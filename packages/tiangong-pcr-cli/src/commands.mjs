@@ -14,6 +14,7 @@ import {
   listPcrs,
   readPcrMarkdown,
   resolveClassification,
+  resolvePcrIdentity,
   validateDatasetAgainstGuidance,
   validateModelAgainstGuidance,
 } from "../../pcr-core/src/index.mjs";
@@ -37,7 +38,7 @@ const COMMAND_OPTIONS = {
   coverage: new Set(),
   "coverage:summary": new Set(["classification"]),
   "coverage:list": new Set(["classification", "status", "page", "page-size"]),
-  resolve: new Set(["classification"]),
+  resolve: new Set(["classification", "pcr"]),
   show: new Set(["pcr", "lang"]),
   guidance: new Set(["pcr"]),
   "validate-model": new Set(["pcr", "input", "fail-on"]),
@@ -96,6 +97,7 @@ export class CliError extends Error {
 
 export function runTiangongPcr(argv) {
   const requestedFormat = requestedFormatFromArgv(argv);
+  const requestedRoot = requestedRootFromArgv(argv);
   try {
     const { command, positional, options } = parseArgs(argv);
 
@@ -162,6 +164,11 @@ export function runTiangongPcr(argv) {
       return ok(writeOutput(page, format, formatCoverageList));
     }
     if (command === "resolve") {
+      validateResolveSelector(options);
+      if (options.pcr !== undefined) {
+        const resolution = resolvePcrIdentity({ root, pcrId: String(options.pcr) });
+        return ok(`${JSON.stringify(resolvePcrIdentityOutput(resolution, options), null, 2)}\n`);
+      }
       const classification = parseClassificationSelector(options.classification, {
         includeCode: true,
       });
@@ -233,7 +240,7 @@ export function runTiangongPcr(argv) {
       `Unknown command: ${[command, ...positional].filter(Boolean).join(" ")}`,
     );
   } catch (error) {
-    return fail(error, requestedFormat);
+    return fail(error, requestedFormat, requestedRoot);
   }
 }
 
@@ -241,8 +248,23 @@ function ok(stdout, exitCode = 0) {
   return { stdout, stderr: "", exitCode };
 }
 
-function fail(error, requestedFormat) {
+function fail(error, requestedFormat, requestedRoot) {
   const normalized = normalizeError(error);
+  if (
+    normalized.code === "PCR_LEGACY_ID_REDIRECT"
+    && normalized.details?.target
+  ) {
+    const originalNextCommand = normalized.details.next_command;
+    const nextCommand = legacyRedirectCommand(
+      normalized.details.target,
+      { root: requestedRoot },
+    );
+    normalized.details.next_command = nextCommand;
+    normalized.message = typeof originalNextCommand === "string"
+      && normalized.message.includes(originalNextCommand)
+      ? normalized.message.replace(originalNextCommand, nextCommand)
+      : `${normalized.message} Next: ${nextCommand}`;
+  }
   if (requestedFormat === "json") {
     return {
       stdout: "",
@@ -265,6 +287,12 @@ function requestedFormatFromArgv(argv) {
   }
   const index = argv.lastIndexOf("--format");
   return index >= 0 && typeof argv[index + 1] === "string" ? argv[index + 1] : null;
+}
+
+function requestedRootFromArgv(argv) {
+  const index = argv.lastIndexOf("--root");
+  const value = index >= 0 ? argv[index + 1] : undefined;
+  return typeof value === "string" && !value.startsWith("--") ? value : undefined;
 }
 
 function normalizeError(error) {
@@ -502,6 +530,22 @@ function parseClassificationSelector(value, { includeCode }) {
     return { system, version, code };
   }
   return { system, version };
+}
+
+function validateResolveSelector(options) {
+  const supplied = ["classification", "pcr"].filter(
+    (key) => options[key] !== undefined,
+  );
+  if (supplied.length !== 1) {
+    throw new CliError(
+      "PCR_CLI_EXACTLY_ONE_SELECTOR_REQUIRED",
+      "Resolve requires exactly one selector: --classification <system>:<version>:<code> or --pcr <pcr-id>.",
+      {
+        required_exactly_one_of: ["classification", "pcr"],
+        supplied,
+      },
+    );
+  }
 }
 
 function validateListOptions(options) {
@@ -788,6 +832,60 @@ function resolveOutput(resolution, options) {
           "Draft feedback when the mapping or missing methodology prevents the requested work.",
         ],
   };
+}
+
+function resolvePcrIdentityOutput(resolution, options) {
+  if (resolution.resolution_status === "legacy_id_redirect") {
+    const nextCommand = legacyRedirectCommand(resolution.redirect.target, options);
+    return {
+      ...resolution,
+      redirect: {
+        ...resolution.redirect,
+        next_command: nextCommand,
+      },
+      next_command: nextCommand,
+      next_steps: [
+        "This PCR id is retired. The target is a locator, not automatically selected methodology.",
+        "Run next_command explicitly to inspect the classification coverage or canonical PCR target.",
+      ],
+    };
+  }
+
+  const usable = resolution.pcr?.readiness?.usable_for_guidance === true;
+  const nextCommand = usable
+    ? [
+        "npm --silent run tiangong-pcr -- guidance",
+        `--pcr ${shellToken(String(resolution.pcr.id))}`,
+        options.root ? `--root ${shellToken(String(options.root))}` : "",
+        "--format json",
+      ].filter(Boolean).join(" ")
+    : null;
+  return {
+    ...resolution,
+    next_command: nextCommand,
+    next_steps: usable
+      ? ["The PCR id is canonical. Run next_command to obtain foreground data-production guidance."]
+      : [
+          "The PCR id is canonical, but readiness blocks guidance; inspect pcr.readiness.blockers.",
+        ],
+  };
+}
+
+function legacyRedirectCommand(target, options) {
+  const selector = target.kind === "classification_coverage"
+    ? [
+        "--classification",
+        shellToken(
+          `${target.classification_system}:${target.classification_version}:${target.code}`,
+        ),
+      ]
+    : ["--pcr", shellToken(String(target.pcr_id))];
+  return [
+    "npm --silent run tiangong-pcr -- resolve",
+    ...selector,
+    options.root ? `--root ${shellToken(String(options.root))}` : "",
+    "--format json",
+  ].filter(Boolean).join(" ");
 }
 
 function validationExitCode(report, failOnValue) {
@@ -1130,26 +1228,29 @@ Agent next step:
 `;
   }
   if (definition.key === "resolve") {
-    return `Usage: tiangong-pcr resolve --classification <system>:<version>:<code> [options]
+    return `Usage: tiangong-pcr resolve (--classification <system>:<version>:<code> | --pcr <pcr-id>) [options]
 
-Resolve an external classification code through deterministic classification mapping files.
-This command does not perform fuzzy search.
+Resolve exactly one external classification code or PCR identity through deterministic contracts.
+This command does not perform fuzzy search and never silently follows a retired PCR id.
 Only coverage_status=mapped selects a material PCR. Known unmapped codes return success with mapping and pcr set to null.
-Legacy scaffolds are compatibility references, while candidate suggestions and manual-review targets are never auto-selected.
+Retired PCR ids return a redirect locator and copyable next command without automatically following the target.
+Candidate suggestions and manual-review targets are never auto-selected.
 Even a mapped result does not prove that the methodology is usable; inspect PCR readiness.
 
 Options:
   --classification <value>          Example: cpc:3.0:01111.
+  --pcr <pcr-id>                    Exact current or retired PCR id. Mutually exclusive with --classification.
   --format json                     Output format. JSON is recommended for Agents.
   --root <path>                     PCR repository root.
   --help                            Show this command help.
 
-Example:
+Examples:
   npm --silent run tiangong-pcr -- resolve --classification cpc:3.0:01111 --format json
+  npm --silent run tiangong-pcr -- resolve --pcr <pcr-id> --format json
 
 Agent next step:
-  Inspect resolution_status and coverage_status. Only when resolution_status is mapped and
-  pcr.readiness.usable_for_guidance is true, run:
+  Inspect resolution_status. For legacy_id_redirect, run next_command explicitly; the target was not auto-selected.
+  Only when the selected canonical or mapped PCR has readiness.usable_for_guidance=true, run:
   npm --silent run tiangong-pcr -- guidance --pcr <mapping.pcr_id> --format json
 `;
   }
@@ -1281,7 +1382,7 @@ Commands:
   tree [--scope all|material|legacy] [--depth <n>] [--format json|markdown]
   coverage summary --classification <system>:<version> [--format json|table]
   coverage list --classification <system>:<version> [--status <coverage-status>] [--page <n>] [--page-size <n>] [--format json|table]
-  resolve --classification <system>:<version>:<code> [--format json]
+  resolve (--classification <system>:<version>:<code> | --pcr <pcr-id>) [--format json]
   show --pcr <pcr-id> [--lang en-US|zh-CN]
   guidance --pcr <pcr-id> [--format json]
   validate-model --pcr <pcr-id> --input <file> [--format json] [--fail-on never|error|warning]
@@ -1291,6 +1392,7 @@ Commands:
 Agent workflow:
   1. Inspect coverage summary/list when classification completeness matters; no fuzzy matching is performed.
   2. If a classification code is available, run resolve --classification <system>:<version>:<code> --format json.
+     If a PCR id is available, run resolve --pcr <pcr-id> --format json. Supply exactly one selector.
   3. If no code is available, use tree/list to browse explicit material PCR hierarchy. list defaults to 10 records per page.
   4. Check resolution_status and readiness. Run guidance only for mapped material PCRs when usable_for_guidance is true.
   5. Build a foreground data package, then run validate-dataset.

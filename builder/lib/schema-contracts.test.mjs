@@ -4,6 +4,7 @@ import test from "node:test";
 import { materialProjectionCompletenessIssues } from "../../packages/pcr-core/src/projection-completeness.mjs";
 import { manifestIdentityProblems } from "./lifecycle-policy.mjs";
 import {
+  assertClassificationMapping,
   validateClassificationMapping,
   validateManifest,
   validateMarkdownFrontmatter,
@@ -116,10 +117,10 @@ test("builder contracts bind stable lifecycle and mapping tokens to shared vocab
     sync_with: "pcr.zh-CN.md",
   };
   const mapping = {
-    schema_version: 1,
+    schema_version: 2,
     classification_system: "cpc",
     classification_version: "3.0",
-    status: "draft",
+    status: "current",
     mappings: [
       {
         code: "01234",
@@ -127,6 +128,12 @@ test("builder contracts bind stable lifecycle and mapping tokens to shared vocab
         pcr_id: "pcr.example",
         mapping_type: "exact",
         confidence: "high",
+        acceptance: {
+          status: "accepted",
+          decided_by: "PCR review board",
+          decided_at_utc: "2026-07-14T12:34:56Z",
+          decision_ref: "docs/adr/fixture-mapping-decision.md",
+        },
       },
     ],
   };
@@ -162,6 +169,148 @@ test("builder contracts bind stable lifecycle and mapping tokens to shared vocab
   );
   mapping.mappings[0].mapping_type = "approximate";
   assert.equal(validateClassificationMapping(mapping).valid, false);
+});
+
+test("classification mapping Schema keeps v1 read compatibility and makes v2 accepted-only", () => {
+  const legacyEdge = {
+    code: "01234",
+    label: "Example",
+    pcr_id: "pcr.example",
+    mapping_type: "manual_review",
+    confidence: "scaffold",
+  };
+  const legacy = {
+    schema_version: 1,
+    classification_system: "CPC",
+    classification_version: "3.0",
+    status: "scaffold",
+    mappings: [legacyEdge],
+  };
+  const acceptedEdge = {
+    ...legacyEdge,
+    mapping_type: "exact",
+    confidence: "reviewed",
+    acceptance: {
+      status: "accepted",
+      decided_by: "PCR review board",
+      decided_at_utc: "2026-07-14T12:34:56.123Z",
+      decision_ref: "docs/adr/fixture-mapping-decision.md",
+    },
+  };
+  const current = {
+    schema_version: 2,
+    classification_system: "CPC",
+    classification_version: "3.0",
+    status: "current",
+    mappings: [acceptedEdge],
+  };
+
+  assert.equal(validateClassificationMapping(legacy).valid, true);
+  assert.equal(validateClassificationMapping({ ...current, mappings: [] }).valid, true);
+  assert.equal(validateClassificationMapping(current).valid, true);
+
+  assert.equal(validateClassificationMapping({ ...legacy, status: "current" }).valid, false);
+  assert.equal(validateClassificationMapping({ ...current, status: "scaffold" }).valid, false);
+  assert.equal(
+    validateClassificationMapping({
+      ...current,
+      mappings: [{ ...legacyEdge, mapping_type: "exact", confidence: "reviewed" }],
+    }).valid,
+    false,
+  );
+  assert.equal(
+    validateClassificationMapping({
+      ...current,
+      mappings: [{
+        ...acceptedEdge,
+        acceptance: {
+          ...acceptedEdge.acceptance,
+          decision_ref: "https://example.test/unreviewed",
+        },
+      }],
+    }).valid,
+    false,
+  );
+  assert.throws(
+    () => assertClassificationMapping({
+      ...current,
+      mappings: [{
+        ...acceptedEdge,
+        acceptance: {
+          ...acceptedEdge.acceptance,
+          decided_at_utc: "2026-02-31T12:34:56Z",
+        },
+      }],
+    }),
+    (error) => {
+      assert.equal(error.code, "PCR_SCHEMA_INVALID");
+      assert.equal(
+        error.errors[0].instance_path,
+        "/mappings/0/acceptance/decided_at_utc",
+      );
+      return true;
+    },
+  );
+  assert.equal(
+    validateClassificationMapping({
+      ...current,
+      mappings: [{
+        ...acceptedEdge,
+        acceptance: {
+          ...acceptedEdge.acceptance,
+          decided_at_utc: "2026-02-31T12:34:56Z",
+        },
+      }],
+    }).valid,
+    false,
+  );
+  assert.equal(
+    validateClassificationMapping({
+      ...current,
+      mappings: [{ ...acceptedEdge, mapping_type: "manual_review" }],
+    }).valid,
+    false,
+  );
+  assert.equal(
+    validateClassificationMapping({
+      ...current,
+      mappings: [{
+        ...acceptedEdge,
+        acceptance: { ...acceptedEdge.acceptance, status: "proposed" },
+      }],
+    }).valid,
+    false,
+  );
+  assert.equal(
+    validateClassificationMapping({
+      ...current,
+      mappings: [{
+        ...acceptedEdge,
+        acceptance: {
+          ...acceptedEdge.acceptance,
+          decided_at_utc: "2026-07-14T20:34:56+08:00",
+        },
+      }],
+    }).valid,
+    false,
+  );
+  assert.equal(
+    validateClassificationMapping({
+      ...current,
+      mappings: [{
+        ...acceptedEdge,
+        acceptance: { ...acceptedEdge.acceptance, decided_by: "   " },
+      }],
+    }).valid,
+    false,
+  );
+  assert.equal(
+    validateClassificationMapping({
+      ...legacy,
+      mappings: [{ ...legacyEdge, acceptance: acceptedEdge.acceptance }],
+    }).valid,
+    false,
+  );
 });
 
 test("published and deprecated manifests require fixed release artifact fingerprints", () => {

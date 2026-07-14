@@ -13,6 +13,7 @@ Use command-specific help when unsure about arguments or output shape:
 npm --silent run tiangong-pcr -- --help
 npm --silent run tiangong-pcr -- list --help
 npm --silent run tiangong-pcr -- coverage list --help
+npm --silent run tiangong-pcr -- resolve --help
 npm --silent run tiangong-pcr -- guidance --help
 ```
 
@@ -25,8 +26,18 @@ npm --silent run tiangong-pcr -- guidance --help
    ```
 
    Inspect `resolution_status` and `coverage_status` first. A known unmapped leaf is a successful result with
-   `mapping: null` and `pcr: null`. A retained scaffold can appear as `legacy_scaffold_compatibility`; do not run
-   guidance for it. Continue only for `resolution_status: mapped` when `pcr.readiness.usable_for_guidance` is true.
+   `mapping: null` and `pcr: null`. Continue only for `resolution_status: mapped` when
+   `pcr.readiness.usable_for_guidance` is true.
+
+   If the user provides a PCR id, resolve that identity instead. Supply exactly one selector:
+
+   ```bash
+   npm --silent run tiangong-pcr -- resolve --pcr <pcr-id> --format json
+   ```
+
+   A retired id returns `legacy_id_redirect`, a terminal locator, and `next_command`. Do not treat it as not-found,
+   do not auto-follow it, and do not run content commands for the old id. Run `next_command` explicitly only when its
+   classification or canonical target is relevant to the user's request.
 
 2. If classification completeness matters, inspect the coverage read model explicitly:
 
@@ -78,8 +89,9 @@ npm --silent run tiangong-pcr -- guidance --help
 
 - `pcr.en-US.md` remains the canonical authored PCR source.
 - `structured.yaml` is generated and consumed by `tiangong-pcr guidance`.
-- Empty scaffolds are excluded from default material browsing. They remain available only through explicit
-  legacy/all compatibility scope or legacy resolution and are rejected by guidance and validation.
+- Empty scaffolds are excluded from default material browsing and remain visible only through explicit legacy/all
+  catalog scope. Retired leaf-derived ids resolve through terminal aliases; content commands reject them with
+  `PCR_LEGACY_ID_REDIRECT`.
 - PCR guidance is foreground-data-package first; process and lifecyclemodel outputs are projections of that package.
 - Tiangong UUIDs from PCR guidance must be copied without dataset versions.
 - Feedback issues are candidate evidence for maintainers before review and merge.

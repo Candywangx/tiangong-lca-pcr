@@ -17,11 +17,20 @@ This directory defines how agents construct, update, validate, and publish PCR r
 - List external literature, official guidance, standards, methods, and non-default quantitative evidence in `Data Sources`.
 - Keep classification codes in `classifications/mappings/**` and `classification_refs`, not in canonical PCR directory names.
 - Keep CPC import classification-only by default. `import-cpc` creates zero PCR records, validates and preserves an
-  existing mapping byte-for-byte, and creates only a zero-edge mapping when one is absent. Register a coverage
+  existing mapping byte-for-byte, and creates only a zero-edge current mapping when one is absent. Register a coverage
   descriptor before importing a non-3.0 version.
-- Treat `scaffold-cpc` as a fail-fast compatibility alias. It requires explicit `--legacy-scaffolds`; that mode may
-  append legacy identity and edges only for unmapped leaves and create one complete scaffold directory only when the
-  target is absent, but it must not repair a partial target, replace accepted mappings, or overwrite PCR content.
+- Treat current mapping v2 as an accepted-positive-edge contract. Every edge must target a material PCR and carry
+  explicit acceptance decision metadata; candidate or manual-review evidence belongs in coverage assessment.
+- Treat `scaffold-cpc` as a fail-fast compatibility alias. It requires explicit `--legacy-scaffolds` and may operate
+  only on a retained v1/scaffold mapping fixture. It must fail before mutation on a current v2 mapping, so it cannot
+  inject an unaccepted edge or rehydrate a retired leaf-derived PCR directory. It must not repair a partial target,
+  replace accepted mappings, or overwrite PCR content.
+- Treat `classifications/aliases/pcr-id-aliases.yaml` as a deterministic generated registry. Rebuild it with
+  `npm run aliases:build`; do not hand-edit terminal locators or silently follow one into a PCR. The catalog must pin
+  its canonical path, exact-byte SHA-256, and entry count, including an empty registry created by `init`.
+- Publish catalog, material index, and coverage indexes only through the journaled catalog artifact transaction.
+  Recover interrupted state with `npm run catalog:recover`; use `--force-stale-lock` only after confirming no writer
+  is active.
 - PCR production always synthesizes the current best PCR for the target product category from available evidence. Existing PCR content is prior evidence and a canonical write target, not a separate reasoning mode.
 - Use public evidence and domain common sense to initialize candidate processes, qualifiers, and likely flows; UUIDs and quantitative ranges must be evidence-backed before they are treated as final PCR content.
 
@@ -62,6 +71,7 @@ For classification import, legacy scaffold compatibility, or mapping work:
 - read `docs/classification-policy.md`
 - inspect the affected files under `classifications/systems/**` or `classifications/mappings/**`
 - inspect `builder/schemas/classification-mapping.schema.json` when mapping shape changes
+- rebuild and check the legacy-id registry when an accepted mapping or retired leaf identity changes
 - inspect `builder/cli/`, `builder/lib/`, `builder/scripts/`, or `builder/templates/` when import or legacy scaffold
   behavior changes
 
@@ -117,7 +127,15 @@ npm run pcr:recover -- --pcr <library/pcrs/...>
 npm run validate
 ```
 
-Use `--force-stale-lock` only after verifying that no writer is active and ordinary recovery explicitly requires it.
+For interrupted catalog/material/coverage publication, recover the whole artifact set and verify it before retrying:
+
+```bash
+npm run catalog:recover
+npm run catalog:check
+```
+
+Use either recovery command's `--force-stale-lock` only after verifying that no writer is active and ordinary
+recovery explicitly requires it.
 
 ## Quality Bar
 

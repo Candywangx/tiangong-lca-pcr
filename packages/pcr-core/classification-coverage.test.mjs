@@ -159,7 +159,7 @@ test("coverage projection cannot downgrade a retained canonical mapping to unkno
 
     assertProjectionFailure(
       root,
-      "coverage_status unknown does not match canonical mapping projection mapped",
+      "coverage_status unknown does not match accepted canonical mapping projection mapped",
     );
   } finally {
     rmSync(root, { recursive: true, force: true });
@@ -181,6 +181,22 @@ test("coverage projection cannot drift canonical mapping relation or PCR identit
     } finally {
       rmSync(root, { recursive: true, force: true });
     }
+  }
+});
+
+test("coverage projection cannot drift canonical mapping acceptance evidence", () => {
+  const root = createMappedCoverageFixture();
+  try {
+    rewriteCoverage(root, (coverage) => {
+      coverage.entries[0].mapping.acceptance.decision_ref = "docs/adr/substituted.md";
+    });
+
+    assertProjectionFailure(
+      root,
+      "mapping.acceptance.decision_ref does not match canonical mapping",
+    );
+  } finally {
+    rmSync(root, { recursive: true, force: true });
   }
 });
 
@@ -247,9 +263,10 @@ function createCoverageFixture() {
   writeRepositoryFile(
     root,
     mappingPath,
-    `schema_version: 1
+    `schema_version: 2
 classification_system: CPC
 classification_version: "3.0"
+status: current
 mappings: []
 `,
   );
@@ -259,9 +276,9 @@ mappings: []
     classification_system: "CPC",
     classification_version: "3.0",
     source: {
-      contract_version: "1",
+      contract_version: "2",
       generator: "builder/scripts/build-catalog.mjs",
-      generator_version: "1",
+      generator_version: "2",
       normalized_leaves: sourceArtifact(root, normalizedLeavesPath),
       mapping: sourceArtifact(root, mappingPath),
     },
@@ -300,15 +317,21 @@ function createMappedCoverageFixture() {
   writeRepositoryFile(
     root,
     mappingPath,
-    `schema_version: 1
+    `schema_version: 2
 classification_system: CPC
 classification_version: "3.0"
+status: current
 mappings:
   - code: "01111"
     label: "Wheat, seed"
     pcr_id: "pcr.example.wheat-seed"
     mapping_type: exact
     confidence: high
+    acceptance:
+      status: accepted
+      decided_by: test-maintainer
+      decided_at_utc: "2026-07-14T14:44:36Z"
+      decision_ref: docs/adr/fixture.md
 `,
   );
   rewriteCoverage(root, (coverage) => {
@@ -333,6 +356,12 @@ mappings:
           pcr_id: "pcr.example.wheat-seed",
           mapping_type: "exact",
           confidence: "high",
+          acceptance: {
+            status: "accepted",
+            decided_by: "test-maintainer",
+            decided_at_utc: "2026-07-14T14:44:36Z",
+            decision_ref: "docs/adr/fixture.md",
+          },
         },
         legacy_reference: null,
       },

@@ -14,6 +14,7 @@ const CORE_SCHEMA_FILES = [
   "feedback.schema.json",
   "guidance-output.schema.json",
   "model-validation-input.schema.json",
+  "pcr-id-aliases.schema.json",
   "readiness.schema.json",
   "structured-projection.schema.json",
   "validation-output.schema.json",
@@ -34,6 +35,7 @@ const entityKindsByFile = {
   "feedback.schema.json": "feedback_intake",
   "guidance-output.schema.json": "guidance_output",
   "model-validation-input.schema.json": "model_validation_input",
+  "pcr-id-aliases.schema.json": "pcr_id_aliases",
   "readiness.schema.json": "readiness",
   "structured-projection.schema.json": "structured_projection",
   "validation-output.schema.json": "validation_report",
@@ -92,6 +94,7 @@ export const CORE_SCHEMA_IDS = Object.freeze({
   feedbackIntake: contractIds.get("feedback.schema.json"),
   modelInput: contractIds.get("model-validation-input.schema.json"),
   datasetInput: contractIds.get("dataset-validation-input.schema.json"),
+  pcrIdAliases: contractIds.get("pcr-id-aliases.schema.json"),
 });
 
 export function assertCoreContract(contract, value, options = {}) {
@@ -167,6 +170,10 @@ export const validateClassificationCoverage = (value) =>
   validateCoreContract("classification-coverage.schema.json", value);
 export const assertClassificationCoverage = (value, options = {}) =>
   assertCoreContract("classification-coverage.schema.json", value, options);
+export const validatePcrIdAliases = (value) =>
+  validateCoreContract("pcr-id-aliases.schema.json", value);
+export const assertPcrIdAliases = (value, options = {}) =>
+  assertCoreContract("pcr-id-aliases.schema.json", value, options);
 
 export const validateStructuredProjection = validateStructured;
 export const assertStructuredProjection = assertStructured;

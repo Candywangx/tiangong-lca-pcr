@@ -47,6 +47,35 @@ function runCliAtRoot(root, args) {
   });
 }
 
+function installEmptyPcrAliasBinding(root) {
+  const registryPath = path.join(
+    root,
+    "classifications/aliases/pcr-id-aliases.yaml",
+  );
+  const registry = `schema_version: 1
+registry_kind: legacy-pcr-id-aliases
+status: current
+aliases: []
+`;
+  mkdirSync(path.dirname(registryPath), { recursive: true });
+  writeFileSync(registryPath, registry);
+
+  const digest = createHash("sha256").update(registry).digest("hex");
+  const catalogPath = path.join(root, "library/catalog.yaml");
+  mkdirSync(path.dirname(catalogPath), { recursive: true });
+  writeFileSync(
+    catalogPath,
+    `schema_version: 1
+catalog_status: current
+pcr_id_aliases:
+  path: classifications/aliases/pcr-id-aliases.yaml
+  hash_mode: exact_bytes
+  sha256: sha256:${digest}
+  entry_count: 0
+`,
+  );
+}
+
 test("list prints PCR records as JSON", () => {
   const output = runCli(["list", "--status", "candidate", "--format", "json"]);
   const page = JSON.parse(output);
@@ -154,8 +183,10 @@ test("resolve help explains deterministic mapping usage", () => {
   const output = runCli(["resolve", "--help"]);
 
   assert.match(output, /Usage: tiangong-pcr resolve/);
-  assert.match(output, /deterministic classification mapping/);
+  assert.match(output, /deterministic contracts/);
   assert.match(output, /cpc:3.0:01111/);
+  assert.match(output, /--pcr <pcr-id>/);
+  assert.match(output, /never silently follows/);
   assert.match(output, /does not prove that the methodology is usable/);
 });
 
@@ -286,7 +317,7 @@ test("resolve prints deterministic classification mapping as JSON", () => {
   assert.match(result.next_command, /--format json/);
 });
 
-test("resolve keeps legacy scaffolds compatible without presenting them as methodology", () => {
+test("resolve returns retired classification leaves as known unmapped coverage", () => {
   const result = JSON.parse(runCli([
     "resolve",
     "--classification",
@@ -295,12 +326,65 @@ test("resolve keeps legacy scaffolds compatible without presenting them as metho
     "json",
   ]));
 
-  assert.equal(result.resolution_status, "legacy_scaffold_compatibility");
+  assert.equal(result.resolution_status, "unmapped");
   assert.equal(result.coverage_status, "unmapped");
-  assert.equal(result.mapping.code, "01112");
-  assert.equal(result.pcr.record_kind, "legacy_scaffold_reference");
-  assert.equal(result.next_command, null);
-  assert.ok(result.next_steps.some((step) => step.includes("Do not run guidance")));
+  assert.equal(result.mapping, null);
+  assert.equal(result.pcr, null);
+  assert.match(result.next_command, /coverage list/);
+});
+
+test("resolve accepts exactly one selector and does not auto-follow retired PCR ids", () => {
+  const redirected = JSON.parse(runCli([
+    "resolve",
+    "--pcr",
+    scaffoldPcrId,
+    "--format",
+    "json",
+  ]));
+  assert.equal(redirected.resolution_status, "legacy_id_redirect");
+  assert.equal(redirected.requested_pcr_id, scaffoldPcrId);
+  assert.equal(redirected.pcr, null);
+  assert.equal(redirected.redirect.source_pcr_id, scaffoldPcrId);
+  assert.equal(redirected.redirect.target.kind, "classification_coverage");
+  assert.match(redirected.next_command, /resolve --classification cpc:3\.0:92200/);
+  assert.match(redirected.next_command, /--root /);
+  assert.equal(redirected.redirect.next_command, redirected.next_command);
+  assert.ok(redirected.next_steps.some((step) => step.includes("not automatically selected")));
+
+  const canonical = JSON.parse(runCli([
+    "resolve",
+    "--pcr",
+    wheatSeedPcrId,
+    "--format",
+    "json",
+  ]));
+  assert.equal(canonical.resolution_status, "canonical");
+  assert.equal(canonical.pcr.id, wheatSeedPcrId);
+  assert.equal(canonical.pcr.readiness.usable_for_guidance, true);
+  assert.match(canonical.next_command, /guidance --pcr/);
+
+  for (const args of [
+    ["resolve", "--format", "json"],
+    [
+      "resolve",
+      "--classification",
+      "cpc:3.0:01111",
+      "--pcr",
+      wheatSeedPcrId,
+      "--format",
+      "json",
+    ],
+  ]) {
+    assert.throws(
+      () => runCliFailure(args),
+      (error) => {
+        assert.equal(String(error.stdout), "");
+        const envelope = JSON.parse(String(error.stderr));
+        assert.equal(envelope.error.code, "PCR_CLI_EXACTLY_ONE_SELECTOR_REQUIRED");
+        return true;
+      },
+    );
+  }
 });
 
 test("resolve returns known non-mapped coverage as success and rejects only unknown codes", () => {
@@ -355,13 +439,29 @@ test("guidance prints Agent-facing data-production PCR rules", () => {
   assert.equal(guidance.readiness.usable_for_guidance, true);
 });
 
-test("guidance rejects an empty scaffold with no JSON stdout", () => {
+test("guidance redirects a retired scaffold id with no JSON stdout", () => {
   assert.throws(
     () => runCliFailure(["guidance", "--pcr", scaffoldPcrId, "--format", "json"]),
     (error) => {
       assert.equal(String(error.stdout), "");
-      assert.match(String(error.stderr), /not usable for guidance/);
-      assert.match(String(error.stderr), /empty_scaffold/);
+      const envelope = JSON.parse(String(error.stderr));
+      assert.equal(envelope.error.code, "PCR_LEGACY_ID_REDIRECT");
+      assert.equal(envelope.error.details.source_pcr_id, scaffoldPcrId);
+      assert.match(envelope.error.details.next_command, /resolve --classification/);
+      assert.match(envelope.error.details.next_command, /--root /);
+      return true;
+    },
+  );
+});
+
+test("show returns the stable retired-id redirect code before content lookup", () => {
+  assert.throws(
+    () => runCliFailure(["show", "--pcr", scaffoldPcrId]),
+    (error) => {
+      assert.equal(String(error.stdout), "");
+      assert.match(String(error.stderr), /\[PCR_LEGACY_ID_REDIRECT\]/);
+      assert.match(String(error.stderr), /resolve --classification cpc:3\.0:92200/);
+      assert.match(String(error.stderr), /--root /);
       return true;
     },
   );
@@ -464,6 +564,7 @@ test("validation treats an inconclusive report as non-zero unless report-only mo
   const pcrDir = path.join(root, relativePcrPath);
   const inputPath = path.join(root, "dataset.json");
   try {
+    installEmptyPcrAliasBinding(root);
     mkdirSync(path.dirname(pcrDir), { recursive: true });
     cpSync(path.join(repoRoot, relativePcrPath), pcrDir, { recursive: true });
     const markdown = readFileSync(path.join(pcrDir, "pcr.en-US.md"), "utf8");
@@ -763,35 +864,47 @@ test("pagination accepts only bounded positive safe integer tokens", async (t) =
   );
 });
 
-test("JSON error envelopes retain core usability code and readiness details", () => {
+test("JSON error envelopes retain stable retired-id redirect details", () => {
   assert.throws(
     () => runCliFailure(["guidance", "--pcr", scaffoldPcrId, "--format", "json"]),
     (error) => {
       assert.equal(String(error.stdout), "");
       const envelope = JSON.parse(String(error.stderr));
-      assert.equal(envelope.error.code, "PCR_NOT_USABLE_FOR_GUIDANCE");
+      assert.equal(envelope.error.code, "PCR_LEGACY_ID_REDIRECT");
       assert.equal(envelope.error.exit_code, 1);
-      assert.equal(envelope.error.details.readiness.usable_for_guidance, false);
-      assert.ok(envelope.error.details.readiness.blockers.length > 0);
+      assert.equal(envelope.error.details.source_pcr_id, scaffoldPcrId);
+      assert.equal(envelope.error.details.target.kind, "classification_coverage");
+      assert.equal(envelope.error.details.reason, "empty_scaffold_migration");
+      assert.ok(envelope.error.details.decision_ref);
+      assert.match(envelope.error.details.next_command, /resolve --classification/);
+      assert.match(envelope.error.details.next_command, /--root /);
       return true;
     },
   );
 });
 
-test("JSON errors retain controlled core error details", () => {
+test("JSON errors retain fail-closed missing-coverage details", () => {
   const root = mkdtempSync(path.join(tmpdir(), "tiangong-pcr-invalid-mapping-cli-"));
   try {
     const mappingDir = path.join(root, "classifications/mappings");
     mkdirSync(mappingDir, { recursive: true });
     writeFileSync(
       path.join(mappingDir, "cpc-3.0-to-pcr.yaml"),
-      `schema_version: 1
+      `schema_version: 2
 classification_system: cpc
 classification_version: "3.0"
+status: current
 mappings:
   - code: "01111"
+    label: Example
     pcr_id: pcr.example
     mapping_type: ambiguous
+    confidence: reviewed
+    acceptance:
+      status: accepted
+      decided_by: test-maintainer
+      decided_at_utc: "2026-07-14T00:00:00Z"
+      decision_ref: docs/test-decision.md
 `,
     );
 
@@ -813,9 +926,11 @@ mappings:
       (error) => {
         assert.equal(String(error.stdout), "");
         const envelope = JSON.parse(String(error.stderr));
-        assert.equal(envelope.error.code, "PCR_INVALID_CLASSIFICATION_MAPPING");
-        assert.equal(envelope.error.details.mapping_type, "ambiguous");
-        assert.ok(envelope.error.details.allowed_mapping_types.includes("manual_review"));
+        assert.equal(envelope.error.code, "PCR_CLASSIFICATION_COVERAGE_NOT_FOUND");
+        assert.deepEqual(envelope.error.details, {
+          classification: "cpc:3.0",
+          coverage_index: "classifications/indexes/cpc-3.0-coverage.json",
+        });
         return true;
       },
     );
@@ -878,9 +993,10 @@ function writeKnownUnmappedCoverage(root) {
   mkdirSync(path.dirname(mappingPath), { recursive: true });
   writeFileSync(
     mappingPath,
-    `schema_version: 1
+    `schema_version: 2
 classification_system: CPC
 classification_version: "3.0"
+status: current
 mappings:
   []
 `,
@@ -895,9 +1011,9 @@ mappings:
       classification_system: "CPC",
       classification_version: "3.0",
       source: {
-        contract_version: "1",
+        contract_version: "2",
         generator: "builder/scripts/build-catalog.mjs",
-        generator_version: "1",
+        generator_version: "2",
         normalized_leaves: {
           path: "classifications/systems/cpc/3.0/normalized/leaves.json",
           hash_mode: "exact_bytes",

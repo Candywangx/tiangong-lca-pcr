@@ -2,30 +2,135 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://tiangong-lca.org/schemas/pcr/v1/classification-mapping.schema.json",
   "title": "Classification to PCR mapping",
-  "type": "object",
-  "required": ["schema_version", "classification_system", "classification_version", "status", "mappings"],
-  "properties": {
-    "schema_version": { "const": 1 },
-    "classification_system": { "type": "string", "minLength": 1 },
-    "classification_version": { "type": "string", "minLength": 1 },
-    "status": { "type": "string", "minLength": 1 },
-    "mappings": {
-      "type": "array",
-      "items": {
-        "type": "object",
-        "required": ["code", "label", "pcr_id", "mapping_type", "confidence"],
-        "properties": {
-          "code": { "type": "string", "minLength": 1 },
-          "label": { "type": "string", "minLength": 1 },
-          "pcr_id": { "type": "string", "pattern": "^pcr\\." },
-          "mapping_type": {
-            "$ref": "https://tiangong-lca.org/schemas/pcr/v1/controlled-vocabulary.schema.json#/$defs/classification_mapping_relation"
-          },
-          "confidence": { "type": "string", "minLength": 1 }
-        },
-        "additionalProperties": false
-      }
+  "oneOf": [
+    { "$ref": "#/$defs/legacyV1Mapping" },
+    { "$ref": "#/$defs/currentV2Mapping" }
+  ],
+  "$defs": {
+    "classificationSystem": {
+      "type": "string",
+      "minLength": 1
+    },
+    "classificationVersion": {
+      "type": "string",
+      "minLength": 1
+    },
+    "code": {
+      "type": "string",
+      "minLength": 1
+    },
+    "label": {
+      "type": "string",
+      "minLength": 1
+    },
+    "pcrId": {
+      "type": "string",
+      "pattern": "^pcr\\."
+    },
+    "mappingRelation": {
+      "$ref": "https://tiangong-lca.org/schemas/pcr/v1/controlled-vocabulary.schema.json#/$defs/classification_mapping_relation"
+    },
+    "acceptedMappingRelation": {
+      "allOf": [
+        { "$ref": "#/$defs/mappingRelation" },
+        { "not": { "const": "manual_review" } }
+      ]
+    },
+    "confidence": {
+      "type": "string",
+      "minLength": 1
+    },
+    "utcTimestamp": {
+      "type": "string",
+      "pattern": "^[0-9]{4}-(?:0[1-9]|1[0-2])-(?:0[1-9]|[12][0-9]|3[01])T(?:[01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9](?:\\.[0-9]+)?Z$"
+    },
+    "acceptance": {
+      "type": "object",
+      "required": ["status", "decided_by", "decided_at_utc", "decision_ref"],
+      "properties": {
+        "status": { "const": "accepted" },
+        "decided_by": { "type": "string", "pattern": "\\S" },
+        "decided_at_utc": { "$ref": "#/$defs/utcTimestamp" },
+        "decision_ref": {
+          "type": "string",
+          "pattern": "^(?:docs|classifications/migrations)/[A-Za-z0-9][A-Za-z0-9._/-]*\\.(?:md|ya?ml|json)(?:#[A-Za-z0-9][A-Za-z0-9._-]*)?$"
+        }
+      },
+      "additionalProperties": false
+    },
+    "legacyV1Edge": {
+      "type": "object",
+      "required": ["code", "label", "pcr_id", "mapping_type", "confidence"],
+      "properties": {
+        "code": { "$ref": "#/$defs/code" },
+        "label": { "$ref": "#/$defs/label" },
+        "pcr_id": { "$ref": "#/$defs/pcrId" },
+        "mapping_type": { "$ref": "#/$defs/mappingRelation" },
+        "confidence": { "$ref": "#/$defs/confidence" }
+      },
+      "additionalProperties": false
+    },
+    "acceptedV2Edge": {
+      "type": "object",
+      "required": [
+        "code",
+        "label",
+        "pcr_id",
+        "mapping_type",
+        "confidence",
+        "acceptance"
+      ],
+      "properties": {
+        "code": { "$ref": "#/$defs/code" },
+        "label": { "$ref": "#/$defs/label" },
+        "pcr_id": { "$ref": "#/$defs/pcrId" },
+        "mapping_type": { "$ref": "#/$defs/acceptedMappingRelation" },
+        "confidence": { "$ref": "#/$defs/confidence" },
+        "acceptance": { "$ref": "#/$defs/acceptance" }
+      },
+      "additionalProperties": false
+    },
+    "legacyV1Mapping": {
+      "type": "object",
+      "required": [
+        "schema_version",
+        "classification_system",
+        "classification_version",
+        "status",
+        "mappings"
+      ],
+      "properties": {
+        "schema_version": { "const": 1 },
+        "classification_system": { "$ref": "#/$defs/classificationSystem" },
+        "classification_version": { "$ref": "#/$defs/classificationVersion" },
+        "status": { "const": "scaffold" },
+        "mappings": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/legacyV1Edge" }
+        }
+      },
+      "additionalProperties": false
+    },
+    "currentV2Mapping": {
+      "type": "object",
+      "required": [
+        "schema_version",
+        "classification_system",
+        "classification_version",
+        "status",
+        "mappings"
+      ],
+      "properties": {
+        "schema_version": { "const": 2 },
+        "classification_system": { "$ref": "#/$defs/classificationSystem" },
+        "classification_version": { "$ref": "#/$defs/classificationVersion" },
+        "status": { "const": "current" },
+        "mappings": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/acceptedV2Edge" }
+        }
+      },
+      "additionalProperties": false
     }
-  },
-  "additionalProperties": false
+  }
 }

@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
 import {
   cpSync,
+  existsSync,
   mkdirSync,
   mkdtempSync,
   readFileSync,
@@ -25,6 +26,7 @@ import {
   listPcrs,
   readPcrMarkdown,
   resolveClassification,
+  resolvePcrIdentity,
   validateDatasetAgainstGuidance,
   validateModelAgainstGuidance,
 } from "./src/index.mjs";
@@ -44,6 +46,10 @@ const abaloneRelativePcrPath =
   "library/pcrs/agriculture-forestry-and-fishery-products/fish-crustaceans-molluscs-and-other-aquatic-invertebrates-products/farmed-abalone-live-fresh-or-chilled";
 const scaffoldRelativePcrPath =
   "library/pcrs/community-social-and-personal-services/education-services/primary-education-services";
+const pilot99000PcrId =
+  "pcr.community-social-and-personal-services.services-provided-by-extraterritorial-organizations-and-bodies.services-provided-by-extraterritorial-organizations-and-bodies";
+const pilot99000RelativePcrPath =
+  "library/pcrs/community-social-and-personal-services/services-provided-by-extraterritorial-organizations-and-bodies/services-provided-by-extraterritorial-organizations-and-bodies";
 
 test("listPcrs exposes canonical PCR records without relying on search", () => {
   const pcrs = listPcrs({ root: repoRoot });
@@ -71,7 +77,7 @@ test("listPcrs rejects a missing repository catalog instead of returning an empt
 });
 
 test("catalog scopes separate material methodology from legacy scaffold references", () => {
-  const root = mkdtempSync(path.join(tmpdir(), "tiangong-pcr-scoped-catalog-"));
+  const root = createBoundRepositoryFixture("tiangong-pcr-scoped-catalog-");
   try {
     for (const relativePath of [wheatRelativePcrPath, scaffoldRelativePcrPath]) {
       const target = path.join(root, relativePath);
@@ -114,7 +120,7 @@ test("catalog scopes separate material methodology from legacy scaffold referenc
 });
 
 test("catalog scope classifies half-valid lifecycle pairs as invalid, never methodology", () => {
-  const root = mkdtempSync(path.join(tmpdir(), "tiangong-pcr-invalid-record-kind-"));
+  const root = createBoundRepositoryFixture("tiangong-pcr-invalid-record-kind-");
   const pcrDir = path.join(root, wheatRelativePcrPath);
   try {
     mkdirSync(path.dirname(pcrDir), { recursive: true });
@@ -146,7 +152,7 @@ test("catalog scope classifies half-valid lifecycle pairs as invalid, never meth
 });
 
 test("material scope does not read excluded legacy artifacts before manifest-only filtering", () => {
-  const root = mkdtempSync(path.join(tmpdir(), "tiangong-pcr-scope-prefilter-"));
+  const root = createBoundRepositoryFixture("tiangong-pcr-scope-prefilter-");
   const legacyDir = path.join(root, scaffoldRelativePcrPath);
   try {
     for (const relativePath of [wheatRelativePcrPath, scaffoldRelativePcrPath]) {
@@ -192,7 +198,7 @@ test("material scope does not read excluded legacy artifacts before manifest-onl
 });
 
 test("catalog discovers only canonical three-level PCR manifests and never follows symlinks", () => {
-  const root = mkdtempSync(path.join(tmpdir(), "tiangong-pcr-canonical-discovery-"));
+  const root = createBoundRepositoryFixture("tiangong-pcr-canonical-discovery-");
   const pcrDir = path.join(root, wheatRelativePcrPath);
   try {
     mkdirSync(path.dirname(pcrDir), { recursive: true });
@@ -220,7 +226,7 @@ test("catalog discovers only canonical three-level PCR manifests and never follo
 });
 
 test("catalog fails closed when canonical manifests duplicate a PCR id", () => {
-  const root = mkdtempSync(path.join(tmpdir(), "tiangong-pcr-duplicate-id-"));
+  const root = createBoundRepositoryFixture("tiangong-pcr-duplicate-id-");
   try {
     for (const relativePath of [
       "library/pcrs/domain-a/subdomain-a/pcr-a",
@@ -246,23 +252,33 @@ test("catalog fails closed when canonical manifests duplicate a PCR id", () => {
 });
 
 test("PCR readiness distinguishes authored guidance from empty scaffolds", () => {
-  const authored = getPcrReadiness({ root: repoRoot, pcrId: wheatSeedPcrId });
-  const scaffold = getPcrReadiness({ root: repoRoot, pcrId: scaffoldPcrId });
+  const root = createBoundRepositoryFixture("tiangong-pcr-readiness-kinds-");
+  try {
+    for (const relativePath of [wheatRelativePcrPath, scaffoldRelativePcrPath]) {
+      const target = path.join(root, relativePath);
+      mkdirSync(path.dirname(target), { recursive: true });
+      cpSync(path.join(repoRoot, relativePath), target, { recursive: true });
+    }
+    const authored = getPcrReadiness({ root, pcrId: wheatSeedPcrId, refresh: true });
+    const scaffold = getPcrReadiness({ root, pcrId: scaffoldPcrId });
 
-  assert.equal(authored.methodology_status, "authored_methodology");
-  assert.equal(authored.usable_for_guidance, true);
-  assert.equal(authored.usable_for_validation, true);
-  assert.equal(scaffold.status, "unavailable");
-  assert.equal(scaffold.methodology_status, "empty_scaffold");
-  assert.equal(scaffold.usable_for_guidance, false);
-  assert.equal(scaffold.projection_fingerprint.required, false);
-  assert.equal(scaffold.projection_fingerprint.status, "not_required");
-  assert.equal(scaffold.projection_fingerprint.schema_valid, null);
-  assert.ok(scaffold.blockers.some((blocker) => blocker.code === "methodology_not_authored"));
+    assert.equal(authored.methodology_status, "authored_methodology");
+    assert.equal(authored.usable_for_guidance, true);
+    assert.equal(authored.usable_for_validation, true);
+    assert.equal(scaffold.status, "unavailable");
+    assert.equal(scaffold.methodology_status, "empty_scaffold");
+    assert.equal(scaffold.usable_for_guidance, false);
+    assert.equal(scaffold.projection_fingerprint.required, false);
+    assert.equal(scaffold.projection_fingerprint.status, "not_required");
+    assert.equal(scaffold.projection_fingerprint.schema_valid, null);
+    assert.ok(scaffold.blockers.some((blocker) => blocker.code === "methodology_not_authored"));
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+  }
 });
 
 test("readiness revalidates projection fingerprints after catalog caching", () => {
-  const root = mkdtempSync(path.join(tmpdir(), "tiangong-pcr-fingerprint-cache-"));
+  const root = createBoundRepositoryFixture("tiangong-pcr-fingerprint-cache-");
   const sourcePcrDir = path.join(repoRoot, wheatRelativePcrPath);
   const pcrDir = path.join(root, wheatRelativePcrPath);
   try {
@@ -297,7 +313,7 @@ test("readiness revalidates projection fingerprints after catalog caching", () =
 });
 
 test("current snapshots observe lifecycle changes without a catalog refresh", () => {
-  const root = mkdtempSync(path.join(tmpdir(), "tiangong-pcr-current-manifest-"));
+  const root = createBoundRepositoryFixture("tiangong-pcr-current-manifest-");
   const pcrDir = path.join(root, wheatRelativePcrPath);
   try {
     mkdirSync(path.dirname(pcrDir), { recursive: true });
@@ -327,7 +343,7 @@ test("current snapshots observe lifecycle changes without a catalog refresh", ()
 });
 
 test("managed published PCR reads a hash-verified current snapshot", () => {
-  const root = mkdtempSync(path.join(tmpdir(), "tiangong-pcr-published-snapshot-"));
+  const root = createBoundRepositoryFixture("tiangong-pcr-published-snapshot-");
   const pcrDir = path.join(root, wheatRelativePcrPath);
   try {
     mkdirSync(path.dirname(pcrDir), { recursive: true });
@@ -353,7 +369,7 @@ test("managed published PCR reads a hash-verified current snapshot", () => {
 });
 
 test("legacy published PCR without release_artifacts remains readable", () => {
-  const root = mkdtempSync(path.join(tmpdir(), "tiangong-pcr-legacy-published-"));
+  const root = createBoundRepositoryFixture("tiangong-pcr-legacy-published-");
   const pcrDir = path.join(root, wheatRelativePcrPath);
   try {
     mkdirSync(path.dirname(pcrDir), { recursive: true });
@@ -370,7 +386,7 @@ test("legacy published PCR without release_artifacts remains readable", () => {
 });
 
 test("managed published PCR fails closed with stable details when any artifact hash drifts", () => {
-  const root = mkdtempSync(path.join(tmpdir(), "tiangong-pcr-published-drift-"));
+  const root = createBoundRepositoryFixture("tiangong-pcr-published-drift-");
   const pcrDir = path.join(root, wheatRelativePcrPath);
   try {
     mkdirSync(path.dirname(pcrDir), { recursive: true });
@@ -403,7 +419,7 @@ test("managed published PCR fails closed with stable details when any artifact h
 });
 
 test("release_artifacts hashes are enforced even when current status is candidate", () => {
-  const root = mkdtempSync(path.join(tmpdir(), "tiangong-pcr-candidate-snapshot-hashes-"));
+  const root = createBoundRepositoryFixture("tiangong-pcr-candidate-snapshot-hashes-");
   const pcrDir = path.join(root, wheatRelativePcrPath);
   try {
     mkdirSync(path.dirname(pcrDir), { recursive: true });
@@ -439,7 +455,7 @@ test("release_artifacts hashes are enforced even when current status is candidat
 });
 
 test("managed release state cannot downgrade to legacy reads by deleting release_artifacts", () => {
-  const root = mkdtempSync(path.join(tmpdir(), "tiangong-pcr-managed-hashes-required-"));
+  const root = createBoundRepositoryFixture("tiangong-pcr-managed-hashes-required-");
   const pcrDir = path.join(root, wheatRelativePcrPath);
   try {
     mkdirSync(path.dirname(pcrDir), { recursive: true });
@@ -478,7 +494,7 @@ test("managed release state cannot downgrade to legacy reads by deleting release
 });
 
 test("cached PCR paths fail closed after a canonical leaf is swapped for an external symlink", () => {
-  const root = mkdtempSync(path.join(tmpdir(), "tiangong-pcr-cached-leaf-"));
+  const root = createBoundRepositoryFixture("tiangong-pcr-cached-leaf-");
   const outsideRoot = mkdtempSync(path.join(tmpdir(), "tiangong-pcr-outside-leaf-"));
   const pcrDir = path.join(root, wheatRelativePcrPath);
   const outsidePcrDir = path.join(outsideRoot, "wheat-seed");
@@ -511,7 +527,7 @@ test("cached PCR paths fail closed after a canonical leaf is swapped for an exte
 });
 
 test("material readiness rejects missing projection metadata and schema drift", () => {
-  const root = mkdtempSync(path.join(tmpdir(), "tiangong-pcr-projection-contract-"));
+  const root = createBoundRepositoryFixture("tiangong-pcr-projection-contract-");
   const sourcePcrDir = path.join(repoRoot, wheatRelativePcrPath);
   const pcrDir = path.join(root, wheatRelativePcrPath);
   try {
@@ -540,7 +556,7 @@ test("material readiness rejects missing projection metadata and schema drift", 
 });
 
 test("readiness reports schema blockers even when projection fingerprints are current", () => {
-  const root = mkdtempSync(path.join(tmpdir(), "tiangong-pcr-schema-blocker-"));
+  const root = createBoundRepositoryFixture("tiangong-pcr-schema-blocker-");
   const pcrDir = path.join(root, wheatRelativePcrPath);
   try {
     mkdirSync(path.dirname(pcrDir), { recursive: true });
@@ -584,7 +600,7 @@ test("readiness reports schema blockers even when projection fingerprints are cu
 });
 
 test("catalog isolates an unreadable structured projection to its PCR readiness", () => {
-  const root = mkdtempSync(path.join(tmpdir(), "tiangong-pcr-isolated-projection-"));
+  const root = createBoundRepositoryFixture("tiangong-pcr-isolated-projection-");
   const wheatDir = path.join(root, wheatRelativePcrPath);
   const abaloneDir = path.join(root, abaloneRelativePcrPath);
   try {
@@ -618,7 +634,7 @@ test("catalog isolates an unreadable structured projection to its PCR readiness"
 });
 
 test("guidance revalidates and consumes the current verified structured projection", () => {
-  const root = mkdtempSync(path.join(tmpdir(), "tiangong-pcr-guidance-snapshot-"));
+  const root = createBoundRepositoryFixture("tiangong-pcr-guidance-snapshot-");
   const pcrDir = path.join(root, wheatRelativePcrPath);
   try {
     mkdirSync(path.dirname(pcrDir), { recursive: true });
@@ -672,7 +688,7 @@ test("guidance revalidates and consumes the current verified structured projecti
 });
 
 test("material readiness rejects schema-valid projections with incomplete methodology", () => {
-  const root = mkdtempSync(path.join(tmpdir(), "tiangong-pcr-projection-completeness-"));
+  const root = createBoundRepositoryFixture("tiangong-pcr-projection-completeness-");
   const relativePcrPath =
     "library/pcrs/agriculture-forestry-and-fishery-products/products-of-agriculture-horticulture-and-market-gardening/wheat-seed";
   const sourcePcrDir = path.join(repoRoot, relativePcrPath);
@@ -710,7 +726,7 @@ test("material readiness rejects schema-valid projections with incomplete method
 });
 
 test("PCR readiness rejects incompatible lifecycle and maturity combinations", () => {
-  const root = mkdtempSync(path.join(tmpdir(), "tiangong-pcr-readiness-state-"));
+  const root = createBoundRepositoryFixture("tiangong-pcr-readiness-state-");
   const pcrDir = path.join(root, "library/pcrs/example-domain/example-subdomain/example");
   try {
     mkdirSync(pcrDir, { recursive: true });
@@ -775,8 +791,142 @@ test("resolveClassification uses deterministic mapping files", () => {
   assert.equal(result.pcr.title["en-US"], "Wheat seed for sowing");
 });
 
+test("resolveClassification fails closed when the required coverage index is missing", () => {
+  const root = createBoundRepositoryFixture("tiangong-pcr-missing-coverage-");
+  try {
+    writeCoverageFixture(root);
+    rmSync(path.join(root, "classifications/indexes/cpc-3.0-coverage.json"));
+
+    assert.throws(
+      () => resolveClassification({
+        root,
+        system: "cpc",
+        version: "3.0",
+        code: "01111",
+      }),
+      (error) => {
+        assert.equal(error.code, "PCR_CLASSIFICATION_COVERAGE_NOT_FOUND");
+        assert.deepEqual(error.details, {
+          classification: "cpc:3.0",
+          coverage_index: "classifications/indexes/cpc-3.0-coverage.json",
+        });
+        return true;
+      },
+    );
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+  }
+});
+
+test("resolveClassification rejects a canonical mapping symbolic link", () => {
+  const root = createBoundRepositoryFixture("tiangong-pcr-mapping-symlink-");
+  const outsideRoot = mkdtempSync(path.join(tmpdir(), "tiangong-pcr-mapping-outside-"));
+  try {
+    writeCoverageFixture(root);
+    const mappingPath = path.join(root, "classifications/mappings/cpc-3.0-to-pcr.yaml");
+    const outsideMappingPath = path.join(outsideRoot, "cpc-3.0-to-pcr.yaml");
+    writeFileSync(outsideMappingPath, readFileSync(mappingPath));
+    rmSync(mappingPath);
+    symlinkSync(outsideMappingPath, mappingPath);
+
+    assert.throws(
+      () => resolveClassification({
+        root,
+        system: "cpc",
+        version: "3.0",
+        code: "01111",
+      }),
+      (error) => {
+        assert.equal(error.code, "PCR_INVALID_CLASSIFICATION_COVERAGE");
+        assert.ok(
+          error.details.issues.some((issue) => issue.includes("contains a symbolic link")),
+        );
+        return true;
+      },
+    );
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+    rmSync(outsideRoot, { recursive: true, force: true });
+  }
+});
+
+test("resolvePcrIdentity returns redirect locators before and after physical scaffold removal", () => {
+  const root = createBoundRepositoryFixture("tiangong-pcr-id-routing-");
+  try {
+    writePcrAliasFixture(root);
+
+    const beforeRemoval = resolvePcrIdentity({ root, pcrId: scaffoldPcrId });
+    assert.equal(beforeRemoval.resolution_status, "legacy_id_redirect");
+    assert.equal(beforeRemoval.pcr, null);
+    assert.deepEqual(beforeRemoval.redirect.target, {
+      kind: "classification_coverage",
+      classification_system: "cpc",
+      classification_version: "3.0",
+      code: "92200",
+    });
+    assert.match(beforeRemoval.redirect.next_command, /resolve --classification cpc:3\.0:92200/);
+
+    const canonical = resolvePcrIdentity({ root, pcrId: wheatSeedPcrId });
+    assert.equal(canonical.resolution_status, "canonical");
+    assert.equal(canonical.redirect, null);
+    assert.equal(canonical.pcr.id, wheatSeedPcrId);
+    assert.equal(canonical.pcr.readiness.usable_for_guidance, true);
+
+    assert.throws(
+      () => readPcrMarkdown({ root, pcrId: scaffoldPcrId }),
+      (error) => {
+        assert.equal(error.code, "PCR_LEGACY_ID_REDIRECT");
+        assert.equal(error.details.source_pcr_id, scaffoldPcrId);
+        assert.equal(error.details.source_pcr_path, scaffoldRelativePcrPath);
+        assert.equal(error.details.reason, "empty_scaffold_migration");
+        assert.equal(error.details.decision_ref, "docs/decisions/retired-id.md");
+        assert.deepEqual(error.details.target, beforeRemoval.redirect.target);
+        assert.equal(error.details.next_command, beforeRemoval.redirect.next_command);
+        return true;
+      },
+    );
+
+    rmSync(path.join(root, scaffoldRelativePcrPath), { recursive: true, force: true });
+    const afterRemoval = resolvePcrIdentity({ root, pcrId: scaffoldPcrId });
+    assert.deepEqual(afterRemoval, beforeRemoval);
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+  }
+});
+
+test("CPC 99000 physical pilot keeps coverage and old-id routing after directory removal", () => {
+  assert.equal(existsSync(path.join(repoRoot, pilot99000RelativePcrPath)), false);
+
+  const identity = resolvePcrIdentity({ root: repoRoot, pcrId: pilot99000PcrId });
+  assert.equal(identity.resolution_status, "legacy_id_redirect");
+  assert.deepEqual(identity.redirect.target, {
+    kind: "classification_coverage",
+    classification_system: "cpc",
+    classification_version: "3.0",
+    code: "99000",
+  });
+
+  const classification = resolveClassification({
+    root: repoRoot,
+    system: "cpc",
+    version: "3.0",
+    code: "99000",
+  });
+  assert.equal(classification.resolution_status, "unmapped");
+  assert.equal(classification.mapping, null);
+  assert.equal(classification.pcr, null);
+
+  const all = listPcrs({ root: repoRoot, scope: "all", refresh: true });
+  assert.equal(all.length, 2876);
+  assert.equal(all.filter((entry) => entry.record_kind === "methodology").length, 3);
+  assert.equal(
+    all.filter((entry) => entry.record_kind === "legacy_scaffold_reference").length,
+    2873,
+  );
+});
+
 test("classification coverage exposes bounded summary/list and additive resolve states", () => {
-  const root = mkdtempSync(path.join(tmpdir(), "tiangong-pcr-coverage-"));
+  const root = createBoundRepositoryFixture("tiangong-pcr-coverage-");
   try {
     writeCoverageFixture(root);
 
@@ -797,7 +947,7 @@ test("classification coverage exposes bounded summary/list and additive resolve 
       version: "3.0",
       code: "01111",
     });
-    const legacy = resolveClassification({
+    const retiredCoverage = resolveClassification({
       root,
       system: "cpc",
       version: "3.0",
@@ -826,7 +976,7 @@ test("classification coverage exposes bounded summary/list and additive resolve 
     });
     assert.equal(Object.hasOwn(summary, "entries"), false);
     assert.equal(unmapped.entries.length, 1);
-    assert.equal(unmapped.entries[0].legacy_reference.pcr_id, scaffoldPcrId);
+    assert.equal(unmapped.entries[0].legacy_reference, null);
     assert.throws(
       () => listClassificationCoverage({
         root,
@@ -842,10 +992,10 @@ test("classification coverage exposes bounded summary/list and additive resolve 
     assert.equal(mapped.mapping.pcr_id, wheatSeedPcrId);
     assert.equal(mapped.pcr.record_kind, "methodology");
 
-    assert.equal(legacy.resolution_status, "legacy_scaffold_compatibility");
-    assert.equal(legacy.coverage_status, "unmapped");
-    assert.equal(legacy.mapping.pcr_id, scaffoldPcrId);
-    assert.equal(legacy.pcr.record_kind, "legacy_scaffold_reference");
+    assert.equal(retiredCoverage.resolution_status, "unmapped");
+    assert.equal(retiredCoverage.coverage_status, "unmapped");
+    assert.equal(retiredCoverage.mapping, null);
+    assert.equal(retiredCoverage.pcr, null);
 
     assert.equal(knownUnmapped.resolution_status, "unmapped");
     assert.equal(knownUnmapped.mapping, null);
@@ -881,25 +1031,22 @@ test("classification coverage exposes bounded summary/list and additive resolve 
   }
 });
 
-test("resolveClassification rejects mapping relations outside the canonical vocabulary", () => {
-  const root = mkdtempSync(path.join(tmpdir(), "tiangong-pcr-invalid-mapping-"));
+test("resolveClassification rejects a coverage source with a noncanonical mapping relation", () => {
+  const root = createBoundRepositoryFixture("tiangong-pcr-invalid-mapping-");
   try {
-    const pcrDir = path.join(root, wheatRelativePcrPath);
-    mkdirSync(path.dirname(pcrDir), { recursive: true });
-    cpSync(path.join(repoRoot, wheatRelativePcrPath), pcrDir, { recursive: true });
-    const mappingDir = path.join(root, "classifications/mappings");
-    mkdirSync(mappingDir, { recursive: true });
+    writeCoverageFixture(root);
+    const mappingPath = path.join(root, "classifications/mappings/cpc-3.0-to-pcr.yaml");
     writeFileSync(
-      path.join(mappingDir, "cpc-3.0-to-pcr.yaml"),
-      `schema_version: 1
-classification_system: CPC
-classification_version: "3.0"
-mappings:
-  - code: "01111"
-    pcr_id: "${wheatSeedPcrId}"
-    mapping_type: invented_relation
-`,
+      mappingPath,
+      readFileSync(mappingPath, "utf8").replace(
+        "mapping_type: exact",
+        "mapping_type: invented_relation",
+      ),
     );
+    const coveragePath = path.join(root, "classifications/indexes/cpc-3.0-coverage.json");
+    const coverage = JSON.parse(readFileSync(coveragePath, "utf8"));
+    coverage.source.mapping.sha256 = exactFileSha256(mappingPath);
+    writeFileSync(coveragePath, `${JSON.stringify(coverage, null, 2)}\n`);
 
     assert.throws(
       () =>
@@ -910,9 +1057,12 @@ mappings:
           code: "01111",
         }),
       (error) => {
-        assert.equal(error.code, "PCR_INVALID_CLASSIFICATION_MAPPING");
-        assert.equal(error.details.mapping_type, "invented_relation");
-        assert.ok(error.details.allowed_mapping_types.includes("manual_review"));
+        assert.equal(error.code, "PCR_INVALID_CLASSIFICATION_COVERAGE");
+        assert.ok(
+          error.details.issues.some(
+            (issue) => issue.includes("source mapping for 01111 cannot be projected"),
+          ),
+        );
         return true;
       },
     );
@@ -921,38 +1071,60 @@ mappings:
   }
 });
 
-test("resolveClassification rejects a mapping target with an invalid lifecycle identity", () => {
-  const root = mkdtempSync(path.join(tmpdir(), "tiangong-pcr-invalid-target-state-"));
+test("resolveClassification never falls back to a legacy mapping when coverage is missing", () => {
+  const root = createBoundRepositoryFixture("tiangong-pcr-unaccepted-mapping-");
   try {
     const pcrDir = path.join(root, wheatRelativePcrPath);
     mkdirSync(path.dirname(pcrDir), { recursive: true });
     cpSync(path.join(repoRoot, wheatRelativePcrPath), pcrDir, { recursive: true });
+    const mappingDir = path.join(root, "classifications/mappings");
+    mkdirSync(mappingDir, { recursive: true });
+    const mappingPath = path.join(mappingDir, "cpc-3.0-to-pcr.yaml");
+    writeFileSync(
+      mappingPath,
+      `schema_version: 1
+classification_system: CPC
+classification_version: "3.0"
+status: scaffold
+mappings:
+  - code: "01111"
+    label: "Wheat, seed"
+    pcr_id: "${wheatSeedPcrId}"
+    mapping_type: exact
+    confidence: scaffold
+`,
+    );
+
+    assert.throws(
+      () => resolveClassification({ root, system: "cpc", version: "3.0", code: "01111" }),
+      (error) => error.code === "PCR_CLASSIFICATION_COVERAGE_NOT_FOUND",
+    );
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+  }
+});
+
+test("resolveClassification rejects coverage mapped to an invalid lifecycle identity", () => {
+  const root = createBoundRepositoryFixture("tiangong-pcr-invalid-target-state-");
+  try {
+    writeCoverageFixture(root);
+    const pcrDir = path.join(root, wheatRelativePcrPath);
     const manifestPath = path.join(pcrDir, "manifest.yaml");
     const manifest = parseYaml(readFileSync(manifestPath, "utf8"));
     writeFileSync(
       manifestPath,
       renderYaml({ ...manifest, status: "scaffold", content_maturity: "authored_methodology" }),
     );
-    const mappingDir = path.join(root, "classifications/mappings");
-    mkdirSync(mappingDir, { recursive: true });
-    writeFileSync(
-      path.join(mappingDir, "cpc-3.0-to-pcr.yaml"),
-      `schema_version: 1
-classification_system: CPC
-classification_version: "3.0"
-mappings:
-  - code: "01111"
-    pcr_id: "${wheatSeedPcrId}"
-    mapping_type: exact
-    confidence: reviewed
-`,
-    );
 
     assert.throws(
       () => resolveClassification({ root, system: "cpc", version: "3.0", code: "01111" }),
       (error) => {
-        assert.equal(error.code, "PCR_INVALID_CLASSIFICATION_TARGET");
-        assert.equal(error.details.record_kind, "invalid_lifecycle_state");
+        assert.equal(error.code, "PCR_INVALID_CLASSIFICATION_COVERAGE");
+        assert.ok(
+          error.details.issues.some(
+            (issue) => issue.includes("mapped coverage points to non-material PCR"),
+          ),
+        );
         return true;
       },
     );
@@ -978,24 +1150,26 @@ test("buildGuidance returns structured rules for Agent data package construction
   assert.equal(guidance.readiness.usable_for_guidance, true);
 });
 
-test("buildGuidance rejects empty scaffolds instead of presenting them as usable", () => {
+test("buildGuidance redirects retired scaffold ids before attempting content access", () => {
   assert.throws(
     () => buildGuidance({ root: repoRoot, pcrId: scaffoldPcrId }),
     (error) => {
-      assert.equal(error.code, "PCR_NOT_USABLE_FOR_GUIDANCE");
-      assert.equal(error.readiness.usable_for_guidance, false);
-      assert.match(error.message, /empty_scaffold/);
+      assert.equal(error.code, "PCR_LEGACY_ID_REDIRECT");
+      assert.equal(error.details.source_pcr_id, scaffoldPcrId);
+      assert.equal(error.details.target.kind, "classification_coverage");
+      assert.match(error.details.next_command, /resolve --classification cpc:3\.0:92200/);
       return true;
     },
   );
 });
 
-test("validation rejects empty scaffolds instead of returning zero findings", () => {
+test("validation redirects retired scaffold ids before attempting content access", () => {
   assert.throws(
     () => validateDatasetAgainstGuidance({ root: repoRoot, pcrId: scaffoldPcrId, dataset: {} }),
     (error) => {
-      assert.equal(error.code, "PCR_NOT_USABLE_FOR_VALIDATION");
-      assert.equal(error.readiness.usable_for_validation, false);
+      assert.equal(error.code, "PCR_LEGACY_ID_REDIRECT");
+      assert.equal(error.details.source_pcr_path, scaffoldRelativePcrPath);
+      assert.equal(error.details.reason, "empty_scaffold_migration");
       return true;
     },
   );
@@ -1135,20 +1309,21 @@ function writeCoverageFixture(root) {
   const mappingPath = path.join(mappingDir, "cpc-3.0-to-pcr.yaml");
   writeFileSync(
     mappingPath,
-    `schema_version: 1
+    `schema_version: 2
 classification_system: CPC
 classification_version: "3.0"
+status: current
 mappings:
   - code: "01111"
     label: "Wheat, seed"
     pcr_id: "${wheatSeedPcrId}"
     mapping_type: exact
-    confidence: scaffold
-  - code: "92200"
-    label: "Primary education services"
-    pcr_id: "${scaffoldPcrId}"
-    mapping_type: exact
-    confidence: scaffold
+    confidence: reviewed
+    acceptance:
+      status: accepted
+      decided_by: test-maintainer
+      decided_at_utc: "2026-07-14T00:00:00Z"
+      decision_ref: docs/test-decision.md
 `,
   );
 
@@ -1201,9 +1376,9 @@ mappings:
       classification_system: "CPC",
       classification_version: "3.0",
       source: {
-        contract_version: "1",
+        contract_version: "2",
         generator: "builder/scripts/build-catalog.mjs",
-        generator_version: "1",
+        generator_version: "2",
         normalized_leaves: {
           path: "classifications/systems/cpc/3.0/normalized/leaves.json",
           hash_mode: "exact_bytes",
@@ -1233,7 +1408,13 @@ mappings:
           mapping: {
             pcr_id: wheatSeedPcrId,
             mapping_type: "exact",
-            confidence: "scaffold",
+            confidence: "reviewed",
+            acceptance: {
+              status: "accepted",
+              decided_by: "test-maintainer",
+              decided_at_utc: "2026-07-14T00:00:00Z",
+              decision_ref: "docs/test-decision.md",
+            },
           },
           legacy_reference: null,
         },
@@ -1244,11 +1425,7 @@ mappings:
           path_titles: ["Services", "Education", "Primary", "Primary", "Primary education services"],
           coverage_status: "unmapped",
           mapping: null,
-          legacy_reference: {
-            kind: "legacy_scaffold_reference",
-            pcr_id: scaffoldPcrId,
-            path: scaffoldRelativePcrPath,
-          },
+          legacy_reference: null,
         },
         {
           code: "99997",
@@ -1270,6 +1447,83 @@ mappings:
         },
       ],
     }, null, 2)}\n`,
+  );
+}
+
+function writePcrAliasFixture(root) {
+  for (const relativePath of [wheatRelativePcrPath, scaffoldRelativePcrPath]) {
+    const target = path.join(root, relativePath);
+    mkdirSync(path.dirname(target), { recursive: true });
+    cpSync(path.join(repoRoot, relativePath), target, { recursive: true });
+  }
+  const decisionPath = path.join(root, "docs/decisions/retired-id.md");
+  mkdirSync(path.dirname(decisionPath), { recursive: true });
+  writeFileSync(decisionPath, "# Retired id decision\n");
+
+  const leavesPath = path.join(
+    root,
+    "classifications/systems/cpc/3.0/normalized/leaves.json",
+  );
+  mkdirSync(path.dirname(leavesPath), { recursive: true });
+  writeFileSync(
+    leavesPath,
+    `${JSON.stringify({
+      classification_system: "CPC",
+      classification_version: "3.0",
+      leaves: [{ code: "92200", title: "Primary education services" }],
+    }, null, 2)}\n`,
+  );
+
+  installPcrAliasBinding(root, [
+    {
+      source_pcr_id: scaffoldPcrId,
+      source_pcr_path: scaffoldRelativePcrPath,
+      target: {
+        kind: "classification_coverage",
+        classification_system: "cpc",
+        classification_version: "3.0",
+        code: "92200",
+      },
+      reason: "empty_scaffold_migration",
+      decision_ref: "docs/decisions/retired-id.md",
+    },
+  ]);
+}
+
+function createBoundRepositoryFixture(prefix) {
+  const root = mkdtempSync(path.join(tmpdir(), prefix));
+  installPcrAliasBinding(root, []);
+  return root;
+}
+
+function installPcrAliasBinding(root, aliases) {
+  const registryPath = path.join(
+    root,
+    "classifications/aliases/pcr-id-aliases.yaml",
+  );
+  const registry = renderYaml({
+    schema_version: 1,
+    registry_kind: "legacy-pcr-id-aliases",
+    status: "current",
+    aliases,
+  });
+  mkdirSync(path.dirname(registryPath), { recursive: true });
+  writeFileSync(registryPath, registry);
+
+  const catalogPath = path.join(root, "library/catalog.yaml");
+  mkdirSync(path.dirname(catalogPath), { recursive: true });
+  writeFileSync(
+    catalogPath,
+    renderYaml({
+      schema_version: 1,
+      catalog_status: "current",
+      pcr_id_aliases: {
+        path: "classifications/aliases/pcr-id-aliases.yaml",
+        hash_mode: "exact_bytes",
+        sha256: `sha256:${createHash("sha256").update(registry).digest("hex")}`,
+        entry_count: aliases.length,
+      },
+    }),
   );
 }
 

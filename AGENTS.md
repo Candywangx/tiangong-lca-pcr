@@ -28,7 +28,7 @@ checkPaths:
   - library/modules/**
   - docs/**
 lastReviewedAt: 2026-07-14
-lastReviewedCommit: c248880a854c1687567f3e4ea6c24e0dd78115ab
+lastReviewedCommit: 41e00bafd03530af7871e4620e59862dd779473e
 ---
 
 # AGENTS.md - TianGong LCA PCR Library
@@ -113,9 +113,15 @@ Classification data and mappings live outside canonical PCR records:
 ```text
 classifications/systems/<system>/<version>/
 classifications/mappings/<system>-<version>-to-pcr.yaml
+classifications/aliases/pcr-id-aliases.yaml
+classifications/indexes/<system>-<version>-coverage.json
 ```
 
-Mapping files are the authoritative link from external classification codes to canonical PCR ids. Mapping relation types should include `exact`, `broader`, `narrower`, `proxy`, and `manual_review`.
+Mapping files are the authoritative link from external classification codes to canonical PCR ids. Current
+`schema_version: 2` / `status: current` mappings contain accepted positive edges only. Each edge must point to a
+material PCR, use `exact`, `broader`, `narrower`, or `proxy`, and carry an `acceptance` decision with status,
+decision-maker, UTC time, and durable decision reference. Candidate and `manual_review` evidence belongs in coverage
+assessment, not in the positive mapping.
 
 `pcr:import:cpc -- --source <csv>` is classification-only by default. Every invocation requires an explicit source;
 the command writes raw source, source metadata, and normalized classification artifacts, creates zero PCR records,
@@ -124,27 +130,32 @@ existing mapping. A retained raw artifact name is immutable: importing different
 closed. A non-3.0 import requires a registered coverage descriptor.
 
 The `scaffold-cpc` compatibility alias must fail unless `--legacy-scaffolds` is explicit. That mode exists only for
-migration reproduction and tests, never for a new classification import. It may append leaf identity and a legacy
-edge only for a currently unmapped leaf. A missing target may be created as one complete four-file legacy scaffold;
-an existing target must already be complete and byte-for-byte equal to the expected legacy template or the import
-fails closed. It must never repair partial directories, replace an accepted edge, or overwrite PCR content.
+migration reproduction and tests, never for a new classification import. It may operate only on a legacy v1/scaffold
+mapping. A current v2 mapping makes the compatibility mode fail before mutation, so it cannot inject an unaccepted
+edge or rehydrate a retired leaf-derived PCR directory. For retained v1 fixtures, a missing target may be created as
+one complete four-file legacy scaffold; an existing target must already be complete and byte-for-byte equal to the
+expected legacy template. It must never repair partial directories, replace an accepted edge, or overwrite PCR
+content.
 
 CPC import mutations are protected by one lock per classification coordinate, no-follow reads, a baseline
 compare-and-swap check, and staged writes. The mapping is the final committed artifact, so a failed import cannot
 publish an edge whose identity or PCR target was not installed.
 
-Only an explicitly accepted edge to a material PCR should become a positive mapping in the target contract.
+Only an explicitly accepted edge to a material PCR is a positive mapping. CPC 3.0 currently has exactly three such
+edges (`01111`, `04412`, and `04911`); CPC 2.1 is a current v2 mapping with zero edges.
 Classification coverage is a derived read model under `classifications/indexes/`; it combines normalized leaves,
 mapping input, target PCR state, and coverage assessment for bounded CLI and viewer reads. Each checked-in index must
 record exact-byte SHA-256 fingerprints for its normalized-leaf and mapping sources, and consumers must reject a stale
-or substituted source. The index is not authoring truth and must be regenerated from those sources.
+or substituted source. A mapped entry projects its acceptance evidence and runtime resolution rechecks it against the
+canonical mapping. The index is not authoring truth and must be regenerated from those sources. CPC 3.0 coverage
+remains complete at 2,877 leaves: 3 mapped, 2,874 unmapped, and 0 unknown.
 
-The material-first migration still retains old scaffold directories and their mapping entries for compatibility.
-In Phase 1, the generated read model treats a valid non-manual-review edge to a material lifecycle pair as `mapped`;
-this is a deterministic compatibility rule, not evidence that per-edge acceptance governance has already been
-formalized. Retained scaffold entries do not prove methodology coverage. Only Phase 2 step 1, the importer cutover,
-is complete. Explicit edge acceptance and positive-mapping contraction, the alias registry, old-id redirects, and
-physical scaffold migration remain unimplemented. Do not describe those remaining migrations as complete.
+Retired CPC leaf-derived PCR ids are recorded in the deterministic registry at
+`classifications/aliases/pcr-id-aliases.yaml`. Its 2,874 aliases are terminal locators to classification coverage;
+they are checked before catalog lookup, cannot chain or cycle, and must not be silently followed into a PCR.
+`resolve --pcr` returns the locator and a copyable next command, while content commands fail with
+`PCR_LEGACY_ID_REDIRECT`. One physical pilot has removed CPC `99000`; it is known-unmapped and its old id redirects.
+The remaining 2,873 legacy directories are still compatibility artifacts. Bulk physical migration is not complete.
 
 ## Builder CLI and Authoring Docs
 
@@ -169,6 +180,13 @@ Stable machine tokens are authored only in `builder/vocab/*.yaml`. Do not hand-e
 or controlled-vocabulary Schema under `packages/pcr-core/`; run `npm run vocab:generate`, and keep token validity
 separate from lifecycle, readiness, evidence, and other cross-field policy.
 
+Build or check the deterministic legacy-id registry with `npm run aliases:build` and `npm run aliases:check`.
+The catalog binds the registry's canonical path, exact-byte SHA-256, and entry count; a missing or mismatched binding
+must fail closed at runtime. Catalog publication replaces the catalog, material index, and coverage indexes as one
+journaled, recoverable artifact set. If publication is interrupted, use `npm run catalog:recover`; use its
+`--force-stale-lock` option only after confirming no writer is active. Do not hand-edit catalog transaction state
+under `library/.pcr-builder-state/catalog/`.
+
 Generated PCR leaf scaffolds under `library/pcrs/**` are intentionally excluded from docpact coverage. The builder, classification sources, mappings, schemas, modules, and project documents remain governed.
 
 ## Public PCR Consumption CLI and Skill
@@ -187,6 +205,7 @@ npm --silent run tiangong-pcr -- list --page 2 --page-size 10
 npm --silent run tiangong-pcr -- coverage summary --classification cpc:3.0 --format json
 npm --silent run tiangong-pcr -- coverage list --classification cpc:3.0 --page 1 --page-size 10 --format json
 npm --silent run tiangong-pcr -- resolve --classification cpc:3.0:01111 --format json
+npm --silent run tiangong-pcr -- resolve --pcr <pcr-id> --format json
 npm --silent run tiangong-pcr -- guidance --pcr <pcr-id> --format json
 npm --silent run tiangong-pcr -- feedback draft --pcr <pcr-id> --type <feedback-type>
 ```
@@ -199,9 +218,11 @@ Rules:
 - `list` is paginated by default with 10 records per page. Output must expose active filters, pagination completeness, and copyable next/previous commands.
 - `coverage summary|list --classification <system>:<version>` exposes classification coverage separately from the
   methodology catalog. `coverage list` is paginated and candidate/manual-review evidence must never be auto-selected.
-- `resolve` must use deterministic accepted mappings and the derived coverage index. A known but unmapped leaf is a
-  successful resolution with `mapping: null` and `pcr: null`; a legacy scaffold may be returned only as an explicit
-  compatibility reference. Neither result implies usable methodology.
+- `resolve` requires exactly one of `--classification` or `--pcr`. Classification resolution uses deterministic
+  accepted mappings and the derived coverage index; a missing coverage index fails closed and must never fall back to
+  selecting directly from a mapping file. A known but unmapped leaf is a successful resolution with `mapping: null`
+  and `pcr: null`. A retired PCR id returns a terminal alias locator and copyable next command without auto-following
+  it. Neither result implies usable methodology.
 - Catalog, resolve, and guidance results must expose PCR readiness. Empty scaffolds are excluded from default material
   browsing, remain available through explicit legacy/all compatibility scope, and must be rejected by guidance and validation.
 - `guidance` and validation must re-check the target projection's Schema and fingerprint at runtime, present Agent-facing boundary, allocation, inventory, production, and validation rules, and never mutate PCR content.

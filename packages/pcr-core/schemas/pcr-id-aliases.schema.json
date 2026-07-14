@@ -1,0 +1,120 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tiangong-lca.org/schemas/pcr/v1/pcr-id-aliases.schema.json",
+  "title": "TianGong legacy PCR id alias registry",
+  "type": "object",
+  "required": ["schema_version", "registry_kind", "status", "aliases"],
+  "properties": {
+    "schema_version": { "const": 1 },
+    "registry_kind": { "const": "legacy-pcr-id-aliases" },
+    "status": { "const": "current" },
+    "aliases": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/alias" }
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "pcrId": {
+      "type": "string",
+      "pattern": "^pcr\\.[a-z0-9]+(?:[.-][a-z0-9]+)*$"
+    },
+    "alias": {
+      "type": "object",
+      "required": [
+        "source_pcr_id",
+        "source_pcr_path",
+        "target",
+        "reason",
+        "decision_ref"
+      ],
+      "properties": {
+        "source_pcr_id": { "$ref": "#/$defs/pcrId" },
+        "source_pcr_path": {
+          "type": "string",
+          "pattern": "^library/pcrs/[a-z0-9][a-z0-9-]*/[a-z0-9][a-z0-9-]*/[a-z0-9][a-z0-9-]*$"
+        },
+        "target": {
+          "oneOf": [
+            { "$ref": "#/$defs/classificationCoverageTarget" },
+            { "$ref": "#/$defs/canonicalPcrTarget" }
+          ]
+        },
+        "reason": {
+          "enum": ["empty_scaffold_migration", "canonical_pcr_replacement"]
+        },
+        "decision_ref": {
+          "type": "string",
+          "pattern": "^(?:docs|classifications/migrations)/[A-Za-z0-9][A-Za-z0-9._/-]*\\.(?:md|ya?ml|json)(?:#[A-Za-z0-9][A-Za-z0-9._-]*)?$"
+        }
+      },
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "target": {
+                "type": "object",
+                "properties": { "kind": { "const": "classification_coverage" } },
+                "required": ["kind"]
+              }
+            },
+            "required": ["target"]
+          },
+          "then": {
+            "properties": { "reason": { "const": "empty_scaffold_migration" } }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "target": {
+                "type": "object",
+                "properties": { "kind": { "const": "canonical_pcr" } },
+                "required": ["kind"]
+              }
+            },
+            "required": ["target"]
+          },
+          "then": {
+            "properties": { "reason": { "const": "canonical_pcr_replacement" } }
+          }
+        }
+      ]
+    },
+    "classificationCoverageTarget": {
+      "type": "object",
+      "required": [
+        "kind",
+        "classification_system",
+        "classification_version",
+        "code"
+      ],
+      "properties": {
+        "kind": { "const": "classification_coverage" },
+        "classification_system": {
+          "type": "string",
+          "pattern": "^[a-z0-9][a-z0-9_-]*$"
+        },
+        "classification_version": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$"
+        },
+        "code": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$"
+        }
+      },
+      "additionalProperties": false
+    },
+    "canonicalPcrTarget": {
+      "type": "object",
+      "required": ["kind", "pcr_id"],
+      "properties": {
+        "kind": { "const": "canonical_pcr" },
+        "pcr_id": { "$ref": "#/$defs/pcrId" }
+      },
+      "additionalProperties": false
+    }
+  }
+}

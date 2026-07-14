@@ -32,6 +32,7 @@ import {
   CLASSIFICATION_COVERAGE_STATUSES,
 } from "../../packages/pcr-core/src/classification-coverage.mjs";
 import { createSchemaRegistry } from "../../packages/pcr-core/src/schema-validation.mjs";
+import { readPcrIdAliases } from "../../packages/pcr-core/src/pcr-id-aliases.mjs";
 import { parseYaml, renderYaml } from "../../packages/pcr-core/src/yaml-lite.mjs";
 import {
   CPC_3_COVERAGE_PATH,
@@ -39,11 +40,22 @@ import {
   CPC_3_MAPPING_PATH,
   COVERAGE_SOURCE_DESCRIPTORS,
 } from "../lib/classification-coverage-sources.mjs";
+import { assertClassificationMapping } from "../lib/schema-contracts.mjs";
+import {
+  buildOrCheckPcrIdAliases,
+  CPC_3_LEAF_SLUGS_PATH,
+} from "./build-pcr-id-aliases.mjs";
+import {
+  inspectCatalogArtifactTransaction,
+  recoverCatalogArtifactTransaction,
+  runCatalogArtifactTransaction,
+} from "../lib/catalog-artifact-transaction.mjs";
 
 const REPOSITORY_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../..");
 
 export const CATALOG_PATH = "library/catalog.yaml";
 export const MATERIAL_INDEX_PATH = "library/indexes/pcr-index.yaml";
+export const PCR_ID_ALIASES_PATH = "classifications/aliases/pcr-id-aliases.yaml";
 export {
   CPC_3_COVERAGE_PATH,
   CPC_3_LEAVES_PATH,
@@ -82,11 +94,26 @@ export function createCatalogArtifacts(
   root = REPOSITORY_ROOT,
   { coverageSources = COVERAGE_SOURCE_DESCRIPTORS } = {},
 ) {
+  const aliasProjection = readCatalogAliasProjection(root);
+  const pcrIdAliases = {
+    path: PCR_ID_ALIASES_PATH,
+    hash_mode: "exact_bytes",
+    sha256: exactByteSha256(aliasProjection.bytes),
+    entry_count: aliasProjection.aliases.length,
+  };
+  const compatibilityMappings = COMPATIBILITY_MAPPING_PATHS
+    .filter((mappingPath) => existsSync(path.join(root, ...mappingPath.split("/"))))
+    .map((mappingPath) => {
+      const source = readYamlSource(root, mappingPath);
+      assertAcceptedMappingDocument(source.value, mappingPath);
+      return { mappingPath, mappingDocument: source.value };
+    });
   const manifestResult = readManifestRecords(root);
   const materialIndex = buildMaterialIndex(manifestResult.records);
   const coverageBuilds = coverageSources.map((descriptor) => {
     const leavesSource = readJsonSource(root, descriptor.normalizedLeavesPath);
     const mappingSource = readYamlSource(root, descriptor.mappingPath);
+    assertAcceptedMappingDocument(mappingSource.value, descriptor.mappingPath);
     const result = buildCoverageIndex({
       leavesDocument: leavesSource.value,
       mappingDocument: mappingSource.value,
@@ -100,10 +127,11 @@ export function createCatalogArtifacts(
     return {
       descriptor,
       leavesDocument: leavesSource.value,
+      mappingDocument: mappingSource.value,
       result,
     };
   });
-  const catalog = buildCatalog(coverageSources);
+  const catalog = buildCatalog(coverageSources, { pcrIdAliases });
 
   assertArtifactSchemas({
     catalog,
@@ -117,7 +145,10 @@ export function createCatalogArtifacts(
   const issues = [
     ...manifestResult.issues,
     ...materialIndexSemanticIssues(materialIndex),
-    ...coverageBuilds.flatMap(({ leavesDocument, result }) => [
+    ...compatibilityMappings.flatMap(({ mappingPath, mappingDocument }) =>
+      mappingDecisionReferenceIssues(root, mappingDocument, mappingPath)),
+    ...coverageBuilds.flatMap(({ descriptor, leavesDocument, mappingDocument, result }) => [
+      ...mappingDecisionReferenceIssues(root, mappingDocument, descriptor.mappingPath),
       ...result.issues,
       ...coverageSemanticIssues({
         index: result.index,
@@ -146,14 +177,22 @@ export function createCatalogArtifacts(
       })),
     ],
     issues: uniqueSorted(issues),
+    aliases: aliasProjection.aliases,
   };
 }
 
-export function buildCatalog(coverageSources = COVERAGE_SOURCE_DESCRIPTORS) {
+export function buildCatalog(
+  coverageSources = COVERAGE_SOURCE_DESCRIPTORS,
+  { pcrIdAliases = null } = {},
+) {
+  if (!pcrIdAliases) {
+    throw new Error("buildCatalog requires a pinned pcrIdAliases descriptor");
+  }
   return {
     schema_version: 1,
     catalog_status: "current",
     pcr_index: MATERIAL_INDEX_PATH,
+    pcr_id_aliases: structuredClone(pcrIdAliases),
     classification_mappings: uniqueInOrder([
       ...coverageSources.map((descriptor) => descriptor.mappingPath),
       ...COMPATIBILITY_MAPPING_PATHS,
@@ -167,6 +206,65 @@ export function buildCatalog(coverageSources = COVERAGE_SOURCE_DESCRIPTORS) {
       "Generated indexes contain current material PCRs and deterministic classification coverage.",
     ],
   };
+}
+
+function readCatalogAliasProjection(root) {
+  if (pcrIdAliasesRequireGeneratedProjection(root)) {
+    const generated = buildOrCheckPcrIdAliases(root, { checkOnly: true });
+    return {
+      aliases: generated.registry.aliases,
+      bytes: Buffer.from(generated.content, "utf8"),
+    };
+  }
+
+  const source = readYamlSource(root, PCR_ID_ALIASES_PATH);
+  const aliases = readPcrIdAliases({ root, verifyCatalogBinding: false });
+  if (aliases.length !== 0 || source.value?.aliases?.length !== 0) {
+    throw new Error(
+      `${PCR_ID_ALIASES_PATH} contains aliases but ${CPC_3_LEAF_SLUGS_PATH} is absent`,
+    );
+  }
+  return { aliases, bytes: source.bytes };
+}
+
+function pcrIdAliasesRequireGeneratedProjection(root) {
+  if (managedEntryExists(root, CPC_3_LEAF_SLUGS_PATH)) {
+    return true;
+  }
+  if (!managedEntryExists(root, CATALOG_PATH)) {
+    return false;
+  }
+  const catalog = readYamlSource(root, CATALOG_PATH).value;
+  if (
+    !catalog
+    || typeof catalog !== "object"
+    || Array.isArray(catalog)
+    || !Object.hasOwn(catalog, "pcr_id_aliases")
+  ) {
+    throw new Error(
+      `${CATALOG_PATH} must declare an exact-byte pcr_id_aliases binding`,
+    );
+  }
+  const descriptor = catalog.pcr_id_aliases;
+  if (!descriptor || typeof descriptor !== "object" || Array.isArray(descriptor)) {
+    // A legacy scalar catalog can be upgraded in a repository that has only
+    // the canonical empty registry and no leaf-slug migration source. Any
+    // non-empty registry still fails in readCatalogAliasProjection.
+    return typeof descriptor !== "string";
+  }
+  return Number(descriptor.entry_count) > 0;
+}
+
+function managedEntryExists(root, relativePath) {
+  try {
+    lstatSync(path.join(root, ...relativePath.split("/")));
+    return true;
+  } catch (error) {
+    if (error?.code === "ENOENT") {
+      return false;
+    }
+    throw error;
+  }
 }
 
 export function buildMaterialIndex(manifests) {
@@ -200,6 +298,7 @@ export function buildCoverageIndex({
   sourceDescriptor = COVERAGE_SOURCE_DESCRIPTORS[0],
   sourceHashes = defaultSourceHashes({ leavesDocument, mappingDocument }),
 }) {
+  assertAcceptedMappingDocument(mappingDocument, sourceDescriptor.mappingPath);
   const issues = [];
   if (leavesDocument.classification_system !== mappingDocument.classification_system) {
     issues.push("classification system differs between normalized leaves and mapping source");
@@ -284,16 +383,10 @@ export function buildCoverageIndex({
         return coverageEntry(base, "unknown", { mapping: mappingProjection(mapping) });
       }
       if (targetKind === "legacy") {
-        return coverageEntry(base, "unmapped", {
-          legacyReference: {
-            kind: "legacy_scaffold_reference",
-            pcr_id: mapping.pcr_id,
-            path: target.path,
-          },
-        });
-      }
-      if (mapping.mapping_type === "manual_review") {
-        return coverageEntry(base, "manual_review", { mapping: mappingProjection(mapping) });
+        issues.push(
+          `accepted classification mapping for ${code} points to legacy empty scaffold ${mapping.pcr_id}`,
+        );
+        return coverageEntry(base, "unknown", { mapping: mappingProjection(mapping) });
       }
       return coverageEntry(base, "mapped", { mapping: mappingProjection(mapping) });
     });
@@ -701,18 +794,59 @@ function sameFileIdentity(left, right) {
 }
 
 export function buildOrCheckCatalog(root = REPOSITORY_ROOT, { checkOnly = false } = {}) {
-  const result = createCatalogArtifacts(root);
-  const issues = [
-    ...result.issues,
-    ...(checkOnly ? staleArtifactIssues(root, result.artifacts) : []),
-  ];
-  if (issues.length > 0) {
-    throw catalogFailure(checkOnly ? "check" : "build", issues);
+  if (checkOnly) {
+    const state = inspectCatalogArtifactTransaction({ root });
+    if (state.status !== "clean") {
+      throw new Error(
+        `PCR catalog check found transaction state ${state.status}` +
+          `${state.phase ? ` at phase ${state.phase}` : ""}; run npm run catalog:recover before checking.`,
+      );
+    }
+    const result = createCatalogArtifacts(root);
+    const issues = [...result.issues, ...staleArtifactIssues(root, result.artifacts)];
+    if (issues.length > 0) {
+      throw catalogFailure("check", issues);
+    }
+    return result;
   }
-  if (!checkOnly) {
-    writeCatalogArtifacts(root, result.artifacts);
+
+  let result;
+  const transaction = runCatalogArtifactTransaction({
+    root,
+    command: "catalog:build",
+    prepareArtifacts() {
+      result = createCatalogArtifacts(root);
+      if (result.issues.length > 0) {
+        throw catalogFailure("build", result.issues);
+      }
+      return result.artifacts;
+    },
+    validateInstalled() {
+      const verification = createCatalogArtifacts(root);
+      const issues = [
+        ...verification.issues,
+        ...staleArtifactIssues(root, verification.artifacts),
+      ];
+      if (issues.length > 0) {
+        throw catalogFailure("installed-set validation", issues);
+      }
+    },
+  });
+  if (transaction.recoveryRequired) {
+    throw new Error(
+      `PCR catalog artifacts were committed, but transaction cleanup is incomplete. ` +
+        `Run npm run catalog:recover before continuing. ${transaction.warnings.join(" ")}`,
+    );
   }
-  return result;
+  return { ...result, transaction };
+}
+
+export function recoverCatalog(root = REPOSITORY_ROOT, { forceStaleLock = false } = {}) {
+  return recoverCatalogArtifactTransaction({
+    root,
+    force: forceStaleLock,
+    command: "catalog:recover",
+  });
 }
 
 export function staleArtifactIssues(root, artifacts) {
@@ -820,6 +954,7 @@ function mappingProjection(mapping) {
     pcr_id: mapping.pcr_id,
     mapping_type: mapping.mapping_type,
     confidence: mapping.confidence,
+    acceptance: structuredClone(mapping.acceptance),
   };
 }
 
@@ -828,9 +963,56 @@ function isValidMappingProjection(mapping) {
     typeof mapping?.pcr_id === "string" &&
     mapping.pcr_id.startsWith("pcr.") &&
     MAPPING_RELATIONS.has(mapping.mapping_type) &&
+    mapping.mapping_type !== "manual_review" &&
     typeof mapping.confidence === "string" &&
-    mapping.confidence.length > 0
+    mapping.confidence.length > 0 &&
+    mapping.acceptance?.status === "accepted" &&
+    typeof mapping.acceptance?.decided_by === "string" &&
+    mapping.acceptance.decided_by.trim().length > 0 &&
+    typeof mapping.acceptance?.decided_at_utc === "string" &&
+    typeof mapping.acceptance?.decision_ref === "string" &&
+    mapping.acceptance.decision_ref.trim().length > 0
   );
+}
+
+function assertAcceptedMappingDocument(mappingDocument, source) {
+  assertClassificationMapping(mappingDocument, {
+    entityKind: "accepted classification mapping",
+    source,
+  });
+  if (mappingDocument.schema_version !== 2 || mappingDocument.status !== "current") {
+    throw new Error(
+      `${source} must use accepted-only mapping schema_version 2 with status current`,
+    );
+  }
+}
+
+function mappingDecisionReferenceIssues(root, mappingDocument, mappingPath) {
+  const issues = [];
+  const checked = new Map();
+  for (const mapping of mappingDocument.mappings) {
+    const reference = String(mapping.acceptance?.decision_ref ?? "");
+    const relativePath = reference.split("#", 1)[0];
+    if (!checked.has(relativePath)) {
+      try {
+        readManagedUtf8File({
+          root,
+          filePath: path.join(root, ...relativePath.split("/")),
+          label: `mapping decision reference ${relativePath}`,
+        });
+        checked.set(relativePath, null);
+      } catch (error) {
+        checked.set(relativePath, error instanceof Error ? error.message : String(error));
+      }
+    }
+    const problem = checked.get(relativePath);
+    if (problem) {
+      issues.push(
+        `${mappingPath} code ${String(mapping.code)} has an unreadable acceptance decision_ref: ${problem}`,
+      );
+    }
+  }
+  return issues;
 }
 
 function defaultSourceHashes({ leavesDocument, mappingDocument }) {
@@ -1156,8 +1338,35 @@ function catalogFailure(action, issues) {
 
 function run() {
   const args = process.argv.slice(2);
-  if (args.some((arg) => arg !== "--check")) {
-    throw new Error(`Unknown catalog option: ${args.find((arg) => arg !== "--check")}`);
+  if (args.includes("--help")) {
+    if (args.length !== 1) {
+      throw new Error("--help cannot be combined with other catalog options");
+    }
+    process.stdout.write(catalogHelpText());
+    return;
+  }
+  const allowed = new Set(["--check", "--recover", "--force-stale-lock"]);
+  const unknown = args.find((arg) => !allowed.has(arg));
+  if (unknown) {
+    throw new Error(`Unknown catalog option: ${unknown}`);
+  }
+  if (args.includes("--check") && args.includes("--recover")) {
+    throw new Error("--check and --recover are mutually exclusive");
+  }
+  if (args.includes("--force-stale-lock") && !args.includes("--recover")) {
+    throw new Error("--force-stale-lock is valid only with --recover");
+  }
+  if (args.includes("--recover")) {
+    const recovery = recoverCatalog(REPOSITORY_ROOT, {
+      forceStaleLock: args.includes("--force-stale-lock"),
+    });
+    console.log(
+      `PCR catalog recovery action: ${recovery.action}. ` +
+        `Recovered phase: ${recovery.phase ?? "none"}. ` +
+        `Artifacts: ${recovery.artifactCount}.`,
+    );
+    console.log("Next: run npm run catalog:check, then rerun the command that was interrupted.");
+    return;
   }
   const checkOnly = args.includes("--check");
   const result = buildOrCheckCatalog(REPOSITORY_ROOT, { checkOnly });
@@ -1166,6 +1375,17 @@ function run() {
   console.log(
     `PCR catalog ${action}: ${result.artifacts.map((artifact) => artifact.path).join(", ")}`,
   );
+}
+
+function catalogHelpText() {
+  return `Usage: node builder/scripts/build-catalog.mjs [--check | --recover [--force-stale-lock]]\n\n` +
+    `Build, verify, or recover the catalog/material/coverage artifact set. Publication uses a journaled whole-set transaction.\n\n` +
+    `Options:\n` +
+    `  --check               Verify source contracts and exact generated bytes without changing files.\n` +
+    `  --recover             Restore the old set after an interrupted pre-commit transaction, or finish cleanup after commit.\n` +
+    `  --force-stale-lock    With --recover, clear a malformed or foreign-host stale lock after confirming no writer is active.\n` +
+    `  --help                Show this help.\n\n` +
+    `Next: run npm run catalog:check after build or recovery.\n`;
 }
 
 const isDirectExecution =

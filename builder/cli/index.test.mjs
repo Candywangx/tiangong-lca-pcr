@@ -104,6 +104,19 @@ function directoryByteSnapshot(root, current = root) {
   return snapshot.sort(([left], [right]) => left.localeCompare(right));
 }
 
+function installLegacyEmptyCpcMapping(root) {
+  const mappingPath = path.join(root, "classifications/mappings/cpc-3.0-to-pcr.yaml");
+  const source = `schema_version: 1
+classification_system: CPC
+classification_version: "3.0"
+status: scaffold
+mappings: []
+`;
+  mkdirSync(path.dirname(mappingPath), { recursive: true });
+  writeFileSync(mappingPath, source);
+  return { mappingPath, source };
+}
+
 function writePublicationReadyPcr(
   root,
   pcrDir,
@@ -355,6 +368,16 @@ test("init creates the bilingual PCR repository scaffold", () => {
         schema_version: 1,
         catalog_status: "scaffold",
         pcr_index: "library/indexes/pcr-index.yaml",
+        pcr_id_aliases: {
+          path: "classifications/aliases/pcr-id-aliases.yaml",
+          hash_mode: "exact_bytes",
+          sha256: `sha256:${createHash("sha256")
+            .update(readFileSync(
+              path.join(root, "classifications/aliases/pcr-id-aliases.yaml"),
+            ))
+            .digest("hex")}`,
+          entry_count: 0,
+        },
         classification_mappings: [],
         notes: [
           "Canonical PCR ids are independent from classification codes.",
@@ -367,6 +390,7 @@ test("init creates the bilingual PCR repository scaffold", () => {
     assert.ok(existsSync(path.join(root, "builder/docs/methods")));
     assert.ok(existsSync(path.join(root, "builder/docs/tools")));
     assert.ok(existsSync(path.join(root, "builder/docs/prompts")));
+    assert.ok(existsSync(path.join(root, "classifications/aliases/pcr-id-aliases.yaml")));
   } finally {
     rmSync(root, { recursive: true, force: true });
   }
@@ -3190,6 +3214,8 @@ test("import-cpc defaults to classification-only artifacts without inventing PCR
         "utf8",
       ),
     );
+    assert.equal(mapping.schema_version, 2);
+    assert.equal(mapping.status, "current");
     assert.deepEqual(mapping.mappings, []);
     assert.match(runCli(["lint", "--root", root]), /PCR library lint passed/i);
     const catalogBuild = createCatalogArtifacts(root);
@@ -3214,6 +3240,7 @@ test("scaffold-cpc creates legacy leaf PCRs only with an explicit compatibility 
   const root = makeTempRoot();
   try {
     runCli(["init", "--root", root]);
+    installLegacyEmptyCpcMapping(root);
     const output = runCli([
       "scaffold-cpc",
       "--legacy-scaffolds",
@@ -3281,7 +3308,7 @@ test("import-cpc preserves existing mappings and legacy identity artifacts byte-
     mkdirSync(path.dirname(mappingPath), { recursive: true });
     mkdirSync(path.dirname(leafSlugsPath), { recursive: true });
     mkdirSync(path.dirname(pcrManifestPath), { recursive: true });
-    const mappingSource = `schema_version: 1
+    const mappingSource = `schema_version: 2
 classification_system: CPC
 classification_version: "3.0"
 status: current
@@ -3291,6 +3318,11 @@ mappings:
     pcr_id: "pcr.existing.domain.pcr"
     mapping_type: exact
     confidence: reviewed
+    acceptance:
+      status: accepted
+      decided_by: "PCR review board"
+      decided_at_utc: "2026-07-14T12:34:56Z"
+      decision_ref: "docs/adr/fixture-mapping-decision.md"
 `;
     writeFileSync(mappingPath, mappingSource);
     writeFileSync(leafSlugsPath, "legacy identity sentinel\n");
@@ -3334,6 +3366,66 @@ test("scaffold-cpc fails fast without the explicit legacy compatibility flag", (
   );
 });
 
+test("legacy CPC compatibility refuses a missing or v2 current mapping before mutation", async (t) => {
+  await t.test("missing mapping", () => {
+    const root = makeTempRoot();
+    try {
+      assert.throws(
+        () => runCliFailure([
+          "scaffold-cpc",
+          "--legacy-scaffolds",
+          "--root",
+          root,
+          "--source",
+          sampleCpcPath,
+        ]),
+        (error) => {
+          assert.match(String(error.stderr), /schema_version 2 status current mappings are accepted-only/u);
+          return true;
+        },
+      );
+      assert.deepEqual(readdirSync(root), []);
+    } finally {
+      rmSync(root, { recursive: true, force: true });
+    }
+  });
+
+  await t.test("v2 current mapping", () => {
+    const root = makeTempRoot();
+    try {
+      const mappingPath = path.join(root, "classifications/mappings/cpc-3.0-to-pcr.yaml");
+      const mappingSource = `schema_version: 2
+classification_system: CPC
+classification_version: "3.0"
+status: current
+mappings: []
+`;
+      mkdirSync(path.dirname(mappingPath), { recursive: true });
+      writeFileSync(mappingPath, mappingSource);
+      const before = directoryByteSnapshot(root);
+
+      assert.throws(
+        () => runCliFailure([
+          "import-cpc",
+          "--legacy-scaffolds",
+          "--root",
+          root,
+          "--source",
+          sampleCpcPath,
+        ]),
+        (error) => {
+          assert.match(String(error.stderr), /schema_version 2 status current mappings are accepted-only/u);
+          return true;
+        },
+      );
+      assert.deepEqual(directoryByteSnapshot(root), before);
+      assert.equal(readFileSync(mappingPath, "utf8"), mappingSource);
+    } finally {
+      rmSync(root, { recursive: true, force: true });
+    }
+  });
+});
+
 test("import-cpc is byte-idempotent for an unchanged source and preserved mapping", () => {
   const root = makeTempRoot();
   try {
@@ -3370,7 +3462,7 @@ test("legacy CPC compatibility merges only unmapped leaves and is idempotent", (
       `schema_version: 1
 classification_system: CPC
 classification_version: "3.0"
-status: current
+status: scaffold
 mappings:
   - code: "01111"
     label: "Wheat, seed"
@@ -3529,7 +3621,7 @@ test("import-cpc rejects unsafe or inconsistent inputs before initializing the r
         `schema_version: 1
 classification_system: CPC
 classification_version: "3.0"
-status: current
+status: scaffold
 mappings:
   - code: "99999"
     label: "Removed"
@@ -3603,6 +3695,7 @@ test("legacy CPC scaffolding keeps generated PCR directory segments short for lo
 `,
     );
     runCli(["init", "--root", root]);
+    installLegacyEmptyCpcMapping(root);
     runCli([
       "scaffold-cpc",
       "--legacy-scaffolds",

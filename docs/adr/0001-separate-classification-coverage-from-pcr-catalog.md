@@ -24,7 +24,7 @@ checkPaths:
   - builder/**
   - packages/**
 lastReviewedAt: 2026-07-14
-lastReviewedCommit: c248880a854c1687567f3e4ea6c24e0dd78115ab
+lastReviewedCommit: 41e00bafd03530af7871e4620e59862dd779473e
 ---
 
 # ADR 0001：拆分 classification coverage 与 canonical PCR catalog
@@ -41,7 +41,11 @@ Classification leaf 的存在不再自动产生 canonical PCR identity。只有�
 
 ## 背景
 
-当前 CPC 3.0 有 2,877 个 leaf，也有 2,877 个 PCR 目录和 mapping target；其中只有 3 个目录包含 `authored_methodology`，其余 2,874 个都是 `scaffold / empty_scaffold`。全部 mapping 却声明 `mapping_type: exact`。这把“分类已导入”错误表达成“canonical methodology 已存在”。
+迁移前 CPC 3.0 有 2,877 个 leaf，也有 2,877 个 PCR 目录和 mapping target；其中只有 3 个目录包含
+`authored_methodology`，其余 2,874 个都是 `scaffold / empty_scaffold`。全部 mapping 却声明
+`mapping_type: exact`。这把“分类已导入”错误表达成“canonical methodology 已存在”。当前 mapping 已收缩为
+3 条带 acceptance decision 的 material edge，alias inventory 已覆盖 2,874 个旧 id，并已完成 CPC `99000`
+的首个物理删除试点；仍存 2,873 个 legacy empty-scaffold 目录等待后续分批迁移。
 
 空目录造成的直接成本包括：
 
@@ -105,7 +109,8 @@ Target 必须满足：
 - `resolve --classification` 保持 exact lookup，不使用 fuzzy 或最近邻回退。
 - 已知 leaf 但无 mapping 是正常的 `unmapped` 成功结果：`mapping: null`、`pcr: null`。
 - 不存在的 system/version/code、损坏的 coverage index 或冲突才是命令错误。
-- 兼容期内，旧 scaffold target 可继续返回 legacy record，但必须同时暴露 `coverage_status: unmapped`，不得暗示 canonical methodology 已存在。
+- 显式 legacy/all catalog scope 可继续展示尚存空目录；classification resolve 不再从 mapping v2 返回
+  legacy target。旧 scaffold id 通过 alias 返回 terminal locator，目录删除前后行为相同。
 - Viewer 的文本搜索可以保留为 literal filter，但不能作为 resolver，也不能自动宣称第一个结果是 canonical mapping。
 
 ## 一致性门禁
@@ -123,7 +128,13 @@ Target 必须满足：
 
 ## 迁移与兼容
 
-第一阶段是完全 additive：生成 material index 和完整 coverage index，公共默认改为 material-first，同时保留全部旧目录和旧 ID 解析。Phase 2 的 importer cutover 已完成：canonical `import-cpc` 默认创建 0 个 PCR，缺失时建立 zero-edge mapping，校验并逐字节保留既有 mapping；非 3.0 版本先注册 coverage descriptor。Fail-fast `scaffold-cpc` 只有显式 `--legacy-scaffolds` 才能为 unmapped leaf append legacy edge、identity 和缺失 scaffold，且不能覆盖 accepted edge 或 PCR。物理删除仍必须等待 positive mapping 收缩、alias 生效及 old-id resolve redirect 就绪后分批执行。
+第一阶段是完全 additive：生成 material index 和完整 coverage index，公共默认改为 material-first，同时保留
+全部旧目录。Phase 2 已完成：canonical `import-cpc` 默认创建 0 个 PCR，缺失时建立 accepted-only v2
+zero-edge mapping，校验并逐字节保留既有 mapping；非 3.0 版本先注册 coverage descriptor。Positive mapping
+现只保留 3 条经审核 material edge，2,874 个旧 id 已进入 alias registry，resolve 已使用 alias-first terminal
+redirect。Fail-fast `scaffold-cpc --legacy-scaffolds` 只兼容 v1/scaffold mapping；遇到 v2/current 会在 mutation
+前拒绝，因此不能重新生成已退役目录。Phase 3 已删除 CPC `99000` 一个完整单叶子域并通过不变量验收；
+其余物理迁移仍须按审核批次执行。
 
 详细顺序、基线、pilot、回滚和验收见 `docs/migrations/p2-classification-coverage-migration.md`。
 

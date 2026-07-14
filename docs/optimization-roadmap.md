@@ -21,7 +21,7 @@ checkPaths:
   - classifications/**
   - library/modules/**
 lastReviewedAt: 2026-07-14
-lastReviewedCommit: 7eae0035def58c97d3846999ef8f3f98c431c86e
+lastReviewedCommit: 41e00bafd03530af7871e4620e59862dd779473e
 ---
 
 # PCR 资料库优化路线图
@@ -38,15 +38,17 @@ lastReviewedCommit: 7eae0035def58c97d3846999ef8f3f98c431c86e
 
 ## 当前基线
 
-截至 2026-07-14，仓库包含 2,877 个 PCR 目录：
+截至 2026-07-14，在完成 Phase 2 与 CPC `99000` 物理 pilot 后，仓库包含 2,876 个 PCR 目录：
 
 | 状态 | 数量 | 消费含义 |
 | --- | ---: | --- |
 | `candidate / authored_methodology` | 3 | `review_required`，可带警告进入 guidance |
-| `scaffold / empty_scaffold` | 2,874 | `unavailable`，只能用于 mapping 与 authoring 定位 |
+| `scaffold / empty_scaffold` | 2,873 | `unavailable`，只在显式 legacy/all catalog scope 下可见 |
 
-这个分布说明当前最重要的问题不是继续增加 scaffold，而是建立可信边界、减少结构性噪声，
-并让少量 material PCR 能够可靠地编译、验证、审核和发布。
+CPC 3.0 的 2,877 个 leaf 仍由 coverage 完整表达：3 mapped、2,874 unmapped、0 unknown。Current mapping
+只含 3 条 accepted material edge；2,874 个 retired-id alias 保留旧 identity locator，因此 alias 数量比
+surviving scaffold 多 1。这个分布说明当前最重要的问题不是继续增加 scaffold，而是继续安全地移除
+结构性噪声，并让少量 material PCR 能够可靠地编译、验证、审核和发布。
 
 ## 分阶段方案
 
@@ -82,15 +84,29 @@ lastReviewedCommit: 7eae0035def58c97d3846999ef8f3f98c431c86e
 
 ### P2：拆分 classification coverage 与 canonical methodology catalog
 
-状态：Phase 2 进行中；迁移计划仅步骤 1 importer cutover 已完成，acceptance、mapping contraction、
-alias/redirect 和物理迁移待推进。
+状态：Phase 2 的 contract/mapping/alias/redirect 步骤已完成；Phase 3 已完成 CPC `99000` 单目录 pilot，
+CPC `98000` 与 bulk physical migration 待推进。
 
 1. 已实现：ADR、迁移计划、确定性 material index 和完整 classification coverage read model；CPC 3.0 基线为 2,877 leaf、3 mapped、2,874 unmapped、0 unknown。
 2. 已实现：catalog CLI 与 viewer 默认 material-first，legacy/all 只能显式请求；coverage summary/list 独立、受控并分页，known-unmapped resolve 不再伪装成方法学成功。
-3. 已实现：legacy scaffold compatibility 保留旧 id 和 exact resolve，同时明确 `record_kind`、`resolution_status` 与不可用 readiness；viewer 不再内联空 Markdown 或 scaffold guidance error。
-4. 已实现：canonical `import-cpc` 每次要求显式 source，默认 classification-only，缺失时创建 zero-edge mapping，校验并逐字节保留既有 mapping，创建 0 个 PCR；coordinate lock、no-follow read、baseline CAS、staged writes 和 mapping-last commit 防止并发覆盖及 dangling edge。`scaffold-cpc` 只有显式 `--legacy-scaffolds` 才能为 unmapped leaf append legacy edge/identity；现有目标必须四文件齐全且逐字节等于 legacy template，否则 fail closed。非 3.0 import 必须先注册 coverage descriptor。
-5. 已实现：coverage runtime 将 leaf inventory、mapping edge 和派生 status 重新绑定到 canonical source，不能在保留 accepted mapping 时把 `mapped` 静默降为 `unknown`。Catalog writer 拒绝路径逃逸和 symlink parent，使用 exclusive no-follow staging、baseline CAS、absent-target no-clobber，并按 index-first/catalog-last 发布。跨目录生成物仍是 ordered publish；崩溃级 group transaction 需要独立 journal/recover 设计。
-6. 待实现：为 positive edge 建立显式 acceptance 并收缩 mapping、建立 legacy alias/redirect registry，先做小范围 pilot，再分批物理删除 2,874 个模板等价目录。
+3. 已实现：2,874 条 deterministic alias 以 terminal classification coverage locator 保留旧 id；alias-first
+   `resolve --pcr` 返回 `legacy_id_redirect` 和 copyable next command，不自动 follow。内容命令以
+   `PCR_LEGACY_ID_REDIRECT` fail closed；viewer 不再内联空 Markdown 或 scaffold guidance error。
+4. 已实现：canonical `import-cpc` 每次要求显式 source，默认 classification-only，缺失时创建 zero-edge
+   v2 mapping，校验并逐字节保留既有 mapping，创建 0 个 PCR；coordinate lock、no-follow read、baseline
+   CAS、staged writes 和 mapping-last commit 防止并发覆盖及 dangling edge。`scaffold-cpc` 只有显式
+   `--legacy-scaffolds` 才能运行，且遇到 current v2 mapping 在 mutation 前 fail closed，不能 rehydrate
+   retired directory。非 3.0 import 必须先注册 coverage descriptor。
+5. 已实现：mapping v2/current 只允许 accepted positive edge，包含 decision-maker、UTC decision time 与
+   durable decision ref；CPC 3.0 收缩为 3 条 material edge，CPC 2.1 为 empty v2。Coverage runtime 将 leaf、
+   acceptance projection 和 canonical mapping 重新绑定，candidate/manual-review evidence 不会被自动选择。
+6. 已实现：alias registry 从 retained leaf identity inventory 确定性生成，拒绝 material collision、unknown
+   target、chain 和 cycle。Catalog 以 exact bytes 与 entry count 绑定 alias registry，并通过
+   lock/journal/stage/backup whole-set transaction 发布 catalog/material/coverage；`catalog:recover` 支持
+   rollback/forward recovery。
+7. 进行中：CPC `99000` pilot 已删除 1 个 legacy 四文件目录，保持 3 material、3 accepted mapping、2,877
+   coverage leaf 与 2,874 alias 不变。下一候选 CPC `98000` 与后续 2,873 个 legacy directory 仍需独立审计
+   后分批迁移。
 
 退出条件：canonical PCR 数量反映方法学实体数量，而不是外部分类叶子数量；新增分类体系不会复制 PCR 树。
 

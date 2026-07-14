@@ -58,14 +58,18 @@ test("classification coverage contract separates accepted mappings from review e
 
   const manualReview = structuredClone(coverage);
   manualReview.entries[0].coverage_status = "manual_review";
-  manualReview.entries[0].mapping.mapping_type = "manual_review";
+  manualReview.entries[0].mapping = null;
   assert.equal(validateClassificationCoverage(manualReview).valid, true);
 
-  manualReview.entries[0].mapping.mapping_type = "exact";
+  manualReview.entries[0].mapping = structuredClone(coverage.entries[0].mapping);
   assert.equal(validateClassificationCoverage(manualReview).valid, false);
 
+  const missingAcceptance = structuredClone(coverage);
+  delete missingAcceptance.entries[0].mapping.acceptance;
+  assert.equal(validateClassificationCoverage(missingAcceptance).valid, false);
+
   const unsupportedGenerator = structuredClone(coverage);
-  unsupportedGenerator.source.generator_version = "2";
+  unsupportedGenerator.source.generator_version = "3";
   assert.equal(validateClassificationCoverage(unsupportedGenerator).valid, false);
 
   const missingSourceDigest = structuredClone(coverage);

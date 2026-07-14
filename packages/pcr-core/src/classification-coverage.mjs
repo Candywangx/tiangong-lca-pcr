@@ -20,9 +20,9 @@ import {
 import { parseYaml } from "./yaml-lite.mjs";
 
 export const CLASSIFICATION_COVERAGE_STATUSES = CLASSIFICATION_COVERAGE_STATUS_VALUES;
-export const CLASSIFICATION_COVERAGE_CONTRACT_VERSION = "1";
+export const CLASSIFICATION_COVERAGE_CONTRACT_VERSION = "2";
 export const CLASSIFICATION_COVERAGE_GENERATOR = "builder/scripts/build-catalog.mjs";
-export const CLASSIFICATION_COVERAGE_GENERATOR_VERSION = "1";
+export const CLASSIFICATION_COVERAGE_GENERATOR_VERSION = "2";
 
 const CLASSIFICATION_MAPPING_RELATIONS = new Set(CLASSIFICATION_MAPPING_RELATION_VALUES);
 
@@ -228,8 +228,14 @@ function assertCoverageSemantics({ coverage, normalized, source }) {
     if (entry.coverage_status === "mapped" && !entry.mapping) {
       issues.push(`mapped entry ${entry.code} has no mapping`);
     }
-    if (entry.coverage_status === "mapped" && entry.mapping?.mapping_type === "manual_review") {
-      issues.push(`mapped entry ${entry.code} cannot use mapping_type manual_review`);
+    if (entry.mapping && !isProjectedMapping(entry.mapping)) {
+      issues.push(`entry ${entry.code} has a mapping without an accepted decision projection`);
+    }
+    if (
+      ["unmapped", "candidate_suggestion", "manual_review"].includes(entry.coverage_status)
+      && entry.mapping
+    ) {
+      issues.push(`${entry.coverage_status} entry ${entry.code} cannot carry an accepted mapping`);
     }
     if (entry.mapping && entry.legacy_reference) {
       issues.push(`entry ${entry.code} cannot be both a material mapping and a legacy reference`);
@@ -361,6 +367,9 @@ function coverageProjectionIssues({ coverage, normalized, normalizedLeaves, mapp
       `source mapping coordinate ${String(mapping.classification_system)}:${String(mapping.classification_version)} does not match ${normalized.system}:${normalized.version}`,
     );
   }
+  if (mapping.schema_version !== 2 || mapping.status !== "current") {
+    issues.push("source mapping must use accepted-only schema_version 2 with status current");
+  }
 
   if (!Array.isArray(normalizedLeaves.leaves)) {
     issues.push("source normalized_leaves.leaves must be an array");
@@ -453,12 +462,16 @@ function coverageProjectionIssues({ coverage, normalized, normalizedLeaves, mapp
           issues.push(`coverage entry ${code} mapping.${field} does not match canonical mapping`);
         }
       }
-      const expectedCoverageStatus = sourceMapping.mapping_type === "manual_review"
-        ? "manual_review"
-        : "mapped";
-      if (entry.coverage_status !== expectedCoverageStatus) {
+      for (const field of ["status", "decided_by", "decided_at_utc", "decision_ref"]) {
+        if (entry.mapping.acceptance?.[field] !== sourceMapping.acceptance?.[field]) {
+          issues.push(
+            `coverage entry ${code} mapping.acceptance.${field} does not match canonical mapping`,
+          );
+        }
+      }
+      if (entry.coverage_status !== "mapped") {
         issues.push(
-          `coverage entry ${code} coverage_status ${entry.coverage_status} does not match canonical mapping projection ${expectedCoverageStatus}`,
+          `coverage entry ${code} coverage_status ${entry.coverage_status} does not match accepted canonical mapping projection mapped`,
         );
       }
       continue;
@@ -502,8 +515,36 @@ function isProjectedMapping(mapping) {
     && typeof mapping.pcr_id === "string"
     && mapping.pcr_id.startsWith("pcr.")
     && CLASSIFICATION_MAPPING_RELATIONS.has(mapping.mapping_type)
+    && mapping.mapping_type !== "manual_review"
     && typeof mapping.confidence === "string"
     && mapping.confidence.length > 0
+    && mapping.acceptance?.status === "accepted"
+    && typeof mapping.acceptance?.decided_by === "string"
+    && mapping.acceptance.decided_by.trim().length > 0
+    && isCanonicalUtcTimestamp(mapping.acceptance?.decided_at_utc)
+    && typeof mapping.acceptance?.decision_ref === "string"
+    && mapping.acceptance.decision_ref.trim().length > 0
+  );
+}
+
+function isCanonicalUtcTimestamp(value) {
+  const match = typeof value === "string"
+    ? /^([0-9]{4})-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):([0-5][0-9]):([0-5][0-9])(?:\.[0-9]+)?Z$/u.exec(value)
+    : null;
+  if (!match) {
+    return false;
+  }
+  const [, year, month, day, hour, minute, second] = match.map(Number);
+  const parsed = new Date(0);
+  parsed.setUTCFullYear(year, month - 1, day);
+  parsed.setUTCHours(hour, minute, second, 0);
+  return (
+    parsed.getUTCFullYear() === year
+    && parsed.getUTCMonth() === month - 1
+    && parsed.getUTCDate() === day
+    && parsed.getUTCHours() === hour
+    && parsed.getUTCMinutes() === minute
+    && parsed.getUTCSeconds() === second
   );
 }
 

@@ -44,6 +44,11 @@ builder/docs/
 npm run init
 npm run lint
 npm run vocab:generate
+npm run aliases:build
+npm run aliases:check
+npm run catalog:build
+npm run catalog:check
+npm run catalog:recover [-- --force-stale-lock]
 npm run pcr:import:cpc -- --source <cpc-structure.csv> --classification-version 3.0
 npm run pcr:import:cpc -- --source <cpc-structure.csv> --classification-version 3.0 --legacy-scaffolds  # migration compatibility only
 npm run pcr:scaffold:cpc -- --source <cpc-structure.csv> --classification-version 3.0 --legacy-scaffolds  # protected legacy alias
@@ -61,13 +66,17 @@ npm run validate
 - `lint` executes the JSON Schema contracts for the catalog, classification mappings, PCR manifests, bilingual Markdown frontmatter, and material structured projections. It also checks required repository paths, bilingual PCR directory completeness, lifecycle compatibility, process inventory structure, range coverage for important flows, and deterministic `structured.yaml` freshness for every material PCR. Candidate PCRs may pass with range warnings; reviewed or published PCRs fail when important flows lack ranges.
 - `pcr:import:cpc` requires an explicit `--source` on every invocation. It imports raw CPC source metadata and
   normalized hierarchy, leaves, and paths; its default classification-only mode creates zero PCR records. It creates a
-  zero-edge mapping scaffold only when no mapping exists. An existing mapping must validate and is preserved
+  zero-edge current mapping document only when no mapping exists. An existing mapping must validate and is preserved
   byte-for-byte in classification-only mode. Register a coverage descriptor before importing a non-3.0 version.
-- `--legacy-scaffolds` is migration/test-only. It appends identity and a legacy edge only for an unmapped leaf. It may
-  create one complete four-file target when that target is absent; an existing target must already be complete and
-  byte-for-byte equal to the expected legacy template. Partial or divergent targets fail closed instead of being
-  repaired. The protected `pcr:scaffold:cpc` compatibility alias fails unless this flag is explicit. Never use this
-  alias or flag for a new classification import.
+- Current classification mapping v2 files contain accepted positive edges only. Every edge targets a material PCR,
+  excludes `manual_review`, and carries acceptance status, decision-maker, UTC decision time, and durable decision
+  reference. CPC 3.0 currently has exactly three accepted edges; CPC 2.1 is empty v2.
+- `--legacy-scaffolds` is migration/test-only and may operate only on retained v1/scaffold mapping fixtures. A current
+  v2 mapping causes it to fail before mutation, preventing unaccepted-edge injection and retired-directory
+  rehydration. For a v1 fixture it may create one complete four-file target when absent; an existing target must be
+  complete and byte-for-byte equal to the expected legacy template. Partial or divergent targets fail closed. The
+  protected `pcr:scaffold:cpc` compatibility alias fails unless this flag is explicit. Never use this alias or flag
+  for a new classification import.
 - CPC imports hold a system/version coordinate lock, use no-follow reads and a baseline compare-and-swap check, stage
   each file replacement or complete legacy directory, and commit the mapping last. A preflight, concurrency, or
   installation failure therefore cannot leave a dangling new mapping edge, although already installed
@@ -87,6 +96,18 @@ npm run validate
 - Every successful publication writes an immutable `releases/<semver>/` snapshot and appends `release-history.yaml`. Release metadata and the current manifest carry exact-byte SHA-256 evidence; lint validates the release chain, snapshot contents, projection integrity, and current-to-latest consistency.
 - `pcr:sync-structured`, `pcr:bump`, `pcr:lifecycle`, `pcr:revise`, and `pcr:publish` replace the complete PCR leaf through a recoverable directory transaction whose state is stored under `library/.pcr-builder-state/`. `pcr:recover` rolls back interrupted pre-commit phases or finishes committed cleanup. Lock ownership is tokenized and keyed by filesystem-canonical PCR identity. `--force-stale-lock` is an explicit stale-lock/pre-journal-stage override, must not be used while a writer is active, and never permits guessing from malformed journal or unexplained tree state.
 - `vocab:generate` validates every vocabulary source and deterministically regenerates the checked-in runtime constants and shared JSON Schema.
+- `aliases:build` deterministically derives `classifications/aliases/pcr-id-aliases.yaml` from the retained CPC leaf
+  identity inventory and current accepted mapping. `aliases:check` rejects stale output, duplicate sources,
+  material-id collisions, alias chains/cycles, and invalid terminal targets. Current output has 2,874 terminal
+  classification-coverage locators and is checked before catalog lookup.
+- `catalog:build` validates sources and publishes `library/catalog.yaml`, the material index, and registered coverage
+  indexes as one journaled recoverable artifact set. The catalog pins the alias registry's canonical path,
+  exact-byte SHA-256, and entry count; missing, truncated, or stale registry bytes fail closed. A pre-commit
+  interruption is rolled back to the old set; a committed interruption finishes forward cleanup.
+- `catalog:check` is read-only and refuses stale artifacts or unresolved transaction state. Use `catalog:recover`
+  before retrying an interrupted publication. `catalog:recover -- --force-stale-lock` is only for a verified stale
+  malformed/foreign lock when no writer is active; malformed journal or contradictory tree evidence still fails
+  closed.
 - `lint` rejects stale generated vocabulary artifacts before inspecting repository content; `validate` then runs lint plus tests.
 
 For the full workspace, release, transaction, and recovery invariants, use
@@ -99,10 +120,16 @@ contracts. Validation runs without type coercion, default insertion, or removal 
 Schema failures are returned in a stable machine-readable shape with the contract id, entity kind, source,
 and sorted field-level errors.
 
+Classification mapping v1/scaffold remains readable only for compatibility fixtures. Repository current mappings
+use v2/current, in which the positive edge and its acceptance decision are one strict contract. The coverage index
+projects that acceptance evidence, and runtime resolution compares it back to the canonical mapping before selecting
+a PCR. Retired leaf-derived identities are represented by a separate strict alias registry; an alias is a terminal
+locator, not a mapping and not a new methodology record.
+
 Authoring Markdown remains the canonical, flexible methodology source. Strict material projection validation
-starts only after Markdown is compiled to `structured.yaml`. Retained legacy scaffolds remain discoverable authoring
-targets and are not required to satisfy the material projection Schema or fingerprint contract; ordinary
-classification imports do not create new ones.
+starts only after Markdown is compiled to `structured.yaml`. Surviving legacy scaffolds remain explicit catalog
+compatibility inventory and are not required to satisfy the material projection Schema or fingerprint contract;
+retired ids are not canonical create targets, and ordinary classification imports do not create new scaffolds.
 
 For a material PCR, lint requires all four conditions together:
 

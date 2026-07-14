@@ -4,6 +4,7 @@ export const REQUIRED_DIRS = [
   "library/indexes",
   "classifications/systems",
   "classifications/mappings",
+  "classifications/aliases",
   "builder/cli",
   "builder/docs",
   "builder/docs/contracts",

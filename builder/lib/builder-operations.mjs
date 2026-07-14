@@ -8,6 +8,7 @@ import {
   realpathSync,
   writeFileSync,
 } from "node:fs";
+import { createHash } from "node:crypto";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -120,17 +121,36 @@ export function init(options) {
     ensureDir(root, dir);
   }
 
+  const emptyAliasRegistry = `schema_version: 1
+registry_kind: legacy-pcr-id-aliases
+status: current
+aliases: []
+`;
+  const emptyAliasRegistrySha256 =
+    `sha256:${createHash("sha256").update(emptyAliasRegistry).digest("hex")}`;
+
   writeIfMissing(
     root,
     "library/catalog.yaml",
     `schema_version: 1
 catalog_status: scaffold
 pcr_index: library/indexes/pcr-index.yaml
+pcr_id_aliases:
+  path: classifications/aliases/pcr-id-aliases.yaml
+  hash_mode: exact_bytes
+  sha256: ${emptyAliasRegistrySha256}
+  entry_count: 0
 classification_mappings: []
 notes:
   - Canonical PCR ids are independent from classification codes.
   - Add deterministic classification mapping files as they become available.
 `,
+  );
+
+  writeIfMissing(
+    root,
+    "classifications/aliases/pcr-id-aliases.yaml",
+    emptyAliasRegistry,
   );
 
   writeIfMissing(

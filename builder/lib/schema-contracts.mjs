@@ -1,6 +1,10 @@
 import { readFileSync } from "node:fs";
 
-import { createSchemaRegistry } from "../../packages/pcr-core/src/schema-validation.mjs";
+import {
+  ContractSchemaError,
+  createSchemaRegistry,
+} from "../../packages/pcr-core/src/schema-validation.mjs";
+import { isValidUtcTimestamp } from "./lifecycle-policy.mjs";
 
 const BUILDER_SCHEMA_FILES = [
   "catalog.schema.json",
@@ -65,10 +69,47 @@ export const assertMarkdownFrontmatter = (value, options = {}) =>
 export const validateCatalog = (value) => validateBuilderContract("catalog.schema.json", value);
 export const assertCatalog = (value, options = {}) =>
   assertBuilderContract("catalog.schema.json", value, options);
-export const validateClassificationMapping = (value) =>
-  validateBuilderContract("classification-mapping.schema.json", value);
-export const assertClassificationMapping = (value, options = {}) =>
-  assertBuilderContract("classification-mapping.schema.json", value, options);
+export function validateClassificationMapping(value) {
+  const result = validateBuilderContract("classification-mapping.schema.json", value);
+  if (!result.valid || value.schema_version !== 2) {
+    return result;
+  }
+  const errors = value.mappings.flatMap((mapping, index) =>
+    isValidUtcTimestamp(mapping.acceptance.decided_at_utc)
+      ? []
+      : [{
+          code: "semantic.utc_timestamp",
+          instance_path: `/mappings/${index}/acceptance/decided_at_utc`,
+          schema_path: "#/$defs/utcTimestamp",
+          keyword: "format",
+          message: "must be a real canonical UTC timestamp",
+          params: {},
+        }]);
+  return errors.length === 0
+    ? result
+    : {
+        ...result,
+        valid: false,
+        code: "PCR_SCHEMA_INVALID",
+        errors,
+        issues: errors,
+      };
+}
+
+export function assertClassificationMapping(value, options = {}) {
+  const result = validateClassificationMapping(value);
+  if (result.valid) {
+    return value;
+  }
+  const contract = resolveContractId("classification-mapping.schema.json");
+  throw new ContractSchemaError({
+    code: options.code,
+    contract,
+    entityKind: options.entityKind ?? "Classification to PCR mapping",
+    source: options.source,
+    issues: result.errors,
+  });
+}
 export const validateStructured = (value) =>
   validateBuilderContract("structured-projection.schema.json", value);
 export const assertStructured = (value, options = {}) =>

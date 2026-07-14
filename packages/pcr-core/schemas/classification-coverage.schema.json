@@ -83,36 +83,12 @@
         {
           "if": {
             "properties": {
-              "coverage_status": { "enum": ["unmapped", "candidate_suggestion"] }
+              "coverage_status": { "enum": ["unmapped", "candidate_suggestion", "manual_review"] }
             },
             "required": ["coverage_status"]
           },
           "then": {
             "properties": { "mapping": { "type": "null" } }
-          }
-        },
-        {
-          "if": {
-            "properties": { "coverage_status": { "const": "manual_review" } },
-            "required": ["coverage_status"]
-          },
-          "then": {
-            "properties": {
-              "mapping": {
-                "anyOf": [
-                  { "type": "null" },
-                  {
-                    "allOf": [
-                      { "$ref": "#/$defs/mapping" },
-                      {
-                        "type": "object",
-                        "properties": { "mapping_type": { "const": "manual_review" } }
-                      }
-                    ]
-                  }
-                ]
-              }
-            }
           }
         }
       ]
@@ -127,9 +103,9 @@
         "mapping"
       ],
       "properties": {
-        "contract_version": { "const": "1" },
+        "contract_version": { "const": "2" },
         "generator": { "const": "builder/scripts/build-catalog.mjs" },
-        "generator_version": { "const": "1" },
+        "generator_version": { "const": "2" },
         "normalized_leaves": { "$ref": "#/$defs/sourceArtifact" },
         "mapping": { "$ref": "#/$defs/sourceArtifact" }
       },
@@ -164,13 +140,36 @@
     },
     "mapping": {
       "type": "object",
-      "required": ["pcr_id", "mapping_type", "confidence"],
+      "required": ["pcr_id", "mapping_type", "confidence", "acceptance"],
       "properties": {
         "pcr_id": { "type": "string", "minLength": 1 },
         "mapping_type": {
-          "$ref": "https://tiangong-lca.org/schemas/pcr/v1/controlled-vocabulary.schema.json#/$defs/classification_mapping_relation"
+          "allOf": [
+            {
+              "$ref": "https://tiangong-lca.org/schemas/pcr/v1/controlled-vocabulary.schema.json#/$defs/classification_mapping_relation"
+            },
+            { "not": { "const": "manual_review" } }
+          ]
         },
-        "confidence": { "type": "string", "minLength": 1 }
+        "confidence": { "type": "string", "minLength": 1 },
+        "acceptance": { "$ref": "#/$defs/acceptance" }
+      },
+      "additionalProperties": false
+    },
+    "acceptance": {
+      "type": "object",
+      "required": ["status", "decided_by", "decided_at_utc", "decision_ref"],
+      "properties": {
+        "status": { "const": "accepted" },
+        "decided_by": { "type": "string", "pattern": "\\S" },
+        "decided_at_utc": {
+          "type": "string",
+          "pattern": "^[0-9]{4}-(?:0[1-9]|1[0-2])-(?:0[1-9]|[12][0-9]|3[01])T(?:[01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9](?:\\.[0-9]+)?Z$"
+        },
+        "decision_ref": {
+          "type": "string",
+          "pattern": "^(?:docs|classifications/migrations)/[A-Za-z0-9][A-Za-z0-9._/-]*\\.(?:md|ya?ml|json)(?:#[A-Za-z0-9][A-Za-z0-9._-]*)?$"
+        }
       },
       "additionalProperties": false
     },

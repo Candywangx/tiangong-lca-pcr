@@ -25,7 +25,7 @@ checkPaths:
   - library/pcrs/**
   - library/modules/**
 lastReviewedAt: 2026-07-14
-lastReviewedCommit: c248880a854c1687567f3e4ea6c24e0dd78115ab
+lastReviewedCommit: 41e00bafd03530af7871e4620e59862dd779473e
 ---
 
 # Authoring Guide
@@ -141,34 +141,40 @@ Public `tiangong-pcr` guidance is a consumption view over PCR content. `tree`, `
 records; explicit catalog compatibility scopes are `--scope material|legacy|all`. Classification coverage is queried
 separately with `coverage summary|list --classification <system>:<version>`, and coverage list output is paginated.
 An accepted mapping and a PCR's readiness are separate claims: an authored candidate is review-required guidance,
-while a known unmapped leaf returns `mapping: null` and `pcr: null`. A retained empty scaffold may be returned as
-`legacy_scaffold_compatibility`, but remains unavailable to guidance and validation. Use `validate-dataset` to check
-the implemented subset of foreground collection package requirements, and inspect `check_coverage.checks_skipped`
-before interpreting a result as complete. If Agent use of `guidance` reveals missing or ambiguous instructions,
-capture that through feedback issue templates or `npm --silent run tiangong-pcr -- feedback draft`.
+while a known unmapped leaf returns `mapping: null` and `pcr: null`. Retired leaf-derived ids are resolved through the
+alias registry before catalog lookup: `resolve --pcr` returns a terminal locator and copyable next command, while
+content commands fail with `PCR_LEGACY_ID_REDIRECT`. They must not be treated as usable methodology. Use
+`validate-dataset` to check the implemented subset of foreground collection package requirements, and inspect
+`check_coverage.checks_skipped` before interpreting a result as complete. If Agent use of `guidance` reveals missing
+or ambiguous instructions, capture that through feedback issue templates or
+`npm --silent run tiangong-pcr -- feedback draft`.
 
 ## Retained Legacy CPC Scaffold Compatibility
 
 Retained CPC-generated PCR directories are migration-era placeholders until reviewed PCR content is written. They are
-excluded from default material browsing and are not accepted mappings merely because old mapping entries still
-reference them. Canonical `import-cpc` requires an explicit `--source` for every run. It creates zero PCR records by
-default, writes raw/metadata/normalized classification artifacts, validates and preserves an existing mapping
-byte-for-byte, and creates only a zero-edge mapping when none exists. A non-3.0 import requires a registered coverage
-descriptor. The importer locks the system/version coordinate, rejects symlinked managed inputs, verifies its baseline
-before commit, stages outputs, and installs the mapping last.
+excluded from default material browsing and have no positive mapping merely because their directories survive.
+Canonical `import-cpc` requires an explicit `--source` for every run. It creates zero PCR records by default, writes
+raw/metadata/normalized classification artifacts, validates and preserves an existing mapping byte-for-byte, and
+creates an empty current v2 mapping when none exists. A non-3.0 import requires a registered coverage descriptor. The
+importer locks the system/version coordinate, rejects symlinked managed inputs, verifies its baseline before commit,
+stages outputs, and installs the mapping last.
 
 The fail-fast `scaffold-cpc` compatibility alias requires explicit `--legacy-scaffolds`. That flag is only for
-migration reproduction or tests, not new imports. It may append identity and a legacy edge for an unmapped leaf and
-may create a complete four-file scaffold only when its target is absent. If the target exists, all four files must
-match the deterministic legacy template byte-for-byte; partial or authored targets fail closed instead of being
-repaired or overwritten. Existing legacy artifacts remain because Phase 2 has completed only this importer-cutover
-step; explicit acceptance/mapping contraction, alias/redirect, and physical migration remain pending. When promoting
-one of these retained records into a material PCR:
+migration reproduction or tests, not new imports. It can operate only on a retained v1/scaffold mapping fixture; a
+current v2 mapping fails before mutation, so compatibility mode cannot append an unaccepted edge or recreate a
+retired directory. In a v1 fixture, an existing target must still match the deterministic legacy template
+byte-for-byte; partial or authored targets fail closed instead of being repaired or overwritten. Phase 2 acceptance,
+mapping contraction, alias generation, and redirect behavior are complete. The CPC `99000` pilot removed one
+directory; the remaining legacy directories are explicit compatibility inventory until later audited batches remove
+them. When intentionally replacing or promoting one of these records into a material PCR:
 
-- keep the existing `classification_refs` and CPC-to-PCR mapping unless the classification match is wrong
+- review the semantic product boundary first; a classification leaf alone is not authority to create a PCR
+- retain or change `classification_refs` according to the reviewed semantic match, not merely the historical path
 - update both `pcr.en-US.md` and `pcr.zh-CN.md` as paired renderings of the same rule
 - run `npm run pcr:sync-structured -- --pcr <library/pcrs/...>` after editing canonical Markdown so `structured.yaml` stays aligned
 - move `status`, `content_maturity`, and `translation_status` forward with `npm run pcr:lifecycle` only after the relevant methodology or translation review has happened
+- add a v2 accepted mapping edge only after the classification-to-PCR relation is reviewed and its durable decision evidence exists
+- run `npm run aliases:build` and `npm run catalog:build` in the same coordinated change so the old id is either removed from alias sources or redirected to the reviewed canonical PCR, and the catalog pins the registry's exact bytes and entry count
 
 Repository lint regenerates and compares the deterministic projection for every material PCR. A stale
 `structured.yaml` is a validation error, so commit canonical Markdown and its generated projection together.

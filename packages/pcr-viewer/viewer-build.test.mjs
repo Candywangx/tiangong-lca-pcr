@@ -695,6 +695,17 @@ function copyFixturePcr({ root, relativePath }) {
 }
 
 function writeFixtureCatalog({ root, coverageIndexes }) {
+  const aliasRegistry = [
+    "schema_version: 1",
+    "registry_kind: legacy-pcr-id-aliases",
+    "status: current",
+    "aliases: []",
+    "",
+  ].join("\n");
+  const aliasPath = path.join(root, "classifications/aliases/pcr-id-aliases.yaml");
+  mkdirSync(path.dirname(aliasPath), { recursive: true });
+  writeFileSync(aliasPath, aliasRegistry, "utf8");
+  const aliasSha256 = `sha256:${createHash("sha256").update(aliasRegistry).digest("hex")}`;
   const catalogPath = path.join(root, "library/catalog.yaml");
   mkdirSync(path.dirname(catalogPath), { recursive: true });
   writeFileSync(
@@ -703,6 +714,11 @@ function writeFixtureCatalog({ root, coverageIndexes }) {
       "schema_version: 1",
       "catalog_status: current",
       'pcr_index: "library/indexes/pcr-index.yaml"',
+      "pcr_id_aliases:",
+      '  path: "classifications/aliases/pcr-id-aliases.yaml"',
+      '  hash_mode: "exact_bytes"',
+      `  sha256: ${JSON.stringify(aliasSha256)}`,
+      "  entry_count: 0",
       "classification_mappings: []",
       "classification_coverage_indexes:",
       ...coverageIndexes.map((indexPath) => `  - ${JSON.stringify(indexPath)}`),
@@ -751,9 +767,10 @@ function writeFixtureCoverageIndex({
     2,
   )}\n`;
   const mappingText = [
-    "schema_version: 1",
+    "schema_version: 2",
     `classification_system: ${JSON.stringify(system.toUpperCase())}`,
     `classification_version: ${JSON.stringify(version)}`,
+    "status: current",
     ...(mappedEntries.length === 0
       ? ["mappings: []"]
       : [
@@ -764,6 +781,11 @@ function writeFixtureCoverageIndex({
             `    pcr_id: ${JSON.stringify(entry.mapping.pcr_id)}`,
             `    mapping_type: ${entry.mapping.mapping_type}`,
             `    confidence: ${entry.mapping.confidence}`,
+            "    acceptance:",
+            `      status: ${entry.mapping.acceptance.status}`,
+            `      decided_by: ${entry.mapping.acceptance.decided_by}`,
+            `      decided_at_utc: ${JSON.stringify(entry.mapping.acceptance.decided_at_utc)}`,
+            `      decision_ref: ${entry.mapping.acceptance.decision_ref}`,
           ]),
         ]),
     "",
@@ -776,9 +798,9 @@ function writeFixtureCoverageIndex({
     classification_system: system.toUpperCase(),
     classification_version: version,
     source: {
-      contract_version: "1",
+      contract_version: "2",
       generator: "builder/scripts/build-catalog.mjs",
-      generator_version: "1",
+      generator_version: "2",
       normalized_leaves: {
         path: normalizedLeavesPath,
         hash_mode: "exact_bytes",
@@ -821,6 +843,12 @@ function fixtureCoverageEntry({ system, index, pcrId }) {
           pcr_id: pcrId,
           mapping_type: "exact",
           confidence: "fixture",
+          acceptance: {
+            status: "accepted",
+            decided_by: "viewer-test",
+            decided_at_utc: "2026-07-14T00:00:00Z",
+            decision_ref: "docs/adr/viewer-fixture.md",
+          },
         }
       : null,
     legacy_reference: null,

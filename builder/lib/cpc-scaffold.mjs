@@ -625,17 +625,17 @@ function sha256Bytes(bytes) {
   return createHash("sha256").update(bytes).digest("hex");
 }
 
-function mappingDocument(classificationVersion, leaves = []) {
+function currentEmptyMappingDocument(classificationVersion) {
   return {
-    schema_version: 1,
+    schema_version: 2,
     classification_system: "CPC",
     classification_version: classificationVersion,
-    status: "scaffold",
-    mappings: leaves.map(mappingEntryForLeaf),
+    status: "current",
+    mappings: [],
   };
 }
 
-function mappingEntryForLeaf(leaf) {
+function legacyMappingEntryForLeaf(leaf) {
   return {
     code: leaf.code,
     label: leaf.title,
@@ -648,7 +648,11 @@ function mappingEntryForLeaf(leaf) {
 function readExistingMapping({ root, relativePath, classificationVersion, leafCodes }) {
   const snapshot = fileSnapshot(root, relativePath, "CPC classification mapping");
   if (!snapshot.exists) {
-    return { document: mappingDocument(classificationVersion), sourceText: null, snapshot };
+    return {
+      document: currentEmptyMappingDocument(classificationVersion),
+      sourceText: null,
+      snapshot,
+    };
   }
 
   const sourceText = decodeUtf8(snapshot.bytes);
@@ -685,6 +689,15 @@ function readExistingMapping({ root, relativePath, classificationVersion, leafCo
     }
   }
   return { document, sourceText, snapshot };
+}
+
+function assertLegacyScaffoldMapping(document, relativePath) {
+  if (document.schema_version === 1 && document.status === "scaffold") {
+    return;
+  }
+  throw new Error(
+    `--legacy-scaffolds cannot modify ${relativePath}: schema_version 2 status current mappings are accepted-only. Use classification-only import and the reviewed mapping workflow instead.`,
+  );
 }
 
 function readLegacyLeafInventory({ root, relativePath, classificationVersion }) {
@@ -787,7 +800,7 @@ function planLegacyCompatibility({ leaves, mappingDocument: existingMapping, lea
       pcr_dir: leaf.pcr_dir,
       pcr_id: pcrIdForLeaf(leaf),
     }));
-  const appendedMappings = legacyLeaves.map(mappingEntryForLeaf);
+  const appendedMappings = legacyLeaves.map(legacyMappingEntryForLeaf);
   const mergedMapping = {
     ...existingMapping,
     mappings: [...existingMapping.mappings, ...appendedMappings],
@@ -1200,6 +1213,9 @@ function importCpcWhileLocked({
     classificationVersion,
     leafCodes,
   });
+  if (legacyScaffolds) {
+    assertLegacyScaffoldMapping(existingMapping.document, mappingPath);
+  }
   const inventory = legacyScaffolds
     ? readLegacyLeafInventory({
         root,
@@ -1426,6 +1442,16 @@ export function importCpc(options = {}) {
   const entries = readCpcCsv(sourceBytes, classificationVersion);
   const { nodes, leaves } = buildCpcModel(entries);
   const root = rootFromOptions(options);
+  if (legacyScaffolds) {
+    const mappingPath = coverageSource.mappingPath;
+    const preflightMapping = readExistingMapping({
+      root,
+      relativePath: mappingPath,
+      classificationVersion,
+      leafCodes: new Set(leaves.map((leaf) => leaf.code)),
+    });
+    assertLegacyScaffoldMapping(preflightMapping.document, mappingPath);
+  }
   const hooks = options.__testHooks ?? {};
   const lock = acquireImportLock(root, classificationVersion, hooks);
   try {

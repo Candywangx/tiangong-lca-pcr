@@ -29,9 +29,35 @@ import {
   writeCatalogArtifacts,
 } from "./build-catalog.mjs";
 import { readClassificationCoverage } from "../../packages/pcr-core/src/classification-coverage.mjs";
-import { renderYaml } from "../../packages/pcr-core/src/yaml-lite.mjs";
+import { parseYaml, renderYaml } from "../../packages/pcr-core/src/yaml-lite.mjs";
+import {
+  buildOrCheckPcrIdAliases,
+  CPC_3_LEAF_SLUGS_PATH,
+  PCR_ID_ALIAS_DECISION_REF,
+} from "./build-pcr-id-aliases.mjs";
 
 const repositoryRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../..");
+const catalogScriptPath = path.join(repositoryRoot, "builder/scripts/build-catalog.mjs");
+
+test("catalog command help explains recovery and stale-lock authority", () => {
+  const help = spawnSync(process.execPath, [catalogScriptPath, "--help"], {
+    cwd: repositoryRoot,
+    encoding: "utf8",
+  });
+  assert.equal(help.status, 0, help.stderr);
+  assert.match(help.stdout, /journaled whole-set transaction/u);
+  assert.match(help.stdout, /--recover/u);
+  assert.match(help.stdout, /--force-stale-lock/u);
+  assert.match(help.stdout, /confirming no writer is active/u);
+  assert.match(help.stdout, /Next:/u);
+
+  const invalid = spawnSync(process.execPath, [catalogScriptPath, "--force-stale-lock"], {
+    cwd: repositoryRoot,
+    encoding: "utf8",
+  });
+  assert.equal(invalid.status, 1);
+  assert.match(invalid.stderr, /valid only with --recover/u);
+});
 
 test("catalog generator emits the current three-PCR material index and complete CPC coverage", () => {
   const result = createCatalogArtifacts(repositoryRoot);
@@ -45,6 +71,15 @@ test("catalog generator emits the current three-PCR material index and complete 
   assert.equal(materialIndex.pcrs.length, 3);
   assert.ok(materialIndex.pcrs.every((entry) => entry.status !== "scaffold"));
   assert.ok(materialIndex.pcrs.every((entry) => entry.content_maturity !== "empty_scaffold"));
+  assert.equal(result.aliases.length, 2874);
+  const catalog = byPath.get("library/catalog.yaml");
+  assert.equal(
+    catalog.pcr_id_aliases.path,
+    "classifications/aliases/pcr-id-aliases.yaml",
+  );
+  assert.equal(catalog.pcr_id_aliases.hash_mode, "exact_bytes");
+  assert.match(catalog.pcr_id_aliases.sha256, /^sha256:[0-9a-f]{64}$/u);
+  assert.equal(catalog.pcr_id_aliases.entry_count, 2874);
 
   assert.deepEqual(coverage.summary, {
     total: 2877,
@@ -55,9 +90,9 @@ test("catalog generator emits the current three-PCR material index and complete 
     unknown: 0,
   });
   assert.equal(new Set(coverage.entries.map((entry) => entry.code)).size, 2877);
-  assert.equal(coverage.source.contract_version, "1");
+  assert.equal(coverage.source.contract_version, "2");
   assert.equal(coverage.source.generator, "builder/scripts/build-catalog.mjs");
-  assert.equal(coverage.source.generator_version, "1");
+  assert.equal(coverage.source.generator_version, "2");
   assert.equal(coverage.source.normalized_leaves.hash_mode, "exact_bytes");
   assert.match(coverage.source.normalized_leaves.sha256, /^sha256:[0-9a-f]{64}$/u);
   assert.equal(coverage.source.mapping.hash_mode, "exact_bytes");
@@ -66,27 +101,101 @@ test("catalog generator emits the current three-PCR material index and complete 
   const wheatSeed = coverage.entries.find((entry) => entry.code === "01111");
   assert.equal(wheatSeed.coverage_status, "mapped");
   assert.equal(wheatSeed.mapping.mapping_type, "exact");
+  assert.equal(wheatSeed.mapping.acceptance.status, "accepted");
   assert.equal(wheatSeed.legacy_reference, null);
 
   const wheatOther = coverage.entries.find((entry) => entry.code === "01112");
   assert.equal(wheatOther.coverage_status, "unmapped");
   assert.equal(wheatOther.mapping, null);
-  assert.equal(wheatOther.legacy_reference.kind, "legacy_scaffold_reference");
+  assert.equal(wheatOther.legacy_reference, null);
 });
 
-test("coverage semantics preserve review evidence and surface dangling or conflicting edges", () => {
+test("catalog alias projection fails closed for missing, empty, omitted, or stale aliases", async (t) => {
+  await t.test("missing generated registry", () => {
+    const root = makeAliasProjectionFixture();
+    try {
+      rmSync(path.join(root, "classifications/aliases/pcr-id-aliases.yaml"));
+      assert.throws(
+        () => createCatalogArtifacts(root),
+        /pcr-id-aliases\.yaml is missing/u,
+      );
+    } finally {
+      rmSync(root, { recursive: true, force: true });
+    }
+  });
+
+  await t.test("empty generated registry", () => {
+    const root = makeAliasProjectionFixture();
+    try {
+      writeEmptyAliasRegistry(root);
+      assert.throws(
+        () => createCatalogArtifacts(root),
+        /pcr-id-aliases\.yaml is stale/u,
+      );
+    } finally {
+      rmSync(root, { recursive: true, force: true });
+    }
+  });
+
+  await t.test("one deterministic alias omitted", () => {
+    const root = makeAliasProjectionFixture();
+    try {
+      const aliasesPath = path.join(root, "classifications/aliases/pcr-id-aliases.yaml");
+      const document = parseYaml(readFileSync(aliasesPath, "utf8"));
+      document.aliases.pop();
+      writeFileSync(aliasesPath, renderYaml(document), "utf8");
+      assert.throws(
+        () => createCatalogArtifacts(root),
+        /pcr-id-aliases\.yaml is stale/u,
+      );
+    } finally {
+      rmSync(root, { recursive: true, force: true });
+    }
+  });
+
+  await t.test("registry byte drift invalidates catalog check", () => {
+    const root = makeAliasProjectionFixture();
+    try {
+      buildOrCheckCatalog(root);
+      const aliasesPath = path.join(root, "classifications/aliases/pcr-id-aliases.yaml");
+      writeFileSync(
+        aliasesPath,
+        `${readFileSync(aliasesPath, "utf8")}\n`,
+        "utf8",
+      );
+      assert.throws(
+        () => buildOrCheckCatalog(root, { checkOnly: true }),
+        /pcr-id-aliases\.yaml is stale/u,
+      );
+    } finally {
+      rmSync(root, { recursive: true, force: true });
+    }
+  });
+
+  await t.test("catalog binding drift is stale even when registry is unchanged", () => {
+    const root = makeAliasProjectionFixture();
+    try {
+      buildOrCheckCatalog(root);
+      const catalogPath = path.join(root, "library/catalog.yaml");
+      const catalog = parseYaml(readFileSync(catalogPath, "utf8"));
+      catalog.pcr_id_aliases.sha256 = `sha256:${"0".repeat(64)}`;
+      writeFileSync(catalogPath, renderYaml(catalog), "utf8");
+      assert.throws(
+        () => buildOrCheckCatalog(root, { checkOnly: true }),
+        /library\/catalog\.yaml is stale/u,
+      );
+    } finally {
+      rmSync(root, { recursive: true, force: true });
+    }
+  });
+});
+
+test("coverage semantics require accepted positive edges and surface dangling or conflicting targets", () => {
   const leaf = (code) => ({
     code,
     title: `Leaf ${code}`,
     path_codes: ["0", code],
     path_titles: ["Root", `Leaf ${code}`],
-  });
-  const mapping = (code, pcrId, mappingType = "exact") => ({
-    code,
-    label: `Leaf ${code}`,
-    pcr_id: pcrId,
-    mapping_type: mappingType,
-    confidence: "high",
   });
   const result = buildCoverageIndex({
     leavesDocument: {
@@ -95,16 +204,17 @@ test("coverage semantics preserve review evidence and surface dangling or confli
       leaves: [leaf("1"), leaf("2"), leaf("3"), leaf("4"), leaf("5"), leaf("6")],
     },
     mappingDocument: {
+      schema_version: 2,
       classification_system: "CPC",
       classification_version: "3.0",
+      status: "current",
       mappings: [
-        mapping("1", "pcr.material"),
-        mapping("2", "pcr.scaffold"),
-        mapping("3", "pcr.material", "manual_review"),
-        mapping("4", "pcr.missing"),
-        mapping("5", "pcr.material"),
-        mapping("5", "pcr.scaffold"),
-        mapping("6", "pcr.invalid"),
+        fixtureMapping("1", "pcr.material"),
+        fixtureMapping("2", "pcr.scaffold"),
+        fixtureMapping("4", "pcr.missing"),
+        fixtureMapping("5", "pcr.material"),
+        fixtureMapping("5", "pcr.scaffold"),
+        fixtureMapping("6", "pcr.invalid"),
       ],
     },
     manifests: [
@@ -137,16 +247,18 @@ test("coverage semantics preserve review evidence and surface dangling or confli
   const byCode = new Map(result.index.entries.map((entry) => [entry.code, entry]));
 
   assert.equal(byCode.get("1").coverage_status, "mapped");
-  assert.equal(byCode.get("2").coverage_status, "unmapped");
-  assert.equal(byCode.get("2").legacy_reference.pcr_id, "pcr.scaffold");
-  assert.equal(byCode.get("3").coverage_status, "manual_review");
-  assert.equal(byCode.get("3").mapping.mapping_type, "manual_review");
+  assert.equal(byCode.get("2").coverage_status, "unknown");
+  assert.equal(byCode.get("2").mapping.pcr_id, "pcr.scaffold");
+  assert.equal(byCode.get("2").legacy_reference, null);
+  assert.equal(byCode.get("3").coverage_status, "unmapped");
+  assert.equal(byCode.get("3").mapping, null);
   assert.equal(byCode.get("4").coverage_status, "unknown");
   assert.equal(byCode.get("5").coverage_status, "unknown");
   assert.equal(byCode.get("6").coverage_status, "unknown");
   assert.equal(byCode.get("6").mapping.pcr_id, "pcr.invalid");
   assert.ok(result.issues.some((issue) => issue.includes("missing PCR pcr.missing")));
   assert.ok(result.issues.some((issue) => issue.includes("conflicting code 5")));
+  assert.ok(result.issues.some((issue) => issue.includes("points to legacy empty scaffold pcr.scaffold")));
   assert.ok(
     result.issues.some((issue) =>
       issue.includes("mapping for 6 points to invalid PCR lifecycle pair pcr.invalid"),
@@ -363,8 +475,10 @@ test("many classification leaves may map to one material PCR without collapsing 
       leaves: [fixtureLeaf("1"), fixtureLeaf("2")],
     },
     mappingDocument: {
+      schema_version: 2,
       classification_system: "CPC",
       classification_version: "3.0",
+      status: "current",
       mappings: [
         fixtureMapping("1", "pcr.methodology"),
         fixtureMapping("2", "pcr.methodology", "broader"),
@@ -411,8 +525,12 @@ test("coverage descriptors drive generated artifacts and catalog references", ()
       secondDescriptor.mappingPath,
       "classifications/mappings/cpc-2.1-to-pcr.yaml",
     ]);
+    assert.equal(catalog.pcr_id_aliases.entry_count, 0);
+    assert.match(catalog.pcr_id_aliases.sha256, /^sha256:[0-9a-f]{64}$/u);
     assert.deepEqual(
-      buildCatalog([secondDescriptor]).classification_coverage_indexes,
+      buildCatalog([secondDescriptor], {
+        pcrIdAliases: catalog.pcr_id_aliases,
+      }).classification_coverage_indexes,
       [secondDescriptor.coveragePath],
     );
   } finally {
@@ -689,6 +807,34 @@ test("catalog writes install referenced indexes before publishing the catalog", 
 function makeCatalogFixture({ leaves = [], mappings = [], manifests = [] } = {}) {
   const root = mkdtempSync(path.join(os.tmpdir(), "tiangong-catalog-fixture-"));
   mkdirSync(path.join(root, "library/pcrs"), { recursive: true });
+  const aliasesPath = path.join(root, "classifications/aliases/pcr-id-aliases.yaml");
+  mkdirSync(path.dirname(aliasesPath), { recursive: true });
+  writeFileSync(
+    aliasesPath,
+    renderYaml({
+      schema_version: 1,
+      registry_kind: "legacy-pcr-id-aliases",
+      status: "current",
+      aliases: [],
+    }),
+    "utf8",
+  );
+  const compatibilityMappingPath = path.join(
+    root,
+    "classifications/mappings/cpc-2.1-to-pcr.yaml",
+  );
+  mkdirSync(path.dirname(compatibilityMappingPath), { recursive: true });
+  writeFileSync(
+    compatibilityMappingPath,
+    renderYaml({
+      schema_version: 2,
+      classification_system: "CPC",
+      classification_version: "2.1",
+      status: "current",
+      mappings: [],
+    }),
+    "utf8",
+  );
   writeCoverageSourceFixture(root, COVERAGE_SOURCE_DESCRIPTORS[0], {
     system: "CPC",
     version: "3.0",
@@ -703,6 +849,47 @@ function makeCatalogFixture({ leaves = [], mappings = [], manifests = [] } = {})
   return root;
 }
 
+function makeAliasProjectionFixture() {
+  const leaves = [fixtureLeaf("1"), fixtureLeaf("2")];
+  const root = makeCatalogFixture({ leaves });
+  const leafSlugsPath = path.join(root, CPC_3_LEAF_SLUGS_PATH);
+  mkdirSync(path.dirname(leafSlugsPath), { recursive: true });
+  writeFileSync(
+    leafSlugsPath,
+    `${JSON.stringify({
+      schema_version: 1,
+      classification_system: "CPC",
+      classification_version: "3.0",
+      status: "scaffold",
+      leaves: leaves.map((leaf) => ({
+        code: leaf.code,
+        title: leaf.title,
+        pcr_dir: `library/pcrs/legacy-fixture/cpc/leaf-${leaf.code}`,
+        pcr_id: `pcr.legacy-fixture.cpc.leaf-${leaf.code}`,
+      })),
+    }, null, 2)}\n`,
+    "utf8",
+  );
+  const decisionPath = path.join(root, PCR_ID_ALIAS_DECISION_REF);
+  mkdirSync(path.dirname(decisionPath), { recursive: true });
+  writeFileSync(decisionPath, "# Fixture alias decision\n", "utf8");
+  buildOrCheckPcrIdAliases(root);
+  return root;
+}
+
+function writeEmptyAliasRegistry(root) {
+  writeFileSync(
+    path.join(root, "classifications/aliases/pcr-id-aliases.yaml"),
+    renderYaml({
+      schema_version: 1,
+      registry_kind: "legacy-pcr-id-aliases",
+      status: "current",
+      aliases: [],
+    }),
+    "utf8",
+  );
+}
+
 function writeCoverageSourceFixture(
   root,
   descriptor,
@@ -712,6 +899,9 @@ function writeCoverageSourceFixture(
   const mappingPath = path.join(root, descriptor.mappingPath);
   mkdirSync(path.dirname(leavesPath), { recursive: true });
   mkdirSync(path.dirname(mappingPath), { recursive: true });
+  const decisionPath = path.join(root, "docs/adr/fixture-mapping-decision.md");
+  mkdirSync(path.dirname(decisionPath), { recursive: true });
+  writeFileSync(decisionPath, "# Fixture mapping decision\n", "utf8");
   writeFileSync(
     leavesPath,
     `${JSON.stringify(
@@ -729,10 +919,10 @@ function writeCoverageSourceFixture(
   writeFileSync(
     mappingPath,
     renderYaml({
-      schema_version: 1,
+      schema_version: 2,
       classification_system: system,
       classification_version: version,
-      status: "scaffold",
+      status: "current",
       mappings,
     }),
     "utf8",
@@ -755,6 +945,12 @@ function fixtureMapping(code, pcrId, mappingType = "exact") {
     pcr_id: pcrId,
     mapping_type: mappingType,
     confidence: "high",
+    acceptance: {
+      status: "accepted",
+      decided_by: "test-maintainer",
+      decided_at_utc: "2026-07-14T14:44:36Z",
+      decision_ref: "docs/adr/fixture-mapping-decision.md",
+    },
   };
 }
 

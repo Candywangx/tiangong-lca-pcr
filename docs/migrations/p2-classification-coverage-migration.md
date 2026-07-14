@@ -21,14 +21,14 @@ checkPaths:
   - builder/**
   - packages/**
 lastReviewedAt: 2026-07-14
-lastReviewedCommit: c248880a854c1687567f3e4ea6c24e0dd78115ab
+lastReviewedCommit: 41e00bafd03530af7871e4620e59862dd779473e
 ---
 
 # P2 Classification Coverage 迁移计划
 
 ## 固化基线
 
-2026-07-14 的可复现 inventory：
+2026-07-14 迁移开始时的可复现 inventory：
 
 | 项目 | 数量 |
 | --- | ---: |
@@ -44,6 +44,22 @@ lastReviewedCommit: c248880a854c1687567f3e4ea6c24e0dd78115ab
 
 三个 material coordinate 是 CPC 3.0 `01111`、`04412` 和 `04911`。迁移不得改变其 PCR id、Markdown、structured projection 或 fingerprint。
 
+Phase 2 与第一个 Phase 3 pilot 完成后的当前 inventory：
+
+| 项目 | 数量 |
+| --- | ---: |
+| PCR manifest / 四文件目录 | 2,876 |
+| material PCR | 3 |
+| surviving `scaffold / empty_scaffold` | 2,873 |
+| CPC 3.0 normalized leaves | 2,877 |
+| CPC 3.0 accepted mappings | 3 |
+| CPC 2.1 accepted mappings | 0 |
+| retired-id aliases | 2,874 |
+| coverage `mapped / unmapped / unknown` | 3 / 2,874 / 0 |
+
+Alias 数量比 surviving scaffold 多 1，是因为 alias 在物理删除前已经覆盖全部待退役 id，而 CPC `99000`
+目录已通过 pilot 删除。
+
 ## Phase 1：Additive read models 与 material-first
 
 状态：已完成。
@@ -53,7 +69,7 @@ lastReviewedCommit: c248880a854c1687567f3e4ea6c24e0dd78115ab
 - catalog、CLI 和 viewer 显式区分 material、legacy 与 all scope；
 - 默认 list/tree/viewer 只加载 material；
 - coverage summary/list 保留全部 2,877 个 leaf 的可查询性；
-- resolve 对现有 material mapping 保持兼容，对 legacy scaffold 明确标记 compatibility 与 unmapped coverage；
+- resolve 对当时的 material mapping 保持兼容，对 legacy scaffold 明确标记 compatibility 与 unmapped coverage；
 - 不删除目录，不修改旧 PCR id，不收缩现有 mapping。
 
 Phase 1 已交付：
@@ -78,12 +94,12 @@ Phase 1 验收：
 - coverage entries 为 2,877，code 唯一，summary 精确；
 - 默认 material catalog 为 3，显式 all scope 仍为 2,877；
 - viewer 默认不含 `empty_scaffold` 或 scaffold `guidance_error`；
-- 旧 classification resolve 与旧 scaffold id 仍有确定性结果；
+- 当时的旧 classification resolve 与旧 scaffold id 仍有确定性结果；
 - `npm run validate` 通过。
 
-## Phase 2：停止再生成并准备 alias
+## Phase 2：停止再生成并建立 alias
 
-状态：进行中。仅步骤 1 importer cutover 已完成；步骤 2-5 以及后续物理迁移均待实现。
+状态：已完成。
 
 1. 已完成：canonical `import-cpc` 每次必须显式传入 `--source`。默认 classification-only，只生成 raw
    source、source metadata 和 normalized classification artifacts；mapping 缺失时创建 zero-edge mapping，
@@ -92,45 +108,60 @@ Phase 1 验收：
    mapping 最后提交；partial failure 不会产生 dangling new edge，先安装的 classification projection 可在下次
    重跑时确定性再生成。
 
-   受保护的 `scaffold-cpc` alias 必须显式使用 `--legacy-scaffolds`，仅用于迁移复现或测试，不能用于新
-   import。该模式只为 unmapped leaf append legacy edge 和 identity；目标不存在时可创建完整四文件 legacy
-   scaffold，目标存在时必须四文件齐全且与确定性 legacy template 逐字节一致，否则 fail closed。它不能
-   修复 partial directory、覆盖 accepted edge 或改写 PCR 内容。
-2. 待实现：为 positive edge 建立显式 acceptance contract 和审核 workflow。
-3. 待实现：positive mapping 只保留指向 material PCR 的 accepted edge；其余 leaf 状态由 coverage
-   assessment 表达。
-4. 待实现：为 2,874 个旧 id 生成 alias inventory，target kind 为 `classification_coverage`，并校验
-   collision、chain 和 cycle。
-5. 待实现：resolve 优先读取 accepted positive mapping；无 mapping 的已知 leaf 返回 `unmapped`，旧 id
-   返回 coverage redirect。
+   受保护的 `scaffold-cpc` alias 必须显式使用 `--legacy-scaffolds`，仅用于 retained v1 fixture 的迁移
+   复现或测试，不能用于新 import。遇到 current v2 mapping 时在 mutation 前 fail closed，不能注入
+   unaccepted edge 或 rehydrate 已退役目录；v1 fixture 的现有目标仍必须四文件齐全并与 legacy template
+   逐字节一致。
+2. 已完成：mapping v2/current 建立显式 acceptance contract。每条 positive edge 必须指向 material PCR，
+   排除 `manual_review`，并携带 accepted status、decision-maker、UTC decision time 与 durable decision ref。
+   CPC 3.0 三条 bootstrap acceptance 由 `docs/adr/0002-bootstrap-accepted-cpc-material-mappings.md` 记录。
+3. 已完成：positive mapping 收缩为 CPC 3.0 的 3 条 accepted material edge；其他 2,874 leaf 由 coverage
+   表达为 unmapped。CPC 2.1 是 empty current v2。Coverage mapped entry 投影 acceptance evidence，runtime
+   resolve 会与 canonical mapping 再次比对。
+4. 已完成：确定性生成 2,874 个旧 id 的 alias inventory，target kind 为
+   `classification_coverage`。Registry 验证 source/path 唯一性、material collision、unknown target、chain
+   和 cycle；`aliases:check` 已进入 lint。
+5. 已完成：`resolve` 必须且只能传 `--classification` 或 `--pcr` 之一。Classification lookup 只选择
+   accepted positive mapping；known leaf 无 mapping 返回 `unmapped`、`mapping: null`、`pcr: null`。旧 id
+   alias-first 返回 `legacy_id_redirect`、terminal coverage locator 和 copyable next command，不自动 follow；
+   content commands 返回 `PCR_LEGACY_ID_REDIRECT`。
+
+Catalog 以 canonical path、exact-byte SHA-256 和 entry count 绑定 alias registry，并将 catalog、material
+index 与 coverage indexes 作为 journaled whole-set transaction 发布。`catalog:recover` 对 pre-commit 中断
+回滚旧集合，对 committed 中断向前完成 cleanup；`--force-stale-lock` 只允许在确认没有 writer 后使用。
 
 迁移全程只有显式 create workflow 可以创建 canonical PCR；classification leaf 本身不是创建请求。
 
-本阶段完成前禁止删除任何 legacy scaffold。
+Phase 2 完成后才允许进入按审计记录执行的物理 pilot。
 
 ## Phase 3：小规模物理 pilot
 
-状态：待实现。
+状态：进行中；CPC `99000` pilot 已完成，CPC `98000` 尚未执行。
 
-首选 pilot 是零 material、单 leaf 的完整分类子域：
+首个 pilot 选择零 material、单 leaf 的 CPC `99000` Services provided by extraterritorial organizations and
+bodies。迁移前按历史 exact-byte hash 审计四文件目录，确认它仍是无实质方法学、无 review metadata 的
+legacy scaffold；不能用已经演化的当前 template 代替历史字节证据。Pilot 只删除这一个四文件目录，
+不改变三个 material PCR。
 
-- CPC `98000` Domestic services；
-- CPC `99000` Services provided by extraterritorial organizations and bodies。
-
-每个 pilot 必须先证明目录仍与标准 scaffold 模板等价，没有手工内容、review metadata 或外部 repo 引用。删除后必须验证：
+删除后验证：
 
 - classification code 返回 `unmapped` coverage；
 - 旧 PCR id 返回 coverage redirect，而不是普通 not-found；
 - material catalog、mapping 和三个 material fingerprint 不变；
 - 全仓校验通过。
 
-每个 pilot 独立提交，以便完整回滚四文件目录、mapping inventory 和 alias 状态。
+当前结果：PCR 目录 2,877 -> 2,876，surviving legacy 2,874 -> 2,873；material 仍为 3，accepted mapping
+仍为 3，alias 仍为 2,874，coverage 仍为 3 mapped / 2,874 unmapped / 0 unknown。CPC `99000` 是
+known-unmapped，旧 id 返回 coverage redirect。
+
+下一 pilot 候选是 CPC `98000` Domestic services；必须独立审计、验证和提交，以便完整回滚目录与审计
+记录。不得因为 `99000` 成功而自动删除 `98000`。
 
 ## Phase 4：按子域批量迁移
 
 状态：待实现。
 
-- 只迁移模板等价的 `scaffold / empty_scaffold`；
+- 只迁移经历史字节/内容审计确认无实质方法学的 `scaffold / empty_scaffold`；
 - 每批选择完整 subdomain，避免留下难以解释的半迁移分类树；
 - 每批记录 count、path inventory 和 checksum；
 - 任何 material、手工增量、identity 冲突或未知状态都自动退出批处理；

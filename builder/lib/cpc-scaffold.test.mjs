@@ -40,6 +40,19 @@ function options(root, overrides = {}) {
   };
 }
 
+function installLegacyEmptyMapping(root) {
+  const mappingPath = path.join(root, "classifications/mappings/cpc-3.0-to-pcr.yaml");
+  const bytes = `schema_version: 1
+classification_system: CPC
+classification_version: "3.0"
+status: scaffold
+mappings: []
+`;
+  mkdirSync(path.dirname(mappingPath), { recursive: true });
+  writeFileSync(mappingPath, bytes);
+  return { bytes, mappingPath };
+}
+
 function lockDocument(overrides = {}) {
   return {
     schema_version: 1,
@@ -167,15 +180,27 @@ test("CPC import stages repository artifacts with readable modes and preserves e
   const leavesPath = path.join(root, "classifications/systems/cpc/3.0/normalized/leaves.json");
 
   assert.equal(statSync(mappingPath).mode & 0o777, 0o644);
+  assert.match(readFileSync(mappingPath, "utf8"), /^schema_version: 2$/mu);
+  assert.match(readFileSync(mappingPath, "utf8"), /^status: "current"$/mu);
   assert.equal(statSync(leavesPath).mode & 0o777, 0o644);
   chmodSync(mappingPath, 0o640);
   importCpc(options(root));
   assert.equal(statSync(mappingPath).mode & 0o777, 0o640);
 });
 
+test("classification-only CPC import preserves a valid legacy v1 mapping byte-for-byte", () => {
+  const root = temporaryRoot();
+  const { bytes, mappingPath } = installLegacyEmptyMapping(root);
+
+  const output = importCpc(options(root));
+
+  assert.ok(output.some((line) => line.includes("Mapping action: preserved_exact_bytes")));
+  assert.equal(readFileSync(mappingPath, "utf8"), bytes);
+});
+
 test("legacy CPC import commits mapping last and rejects a divergent unmapped target", () => {
   const root = temporaryRoot();
-  const mappingPath = path.join(root, "classifications/mappings/cpc-3.0-to-pcr.yaml");
+  const { bytes: mappingBytes, mappingPath } = installLegacyEmptyMapping(root);
   const manifestPath = path.join(
     root,
     "library/pcrs/agriculture-forestry-and-fishery-products/products-of-agriculture-horticulture-and-market-gardening/wheat-seed/manifest.yaml",
@@ -192,7 +217,7 @@ test("legacy CPC import commits mapping last and rejects a divergent unmapped ta
     })),
     /injected mapping commit failure/u,
   );
-  assert.equal(existsSync(mappingPath), false);
+  assert.equal(readFileSync(mappingPath, "utf8"), mappingBytes);
   assert.equal(existsSync(manifestPath), true);
 
   writeFileSync(manifestPath, "divergent authored content\n");
@@ -200,7 +225,40 @@ test("legacy CPC import commits mapping last and rejects a divergent unmapped ta
     () => importCpc(options(root, { "legacy-scaffolds": true })),
     /contains authored, material, partial, or modified content/u,
   );
-  assert.equal(existsSync(mappingPath), false);
+  assert.equal(readFileSync(mappingPath, "utf8"), mappingBytes);
+});
+
+test("legacy CPC mode refuses missing or v2 current mappings before repository mutation", async (t) => {
+  await t.test("missing mapping becomes accepted-only v2", () => {
+    const root = temporaryRoot();
+
+    assert.throws(
+      () => importCpc(options(root, { "legacy-scaffolds": true })),
+      /schema_version 2 status current mappings are accepted-only/u,
+    );
+    assert.deepEqual(readdirSync(root), []);
+  });
+
+  await t.test("existing v2 current mapping remains byte-exact", () => {
+    const root = temporaryRoot();
+    const mappingPath = path.join(root, "classifications/mappings/cpc-3.0-to-pcr.yaml");
+    const mappingBytes = `schema_version: 2
+classification_system: CPC
+classification_version: "3.0"
+status: current
+mappings: []
+`;
+    mkdirSync(path.dirname(mappingPath), { recursive: true });
+    writeFileSync(mappingPath, mappingBytes);
+    const beforeEntries = readdirSync(root, { recursive: true }).sort();
+
+    assert.throws(
+      () => importCpc(options(root, { "legacy-scaffolds": true })),
+      /schema_version 2 status current mappings are accepted-only/u,
+    );
+    assert.deepEqual(readdirSync(root, { recursive: true }).sort(), beforeEntries);
+    assert.equal(readFileSync(mappingPath, "utf8"), mappingBytes);
+  });
 });
 
 test("CPC mapping baseline CAS preserves a concurrent mapping", () => {
@@ -229,7 +287,7 @@ mappings: []
 
 test("CPC mapping-last commit rejects a concurrently replaced source projection", () => {
   const root = temporaryRoot();
-  const mappingPath = path.join(root, "classifications/mappings/cpc-3.0-to-pcr.yaml");
+  const { bytes: mappingBytes, mappingPath } = installLegacyEmptyMapping(root);
   const leavesPath = path.join(
     root,
     "classifications/systems/cpc/3.0/normalized/leaves.json",
@@ -255,7 +313,7 @@ test("CPC mapping-last commit rejects a concurrently replaced source projection"
     })),
     /normalized leaves changed after installation; mapping commit was aborted/u,
   );
-  assert.equal(existsSync(mappingPath), false);
+  assert.equal(readFileSync(mappingPath, "utf8"), mappingBytes);
   assert.deepEqual(JSON.parse(readFileSync(leavesPath, "utf8")).leaves, []);
 });
 

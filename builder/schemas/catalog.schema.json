@@ -3,11 +3,22 @@
   "$id": "https://tiangong-lca.org/schemas/pcr/v1/catalog.schema.json",
   "title": "TianGong PCR catalog",
   "type": "object",
-  "required": ["schema_version", "catalog_status", "pcr_index", "classification_mappings", "notes"],
+  "required": ["schema_version", "catalog_status", "pcr_index", "pcr_id_aliases", "classification_mappings", "notes"],
   "properties": {
     "schema_version": { "const": 1 },
     "catalog_status": { "enum": ["scaffold", "current"] },
     "pcr_index": { "type": "string", "minLength": 1 },
+    "pcr_id_aliases": {
+      "type": "object",
+      "required": ["path", "hash_mode", "sha256", "entry_count"],
+      "properties": {
+        "path": { "const": "classifications/aliases/pcr-id-aliases.yaml" },
+        "hash_mode": { "const": "exact_bytes" },
+        "sha256": { "type": "string", "pattern": "^sha256:[0-9a-f]{64}$" },
+        "entry_count": { "type": "integer", "minimum": 0 }
+      },
+      "additionalProperties": false
+    },
     "classification_mappings": {
       "type": "array",
       "items": { "type": "string", "minLength": 1 },

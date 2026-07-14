@@ -2,7 +2,6 @@ import { createHash } from "node:crypto";
 import {
   closeSync,
   constants as fsConstants,
-  existsSync,
   fstatSync,
   lstatSync,
   openSync,
@@ -11,11 +10,11 @@ import {
   readdirSync,
 } from "node:fs";
 import path from "node:path";
+import { TextDecoder } from "node:util";
 
 import {
   PcrClassificationCodeUnknownError,
   PcrClassificationCoverageSemanticError,
-  hasClassificationCoverage,
   readClassificationCoverage,
 } from "./classification-coverage.mjs";
 import { assertCoreContract, validateCoreContract } from "./contracts.mjs";
@@ -24,7 +23,8 @@ import {
   projectionNotRequiredState,
 } from "./projection-integrity.mjs";
 import { materialProjectionCompletenessIssues } from "./projection-completeness.mjs";
-import { parseYaml, readYamlFile } from "./yaml-lite.mjs";
+import { findPcrIdAlias } from "./pcr-id-aliases.mjs";
+import { parseYaml } from "./yaml-lite.mjs";
 import {
   CLASSIFICATION_MAPPING_RELATION_VALUES,
   CONTENT_MATURITY_VALUES,
@@ -94,17 +94,31 @@ export class PcrUsabilityError extends Error {
 }
 
 export class PcrClassificationMappingError extends Error {
-  constructor({ system, version, code, mappingType }) {
-    super(
-      `Classification mapping ${system}:${version}:${code} uses unsupported mapping_type ${String(mappingType)}.`,
-    );
+  constructor({ system, version, code, mappingType, issue = null }) {
+    super(issue
+      ? `Classification mapping ${system}:${version}:${code} is not an accepted current mapping: ${issue}.`
+      : `Classification mapping ${system}:${version}:${code} uses unsupported mapping_type ${String(mappingType)}.`);
     this.name = "PcrClassificationMappingError";
     this.code = "PCR_INVALID_CLASSIFICATION_MAPPING";
     this.details = {
       classification: `${system}:${version}:${code}`,
       mapping_type: mappingType ?? null,
       allowed_mapping_types: [...CLASSIFICATION_MAPPING_RELATION_VALUES],
+      issue,
     };
+  }
+}
+
+export class PcrLegacyIdRedirectError extends Error {
+  constructor(alias) {
+    const redirect = legacyPcrIdRedirect(alias);
+    super(
+      `PCR id ${redirect.source_pcr_id} is a retired legacy identity. ` +
+        `Use the redirect target with: ${redirect.next_command}`,
+    );
+    this.name = "PcrLegacyIdRedirectError";
+    this.code = "PCR_LEGACY_ID_REDIRECT";
+    this.details = redirect;
   }
 }
 
@@ -236,51 +250,18 @@ export function resolveClassification({ root, system, version, code }) {
   const normalizedSystem = String(system).toLowerCase();
   const normalizedVersion = String(version);
   const normalizedCode = String(code);
-  if (hasClassificationCoverage({
+  const coverageIndex = readClassificationCoverage({
     root,
     system: normalizedSystem,
     version: normalizedVersion,
-  })) {
-    const coverageIndex = readClassificationCoverage({
-      root,
-      system: normalizedSystem,
-      version: normalizedVersion,
-    });
-    return resolveClassificationWithCoverage({
-      root,
-      system: normalizedSystem,
-      version: normalizedVersion,
-      code: normalizedCode,
-      coverageIndex,
-    });
-  }
-
-  const legacy = readCanonicalClassificationMapping({
+  });
+  return resolveClassificationWithCoverage({
     root,
     system: normalizedSystem,
     version: normalizedVersion,
     code: normalizedCode,
+    coverageIndex,
   });
-  const pcr = getPcrById({ root, pcrId: legacy.mapping.pcr_id });
-  if (pcr.record_kind === "invalid_lifecycle_state") {
-    throw new PcrClassificationTargetStateError({
-      system: normalizedSystem,
-      version: normalizedVersion,
-      code: normalizedCode,
-      pcr,
-    });
-  }
-  return {
-    classification_system: legacy.mappingFile.classification_system,
-    classification_version: legacy.mappingFile.classification_version,
-    mapping: legacy.mapping,
-    pcr,
-    resolution_status: pcr.record_kind === "legacy_scaffold_reference"
-      ? "legacy_scaffold_compatibility"
-      : "mapped",
-    coverage_status: null,
-    coverage: null,
-  };
 }
 
 function resolveClassificationWithCoverage({ root, system, version, code, coverageIndex }) {
@@ -369,20 +350,55 @@ function resolveClassificationWithCoverage({ root, system, version, code, covera
 }
 
 function readCanonicalClassificationMapping({ root, system, version, code }) {
+  const normalizedRoot = path.resolve(root);
   const mappingPath = path.join(
-    root,
+    normalizedRoot,
     "classifications/mappings",
     `${system}-${version}-to-pcr.yaml`,
   );
-  if (!existsSync(mappingPath)) {
-    throw new Error(`Classification mapping not found: ${toPosix(path.relative(root, mappingPath))}`);
+  const mappingRelativePath = toPosix(path.relative(normalizedRoot, mappingPath));
+  let mappingFile;
+  try {
+    const mappingBytes = readControlledRepositoryFileBytes({
+      root: normalizedRoot,
+      filePath: mappingPath,
+      relativePath: mappingRelativePath,
+      label: "classification mapping",
+    });
+    mappingFile = parseYaml(new TextDecoder("utf-8", { fatal: true }).decode(mappingBytes));
+  } catch (error) {
+    if (error instanceof PcrClassificationMappingError) {
+      throw error;
+    }
+    throw new PcrClassificationMappingError({
+      system,
+      version,
+      code,
+      issue:
+        `canonical mapping source ${mappingRelativePath} could not be read safely ` +
+        `(${error instanceof Error ? error.message : String(error)})`,
+    });
   }
-  const mappingFile = readYamlFile(mappingPath);
-  const mapping = (mappingFile.mappings ?? []).find((entry) => String(entry.code) === String(code));
-  if (!mapping) {
+  assertCurrentAcceptedMappingDocument({ mappingFile, system, version, code });
+  const matches = (mappingFile.mappings ?? []).filter(
+    (entry) => String(entry.code) === String(code),
+  );
+  if (matches.length === 0) {
     throw new Error(`No PCR mapping found for ${system}:${version}:${code}`);
   }
-  if (!CLASSIFICATION_MAPPING_RELATIONS.has(mapping.mapping_type)) {
+  if (matches.length !== 1) {
+    throw new PcrClassificationMappingError({
+      system,
+      version,
+      code,
+      issue: `expected one selected edge, found ${matches.length}`,
+    });
+  }
+  const mapping = matches[0];
+  if (
+    !CLASSIFICATION_MAPPING_RELATIONS.has(mapping.mapping_type)
+    || mapping.mapping_type === "manual_review"
+  ) {
     throw new PcrClassificationMappingError({
       system,
       version,
@@ -390,7 +406,77 @@ function readCanonicalClassificationMapping({ root, system, version, code }) {
       mappingType: mapping.mapping_type,
     });
   }
+  assertAcceptedMappingDecision({ mapping, system, version, code });
   return { mappingFile, mapping };
+}
+
+function assertCurrentAcceptedMappingDocument({ mappingFile, system, version, code }) {
+  if (mappingFile?.schema_version !== 2 || mappingFile?.status !== "current") {
+    throw new PcrClassificationMappingError({
+      system,
+      version,
+      code,
+      issue:
+        `expected schema_version 2 with status current, found ` +
+        `${String(mappingFile?.schema_version)}/${String(mappingFile?.status)}`,
+    });
+  }
+  if (
+    String(mappingFile.classification_system).toLowerCase() !== String(system).toLowerCase()
+    || String(mappingFile.classification_version) !== String(version)
+    || !Array.isArray(mappingFile.mappings)
+  ) {
+    throw new PcrClassificationMappingError({
+      system,
+      version,
+      code,
+      issue: "mapping document coordinate or mappings array does not match the requested classification",
+    });
+  }
+}
+
+function assertAcceptedMappingDecision({ mapping, system, version, code }) {
+  const acceptance = mapping?.acceptance;
+  if (
+    acceptance?.status !== "accepted"
+    || typeof acceptance?.decided_by !== "string"
+    || acceptance.decided_by.trim().length === 0
+    || !isRealCanonicalUtcTimestamp(acceptance?.decided_at_utc)
+    || typeof acceptance?.decision_ref !== "string"
+    || !/^(?:docs|classifications\/migrations)\/[A-Za-z0-9][A-Za-z0-9._/-]*\.(?:md|ya?ml|json)(?:#[A-Za-z0-9][A-Za-z0-9._-]*)?$/u.test(
+      acceptance.decision_ref,
+    )
+  ) {
+    throw new PcrClassificationMappingError({
+      system,
+      version,
+      code,
+      mappingType: mapping?.mapping_type,
+      issue:
+        "selected edge requires acceptance.status=accepted, decided_by, strict decided_at_utc, and decision_ref",
+    });
+  }
+}
+
+function isRealCanonicalUtcTimestamp(value) {
+  const match = typeof value === "string"
+    ? /^([0-9]{4})-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):([0-5][0-9]):([0-5][0-9])(?:\.[0-9]+)?Z$/u.exec(value)
+    : null;
+  if (!match) {
+    return false;
+  }
+  const [, year, month, day, hour, minute, second] = match.map(Number);
+  const parsed = new Date(0);
+  parsed.setUTCFullYear(year, month - 1, day);
+  parsed.setUTCHours(hour, minute, second, 0);
+  return (
+    parsed.getUTCFullYear() === year
+    && parsed.getUTCMonth() === month - 1
+    && parsed.getUTCDate() === day
+    && parsed.getUTCHours() === hour
+    && parsed.getUTCMinutes() === minute
+    && parsed.getUTCSeconds() === second
+  );
 }
 
 function assertCoverageMappingMatchesCanonical({ coverage, canonical, system, version, code }) {
@@ -406,6 +492,21 @@ function assertCoverageMappingMatchesCanonical({ coverage, canonical, system, ve
       });
     }
   }
+  for (const field of ["status", "decided_by", "decided_at_utc", "decision_ref"]) {
+    if (
+      String(coverageMapping?.acceptance?.[field])
+      !== String(canonicalMapping?.acceptance?.[field])
+    ) {
+      throw invalidCoverageResolution({
+        system,
+        version,
+        code,
+        issue:
+          `coverage mapping acceptance.${field} ${String(coverageMapping?.acceptance?.[field])} ` +
+          `does not match canonical mapping ${String(canonicalMapping?.acceptance?.[field])}`,
+      });
+    }
+  }
 }
 
 function invalidCoverageResolution({ system, version, code, issue }) {
@@ -415,6 +516,61 @@ function invalidCoverageResolution({ system, version, code, issue }) {
     source: `classifications/indexes/${system}-${version}-coverage.json`,
     issues: [`entry ${code}: ${issue}`],
   });
+}
+
+/**
+ * Resolve a PCR identity without silently following a retired id. Alias
+ * lookup intentionally happens before catalog lookup, including while the
+ * old scaffold directory still exists during a staged migration.
+ */
+export function resolvePcrIdentity({ root, pcrId }) {
+  const normalizedPcrId = String(pcrId);
+  const alias = findPcrIdAlias({ root, pcrId: normalizedPcrId });
+  if (alias) {
+    return {
+      resolution_status: "legacy_id_redirect",
+      requested_pcr_id: normalizedPcrId,
+      redirect: legacyPcrIdRedirect(alias),
+      pcr: null,
+    };
+  }
+  return {
+    resolution_status: "canonical",
+    requested_pcr_id: normalizedPcrId,
+    redirect: null,
+    pcr: getCurrentPcrSnapshotUnchecked({ root, pcrId: normalizedPcrId }).pcr,
+  };
+}
+
+function legacyPcrIdRedirect(alias) {
+  return {
+    source_pcr_id: alias.source_pcr_id,
+    source_pcr_path: alias.source_pcr_path,
+    target: structuredClone(alias.target),
+    reason: alias.reason,
+    decision_ref: alias.decision_ref,
+    next_command: nextCommandForLegacyPcrAlias(alias.target),
+  };
+}
+
+function nextCommandForLegacyPcrAlias(target) {
+  if (target.kind === "classification_coverage") {
+    return (
+      "npm --silent run tiangong-pcr -- resolve --classification " +
+      `${target.classification_system}:${target.classification_version}:${target.code} --format json`
+    );
+  }
+  return (
+    "npm --silent run tiangong-pcr -- resolve --pcr " +
+    `${target.pcr_id} --format json`
+  );
+}
+
+function throwIfLegacyPcrId({ root, pcrId }) {
+  const alias = findPcrIdAlias({ root, pcrId: String(pcrId) });
+  if (alias) {
+    throw new PcrLegacyIdRedirectError(alias);
+  }
 }
 
 export function getPcrById({ root, pcrId, refresh = false }) {
@@ -783,6 +939,11 @@ function currentPcrEntry(root, entry) {
 }
 
 function getCurrentPcrSnapshot({ root, pcrId, refresh = false }) {
+  throwIfLegacyPcrId({ root, pcrId });
+  return getCurrentPcrSnapshotUnchecked({ root, pcrId, refresh });
+}
+
+function getCurrentPcrSnapshotUnchecked({ root, pcrId, refresh = false }) {
   const normalizedRoot = path.resolve(root);
   const entry = getPcrCatalog({ root: normalizedRoot, refresh }).find(
     (candidate) => candidate.id === pcrId,
@@ -1063,6 +1224,95 @@ function readOptionalCanonicalFile(filePath) {
   } catch (error) {
     return { bytes: null, error };
   }
+}
+
+function readControlledRepositoryFileBytes({ root, filePath, relativePath, label }) {
+  const normalizedRoot = path.resolve(root);
+  const normalizedFilePath = path.resolve(filePath);
+  const containedPath = path.relative(normalizedRoot, normalizedFilePath);
+  if (
+    containedPath.length === 0
+    || path.isAbsolute(containedPath)
+    || containedPath === ".."
+    || containedPath.startsWith(`..${path.sep}`)
+  ) {
+    throw new Error(`${label} path escapes the repository root: ${relativePath}`);
+  }
+
+  const expectedRelativePath = toPosix(containedPath);
+  if (expectedRelativePath !== relativePath) {
+    throw new Error(`${label} path is not canonical: ${relativePath}`);
+  }
+
+  const before = assertControlledRepositoryPath({
+    root: normalizedRoot,
+    containedPath,
+    relativePath,
+    label,
+  });
+  let descriptor;
+  try {
+    descriptor = openSync(
+      normalizedFilePath,
+      fsConstants.O_RDONLY
+        | (fsConstants.O_NOFOLLOW ?? 0)
+        | (fsConstants.O_NONBLOCK ?? 0),
+    );
+    const opened = fstatSync(descriptor);
+    if (!opened.isFile()) {
+      throw new Error(`${label} is not a regular file: ${relativePath}`);
+    }
+    const after = assertControlledRepositoryPath({
+      root: normalizedRoot,
+      containedPath,
+      relativePath,
+      label,
+    });
+    if (
+      opened.dev !== before.dev
+      || opened.ino !== before.ino
+      || opened.dev !== after.dev
+      || opened.ino !== after.ino
+    ) {
+      throw new Error(`${label} path changed while it was being opened: ${relativePath}`);
+    }
+    return readFileSync(descriptor);
+  } finally {
+    if (descriptor !== undefined) {
+      closeSync(descriptor);
+    }
+  }
+}
+
+function assertControlledRepositoryPath({ root, containedPath, relativePath, label }) {
+  let currentPath = root;
+  let finalStats;
+  const segments = containedPath.split(path.sep);
+  for (const [index, segment] of segments.entries()) {
+    currentPath = path.join(currentPath, segment);
+    const stats = lstatSync(currentPath);
+    if (stats.isSymbolicLink()) {
+      throw new Error(`${label} path contains a symbolic link: ${relativePath}`);
+    }
+    const isLast = index === segments.length - 1;
+    if (isLast ? !stats.isFile() : !stats.isDirectory()) {
+      throw new Error(
+        isLast
+          ? `${label} is not a regular file: ${relativePath}`
+          : `${label} parent is not a directory: ${relativePath}`,
+      );
+    }
+    if (isLast) {
+      finalStats = stats;
+    }
+  }
+
+  const realRoot = realpathSync(root);
+  const realFile = realpathSync(path.join(root, containedPath));
+  if (!pathIsInside(realRoot, realFile) || realRoot === realFile) {
+    throw new Error(`${label} real path escapes the repository root: ${relativePath}`);
+  }
+  return finalStats;
 }
 
 function readCanonicalFileBytes(filePath) {
