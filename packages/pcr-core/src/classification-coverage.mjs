@@ -453,6 +453,14 @@ function coverageProjectionIssues({ coverage, normalized, normalizedLeaves, mapp
           issues.push(`coverage entry ${code} mapping.${field} does not match canonical mapping`);
         }
       }
+      const expectedCoverageStatus = sourceMapping.mapping_type === "manual_review"
+        ? "manual_review"
+        : "mapped";
+      if (entry.coverage_status !== expectedCoverageStatus) {
+        issues.push(
+          `coverage entry ${code} coverage_status ${entry.coverage_status} does not match canonical mapping projection ${expectedCoverageStatus}`,
+        );
+      }
       continue;
     }
     if (entry.legacy_reference) {

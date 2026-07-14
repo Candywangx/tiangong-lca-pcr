@@ -148,6 +148,24 @@ test("coverage projection cannot erase a canonical mapped edge as unmapped", () 
   }
 });
 
+test("coverage projection cannot downgrade a retained canonical mapping to unknown", () => {
+  const root = createMappedCoverageFixture();
+  try {
+    rewriteCoverage(root, (coverage) => {
+      coverage.entries[0].coverage_status = "unknown";
+      coverage.summary.mapped = 0;
+      coverage.summary.unknown = 1;
+    });
+
+    assertProjectionFailure(
+      root,
+      "coverage_status unknown does not match canonical mapping projection mapped",
+    );
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+  }
+});
+
 test("coverage projection cannot drift canonical mapping relation or PCR identity", () => {
   for (const [field, replacement] of [
     ["mapping_type", "broader"],
