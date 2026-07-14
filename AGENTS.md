@@ -28,7 +28,7 @@ checkPaths:
   - library/modules/**
   - docs/**
 lastReviewedAt: 2026-07-14
-lastReviewedCommit: 7a3d0c7ea81ba384e435e3d766b6c4b6997a51d5
+lastReviewedCommit: 004d215068aabe92253116150dc3599920983687
 ---
 
 # AGENTS.md - TianGong LCA PCR Library
@@ -60,7 +60,8 @@ Rules:
 
 - `manifest.yaml` owns language-independent PCR identity, title map, lifecycle status, content maturity, target entities, module references, and available languages.
 - `pcr.en-US.md` and `pcr.zh-CN.md` are two language renderings of the same PCR record, not separate PCR records.
-- `structured.yaml` is the machine-oriented projection of the canonical Markdown PCR. It carries reference flow definitions, measurement rules, process inventories, validation-facing fields, and external data sources without authoring trace logs.
+- `structured.yaml` is the machine-oriented projection of the canonical Markdown PCR. It carries reference flow definitions, measurement rules, process inventories, validation-facing fields, external data sources, and deterministic projection metadata without authoring trace logs.
+- Material projections must satisfy `packages/pcr-core/schemas/structured-projection.schema.json` and carry a current canonical-Markdown/content SHA-256 fingerprint. Missing, malformed, stale, or unsupported projections are unavailable to guidance and validation.
 - Do not create parallel `pcrs/en/` and `pcrs/zh-CN/` directory trees.
 - Do not use CPC, HS, ISIC, NAICS, or another external classification system as the canonical PCR directory tree.
 - Do not include external classification codes in PCR directory names. Use semantic PCR slugs such as `wheat-seed`; keep CPC, HS, ISIC, NAICS, and similar codes in mappings and `classification_refs`.
@@ -97,9 +98,10 @@ Agent-facing PCR production guidance lives under `builder/`. Use `builder/AGENTS
 
 CLI commands and command meanings are documented in `builder/README.md`. Keep detailed CLI usage there instead of duplicating it in this repo-level contract.
 
-Material PCRs must have a deterministic `structured.yaml` projection that matches canonical Markdown. Lifecycle state,
-content maturity, and translation state are one validated contract. Publication must pass the builder preflight before
-either the manifest or structured projection is replaced.
+Material PCRs must have a deterministic, schema-valid `structured.yaml` projection whose source and generated-content
+fingerprints match canonical Markdown and the projection bytes. Lifecycle state, content maturity, and translation
+state are one validated contract. Publication must pass the builder preflight before either the manifest or structured
+projection is replaced.
 
 Generated PCR leaf scaffolds under `library/pcrs/**` are intentionally excluded from docpact coverage. The builder, classification sources, mappings, schemas, modules, and project documents remain governed.
 
@@ -124,7 +126,7 @@ Rules:
 - `list` is paginated by default with 10 records per page. Human-readable output must tell agents how to request the next page and what next command to run.
 - `resolve` must use deterministic mapping files under `classifications/mappings/**`. A mapping result identifies a PCR record but does not imply that its methodology is usable.
 - Catalog, resolve, and guidance results must expose PCR readiness. Empty scaffolds remain discoverable authoring targets but must be rejected by guidance and validation.
-- `guidance` must consume current `structured.yaml`, present Agent-facing boundary, allocation, inventory, production, and validation rules, and never mutate PCR content.
+- `guidance` and validation must re-check the target projection's Schema and fingerprint at runtime, present Agent-facing boundary, allocation, inventory, production, and validation rules, and never mutate PCR content.
 - Validation output must distinguish status from coverage by reporting accepted input, checks performed, checks skipped, findings, and completeness. Error findings and inconclusive validation fail the CLI by default; report-only exit behavior must be explicitly requested.
 - `feedback draft` creates issue-ready candidate evidence; it does not update PCR truth.
 - `--help` must work globally and for each public command. Command help should include purpose, options, output shape where relevant, and Agent next-step guidance.

@@ -1,5 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tiangong-lca.org/schemas/pcr/v1/guidance-output.schema.json",
   "title": "TianGong PCR Agent Guidance",
   "type": "object",
   "required": [
@@ -26,37 +27,71 @@
     "schema_version": { "const": 1 },
     "guidance_kind": { "const": "tiangong-pcr-agent-guidance" },
     "pcr": { "type": "object" },
-    "readiness": { "$ref": "readiness.schema.json" },
+    "readiness": {
+      "$ref": "https://tiangong-lca.org/schemas/pcr/v1/readiness.schema.json"
+    },
     "source_structured": { "type": "string", "minLength": 1 },
     "system_boundary": {
       "type": "object",
       "required": ["rules"],
       "properties": {
-        "rules": { "type": "array" }
-      }
+        "rules": { "$ref": "#/$defs/normativeRules" }
+      },
+      "additionalProperties": false
     },
     "reference_flow": { "type": "object" },
     "boundary_abstraction": { "type": "object" },
-    "measurement_rules": { "type": "array" },
-    "process_map": { "type": "array" },
-    "process_inventory": { "type": "array" },
+    "measurement_rules": { "$ref": "#/$defs/objectArray" },
+    "process_map": { "$ref": "#/$defs/objectArray" },
+    "process_inventory": { "$ref": "#/$defs/objectArray" },
     "production_guidance": {
       "type": "object",
       "required": ["collection_protocols", "calculation_rules", "data_quality_requirements"],
       "properties": {
-        "collection_protocols": { "type": "array" },
-        "calculation_rules": { "type": "array" },
-        "data_quality_requirements": { "type": "array" }
-      }
+        "collection_protocols": { "$ref": "#/$defs/objectArray" },
+        "calculation_rules": { "$ref": "#/$defs/objectArray" },
+        "data_quality_requirements": { "$ref": "#/$defs/objectArray" }
+      },
+      "additionalProperties": false
     },
     "published_dataset_profile": { "type": "object" },
-    "allocation_rules": { "type": "array" },
-    "data_quality_rules": { "type": "array" },
-    "validation_rules": { "type": "array" },
-    "data_sources": { "type": "array" },
+    "allocation_rules": { "$ref": "#/$defs/normativeRules" },
+    "data_quality_rules": { "$ref": "#/$defs/objectArray" },
+    "validation_rules": { "$ref": "#/$defs/normativeRules" },
+    "data_sources": { "$ref": "#/$defs/objectArray" },
     "validation_notes": {
       "type": "array",
-      "items": { "type": "string" }
+      "items": { "type": "string", "minLength": 1 }
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "objectArray": {
+      "type": "array",
+      "items": { "type": "object" }
+    },
+    "normativeRules": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/normativeRule" }
+    },
+    "normativeRule": {
+      "type": "object",
+      "required": ["rule_id", "applies_to", "rule", "source_ids"],
+      "properties": {
+        "rule_id": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "^[a-z0-9]+(?:_[a-z0-9]+)*$"
+        },
+        "applies_to": { "type": "string", "minLength": 1 },
+        "rule": { "type": "string", "minLength": 1 },
+        "source_ids": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 },
+          "uniqueItems": true
+        }
+      },
+      "additionalProperties": false
     }
   }
 }

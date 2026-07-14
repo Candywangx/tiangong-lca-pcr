@@ -1,4 +1,5 @@
 import { isTableLine, normalizeHeader, parseTable, stripInlineCode, tableCell } from "./markdown-table.mjs";
+import { normalizeFingerprintText } from "../../packages/pcr-core/src/projection-integrity.mjs";
 
 export { structuredProjectionYaml } from "./structured-yaml-projection.mjs";
 
@@ -803,7 +804,7 @@ function parseNormativeSection(lines, targetSection, idPrefix, defaultAppliesTo)
 }
 
 export function parsePcrMarkdownToStructured(markdown) {
-  const lines = markdown.split(/\r?\n/u);
+  const lines = normalizeFingerprintText(markdown).split("\n");
   const systemBoundaryRules = parseNormativeSection(
     lines,
     "system_boundary",

@@ -314,6 +314,16 @@ test("viewer scripts can run from paths containing spaces and non-ASCII characte
     cpSync(path.join(repoRoot, "packages", "pcr-core", "src"), path.join(fixtureCoreRoot, "src"), {
       recursive: true,
     });
+    cpSync(
+      path.join(repoRoot, "packages", "pcr-core", "schemas"),
+      path.join(fixtureCoreRoot, "schemas"),
+      { recursive: true },
+    );
+    symlinkSync(
+      path.join(repoRoot, "node_modules"),
+      path.join(fixtureRoot, "node_modules"),
+      process.platform === "win32" ? "junction" : "dir",
+    );
 
     const buildOutput = execFileSync(process.execPath, [
       path.join(fixtureViewerRoot, "scripts", "build-viewer-data.mjs"),

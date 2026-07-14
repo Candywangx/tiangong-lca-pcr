@@ -51,12 +51,36 @@ npm run validate
 ```
 
 - `init` creates required scaffold directories and guide files.
-- `lint` checks required repository paths, bilingual PCR directory completeness, lifecycle compatibility, process inventory structure, range coverage for important flows, and deterministic `structured.yaml` freshness for every material PCR. Candidate PCRs may pass with range warnings; reviewed or published PCRs fail when important flows lack ranges.
-- `pcr:sync-structured` atomically regenerates `structured.yaml` from canonical PCR Markdown, including boundary, allocation, validation, and process-inventory rules.
+- `lint` executes the JSON Schema contracts for the catalog, classification mappings, PCR manifests, bilingual Markdown frontmatter, and material structured projections. It also checks required repository paths, bilingual PCR directory completeness, lifecycle compatibility, process inventory structure, range coverage for important flows, and deterministic `structured.yaml` freshness for every material PCR. Candidate PCRs may pass with range warnings; reviewed or published PCRs fail when important flows lack ranges.
+- `pcr:sync-structured` atomically regenerates `structured.yaml` from canonical PCR Markdown, including boundary, allocation, validation, process-inventory rules, and deterministic projection metadata.
 - `pcr:lifecycle` validates manifest lifecycle transitions and runs a material preflight before a PCR becomes active.
 - `pcr:bump` updates a valid manifest semver and rejects malformed, published, or deprecated records. Published and deprecated records must first enter the audited reopen/revision workflow planned for P1; they are never version-bumped in place.
 - `pcr:publish` first validates the future manifest and freshly generated projection without writing. Publication requires the complete manifest identity contract, active reviewed methodology, reviewed non-empty Chinese Markdown with aligned normative rule ids, valid semver, and no unresolved review blocker; a failed preflight leaves files unchanged.
 - `validate` runs lint plus tests.
+
+## Executable Contract Boundary
+
+The builder and `packages/pcr-core` share strict JSON Schema 2020-12 validation for stable machine-facing
+contracts. Validation runs without type coercion, default insertion, or removal of additional properties.
+Schema failures are returned in a stable machine-readable shape with the contract id, entity kind, source,
+and sorted field-level errors.
+
+Authoring Markdown remains the canonical, flexible methodology source. Strict material projection validation
+starts only after Markdown is compiled to `structured.yaml`. Empty scaffolds remain discoverable authoring
+targets and are not required to satisfy the material projection Schema or fingerprint contract.
+
+For a material PCR, lint requires all four conditions together:
+
+1. `structured.yaml` satisfies `packages/pcr-core/schemas/structured-projection.schema.json`.
+2. Its `projection_metadata` hashes match canonical Markdown and the generated content.
+3. Its full deterministic rendering matches a fresh builder projection.
+4. Its stable shape contains the material methodology required for consumption, including identity,
+   functional unit, reference flow, measurement, boundary, inventory, allocation, validation, and dataset
+   profile content.
+
+The consumption core repeats the Schema, fingerprint, and material completeness checks when it computes
+readiness. Guidance and validation output are also asserted against their public JSON Schema contracts before
+they are returned.
 
 Generated PCR scaffolds use the current authoring skeleton:
 

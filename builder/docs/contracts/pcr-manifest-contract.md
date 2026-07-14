@@ -2,6 +2,11 @@
 
 `manifest.yaml` owns PCR identity and lifecycle state that should not be duplicated in Markdown prose.
 
+The executable JSON Schema is `builder/schemas/pcr-manifest.schema.json`. Repository lint validates every
+PCR manifest against that Schema before applying lifecycle and cross-file semantic checks. Markdown
+frontmatter has a separate executable contract at `builder/schemas/pcr-markdown-frontmatter.schema.json`;
+it is not another representation of the manifest.
+
 ## Required Identity Fields
 
 - `schema_version`
@@ -81,3 +86,7 @@ the manifest and structured projection unchanged.
 `pcr:bump` cannot mutate a `published` / `published_methodology` or deprecated record. A new version of an audited
 record must first be opened through the reopen/revision workflow. That audited workflow is planned for P1; until it is
 implemented, do not change the version of a published or deprecated PCR in place.
+
+JSON Schema checks field shape and controlled values. Lifecycle compatibility, manifest-to-Markdown identity,
+translation alignment, material preflight, review blockers, and publication transition rules remain semantic
+checks in the builder. Passing the manifest Schema alone does not make a PCR publishable.

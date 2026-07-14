@@ -1,14 +1,29 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tiangong-lca.org/schemas/pcr/v1/classification-mapping.schema.json",
   "title": "Classification to PCR mapping",
   "type": "object",
-  "required": ["schema_version", "classification_system", "classification_version", "mappings"],
+  "required": ["schema_version", "classification_system", "classification_version", "status", "mappings"],
   "properties": {
-    "schema_version": { "type": "integer" },
-    "classification_system": { "type": "string" },
-    "classification_version": { "type": "string" },
-    "mappings": { "type": "array" }
+    "schema_version": { "const": 1 },
+    "classification_system": { "type": "string", "minLength": 1 },
+    "classification_version": { "type": "string", "minLength": 1 },
+    "status": { "type": "string", "minLength": 1 },
+    "mappings": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["code", "label", "pcr_id", "mapping_type", "confidence"],
+        "properties": {
+          "code": { "type": "string", "minLength": 1 },
+          "label": { "type": "string", "minLength": 1 },
+          "pcr_id": { "type": "string", "pattern": "^pcr\\." },
+          "mapping_type": { "enum": ["exact", "broader", "narrower", "proxy", "manual_review"] },
+          "confidence": { "type": "string", "minLength": 1 }
+        },
+        "additionalProperties": false
+      }
+    }
   },
-  "additionalProperties": true
+  "additionalProperties": false
 }
-

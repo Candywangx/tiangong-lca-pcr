@@ -42,6 +42,19 @@ export function init(options) {
 
   writeIfMissing(
     root,
+    "library/catalog.yaml",
+    `schema_version: 1
+catalog_status: scaffold
+pcr_index: library/indexes/pcr-index.yaml
+classification_mappings: []
+notes:
+  - Canonical PCR ids are independent from classification codes.
+  - Add deterministic classification mapping files as they become available.
+`,
+  );
+
+  writeIfMissing(
+    root,
     "library/pcrs/README.md",
     `# PCR Records
 

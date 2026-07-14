@@ -2,6 +2,7 @@ import { existsSync, lstatSync, readFileSync, readdirSync } from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
+import { materialProjectionCompletenessIssues } from "../../packages/pcr-core/src/projection-completeness.mjs";
 import { parseYaml } from "../../packages/pcr-core/src/yaml-lite.mjs";
 import { manifestLifecycleProblems } from "./lifecycle-policy.mjs";
 import {
@@ -10,6 +11,7 @@ import {
 } from "./markdown-projection.mjs";
 import { PCR_EN_FILE, PCR_ZH_FILE } from "./scaffold-templates.mjs";
 import { REQUIRED_DIRS } from "./builder-constants.mjs";
+import { validateBuilderContract } from "./schema-contracts.mjs";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const defaultRoot = path.resolve(__dirname, "../..");
@@ -64,14 +66,6 @@ const EVIDENCE_KIND_VALUES = new Set([
   "source_rule",
   "reasoned_estimate",
 ]);
-const BOUNDARY_ABSTRACTION_REQUIRED_FIELDS = [
-  "declared_starting_condition",
-  "starting_condition_role",
-  "product_classification_scope",
-  "recursive_input_rule",
-  "upstream_dataset_requirement",
-  "disclosure",
-];
 const RECURSIVE_ORIGIN_TERM_PATTERN =
   /\b(first[- ]generation|previous[- ]generation)\b|第一代|上一代/giu;
 const IMPORTANT_RANGE_PATTERNS = [
@@ -135,6 +129,30 @@ function walkDirectories(root, problems, repositoryRoot) {
 
 function toRepoRelative(root, absolutePath) {
   return path.relative(root, absolutePath).replaceAll(path.sep, "/");
+}
+
+function addContractProblems({ contract, value, sourcePath, root, problems, entityKind }) {
+  const result = validateBuilderContract(contract, value, { entityKind });
+  for (const error of result.errors) {
+    problems.push(
+      `${toRepoRelative(root, sourcePath)}: ${entityKind} schema ${error.instance_path} ${error.message}`,
+    );
+  }
+}
+
+function validateYamlContractFile({ contract, sourcePath, root, problems, entityKind }) {
+  if (!existsSync(sourcePath)) {
+    problems.push(`Missing contract file: ${toRepoRelative(root, sourcePath)}`);
+    return;
+  }
+  addContractProblems({
+    contract,
+    value: parseYaml(readFileSync(sourcePath, "utf8")),
+    sourcePath,
+    root,
+    problems,
+    entityKind,
+  });
 }
 
 function inventoryRows(processInventory) {
@@ -231,12 +249,8 @@ function validatePcrProjection(
 ) {
   const relativePath = toRepoRelative(root, markdownPath);
   const rows = inventoryRows(projection.processInventory);
-  if (rows.length === 0 && projection.processMap.length === 0) {
-    if (!material) {
-      return;
-    }
-    problems.push(`${relativePath}: material PCR is missing a Process Map`);
-    problems.push(`${relativePath}: material PCR has no process inventory flow rows`);
+  if (!material && rows.length === 0 && projection.processMap.length === 0) {
+    return;
   }
 
   const processMapById = new Map(projection.processMap.map((entry) => [entry.id, entry]));
@@ -357,25 +371,8 @@ function validatePcrProjection(
     return;
   }
 
-  for (const [label, rules] of [
-    ["System Boundary", projection.systemBoundary?.rules ?? []],
-    ["Allocation", projection.allocationRules ?? []],
-    ["Validation", projection.validationRules ?? []],
-  ]) {
-    if (rules.length === 0) {
-      problems.push(`${relativePath}: material PCR requires at least one ${label} rule`);
-    }
-  }
-
   for (const match of String(markdown).matchAll(RECURSIVE_ORIGIN_TERM_PATTERN)) {
     problems.push(`${relativePath}: contains prohibited recursive-origin term "${match[0]}"`);
-  }
-
-  const boundaryAbstraction = projection.boundaryAbstraction ?? {};
-  for (const key of BOUNDARY_ABSTRACTION_REQUIRED_FIELDS) {
-    if (!boundaryAbstraction[key]) {
-      problems.push(`${relativePath}: Boundary Abstraction is missing ${key}`);
-    }
   }
 
   for (const protocol of projection.collectionProtocols) {
@@ -399,20 +396,6 @@ function validatePcrProjection(
     }
   }
 
-  const profile = projection.publishedDatasetProfile ?? {};
-  for (const key of [
-    "dataset_role",
-    "downstream_use",
-    "allowed_use",
-    "excluded_use",
-    "required_metadata",
-    "required_quality_disclosure",
-    "update_trigger",
-  ]) {
-    if (!profile[key]) {
-      problems.push(`${relativePath}: Published Dataset Profile is missing ${key}`);
-    }
-  }
 }
 
 function normalizeGeneratedText(text) {
@@ -441,6 +424,27 @@ function parseMarkdownEnvelope(markdown) {
       body: lines.slice(closingIndex + 1).join("\n"),
     };
   }
+}
+
+function validateMarkdownFrontmatterContract(root, markdownPath, markdown, problems) {
+  const relativePath = toRepoRelative(root, markdownPath);
+  if (!String(markdown ?? "").trim()) {
+    problems.push(`${relativePath}: Markdown file must not be empty`);
+    return;
+  }
+  const envelope = parseMarkdownEnvelope(markdown);
+  if (envelope.error) {
+    problems.push(`${relativePath}: ${envelope.error}`);
+    return;
+  }
+  addContractProblems({
+    contract: "pcr-markdown-frontmatter.schema.json",
+    value: envelope.frontmatter,
+    sourcePath: markdownPath,
+    root,
+    problems,
+    entityKind: "PCR Markdown frontmatter",
+  });
 }
 
 function inspectCanonicalMarkdown(root, markdownPath, markdown, manifest, problems) {
@@ -553,6 +557,14 @@ export function inspectPcrDirectory({
 
   const manifestText = manifestTextOverride ?? readFileSync(manifestPath, "utf8");
   const manifest = parseYaml(manifestText);
+  addContractProblems({
+    contract: "pcr-manifest.schema.json",
+    value: manifest,
+    sourcePath: manifestPath,
+    root: resolvedRoot,
+    problems,
+    entityKind: "PCR manifest",
+  });
   if (checkManifestLifecycle) {
     validateManifestLifecycle(resolvedRoot, manifestPath, manifestText, problems);
   }
@@ -562,6 +574,12 @@ export function inspectPcrDirectory({
   }
 
   const markdownText = readFileSync(canonicalMarkdown, "utf8");
+  validateMarkdownFrontmatterContract(
+    resolvedRoot,
+    canonicalMarkdown,
+    markdownText,
+    problems,
+  );
   const projection = parsePcrMarkdownToStructured(markdownText);
   const material = isMaterialManifest(manifestText);
   validatePcrProjection(
@@ -585,27 +603,22 @@ export function inspectPcrDirectory({
       manifest,
       problems,
     );
-    const canonicalPcrId = projection.productCategoryIdentity?.canonical_pcr_id;
-    if (!canonicalPcrId) {
-      problems.push(
-        `${toRepoRelative(resolvedRoot, canonicalMarkdown)}: Product Category Identity requires canonical_pcr_id`,
-      );
-    } else if (canonicalPcrId !== manifest.id) {
-      problems.push(
-        `${toRepoRelative(resolvedRoot, canonicalMarkdown)}: canonical_pcr_id "${canonicalPcrId}" ` +
-          `does not match manifest id "${manifest.id}"`,
-      );
-    }
-
   }
 
-  if (material) {
-    const chineseMarkdownPath = path.join(directory, PCR_ZH_FILE);
-    if (existsSync(chineseMarkdownPath)) {
+  const chineseMarkdownPath = path.join(directory, PCR_ZH_FILE);
+  if (existsSync(chineseMarkdownPath)) {
+    const chineseMarkdownText = readFileSync(chineseMarkdownPath, "utf8");
+    validateMarkdownFrontmatterContract(
+      resolvedRoot,
+      chineseMarkdownPath,
+      chineseMarkdownText,
+      problems,
+    );
+    if (material) {
       const chineseProjection = inspectChineseMarkdown(
         resolvedRoot,
         chineseMarkdownPath,
-        readFileSync(chineseMarkdownPath, "utf8"),
+        chineseMarkdownText,
         manifest,
         problems,
       );
@@ -621,10 +634,30 @@ export function inspectPcrDirectory({
     }
   }
 
-  const expectedStructuredText = structuredProjectionYaml(projection);
+  const expectedStructuredText = structuredProjectionYaml(projection, {
+    sourceMarkdown: markdownText,
+  });
+  if (material) {
+    for (const issue of materialProjectionCompletenessIssues(
+      parseYaml(expectedStructuredText),
+      { expectedPcrId: manifest.id },
+    )) {
+      problems.push(
+        `${toRepoRelative(resolvedRoot, canonicalMarkdown)}: ${issue.message}`,
+      );
+    }
+  }
   const structuredPath = path.join(directory, "structured.yaml");
   if (material && (existsSync(structuredPath) || structuredTextOverride !== undefined)) {
     const actualStructuredText = structuredTextOverride ?? readFileSync(structuredPath, "utf8");
+    addContractProblems({
+      contract: "structured-projection.schema.json",
+      value: parseYaml(actualStructuredText),
+      sourcePath: structuredPath,
+      root: resolvedRoot,
+      problems,
+      entityKind: "material structured projection",
+    });
     if (normalizeGeneratedText(actualStructuredText) !== normalizeGeneratedText(expectedStructuredText)) {
       problems.push(
         `${toRepoRelative(resolvedRoot, structuredPath)}: stale structured projection; run ` +
@@ -644,6 +677,27 @@ export function lint(options) {
   for (const dir of REQUIRED_DIRS) {
     if (!existsSync(path.join(root, dir))) {
       problems.push(`Missing required directory: ${dir}`);
+    }
+  }
+
+  validateYamlContractFile({
+    contract: "catalog.schema.json",
+    sourcePath: path.join(root, "library/catalog.yaml"),
+    root,
+    problems,
+    entityKind: "PCR catalog",
+  });
+
+  const mappingRoot = path.join(root, "classifications/mappings");
+  if (existsSync(mappingRoot)) {
+    for (const fileName of readdirSync(mappingRoot).filter((entry) => /\.ya?ml$/u.test(entry)).sort()) {
+      validateYamlContractFile({
+        contract: "classification-mapping.schema.json",
+        sourcePath: path.join(mappingRoot, fileName),
+        root,
+        problems,
+        entityKind: "classification mapping",
+      });
     }
   }
 

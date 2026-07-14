@@ -22,6 +22,12 @@ function parseBlock(lines, startIndex, indent) {
   if (index >= lines.length || lines[index].indent < indent) {
     return [undefined, index];
   }
+  if (
+    lines[index].indent === indent &&
+    (lines[index].trimmed === "[]" || lines[index].trimmed === "{}")
+  ) {
+    return [parseScalar(lines[index].trimmed), index + 1];
+  }
   if (lines[index].indent === indent && lines[index].trimmed.startsWith("- ")) {
     return parseList(lines, index, indent);
   }
@@ -138,6 +144,12 @@ function parseScalar(value) {
   ) {
     return trimmed.slice(1, -1);
   }
+  if (/^-?(?:0|[1-9]\d*)(?:\.\d+)?(?:[eE][+-]?\d+)?$/u.test(trimmed)) {
+    const numeric = Number(trimmed);
+    if (Number.isFinite(numeric)) {
+      return numeric;
+    }
+  }
   return trimmed;
 }
 
@@ -241,6 +253,9 @@ function renderScalar(value) {
   }
   if (typeof value === "boolean") {
     return value ? "true" : "false";
+  }
+  if (typeof value === "number" && Number.isFinite(value)) {
+    return String(value);
   }
   return JSON.stringify(String(value));
 }

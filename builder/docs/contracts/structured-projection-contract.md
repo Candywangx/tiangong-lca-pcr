@@ -7,7 +7,15 @@
 - Regenerate `structured.yaml` with `npm run pcr:sync-structured -- --pcr <library/pcrs/...>` during PCR authoring.
 - Commit Markdown and generated structured projection together.
 - Keep the projection limited to PCR facts, rules, UUID references, data production rules, dataset profile fields, and source references.
-- Do not hand-edit `structured.yaml`. Repository lint compares every material PCR with a fresh deterministic projection and rejects stale output.
+- Do not hand-edit `structured.yaml`. Repository lint validates every material projection against
+  `packages/pcr-core/schemas/structured-projection.schema.json`, compares it with a fresh deterministic
+  projection, and rejects schema-invalid or stale output.
+- The strict structured-projection contract applies to material PCRs. Empty scaffold projections remain
+  authoring placeholders and do not require a material projection fingerprint.
+- JSON Schema owns the stable machine shape. Material methodology completeness is a separate semantic
+  contract shared by builder preflight and runtime readiness: required identity, functional-unit,
+  reference-flow, measurement, boundary, inventory, allocation, validation, and published-profile content
+  must be non-empty before guidance or validation is usable.
 
 ## Projection Fields
 
@@ -32,6 +40,37 @@ Expected generated fields include:
 - `validation_rules`
 - `published_dataset_profile`
 - `data_sources`
+- `projection_metadata`
+
+## Projection Metadata and Fingerprint
+
+Every material projection ends with one final top-level `projection_metadata` block:
+
+```yaml
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:<64 lowercase hexadecimal characters>"
+  generated_content_sha256: "sha256:<64 lowercase hexadecimal characters>"
+```
+
+`canonical_markdown.sha256` fingerprints canonical `pcr.en-US.md`. Before hashing, the fingerprint
+normalization removes a leading UTF-8 BOM and converts CRLF and bare CR line endings to LF. It does not add
+a build timestamp, trim whitespace, normalize Unicode, or rewrite the final newline.
+`generated_content_sha256` fingerprints the generated projection content before the `projection_metadata`
+block, using the same normalization. The metadata block must be last so the generated content boundary is
+deterministic.
+
+The metadata is integrity evidence, not a second source of PCR truth. At consumption time, `pcr-core`
+validates the material projection Schema and recomputes both hashes. Missing metadata, unsupported contract
+versions, source mismatches, generated-content mismatches, and schema failures make readiness unavailable
+for guidance and validation. A current, Schema-valid fingerprint is necessary but not sufficient: runtime
+readiness also applies the material completeness contract so an `authored_methodology` label cannot turn an
+empty-but-well-shaped projection into usable guidance.
 
 ## Normative Rule Shape
 

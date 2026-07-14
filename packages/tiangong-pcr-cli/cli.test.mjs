@@ -1,9 +1,19 @@
 import assert from "node:assert/strict";
 import { execFileSync } from "node:child_process";
-import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from "node:fs";
+import {
+  cpSync,
+  mkdirSync,
+  mkdtempSync,
+  readFileSync,
+  rmSync,
+  writeFileSync,
+} from "node:fs";
 import { tmpdir } from "node:os";
 import path from "node:path";
 import test from "node:test";
+
+import { parsePcrMarkdownToStructured } from "../../builder/lib/markdown-projection.mjs";
+import { structuredProjectionYaml } from "../../builder/lib/structured-yaml-projection.mjs";
 
 const cliPath = path.resolve("packages/tiangong-pcr-cli/bin/tiangong-pcr.mjs");
 const repoRoot = path.resolve(".");
@@ -234,35 +244,19 @@ test("validate-dataset defaults to an error gate and supports explicit report-on
 
 test("validation treats an inconclusive report as non-zero unless report-only mode is explicit", () => {
   const root = mkdtempSync(path.join(tmpdir(), "tiangong-pcr-inconclusive-"));
-  const pcrDir = path.join(root, "library/pcrs/example");
+  const relativePcrPath =
+    "library/pcrs/agriculture-forestry-and-fishery-products/products-of-agriculture-horticulture-and-market-gardening/wheat-seed";
+  const pcrDir = path.join(root, relativePcrPath);
   const inputPath = path.join(root, "dataset.json");
   try {
-    mkdirSync(pcrDir, { recursive: true });
-    writeFileSync(
-      path.join(pcrDir, "manifest.yaml"),
-      `schema_version: 1
-id: pcr.example
-title:
-  en-US: Example
-status: candidate
-content_maturity: authored_methodology
-`,
-    );
+    mkdirSync(path.dirname(pcrDir), { recursive: true });
+    cpSync(path.join(repoRoot, relativePcrPath), pcrDir, { recursive: true });
+    const markdown = readFileSync(path.join(pcrDir, "pcr.en-US.md"), "utf8");
+    const projection = parsePcrMarkdownToStructured(markdown);
+    projection.collectionProtocols = [];
     writeFileSync(
       path.join(pcrDir, "structured.yaml"),
-      `schema_version: 1
-reference_flow_definition: {}
-system_boundary:
-  rules: []
-process_map: []
-process_inventory: []
-allocation_rules: []
-dataset_production:
-  collection_protocols: []
-  calculation_rules: []
-  data_quality_requirements: []
-validation_rules: []
-`,
+      structuredProjectionYaml(projection, { sourceMarkdown: markdown }),
     );
     writeFileSync(inputPath, "{}\n");
 
@@ -272,7 +266,7 @@ validation_rules: []
       root,
       "validate-dataset",
       "--pcr",
-      "pcr.example",
+      wheatSeedPcrId,
       "--input",
       inputPath,
       "--format",

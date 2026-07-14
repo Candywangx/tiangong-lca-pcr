@@ -1,5 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tiangong-lca.org/schemas/pcr/v1/validation-output.schema.json",
   "title": "TianGong PCR Validation Report",
   "type": "object",
   "required": [
@@ -21,17 +22,22 @@
       "enum": ["tiangong-pcr-model-validation", "tiangong-pcr-dataset-validation"]
     },
     "pcr": { "type": "object" },
-    "readiness": { "$ref": "readiness.schema.json" },
+    "readiness": {
+      "$ref": "https://tiangong-lca.org/schemas/pcr/v1/readiness.schema.json"
+    },
     "validation_status": { "enum": ["passed", "failed", "inconclusive"] },
     "completeness": { "enum": ["none", "partial", "complete"] },
     "input": {
       "type": "object",
       "required": ["input_kind", "representation", "accepted"],
       "properties": {
-        "input_kind": { "type": "string" },
-        "representation": { "type": "string" },
-        "accepted": { "type": "boolean" }
-      }
+        "input_kind": { "type": "string", "minLength": 1 },
+        "representation": { "type": "string", "minLength": 1 },
+        "accepted": { "type": "boolean" },
+        "collection_record_count": { "type": "integer", "minimum": 0 },
+        "distinct_protocol_id_count": { "type": "integer", "minimum": 0 }
+      },
+      "additionalProperties": false
     },
     "check_coverage": {
       "type": "object",
@@ -54,7 +60,8 @@
           "type": "array",
           "items": { "$ref": "#/$defs/skippedCheck" }
         }
-      }
+      },
+      "additionalProperties": false
     },
     "finding_count": { "type": "integer", "minimum": 0 },
     "finding_summary": {
@@ -64,42 +71,47 @@
         "error": { "type": "integer", "minimum": 0 },
         "warning": { "type": "integer", "minimum": 0 },
         "info": { "type": "integer", "minimum": 0 }
-      }
+      },
+      "additionalProperties": false
     },
     "findings": {
       "type": "array",
       "items": { "$ref": "#/$defs/finding" }
     }
   },
+  "additionalProperties": false,
   "$defs": {
     "performedCheck": {
       "type": "object",
       "required": ["check_id", "requirement_family", "requirement_count", "evaluated_requirement_count"],
       "properties": {
-        "check_id": { "type": "string" },
-        "requirement_family": { "type": "string" },
+        "check_id": { "type": "string", "minLength": 1 },
+        "requirement_family": { "type": "string", "minLength": 1 },
         "requirement_count": { "type": "integer", "minimum": 0 },
         "evaluated_requirement_count": { "type": "integer", "minimum": 0 }
-      }
+      },
+      "additionalProperties": false
     },
     "skippedCheck": {
       "type": "object",
       "required": ["check_id", "requirement_family", "requirement_count", "reason"],
       "properties": {
-        "check_id": { "type": "string" },
-        "requirement_family": { "type": "string" },
+        "check_id": { "type": "string", "minLength": 1 },
+        "requirement_family": { "type": "string", "minLength": 1 },
         "requirement_count": { "type": "integer", "minimum": 0 },
-        "reason": { "type": "string" }
-      }
+        "reason": { "type": "string", "minLength": 1 }
+      },
+      "additionalProperties": false
     },
     "finding": {
       "type": "object",
       "required": ["severity", "code", "message"],
       "properties": {
         "severity": { "enum": ["error", "warning", "info"] },
-        "code": { "type": "string" },
-        "message": { "type": "string" }
-      }
+        "code": { "type": "string", "minLength": 1 },
+        "message": { "type": "string", "minLength": 1 }
+      },
+      "additionalProperties": false
     }
   }
 }

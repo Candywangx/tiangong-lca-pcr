@@ -107,7 +107,10 @@ export function syncStructured(options) {
   }
   const markdown = readFileSync(markdownPath, "utf8");
   const projection = parsePcrMarkdownToStructured(markdown);
-  atomicWrite(path.join(pcrDir, "structured.yaml"), structuredProjectionYaml(projection));
+  atomicWrite(
+    path.join(pcrDir, "structured.yaml"),
+    structuredProjectionYaml(projection, { sourceMarkdown: markdown }),
+  );
   return [`Synced structured PCR from ${toRepoRelative(root, markdownPath)}.`];
 }
 
@@ -226,7 +229,7 @@ export function publish(options) {
   }
   const markdown = readFileSync(markdownPath, "utf8");
   const projection = parsePcrMarkdownToStructured(markdown);
-  const structuredText = structuredProjectionYaml(projection);
+  const structuredText = structuredProjectionYaml(projection, { sourceMarkdown: markdown });
   const now = new Date().toISOString();
   const nextManifest = {
     ...currentManifest,

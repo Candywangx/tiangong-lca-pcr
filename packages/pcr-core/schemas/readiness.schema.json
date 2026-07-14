@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "readiness.schema.json",
+  "$id": "https://tiangong-lca.org/schemas/pcr/v1/readiness.schema.json",
   "title": "TianGong PCR Readiness",
   "type": "object",
   "required": [
@@ -8,6 +8,7 @@
     "lifecycle_status",
     "methodology_status",
     "structured_projection_available",
+    "projection_fingerprint",
     "usable_for_guidance",
     "usable_for_validation",
     "blockers",
@@ -15,11 +16,12 @@
   ],
   "properties": {
     "status": { "enum": ["ready", "review_required", "unavailable"] },
-    "lifecycle_status": { "type": "string" },
-    "methodology_status": { "type": "string" },
+    "lifecycle_status": { "type": "string", "minLength": 1 },
+    "methodology_status": { "type": "string", "minLength": 1 },
     "structured_projection_available": { "type": "boolean" },
     "usable_for_guidance": { "type": "boolean" },
     "usable_for_validation": { "type": "boolean" },
+    "projection_fingerprint": { "$ref": "#/$defs/projectionFingerprint" },
     "blockers": {
       "type": "array",
       "items": { "$ref": "#/$defs/message" }
@@ -29,14 +31,70 @@
       "items": { "$ref": "#/$defs/message" }
     }
   },
+  "additionalProperties": false,
   "$defs": {
     "message": {
       "type": "object",
       "required": ["code", "message"],
       "properties": {
-        "code": { "type": "string" },
-        "message": { "type": "string" }
-      }
+        "code": { "type": "string", "minLength": 1 },
+        "message": { "type": "string", "minLength": 1 }
+      },
+      "additionalProperties": false
+    },
+    "projectionFingerprint": {
+      "type": "object",
+      "required": [
+        "required",
+        "status",
+        "schema_valid",
+        "contract_version",
+        "source_sha256",
+        "generated_content_sha256",
+        "source_hash_valid",
+        "content_hash_valid",
+        "issues"
+      ],
+      "properties": {
+        "required": { "type": "boolean" },
+        "schema_valid": { "type": ["boolean", "null"] },
+        "status": {
+          "enum": [
+            "not_required",
+            "missing",
+            "invalid",
+            "unsupported_contract",
+            "source_missing",
+            "source_mismatch",
+            "content_mismatch",
+            "current"
+          ]
+        },
+        "contract_version": { "type": ["string", "null"] },
+        "source_sha256": {
+          "anyOf": [
+            { "$ref": "#/$defs/sha256" },
+            { "type": "null" }
+          ]
+        },
+        "generated_content_sha256": {
+          "anyOf": [
+            { "$ref": "#/$defs/sha256" },
+            { "type": "null" }
+          ]
+        },
+        "source_hash_valid": { "type": ["boolean", "null"] },
+        "content_hash_valid": { "type": ["boolean", "null"] },
+        "issues": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/message" }
+        }
+      },
+      "additionalProperties": false
+    },
+    "sha256": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
     }
   }
 }

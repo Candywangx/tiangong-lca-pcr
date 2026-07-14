@@ -27,7 +27,7 @@ checkPaths:
   - library/modules/**
   - docs/**
 lastReviewedAt: 2026-07-14
-lastReviewedCommit: 7a3d0c7ea81ba384e435e3d766b6c4b6997a51d5
+lastReviewedCommit: 004d215068aabe92253116150dc3599920983687
 ---
 
 # TianGong LCA PCR Library
@@ -89,7 +89,7 @@ npm run validate
 
 `pcr:scaffold:cpc` imports a CPC structure CSV, stores the raw and normalized classification data under `classifications/systems/cpc/<version>/`, writes a CPC-to-PCR mapping file, and creates empty bilingual PCR directories for leaf classes only. PCR directory names are semantic slugs, not CPC codes; the CPC code remains in the mapping layer and PCR metadata.
 
-`pcr:sync-structured` regenerates `structured.yaml` from canonical Markdown. Repository lint rejects a stale projection for every material PCR. `pcr:bump` updates a valid manifest version. `pcr:publish` runs a no-write preflight before it regenerates `structured.yaml` and records publication: the PCR must already be active and reviewed, the Chinese translation must be reviewed, the version must be valid semver, and review metadata must contain no unresolved blocker.
+`pcr:sync-structured` regenerates `structured.yaml` from canonical Markdown and appends deterministic projection metadata: a generator contract version, canonical Markdown SHA-256, and generated-content SHA-256, with no timestamp. Repository lint validates every material projection against the shared JSON Schema, verifies its fingerprint, and rejects stale output. `pcr:bump` updates a valid manifest version. `pcr:publish` runs a no-write preflight before it regenerates `structured.yaml` and records publication: the PCR must already be active and reviewed, the Chinese translation must be reviewed, the version must be valid semver, and review metadata must contain no unresolved blocker.
 
 PCR production agents may use `tiangong-lca-cli` to search Tiangong database flow, process, and dataset identity records and copy selected UUID references into PCR content. The CLI is an evidence tool for identity selection.
 
@@ -114,7 +114,13 @@ The public CLI provides deterministic classification `resolve`, explicit `tree` 
 
 Catalog and mapping results carry a `readiness` object. A classification mapping identifies a PCR record; it does not claim that methodology is usable. Authored candidates are marked `review_required`, while an `empty_scaffold` is `unavailable` and is rejected by `guidance` and both validation commands.
 
-Validation output reports `validation_status`, `completeness`, accepted input shape, checks performed, checks skipped, and findings by severity. A `passed` result applies only to `checks_performed`; consumers must inspect partial coverage. Validation commands default to `--fail-on error` and exit 2 when error findings are present or the result is inconclusive. Use `--fail-on never` explicitly when a report-only workflow must keep exit code 0.
+For material PCRs, readiness also reports `projection_fingerprint`. `pcr-core` validates the current
+`structured.yaml` against the shared material projection Schema and recomputes its canonical-source and
+generated-content hashes at runtime. A missing or invalid Schema/fingerprint is a readiness blocker, even when
+the file exists. Runtime readiness separately checks material methodology completeness, so a current,
+Schema-valid but empty projection is also unavailable. Empty scaffolds report the fingerprint as `not_required`.
+
+Validation output reports `validation_status`, `completeness`, accepted input shape, checks performed, checks skipped, and findings by severity. Public readiness and validation reports are checked for both JSON shape and cross-field consistency, including blocker/usability alignment, finding totals, coverage totals, completeness, and status. A `passed` result applies only to `checks_performed`; consumers must inspect partial coverage. Validation commands default to `--fail-on error` and exit 2 when error findings are present or the result is inconclusive. Use `--fail-on never` explicitly when a report-only workflow must keep exit code 0.
 
 PCR guidance is dataset-production first. `process` and `lifecyclemodel` remain target entities as publication, validation, and downstream-use projections of the foreground data package rather than separate sources of methodology truth.
 

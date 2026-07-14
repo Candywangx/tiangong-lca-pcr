@@ -1,4 +1,5 @@
 import { PCR_EN_FILE } from "./scaffold-templates.mjs";
+import { buildProjectionMetadata } from "../../packages/pcr-core/src/projection-integrity.mjs";
 
 function yamlScalar(value) {
   if (value === null || value === undefined || value === "") {
@@ -72,7 +73,10 @@ function yamlNormativeRules(lines, indent, rules) {
   }
 }
 
-export function structuredProjectionYaml(projection) {
+export function structuredProjectionYaml(projection, { sourceMarkdown } = {}) {
+  if (typeof sourceMarkdown !== "string") {
+    throw new TypeError("structuredProjectionYaml requires canonical sourceMarkdown.");
+  }
   const lines = [
     "schema_version: 1",
     "generated_from: markdown",
@@ -273,6 +277,18 @@ export function structuredProjectionYaml(projection) {
       yamlKeyValue(lines, 4, "used_for", source.used_for);
     }
   }
+
+  const generatedContent = `${lines.join("\n")}\n`;
+  const metadata = buildProjectionMetadata({ sourceMarkdown, generatedContent });
+  lines.push("projection_metadata:");
+  yamlKeyValue(lines, 2, "contract_version", metadata.contract_version);
+  yamlKeyValue(lines, 2, "generator", metadata.generator);
+  lines.push("  canonical_markdown:");
+  yamlKeyValue(lines, 4, "path", metadata.canonical_markdown.path);
+  yamlKeyValue(lines, 4, "normalization", metadata.canonical_markdown.normalization);
+  yamlKeyValue(lines, 4, "hash_algorithm", metadata.canonical_markdown.hash_algorithm);
+  yamlKeyValue(lines, 4, "sha256", metadata.canonical_markdown.sha256);
+  yamlKeyValue(lines, 2, "generated_content_sha256", metadata.generated_content_sha256);
 
   return `${lines.join("\n")}\n`;
 }

@@ -1,7 +1,13 @@
 import { existsSync, readFileSync, readdirSync, statSync } from "node:fs";
 import path from "node:path";
 
-import { readYamlFile } from "./yaml-lite.mjs";
+import { assertCoreContract, validateCoreContract } from "./contracts.mjs";
+import {
+  inspectProjectionIntegrity,
+  projectionNotRequiredState,
+} from "./projection-integrity.mjs";
+import { materialProjectionCompletenessIssues } from "./projection-completeness.mjs";
+import { parseYaml, readYamlFile } from "./yaml-lite.mjs";
 
 export const FEEDBACK_TYPES = [
   "missing_pcr",
@@ -44,7 +50,10 @@ export class PcrUsabilityError extends Error {
 }
 
 export function listPcrs({ root, refresh = false }) {
-  return getPcrCatalog({ root, refresh }).map(clonePcrEntry);
+  const normalizedRoot = path.resolve(root);
+  return getPcrCatalog({ root: normalizedRoot, refresh }).map((entry) =>
+    currentPcrEntry(normalizedRoot, entry),
+  );
 }
 
 function getPcrCatalog({ root, refresh = false }) {
@@ -75,10 +84,6 @@ function readPcrCatalog(root) {
         translation_status: manifest.translation_status ?? {},
         classification_refs: manifest.classification_refs ?? [],
       };
-      pcr.readiness = assessPcrReadiness({
-        pcr,
-        structuredAvailable: existsSync(path.join(pcrDir, "structured.yaml")),
-      });
       return pcr;
     })
     .filter((entry) => entry.id)
@@ -129,11 +134,7 @@ export function resolveClassification({ root, system, version, code }) {
 }
 
 export function getPcrById({ root, pcrId, refresh = false }) {
-  const pcr = getPcrCatalog({ root, refresh }).find((entry) => entry.id === pcrId);
-  if (!pcr) {
-    throw new Error(`PCR not found: ${pcrId}`);
-  }
-  return clonePcrEntry(pcr);
+  return getCurrentPcrSnapshot({ root, pcrId, refresh }).pcr;
 }
 
 export function getPcrReadiness({ root, pcrId, refresh = false }) {
@@ -154,14 +155,15 @@ export function buildGuidance({ root, pcrId }) {
 }
 
 function buildGuidanceForOperation({ root, pcrId, operation }) {
-  const pcr = getPcrById({ root, pcrId });
+  const snapshot = getCurrentPcrSnapshot({ root, pcrId });
+  const { pcr, structured, structuredPath } = snapshot;
   assertPcrUsable({ pcr, operation });
-  const structuredPath = path.join(root, pcr.path, "structured.yaml");
-  if (!existsSync(structuredPath)) {
-    throw new Error(`structured.yaml not found for ${pcrId}`);
+  if (!structured) {
+    throw new Error(
+      `PCR ${pcrId} passed readiness without a verified structured projection.`,
+    );
   }
-  const structured = readYamlFile(structuredPath);
-  return {
+  const guidance = {
     schema_version: 1,
     guidance_kind: "tiangong-pcr-agent-guidance",
     pcr,
@@ -189,6 +191,12 @@ function buildGuidanceForOperation({ root, pcrId, operation }) {
       "Run tiangong-pcr validate-dataset after constructing a foreground data package and draft feedback if PCR guidance is missing or ambiguous.",
     ],
   };
+  assertCoreContract("guidance-output.schema.json", guidance, {
+    code: "PCR_INTERNAL_CONTRACT_INVALID",
+    entityKind: "Agent guidance output",
+    source: toPosix(path.relative(root, structuredPath)),
+  });
+  return guidance;
 }
 
 export function createFeedbackDraft({
@@ -248,13 +256,18 @@ ${evidence}
 - [ ] Bump or publish the PCR manifest if lifecycle state changes.
 `;
 
-  return { title, body };
+  const draft = { title, body };
+  assertCoreContract("feedback-draft-output.schema.json", draft, {
+    code: "PCR_INTERNAL_CONTRACT_INVALID",
+    entityKind: "PCR feedback issue draft output",
+  });
+  return draft;
 }
 
 export function validateModelAgainstGuidance({ root, pcrId, model }) {
   const guidance = buildGuidanceForOperation({ root, pcrId, operation: "validation" });
   const findings = [];
-  const accepted = typeof model === "string" || isRecord(model);
+  const accepted = validateCoreContract("model-validation-input.schema.json", model).valid;
   const text = typeof model === "string" ? model : accepted ? JSON.stringify(model) : "";
   const checksPerformed = [];
   const checksSkipped = [];
@@ -353,7 +366,7 @@ export function validateModelAgainstGuidance({ root, pcrId, model }) {
 export function validateDatasetAgainstGuidance({ root, pcrId, dataset }) {
   const guidance = buildGuidanceForOperation({ root, pcrId, operation: "validation" });
   const findings = [];
-  const accepted = isRecord(dataset);
+  const accepted = validateCoreContract("dataset-validation-input.schema.json", dataset).valid;
   const checksPerformed = [];
   const checksSkipped = [];
   const records = accepted ? collectionRecordArrays(dataset) : [];
@@ -479,13 +492,236 @@ function collectionRecordArrays(value) {
   return records;
 }
 
-function assessPcrReadiness({ pcr, structuredAvailable }) {
+function currentPcrEntry(root, entry) {
+  return currentPcrSnapshot(root, entry).pcr;
+}
+
+function getCurrentPcrSnapshot({ root, pcrId, refresh = false }) {
+  const normalizedRoot = path.resolve(root);
+  const entry = getPcrCatalog({ root: normalizedRoot, refresh }).find(
+    (candidate) => candidate.id === pcrId,
+  );
+  if (!entry) {
+    throw new Error(`PCR not found: ${pcrId}`);
+  }
+  return currentPcrSnapshot(normalizedRoot, entry);
+}
+
+function currentPcrSnapshot(root, entry) {
+  const pcr = clonePcrEntry(entry);
+  let projection;
+  try {
+    projection = inspectPcrProjection({ root, pcr });
+  } catch (error) {
+    projection = failedProjectionInspection({ root, pcr, error });
+  }
+  pcr.readiness = assessPcrReadiness({
+    pcr,
+    projectionFingerprint: projection.fingerprint,
+    structuredAvailable: projection.structuredAvailable,
+    projectionCompletenessIssues: projection.completenessIssues,
+  });
+  return { pcr, ...projection };
+}
+
+function inspectPcrProjection({ root, pcr }) {
+  const pcrDir = path.join(root, pcr.path);
+  const structuredPath = path.join(pcrDir, "structured.yaml");
+  if (!isMaterialPcr(pcr)) {
+    return {
+      fingerprint: {
+        ...projectionNotRequiredState(),
+        schema_valid: null,
+      },
+      structured: null,
+      structuredPath,
+      structuredAvailable: existsSync(structuredPath),
+      completenessIssues: [],
+    };
+  }
+
+  if (!existsSync(structuredPath)) {
+    return unavailableProjectionInspection({
+      structuredPath,
+      structuredAvailable: false,
+      fingerprint: missingProjectionState(
+        "missing",
+        "structured_projection_missing",
+        "structured.yaml is required for material PCR guidance and validation.",
+      ),
+    });
+  }
+
+  const markdownPath = path.join(pcrDir, "pcr.en-US.md");
+  if (!existsSync(markdownPath)) {
+    return unavailableProjectionInspection({
+      structuredPath,
+      structuredAvailable: true,
+      fingerprint: missingProjectionState(
+        "source_missing",
+        "projection_source_missing",
+        "Canonical pcr.en-US.md is required to verify the structured projection.",
+      ),
+    });
+  }
+
+  let sourceMarkdown;
+  try {
+    sourceMarkdown = readFileSync(markdownPath, "utf8");
+  } catch (error) {
+    return unavailableProjectionInspection({
+      structuredPath,
+      structuredAvailable: true,
+      fingerprint: invalidProjectionState(
+        "projection_source_unreadable",
+        `Canonical pcr.en-US.md could not be read (${errorCode(error)}).`,
+        null,
+      ),
+    });
+  }
+
+  let structuredText;
+  try {
+    structuredText = readFileSync(structuredPath, "utf8");
+  } catch (error) {
+    return unavailableProjectionInspection({
+      structuredPath,
+      structuredAvailable: false,
+      fingerprint: invalidProjectionState(
+        "structured_projection_unreadable",
+        `structured.yaml could not be read (${errorCode(error)}).`,
+        false,
+      ),
+    });
+  }
+
+  let structured;
+  try {
+    structured = parseYaml(structuredText);
+  } catch (error) {
+    return unavailableProjectionInspection({
+      structuredPath,
+      structuredAvailable: true,
+      fingerprint: invalidProjectionState(
+        "structured_projection_parse_error",
+        `structured.yaml could not be parsed (${errorCode(error)}).`,
+        false,
+      ),
+    });
+  }
+
+  const schemaResult = validateCoreContract(
+    "structured-projection.schema.json",
+    structured,
+    { entityKind: "material structured projection" },
+  );
+  const integrity = inspectProjectionIntegrity({
+    sourceMarkdown,
+    structuredText,
+    metadata: structured?.projection_metadata,
+  });
+  const schemaIssues = schemaResult.valid
+    ? []
+    : [
+        {
+          code: "structured_schema_invalid",
+          message: `structured.yaml violates the material projection schema (${schemaResult.errors.length} issue(s)).`,
+        },
+        ...schemaResult.errors.map((error) => ({
+          code: `structured_schema.${error.keyword}`,
+          message: `${error.instance_path}: ${error.message}`,
+        })),
+      ];
+  const issues = deduplicateMessages([...schemaIssues, ...integrity.issues]);
+  const fingerprint = {
+    ...integrity,
+    status: schemaResult.valid ? integrity.status : "invalid",
+    schema_valid: schemaResult.valid,
+    issues,
+  };
+
+  return {
+    fingerprint,
+    structured: schemaResult.valid && integrity.status === "current" ? structured : null,
+    structuredPath,
+    structuredAvailable: true,
+    completenessIssues: schemaResult.valid
+      ? materialProjectionCompletenessIssues(structured, { expectedPcrId: pcr.id })
+      : [],
+  };
+}
+
+function unavailableProjectionInspection({ fingerprint, structuredPath, structuredAvailable }) {
+  return {
+    fingerprint,
+    structured: null,
+    structuredPath,
+    structuredAvailable,
+    completenessIssues: [],
+  };
+}
+
+function failedProjectionInspection({ root, pcr, error }) {
+  return unavailableProjectionInspection({
+    structuredPath: path.join(root, pcr.path, "structured.yaml"),
+    structuredAvailable: false,
+    fingerprint: invalidProjectionState(
+      "projection_inspection_failed",
+      `Projection integrity inspection failed (${errorCode(error)}).`,
+      false,
+    ),
+  });
+}
+
+function invalidProjectionState(code, message, schemaValid) {
+  return {
+    required: true,
+    status: "invalid",
+    schema_valid: schemaValid,
+    contract_version: null,
+    source_sha256: null,
+    generated_content_sha256: null,
+    source_hash_valid: null,
+    content_hash_valid: null,
+    issues: [{ code, message }],
+  };
+}
+
+function errorCode(error) {
+  return typeof error?.code === "string" && error.code
+    ? error.code
+    : "unknown_error";
+}
+
+function missingProjectionState(status, code, message) {
+  return {
+    required: true,
+    status,
+    schema_valid: null,
+    contract_version: null,
+    source_sha256: null,
+    generated_content_sha256: null,
+    source_hash_valid: null,
+    content_hash_valid: null,
+    issues: [{ code, message }],
+  };
+}
+
+function isMaterialPcr(pcr) {
+  return pcr.status !== "scaffold" || pcr.content_maturity !== "empty_scaffold";
+}
+
+function assessPcrReadiness({
+  pcr,
+  projectionFingerprint,
+  structuredAvailable,
+  projectionCompletenessIssues = [],
+}) {
   const blockers = [];
   const warnings = [];
   const methodologyStatus = pcr.content_maturity ?? "unknown";
   const lifecycleStatus = pcr.status ?? "unknown";
   const chineseTranslationStatus = pcr.translation_status?.["zh-CN"] ?? "unknown";
-
   if (!GUIDANCE_MATURITIES.has(methodologyStatus)) {
     blockers.push({
       code: "methodology_not_authored",
@@ -509,11 +745,17 @@ function assessPcrReadiness({ pcr, structuredAvailable }) {
       message: "Deprecated PCR methodology must not guide new work.",
     });
   }
-  if (!structuredAvailable) {
-    blockers.push({
-      code: "structured_projection_missing",
-      message: "structured.yaml is required for Agent guidance and validation.",
-    });
+  if (projectionFingerprint.required && (
+    projectionFingerprint.schema_valid !== true || projectionFingerprint.status !== "current"
+  )) {
+    blockers.push(...projectionFingerprint.issues);
+  }
+  if (
+    projectionFingerprint.required &&
+    projectionFingerprint.schema_valid === true &&
+    projectionFingerprint.status === "current"
+  ) {
+    blockers.push(...projectionCompletenessIssues);
   }
   if (
     GUIDANCE_MATURITIES.has(methodologyStatus) &&
@@ -556,19 +798,27 @@ function assessPcrReadiness({ pcr, structuredAvailable }) {
     });
   }
 
-  const usable = blockers.length === 0;
-  return {
+  const uniqueBlockers = deduplicateMessages(blockers);
+  const uniqueWarnings = deduplicateMessages(warnings);
+  const usable = uniqueBlockers.length === 0;
+  const readiness = {
     status: usable
       ? (REVIEWED_MATURITIES.has(methodologyStatus) && lifecycleStatus !== "candidate" ? "ready" : "review_required")
       : "unavailable",
     lifecycle_status: lifecycleStatus,
     methodology_status: methodologyStatus,
     structured_projection_available: structuredAvailable,
+    projection_fingerprint: structuredClone(projectionFingerprint),
     usable_for_guidance: usable,
     usable_for_validation: usable,
-    blockers,
-    warnings,
+    blockers: uniqueBlockers,
+    warnings: uniqueWarnings,
   };
+  assertCoreContract("readiness.schema.json", readiness, {
+    code: "PCR_INTERNAL_CONTRACT_INVALID",
+    entityKind: "PCR readiness",
+  });
+  return readiness;
 }
 
 function assertPcrUsable({ pcr, operation }) {
@@ -600,7 +850,7 @@ function buildValidationReport({
       ? "inconclusive"
       : "passed";
 
-  return {
+  const report = {
     schema_version: 1,
     validation_kind: validationKind,
     pcr: guidance.pcr,
@@ -619,6 +869,11 @@ function buildValidationReport({
     finding_summary: findingSummary,
     findings,
   };
+  assertCoreContract("validation-output.schema.json", report, {
+    code: "PCR_INTERNAL_CONTRACT_INVALID",
+    entityKind: "PCR validation report",
+  });
+  return report;
 }
 
 function performedCheck(checkId, requirementFamily, requirementCount) {
@@ -650,6 +905,14 @@ function countFindingsBySeverity(findings) {
     }
   }
   return summary;
+}
+
+function deduplicateMessages(entries) {
+  return [
+    ...new Map(
+      entries.map((entry) => [`${entry.code}\0${entry.message}`, entry]),
+    ).values(),
+  ];
 }
 
 function countInventoryRows(processInventory) {

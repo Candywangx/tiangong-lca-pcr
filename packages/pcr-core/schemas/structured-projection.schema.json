@@ -1,0 +1,157 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tiangong-lca.org/schemas/pcr/v1/structured-projection.schema.json",
+  "title": "TianGong material PCR structured projection",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "generated_from",
+    "source_markdown",
+    "product_category_identity",
+    "functional_unit",
+    "system_boundary",
+    "boundary_abstraction",
+    "reference_flow_definition",
+    "reference_flows",
+    "measurement_rules",
+    "process_map",
+    "process_inventory",
+    "allocation_rules",
+    "dataset_production",
+    "validation_rules",
+    "published_dataset_profile",
+    "data_sources",
+    "projection_metadata"
+  ],
+  "$defs": {
+    "nonEmptyString": { "type": "string", "minLength": 1 },
+    "normativeRule": {
+      "type": "object",
+      "required": ["rule_id", "applies_to", "rule", "source_ids"],
+      "properties": {
+        "rule_id": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "^[a-z0-9]+(?:_[a-z0-9]+)*$"
+        },
+        "applies_to": { "$ref": "#/$defs/nonEmptyString" },
+        "rule": { "$ref": "#/$defs/nonEmptyString" },
+        "source_ids": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/nonEmptyString" },
+          "uniqueItems": true
+        }
+      },
+      "additionalProperties": false
+    },
+    "normativeRuleArray": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/normativeRule" }
+    },
+    "projectionMetadata": {
+      "type": "object",
+      "required": ["contract_version", "generator", "canonical_markdown", "generated_content_sha256"],
+      "properties": {
+        "contract_version": { "const": "1" },
+        "generator": { "const": "tiangong-pcr-builder/markdown-projection" },
+        "canonical_markdown": {
+          "type": "object",
+          "required": ["path", "normalization", "hash_algorithm", "sha256"],
+          "properties": {
+            "path": { "const": "pcr.en-US.md" },
+            "normalization": { "const": "utf8-lf-v1" },
+            "hash_algorithm": { "const": "sha256" },
+            "sha256": { "type": "string", "pattern": "^sha256:[0-9a-f]{64}$" }
+          },
+          "additionalProperties": false
+        },
+        "generated_content_sha256": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        }
+      },
+      "additionalProperties": false
+    },
+    "processMapEntry": {
+      "type": "object",
+      "required": ["id", "name", "inclusion", "inclusion_condition", "role", "quantitative_reference"],
+      "properties": {
+        "id": { "$ref": "#/$defs/nonEmptyString" },
+        "name": { "$ref": "#/$defs/nonEmptyString" },
+        "inclusion": { "enum": ["required", "conditional", "optional", "excluded_by_default"] },
+        "inclusion_condition": { "type": "string" },
+        "role": { "$ref": "#/$defs/nonEmptyString" },
+        "quantitative_reference": { "$ref": "#/$defs/nonEmptyString" }
+      },
+      "additionalProperties": false
+    },
+    "flowGroups": {
+      "type": "object",
+      "required": ["product", "waste", "elementary"],
+      "properties": {
+        "product": { "type": "array", "items": { "type": "object" } },
+        "waste": { "type": "array", "items": { "type": "object" } },
+        "elementary": { "type": "array", "items": { "type": "object" } }
+      },
+      "additionalProperties": false
+    },
+    "processInventoryEntry": {
+      "type": "object",
+      "required": ["id", "label", "inputs", "outputs"],
+      "properties": {
+        "id": { "$ref": "#/$defs/nonEmptyString" },
+        "label": { "$ref": "#/$defs/nonEmptyString" },
+        "inputs": { "$ref": "#/$defs/flowGroups" },
+        "outputs": { "$ref": "#/$defs/flowGroups" }
+      },
+      "additionalProperties": false
+    }
+  },
+  "properties": {
+    "schema_version": { "const": 1 },
+    "generated_from": { "const": "markdown" },
+    "source_markdown": { "const": "pcr.en-US.md" },
+    "product_category_identity": {
+      "type": "object",
+      "properties": {
+        "canonical_pcr_id": { "type": "string", "pattern": "^pcr\\." }
+      },
+      "additionalProperties": { "type": "string" }
+    },
+    "functional_unit": { "type": "object" },
+    "system_boundary": {
+      "type": "object",
+      "required": ["rules"],
+      "properties": { "rules": { "$ref": "#/$defs/normativeRuleArray" } },
+      "additionalProperties": false
+    },
+    "boundary_abstraction": { "type": "object" },
+    "reference_flow_definition": { "type": "object" },
+    "reference_flows": { "type": "array" },
+    "measurement_rules": { "type": "array", "items": { "type": "object" } },
+    "process_map": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/processMapEntry" }
+    },
+    "process_inventory": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/processInventoryEntry" }
+    },
+    "allocation_rules": { "$ref": "#/$defs/normativeRuleArray" },
+    "dataset_production": {
+      "type": "object",
+      "required": ["collection_protocols", "calculation_rules", "data_quality_requirements"],
+      "properties": {
+        "collection_protocols": { "type": "array" },
+        "calculation_rules": { "type": "array" },
+        "data_quality_requirements": { "type": "array" }
+      },
+      "additionalProperties": false
+    },
+    "validation_rules": { "$ref": "#/$defs/normativeRuleArray" },
+    "published_dataset_profile": { "type": "object" },
+    "data_sources": { "type": "array", "items": { "type": "object" } },
+    "projection_metadata": { "$ref": "#/$defs/projectionMetadata" }
+  },
+  "additionalProperties": false
+}

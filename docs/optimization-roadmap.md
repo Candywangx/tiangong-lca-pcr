@@ -21,7 +21,7 @@ checkPaths:
   - classifications/**
   - library/modules/**
 lastReviewedAt: 2026-07-14
-lastReviewedCommit: 7a3d0c7ea81ba384e435e3d766b6c4b6997a51d5
+lastReviewedCommit: 004d215068aabe92253116150dc3599920983687
 ---
 
 # PCR 资料库优化路线图
@@ -68,17 +68,17 @@ lastReviewedCommit: 7a3d0c7ea81ba384e435e3d766b6c4b6997a51d5
 
 ### P1：强化编译契约与运行时可信度
 
-状态：下一阶段，优先执行。
+状态：进行中。1–4 已实现；5–7 待实现。
 
-1. 将 JSON Schema 接入 repo lint 和消费侧 contract tests，而不是只把 Schema 作为说明文件保存。
-2. 为 `structured.yaml` 增加确定性 projection metadata，例如 generator contract version 与 canonical Markdown SHA-256；禁止时间戳进入可复现投影。
-3. readiness 在运行时验证 projection fingerprint 和 schema，不只检查文件存在。
-4. 为 manifest、mapping、guidance、validation report 建立跨层 fixture tests，保证 builder 输出可被 pcr-core 直接消费。
+1. 已实现：将 JSON Schema 接入 repo lint 和消费侧 contract tests，并为 readiness/validation report 增加跨字段语义断言；Schema 不再只是说明文件。
+2. 已实现：为 material `structured.yaml` 增加确定性 projection metadata，包含 generator contract version、canonical Markdown SHA-256 和 generated-content SHA-256；可复现投影不包含时间戳。
+3. 已实现：readiness 在运行时验证 material projection fingerprint、Schema 与独立的内容完整度语义门禁，不只检查文件存在，也不会把结构合法但方法学为空的 authored 投影判为可用。
+4. 已实现：建立真实 material PCR 的跨层 fixture，连续验证 manifest、Markdown frontmatter、mapping、builder 重渲染、shared structured Schema、resolve、readiness、guidance 和 validation report，并锁定跨层 identity 与关键规则一致性。
 5. 统一 controlled vocabulary、Schema 和代码常量的生成源，消除“三份枚举各自演进”。
 6. 完善 builder CLI 参数校验、命令级 help、JSON 输出与稳定错误码。
 7. 定义 published PCR 开启下一修订版的显式状态与 release-history contract；在此之前禁止直接 bump 已发布记录。
 
-退出条件：所有 material PCR 100% schema-valid、fingerprint-current，公开输出均有自动 contract validation。
+退出条件：所有 material PCR 100% schema-valid、fingerprint-current，公开输出均有自动 contract validation。当前已打通 Schema 执行、指纹、运行时输出校验与跨层 fixture，但 P1 仍因词表单源、CLI 契约和 published revision contract 未完成而保持进行中。
 
 ### P2：拆分 classification coverage 与 canonical methodology catalog
 

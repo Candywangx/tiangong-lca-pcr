@@ -278,7 +278,7 @@ A separate paragraph remains its own rule.
 });
 
 test("structuredProjectionYaml renders normative rule contracts", () => {
-  const projection = parsePcrMarkdownToStructured(`
+  const markdown = `
 ## 5. System Boundary
 
 The system boundary includes direct preparation.
@@ -290,8 +290,9 @@ Avoid allocation by subdivision.
 ## 9. Validation Rules
 
 The reference mass shall reconcile.
-`);
-  const yaml = structuredProjectionYaml(projection);
+`;
+  const projection = parsePcrMarkdownToStructured(markdown);
+  const yaml = structuredProjectionYaml(projection, { sourceMarkdown: markdown });
 
   assert.match(yaml, /system_boundary:\n  rules:\n    - rule_id: system_boundary_rule_1/u);
   assert.match(yaml, /allocation_rules:\n  - rule_id: allocation_rule_1/u);

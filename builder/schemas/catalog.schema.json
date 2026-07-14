@@ -1,12 +1,22 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tiangong-lca.org/schemas/pcr/v1/catalog.schema.json",
   "title": "TianGong PCR catalog",
   "type": "object",
-  "required": ["schema_version", "catalog_status"],
+  "required": ["schema_version", "catalog_status", "pcr_index", "classification_mappings", "notes"],
   "properties": {
-    "schema_version": { "type": "integer" },
-    "catalog_status": { "type": "string" }
+    "schema_version": { "const": 1 },
+    "catalog_status": { "type": "string", "minLength": 1 },
+    "pcr_index": { "type": "string", "minLength": 1 },
+    "classification_mappings": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 },
+      "uniqueItems": true
+    },
+    "notes": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 }
+    }
   },
-  "additionalProperties": true
+  "additionalProperties": false
 }
-

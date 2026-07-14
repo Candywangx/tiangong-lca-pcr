@@ -27,7 +27,7 @@ checkPaths:
   - classifications/**
   - library/modules/**
 lastReviewedAt: 2026-07-14
-lastReviewedCommit: 7a3d0c7ea81ba384e435e3d766b6c4b6997a51d5
+lastReviewedCommit: 004d215068aabe92253116150dc3599920983687
 ---
 
 # PCR 资料库架构
@@ -117,7 +117,27 @@ library/pcrs/<domain>/<subdomain>/<pcr-slug>/
 
 - `manifest.yaml`：PCR id、title map、status、version、content maturity、translation state、target entities、module references、classification references。
 - `pcr.en-US.md` / `pcr.zh-CN.md`：同一 PCR 方法学的双语人类可读文本。
-- `structured.yaml`：供工具消费的结构化投影，包含 reference flow、boundary abstraction、measurement rules、process map、process inventory、dataset production requirements、validation rules、published dataset profile、data sources。
+- `structured.yaml`：供工具消费的结构化投影，包含 reference flow、boundary abstraction、measurement rules、process map、process inventory、dataset production requirements、validation rules、published dataset profile、data sources，以及可验证 source 与 generated content 的 projection metadata。
+
+### 契约执行层
+
+仓库只对稳定、需要机器判断的边界使用严格 JSON Schema 2020-12；Markdown 仍是允许
+方法学表达的 canonical authoring truth。Schema 校验不会执行类型强制转换、默认值填充或
+删除未知字段，因此不会在校验过程中暗中改写输入。
+
+写入侧由 builder lint 执行 catalog、classification mapping、PCR manifest、双语 Markdown frontmatter
+与 material structured projection 契约。结构化投影 Schema 位于
+`packages/pcr-core/schemas/structured-projection.schema.json`，builder 与消费侧共用同一份定义。
+
+JSON Schema 负责稳定机器形状；随 material 状态变化的内容完整度由独立语义门禁负责。builder
+preflight 与 `packages/pcr-core` 共同要求 identity、functional unit、reference flow、measurement、
+boundary、inventory、allocation、validation 和 published profile 具备可消费内容。
+
+消费侧由 `packages/pcr-core` 在运行时再次校验 material projection Schema、指纹与内容完整度，并在
+返回 readiness、guidance、validation report 和 feedback draft 前执行各自的输出 Schema。readiness 与
+validation report 还执行 JSON Schema 不适合表达的跨字段语义校验，例如 blocker/usability 对齐、
+finding 汇总、coverage 算术、completeness 和 status 一致性。这个重复是信任边界：repo lint 保护
+入库内容，运行时校验保护当前被读取的文件和公开输出。
 
 ### Classification Mapping
 
@@ -150,6 +170,14 @@ allocation、data quality 和 validation 规则。模块是方法学资产，不
 classification mapping 只回答“哪个 PCR id 对应这个外部 code”，不回答“该 PCR 是否已可用”。
 消费方必须检查 `usable_for_guidance` 或 `usable_for_validation`。
 
+对 material PCR，readiness 还携带 `projection_fingerprint`。`pcr-core` 在计算当前 readiness 时校验
+structured projection Schema，然后重新计算 canonical Markdown 与 generated content 的 SHA-256，而不是
+只检查 `structured.yaml` 是否存在。指纹对文本先移除开头 UTF-8 BOM，再将 CRLF 和单独 CR
+统一为 LF；确定性元数据不包含时间戳。Schema 失败、metadata 缺失、不支持的 contract
+version、source mismatch 或 content mismatch 都会成为 blocker。对 empty scaffold，该指纹明确为
+`not_required`。即使指纹 current 且 Schema-valid，缺少上述 material 方法学内容仍会成为独立
+readiness blocker，不能仅靠 `authored_methodology` 标签进入 guidance。
+
 guidance 会投出 `system_boundary.rules`、`allocation_rules` 和 `validation_rules` 等关键规则。
 validation report 同时声明 `validation_status`、`completeness`、输入接受状态、已执行检查和跳过检查；
 因此“没有 finding”不能在 coverage 不完整时被解释为完整符合。
@@ -159,6 +187,10 @@ validation report 同时声明 `validation_status`、`completeness`、输入接�
 feedback draft 和 GitHub issue 是候选证据。它们可能指向 PCR 内容、mapping、UUID、range、
 source、translation 或 validator 问题，但必须经过 maintainer intake 和 builder workflow
 才能改变仓库 truth。
+
+反馈输入与 issue-ready draft 是两个不同实体：`feedback.schema.json` 描述结构化 intake，
+`feedback-draft-output.schema.json` 描述 CLI 返回的 `{ title, body }`。不要用一个 Schema 同时表示
+尚未渲染的反馈字段和已经渲染的 issue 文本。
 
 ## 关键流程
 
@@ -251,7 +283,7 @@ feedback 可以触发 PCR 内容更新、mapping 修复、UUID 修正、range ev
 
 派生物：
 
-- `structured.yaml`：canonical PCR 内容的确定性机器侧投影；material PCR 的 repo lint 会逐字比较重新生成结果并拒绝 stale artifact。
+- `structured.yaml`：canonical PCR 内容的确定性机器侧投影；material PCR 的 repo lint 会验证共享 Schema、source/content 指纹，并逐字比较重新生成结果以拒绝 stale artifact。
 - `library/indexes/**`：用于浏览和检索的索引。
 - `packages/pcr-viewer/dist/**`：由 `npm run viewer:build` 生成的静态 viewer artifact。
 - `classifications/systems/<system>/<version>/normalized/**`：由 retained source artifact 和 import logic 派生的 normalized 分类数据。
@@ -295,7 +327,8 @@ authored records 前仍保持排除。
 
 material PCR 的状态、成熟度和翻译状态必须满足 lifecycle 矩阵。进入 `active` 前会运行实质
 preflight；`publish` 只接受已 active、reviewed methodology、中文翻译已 reviewed、合法 semver、
-且没有 unresolved/blocking review metadata 的记录。发布前先在内存中验证未来 manifest 与新投影，
+且没有 unresolved/blocking review metadata 的记录。发布前先在内存中验证未来 manifest 与新投影的
+Schema、指纹和语义 preflight，
 失败不改文件，成功才原子替换生成物并记录发布状态。
 
 pull request 和 main 分支 push 通过 GitHub Actions 运行 `npm run validate`，使本地合同、投影

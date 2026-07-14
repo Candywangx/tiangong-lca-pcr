@@ -19,6 +19,39 @@ import { parseYaml } from "../../packages/pcr-core/src/yaml-lite.mjs";
 const cliPath = path.resolve("builder/cli/index.mjs");
 const sampleCpcPath = path.resolve("builder/fixtures/cpc-structure.sample.csv");
 
+const materialIdentityAndReferenceMarkdown = `## 2. Product Category Identity
+
+| Field | Value |
+| --- | --- |
+| canonical_pcr_id | pcr.agriculture.crops.wheat-seed |
+| covered_products | wheat seed |
+
+## 3. Reference Flow
+
+| Field | Value |
+| --- | --- |
+| What | cleaned wheat seed for sowing |
+| How much | 1 kg |
+| How well | declared seed class and moisture basis |
+| How long or cycle | one seed production crop cycle |
+| reference_flow_link | Reference amount and product flow below |
+
+| Field | Value |
+| --- | --- |
+| Reference amount | 1 kg |
+| Reference product flow | Wheat 12da5e7d-9b93-4404-8c7d-08f98bec6238 |
+| Reference flow property | Mass 93a60a56-a3c8-11da-a746-0800200b9a66 |
+| Reference unit group | Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66 |
+| Reference unit | kg |
+| Required qualifiers | seed class; moisture basis |
+
+## 4. Measurement and Unit Rules
+
+| rule_id | Applies to | Required property | Required unit | Rule |
+| --- | --- | --- | --- | --- |
+| reference_mass | reference product | Mass 93a60a56-a3c8-11da-a746-0800200b9a66 | kg | Record the reference flow in kg. |
+`;
+
 function makeTempRoot() {
   return mkdtempSync(path.join(tmpdir(), "tiangong-pcr-cli-test-"));
 }
@@ -90,6 +123,14 @@ sync_with: pcr.zh-CN.md
 | covered_products | wheat seed |
 
 ## 3. Reference Flow
+
+| Field | Value |
+| --- | --- |
+| What | cleaned wheat seed for sowing |
+| How much | 1 kg |
+| How well | declared seed class and moisture basis |
+| How long or cycle | one seed production crop cycle |
+| reference_flow_link | Reference amount and product flow below |
 
 | Field | Value |
 | --- | --- |
@@ -242,6 +283,19 @@ test("init creates the bilingual PCR repository scaffold", () => {
     assert.match(
       readFileSync(path.join(root, "builder/docs/index.md"), "utf8"),
       /Builder Documentation Index/,
+    );
+    assert.deepEqual(
+      parseYaml(readFileSync(path.join(root, "library/catalog.yaml"), "utf8")),
+      {
+        schema_version: 1,
+        catalog_status: "scaffold",
+        pcr_index: "library/indexes/pcr-index.yaml",
+        classification_mappings: [],
+        notes: [
+          "Canonical PCR ids are independent from classification codes.",
+          "Add deterministic classification mapping files as they become available.",
+        ],
+      },
     );
     assert.ok(existsSync(path.join(root, "builder/docs/workflows")));
     assert.ok(existsSync(path.join(root, "builder/docs/contracts")));
@@ -709,7 +763,16 @@ test("lint accepts reasoned estimate ranges without source ids", () => {
     ]);
     writeFileSync(
       path.join(pcrDir, "pcr.en-US.md"),
-      `# Wheat Seed Production
+      `---
+pcr_id: pcr.agriculture.crops.wheat-seed
+language: en-US
+status: scaffold
+sync_with: pcr.zh-CN.md
+---
+
+# Wheat Seed Production
+
+${materialIdentityAndReferenceMarkdown}
 
 ## 5. System Boundary
 
@@ -803,11 +866,27 @@ languages:
   available:
     - en-US
     - zh-CN
+translation_status:
+  zh-CN: draft_translation
+target_entities:
+  - flow
+  - process
+  - lifecyclemodel
+  - dataset
 `,
     );
     writeFileSync(
       path.join(pcrDir, "pcr.en-US.md"),
-      `# Wheat Seed Production
+      `---
+pcr_id: pcr.agriculture.crops.wheat-seed
+language: en-US
+status: candidate
+sync_with: pcr.zh-CN.md
+---
+
+# Wheat Seed Production
+
+${materialIdentityAndReferenceMarkdown}
 
 ## 5. System Boundary
 
@@ -920,11 +999,27 @@ languages:
   available:
     - en-US
     - zh-CN
+translation_status:
+  zh-CN: draft_translation
+target_entities:
+  - flow
+  - process
+  - lifecyclemodel
+  - dataset
 `,
     );
     writeFileSync(
       path.join(pcrDir, "pcr.en-US.md"),
-      `# Wheat Seed Production
+      `---
+pcr_id: pcr.agriculture.crops.wheat-seed
+language: en-US
+status: candidate
+sync_with: pcr.zh-CN.md
+---
+
+# Wheat Seed Production
+
+${materialIdentityAndReferenceMarkdown}
 
 ## 5. System Boundary
 
@@ -1039,11 +1134,27 @@ languages:
   available:
     - en-US
     - zh-CN
+translation_status:
+  zh-CN: reviewed
+target_entities:
+  - flow
+  - process
+  - lifecyclemodel
+  - dataset
 `,
     );
     writeFileSync(
       path.join(pcrDir, "pcr.en-US.md"),
-      `# Wheat Seed Production
+      `---
+pcr_id: pcr.agriculture.crops.wheat-seed
+language: en-US
+status: active
+sync_with: pcr.zh-CN.md
+---
+
+# Wheat Seed Production
+
+${materialIdentityAndReferenceMarkdown}
 
 ## 5. System Boundary
 
