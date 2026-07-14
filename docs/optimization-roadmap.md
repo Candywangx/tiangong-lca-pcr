@@ -21,7 +21,7 @@ checkPaths:
   - classifications/**
   - library/modules/**
 lastReviewedAt: 2026-07-14
-lastReviewedCommit: c248880a854c1687567f3e4ea6c24e0dd78115ab
+lastReviewedCommit: 7eae0035def58c97d3846999ef8f3f98c431c86e
 ---
 
 # PCR 资料库优化路线图
@@ -89,7 +89,8 @@ alias/redirect 和物理迁移待推进。
 2. 已实现：catalog CLI 与 viewer 默认 material-first，legacy/all 只能显式请求；coverage summary/list 独立、受控并分页，known-unmapped resolve 不再伪装成方法学成功。
 3. 已实现：legacy scaffold compatibility 保留旧 id 和 exact resolve，同时明确 `record_kind`、`resolution_status` 与不可用 readiness；viewer 不再内联空 Markdown 或 scaffold guidance error。
 4. 已实现：canonical `import-cpc` 每次要求显式 source，默认 classification-only，缺失时创建 zero-edge mapping，校验并逐字节保留既有 mapping，创建 0 个 PCR；coordinate lock、no-follow read、baseline CAS、staged writes 和 mapping-last commit 防止并发覆盖及 dangling edge。`scaffold-cpc` 只有显式 `--legacy-scaffolds` 才能为 unmapped leaf append legacy edge/identity；现有目标必须四文件齐全且逐字节等于 legacy template，否则 fail closed。非 3.0 import 必须先注册 coverage descriptor。
-5. 待实现：为 positive edge 建立显式 acceptance 并收缩 mapping、建立 legacy alias/redirect registry，先做小范围 pilot，再分批物理删除 2,874 个模板等价目录。
+5. 已实现：coverage runtime 将 leaf inventory、mapping edge 和派生 status 重新绑定到 canonical source，不能在保留 accepted mapping 时把 `mapped` 静默降为 `unknown`。Catalog writer 拒绝路径逃逸和 symlink parent，使用 exclusive no-follow staging、baseline CAS、absent-target no-clobber，并按 index-first/catalog-last 发布。跨目录生成物仍是 ordered publish；崩溃级 group transaction 需要独立 journal/recover 设计。
+6. 待实现：为 positive edge 建立显式 acceptance 并收缩 mapping、建立 legacy alias/redirect registry，先做小范围 pilot，再分批物理删除 2,874 个模板等价目录。
 
 退出条件：canonical PCR 数量反映方法学实体数量，而不是外部分类叶子数量；新增分类体系不会复制 PCR 树。
 

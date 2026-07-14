@@ -194,6 +194,13 @@ truth，不能手工替代 mapping。
 已知 leaf 可以合法地处于 `unmapped`、`candidate_suggestion` 或 `manual_review`，此时不得为了让覆盖率
 看起来完整而自动创建 PCR id。
 
+`catalog:build` 对生成物执行受约束的 ordered publish：输出路径必须规范化且位于真实仓库根目录内，
+父目录和目标不能是 symbolic link；每个文件先用随机、exclusive、no-follow 的同目录临时文件 staging，
+再校验 root/parent identity、目标 baseline 和 staged bytes。原本不存在的目标使用 no-clobber 安装，
+material/coverage index 先安装，`library/catalog.yaml` 最后发布。由于这些生成物跨多个目录，这不是
+group-atomic transaction；进程中断可能留下 mixed generation，但 `catalog:check` 会检测 stale artifact，
+重新运行 `catalog:build` 可以收敛。若要保证崩溃级 all-or-nothing，必须另行引入 journal/recover 协议。
+
 当前迁移期仍保留旧 empty scaffold 目录及其 mapping entry，coverage 构建会把它们解释成
 `legacy_scaffold_reference`，而不是 material mapping。Phase 1 把合法、非 `manual_review` 且指向 material
 lifecycle pair 的 edge 投影为 `mapped`，但这不等于 mapping source 已具备逐 edge acceptance 治理。

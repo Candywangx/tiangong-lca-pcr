@@ -3,6 +3,8 @@ import {
   constants as fsConstants,
   existsSync,
   fstatSync,
+  fsyncSync,
+  linkSync,
   lstatSync,
   mkdirSync,
   openSync,
@@ -13,7 +15,7 @@ import {
   unlinkSync,
   writeFileSync,
 } from "node:fs";
-import { createHash } from "node:crypto";
+import { createHash, randomUUID } from "node:crypto";
 import path from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import { TextDecoder } from "node:util";
@@ -336,32 +338,366 @@ export function buildCoverageIndex({
   };
 }
 
-export function writeCatalogArtifacts(root, artifacts) {
+export function writeCatalogArtifacts(
+  root,
+  artifacts,
+  { tokenFactory = randomUUID, hooks = {} } = {},
+) {
+  const prepared = prepareCatalogArtifactWrites(root, artifacts);
   const pending = [];
   try {
-    for (const [index, artifact] of artifacts.entries()) {
-      const outputPath = path.join(root, artifact.path);
-      mkdirSync(path.dirname(outputPath), { recursive: true });
+    for (const [index, artifact] of prepared.entries()) {
+      const token = tokenFactory({ artifactPath: artifact.relativePath, index });
+      assertCatalogTemporaryToken(token, artifact.relativePath);
       const temporaryPath = path.join(
-        path.dirname(outputPath),
-        `.${path.basename(outputPath)}.catalog-${process.pid}-${index}.tmp`,
+        artifact.parentPath,
+        `.${path.basename(artifact.outputPath)}.catalog-${token}.tmp`,
       );
-      if (existsSync(temporaryPath)) {
-        unlinkSync(temporaryPath);
+
+      assertCatalogParentUnchanged(artifact);
+      let fileDescriptor;
+      try {
+        fileDescriptor = openSync(
+          temporaryPath,
+          fsConstants.O_WRONLY
+            | fsConstants.O_CREAT
+            | fsConstants.O_EXCL
+            | fsConstants.O_NOFOLLOW,
+          0o644,
+        );
+      } catch (error) {
+        throw new Error(
+          `could not create an exclusive temporary for ${artifact.relativePath}: ${error.message}`,
+          { cause: error },
+        );
       }
-      writeFileSync(temporaryPath, artifact.content, "utf8");
-      pending.push({ outputPath, temporaryPath });
+
+      const temporaryStat = fstatSync(fileDescriptor);
+      const staged = {
+        ...artifact,
+        temporaryPath,
+        temporaryIdentity: fileIdentity(temporaryStat),
+        temporarySha256: exactByteSha256(Buffer.from(artifact.content, "utf8")),
+      };
+      pending.push(staged);
+      try {
+        if (!temporaryStat.isFile()) {
+          throw new Error(`temporary for ${artifact.relativePath} is not a regular file`);
+        }
+        writeFileSync(fileDescriptor, artifact.content, "utf8");
+        fsyncSync(fileDescriptor);
+      } finally {
+        closeSync(fileDescriptor);
+      }
     }
-    for (const { outputPath, temporaryPath } of pending) {
-      renameSync(temporaryPath, outputPath);
+
+    hooks.afterStage?.({
+      artifacts: pending.map(({ relativePath, outputPath, temporaryPath }) => ({
+        path: relativePath,
+        outputPath,
+        temporaryPath,
+      })),
+    });
+
+    // Artifacts span directories, so this is an ordered publish rather than a group-atomic
+    // transaction. Keep the catalog last so it never advertises an index before installation.
+    const installOrder = [
+      ...pending.filter((artifact) => artifact.relativePath !== CATALOG_PATH),
+      ...pending.filter((artifact) => artifact.relativePath === CATALOG_PATH),
+    ];
+    for (const artifact of installOrder) {
+      hooks.beforeInstall?.({
+        path: artifact.relativePath,
+        outputPath: artifact.outputPath,
+        temporaryPath: artifact.temporaryPath,
+      });
+      assertCatalogParentUnchanged(artifact);
+      assertCatalogTargetUnchanged(artifact);
+      assertCatalogTemporaryUnchanged(artifact);
+      if (artifact.targetSnapshot === null) {
+        linkSync(artifact.temporaryPath, artifact.outputPath);
+        unlinkSync(artifact.temporaryPath);
+      } else {
+        renameSync(artifact.temporaryPath, artifact.outputPath);
+      }
     }
   } finally {
-    for (const { temporaryPath } of pending) {
-      if (existsSync(temporaryPath)) {
-        unlinkSync(temporaryPath);
-      }
+    for (const artifact of pending) {
+      cleanupOwnedCatalogTemporary(artifact);
     }
   }
+}
+
+function prepareCatalogArtifactWrites(root, artifacts) {
+  if (!Array.isArray(artifacts)) {
+    throw new Error("catalog artifacts must be an array");
+  }
+
+  const resolvedRoot = realpathSync(path.resolve(root));
+  const rootStat = lstatSync(resolvedRoot);
+  if (rootStat.isSymbolicLink() || !rootStat.isDirectory()) {
+    throw new Error(`catalog repository root must be a directory: ${resolvedRoot}`);
+  }
+  const rootIdentity = fileIdentity(rootStat);
+
+  const seenPaths = new Set();
+  const validated = artifacts.map((artifact) => {
+    const relativePath = validateCatalogArtifact(artifact);
+    if (seenPaths.has(relativePath)) {
+      throw new Error(`catalog artifact path is duplicated: ${relativePath}`);
+    }
+    seenPaths.add(relativePath);
+    const outputPath = path.join(resolvedRoot, ...relativePath.split("/"));
+    return {
+      content: artifact.content,
+      relativePath,
+      rootPath: resolvedRoot,
+      rootIdentity,
+      outputPath,
+      parentPath: path.dirname(outputPath),
+    };
+  });
+
+  for (const artifact of validated) {
+    assertCatalogParentChain(resolvedRoot, artifact.parentPath, artifact.relativePath, {
+      allowMissing: true,
+      rootIdentity,
+    });
+  }
+  for (const artifact of validated) {
+    createCatalogParentChain(
+      resolvedRoot,
+      artifact.parentPath,
+      artifact.relativePath,
+      rootIdentity,
+    );
+  }
+
+  return validated.map((artifact) => ({
+    ...artifact,
+    parentIdentity: fileIdentity(
+      assertCatalogParentChain(resolvedRoot, artifact.parentPath, artifact.relativePath, {
+        rootIdentity,
+      }),
+    ),
+    targetSnapshot: catalogFileSnapshot(artifact.outputPath, artifact.relativePath),
+  }));
+}
+
+function validateCatalogArtifact(artifact) {
+  const relativePath = artifact?.path;
+  if (
+    typeof relativePath !== "string"
+    || relativePath.length === 0
+    || relativePath.includes("\\")
+    || relativePath.includes("\0")
+    || relativePath.endsWith("/")
+    || path.posix.isAbsolute(relativePath)
+    || path.posix.normalize(relativePath) !== relativePath
+    || relativePath === "."
+    || relativePath === ".."
+    || relativePath.startsWith("../")
+  ) {
+    throw new Error(
+      `catalog artifact path must be a normalized repository-relative path: ${String(relativePath)}`,
+    );
+  }
+  if (typeof artifact.content !== "string") {
+    throw new Error(`catalog artifact ${relativePath} content must be a string`);
+  }
+  return relativePath;
+}
+
+function assertCatalogParentChain(
+  resolvedRoot,
+  parentPath,
+  relativePath,
+  { allowMissing = false, rootIdentity = null } = {},
+) {
+  const parentRelativePath = path.relative(resolvedRoot, parentPath);
+  if (
+    path.isAbsolute(parentRelativePath)
+    || parentRelativePath === ".."
+    || parentRelativePath.startsWith(`..${path.sep}`)
+  ) {
+    throw new Error(`catalog artifact ${relativePath} parent escapes the repository root`);
+  }
+
+  let currentPath = resolvedRoot;
+  let currentStat = lstatSync(currentPath);
+  if (currentStat.isSymbolicLink() || !currentStat.isDirectory()) {
+    throw new Error(`catalog repository root changed while preparing ${relativePath}`);
+  }
+  if (rootIdentity && !sameFileIdentity(currentStat, rootIdentity)) {
+    throw new Error(`catalog repository root changed while preparing ${relativePath}`);
+  }
+  for (const segment of parentRelativePath.split(path.sep).filter(Boolean)) {
+    currentPath = path.join(currentPath, segment);
+    try {
+      currentStat = lstatSync(currentPath);
+    } catch (error) {
+      if (allowMissing && error?.code === "ENOENT") {
+        return null;
+      }
+      throw new Error(`catalog artifact ${relativePath} parent is missing: ${currentPath}`, {
+        cause: error,
+      });
+    }
+    if (currentStat.isSymbolicLink()) {
+      throw new Error(
+        `catalog artifact ${relativePath} parent contains a symbolic link: ${currentPath}`,
+      );
+    }
+    if (!currentStat.isDirectory()) {
+      throw new Error(`catalog artifact ${relativePath} parent must be a directory: ${currentPath}`);
+    }
+  }
+  return currentStat;
+}
+
+function createCatalogParentChain(resolvedRoot, parentPath, relativePath, rootIdentity) {
+  assertCatalogParentChain(resolvedRoot, resolvedRoot, relativePath, { rootIdentity });
+  const parentRelativePath = path.relative(resolvedRoot, parentPath);
+  let currentPath = resolvedRoot;
+  for (const segment of parentRelativePath.split(path.sep).filter(Boolean)) {
+    currentPath = path.join(currentPath, segment);
+    try {
+      mkdirSync(currentPath, { mode: 0o755 });
+    } catch (error) {
+      if (error?.code !== "EEXIST") {
+        throw error;
+      }
+    }
+    const stat = lstatSync(currentPath);
+    if (stat.isSymbolicLink()) {
+      throw new Error(
+        `catalog artifact ${relativePath} parent contains a symbolic link: ${currentPath}`,
+      );
+    }
+    if (!stat.isDirectory()) {
+      throw new Error(`catalog artifact ${relativePath} parent must be a directory: ${currentPath}`);
+    }
+  }
+  assertCatalogParentChain(resolvedRoot, parentPath, relativePath, { rootIdentity });
+}
+
+function assertCatalogTemporaryToken(token, relativePath) {
+  if (typeof token !== "string" || !/^[A-Za-z0-9_-]{1,128}$/u.test(token)) {
+    throw new Error(`temporary token for ${relativePath} is invalid`);
+  }
+}
+
+function catalogFileSnapshot(filePath, label, { allowMissing = true } = {}) {
+  let pathStat;
+  try {
+    pathStat = lstatSync(filePath);
+  } catch (error) {
+    if (allowMissing && error?.code === "ENOENT") {
+      return null;
+    }
+    throw error;
+  }
+  if (pathStat.isSymbolicLink()) {
+    throw new Error(`catalog artifact ${label} must not be a symbolic link`);
+  }
+  if (!pathStat.isFile()) {
+    throw new Error(`catalog artifact ${label} must be a regular file`);
+  }
+
+  const fileDescriptor = openSync(filePath, MANAGED_READ_FLAGS);
+  try {
+    const descriptorStat = fstatSync(fileDescriptor);
+    const currentStat = lstatSync(filePath);
+    if (
+      !descriptorStat.isFile()
+      || descriptorStat.dev !== currentStat.dev
+      || descriptorStat.ino !== currentStat.ino
+    ) {
+      throw new Error(`catalog artifact ${label} changed while it was being opened`);
+    }
+    return {
+      ...fileIdentity(descriptorStat),
+      sha256: exactByteSha256(readFileSync(fileDescriptor)),
+    };
+  } finally {
+    closeSync(fileDescriptor);
+  }
+}
+
+function assertCatalogParentUnchanged(artifact) {
+  const currentIdentity = fileIdentity(
+    assertCatalogParentChain(
+      artifact.rootPath,
+      artifact.parentPath,
+      artifact.relativePath,
+      { rootIdentity: artifact.rootIdentity },
+    ),
+  );
+  if (!sameFileIdentity(currentIdentity, artifact.parentIdentity)) {
+    throw new Error(`catalog artifact ${artifact.relativePath} parent changed after staging`);
+  }
+}
+
+function assertCatalogTargetUnchanged(artifact) {
+  const current = catalogFileSnapshot(artifact.outputPath, artifact.relativePath);
+  const baseline = artifact.targetSnapshot;
+  if (
+    (baseline === null) !== (current === null)
+    || (baseline !== null && (
+      !sameFileIdentity(baseline, current)
+      || baseline.sha256 !== current.sha256
+    ))
+  ) {
+    throw new Error(`catalog artifact ${artifact.relativePath} changed after staging`);
+  }
+}
+
+function assertCatalogTemporaryUnchanged(artifact) {
+  const current = catalogFileSnapshot(
+    artifact.temporaryPath,
+    `temporary for ${artifact.relativePath}`,
+    { allowMissing: false },
+  );
+  if (
+    !sameFileIdentity(current, artifact.temporaryIdentity)
+    || current.sha256 !== artifact.temporarySha256
+  ) {
+    throw new Error(`temporary for ${artifact.relativePath} changed after staging`);
+  }
+}
+
+function cleanupOwnedCatalogTemporary(artifact) {
+  let parentStat;
+  try {
+    parentStat = assertCatalogParentChain(
+      artifact.rootPath,
+      artifact.parentPath,
+      artifact.relativePath,
+      { rootIdentity: artifact.rootIdentity },
+    );
+  } catch {
+    return;
+  }
+  if (!parentStat.isDirectory() || !sameFileIdentity(parentStat, artifact.parentIdentity)) {
+    return;
+  }
+  let temporaryStat;
+  try {
+    temporaryStat = lstatSync(artifact.temporaryPath);
+  } catch {
+    return;
+  }
+  if (temporaryStat.isFile() && sameFileIdentity(temporaryStat, artifact.temporaryIdentity)) {
+    unlinkSync(artifact.temporaryPath);
+  }
+}
+
+function fileIdentity(stat) {
+  return { dev: stat.dev, ino: stat.ino };
+}
+
+function sameFileIdentity(left, right) {
+  return left?.dev === right?.dev && left?.ino === right?.ino;
 }
 
 export function buildOrCheckCatalog(root = REPOSITORY_ROOT, { checkOnly = false } = {}) {
