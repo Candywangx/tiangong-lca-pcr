@@ -19,6 +19,7 @@ import {
   parsePcrMarkdownToStructured,
   structuredProjectionYaml,
 } from "./markdown-projection.mjs";
+import { inspectPublishedRevisionState } from "./published-revision-state.mjs";
 import { PCR_EN_FILE, PCR_ZH_FILE } from "./scaffold-templates.mjs";
 import { REQUIRED_DIRS } from "./builder-constants.mjs";
 import { validateBuilderContract } from "./schema-contracts.mjs";
@@ -67,7 +68,7 @@ const IMPORTANT_RANGE_PATTERNS = [
   },
 ];
 
-function walkDirectories(root, problems, repositoryRoot) {
+function discoverCanonicalPcrDirectories(root, problems, repositoryRoot) {
   if (!existsSync(root)) {
     return [];
   }
@@ -78,10 +79,19 @@ function walkDirectories(root, problems, repositoryRoot) {
     return [];
   }
   const results = [];
-  const stack = [root];
+  const stack = [{ directory: root, depth: 0 }];
   while (stack.length > 0) {
-    const current = stack.pop();
-    results.push(current);
+    const { directory: current, depth } = stack.pop();
+    const manifestPath = path.join(current, "manifest.yaml");
+    if (existsSync(manifestPath)) {
+      if (depth === 3) {
+        results.push(current);
+      } else {
+        problems.push(
+          `${toRepoRelative(repositoryRoot, manifestPath)}: manifest.yaml must be exactly three directories below library/pcrs`,
+        );
+      }
+    }
     for (const entry of readdirSync(current)) {
       const child = path.join(current, entry);
       const stats = lstatSync(child);
@@ -92,11 +102,11 @@ function walkDirectories(root, problems, repositoryRoot) {
         continue;
       }
       if (stats.isDirectory()) {
-        stack.push(child);
+        stack.push({ directory: child, depth: depth + 1 });
       }
     }
   }
-  return results;
+  return results.sort();
 }
 
 function toRepoRelative(root, absolutePath) {
@@ -505,6 +515,7 @@ function validateBilingualRuleAlignment(root, zhPath, english, chinese, problems
 export function inspectPcrDirectory({
   root,
   pcrDir,
+  manifestFileName = "manifest.yaml",
   manifestText: manifestTextOverride,
   structuredText: structuredTextOverride,
   checkManifestLifecycle = true,
@@ -514,11 +525,11 @@ export function inspectPcrDirectory({
   const directory = path.resolve(String(pcrDir));
   const problems = [];
   const warnings = [];
-  const manifestPath = path.join(directory, "manifest.yaml");
+  const manifestPath = path.join(directory, manifestFileName);
 
-  for (const fileName of ["manifest.yaml", PCR_EN_FILE, PCR_ZH_FILE, "structured.yaml"]) {
+  for (const fileName of [manifestFileName, PCR_EN_FILE, PCR_ZH_FILE, "structured.yaml"]) {
     const candidate = path.join(directory, fileName);
-    if (!existsSync(candidate) && !(fileName === "manifest.yaml" && manifestTextOverride !== undefined)) {
+    if (!existsSync(candidate) && !(fileName === manifestFileName && manifestTextOverride !== undefined)) {
       problems.push(`Missing PCR file: ${toRepoRelative(resolvedRoot, candidate)}`);
     }
   }
@@ -631,9 +642,15 @@ export function inspectPcrDirectory({
       entityKind: "material structured projection",
     });
     if (normalizeGeneratedText(actualStructuredText) !== normalizeGeneratedText(expectedStructuredText)) {
+      const commandDirectory = manifestFileName === "manifest.next.yaml"
+        ? path.dirname(directory)
+        : directory;
+      const workspaceOption = manifestFileName === "manifest.next.yaml"
+        ? " --workspace revision"
+        : "";
       problems.push(
         `${toRepoRelative(resolvedRoot, structuredPath)}: stale structured projection; run ` +
-          `\`npm run pcr:sync-structured -- --pcr ${toRepoRelative(resolvedRoot, directory)}\``,
+          `\`npm run pcr:sync-structured -- --pcr ${toRepoRelative(resolvedRoot, commandDirectory)}${workspaceOption}\``,
       );
     }
   }
@@ -674,14 +691,23 @@ export function lint(options) {
   }
 
   const pcrRoot = path.join(root, "library/pcrs");
-  for (const directory of walkDirectories(pcrRoot, problems, root)) {
-    const manifest = path.join(directory, "manifest.yaml");
-    if (!existsSync(manifest)) {
-      continue;
-    }
+  for (const directory of discoverCanonicalPcrDirectories(pcrRoot, problems, root)) {
     const result = inspectPcrDirectory({ root, pcrDir: directory });
     problems.push(...result.problems);
     warnings.push(...result.warnings);
+
+    const state = inspectPublishedRevisionState({ root, pcrDir: directory });
+    problems.push(...state.problems);
+    warnings.push(...state.warnings);
+    if (state.revision) {
+      const revisionResult = inspectPcrDirectory({
+        root,
+        pcrDir: state.revision.revisionDir,
+        manifestFileName: "manifest.next.yaml",
+      });
+      problems.push(...revisionResult.problems);
+      warnings.push(...revisionResult.warnings);
+    }
   }
 
   if (problems.length > 0) {

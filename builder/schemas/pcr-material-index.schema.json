@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tiangong-lca.org/schemas/pcr/v1/pcr-material-index.schema.json",
+  "title": "TianGong material PCR index",
+  "type": "object",
+  "required": ["schema_version", "index_kind", "status", "summary", "pcrs"],
+  "properties": {
+    "schema_version": { "const": 1 },
+    "index_kind": { "const": "tiangong-pcr-material-catalog" },
+    "status": { "const": "current" },
+    "summary": {
+      "type": "object",
+      "required": ["total"],
+      "properties": {
+        "total": { "type": "integer", "minimum": 0 }
+      },
+      "additionalProperties": false
+    },
+    "pcrs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "path", "title", "status", "content_maturity"],
+        "properties": {
+          "id": { "type": "string", "pattern": "^pcr\\." },
+          "path": { "type": "string", "pattern": "^library/pcrs/" },
+          "title": {
+            "type": "object",
+            "required": ["en-US", "zh-CN"],
+            "properties": {
+              "en-US": { "type": "string", "minLength": 1 },
+              "zh-CN": { "type": "string", "minLength": 1 }
+            },
+            "additionalProperties": false
+          },
+          "status": {
+            "allOf": [
+              {
+                "$ref": "https://tiangong-lca.org/schemas/pcr/v1/controlled-vocabulary.schema.json#/$defs/pcr_status"
+              },
+              { "not": { "const": "scaffold" } }
+            ]
+          },
+          "content_maturity": {
+            "allOf": [
+              {
+                "$ref": "https://tiangong-lca.org/schemas/pcr/v1/controlled-vocabulary.schema.json#/$defs/content_maturity"
+              },
+              { "not": { "const": "empty_scaffold" } }
+            ]
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

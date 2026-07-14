@@ -1,5 +1,6 @@
 import assert from "node:assert/strict";
-import { execFileSync, spawn } from "node:child_process";
+import { execFileSync, spawn, spawnSync } from "node:child_process";
+import { createHash } from "node:crypto";
 import {
   cpSync,
   existsSync,
@@ -16,11 +17,18 @@ import test from "node:test";
 import { pathToFileURL } from "node:url";
 
 import { buildGuidance } from "../pcr-core/src/index.mjs";
-import { buildViewer, VIEWER_BUILD_MARKER } from "./scripts/build-viewer-data.mjs";
+import {
+  buildViewer,
+  buildViewerData,
+  validateViewerScope,
+  VIEWER_BUILD_MARKER,
+} from "./scripts/build-viewer-data.mjs";
 import { serveViewer } from "./scripts/serve-viewer.mjs";
 import {
+  assertViewerDataContract,
   describeReadiness,
   filterPcrs,
+  formatCoverageSummary,
   renderMarkdown,
   summarizeGuidance,
 } from "./static/viewer-core.js";
@@ -28,6 +36,10 @@ import {
 const repoRoot = path.resolve(".");
 const abalonePcrId =
   "pcr.agriculture-forestry-and-fishery-products.fish-crustaceans-molluscs-and-other-aquatic-invertebrates-products.farmed-abalone-live-fresh-or-chilled";
+const wheatPcrId =
+  "pcr.agriculture-forestry-and-fishery-products.products-of-agriculture-horticulture-and-market-gardening.wheat-seed";
+const wheatPcrPath =
+  "library/pcrs/agriculture-forestry-and-fishery-products/products-of-agriculture-horticulture-and-market-gardening/wheat-seed";
 
 test("buildViewer writes viewer data and static assets", () => {
   const outDir = mkdtempSync(path.join(tmpdir(), "tiangong-pcr-viewer-"));
@@ -35,9 +47,11 @@ test("buildViewer writes viewer data and static assets", () => {
     const data = buildViewer({ root: repoRoot, outDir });
     const dataPath = path.join(outDir, "data", "pcr-viewer-data.json");
 
-    assert.equal(data.schema_version, 1);
+    assert.equal(data.schema_version, 3);
     assert.equal(data.viewer_kind, "tiangong-pcr-static-viewer-data");
+    assert.equal(data.catalog_scope, "material");
     assert.ok(data.pcr_count > 0);
+    assert.ok(data.pcr_count < 50, `Expected a bounded material catalog, received ${data.pcr_count} PCRs`);
     assert.ok(existsSync(dataPath));
     assert.ok(existsSync(path.join(outDir, "index.html")));
     assert.ok(existsSync(path.join(outDir, "styles.css")));
@@ -50,8 +64,24 @@ test("buildViewer writes viewer data and static assets", () => {
     const scaffold = parsed.pcrs.find((entry) => entry.content_maturity === "empty_scaffold");
 
     assert.ok(abalone);
-    assert.ok(scaffold);
-    assert.equal(scaffold.readiness.status, "unavailable");
+    assert.equal(scaffold, undefined);
+    assert.equal(parsed.pcrs.every((entry) => entry.record_kind === "methodology"), true);
+    assert.equal(parsed.catalog_scope, "material");
+    assert.equal(parsed.classification_coverage_summaries.length, 1);
+    const [cpcCoverage] = parsed.classification_coverage_summaries;
+    assert.deepEqual(cpcCoverage.coordinate, { system: "cpc", version: "3.0" });
+    assert.equal(cpcCoverage.index_kind, "classification-pcr-coverage");
+    assert.equal(
+      cpcCoverage.index_path,
+      "classifications/indexes/cpc-3.0-coverage.json",
+    );
+    assert.equal(cpcCoverage.entries_inlined, false);
+    assert.equal(cpcCoverage.summary.total, 2877);
+    assert.equal(cpcCoverage.summary.mapped, 3);
+    assert.equal(cpcCoverage.summary.unmapped, 2874);
+    assert.equal(Object.hasOwn(cpcCoverage, "entries"), false);
+    assert.equal(Object.hasOwn(parsed, "classification_coverage"), false);
+    assert.ok(readFileSync(dataPath).byteLength < 2_000_000, "Expected material viewer data below 2 MB");
     assert.equal(abalone.title["en-US"], "Farmed abalone, live, fresh or chilled");
     assert.equal(abalone.markdown["en-US"].includes("# Farmed abalone"), true);
     assert.equal(abalone.markdown["zh-CN"].includes("# 养殖鲍鱼"), true);
@@ -65,9 +95,155 @@ test("buildViewer writes viewer data and static assets", () => {
   }
 });
 
+test("buildViewer scope all preserves catalog compatibility without inlining empty scaffolds", () => {
+  const outDir = mkdtempSync(path.join(tmpdir(), "tiangong-pcr-viewer-all-"));
+  try {
+    const materialData = buildViewerData({ root: repoRoot });
+    const data = buildViewer({ root: repoRoot, outDir, scope: "all" });
+    const scaffolds = data.pcrs.filter(
+      (entry) => entry.record_kind === "legacy_scaffold_reference",
+    );
+
+    assert.equal(data.catalog_scope, "all");
+    assert.ok(data.pcr_count > materialData.pcr_count);
+    assert.ok(
+      JSON.stringify(materialData).length * 5 < JSON.stringify(data).length,
+      "Expected default material data to be at least five times smaller than all-scope data",
+    );
+    assert.ok(scaffolds.length > 0);
+    for (const scaffold of scaffolds) {
+      assert.equal(Object.hasOwn(scaffold, "markdown"), false);
+      assert.equal(Object.hasOwn(scaffold, "guidance"), false);
+      assert.doesNotMatch(JSON.stringify(scaffold), /guidance_error/u);
+    }
+    assert.ok(existsSync(path.join(outDir, VIEWER_BUILD_MARKER)));
+  } finally {
+    rmSync(outDir, { recursive: true, force: true });
+  }
+});
+
+test("viewer build CLI validates its material, all, and legacy scopes", () => {
+  assert.equal(validateViewerScope("material"), "material");
+  assert.equal(validateViewerScope("all"), "all");
+  assert.equal(validateViewerScope("legacy"), "legacy");
+  assert.throws(() => validateViewerScope("everything"), /Invalid viewer scope: everything/u);
+
+  const scriptPath = path.join(repoRoot, "packages/pcr-viewer/scripts/build-viewer-data.mjs");
+  const result = spawnSync(process.execPath, [scriptPath, "--scope", "everything"], {
+    encoding: "utf8",
+  });
+  assert.equal(result.status, 1);
+  assert.equal(result.stdout, "");
+  assert.match(result.stderr, /Invalid viewer scope: everything/u);
+});
+
+test("viewer coverage counts classification leaves independently from PCR catalog size", () => {
+  const root = mkdtempSync(path.join(tmpdir(), "tiangong-pcr-viewer-many-to-one-"));
+  try {
+    copyFixturePcr({ root, relativePath: wheatPcrPath });
+    const coverageIndex = writeFixtureCoverageIndex({
+      root,
+      system: "cpc",
+      version: "3.0",
+      mappedPcrIds: [wheatPcrId, wheatPcrId, wheatPcrId, wheatPcrId],
+    });
+    writeFixtureCatalog({ root, coverageIndexes: [coverageIndex] });
+
+    const data = buildViewerData({ root });
+    const [coverage] = data.classification_coverage_summaries;
+
+    assert.equal(data.pcr_count, 1);
+    assert.equal(coverage.summary.mapped, 4);
+    assert.ok(coverage.summary.mapped > data.pcr_count);
+    assert.equal(Object.hasOwn(coverage, "entries"), false);
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+  }
+});
+
+test("viewer discovers and presents every catalog-declared coverage coordinate", () => {
+  const root = mkdtempSync(path.join(tmpdir(), "tiangong-pcr-viewer-multi-coverage-"));
+  try {
+    copyFixturePcr({ root, relativePath: wheatPcrPath });
+    const cpcIndex = writeFixtureCoverageIndex({
+      root,
+      system: "cpc",
+      version: "3.0",
+      mappedPcrIds: [wheatPcrId, wheatPcrId],
+    });
+    const hsIndex = writeFixtureCoverageIndex({
+      root,
+      system: "hs",
+      version: "2022",
+      mappedPcrIds: [wheatPcrId],
+      unmappedCount: 2,
+    });
+    writeFixtureCatalog({ root, coverageIndexes: [cpcIndex, hsIndex] });
+
+    const data = buildViewerData({ root });
+    assert.equal(assertViewerDataContract(data), data);
+    assert.deepEqual(
+      data.classification_coverage_summaries.map((coverage) => coverage.coordinate),
+      [
+        { system: "cpc", version: "3.0" },
+        { system: "hs", version: "2022" },
+      ],
+    );
+    assert.deepEqual(
+      data.classification_coverage_summaries.map(formatCoverageSummary),
+      [
+        "CPC 3.0 · 2/2 classification leaves mapped",
+        "HS 2022 · 1/3 classification leaves mapped",
+      ],
+    );
+    assert.equal(
+      data.classification_coverage_summaries.every(
+        (coverage) => coverage.entries_inlined === false && !Object.hasOwn(coverage, "entries"),
+      ),
+      true,
+    );
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+  }
+});
+
+test("viewer fails closed when catalog coverage declarations are missing or invalid", () => {
+  const root = mkdtempSync(path.join(tmpdir(), "tiangong-pcr-viewer-invalid-coverage-"));
+  try {
+    mkdirSync(path.join(root, "library/pcrs"), { recursive: true });
+    assert.throws(() => buildViewerData({ root }), /Missing PCR catalog/u);
+
+    writeFileSync(
+      path.join(root, "library/catalog.yaml"),
+      "schema_version: 1\ncatalog_status: current\nclassification_coverage_indexes: []\n",
+    );
+    assert.throws(
+      () => buildViewerData({ root }),
+      /classification_coverage_indexes must be a non-empty array/u,
+    );
+
+    writeFixtureCatalog({ root, coverageIndexes: ["../outside-coverage.json"] });
+    assert.throws(
+      () => buildViewerData({ root }),
+      /Invalid PCR catalog coverage declaration/u,
+    );
+
+    writeFixtureCatalog({
+      root,
+      coverageIndexes: ["classifications/indexes/missing-1.0-coverage.json"],
+    });
+    assert.throws(
+      () => buildViewerData({ root }),
+      /Missing classification coverage index/u,
+    );
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+  }
+});
+
 test("buildViewer refuses protected and unowned output directories", () => {
   assert.throws(
-    () => buildViewer({ root: repoRoot, outDir: repoRoot }),
+    () => buildViewer({ root: repoRoot, outDir: repoRoot, scope: "all" }),
     /Refusing to build the PCR viewer into protected path/u,
   );
 
@@ -144,6 +320,11 @@ test("buildViewer does not replace an existing build with an empty catalog", () 
   const sentinelPath = path.join(outDir, "keep.txt");
   try {
     mkdirSync(path.join(emptyRoot, "library/pcrs"), { recursive: true });
+    writeFixtureCoverageIndex({ root: emptyRoot, system: "cpc", version: "3.0" });
+    writeFixtureCatalog({
+      root: emptyRoot,
+      coverageIndexes: ["classifications/indexes/cpc-3.0-coverage.json"],
+    });
     mkdirSync(outDir);
     writeFileSync(path.join(outDir, VIEWER_BUILD_MARKER), "owned viewer build\n");
     writeFileSync(sentinelPath, "last usable output\n");
@@ -195,6 +376,51 @@ test("viewer-core filters PCRs and renders safe Markdown", () => {
   assert.match(html, /<h1>Title<\/h1>/);
   assert.match(html, /&lt;unsafe&gt;/);
   assert.match(html, /<table>/);
+});
+
+test("viewer-core rejects stale or incomplete viewer data contracts", () => {
+  const data = {
+    schema_version: 3,
+    viewer_kind: "tiangong-pcr-static-viewer-data",
+    catalog_scope: "material",
+    classification_coverage_summaries: [viewerCoverageSummary()],
+    pcr_count: 0,
+    pcrs: [],
+  };
+
+  assert.equal(assertViewerDataContract(data), data);
+  assert.throws(
+    () => assertViewerDataContract({ ...data, schema_version: 2 }),
+    /Unsupported PCR viewer data schema version: 2/u,
+  );
+  assert.throws(
+    () => assertViewerDataContract({ ...data, classification_coverage_summaries: null }),
+    /classification_coverage_summaries must be a non-empty array/u,
+  );
+  assert.throws(
+    () =>
+      assertViewerDataContract({
+        ...data,
+        classification_coverage_summaries: [
+          { ...viewerCoverageSummary(), entries: [], entries_inlined: true },
+        ],
+      }),
+    /must not inline entries/u,
+  );
+  assert.throws(
+    () => assertViewerDataContract({ ...data, pcr_count: 1 }),
+    /pcr_count must match/u,
+  );
+});
+
+test("viewer labels classification matching as a literal filter, not a resolver", () => {
+  const appSource = readFileSync(path.join(repoRoot, "packages/pcr-viewer/static/app.js"), "utf8");
+
+  assert.match(appSource, /Literal metadata filter/u);
+  assert.match(appSource, /Substring filter only/u);
+  assert.match(appSource, /tiangong-pcr resolve/u);
+  assert.match(appSource, /classification_coverage_summaries/u);
+  assert.match(appSource, /coverageSummaries\.map/u);
 });
 
 test("viewer-core renders deep headings, inline code, and indented lists", () => {
@@ -331,12 +557,15 @@ test("viewer scripts can run from paths containing spaces and non-ASCII characte
       repoRoot,
       "--out-dir",
       outDir,
+      "--scope",
+      "material",
     ], {
       cwd: repoRoot,
       encoding: "utf8",
     });
 
     assert.match(buildOutput, /Built PCR viewer data for \d+ PCR records/);
+    assert.match(buildOutput, /scope: material/u);
 
     const server = spawn(process.execPath, [
       path.join(fixtureViewerRoot, "scripts", "serve-viewer.mjs"),
@@ -375,6 +604,160 @@ test("viewer scripts can run from paths containing spaces and non-ASCII characte
     rmSync(tempRoot, { recursive: true, force: true });
   }
 });
+
+function viewerCoverageSummary({ system = "cpc", version = "3.0" } = {}) {
+  return {
+    coordinate: { system, version },
+    schema_version: 1,
+    index_kind: "classification-pcr-coverage",
+    classification_system: system.toUpperCase(),
+    classification_version: version,
+    source: {},
+    summary: {
+      total: 0,
+      mapped: 0,
+      unmapped: 0,
+      candidate_suggestion: 0,
+      manual_review: 0,
+      unknown: 0,
+    },
+    index_path: `classifications/indexes/${system}-${version}-coverage.json`,
+    entries_inlined: false,
+  };
+}
+
+function copyFixturePcr({ root, relativePath }) {
+  const target = path.join(root, relativePath);
+  mkdirSync(path.dirname(target), { recursive: true });
+  cpSync(path.join(repoRoot, relativePath), target, { recursive: true });
+}
+
+function writeFixtureCatalog({ root, coverageIndexes }) {
+  const catalogPath = path.join(root, "library/catalog.yaml");
+  mkdirSync(path.dirname(catalogPath), { recursive: true });
+  writeFileSync(
+    catalogPath,
+    [
+      "schema_version: 1",
+      "catalog_status: current",
+      'pcr_index: "library/indexes/pcr-index.yaml"',
+      "classification_mappings: []",
+      "classification_coverage_indexes:",
+      ...coverageIndexes.map((indexPath) => `  - ${JSON.stringify(indexPath)}`),
+      "notes:",
+      '  - "Viewer test fixture."',
+      "",
+    ].join("\n"),
+  );
+}
+
+function writeFixtureCoverageIndex({
+  root,
+  system,
+  version,
+  mappedPcrIds = [],
+  unmappedCount = 0,
+}) {
+  const normalizedLeavesPath =
+    `classifications/systems/${system}/${version}/normalized/leaves.json`;
+  const mappingPath = `classifications/mappings/${system}-${version}-to-pcr.yaml`;
+  const indexPath = `classifications/indexes/${system}-${version}-coverage.json`;
+  const normalizedLeavesText = `${JSON.stringify(
+    {
+      schema_version: 1,
+      fixture: `${system}:${version}`,
+      leaf_count: mappedPcrIds.length + unmappedCount,
+    },
+    null,
+    2,
+  )}\n`;
+  const mappingText = [
+    "schema_version: 1",
+    `classification_system: ${JSON.stringify(system.toUpperCase())}`,
+    `classification_version: ${JSON.stringify(version)}`,
+    "mappings: []",
+    "",
+  ].join("\n");
+  writeFixtureFile({ root, relativePath: normalizedLeavesPath, contents: normalizedLeavesText });
+  writeFixtureFile({ root, relativePath: mappingPath, contents: mappingText });
+
+  const mappedEntries = mappedPcrIds.map((pcrId, index) =>
+    fixtureCoverageEntry({ system, index, pcrId }),
+  );
+  const unmappedEntries = Array.from({ length: unmappedCount }, (_, offset) =>
+    fixtureCoverageEntry({
+      system,
+      index: mappedEntries.length + offset,
+      pcrId: null,
+    }),
+  );
+  const entries = [...mappedEntries, ...unmappedEntries];
+  const document = {
+    schema_version: 1,
+    index_kind: "classification-pcr-coverage",
+    classification_system: system.toUpperCase(),
+    classification_version: version,
+    source: {
+      contract_version: "1",
+      generator: "builder/scripts/build-catalog.mjs",
+      generator_version: "1",
+      normalized_leaves: {
+        path: normalizedLeavesPath,
+        hash_mode: "exact_bytes",
+        sha256: sha256(normalizedLeavesText),
+      },
+      mapping: {
+        path: mappingPath,
+        hash_mode: "exact_bytes",
+        sha256: sha256(mappingText),
+      },
+    },
+    summary: {
+      total: entries.length,
+      mapped: mappedEntries.length,
+      unmapped: unmappedEntries.length,
+      candidate_suggestion: 0,
+      manual_review: 0,
+      unknown: 0,
+    },
+    entries,
+  };
+  writeFixtureFile({
+    root,
+    relativePath: indexPath,
+    contents: `${JSON.stringify(document, null, 2)}\n`,
+  });
+  return indexPath;
+}
+
+function fixtureCoverageEntry({ system, index, pcrId }) {
+  const code = `${system.toUpperCase()}-${String(index + 1).padStart(3, "0")}`;
+  return {
+    code,
+    label: `Fixture leaf ${index + 1}`,
+    path_codes: [code],
+    path_titles: [`Fixture leaf ${index + 1}`],
+    coverage_status: pcrId ? "mapped" : "unmapped",
+    mapping: pcrId
+      ? {
+          pcr_id: pcrId,
+          mapping_type: "exact",
+          confidence: "fixture",
+        }
+      : null,
+    legacy_reference: null,
+  };
+}
+
+function writeFixtureFile({ root, relativePath, contents }) {
+  const filePath = path.join(root, ...relativePath.split("/"));
+  mkdirSync(path.dirname(filePath), { recursive: true });
+  writeFileSync(filePath, contents);
+}
+
+function sha256(contents) {
+  return `sha256:${createHash("sha256").update(contents).digest("hex")}`;
+}
 
 async function assertResponse(baseUrl, route, status, contentTypePattern) {
   const response = await fetch(`${baseUrl}${route}`);

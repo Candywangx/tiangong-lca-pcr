@@ -48,6 +48,7 @@ Use top-level lifecycle fields for version state:
 - `status`
 - `updated_at_utc`
 - `published_at_utc`
+- `release_artifacts`
 - `content_maturity`
 - `translation_status`
 
@@ -81,12 +82,28 @@ npm run pcr:lifecycle -- --pcr <library/pcrs/...> --status active --content-matu
 
 `pcr:lifecycle` updates `updated_at_utc` but does not regenerate `structured.yaml` and cannot assign published state.
 Use `pcr:publish` only when assigning a published version and `published_at_utc`; failed publication preflight leaves
-the manifest and structured projection unchanged.
+the managed PCR directory unchanged. After publication, `release_artifacts` records the exact-byte SHA-256 of both
+current Markdown files and `structured.yaml`. Published and deprecated manifests require that digest set.
 
 `pcr:bump` cannot mutate a `published` / `published_methodology` or deprecated record. A new version of an audited
-record must first be opened through the audited revision contract in `published-revision-contract.md`. That contract
-is defined but not yet implemented; until its commands, Schemas, and transaction recovery exist, do not change the
-version of a published or deprecated PCR in place.
+published record must be opened with an explicit target version and edited through the audited revision contract:
+
+```bash
+npm run pcr:revise -- --pcr <library/pcrs/...> --version <target-semver>
+npm run pcr:sync-structured -- --pcr <library/pcrs/...> --workspace revision
+npm run pcr:lifecycle -- --pcr <library/pcrs/...> --workspace revision --status active --content-maturity reviewed_methodology --translation zh-CN=reviewed
+npm run pcr:publish -- --pcr <library/pcrs/...> --workspace revision
+```
+
+The revision manifest is `revision/manifest.next.yaml`; its version is fixed by `revision/revision.yaml` and it may
+move only between `candidate` and `active` until publication. `--workspace current` remains the default for lifecycle
+and sync commands, so revision work must opt in explicitly. A published current manifest permits only the exact
+one-way lifecycle update to `deprecated` plus `deprecated_methodology`; deprecated current state is immutable and
+cannot be reopened.
+
+First publication creates the initial immutable `releases/<semver>/` snapshot and `release-history.yaml`. Later
+revision publication appends the next release and promotes the revision in one recoverable directory transaction.
+See `published-revision-contract.md` for the release metadata, history, transaction, and recovery invariants.
 
 JSON Schema checks field shape and controlled values. Lifecycle compatibility, manifest-to-Markdown identity,
 translation alignment, material preflight, review blockers, and publication transition rules remain semantic

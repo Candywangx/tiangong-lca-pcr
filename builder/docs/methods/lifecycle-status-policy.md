@@ -47,9 +47,21 @@ Use `pcr:lifecycle` for review and translation state changes:
 npm run pcr:lifecycle -- --pcr <library/pcrs/...> --status active --content-maturity reviewed_methodology --translation zh-CN=reviewed
 ```
 
-Use `pcr:publish` only when assigning a published version and `published_at_utc`.
+Use `pcr:publish` only when assigning a published version, `published_at_utc`, release artifact digests, and the
+immutable release-history entry.
 
-Published and deprecated records cannot be version-bumped in place. Reopening one as a candidate revision requires
-the audited storage and transaction contract in `../contracts/published-revision-contract.md`. It intentionally adds
-no `revising` lifecycle value. The contract is defined but not yet implemented, so published and deprecated records
-remain immutable in place.
+Published and deprecated current records cannot be synced or version-bumped in place. Open a later version of a
+managed published PCR with an explicit target version:
+
+```bash
+npm run pcr:revise -- --pcr <library/pcrs/...> --version <target-semver>
+```
+
+The audited revision contract in `../contracts/published-revision-contract.md` intentionally adds no `revising`
+lifecycle value. The top-level manifest remains `published`, while `revision/manifest.next.yaml` moves from
+`candidate/authored_methodology` to `active/reviewed_methodology` through
+`pcr:lifecycle --workspace revision`. Publication promotes it with `pcr:publish --workspace revision`; its target
+version is locked by `revision.yaml`.
+
+A published current record permits only the one-way transition to `deprecated/deprecated_methodology`. Deprecated
+state cannot return to candidate or active and cannot be opened with `pcr:revise`.

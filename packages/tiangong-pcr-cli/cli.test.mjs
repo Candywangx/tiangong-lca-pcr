@@ -1,5 +1,6 @@
 import assert from "node:assert/strict";
 import { execFileSync } from "node:child_process";
+import { createHash } from "node:crypto";
 import {
   cpSync,
   mkdirSync,
@@ -38,6 +39,14 @@ function runCliFailure(args) {
   });
 }
 
+function runCliAtRoot(root, args) {
+  return execFileSync(process.execPath, [cliPath, "--root", root, ...args], {
+    cwd: repoRoot,
+    encoding: "utf8",
+    stdio: ["ignore", "pipe", "pipe"],
+  });
+}
+
 test("list prints PCR records as JSON", () => {
   const output = runCli(["list", "--status", "candidate", "--format", "json"]);
   const page = JSON.parse(output);
@@ -47,19 +56,44 @@ test("list prints PCR records as JSON", () => {
   assert.ok(page.items.some((entry) => entry.id === wheatSeedPcrId));
 });
 
+test("list defaults to material scope and derives legacy scope for scaffold filters", () => {
+  const material = JSON.parse(runCli(["list", "--format", "json"]));
+  const legacy = JSON.parse(runCli([
+    "list",
+    "--status",
+    "scaffold",
+    "--page-size",
+    "2",
+    "--format",
+    "json",
+  ]));
+
+  assert.equal(material.requested_scope, null);
+  assert.equal(material.effective_scope, "material");
+  assert.equal(material.scope_source, "default");
+  assert.equal(material.filters.scope, "material");
+  assert.ok(material.items.every((entry) => entry.record_kind === "methodology"));
+
+  assert.equal(legacy.requested_scope, null);
+  assert.equal(legacy.effective_scope, "legacy");
+  assert.equal(legacy.scope_source, "derived_from_status");
+  assert.equal(legacy.filters.scope, "legacy");
+  assert.ok(legacy.items.every((entry) => entry.record_kind === "legacy_scaffold_reference"));
+});
+
 test("list paginates to 10 records by default and suggests the next page", () => {
-  const output = runCli(["list"]);
+  const output = runCli(["list", "--scope", "all"]);
 
   assert.match(output, /PCR id \| Status \| Readiness \| Title/);
   assert.match(output, /Showing 1-10 of /);
   assert.match(output, /Next page:/);
-  assert.match(output, /npm --silent run tiangong-pcr -- list --page 2/);
+  assert.match(output, /npm --silent run tiangong-pcr -- list --scope all --page 2/);
   assert.match(output, /--root /);
   assert.match(output, /usable_for_guidance/);
 });
 
 test("list next commands preserve custom root and output format", () => {
-  const page = JSON.parse(runCli(["list", "--format", "json"]));
+  const page = JSON.parse(runCli(["list", "--scope", "all", "--format", "json"]));
 
   assert.match(page.next_command, /--root /);
   assert.match(page.next_command, /--format json/);
@@ -71,6 +105,8 @@ test("list path-prefix filters the catalog and survives pagination", () => {
     "agriculture-forestry-and-fishery-products/products-of-agriculture-horticulture-and-market-gardening";
   const page = JSON.parse(runCli([
     "list",
+    "--scope",
+    "all",
     "--path-prefix",
     pathPrefix,
     "--page-size",
@@ -83,6 +119,7 @@ test("list path-prefix filters the catalog and survives pagination", () => {
   assert.ok(page.total_count > 1);
   assert.ok(page.items.every((entry) => entry.path.includes(pathPrefix)));
   assert.deepEqual(page.filters, {
+    scope: "all",
     status: null,
     content_maturity: null,
     path_prefix: pathPrefix,
@@ -122,6 +159,91 @@ test("resolve help explains deterministic mapping usage", () => {
   assert.match(output, /does not prove that the methodology is usable/);
 });
 
+test("coverage help exposes bounded deterministic browsing and no auto-selection", () => {
+  const parentHelp = runCli(["coverage", "--help"]);
+  const summaryHelp = runCli(["coverage", "summary", "--help"]);
+  const listHelp = runCli(["coverage", "list", "--help"]);
+
+  assert.match(parentHelp, /Usage: tiangong-pcr coverage <summary\|list>/);
+  assert.match(parentHelp, /coverage summary --classification <system>:<version>/);
+  assert.match(parentHelp, /coverage list --classification <system>:<version>/);
+  assert.match(parentHelp, /summary and list support json\|table/);
+  assert.match(parentHelp, /npm --silent run tiangong-pcr -- coverage summary --classification cpc:3\.0 --format json/);
+  assert.match(summaryHelp, /bounded aggregate coverage/);
+  assert.match(summaryHelp, /cpc:3\.0/);
+  assert.match(listHelp, /not fuzzy search/);
+  assert.match(listHelp, /never selected as accepted PCR mappings/);
+  assert.match(listHelp, /previous_command/);
+});
+
+test("coverage parent errors name both valid subcommands", () => {
+  for (const args of [["coverage"], ["coverage", "nope"]]) {
+    assert.throws(
+      () => runCliFailure(args),
+      (error) => {
+        const stderr = String(error.stderr);
+        assert.match(stderr, /coverage summary --classification <system>:<version>/);
+        assert.match(stderr, /coverage list --classification <system>:<version>/);
+        return true;
+      },
+    );
+  }
+
+  assert.throws(
+    () => runCliFailure(["coverage", "--format", "json"]),
+    (error) => {
+      assert.equal(String(error.stdout), "");
+      const envelope = JSON.parse(String(error.stderr));
+      assert.equal(envelope.error.code, "PCR_CLI_MISSING_SUBCOMMAND");
+      assert.deepEqual(envelope.error.details.valid_subcommands, ["summary", "list"]);
+      return true;
+    },
+  );
+});
+
+test("coverage summary is bounded and coverage list exposes stable pagination context", () => {
+  const summary = JSON.parse(runCli([
+    "coverage",
+    "summary",
+    "--classification",
+    "cpc:3.0",
+    "--format",
+    "json",
+  ]));
+  const page = JSON.parse(runCli([
+    "coverage",
+    "list",
+    "--classification",
+    "cpc:3.0",
+    "--status",
+    "unmapped",
+    "--page-size",
+    "2",
+    "--format",
+    "json",
+  ]));
+
+  assert.equal(summary.summary.total, 2877);
+  assert.equal(summary.summary.mapped, 3);
+  assert.equal(summary.completeness.bounded, true);
+  assert.equal(summary.completeness.entry_details_included, false);
+  assert.equal(Object.hasOwn(summary, "entries"), false);
+  assert.match(summary.next_command, /coverage list --classification cpc:3\.0/);
+
+  assert.deepEqual(page.filters, { status: "unmapped" });
+  assert.equal(page.completeness.page, 1);
+  assert.equal(page.completeness.page_size, 2);
+  assert.equal(page.completeness.returned_count, 2);
+  assert.equal(page.completeness.total_count, 2874);
+  assert.equal(page.completeness.has_more, true);
+  assert.ok(page.items.every((entry) => entry.coverage_status === "unmapped"));
+  assert.ok(page.items.every((entry) => entry.mapping === null));
+  assert.match(page.next_command, /--status unmapped/);
+  assert.match(page.next_command, /--page 2/);
+  assert.match(page.next_command, /--root /);
+  assert.match(page.next_command, /--format json/);
+});
+
 test("guidance help keeps foreground dataset production as the primary workflow", () => {
   const output = runCli(["guidance", "--help"]);
 
@@ -157,8 +279,65 @@ test("resolve prints deterministic classification mapping as JSON", () => {
 
   assert.equal(result.mapping.pcr_id, wheatSeedPcrId);
   assert.equal(result.mapping.mapping_type, "exact");
+  assert.equal(result.resolution_status, "mapped");
+  assert.equal(result.coverage_status, "mapped");
+  assert.equal(result.coverage.code, "01111");
   assert.match(result.next_command, /--root /);
   assert.match(result.next_command, /--format json/);
+});
+
+test("resolve keeps legacy scaffolds compatible without presenting them as methodology", () => {
+  const result = JSON.parse(runCli([
+    "resolve",
+    "--classification",
+    "cpc:3.0:01112",
+    "--format",
+    "json",
+  ]));
+
+  assert.equal(result.resolution_status, "legacy_scaffold_compatibility");
+  assert.equal(result.coverage_status, "unmapped");
+  assert.equal(result.mapping.code, "01112");
+  assert.equal(result.pcr.record_kind, "legacy_scaffold_reference");
+  assert.equal(result.next_command, null);
+  assert.ok(result.next_steps.some((step) => step.includes("Do not run guidance")));
+});
+
+test("resolve returns known non-mapped coverage as success and rejects only unknown codes", () => {
+  const root = mkdtempSync(path.join(tmpdir(), "tiangong-pcr-cli-unmapped-"));
+  try {
+    writeKnownUnmappedCoverage(root);
+    const known = JSON.parse(runCliAtRoot(root, [
+      "resolve",
+      "--classification",
+      "cpc:3.0:X-1",
+      "--format",
+      "json",
+    ]));
+    assert.equal(known.resolution_status, "unmapped");
+    assert.equal(known.coverage_status, "unknown");
+    assert.equal(known.mapping, null);
+    assert.equal(known.pcr, null);
+    assert.match(known.next_command, /coverage list/);
+
+    assert.throws(
+      () => runCliAtRoot(root, [
+        "resolve",
+        "--classification",
+        "cpc:3.0:NOT-THERE",
+        "--format",
+        "json",
+      ]),
+      (error) => {
+        assert.equal(String(error.stdout), "");
+        const envelope = JSON.parse(String(error.stderr));
+        assert.equal(envelope.error.code, "PCR_CLASSIFICATION_CODE_UNKNOWN");
+        return true;
+      },
+    );
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+  }
 });
 
 test("guidance prints Agent-facing data-production PCR rules", () => {
@@ -490,6 +669,37 @@ test("classification, language, vocabulary filters, and validation policy are st
       code: "PCR_CLI_INVALID_CHOICE",
     },
     {
+      name: "catalog scope is controlled",
+      args: ["list", "--scope", "everything", "--format", "json"],
+      code: "PCR_CLI_INVALID_CHOICE",
+    },
+    {
+      name: "coverage classification has exactly two segments",
+      args: [
+        "coverage",
+        "summary",
+        "--classification",
+        "cpc:3.0:01111",
+        "--format",
+        "json",
+      ],
+      code: "PCR_CLI_INVALID_CLASSIFICATION",
+    },
+    {
+      name: "coverage status is controlled",
+      args: [
+        "coverage",
+        "list",
+        "--classification",
+        "cpc:3.0",
+        "--status",
+        "maybe",
+        "--format",
+        "json",
+      ],
+      code: "PCR_CLI_INVALID_CHOICE",
+    },
+    {
       name: "fail-on is checked before reading input",
       args: [
         "validate-dataset",
@@ -642,3 +852,79 @@ test("feedback type and malformed global invocations fail with actionable JSON",
     },
   );
 });
+
+function writeKnownUnmappedCoverage(root) {
+  const leavesPath = path.join(
+    root,
+    "classifications/systems/cpc/3.0/normalized/leaves.json",
+  );
+  mkdirSync(path.dirname(leavesPath), { recursive: true });
+  writeFileSync(
+    leavesPath,
+    `${JSON.stringify({
+      classification_system: "CPC",
+      classification_version: "3.0",
+      leaves: ["X-1"],
+    }, null, 2)}\n`,
+  );
+  const mappingPath = path.join(root, "classifications/mappings/cpc-3.0-to-pcr.yaml");
+  mkdirSync(path.dirname(mappingPath), { recursive: true });
+  writeFileSync(
+    mappingPath,
+    `schema_version: 1
+classification_system: CPC
+classification_version: "3.0"
+mappings:
+  []
+`,
+  );
+  const indexDir = path.join(root, "classifications/indexes");
+  mkdirSync(indexDir, { recursive: true });
+  writeFileSync(
+    path.join(indexDir, "cpc-3.0-coverage.json"),
+    `${JSON.stringify({
+      schema_version: 1,
+      index_kind: "classification-pcr-coverage",
+      classification_system: "CPC",
+      classification_version: "3.0",
+      source: {
+        contract_version: "1",
+        generator: "builder/scripts/build-catalog.mjs",
+        generator_version: "1",
+        normalized_leaves: {
+          path: "classifications/systems/cpc/3.0/normalized/leaves.json",
+          hash_mode: "exact_bytes",
+          sha256: exactFileSha256(leavesPath),
+        },
+        mapping: {
+          path: "classifications/mappings/cpc-3.0-to-pcr.yaml",
+          hash_mode: "exact_bytes",
+          sha256: exactFileSha256(mappingPath),
+        },
+      },
+      summary: {
+        total: 1,
+        mapped: 0,
+        unmapped: 0,
+        candidate_suggestion: 0,
+        manual_review: 0,
+        unknown: 1,
+      },
+      entries: [
+        {
+          code: "X-1",
+          label: "Known code without mapping",
+          path_codes: ["X", "X-1"],
+          path_titles: ["Fixture", "Known code without mapping"],
+          coverage_status: "unknown",
+          mapping: null,
+          legacy_reference: null,
+        },
+      ],
+    }, null, 2)}\n`,
+  );
+}
+
+function exactFileSha256(filePath) {
+  return `sha256:${createHash("sha256").update(readFileSync(filePath)).digest("hex")}`;
+}

@@ -1,7 +1,9 @@
 import {
+  assertViewerDataContract,
   describeReadiness,
   escapeHtml,
   filterPcrs,
+  formatCoverageSummary,
   renderMarkdown,
   summarizeGuidance,
 } from "./viewer-core.js";
@@ -26,7 +28,7 @@ async function boot() {
     if (!response.ok) {
       throw new Error(`Unable to load viewer data: HTTP ${response.status}`);
     }
-    state.data = await response.json();
+    state.data = assertViewerDataContract(await response.json());
     state.selectedId = state.data.pcrs[0]?.id ?? "";
     render();
   } catch (error) {
@@ -49,6 +51,7 @@ function render() {
         <div>
           <p class="eyebrow">TianGong LCA</p>
           <h1>PCR Viewer</h1>
+          ${renderCatalogSummary(state.data)}
         </div>
         <span class="count">${filtered.length}/${pcrs.length}</span>
       </header>
@@ -104,8 +107,9 @@ function renderFilters(pcrs) {
   return `
     <div class="filters">
       <label>
-        <span>Search</span>
-        <input id="query" value="${escapeHtml(state.query)}" placeholder="PCR id, title, CPC code">
+        <span>Literal metadata filter</span>
+        <input id="query" aria-describedby="literal-filter-note" value="${escapeHtml(state.query)}" placeholder="Filter PCR id, title, or classification text">
+        <small class="filter-note" id="literal-filter-note">Substring filter only. Use <code>tiangong-pcr resolve</code> for deterministic classification resolution.</small>
       </label>
       <label>
         <span>Status</span>
@@ -187,15 +191,25 @@ function renderTabButton(tab) {
 
 function renderTabContent(pcr) {
   if (state.tab === "guidance") {
+    if (!pcr.guidance) {
+      return renderMethodologyNotInlined(pcr);
+    }
     return renderGuidance(pcr.guidance);
   }
   if (state.tab === "sources") {
+    if (!pcr.guidance) {
+      return renderMethodologyNotInlined(pcr);
+    }
     return renderSources(pcr.guidance?.data_sources ?? []);
   }
   const markdown = pcr.markdown?.[state.language] ?? "";
   return markdown
     ? `<div class="markdown-body">${renderMarkdown(markdown)}</div>`
     : `<div class="empty-state"><h3>No ${escapeHtml(state.language)} Markdown</h3><p>This PCR does not have a readable Markdown file for the selected language.</p></div>`;
+}
+
+function renderMethodologyNotInlined(pcr) {
+  return `<div class="empty-state"><h3>Methodology not inlined</h3><p>${escapeHtml(pcr.id)} is present for catalog or authoring compatibility, but this viewer build does not inline methodology for empty scaffolds.</p></div>`;
 }
 
 function renderGuidance(guidance = {}) {
@@ -308,6 +322,19 @@ function unique(values) {
 
 function formatClassificationRefs(refs = []) {
   return refs.map((ref) => `${ref.system ?? ""} ${ref.version ?? ""} ${ref.code ?? ""}`.trim()).join("; ");
+}
+
+function renderCatalogSummary(data = {}) {
+  const scope = data.catalog_scope ?? "unknown";
+  const coverageSummaries = data.classification_coverage_summaries ?? [];
+  return `
+    <div class="catalog-summary">
+      <p>${escapeHtml(`${scope} catalog · ${data.pcr_count ?? 0} PCR records`)}</p>
+      <ul aria-label="Classification coverage summaries">
+        ${coverageSummaries.map((coverage) => `<li>${escapeHtml(formatCoverageSummary(coverage))}</li>`).join("")}
+      </ul>
+    </div>
+  `;
 }
 
 function tabLabel(tab) {

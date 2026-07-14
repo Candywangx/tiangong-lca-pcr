@@ -3,10 +3,14 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 
 import {
+  CLASSIFICATION_COVERAGE_STATUSES,
   FEEDBACK_TYPES,
+  PCR_CATALOG_SCOPES,
   buildGuidance,
   buildPcrTree,
   createFeedbackDraft,
+  getClassificationCoverageSummary,
+  listClassificationCoverage,
   listPcrs,
   readPcrMarkdown,
   resolveClassification,
@@ -23,11 +27,16 @@ const VALID_FAIL_ON = new Set(["never", "error", "warning"]);
 const VALID_LANGUAGES = new Set(["en-US", "zh-CN"]);
 const VALID_PCR_STATUSES = new Set(PCR_STATUS_VALUES);
 const VALID_CONTENT_MATURITIES = new Set(CONTENT_MATURITY_VALUES);
+const VALID_CATALOG_SCOPES = new Set(PCR_CATALOG_SCOPES);
+const VALID_COVERAGE_STATUSES = new Set(CLASSIFICATION_COVERAGE_STATUSES);
 const GLOBAL_OPTIONS = new Set(["root", "format", "help"]);
 const GLOBAL_HELP_OPTIONS = new Set(["root", "help"]);
 const COMMAND_OPTIONS = {
-  list: new Set(["status", "content-maturity", "path-prefix", "page", "page-size"]),
-  tree: new Set(["depth"]),
+  list: new Set(["status", "content-maturity", "path-prefix", "scope", "page", "page-size"]),
+  tree: new Set(["depth", "scope"]),
+  coverage: new Set(),
+  "coverage:summary": new Set(["classification"]),
+  "coverage:list": new Set(["classification", "status", "page", "page-size"]),
   resolve: new Set(["classification"]),
   show: new Set(["pcr", "lang"]),
   guidance: new Set(["pcr"]),
@@ -47,6 +56,21 @@ const COMMAND_OPTIONS = {
 const COMMAND_DEFINITIONS = [
   { key: "list", command: "list", formats: ["json", "markdown", "table"], defaultFormat: "table" },
   { key: "tree", command: "tree", formats: ["json", "markdown"], defaultFormat: "markdown" },
+  { key: "coverage", command: "coverage", formats: ["json", "table"], defaultFormat: "table" },
+  {
+    key: "coverage:summary",
+    command: "coverage",
+    positional: ["summary"],
+    formats: ["json", "table"],
+    defaultFormat: "table",
+  },
+  {
+    key: "coverage:list",
+    command: "coverage",
+    positional: ["list"],
+    formats: ["json", "table"],
+    defaultFormat: "table",
+  },
   { key: "resolve", command: "resolve", formats: ["json"], defaultFormat: "json" },
   { key: "show", command: "show", formats: ["markdown"], defaultFormat: "markdown" },
   { key: "guidance", command: "guidance", formats: ["json"], defaultFormat: "json" },
@@ -90,28 +114,58 @@ export function runTiangongPcr(argv) {
 
     if (command === "list") {
       validateListOptions(options);
-      return ok(writeOutput(paginateList(filterPcrs(listPcrs({ root }), options), options), format, formatListTable));
+      const scope = effectiveCatalogScope(options);
+      const page = paginateList(
+        filterPcrs(listPcrs({ root, scope: scope.effective }), options),
+        options,
+        scope,
+      );
+      return ok(writeOutput(page, format, formatListTable));
     }
     if (command === "tree") {
       const depth = positiveIntegerOption(options.depth, "depth", 2);
-      const tree = buildPcrTree({ root, depth });
+      const scope = effectiveCatalogScope(options);
+      const tree = buildPcrTree({ root, depth, scope: scope.effective });
       if (format === "json") {
-        return ok(`${JSON.stringify(treeOutput(tree, depth), null, 2)}\n`);
+        return ok(`${JSON.stringify(treeOutput(tree, depth, scope), null, 2)}\n`);
       }
-      return ok(`${formatTreeMarkdown(tree, depth)}\n`);
+      return ok(`${formatTreeMarkdown(tree, depth, scope)}\n`);
+    }
+    if (command === "coverage" && positional.length === 0) {
+      throw new CliError(
+        "PCR_CLI_MISSING_SUBCOMMAND",
+        "Missing coverage subcommand. Use `coverage summary --classification <system>:<version>` or `coverage list --classification <system>:<version>`.",
+        { command: "coverage", valid_subcommands: ["summary", "list"] },
+      );
+    }
+    if (command === "coverage" && positional[0] === "summary") {
+      const classification = parseClassificationSelector(options.classification, {
+        includeCode: false,
+      });
+      const summary = coverageSummaryOutput(
+        getClassificationCoverageSummary({ root, ...classification }),
+        options,
+      );
+      return ok(writeOutput(summary, format, formatCoverageSummary));
+    }
+    if (command === "coverage" && positional[0] === "list") {
+      const classification = parseClassificationSelector(options.classification, {
+        includeCode: false,
+      });
+      validateCoverageListOptions(options);
+      const result = listClassificationCoverage({
+        root,
+        ...classification,
+        status: options.status === undefined ? null : String(options.status),
+      });
+      const page = paginateCoverage(result, classification, options);
+      return ok(writeOutput(page, format, formatCoverageList));
     }
     if (command === "resolve") {
-      const classification = String(options.classification ?? "");
-      const classificationParts = classification.split(":");
-      if (classificationParts.length !== 3 || classificationParts.some((part) => part.length === 0)) {
-        throw new CliError(
-          "PCR_CLI_INVALID_CLASSIFICATION",
-          "Use --classification <system>:<version>:<code>, for example cpc:3.0:01111",
-          { value: classification },
-        );
-      }
-      const [system, version, code] = classificationParts;
-      const resolution = resolveClassification({ root, system, version, code });
+      const classification = parseClassificationSelector(options.classification, {
+        includeCode: true,
+      });
+      const resolution = resolveClassification({ root, ...classification });
       return ok(`${JSON.stringify(resolveOutput(resolution, options), null, 2)}\n`);
     }
     if (command === "show") {
@@ -262,6 +316,21 @@ function requireCommandDefinition(command, positional) {
     return definition;
   }
 
+  if (command === "coverage") {
+    const subcommand = positional[0] ?? "";
+    if (!["summary", "list"].includes(subcommand)) {
+      throw new CliError(
+        "PCR_CLI_UNKNOWN_SUBCOMMAND",
+        `Unknown coverage subcommand${subcommand ? `: ${subcommand}` : ""}. Use \`coverage summary --classification <system>:<version>\` or \`coverage list --classification <system>:<version>\`.`,
+        { command: "coverage", subcommand: subcommand || null, valid_subcommands: ["summary", "list"] },
+      );
+    }
+    throw new CliError(
+      "PCR_CLI_UNEXPECTED_POSITIONAL",
+      `Unexpected positional argument(s) for coverage ${subcommand}: ${positional.slice(1).join(" ")}`,
+    );
+  }
+
   const commandDefinitions = COMMAND_DEFINITIONS.filter((candidate) => candidate.command === command);
   if (commandDefinitions.length > 0) {
     const expected = commandDefinitions[0].positional ?? [];
@@ -403,6 +472,38 @@ function readInputFile(value) {
   }
 }
 
+function parseClassificationSelector(value, { includeCode }) {
+  const classification = String(value ?? "");
+  const parts = classification.split(":");
+  const expectedParts = includeCode ? 3 : 2;
+  if (parts.length !== expectedParts || parts.some((part) => part.length === 0)) {
+    const expected = includeCode
+      ? "<system>:<version>:<code>, for example cpc:3.0:01111"
+      : "<system>:<version>, for example cpc:3.0";
+    throw new CliError(
+      "PCR_CLI_INVALID_CLASSIFICATION",
+      `Use --classification ${expected}`,
+      { value: classification, expected_segments: expectedParts },
+    );
+  }
+  const [system, version, code] = parts;
+  if (
+    !/^[A-Za-z0-9][A-Za-z0-9_-]*$/u.test(system)
+    || !/^[A-Za-z0-9][A-Za-z0-9._-]*$/u.test(version)
+    || (includeCode && !/^[A-Za-z0-9][A-Za-z0-9._-]*$/u.test(code))
+  ) {
+    throw new CliError(
+      "PCR_CLI_INVALID_CLASSIFICATION",
+      `Invalid --classification "${classification}". Use identifier tokens without spaces or path separators.`,
+      { value: classification },
+    );
+  }
+  if (includeCode) {
+    return { system, version, code };
+  }
+  return { system, version };
+}
+
 function validateListOptions(options) {
   if (options.status !== undefined && !VALID_PCR_STATUSES.has(String(options.status))) {
     throw invalidChoiceError("status", String(options.status), PCR_STATUS_VALUES);
@@ -420,8 +521,43 @@ function validateListOptions(options) {
   if (options["path-prefix"] !== undefined) {
     normalizePathPrefix(options["path-prefix"]);
   }
+  validateCatalogScope(options.scope);
   positiveIntegerOption(options.page, "page", 1);
   positiveIntegerOption(options["page-size"], "page-size", 10, 100);
+}
+
+function validateCoverageListOptions(options) {
+  if (options.status !== undefined && !VALID_COVERAGE_STATUSES.has(String(options.status))) {
+    throw invalidChoiceError("status", String(options.status), CLASSIFICATION_COVERAGE_STATUSES, {
+      command: "coverage list",
+    });
+  }
+  positiveIntegerOption(options.page, "page", 1);
+  positiveIntegerOption(options["page-size"], "page-size", 10, 100);
+}
+
+function validateCatalogScope(value) {
+  if (value !== undefined && !VALID_CATALOG_SCOPES.has(String(value))) {
+    throw invalidChoiceError("scope", String(value), PCR_CATALOG_SCOPES);
+  }
+}
+
+function effectiveCatalogScope(options) {
+  validateCatalogScope(options.scope);
+  if (options.scope !== undefined) {
+    return {
+      requested: String(options.scope),
+      effective: String(options.scope),
+      source: "explicit",
+    };
+  }
+  if (String(options.status ?? "") === "scaffold") {
+    return { requested: null, effective: "legacy", source: "derived_from_status" };
+  }
+  if (String(options["content-maturity"] ?? "") === "empty_scaffold") {
+    return { requested: null, effective: "legacy", source: "derived_from_content_maturity" };
+  }
+  return { requested: null, effective: "material", source: "default" };
 }
 
 function filterPcrs(pcrs, options) {
@@ -442,7 +578,7 @@ function filterPcrs(pcrs, options) {
   return result;
 }
 
-function paginateList(pcrs, options) {
+function paginateList(pcrs, options, scope) {
   const pageSize = positiveIntegerOption(options["page-size"], "page-size", 10, 100);
   const page = positiveIntegerOption(options.page, "page", 1);
   const totalCount = pcrs.length;
@@ -461,6 +597,7 @@ function paginateList(pcrs, options) {
 
   return {
     filters: {
+      scope: scope.effective,
       status: options.status ? String(options.status) : null,
       content_maturity: options["content-maturity"]
         ? String(options["content-maturity"])
@@ -469,6 +606,9 @@ function paginateList(pcrs, options) {
         ? normalizePathPrefix(options["path-prefix"])
         : null,
     },
+    requested_scope: scope.requested,
+    effective_scope: scope.effective,
+    scope_source: scope.source,
     page,
     page_size: pageSize,
     total_count: totalCount,
@@ -485,9 +625,106 @@ function paginateList(pcrs, options) {
   };
 }
 
-function treeOutput(tree, depth) {
+function coverageSummaryOutput(summary, options) {
+  const classification = `${String(summary.classification_system).toLowerCase()}:${summary.classification_version}`;
+  return {
+    ...summary,
+    completeness: {
+      status: "complete",
+      bounded: true,
+      entry_details_included: false,
+    },
+    next_command: buildCoverageListCommand({
+      ...options,
+      classification: options.classification ?? classification,
+      page: 1,
+    }),
+    next_steps: [
+      "Use coverage list with --status to inspect a bounded, paginated subset.",
+      "Use resolve --classification <system>:<version>:<code> for deterministic resolution; candidate suggestions are never selected automatically.",
+    ],
+  };
+}
+
+function paginateCoverage(result, classification, options) {
+  const pageSize = positiveIntegerOption(options["page-size"], "page-size", 10, 100);
+  const page = positiveIntegerOption(options.page, "page", 1);
+  const totalCount = result.entries.length;
+  const totalPages = Math.max(1, Math.ceil(totalCount / pageSize));
+  if (page > totalPages) {
+    throw new CliError(
+      "PCR_CLI_PAGE_OUT_OF_RANGE",
+      `--page ${page} is out of range. Available pages: 1-${totalPages}.`,
+      { page, total_pages: totalPages },
+    );
+  }
+  const startIndex = (page - 1) * pageSize;
+  const items = result.entries.slice(startIndex, startIndex + pageSize);
+  const previousPage = page > 1 ? page - 1 : null;
+  const nextPage = page < totalPages ? page + 1 : null;
+  const commandOptions = {
+    ...options,
+    classification: options.classification ?? `${classification.system}:${classification.version}`,
+  };
+  return {
+    classification: {
+      system: result.classification_system,
+      version: result.classification_version,
+    },
+    filters: {
+      status: options.status === undefined ? null : String(options.status),
+    },
+    available_statuses: result.available_statuses,
+    completeness: {
+      status: nextPage === null && previousPage === null ? "complete" : "paginated",
+      page,
+      page_size: pageSize,
+      returned_count: items.length,
+      total_count: totalCount,
+      total_pages: totalPages,
+      has_more: nextPage !== null,
+    },
+    items,
+    previous_command: previousPage
+      ? buildCoverageListCommand({ ...commandOptions, page: previousPage })
+      : null,
+    next_command: nextPage
+      ? buildCoverageListCommand({ ...commandOptions, page: nextPage })
+      : null,
+    next_steps: [
+      "Continue with previous_command or next_command when present; pagination is explicit and deterministic.",
+      "Run resolve --classification <system>:<version>:<code> for an exact code. This command does not fuzzy-match or auto-select candidate suggestions.",
+    ],
+  };
+}
+
+function buildCoverageListCommand(options) {
+  const parts = ["npm", "--silent", "run", "tiangong-pcr", "--", "coverage", "list"];
+  parts.push("--classification", shellToken(String(options.classification)));
+  if (options.status) {
+    parts.push("--status", shellToken(String(options.status)));
+  }
+  if (options["page-size"]) {
+    parts.push("--page-size", shellToken(String(options["page-size"])));
+  }
+  if (options.page) {
+    parts.push("--page", shellToken(String(options.page)));
+  }
+  if (options.root) {
+    parts.push("--root", shellToken(String(options.root)));
+  }
+  if (options.format) {
+    parts.push("--format", shellToken(String(options.format)));
+  }
+  return parts.join(" ");
+}
+
+function treeOutput(tree, depth, scope) {
   return {
     scope: "library/pcrs",
+    requested_scope: scope.requested,
+    effective_scope: scope.effective,
+    scope_source: scope.source,
     depth,
     completeness: depth >= 3 ? "complete" : "partial",
     tree,
@@ -505,7 +742,7 @@ function treeOutput(tree, depth) {
 function resolveOutput(resolution, options) {
   const usable = resolution.pcr?.readiness?.usable_for_guidance === true;
   const pcrId = resolution.mapping?.pcr_id;
-  const nextCommand = usable && pcrId
+  const guidanceCommand = usable && resolution.resolution_status === "mapped" && pcrId
     ? [
         "npm --silent run tiangong-pcr -- guidance",
         `--pcr ${shellToken(String(pcrId))}`,
@@ -513,9 +750,37 @@ function resolveOutput(resolution, options) {
         "--format json",
       ].filter(Boolean).join(" ")
     : null;
+  if (resolution.resolution_status === "unmapped") {
+    const [system, version] = String(options.classification).split(":");
+    const coverageCommand = buildCoverageListCommand({
+      classification: `${system}:${version}`,
+      status: resolution.coverage_status,
+      root: options.root,
+      format: "json",
+      page: 1,
+    });
+    return {
+      ...resolution,
+      next_command: coverageCommand,
+      next_steps: [
+        "No accepted PCR mapping was selected. Candidate suggestions and manual-review targets remain evidence only.",
+        "Use next_command to inspect the same coverage status, or draft missing_pcr feedback with supporting evidence.",
+      ],
+    };
+  }
+  if (resolution.resolution_status === "legacy_scaffold_compatibility") {
+    return {
+      ...resolution,
+      next_command: null,
+      next_steps: [
+        "This is a legacy scaffold compatibility reference, not usable PCR methodology.",
+        "Do not run guidance. Draft missing_pcr feedback if material methodology is required.",
+      ],
+    };
+  }
   return {
     ...resolution,
-    next_command: nextCommand,
+    next_command: guidanceCommand,
     next_steps: usable
       ? ["Run next_command to obtain foreground data-production guidance."]
       : [
@@ -545,13 +810,17 @@ function validationExitCode(report, failOnValue) {
 }
 
 function formatListTable(page) {
-  const lines = ["PCR id | Status | Readiness | Title", "--- | --- | --- | ---"];
+  const lines = [
+    "PCR id | Status | Readiness | Title | Record kind",
+    "--- | --- | --- | --- | ---",
+  ];
   for (const pcr of page.items) {
-    lines.push(`${pcr.id} | ${pcr.status} | ${pcr.readiness?.status ?? "unknown"} | ${pcr.title["en-US"] ?? ""}`);
+    lines.push(`${pcr.id} | ${pcr.status} | ${pcr.readiness?.status ?? "unknown"} | ${pcr.title["en-US"] ?? ""} | ${pcr.record_kind}`);
   }
   const start = page.total_count === 0 ? 0 : (page.page - 1) * page.page_size + 1;
   const end = Math.min(page.page * page.page_size, page.total_count);
   lines.push("");
+  lines.push(`Effective scope: ${page.effective_scope} (${page.scope_source}).`);
   lines.push(`Showing ${start}-${end} of ${page.total_count} PCR records. Page ${page.page} of ${page.total_pages}.`);
   if (page.previous_command) {
     lines.push(`Previous page: ${page.previous_command}`);
@@ -560,6 +829,49 @@ function formatListTable(page) {
     lines.push(`Next page: ${page.next_command}`);
   }
   lines.push("Next step: inspect readiness and run `npm --silent run tiangong-pcr -- guidance --pcr <pcr-id> --format json` only when `usable_for_guidance` is true; use `npm --silent run tiangong-pcr -- resolve` when you have a classification code.");
+  return lines.join("\n");
+}
+
+function formatCoverageSummary(result) {
+  const lines = [
+    `Classification coverage: ${result.classification_system} ${result.classification_version}`,
+    "",
+    "Status | Count",
+    "--- | ---:",
+  ];
+  for (const status of CLASSIFICATION_COVERAGE_STATUSES) {
+    lines.push(`${status} | ${result.summary[status]}`);
+  }
+  lines.push(`total | ${result.summary.total}`);
+  lines.push("");
+  lines.push("Summary is complete and bounded; individual entries are not included.");
+  lines.push(`Next: ${result.next_command}`);
+  return lines.join("\n");
+}
+
+function formatCoverageList(result) {
+  const lines = [
+    `Classification coverage: ${result.classification.system} ${result.classification.version}`,
+    "",
+    "Code | Coverage status | Label | Resolution evidence",
+    "--- | --- | --- | ---",
+  ];
+  for (const entry of result.items) {
+    const evidence = entry.mapping?.pcr_id ?? entry.legacy_reference?.pcr_id ?? "none";
+    lines.push(`${entry.code} | ${entry.coverage_status} | ${entry.label} | ${evidence}`);
+  }
+  const completeness = result.completeness;
+  lines.push("");
+  lines.push(
+    `Filter status: ${result.filters.status ?? "all"}. Showing ${completeness.returned_count} of ${completeness.total_count} entries on page ${completeness.page} of ${completeness.total_pages}.`,
+  );
+  if (result.previous_command) {
+    lines.push(`Previous page: ${result.previous_command}`);
+  }
+  if (result.next_command) {
+    lines.push(`Next page: ${result.next_command}`);
+  }
+  lines.push("Next: run `npm --silent run tiangong-pcr -- resolve --classification <system>:<version>:<code> --format json` for an exact code; no fuzzy or candidate auto-selection is performed.");
   return lines.join("\n");
 }
 
@@ -618,6 +930,9 @@ function normalizePathPrefix(value) {
 
 function buildListCommand(options) {
   const parts = ["npm", "--silent", "run", "tiangong-pcr", "--", "list"];
+  if (options.scope) {
+    parts.push("--scope", shellToken(String(options.scope)));
+  }
   if (options.status) {
     parts.push("--status", shellToken(String(options.status)));
   }
@@ -648,8 +963,10 @@ function shellToken(value) {
     : `'${String(value).replaceAll("'", `'"'"'`)}'`;
 }
 
-function formatTreeMarkdown(tree, depth) {
+function formatTreeMarkdown(tree, depth, scope) {
   const lines = [];
+  lines.push(`Effective scope: ${scope.effective} (${scope.source}).`);
+  lines.push("");
   renderTreeNode(tree, lines, 0);
   lines.push("");
   if (depth < 3) {
@@ -695,6 +1012,7 @@ function helpText(command = "", positional = []) {
 Browse PCR records explicitly. This is catalog browsing, not fuzzy search.
 
 Options:
+  --scope all|material|legacy       Record scope. Defaults to material. A scaffold/empty-scaffold filter derives legacy when scope is omitted.
   --status <status>                 Filter by manifest status, for example candidate or scaffold.
   --content-maturity <state>        Filter by content maturity.
   --path-prefix <path>              Filter below library/pcrs by a slash-delimited path prefix.
@@ -706,20 +1024,23 @@ Options:
 
 JSON output:
   {
-    "filters": { "status": null, "content_maturity": null, "path_prefix": null },
+    "filters": { "scope": "material", "status": null, "content_maturity": null, "path_prefix": null },
+    "effective_scope": "material",
+    "scope_source": "default",
     "page": 1,
     "page_size": 10,
-    "total_count": 2877,
-    "total_pages": 288,
-    "has_more": true,
+    "total_count": 3,
+    "total_pages": 1,
+    "has_more": false,
     "items": [{ "id": "<pcr-id>", "readiness": { "usable_for_guidance": true } }],
     "previous_command": null,
-    "next_command": "npm --silent run tiangong-pcr -- list --page 2",
+    "next_command": null,
     "next_steps": []
   }
 
 Agent next step:
-  Follow next_command for more pages. Inspect each record's readiness, and only when
+  Follow next_command when present. Use --scope all or --scope legacy only when those records are required.
+  Inspect each record's readiness, and only when
   usable_for_guidance is true run:
   npm --silent run tiangong-pcr -- guidance --pcr <pcr-id> --format json
 `;
@@ -731,6 +1052,7 @@ Show the PCR directory hierarchy so an Agent can inspect available categories be
 
 Options:
   --depth <n>                       Limit hierarchy depth. Defaults to 2.
+  --scope all|material|legacy       Record scope. Defaults to material.
   --format json|markdown            Output format. Defaults to markdown.
   --root <path>                     PCR repository root.
   --help                            Show this command help.
@@ -743,12 +1065,78 @@ Agent next step:
   Markdown PCR leaves include readiness and usable_for_guidance when --depth reaches them.
 `;
   }
+  if (definition.key === "coverage") {
+    return `Usage: tiangong-pcr coverage <summary|list> [options]
+
+Inspect deterministic PCR coverage for one explicit classification system and version.
+This command family does not perform fuzzy search or automatically select candidate suggestions.
+
+Subcommands:
+  coverage summary --classification <system>:<version> [--format json|table]
+      Return bounded aggregate counts without leaf entries.
+  coverage list --classification <system>:<version> [--status <coverage-status>] [--page <n>] [--page-size <n>] [--format json|table]
+      Return an explicitly filtered, paginated leaf list with completeness and continuation commands.
+
+Selector:
+  --classification <system>:<version>   Example: cpc:3.0. A leaf code belongs only on resolve.
+
+Output:
+  summary and list support json|table. JSON stdout is stable and remains clean on success.
+
+Agent next step:
+  Start with:
+  npm --silent run tiangong-pcr -- coverage summary --classification cpc:3.0 --format json
+  Then follow next_command or run coverage list with an explicit status filter.
+`;
+  }
+  if (definition.key === "coverage:summary") {
+    return `Usage: tiangong-pcr coverage summary --classification <system>:<version> [options]
+
+Show bounded aggregate coverage for one explicit classification system and version.
+This command does not list leaves and does not perform fuzzy search.
+
+Options:
+  --classification <value>          Example: cpc:3.0.
+  --format json|table               Output format. Defaults to table.
+  --root <path>                     PCR repository root.
+  --help                            Show this command help.
+
+JSON output includes source, complete status counts, a bounded completeness marker, and next_command.
+
+Agent next step:
+  Run next_command or use coverage list --classification cpc:3.0 --status <status>
+  to inspect a paginated subset.
+`;
+  }
+  if (definition.key === "coverage:list") {
+    return `Usage: tiangong-pcr coverage list --classification <system>:<version> [options]
+
+List explicit classification leaves and their PCR coverage status. This is deterministic coverage browsing, not fuzzy search.
+
+Options:
+  --classification <value>          Example: cpc:3.0.
+  --status <status>                 Filter by mapped, unmapped, candidate_suggestion, manual_review, or unknown.
+  --page <n>                        Page number. Defaults to 1.
+  --page-size <n>                   Entries per page, from 1 to 100. Defaults to 10.
+  --format json|table               Output format. Defaults to table.
+  --root <path>                     PCR repository root.
+  --help                            Show this command help.
+
+JSON output keeps filters, completeness, items, previous_command, and next_command stable.
+Candidate suggestions and manual-review targets are evidence only and are never selected as accepted PCR mappings.
+
+Agent next step:
+  Follow the pagination commands, then run resolve --classification <system>:<version>:<code> for an exact leaf.
+`;
+  }
   if (definition.key === "resolve") {
     return `Usage: tiangong-pcr resolve --classification <system>:<version>:<code> [options]
 
 Resolve an external classification code through deterministic classification mapping files.
 This command does not perform fuzzy search.
-Mapping success identifies a PCR record; it does not prove that the methodology is usable.
+Only coverage_status=mapped selects a material PCR. Known unmapped codes return success with mapping and pcr set to null.
+Legacy scaffolds are compatibility references, while candidate suggestions and manual-review targets are never auto-selected.
+Even a mapped result does not prove that the methodology is usable; inspect PCR readiness.
 
 Options:
   --classification <value>          Example: cpc:3.0:01111.
@@ -760,7 +1148,8 @@ Example:
   npm --silent run tiangong-pcr -- resolve --classification cpc:3.0:01111 --format json
 
 Agent next step:
-  Inspect pcr.readiness. When usable_for_guidance is true, run:
+  Inspect resolution_status and coverage_status. Only when resolution_status is mapped and
+  pcr.readiness.usable_for_guidance is true, run:
   npm --silent run tiangong-pcr -- guidance --pcr <mapping.pcr_id> --format json
 `;
   }
@@ -888,8 +1277,10 @@ Usage:
   tiangong-pcr <command> --help
 
 Commands:
-  list [--status <status>] [--content-maturity <state>] [--path-prefix <path>] [--page <n>] [--page-size <n>] [--format json|markdown|table]
-  tree [--depth <n>] [--format json|markdown]
+  list [--scope all|material|legacy] [--status <status>] [--content-maturity <state>] [--path-prefix <path>] [--page <n>] [--page-size <n>] [--format json|markdown|table]
+  tree [--scope all|material|legacy] [--depth <n>] [--format json|markdown]
+  coverage summary --classification <system>:<version> [--format json|table]
+  coverage list --classification <system>:<version> [--status <coverage-status>] [--page <n>] [--page-size <n>] [--format json|table]
   resolve --classification <system>:<version>:<code> [--format json]
   show --pcr <pcr-id> [--lang en-US|zh-CN]
   guidance --pcr <pcr-id> [--format json]
@@ -898,11 +1289,12 @@ Commands:
   feedback draft --type <type> [--pcr <pcr-id>] [--summary <text>]
 
 Agent workflow:
-  1. If a classification code is available, run resolve --classification <system>:<version>:<code> --format json.
-  2. If no code is available, use tree/list to browse explicit PCR hierarchy. list defaults to 10 records per page.
-  3. Check the returned readiness. Run guidance only when usable_for_guidance is true.
-  4. Build a foreground data package, then run validate-dataset.
-  5. Only for downstream publication projections, build a process or lifecyclemodel and run validate-model.
-  6. If PCR guidance is missing or ambiguous, run feedback draft with the observed gap.
+  1. Inspect coverage summary/list when classification completeness matters; no fuzzy matching is performed.
+  2. If a classification code is available, run resolve --classification <system>:<version>:<code> --format json.
+  3. If no code is available, use tree/list to browse explicit material PCR hierarchy. list defaults to 10 records per page.
+  4. Check resolution_status and readiness. Run guidance only for mapped material PCRs when usable_for_guidance is true.
+  5. Build a foreground data package, then run validate-dataset.
+  6. Only for downstream publication projections, build a process or lifecyclemodel and run validate-model.
+  7. If PCR guidance is missing or ambiguous, run feedback draft with the observed gap.
 `;
 }

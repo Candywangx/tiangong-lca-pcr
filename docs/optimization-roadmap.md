@@ -21,7 +21,7 @@ checkPaths:
   - classifications/**
   - library/modules/**
 lastReviewedAt: 2026-07-14
-lastReviewedCommit: 35080d8a47c5e66224b164442c98469014c0b848
+lastReviewedCommit: c248880a854c1687567f3e4ea6c24e0dd78115ab
 ---
 
 # PCR 资料库优化路线图
@@ -52,7 +52,7 @@ lastReviewedCommit: 35080d8a47c5e66224b164442c98469014c0b848
 
 ### P0：消除假安全信号
 
-状态：本轮实现。
+状态：已完成。
 
 - catalog、resolve、guidance 暴露统一 readiness；空 scaffold 禁止 guidance/validation。
 - validation 区分结果与覆盖率，报告输入、performed/skipped checks、完整度和 findings。
@@ -68,7 +68,7 @@ lastReviewedCommit: 35080d8a47c5e66224b164442c98469014c0b848
 
 ### P1：强化编译契约与运行时可信度
 
-状态：已完成。第 7 项完成的是修订契约设计与现有不可变门禁；真正的 revision workflow 实现仍是后续工作。
+状态：已完成。
 
 1. 已实现：将 JSON Schema 接入 repo lint 和消费侧 contract tests，并为 readiness/validation report 增加跨字段语义断言；Schema 不再只是说明文件。
 2. 已实现：为 material `structured.yaml` 增加确定性 projection metadata，包含 generator contract version、canonical Markdown SHA-256 和 generated-content SHA-256；可复现投影不包含时间戳。
@@ -76,19 +76,19 @@ lastReviewedCommit: 35080d8a47c5e66224b164442c98469014c0b848
 4. 已实现：建立真实 material PCR 的跨层 fixture，连续验证 manifest、Markdown frontmatter、mapping、builder 重渲染、shared structured Schema、resolve、readiness、guidance 和 validation report，并锁定跨层 identity 与关键规则一致性。
 5. 已实现：`builder/vocab/*.yaml` 成为唯一手写词表源，确定性生成共享 runtime constants 与 JSON Schema；validate 会拒绝 stale 生成物，material projection 和 mapping runtime 也会拒绝未知 token。
 6. 已实现：公共消费 CLI 使用逐命令格式契约、受控 filter、严格参数校验、稳定错误 envelope、bounded tree 和分页 path-prefix down-drill；JSON 输出明确 filters、completeness 与下一命令。
-7. 已实现（契约设计）：`builder/docs/contracts/published-revision-contract.md` 规定 published current、单一 revision workspace、不可变 release snapshot、append-only history 和可恢复目录事务；现有 `pcr:bump` 继续禁止直接修改 published/deprecated 记录。命令、Schema、lock/journal 与故障恢复是该契约的后续实现，在完成前禁止手工创建 revision/release artifacts。
+7. 已实现：published current、单一 revision workspace、不可变 release snapshot、append-only history、exact-byte digest、per-PCR lock、journal/stage/backup 和显式 recovery 形成可执行契约。`pcr:revise` 固定 target version，后续发布从 revision 原子提升；`pcr-core` 对 managed current snapshot fail closed。
 
-退出条件：已达成。所有 material PCR 都通过可执行 Schema、内容完整度与 fingerprint 校验；公开 guidance/validation 输出具有自动 contract validation；词表生成、CLI 边界和 published revision 设计均已固化。实现 `pcr:revise`、发布快照写入、锁与恢复必须按已定义契约单独落地，不影响本阶段的契约设计完成判定。
+退出条件：已达成。所有 material PCR 都通过可执行 Schema、内容完整度与 fingerprint 校验；公开 guidance/validation 输出具有自动 contract validation；词表、CLI、published revision、release snapshot、transaction 和 recovery 边界均有实现与失败用例。
 
 ### P2：拆分 classification coverage 与 canonical methodology catalog
 
-状态：需要先写 ADR 和迁移计划。
+状态：Phase 1 已完成；物理迁移阶段待推进。
 
-1. 停止“每个 classification leaf 自动创建 canonical PCR 目录”。分类导入只生成 source、normalized data 和 coverage/mapping 状态。
-2. 对尚无真实方法学的 leaf 使用明确的 `unmapped` / `manual_review` / candidate suggestion 表达，不预先宣称 canonical PCR identity。
-3. 只有形成稳定语义边界时才创建 PCR record；多个 classification leaf 可以映射到同一个 record。
-4. 将现有 2,874 个 empty scaffold 迁移为轻量 coverage index，并为已有外部引用设计 redirect 或 compatibility period。
-5. catalog 和 viewer 默认 material-first，classification coverage 按需加载。
+1. 已实现：ADR、迁移计划、确定性 material index 和完整 classification coverage read model；CPC 3.0 基线为 2,877 leaf、3 mapped、2,874 unmapped、0 unknown。
+2. 已实现：catalog CLI 与 viewer 默认 material-first，legacy/all 只能显式请求；coverage summary/list 独立、受控并分页，known-unmapped resolve 不再伪装成方法学成功。
+3. 已实现：legacy scaffold compatibility 保留旧 id 和 exact resolve，同时明确 `record_kind`、`resolution_status` 与不可用 readiness；viewer 不再内联空 Markdown 或 scaffold guidance error。
+4. 待实现：停止 CPC importer 的逐 leaf PCR scaffold 生成，只生成 source、normalized classification 和 coverage inputs；新 canonical PCR 必须由稳定产品语义边界与方法学需求驱动。
+5. 待实现：收缩 positive mapping、建立 legacy alias registry，先做小范围 pilot，再分批物理删除 2,874 个模板等价目录。
 
 退出条件：canonical PCR 数量反映方法学实体数量，而不是外部分类叶子数量；新增分类体系不会复制 PCR 树。
 
@@ -126,7 +126,7 @@ lastReviewedCommit: 35080d8a47c5e66224b164442c98469014c0b848
 | Validation | 未声明的 skipped requirement family | 0 |
 | Identity | 仅因 classification leaf 新增的 PCR record | P2 后为 0 |
 | Composition | 声明 module 但 compiled guidance 未解析 | P3 后为 0 |
-| Scale | viewer 首屏必须加载的全库正文 | P4 后为 0 |
+| Scale | viewer 默认加载的 empty scaffold 正文 | 0 |
 | Quality | published PCR 的 review、translation、source 与 fingerprint 证据 | 100% |
 
 ## 实施原则

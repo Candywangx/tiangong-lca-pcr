@@ -27,7 +27,7 @@ checkPaths:
   - library/modules/**
   - docs/**
 lastReviewedAt: 2026-07-14
-lastReviewedCommit: 35080d8a47c5e66224b164442c98469014c0b848
+lastReviewedCommit: c248880a854c1687567f3e4ea6c24e0dd78115ab
 ---
 
 # TianGong LCA PCR Library
@@ -40,9 +40,10 @@ PCR records are canonical methodology documents. Classification systems such as 
 
 - `library/pcrs/`: canonical PCR markdown records grouped by TianGong methodology domains.
 - `library/modules/`: reusable data production method modules referenced by PCR records.
-- `library/indexes/`: generated and maintained PCR indexes.
+- `library/indexes/`: generated material PCR indexes.
 - `classifications/systems/`: source and normalized classification-system data.
 - `classifications/mappings/`: mappings from external classification codes to canonical PCR ids.
+- `classifications/indexes/`: derived classification coverage read models for the CLI and viewer.
 - `builder/`: CLI, implementation modules, scripts, schemas, templates, controlled vocabularies, and builder documentation for constructing and validating the PCR library.
 - `packages/pcr-core/`: shared library for reading PCR catalog, mapping, guidance, validation, and feedback draft data.
 - `packages/tiangong-pcr-cli/`: public Agent-facing CLI for consuming PCR guidance during foreground data package construction.
@@ -63,6 +64,28 @@ library/pcrs/<domain>/<subdomain>/<pcr-slug>/
   structured.yaml
 ```
 
+After first publication, the same canonical leaf also carries an immutable release chain. While a later version is
+being authored, one explicit revision workspace may coexist with the stable current release:
+
+```text
+  release-history.yaml
+  revision/                         # present only while one revision is open
+    revision.yaml
+    manifest.next.yaml
+    pcr.en-US.md
+    pcr.zh-CN.md
+    structured.yaml
+  releases/<semver>/
+    release.yaml
+    manifest.snapshot.yaml
+    pcr.en-US.md
+    pcr.zh-CN.md
+    structured.yaml
+```
+
+The top-level four files remain the current consumer-facing release. Release snapshots are immutable, history is
+append-only, and managed subtrees never contain another `manifest.yaml`.
+
 Material PCR content should use this authoring shape:
 
 - reference flow definition with UUID-bearing product flow and category-specific required qualifiers
@@ -81,15 +104,35 @@ Material PCR content should use this authoring shape:
 npm run init
 npm run lint
 npm run pcr:scaffold:cpc -- --source <cpc-structure.csv> --classification-version 3.0 --source-url <official-source-url>
-npm run pcr:sync-structured -- --pcr <library/pcrs/...>
+npm run pcr:sync-structured -- --pcr <library/pcrs/...> [--workspace current|revision]
 npm run pcr:bump -- --pcr <library/pcrs/...> --level patch
-npm run pcr:publish -- --pcr <library/pcrs/...> --version <semver>
+npm run pcr:publish -- --pcr <library/pcrs/...> --workspace current --version <semver>
+npm run pcr:revise -- --pcr <library/pcrs/...> --version <target-semver>
+npm run pcr:publish -- --pcr <library/pcrs/...> --workspace revision
+npm run pcr:recover -- --pcr <library/pcrs/...> [--force-stale-lock]
 npm run validate
 ```
 
-`pcr:scaffold:cpc` imports a CPC structure CSV, stores the raw and normalized classification data under `classifications/systems/cpc/<version>/`, writes a CPC-to-PCR mapping file, and creates empty bilingual PCR directories for leaf classes only. PCR directory names are semantic slugs, not CPC codes; the CPC code remains in the mapping layer and PCR metadata.
+`pcr:scaffold:cpc` currently imports a CPC structure CSV, stores raw and normalized classification data under
+`classifications/systems/cpc/<version>/`, writes a CPC-to-PCR mapping file, and retains the legacy behavior of creating
+empty bilingual PCR directories for leaf classes. This is migration compatibility, not the target identity model.
+A new classification leaf should not create a canonical PCR automatically; Phase 2 will remove that generator
+behavior after positive mappings and legacy aliases are separated. Existing directories and old mapping entries have
+not yet been physically removed.
 
-`pcr:sync-structured` regenerates `structured.yaml` from canonical Markdown and appends deterministic projection metadata: a generator contract version, canonical Markdown SHA-256, and generated-content SHA-256, with no timestamp. Repository lint validates every material projection against the shared JSON Schema, verifies its fingerprint, and rejects stale output. `pcr:bump` updates a valid manifest version. `pcr:publish` runs a no-write preflight before it regenerates `structured.yaml` and records publication: the PCR must already be active and reviewed, the Chinese translation must be reviewed, the version must be valid semver, and review metadata must contain no unresolved blocker.
+`pcr:sync-structured` regenerates `structured.yaml` from canonical Markdown and appends deterministic projection metadata: a generator contract version, canonical Markdown SHA-256, and generated-content SHA-256, with no timestamp. Repository lint validates every material projection against the shared JSON Schema, verifies its fingerprint, and rejects stale output. `--workspace` defaults to `current`; a published or deprecated current release cannot be synced or bumped in place.
+
+First publication uses `pcr:publish --workspace current --version <semver>` and creates both the current release and its
+initial immutable `releases/<semver>/` snapshot plus `release-history.yaml`. For a later version, `pcr:revise` opens
+`revision/`, fixes a greater target version, and leaves the top-level release unchanged. Sync and lifecycle commands
+must then use `--workspace revision`; reviewed revision publication uses `pcr:publish --workspace revision` without a
+version argument. A deprecated PCR cannot be reopened.
+
+Builder sync, bump, lifecycle, revise, and publish mutations replace the complete canonical leaf through a recoverable
+directory transaction. Lock, journal, staging, and backup state live under `library/.pcr-builder-state/`;
+`pcr:recover` rolls back interrupted pre-commit work or finishes committed cleanup. `--force-stale-lock` is only for
+verified stale state when ordinary recovery requires it. Publication preflight still requires active reviewed
+methodology, reviewed Chinese translation, valid SemVer, fresh projection content, and no unresolved review blocker.
 
 PCR production agents may use `tiangong-lca-cli` to search Tiangong database flow, process, and dataset identity records and copy selected UUID references into PCR content. The CLI is an evidence tool for identity selection.
 
@@ -101,9 +144,12 @@ Use `tiangong-pcr` when consuming PCRs to guide foreground data package construc
 
 ```bash
 npm --silent run tiangong-pcr -- tree --format markdown
+npm --silent run tiangong-pcr -- list --scope material --format json
 npm --silent run tiangong-pcr -- list --path-prefix agriculture-forestry-and-fishery-products/products-of-agriculture-horticulture-and-market-gardening --format json
-npm --silent run tiangong-pcr -- list --status candidate --format json
+npm --silent run tiangong-pcr -- list --scope legacy --page 1 --page-size 10 --format json
 npm --silent run tiangong-pcr -- list --page 2 --page-size 10
+npm --silent run tiangong-pcr -- coverage summary --classification cpc:3.0 --format json
+npm --silent run tiangong-pcr -- coverage list --classification cpc:3.0 --page 1 --page-size 10 --format json
 npm --silent run tiangong-pcr -- resolve --classification cpc:3.0:01111 --format json
 npm --silent run tiangong-pcr -- show --pcr <pcr-id> --lang zh-CN
 npm --silent run tiangong-pcr -- guidance --pcr <pcr-id> --format json
@@ -111,9 +157,24 @@ npm --silent run tiangong-pcr -- validate-dataset --pcr <pcr-id> --input <datase
 npm --silent run tiangong-pcr -- feedback draft --pcr <pcr-id> --type range_evidence_update --summary "<finding>"
 ```
 
-The public CLI provides deterministic classification `resolve`, explicit `tree` and `list` catalog browsing, structured `guidance`, foreground data package coverage checks through `validate-dataset`, process/lifecyclemodel draft checks through `validate-model`, and issue-ready feedback drafting. `tree` defaults to a bounded depth-2 category view; use paginated `list --path-prefix` to drill into a category. `list` defaults to 10 records per page and reports its filters, `has_more`, and copyable next/previous commands.
+The public CLI provides deterministic classification `resolve`, explicit `tree` and `list` methodology-catalog
+browsing, classification `coverage summary|list`, structured `guidance`, foreground data package checks through
+`validate-dataset`, process/lifecyclemodel draft checks through `validate-model`, and issue-ready feedback drafting.
+`tree`, `list`, and the viewer default to material records. Use `--scope material|legacy|all` on catalog commands
+when the scope must be explicit. `tree` defaults to a bounded depth-2 category view; use paginated
+`list --path-prefix` to drill into a category. `list` defaults to 10 records per page and reports its filters,
+effective scope, `has_more`, and copyable next/previous commands.
 
-Catalog and mapping results carry a `readiness` object. A classification mapping identifies a PCR record; it does not claim that methodology is usable. Authored candidates are marked `review_required`, while an `empty_scaffold` is `unavailable` and is rejected by `guidance` and both validation commands.
+Classification coverage is separate from the methodology catalog. `coverage summary --classification cpc:3.0`
+returns bounded aggregate counts, while `coverage list --classification cpc:3.0` returns explicit leaves in pages of
+10 by default and supports `--status`. The checked-in coverage index is a deterministic read model derived from
+normalized leaves, accepted mapping edges, and migration compatibility data; it is not a new authoring truth.
+
+Material catalog and mapped resolve results carry a `readiness` object. An accepted mapping identifies a PCR record;
+it does not claim that methodology is usable. Authored candidates are marked `review_required`. A known classification
+leaf without an accepted mapping is a successful `resolve` result with `mapping: null` and `pcr: null`. During the
+migration, a retained empty scaffold may instead be exposed as `legacy_scaffold_compatibility`; it remains
+`unavailable` and is rejected by `guidance` and both validation commands.
 
 For material PCRs, readiness also reports `projection_fingerprint`. `pcr-core` validates the current
 `structured.yaml` against the shared material projection Schema and recomputes its canonical-source and
@@ -135,13 +196,24 @@ Use the static PCR viewer when you want to browse PCR records in a browser:
 
 ```bash
 npm run viewer:build
+npm run viewer:build -- --scope legacy
 npm run viewer:serve
 ```
 
-The build step reads canonical PCR records through `packages/pcr-core`, writes generated data under `packages/pcr-viewer/dist/data/`, and copies the read-only browser assets into `packages/pcr-viewer/dist/`. Missing or empty PCR catalogs fail before replacement. Custom output directories are replaced only when empty or marked as a previous viewer build; protected repository and source paths are rejected after canonical path resolution. The replacement is prepared in a sibling temporary directory so a failed build does not erase the last usable output. The local server also rejects requested files whose resolved symlink target escapes the build root.
+The build step defaults to material PCRs; use `--scope material|legacy|all` to choose another explicit record scope.
+It reads records through `packages/pcr-core`, writes generated data under `packages/pcr-viewer/dist/data/`, and copies
+the read-only browser assets into `packages/pcr-viewer/dist/`. Missing or empty selected-scope catalogs fail before
+replacement. Custom output directories are replaced only when empty or marked as a previous viewer build; protected
+repository and source paths are rejected after canonical path resolution. The replacement is prepared in a sibling
+temporary directory so a failed build does not erase the last usable output. The local server also rejects requested
+files whose resolved symlink target escapes the build root.
 
 The viewer is a consumption surface only. It does not edit PCR Markdown, manifests, mappings, or `structured.yaml`.
 
-## Initial Status
+## Migration Status
 
-This repository is intentionally scaffold-first. It establishes the layout and contracts for CPC-backed PCR scaffold generation without treating generated empty PCR files as methodology guidance. Scaffold catalog entries remain discoverable for mapping and authoring, but only authored or reviewed records can enter the guidance and validation path.
+The consumption surfaces are now material-first: default catalog, tree, list, and viewer output represent methodology
+records, while complete classification coverage remains queryable separately. Legacy scaffold directories and old
+mapping entries are still retained for compatibility and can be inspected only through explicit legacy/all scope or a
+compatibility resolution. Phase 2 will stop per-leaf scaffold generation and prepare aliases before any physical
+removal. Only authored or reviewed material records can enter the guidance and validation path.

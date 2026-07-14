@@ -6,9 +6,14 @@
   "required": ["schema_version", "catalog_status", "pcr_index", "classification_mappings", "notes"],
   "properties": {
     "schema_version": { "const": 1 },
-    "catalog_status": { "type": "string", "minLength": 1 },
+    "catalog_status": { "enum": ["scaffold", "current"] },
     "pcr_index": { "type": "string", "minLength": 1 },
     "classification_mappings": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 },
+      "uniqueItems": true
+    },
+    "classification_coverage_indexes": {
       "type": "array",
       "items": { "type": "string", "minLength": 1 },
       "uniqueItems": true
@@ -18,5 +23,17 @@
       "items": { "type": "string", "minLength": 1 }
     }
   },
+  "allOf": [
+    {
+      "if": {
+        "properties": { "catalog_status": { "const": "current" } },
+        "required": ["catalog_status"]
+      },
+      "then": {
+        "required": ["classification_coverage_indexes"],
+        "properties": { "classification_coverage_indexes": true }
+      }
+    }
+  ],
   "additionalProperties": false
 }

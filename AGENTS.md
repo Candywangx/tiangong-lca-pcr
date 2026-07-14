@@ -28,7 +28,7 @@ checkPaths:
   - library/modules/**
   - docs/**
 lastReviewedAt: 2026-07-14
-lastReviewedCommit: 35080d8a47c5e66224b164442c98469014c0b848
+lastReviewedCommit: c248880a854c1687567f3e4ea6c24e0dd78115ab
 ---
 
 # AGENTS.md - TianGong LCA PCR Library
@@ -40,6 +40,8 @@ This repository owns canonical PCR and modelling methodology assets for TianGong
 - PCR files are classification-independent methodology records.
 - Classification systems map to PCR records through `classifications/mappings/`.
 - Do not duplicate PCR records only because a new classification system is added.
+- A classification leaf is coverage input, not a request to create canonical PCR identity. Create a PCR only when a
+  reviewed semantic product boundary and material methodology need a canonical record.
 - Keep reusable method rules in `library/modules/` and category-specific rules in `library/pcrs/`.
 - Builder scripts must not depend on private workspace state.
 - Keep PCR production and PCR consumption separate: `builder/` owns library maintenance, while `packages/` and `skills/` expose reviewed PCR guidance to agents and humans.
@@ -56,6 +58,24 @@ library/pcrs/<domain>/<subdomain>/<pcr-slug>/
   structured.yaml
 ```
 
+After first publication the same leaf also owns its audited release lineage, and may own one explicit open revision:
+
+```text
+  release-history.yaml
+  revision/
+    revision.yaml
+    manifest.next.yaml
+    pcr.en-US.md
+    pcr.zh-CN.md
+    structured.yaml
+  releases/<semver>/
+    release.yaml
+    manifest.snapshot.yaml
+    pcr.en-US.md
+    pcr.zh-CN.md
+    structured.yaml
+```
+
 Rules:
 
 - `manifest.yaml` owns language-independent PCR identity, title map, lifecycle status, content maturity, target entities, module references, and available languages.
@@ -66,6 +86,13 @@ Rules:
 - Do not use CPC, HS, ISIC, NAICS, or another external classification system as the canonical PCR directory tree.
 - Do not include external classification codes in PCR directory names. Use semantic PCR slugs such as `wheat-seed`; keep CPC, HS, ISIC, NAICS, and similar codes in mappings and `classification_refs`.
 - If a classification leaf maps to an existing PCR, update the mapping file instead of duplicating the PCR.
+- After publication, the top-level four files are the current consumer-facing release. Open later work with
+  `pcr:revise` and operate explicitly on `--workspace revision`; never edit, sync, or bump published/deprecated current
+  content in place.
+- `releases/<semver>/` is immutable and `release-history.yaml` is append-only. Do not create or edit them manually;
+  publication maintains them through a recoverable whole-directory transaction.
+- A published current record may move only to `deprecated/deprecated_methodology`. A deprecated PCR cannot be
+  reopened by lifecycle or revision commands.
 
 Reusable modules may use the same localized directory pattern:
 
@@ -90,6 +117,15 @@ classifications/mappings/<system>-<version>-to-pcr.yaml
 
 Mapping files are the authoritative link from external classification codes to canonical PCR ids. Mapping relation types should include `exact`, `broader`, `narrower`, `proxy`, and `manual_review`.
 
+Only an accepted edge to a material PCR is a positive mapping. Classification coverage is a derived read model under
+`classifications/indexes/`; it combines normalized leaves with accepted mappings and coverage assessment for bounded
+CLI and viewer reads. It is not authoring truth and must be regenerated from its sources.
+
+The material-first migration still retains old scaffold directories and their mapping entries for compatibility.
+Those retained entries do not prove methodology coverage. Phase 2 will stop the old CPC generator from creating a PCR
+for every new leaf and will separate positive mappings from legacy compatibility references; do not claim that
+physical scaffold deletion or mapping contraction has already happened.
+
 ## Builder CLI and Authoring Docs
 
 The builder CLI lives under `builder/cli/`.
@@ -102,6 +138,12 @@ Material PCRs must have a deterministic, schema-valid `structured.yaml` projecti
 fingerprints match canonical Markdown and the projection bytes. Lifecycle state, content maturity, and translation
 state are one validated contract. Publication must pass the builder preflight before either the manifest or structured
 projection is replaced.
+
+First publication uses the current workspace and creates the initial immutable release snapshot and history. Later
+publication requires a `pcr:revise` workspace whose target SemVer is fixed at open time. Builder sync, bump,
+lifecycle, revise, and publish mutations use per-PCR lock/journal/stage/backup state under
+`library/.pcr-builder-state/`; recover interrupted state with `pcr:recover`, and use `--force-stale-lock` only after
+confirming no writer is active.
 
 Stable machine tokens are authored only in `builder/vocab/*.yaml`. Do not hand-edit the generated runtime constants
 or controlled-vocabulary Schema under `packages/pcr-core/`; run `npm run vocab:generate`, and keep token validity
@@ -118,9 +160,12 @@ Use this CLI to consume PCRs while constructing foreground data packages and the
 
 ```bash
 npm --silent run tiangong-pcr -- tree --format markdown
+npm --silent run tiangong-pcr -- list --scope material --format json
 npm --silent run tiangong-pcr -- list --path-prefix <domain/subdomain> --format json
-npm --silent run tiangong-pcr -- list --status candidate --format json
+npm --silent run tiangong-pcr -- list --scope legacy --page 1 --page-size 10 --format json
 npm --silent run tiangong-pcr -- list --page 2 --page-size 10
+npm --silent run tiangong-pcr -- coverage summary --classification cpc:3.0 --format json
+npm --silent run tiangong-pcr -- coverage list --classification cpc:3.0 --page 1 --page-size 10 --format json
 npm --silent run tiangong-pcr -- resolve --classification cpc:3.0:01111 --format json
 npm --silent run tiangong-pcr -- guidance --pcr <pcr-id> --format json
 npm --silent run tiangong-pcr -- feedback draft --pcr <pcr-id> --type <feedback-type>
@@ -128,11 +173,17 @@ npm --silent run tiangong-pcr -- feedback draft --pcr <pcr-id> --type <feedback-
 
 Rules:
 
-- `tree` and `list` are explicit catalog-browsing tools, not fuzzy search.
-- `tree` defaults to the bounded domain/subdomain view at depth 2. Use paginated `list --path-prefix` to drill down; request depth 3 only when the complete, large leaf hierarchy is required.
+- `tree` and `list` are explicit catalog-browsing tools, not fuzzy search. They default to material PCRs; use
+  `--scope material|legacy|all` when the requested record scope must be explicit.
+- `tree` defaults to the bounded material domain/subdomain view at depth 2. Use paginated `list --path-prefix` to drill down; request depth 3 only when the complete selected-scope hierarchy is required.
 - `list` is paginated by default with 10 records per page. Output must expose active filters, pagination completeness, and copyable next/previous commands.
-- `resolve` must use deterministic mapping files under `classifications/mappings/**`. A mapping result identifies a PCR record but does not imply that its methodology is usable.
-- Catalog, resolve, and guidance results must expose PCR readiness. Empty scaffolds remain discoverable authoring targets but must be rejected by guidance and validation.
+- `coverage summary|list --classification <system>:<version>` exposes classification coverage separately from the
+  methodology catalog. `coverage list` is paginated and candidate/manual-review evidence must never be auto-selected.
+- `resolve` must use deterministic accepted mappings and the derived coverage index. A known but unmapped leaf is a
+  successful resolution with `mapping: null` and `pcr: null`; a legacy scaffold may be returned only as an explicit
+  compatibility reference. Neither result implies usable methodology.
+- Catalog, resolve, and guidance results must expose PCR readiness. Empty scaffolds are excluded from default material
+  browsing, remain available through explicit legacy/all compatibility scope, and must be rejected by guidance and validation.
 - `guidance` and validation must re-check the target projection's Schema and fingerprint at runtime, present Agent-facing boundary, allocation, inventory, production, and validation rules, and never mutate PCR content.
 - Validation output must distinguish status from coverage by reporting accepted input, checks performed, checks skipped, findings, and completeness. Error findings and inconclusive validation fail the CLI by default; report-only exit behavior must be explicitly requested.
 - `feedback draft` creates issue-ready candidate evidence; it does not update PCR truth.

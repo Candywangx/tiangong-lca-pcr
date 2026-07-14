@@ -5,6 +5,7 @@ export const AMOUNT_RANGE_ROLE_VALUES = Object.freeze(["qa_guardrail","typical_r
 export const AMOUNT_SPECIFICITY_VALUES = Object.freeze(["generic","site_specific","product_specific","route_specific","scenario_specific","technology_specific","not_applicable"]);
 export const AMOUNT_VALUE_MODE_VALUES = Object.freeze(["fixed_value","foreground_record","calculated_value","modelled_estimate","not_applicable"]);
 export const BASIS_KIND_VALUES = Object.freeze(["reference_flow","process_output","n_input","fuel_inventory","transport_service","storage_duration","crop_cycle"]);
+export const CLASSIFICATION_COVERAGE_STATUS_VALUES = Object.freeze(["mapped","unmapped","candidate_suggestion","manual_review","unknown"]);
 export const CLASSIFICATION_MAPPING_RELATION_VALUES = Object.freeze(["exact","broader","narrower","proxy","manual_review"]);
 export const CONTENT_MATURITY_VALUES = Object.freeze(["empty_scaffold","draft_methodology","authored_methodology","reviewed_methodology","published_methodology","deprecated_methodology"]);
 export const EVIDENCE_KIND_VALUES = Object.freeze(["external_source","observed_dataset","method_formula","foreground_data","tiangong_default","collected_record","calculated_from_collection","identity_reference","source_rule","reasoned_estimate"]);
@@ -23,6 +24,7 @@ export const CONTROLLED_VOCABULARY = Object.freeze({
   amount_specificity: AMOUNT_SPECIFICITY_VALUES,
   amount_value_mode: AMOUNT_VALUE_MODE_VALUES,
   basis_kind: BASIS_KIND_VALUES,
+  classification_coverage_status: CLASSIFICATION_COVERAGE_STATUS_VALUES,
   classification_mapping_relation: CLASSIFICATION_MAPPING_RELATION_VALUES,
   content_maturity: CONTENT_MATURITY_VALUES,
   evidence_kind: EVIDENCE_KIND_VALUES,

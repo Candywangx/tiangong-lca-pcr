@@ -4,6 +4,7 @@ import {
   lstatSync,
   mkdirSync,
   mkdtempSync,
+  readFileSync,
   realpathSync,
   readdirSync,
   renameSync,
@@ -13,23 +14,34 @@ import {
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
-import { buildGuidance, listPcrs, readPcrMarkdown } from "../../pcr-core/src/index.mjs";
+import {
+  buildGuidance,
+  classificationCoveragePath,
+  getClassificationCoverageSummary,
+  listPcrs,
+  PCR_CATALOG_SCOPES,
+  readPcrMarkdown,
+} from "../../pcr-core/src/index.mjs";
+import { parseYaml } from "../../pcr-core/src/yaml-lite.mjs";
+import { VIEWER_DATA_SCHEMA_VERSION } from "../static/viewer-core.js";
 
 const repoRoot = path.resolve(fileURLToPath(new URL("../../..", import.meta.url)));
 const packageRoot = path.resolve(fileURLToPath(new URL("..", import.meta.url)));
 const defaultOutDir = path.join(packageRoot, "dist");
 const staticDir = path.join(packageRoot, "static");
 const languages = ["en-US", "zh-CN"];
+const viewerScopes = new Set(PCR_CATALOG_SCOPES);
 export const VIEWER_BUILD_MARKER = ".tiangong-pcr-viewer-build";
 
-export function buildViewer({ root = repoRoot, outDir = defaultOutDir } = {}) {
+export function buildViewer({ root = repoRoot, outDir = defaultOutDir, scope = "material" } = {}) {
   const resolvedRoot = canonicalizeExistingAncestors(root);
   const requestedOutDir = path.resolve(outDir);
+  const resolvedScope = validateViewerScope(scope);
   rejectOutputSymlink(requestedOutDir);
   const resolvedOutDir = canonicalizeExistingAncestors(requestedOutDir);
   assertSafeOutDir({ root: resolvedRoot, outDir: resolvedOutDir, requestedOutDir });
 
-  const data = buildViewerData({ root: resolvedRoot });
+  const data = buildViewerData({ root: resolvedRoot, scope: resolvedScope });
   if (data.pcr_count === 0) {
     throw new Error(`Refusing to replace viewer output with an empty PCR catalog from ${resolvedRoot}`);
   }
@@ -145,20 +157,18 @@ function unusedSiblingPath(prefix) {
   return candidate;
 }
 
-export function buildViewerData({ root = repoRoot } = {}) {
-  const pcrs = listPcrs({ root }).map((pcr) => {
-    const markdown = Object.fromEntries(
-      languages.map((language) => [language, readOptionalMarkdown({ root, pcr, language })]),
-    );
-    const guidance = readOptionalGuidance({ root, pcr });
+export function buildViewerData({ root = repoRoot, scope = "material" } = {}) {
+  const resolvedRoot = realpathSync(path.resolve(root));
+  const resolvedScope = validateViewerScope(scope);
+  const classificationCoverageSummaries = buildClassificationCoverageSummaries({
+    root: resolvedRoot,
+  });
+  const pcrs = listPcrs({ root: resolvedRoot, scope: resolvedScope }).map((pcr) => {
     const classificationText = (pcr.classification_refs ?? [])
       .map((ref) => `${ref.system ?? ""} ${ref.version ?? ""} ${ref.code ?? ""} ${ref.title ?? ""}`)
       .join(" ");
-
-    return {
+    const catalogEntry = {
       ...pcr,
-      markdown,
-      guidance,
       search_text: [
         pcr.id,
         pcr.path,
@@ -172,15 +182,168 @@ export function buildViewerData({ root = repoRoot } = {}) {
         .filter(Boolean)
         .join(" "),
     };
+
+    if (
+      pcr.record_kind === "legacy_scaffold_reference" ||
+      pcr.content_maturity === "empty_scaffold"
+    ) {
+      return catalogEntry;
+    }
+
+    const markdown = Object.fromEntries(
+      languages.map((language) => [
+        language,
+        readOptionalMarkdown({ root: resolvedRoot, pcr, language }),
+      ]),
+    );
+    const guidance = readOptionalGuidance({ root: resolvedRoot, pcr });
+
+    return {
+      ...catalogEntry,
+      markdown,
+      guidance,
+    };
   });
 
   return {
-    schema_version: 1,
+    schema_version: VIEWER_DATA_SCHEMA_VERSION,
     viewer_kind: "tiangong-pcr-static-viewer-data",
     generated_at_utc: new Date().toISOString(),
+    catalog_scope: resolvedScope,
+    classification_coverage_summaries: classificationCoverageSummaries,
     pcr_count: pcrs.length,
     pcrs,
   };
+}
+
+export function buildClassificationCoverageSummaries({ root }) {
+  const resolvedRoot = realpathSync(path.resolve(root));
+  const catalogPath = path.join(resolvedRoot, "library", "catalog.yaml");
+  const catalog = readRequiredYamlFile({
+    root: resolvedRoot,
+    filePath: catalogPath,
+    label: "PCR catalog",
+  });
+  const declarations = catalog?.classification_coverage_indexes;
+  if (!Array.isArray(declarations) || declarations.length === 0) {
+    throw new Error(
+      "Invalid PCR catalog coverage declarations: classification_coverage_indexes must be a non-empty array.",
+    );
+  }
+
+  const seenDeclarations = new Set();
+  const seenCoordinates = new Set();
+  return declarations.map((declaration, index) => {
+    const indexPath = validateCoverageIndexDeclaration(declaration, index);
+    if (seenDeclarations.has(indexPath)) {
+      throw new Error(`Invalid PCR catalog coverage declarations: duplicate index ${indexPath}.`);
+    }
+    seenDeclarations.add(indexPath);
+
+    const absoluteIndexPath = path.join(resolvedRoot, ...indexPath.split("/"));
+    const document = readRequiredJsonFile({
+      root: resolvedRoot,
+      filePath: absoluteIndexPath,
+      label: `classification coverage index ${indexPath}`,
+    });
+    const coordinate = coverageCoordinateFromDocument({ document, indexPath });
+    const coordinateKey = `${coordinate.system}:${coordinate.version}`;
+    if (seenCoordinates.has(coordinateKey)) {
+      throw new Error(
+        `Invalid PCR catalog coverage declarations: duplicate classification coordinate ${coordinateKey}.`,
+      );
+    }
+    seenCoordinates.add(coordinateKey);
+
+    const expectedPath = toPosix(
+      path.relative(resolvedRoot, classificationCoveragePath({ root: resolvedRoot, ...coordinate })),
+    );
+    if (indexPath !== expectedPath) {
+      throw new Error(
+        `Invalid PCR catalog coverage declaration ${indexPath}: index coordinate ${coordinateKey} requires ${expectedPath}.`,
+      );
+    }
+
+    return {
+      coordinate,
+      ...getClassificationCoverageSummary({ root: resolvedRoot, ...coordinate }),
+      index_path: indexPath,
+      entries_inlined: false,
+    };
+  });
+}
+
+function validateCoverageIndexDeclaration(value, index) {
+  if (typeof value !== "string" || !value || value !== value.trim()) {
+    throw new Error(
+      `Invalid PCR catalog coverage declaration at classification_coverage_indexes[${index}]: expected a non-empty trimmed path string.`,
+    );
+  }
+  if (
+    value.includes("\\") ||
+    path.posix.isAbsolute(value) ||
+    path.posix.normalize(value) !== value ||
+    !value.startsWith("classifications/indexes/") ||
+    !/^[A-Za-z0-9._/-]+-coverage\.json$/u.test(value)
+  ) {
+    throw new Error(
+      `Invalid PCR catalog coverage declaration at classification_coverage_indexes[${index}]: ${value}.`,
+    );
+  }
+  return value;
+}
+
+function coverageCoordinateFromDocument({ document, indexPath }) {
+  const system = String(document?.classification_system ?? "").toLowerCase();
+  const version = String(document?.classification_version ?? "");
+  if (!/^[a-z0-9][a-z0-9_-]*$/u.test(system) || !/^[A-Za-z0-9][A-Za-z0-9._-]*$/u.test(version)) {
+    throw new Error(
+      `Invalid classification coordinate in declared coverage index ${indexPath}.`,
+    );
+  }
+  return { system, version };
+}
+
+function readRequiredYamlFile({ root, filePath, label }) {
+  const text = readRequiredRealFile({ root, filePath, label });
+  try {
+    return parseYaml(text);
+  } catch (error) {
+    throw new Error(`Invalid ${label}: ${error.message}`);
+  }
+}
+
+function readRequiredJsonFile({ root, filePath, label }) {
+  const text = readRequiredRealFile({ root, filePath, label });
+  try {
+    return JSON.parse(text);
+  } catch (error) {
+    throw new Error(`Invalid ${label}: ${error.message}`);
+  }
+}
+
+function readRequiredRealFile({ root, filePath, label }) {
+  let stat;
+  try {
+    stat = lstatSync(filePath);
+  } catch (error) {
+    if (error?.code === "ENOENT") {
+      throw new Error(`Missing ${label}: ${toPosix(path.relative(root, filePath))}`);
+    }
+    throw error;
+  }
+  if (stat.isSymbolicLink() || !stat.isFile()) {
+    throw new Error(`${label} must be a real file: ${toPosix(path.relative(root, filePath))}`);
+  }
+  const realFilePath = realpathSync(filePath);
+  if (realFilePath !== root && !isAncestor(root, realFilePath)) {
+    throw new Error(`${label} escapes the PCR repository root: ${realFilePath}`);
+  }
+  return readFileSync(realFilePath, "utf8");
+}
+
+function toPosix(value) {
+  return value.split(path.sep).join("/");
 }
 
 function readOptionalMarkdown({ root, pcr, language }) {
@@ -209,11 +372,24 @@ function cliOptions(argv) {
     } else if (token === "--out-dir") {
       options.outDir = path.resolve(requiredOptionValue(argv, index, token));
       index += 1;
+    } else if (token === "--scope") {
+      options.scope = validateViewerScope(requiredOptionValue(argv, index, token));
+      index += 1;
     } else {
       throw new Error(`Unknown option: ${token}`);
     }
   }
   return options;
+}
+
+export function validateViewerScope(scope) {
+  const value = String(scope);
+  if (!viewerScopes.has(value)) {
+    throw new Error(
+      `Invalid viewer scope: ${value}. Expected one of: ${PCR_CATALOG_SCOPES.join(", ")}.`,
+    );
+  }
+  return value;
 }
 
 function requiredOptionValue(argv, index, option) {
@@ -226,7 +402,9 @@ function requiredOptionValue(argv, index, option) {
 
 if (isCliMain(import.meta.url)) {
   const data = buildViewer(cliOptions(process.argv.slice(2)));
-  console.log(`Built PCR viewer data for ${data.pcr_count} PCR records.`);
+  console.log(
+    `Built PCR viewer data for ${data.pcr_count} PCR records (scope: ${data.catalog_scope}).`,
+  );
 }
 
 function isCliMain(moduleUrl) {

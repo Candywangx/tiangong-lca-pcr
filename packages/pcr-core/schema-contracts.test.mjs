@@ -14,6 +14,7 @@ import {
   assertStructured,
   CORE_SCHEMA_IDS,
   validateDatasetInput,
+  validateClassificationCoverage,
   validateFeedbackDraft,
   validateFeedbackIntake,
   validateGuidance,
@@ -40,6 +41,40 @@ test("all pcr-core JSON Schemas compile together in strict Ajv 2020 mode", () =>
     .map((fileName) => JSON.parse(readFileSync(path.join(schemaDirectory, fileName), "utf8")));
 
   assert.doesNotThrow(() => createSchemaRegistry(schemas));
+});
+
+test("classification coverage contract separates accepted mappings from review evidence", () => {
+  const coverage = JSON.parse(
+    readFileSync(
+      path.join(repoRoot, "classifications/indexes/cpc-3.0-coverage.json"),
+      "utf8",
+    ),
+  );
+  assert.equal(validateClassificationCoverage(coverage).valid, true);
+
+  const candidateWithMapping = structuredClone(coverage);
+  candidateWithMapping.entries[0].coverage_status = "candidate_suggestion";
+  assert.equal(validateClassificationCoverage(candidateWithMapping).valid, false);
+
+  const manualReview = structuredClone(coverage);
+  manualReview.entries[0].coverage_status = "manual_review";
+  manualReview.entries[0].mapping.mapping_type = "manual_review";
+  assert.equal(validateClassificationCoverage(manualReview).valid, true);
+
+  manualReview.entries[0].mapping.mapping_type = "exact";
+  assert.equal(validateClassificationCoverage(manualReview).valid, false);
+
+  const unsupportedGenerator = structuredClone(coverage);
+  unsupportedGenerator.source.generator_version = "2";
+  assert.equal(validateClassificationCoverage(unsupportedGenerator).valid, false);
+
+  const missingSourceDigest = structuredClone(coverage);
+  delete missingSourceDigest.source.mapping.sha256;
+  assert.equal(validateClassificationCoverage(missingSourceDigest).valid, false);
+
+  const nonExactHashMode = structuredClone(coverage);
+  nonExactHashMode.source.normalized_leaves.hash_mode = "normalized_text";
+  assert.equal(validateClassificationCoverage(nonExactHashMode).valid, false);
 });
 
 test("material structured contract rejects an empty object with stable sorted errors", () => {

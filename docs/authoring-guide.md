@@ -25,7 +25,7 @@ checkPaths:
   - library/pcrs/**
   - library/modules/**
 lastReviewedAt: 2026-07-14
-lastReviewedCommit: 7a3d0c7ea81ba384e435e3d766b6c4b6997a51d5
+lastReviewedCommit: c248880a854c1687567f3e4ea6c24e0dd78115ab
 ---
 
 # Authoring Guide
@@ -41,6 +41,9 @@ When the trigger is external PCR feedback, start with `builder/docs/workflows/in
 Use mapping files under `classifications/mappings/` to connect external classification codes to canonical PCR ids.
 
 One semantic product category uses one canonical PCR record. Additional classification systems add mapping entries to that PCR id.
+A newly imported classification leaf does not by itself justify a PCR directory. Leave it represented in classification
+coverage until product scope and methodology review establish a material canonical record; then create that record and
+accept the mapping edge. Do not create empty PCRs merely to make the classification look fully mapped.
 
 Each material PCR should be a directory:
 
@@ -134,11 +137,22 @@ Flow identity sources and range sources can differ. A flow UUID may come from a 
 
 AI PCR production uses public evidence and domain common sense to initialize candidate processes, likely input/output flows, and search terms. Existing PCR records are read as prior evidence, then the current best PCR is written to the appropriate canonical record.
 
-Public `tiangong-pcr` guidance is a consumption view over PCR content. Catalog and mapping results expose readiness separately from identity: an authored candidate is review-required guidance, while an empty scaffold is unavailable and cannot be used by guidance or validation. Use `validate-dataset` to check the implemented subset of foreground collection package requirements, and inspect `check_coverage.checks_skipped` before interpreting a result as complete. If Agent use of `guidance` reveals missing or ambiguous instructions, capture that through feedback issue templates or `npm --silent run tiangong-pcr -- feedback draft`.
+Public `tiangong-pcr` guidance is a consumption view over PCR content. `tree`, `list`, and the viewer default to material
+records; explicit catalog compatibility scopes are `--scope material|legacy|all`. Classification coverage is queried
+separately with `coverage summary|list --classification <system>:<version>`, and coverage list output is paginated.
+An accepted mapping and a PCR's readiness are separate claims: an authored candidate is review-required guidance,
+while a known unmapped leaf returns `mapping: null` and `pcr: null`. A retained empty scaffold may be returned as
+`legacy_scaffold_compatibility`, but remains unavailable to guidance and validation. Use `validate-dataset` to check
+the implemented subset of foreground collection package requirements, and inspect `check_coverage.checks_skipped`
+before interpreting a result as complete. If Agent use of `guidance` reveals missing or ambiguous instructions,
+capture that through feedback issue templates or `npm --silent run tiangong-pcr -- feedback draft`.
 
-## CPC Scaffolded PCRs
+## Legacy CPC Scaffold Compatibility
 
-CPC-generated PCR directories are placeholders until reviewed PCR content is written. When filling one of these records:
+CPC-generated PCR directories are migration-era placeholders until reviewed PCR content is written. They are excluded
+from default material browsing and are not accepted mappings merely because old mapping entries still reference them.
+The existing importer still creates these directories; Phase 2 will stop that per-leaf behavior before any physical
+scaffold removal. Until then, when promoting one of these retained records into a material PCR:
 
 - keep the existing `classification_refs` and CPC-to-PCR mapping unless the classification match is wrong
 - update both `pcr.en-US.md` and `pcr.zh-CN.md` as paired renderings of the same rule
@@ -154,7 +168,15 @@ Lifecycle fields form one contract rather than independent labels. Scaffolds are
 authored; active PCRs are reviewed methodology; published PCRs are published methodology. Use one lifecycle command
 to make a valid transition and do not edit a status without moving the corresponding maturity when required.
 
-Before publication, the record must be `active` with `reviewed_methodology`, Chinese translation status `reviewed`,
-a valid semantic version, no unresolved or blocking review metadata, a current structured projection, and no material
-lint problem. `pcr:publish` evaluates the future manifest and generated projection before writing either file. Failed
-preflight leaves the existing manifest and projection unchanged.
+Before publication, the selected workspace must be `active` with `reviewed_methodology`, Chinese translation status
+`reviewed`, a valid semantic version, no unresolved or blocking review metadata, a current structured projection, and
+no material lint problem. First publication requires
+`pcr:publish --workspace current --version <semver>`. A later version starts with `pcr:revise --version
+<target-semver>`, is edited and reviewed only through `--workspace revision`, and is promoted with
+`pcr:publish --workspace revision`.
+
+Publication preflight runs while the per-PCR transaction lock is held. Failure leaves the complete PCR leaf
+unchanged. Success installs the current files, immutable `releases/<semver>/` snapshot, exact-byte release metadata,
+and append-only history together through the recoverable directory transaction. Never edit a published/deprecated
+current workspace or managed release artifact in place; run `pcr:recover` when an interrupted mutation reports
+recovery state.

@@ -7,6 +7,9 @@ import {
   validateClassificationMapping,
   validateManifest,
   validateMarkdownFrontmatter,
+  validateRelease,
+  validateReleaseHistory,
+  validateRevision,
   validateStructured,
 } from "./schema-contracts.mjs";
 
@@ -159,4 +162,128 @@ test("builder contracts bind stable lifecycle and mapping tokens to shared vocab
   );
   mapping.mappings[0].mapping_type = "approximate";
   assert.equal(validateClassificationMapping(mapping).valid, false);
+});
+
+test("published and deprecated manifests require fixed release artifact fingerprints", () => {
+  const hash = `sha256:${"a".repeat(64)}`;
+  const manifest = {
+    schema_version: 1,
+    id: "pcr.example",
+    title: { "en-US": "Example", "zh-CN": "示例" },
+    status: "published",
+    pcr_kind: "product_category_rule",
+    content_maturity: "published_methodology",
+  };
+  const releaseArtifacts = {
+    pcr_en_us_sha256: hash,
+    pcr_zh_cn_sha256: hash,
+    structured_sha256: hash,
+  };
+
+  assert.equal(validateManifest(manifest).valid, false);
+  assert.equal(validateManifest({ ...manifest, release_artifacts: releaseArtifacts }).valid, true);
+  assert.equal(
+    validateManifest({
+      ...manifest,
+      status: "deprecated",
+      content_maturity: "deprecated_methodology",
+    }).valid,
+    false,
+  );
+  assert.equal(
+    validateManifest({
+      ...manifest,
+      status: "deprecated",
+      content_maturity: "deprecated_methodology",
+      release_artifacts: releaseArtifacts,
+    }).valid,
+    true,
+  );
+  assert.equal(
+    validateManifest({
+      ...manifest,
+      release_artifacts: { ...releaseArtifacts, structured_sha256: "a".repeat(64) },
+    }).valid,
+    false,
+  );
+  assert.equal(
+    validateManifest({
+      ...manifest,
+      status: "candidate",
+      content_maturity: "authored_methodology",
+      release_artifacts: releaseArtifacts,
+    }).valid,
+    false,
+  );
+});
+
+test("revision, release, and release-history Schemas enforce immutable metadata shapes", () => {
+  const hash = `sha256:${"b".repeat(64)}`;
+  const revision = {
+    schema_version: 1,
+    pcr_id: "pcr.example",
+    base_version: "1.0.0",
+    target_version: "1.1.0-rc.1+review.2",
+    opened_at_utc: "2026-07-14T12:34:56.123Z",
+  };
+  const release = {
+    schema_version: 1,
+    pcr_id: "pcr.example",
+    version: "1.0.0",
+    published_at_utc: "2026-07-14T12:34:56Z",
+    predecessor_version: null,
+    artifacts: {
+      manifest_snapshot_sha256: hash,
+      pcr_en_us_sha256: hash,
+      pcr_zh_cn_sha256: hash,
+      structured_sha256: hash,
+    },
+  };
+  const history = {
+    schema_version: 1,
+    pcr_id: "pcr.example",
+    current_version: "1.0.0",
+    releases: [
+      {
+        version: "1.0.0",
+        published_at_utc: "2026-07-14T12:34:56Z",
+        predecessor_version: null,
+        path: "releases/1.0.0",
+        release_sha256: hash,
+      },
+    ],
+  };
+
+  assert.equal(validateRevision(revision).valid, true);
+  assert.equal(validateRelease(release).valid, true);
+  assert.equal(validateReleaseHistory(history).valid, true);
+
+  assert.equal(validateRevision({ ...revision, target_version: "01.1.0" }).valid, false);
+  assert.equal(
+    validateRevision({ ...revision, opened_at_utc: "2026-07-14T12:34:56+08:00" }).valid,
+    false,
+  );
+  assert.equal(validateRevision({ ...revision, note: "mutable" }).valid, false);
+  assert.equal(
+    validateRelease({
+      ...release,
+      artifacts: { ...release.artifacts, manifest_snapshot_sha256: undefined },
+    }).valid,
+    false,
+  );
+  assert.equal(validateReleaseHistory({ ...history, releases: [] }).valid, false);
+  assert.equal(
+    validateReleaseHistory({
+      ...history,
+      releases: [{ ...history.releases[0], path: "releases/../1.0.0" }],
+    }).valid,
+    false,
+  );
+  assert.equal(
+    validateReleaseHistory({
+      ...history,
+      releases: [{ ...history.releases[0], release_sha256: `sha256:${"B".repeat(64)}` }],
+    }).valid,
+    false,
+  );
 });

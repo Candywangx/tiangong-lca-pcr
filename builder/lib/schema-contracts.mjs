@@ -7,6 +7,9 @@ const BUILDER_SCHEMA_FILES = [
   "classification-mapping.schema.json",
   "pcr-manifest.schema.json",
   "pcr-markdown-frontmatter.schema.json",
+  "pcr-release-history.schema.json",
+  "pcr-release.schema.json",
+  "pcr-revision.schema.json",
 ];
 
 const schemaDependencies = [
@@ -70,6 +73,18 @@ export const validateStructured = (value) =>
   validateBuilderContract("structured-projection.schema.json", value);
 export const assertStructured = (value, options = {}) =>
   assertBuilderContract("structured-projection.schema.json", value, options);
+export const validateRevision = (value) =>
+  validateBuilderContract("pcr-revision.schema.json", value);
+export const assertRevision = (value, options = {}) =>
+  assertBuilderContract("pcr-revision.schema.json", value, options);
+export const validateRelease = (value) =>
+  validateBuilderContract("pcr-release.schema.json", value);
+export const assertRelease = (value, options = {}) =>
+  assertBuilderContract("pcr-release.schema.json", value, options);
+export const validateReleaseHistory = (value) =>
+  validateBuilderContract("pcr-release-history.schema.json", value);
+export const assertReleaseHistory = (value, options = {}) =>
+  assertBuilderContract("pcr-release-history.schema.json", value, options);
 
 function resolveContractId(contract) {
   return contractIds.get(contract) ?? contract;

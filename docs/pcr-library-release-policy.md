@@ -1,14 +1,41 @@
 # PCR Library Release Policy
 
-PCR release state is managed per PCR in `manifest.yaml`.
+Before first publication, PCR release state is authored in the top-level four-file current workspace. First
+publication requires an explicit version and creates the managed release chain:
 
-Use:
+```bash
+npm run pcr:publish -- --pcr <library/pcrs/...> --workspace current --version <semver>
+```
 
-- `npm run pcr:lifecycle -- --pcr <library/pcrs/...> ...` for review, content maturity, and translation state changes.
-- `npm run pcr:bump -- --pcr <library/pcrs/...> --level patch|minor|major` for semantic version increments.
-- `npm run pcr:publish -- --pcr <library/pcrs/...> --version <semver>` to preflight, regenerate structured output, and mark the PCR as published.
+After publication, the top-level files remain the current consumer-facing release. Each audited version also has an
+immutable `releases/<semver>/` snapshot, and `release-history.yaml` is append-only. The current manifest carries
+exact-byte hashes for both Markdown files and `structured.yaml`; lint and `pcr-core` fail closed when managed current
+or archived release bytes do not match their recorded hashes.
 
-Publication requires current `active` status with `reviewed_methodology`, reviewed Chinese translation, valid semantic
-versioning, a deterministic current `structured.yaml`, no unresolved or blocking review metadata, and passing material
-PCR lint. The command validates the future manifest and generated projection before writing; failed preflight leaves
-both existing files unchanged. Run `npm run validate` before and after publication.
+Do not edit, sync, or bump a published/deprecated current workspace in place. Open a later version with an explicit,
+greater target version, then operate only on the revision workspace:
+
+```bash
+npm run pcr:revise -- --pcr <library/pcrs/...> --version <target-semver>
+npm run pcr:sync-structured -- --pcr <library/pcrs/...> --workspace revision
+npm run pcr:lifecycle -- --pcr <library/pcrs/...> --workspace revision --status active --content-maturity reviewed_methodology --translation zh-CN=reviewed
+npm run pcr:publish -- --pcr <library/pcrs/...> --workspace revision
+```
+
+The revision target is locked by `revision/revision.yaml`; revision publication therefore rejects `--version`.
+A deprecated PCR cannot be reopened. Unpublished current records may still use `pcr:bump`; managed published,
+deprecated, and revision workspaces may not.
+
+Publication requires `active/reviewed_methodology`, reviewed Chinese translation, a valid SemVer, a deterministic
+current projection, no unresolved or blocking review metadata, and passing material lint. Builder mutations run under
+a per-PCR lock and replace the complete leaf through a recoverable directory transaction. Failed preflight leaves the
+PCR unchanged. If an interrupted mutation reports recovery state, run:
+
+```bash
+npm run pcr:recover -- --pcr <library/pcrs/...>
+npm run validate
+```
+
+Use `--force-stale-lock` only when ordinary recovery explicitly requires it and after verifying that no writer is
+active. Never create or edit `revision/`, `releases/`, `release-history.yaml`, or builder transaction state manually.
+Run `npm run validate` before and after publication or recovery.

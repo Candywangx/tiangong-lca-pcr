@@ -6,8 +6,11 @@ This directory defines how agents construct, update, validate, and publish PCR r
 
 - Treat `pcr.en-US.md` as the canonical authored source.
 - Treat `pcr.zh-CN.md` as the aligned Chinese rendering of the same PCR.
-- Treat `structured.yaml` as generated output. Regenerate it with `npm run pcr:sync-structured -- --pcr <library/pcrs/...>`.
+- Treat `structured.yaml` as generated output. Regenerate an unpublished current workspace with `npm run pcr:sync-structured -- --pcr <library/pcrs/...>` and an open revision with `--workspace revision`.
 - Do not hand-edit generated structured projections except when changing the projection generator itself.
+- Do not edit, sync, or bump a published/deprecated current workspace in place. Open a published revision with `pcr:revise`; its target version is locked until publication.
+- Do not edit `releases/**` or `release-history.yaml` manually. They are immutable/append-only publication artifacts maintained by the builder transaction.
+- Do not reopen a deprecated PCR. Reintroduction requires a separately governed successor or restoration workflow.
 - Store Tiangong UUID references without dataset versions.
 - Do not put CLI lookup traces, search logs, review notes, API keys, session paths, or private runtime details in PCR Markdown or `structured.yaml`.
 - Do not list Tiangong database rows in `Data Sources` when they only support UUID identity. Tiangong is the default source for UUID-bearing rows.
@@ -38,6 +41,8 @@ For translation, review, or publish work:
 
 - read the matching file under `builder/docs/workflows/`
 - read only the contracts named by that workflow
+- for an already published PCR, read `builder/docs/contracts/published-revision-contract.md` and operate on
+  `--workspace revision`
 
 For feedback issue intake or accepted feedback updates:
 
@@ -85,8 +90,27 @@ For review, translation, publication, or version lifecycle updates, run the rele
 ```bash
 npm run pcr:lifecycle -- --pcr <library/pcrs/...> --status active --content-maturity reviewed_methodology --translation zh-CN=reviewed
 npm run pcr:bump -- --pcr <library/pcrs/...> --level patch
-npm run pcr:publish -- --pcr <library/pcrs/...> --version <semver>
+npm run pcr:publish -- --pcr <library/pcrs/...> --workspace current --version <semver>
 ```
+
+For a later version of a managed published PCR, keep the top-level current release unchanged and use the revision
+workspace:
+
+```bash
+npm run pcr:revise -- --pcr <library/pcrs/...> --version <target-semver>
+npm run pcr:sync-structured -- --pcr <library/pcrs/...> --workspace revision
+npm run pcr:lifecycle -- --pcr <library/pcrs/...> --workspace revision --status active --content-maturity reviewed_methodology --translation zh-CN=reviewed
+npm run pcr:publish -- --pcr <library/pcrs/...> --workspace revision
+```
+
+If a builder mutation reports an interrupted transaction, recover it before continuing and validate afterward:
+
+```bash
+npm run pcr:recover -- --pcr <library/pcrs/...>
+npm run validate
+```
+
+Use `--force-stale-lock` only after verifying that no writer is active and ordinary recovery explicitly requires it.
 
 ## Quality Bar
 

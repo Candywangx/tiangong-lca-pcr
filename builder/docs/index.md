@@ -16,7 +16,7 @@ Use this index to choose the smallest relevant builder context.
 
 - `contracts/pcr-markdown-contract.md`: authored Markdown structure.
 - `contracts/pcr-manifest-contract.md`: lifecycle and identity metadata.
-- `contracts/published-revision-contract.md`: planned, not-yet-implemented storage and transaction contract for revising published PCRs.
+- `contracts/published-revision-contract.md`: executable workspace, immutable release, directory-transaction, and recovery contract for published PCRs.
 - `contracts/structured-projection-contract.md`: generated `structured.yaml` projection rules.
 - `contracts/evidence-and-source-contract.md`: source records and source references.
 - `contracts/tiangong-uuid-reference-contract.md`: Tiangong UUID storage rules.

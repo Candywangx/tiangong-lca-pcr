@@ -1,3 +1,115 @@
+// Version 3 intentionally replaces the singular classification_coverage field with
+// coordinate-keyed classification_coverage_summaries. Older generated data must be
+// rebuilt together with the static assets instead of being guessed into the new shape.
+export const VIEWER_DATA_SCHEMA_VERSION = 3;
+
+export function assertViewerDataContract(data) {
+  if (data?.schema_version !== VIEWER_DATA_SCHEMA_VERSION) {
+    throw new Error(
+      `Unsupported PCR viewer data schema version: ${String(data?.schema_version ?? "missing")}. Expected ${VIEWER_DATA_SCHEMA_VERSION}. Rebuild viewer data and static assets together.`,
+    );
+  }
+  if (data.viewer_kind !== "tiangong-pcr-static-viewer-data") {
+    throw new Error(`Unsupported PCR viewer data kind: ${String(data.viewer_kind ?? "missing")}.`);
+  }
+  if (!Array.isArray(data.pcrs)) {
+    throw new Error("Invalid PCR viewer data: pcrs must be an array.");
+  }
+  if (data.pcr_count !== data.pcrs.length) {
+    throw new Error("Invalid PCR viewer data: pcr_count must match the pcrs array length.");
+  }
+  if (!["all", "material", "legacy"].includes(data.catalog_scope)) {
+    throw new Error(`Invalid PCR viewer catalog scope: ${String(data.catalog_scope ?? "missing")}.`);
+  }
+  if (
+    !Array.isArray(data.classification_coverage_summaries) ||
+    data.classification_coverage_summaries.length === 0
+  ) {
+    throw new Error(
+      "Invalid PCR viewer data: classification_coverage_summaries must be a non-empty array.",
+    );
+  }
+  const seenCoordinates = new Set();
+  const seenIndexPaths = new Set();
+  for (const coverage of data.classification_coverage_summaries) {
+    assertCoverageSummaryContract(coverage, { seenCoordinates, seenIndexPaths });
+  }
+  return data;
+}
+
+function assertCoverageSummaryContract(coverage, { seenCoordinates, seenIndexPaths }) {
+  const coordinate = coverage?.coordinate;
+  const system = coordinate?.system;
+  const version = coordinate?.version;
+  if (
+    typeof system !== "string" ||
+    !/^[a-z0-9][a-z0-9_-]*$/u.test(system) ||
+    typeof version !== "string" ||
+    !/^[A-Za-z0-9][A-Za-z0-9._-]*$/u.test(version)
+  ) {
+    throw new Error("Invalid PCR viewer data: coverage summary has an invalid coordinate.");
+  }
+
+  const coordinateKey = `${system}:${version}`;
+  if (seenCoordinates.has(coordinateKey)) {
+    throw new Error(`Invalid PCR viewer data: duplicate coverage coordinate ${coordinateKey}.`);
+  }
+  seenCoordinates.add(coordinateKey);
+
+  if (
+    coverage.schema_version !== 1 ||
+    coverage.index_kind !== "classification-pcr-coverage" ||
+    String(coverage.classification_system ?? "").toLowerCase() !== system ||
+    String(coverage.classification_version ?? "") !== version
+  ) {
+    throw new Error(
+      `Invalid PCR viewer data: coverage summary metadata does not match ${coordinateKey}.`,
+    );
+  }
+  const expectedIndexPath = `classifications/indexes/${system}-${version}-coverage.json`;
+  if (coverage.index_path !== expectedIndexPath || seenIndexPaths.has(coverage.index_path)) {
+    throw new Error(
+      `Invalid PCR viewer data: coverage summary ${coordinateKey} has an invalid or duplicate index_path.`,
+    );
+  }
+  seenIndexPaths.add(coverage.index_path);
+
+  if (coverage.entries_inlined !== false || Object.hasOwn(coverage, "entries")) {
+    throw new Error(
+      `Invalid PCR viewer data: coverage summary ${coordinateKey} must not inline entries.`,
+    );
+  }
+  const statusKeys = [
+    "mapped",
+    "unmapped",
+    "candidate_suggestion",
+    "manual_review",
+    "unknown",
+  ];
+  if (
+    !coverage.summary ||
+    !Number.isInteger(coverage.summary.total) ||
+    coverage.summary.total < 0 ||
+    statusKeys.some(
+      (key) => !Number.isInteger(coverage.summary[key]) || coverage.summary[key] < 0,
+    ) ||
+    statusKeys.reduce((total, key) => total + coverage.summary[key], 0) !==
+      coverage.summary.total
+  ) {
+    throw new Error(
+      `Invalid PCR viewer data: coverage summary ${coordinateKey} has inconsistent counts.`,
+    );
+  }
+}
+
+export function formatCoverageSummary(coverage = {}) {
+  const system = coverage.classification_system ?? coverage.coordinate?.system ?? "unknown";
+  const version = coverage.classification_version ?? coverage.coordinate?.version ?? "unknown";
+  const mapped = coverage.summary?.mapped ?? 0;
+  const total = coverage.summary?.total ?? 0;
+  return `${system} ${version} · ${mapped}/${total} classification leaves mapped`;
+}
+
 export function filterPcrs(pcrs, { query = "", status = "", maturity = "" } = {}) {
   const normalizedQuery = normalize(query);
   return pcrs.filter((pcr) => {

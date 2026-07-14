@@ -17,8 +17,8 @@ const STATUS_MATURITY = new Map([
 
 const STATUS_TRANSITIONS = new Map([
   ["scaffold", new Set(["scaffold", "candidate"])],
-  ["candidate", new Set(["candidate", "active", "deprecated"])],
-  ["active", new Set(["active", "deprecated"])],
+  ["candidate", new Set(["candidate", "active"])],
+  ["active", new Set(["active"])],
   ["published", new Set(["published", "deprecated"])],
   ["deprecated", new Set(["deprecated"])],
 ]);
@@ -69,6 +69,75 @@ function collectReviewBlockers(value, prefix = "review_metadata") {
 
 export function isValidSemver(value) {
   return SEMVER_PATTERN.test(String(value ?? ""));
+}
+
+export function compareSemver(left, right) {
+  const leftValue = String(left ?? "");
+  const rightValue = String(right ?? "");
+  const leftMatch = SEMVER_PATTERN.exec(leftValue);
+  const rightMatch = SEMVER_PATTERN.exec(rightValue);
+
+  if (!leftMatch) {
+    throw new TypeError(`Cannot compare invalid semver value "${leftValue}"`);
+  }
+  if (!rightMatch) {
+    throw new TypeError(`Cannot compare invalid semver value "${rightValue}"`);
+  }
+
+  for (const index of [1, 2, 3]) {
+    const comparison = compareNumericIdentifier(leftMatch[index], rightMatch[index]);
+    if (comparison !== 0) {
+      return comparison;
+    }
+  }
+
+  const leftPrerelease = leftMatch[4];
+  const rightPrerelease = rightMatch[4];
+  if (leftPrerelease === undefined && rightPrerelease === undefined) {
+    return 0;
+  }
+  if (leftPrerelease === undefined) {
+    return 1;
+  }
+  if (rightPrerelease === undefined) {
+    return -1;
+  }
+
+  const leftIdentifiers = leftPrerelease.split(".");
+  const rightIdentifiers = rightPrerelease.split(".");
+  const sharedLength = Math.min(leftIdentifiers.length, rightIdentifiers.length);
+  for (let index = 0; index < sharedLength; index += 1) {
+    const leftIdentifier = leftIdentifiers[index];
+    const rightIdentifier = rightIdentifiers[index];
+    const leftNumeric = /^[0-9]+$/u.test(leftIdentifier);
+    const rightNumeric = /^[0-9]+$/u.test(rightIdentifier);
+
+    if (leftNumeric && rightNumeric) {
+      const comparison = compareNumericIdentifier(leftIdentifier, rightIdentifier);
+      if (comparison !== 0) {
+        return comparison;
+      }
+      continue;
+    }
+    if (leftNumeric !== rightNumeric) {
+      return leftNumeric ? -1 : 1;
+    }
+    if (leftIdentifier !== rightIdentifier) {
+      return leftIdentifier < rightIdentifier ? -1 : 1;
+    }
+  }
+
+  return Math.sign(leftIdentifiers.length - rightIdentifiers.length);
+}
+
+function compareNumericIdentifier(left, right) {
+  if (left.length !== right.length) {
+    return Math.sign(left.length - right.length);
+  }
+  if (left === right) {
+    return 0;
+  }
+  return left < right ? -1 : 1;
 }
 
 export function manifestReviewBlockers(manifest) {

@@ -2,7 +2,14 @@
 import { init } from "../lib/builder-operations.mjs";
 import { scaffoldCpc } from "../lib/cpc-scaffold.mjs";
 import { lint } from "../lib/lint-rules.mjs";
-import { bump, lifecycle, publish, syncStructured } from "../lib/manifest-lifecycle.mjs";
+import {
+  bump,
+  lifecycle,
+  publish,
+  recover,
+  revise,
+  syncStructured,
+} from "../lib/manifest-lifecycle.mjs";
 
 function parseArgs(argv) {
   const [command, ...rest] = argv;
@@ -34,10 +41,21 @@ Usage:
   node builder/cli/index.mjs init [--root <path>] [--sample-pcr <domain/path/slug>]
   node builder/cli/index.mjs lint [--root <path>]
   node builder/cli/index.mjs scaffold-cpc --source <csv> [--classification-version 3.0]
-  node builder/cli/index.mjs sync-structured --pcr <library/pcrs/...> [--root <path>]
-  node builder/cli/index.mjs lifecycle --pcr <library/pcrs/...> [--status <status>] [--content-maturity <state>] [--translation <lang=status>] [--root <path>]
+  node builder/cli/index.mjs sync-structured --pcr <library/pcrs/...> [--workspace current|revision] [--root <path>]
+  node builder/cli/index.mjs lifecycle --pcr <library/pcrs/...> [--workspace current|revision] [--status <status>] [--content-maturity <state>] [--translation <lang=status>] [--root <path>]
   node builder/cli/index.mjs bump --pcr <library/pcrs/...> [--level patch|minor|major] [--root <path>]
-  node builder/cli/index.mjs publish --pcr <library/pcrs/...> [--version <semver>] [--root <path>]
+  node builder/cli/index.mjs revise --pcr <library/pcrs/...> --version <semver> [--root <path>]
+  node builder/cli/index.mjs publish --pcr <library/pcrs/...> --workspace current --version <semver> [--root <path>]
+  node builder/cli/index.mjs publish --pcr <library/pcrs/...> --workspace revision [--root <path>]
+  node builder/cli/index.mjs recover --pcr <library/pcrs/...> [--force-stale-lock] [--root <path>]
+
+Workspace rules:
+  current   The canonical top-level authoring/current-release files (default).
+  revision  The explicit revision/ workspace of an already published PCR.
+
+Publication rules:
+  First release: publish --workspace current --version <semver>
+  Later release: publish --workspace revision (the version is locked by revise)
 `;
 }
 
@@ -65,6 +83,12 @@ function runCommand(command, options) {
   }
   if (command === "publish") {
     return { messages: publish(options), exitCode: 0 };
+  }
+  if (command === "revise") {
+    return { messages: revise(options), exitCode: 0 };
+  }
+  if (command === "recover") {
+    return { messages: recover(options), exitCode: 0 };
   }
   throw new Error(`Unknown command: ${command}`);
 }

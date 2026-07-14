@@ -1,6 +1,23 @@
-import { existsSync, readFileSync, readdirSync, statSync } from "node:fs";
+import { createHash } from "node:crypto";
+import {
+  closeSync,
+  constants as fsConstants,
+  existsSync,
+  fstatSync,
+  lstatSync,
+  openSync,
+  readFileSync,
+  realpathSync,
+  readdirSync,
+} from "node:fs";
 import path from "node:path";
 
+import {
+  PcrClassificationCodeUnknownError,
+  PcrClassificationCoverageSemanticError,
+  hasClassificationCoverage,
+  readClassificationCoverage,
+} from "./classification-coverage.mjs";
 import { assertCoreContract, validateCoreContract } from "./contracts.mjs";
 import {
   inspectProjectionIntegrity,
@@ -10,13 +27,47 @@ import { materialProjectionCompletenessIssues } from "./projection-completeness.
 import { parseYaml, readYamlFile } from "./yaml-lite.mjs";
 import {
   CLASSIFICATION_MAPPING_RELATION_VALUES,
+  CONTENT_MATURITY_VALUES,
   FEEDBACK_TYPE_VALUES,
+  PCR_STATUS_VALUES,
 } from "./generated/controlled-vocabulary.mjs";
 
 export const FEEDBACK_TYPES = FEEDBACK_TYPE_VALUES;
+export {
+  CLASSIFICATION_COVERAGE_STATUSES,
+  PcrClassificationCodeUnknownError,
+  PcrClassificationCoverageNotFoundError,
+  PcrClassificationCoverageSemanticError,
+  PcrClassificationCoverageStatusError,
+  classificationCoveragePath,
+  findClassificationCoverageEntry,
+  getClassificationCoverageSummary,
+  hasClassificationCoverage,
+  listClassificationCoverage,
+  readClassificationCoverage,
+} from "./classification-coverage.mjs";
+export const PCR_CATALOG_SCOPES = Object.freeze(["all", "material", "legacy"]);
+export const PCR_RECORD_KINDS = Object.freeze([
+  "methodology",
+  "legacy_scaffold_reference",
+  "invalid_lifecycle_state",
+]);
 const CLASSIFICATION_MAPPING_RELATIONS = new Set(CLASSIFICATION_MAPPING_RELATION_VALUES);
+const PCR_CATALOG_SCOPE_SET = new Set(PCR_CATALOG_SCOPES);
+const METHODOLOGY_LIFECYCLE_STATUSES = new Set(
+  PCR_STATUS_VALUES.filter((value) => value !== "scaffold"),
+);
+const METHODOLOGY_MATURITIES = new Set(
+  CONTENT_MATURITY_VALUES.filter((value) => value !== "empty_scaffold"),
+);
 
+const CURRENT_SNAPSHOT_MAX_ATTEMPTS = 3;
 const pcrCatalogCache = new Map();
+const RELEASE_ARTIFACTS = Object.freeze({
+  pcr_en_us_sha256: "pcr.en-US.md",
+  pcr_zh_cn_sha256: "pcr.zh-CN.md",
+  structured_sha256: "structured.yaml",
+});
 const GUIDANCE_MATURITIES = new Set([
   "authored_methodology",
   "reviewed_methodology",
@@ -57,11 +108,71 @@ export class PcrClassificationMappingError extends Error {
   }
 }
 
-export function listPcrs({ root, refresh = false }) {
+export class PcrClassificationTargetStateError extends Error {
+  constructor({ system, version, code, pcr }) {
+    super(
+      `Classification mapping ${system}:${version}:${code} points to PCR ${pcr.id} with invalid ` +
+        `lifecycle identity ${pcr.status}/${pcr.content_maturity}.`,
+    );
+    this.name = "PcrClassificationTargetStateError";
+    this.code = "PCR_INVALID_CLASSIFICATION_TARGET";
+    this.details = {
+      classification: `${system}:${version}:${code}`,
+      pcr_id: pcr.id,
+      status: pcr.status,
+      content_maturity: pcr.content_maturity,
+      record_kind: pcr.record_kind,
+    };
+  }
+}
+
+export class PcrCurrentSnapshotInconsistentError extends Error {
+  constructor({ pcrId, pcrPath, attempts, lastFailure }) {
+    super(
+      `PCR ${pcrId} current snapshot could not be read consistently after ${attempts} attempts.`,
+    );
+    this.name = "PcrCurrentSnapshotInconsistentError";
+    this.code = "PCR_CURRENT_SNAPSHOT_INCONSISTENT";
+    this.details = {
+      pcr_id: pcrId,
+      pcr_path: pcrPath,
+      attempts,
+      last_failure: lastFailure,
+    };
+  }
+}
+
+export class PcrDuplicateIdError extends Error {
+  constructor({ pcrId, paths }) {
+    super(`Duplicate canonical PCR id ${pcrId}: ${paths.join(", ")}`);
+    this.name = "PcrDuplicateIdError";
+    this.code = "PCR_DUPLICATE_ID";
+    this.details = { pcr_id: pcrId, paths: [...paths] };
+  }
+}
+
+export class PcrCatalogScopeError extends Error {
+  constructor(scope) {
+    super(`Unsupported PCR catalog scope ${String(scope)}. Expected one of: ${PCR_CATALOG_SCOPES.join(", ")}.`);
+    this.name = "PcrCatalogScopeError";
+    this.code = "PCR_INVALID_CATALOG_SCOPE";
+    this.details = {
+      scope: String(scope),
+      allowed_scopes: [...PCR_CATALOG_SCOPES],
+    };
+  }
+}
+
+export function listPcrs({ root, refresh = false, scope = "all" }) {
+  const normalizedScope = normalizeCatalogScope(scope);
   const normalizedRoot = path.resolve(root);
-  return getPcrCatalog({ root: normalizedRoot, refresh }).map((entry) =>
-    currentPcrEntry(normalizedRoot, entry),
-  );
+  const catalog = getPcrCatalog({ root: normalizedRoot, refresh });
+  const candidates = normalizedScope === "all"
+    ? catalog
+    : catalog.filter((entry) => currentCatalogEntryMatchesScope(normalizedRoot, entry, normalizedScope));
+  return candidates
+    .map((entry) => currentPcrEntry(normalizedRoot, entry))
+    .filter((entry) => recordMatchesScope(entry, normalizedScope));
 }
 
 function getPcrCatalog({ root, refresh = false }) {
@@ -74,33 +185,37 @@ function getPcrCatalog({ root, refresh = false }) {
 
 function readPcrCatalog(root) {
   const pcrRoot = path.join(root, "library/pcrs");
-  if (!existsSync(pcrRoot) || !statSync(pcrRoot).isDirectory()) {
+  if (!isCanonicalDirectory(pcrRoot)) {
     throw new Error(`PCR catalog root not found: ${toPosix(path.relative(root, pcrRoot))}`);
   }
-  return findManifestFiles(pcrRoot)
+  const catalog = findManifestFiles(pcrRoot)
     .map((manifestPath) => {
-      const manifest = readYamlFile(manifestPath);
+      const manifest = parseYaml(readCanonicalFileBytes(manifestPath).toString("utf8"));
       const pcrDir = path.dirname(manifestPath);
-      const pcr = {
+      return {
         id: manifest.id,
         path: toPosix(path.relative(root, pcrDir)),
-        title: manifest.title ?? {},
-        status: manifest.status ?? "unknown",
-        version: manifest.version ?? null,
-        content_maturity: manifest.content_maturity ?? null,
-        languages: manifest.languages ?? {},
-        translation_status: manifest.translation_status ?? {},
-        classification_refs: manifest.classification_refs ?? [],
+        manifestPath,
       };
-      return pcr;
     })
-    .filter((entry) => entry.id)
-    .sort((left, right) => left.id.localeCompare(right.id));
+    .filter((entry) => entry.id);
+  const entriesById = new Map();
+  for (const entry of catalog) {
+    const existing = entriesById.get(entry.id);
+    if (existing) {
+      throw new PcrDuplicateIdError({
+        pcrId: entry.id,
+        paths: [existing.path, entry.path].sort(),
+      });
+    }
+    entriesById.set(entry.id, entry);
+  }
+  return catalog.sort((left, right) => left.id.localeCompare(right.id));
 }
 
-export function buildPcrTree({ root, depth = Infinity }) {
+export function buildPcrTree({ root, depth = Infinity, scope = "all" }) {
   const tree = {};
-  for (const pcr of listPcrs({ root })) {
+  for (const pcr of listPcrs({ root, scope })) {
     const segments = pcr.path.replace(/^library\/pcrs\//u, "").split("/");
     let node = tree;
     for (const [index, segment] of segments.entries()) {
@@ -119,10 +234,145 @@ export function buildPcrTree({ root, depth = Infinity }) {
 
 export function resolveClassification({ root, system, version, code }) {
   const normalizedSystem = String(system).toLowerCase();
+  const normalizedVersion = String(version);
+  const normalizedCode = String(code);
+  if (hasClassificationCoverage({
+    root,
+    system: normalizedSystem,
+    version: normalizedVersion,
+  })) {
+    const coverageIndex = readClassificationCoverage({
+      root,
+      system: normalizedSystem,
+      version: normalizedVersion,
+    });
+    return resolveClassificationWithCoverage({
+      root,
+      system: normalizedSystem,
+      version: normalizedVersion,
+      code: normalizedCode,
+      coverageIndex,
+    });
+  }
+
+  const legacy = readCanonicalClassificationMapping({
+    root,
+    system: normalizedSystem,
+    version: normalizedVersion,
+    code: normalizedCode,
+  });
+  const pcr = getPcrById({ root, pcrId: legacy.mapping.pcr_id });
+  if (pcr.record_kind === "invalid_lifecycle_state") {
+    throw new PcrClassificationTargetStateError({
+      system: normalizedSystem,
+      version: normalizedVersion,
+      code: normalizedCode,
+      pcr,
+    });
+  }
+  return {
+    classification_system: legacy.mappingFile.classification_system,
+    classification_version: legacy.mappingFile.classification_version,
+    mapping: legacy.mapping,
+    pcr,
+    resolution_status: pcr.record_kind === "legacy_scaffold_reference"
+      ? "legacy_scaffold_compatibility"
+      : "mapped",
+    coverage_status: null,
+    coverage: null,
+  };
+}
+
+function resolveClassificationWithCoverage({ root, system, version, code, coverageIndex }) {
+  const coverage = coverageIndex.entries.find(
+    (candidate) => String(candidate.code) === String(code),
+  );
+  if (!coverage) {
+    throw new PcrClassificationCodeUnknownError({ system, version, code });
+  }
+  if (coverage.coverage_status === "mapped") {
+    const canonical = readCanonicalClassificationMapping({
+      root,
+      system,
+      version,
+      code,
+    });
+    assertCoverageMappingMatchesCanonical({ coverage, canonical, system, version, code });
+    const pcr = getPcrById({ root, pcrId: canonical.mapping.pcr_id });
+    if (pcr.record_kind !== "methodology") {
+      throw invalidCoverageResolution({
+        system,
+        version,
+        code,
+        issue: `mapped coverage points to non-material PCR ${pcr.id}`,
+      });
+    }
+    return {
+      classification_system: canonical.mappingFile.classification_system,
+      classification_version: canonical.mappingFile.classification_version,
+      mapping: canonical.mapping,
+      pcr,
+      resolution_status: "mapped",
+      coverage_status: coverage.coverage_status,
+      coverage,
+    };
+  }
+
+  if (coverage.legacy_reference) {
+    const canonical = readCanonicalClassificationMapping({
+      root,
+      system,
+      version,
+      code,
+    });
+    if (canonical.mapping.pcr_id !== coverage.legacy_reference.pcr_id) {
+      throw invalidCoverageResolution({
+        system,
+        version,
+        code,
+        issue: `legacy reference ${coverage.legacy_reference.pcr_id} does not match canonical mapping ${canonical.mapping.pcr_id}`,
+      });
+    }
+    const pcr = getPcrById({ root, pcrId: canonical.mapping.pcr_id });
+    if (pcr.record_kind !== "legacy_scaffold_reference") {
+      throw invalidCoverageResolution({
+        system,
+        version,
+        code,
+        issue: `legacy reference points to material PCR ${pcr.id}`,
+      });
+    }
+    return {
+      classification_system: canonical.mappingFile.classification_system,
+      classification_version: canonical.mappingFile.classification_version,
+      mapping: canonical.mapping,
+      pcr,
+      resolution_status: "legacy_scaffold_compatibility",
+      coverage_status: coverage.coverage_status,
+      coverage,
+    };
+  }
+
+  return {
+    classification_system: String(coverageIndex.classification_system),
+    classification_version: String(coverageIndex.classification_version),
+    mapping: null,
+    pcr: null,
+    resolution_status: "unmapped",
+    coverage_status: coverage.coverage_status,
+    coverage,
+    review_candidate:
+      ["manual_review", "unknown"].includes(coverage.coverage_status) && coverage.mapping
+        ? structuredClone(coverage.mapping)
+        : null,
+  };
+}
+
+function readCanonicalClassificationMapping({ root, system, version, code }) {
   const mappingPath = path.join(
     root,
     "classifications/mappings",
-    `${normalizedSystem}-${version}-to-pcr.yaml`,
+    `${system}-${version}-to-pcr.yaml`,
   );
   if (!existsSync(mappingPath)) {
     throw new Error(`Classification mapping not found: ${toPosix(path.relative(root, mappingPath))}`);
@@ -134,19 +384,37 @@ export function resolveClassification({ root, system, version, code }) {
   }
   if (!CLASSIFICATION_MAPPING_RELATIONS.has(mapping.mapping_type)) {
     throw new PcrClassificationMappingError({
-      system: normalizedSystem,
+      system,
       version,
       code,
       mappingType: mapping.mapping_type,
     });
   }
-  const pcr = getPcrById({ root, pcrId: mapping.pcr_id });
-  return {
-    classification_system: mappingFile.classification_system,
-    classification_version: mappingFile.classification_version,
-    mapping,
-    pcr,
-  };
+  return { mappingFile, mapping };
+}
+
+function assertCoverageMappingMatchesCanonical({ coverage, canonical, system, version, code }) {
+  const coverageMapping = coverage.mapping;
+  const canonicalMapping = canonical.mapping;
+  for (const field of ["pcr_id", "mapping_type", "confidence"]) {
+    if (String(coverageMapping?.[field]) !== String(canonicalMapping?.[field])) {
+      throw invalidCoverageResolution({
+        system,
+        version,
+        code,
+        issue: `coverage mapping ${field} ${String(coverageMapping?.[field])} does not match canonical mapping ${String(canonicalMapping?.[field])}`,
+      });
+    }
+  }
+}
+
+function invalidCoverageResolution({ system, version, code, issue }) {
+  return new PcrClassificationCoverageSemanticError({
+    system,
+    version,
+    source: `classifications/indexes/${system}-${version}-coverage.json`,
+    issues: [`entry ${code}: ${issue}`],
+  });
 }
 
 export function getPcrById({ root, pcrId, refresh = false }) {
@@ -158,12 +426,14 @@ export function getPcrReadiness({ root, pcrId, refresh = false }) {
 }
 
 export function readPcrMarkdown({ root, pcrId, language = "en-US" }) {
-  const pcr = getPcrById({ root, pcrId });
-  const markdownPath = path.join(root, pcr.path, `pcr.${language}.md`);
-  if (!existsSync(markdownPath)) {
+  const snapshot = getCurrentPcrSnapshot({ root, pcrId });
+  const markdownName = `pcr.${language}.md`;
+  const markdownPath = path.join(root, snapshot.pcr.path, markdownName);
+  const artifact = snapshot.artifacts[markdownName];
+  if (!artifact?.bytes) {
     throw new Error(`PCR Markdown not found: ${toPosix(path.relative(root, markdownPath))}`);
   }
-  return readFileSync(markdownPath, "utf8");
+  return artifact.bytes.toString("utf8");
 }
 
 export function buildGuidance({ root, pcrId }) {
@@ -524,10 +794,15 @@ function getCurrentPcrSnapshot({ root, pcrId, refresh = false }) {
 }
 
 function currentPcrSnapshot(root, entry) {
-  const pcr = clonePcrEntry(entry);
+  const snapshotFiles = readConsistentSnapshotFiles({ root, entry });
+  const pcr = pcrFromManifest({
+    root,
+    pcrDir: path.dirname(entry.manifestPath),
+    manifest: snapshotFiles.manifest,
+  });
   let projection;
   try {
-    projection = inspectPcrProjection({ root, pcr });
+    projection = inspectPcrProjection({ root, pcr, artifacts: snapshotFiles.artifacts });
   } catch (error) {
     projection = failedProjectionInspection({ root, pcr, error });
   }
@@ -537,12 +812,320 @@ function currentPcrSnapshot(root, entry) {
     structuredAvailable: projection.structuredAvailable,
     projectionCompletenessIssues: projection.completenessIssues,
   });
-  return { pcr, ...projection };
+  return { pcr, artifacts: snapshotFiles.artifacts, ...projection };
 }
 
-function inspectPcrProjection({ root, pcr }) {
+function readConsistentSnapshotFiles({ root, entry }) {
+  let lastFailure = null;
+  for (let attempt = 1; attempt <= CURRENT_SNAPSHOT_MAX_ATTEMPTS; attempt += 1) {
+    try {
+      const locationA = assertCurrentSnapshotLocation({ root, entry });
+      const manifestABytes = readCanonicalFileBytes(locationA.manifestPath);
+      const manifest = parseYaml(manifestABytes.toString("utf8"));
+      if (manifest.id !== entry.id) {
+        throw snapshotAttemptError(
+          "manifest_identity_changed",
+          `Expected PCR id ${entry.id}, found ${String(manifest.id)}.`,
+          { expected_pcr_id: entry.id, actual_pcr_id: manifest.id ?? null },
+        );
+      }
+
+      const managedMarkersA = currentManagedStateMarkers(locationA.pcrDir);
+      assertManagedSnapshotHashesDeclared({ manifest, managedMarkers: managedMarkersA });
+      const artifacts = Object.fromEntries(
+        Object.values(RELEASE_ARTIFACTS).map((filename) => [
+          filename,
+          readOptionalCanonicalFile(path.join(locationA.pcrDir, filename)),
+        ]),
+      );
+      const releaseFailures = releaseArtifactFailures({ manifest, artifacts });
+      const locationB = assertCurrentSnapshotLocation({ root, entry });
+      const managedMarkersB = currentManagedStateMarkers(locationB.pcrDir);
+      if (!sameStrings(managedMarkersA, managedMarkersB)) {
+        throw snapshotAttemptError(
+          "managed_state_changed_during_read",
+          "PCR managed release state changed while its current snapshot was being read.",
+          {
+            managed_markers_before: managedMarkersA,
+            managed_markers_after: managedMarkersB,
+          },
+        );
+      }
+      const manifestBBytes = readCanonicalFileBytes(locationB.manifestPath);
+      if (!manifestABytes.equals(manifestBBytes)) {
+        throw snapshotAttemptError(
+          "manifest_changed_during_read",
+          "manifest.yaml changed while its current artifacts were being read.",
+        );
+      }
+      if (releaseFailures.length > 0) {
+        throw snapshotAttemptError(
+          "release_artifact_hash_mismatch",
+          "Current PCR artifacts do not match manifest.release_artifacts.",
+          { manifest_status: manifest.status ?? null, artifacts: releaseFailures },
+        );
+      }
+      return { manifest, artifacts };
+    } catch (error) {
+      lastFailure = snapshotFailureDetails(error);
+    }
+  }
+  throw new PcrCurrentSnapshotInconsistentError({
+    pcrId: entry.id,
+    pcrPath: entry.path,
+    attempts: CURRENT_SNAPSHOT_MAX_ATTEMPTS,
+    lastFailure,
+  });
+}
+
+function releaseArtifactFailures({ manifest, artifacts }) {
+  if (!Object.hasOwn(manifest, "release_artifacts")) {
+    return [];
+  }
+  const expectedHashes = isRecord(manifest.release_artifacts)
+    ? manifest.release_artifacts
+    : {};
+  const failures = [];
+  for (const [hashField, filename] of Object.entries(RELEASE_ARTIFACTS)) {
+    const artifact = artifacts[filename];
+    const expected = expectedHashes[hashField];
+    if (!artifact?.bytes) {
+      failures.push({
+        artifact: filename,
+        hash_field: hashField,
+        expected: typeof expected === "string" ? expected : null,
+        actual: null,
+        reason: `artifact_unreadable:${errorCode(artifact?.error)}`,
+      });
+      continue;
+    }
+    const actual = exactByteSha256(artifact.bytes);
+    if (typeof expected !== "string" || expected !== actual) {
+      failures.push({
+        artifact: filename,
+        hash_field: hashField,
+        expected: typeof expected === "string" ? expected : null,
+        actual,
+        reason: "sha256_mismatch",
+      });
+    }
+  }
+  return failures;
+}
+
+function assertManagedSnapshotHashesDeclared({ manifest, managedMarkers }) {
+  if (managedMarkers.length === 0 || Object.hasOwn(manifest, "release_artifacts")) {
+    return;
+  }
+  throw snapshotAttemptError(
+    "managed_release_artifacts_missing",
+    "Managed PCR current state requires manifest.release_artifacts and cannot use legacy snapshot semantics.",
+    {
+      manifest_status: manifest.status ?? null,
+      managed_markers: managedMarkers,
+      required_field: "manifest.release_artifacts",
+      required_hash_fields: Object.keys(RELEASE_ARTIFACTS),
+    },
+  );
+}
+
+function currentManagedStateMarkers(pcrDir) {
+  return ["release-history.yaml", "releases"]
+    .filter((name) => pathEntryExists(path.join(pcrDir, name)))
+    .sort((left, right) => left.localeCompare(right));
+}
+
+function pathEntryExists(targetPath) {
+  try {
+    lstatSync(targetPath);
+    return true;
+  } catch (error) {
+    if (error?.code === "ENOENT") {
+      return false;
+    }
+    throw error;
+  }
+}
+
+function sameStrings(left, right) {
+  return left.length === right.length && left.every((value, index) => value === right[index]);
+}
+
+function assertCurrentSnapshotLocation({ root, entry }) {
+  const normalizedRoot = path.resolve(root);
+  const pathSegments = String(entry.path).split("/");
+  if (
+    pathSegments.length !== 5 ||
+    pathSegments[0] !== "library" ||
+    pathSegments[1] !== "pcrs" ||
+    pathSegments.slice(2).some((segment) => !segment || segment === "." || segment === "..")
+  ) {
+    throw snapshotAttemptError(
+      "canonical_pcr_path_invalid",
+      "Cached PCR path is not a canonical domain/subdomain/leaf path.",
+      {
+        pcr_path: entry.path,
+        reason: "non_canonical_relative_path",
+      },
+    );
+  }
+
+  const directoryPaths = [normalizedRoot];
+  for (const segment of pathSegments) {
+    directoryPaths.push(path.join(directoryPaths.at(-1), segment));
+  }
+
+  let rootRealPath = null;
+  for (const [index, directoryPath] of directoryPaths.entries()) {
+    const relativePath = toPosix(path.relative(normalizedRoot, directoryPath)) || ".";
+    let stat;
+    try {
+      stat = lstatSync(directoryPath);
+    } catch (error) {
+      throw snapshotAttemptError(
+        "canonical_pcr_path_invalid",
+        `Canonical PCR directory is unavailable: ${relativePath}.`,
+        {
+          path_component: relativePath,
+          reason: `directory_unreadable:${errorCode(error)}`,
+          expected_type: "regular_directory",
+        },
+      );
+    }
+    if (stat.isSymbolicLink() || !stat.isDirectory()) {
+      throw snapshotAttemptError(
+        "canonical_pcr_path_invalid",
+        `Canonical PCR path component is not a regular directory: ${relativePath}.`,
+        {
+          path_component: relativePath,
+          reason: stat.isSymbolicLink() ? "symbolic_link" : "not_a_directory",
+          expected_type: "regular_directory",
+        },
+      );
+    }
+
+    let realPath;
+    try {
+      realPath = realpathSync(directoryPath);
+    } catch (error) {
+      throw snapshotAttemptError(
+        "canonical_pcr_path_invalid",
+        `Canonical PCR directory cannot be resolved: ${relativePath}.`,
+        {
+          path_component: relativePath,
+          reason: `realpath_unavailable:${errorCode(error)}`,
+          expected_type: "regular_directory",
+        },
+      );
+    }
+    if (index === 0) {
+      rootRealPath = realPath;
+    } else if (!pathIsInside(rootRealPath, realPath)) {
+      throw snapshotAttemptError(
+        "canonical_pcr_path_invalid",
+        `Canonical PCR directory resolves outside the repository root: ${relativePath}.`,
+        {
+          path_component: relativePath,
+          reason: "realpath_outside_root",
+          expected_type: "regular_directory_within_root",
+        },
+      );
+    }
+  }
+
+  const pcrDir = directoryPaths.at(-1);
+  const manifestPath = path.join(pcrDir, "manifest.yaml");
+  if (path.resolve(entry.manifestPath) !== manifestPath) {
+    throw snapshotAttemptError(
+      "canonical_pcr_path_invalid",
+      "Cached manifest path is not the direct manifest.yaml child of its canonical PCR leaf.",
+      {
+        pcr_path: entry.path,
+        reason: "manifest_not_direct_leaf_child",
+      },
+    );
+  }
+  return { manifestPath, pcrDir };
+}
+
+function pathIsInside(rootPath, candidatePath) {
+  const relativePath = path.relative(rootPath, candidatePath);
+  return relativePath === "" || (!path.isAbsolute(relativePath) && relativePath !== ".." && !relativePath.startsWith(`..${path.sep}`));
+}
+
+function exactByteSha256(bytes) {
+  return `sha256:${createHash("sha256").update(bytes).digest("hex")}`;
+}
+
+function readOptionalCanonicalFile(filePath) {
+  try {
+    return { bytes: readCanonicalFileBytes(filePath), error: null };
+  } catch (error) {
+    return { bytes: null, error };
+  }
+}
+
+function readCanonicalFileBytes(filePath) {
+  const stat = lstatSync(filePath);
+  if (stat.isSymbolicLink() || !stat.isFile()) {
+    const error = new Error(`Canonical PCR artifact is not a regular file: ${filePath}`);
+    error.code = stat.isSymbolicLink()
+      ? "PCR_CANONICAL_SYMLINK_REJECTED"
+      : "PCR_CANONICAL_FILE_NOT_REGULAR";
+    throw error;
+  }
+  const descriptor = openSync(
+    filePath,
+    fsConstants.O_RDONLY | (fsConstants.O_NOFOLLOW ?? 0),
+  );
+  try {
+    if (!fstatSync(descriptor).isFile()) {
+      const error = new Error(`Canonical PCR artifact is not a regular file: ${filePath}`);
+      error.code = "PCR_CANONICAL_FILE_NOT_REGULAR";
+      throw error;
+    }
+    return readFileSync(descriptor);
+  } finally {
+    closeSync(descriptor);
+  }
+}
+
+function snapshotAttemptError(code, message, details = {}) {
+  const error = new Error(message);
+  error.snapshotCode = code;
+  error.snapshotDetails = details;
+  return error;
+}
+
+function snapshotFailureDetails(error) {
+  return {
+    code: error?.snapshotCode ?? errorCode(error),
+    message: error instanceof Error ? error.message : String(error),
+    ...(isRecord(error?.snapshotDetails) ? error.snapshotDetails : {}),
+  };
+}
+
+function pcrFromManifest({ root, pcrDir, manifest }) {
+  const pcr = {
+    id: manifest.id,
+    path: toPosix(path.relative(root, pcrDir)),
+    title: manifest.title ?? {},
+    status: manifest.status ?? "unknown",
+    version: manifest.version ?? null,
+    content_maturity: manifest.content_maturity ?? null,
+    languages: manifest.languages ?? {},
+    translation_status: manifest.translation_status ?? {},
+    classification_refs: manifest.classification_refs ?? [],
+  };
+  pcr.record_kind = recordKindForPcr(pcr);
+  return pcr;
+}
+
+function inspectPcrProjection({ root, pcr, artifacts }) {
   const pcrDir = path.join(root, pcr.path);
   const structuredPath = path.join(pcrDir, "structured.yaml");
+  const structuredArtifact = artifacts["structured.yaml"];
+  const markdownArtifact = artifacts["pcr.en-US.md"];
   if (!isMaterialPcr(pcr)) {
     return {
       fingerprint: {
@@ -551,12 +1134,12 @@ function inspectPcrProjection({ root, pcr }) {
       },
       structured: null,
       structuredPath,
-      structuredAvailable: existsSync(structuredPath),
+      structuredAvailable: Boolean(structuredArtifact?.bytes),
       completenessIssues: [],
     };
   }
 
-  if (!existsSync(structuredPath)) {
+  if (!structuredArtifact?.bytes && structuredArtifact?.error?.code === "ENOENT") {
     return unavailableProjectionInspection({
       structuredPath,
       structuredAvailable: false,
@@ -568,11 +1151,10 @@ function inspectPcrProjection({ root, pcr }) {
     });
   }
 
-  const markdownPath = path.join(pcrDir, "pcr.en-US.md");
-  if (!existsSync(markdownPath)) {
+  if (!markdownArtifact?.bytes && markdownArtifact?.error?.code === "ENOENT") {
     return unavailableProjectionInspection({
       structuredPath,
-      structuredAvailable: true,
+      structuredAvailable: Boolean(structuredArtifact?.bytes),
       fingerprint: missingProjectionState(
         "source_missing",
         "projection_source_missing",
@@ -581,35 +1163,32 @@ function inspectPcrProjection({ root, pcr }) {
     });
   }
 
-  let sourceMarkdown;
-  try {
-    sourceMarkdown = readFileSync(markdownPath, "utf8");
-  } catch (error) {
+  if (!markdownArtifact?.bytes) {
     return unavailableProjectionInspection({
       structuredPath,
-      structuredAvailable: true,
+      structuredAvailable: Boolean(structuredArtifact?.bytes),
       fingerprint: invalidProjectionState(
         "projection_source_unreadable",
-        `Canonical pcr.en-US.md could not be read (${errorCode(error)}).`,
+        `Canonical pcr.en-US.md could not be read (${errorCode(markdownArtifact?.error)}).`,
         null,
       ),
     });
   }
 
-  let structuredText;
-  try {
-    structuredText = readFileSync(structuredPath, "utf8");
-  } catch (error) {
+  if (!structuredArtifact?.bytes) {
     return unavailableProjectionInspection({
       structuredPath,
       structuredAvailable: false,
       fingerprint: invalidProjectionState(
         "structured_projection_unreadable",
-        `structured.yaml could not be read (${errorCode(error)}).`,
+        `structured.yaml could not be read (${errorCode(structuredArtifact?.error)}).`,
         false,
       ),
     });
   }
+
+  const sourceMarkdown = markdownArtifact.bytes.toString("utf8");
+  const structuredText = structuredArtifact.bytes.toString("utf8");
 
   let structured;
   try {
@@ -724,7 +1303,84 @@ function missingProjectionState(status, code, message) {
 }
 
 function isMaterialPcr(pcr) {
-  return pcr.status !== "scaffold" || pcr.content_maturity !== "empty_scaffold";
+  return recordKindForPcr(pcr) === "methodology";
+}
+
+function normalizeCatalogScope(scope) {
+  const normalized = String(scope);
+  if (!PCR_CATALOG_SCOPE_SET.has(normalized)) {
+    throw new PcrCatalogScopeError(scope);
+  }
+  return normalized;
+}
+
+function recordMatchesScope(pcr, scope) {
+  if (scope === "all") {
+    return true;
+  }
+  return scope === "material"
+    ? pcr.record_kind === "methodology"
+    : pcr.record_kind === "legacy_scaffold_reference";
+}
+
+function currentCatalogEntryMatchesScope(root, entry, scope) {
+  const manifest = readConsistentCurrentManifest({ root, entry });
+  const recordKind = recordKindForPcr({
+    status: manifest.status ?? "unknown",
+    content_maturity: manifest.content_maturity ?? null,
+  });
+  return scope === "material"
+    ? recordKind === "methodology"
+    : recordKind === "legacy_scaffold_reference";
+}
+
+function readConsistentCurrentManifest({ root, entry }) {
+  let lastFailure = null;
+  for (let attempt = 1; attempt <= CURRENT_SNAPSHOT_MAX_ATTEMPTS; attempt += 1) {
+    try {
+      const locationA = assertCurrentSnapshotLocation({ root, entry });
+      const manifestABytes = readCanonicalFileBytes(locationA.manifestPath);
+      const manifest = parseYaml(manifestABytes.toString("utf8"));
+      if (manifest.id !== entry.id) {
+        throw snapshotAttemptError(
+          "manifest_identity_changed",
+          `Expected PCR id ${entry.id}, found ${String(manifest.id)}.`,
+          { expected_pcr_id: entry.id, actual_pcr_id: manifest.id ?? null },
+        );
+      }
+
+      const locationB = assertCurrentSnapshotLocation({ root, entry });
+      const manifestBBytes = readCanonicalFileBytes(locationB.manifestPath);
+      if (!manifestABytes.equals(manifestBBytes)) {
+        throw snapshotAttemptError(
+          "manifest_changed_during_read",
+          "manifest.yaml changed while its catalog scope was being determined.",
+        );
+      }
+      return manifest;
+    } catch (error) {
+      lastFailure = snapshotFailureDetails(error);
+    }
+  }
+  throw new PcrCurrentSnapshotInconsistentError({
+    pcrId: entry.id,
+    pcrPath: entry.path,
+    attempts: CURRENT_SNAPSHOT_MAX_ATTEMPTS,
+    lastFailure,
+  });
+}
+
+function recordKindForPcr(pcr) {
+  if (pcr.status === "scaffold" && pcr.content_maturity === "empty_scaffold") {
+    return "legacy_scaffold_reference";
+  }
+  if (
+    METHODOLOGY_LIFECYCLE_STATUSES.has(pcr.status) &&
+    METHODOLOGY_MATURITIES.has(pcr.content_maturity)
+  ) {
+    return "methodology";
+  }
+  return "invalid_lifecycle_state";
 }
 
 function assessPcrReadiness({
@@ -738,6 +1394,14 @@ function assessPcrReadiness({
   const methodologyStatus = pcr.content_maturity ?? "unknown";
   const lifecycleStatus = pcr.status ?? "unknown";
   const chineseTranslationStatus = pcr.translation_status?.["zh-CN"] ?? "unknown";
+  if (pcr.record_kind === "invalid_lifecycle_state") {
+    blockers.push({
+      code: "invalid_lifecycle_identity",
+      message:
+        `status ${lifecycleStatus} and content_maturity ${methodologyStatus} do not identify either ` +
+        "a legacy scaffold or a material methodology record.",
+    });
+  }
   if (!GUIDANCE_MATURITIES.has(methodologyStatus)) {
     blockers.push({
       code: "methodology_not_authored",
@@ -976,28 +1640,51 @@ function isRecord(value) {
 }
 
 function findManifestFiles(directory) {
-  if (!existsSync(directory)) {
-    return [];
-  }
   const results = [];
-  for (const entry of readdirSync(directory)) {
-    const fullPath = path.join(directory, entry);
-    const stat = statSync(fullPath);
-    if (stat.isDirectory()) {
-      results.push(...findManifestFiles(fullPath));
-      continue;
-    }
-    if (entry === "manifest.yaml") {
-      results.push(fullPath);
+  for (const domainDir of canonicalChildDirectories(directory)) {
+    for (const subdomainDir of canonicalChildDirectories(domainDir)) {
+      for (const pcrDir of canonicalChildDirectories(subdomainDir)) {
+        const manifestPath = path.join(pcrDir, "manifest.yaml");
+        if (isCanonicalFile(manifestPath)) {
+          results.push(manifestPath);
+        }
+      }
     }
   }
   return results;
 }
 
-function toPosix(value) {
-  return value.split(path.sep).join("/");
+function canonicalChildDirectories(directory) {
+  return readdirSync(directory)
+    .map((entry) => path.join(directory, entry))
+    .filter(isCanonicalDirectory)
+    .sort((left, right) => left.localeCompare(right));
 }
 
-function clonePcrEntry(entry) {
-  return structuredClone(entry);
+function isCanonicalDirectory(directory) {
+  try {
+    const stat = lstatSync(directory);
+    return !stat.isSymbolicLink() && stat.isDirectory();
+  } catch (error) {
+    if (error?.code === "ENOENT") {
+      return false;
+    }
+    throw error;
+  }
+}
+
+function isCanonicalFile(filePath) {
+  try {
+    const stat = lstatSync(filePath);
+    return !stat.isSymbolicLink() && stat.isFile();
+  } catch (error) {
+    if (error?.code === "ENOENT") {
+      return false;
+    }
+    throw error;
+  }
+}
+
+function toPosix(value) {
+  return value.split(path.sep).join("/");
 }

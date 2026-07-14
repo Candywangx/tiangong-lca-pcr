@@ -106,10 +106,45 @@
       "type": "array",
       "items": { "$ref": "#/$defs/classificationRef" }
     },
-    "review_metadata": { "type": "object" }
+    "review_metadata": { "type": "object" },
+    "release_artifacts": {
+      "type": "object",
+      "required": [
+        "pcr_en_us_sha256",
+        "pcr_zh_cn_sha256",
+        "structured_sha256"
+      ],
+      "properties": {
+        "pcr_en_us_sha256": { "$ref": "#/$defs/sha256" },
+        "pcr_zh_cn_sha256": { "$ref": "#/$defs/sha256" },
+        "structured_sha256": { "$ref": "#/$defs/sha256" }
+      },
+      "additionalProperties": false
+    }
   },
   "additionalProperties": false,
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "status": { "enum": ["published", "deprecated"] }
+        },
+        "required": ["status"]
+      },
+      "then": {
+        "properties": { "release_artifacts": true },
+        "required": ["release_artifacts"]
+      },
+      "else": {
+        "properties": { "release_artifacts": false }
+      }
+    }
+  ],
   "$defs": {
+    "sha256": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
     "classificationRef": {
       "type": "object",
       "required": ["system", "version", "code", "title", "mapping_type"],

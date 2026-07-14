@@ -1,10 +1,12 @@
 import assert from "node:assert/strict";
 import { execFileSync } from "node:child_process";
+import { createHash } from "node:crypto";
 import {
   existsSync,
   mkdirSync,
   mkdtempSync,
   readFileSync,
+  readdirSync,
   rmSync,
   symlinkSync,
   unlinkSync,
@@ -15,6 +17,10 @@ import path from "node:path";
 import test from "node:test";
 
 import { parseYaml } from "../../packages/pcr-core/src/yaml-lite.mjs";
+import {
+  runPcrDirectoryTransaction,
+  transactionStatePaths,
+} from "../lib/pcr-directory-transaction.mjs";
 
 const cliPath = path.resolve("builder/cli/index.mjs");
 const sampleCpcPath = path.resolve("builder/fixtures/cpc-structure.sample.csv");
@@ -72,6 +78,10 @@ function runCliFailure(args, options = {}) {
     stdio: ["ignore", "pipe", "pipe"],
     ...options,
   });
+}
+
+function sha256(value) {
+  return `sha256:${createHash("sha256").update(value).digest("hex")}`;
 }
 
 function writePublicationReadyPcr(
@@ -260,6 +270,41 @@ sync_with: pcr.en-US.md
     "--pcr",
     "library/pcrs/agriculture/crops/wheat-seed",
   ]);
+}
+
+function createManagedPublishedPcr(root, version = "1.0.0") {
+  const pcrOption = "library/pcrs/agriculture/crops/wheat-seed";
+  const pcrDir = path.join(root, pcrOption);
+  runCli(["init", "--root", root]);
+  runCli([
+    "init",
+    "--root",
+    root,
+    "--sample-pcr",
+    "agriculture/crops/wheat-seed",
+    "--pcr-id",
+    "pcr.agriculture.crops.wheat-seed",
+    "--title-en",
+    "Wheat seed production",
+    "--title-zh-CN",
+    "小麦种子生产",
+  ]);
+  writePublicationReadyPcr(root, pcrDir);
+  runCli([
+    "lifecycle",
+    "--root",
+    root,
+    "--pcr",
+    pcrOption,
+    "--status",
+    "active",
+    "--content-maturity",
+    "reviewed_methodology",
+    "--translation",
+    "zh-CN=reviewed",
+  ]);
+  runCli(["publish", "--root", root, "--pcr", pcrOption, "--version", version]);
+  return { pcrDir, pcrOption };
 }
 
 test("init creates the bilingual PCR repository scaffold", () => {
@@ -1400,8 +1445,11 @@ test("bump updates versions and reviewed PCRs can publish", () => {
       "--version",
       "1.0.0",
     ]);
-    assert.match(publishOutput, /Synced structured PCR from library\/pcrs\/agriculture\/crops\/wheat-seed\/pcr.en-US.md/);
-    assert.match(publishOutput, /Published PCR manifest at library\/pcrs\/agriculture\/crops\/wheat-seed\/manifest.yaml/);
+    assert.match(
+      publishOutput,
+      /Published PCR manifest at library\/pcrs\/agriculture\/crops\/wheat-seed\/manifest.yaml \(version 1\.0\.0\)/,
+    );
+    assert.match(publishOutput, /Archived immutable release at library\/pcrs\/agriculture\/crops\/wheat-seed\/releases\/1\.0\.0/);
     manifest = readFileSync(path.join(pcrDir, "manifest.yaml"), "utf8");
     parsedManifest = parseYaml(manifest);
     assert.equal(parsedManifest.status, "published");
@@ -1409,6 +1457,413 @@ test("bump updates versions and reviewed PCRs can publish", () => {
     assert.equal(parsedManifest.version, "1.0.0");
     assert.ok(parsedManifest.published_at_utc);
     assert.equal(parsedManifest.title["zh-CN"], "小麦种子生产");
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+  }
+});
+
+test("first publication requires an explicit version without writing transaction state", () => {
+  const root = makeTempRoot();
+  try {
+    runCli(["init", "--root", root]);
+    const pcrOption = "library/pcrs/agriculture/crops/wheat-seed";
+    const pcrDir = path.join(root, pcrOption);
+    runCli([
+      "init",
+      "--root",
+      root,
+      "--sample-pcr",
+      "agriculture/crops/wheat-seed",
+      "--pcr-id",
+      "pcr.agriculture.crops.wheat-seed",
+      "--title-en",
+      "Wheat seed production",
+      "--title-zh-CN",
+      "小麦种子生产",
+    ]);
+    writePublicationReadyPcr(root, pcrDir);
+    runCli([
+      "lifecycle",
+      "--root",
+      root,
+      "--pcr",
+      pcrOption,
+      "--status",
+      "active",
+      "--content-maturity",
+      "reviewed_methodology",
+      "--translation",
+      "zh-CN=reviewed",
+    ]);
+    const before = Object.fromEntries(
+      readdirSync(pcrDir).map((fileName) => [
+        fileName,
+        readFileSync(path.join(pcrDir, fileName), "utf8"),
+      ]),
+    );
+
+    assert.throws(
+      () => runCliFailure(["publish", "--root", root, "--pcr", pcrOption]),
+      (error) => {
+        assert.match(String(error.stderr), /first publication requires an explicit --version <semver>/u);
+        return true;
+      },
+    );
+    assert.deepEqual(
+      Object.fromEntries(
+        readdirSync(pcrDir).map((fileName) => [
+          fileName,
+          readFileSync(path.join(pcrDir, fileName), "utf8"),
+        ]),
+      ),
+      before,
+    );
+    assert.equal(existsSync(path.join(root, "library", ".pcr-builder-state")), false);
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+  }
+});
+
+test("pcr:recover validates the recovered PCR before deleting transaction evidence", () => {
+  const root = makeTempRoot();
+  try {
+    runCli(["init", "--root", root]);
+    const pcrOption = "library/pcrs/agriculture/crops/wheat-seed";
+    const pcrDir = path.join(root, pcrOption);
+    runCli([
+      "init",
+      "--root",
+      root,
+      "--sample-pcr",
+      "agriculture/crops/wheat-seed",
+      "--pcr-id",
+      "pcr.agriculture.crops.wheat-seed",
+      "--title-en",
+      "Wheat seed production",
+      "--title-zh-CN",
+      "小麦种子生产",
+    ]);
+    const transaction = runPcrDirectoryTransaction({
+      root,
+      pcr: pcrDir,
+      prepareStage({ stageDir }) {
+        rmSync(path.join(stageDir, "pcr.zh-CN.md"));
+      },
+      onPhase({ phase }) {
+        if (phase === "committed") {
+          throw new Error("leave committed recovery state");
+        }
+      },
+    });
+    assert.equal(transaction.committed, true);
+    assert.equal(transaction.recoveryRequired, true);
+    const statePaths = transactionStatePaths({ root, pcr: pcrDir });
+
+    assert.throws(
+      () => runCliFailure(["recover", "--root", root, "--pcr", pcrOption]),
+      (error) => {
+        assert.match(String(error.stderr), /PCR recovered-tree validation failed/u);
+        assert.match(String(error.stderr), /Missing PCR file/u);
+        return true;
+      },
+    );
+    assert.equal(existsSync(statePaths.journalPath), true);
+    assert.equal(existsSync(statePaths.backupDir), true);
+    assert.equal(existsSync(statePaths.transactionDir), true);
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+  }
+});
+
+test("first publication creates a byte-verified immutable release and history", () => {
+  const root = makeTempRoot();
+  try {
+    const { pcrDir } = createManagedPublishedPcr(root);
+    const releaseDir = path.join(pcrDir, "releases/1.0.0");
+    const historyText = readFileSync(path.join(pcrDir, "release-history.yaml"), "utf8");
+    const history = parseYaml(historyText);
+    const releaseText = readFileSync(path.join(releaseDir, "release.yaml"), "utf8");
+    const release = parseYaml(releaseText);
+    const artifactFiles = {
+      manifest_snapshot_sha256: "manifest.snapshot.yaml",
+      pcr_en_us_sha256: "pcr.en-US.md",
+      pcr_zh_cn_sha256: "pcr.zh-CN.md",
+      structured_sha256: "structured.yaml",
+    };
+
+    assert.deepEqual(readdirSync(releaseDir).sort(), [
+      "manifest.snapshot.yaml",
+      "pcr.en-US.md",
+      "pcr.zh-CN.md",
+      "release.yaml",
+      "structured.yaml",
+    ]);
+    assert.equal(history.current_version, "1.0.0");
+    assert.deepEqual(
+      history.releases.map(({ version, predecessor_version, path: releasePath }) => ({
+        version,
+        predecessor_version,
+        path: releasePath,
+      })),
+      [{ version: "1.0.0", predecessor_version: null, path: "releases/1.0.0" }],
+    );
+    assert.equal(history.releases[0].release_sha256, sha256(releaseText));
+    assert.equal(release.pcr_id, "pcr.agriculture.crops.wheat-seed");
+    assert.equal(release.version, "1.0.0");
+    assert.equal(release.predecessor_version, null);
+
+    for (const [hashField, fileName] of Object.entries(artifactFiles)) {
+      const snapshotText = readFileSync(path.join(releaseDir, fileName), "utf8");
+      assert.equal(release.artifacts[hashField], sha256(snapshotText));
+      const currentName = fileName === "manifest.snapshot.yaml" ? "manifest.yaml" : fileName;
+      assert.equal(snapshotText, readFileSync(path.join(pcrDir, currentName), "utf8"));
+    }
+
+    const currentManifest = parseYaml(readFileSync(path.join(pcrDir, "manifest.yaml"), "utf8"));
+    assert.deepEqual(currentManifest.release_artifacts, {
+      pcr_en_us_sha256: release.artifacts.pcr_en_us_sha256,
+      pcr_zh_cn_sha256: release.artifacts.pcr_zh_cn_sha256,
+      structured_sha256: release.artifacts.structured_sha256,
+    });
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+  }
+});
+
+test("published revision preserves current bytes until atomic promotion and appends history", () => {
+  const root = makeTempRoot();
+  try {
+    const { pcrDir, pcrOption } = createManagedPublishedPcr(root);
+    const currentFileNames = ["manifest.yaml", "pcr.en-US.md", "pcr.zh-CN.md", "structured.yaml"];
+    const currentBytes = Object.fromEntries(
+      currentFileNames.map((fileName) => [fileName, readFileSync(path.join(pcrDir, fileName), "utf8")]),
+    );
+    const firstReleaseDir = path.join(pcrDir, "releases/1.0.0");
+    const firstReleaseBytes = Object.fromEntries(
+      readdirSync(firstReleaseDir).map((fileName) => [
+        fileName,
+        readFileSync(path.join(firstReleaseDir, fileName), "utf8"),
+      ]),
+    );
+
+    const reviseOutput = runCli([
+      "revise",
+      "--root",
+      root,
+      "--pcr",
+      pcrOption,
+      "--version",
+      "1.1.0",
+    ]);
+    assert.match(reviseOutput, /Opened PCR revision 1\.0\.0 -> 1\.1\.0/);
+    for (const [fileName, text] of Object.entries(currentBytes)) {
+      assert.equal(readFileSync(path.join(pcrDir, fileName), "utf8"), text);
+    }
+
+    const revisionDir = path.join(pcrDir, "revision");
+    assert.deepEqual(readdirSync(revisionDir).sort(), [
+      "manifest.next.yaml",
+      "pcr.en-US.md",
+      "pcr.zh-CN.md",
+      "revision.yaml",
+      "structured.yaml",
+    ]);
+    const revisionMetadata = parseYaml(
+      readFileSync(path.join(revisionDir, "revision.yaml"), "utf8"),
+    );
+    assert.deepEqual(Object.keys(revisionMetadata).sort(), [
+      "base_version",
+      "opened_at_utc",
+      "pcr_id",
+      "schema_version",
+      "target_version",
+    ]);
+    assert.equal(revisionMetadata.schema_version, 1);
+    assert.equal(revisionMetadata.pcr_id, "pcr.agriculture.crops.wheat-seed");
+    assert.equal(revisionMetadata.base_version, "1.0.0");
+    assert.equal(revisionMetadata.target_version, "1.1.0");
+    assert.match(revisionMetadata.opened_at_utc, /^\d{4}-\d{2}-\d{2}T.*Z$/u);
+    const nextManifest = parseYaml(readFileSync(path.join(revisionDir, "manifest.next.yaml"), "utf8"));
+    assert.equal(nextManifest.version, "1.1.0");
+    assert.equal(nextManifest.status, "candidate");
+    assert.equal(nextManifest.content_maturity, "authored_methodology");
+    assert.equal(nextManifest.translation_status["zh-CN"], "out_of_sync");
+    assert.equal(nextManifest.published_at_utc, undefined);
+    assert.equal(nextManifest.release_artifacts, undefined);
+
+    assert.throws(
+      () => runCliFailure(["sync-structured", "--root", root, "--pcr", pcrOption]),
+      (error) => {
+        assert.match(String(error.stderr), /current published PCR content is immutable/);
+        return true;
+      },
+    );
+    assert.throws(
+      () =>
+        runCliFailure([
+          "lifecycle",
+          "--root",
+          root,
+          "--pcr",
+          pcrOption,
+          "--translation",
+          "zh-CN=reviewed",
+        ]),
+      (error) => {
+        assert.match(String(error.stderr), /Cannot change current lifecycle while a revision workspace is open/);
+        return true;
+      },
+    );
+    assert.throws(
+      () =>
+        runCliFailure([
+          "publish",
+          "--root",
+          root,
+          "--pcr",
+          pcrOption,
+          "--workspace",
+          "revision",
+          "--version",
+          "1.2.0",
+        ]),
+      (error) => {
+        assert.match(String(error.stderr), /target version locked in revision\.yaml; omit --version/);
+        return true;
+      },
+    );
+    assert.throws(
+      () =>
+        runCliFailure([
+          "bump",
+          "--root",
+          root,
+          "--pcr",
+          pcrOption,
+          "--workspace",
+          "revision",
+        ]),
+      (error) => {
+        assert.match(String(error.stderr), /revision target versions are locked/);
+        return true;
+      },
+    );
+    for (const [fileName, text] of Object.entries(currentBytes)) {
+      assert.equal(readFileSync(path.join(pcrDir, fileName), "utf8"), text);
+    }
+
+    const revisionEnglishPath = path.join(revisionDir, "pcr.en-US.md");
+    writeFileSync(
+      revisionEnglishPath,
+      readFileSync(revisionEnglishPath, "utf8").replace(
+        "# Wheat Seed Production",
+        "# Wheat Seed Production Revision 1.1",
+      ),
+    );
+    const syncOutput = runCli([
+      "sync-structured",
+      "--root",
+      root,
+      "--pcr",
+      pcrOption,
+      "--workspace",
+      "revision",
+    ]);
+    assert.match(syncOutput, /revision\/pcr\.en-US\.md/);
+    runCli([
+      "lifecycle",
+      "--root",
+      root,
+      "--pcr",
+      pcrOption,
+      "--workspace",
+      "revision",
+      "--status",
+      "active",
+      "--content-maturity",
+      "reviewed_methodology",
+      "--translation",
+      "zh-CN=reviewed",
+    ]);
+    for (const [fileName, text] of Object.entries(currentBytes)) {
+      assert.equal(readFileSync(path.join(pcrDir, fileName), "utf8"), text);
+    }
+
+    const publishOutput = runCli([
+      "publish",
+      "--root",
+      root,
+      "--pcr",
+      pcrOption,
+      "--workspace",
+      "revision",
+    ]);
+    assert.match(publishOutput, /Published PCR manifest .* \(version 1\.1\.0\)/);
+    assert.equal(existsSync(revisionDir), false);
+
+    const currentManifest = parseYaml(readFileSync(path.join(pcrDir, "manifest.yaml"), "utf8"));
+    assert.equal(currentManifest.version, "1.1.0");
+    assert.equal(currentManifest.status, "published");
+    const history = parseYaml(readFileSync(path.join(pcrDir, "release-history.yaml"), "utf8"));
+    assert.equal(history.current_version, "1.1.0");
+    assert.deepEqual(
+      history.releases.map(({ version, predecessor_version, path: releasePath }) => ({
+        version,
+        predecessor_version,
+        path: releasePath,
+      })),
+      [
+        { version: "1.0.0", predecessor_version: null, path: "releases/1.0.0" },
+        { version: "1.1.0", predecessor_version: "1.0.0", path: "releases/1.1.0" },
+      ],
+    );
+    for (const [fileName, text] of Object.entries(firstReleaseBytes)) {
+      assert.equal(readFileSync(path.join(firstReleaseDir, fileName), "utf8"), text);
+    }
+    const secondReleaseDir = path.join(pcrDir, "releases/1.1.0");
+    for (const [currentName, snapshotName] of [
+      ["manifest.yaml", "manifest.snapshot.yaml"],
+      ["pcr.en-US.md", "pcr.en-US.md"],
+      ["pcr.zh-CN.md", "pcr.zh-CN.md"],
+      ["structured.yaml", "structured.yaml"],
+    ]) {
+      assert.equal(
+        readFileSync(path.join(pcrDir, currentName), "utf8"),
+        readFileSync(path.join(secondReleaseDir, snapshotName), "utf8"),
+      );
+    }
+
+    const recoverOutput = runCli(["recover", "--root", root, "--pcr", pcrOption]);
+    assert.match(recoverOutput, /PCR transaction recovery result: nothing_to_recover/);
+
+    runCli([
+      "lifecycle",
+      "--root",
+      root,
+      "--pcr",
+      pcrOption,
+      "--status",
+      "deprecated",
+      "--content-maturity",
+      "deprecated_methodology",
+    ]);
+    assert.throws(
+      () =>
+        runCliFailure([
+          "revise",
+          "--root",
+          root,
+          "--pcr",
+          pcrOption,
+          "--version",
+          "1.2.0",
+        ]),
+      (error) => {
+        assert.match(String(error.stderr), /pcr:revise requires current status published; found deprecated/);
+        return true;
+      },
+    );
+    assert.equal(existsSync(path.join(pcrDir, "revision")), false);
   } finally {
     rmSync(root, { recursive: true, force: true });
   }
@@ -1892,7 +2347,8 @@ test("bump rejects published and deprecated PCR records without writing", () => 
       () => runCliFailure(["bump", "--root", root, "--pcr", pcrOption, "--level", "patch"]),
       (error) => {
         assert.match(String(error.stderr), /Cannot bump published\/published_methodology PCR in place/);
-        assert.match(String(error.stderr), /published revision contract is defined, but its workflow is not implemented/);
+        assert.match(String(error.stderr), /Open a published PCR revision with `npm run pcr:revise/);
+        assert.match(String(error.stderr), /revision target version is fixed when the workspace opens/);
         return true;
       },
     );

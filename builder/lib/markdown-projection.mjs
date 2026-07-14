@@ -480,7 +480,7 @@ function parseDataSourceRows(table) {
   return table.rows
     .map((row) => ({
       id: stripInlineCode(tableCell(row, headerIndex, ["source_id", "id"])),
-      type: stripInlineCode(tableCell(row, headerIndex, ["type"])),
+      type: normalizeStructuredId(controlledValue(tableCell(row, headerIndex, ["type"]))),
       reference: stripInlineCode(tableCell(row, headerIndex, ["reference"])),
       used_for: stripInlineCode(tableCell(row, headerIndex, ["used_for", "use", "用途"])),
     }))

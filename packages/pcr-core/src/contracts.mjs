@@ -8,6 +8,7 @@ import {
 
 const CORE_SCHEMA_DEPENDENCY_FILES = ["controlled-vocabulary.schema.json"];
 const CORE_SCHEMA_FILES = [
+  "classification-coverage.schema.json",
   "dataset-validation-input.schema.json",
   "feedback-draft-output.schema.json",
   "feedback.schema.json",
@@ -27,6 +28,7 @@ const schemaDependencies = CORE_SCHEMA_DEPENDENCY_FILES.map((fileName) =>
 );
 const contractIds = new Map(schemaEntries.map(({ fileName, schema }) => [fileName, schema.$id]));
 const entityKindsByFile = {
+  "classification-coverage.schema.json": "classification_coverage",
   "dataset-validation-input.schema.json": "dataset_validation_input",
   "feedback-draft-output.schema.json": "feedback_draft_output",
   "feedback.schema.json": "feedback_intake",
@@ -81,6 +83,7 @@ export class CoreContractSemanticError extends Error {
 }
 
 export const CORE_SCHEMA_IDS = Object.freeze({
+  classificationCoverage: contractIds.get("classification-coverage.schema.json"),
   structured: contractIds.get("structured-projection.schema.json"),
   readiness: contractIds.get("readiness.schema.json"),
   guidance: contractIds.get("guidance-output.schema.json"),
@@ -160,6 +163,10 @@ export const validateDatasetInput = (value) =>
   validateCoreContract("dataset-validation-input.schema.json", value);
 export const assertDatasetInput = (value, options = {}) =>
   assertCoreContract("dataset-validation-input.schema.json", value, options);
+export const validateClassificationCoverage = (value) =>
+  validateCoreContract("classification-coverage.schema.json", value);
+export const assertClassificationCoverage = (value, options = {}) =>
+  assertCoreContract("classification-coverage.schema.json", value, options);
 
 export const validateStructuredProjection = validateStructured;
 export const assertStructuredProjection = assertStructured;

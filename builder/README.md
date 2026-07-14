@@ -44,21 +44,30 @@ builder/docs/
 npm run init
 npm run lint
 npm run vocab:generate
-npm run pcr:sync-structured -- --pcr <library/pcrs/...>
-npm run pcr:lifecycle -- --pcr <library/pcrs/...> --status active --content-maturity reviewed_methodology --translation zh-CN=reviewed
+npm run pcr:sync-structured -- --pcr <library/pcrs/...> [--workspace current|revision]
+npm run pcr:lifecycle -- --pcr <library/pcrs/...> [--workspace current|revision] --status active --content-maturity reviewed_methodology --translation zh-CN=reviewed
 npm run pcr:bump -- --pcr <library/pcrs/...> --level patch
-npm run pcr:publish -- --pcr <library/pcrs/...> --version <semver>
+npm run pcr:publish -- --pcr <library/pcrs/...> --workspace current --version <semver>
+npm run pcr:revise -- --pcr <library/pcrs/...> --version <target-semver>
+npm run pcr:publish -- --pcr <library/pcrs/...> --workspace revision
+npm run pcr:recover -- --pcr <library/pcrs/...> [--force-stale-lock]
 npm run validate
 ```
 
 - `init` creates required scaffold directories and guide files.
 - `lint` executes the JSON Schema contracts for the catalog, classification mappings, PCR manifests, bilingual Markdown frontmatter, and material structured projections. It also checks required repository paths, bilingual PCR directory completeness, lifecycle compatibility, process inventory structure, range coverage for important flows, and deterministic `structured.yaml` freshness for every material PCR. Candidate PCRs may pass with range warnings; reviewed or published PCRs fail when important flows lack ranges.
-- `pcr:sync-structured` atomically regenerates `structured.yaml` from canonical PCR Markdown, including boundary, allocation, validation, process-inventory rules, and deterministic projection metadata.
-- `pcr:lifecycle` validates manifest lifecycle transitions and runs a material preflight before a PCR becomes active.
-- `pcr:bump` updates a valid manifest semver and rejects malformed, published, or deprecated records. The audited contract for revising a published record is defined in `builder/docs/contracts/published-revision-contract.md`, but its workflow is not implemented; published and deprecated records are never version-bumped in place.
-- `pcr:publish` first validates the future manifest and freshly generated projection without writing. Publication requires the complete manifest identity contract, active reviewed methodology, reviewed non-empty Chinese Markdown with aligned normative rule ids, valid semver, and no unresolved review blocker; a failed preflight leaves files unchanged.
+- `pcr:sync-structured` regenerates `structured.yaml` from canonical PCR Markdown, including boundary, allocation, validation, process-inventory rules, and deterministic projection metadata. `--workspace` defaults to `current`; published and deprecated current files are immutable, so an open revision must be synced with `--workspace revision`.
+- `pcr:lifecycle` validates manifest lifecycle transitions and runs a material preflight before a PCR becomes active. Use `--workspace revision` for revision review state. A published current record permits only the one-way transition to `deprecated/deprecated_methodology`; a deprecated record cannot be reopened.
+- `pcr:bump` updates a valid semver only for an unpublished current workspace. It rejects malformed, published, deprecated, or open-revision state because a revision target version is fixed when `pcr:revise` opens it.
+- `pcr:revise` opens one explicit `revision/` workspace from a managed published release, records a greater target semver in `revision.yaml`, preserves the consumer-facing top-level release, and marks the Chinese revision out of sync. It rejects deprecated and already-open records.
+- `pcr:publish` first validates the proposed published manifest and freshly generated projection without writing. First publication uses `--workspace current --version <semver>`; later publication uses `--workspace revision` and the version locked by `pcr:revise`. Publication requires the complete identity contract, active reviewed methodology, reviewed non-empty Chinese Markdown with aligned normative rule ids, valid semver, and no unresolved review blocker.
+- Every successful publication writes an immutable `releases/<semver>/` snapshot and appends `release-history.yaml`. Release metadata and the current manifest carry exact-byte SHA-256 evidence; lint validates the release chain, snapshot contents, projection integrity, and current-to-latest consistency.
+- `pcr:sync-structured`, `pcr:bump`, `pcr:lifecycle`, `pcr:revise`, and `pcr:publish` replace the complete PCR leaf through a recoverable directory transaction whose state is stored under `library/.pcr-builder-state/`. `pcr:recover` rolls back interrupted pre-commit phases or finishes committed cleanup. `--force-stale-lock` is an explicit stale-state override and must not be used while a writer is active.
 - `vocab:generate` validates every vocabulary source and deterministically regenerates the checked-in runtime constants and shared JSON Schema.
 - `lint` rejects stale generated vocabulary artifacts before inspecting repository content; `validate` then runs lint plus tests.
+
+For the full workspace, release, transaction, and recovery invariants, use
+`builder/docs/contracts/published-revision-contract.md`.
 
 ## Executable Contract Boundary
 
