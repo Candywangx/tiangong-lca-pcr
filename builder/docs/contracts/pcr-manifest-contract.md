@@ -84,8 +84,9 @@ Use `pcr:publish` only when assigning a published version and `published_at_utc`
 the manifest and structured projection unchanged.
 
 `pcr:bump` cannot mutate a `published` / `published_methodology` or deprecated record. A new version of an audited
-record must first be opened through the reopen/revision workflow. That audited workflow is planned for P1; until it is
-implemented, do not change the version of a published or deprecated PCR in place.
+record must first be opened through the audited revision contract in `published-revision-contract.md`. That contract
+is defined but not yet implemented; until its commands, Schemas, and transaction recovery exist, do not change the
+version of a published or deprecated PCR in place.
 
 JSON Schema checks field shape and controlled values. Lifecycle compatibility, manifest-to-Markdown identity,
 translation alignment, material preflight, review blockers, and publication transition rules remain semantic

@@ -9,6 +9,18 @@ const BUILDER_SCHEMA_FILES = [
   "pcr-markdown-frontmatter.schema.json",
 ];
 
+const schemaDependencies = [
+  JSON.parse(
+    readFileSync(
+      new URL(
+        "../../packages/pcr-core/schemas/controlled-vocabulary.schema.json",
+        import.meta.url,
+      ),
+      "utf8",
+    ),
+  ),
+];
+
 const schemaEntries = [
   ...BUILDER_SCHEMA_FILES.map((fileName) => ({
     fileName,
@@ -27,7 +39,7 @@ const schemaEntries = [
 
 const contractIds = new Map(schemaEntries.map(({ fileName, schema }) => [fileName, schema.$id]));
 const registry = createSchemaRegistry(
-  schemaEntries.map(({ schema }) => schema),
+  [...schemaDependencies, ...schemaEntries.map(({ schema }) => schema)],
   Object.fromEntries(schemaEntries.map(({ schema }) => [schema.$id, schema.title ?? schema.$id])),
 );
 

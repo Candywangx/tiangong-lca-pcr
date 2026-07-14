@@ -962,9 +962,9 @@ Marketable straw or residue owned by seed plant作为输出产品流记录。数
 
 | 来源 ID | 类型 | 引用 | 用途 |
 | --- | --- | --- | --- |
-| `fao-wheat-seed-production` | 官方指南 | <https://www.fao.org/4/y4011e/y4011e0v.htm> | 种子认证、质量控制、种子质量属性和过程边界 |
-| `unl-wheat-seeding-rate` | 推广指南 | <https://cropwatch.unl.edu/determining-seeding-rate-your-winter-wheat/> | 播种量和千粒重方法语境 |
-| `umn-small-grain-seeding-rate` | 推广指南 | <https://extension.umn.edu/planting-small-grains/seeding-rate-small-grains> | 播种量公式、成苗损失和发芽率方法语境 |
-| `usda-seed-cleaning-handling` | 官方手册 | <https://www.govinfo.gov/content/pkg/GOVPUB-A-PURL-gpo20323/pdf/GOVPUB-A-PURL-gpo20323.pdf> | 种子清选过程拆分和筛下物或不合格物方法语境 |
-| `ipcc-2019-managed-soils-n2o` | 官方方法指南 | <https://www.ipcc-nggip.iges.or.jp/public/2019rf/pdf/4_Volume4/19R_V4_Ch11_Soils_N2O_CO2.pdf> | N2O 直接排放因子和氮排放计算 |
+| `fao-wheat-seed-production` | official_guidance | <https://www.fao.org/4/y4011e/y4011e0v.htm> | 种子认证、质量控制、种子质量属性和过程边界 |
+| `unl-wheat-seeding-rate` | extension_guidance | <https://cropwatch.unl.edu/determining-seeding-rate-your-winter-wheat/> | 播种量和千粒重方法语境 |
+| `umn-small-grain-seeding-rate` | extension_guidance | <https://extension.umn.edu/planting-small-grains/seeding-rate-small-grains> | 播种量公式、成苗损失和发芽率方法语境 |
+| `usda-seed-cleaning-handling` | handbook | <https://www.govinfo.gov/content/pkg/GOVPUB-A-PURL-gpo20323/pdf/GOVPUB-A-PURL-gpo20323.pdf> | 种子清选过程拆分和筛下物或不合格物方法语境 |
+| `ipcc-2019-managed-soils-n2o` | method_factor | <https://www.ipcc-nggip.iges.or.jp/public/2019rf/pdf/4_Volume4/19R_V4_Ch11_Soils_N2O_CO2.pdf> | N2O 直接排放因子和氮排放计算 |
 | `mass-balance-identity` | method_factor | Conservation of mass applied as a PCR calculation identity for process reference outputs and batch reconciliation. | 参考输出和质量平衡校验的 QA 校验范围。 |

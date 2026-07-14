@@ -21,7 +21,7 @@ checkPaths:
   - classifications/**
   - library/modules/**
 lastReviewedAt: 2026-07-14
-lastReviewedCommit: 004d215068aabe92253116150dc3599920983687
+lastReviewedCommit: 35080d8a47c5e66224b164442c98469014c0b848
 ---
 
 # PCR 资料库优化路线图
@@ -68,17 +68,17 @@ lastReviewedCommit: 004d215068aabe92253116150dc3599920983687
 
 ### P1：强化编译契约与运行时可信度
 
-状态：进行中。1–4 已实现；5–7 待实现。
+状态：已完成。第 7 项完成的是修订契约设计与现有不可变门禁；真正的 revision workflow 实现仍是后续工作。
 
 1. 已实现：将 JSON Schema 接入 repo lint 和消费侧 contract tests，并为 readiness/validation report 增加跨字段语义断言；Schema 不再只是说明文件。
 2. 已实现：为 material `structured.yaml` 增加确定性 projection metadata，包含 generator contract version、canonical Markdown SHA-256 和 generated-content SHA-256；可复现投影不包含时间戳。
 3. 已实现：readiness 在运行时验证 material projection fingerprint、Schema 与独立的内容完整度语义门禁，不只检查文件存在，也不会把结构合法但方法学为空的 authored 投影判为可用。
 4. 已实现：建立真实 material PCR 的跨层 fixture，连续验证 manifest、Markdown frontmatter、mapping、builder 重渲染、shared structured Schema、resolve、readiness、guidance 和 validation report，并锁定跨层 identity 与关键规则一致性。
-5. 统一 controlled vocabulary、Schema 和代码常量的生成源，消除“三份枚举各自演进”。
-6. 完善 builder CLI 参数校验、命令级 help、JSON 输出与稳定错误码。
-7. 定义 published PCR 开启下一修订版的显式状态与 release-history contract；在此之前禁止直接 bump 已发布记录。
+5. 已实现：`builder/vocab/*.yaml` 成为唯一手写词表源，确定性生成共享 runtime constants 与 JSON Schema；validate 会拒绝 stale 生成物，material projection 和 mapping runtime 也会拒绝未知 token。
+6. 已实现：公共消费 CLI 使用逐命令格式契约、受控 filter、严格参数校验、稳定错误 envelope、bounded tree 和分页 path-prefix down-drill；JSON 输出明确 filters、completeness 与下一命令。
+7. 已实现（契约设计）：`builder/docs/contracts/published-revision-contract.md` 规定 published current、单一 revision workspace、不可变 release snapshot、append-only history 和可恢复目录事务；现有 `pcr:bump` 继续禁止直接修改 published/deprecated 记录。命令、Schema、lock/journal 与故障恢复是该契约的后续实现，在完成前禁止手工创建 revision/release artifacts。
 
-退出条件：所有 material PCR 100% schema-valid、fingerprint-current，公开输出均有自动 contract validation。当前已打通 Schema 执行、指纹、运行时输出校验与跨层 fixture，但 P1 仍因词表单源、CLI 契约和 published revision contract 未完成而保持进行中。
+退出条件：已达成。所有 material PCR 都通过可执行 Schema、内容完整度与 fingerprint 校验；公开 guidance/validation 输出具有自动 contract validation；词表生成、CLI 边界和 published revision 设计均已固化。实现 `pcr:revise`、发布快照写入、锁与恢复必须按已定义契约单独落地，不影响本阶段的契约设计完成判定。
 
 ### P2：拆分 classification coverage 与 canonical methodology catalog
 

@@ -78,10 +78,109 @@
       "properties": {
         "id": { "$ref": "#/$defs/nonEmptyString" },
         "name": { "$ref": "#/$defs/nonEmptyString" },
-        "inclusion": { "enum": ["required", "conditional", "optional", "excluded_by_default"] },
+        "inclusion": {
+          "$ref": "https://tiangong-lca.org/schemas/pcr/v1/controlled-vocabulary.schema.json#/$defs/process_inclusion"
+        },
         "inclusion_condition": { "type": "string" },
         "role": { "$ref": "#/$defs/nonEmptyString" },
         "quantitative_reference": { "$ref": "#/$defs/nonEmptyString" }
+      },
+      "additionalProperties": false
+    },
+    "amountBasis": {
+      "type": "object",
+      "required": ["kind"],
+      "properties": {
+        "text": { "type": "string" },
+        "kind": {
+          "$ref": "https://tiangong-lca.org/schemas/pcr/v1/controlled-vocabulary.schema.json#/$defs/basis_kind"
+        }
+      },
+      "additionalProperties": false
+    },
+    "amountEvidence": {
+      "type": "object",
+      "required": ["kind"],
+      "properties": {
+        "kind": {
+          "$ref": "https://tiangong-lca.org/schemas/pcr/v1/controlled-vocabulary.schema.json#/$defs/evidence_kind"
+        },
+        "collection_protocol_id": { "type": "string" },
+        "source_ids": {
+          "type": "array",
+          "items": { "type": "string" },
+          "uniqueItems": true
+        }
+      },
+      "additionalProperties": false
+    },
+    "amountRange": {
+      "type": "object",
+      "required": ["role", "basis_kind", "evidence_kind"],
+      "properties": {
+        "role": {
+          "$ref": "https://tiangong-lca.org/schemas/pcr/v1/controlled-vocabulary.schema.json#/$defs/amount_range_role"
+        },
+        "lower": { "type": "string" },
+        "upper": { "type": "string" },
+        "unit": { "type": "string" },
+        "basis": { "type": "string" },
+        "basis_kind": {
+          "$ref": "https://tiangong-lca.org/schemas/pcr/v1/controlled-vocabulary.schema.json#/$defs/basis_kind"
+        },
+        "evidence_kind": {
+          "$ref": "https://tiangong-lca.org/schemas/pcr/v1/controlled-vocabulary.schema.json#/$defs/evidence_kind"
+        },
+        "source_ids": {
+          "type": "array",
+          "items": { "type": "string" },
+          "uniqueItems": true
+        }
+      },
+      "additionalProperties": false
+    },
+    "flowAmount": {
+      "type": "object",
+      "required": ["value_mode", "specificity", "basis", "evidence", "ranges"],
+      "properties": {
+        "expression": { "type": "string" },
+        "value_mode": {
+          "$ref": "https://tiangong-lca.org/schemas/pcr/v1/controlled-vocabulary.schema.json#/$defs/amount_value_mode"
+        },
+        "specificity": {
+          "$ref": "https://tiangong-lca.org/schemas/pcr/v1/controlled-vocabulary.schema.json#/$defs/amount_specificity"
+        },
+        "basis": { "$ref": "#/$defs/amountBasis" },
+        "evidence": { "$ref": "#/$defs/amountEvidence" },
+        "ranges": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/amountRange" }
+        }
+      },
+      "additionalProperties": false
+    },
+    "flowRow": {
+      "type": "object",
+      "required": [
+        "row_id",
+        "role",
+        "name",
+        "flow_type",
+        "property_unit",
+        "description",
+        "amount"
+      ],
+      "properties": {
+        "row_id": { "type": "string" },
+        "role": { "type": "string" },
+        "name": { "type": "string" },
+        "flow_type": {
+          "$ref": "https://tiangong-lca.org/schemas/pcr/v1/controlled-vocabulary.schema.json#/$defs/flow_type"
+        },
+        "flow_ref": { "type": "object" },
+        "property_unit": { "type": "string" },
+        "description": { "type": "string" },
+        "amount": { "$ref": "#/$defs/flowAmount" }
       },
       "additionalProperties": false
     },
@@ -89,9 +188,9 @@
       "type": "object",
       "required": ["product", "waste", "elementary"],
       "properties": {
-        "product": { "type": "array", "items": { "type": "object" } },
-        "waste": { "type": "array", "items": { "type": "object" } },
-        "elementary": { "type": "array", "items": { "type": "object" } }
+        "product": { "type": "array", "items": { "$ref": "#/$defs/flowRow" } },
+        "waste": { "type": "array", "items": { "$ref": "#/$defs/flowRow" } },
+        "elementary": { "type": "array", "items": { "$ref": "#/$defs/flowRow" } }
       },
       "additionalProperties": false
     },
@@ -103,6 +202,19 @@
         "label": { "$ref": "#/$defs/nonEmptyString" },
         "inputs": { "$ref": "#/$defs/flowGroups" },
         "outputs": { "$ref": "#/$defs/flowGroups" }
+      },
+      "additionalProperties": false
+    },
+    "dataSource": {
+      "type": "object",
+      "required": ["type"],
+      "properties": {
+        "id": { "type": "string" },
+        "type": {
+          "$ref": "https://tiangong-lca.org/schemas/pcr/v1/controlled-vocabulary.schema.json#/$defs/source_type"
+        },
+        "reference": { "type": "string" },
+        "used_for": { "type": "string" }
       },
       "additionalProperties": false
     }
@@ -150,7 +262,7 @@
     },
     "validation_rules": { "$ref": "#/$defs/normativeRuleArray" },
     "published_dataset_profile": { "type": "object" },
-    "data_sources": { "type": "array", "items": { "type": "object" } },
+    "data_sources": { "type": "array", "items": { "$ref": "#/$defs/dataSource" } },
     "projection_metadata": { "$ref": "#/$defs/projectionMetadata" }
   },
   "additionalProperties": false

@@ -28,7 +28,7 @@ checkPaths:
   - library/modules/**
   - docs/**
 lastReviewedAt: 2026-07-14
-lastReviewedCommit: 004d215068aabe92253116150dc3599920983687
+lastReviewedCommit: 35080d8a47c5e66224b164442c98469014c0b848
 ---
 
 # AGENTS.md - TianGong LCA PCR Library
@@ -103,16 +103,22 @@ fingerprints match canonical Markdown and the projection bytes. Lifecycle state,
 state are one validated contract. Publication must pass the builder preflight before either the manifest or structured
 projection is replaced.
 
+Stable machine tokens are authored only in `builder/vocab/*.yaml`. Do not hand-edit the generated runtime constants
+or controlled-vocabulary Schema under `packages/pcr-core/`; run `npm run vocab:generate`, and keep token validity
+separate from lifecycle, readiness, evidence, and other cross-field policy.
+
 Generated PCR leaf scaffolds under `library/pcrs/**` are intentionally excluded from docpact coverage. The builder, classification sources, mappings, schemas, modules, and project documents remain governed.
 
 ## Public PCR Consumption CLI and Skill
 
 The public Agent-facing CLI lives under `packages/tiangong-pcr-cli/` and uses shared logic from `packages/pcr-core/`.
 
-Use this CLI to consume PCRs while constructing LCA `process` or `lifecyclemodel` data:
+Use this CLI to consume PCRs while constructing foreground data packages and their downstream LCA `process` or
+`lifecyclemodel` projections:
 
 ```bash
-npm --silent run tiangong-pcr -- tree --depth 3 --format markdown
+npm --silent run tiangong-pcr -- tree --format markdown
+npm --silent run tiangong-pcr -- list --path-prefix <domain/subdomain> --format json
 npm --silent run tiangong-pcr -- list --status candidate --format json
 npm --silent run tiangong-pcr -- list --page 2 --page-size 10
 npm --silent run tiangong-pcr -- resolve --classification cpc:3.0:01111 --format json
@@ -123,13 +129,15 @@ npm --silent run tiangong-pcr -- feedback draft --pcr <pcr-id> --type <feedback-
 Rules:
 
 - `tree` and `list` are explicit catalog-browsing tools, not fuzzy search.
-- `list` is paginated by default with 10 records per page. Human-readable output must tell agents how to request the next page and what next command to run.
+- `tree` defaults to the bounded domain/subdomain view at depth 2. Use paginated `list --path-prefix` to drill down; request depth 3 only when the complete, large leaf hierarchy is required.
+- `list` is paginated by default with 10 records per page. Output must expose active filters, pagination completeness, and copyable next/previous commands.
 - `resolve` must use deterministic mapping files under `classifications/mappings/**`. A mapping result identifies a PCR record but does not imply that its methodology is usable.
 - Catalog, resolve, and guidance results must expose PCR readiness. Empty scaffolds remain discoverable authoring targets but must be rejected by guidance and validation.
 - `guidance` and validation must re-check the target projection's Schema and fingerprint at runtime, present Agent-facing boundary, allocation, inventory, production, and validation rules, and never mutate PCR content.
 - Validation output must distinguish status from coverage by reporting accepted input, checks performed, checks skipped, findings, and completeness. Error findings and inconclusive validation fail the CLI by default; report-only exit behavior must be explicitly requested.
 - `feedback draft` creates issue-ready candidate evidence; it does not update PCR truth.
 - `--help` must work globally and for each public command. Command help should include purpose, options, output shape where relevant, and Agent next-step guidance.
+- Output formats are command-specific contracts. JSON-only commands must never silently emit another representation, and JSON-requested failures must keep stdout empty while returning a stable error code and details on stderr.
 - PCR guidance is dataset-production first, while `process` and `lifecyclemodel` remain target entities as publication, validation, and downstream-use projections of the foreground data package.
 - Agent skill guidance lives under `skills/tiangong-pcr/` and must remain thin. It should point agents to CLI commands and library contracts instead of duplicating PCR rules.
 - GitHub feedback intake surfaces live under `.github/ISSUE_TEMPLATE/`.

@@ -77,6 +77,121 @@ test("material structured contract accepts a generated repository projection", (
   assert.equal(result.valid, true);
 });
 
+test("material structured contract binds process and inventory tokens to shared vocabularies", () => {
+  const base = minimalStructuredProjection();
+  base.process_inventory[0].inputs.product.push(materialFlowRow());
+  base.data_sources.push({
+    id: "source-1",
+    type: "official_guidance",
+    reference: "https://example.test/source",
+    used_for: "Fixture evidence",
+  });
+  assert.equal(validateStructured(base).valid, true);
+
+  const invalidCases = [
+    ["/process_map/0/inclusion", (value) => (value.process_map[0].inclusion = "mandatory")],
+    [
+      "/process_inventory/0/inputs/product/0/flow_type",
+      (value) => (value.process_inventory[0].inputs.product[0].flow_type = "technosphere"),
+    ],
+    [
+      "/process_inventory/0/inputs/product/0/amount/value_mode",
+      (value) => (value.process_inventory[0].inputs.product[0].amount.value_mode = "measured"),
+    ],
+    [
+      "/process_inventory/0/inputs/product/0/amount/specificity",
+      (value) => (value.process_inventory[0].inputs.product[0].amount.specificity = "regional"),
+    ],
+    [
+      "/process_inventory/0/inputs/product/0/amount/basis/kind",
+      (value) => (value.process_inventory[0].inputs.product[0].amount.basis.kind = "batch"),
+    ],
+    [
+      "/process_inventory/0/inputs/product/0/amount/evidence/kind",
+      (value) => (value.process_inventory[0].inputs.product[0].amount.evidence.kind = "citation"),
+    ],
+    [
+      "/process_inventory/0/inputs/product/0/amount/basis/kind",
+      (value) => delete value.process_inventory[0].inputs.product[0].amount.basis.kind,
+    ],
+    [
+      "/process_inventory/0/inputs/product/0/amount/ranges/0/role",
+      (value) => (value.process_inventory[0].inputs.product[0].amount.ranges[0].role = "limit"),
+    ],
+    [
+      "/process_inventory/0/inputs/product/0/amount/ranges/0/basis_kind",
+      (value) => (value.process_inventory[0].inputs.product[0].amount.ranges[0].basis_kind = "batch"),
+    ],
+    [
+      "/process_inventory/0/inputs/product/0/amount/ranges/0/evidence_kind",
+      (value) => (value.process_inventory[0].inputs.product[0].amount.ranges[0].evidence_kind = "citation"),
+    ],
+    ["/data_sources/0/type", (value) => (value.data_sources[0].type = "official guidance")],
+    ["/data_sources/0/type", (value) => delete value.data_sources[0].type],
+    [
+      "/process_inventory/0/inputs/product/0",
+      (value) => (value.process_inventory[0].inputs.product[0].unknown_column = "typo"),
+    ],
+  ];
+
+  for (const [instancePath, mutate] of invalidCases) {
+    const value = structuredClone(base);
+    mutate(value);
+    const result = validateStructured(value);
+    assert.equal(result.valid, false, instancePath);
+    assert.ok(
+      result.errors.some(
+        (error) =>
+          error.instance_path === instancePath
+          && ["enum", "required", "additionalProperties"].includes(error.keyword),
+      ),
+      instancePath,
+    );
+  }
+});
+
+test("flow row shape keeps the seven stable projection columns required", () => {
+  const schema = JSON.parse(
+    readFileSync(
+      path.join(repoRoot, "packages/pcr-core/schemas/structured-projection.schema.json"),
+      "utf8",
+    ),
+  );
+
+  assert.deepEqual(schema.$defs.flowRow.required, [
+    "row_id",
+    "role",
+    "name",
+    "flow_type",
+    "property_unit",
+    "description",
+    "amount",
+  ]);
+});
+
+test("feedback intake binds type and confidence to shared vocabularies", () => {
+  const feedback = {
+    feedback_type: "validation_rule_issue",
+    summary: "Clarify the rule.",
+    confidence: "high",
+  };
+
+  assert.equal(validateFeedbackIntake(feedback).valid, true);
+  for (const [instancePath, patch] of [
+    ["/feedback_type", { feedback_type: "general_comment" }],
+    ["/confidence", { confidence: "certain" }],
+  ]) {
+    const result = validateFeedbackIntake({ ...feedback, ...patch });
+    assert.equal(result.valid, false, instancePath);
+    assert.ok(
+      result.errors.some(
+        (error) => error.instance_path === instancePath && error.keyword === "enum",
+      ),
+      instancePath,
+    );
+  }
+});
+
 test("contract validation never coerces or mutates input", () => {
   const value = minimalStructuredProjection();
   value.schema_version = "1";
@@ -265,6 +380,36 @@ function minimalStructuredProjection() {
         sha256: hash,
       },
       generated_content_sha256: hash,
+    },
+  };
+}
+
+function materialFlowRow() {
+  return {
+    row_id: "input_1",
+    role: "Example input",
+    name: "Example material",
+    flow_type: "product",
+    property_unit: "Mass / kg",
+    description: "Example material input.",
+    amount: {
+      expression: "measured input",
+      value_mode: "foreground_record",
+      specificity: "site_specific",
+      basis: { text: "per reference flow", kind: "reference_flow" },
+      evidence: { kind: "external_source", source_ids: ["source-1"] },
+      ranges: [
+        {
+          role: "typical_range",
+          lower: "0",
+          upper: "1",
+          unit: "kg/kg reference flow",
+          basis: "per reference flow",
+          basis_kind: "reference_flow",
+          evidence_kind: "external_source",
+          source_ids: ["source-1"],
+        },
+      ],
     },
   };
 }

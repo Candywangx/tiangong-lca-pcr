@@ -28,12 +28,13 @@ npm --silent run tiangong-pcr -- guidance --help
 2. If no classification code is available, inspect the catalog explicitly:
 
    ```bash
-   npm --silent run tiangong-pcr -- tree --depth 3 --format markdown
+   npm --silent run tiangong-pcr -- tree --format markdown
+   npm --silent run tiangong-pcr -- list --path-prefix <domain/subdomain> --format json
    npm --silent run tiangong-pcr -- list --status candidate --format json
    npm --silent run tiangong-pcr -- list --page 2 --page-size 10
    ```
 
-   `list` defaults to 10 records per page. Follow `next_command` in JSON output or the "Next page" line in human-readable output. Choose a PCR from product meaning, declared gate, reference flow, process boundary, and `readiness`.
+   `tree` defaults to the bounded depth-2 category view. Use `list --path-prefix` to drill down instead of loading every leaf. `list` defaults to 10 records per page; follow `next_command` or `previous_command` and preserve the reported filters. Choose a PCR from product meaning, declared gate, reference flow, process boundary, and `readiness`.
 
 3. Read Agent-facing data-production guidance:
 

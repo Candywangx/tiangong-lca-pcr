@@ -8,7 +8,7 @@ Use stable source ids, then reference those ids from reference-flow, process-inv
 
 - source id
 - title
-- source type, such as `official-guidance`, `literature`, `standard`, `dataset`, or `method-factor`
+- source type, using a canonical token from `builder/vocab/source-type.yaml`, such as `official_guidance`, `literature`, `standard`, `dataset`, or `method_factor`
 - URL, DOI, report identifier, or other stable reference when available
 - retrieved date when the source is web-hosted
 - the PCR use, such as `method rule`, `range evidence`, `process decomposition`, `emission factor`, or `quality requirement`

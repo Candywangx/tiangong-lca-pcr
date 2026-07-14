@@ -8,20 +8,13 @@ import {
 } from "./projection-integrity.mjs";
 import { materialProjectionCompletenessIssues } from "./projection-completeness.mjs";
 import { parseYaml, readYamlFile } from "./yaml-lite.mjs";
+import {
+  CLASSIFICATION_MAPPING_RELATION_VALUES,
+  FEEDBACK_TYPE_VALUES,
+} from "./generated/controlled-vocabulary.mjs";
 
-export const FEEDBACK_TYPES = [
-  "missing_pcr",
-  "classification_mapping_gap",
-  "unclear_reference_flow",
-  "wrong_or_missing_uuid",
-  "process_boundary_issue",
-  "inventory_flow_gap",
-  "range_evidence_update",
-  "unit_or_flow_property_issue",
-  "validation_rule_issue",
-  "translation_mismatch",
-  "source_update",
-];
+export const FEEDBACK_TYPES = FEEDBACK_TYPE_VALUES;
+const CLASSIFICATION_MAPPING_RELATIONS = new Set(CLASSIFICATION_MAPPING_RELATION_VALUES);
 
 const pcrCatalogCache = new Map();
 const GUIDANCE_MATURITIES = new Set([
@@ -46,6 +39,21 @@ export class PcrUsabilityError extends Error {
     this.name = "PcrUsabilityError";
     this.code = `PCR_NOT_USABLE_FOR_${operation.toUpperCase()}`;
     this.readiness = structuredClone(readiness);
+  }
+}
+
+export class PcrClassificationMappingError extends Error {
+  constructor({ system, version, code, mappingType }) {
+    super(
+      `Classification mapping ${system}:${version}:${code} uses unsupported mapping_type ${String(mappingType)}.`,
+    );
+    this.name = "PcrClassificationMappingError";
+    this.code = "PCR_INVALID_CLASSIFICATION_MAPPING";
+    this.details = {
+      classification: `${system}:${version}:${code}`,
+      mapping_type: mappingType ?? null,
+      allowed_mapping_types: [...CLASSIFICATION_MAPPING_RELATION_VALUES],
+    };
   }
 }
 
@@ -123,6 +131,14 @@ export function resolveClassification({ root, system, version, code }) {
   const mapping = (mappingFile.mappings ?? []).find((entry) => String(entry.code) === String(code));
   if (!mapping) {
     throw new Error(`No PCR mapping found for ${system}:${version}:${code}`);
+  }
+  if (!CLASSIFICATION_MAPPING_RELATIONS.has(mapping.mapping_type)) {
+    throw new PcrClassificationMappingError({
+      system: normalizedSystem,
+      version,
+      code,
+      mappingType: mapping.mapping_type,
+    });
   }
   const pcr = getPcrById({ root, pcrId: mapping.pcr_id });
   return {

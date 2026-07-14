@@ -962,9 +962,9 @@ Before publishing a foreground data package using this PCR, check:
 
 | Source id | Type | Reference | Used for |
 | --- | --- | --- | --- |
-| `fao-wheat-seed-production` | official guidance | <https://www.fao.org/4/y4011e/y4011e0v.htm> | seed certification, quality control, seed quality attributes, and process boundary |
-| `unl-wheat-seeding-rate` | extension guidance | <https://cropwatch.unl.edu/determining-seeding-rate-your-winter-wheat/> | seeding rate and thousand-kernel weight method context |
-| `umn-small-grain-seeding-rate` | extension guidance | <https://extension.umn.edu/planting-small-grains/seeding-rate-small-grains> | seeding rate formula, stand loss, and germination method context |
-| `usda-seed-cleaning-handling` | official handbook | <https://www.govinfo.gov/content/pkg/GOVPUB-A-PURL-gpo20323/pdf/GOVPUB-A-PURL-gpo20323.pdf> | seed cleaning process decomposition and screenings or reject context |
-| `ipcc-2019-managed-soils-n2o` | official method guidance | <https://www.ipcc-nggip.iges.or.jp/public/2019rf/pdf/4_Volume4/19R_V4_Ch11_Soils_N2O_CO2.pdf> | N2O direct emission factor and nitrogen emission calculation |
+| `fao-wheat-seed-production` | official_guidance | <https://www.fao.org/4/y4011e/y4011e0v.htm> | seed certification, quality control, seed quality attributes, and process boundary |
+| `unl-wheat-seeding-rate` | extension_guidance | <https://cropwatch.unl.edu/determining-seeding-rate-your-winter-wheat/> | seeding rate and thousand-kernel weight method context |
+| `umn-small-grain-seeding-rate` | extension_guidance | <https://extension.umn.edu/planting-small-grains/seeding-rate-small-grains> | seeding rate formula, stand loss, and germination method context |
+| `usda-seed-cleaning-handling` | handbook | <https://www.govinfo.gov/content/pkg/GOVPUB-A-PURL-gpo20323/pdf/GOVPUB-A-PURL-gpo20323.pdf> | seed cleaning process decomposition and screenings or reject context |
+| `ipcc-2019-managed-soils-n2o` | method_factor | <https://www.ipcc-nggip.iges.or.jp/public/2019rf/pdf/4_Volume4/19R_V4_Ch11_Soils_N2O_CO2.pdf> | N2O direct emission factor and nitrogen emission calculation |
 | `mass-balance-identity` | method_factor | Conservation of mass applied as a PCR calculation identity for process reference outputs and batch reconciliation. | QA guardrails for reference outputs and mass-balance checks. |

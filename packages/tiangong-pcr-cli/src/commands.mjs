@@ -3,6 +3,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 
 import {
+  FEEDBACK_TYPES,
   buildGuidance,
   buildPcrTree,
   createFeedbackDraft,
@@ -12,13 +13,20 @@ import {
   validateDatasetAgainstGuidance,
   validateModelAgainstGuidance,
 } from "../../pcr-core/src/index.mjs";
+import {
+  CONTENT_MATURITY_VALUES,
+  PCR_STATUS_VALUES,
+} from "../../pcr-core/src/generated/controlled-vocabulary.mjs";
 
 const defaultRoot = path.resolve(fileURLToPath(new URL("../../..", import.meta.url)));
-const VALID_FORMATS = new Set(["json", "markdown", "table"]);
 const VALID_FAIL_ON = new Set(["never", "error", "warning"]);
+const VALID_LANGUAGES = new Set(["en-US", "zh-CN"]);
+const VALID_PCR_STATUSES = new Set(PCR_STATUS_VALUES);
+const VALID_CONTENT_MATURITIES = new Set(CONTENT_MATURITY_VALUES);
 const GLOBAL_OPTIONS = new Set(["root", "format", "help"]);
+const GLOBAL_HELP_OPTIONS = new Set(["root", "help"]);
 const COMMAND_OPTIONS = {
-  list: new Set(["status", "content-maturity", "page", "page-size", "limit"]),
+  list: new Set(["status", "content-maturity", "path-prefix", "page", "page-size"]),
   tree: new Set(["depth"]),
   resolve: new Set(["classification"]),
   show: new Set(["pcr", "lang"]),
@@ -37,17 +45,33 @@ const COMMAND_OPTIONS = {
   ]),
 };
 const COMMAND_DEFINITIONS = [
-  { key: "list", command: "list" },
-  { key: "tree", command: "tree" },
-  { key: "resolve", command: "resolve" },
-  { key: "show", command: "show" },
-  { key: "guidance", command: "guidance" },
-  { key: "validate-model", command: "validate-model" },
-  { key: "validate-dataset", command: "validate-dataset" },
-  { key: "feedback:draft", command: "feedback", positional: ["draft"] },
+  { key: "list", command: "list", formats: ["json", "markdown", "table"], defaultFormat: "table" },
+  { key: "tree", command: "tree", formats: ["json", "markdown"], defaultFormat: "markdown" },
+  { key: "resolve", command: "resolve", formats: ["json"], defaultFormat: "json" },
+  { key: "show", command: "show", formats: ["markdown"], defaultFormat: "markdown" },
+  { key: "guidance", command: "guidance", formats: ["json"], defaultFormat: "json" },
+  { key: "validate-model", command: "validate-model", formats: ["json"], defaultFormat: "json" },
+  { key: "validate-dataset", command: "validate-dataset", formats: ["json"], defaultFormat: "json" },
+  {
+    key: "feedback:draft",
+    command: "feedback",
+    positional: ["draft"],
+    formats: ["json", "markdown"],
+    defaultFormat: "markdown",
+  },
 ];
 
+export class CliError extends Error {
+  constructor(code, message, details = undefined) {
+    super(message);
+    this.name = "CliError";
+    this.code = code;
+    this.details = details === undefined ? undefined : structuredClone(details);
+  }
+}
+
 export function runTiangongPcr(argv) {
+  const requestedFormat = requestedFormatFromArgv(argv);
   try {
     const { command, positional, options } = parseArgs(argv);
 
@@ -62,28 +86,41 @@ export function runTiangongPcr(argv) {
     }
 
     const root = path.resolve(String(options.root ?? defaultRoot));
-    const format = String(options.format ?? "table");
-    validateFormat(format);
+    const format = validateCommandFormat(definition, options.format);
 
     if (command === "list") {
+      validateListOptions(options);
       return ok(writeOutput(paginateList(filterPcrs(listPcrs({ root }), options), options), format, formatListTable));
     }
     if (command === "tree") {
-      const depth = options.depth === undefined ? Infinity : positiveIntegerOption(options.depth, "depth");
+      const depth = positiveIntegerOption(options.depth, "depth", 2);
       const tree = buildPcrTree({ root, depth });
-      return ok(writeOutput(tree, format, formatTreeMarkdown));
+      if (format === "json") {
+        return ok(`${JSON.stringify(treeOutput(tree, depth), null, 2)}\n`);
+      }
+      return ok(`${formatTreeMarkdown(tree)}\n`);
     }
     if (command === "resolve") {
       const classification = String(options.classification ?? "");
-      const [system, version, code] = classification.split(":");
-      if (!system || !version || !code) {
-        throw new Error("Use --classification <system>:<version>:<code>, for example cpc:3.0:01111");
+      const classificationParts = classification.split(":");
+      if (classificationParts.length !== 3 || classificationParts.some((part) => part.length === 0)) {
+        throw new CliError(
+          "PCR_CLI_INVALID_CLASSIFICATION",
+          "Use --classification <system>:<version>:<code>, for example cpc:3.0:01111",
+          { value: classification },
+        );
       }
-      return ok(writeOutput(resolveClassification({ root, system, version, code }), format, JSON.stringify));
+      const [system, version, code] = classificationParts;
+      const resolution = resolveClassification({ root, system, version, code });
+      return ok(`${JSON.stringify(resolveOutput(resolution, options), null, 2)}\n`);
     }
     if (command === "show") {
       requireOption(options, "pcr");
-      return ok(readPcrMarkdown({ root, pcrId: String(options.pcr), language: String(options.lang ?? "en-US") }));
+      const language = String(options.lang ?? "en-US");
+      if (!VALID_LANGUAGES.has(language)) {
+        throw invalidChoiceError("lang", language, [...VALID_LANGUAGES]);
+      }
+      return ok(readPcrMarkdown({ root, pcrId: String(options.pcr), language }));
     }
     if (command === "guidance") {
       requireOption(options, "pcr");
@@ -92,32 +129,38 @@ export function runTiangongPcr(argv) {
     if (command === "validate-model") {
       requireOption(options, "pcr");
       requireOption(options, "input");
-      const modelText = readFileSync(path.resolve(String(options.input)), "utf8");
+      const failOn = validateFailOn(options["fail-on"]);
+      const modelText = readInputFile(options.input);
       const report = validateModelAgainstGuidance({ root, pcrId: String(options.pcr), model: modelText });
       return ok(writeOutput(
         report,
         format,
         JSON.stringify,
-      ), validationExitCode(report, options["fail-on"]));
+      ), validationExitCode(report, failOn));
     }
     if (command === "validate-dataset") {
       requireOption(options, "pcr");
       requireOption(options, "input");
-      const datasetText = readFileSync(path.resolve(String(options.input)), "utf8");
+      const failOn = validateFailOn(options["fail-on"]);
+      const datasetText = readInputFile(options.input);
       const dataset = parseDatasetInput(datasetText);
       const report = validateDatasetAgainstGuidance({ root, pcrId: String(options.pcr), dataset });
       return ok(writeOutput(
         report,
         format,
         JSON.stringify,
-      ), validationExitCode(report, options["fail-on"]));
+      ), validationExitCode(report, failOn));
     }
     if (command === "feedback" && positional[0] === "draft") {
       requireOption(options, "type");
+      const feedbackType = String(options.type);
+      if (!FEEDBACK_TYPES.includes(feedbackType)) {
+        throw invalidChoiceError("type", feedbackType, FEEDBACK_TYPES);
+      }
       const draft = createFeedbackDraft({
         root,
         pcrId: options.pcr ? String(options.pcr) : "",
-        type: String(options.type),
+        type: feedbackType,
         affectedSection: String(options["affected-section"] ?? ""),
         processId: String(options["process-id"] ?? ""),
         flowRole: String(options["flow-role"] ?? ""),
@@ -131,9 +174,12 @@ export function runTiangongPcr(argv) {
       return ok(`# ${draft.title}\n\n${draft.body}`);
     }
 
-    throw new Error(`Unknown command: ${[command, ...positional].filter(Boolean).join(" ")}`);
+    throw new CliError(
+      "PCR_CLI_UNKNOWN_COMMAND",
+      `Unknown command: ${[command, ...positional].filter(Boolean).join(" ")}`,
+    );
   } catch (error) {
-    return fail(error);
+    return fail(error, requestedFormat);
   }
 }
 
@@ -141,8 +187,62 @@ function ok(stdout, exitCode = 0) {
   return { stdout, stderr: "", exitCode };
 }
 
-function fail(error) {
-  return { stdout: "", stderr: `${error.message}\n`, exitCode: 1 };
+function fail(error, requestedFormat) {
+  const normalized = normalizeError(error);
+  if (requestedFormat === "json") {
+    return {
+      stdout: "",
+      stderr: `${JSON.stringify({ error: { ...normalized, exit_code: 1 } }, null, 2)}\n`,
+      exitCode: 1,
+    };
+  }
+  return {
+    stdout: "",
+    stderr: `[${normalized.code}] ${normalized.message}\n`,
+    exitCode: 1,
+  };
+}
+
+function requestedFormatFromArgv(argv) {
+  for (let index = argv.length - 2; index >= 0; index -= 1) {
+    if (argv[index] === "--format" && argv[index + 1] === "json") {
+      return "json";
+    }
+  }
+  const index = argv.lastIndexOf("--format");
+  return index >= 0 && typeof argv[index + 1] === "string" ? argv[index + 1] : null;
+}
+
+function normalizeError(error) {
+  const message = error instanceof Error ? error.message : String(error);
+  const code = error instanceof CliError || /^PCR_/u.test(String(error?.code ?? ""))
+    ? String(error.code)
+    : "PCR_CLI_RUNTIME_ERROR";
+  const details = coreOrCliErrorDetails(error);
+  return details === undefined ? { code, message } : { code, message, details };
+}
+
+function coreOrCliErrorDetails(error) {
+  if (error instanceof CliError) {
+    return error.details;
+  }
+  if (error?.details !== undefined) {
+    return structuredClone(error.details);
+  }
+  if (error?.readiness !== undefined) {
+    return { readiness: structuredClone(error.readiness) };
+  }
+  if (typeof error?.toJSON === "function") {
+    const serialized = error.toJSON();
+    if (serialized && typeof serialized === "object") {
+      const { code: _code, ...details } = serialized;
+      return details;
+    }
+  }
+  if (error?.details && typeof error.details === "object") {
+    return structuredClone(error.details);
+  }
+  return undefined;
 }
 
 function commandDefinitionFor(command, positional = []) {
@@ -167,17 +267,32 @@ function requireCommandDefinition(command, positional) {
     const expected = commandDefinitions[0].positional ?? [];
     const isExpectedPrefix = expected.every((value, index) => positional[index] === value);
     if (isExpectedPrefix && positional.length > expected.length) {
-      throw new Error(`Unexpected positional argument(s) for ${[command, ...expected].join(" ")}: ${positional.slice(expected.length).join(" ")}`);
+      throw new CliError(
+        "PCR_CLI_UNEXPECTED_POSITIONAL",
+        `Unexpected positional argument(s) for ${[command, ...expected].join(" ")}: ${positional.slice(expected.length).join(" ")}`,
+      );
     }
   }
-  throw new Error(`Unknown command: ${[command, ...positional].filter(Boolean).join(" ")}`);
+  throw new CliError(
+    "PCR_CLI_UNKNOWN_COMMAND",
+    `Unknown command: ${[command, ...positional].filter(Boolean).join(" ")}`,
+  );
 }
 
 function validateHelpInvocation({ command, positional, options }) {
   if (command === "help" && positional.length > 0) {
-    throw new Error(`Unexpected positional argument(s) for help: ${positional.join(" ")}`);
+    throw new CliError(
+      "PCR_CLI_UNEXPECTED_POSITIONAL",
+      `Unexpected positional argument(s) for help: ${positional.join(" ")}`,
+    );
   }
-  validateOptionsAgainst(options, GLOBAL_OPTIONS);
+  validateOptionsAgainst(options, GLOBAL_HELP_OPTIONS);
+  if (!command && options.help !== true && Object.keys(options).length > 0) {
+    throw new CliError(
+      "PCR_CLI_MISSING_COMMAND",
+      "Missing command. Run tiangong-pcr --help to inspect available commands.",
+    );
+  }
 }
 
 function validateCommandOptions(definition, options) {
@@ -188,24 +303,36 @@ function validateCommandOptions(definition, options) {
 function validateOptionsAgainst(options, allowed) {
   for (const [key, value] of Object.entries(options)) {
     if (!allowed.has(key)) {
-      throw new Error(`Unknown option --${key}`);
+      throw new CliError("PCR_CLI_UNKNOWN_OPTION", `Unknown option --${key}`, { option: key });
     }
     if (key === "help") {
       if (value !== true) {
-        throw new Error("Option --help does not accept a value.");
+        throw new CliError(
+          "PCR_CLI_INVALID_OPTION",
+          "Option --help does not accept a value.",
+          { option: key, value },
+        );
       }
       continue;
     }
     if (value === true) {
-      throw new Error(`Option --${key} requires a value.`);
+      throw new CliError(
+        "PCR_CLI_MISSING_OPTION_VALUE",
+        `Option --${key} requires a value.`,
+        { option: key },
+      );
     }
   }
 }
 
-function validateFormat(format) {
-  if (!VALID_FORMATS.has(format)) {
-    throw new Error(`Invalid --format "${format}". Expected one of: json, markdown, table.`);
+function validateCommandFormat(definition, formatValue) {
+  const format = String(formatValue ?? definition.defaultFormat);
+  if (!definition.formats.includes(format)) {
+    throw invalidChoiceError("format", format, definition.formats, {
+      command: [definition.command, ...(definition.positional ?? [])].join(" "),
+    });
   }
+  return format;
 }
 
 function parseArgs(argv) {
@@ -218,10 +345,10 @@ function parseArgs(argv) {
     if (token.startsWith("--")) {
       const key = token.slice(2);
       if (!key) {
-        throw new Error("Unexpected bare -- argument.");
+        throw new CliError("PCR_CLI_INVALID_ARGUMENT", "Unexpected bare -- argument.");
       }
       if (Object.hasOwn(options, key)) {
-        throw new Error(`Duplicate option --${key}`);
+        throw new CliError("PCR_CLI_DUPLICATE_OPTION", `Duplicate option --${key}`, { option: key });
       }
       const next = argv[index + 1];
       if (next === undefined || next.startsWith("--")) {
@@ -256,8 +383,45 @@ function parseDatasetInput(text) {
   try {
     return JSON.parse(text);
   } catch (error) {
-    throw new Error(`Malformed dataset JSON: ${error.message}`);
+    throw new CliError(
+      "PCR_CLI_INVALID_DATASET_JSON",
+      `Malformed dataset JSON: ${error.message}`,
+    );
   }
+}
+
+function readInputFile(value) {
+  const inputPath = path.resolve(String(value));
+  try {
+    return readFileSync(inputPath, "utf8");
+  } catch (error) {
+    throw new CliError(
+      "PCR_CLI_INPUT_READ_FAILED",
+      `Unable to read --input file ${inputPath}: ${error.message}`,
+      { input: inputPath },
+    );
+  }
+}
+
+function validateListOptions(options) {
+  if (options.status !== undefined && !VALID_PCR_STATUSES.has(String(options.status))) {
+    throw invalidChoiceError("status", String(options.status), PCR_STATUS_VALUES);
+  }
+  if (
+    options["content-maturity"] !== undefined
+    && !VALID_CONTENT_MATURITIES.has(String(options["content-maturity"]))
+  ) {
+    throw invalidChoiceError(
+      "content-maturity",
+      String(options["content-maturity"]),
+      CONTENT_MATURITY_VALUES,
+    );
+  }
+  if (options["path-prefix"] !== undefined) {
+    normalizePathPrefix(options["path-prefix"]);
+  }
+  positiveIntegerOption(options.page, "page", 1);
+  positiveIntegerOption(options["page-size"], "page-size", 10, 100);
 }
 
 function filterPcrs(pcrs, options) {
@@ -268,16 +432,27 @@ function filterPcrs(pcrs, options) {
   if (options["content-maturity"]) {
     result = result.filter((entry) => entry.content_maturity === String(options["content-maturity"]));
   }
+  if (options["path-prefix"]) {
+    const prefix = normalizePathPrefix(options["path-prefix"]);
+    result = result.filter((entry) => {
+      const relativePath = String(entry.path).replace(/^library\/pcrs\/?/u, "");
+      return relativePath === prefix || relativePath.startsWith(`${prefix}/`);
+    });
+  }
   return result;
 }
 
 function paginateList(pcrs, options) {
-  const pageSize = positiveIntegerOption(options["page-size"] ?? options.limit, "page-size", 10);
+  const pageSize = positiveIntegerOption(options["page-size"], "page-size", 10, 100);
   const page = positiveIntegerOption(options.page, "page", 1);
   const totalCount = pcrs.length;
   const totalPages = Math.max(1, Math.ceil(totalCount / pageSize));
   if (page > totalPages) {
-    throw new Error(`--page ${page} is out of range. Available pages: 1-${totalPages}.`);
+    throw new CliError(
+      "PCR_CLI_PAGE_OUT_OF_RANGE",
+      `--page ${page} is out of range. Available pages: 1-${totalPages}.`,
+      { page, total_pages: totalPages },
+    );
   }
   const startIndex = (page - 1) * pageSize;
   const items = pcrs.slice(startIndex, startIndex + pageSize);
@@ -285,26 +460,73 @@ function paginateList(pcrs, options) {
   const previousPage = page > 1 ? page - 1 : null;
 
   return {
+    filters: {
+      status: options.status ? String(options.status) : null,
+      content_maturity: options["content-maturity"]
+        ? String(options["content-maturity"])
+        : null,
+      path_prefix: options["path-prefix"]
+        ? normalizePathPrefix(options["path-prefix"])
+        : null,
+    },
     page,
     page_size: pageSize,
     total_count: totalCount,
     total_pages: totalPages,
+    has_more: nextPage !== null,
     items,
     previous_command: previousPage ? buildListCommand({ ...options, page: previousPage }) : null,
     next_command: nextPage ? buildListCommand({ ...options, page: nextPage }) : null,
     next_steps: [
-      "If you have a classification code, prefer resolve --classification <system>:<version>:<code>.",
-      "If the correct PCR is unclear, inspect tree --depth 3 and then open candidate guidance.",
-      "Check items[].readiness and run guidance only when usable_for_guidance is true.",
+      "If you have a classification code, prefer npm --silent run tiangong-pcr -- resolve --classification <system>:<version>:<code>.",
+      "If the correct PCR is unclear, inspect npm --silent run tiangong-pcr -- tree --depth 3 and then open candidate guidance.",
+      "Check items[].readiness and run npm --silent run tiangong-pcr -- guidance --pcr <pcr-id> --format json only when usable_for_guidance is true.",
     ],
   };
 }
 
+function treeOutput(tree, depth) {
+  return {
+    scope: "library/pcrs",
+    depth,
+    completeness: depth >= 3 ? "complete" : "partial",
+    tree,
+    next_steps: depth >= 3
+      ? [
+          "Inspect PCR leaf readiness and run npm --silent run tiangong-pcr -- guidance --pcr <pcr-id> --format json only when usable_for_guidance is true.",
+        ]
+      : [
+          "Choose a visible path and run npm --silent run tiangong-pcr -- list --path-prefix <path> --format json.",
+          "Use --depth 3 only when a complete hierarchy is required; the full tree is large.",
+        ],
+  };
+}
+
+function resolveOutput(resolution, options) {
+  const usable = resolution.pcr?.readiness?.usable_for_guidance === true;
+  const pcrId = resolution.mapping?.pcr_id;
+  const nextCommand = usable && pcrId
+    ? [
+        "npm --silent run tiangong-pcr -- guidance",
+        `--pcr ${shellToken(String(pcrId))}`,
+        options.root ? `--root ${shellToken(String(options.root))}` : "",
+        "--format json",
+      ].filter(Boolean).join(" ")
+    : null;
+  return {
+    ...resolution,
+    next_command: nextCommand,
+    next_steps: usable
+      ? ["Run next_command to obtain foreground data-production guidance."]
+      : [
+          "The mapping identifies a PCR, but its readiness blocks guidance; inspect pcr.readiness.blockers.",
+          "Draft feedback when the mapping or missing methodology prevents the requested work.",
+        ],
+  };
+}
+
 function validationExitCode(report, failOnValue) {
-  const failOn = String(failOnValue ?? "error");
-  if (!VALID_FAIL_ON.has(failOn)) {
-    throw new Error(`Invalid --fail-on "${failOn}". Expected one of: never, error, warning.`);
-  }
+  const failOn = validateFailOn(failOnValue);
   if (failOn === "never") {
     return 0;
   }
@@ -337,33 +559,76 @@ function formatListTable(page) {
   if (page.next_command) {
     lines.push(`Next page: ${page.next_command}`);
   }
-  lines.push("Next step: inspect readiness and call `guidance --pcr <pcr-id> --format json` only when `usable_for_guidance` is true; use `resolve` when you have a classification code.");
+  lines.push("Next step: inspect readiness and run `npm --silent run tiangong-pcr -- guidance --pcr <pcr-id> --format json` only when `usable_for_guidance` is true; use `npm --silent run tiangong-pcr -- resolve` when you have a classification code.");
   return lines.join("\n");
 }
 
-function positiveIntegerOption(value, optionName, fallback) {
+function positiveIntegerOption(value, optionName, fallback, maximum = Infinity) {
   if (value === undefined) {
     return fallback;
   }
-  const parsed = Number(value);
-  if (!Number.isInteger(parsed) || parsed <= 0) {
-    throw new Error(`Invalid --${optionName} "${value}". Expected a positive integer.`);
+  const token = String(value);
+  const parsed = Number(token);
+  if (!/^[1-9][0-9]*$/u.test(token) || !Number.isSafeInteger(parsed) || parsed > maximum) {
+    const expectation = Number.isFinite(maximum)
+      ? `a positive safe integer no greater than ${maximum}`
+      : "a positive safe integer";
+    throw new CliError(
+      "PCR_CLI_INVALID_INTEGER_OPTION",
+      `Invalid --${optionName} "${value}". Expected ${expectation}.`,
+      { option: optionName, value: String(value), maximum: Number.isFinite(maximum) ? maximum : null },
+    );
   }
   return parsed;
 }
 
+function validateFailOn(value) {
+  const failOn = String(value ?? "error");
+  if (!VALID_FAIL_ON.has(failOn)) {
+    throw invalidChoiceError("fail-on", failOn, [...VALID_FAIL_ON]);
+  }
+  return failOn;
+}
+
+function invalidChoiceError(option, value, choices, details = {}) {
+  return new CliError(
+    "PCR_CLI_INVALID_CHOICE",
+    `Invalid --${option} "${value}". Expected one of: ${choices.join(", ")}.`,
+    { option, value, choices: [...choices], ...details },
+  );
+}
+
+function normalizePathPrefix(value) {
+  const original = String(value);
+  const prefix = original.replace(/^library\/pcrs\/?/u, "").replace(/^\/+|\/+$/gu, "");
+  const segments = prefix.split("/");
+  if (
+    prefix.length === 0
+    || original.includes("\\")
+    || segments.some((segment) => segment.length === 0 || segment === "." || segment === "..")
+  ) {
+    throw new CliError(
+      "PCR_CLI_INVALID_PATH_PREFIX",
+      `Invalid --path-prefix "${original}". Use a slash-delimited path below library/pcrs without . or .. segments.`,
+      { option: "path-prefix", value: original },
+    );
+  }
+  return prefix;
+}
+
 function buildListCommand(options) {
-  const parts = ["tiangong-pcr", "list"];
+  const parts = ["npm", "--silent", "run", "tiangong-pcr", "--", "list"];
   if (options.status) {
     parts.push("--status", shellToken(String(options.status)));
   }
   if (options["content-maturity"]) {
     parts.push("--content-maturity", shellToken(String(options["content-maturity"])));
   }
+  if (options["path-prefix"]) {
+    parts.push("--path-prefix", shellToken(String(options["path-prefix"])));
+  }
   if (options["page-size"]) {
     parts.push("--page-size", shellToken(String(options["page-size"])));
-  } else if (options.limit) {
-    parts.push("--page-size", shellToken(String(options.limit)));
   }
   if (options.page) {
     parts.push("--page", shellToken(String(options.page)));
@@ -393,7 +658,10 @@ function renderTreeNode(node, lines, depth) {
   for (const [segment, value] of Object.entries(node).sort(([left], [right]) => left.localeCompare(right))) {
     lines.push(`${"  ".repeat(depth)}- ${segment}`);
     for (const pcr of value.pcrs ?? []) {
-      lines.push(`${"  ".repeat(depth + 1)}- ${pcr.id}`);
+      const readiness = pcr.readiness ?? {};
+      lines.push(
+        `${"  ".repeat(depth + 1)}- ${pcr.id} (readiness: ${readiness.status ?? "unknown"}; usable_for_guidance: ${readiness.usable_for_guidance === true})`,
+      );
     }
     renderTreeNode(value.children ?? {}, lines, depth + 1);
   }
@@ -401,7 +669,11 @@ function renderTreeNode(node, lines, depth) {
 
 function requireOption(options, key) {
   if (!options[key]) {
-    throw new Error(`Missing required option --${key}`);
+    throw new CliError(
+      "PCR_CLI_MISSING_REQUIRED_OPTION",
+      `Missing required option --${key}`,
+      { option: key },
+    );
   }
 }
 
@@ -418,26 +690,31 @@ Browse PCR records explicitly. This is catalog browsing, not fuzzy search.
 Options:
   --status <status>                 Filter by manifest status, for example candidate or scaffold.
   --content-maturity <state>        Filter by content maturity.
+  --path-prefix <path>              Filter below library/pcrs by a slash-delimited path prefix.
   --page <n>                        Page number. Defaults to 1.
-  --page-size <n>                   Records per page. Defaults to 10 records per page.
+  --page-size <n>                   Records per page, from 1 to 100. Defaults to 10 records per page.
   --format json|markdown|table      Output format. Defaults to table.
   --root <path>                     PCR repository root.
+  --help                            Show this command help.
 
 JSON output:
   {
+    "filters": { "status": null, "content_maturity": null, "path_prefix": null },
     "page": 1,
     "page_size": 10,
     "total_count": 2877,
     "total_pages": 288,
+    "has_more": true,
     "items": [{ "id": "<pcr-id>", "readiness": { "usable_for_guidance": true } }],
     "previous_command": null,
-    "next_command": "tiangong-pcr list --page 2",
+    "next_command": "npm --silent run tiangong-pcr -- list --page 2",
     "next_steps": []
   }
 
 Agent next step:
   Follow next_command for more pages. Inspect each record's readiness, and only when
-  usable_for_guidance is true run: tiangong-pcr guidance --pcr <pcr-id> --format json
+  usable_for_guidance is true run:
+  npm --silent run tiangong-pcr -- guidance --pcr <pcr-id> --format json
 `;
   }
   if (definition.key === "tree") {
@@ -446,12 +723,17 @@ Agent next step:
 Show the PCR directory hierarchy so an Agent can inspect available categories before selecting a PCR.
 
 Options:
-  --depth <n>                       Limit hierarchy depth.
-  --format json|markdown            Output format. Defaults to table-style markdown.
+  --depth <n>                       Limit hierarchy depth. Defaults to 2.
+  --format json|markdown            Output format. Defaults to markdown.
   --root <path>                     PCR repository root.
+  --help                            Show this command help.
+
+JSON output includes scope, requested depth, completeness, tree, and next_steps.
 
 Agent next step:
-  Use tree to narrow the category area, then use list or guidance for concrete PCR records.
+  Use tree to narrow the category area, then run:
+  npm --silent run tiangong-pcr -- list --path-prefix <path>
+  Markdown PCR leaves include readiness and usable_for_guidance when --depth reaches them.
 `;
   }
   if (definition.key === "resolve") {
@@ -465,12 +747,14 @@ Options:
   --classification <value>          Example: cpc:3.0:01111.
   --format json                     Output format. JSON is recommended for Agents.
   --root <path>                     PCR repository root.
+  --help                            Show this command help.
 
 Example:
-  tiangong-pcr resolve --classification cpc:3.0:01111 --format json
+  npm --silent run tiangong-pcr -- resolve --classification cpc:3.0:01111 --format json
 
 Agent next step:
-  Inspect pcr.readiness. Use mapping.pcr_id with guidance only when usable_for_guidance is true.
+  Inspect pcr.readiness. When usable_for_guidance is true, run:
+  npm --silent run tiangong-pcr -- guidance --pcr <mapping.pcr_id> --format json
 `;
   }
   if (definition.key === "show") {
@@ -481,10 +765,12 @@ Print the human-readable PCR Markdown.
 Options:
   --pcr <pcr-id>                    PCR id to display.
   --lang en-US|zh-CN                Markdown language. Defaults to en-US.
+  --format markdown                 Output format. Defaults to markdown.
   --root <path>                     PCR repository root.
+  --help                            Show this command help.
 
 Agent next step:
-  Use show for human review. Use guidance for machine-readable model construction rules.
+  Use show for human review. Use guidance for machine-readable foreground data-production rules.
 `;
   }
   if (definition.key === "guidance") {
@@ -497,13 +783,15 @@ Options:
   --pcr <pcr-id>                    PCR id.
   --format json                     Output format. JSON is recommended for Agents.
   --root <path>                     PCR repository root.
+  --help                            Show this command help.
 
 JSON output includes:
   pcr, readiness, system_boundary, reference_flow, measurement_rules, process_map,
   process_inventory, allocation_rules, validation_rules, data_sources, and validation_notes.
 
 Agent next step:
-  Build the process or lifecyclemodel from the guidance, then run validate-model.
+  Build the foreground data package from the guidance, then run validate-dataset.
+  Use process or lifecyclemodel publication and validate-model only as a downstream projection.
 `;
   }
   if (definition.key === "validate-model") {
@@ -517,6 +805,7 @@ Options:
   --format json                     Output format. JSON is recommended for Agents.
   --fail-on never|error|warning     Exit 2 at the selected finding threshold. Defaults to error.
   --root <path>                     PCR repository root.
+  --help                            Show this command help.
 
 JSON output includes:
   validation_status, completeness, input, check_coverage, finding_summary, and findings.
@@ -526,7 +815,7 @@ Exit codes:
   1 usage, input, or runtime error; 2 validation is inconclusive or the --fail-on threshold was reached.
 
 Agent next step:
-  Address findings in the model. If the PCR guidance is missing or unclear, create feedback.
+  Address findings in the model. If the PCR guidance is missing or unclear, create feedback draft.
 `;
   }
   if (definition.key === "validate-dataset") {
@@ -541,6 +830,7 @@ Options:
   --format json                     Output format. JSON is recommended for Agents.
   --fail-on never|error|warning     Exit 2 at the selected finding threshold. Defaults to error.
   --root <path>                     PCR repository root.
+  --help                            Show this command help.
 
 JSON output includes:
   validation_status, completeness, input, check_coverage, finding_summary, and findings.
@@ -569,19 +859,11 @@ Options:
   --evidence <text>                 Evidence URLs, files, or notes.
   --proposed-change <text>          Suggested change.
   --format json|markdown            Output format. Defaults to markdown.
+  --root <path>                     PCR repository root.
+  --help                            Show this command help.
 
 Feedback types:
-  missing_pcr
-  classification_mapping_gap
-  unclear_reference_flow
-  wrong_or_missing_uuid
-  process_boundary_issue
-  inventory_flow_gap
-  range_evidence_update
-  unit_or_flow_property_issue
-  validation_rule_issue
-  translation_mismatch
-  source_update
+${FEEDBACK_TYPES.map((type) => `  ${type}`).join("\n")}
 
 Agent next step:
   Open a GitHub issue with the generated body, or hand it to a maintainer for intake.
@@ -599,7 +881,7 @@ Usage:
   tiangong-pcr <command> --help
 
 Commands:
-  list [--status <status>] [--content-maturity <state>] [--page <n>] [--page-size <n>] [--format json|markdown|table]
+  list [--status <status>] [--content-maturity <state>] [--path-prefix <path>] [--page <n>] [--page-size <n>] [--format json|markdown|table]
   tree [--depth <n>] [--format json|markdown]
   resolve --classification <system>:<version>:<code> [--format json]
   show --pcr <pcr-id> [--lang en-US|zh-CN]
@@ -612,7 +894,8 @@ Agent workflow:
   1. If a classification code is available, run resolve --classification <system>:<version>:<code> --format json.
   2. If no code is available, use tree/list to browse explicit PCR hierarchy. list defaults to 10 records per page.
   3. Check the returned readiness. Run guidance only when usable_for_guidance is true.
-  4. Build a model or foreground data collection package, then run validate-model or validate-dataset.
-  5. If PCR guidance is missing or ambiguous, run feedback draft with the observed gap.
+  4. Build a foreground data package, then run validate-dataset.
+  5. Only for downstream publication projections, build a process or lifecyclemodel and run validate-model.
+  6. If PCR guidance is missing or ambiguous, run feedback draft with the observed gap.
 `;
 }

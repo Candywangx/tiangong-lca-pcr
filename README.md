@@ -27,7 +27,7 @@ checkPaths:
   - library/modules/**
   - docs/**
 lastReviewedAt: 2026-07-14
-lastReviewedCommit: 004d215068aabe92253116150dc3599920983687
+lastReviewedCommit: 35080d8a47c5e66224b164442c98469014c0b848
 ---
 
 # TianGong LCA PCR Library
@@ -100,7 +100,8 @@ Builder docs live under `builder/docs/`. Start with `builder/AGENTS.md` for task
 Use `tiangong-pcr` when consuming PCRs to guide foreground data package construction:
 
 ```bash
-npm --silent run tiangong-pcr -- tree --depth 3 --format markdown
+npm --silent run tiangong-pcr -- tree --format markdown
+npm --silent run tiangong-pcr -- list --path-prefix agriculture-forestry-and-fishery-products/products-of-agriculture-horticulture-and-market-gardening --format json
 npm --silent run tiangong-pcr -- list --status candidate --format json
 npm --silent run tiangong-pcr -- list --page 2 --page-size 10
 npm --silent run tiangong-pcr -- resolve --classification cpc:3.0:01111 --format json
@@ -110,7 +111,7 @@ npm --silent run tiangong-pcr -- validate-dataset --pcr <pcr-id> --input <datase
 npm --silent run tiangong-pcr -- feedback draft --pcr <pcr-id> --type range_evidence_update --summary "<finding>"
 ```
 
-The public CLI provides deterministic classification `resolve`, explicit `tree` and `list` catalog browsing, structured `guidance`, foreground data package coverage checks through `validate-dataset`, process/lifecyclemodel draft checks through `validate-model`, and issue-ready feedback drafting. `list` defaults to 10 records per page and prints next-page guidance in human-readable output.
+The public CLI provides deterministic classification `resolve`, explicit `tree` and `list` catalog browsing, structured `guidance`, foreground data package coverage checks through `validate-dataset`, process/lifecyclemodel draft checks through `validate-model`, and issue-ready feedback drafting. `tree` defaults to a bounded depth-2 category view; use paginated `list --path-prefix` to drill into a category. `list` defaults to 10 records per page and reports its filters, `has_more`, and copyable next/previous commands.
 
 Catalog and mapping results carry a `readiness` object. A classification mapping identifies a PCR record; it does not claim that methodology is usable. Authored candidates are marked `review_required`, while an `empty_scaffold` is `unavailable` and is rejected by `guidance` and both validation commands.
 
@@ -125,6 +126,8 @@ Validation output reports `validation_status`, `completeness`, accepted input sh
 PCR guidance is dataset-production first. `process` and `lifecyclemodel` remain target entities as publication, validation, and downstream-use projections of the foreground data package rather than separate sources of methodology truth.
 
 Use `npm --silent run tiangong-pcr -- --help` for the global Agent workflow and `npm --silent run tiangong-pcr -- <command> --help` for command-specific options, output shape, and next-step guidance.
+
+Formats are enforced per command: `resolve`, `guidance`, and validation are JSON; `show` is Markdown; `tree` supports JSON or Markdown; `list` supports JSON, Markdown, or table output; feedback drafts support JSON or Markdown. With `--format json`, usage or runtime failures leave stdout empty and return a stable `{ "error": { "code", "message", "details", "exit_code" } }` envelope on stderr.
 
 ## Local PCR Viewer
 

@@ -27,7 +27,7 @@ checkPaths:
   - classifications/**
   - library/modules/**
 lastReviewedAt: 2026-07-14
-lastReviewedCommit: 004d215068aabe92253116150dc3599920983687
+lastReviewedCommit: 35080d8a47c5e66224b164442c98469014c0b848
 ---
 
 # PCR 资料库架构
@@ -236,9 +236,18 @@ agent / user
 公开 CLI 提供 catalog browsing、classification resolution、PCR display、guidance output、
 model validation、dataset validation 和 feedback draft。它是消费契约，不是 authoring 入口。
 
+`tree` 默认只返回 depth 2 的 domain/subdomain 范围，避免把 2,877 个 leaf 一次性注入 Agent
+上下文；Agent 应使用分页 `list --path-prefix <domain/subdomain>` 下钻。list JSON 显式返回
+filters、has_more 和可复制的 next/previous command，tree JSON 显式返回 scope、depth 和
+completeness。命令各自声明允许的输出格式，不允许 `show --format json` 或
+`guidance --format markdown` 这类格式与实际内容不一致的成功结果。
+
 `resolve` 命中 mapping 后仍要检查返回 PCR 的 readiness。空 scaffold 的 `guidance` 和 validation
 会明确失败。validation 命令默认在 error finding 或结果 inconclusive 时退出 2；仅报告但不影响 shell 状态的工作流
 必须显式使用 `--fail-on never`。
+
+当请求 JSON 时，usage/input/runtime error 保持 stdout 为空，在 stderr 返回稳定 error code、
+message、details 和 exit_code；validation gate 的 exit 2 仍把完整 validation report 放在 stdout。
 
 ### 本地 viewer 预览 PCR
 
@@ -278,12 +287,14 @@ feedback 可以触发 PCR 内容更新、mapping 修复、UUID 修正、range ev
 | 外部分类 truth | `classifications/systems/**` | 分类体系 source 和 normalized 数据 |
 | mapping truth | `classifications/mappings/**` | 外部分类 code 到 PCR id 的映射 |
 | authoring behavior | `builder/**` | 构建、投影、lint、publish 行为 |
+| controlled token truth | `builder/vocab/*.yaml` | 稳定 machine token 的唯一手写来源 |
 | consumption behavior | `packages/**`、`skills/**` | 读取、验证、展示和 agent 使用方式 |
 | feedback intake | `.github/ISSUE_TEMPLATE/**`、`tiangong-pcr feedback draft` | 候选证据入口 |
 
 派生物：
 
 - `structured.yaml`：canonical PCR 内容的确定性机器侧投影；material PCR 的 repo lint 会验证共享 Schema、source/content 指纹，并逐字比较重新生成结果以拒绝 stale artifact。
+- `packages/pcr-core/src/generated/controlled-vocabulary.mjs` 与 `packages/pcr-core/schemas/controlled-vocabulary.schema.json`：由 `builder/vocab/*.yaml` 确定性生成的 runtime/Schema 投影；`npm run vocab:check` 拒绝 stale artifact。
 - `library/indexes/**`：用于浏览和检索的索引。
 - `packages/pcr-viewer/dist/**`：由 `npm run viewer:build` 生成的静态 viewer artifact。
 - `classifications/systems/<system>/<version>/normalized/**`：由 retained source artifact 和 import logic 派生的 normalized 分类数据。

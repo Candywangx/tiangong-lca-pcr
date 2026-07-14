@@ -6,6 +6,7 @@ import {
   validationReportSemanticIssues,
 } from "./output-semantics.mjs";
 
+const CORE_SCHEMA_DEPENDENCY_FILES = ["controlled-vocabulary.schema.json"];
 const CORE_SCHEMA_FILES = [
   "dataset-validation-input.schema.json",
   "feedback-draft-output.schema.json",
@@ -21,6 +22,9 @@ const schemaEntries = CORE_SCHEMA_FILES.map((fileName) => ({
   fileName,
   schema: JSON.parse(readFileSync(new URL(`../schemas/${fileName}`, import.meta.url), "utf8")),
 }));
+const schemaDependencies = CORE_SCHEMA_DEPENDENCY_FILES.map((fileName) =>
+  JSON.parse(readFileSync(new URL(`../schemas/${fileName}`, import.meta.url), "utf8")),
+);
 const contractIds = new Map(schemaEntries.map(({ fileName, schema }) => [fileName, schema.$id]));
 const entityKindsByFile = {
   "dataset-validation-input.schema.json": "dataset_validation_input",
@@ -33,7 +37,7 @@ const entityKindsByFile = {
   "validation-output.schema.json": "validation_report",
 };
 const registry = createSchemaRegistry(
-  schemaEntries.map(({ schema }) => schema),
+  [...schemaDependencies, ...schemaEntries.map(({ schema }) => schema)],
   Object.fromEntries(
     schemaEntries.map(({ fileName, schema }) => [schema.$id, entityKindsByFile[fileName]]),
   ),

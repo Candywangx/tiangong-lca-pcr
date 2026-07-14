@@ -378,6 +378,46 @@ test("resolveClassification uses deterministic mapping files", () => {
   assert.equal(result.pcr.title["en-US"], "Wheat seed for sowing");
 });
 
+test("resolveClassification rejects mapping relations outside the canonical vocabulary", () => {
+  const root = mkdtempSync(path.join(tmpdir(), "tiangong-pcr-invalid-mapping-"));
+  try {
+    const pcrDir = path.join(root, wheatRelativePcrPath);
+    mkdirSync(path.dirname(pcrDir), { recursive: true });
+    cpSync(path.join(repoRoot, wheatRelativePcrPath), pcrDir, { recursive: true });
+    const mappingDir = path.join(root, "classifications/mappings");
+    mkdirSync(mappingDir, { recursive: true });
+    writeFileSync(
+      path.join(mappingDir, "cpc-3.0-to-pcr.yaml"),
+      `schema_version: 1
+classification_system: CPC
+classification_version: "3.0"
+mappings:
+  - code: "01111"
+    pcr_id: "${wheatSeedPcrId}"
+    mapping_type: invented_relation
+`,
+    );
+
+    assert.throws(
+      () =>
+        resolveClassification({
+          root,
+          system: "cpc",
+          version: "3.0",
+          code: "01111",
+        }),
+      (error) => {
+        assert.equal(error.code, "PCR_INVALID_CLASSIFICATION_MAPPING");
+        assert.equal(error.details.mapping_type, "invented_relation");
+        assert.ok(error.details.allowed_mapping_types.includes("manual_review"));
+        return true;
+      },
+    );
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+  }
+});
+
 test("buildGuidance returns structured rules for Agent data package construction", () => {
   const guidance = buildGuidance({ root: repoRoot, pcrId: wheatSeedPcrId });
 

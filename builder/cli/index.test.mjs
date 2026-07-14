@@ -1892,7 +1892,7 @@ test("bump rejects published and deprecated PCR records without writing", () => 
       () => runCliFailure(["bump", "--root", root, "--pcr", pcrOption, "--level", "patch"]),
       (error) => {
         assert.match(String(error.stderr), /Cannot bump published\/published_methodology PCR in place/);
-        assert.match(String(error.stderr), /reopen\/revision workflow is planned for P1/);
+        assert.match(String(error.stderr), /published revision contract is defined, but its workflow is not implemented/);
         return true;
       },
     );

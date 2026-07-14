@@ -39,4 +39,6 @@ timestamps together with a freshly generated `structured.yaml`.
 Publication is an audited lifecycle fact. It does not make unresolved methodology questions acceptable inside PCR content.
 
 Do not use `pcr:bump` on a published or deprecated PCR. Reopening an audited record for a new revision requires the
-reopen/revision workflow planned for P1; until that workflow exists, published version state is immutable in place.
+storage and transaction rules in `../contracts/published-revision-contract.md`. That contract is defined but not yet
+implemented; until its commands, Schemas, and recovery behavior exist, published and deprecated version state is
+immutable in place. Do not create `revision/`, `releases/`, or `release-history.yaml` manually.

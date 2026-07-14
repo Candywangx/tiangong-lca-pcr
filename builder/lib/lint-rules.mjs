@@ -4,6 +4,16 @@ import { fileURLToPath } from "node:url";
 
 import { materialProjectionCompletenessIssues } from "../../packages/pcr-core/src/projection-completeness.mjs";
 import { parseYaml } from "../../packages/pcr-core/src/yaml-lite.mjs";
+import {
+  AMOUNT_RANGE_ROLE_VALUES as AMOUNT_RANGE_ROLE_VALUE_LIST,
+  AMOUNT_SPECIFICITY_VALUES as AMOUNT_SPECIFICITY_VALUE_LIST,
+  AMOUNT_VALUE_MODE_VALUES as AMOUNT_VALUE_MODE_VALUE_LIST,
+  BASIS_KIND_VALUES as BASIS_KIND_VALUE_LIST,
+  EVIDENCE_KIND_VALUES as EVIDENCE_KIND_VALUE_LIST,
+  FLOW_DIRECTION_VALUES as FLOW_DIRECTION_VALUE_LIST,
+  FLOW_TYPE_VALUES as FLOW_TYPE_VALUE_LIST,
+  PROCESS_INCLUSION_VALUES as PROCESS_INCLUSION_VALUE_LIST,
+} from "../../packages/pcr-core/src/generated/controlled-vocabulary.mjs";
 import { manifestLifecycleProblems } from "./lifecycle-policy.mjs";
 import {
   parsePcrMarkdownToStructured,
@@ -20,52 +30,14 @@ function rootFromOptions(options) {
   return path.resolve(String(options.root ?? defaultRoot));
 }
 
-const PROCESS_INCLUSION_VALUES = new Set(["required", "conditional", "optional", "excluded_by_default"]);
-const AMOUNT_VALUE_MODE_VALUES = new Set([
-  "fixed_value",
-  "foreground_record",
-  "calculated_value",
-  "modelled_estimate",
-  "not_applicable",
-]);
-const AMOUNT_SPECIFICITY_VALUES = new Set([
-  "generic",
-  "site_specific",
-  "product_specific",
-  "route_specific",
-  "scenario_specific",
-  "technology_specific",
-  "not_applicable",
-]);
-const BASIS_KIND_VALUES = new Set([
-  "reference_flow",
-  "process_output",
-  "n_input",
-  "fuel_inventory",
-  "transport_service",
-  "storage_duration",
-  "crop_cycle",
-]);
-const FLOW_TYPE_VALUES = new Set(["product", "waste", "elementary"]);
-const RANGE_ROLE_VALUES = new Set([
-  "qa_guardrail",
-  "typical_range",
-  "allowed_range",
-  "default_estimate",
-  "uncertainty_range",
-]);
-const EVIDENCE_KIND_VALUES = new Set([
-  "external_source",
-  "observed_dataset",
-  "method_formula",
-  "foreground_data",
-  "tiangong_default",
-  "collected_record",
-  "calculated_from_collection",
-  "identity_reference",
-  "source_rule",
-  "reasoned_estimate",
-]);
+const PROCESS_INCLUSION_VALUES = new Set(PROCESS_INCLUSION_VALUE_LIST);
+const AMOUNT_VALUE_MODE_VALUES = new Set(AMOUNT_VALUE_MODE_VALUE_LIST);
+const AMOUNT_SPECIFICITY_VALUES = new Set(AMOUNT_SPECIFICITY_VALUE_LIST);
+const BASIS_KIND_VALUES = new Set(BASIS_KIND_VALUE_LIST);
+const FLOW_DIRECTION_VALUES = FLOW_DIRECTION_VALUE_LIST;
+const FLOW_TYPE_VALUES = new Set(FLOW_TYPE_VALUE_LIST);
+const RANGE_ROLE_VALUES = new Set(AMOUNT_RANGE_ROLE_VALUE_LIST);
+const EVIDENCE_KIND_VALUES = new Set(EVIDENCE_KIND_VALUE_LIST);
 const RECURSIVE_ORIGIN_TERM_PATTERN =
   /\b(first[- ]generation|previous[- ]generation)\b|第一代|上一代/giu;
 const IMPORTANT_RANGE_PATTERNS = [
@@ -158,8 +130,8 @@ function validateYamlContractFile({ contract, sourcePath, root, problems, entity
 function inventoryRows(processInventory) {
   const rows = [];
   for (const processEntry of processInventory) {
-    for (const direction of ["inputs", "outputs"]) {
-      for (const flowType of ["product", "waste", "elementary"]) {
+    for (const direction of FLOW_DIRECTION_VALUES) {
+      for (const flowType of FLOW_TYPE_VALUE_LIST) {
         for (const row of processEntry[direction][flowType]) {
           rows.push({ processEntry, direction, flowType, row });
         }

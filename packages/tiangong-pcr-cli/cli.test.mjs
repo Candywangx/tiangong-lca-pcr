@@ -53,7 +53,7 @@ test("list paginates to 10 records by default and suggests the next page", () =>
   assert.match(output, /PCR id \| Status \| Readiness \| Title/);
   assert.match(output, /Showing 1-10 of /);
   assert.match(output, /Next page:/);
-  assert.match(output, /tiangong-pcr list --page 2/);
+  assert.match(output, /npm --silent run tiangong-pcr -- list --page 2/);
   assert.match(output, /--root /);
   assert.match(output, /usable_for_guidance/);
 });
@@ -64,6 +64,32 @@ test("list next commands preserve custom root and output format", () => {
   assert.match(page.next_command, /--root /);
   assert.match(page.next_command, /--format json/);
   assert.match(page.next_command, /--page 2/);
+});
+
+test("list path-prefix filters the catalog and survives pagination", () => {
+  const pathPrefix =
+    "agriculture-forestry-and-fishery-products/products-of-agriculture-horticulture-and-market-gardening";
+  const page = JSON.parse(runCli([
+    "list",
+    "--path-prefix",
+    pathPrefix,
+    "--page-size",
+    "1",
+    "--format",
+    "json",
+  ]));
+
+  assert.equal(page.page_size, 1);
+  assert.ok(page.total_count > 1);
+  assert.ok(page.items.every((entry) => entry.path.includes(pathPrefix)));
+  assert.deepEqual(page.filters, {
+    status: null,
+    content_maturity: null,
+    path_prefix: pathPrefix,
+  });
+  assert.equal(page.has_more, true);
+  assert.match(page.next_command, /npm --silent run tiangong-pcr -- list/);
+  assert.match(page.next_command, new RegExp(`--path-prefix ${pathPrefix}`));
 });
 
 test("help explains the Agent selection workflow", () => {
@@ -96,6 +122,14 @@ test("resolve help explains deterministic mapping usage", () => {
   assert.match(output, /does not prove that the methodology is usable/);
 });
 
+test("guidance help keeps foreground dataset production as the primary workflow", () => {
+  const output = runCli(["guidance", "--help"]);
+
+  assert.match(output, /foreground data package/);
+  assert.match(output, /validate-dataset/);
+  assert.match(output, /process or lifecyclemodel.*downstream projection/);
+});
+
 test("feedback draft help lists feedback types", () => {
   const output = runCli(["feedback", "draft", "--help"]);
 
@@ -123,6 +157,8 @@ test("resolve prints deterministic classification mapping as JSON", () => {
 
   assert.equal(result.mapping.pcr_id, wheatSeedPcrId);
   assert.equal(result.mapping.mapping_type, "exact");
+  assert.match(result.next_command, /--root /);
+  assert.match(result.next_command, /--format json/);
 });
 
 test("guidance prints Agent-facing data-production PCR rules", () => {
@@ -364,6 +400,242 @@ test("unknown options and out-of-range pages fail explicitly", () => {
     () => runCliFailure(["list", "--status", "candidate", "--page", "999"]),
     (error) => {
       assert.match(String(error.stderr), /--page 999 is out of range/);
+      return true;
+    },
+  );
+});
+
+test("commands enforce their own output formats and defaults", async (t) => {
+  const invalidCases = [
+    {
+      name: "show rejects json",
+      args: ["show", "--pcr", wheatSeedPcrId, "--format", "json"],
+      jsonError: true,
+    },
+    {
+      name: "guidance rejects markdown",
+      args: ["guidance", "--pcr", wheatSeedPcrId, "--format", "markdown"],
+      jsonError: false,
+    },
+    {
+      name: "feedback draft rejects table",
+      args: ["feedback", "draft", "--type", "translation_mismatch", "--format", "table"],
+      jsonError: false,
+    },
+  ];
+
+  for (const testCase of invalidCases) {
+    await t.test(testCase.name, () => {
+      assert.throws(
+        () => runCliFailure(testCase.args),
+        (error) => {
+          if (testCase.jsonError) {
+            const envelope = JSON.parse(String(error.stderr));
+            assert.equal(envelope.error.code, "PCR_CLI_INVALID_CHOICE");
+            assert.equal(envelope.error.details.option, "format");
+          } else {
+            assert.match(String(error.stderr), /PCR_CLI_INVALID_CHOICE/);
+          }
+          return true;
+        },
+      );
+    });
+  }
+
+  assert.equal(
+    JSON.parse(runCli(["resolve", "--classification", "cpc:3.0:01111"])).mapping.pcr_id,
+    wheatSeedPcrId,
+  );
+  assert.equal(JSON.parse(runCli(["guidance", "--pcr", wheatSeedPcrId])).pcr.id, wheatSeedPcrId);
+});
+
+test("tree defaults to depth 2 and reports readiness on rendered PCR leaves", () => {
+  const defaultTree = runCli(["tree"]);
+  assert.doesNotMatch(defaultTree, new RegExp(wheatSeedPcrId.replaceAll(".", "\\.")));
+
+  const jsonTree = JSON.parse(runCli(["tree", "--format", "json"]));
+  assert.equal(jsonTree.scope, "library/pcrs");
+  assert.equal(jsonTree.depth, 2);
+  assert.equal(jsonTree.completeness, "partial");
+  assert.ok(jsonTree.tree);
+  assert.ok(jsonTree.next_steps.some((step) => step.includes("--path-prefix")));
+
+  const leafTree = runCli(["tree", "--depth", "3"]);
+  assert.match(leafTree, new RegExp(wheatSeedPcrId.replaceAll(".", "\\.")));
+  assert.match(leafTree, /readiness: [a-z_]+; usable_for_guidance: (?:true|false)/);
+});
+
+test("classification, language, vocabulary filters, and validation policy are strict", async (t) => {
+  const cases = [
+    {
+      name: "classification has exactly three segments",
+      args: ["resolve", "--classification", "cpc:3.0:01111:extra", "--format", "json"],
+      code: "PCR_CLI_INVALID_CLASSIFICATION",
+    },
+    {
+      name: "language is controlled",
+      args: ["show", "--pcr", wheatSeedPcrId, "--lang", "fr-FR", "--format", "markdown"],
+      code: "PCR_CLI_INVALID_CHOICE",
+    },
+    {
+      name: "status is controlled",
+      args: ["list", "--status", "canddiate", "--format", "json"],
+      code: "PCR_CLI_INVALID_CHOICE",
+    },
+    {
+      name: "content maturity is controlled",
+      args: ["list", "--content-maturity", "reviewd", "--format", "json"],
+      code: "PCR_CLI_INVALID_CHOICE",
+    },
+    {
+      name: "fail-on is checked before reading input",
+      args: [
+        "validate-dataset",
+        "--pcr",
+        wheatSeedPcrId,
+        "--input",
+        "/definitely/missing.json",
+        "--fail-on",
+        "sometimes",
+        "--format",
+        "json",
+      ],
+      code: "PCR_CLI_INVALID_CHOICE",
+    },
+  ];
+
+  for (const testCase of cases) {
+    await t.test(testCase.name, () => {
+      assert.throws(
+        () => runCliFailure(testCase.args),
+        (error) => {
+          const stderr = String(error.stderr);
+          if (testCase.args.at(-1) === "json") {
+            assert.equal(JSON.parse(stderr).error.code, testCase.code);
+          } else {
+            assert.match(stderr, new RegExp(testCase.code));
+          }
+          return true;
+        },
+      );
+    });
+  }
+});
+
+test("pagination accepts only bounded positive safe integer tokens", async (t) => {
+  const cases = [
+    ["--page", "1.5"],
+    ["--page", "9007199254740992"],
+    ["--page-size", "101"],
+    ["--page-size", "1e2"],
+  ];
+
+  for (const args of cases) {
+    await t.test(args.join(" "), () => {
+      assert.throws(
+        () => runCliFailure(["list", ...args, "--format", "json"]),
+        (error) => {
+          assert.equal(JSON.parse(String(error.stderr)).error.code, "PCR_CLI_INVALID_INTEGER_OPTION");
+          return true;
+        },
+      );
+    });
+  }
+
+  assert.throws(
+    () => runCliFailure(["list", "--limit", "5", "--format", "json"]),
+    (error) => {
+      assert.equal(JSON.parse(String(error.stderr)).error.code, "PCR_CLI_UNKNOWN_OPTION");
+      return true;
+    },
+  );
+});
+
+test("JSON error envelopes retain core usability code and readiness details", () => {
+  assert.throws(
+    () => runCliFailure(["guidance", "--pcr", scaffoldPcrId, "--format", "json"]),
+    (error) => {
+      assert.equal(String(error.stdout), "");
+      const envelope = JSON.parse(String(error.stderr));
+      assert.equal(envelope.error.code, "PCR_NOT_USABLE_FOR_GUIDANCE");
+      assert.equal(envelope.error.exit_code, 1);
+      assert.equal(envelope.error.details.readiness.usable_for_guidance, false);
+      assert.ok(envelope.error.details.readiness.blockers.length > 0);
+      return true;
+    },
+  );
+});
+
+test("JSON errors retain controlled core error details", () => {
+  const root = mkdtempSync(path.join(tmpdir(), "tiangong-pcr-invalid-mapping-cli-"));
+  try {
+    const mappingDir = path.join(root, "classifications/mappings");
+    mkdirSync(mappingDir, { recursive: true });
+    writeFileSync(
+      path.join(mappingDir, "cpc-3.0-to-pcr.yaml"),
+      `schema_version: 1
+classification_system: cpc
+classification_version: "3.0"
+mappings:
+  - code: "01111"
+    pcr_id: pcr.example
+    mapping_type: ambiguous
+`,
+    );
+
+    assert.throws(
+      () => execFileSync(
+        process.execPath,
+        [
+          cliPath,
+          "--root",
+          root,
+          "resolve",
+          "--classification",
+          "cpc:3.0:01111",
+          "--format",
+          "json",
+        ],
+        { encoding: "utf8", stdio: ["ignore", "pipe", "pipe"] },
+      ),
+      (error) => {
+        assert.equal(String(error.stdout), "");
+        const envelope = JSON.parse(String(error.stderr));
+        assert.equal(envelope.error.code, "PCR_INVALID_CLASSIFICATION_MAPPING");
+        assert.equal(envelope.error.details.mapping_type, "ambiguous");
+        assert.ok(envelope.error.details.allowed_mapping_types.includes("manual_review"));
+        return true;
+      },
+    );
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+  }
+});
+
+test("feedback type and malformed global invocations fail with actionable JSON", () => {
+  assert.throws(
+    () => runCliFailure(["feedback", "draft", "--type", "bogus", "--format", "json"]),
+    (error) => {
+      const envelope = JSON.parse(String(error.stderr));
+      assert.equal(envelope.error.code, "PCR_CLI_INVALID_CHOICE");
+      assert.equal(envelope.error.details.option, "type");
+      assert.ok(envelope.error.details.choices.includes("translation_mismatch"));
+      return true;
+    },
+  );
+
+  assert.throws(
+    () => runCliFailure(["--format", "json"]),
+    (error) => {
+      assert.equal(JSON.parse(String(error.stderr)).error.code, "PCR_CLI_UNKNOWN_OPTION");
+      return true;
+    },
+  );
+
+  assert.throws(
+    () => runCliFailure(["list", "--format", "json", "--format", "markdown"]),
+    (error) => {
+      assert.equal(JSON.parse(String(error.stderr)).error.code, "PCR_CLI_DUPLICATE_OPTION");
       return true;
     },
   );

@@ -36,13 +36,14 @@ builder/docs/
 - `builder/docs/methods/` contains reusable modelling method notes that support the contracts.
 - `builder/docs/tools/` explains authoring-time tools, Tiangong CLI lookup, and usable evidence sources.
 - `builder/docs/prompts/` contains thin entry prompts for Codex, Claude Code, and PCR reviewers.
-- `builder/vocab/` contains controlled vocabularies intended for lint and CLI consumption.
+- `builder/vocab/` is the only hand-authored source for controlled tokens. `npm run vocab:generate` projects it into the shared runtime module and JSON Schema used by lint, core, and the public CLI.
 
 ## Builder CLI
 
 ```bash
 npm run init
 npm run lint
+npm run vocab:generate
 npm run pcr:sync-structured -- --pcr <library/pcrs/...>
 npm run pcr:lifecycle -- --pcr <library/pcrs/...> --status active --content-maturity reviewed_methodology --translation zh-CN=reviewed
 npm run pcr:bump -- --pcr <library/pcrs/...> --level patch
@@ -54,9 +55,10 @@ npm run validate
 - `lint` executes the JSON Schema contracts for the catalog, classification mappings, PCR manifests, bilingual Markdown frontmatter, and material structured projections. It also checks required repository paths, bilingual PCR directory completeness, lifecycle compatibility, process inventory structure, range coverage for important flows, and deterministic `structured.yaml` freshness for every material PCR. Candidate PCRs may pass with range warnings; reviewed or published PCRs fail when important flows lack ranges.
 - `pcr:sync-structured` atomically regenerates `structured.yaml` from canonical PCR Markdown, including boundary, allocation, validation, process-inventory rules, and deterministic projection metadata.
 - `pcr:lifecycle` validates manifest lifecycle transitions and runs a material preflight before a PCR becomes active.
-- `pcr:bump` updates a valid manifest semver and rejects malformed, published, or deprecated records. Published and deprecated records must first enter the audited reopen/revision workflow planned for P1; they are never version-bumped in place.
+- `pcr:bump` updates a valid manifest semver and rejects malformed, published, or deprecated records. The audited contract for revising a published record is defined in `builder/docs/contracts/published-revision-contract.md`, but its workflow is not implemented; published and deprecated records are never version-bumped in place.
 - `pcr:publish` first validates the future manifest and freshly generated projection without writing. Publication requires the complete manifest identity contract, active reviewed methodology, reviewed non-empty Chinese Markdown with aligned normative rule ids, valid semver, and no unresolved review blocker; a failed preflight leaves files unchanged.
-- `validate` runs lint plus tests.
+- `vocab:generate` validates every vocabulary source and deterministically regenerates the checked-in runtime constants and shared JSON Schema.
+- `lint` rejects stale generated vocabulary artifacts before inspecting repository content; `validate` then runs lint plus tests.
 
 ## Executable Contract Boundary
 

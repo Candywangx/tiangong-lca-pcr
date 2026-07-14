@@ -50,4 +50,6 @@ npm run pcr:lifecycle -- --pcr <library/pcrs/...> --status active --content-matu
 Use `pcr:publish` only when assigning a published version and `published_at_utc`.
 
 Published and deprecated records cannot be version-bumped in place. Reopening one as a candidate revision requires
-the audited reopen/revision workflow planned for P1.
+the audited storage and transaction contract in `../contracts/published-revision-contract.md`. It intentionally adds
+no `revising` lifecycle value. The contract is defined but not yet implemented, so published and deprecated records
+remain immutable in place.

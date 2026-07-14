@@ -195,7 +195,7 @@ export function bump(options) {
         "",
         "Next:",
         "- Reopen the PCR through the revision workflow before assigning a new version.",
-        "- The audited reopen/revision workflow is planned for P1; do not mutate this published or deprecated record in place.",
+        "- The published revision contract is defined, but its workflow is not implemented; do not mutate this published or deprecated record in place.",
       ].join("\n"),
     );
   }

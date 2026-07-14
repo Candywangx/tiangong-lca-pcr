@@ -1,23 +1,8 @@
-export const PCR_STATUS_VALUES = ["scaffold", "candidate", "active", "published", "deprecated"];
-
-export const CONTENT_MATURITY_VALUES = [
-  "empty_scaffold",
-  "draft_methodology",
-  "authored_methodology",
-  "reviewed_methodology",
-  "published_methodology",
-  "deprecated_methodology",
-];
-
-export const TRANSLATION_STATUS_VALUES = [
-  "not_available",
-  "scaffold",
-  "scaffold_pending_translation",
-  "draft_translation",
-  "aligned",
-  "reviewed",
-  "out_of_sync",
-];
+export {
+  CONTENT_MATURITY_VALUES,
+  PCR_STATUS_VALUES,
+  TRANSLATION_STATUS_VALUES,
+} from "../../packages/pcr-core/src/generated/controlled-vocabulary.mjs";
 
 export function formatOneOf(values) {
   if (values.length === 0) {
