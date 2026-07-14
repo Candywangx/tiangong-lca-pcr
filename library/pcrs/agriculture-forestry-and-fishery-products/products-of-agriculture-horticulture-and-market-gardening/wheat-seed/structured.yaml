@@ -15,6 +15,32 @@ functional_unit:
   how_well: "declared seed class, treatment status, moisture basis, physical purity, and germination rate"
   how_long_or_cycle: "one seed production crop cycle; storage duration declared separately when included"
   reference_flow_link: "Reference amount and product flow below"
+system_boundary:
+  rules:
+    - rule_id: system_boundary_rule_1
+      applies_to: "foreground_system_boundary"
+      rule: "Source seed lot, fertilizer, fuel, electricity, crop protection products, seed treatment chemicals, packaging, and their transport records when they are part of the foreground data package."
+      source_ids: []
+    - rule_id: system_boundary_rule_2
+      applies_to: "foreground_system_boundary"
+      rule: "Field seed multiplication: land preparation, sowing, fertilization, irrigation where applicable, crop protection, field inspections when material, harvesting, and field drying."
+      source_ids: []
+    - rule_id: system_boundary_rule_3
+      applies_to: "foreground_system_boundary"
+      rule: "Seed conditioning: drying, cleaning, grading, testing, treatment, packaging, and storage."
+      source_ids: []
+    - rule_id: system_boundary_rule_4
+      applies_to: "foreground_system_boundary"
+      rule: "Transport to the declared gate when the reference flow is delivered seed."
+      source_ids: []
+    - rule_id: system_boundary_rule_5
+      applies_to: "foreground_system_boundary"
+      rule: "The foreground data package covers seed production to the declared gate. Downstream wheat cultivation using the seed is described in downstream use metadata when the completed dataset is consumed. Capital goods, land occupation, and land transformation are recorded when the declared data package scope includes them."
+      source_ids: []
+    - rule_id: system_boundary_rule_6
+      applies_to: "foreground_system_boundary"
+      rule: "This boundary is a data-production abstraction. A declared source seed lot is the reproduction starting condition for the foreground package. The source seed lot carries variety and lot identity; seed biomass formation is represented through field material and elementary flows such as water, nutrients, land use, emissions, and biogenic carbon accounting when declared."
+      source_ids: []
 boundary_abstraction:
   declared_starting_condition: "source_seed_lot"
   starting_condition_role: "identity_and_reproduction_condition"
@@ -1036,6 +1062,27 @@ process_inventory:
                 basis_kind: "fuel_inventory"
                 evidence_kind: "reasoned_estimate"
                 source_ids: []
+allocation_rules:
+  - rule_id: allocation_rule_1
+    applies_to: "foreground_burden_allocation"
+    rule: "Avoid allocation by subdividing seed production, screenings, straw management, and reject handling processes."
+    source_ids: []
+  - rule_id: allocation_rule_2
+    applies_to: "foreground_burden_allocation"
+    rule: "Use substitution only when the displaced product and market are supported by evidence."
+    source_ids: []
+  - rule_id: allocation_rule_3
+    applies_to: "foreground_burden_allocation"
+    rule: "Use economic allocation when seed, screenings, and straw are all marketable products and price data are reliable."
+    source_ids: []
+  - rule_id: allocation_rule_4
+    applies_to: "foreground_burden_allocation"
+    rule: "Use mass allocation only as a fallback and disclose the sensitivity."
+    source_ids: []
+  - rule_id: allocation_rule_5
+    applies_to: "foreground_burden_allocation"
+    rule: "Rejected seed, screenings, straw, and packaging waste must have declared fates, such as product output, waste treatment, field return, incorporation, feed use, open burning, or another evidenced route."
+    source_ids: []
 dataset_production:
   collection_protocols:
     - protocol_id: cp_source_seed_lot_mass
@@ -1329,6 +1376,39 @@ dataset_production:
       applies_to: "crop-cycle data"
       requirement: "Field production data should cover the declared crop cycle; weather-sensitive comparative work should disclose whether one-year or multi-year average data are used."
       evidence: "crop-year production records"
+validation_rules:
+  - rule_id: validation_rule_1
+    applies_to: "foreground_dataset_conformance"
+    rule: "reference flow includes mass, gate, seed treatment status, and seed quality qualifiers"
+    source_ids: []
+  - rule_id: validation_rule_2
+    applies_to: "foreground_dataset_conformance"
+    rule: "dataset metadata distinguishes seed product from commodity grain"
+    source_ids: []
+  - rule_id: validation_rule_3
+    applies_to: "foreground_dataset_conformance"
+    rule: "field seed multiplication and seed conditioning are separate when data are available"
+    source_ids: []
+  - rule_id: validation_rule_4
+    applies_to: "foreground_dataset_conformance"
+    rule: "fertilizer, fuel, irrigation, conditioning energy, packaging, and seed treatment inputs are addressed"
+    source_ids: []
+  - rule_id: validation_rule_5
+    applies_to: "foreground_dataset_conformance"
+    rule: "N2O, ammonia, nitrate, fossil CO2, water withdrawal, and land occupation are considered when in scope"
+    source_ids: []
+  - rule_id: validation_rule_6
+    applies_to: "foreground_dataset_conformance"
+    rule: "screenings, rejected seed, straw, and packaging waste have declared fates"
+    source_ids: []
+  - rule_id: validation_rule_7
+    applies_to: "foreground_dataset_conformance"
+    rule: "allocation method is declared and justified"
+    source_ids: []
+  - rule_id: validation_rule_8
+    applies_to: "foreground_dataset_conformance"
+    rule: "values outside typical ranges include a source note and method rationale"
+    source_ids: []
 published_dataset_profile:
   dataset_role: "unit_process"
   downstream_use: "secondary_dataset; background_dataset"

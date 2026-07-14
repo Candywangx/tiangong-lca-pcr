@@ -2,9 +2,11 @@ import assert from "node:assert/strict";
 import { execFileSync } from "node:child_process";
 import {
   existsSync,
+  mkdirSync,
   mkdtempSync,
   readFileSync,
   rmSync,
+  symlinkSync,
   unlinkSync,
   writeFileSync,
 } from "node:fs";
@@ -37,6 +39,186 @@ function runCliFailure(args, options = {}) {
     stdio: ["ignore", "pipe", "pipe"],
     ...options,
   });
+}
+
+function writePublicationReadyPcr(
+  root,
+  pcrDir,
+  { blocker = false, translationStatus = "reviewed" } = {},
+) {
+  writeFileSync(
+    path.join(pcrDir, "manifest.yaml"),
+    `schema_version: 1
+id: pcr.agriculture.crops.wheat-seed
+version: "0.1.0"
+title:
+  en-US: "Wheat seed production"
+  zh-CN: "小麦种子生产"
+status: candidate
+pcr_kind: product_category_rule
+content_maturity: authored_methodology
+languages:
+  canonical: en-US
+  available:
+    - en-US
+    - zh-CN
+translation_status:
+  zh-CN: ${translationStatus}
+target_entities:
+  - flow
+  - process
+  - lifecyclemodel
+  - dataset
+${blocker ? `review_metadata:\n  unresolved_identity:\n    - "Select the final product flow before publication."\n` : ""}`,
+  );
+  writeFileSync(
+    path.join(pcrDir, "pcr.en-US.md"),
+    `---
+pcr_id: pcr.agriculture.crops.wheat-seed
+language: en-US
+status: candidate
+sync_with: pcr.zh-CN.md
+---
+
+# Wheat Seed Production
+
+## 2. Product Category Identity
+
+| Field | Value |
+| --- | --- |
+| canonical_pcr_id | pcr.agriculture.crops.wheat-seed |
+| covered_products | wheat seed |
+
+## 3. Reference Flow
+
+| Field | Value |
+| --- | --- |
+| Reference amount | 1 kg |
+| Reference product flow | Wheat \`12da5e7d-9b93-4404-8c7d-08f98bec6238\` |
+| Reference flow property | Mass \`93a60a56-a3c8-11da-a746-0800200b9a66\` |
+| Reference unit group | Units of mass \`93a60a57-a4c8-11da-a746-0800200c9a66\` |
+| Reference unit | kg |
+| Required qualifiers | seed class; moisture basis |
+
+## 4. Measurement and Unit Rules
+
+| rule_id | Applies to | Required property | Required unit | Rule |
+| --- | --- | --- | --- | --- |
+| \`reference_mass\` | reference product | Mass \`93a60a56-a3c8-11da-a746-0800200b9a66\` | kg | Record the reference flow in kg. |
+
+## 5. System Boundary
+
+The foreground system boundary must begin with the accepted seed lot and end at the declared gate.
+
+### Boundary Abstraction
+
+| Field | Value |
+| --- | --- |
+| declared_starting_condition | accepted seed lot |
+| starting_condition_role | disclosed foreground input |
+| product_classification_scope | wheat seed |
+| recursive_input_rule | same-category input remains explicit |
+| upstream_dataset_requirement | source lot disclosure |
+| disclosure | record source lot and declared gate |
+
+## 6. Process Inventory Structure
+
+### Process Map
+
+| process_id | process_name | inclusion | inclusion_condition | role | quantitative_reference |
+| --- | --- | --- | --- | --- | --- |
+| applicability | Applicability record | required |  | foreground disclosure | reference product |
+
+### Process: Applicability Record (\`applicability\`)
+
+#### Inputs
+
+##### Product flows
+
+###### Method applicability record (\`method_applicability_record\`)
+
+This row records the applicability declaration and is not a quantitative exchange.
+
+- Selected flow: Method applicability record
+- Flow property / unit: Narrative disclosure record
+- Amount rule: descriptive record
+- Value mode: Not applicable (\`not_applicable\`)
+- Specificity: Not applicable (\`not_applicable\`)
+- Normalization basis: reference flow
+- Basis kind: Reference flow (\`reference_flow\`)
+- Evidence kind: Identity reference (\`identity_reference\`)
+- Sources:
+
+## 7. Allocation and Co-product Handling
+
+No co-products are represented by this applicability record.
+
+## 9. Validation Rules
+
+The applicability record and reference-flow qualifiers must be present.
+
+## 10. Published Dataset Profile
+
+| Field | Value |
+| --- | --- |
+| dataset_role | unit_process |
+| downstream_use | secondary_dataset |
+| allowed_use | wheat seed production with matching qualifiers |
+| excluded_use | commodity grain production |
+| required_metadata | reference flow; seed class; moisture basis |
+| required_quality_disclosure | applicability and source-lot records |
+| update_trigger | material boundary or reference-flow change |
+`,
+  );
+  writeFileSync(
+    path.join(pcrDir, "pcr.zh-CN.md"),
+    `---
+pcr_id: pcr.agriculture.crops.wheat-seed
+language: zh-CN
+status: candidate
+sync_with: pcr.en-US.md
+---
+
+# 小麦种子生产
+
+## 2. 产品类别识别
+
+| 字段 | 值 |
+| --- | --- |
+| canonical_pcr_id | pcr.agriculture.crops.wheat-seed |
+| covered_products | 小麦种子 |
+
+## 5. 系统边界
+
+前景系统边界必须从接收的种批开始，并在声明的交付边界结束。
+
+### 边界概化
+
+| 字段 | 值 |
+| --- | --- |
+| declared_starting_condition | accepted seed lot |
+| starting_condition_role | disclosed foreground input |
+| product_classification_scope | wheat seed |
+| recursive_input_rule | same-category input remains explicit |
+| upstream_dataset_requirement | source lot disclosure |
+| disclosure | record source lot and declared gate |
+
+## 7. 分配与副产品处理
+
+本适用性记录不表示副产品。
+
+## 9. 验证规则
+
+适用性记录和参考流限定信息必须存在。
+`,
+  );
+  runCli([
+    "sync-structured",
+    "--root",
+    root,
+    "--pcr",
+    "library/pcrs/agriculture/crops/wheat-seed",
+  ]);
 }
 
 test("init creates the bilingual PCR repository scaffold", () => {
@@ -189,6 +371,7 @@ test("optional PCR scaffold uses process inventory without construction trace se
 
     assert.match(structured, /process_inventory: \[\]/);
     assert.match(structured, /boundary_abstraction: \{\}/);
+    assert.deepEqual(parseYaml(structured).system_boundary, { rules: [] });
     assert.match(structured, /data_sources: \[\]/);
     assert.doesNotMatch(structured, /cli_lookup_trace/);
   } finally {
@@ -244,6 +427,8 @@ sync_with: pcr.zh-CN.md
 | \`seed_count_conversion\` | optional seed-count data | Mass \`93a60a56-a3c8-11da-a746-0800200b9a66\` | kg | Seed count data must include thousand-kernel weight for conversion to mass. |
 
 ## 5. System Boundary
+
+The boundary must retain the declared source-route provenance.
 
 ### Boundary Abstraction
 
@@ -528,6 +713,8 @@ test("lint accepts reasoned estimate ranges without source ids", () => {
 
 ## 5. System Boundary
 
+The boundary must retain the declared source-route provenance.
+
 ### Boundary Abstraction
 
 | Field | Value |
@@ -624,6 +811,8 @@ languages:
 
 ## 5. System Boundary
 
+The boundary must keep the source seed lot and drying process explicit.
+
 ### Boundary Abstraction
 
 | Field | Value |
@@ -662,6 +851,14 @@ This row records route-specific provenance disclosures that are not numeric mate
 - Basis kind: Process output (\`process_output\`)
 - Evidence kind: Source rule (\`source_rule\`)
 
+## 7. Allocation and Co-product Handling
+
+No allocation is applied to the disclosure row.
+
+## 9. Validation Rules
+
+The source-route disclosure must be present.
+
 ## 10. Published Dataset Profile
 
 | Field | Value |
@@ -675,6 +872,13 @@ This row records route-specific provenance disclosures that are not numeric mate
 | update_trigger | provenance rule change |
 `,
     );
+    runCli([
+      "sync-structured",
+      "--root",
+      root,
+      "--pcr",
+      "library/pcrs/agriculture/crops/wheat-seed",
+    ]);
     const output = runCli(["lint", "--root", root]);
 
     assert.match(output, /PCR library lint passed/i);
@@ -735,6 +939,8 @@ languages:
 | upstream_dataset_requirement | source seed lot disclosure |
 | disclosure | source seed lot and energy records |
 
+The boundary must keep the source seed lot and drying process explicit.
+
 ## 6. Process Inventory Structure
 
 ### Process Map
@@ -762,6 +968,14 @@ Drying energy is estimated before source-backed ranges are available.
 - Basis kind: Process output (\`process_output\`)
 - Evidence kind: Reasoned estimate (\`reasoned_estimate\`)
 
+## 7. Allocation and Co-product Handling
+
+No allocation is applied to the drying estimate.
+
+## 9. Validation Rules
+
+The drying-energy basis must be disclosed.
+
 ## 10. Published Dataset Profile
 
 | Field | Value |
@@ -775,6 +989,13 @@ Drying energy is estimated before source-backed ranges are available.
 | update_trigger | source-backed range evidence |
 `,
     );
+    runCli([
+      "sync-structured",
+      "--root",
+      root,
+      "--pcr",
+      "library/pcrs/agriculture/crops/wheat-seed",
+    ]);
     const output = runCli(["lint", "--root", root]);
 
     assert.match(output, /PCR library lint passed with warnings/i);
@@ -1009,7 +1230,7 @@ Source seed lot used for multiplication is recorded as an input product flow. Th
   }
 });
 
-test("bump and publish update PCR manifest lifecycle fields", () => {
+test("bump updates versions and reviewed PCRs can publish", () => {
   const root = makeTempRoot();
   try {
     runCli(["init", "--root", root]);
@@ -1045,6 +1266,20 @@ test("bump and publish update PCR manifest lifecycle fields", () => {
     assert.equal(parsedManifest.title["en-US"], "Wheat seed production");
     assert.deepEqual(parsedManifest.target_entities, ["flow", "process", "lifecyclemodel", "dataset"]);
 
+    writePublicationReadyPcr(root, pcrDir);
+    runCli([
+      "lifecycle",
+      "--root",
+      root,
+      "--pcr",
+      "library/pcrs/agriculture/crops/wheat-seed",
+      "--status",
+      "active",
+      "--content-maturity",
+      "reviewed_methodology",
+      "--translation",
+      "zh-CN=reviewed",
+    ]);
     const publishOutput = runCli([
       "publish",
       "--root",
@@ -1059,9 +1294,57 @@ test("bump and publish update PCR manifest lifecycle fields", () => {
     manifest = readFileSync(path.join(pcrDir, "manifest.yaml"), "utf8");
     parsedManifest = parseYaml(manifest);
     assert.equal(parsedManifest.status, "published");
+    assert.equal(parsedManifest.content_maturity, "published_methodology");
     assert.equal(parsedManifest.version, "1.0.0");
     assert.ok(parsedManifest.published_at_utc);
     assert.equal(parsedManifest.title["zh-CN"], "小麦种子生产");
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+  }
+});
+
+test("bump rejects an invalid existing manifest version", () => {
+  const root = makeTempRoot();
+  try {
+    runCli(["init", "--root", root]);
+    const pcrDir = path.join(root, "library/pcrs/agriculture/crops/wheat-seed");
+    runCli([
+      "init",
+      "--root",
+      root,
+      "--sample-pcr",
+      "agriculture/crops/wheat-seed",
+      "--pcr-id",
+      "pcr.agriculture.crops.wheat-seed",
+      "--title-en",
+      "Wheat seed production",
+      "--title-zh-CN",
+      "小麦种子生产",
+    ]);
+    const manifestPath = path.join(pcrDir, "manifest.yaml");
+    const invalidManifest = readFileSync(manifestPath, "utf8").replace(
+      "id: pcr.agriculture.crops.wheat-seed",
+      "id: pcr.agriculture.crops.wheat-seed\nversion: not-semver",
+    );
+    writeFileSync(manifestPath, invalidManifest);
+
+    assert.throws(
+      () =>
+        runCliFailure([
+          "bump",
+          "--root",
+          root,
+          "--pcr",
+          "library/pcrs/agriculture/crops/wheat-seed",
+          "--level",
+          "patch",
+        ]),
+      (error) => {
+        assert.match(String(error.stderr), /Cannot bump invalid manifest version "not-semver"/);
+        return true;
+      },
+    );
+    assert.equal(readFileSync(manifestPath, "utf8"), invalidManifest);
   } finally {
     rmSync(root, { recursive: true, force: true });
   }
@@ -1085,6 +1368,7 @@ test("lifecycle updates PCR manifest review and translation state", () => {
       "--title-zh-CN",
       "小麦种子生产",
     ]);
+    writePublicationReadyPcr(root, pcrDir);
 
     const output = runCli([
       "lifecycle",
@@ -1193,6 +1477,820 @@ test("lint rejects invalid manifest lifecycle values", () => {
   }
 });
 
+test("lint rejects stale structured projections for material PCRs", () => {
+  const root = makeTempRoot();
+  try {
+    runCli(["init", "--root", root]);
+    const pcrDir = path.join(root, "library/pcrs/agriculture/crops/wheat-seed");
+    runCli([
+      "init",
+      "--root",
+      root,
+      "--sample-pcr",
+      "agriculture/crops/wheat-seed",
+      "--pcr-id",
+      "pcr.agriculture.crops.wheat-seed",
+      "--title-en",
+      "Wheat seed production",
+      "--title-zh-CN",
+      "小麦种子生产",
+    ]);
+    writePublicationReadyPcr(root, pcrDir);
+    const markdownPath = path.join(pcrDir, "pcr.en-US.md");
+    writeFileSync(
+      markdownPath,
+      readFileSync(markdownPath, "utf8").replace(
+        "| declared_starting_condition | accepted seed lot |",
+        "| declared_starting_condition | accepted certified seed lot |",
+      ),
+    );
+
+    assert.throws(
+      () => runCliFailure(["lint", "--root", root]),
+      (error) => {
+        assert.match(String(error.stderr), /structured\.yaml: stale structured projection/);
+        assert.match(String(error.stderr), /npm run pcr:sync-structured/);
+        return true;
+      },
+    );
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+  }
+});
+
+test("publish rejects scaffold PCRs without modifying generated or manifest files", () => {
+  const root = makeTempRoot();
+  try {
+    runCli(["init", "--root", root]);
+    const pcrDir = path.join(root, "library/pcrs/agriculture/crops/wheat-seed");
+    runCli([
+      "init",
+      "--root",
+      root,
+      "--sample-pcr",
+      "agriculture/crops/wheat-seed",
+      "--pcr-id",
+      "pcr.agriculture.crops.wheat-seed",
+      "--title-en",
+      "Wheat seed production",
+      "--title-zh-CN",
+      "小麦种子生产",
+    ]);
+    const manifestPath = path.join(pcrDir, "manifest.yaml");
+    const structuredPath = path.join(pcrDir, "structured.yaml");
+    const manifestBefore = readFileSync(manifestPath, "utf8");
+    const structuredBefore = readFileSync(structuredPath, "utf8");
+
+    assert.throws(
+      () =>
+        runCliFailure([
+          "publish",
+          "--root",
+          root,
+          "--pcr",
+          "library/pcrs/agriculture/crops/wheat-seed",
+          "--version",
+          "1.0.0",
+        ]),
+      (error) => {
+        assert.match(String(error.stderr), /publish requires current status "active"/);
+        assert.match(String(error.stderr), /current content_maturity "reviewed_methodology"/);
+        return true;
+      },
+    );
+    assert.equal(readFileSync(manifestPath, "utf8"), manifestBefore);
+    assert.equal(readFileSync(structuredPath, "utf8"), structuredBefore);
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+  }
+});
+
+test("publish rejects invalid semver and unresolved review blockers", () => {
+  const root = makeTempRoot();
+  try {
+    runCli(["init", "--root", root]);
+    const pcrDir = path.join(root, "library/pcrs/agriculture/crops/wheat-seed");
+    runCli([
+      "init",
+      "--root",
+      root,
+      "--sample-pcr",
+      "agriculture/crops/wheat-seed",
+      "--pcr-id",
+      "pcr.agriculture.crops.wheat-seed",
+      "--title-en",
+      "Wheat seed production",
+      "--title-zh-CN",
+      "小麦种子生产",
+    ]);
+    writePublicationReadyPcr(root, pcrDir, { blocker: true });
+    runCli([
+      "lifecycle",
+      "--root",
+      root,
+      "--pcr",
+      "library/pcrs/agriculture/crops/wheat-seed",
+      "--status",
+      "active",
+      "--content-maturity",
+      "reviewed_methodology",
+    ]);
+
+    assert.throws(
+      () =>
+        runCliFailure([
+          "publish",
+          "--root",
+          root,
+          "--pcr",
+          "library/pcrs/agriculture/crops/wheat-seed",
+          "--version",
+          "01.0",
+        ]),
+      (error) => {
+        assert.match(String(error.stderr), /--version must be valid semver/);
+        assert.match(String(error.stderr), /unresolved review blocker at review_metadata\.unresolved_identity/);
+        return true;
+      },
+    );
+    const manifest = parseYaml(readFileSync(path.join(pcrDir, "manifest.yaml"), "utf8"));
+    assert.equal(manifest.status, "active");
+    assert.equal(manifest.content_maturity, "reviewed_methodology");
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+  }
+});
+
+test("publish requires reviewed Chinese translation after active alignment", () => {
+  const root = makeTempRoot();
+  try {
+    runCli(["init", "--root", root]);
+    const pcrDir = path.join(root, "library/pcrs/agriculture/crops/wheat-seed");
+    runCli([
+      "init",
+      "--root",
+      root,
+      "--sample-pcr",
+      "agriculture/crops/wheat-seed",
+      "--pcr-id",
+      "pcr.agriculture.crops.wheat-seed",
+      "--title-en",
+      "Wheat seed production",
+      "--title-zh-CN",
+      "小麦种子生产",
+    ]);
+    writePublicationReadyPcr(root, pcrDir, { translationStatus: "aligned" });
+    runCli([
+      "lifecycle",
+      "--root",
+      root,
+      "--pcr",
+      "library/pcrs/agriculture/crops/wheat-seed",
+      "--status",
+      "active",
+      "--content-maturity",
+      "reviewed_methodology",
+    ]);
+
+    assert.throws(
+      () =>
+        runCliFailure([
+          "publish",
+          "--root",
+          root,
+          "--pcr",
+          "library/pcrs/agriculture/crops/wheat-seed",
+          "--version",
+          "1.0.0",
+        ]),
+      (error) => {
+        assert.match(
+          String(error.stderr),
+          /status "published" requires translation_status\.zh-CN to be reviewed/,
+        );
+        return true;
+      },
+    );
+    const manifest = parseYaml(readFileSync(path.join(pcrDir, "manifest.yaml"), "utf8"));
+    assert.equal(manifest.status, "active");
+    assert.equal(manifest.translation_status["zh-CN"], "aligned");
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+  }
+});
+
+test("lifecycle rejects illegal promotions and incompatible cross-field state", () => {
+  const root = makeTempRoot();
+  try {
+    runCli(["init", "--root", root]);
+    const pcrDir = path.join(root, "library/pcrs/agriculture/crops/wheat-seed");
+    runCli([
+      "init",
+      "--root",
+      root,
+      "--sample-pcr",
+      "agriculture/crops/wheat-seed",
+      "--pcr-id",
+      "pcr.agriculture.crops.wheat-seed",
+      "--title-en",
+      "Wheat seed production",
+      "--title-zh-CN",
+      "小麦种子生产",
+    ]);
+    const manifestPath = path.join(pcrDir, "manifest.yaml");
+    const before = readFileSync(manifestPath, "utf8");
+
+    assert.throws(
+      () =>
+        runCliFailure([
+          "lifecycle",
+          "--root",
+          root,
+          "--pcr",
+          "library/pcrs/agriculture/crops/wheat-seed",
+          "--status",
+          "active",
+          "--content-maturity",
+          "reviewed_methodology",
+          "--translation",
+          "zh-CN=reviewed",
+        ]),
+      (error) => {
+        assert.match(String(error.stderr), /illegal PCR status transition from "scaffold" to "active"/);
+        return true;
+      },
+    );
+    assert.equal(readFileSync(manifestPath, "utf8"), before);
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+  }
+});
+
+test("builder mutation commands reject PCR paths outside library/pcrs", () => {
+  const root = makeTempRoot();
+  try {
+    runCli(["init", "--root", root]);
+    assert.throws(
+      () => runCliFailure(["sync-structured", "--root", root, "--pcr", "../outside-pcr"]),
+      (error) => {
+        assert.match(String(error.stderr), /PCR path must be inside library\/pcrs\//);
+        return true;
+      },
+    );
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+  }
+});
+
+test("bump rejects published and deprecated PCR records without writing", () => {
+  const root = makeTempRoot();
+  try {
+    runCli(["init", "--root", root]);
+    const pcrDir = path.join(root, "library/pcrs/agriculture/crops/wheat-seed");
+    const pcrOption = "library/pcrs/agriculture/crops/wheat-seed";
+    runCli([
+      "init",
+      "--root",
+      root,
+      "--sample-pcr",
+      "agriculture/crops/wheat-seed",
+      "--pcr-id",
+      "pcr.agriculture.crops.wheat-seed",
+      "--title-en",
+      "Wheat seed production",
+      "--title-zh-CN",
+      "小麦种子生产",
+    ]);
+    writePublicationReadyPcr(root, pcrDir);
+    runCli([
+      "lifecycle",
+      "--root",
+      root,
+      "--pcr",
+      pcrOption,
+      "--status",
+      "active",
+      "--content-maturity",
+      "reviewed_methodology",
+    ]);
+    runCli(["publish", "--root", root, "--pcr", pcrOption, "--version", "1.0.0"]);
+
+    const manifestPath = path.join(pcrDir, "manifest.yaml");
+    const published = readFileSync(manifestPath, "utf8");
+    assert.throws(
+      () => runCliFailure(["bump", "--root", root, "--pcr", pcrOption, "--level", "patch"]),
+      (error) => {
+        assert.match(String(error.stderr), /Cannot bump published\/published_methodology PCR in place/);
+        assert.match(String(error.stderr), /reopen\/revision workflow is planned for P1/);
+        return true;
+      },
+    );
+    assert.equal(readFileSync(manifestPath, "utf8"), published);
+
+    const deprecated = published
+      .replace(/status: "?published"?/u, "status: deprecated")
+      .replace(
+        /content_maturity: "?published_methodology"?/u,
+        "content_maturity: deprecated_methodology",
+      );
+    writeFileSync(manifestPath, deprecated);
+    assert.throws(
+      () => runCliFailure(["bump", "--root", root, "--pcr", pcrOption, "--level", "minor"]),
+      (error) => {
+        assert.match(String(error.stderr), /Cannot bump deprecated\/deprecated_methodology PCR in place/);
+        return true;
+      },
+    );
+    assert.equal(readFileSync(manifestPath, "utf8"), deprecated);
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+  }
+});
+
+test("active preflight enforces required manifest identity without writing", () => {
+  const root = makeTempRoot();
+  try {
+    runCli(["init", "--root", root]);
+    const pcrDir = path.join(root, "library/pcrs/agriculture/crops/wheat-seed");
+    const pcrOption = "library/pcrs/agriculture/crops/wheat-seed";
+    runCli([
+      "init",
+      "--root",
+      root,
+      "--sample-pcr",
+      "agriculture/crops/wheat-seed",
+      "--pcr-id",
+      "pcr.agriculture.crops.wheat-seed",
+      "--title-en",
+      "Wheat seed production",
+      "--title-zh-CN",
+      "小麦种子生产",
+    ]);
+    writePublicationReadyPcr(root, pcrDir);
+    const manifestPath = path.join(pcrDir, "manifest.yaml");
+    const invalidManifest = readFileSync(manifestPath, "utf8").replace(
+      '  zh-CN: "小麦种子生产"\n',
+      "",
+    );
+    writeFileSync(manifestPath, invalidManifest);
+
+    assert.throws(
+      () =>
+        runCliFailure([
+          "lifecycle",
+          "--root",
+          root,
+          "--pcr",
+          pcrOption,
+          "--status",
+          "active",
+          "--content-maturity",
+          "reviewed_methodology",
+        ]),
+      (error) => {
+        assert.match(String(error.stderr), /manifest requires non-empty title\.zh-CN/);
+        return true;
+      },
+    );
+    assert.equal(readFileSync(manifestPath, "utf8"), invalidManifest);
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+  }
+});
+
+test("publish rejects canonical PCR identity mismatch without writing", () => {
+  const root = makeTempRoot();
+  try {
+    runCli(["init", "--root", root]);
+    const pcrDir = path.join(root, "library/pcrs/agriculture/crops/wheat-seed");
+    const pcrOption = "library/pcrs/agriculture/crops/wheat-seed";
+    runCli([
+      "init",
+      "--root",
+      root,
+      "--sample-pcr",
+      "agriculture/crops/wheat-seed",
+      "--pcr-id",
+      "pcr.agriculture.crops.wheat-seed",
+      "--title-en",
+      "Wheat seed production",
+      "--title-zh-CN",
+      "小麦种子生产",
+    ]);
+    writePublicationReadyPcr(root, pcrDir);
+    runCli([
+      "lifecycle",
+      "--root",
+      root,
+      "--pcr",
+      pcrOption,
+      "--status",
+      "active",
+      "--content-maturity",
+      "reviewed_methodology",
+    ]);
+    const englishPath = path.join(pcrDir, "pcr.en-US.md");
+    writeFileSync(
+      englishPath,
+      readFileSync(englishPath, "utf8").replace(
+        "| canonical_pcr_id | pcr.agriculture.crops.wheat-seed |",
+        "| canonical_pcr_id | pcr.wrong.identity |",
+      ),
+    );
+    runCli(["sync-structured", "--root", root, "--pcr", pcrOption]);
+    const manifestPath = path.join(pcrDir, "manifest.yaml");
+    const structuredPath = path.join(pcrDir, "structured.yaml");
+    const manifestBefore = readFileSync(manifestPath, "utf8");
+    const structuredBefore = readFileSync(structuredPath, "utf8");
+
+    assert.throws(
+      () => runCliFailure(["publish", "--root", root, "--pcr", pcrOption, "--version", "1.0.0"]),
+      (error) => {
+        assert.match(
+          String(error.stderr),
+          /canonical_pcr_id "pcr\.wrong\.identity" does not match manifest id "pcr\.agriculture\.crops\.wheat-seed"/,
+        );
+        return true;
+      },
+    );
+    assert.equal(readFileSync(manifestPath, "utf8"), manifestBefore);
+    assert.equal(readFileSync(structuredPath, "utf8"), structuredBefore);
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+  }
+});
+
+test("active preflight rejects empty or invalid Chinese Markdown without writing", async (t) => {
+  for (const testCase of [
+    {
+      name: "empty content",
+      mutate: () => "",
+      expected: /requires non-empty Chinese Markdown/,
+    },
+    {
+      name: "wrong pcr id",
+      mutate: (text) => text.replace(
+        "pcr_id: pcr.agriculture.crops.wheat-seed",
+        "pcr_id: pcr.wrong.identity",
+      ),
+      expected: /frontmatter pcr_id must be "pcr\.agriculture\.crops\.wheat-seed"/,
+    },
+    {
+      name: "wrong language",
+      mutate: (text) => text.replace("language: zh-CN", "language: en-US"),
+      expected: /frontmatter language must be "zh-CN"/,
+    },
+    {
+      name: "wrong sync target",
+      mutate: (text) => text.replace("sync_with: pcr.en-US.md", "sync_with: other.md"),
+      expected: /frontmatter sync_with must be "pcr\.en-US\.md"/,
+    },
+  ]) {
+    await t.test(testCase.name, () => {
+      const root = makeTempRoot();
+      try {
+        runCli(["init", "--root", root]);
+        const pcrDir = path.join(root, "library/pcrs/agriculture/crops/wheat-seed");
+        const pcrOption = "library/pcrs/agriculture/crops/wheat-seed";
+        runCli([
+          "init",
+          "--root",
+          root,
+          "--sample-pcr",
+          "agriculture/crops/wheat-seed",
+          "--pcr-id",
+          "pcr.agriculture.crops.wheat-seed",
+          "--title-en",
+          "Wheat seed production",
+          "--title-zh-CN",
+          "小麦种子生产",
+        ]);
+        writePublicationReadyPcr(root, pcrDir);
+        const chinesePath = path.join(pcrDir, "pcr.zh-CN.md");
+        writeFileSync(chinesePath, testCase.mutate(readFileSync(chinesePath, "utf8")));
+        const manifestPath = path.join(pcrDir, "manifest.yaml");
+        const manifestBefore = readFileSync(manifestPath, "utf8");
+
+        assert.throws(
+          () =>
+            runCliFailure([
+              "lifecycle",
+              "--root",
+              root,
+              "--pcr",
+              pcrOption,
+              "--status",
+              "active",
+              "--content-maturity",
+              "reviewed_methodology",
+            ]),
+          (error) => {
+            assert.match(String(error.stderr), testCase.expected);
+            return true;
+          },
+        );
+        assert.equal(readFileSync(manifestPath, "utf8"), manifestBefore);
+      } finally {
+        rmSync(root, { recursive: true, force: true });
+      }
+    });
+  }
+});
+
+test("active preflight rejects invalid canonical English frontmatter without writing", async (t) => {
+  for (const testCase of [
+    {
+      name: "wrong pcr id",
+      mutate: (text) => text.replace(
+        "pcr_id: pcr.agriculture.crops.wheat-seed",
+        "pcr_id: pcr.wrong.identity",
+      ),
+      expected: /frontmatter pcr_id must be "pcr\.agriculture\.crops\.wheat-seed"/,
+    },
+    {
+      name: "wrong language",
+      mutate: (text) => text.replace("language: en-US", "language: zh-CN"),
+      expected: /frontmatter language must be "en-US"/,
+    },
+    {
+      name: "wrong sync target",
+      mutate: (text) => text.replace("sync_with: pcr.zh-CN.md", "sync_with: other.md"),
+      expected: /frontmatter sync_with must be "pcr\.zh-CN\.md"/,
+    },
+  ]) {
+    await t.test(testCase.name, () => {
+      const root = makeTempRoot();
+      try {
+        runCli(["init", "--root", root]);
+        const pcrDir = path.join(root, "library/pcrs/agriculture/crops/wheat-seed");
+        const pcrOption = "library/pcrs/agriculture/crops/wheat-seed";
+        runCli([
+          "init",
+          "--root",
+          root,
+          "--sample-pcr",
+          "agriculture/crops/wheat-seed",
+          "--pcr-id",
+          "pcr.agriculture.crops.wheat-seed",
+          "--title-en",
+          "Wheat seed production",
+          "--title-zh-CN",
+          "小麦种子生产",
+        ]);
+        writePublicationReadyPcr(root, pcrDir);
+        const englishPath = path.join(pcrDir, "pcr.en-US.md");
+        writeFileSync(englishPath, testCase.mutate(readFileSync(englishPath, "utf8")));
+        const manifestPath = path.join(pcrDir, "manifest.yaml");
+        const manifestBefore = readFileSync(manifestPath, "utf8");
+
+        assert.throws(
+          () =>
+            runCliFailure([
+              "lifecycle",
+              "--root",
+              root,
+              "--pcr",
+              pcrOption,
+              "--status",
+              "active",
+              "--content-maturity",
+              "reviewed_methodology",
+            ]),
+          (error) => {
+            assert.match(String(error.stderr), testCase.expected);
+            return true;
+          },
+        );
+        assert.equal(readFileSync(manifestPath, "utf8"), manifestBefore);
+      } finally {
+        rmSync(root, { recursive: true, force: true });
+      }
+    });
+  }
+});
+
+test("active preflight rejects bilingual ordered rule id mismatch without writing", () => {
+  const root = makeTempRoot();
+  try {
+    runCli(["init", "--root", root]);
+    const pcrDir = path.join(root, "library/pcrs/agriculture/crops/wheat-seed");
+    const pcrOption = "library/pcrs/agriculture/crops/wheat-seed";
+    runCli([
+      "init",
+      "--root",
+      root,
+      "--sample-pcr",
+      "agriculture/crops/wheat-seed",
+      "--pcr-id",
+      "pcr.agriculture.crops.wheat-seed",
+      "--title-en",
+      "Wheat seed production",
+      "--title-zh-CN",
+      "小麦种子生产",
+    ]);
+    writePublicationReadyPcr(root, pcrDir);
+    const chinesePath = path.join(pcrDir, "pcr.zh-CN.md");
+    writeFileSync(
+      chinesePath,
+      readFileSync(chinesePath, "utf8").replace(
+        "本适用性记录不表示副产品。",
+        "本适用性记录不表示副产品。\n\n任何新增共产品都必须单独复核分配。",
+      ),
+    );
+    const manifestPath = path.join(pcrDir, "manifest.yaml");
+    const manifestBefore = readFileSync(manifestPath, "utf8");
+
+    assert.throws(
+      () =>
+        runCliFailure([
+          "lifecycle",
+          "--root",
+          root,
+          "--pcr",
+          pcrOption,
+          "--status",
+          "active",
+          "--content-maturity",
+          "reviewed_methodology",
+        ]),
+      (error) => {
+        assert.match(String(error.stderr), /allocation ordered rule ids do not match canonical English/);
+        return true;
+      },
+    );
+    assert.equal(readFileSync(manifestPath, "utf8"), manifestBefore);
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+  }
+});
+
+test("publish rejects bilingual ordered rule id mismatch without writing", () => {
+  const root = makeTempRoot();
+  try {
+    runCli(["init", "--root", root]);
+    const pcrDir = path.join(root, "library/pcrs/agriculture/crops/wheat-seed");
+    const pcrOption = "library/pcrs/agriculture/crops/wheat-seed";
+    runCli([
+      "init",
+      "--root",
+      root,
+      "--sample-pcr",
+      "agriculture/crops/wheat-seed",
+      "--pcr-id",
+      "pcr.agriculture.crops.wheat-seed",
+      "--title-en",
+      "Wheat seed production",
+      "--title-zh-CN",
+      "小麦种子生产",
+    ]);
+    writePublicationReadyPcr(root, pcrDir);
+    runCli([
+      "lifecycle",
+      "--root",
+      root,
+      "--pcr",
+      pcrOption,
+      "--status",
+      "active",
+      "--content-maturity",
+      "reviewed_methodology",
+    ]);
+    const chinesePath = path.join(pcrDir, "pcr.zh-CN.md");
+    writeFileSync(
+      chinesePath,
+      readFileSync(chinesePath, "utf8").replace(
+        "本适用性记录不表示副产品。",
+        "本适用性记录不表示副产品。\n\n任何新增共产品都必须单独复核分配。",
+      ),
+    );
+    const manifestPath = path.join(pcrDir, "manifest.yaml");
+    const structuredPath = path.join(pcrDir, "structured.yaml");
+    const manifestBefore = readFileSync(manifestPath, "utf8");
+    const structuredBefore = readFileSync(structuredPath, "utf8");
+
+    assert.throws(
+      () => runCliFailure(["publish", "--root", root, "--pcr", pcrOption, "--version", "1.0.0"]),
+      (error) => {
+        assert.match(String(error.stderr), /allocation ordered rule ids do not match canonical English/);
+        return true;
+      },
+    );
+    assert.equal(readFileSync(manifestPath, "utf8"), manifestBefore);
+    assert.equal(readFileSync(structuredPath, "utf8"), structuredBefore);
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+  }
+});
+
+test("active preflight requires each normative rule group without writing", () => {
+  const root = makeTempRoot();
+  try {
+    runCli(["init", "--root", root]);
+    const pcrDir = path.join(root, "library/pcrs/agriculture/crops/wheat-seed");
+    const pcrOption = "library/pcrs/agriculture/crops/wheat-seed";
+    runCli([
+      "init",
+      "--root",
+      root,
+      "--sample-pcr",
+      "agriculture/crops/wheat-seed",
+      "--pcr-id",
+      "pcr.agriculture.crops.wheat-seed",
+      "--title-en",
+      "Wheat seed production",
+      "--title-zh-CN",
+      "小麦种子生产",
+    ]);
+    writePublicationReadyPcr(root, pcrDir);
+    const englishPath = path.join(pcrDir, "pcr.en-US.md");
+    writeFileSync(
+      englishPath,
+      readFileSync(englishPath, "utf8").replace(
+        "No co-products are represented by this applicability record.",
+        "",
+      ),
+    );
+    runCli(["sync-structured", "--root", root, "--pcr", pcrOption]);
+    const manifestPath = path.join(pcrDir, "manifest.yaml");
+    const manifestBefore = readFileSync(manifestPath, "utf8");
+
+    assert.throws(
+      () =>
+        runCliFailure([
+          "lifecycle",
+          "--root",
+          root,
+          "--pcr",
+          pcrOption,
+          "--status",
+          "active",
+          "--content-maturity",
+          "reviewed_methodology",
+        ]),
+      (error) => {
+        assert.match(String(error.stderr), /material PCR requires at least one Allocation rule/);
+        return true;
+      },
+    );
+    assert.equal(readFileSync(manifestPath, "utf8"), manifestBefore);
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+  }
+});
+
+test("builder rejects a library/pcrs symlink that resolves outside the real repository root", () => {
+  const root = makeTempRoot();
+  const outside = makeTempRoot();
+  try {
+    runCli(["init", "--root", root]);
+    const escapedPcr = path.join(outside, "escaped");
+    mkdirSync(escapedPcr, { recursive: true });
+    writeFileSync(path.join(escapedPcr, "pcr.en-US.md"), "# Escaped PCR\n");
+    const pcrRoot = path.join(root, "library/pcrs");
+    rmSync(pcrRoot, { recursive: true, force: true });
+    symlinkSync(outside, pcrRoot, "dir");
+
+    assert.throws(
+      () =>
+        runCliFailure([
+          "sync-structured",
+          "--root",
+          root,
+          "--pcr",
+          "library/pcrs/escaped",
+        ]),
+      (error) => {
+        assert.match(String(error.stderr), /PCR root must resolve inside repository root/);
+        return true;
+      },
+    );
+    assert.equal(existsSync(path.join(escapedPcr, "structured.yaml")), false);
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+    rmSync(outside, { recursive: true, force: true });
+  }
+});
+
+test("lint rejects symbolic links inside the PCR directory tree", () => {
+  const root = makeTempRoot();
+  const outside = makeTempRoot();
+  try {
+    runCli(["init", "--root", root]);
+    symlinkSync(outside, path.join(root, "library/pcrs/escaped"), "dir");
+
+    assert.throws(
+      () => runCliFailure(["lint", "--root", root]),
+      (error) => {
+        assert.match(String(error.stderr), /symbolic links are not allowed inside the PCR directory tree/);
+        return true;
+      },
+    );
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+    rmSync(outside, { recursive: true, force: true });
+  }
+});
+
 test("unknown builder command fails explicitly", () => {
   assert.throws(
     () => runCliFailure(["nope"]),
@@ -1264,6 +2362,11 @@ test("scaffold-cpc creates PCR directories only for CPC leaf classes", () => {
     assert.equal(existsSync(path.join(wheatSeedDir, "pcr.en-US.md")), true);
     assert.equal(existsSync(path.join(wheatSeedDir, "pcr.zh-CN.md")), true);
     assert.equal(existsSync(path.join(wheatSeedDir, "structured.yaml")), true);
+    assert.deepEqual(
+      parseYaml(readFileSync(path.join(wheatSeedDir, "structured.yaml"), "utf8"))
+        .system_boundary,
+      { rules: [] },
+    );
     assert.equal(existsSync(codedWheatSeedDir), false);
     assert.equal(existsSync(wheatDir), false);
 

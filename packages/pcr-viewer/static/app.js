@@ -1,4 +1,10 @@
-import { escapeHtml, filterPcrs, renderMarkdown, summarizeGuidance } from "./viewer-core.js";
+import {
+  describeReadiness,
+  escapeHtml,
+  filterPcrs,
+  renderMarkdown,
+  summarizeGuidance,
+} from "./viewer-core.js";
 
 const TABS = ["markdown", "guidance", "sources"];
 
@@ -120,15 +126,20 @@ function renderFilters(pcrs) {
 }
 
 function renderPcrListItem(pcr, selected) {
+  const readiness = describeReadiness(pcr.readiness);
   return `
     <button class="pcr-list-item${selected ? " selected" : ""}" data-pcr-id="${escapeHtml(pcr.id)}">
       <span class="pcr-title">${escapeHtml(pcr.title?.["en-US"] ?? pcr.id)}</span>
-      <span class="pcr-meta">${escapeHtml(pcr.status)} · ${escapeHtml(pcr.content_maturity ?? "")}</span>
+      <span class="pcr-meta">
+        <span class="readiness-badge readiness-${readiness.tone}">${escapeHtml(readiness.status)}</span>
+        <span>${escapeHtml(pcr.status)} · ${escapeHtml(pcr.content_maturity ?? "")}</span>
+      </span>
     </button>
   `;
 }
 
 function renderSelectedPcr(pcr) {
+  const readiness = describeReadiness(pcr.readiness);
   return `
     <header class="viewer-header">
       <div>
@@ -144,6 +155,7 @@ function renderSelectedPcr(pcr) {
       </div>
     </header>
     <section class="metadata-strip">
+      <div><span>Readiness</span><strong><span class="readiness-badge readiness-${readiness.tone}">${escapeHtml(readiness.status)}</span></strong></div>
       <div><span>Path</span><strong>${escapeHtml(pcr.path)}</strong></div>
       <div><span>Content maturity</span><strong>${escapeHtml(pcr.content_maturity ?? "")}</strong></div>
       <div><span>Classification refs</span><strong>${escapeHtml(formatClassificationRefs(pcr.classification_refs))}</strong></div>

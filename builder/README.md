@@ -51,11 +51,11 @@ npm run validate
 ```
 
 - `init` creates required scaffold directories and guide files.
-- `lint` checks required repository paths, bilingual PCR directory completeness, lifecycle values, process inventory structure, and range coverage for important flows. Candidate PCRs may pass with range warnings; reviewed or published PCRs fail when important flows lack ranges.
-- `pcr:sync-structured` regenerates `structured.yaml` from canonical PCR Markdown, including process inventory flow cards.
-- `pcr:lifecycle` updates manifest lifecycle state using controlled vocabularies for PCR status, content maturity, and translation status.
-- `pcr:bump` updates manifest version lifecycle fields.
-- `pcr:publish` syncs structured output and marks the manifest publication state.
+- `lint` checks required repository paths, bilingual PCR directory completeness, lifecycle compatibility, process inventory structure, range coverage for important flows, and deterministic `structured.yaml` freshness for every material PCR. Candidate PCRs may pass with range warnings; reviewed or published PCRs fail when important flows lack ranges.
+- `pcr:sync-structured` atomically regenerates `structured.yaml` from canonical PCR Markdown, including boundary, allocation, validation, and process-inventory rules.
+- `pcr:lifecycle` validates manifest lifecycle transitions and runs a material preflight before a PCR becomes active.
+- `pcr:bump` updates a valid manifest semver and rejects malformed, published, or deprecated records. Published and deprecated records must first enter the audited reopen/revision workflow planned for P1; they are never version-bumped in place.
+- `pcr:publish` first validates the future manifest and freshly generated projection without writing. Publication requires the complete manifest identity contract, active reviewed methodology, reviewed non-empty Chinese Markdown with aligned normative rule ids, valid semver, and no unresolved review blocker; a failed preflight leaves files unchanged.
 - `validate` runs lint plus tests.
 
 Generated PCR scaffolds use the current authoring skeleton:

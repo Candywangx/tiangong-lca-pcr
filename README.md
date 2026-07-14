@@ -21,12 +21,13 @@ checkPaths:
   - builder/**
   - packages/**
   - skills/**
+  - .github/workflows/**
   - .github/ISSUE_TEMPLATE/**
   - classifications/**
   - library/modules/**
   - docs/**
-lastReviewedAt: 2026-06-26
-lastReviewedCommit: dae1dbce5c42f410b706e5c4dfcfbf35e2aab0b0
+lastReviewedAt: 2026-07-14
+lastReviewedCommit: 7a3d0c7ea81ba384e435e3d766b6c4b6997a51d5
 ---
 
 # TianGong LCA PCR Library
@@ -46,8 +47,9 @@ PCR records are canonical methodology documents. Classification systems such as 
 - `packages/pcr-core/`: shared library for reading PCR catalog, mapping, guidance, validation, and feedback draft data.
 - `packages/tiangong-pcr-cli/`: public Agent-facing CLI for consuming PCR guidance during foreground data package construction.
 - `skills/tiangong-pcr/`: thin Agent skill for selecting PCRs, using guidance, validating drafts, and creating feedback.
+- `.github/workflows/`: repository validation gates for pull requests and main-branch updates.
 - `.github/ISSUE_TEMPLATE/`: structured PCR feedback and missing-PCR issue forms.
-- `docs/`: project-level architecture and authoring notes.
+- `docs/`: project-level architecture, authoring notes, release policy, and the phased optimization roadmap.
 
 ## PCR Record Shape
 
@@ -87,7 +89,7 @@ npm run validate
 
 `pcr:scaffold:cpc` imports a CPC structure CSV, stores the raw and normalized classification data under `classifications/systems/cpc/<version>/`, writes a CPC-to-PCR mapping file, and creates empty bilingual PCR directories for leaf classes only. PCR directory names are semantic slugs, not CPC codes; the CPC code remains in the mapping layer and PCR metadata.
 
-`pcr:sync-structured` regenerates `structured.yaml` from canonical Markdown. `pcr:bump` updates the manifest version lifecycle. `pcr:publish` syncs `structured.yaml` and marks the manifest publication state.
+`pcr:sync-structured` regenerates `structured.yaml` from canonical Markdown. Repository lint rejects a stale projection for every material PCR. `pcr:bump` updates a valid manifest version. `pcr:publish` runs a no-write preflight before it regenerates `structured.yaml` and records publication: the PCR must already be active and reviewed, the Chinese translation must be reviewed, the version must be valid semver, and review metadata must contain no unresolved blocker.
 
 PCR production agents may use `tiangong-lca-cli` to search Tiangong database flow, process, and dataset identity records and copy selected UUID references into PCR content. The CLI is an evidence tool for identity selection.
 
@@ -110,6 +112,10 @@ npm --silent run tiangong-pcr -- feedback draft --pcr <pcr-id> --type range_evid
 
 The public CLI provides deterministic classification `resolve`, explicit `tree` and `list` catalog browsing, structured `guidance`, foreground data package coverage checks through `validate-dataset`, process/lifecyclemodel draft checks through `validate-model`, and issue-ready feedback drafting. `list` defaults to 10 records per page and prints next-page guidance in human-readable output.
 
+Catalog and mapping results carry a `readiness` object. A classification mapping identifies a PCR record; it does not claim that methodology is usable. Authored candidates are marked `review_required`, while an `empty_scaffold` is `unavailable` and is rejected by `guidance` and both validation commands.
+
+Validation output reports `validation_status`, `completeness`, accepted input shape, checks performed, checks skipped, and findings by severity. A `passed` result applies only to `checks_performed`; consumers must inspect partial coverage. Validation commands default to `--fail-on error` and exit 2 when error findings are present or the result is inconclusive. Use `--fail-on never` explicitly when a report-only workflow must keep exit code 0.
+
 PCR guidance is dataset-production first. `process` and `lifecyclemodel` remain target entities as publication, validation, and downstream-use projections of the foreground data package rather than separate sources of methodology truth.
 
 Use `npm --silent run tiangong-pcr -- --help` for the global Agent workflow and `npm --silent run tiangong-pcr -- <command> --help` for command-specific options, output shape, and next-step guidance.
@@ -123,10 +129,10 @@ npm run viewer:build
 npm run viewer:serve
 ```
 
-The build step reads canonical PCR records through `packages/pcr-core`, writes generated data under `packages/pcr-viewer/dist/data/`, and copies the read-only browser assets into `packages/pcr-viewer/dist/`.
+The build step reads canonical PCR records through `packages/pcr-core`, writes generated data under `packages/pcr-viewer/dist/data/`, and copies the read-only browser assets into `packages/pcr-viewer/dist/`. Missing or empty PCR catalogs fail before replacement. Custom output directories are replaced only when empty or marked as a previous viewer build; protected repository and source paths are rejected after canonical path resolution. The replacement is prepared in a sibling temporary directory so a failed build does not erase the last usable output. The local server also rejects requested files whose resolved symlink target escapes the build root.
 
 The viewer is a consumption surface only. It does not edit PCR Markdown, manifests, mappings, or `structured.yaml`.
 
 ## Initial Status
 
-This repository is intentionally scaffold-first. It establishes the layout and contracts for CPC-backed PCR scaffold generation without treating the generated empty PCR files as reviewed PCR content.
+This repository is intentionally scaffold-first. It establishes the layout and contracts for CPC-backed PCR scaffold generation without treating generated empty PCR files as methodology guidance. Scaffold catalog entries remain discoverable for mapping and authoring, but only authored or reviewed records can enter the guidance and validation path.

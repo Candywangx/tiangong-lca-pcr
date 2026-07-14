@@ -13,7 +13,32 @@ Each PCR directory must contain:
 
 `pcr.en-US.md` is the canonical authored source. `pcr.zh-CN.md` is an aligned rendering of the same rule. New scaffolds should use the language-specific templates `builder/templates/pcr.en-US.md.hbs` and `builder/templates/pcr.zh-CN.md.hbs`.
 
+For active and published PCRs, canonical English Markdown must contain authored content and declare the manifest
+identity, canonical language, and bilingual relationship in frontmatter:
+
+```yaml
+---
+pcr_id: <manifest.id>
+language: en-US
+sync_with: pcr.zh-CN.md
+---
+```
+
 Chinese Markdown should translate human-facing headings, table labels, process names, explanatory notes, and ordinary prose. Stable machine-facing identifiers and controlled vocabulary values, such as `process_id`, `row_id`, `direction`, `flow_type`, `value_mode`, `specificity`, `basis_kind`, `evidence_kind`, `source_ids`, Tiangong UUIDs, and source ids, should remain unchanged unless the parser and vocabulary contract explicitly support a localized equivalent.
+
+Material Chinese Markdown must contain authored content after its YAML frontmatter. Its frontmatter must declare the
+same PCR identity and the exact language relationship:
+
+```yaml
+---
+pcr_id: <manifest.id>
+language: zh-CN
+sync_with: pcr.en-US.md
+---
+```
+
+Active and publication preflights reject an empty Chinese file, missing or malformed frontmatter, or any mismatch in
+these three fields.
 
 ## Required Sections
 
@@ -31,6 +56,11 @@ Material PCR Markdown must use this section order:
 10. Published Dataset Profile
 11. Data Sources
 
+System Boundary, Allocation and Co-product Handling, and Validation Rules must each project at least one normative
+rule for every material PCR. Before a PCR becomes active, and again at publication, English and Chinese Markdown
+must project the same ordered `rule_id` sequence in all three groups. This is a structural translation check;
+translated prose remains human-authored.
+
 ## Product Category Identity
 
 The product category identity section defines the stable PCR meaning independently from any one external classification system:
@@ -46,6 +76,8 @@ The product category identity section defines the stable PCR meaning independent
 | production_route |  |
 | market_state |  |
 ```
+
+For active and published PCRs, `canonical_pcr_id` is required and must exactly equal `manifest.yaml` `id`.
 
 ## Reference Flow
 

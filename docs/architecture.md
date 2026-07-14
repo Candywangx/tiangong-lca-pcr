@@ -22,11 +22,12 @@ checkPaths:
   - builder/**
   - packages/**
   - skills/**
+  - .github/workflows/**
   - .github/ISSUE_TEMPLATE/**
   - classifications/**
   - library/modules/**
-lastReviewedAt: 2026-06-26
-lastReviewedCommit: dae1dbce5c42f410b706e5c4dfcfbf35e2aab0b0
+lastReviewedAt: 2026-07-14
+lastReviewedCommit: 7a3d0c7ea81ba384e435e3d766b6c4b6997a51d5
 ---
 
 # PCR 资料库架构
@@ -140,6 +141,19 @@ allocation、data quality 和 validation 规则。模块是方法学资产，不
 `packages/pcr-core` 从 `structured.yaml` 构造 Agent-facing guidance。这个 guidance 是消费视图，
 不是新的 authoring truth。CLI、viewer 和 skill 都应把它当作读取结果，而不是修改源。
 
+每个 catalog、resolve 和 guidance 结果都携带 `readiness`：
+
+- `ready`：方法学已经审核，可进入 guidance 和 validation。
+- `review_required`：已有 authored methodology，可以带显式审核警告使用。
+- `unavailable`：例如 `empty_scaffold`、deprecated PCR 或缺少结构化投影，不得进入 guidance 或 validation。
+
+classification mapping 只回答“哪个 PCR id 对应这个外部 code”，不回答“该 PCR 是否已可用”。
+消费方必须检查 `usable_for_guidance` 或 `usable_for_validation`。
+
+guidance 会投出 `system_boundary.rules`、`allocation_rules` 和 `validation_rules` 等关键规则。
+validation report 同时声明 `validation_status`、`completeness`、输入接受状态、已执行检查和跳过检查；
+因此“没有 finding”不能在 coverage 不完整时被解释为完整符合。
+
 ### Feedback Draft
 
 feedback draft 和 GitHub issue 是候选证据。它们可能指向 PCR 内容、mapping、UUID、range、
@@ -190,6 +204,10 @@ agent / user
 公开 CLI 提供 catalog browsing、classification resolution、PCR display、guidance output、
 model validation、dataset validation 和 feedback draft。它是消费契约，不是 authoring 入口。
 
+`resolve` 命中 mapping 后仍要检查返回 PCR 的 readiness。空 scaffold 的 `guidance` 和 validation
+会明确失败。validation 命令默认在 error finding 或结果 inconclusive 时退出 2；仅报告但不影响 shell 状态的工作流
+必须显式使用 `--fail-on never`。
+
 ### 本地 viewer 预览 PCR
 
 ```text
@@ -201,6 +219,10 @@ npm run viewer:build
 ```
 
 viewer 是只读预览界面。它可以帮助浏览、搜索和检查 Markdown/guidance/source，但不能编辑 PCR。
+构建器先在同级临时目录准备完整输出，再替换目标。自定义非空目录只有带有 viewer build marker
+时才允许替换；仓库根、package source 和其他受保护路径会在 realpath 解析后被拒绝。local server
+同样会解析请求文件的真实路径，并拒绝通过 symlink 跳出 build root 的访问。
+缺失或空的 PCR catalog 会在替换开始前失败，不能用空站点覆盖上一次可用 build。
 
 ### feedback 回流
 
@@ -229,7 +251,7 @@ feedback 可以触发 PCR 内容更新、mapping 修复、UUID 修正、range ev
 
 派生物：
 
-- `structured.yaml`：canonical PCR 内容的机器侧投影。
+- `structured.yaml`：canonical PCR 内容的确定性机器侧投影；material PCR 的 repo lint 会逐字比较重新生成结果并拒绝 stale artifact。
 - `library/indexes/**`：用于浏览和检索的索引。
 - `packages/pcr-viewer/dist/**`：由 `npm run viewer:build` 生成的静态 viewer artifact。
 - `classifications/systems/<system>/<version>/normalized/**`：由 retained source artifact 和 import logic 派生的 normalized 分类数据。
@@ -270,3 +292,11 @@ feedback 可以触发 PCR 内容更新、mapping 修复、UUID 修正、range ev
 docpact 检查覆盖 builder assets、mappings、modules、package surfaces、skills、feedback
 intake 和 project contracts；大型生成目录 `library/pcrs/**` 在 PCR 文件成为 material
 authored records 前仍保持排除。
+
+material PCR 的状态、成熟度和翻译状态必须满足 lifecycle 矩阵。进入 `active` 前会运行实质
+preflight；`publish` 只接受已 active、reviewed methodology、中文翻译已 reviewed、合法 semver、
+且没有 unresolved/blocking review metadata 的记录。发布前先在内存中验证未来 manifest 与新投影，
+失败不改文件，成功才原子替换生成物并记录发布状态。
+
+pull request 和 main 分支 push 通过 GitHub Actions 运行 `npm run validate`，使本地合同、投影
+freshness 和自动测试成为合并门禁的统一入口。

@@ -1,4 +1,12 @@
-import { existsSync, readFileSync, writeFileSync } from "node:fs";
+import {
+  existsSync,
+  readFileSync,
+  realpathSync,
+  renameSync,
+  rmSync,
+  statSync,
+  writeFileSync,
+} from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -9,6 +17,12 @@ import {
   TRANSLATION_STATUS_VALUES,
   formatOneOf,
 } from "./lifecycle-vocab.mjs";
+import { inspectPcrDirectory } from "./lint-rules.mjs";
+import {
+  isValidSemver,
+  lifecycleTransitionProblems,
+  manifestReviewBlockers,
+} from "./lifecycle-policy.mjs";
 import { parsePcrMarkdownToStructured, structuredProjectionYaml } from "./markdown-projection.mjs";
 import { PCR_EN_FILE } from "./scaffold-templates.mjs";
 
@@ -19,28 +33,69 @@ function rootFromOptions(options) {
   return path.resolve(String(options.root ?? defaultRoot));
 }
 
-function normalizeSlug(value) {
-  return String(value ?? "")
-    .trim()
-    .replace(/^\/+|\/+$/gu, "")
-    .replaceAll("\\", "/")
-    .replace(/\/{2,}/gu, "/");
-}
-
 function toRepoRelative(root, absolutePath) {
   return path.relative(root, absolutePath).replaceAll(path.sep, "/");
 }
 
+function isStrictDescendant(parent, candidate) {
+  const relative = path.relative(parent, candidate);
+  return relative !== "" && relative !== ".." && !relative.startsWith(`..${path.sep}`) && !path.isAbsolute(relative);
+}
+
 function pcrDirectoryFromOptions(root, options) {
-  const pcr = options.pcr ? normalizeSlug(options.pcr) : null;
+  const pcr = options.pcr ? String(options.pcr).trim() : null;
   if (!pcr) {
     throw new Error("Missing required --pcr <library/pcrs/...> option.");
   }
   const candidate = path.resolve(root, pcr);
+  const pcrRoot = path.resolve(root, "library/pcrs");
+  if (!isStrictDescendant(pcrRoot, candidate)) {
+    throw new Error(
+      `PCR path must be inside ${toRepoRelative(root, pcrRoot)}/; received ${pcr}.`,
+    );
+  }
   if (!existsSync(candidate)) {
     throw new Error(`PCR directory not found: ${candidate}`);
   }
+  if (!statSync(candidate).isDirectory()) {
+    throw new Error(`PCR path is not a directory: ${candidate}`);
+  }
+  const realRoot = realpathSync(root);
+  const realPcrRoot = realpathSync(pcrRoot);
+  if (!isStrictDescendant(realRoot, realPcrRoot)) {
+    throw new Error(
+      `PCR root must resolve inside repository root; ${toRepoRelative(root, pcrRoot)} resolves to ${realPcrRoot}.`,
+    );
+  }
+  if (!isStrictDescendant(realPcrRoot, realpathSync(candidate))) {
+    throw new Error(`PCR directory resolves outside ${toRepoRelative(root, pcrRoot)}/: ${candidate}`);
+  }
   return candidate;
+}
+
+function atomicWrite(filePath, content) {
+  const tempPath = path.join(
+    path.dirname(filePath),
+    `.${path.basename(filePath)}.${process.pid}.${Date.now()}.tmp`,
+  );
+  try {
+    writeFileSync(tempPath, content, { flag: "wx" });
+    renameSync(tempPath, filePath);
+  } finally {
+    rmSync(tempPath, { force: true });
+  }
+}
+
+function publicationPreflightError(root, pcrDir, problems) {
+  return new Error(
+    [
+      `PCR publication preflight failed for ${toRepoRelative(root, pcrDir)}.`,
+      ...problems.map((problem) => `- ${problem}`),
+      "",
+      "Next:",
+      "- Resolve every finding, run `npm run validate`, then retry the publish command.",
+    ].join("\n"),
+  );
 }
 
 export function syncStructured(options) {
@@ -52,7 +107,7 @@ export function syncStructured(options) {
   }
   const markdown = readFileSync(markdownPath, "utf8");
   const projection = parsePcrMarkdownToStructured(markdown);
-  writeFileSync(path.join(pcrDir, "structured.yaml"), structuredProjectionYaml(projection));
+  atomicWrite(path.join(pcrDir, "structured.yaml"), structuredProjectionYaml(projection));
   return [`Synced structured PCR from ${toRepoRelative(root, markdownPath)}.`];
 }
 
@@ -62,21 +117,6 @@ function readManifest(root, pcrDir) {
     throw new Error(`Missing manifest file: ${toRepoRelative(root, manifestPath)}`);
   }
   return { manifestPath, text: readFileSync(manifestPath, "utf8") };
-}
-
-function topLevelValue(text, key) {
-  const value = parseYaml(text)[key];
-  return value === undefined || value === null ? null : String(value);
-}
-
-function setTopLevelValue(text, key, value) {
-  const manifest = parseYaml(text);
-  manifest[key] = String(value);
-  return renderYaml(manifest);
-}
-
-function setTopLevelPlainValue(text, key, value) {
-  return setTopLevelValue(text, key, value);
 }
 
 function requireAllowedOption(options, key, values) {
@@ -112,8 +152,14 @@ function parseTranslationOption(value) {
 }
 
 function incrementVersion(current, level) {
-  const match = String(current ?? "0.0.0").match(/^(\d+)\.(\d+)\.(\d+)$/u);
-  let [major, minor, patch] = match ? match.slice(1).map(Number) : [0, 0, 0];
+  if (current !== null && current !== undefined && !isValidSemver(current)) {
+    throw new Error(
+      `Cannot bump invalid manifest version "${current}"; use a valid semver version before retrying.`,
+    );
+  }
+  const match = String(current ?? "0.0.0").match(/^(\d+)\.(\d+)\.(\d+)/u);
+  const [majorValue, minorValue, patchValue] = match.slice(1).map(Number);
+  let [major, minor, patch] = [majorValue, minorValue, patchValue];
   if (level === "major") {
     major += 1;
     minor = 0;
@@ -127,42 +173,99 @@ function incrementVersion(current, level) {
   return `${major}.${minor}.${patch}`;
 }
 
-function updateManifest(options, updater) {
-  const root = rootFromOptions(options);
-  const pcrDir = pcrDirectoryFromOptions(root, options);
-  const { manifestPath, text } = readManifest(root, pcrDir);
-  writeFileSync(manifestPath, updater(text));
-  return { root, manifestPath };
-}
-
 export function bump(options) {
   const level = String(options.level ?? "patch");
   if (!["major", "minor", "patch"].includes(level)) {
     throw new Error("--level must be one of major, minor, or patch.");
   }
+  const root = rootFromOptions(options);
+  const pcrDir = pcrDirectoryFromOptions(root, options);
+  const { manifestPath, text } = readManifest(root, pcrDir);
+  const manifest = parseYaml(text);
+  if (
+    ["published", "deprecated"].includes(manifest.status) ||
+    ["published_methodology", "deprecated_methodology"].includes(manifest.content_maturity)
+  ) {
+    throw new Error(
+      [
+        `Cannot bump ${manifest.status}/${manifest.content_maturity} PCR in place at ${toRepoRelative(root, manifestPath)}.`,
+        "",
+        "Next:",
+        "- Reopen the PCR through the revision workflow before assigning a new version.",
+        "- The audited reopen/revision workflow is planned for P1; do not mutate this published or deprecated record in place.",
+      ].join("\n"),
+    );
+  }
   const now = new Date().toISOString();
-  const result = updateManifest(options, (text) => {
-    const nextVersion = incrementVersion(topLevelValue(text, "version"), level);
-    let updated = setTopLevelValue(text, "version", nextVersion);
-    updated = setTopLevelValue(updated, "updated_at_utc", now);
-    return updated;
-  });
-  return [`Updated PCR manifest version at ${toRepoRelative(result.root, result.manifestPath)}.`];
+  manifest.version = incrementVersion(manifest.version, level);
+  manifest.updated_at_utc = now;
+  atomicWrite(manifestPath, renderYaml(manifest));
+  return [`Updated PCR manifest version at ${toRepoRelative(root, manifestPath)}.`];
 }
 
 export function publish(options) {
   const root = rootFromOptions(options);
   const pcrDir = pcrDirectoryFromOptions(root, options);
-  const messages = syncStructured({ ...options, root, pcr: toRepoRelative(root, pcrDir) });
-  const now = new Date().toISOString();
   const { manifestPath, text } = readManifest(root, pcrDir);
-  const version = String(options.version ?? topLevelValue(text, "version") ?? "0.1.0");
-  let updated = setTopLevelPlainValue(text, "status", "published");
-  updated = setTopLevelValue(updated, "version", version);
-  updated = setTopLevelValue(updated, "published_at_utc", now);
-  updated = setTopLevelValue(updated, "updated_at_utc", now);
-  writeFileSync(manifestPath, updated);
-  return [...messages, `Published PCR manifest at ${toRepoRelative(root, manifestPath)}.`];
+  const currentManifest = parseYaml(text);
+  const version = String(options.version ?? currentManifest.version ?? "");
+  const preflightProblems = [];
+  if (!isValidSemver(version)) {
+    preflightProblems.push(
+      `--version must be valid semver (for example 1.0.0); received "${version || "(missing)"}"`,
+    );
+  }
+  for (const blocker of manifestReviewBlockers(currentManifest)) {
+    preflightProblems.push(`unresolved review blocker at ${blocker}`);
+  }
+
+  const markdownPath = path.join(pcrDir, PCR_EN_FILE);
+  if (!existsSync(markdownPath)) {
+    preflightProblems.push(`missing canonical markdown file: ${toRepoRelative(root, markdownPath)}`);
+    throw publicationPreflightError(root, pcrDir, preflightProblems);
+  }
+  const markdown = readFileSync(markdownPath, "utf8");
+  const projection = parsePcrMarkdownToStructured(markdown);
+  const structuredText = structuredProjectionYaml(projection);
+  const now = new Date().toISOString();
+  const nextManifest = {
+    ...currentManifest,
+    status: "published",
+    content_maturity: "published_methodology",
+    version,
+    published_at_utc: now,
+    updated_at_utc: now,
+  };
+  preflightProblems.push(...lifecycleTransitionProblems(currentManifest, nextManifest, "publish"));
+
+  const nextManifestText = renderYaml(nextManifest);
+  const inspection = inspectPcrDirectory({
+    root,
+    pcrDir,
+    manifestText: nextManifestText,
+    structuredText,
+    checkManifestLifecycle: false,
+    checkBilingualRuleAlignment: true,
+  });
+  preflightProblems.push(...inspection.problems);
+  if (preflightProblems.length > 0) {
+    throw publicationPreflightError(root, pcrDir, [...new Set(preflightProblems)]);
+  }
+
+  const structuredPath = path.join(pcrDir, "structured.yaml");
+  const previousStructured = readFileSync(structuredPath, "utf8");
+  atomicWrite(structuredPath, structuredText);
+  try {
+    atomicWrite(manifestPath, nextManifestText);
+  } catch (error) {
+    atomicWrite(structuredPath, previousStructured);
+    throw error;
+  }
+
+  return [
+    `Synced structured PCR from ${toRepoRelative(root, markdownPath)}.`,
+    `Published PCR manifest at ${toRepoRelative(root, manifestPath)}.`,
+  ];
 }
 
 export function lifecycle(options) {
@@ -177,7 +280,8 @@ export function lifecycle(options) {
   const root = rootFromOptions(options);
   const pcrDir = pcrDirectoryFromOptions(root, options);
   const { manifestPath, text } = readManifest(root, pcrDir);
-  const manifest = parseYaml(text);
+  const currentManifest = parseYaml(text);
+  const manifest = structuredClone(currentManifest);
   const changed = [];
 
   if (status) {
@@ -197,7 +301,37 @@ export function lifecycle(options) {
   }
   manifest.updated_at_utc = now;
 
-  writeFileSync(manifestPath, renderYaml(manifest));
+  const transitionProblems = lifecycleTransitionProblems(currentManifest, manifest);
+  if (transitionProblems.length > 0) {
+    throw new Error(
+      [
+        `PCR lifecycle update rejected for ${toRepoRelative(root, pcrDir)}.`,
+        ...transitionProblems.map((problem) => `- ${problem}`),
+      ].join("\n"),
+    );
+  }
+
+  if (manifest.status === "active") {
+    const inspection = inspectPcrDirectory({
+      root,
+      pcrDir,
+      manifestText: renderYaml(manifest),
+      checkManifestLifecycle: false,
+    });
+    if (inspection.problems.length > 0) {
+      throw new Error(
+        [
+          `PCR lifecycle review preflight failed for ${toRepoRelative(root, pcrDir)}.`,
+          ...inspection.problems.map((problem) => `- ${problem}`),
+          "",
+          "Next:",
+          "- Resolve every finding and sync structured.yaml before marking the PCR active.",
+        ].join("\n"),
+      );
+    }
+  }
+
+  atomicWrite(manifestPath, renderYaml(manifest));
   return [
     `Updated PCR lifecycle at ${toRepoRelative(root, manifestPath)}.`,
     "",

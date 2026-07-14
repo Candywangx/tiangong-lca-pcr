@@ -49,6 +49,28 @@ function normalizeStructuredId(value) {
   return normalizeAsciiSlug(value).replaceAll("-", "_");
 }
 
+function normalizeProjectionHeader(value) {
+  const raw = stripInlineCode(value).trim().toLowerCase();
+  const localizedHeaders = new Map([
+    ["字段", "field"],
+    ["值", "value"],
+    ["规则编号", "rule_id"],
+    ["适用对象", "applies_to"],
+    ["适用于", "applies_to"],
+    ["规则", "rule"],
+    ["要求", "rule"],
+    ["来源", "source_ids"],
+    ["必需流属性", "required_property"],
+    ["必需单位", "required_unit"],
+    ["过程名称", "process_name"],
+    ["纳入状态", "inclusion"],
+    ["纳入条件", "inclusion_condition"],
+    ["建模角色", "role"],
+    ["定量参考", "quantitative_reference"],
+  ]);
+  return localizedHeaders.get(raw) ?? normalizeHeader(raw);
+}
+
 function inlineCodeValues(value) {
   return [...String(value ?? "").matchAll(/`([^`]+)`/gu)].map((match) => match[1].trim()).filter(Boolean);
 }
@@ -313,7 +335,9 @@ function parseRangeEntries(fields) {
 }
 
 function parseReferenceFlowTable(table) {
-  const headerIndex = new Map(table.headers.map((header, index) => [normalizeHeader(header), index]));
+  const headerIndex = new Map(
+    table.headers.map((header, index) => [normalizeProjectionHeader(header), index]),
+  );
   return table.rows
     .map((row) => {
       const uuid = extractFirstUuid(
@@ -333,7 +357,9 @@ function parseReferenceFlowTable(table) {
 }
 
 function parseReferenceFlowDefinitionTable(table) {
-  const headerIndex = new Map(table.headers.map((header, index) => [normalizeHeader(header), index]));
+  const headerIndex = new Map(
+    table.headers.map((header, index) => [normalizeProjectionHeader(header), index]),
+  );
   if (!headerIndex.has("field") || !headerIndex.has("value")) {
     return null;
   }
@@ -371,17 +397,19 @@ function parseReferenceFlowDefinitionTable(table) {
 }
 
 function parseFieldValueTable(table) {
-  const headerIndex = new Map(table.headers.map((header, index) => [normalizeHeader(header), index]));
-  if (!headerIndex.has("field") && !headerIndex.has("字段")) {
+  const headerIndex = new Map(
+    table.headers.map((header, index) => [normalizeProjectionHeader(header), index]),
+  );
+  if (!headerIndex.has("field")) {
     return null;
   }
-  if (!headerIndex.has("value") && !headerIndex.has("值")) {
+  if (!headerIndex.has("value")) {
     return null;
   }
   const result = {};
   for (const row of table.rows) {
-    const key = normalizeStructuredId(tableCell(row, headerIndex, ["field", "字段"]));
-    const value = stripInlineCode(tableCell(row, headerIndex, ["value", "值"]));
+    const key = normalizeStructuredId(tableCell(row, headerIndex, ["field"]));
+    const value = stripInlineCode(tableCell(row, headerIndex, ["value"]));
     if (key) {
       result[key] = value;
     }
@@ -405,7 +433,9 @@ function parseFunctionalUnitTable(table) {
 }
 
 function parseMeasurementRuleRows(table) {
-  const headerIndex = new Map(table.headers.map((header, index) => [normalizeHeader(header), index]));
+  const headerIndex = new Map(
+    table.headers.map((header, index) => [normalizeProjectionHeader(header), index]),
+  );
   return table.rows
     .map((row) => {
       const requiredProperty = tableCell(row, headerIndex, ["required_property", "flow_property"]);
@@ -422,7 +452,9 @@ function parseMeasurementRuleRows(table) {
 }
 
 function parseProcessMapRows(table) {
-  const headerIndex = new Map(table.headers.map((header, index) => [normalizeHeader(header), index]));
+  const headerIndex = new Map(
+    table.headers.map((header, index) => [normalizeProjectionHeader(header), index]),
+  );
   if (!headerIndex.has("process_id")) {
     return [];
   }
@@ -441,7 +473,9 @@ function parseProcessMapRows(table) {
 }
 
 function parseDataSourceRows(table) {
-  const headerIndex = new Map(table.headers.map((header, index) => [normalizeHeader(header), index]));
+  const headerIndex = new Map(
+    table.headers.map((header, index) => [normalizeProjectionHeader(header), index]),
+  );
   return table.rows
     .map((row) => ({
       id: stripInlineCode(tableCell(row, headerIndex, ["source_id", "id"])),
@@ -453,7 +487,9 @@ function parseDataSourceRows(table) {
 }
 
 function parseCollectionProtocolRows(table) {
-  const headerIndex = new Map(table.headers.map((header, index) => [normalizeHeader(header), index]));
+  const headerIndex = new Map(
+    table.headers.map((header, index) => [normalizeProjectionHeader(header), index]),
+  );
   if (!headerIndex.has("protocol_id")) {
     return [];
   }
@@ -476,7 +512,9 @@ function parseCollectionProtocolRows(table) {
 }
 
 function parseCalculationRuleRows(table) {
-  const headerIndex = new Map(table.headers.map((header, index) => [normalizeHeader(header), index]));
+  const headerIndex = new Map(
+    table.headers.map((header, index) => [normalizeProjectionHeader(header), index]),
+  );
   if (!headerIndex.has("rule_id")) {
     return [];
   }
@@ -493,7 +531,9 @@ function parseCalculationRuleRows(table) {
 }
 
 function parseDataQualityRequirementRows(table) {
-  const headerIndex = new Map(table.headers.map((header, index) => [normalizeHeader(header), index]));
+  const headerIndex = new Map(
+    table.headers.map((header, index) => [normalizeProjectionHeader(header), index]),
+  );
   if (!headerIndex.has("requirement_id")) {
     return [];
   }
@@ -507,8 +547,281 @@ function parseDataQualityRequirementRows(table) {
     .filter((row) => row.id);
 }
 
+function markdownSectionKind(title) {
+  const normalized = String(title ?? "").toLowerCase();
+  if (normalized.includes("product category identity") || normalized.includes("产品类别识别")) {
+    return "product_category_identity";
+  }
+  if (
+    normalized.includes("reference flow") ||
+    normalized.includes("functional unit") ||
+    normalized.includes("参考流") ||
+    normalized.includes("功能单位")
+  ) {
+    return "reference_flow";
+  }
+  if (
+    normalized.includes("system boundary") ||
+    normalized.includes("系统边界") ||
+    normalized.includes("cut-off rules") ||
+    normalized.includes("cutoff rules") ||
+    normalized.includes("截断规则")
+  ) {
+    return "system_boundary";
+  }
+  if (normalized.includes("allocation") || normalized.includes("分配")) {
+    return "allocation_rules";
+  }
+  if (
+    normalized.includes("validation rules") ||
+    normalized.includes("验证规则") ||
+    normalized.includes("校验规则")
+  ) {
+    return "validation_rules";
+  }
+  if (
+    normalized.includes("measurement and unit rules") ||
+    normalized.includes("计量与单位规则") ||
+    normalized.includes("flow properties and unit conventions") ||
+    normalized.includes("流属性与单位约定")
+  ) {
+    return "measurement_rules";
+  }
+  if (
+    normalized.includes("foreground data collection") ||
+    normalized.includes("data quality and evidence rules") ||
+    normalized.includes("前景数据采集") ||
+    normalized.includes("数据质量与证据规则")
+  ) {
+    return "dataset_production";
+  }
+  if (normalized.includes("process inventory") || normalized.includes("过程清单")) {
+    return "process_inventory";
+  }
+  if (normalized.includes("published dataset profile") || normalized.includes("发布数据集画像")) {
+    return "published_dataset_profile";
+  }
+  if (normalized.includes("data sources") || normalized.includes("数据源")) {
+    return "data_sources";
+  }
+  return "";
+}
+
+function sectionBodyLines(lines, targetSection) {
+  const body = [];
+  let active = false;
+  for (const rawLine of lines) {
+    const heading = rawLine.trim().match(/^##\s+(?:\d+\.\s*)?(.+)$/u);
+    if (heading) {
+      active = markdownSectionKind(heading[1]) === targetSection;
+      continue;
+    }
+    if (active) {
+      body.push(rawLine);
+    }
+  }
+  return body;
+}
+
+function parseNormativeRuleRows(table, defaultAppliesTo) {
+  const headerIndex = new Map(
+    table.headers.map((header, index) => [normalizeProjectionHeader(header), index]),
+  );
+  if (!headerIndex.has("rule") && !headerIndex.has("requirement")) {
+    return [];
+  }
+  return table.rows
+    .map((row) => ({
+      rule_id: normalizeStructuredId(
+        tableCell(row, headerIndex, ["rule_id", "requirement_id", "id"]),
+      ),
+      applies_to:
+        stripInlineCode(tableCell(row, headerIndex, ["applies_to", "scope"])) ||
+        defaultAppliesTo,
+      rule: stripInlineCode(tableCell(row, headerIndex, ["rule", "requirement", "description"])),
+      source_ids: extractSourceIds(tableCell(row, headerIndex, ["source_ids", "sources"])),
+    }))
+    .filter((entry) => entry.rule);
+}
+
+function nextMeaningfulLine(lines, startIndex) {
+  for (let index = startIndex; index < lines.length; index += 1) {
+    if (lines[index].trim()) {
+      return lines[index].trim();
+    }
+  }
+  return "";
+}
+
+function leadingWhitespaceWidth(value) {
+  const leadingWhitespace = String(value ?? "").match(/^[ \t]*/u)?.[0] ?? "";
+  return [...leadingWhitespace].reduce(
+    (width, character) => width + (character === "\t" ? 4 : 1),
+    0,
+  );
+}
+
+function parseNormativeListItem(value) {
+  const match = String(value ?? "").match(/^([ \t]*)(?:[-+*]|\d+[.)])\s+(.+)$/u);
+  if (!match) {
+    return null;
+  }
+  return {
+    indent: leadingWhitespaceWidth(match[1]),
+    content: match[2].trim(),
+  };
+}
+
+function parseNormativeListRule(lines, startIndex) {
+  const rootItem = parseNormativeListItem(lines[startIndex]);
+  if (!rootItem) {
+    return null;
+  }
+
+  const fragments = [rootItem.content];
+  let blankSinceContent = false;
+  let index = startIndex + 1;
+  for (; index < lines.length; index += 1) {
+    const rawLine = lines[index];
+    const line = rawLine.trim();
+    if (!line) {
+      blankSinceContent = true;
+      continue;
+    }
+    if (/^#{3,6}\s+/u.test(line) || isTableLine(line)) {
+      break;
+    }
+
+    const nestedItem = parseNormativeListItem(rawLine);
+    if (nestedItem) {
+      if (nestedItem.indent <= rootItem.indent) {
+        break;
+      }
+      fragments.push(nestedItem.content);
+      blankSinceContent = false;
+      continue;
+    }
+
+    const continuationIndent = leadingWhitespaceWidth(rawLine);
+    if (
+      continuationIndent < rootItem.indent ||
+      (blankSinceContent && continuationIndent <= rootItem.indent)
+    ) {
+      break;
+    }
+    fragments.push(line);
+    blankSinceContent = false;
+  }
+
+  return {
+    rule: stripInlineCode(fragments.join(" ")).replace(/\s+/gu, " ").trim(),
+    nextIndex: index,
+  };
+}
+
+function parseNormativeSection(lines, targetSection, idPrefix, defaultAppliesTo) {
+  const body = sectionBodyLines(lines, targetSection);
+  const rawRules = [];
+
+  for (let index = 0; index < body.length; index += 1) {
+    const rawLine = body[index];
+    const line = rawLine.trim();
+    if (!line) {
+      continue;
+    }
+    if (/^#{3,6}\s+/u.test(line)) {
+      continue;
+    }
+    if (isTableLine(line)) {
+      const { table, nextIndex } = parseTable(body, index);
+      if (table) {
+        rawRules.push(...parseNormativeRuleRows(table, defaultAppliesTo));
+      }
+      index = nextIndex - 1;
+      continue;
+    }
+    const listRule = parseNormativeListRule(body, index);
+    if (listRule) {
+      rawRules.push({
+        rule_id: "",
+        applies_to: defaultAppliesTo,
+        rule: listRule.rule,
+        source_ids: [],
+      });
+      index = listRule.nextIndex - 1;
+      continue;
+    }
+
+    const paragraphLines = [line];
+    let nextIndex = index + 1;
+    while (nextIndex < body.length) {
+      const candidate = body[nextIndex].trim();
+      if (
+        !candidate ||
+        /^#{3,6}\s+/u.test(candidate) ||
+        isTableLine(candidate) ||
+        parseNormativeListItem(body[nextIndex])
+      ) {
+        break;
+      }
+      paragraphLines.push(candidate);
+      nextIndex += 1;
+    }
+    const paragraph = paragraphLines.join(" ").trim();
+    const nextLine = nextMeaningfulLine(body, nextIndex);
+    const introducesStructuredRules =
+      /[:：]$/u.test(paragraph) &&
+      (Boolean(parseNormativeListItem(nextLine)) || isTableLine(nextLine));
+    if (!introducesStructuredRules) {
+      rawRules.push({
+        rule_id: "",
+        applies_to: defaultAppliesTo,
+        rule: stripInlineCode(paragraph).replace(/\s+/gu, " ").trim(),
+        source_ids: [],
+      });
+    }
+    index = nextIndex - 1;
+  }
+
+  const usedRuleIds = new Set();
+  return rawRules.map((entry, index) => {
+    const fallbackId = `${idPrefix}_rule_${index + 1}`;
+    let ruleId = entry.rule_id || fallbackId;
+    let suffix = 2;
+    while (usedRuleIds.has(ruleId)) {
+      ruleId = `${entry.rule_id || fallbackId}_${suffix}`;
+      suffix += 1;
+    }
+    usedRuleIds.add(ruleId);
+    return {
+      rule_id: ruleId,
+      applies_to: entry.applies_to || defaultAppliesTo,
+      rule: entry.rule,
+      source_ids: entry.source_ids ?? [],
+    };
+  });
+}
+
 export function parsePcrMarkdownToStructured(markdown) {
   const lines = markdown.split(/\r?\n/u);
+  const systemBoundaryRules = parseNormativeSection(
+    lines,
+    "system_boundary",
+    "system_boundary",
+    "foreground_system_boundary",
+  );
+  const allocationRules = parseNormativeSection(
+    lines,
+    "allocation_rules",
+    "allocation",
+    "foreground_burden_allocation",
+  );
+  const validationRules = parseNormativeSection(
+    lines,
+    "validation_rules",
+    "validation",
+    "foreground_dataset_conformance",
+  );
   let productCategoryIdentity = null;
   let functionalUnit = null;
   let boundaryAbstraction = null;
@@ -532,36 +845,7 @@ export function parsePcrMarkdownToStructured(markdown) {
     const line = lines[index].trim();
     const h2 = line.match(/^##\s+(?:\d+\.\s*)?(.+)$/u);
     if (h2) {
-      const title = h2[1].toLowerCase();
-      if (title.includes("product category identity") || title.includes("产品类别识别")) {
-        section = "product_category_identity";
-      } else if (title.includes("reference flow") || title.includes("参考流")) {
-        section = "reference_flow";
-      } else if (title.includes("system boundary") || title.includes("系统边界")) {
-        section = "system_boundary";
-      } else if (
-        title.includes("measurement and unit rules") ||
-        title.includes("计量与单位规则") ||
-        title.includes("flow properties and unit conventions") ||
-        title.includes("流属性与单位约定")
-      ) {
-        section = "measurement_rules";
-      } else if (
-        title.includes("foreground data collection") ||
-        title.includes("data quality and evidence rules") ||
-        title.includes("前景数据采集") ||
-        title.includes("数据质量与证据规则")
-      ) {
-        section = "dataset_production";
-      } else if (title.includes("process inventory") || title.includes("过程清单")) {
-        section = "process_inventory";
-      } else if (title.includes("published dataset profile") || title.includes("发布数据集画像")) {
-        section = "published_dataset_profile";
-      } else if (title.includes("data sources") || title.includes("数据源")) {
-        section = "data_sources";
-      } else {
-        section = "";
-      }
+      section = markdownSectionKind(h2[1]);
       subSection = "";
       direction = null;
       flowType = null;
@@ -733,15 +1017,18 @@ export function parsePcrMarkdownToStructured(markdown) {
   return {
     productCategoryIdentity,
     functionalUnit,
+    systemBoundary: { rules: systemBoundaryRules },
     boundaryAbstraction,
     referenceFlowDefinition,
     referenceFlows,
     measurementRules,
     processMap,
     processInventory,
+    allocationRules,
     collectionProtocols,
     calculationRules,
     dataQualityRequirements,
+    validationRules,
     publishedDatasetProfile,
     dataSources,
   };

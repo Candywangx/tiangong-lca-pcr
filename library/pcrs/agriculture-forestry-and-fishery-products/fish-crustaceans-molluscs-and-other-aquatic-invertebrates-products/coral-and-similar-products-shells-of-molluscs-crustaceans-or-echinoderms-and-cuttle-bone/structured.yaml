@@ -18,6 +18,16 @@ functional_unit:
   how_well: "Product shall state source route, material family, moisture basis, grade or particle-size class when applicable, and legal or provenance evidence."
   how_long_or_cycle: "One production batch or reporting period, normalized to the reference flow."
   reference_flow_link: "reference_product_flow"
+system_boundary:
+  rules:
+    - rule_id: system_boundary_rule_1
+      applies_to: "foreground_system_boundary"
+      rule: "The default boundary starts at the declared source material being received or directly collected for this product category. Upstream ecological formation of shells, coral-like material, or cuttle-bone is outside the foreground production boundary unless the operator directly controls aquaculture, harvesting, or habitat intervention. The dataset shall disclose the source route and shall include any directly controlled collection, receipt, cleaning, drying, sorting, size-reduction, packaging, and facility waste handling."
+      source_ids: []
+    - rule_id: system_boundary_rule_2
+      applies_to: "foreground_system_boundary"
+      rule: "Same-category CPC 04911 material inputs remain visible product inputs. They may not be cut off as unspecified natural mineral material. Ancillary flows may be excluded only when a program-specific cut-off rule permits exclusion and the dataset records the excluded flow type, reason, and expected relevance. Legal or provenance disclosures, wastewater fate, residue fate, and final product moisture basis are not cut-off candidates."
+      source_ids: []
 boundary_abstraction:
   declared_starting_condition: "declared_source_material_received"
   starting_condition_role: "The first foreground-controlled material state is source material received, collected, salvaged, or purchased for CPC 04911 processing."
@@ -618,6 +628,11 @@ process_inventory:
                 basis_kind: "fuel_inventory"
                 evidence_kind: "reasoned_estimate"
                 source_ids: []
+allocation_rules:
+  - rule_id: allocation_rule_1
+    applies_to: "foreground_burden_allocation"
+    rule: "Avoid allocation where a batch can be separated by measured product grade, material family, or product destination. When a batch produces several saleable grades of CPC 04911 material, allocate shared washing, drying, sorting, and packaging burdens by dry or declared product mass unless a reviewed market-value rule is documented. Rejects, wastewater, brine, and dust are outputs requiring treatment or emission modelling, not co-products, unless the operator demonstrates a saleable recovered material dataset with a separate reference flow."
+    source_ids: []
 dataset_production:
   collection_protocols:
     - protocol_id: cp_source_material_receipt
@@ -850,6 +865,11 @@ dataset_production:
       applies_to: "packed product datasets"
       requirement: "Declare packaging material type, packaging mass or count, and packed product mass."
       evidence: "bill of materials, packing log, or inventory issue record"
+validation_rules:
+  - rule_id: validation_rule_1
+    applies_to: "foreground_dataset_conformance"
+    rule: "A conforming dataset shall provide the reference flow UUID, mass property UUID, unit group UUID, source route, material family, declared moisture basis, and final product mass. Required processes shall have foreground collection records or explicit zero-activity declarations. Required product and waste mass records shall reconcile by batch or reporting period. Route-specific unresolved flow choices shall be reviewed before publication when a more precise Tiangong flow exists. Same-category CPC 04911 inputs shall remain explicit product inputs and shall not be hidden as generic mineral or waste inputs."
+    source_ids: []
 published_dataset_profile:
   dataset_role: "unit_process"
   downstream_use: "secondary_dataset; background_dataset"

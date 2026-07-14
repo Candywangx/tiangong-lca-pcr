@@ -5,6 +5,7 @@ language: zh-CN
 status: candidate
 content_maturity: authored_methodology
 translation_status: aligned
+sync_with: pcr.en-US.md
 ---
 
 # 珊瑚及类似产品、软体动物、甲壳动物或棘皮动物外壳和乌贼骨

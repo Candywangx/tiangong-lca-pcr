@@ -2,11 +2,39 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "title": "TianGong PCR Agent Guidance",
   "type": "object",
-  "required": ["schema_version", "guidance_kind", "pcr", "reference_flow", "process_map"],
+  "required": [
+    "schema_version",
+    "guidance_kind",
+    "pcr",
+    "readiness",
+    "source_structured",
+    "system_boundary",
+    "boundary_abstraction",
+    "reference_flow",
+    "measurement_rules",
+    "process_map",
+    "process_inventory",
+    "production_guidance",
+    "published_dataset_profile",
+    "allocation_rules",
+    "data_quality_rules",
+    "validation_rules",
+    "data_sources",
+    "validation_notes"
+  ],
   "properties": {
     "schema_version": { "const": 1 },
     "guidance_kind": { "const": "tiangong-pcr-agent-guidance" },
     "pcr": { "type": "object" },
+    "readiness": { "$ref": "readiness.schema.json" },
+    "source_structured": { "type": "string", "minLength": 1 },
+    "system_boundary": {
+      "type": "object",
+      "required": ["rules"],
+      "properties": {
+        "rules": { "type": "array" }
+      }
+    },
     "reference_flow": { "type": "object" },
     "boundary_abstraction": { "type": "object" },
     "measurement_rules": { "type": "array" },
@@ -14,6 +42,7 @@
     "process_inventory": { "type": "array" },
     "production_guidance": {
       "type": "object",
+      "required": ["collection_protocols", "calculation_rules", "data_quality_requirements"],
       "properties": {
         "collection_protocols": { "type": "array" },
         "calculation_rules": { "type": "array" },
@@ -21,6 +50,9 @@
       }
     },
     "published_dataset_profile": { "type": "object" },
+    "allocation_rules": { "type": "array" },
+    "data_quality_rules": { "type": "array" },
+    "validation_rules": { "type": "array" },
     "data_sources": { "type": "array" },
     "validation_notes": {
       "type": "array",

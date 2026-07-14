@@ -59,6 +59,19 @@ function yamlFlatObject(lines, indent, object) {
   }
 }
 
+function yamlNormativeRules(lines, indent, rules) {
+  if (!rules || rules.length === 0) {
+    lines.push(`${" ".repeat(indent)}[]`);
+    return;
+  }
+  for (const rule of rules) {
+    lines.push(`${" ".repeat(indent)}- rule_id: ${yamlPlainOrQuoted(rule.rule_id)}`);
+    yamlKeyValue(lines, indent + 2, "applies_to", rule.applies_to);
+    yamlKeyValue(lines, indent + 2, "rule", rule.rule);
+    yamlStringArray(lines, indent + 2, "source_ids", rule.source_ids);
+  }
+}
+
 export function structuredProjectionYaml(projection) {
   const lines = [
     "schema_version: 1",
@@ -71,6 +84,10 @@ export function structuredProjectionYaml(projection) {
 
   lines.push("functional_unit:");
   yamlFlatObject(lines, 2, projection.functionalUnit);
+
+  lines.push("system_boundary:");
+  lines.push("  rules:");
+  yamlNormativeRules(lines, 4, projection.systemBoundary?.rules);
 
   lines.push("boundary_abstraction:");
   yamlFlatObject(lines, 2, projection.boundaryAbstraction);
@@ -191,6 +208,9 @@ export function structuredProjectionYaml(projection) {
     }
   }
 
+  lines.push("allocation_rules:");
+  yamlNormativeRules(lines, 2, projection.allocationRules);
+
   lines.push("dataset_production:");
   lines.push("  collection_protocols:");
   if (projection.collectionProtocols.length === 0) {
@@ -235,6 +255,9 @@ export function structuredProjectionYaml(projection) {
       yamlKeyValue(lines, 6, "evidence", requirement.evidence);
     }
   }
+
+  lines.push("validation_rules:");
+  yamlNormativeRules(lines, 2, projection.validationRules);
 
   lines.push("published_dataset_profile:");
   yamlFlatObject(lines, 2, projection.publishedDatasetProfile);

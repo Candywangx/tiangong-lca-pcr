@@ -15,6 +15,28 @@ functional_unit:
   how_well: "declared species or hybrid, product form, live/fresh/chilled state, shell-on or shucked basis, size grade, harvest and holding condition, and culture system"
   how_long_or_cycle: "one production batch, harvest lot, or reporting period normalized to marketable product output"
   reference_flow_link: "Reference amount and product flow below"
+system_boundary:
+  rules:
+    - rule_id: system_boundary_rule_1
+      applies_to: "foreground_system_boundary"
+      rule: "Seed or juvenile sourcing, including on-site hatchery and nursery activity when controlled by the reporting operator, or purchased juvenile disclosure when supplied by another hatchery."
+      source_ids: []
+    - rule_id: system_boundary_rule_2
+      applies_to: "foreground_system_boundary"
+      rule: "Grow-out husbandry, including culture units, stocking, feed, water movement, aeration, filtration, biofouling control, mortality management, predator or escape controls, and directly controlled maintenance."
+      source_ids: []
+    - rule_id: system_boundary_rule_3
+      applies_to: "foreground_system_boundary"
+      rule: "Harvest, grading, purging or depuration when performed, live holding, chilling, packaging, and declared gate release."
+      source_ids: []
+    - rule_id: system_boundary_rule_4
+      applies_to: "foreground_system_boundary"
+      rule: "Delivery to the declared gate when the reference product is delivered rather than farm-gate product."
+      source_ids: []
+    - rule_id: system_boundary_rule_5
+      applies_to: "foreground_system_boundary"
+      rule: "Capital goods, infrastructure construction, and long-term habitat modification are included only when the declared data package scope requires them. Feed and seed upstream datasets are linked as upstream inputs unless the same operator controls and reports their production in the foreground package."
+      source_ids: []
 boundary_abstraction:
   declared_starting_condition: "declared_seed_or_juvenile_stocking_event"
   starting_condition_role: "aquaculture_stock_identity_and_biological_starting_condition"
@@ -820,6 +842,19 @@ process_inventory:
         []
       elementary:
         []
+allocation_rules:
+  - rule_id: allocation_rule_1
+    applies_to: "foreground_burden_allocation"
+    rule: "Avoid allocation where batch records can partition burdens by culture unit, harvest lot, grade, product form, or destination. Separate live, fresh, chilled, shell-on, shucked, size-grade, and off-grade products by measured mass before applying allocation."
+    source_ids: []
+  - rule_id: allocation_rule_2
+    applies_to: "foreground_burden_allocation"
+    rule: "When a single foreground batch produces several saleable abalone grades within CPC 04412, allocate shared grow-out, harvest, holding, and pack-out burdens by declared product mass unless a reviewed market-value rule is documented. Shells, mortalities, wastewater, sludge, biofouling residue, and broken or dead product are waste or treatment outputs unless they are sold with a separate product dataset and reference flow."
+    source_ids: []
+  - rule_id: allocation_rule_3
+    applies_to: "foreground_burden_allocation"
+    rule: "If the same site grows other species or co-products in the same system, allocate shared energy, water, feed preparation, and maintenance records by measured culture-unit service, biomass-time, or product mass in that order of preference. The selected allocation basis must be disclosed."
+    source_ids: []
 dataset_production:
   collection_protocols:
     - protocol_id: cp_seed_stocking_records
@@ -1005,6 +1040,39 @@ dataset_production:
       applies_to: "all foreground rows"
       requirement: "Cover a complete production batch, harvest lot, or representative reporting period; disclose partial-cycle datasets."
       evidence: "production calendar, stocking and harvest dates, reporting-period records"
+validation_rules:
+  - rule_id: validation_rule_1
+    applies_to: "foreground_dataset_conformance"
+    rule: "the reference product is normalized to 1 kg farmed abalone in a declared live, fresh, or chilled product form;"
+    source_ids: []
+  - rule_id: validation_rule_2
+    applies_to: "foreground_dataset_conformance"
+    rule: "species or hybrid, culture system, seed or juvenile source, product state, product form, size grade, geography, declared gate, holding duration, and feed regime are declared;"
+    source_ids: []
+  - rule_id: validation_rule_3
+    applies_to: "foreground_dataset_conformance"
+    rule: "seed or juvenile input, feed, water, energy, fuel, mortality or residue, harvest, pack-out, and packaging records are either present or explicitly marked not applicable with a reason;"
+    source_ids: []
+  - rule_id: validation_rule_4
+    applies_to: "foreground_dataset_conformance"
+    rule: "count records include mean individual mass or another transparent conversion to kg;"
+    source_ids: []
+  - rule_id: validation_rule_5
+    applies_to: "foreground_dataset_conformance"
+    rule: "feed records distinguish macroalgae, formulated feed, and mixed feed, and keep wet, dry, and as-fed bases separate;"
+    source_ids: []
+  - rule_id: validation_rule_6
+    applies_to: "foreground_dataset_conformance"
+    rule: "water rows distinguish pumped or supplied water from ambient open-water exchange;"
+    source_ids: []
+  - rule_id: validation_rule_7
+    applies_to: "foreground_dataset_conformance"
+    rule: "pack-out mass balance reconciles harvested input, reference product, saleable off-grade product, rejects, and holding losses;"
+    source_ids: []
+  - rule_id: validation_rule_8
+    applies_to: "foreground_dataset_conformance"
+    rule: "same-site multi-species or multi-grade allocation is documented before the dataset is used as a background or secondary dataset."
+    source_ids: []
 published_dataset_profile:
   dataset_role: "foreground production package that may be published as a secondary_dataset or background_dataset after review"
   downstream_use: "use as farmed abalone input to seafood processing, food service, retail, cold-chain, or regional food-product lifecycle models"

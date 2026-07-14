@@ -1,0 +1,105 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "TianGong PCR Validation Report",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "validation_kind",
+    "pcr",
+    "readiness",
+    "validation_status",
+    "completeness",
+    "input",
+    "check_coverage",
+    "finding_count",
+    "finding_summary",
+    "findings"
+  ],
+  "properties": {
+    "schema_version": { "const": 1 },
+    "validation_kind": {
+      "enum": ["tiangong-pcr-model-validation", "tiangong-pcr-dataset-validation"]
+    },
+    "pcr": { "type": "object" },
+    "readiness": { "$ref": "readiness.schema.json" },
+    "validation_status": { "enum": ["passed", "failed", "inconclusive"] },
+    "completeness": { "enum": ["none", "partial", "complete"] },
+    "input": {
+      "type": "object",
+      "required": ["input_kind", "representation", "accepted"],
+      "properties": {
+        "input_kind": { "type": "string" },
+        "representation": { "type": "string" },
+        "accepted": { "type": "boolean" }
+      }
+    },
+    "check_coverage": {
+      "type": "object",
+      "required": [
+        "total_requirement_count",
+        "checked_requirement_count",
+        "skipped_requirement_count",
+        "checks_performed",
+        "checks_skipped"
+      ],
+      "properties": {
+        "total_requirement_count": { "type": "integer", "minimum": 0 },
+        "checked_requirement_count": { "type": "integer", "minimum": 0 },
+        "skipped_requirement_count": { "type": "integer", "minimum": 0 },
+        "checks_performed": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/performedCheck" }
+        },
+        "checks_skipped": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/skippedCheck" }
+        }
+      }
+    },
+    "finding_count": { "type": "integer", "minimum": 0 },
+    "finding_summary": {
+      "type": "object",
+      "required": ["error", "warning", "info"],
+      "properties": {
+        "error": { "type": "integer", "minimum": 0 },
+        "warning": { "type": "integer", "minimum": 0 },
+        "info": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "findings": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/finding" }
+    }
+  },
+  "$defs": {
+    "performedCheck": {
+      "type": "object",
+      "required": ["check_id", "requirement_family", "requirement_count", "evaluated_requirement_count"],
+      "properties": {
+        "check_id": { "type": "string" },
+        "requirement_family": { "type": "string" },
+        "requirement_count": { "type": "integer", "minimum": 0 },
+        "evaluated_requirement_count": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "skippedCheck": {
+      "type": "object",
+      "required": ["check_id", "requirement_family", "requirement_count", "reason"],
+      "properties": {
+        "check_id": { "type": "string" },
+        "requirement_family": { "type": "string" },
+        "requirement_count": { "type": "integer", "minimum": 0 },
+        "reason": { "type": "string" }
+      }
+    },
+    "finding": {
+      "type": "object",
+      "required": ["severity", "code", "message"],
+      "properties": {
+        "severity": { "enum": ["error", "warning", "info"] },
+        "code": { "type": "string" },
+        "message": { "type": "string" }
+      }
+    }
+  }
+}

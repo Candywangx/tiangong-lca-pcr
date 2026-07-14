@@ -24,8 +24,8 @@ checkPaths:
   - .github/ISSUE_TEMPLATE/**
   - library/pcrs/**
   - library/modules/**
-lastReviewedAt: 2026-06-26
-lastReviewedCommit: dae1dbce5c42f410b706e5c4dfcfbf35e2aab0b0
+lastReviewedAt: 2026-07-14
+lastReviewedCommit: 7a3d0c7ea81ba384e435e3d766b6c4b6997a51d5
 ---
 
 # Authoring Guide
@@ -86,6 +86,8 @@ The measurement and unit rules section contains rules that affect data consisten
 
 The system boundary section stores `Boundary Abstraction` facts: `declared_starting_condition`, `starting_condition_role`, `product_classification_scope`, `recursive_input_rule`, `upstream_dataset_requirement`, and `disclosure`. The declared starting condition is backed by foreground collection records and dataset disclosure.
 
+System-boundary, allocation, and validation requirements are projected as machine-addressable normative rules with `rule_id`, `applies_to`, `rule`, and `source_ids`. Existing numbered lists, bullets, and normative paragraphs receive deterministic fallback ids. Use an explicit rule table and stable ids when external validators, review findings, or feedback records need to reference an individual rule over time. English and Chinese material PCRs must preserve the same ordered rule ids for these three rule families.
+
 Each inventory flow card should carry a stable `row_id`, the selected flow UUID when available, the flow property/unit used in that row, `amount`, `value_mode`, `specificity`, `basis`, `basis_kind`, `evidence_kind`, `collection_protocol_id`, and `source_ids`.
 
 The foreground data collection section defines the raw fields, collection method, unit, frequency, temporal coverage, site scope, aggregation rule, calculation rules, and quality evidence that produce the first dataset values.
@@ -132,7 +134,7 @@ Flow identity sources and range sources can differ. A flow UUID may come from a 
 
 AI PCR production uses public evidence and domain common sense to initialize candidate processes, likely input/output flows, and search terms. Existing PCR records are read as prior evidence, then the current best PCR is written to the appropriate canonical record.
 
-Public `tiangong-pcr` guidance is a consumption view over PCR content. Use `validate-dataset` to check foreground collection package coverage. If Agent use of `guidance` reveals missing or ambiguous instructions, capture that through feedback issue templates or `npm --silent run tiangong-pcr -- feedback draft`.
+Public `tiangong-pcr` guidance is a consumption view over PCR content. Catalog and mapping results expose readiness separately from identity: an authored candidate is review-required guidance, while an empty scaffold is unavailable and cannot be used by guidance or validation. Use `validate-dataset` to check the implemented subset of foreground collection package requirements, and inspect `check_coverage.checks_skipped` before interpreting a result as complete. If Agent use of `guidance` reveals missing or ambiguous instructions, capture that through feedback issue templates or `npm --silent run tiangong-pcr -- feedback draft`.
 
 ## CPC Scaffolded PCRs
 
@@ -142,3 +144,17 @@ CPC-generated PCR directories are placeholders until reviewed PCR content is wri
 - update both `pcr.en-US.md` and `pcr.zh-CN.md` as paired renderings of the same rule
 - run `npm run pcr:sync-structured -- --pcr <library/pcrs/...>` after editing canonical Markdown so `structured.yaml` stays aligned
 - move `status`, `content_maturity`, and `translation_status` forward with `npm run pcr:lifecycle` only after the relevant methodology or translation review has happened
+
+Repository lint regenerates and compares the deterministic projection for every material PCR. A stale
+`structured.yaml` is a validation error, so commit canonical Markdown and its generated projection together.
+
+## Lifecycle and Publication
+
+Lifecycle fields form one contract rather than independent labels. Scaffolds are empty; candidates may be draft or
+authored; active PCRs are reviewed methodology; published PCRs are published methodology. Use one lifecycle command
+to make a valid transition and do not edit a status without moving the corresponding maturity when required.
+
+Before publication, the record must be `active` with `reviewed_methodology`, Chinese translation status `reviewed`,
+a valid semantic version, no unresolved or blocking review metadata, a current structured projection, and no material
+lint problem. `pcr:publish` evaluates the future manifest and generated projection before writing either file. Failed
+preflight leaves the existing manifest and projection unchanged.

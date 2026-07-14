@@ -1,7 +1,30 @@
 import assert from "node:assert/strict";
+import { readFileSync, readdirSync } from "node:fs";
+import path from "node:path";
 import test from "node:test";
+import { fileURLToPath } from "node:url";
 
-import { parsePcrMarkdownToStructured } from "./markdown-projection.mjs";
+import { parseYaml } from "../../packages/pcr-core/src/yaml-lite.mjs";
+
+import {
+  parsePcrMarkdownToStructured,
+  structuredProjectionYaml,
+} from "./markdown-projection.mjs";
+
+const repoRoot = path.resolve(fileURLToPath(new URL("../..", import.meta.url)));
+
+function manifestFiles(directory) {
+  const files = [];
+  for (const entry of readdirSync(directory, { withFileTypes: true })) {
+    const entryPath = path.join(directory, entry.name);
+    if (entry.isDirectory()) {
+      files.push(...manifestFiles(entryPath));
+    } else if (entry.name === "manifest.yaml") {
+      files.push(entryPath);
+    }
+  }
+  return files;
+}
 
 test("parsePcrMarkdownToStructured reads localized Chinese flow cards", () => {
   const projection = parsePcrMarkdownToStructured(`
@@ -90,4 +113,223 @@ test("parsePcrMarkdownToStructured reads nested localized range fields", () => {
       source_ids: ["mass-balance-identity"],
     },
   ]);
+});
+
+test("parsePcrMarkdownToStructured projects English boundary, allocation, and validation rules", () => {
+  const projection = parsePcrMarkdownToStructured(`
+## 5. System Boundary
+
+The foreground boundary includes:
+
+1. Include directly controlled collection and preparation.
+2. Link purchased material to an upstream dataset.
+
+### Boundary Abstraction
+
+| Field | Value |
+| --- | --- |
+| declared_starting_condition | source_material_received |
+
+## 6A. Same-Category Input and Cut-Off Rules
+
+Same-category inputs remain visible product inputs.
+
+## 7. Allocation and Co-product Handling
+
+| rule_id | Applies to | Rule | source_ids |
+| --- | --- | --- | --- |
+| \`avoid_allocation\` | separable batches | Subdivide the process before allocating shared burdens. | \`allocation-source\` |
+
+## 9. Validation Rules
+
+A foreground data package conforms only when:
+
+- the reference product is normalized to the declared mass;
+- the allocation method is declared and justified.
+`);
+
+  assert.deepEqual(projection.systemBoundary, {
+    rules: [
+      {
+        rule_id: "system_boundary_rule_1",
+        applies_to: "foreground_system_boundary",
+        rule: "Include directly controlled collection and preparation.",
+        source_ids: [],
+      },
+      {
+        rule_id: "system_boundary_rule_2",
+        applies_to: "foreground_system_boundary",
+        rule: "Link purchased material to an upstream dataset.",
+        source_ids: [],
+      },
+      {
+        rule_id: "system_boundary_rule_3",
+        applies_to: "foreground_system_boundary",
+        rule: "Same-category inputs remain visible product inputs.",
+        source_ids: [],
+      },
+    ],
+  });
+  assert.deepEqual(projection.allocationRules, [
+    {
+      rule_id: "avoid_allocation",
+      applies_to: "separable batches",
+      rule: "Subdivide the process before allocating shared burdens.",
+      source_ids: ["allocation-source"],
+    },
+  ]);
+  assert.deepEqual(projection.validationRules, [
+    {
+      rule_id: "validation_rule_1",
+      applies_to: "foreground_dataset_conformance",
+      rule: "the reference product is normalized to the declared mass;",
+      source_ids: [],
+    },
+    {
+      rule_id: "validation_rule_2",
+      applies_to: "foreground_dataset_conformance",
+      rule: "the allocation method is declared and justified.",
+      source_ids: [],
+    },
+  ]);
+  assert.deepEqual(projection.boundaryAbstraction, {
+    declared_starting_condition: "source_material_received",
+  });
+});
+
+test("parsePcrMarkdownToStructured supports Chinese rule headings and deterministic fallback ids", () => {
+  const projection = parsePcrMarkdownToStructured(`
+## 5. 系统边界
+
+默认边界包括：
+
+1. 纳入前景直接控制的清洗活动。
+
+## 7. 分配与共产品处理
+
+按以下顺序决策：
+
+1. 优先通过过程细分避免分配。
+2. 无法细分时披露所选分配基准。
+
+## 9. 校验规则
+
+发布前检查：
+
+- 参考产品按声明质量归一化。
+- 所有废物流均有明确去向。
+`);
+
+  assert.equal(projection.systemBoundary.rules[0].rule_id, "system_boundary_rule_1");
+  assert.equal(projection.systemBoundary.rules[0].rule, "纳入前景直接控制的清洗活动。");
+  assert.deepEqual(
+    projection.allocationRules.map(({ rule_id, rule }) => ({ rule_id, rule })),
+    [
+      { rule_id: "allocation_rule_1", rule: "优先通过过程细分避免分配。" },
+      { rule_id: "allocation_rule_2", rule: "无法细分时披露所选分配基准。" },
+    ],
+  );
+  assert.deepEqual(
+    projection.validationRules.map(({ rule_id, rule }) => ({ rule_id, rule })),
+    [
+      { rule_id: "validation_rule_1", rule: "参考产品按声明质量归一化。" },
+      { rule_id: "validation_rule_2", rule: "所有废物流均有明确去向。" },
+    ],
+  );
+});
+
+test("parsePcrMarkdownToStructured folds list continuations and nested items into the parent rule", () => {
+  const projection = parsePcrMarkdownToStructured(`
+## 7. Allocation and Co-product Handling
+
+Apply allocation in this order:
+
+1. Prefer subdivision when records allow
+and preserve the directly measured relationship.
+
+   This indented continuation remains part of the first rule.
+   - Nested condition A.
+     Nested detail stays with the parent.
+   - Nested condition B.
+2. Use mass allocation only as a fallback.
+   Its sensitivity must be disclosed.
+
+A separate paragraph remains its own rule.
+`);
+
+  assert.deepEqual(
+    projection.allocationRules.map(({ rule_id, rule }) => ({ rule_id, rule })),
+    [
+      {
+        rule_id: "allocation_rule_1",
+        rule:
+          "Prefer subdivision when records allow and preserve the directly measured relationship. This indented continuation remains part of the first rule. Nested condition A. Nested detail stays with the parent. Nested condition B.",
+      },
+      {
+        rule_id: "allocation_rule_2",
+        rule: "Use mass allocation only as a fallback. Its sensitivity must be disclosed.",
+      },
+      {
+        rule_id: "allocation_rule_3",
+        rule: "A separate paragraph remains its own rule.",
+      },
+    ],
+  );
+});
+
+test("structuredProjectionYaml renders normative rule contracts", () => {
+  const projection = parsePcrMarkdownToStructured(`
+## 5. System Boundary
+
+The system boundary includes direct preparation.
+
+## 7. Allocation Rules
+
+Avoid allocation by subdivision.
+
+## 9. Validation Rules
+
+The reference mass shall reconcile.
+`);
+  const yaml = structuredProjectionYaml(projection);
+
+  assert.match(yaml, /system_boundary:\n  rules:\n    - rule_id: system_boundary_rule_1/u);
+  assert.match(yaml, /allocation_rules:\n  - rule_id: allocation_rule_1/u);
+  assert.match(yaml, /validation_rules:\n  - rule_id: validation_rule_1/u);
+  assert.match(yaml, /source_ids: \[\]/u);
+});
+
+test("material PCR translations preserve machine-addressable normative rule ids", () => {
+  const materialManifests = manifestFiles(path.join(repoRoot, "library/pcrs"))
+    .map((manifestPath) => ({
+      manifestPath,
+      manifest: parseYaml(readFileSync(manifestPath, "utf8")),
+    }))
+    .filter(({ manifest }) =>
+      ["authored_methodology", "reviewed_methodology", "published_methodology"].includes(
+        manifest.content_maturity,
+      ),
+    );
+
+  assert.ok(materialManifests.length > 0);
+  for (const { manifestPath, manifest } of materialManifests) {
+    const pcrDir = path.dirname(manifestPath);
+    const english = parsePcrMarkdownToStructured(
+      readFileSync(path.join(pcrDir, "pcr.en-US.md"), "utf8"),
+    );
+    const chinese = parsePcrMarkdownToStructured(
+      readFileSync(path.join(pcrDir, "pcr.zh-CN.md"), "utf8"),
+    );
+    for (const [label, englishRules, chineseRules] of [
+      ["system boundary", english.systemBoundary.rules, chinese.systemBoundary.rules],
+      ["allocation", english.allocationRules, chinese.allocationRules],
+      ["validation", english.validationRules, chinese.validationRules],
+    ]) {
+      assert.deepEqual(
+        chineseRules.map((rule) => rule.rule_id),
+        englishRules.map((rule) => rule.rule_id),
+        `${manifest.id} has misaligned ${label} rule ids`,
+      );
+    }
+  }
 });

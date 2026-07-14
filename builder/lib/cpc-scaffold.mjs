@@ -287,7 +287,8 @@ classification_seed:
 reference_flows: []
 flow_properties: []
 unit_conventions: []
-system_boundary: {}
+system_boundary:
+  rules: []
 boundary_abstraction: {}
 process_map: []
 process_inventory: []

@@ -5,6 +5,7 @@ language: en-US
 status: candidate
 content_maturity: authored_methodology
 translation_status: canonical
+sync_with: pcr.zh-CN.md
 ---
 
 # Coral and similar products, shells of molluscs, crustaceans or echinoderms and cuttle-bone

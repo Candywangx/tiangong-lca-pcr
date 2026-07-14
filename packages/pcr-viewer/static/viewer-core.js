@@ -27,6 +27,16 @@ export function summarizeGuidance(guidance = {}) {
   };
 }
 
+export function describeReadiness(readiness = {}) {
+  const status = String(readiness?.status ?? "unknown");
+  const tone = {
+    ready: "ready",
+    review_required: "review",
+    unavailable: "unavailable",
+  }[status] ?? "unknown";
+  return { status, tone };
+}
+
 export function renderMarkdown(markdown = "") {
   const lines = markdown.split(/\r?\n/u);
   const html = [];

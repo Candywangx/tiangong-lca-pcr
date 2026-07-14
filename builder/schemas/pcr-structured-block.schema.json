@@ -2,6 +2,40 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "title": "TianGong PCR structured block",
   "type": "object",
+  "$defs": {
+    "normativeRule": {
+      "type": "object",
+      "description": "A stable, machine-addressable normative PCR rule projected from Markdown.",
+      "required": ["rule_id", "applies_to", "rule", "source_ids"],
+      "properties": {
+        "rule_id": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "^[a-z0-9]+(?:_[a-z0-9]+)*$"
+        },
+        "applies_to": { "type": "string", "minLength": 1 },
+        "rule": { "type": "string", "minLength": 1 },
+        "source_ids": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 },
+          "uniqueItems": true
+        }
+      },
+      "additionalProperties": false
+    },
+    "normativeRuleArray": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/normativeRule" }
+    },
+    "systemBoundary": {
+      "type": "object",
+      "required": ["rules"],
+      "properties": {
+        "rules": { "$ref": "#/$defs/normativeRuleArray" }
+      },
+      "additionalProperties": false
+    }
+  },
   "properties": {
     "product_category_identity": { "type": "object" },
     "functional_unit": { "type": "object" },
@@ -10,14 +44,14 @@
     "measurement_rules": { "type": "array" },
     "flow_properties": { "type": "array" },
     "unit_conventions": { "type": "array" },
-    "system_boundary": { "type": "object" },
+    "system_boundary": { "$ref": "#/$defs/systemBoundary" },
     "boundary_abstraction": { "type": "object" },
     "process_inventory": { "type": "array" },
     "dataset_production": { "type": "object" },
     "published_dataset_profile": { "type": "object" },
-    "allocation_rules": { "type": "array" },
+    "allocation_rules": { "$ref": "#/$defs/normativeRuleArray" },
     "data_quality_rules": { "type": "array" },
-    "validation_rules": { "type": "array" },
+    "validation_rules": { "$ref": "#/$defs/normativeRuleArray" },
     "data_sources": { "type": "array" },
     "inventory_patterns": {
       "type": "array",

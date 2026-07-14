@@ -58,7 +58,8 @@ functional_unit: {}
 reference_flows: []
 flow_properties: []
 unit_conventions: []
-system_boundary: {}
+system_boundary:
+  rules: []
 boundary_abstraction: {}
 process_map: []
 process_inventory: []

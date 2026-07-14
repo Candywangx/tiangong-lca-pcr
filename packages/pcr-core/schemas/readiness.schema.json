@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "readiness.schema.json",
+  "title": "TianGong PCR Readiness",
+  "type": "object",
+  "required": [
+    "status",
+    "lifecycle_status",
+    "methodology_status",
+    "structured_projection_available",
+    "usable_for_guidance",
+    "usable_for_validation",
+    "blockers",
+    "warnings"
+  ],
+  "properties": {
+    "status": { "enum": ["ready", "review_required", "unavailable"] },
+    "lifecycle_status": { "type": "string" },
+    "methodology_status": { "type": "string" },
+    "structured_projection_available": { "type": "boolean" },
+    "usable_for_guidance": { "type": "boolean" },
+    "usable_for_validation": { "type": "boolean" },
+    "blockers": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/message" }
+    },
+    "warnings": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/message" }
+    }
+  },
+  "$defs": {
+    "message": {
+      "type": "object",
+      "required": ["code", "message"],
+      "properties": {
+        "code": { "type": "string" },
+        "message": { "type": "string" }
+      }
+    }
+  }
+}

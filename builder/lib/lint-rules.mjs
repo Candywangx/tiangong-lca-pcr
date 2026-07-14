@@ -1,14 +1,13 @@
-import { existsSync, readFileSync, readdirSync, statSync } from "node:fs";
+import { existsSync, lstatSync, readFileSync, readdirSync } from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
 import { parseYaml } from "../../packages/pcr-core/src/yaml-lite.mjs";
+import { manifestLifecycleProblems } from "./lifecycle-policy.mjs";
 import {
-  CONTENT_MATURITY_VALUES,
-  PCR_STATUS_VALUES,
-  TRANSLATION_STATUS_VALUES,
-} from "./lifecycle-vocab.mjs";
-import { parsePcrMarkdownToStructured } from "./markdown-projection.mjs";
+  parsePcrMarkdownToStructured,
+  structuredProjectionYaml,
+} from "./markdown-projection.mjs";
 import { PCR_EN_FILE, PCR_ZH_FILE } from "./scaffold-templates.mjs";
 import { REQUIRED_DIRS } from "./builder-constants.mjs";
 
@@ -102,8 +101,14 @@ const IMPORTANT_RANGE_PATTERNS = [
   },
 ];
 
-function walkDirectories(root) {
+function walkDirectories(root, problems, repositoryRoot) {
   if (!existsSync(root)) {
+    return [];
+  }
+  if (lstatSync(root).isSymbolicLink()) {
+    problems.push(
+      `${toRepoRelative(repositoryRoot, root)}: PCR root must not be a symbolic link`,
+    );
     return [];
   }
   const results = [];
@@ -113,7 +118,14 @@ function walkDirectories(root) {
     results.push(current);
     for (const entry of readdirSync(current)) {
       const child = path.join(current, entry);
-      if (statSync(child).isDirectory()) {
+      const stats = lstatSync(child);
+      if (stats.isSymbolicLink()) {
+        problems.push(
+          `${toRepoRelative(repositoryRoot, child)}: symbolic links are not allowed inside the PCR directory tree`,
+        );
+        continue;
+      }
+      if (stats.isDirectory()) {
         stack.push(child);
       }
     }
@@ -147,10 +159,7 @@ function topLevelValue(text, key) {
 function isMaterialManifest(text) {
   const status = topLevelValue(text, "status");
   const maturity = topLevelValue(text, "content_maturity");
-  return (
-    ["candidate", "active", "published"].includes(status) ||
-    ["authored_methodology", "reviewed_methodology"].includes(maturity)
-  );
+  return status !== "scaffold" || maturity !== "empty_scaffold";
 }
 
 function rangePolicyFromManifest(text) {
@@ -206,21 +215,8 @@ function importantRangeReason({ processEntry, direction, flowType, row }) {
 function validateManifestLifecycle(root, manifestPath, manifestText, problems) {
   const relativePath = toRepoRelative(root, manifestPath);
   const manifest = parseYaml(manifestText);
-  if (!PCR_STATUS_VALUES.includes(manifest.status)) {
-    problems.push(`${relativePath}: invalid manifest status "${manifest.status}"`);
-  }
-  if (!CONTENT_MATURITY_VALUES.includes(manifest.content_maturity)) {
-    problems.push(`${relativePath}: invalid manifest content_maturity "${manifest.content_maturity}"`);
-  }
-  const translationStatus = manifest.translation_status ?? {};
-  if (translationStatus && typeof translationStatus === "object" && !Array.isArray(translationStatus)) {
-    for (const [language, status] of Object.entries(translationStatus)) {
-      if (!TRANSLATION_STATUS_VALUES.includes(status)) {
-        problems.push(`${relativePath}: invalid translation_status.${language} "${status}"`);
-      }
-    }
-  } else if (translationStatus !== null) {
-    problems.push(`${relativePath}: translation_status must be a map`);
+  for (const problem of manifestLifecycleProblems(manifest)) {
+    problems.push(`${relativePath}: ${problem}`);
   }
 }
 
@@ -236,7 +232,11 @@ function validatePcrProjection(
   const relativePath = toRepoRelative(root, markdownPath);
   const rows = inventoryRows(projection.processInventory);
   if (rows.length === 0 && projection.processMap.length === 0) {
-    return;
+    if (!material) {
+      return;
+    }
+    problems.push(`${relativePath}: material PCR is missing a Process Map`);
+    problems.push(`${relativePath}: material PCR has no process inventory flow rows`);
   }
 
   const processMapById = new Map(projection.processMap.map((entry) => [entry.id, entry]));
@@ -357,6 +357,16 @@ function validatePcrProjection(
     return;
   }
 
+  for (const [label, rules] of [
+    ["System Boundary", projection.systemBoundary?.rules ?? []],
+    ["Allocation", projection.allocationRules ?? []],
+    ["Validation", projection.validationRules ?? []],
+  ]) {
+    if (rules.length === 0) {
+      problems.push(`${relativePath}: material PCR requires at least one ${label} rule`);
+    }
+  }
+
   for (const match of String(markdown).matchAll(RECURSIVE_ORIGIN_TERM_PATTERN)) {
     problems.push(`${relativePath}: contains prohibited recursive-origin term "${match[0]}"`);
   }
@@ -405,6 +415,227 @@ function validatePcrProjection(
   }
 }
 
+function normalizeGeneratedText(text) {
+  return `${String(text ?? "").replace(/\r\n?/gu, "\n").trimEnd()}\n`;
+}
+
+function parseMarkdownEnvelope(markdown) {
+  const lines = String(markdown ?? "").replace(/^\uFEFF/u, "").split(/\r?\n/u);
+  if (lines[0]?.trim() !== "---") {
+    return { error: "must start with YAML frontmatter", frontmatter: null, body: "" };
+  }
+  const closingIndex = lines.findIndex((line, index) => index > 0 && line.trim() === "---");
+  if (closingIndex < 0) {
+    return { error: "has unclosed YAML frontmatter", frontmatter: null, body: "" };
+  }
+  try {
+    return {
+      error: null,
+      frontmatter: parseYaml(lines.slice(1, closingIndex).join("\n")),
+      body: lines.slice(closingIndex + 1).join("\n"),
+    };
+  } catch (error) {
+    return {
+      error: `has invalid YAML frontmatter: ${error.message}`,
+      frontmatter: null,
+      body: lines.slice(closingIndex + 1).join("\n"),
+    };
+  }
+}
+
+function inspectCanonicalMarkdown(root, markdownPath, markdown, manifest, problems) {
+  const relativePath = toRepoRelative(root, markdownPath);
+  if (!String(markdown ?? "").trim()) {
+    problems.push(`${relativePath}: active or published PCR requires non-empty canonical English Markdown`);
+    return;
+  }
+
+  const envelope = parseMarkdownEnvelope(markdown);
+  if (envelope.error) {
+    problems.push(`${relativePath}: ${envelope.error}`);
+    return;
+  }
+  if (!envelope.body.trim()) {
+    problems.push(`${relativePath}: active or published PCR requires English Markdown content after frontmatter`);
+  }
+
+  for (const [field, expected] of [
+    ["pcr_id", manifest?.id],
+    ["language", "en-US"],
+    ["sync_with", PCR_ZH_FILE],
+  ]) {
+    const actual = envelope.frontmatter?.[field];
+    if (actual !== expected) {
+      problems.push(
+        `${relativePath}: frontmatter ${field} must be "${expected}"; found "${actual ?? "(missing)"}"`,
+      );
+    }
+  }
+}
+
+function inspectChineseMarkdown(root, markdownPath, markdown, manifest, problems) {
+  const relativePath = toRepoRelative(root, markdownPath);
+  if (!String(markdown ?? "").trim()) {
+    problems.push(`${relativePath}: material PCR requires non-empty Chinese Markdown`);
+    return null;
+  }
+
+  const envelope = parseMarkdownEnvelope(markdown);
+  if (envelope.error) {
+    problems.push(`${relativePath}: ${envelope.error}`);
+    return null;
+  }
+  if (!envelope.body.trim()) {
+    problems.push(`${relativePath}: material PCR requires Chinese Markdown content after frontmatter`);
+  }
+
+  for (const [field, expected] of [
+    ["pcr_id", manifest?.id],
+    ["language", "zh-CN"],
+    ["sync_with", PCR_EN_FILE],
+  ]) {
+    const actual = envelope.frontmatter?.[field];
+    if (actual !== expected) {
+      problems.push(
+        `${relativePath}: frontmatter ${field} must be "${expected}"; found "${actual ?? "(missing)"}"`,
+      );
+    }
+  }
+
+  return envelope.body.trim() ? parsePcrMarkdownToStructured(markdown) : null;
+}
+
+function validateBilingualRuleAlignment(root, zhPath, english, chinese, problems) {
+  if (!chinese) {
+    return;
+  }
+  const relativePath = toRepoRelative(root, zhPath);
+  for (const [label, englishRules, chineseRules] of [
+    ["system boundary", english.systemBoundary?.rules ?? [], chinese.systemBoundary?.rules ?? []],
+    ["allocation", english.allocationRules ?? [], chinese.allocationRules ?? []],
+    ["validation", english.validationRules ?? [], chinese.validationRules ?? []],
+  ]) {
+    const englishIds = englishRules.map((rule) => rule.rule_id);
+    const chineseIds = chineseRules.map((rule) => rule.rule_id);
+    if (JSON.stringify(englishIds) !== JSON.stringify(chineseIds)) {
+      problems.push(
+        `${relativePath}: ${label} ordered rule ids do not match canonical English ` +
+          `(en-US: [${englishIds.join(", ")}], zh-CN: [${chineseIds.join(", ")}])`,
+      );
+    }
+  }
+}
+
+export function inspectPcrDirectory({
+  root,
+  pcrDir,
+  manifestText: manifestTextOverride,
+  structuredText: structuredTextOverride,
+  checkManifestLifecycle = true,
+  checkBilingualRuleAlignment = false,
+} = {}) {
+  const resolvedRoot = rootFromOptions({ root });
+  const directory = path.resolve(String(pcrDir));
+  const problems = [];
+  const warnings = [];
+  const manifestPath = path.join(directory, "manifest.yaml");
+
+  for (const fileName of ["manifest.yaml", PCR_EN_FILE, PCR_ZH_FILE, "structured.yaml"]) {
+    const candidate = path.join(directory, fileName);
+    if (!existsSync(candidate) && !(fileName === "manifest.yaml" && manifestTextOverride !== undefined)) {
+      problems.push(`Missing PCR file: ${toRepoRelative(resolvedRoot, candidate)}`);
+    }
+  }
+
+  if (!existsSync(manifestPath) && manifestTextOverride === undefined) {
+    return { problems, warnings, projection: null, expectedStructuredText: null };
+  }
+
+  const manifestText = manifestTextOverride ?? readFileSync(manifestPath, "utf8");
+  const manifest = parseYaml(manifestText);
+  if (checkManifestLifecycle) {
+    validateManifestLifecycle(resolvedRoot, manifestPath, manifestText, problems);
+  }
+  const canonicalMarkdown = path.join(directory, PCR_EN_FILE);
+  if (!existsSync(canonicalMarkdown)) {
+    return { problems, warnings, projection: null, expectedStructuredText: null };
+  }
+
+  const markdownText = readFileSync(canonicalMarkdown, "utf8");
+  const projection = parsePcrMarkdownToStructured(markdownText);
+  const material = isMaterialManifest(manifestText);
+  validatePcrProjection(
+    canonicalMarkdown,
+    projection,
+    problems,
+    warnings,
+    resolvedRoot,
+    {
+      material,
+      rangePolicy: rangePolicyFromManifest(manifestText),
+    },
+    markdownText,
+  );
+
+  if (["active", "published"].includes(manifest.status)) {
+    inspectCanonicalMarkdown(
+      resolvedRoot,
+      canonicalMarkdown,
+      markdownText,
+      manifest,
+      problems,
+    );
+    const canonicalPcrId = projection.productCategoryIdentity?.canonical_pcr_id;
+    if (!canonicalPcrId) {
+      problems.push(
+        `${toRepoRelative(resolvedRoot, canonicalMarkdown)}: Product Category Identity requires canonical_pcr_id`,
+      );
+    } else if (canonicalPcrId !== manifest.id) {
+      problems.push(
+        `${toRepoRelative(resolvedRoot, canonicalMarkdown)}: canonical_pcr_id "${canonicalPcrId}" ` +
+          `does not match manifest id "${manifest.id}"`,
+      );
+    }
+
+  }
+
+  if (material) {
+    const chineseMarkdownPath = path.join(directory, PCR_ZH_FILE);
+    if (existsSync(chineseMarkdownPath)) {
+      const chineseProjection = inspectChineseMarkdown(
+        resolvedRoot,
+        chineseMarkdownPath,
+        readFileSync(chineseMarkdownPath, "utf8"),
+        manifest,
+        problems,
+      );
+      if (checkBilingualRuleAlignment || ["active", "published"].includes(manifest.status)) {
+        validateBilingualRuleAlignment(
+          resolvedRoot,
+          chineseMarkdownPath,
+          projection,
+          chineseProjection,
+          problems,
+        );
+      }
+    }
+  }
+
+  const expectedStructuredText = structuredProjectionYaml(projection);
+  const structuredPath = path.join(directory, "structured.yaml");
+  if (material && (existsSync(structuredPath) || structuredTextOverride !== undefined)) {
+    const actualStructuredText = structuredTextOverride ?? readFileSync(structuredPath, "utf8");
+    if (normalizeGeneratedText(actualStructuredText) !== normalizeGeneratedText(expectedStructuredText)) {
+      problems.push(
+        `${toRepoRelative(resolvedRoot, structuredPath)}: stale structured projection; run ` +
+          `\`npm run pcr:sync-structured -- --pcr ${toRepoRelative(resolvedRoot, directory)}\``,
+      );
+    }
+  }
+
+  return { problems, warnings, projection, expectedStructuredText };
+}
+
 export function lint(options) {
   const root = rootFromOptions(options);
   const problems = [];
@@ -417,35 +648,14 @@ export function lint(options) {
   }
 
   const pcrRoot = path.join(root, "library/pcrs");
-  for (const directory of walkDirectories(pcrRoot)) {
+  for (const directory of walkDirectories(pcrRoot, problems, root)) {
     const manifest = path.join(directory, "manifest.yaml");
     if (!existsSync(manifest)) {
       continue;
     }
-    for (const fileName of [PCR_EN_FILE, PCR_ZH_FILE, "structured.yaml"]) {
-      const candidate = path.join(directory, fileName);
-      if (!existsSync(candidate)) {
-        problems.push(`Missing PCR file: ${toRepoRelative(root, candidate)}`);
-      }
-    }
-    const canonicalMarkdown = path.join(directory, PCR_EN_FILE);
-    if (existsSync(canonicalMarkdown)) {
-      const manifestText = readFileSync(manifest, "utf8");
-      validateManifestLifecycle(root, manifest, manifestText, problems);
-      const markdownText = readFileSync(canonicalMarkdown, "utf8");
-      validatePcrProjection(
-        canonicalMarkdown,
-        parsePcrMarkdownToStructured(markdownText),
-        problems,
-        warnings,
-        root,
-        {
-          material: isMaterialManifest(manifestText),
-          rangePolicy: rangePolicyFromManifest(manifestText),
-        },
-        markdownText,
-      );
-    }
+    const result = inspectPcrDirectory({ root, pcrDir: directory });
+    problems.push(...result.problems);
+    warnings.push(...result.warnings);
   }
 
   if (problems.length > 0) {
