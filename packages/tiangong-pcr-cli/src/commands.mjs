@@ -98,7 +98,7 @@ export function runTiangongPcr(argv) {
       if (format === "json") {
         return ok(`${JSON.stringify(treeOutput(tree, depth), null, 2)}\n`);
       }
-      return ok(`${formatTreeMarkdown(tree)}\n`);
+      return ok(`${formatTreeMarkdown(tree, depth)}\n`);
     }
     if (command === "resolve") {
       const classification = String(options.classification ?? "");
@@ -648,9 +648,16 @@ function shellToken(value) {
     : `'${String(value).replaceAll("'", `'"'"'`)}'`;
 }
 
-function formatTreeMarkdown(tree) {
+function formatTreeMarkdown(tree, depth) {
   const lines = [];
   renderTreeNode(tree, lines, 0);
+  lines.push("");
+  if (depth < 3) {
+    lines.push(`This hierarchy is partial at depth ${depth}.`);
+    lines.push("Next: run `npm --silent run tiangong-pcr -- list --path-prefix <visible-path>` to inspect paginated PCR records and readiness.");
+  } else {
+    lines.push("Next: inspect leaf readiness and run `npm --silent run tiangong-pcr -- guidance --pcr <pcr-id> --format json` only when `usable_for_guidance` is true.");
+  }
   return lines.join("\n");
 }
 
@@ -888,7 +895,7 @@ Commands:
   guidance --pcr <pcr-id> [--format json]
   validate-model --pcr <pcr-id> --input <file> [--format json] [--fail-on never|error|warning]
   validate-dataset --pcr <pcr-id> --input <file> [--format json] [--fail-on never|error|warning]
-  feedback draft --pcr <pcr-id> --type <type> [--summary <text>]
+  feedback draft --type <type> [--pcr <pcr-id>] [--summary <text>]
 
 Agent workflow:
   1. If a classification code is available, run resolve --classification <system>:<version>:<code> --format json.

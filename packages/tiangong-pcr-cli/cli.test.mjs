@@ -452,6 +452,8 @@ test("commands enforce their own output formats and defaults", async (t) => {
 test("tree defaults to depth 2 and reports readiness on rendered PCR leaves", () => {
   const defaultTree = runCli(["tree"]);
   assert.doesNotMatch(defaultTree, new RegExp(wheatSeedPcrId.replaceAll(".", "\\.")));
+  assert.match(defaultTree, /partial at depth 2/);
+  assert.match(defaultTree, /list --path-prefix <visible-path>/);
 
   const jsonTree = JSON.parse(runCli(["tree", "--format", "json"]));
   assert.equal(jsonTree.scope, "library/pcrs");
