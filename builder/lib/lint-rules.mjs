@@ -1,4 +1,13 @@
-import { existsSync, lstatSync, readFileSync, readdirSync } from "node:fs";
+import {
+  closeSync,
+  constants as fsConstants,
+  existsSync,
+  fstatSync,
+  lstatSync,
+  openSync,
+  readFileSync,
+  readdirSync,
+} from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -26,6 +35,7 @@ import { validateBuilderContract } from "./schema-contracts.mjs";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const defaultRoot = path.resolve(__dirname, "../..");
+const UTF8_DECODER = new TextDecoder("utf-8", { fatal: true });
 
 function rootFromOptions(options) {
   return path.resolve(String(options.root ?? defaultRoot));
@@ -72,9 +82,10 @@ function discoverCanonicalPcrDirectories(root, problems, repositoryRoot) {
   if (!existsSync(root)) {
     return [];
   }
-  if (lstatSync(root).isSymbolicLink()) {
+  const rootStats = lstatSync(root);
+  if (rootStats.isSymbolicLink() || !rootStats.isDirectory()) {
     problems.push(
-      `${toRepoRelative(repositoryRoot, root)}: PCR root must not be a symbolic link`,
+      `${toRepoRelative(repositoryRoot, root)}: PCR root must be a canonical directory and must not be a symbolic link`,
     );
     return [];
   }
@@ -84,11 +95,16 @@ function discoverCanonicalPcrDirectories(root, problems, repositoryRoot) {
     const { directory: current, depth } = stack.pop();
     const manifestPath = path.join(current, "manifest.yaml");
     if (existsSync(manifestPath)) {
-      if (depth === 3) {
+      const manifestStats = lstatSync(manifestPath);
+      if (depth === 3 && manifestStats.isFile() && !manifestStats.isSymbolicLink()) {
         results.push(current);
-      } else {
+      } else if (depth !== 3) {
         problems.push(
           `${toRepoRelative(repositoryRoot, manifestPath)}: manifest.yaml must be exactly three directories below library/pcrs`,
+        );
+      } else if (!manifestStats.isSymbolicLink()) {
+        problems.push(
+          `${toRepoRelative(repositoryRoot, manifestPath)}: manifest.yaml must be a canonical regular file`,
         );
       }
     }
@@ -113,6 +129,67 @@ function toRepoRelative(root, absolutePath) {
   return path.relative(root, absolutePath).replaceAll(path.sep, "/");
 }
 
+function canonicalRegularFileState(filePath, root, problems, { missingMessage } = {}) {
+  let stats;
+  try {
+    stats = lstatSync(filePath);
+  } catch (error) {
+    if (error.code === "ENOENT") {
+      problems.push(
+        missingMessage ?? `${toRepoRelative(root, filePath)}: required file is missing`,
+      );
+      return { exists: false, safe: true };
+    }
+    problems.push(
+      `${toRepoRelative(root, filePath)}: managed input could not be inspected (${error.code ?? error.message})`,
+    );
+    return { exists: false, safe: false };
+  }
+
+  if (stats.isSymbolicLink() || !stats.isFile()) {
+    problems.push(
+      `${toRepoRelative(root, filePath)}: managed input must be a canonical regular file; ` +
+        "symbolic links and special files are not allowed",
+    );
+    return { exists: true, safe: false };
+  }
+  return { exists: true, safe: true };
+}
+
+function readCanonicalRegularFile(filePath, root, problems) {
+  let descriptor;
+  try {
+    descriptor = openSync(
+      filePath,
+      fsConstants.O_RDONLY |
+        (fsConstants.O_NOFOLLOW ?? 0) |
+        (fsConstants.O_NONBLOCK ?? 0),
+    );
+    if (!fstatSync(descriptor).isFile()) {
+      problems.push(
+        `${toRepoRelative(root, filePath)}: managed input must be a canonical regular file`,
+      );
+      return null;
+    }
+    const bytes = readFileSync(descriptor);
+    try {
+      return UTF8_DECODER.decode(bytes);
+    } catch {
+      problems.push(`${toRepoRelative(root, filePath)}: managed input must be valid UTF-8`);
+      return null;
+    }
+  } catch (error) {
+    problems.push(
+      `${toRepoRelative(root, filePath)}: managed input could not be safely read (${error.code ?? error.message})`,
+    );
+    return null;
+  } finally {
+    if (descriptor !== undefined) {
+      closeSync(descriptor);
+    }
+  }
+}
+
 function addContractProblems({ contract, value, sourcePath, root, problems, entityKind }) {
   const result = validateBuilderContract(contract, value, { entityKind });
   for (const error of result.errors) {
@@ -123,13 +200,19 @@ function addContractProblems({ contract, value, sourcePath, root, problems, enti
 }
 
 function validateYamlContractFile({ contract, sourcePath, root, problems, entityKind }) {
-  if (!existsSync(sourcePath)) {
-    problems.push(`Missing contract file: ${toRepoRelative(root, sourcePath)}`);
+  const state = canonicalRegularFileState(sourcePath, root, problems, {
+    missingMessage: `Missing contract file: ${toRepoRelative(root, sourcePath)}`,
+  });
+  if (!state.exists || !state.safe) {
+    return;
+  }
+  const text = readCanonicalRegularFile(sourcePath, root, problems);
+  if (text === null) {
     return;
   }
   addContractProblems({
     contract,
-    value: parseYaml(readFileSync(sourcePath, "utf8")),
+    value: parseYaml(text),
     sourcePath,
     root,
     problems,
@@ -526,19 +609,102 @@ export function inspectPcrDirectory({
   const problems = [];
   const warnings = [];
   const manifestPath = path.join(directory, manifestFileName);
+  const inputSpecifications = [
+    {
+      fileName: manifestFileName,
+      filePath: manifestPath,
+      override: manifestTextOverride,
+    },
+    {
+      fileName: PCR_EN_FILE,
+      filePath: path.join(directory, PCR_EN_FILE),
+      override: undefined,
+    },
+    {
+      fileName: PCR_ZH_FILE,
+      filePath: path.join(directory, PCR_ZH_FILE),
+      override: undefined,
+    },
+    {
+      fileName: "structured.yaml",
+      filePath: path.join(directory, "structured.yaml"),
+      override: structuredTextOverride,
+    },
+  ];
+  const inputStates = new Map();
+  let managedInputsSafe = true;
 
-  for (const fileName of [manifestFileName, PCR_EN_FILE, PCR_ZH_FILE, "structured.yaml"]) {
-    const candidate = path.join(directory, fileName);
-    if (!existsSync(candidate) && !(fileName === manifestFileName && manifestTextOverride !== undefined)) {
-      problems.push(`Missing PCR file: ${toRepoRelative(resolvedRoot, candidate)}`);
+  // Complete the type preflight before opening any managed input. A single symlink or
+  // special file invalidates the inspection boundary, so no other leaf content is read.
+  for (const specification of inputSpecifications) {
+    const state = specification.override !== undefined
+      ? { exists: true, safe: true }
+      : canonicalRegularFileState(
+          specification.filePath,
+          resolvedRoot,
+          problems,
+          {
+            missingMessage: `Missing PCR file: ${toRepoRelative(resolvedRoot, specification.filePath)}`,
+          },
+        );
+    inputStates.set(specification.fileName, state);
+    if (!state.safe) {
+      managedInputsSafe = false;
     }
   }
 
-  if (!existsSync(manifestPath) && manifestTextOverride === undefined) {
-    return { problems, warnings, projection: null, expectedStructuredText: null };
+  if (!managedInputsSafe) {
+    return {
+      problems,
+      warnings,
+      projection: null,
+      expectedStructuredText: null,
+      managedInputsSafe: false,
+    };
   }
 
-  const manifestText = manifestTextOverride ?? readFileSync(manifestPath, "utf8");
+  const inputTexts = new Map();
+  for (const specification of inputSpecifications) {
+    if (specification.override !== undefined) {
+      inputTexts.set(specification.fileName, specification.override);
+      continue;
+    }
+    if (!inputStates.get(specification.fileName).exists) {
+      continue;
+    }
+    const text = readCanonicalRegularFile(
+      specification.filePath,
+      resolvedRoot,
+      problems,
+    );
+    if (text === null) {
+      managedInputsSafe = false;
+      break;
+    }
+    inputTexts.set(specification.fileName, text);
+  }
+
+  if (!managedInputsSafe) {
+    return {
+      problems,
+      warnings,
+      projection: null,
+      expectedStructuredText: null,
+      managedInputsSafe: false,
+    };
+  }
+
+  if (!inputTexts.has(manifestFileName)) {
+    return {
+      problems,
+      warnings,
+      projection: null,
+      expectedStructuredText: null,
+      managedInputsSafe: true,
+    };
+  }
+
+  const manifestText = inputTexts.get(manifestFileName);
   const manifest = parseYaml(manifestText);
   addContractProblems({
     contract: "pcr-manifest.schema.json",
@@ -552,11 +718,17 @@ export function inspectPcrDirectory({
     validateManifestLifecycle(resolvedRoot, manifestPath, manifestText, problems);
   }
   const canonicalMarkdown = path.join(directory, PCR_EN_FILE);
-  if (!existsSync(canonicalMarkdown)) {
-    return { problems, warnings, projection: null, expectedStructuredText: null };
+  if (!inputTexts.has(PCR_EN_FILE)) {
+    return {
+      problems,
+      warnings,
+      projection: null,
+      expectedStructuredText: null,
+      managedInputsSafe: true,
+    };
   }
 
-  const markdownText = readFileSync(canonicalMarkdown, "utf8");
+  const markdownText = inputTexts.get(PCR_EN_FILE);
   validateMarkdownFrontmatterContract(
     resolvedRoot,
     canonicalMarkdown,
@@ -589,8 +761,8 @@ export function inspectPcrDirectory({
   }
 
   const chineseMarkdownPath = path.join(directory, PCR_ZH_FILE);
-  if (existsSync(chineseMarkdownPath)) {
-    const chineseMarkdownText = readFileSync(chineseMarkdownPath, "utf8");
+  if (inputTexts.has(PCR_ZH_FILE)) {
+    const chineseMarkdownText = inputTexts.get(PCR_ZH_FILE);
     validateMarkdownFrontmatterContract(
       resolvedRoot,
       chineseMarkdownPath,
@@ -631,8 +803,8 @@ export function inspectPcrDirectory({
     }
   }
   const structuredPath = path.join(directory, "structured.yaml");
-  if (material && (existsSync(structuredPath) || structuredTextOverride !== undefined)) {
-    const actualStructuredText = structuredTextOverride ?? readFileSync(structuredPath, "utf8");
+  if (material && inputTexts.has("structured.yaml")) {
+    const actualStructuredText = inputTexts.get("structured.yaml");
     addContractProblems({
       contract: "structured-projection.schema.json",
       value: parseYaml(actualStructuredText),
@@ -655,7 +827,13 @@ export function inspectPcrDirectory({
     }
   }
 
-  return { problems, warnings, projection, expectedStructuredText };
+  return {
+    problems,
+    warnings,
+    projection,
+    expectedStructuredText,
+    managedInputsSafe: true,
+  };
 }
 
 export function lint(options) {
@@ -664,8 +842,14 @@ export function lint(options) {
   const warnings = [];
 
   for (const dir of REQUIRED_DIRS) {
-    if (!existsSync(path.join(root, dir))) {
+    const directory = path.join(root, dir);
+    if (!existsSync(directory)) {
       problems.push(`Missing required directory: ${dir}`);
+      continue;
+    }
+    const stats = lstatSync(directory);
+    if (stats.isSymbolicLink() || !stats.isDirectory()) {
+      problems.push(`${dir}: required path must be a canonical directory`);
     }
   }
 
@@ -679,14 +863,19 @@ export function lint(options) {
 
   const mappingRoot = path.join(root, "classifications/mappings");
   if (existsSync(mappingRoot)) {
-    for (const fileName of readdirSync(mappingRoot).filter((entry) => /\.ya?ml$/u.test(entry)).sort()) {
-      validateYamlContractFile({
-        contract: "classification-mapping.schema.json",
-        sourcePath: path.join(mappingRoot, fileName),
-        root,
-        problems,
-        entityKind: "classification mapping",
-      });
+    const mappingRootStats = lstatSync(mappingRoot);
+    if (mappingRootStats.isSymbolicLink() || !mappingRootStats.isDirectory()) {
+      problems.push("classifications/mappings: mapping root must be a canonical directory");
+    } else {
+      for (const fileName of readdirSync(mappingRoot).filter((entry) => /\.ya?ml$/u.test(entry)).sort()) {
+        validateYamlContractFile({
+          contract: "classification-mapping.schema.json",
+          sourcePath: path.join(mappingRoot, fileName),
+          root,
+          problems,
+          entityKind: "classification mapping",
+        });
+      }
     }
   }
 
@@ -695,6 +884,9 @@ export function lint(options) {
     const result = inspectPcrDirectory({ root, pcrDir: directory });
     problems.push(...result.problems);
     warnings.push(...result.warnings);
+    if (!result.managedInputsSafe) {
+      continue;
+    }
 
     const state = inspectPublishedRevisionState({ root, pcrDir: directory });
     problems.push(...state.problems);

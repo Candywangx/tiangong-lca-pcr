@@ -7,6 +7,7 @@ import {
   readFileSync,
   mkdirSync,
   mkdtempSync,
+  renameSync,
   rmSync,
   symlinkSync,
   writeFileSync,
@@ -239,6 +240,67 @@ test("viewer fails closed when catalog coverage declarations are missing or inva
   } finally {
     rmSync(root, { recursive: true, force: true });
   }
+});
+
+test("viewer managed inputs reject symbolic links, FIFOs, and invalid UTF-8", async (t) => {
+  await t.test("catalog symbolic link", () => {
+    const root = mkdtempSync(path.join(tmpdir(), "tiangong-pcr-viewer-catalog-link-"));
+    try {
+      mkdirSync(path.join(root, "library/pcrs"), { recursive: true });
+      writeFixtureCatalog({
+        root,
+        coverageIndexes: ["classifications/indexes/cpc-3.0-coverage.json"],
+      });
+      const catalogPath = path.join(root, "library/catalog.yaml");
+      const sourcePath = `${catalogPath}.source`;
+      renameSync(catalogPath, sourcePath);
+      symlinkSync(path.basename(sourcePath), catalogPath);
+
+      assert.throws(
+        () => buildViewerData({ root }),
+        /PCR catalog path contains a symbolic link/u,
+      );
+    } finally {
+      rmSync(root, { recursive: true, force: true });
+    }
+  });
+
+  await t.test("catalog FIFO", (subtest) => {
+    const root = mkdtempSync(path.join(tmpdir(), "tiangong-pcr-viewer-catalog-fifo-"));
+    try {
+      mkdirSync(path.join(root, "library/pcrs"), { recursive: true });
+      const catalogPath = path.join(root, "library/catalog.yaml");
+      const result = spawnSync("mkfifo", [catalogPath], { encoding: "utf8" });
+      if (result.error?.code === "ENOENT") {
+        subtest.skip("mkfifo is unavailable on this platform");
+        return;
+      }
+      assert.equal(result.status, 0, result.stderr);
+      assert.throws(
+        () => buildViewerData({ root }),
+        /PCR catalog must be a regular file/u,
+      );
+    } finally {
+      rmSync(root, { recursive: true, force: true });
+    }
+  });
+
+  await t.test("declared coverage index invalid UTF-8", () => {
+    const root = mkdtempSync(path.join(tmpdir(), "tiangong-pcr-viewer-coverage-utf8-"));
+    try {
+      mkdirSync(path.join(root, "library/pcrs"), { recursive: true });
+      const indexPath = "classifications/indexes/cpc-3.0-coverage.json";
+      writeFixtureCatalog({ root, coverageIndexes: [indexPath] });
+      writeFixtureFile({ root, relativePath: indexPath, contents: Buffer.from([0xff]) });
+
+      assert.throws(
+        () => buildViewerData({ root }),
+        /classification coverage index .* must contain valid UTF-8/u,
+      );
+    } finally {
+      rmSync(root, { recursive: true, force: true });
+    }
+  });
 });
 
 test("buildViewer refuses protected and unowned output directories", () => {
@@ -662,25 +724,6 @@ function writeFixtureCoverageIndex({
     `classifications/systems/${system}/${version}/normalized/leaves.json`;
   const mappingPath = `classifications/mappings/${system}-${version}-to-pcr.yaml`;
   const indexPath = `classifications/indexes/${system}-${version}-coverage.json`;
-  const normalizedLeavesText = `${JSON.stringify(
-    {
-      schema_version: 1,
-      fixture: `${system}:${version}`,
-      leaf_count: mappedPcrIds.length + unmappedCount,
-    },
-    null,
-    2,
-  )}\n`;
-  const mappingText = [
-    "schema_version: 1",
-    `classification_system: ${JSON.stringify(system.toUpperCase())}`,
-    `classification_version: ${JSON.stringify(version)}`,
-    "mappings: []",
-    "",
-  ].join("\n");
-  writeFixtureFile({ root, relativePath: normalizedLeavesPath, contents: normalizedLeavesText });
-  writeFixtureFile({ root, relativePath: mappingPath, contents: mappingText });
-
   const mappedEntries = mappedPcrIds.map((pcrId, index) =>
     fixtureCoverageEntry({ system, index, pcrId }),
   );
@@ -692,6 +735,41 @@ function writeFixtureCoverageIndex({
     }),
   );
   const entries = [...mappedEntries, ...unmappedEntries];
+  const normalizedLeavesText = `${JSON.stringify(
+    {
+      schema_version: 1,
+      classification_system: system.toUpperCase(),
+      classification_version: version,
+      leaves: entries.map((entry) => ({
+        code: entry.code,
+        title: entry.label,
+        path_codes: entry.path_codes,
+        path_titles: entry.path_titles,
+      })),
+    },
+    null,
+    2,
+  )}\n`;
+  const mappingText = [
+    "schema_version: 1",
+    `classification_system: ${JSON.stringify(system.toUpperCase())}`,
+    `classification_version: ${JSON.stringify(version)}`,
+    ...(mappedEntries.length === 0
+      ? ["mappings: []"]
+      : [
+          "mappings:",
+          ...mappedEntries.flatMap((entry) => [
+            `  - code: ${JSON.stringify(entry.code)}`,
+            `    label: ${JSON.stringify(entry.label)}`,
+            `    pcr_id: ${JSON.stringify(entry.mapping.pcr_id)}`,
+            `    mapping_type: ${entry.mapping.mapping_type}`,
+            `    confidence: ${entry.mapping.confidence}`,
+          ]),
+        ]),
+    "",
+  ].join("\n");
+  writeFixtureFile({ root, relativePath: normalizedLeavesPath, contents: normalizedLeavesText });
+  writeFixtureFile({ root, relativePath: mappingPath, contents: mappingText });
   const document = {
     schema_version: 1,
     index_kind: "classification-pcr-coverage",

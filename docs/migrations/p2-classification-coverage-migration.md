@@ -65,8 +65,11 @@ Phase 1 已交付：
   和 coverage/material 交叉引用漂移；
 - public CLI 的 `tree`/`list` 默认 material，`coverage summary|list` 独立且分页，exact resolve 显式区分
   `mapped`、`legacy_scaffold_compatibility` 和 known-unmapped；
-- viewer data contract 升级为 v2，默认只包含 3 条 material methodology 和轻量 coverage summary，
-  不再内联 2,874 条 empty scaffold 的 Markdown 或 guidance error；
+- viewer data contract 升级为 v3，默认只包含 3 条 material methodology，并按 system/version 输出轻量
+  `classification_coverage_summaries`，不再内联 coverage entries、2,874 条 empty scaffold 的 Markdown
+  或 guidance error；
+- coverage source descriptor 固定 generator/contract 版本及 normalized leaves、mapping 两份输入的
+  exact-byte SHA-256；catalog check 与 runtime read 都会拒绝 stale 或被替换的输入；
 - core API 默认 scope 仍为 `all` 以保留库级兼容，CLI/viewer 在边界处显式选择 `material`。
 
 Phase 1 验收：
@@ -80,13 +83,28 @@ Phase 1 验收：
 
 ## Phase 2：停止再生成并准备 alias
 
-状态：待实现。
+状态：进行中。仅步骤 1 importer cutover 已完成；步骤 2-5 以及后续物理迁移均待实现。
 
-1. 修改 CPC importer，只生成 raw、normalized classification 和 coverage input，不再按 leaf 创建 PCR 目录。
-2. 显式 create workflow 成为创建 canonical PCR 的唯一入口。
-3. Positive mapping 只保留指向 material PCR 的 3 条 accepted edge；其余 leaf 状态由 coverage assessment 表达。
-4. 为 2,874 个旧 id 生成 alias inventory，target kind 为 `classification_coverage`，并校验 collision、chain 和 cycle。
-5. Resolve 优先读取 positive mapping；无 mapping 的已知 leaf 返回 `unmapped`，旧 id 返回 coverage redirect。
+1. 已完成：canonical `import-cpc` 每次必须显式传入 `--source`。默认 classification-only，只生成 raw
+   source、source metadata 和 normalized classification artifacts；mapping 缺失时创建 zero-edge mapping，
+   已存在时先验证并逐字节保留，创建 0 个 PCR。非 3.0 版本必须先注册 coverage descriptor。Importer
+   以 system/version coordinate lock、no-follow read、baseline CAS 和逐文件/完整目录 staged install 协调变更，
+   mapping 最后提交；partial failure 不会产生 dangling new edge，先安装的 classification projection 可在下次
+   重跑时确定性再生成。
+
+   受保护的 `scaffold-cpc` alias 必须显式使用 `--legacy-scaffolds`，仅用于迁移复现或测试，不能用于新
+   import。该模式只为 unmapped leaf append legacy edge 和 identity；目标不存在时可创建完整四文件 legacy
+   scaffold，目标存在时必须四文件齐全且与确定性 legacy template 逐字节一致，否则 fail closed。它不能
+   修复 partial directory、覆盖 accepted edge 或改写 PCR 内容。
+2. 待实现：为 positive edge 建立显式 acceptance contract 和审核 workflow。
+3. 待实现：positive mapping 只保留指向 material PCR 的 accepted edge；其余 leaf 状态由 coverage
+   assessment 表达。
+4. 待实现：为 2,874 个旧 id 生成 alias inventory，target kind 为 `classification_coverage`，并校验
+   collision、chain 和 cycle。
+5. 待实现：resolve 优先读取 accepted positive mapping；无 mapping 的已知 leaf 返回 `unmapped`，旧 id
+   返回 coverage redirect。
+
+迁移全程只有显式 create workflow 可以创建 canonical PCR；classification leaf 本身不是创建请求。
 
 本阶段完成前禁止删除任何 legacy scaffold。
 

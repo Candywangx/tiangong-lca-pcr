@@ -50,6 +50,7 @@ import { validateManifest, validateStructured } from "./schema-contracts.mjs";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const defaultRoot = path.resolve(__dirname, "../..");
+const UTF8_DECODER = new TextDecoder("utf-8", { fatal: true });
 
 function rootFromOptions(options) {
   return path.resolve(String(options.root ?? defaultRoot));
@@ -72,12 +73,13 @@ function pcrDirectoryFromOptions(root, options) {
   }
   const candidate = path.resolve(root, pcr);
   const pcrRoot = path.resolve(root, "library/pcrs");
-  if (!isStrictDescendant(pcrRoot, candidate)) {
-    throw new Error(
-      `PCR path must be inside ${toRepoRelative(root, pcrRoot)}/; received ${pcr}.`,
-    );
-  }
+  const lexicallyContained = isStrictDescendant(pcrRoot, candidate);
   if (!existsSync(candidate)) {
+    if (!lexicallyContained) {
+      throw new Error(
+        `PCR path must be inside ${toRepoRelative(root, pcrRoot)}/; received ${pcr}.`,
+      );
+    }
     throw new Error(`PCR directory not found: ${candidate}`);
   }
   if (!statSync(candidate).isDirectory()) {
@@ -90,7 +92,13 @@ function pcrDirectoryFromOptions(root, options) {
       `PCR root must resolve inside repository root; ${toRepoRelative(root, pcrRoot)} resolves to ${realPcrRoot}.`,
     );
   }
-  if (!isStrictDescendant(realPcrRoot, realpathSync(candidate))) {
+  const realCandidate = realpathSync(candidate);
+  if (!isStrictDescendant(realPcrRoot, realCandidate)) {
+    if (!lexicallyContained) {
+      throw new Error(
+        `PCR path must be inside ${toRepoRelative(root, pcrRoot)}/; received ${pcr}.`,
+      );
+    }
     throw new Error(`PCR directory resolves outside ${toRepoRelative(root, pcrRoot)}/: ${candidate}`);
   }
   return candidate;
@@ -147,7 +155,12 @@ function readRequiredText(filePath, label) {
     if (!fstatSync(descriptor).isFile()) {
       throw new Error(`${label} must be a regular file: ${filePath}`);
     }
-    return readFileSync(descriptor, "utf8");
+    const bytes = readFileSync(descriptor);
+    try {
+      return UTF8_DECODER.decode(bytes);
+    } catch {
+      throw new Error(`${label} must contain valid UTF-8: ${filePath}`);
+    }
   } finally {
     closeSync(descriptor);
   }
@@ -183,6 +196,28 @@ function parseTranslationOption(value) {
     throw new Error(`--translation status must be one of ${formatOneOf(TRANSLATION_STATUS_VALUES)}.`);
   }
   return { language, status };
+}
+
+function translationTargetProblems(manifest, translation) {
+  if (!translation) {
+    return [];
+  }
+  const canonical = manifest.languages?.canonical;
+  const available = Array.isArray(manifest.languages?.available)
+    ? manifest.languages.available
+    : [];
+  const problems = [];
+  if (translation.language === canonical) {
+    problems.push(
+      `--translation cannot target canonical language ${translation.language}; update canonical Markdown instead`,
+    );
+  }
+  if (!available.includes(translation.language)) {
+    problems.push(
+      `--translation language ${translation.language} is not declared in manifest.languages.available`,
+    );
+  }
+  return problems;
 }
 
 function incrementVersion(current, level) {
@@ -423,7 +458,7 @@ export function syncStructured(options) {
     if (state.problems.length > 0) {
       throw operationError("PCR sync preflight failed", root, paths.pcrDir, state.problems);
     }
-    const selectedManifest = parseYaml(readFileSync(paths.manifestPath, "utf8"));
+    const selectedManifest = parseYaml(readRequiredText(paths.manifestPath, "PCR manifest"));
     if (workspace === "current" && ["published", "deprecated"].includes(selectedManifest.status)) {
       throw operationError(
         "PCR sync rejected",
@@ -445,7 +480,9 @@ export function syncStructured(options) {
     prepareStage({ stageDir }) {
       const workspaceDir = workspace === "current" ? stageDir : revisionWorkspaceAt(stageDir);
       const manifestName = workspace === "current" ? "manifest.yaml" : "manifest.next.yaml";
-      const manifest = parseYaml(readFileSync(path.join(workspaceDir, manifestName), "utf8"));
+      const manifest = parseYaml(
+        readRequiredText(path.join(workspaceDir, manifestName), "PCR manifest"),
+      );
       if (workspace === "current" && ["published", "deprecated"].includes(manifest.status)) {
         throw new Error(`Cannot sync immutable current ${manifest.status} PCR content.`);
       }
@@ -478,6 +515,14 @@ export function syncStructured(options) {
         pcrDir: workspaceDir,
         manifestFileName: workspace === "current" ? "manifest.yaml" : "manifest.next.yaml",
       });
+      if (!inspection.managedInputsSafe) {
+        throw operationError(
+          "PCR sync staged managed-input validation failed",
+          root,
+          paths.pcrDir,
+          inspection.problems,
+        );
+      }
       const staleOnlyProblems = inspection.problems.filter((problem) => /stale structured projection/u.test(problem));
       if (staleOnlyProblems.length > 0) {
         throw operationError("PCR sync staged projection validation failed", root, paths.pcrDir, staleOnlyProblems);
@@ -501,7 +546,11 @@ export function bump(options) {
   }
   const root = rootFromOptions(options);
   const paths = workspacePathsFromOptions(root, options, "current");
-  const current = parseYaml(readFileSync(paths.manifestPath, "utf8"));
+  const state = inspectManagedState(root, paths.pcrDir);
+  if (state.problems.length > 0) {
+    throw operationError("PCR bump managed-state preflight failed", root, paths.pcrDir, state.problems);
+  }
+  const current = parseYaml(readRequiredText(paths.manifestPath, "PCR manifest"));
   if (
     ["published", "deprecated"].includes(current.status) ||
     ["published_methodology", "deprecated_methodology"].includes(current.content_maturity)
@@ -516,7 +565,7 @@ export function bump(options) {
       ].join("\n"),
     );
   }
-  if (existsSync(path.join(paths.pcrDir, "revision"))) {
+  if (state.revision || existsSync(path.join(paths.pcrDir, "revision"))) {
     throw new Error("Cannot bump current PCR while a revision workspace is open.");
   }
 
@@ -526,21 +575,30 @@ export function bump(options) {
     pcr: paths.pcrDir,
     command: `bump:${level}`,
     preflight() {
-      const locked = parseYaml(readFileSync(paths.manifestPath, "utf8"));
+      const lockedState = inspectManagedState(root, paths.pcrDir);
+      if (lockedState.problems.length > 0) {
+        throw operationError(
+          "PCR bump managed-state preflight failed",
+          root,
+          paths.pcrDir,
+          lockedState.problems,
+        );
+      }
+      const locked = parseYaml(readRequiredText(paths.manifestPath, "PCR manifest"));
       if (
         ["published", "deprecated"].includes(locked.status) ||
         ["published_methodology", "deprecated_methodology"].includes(locked.content_maturity)
       ) {
         throw new Error(`Cannot bump ${locked.status}/${locked.content_maturity} PCR in place.`);
       }
-      if (existsSync(path.join(paths.pcrDir, "revision"))) {
+      if (lockedState.revision || existsSync(path.join(paths.pcrDir, "revision"))) {
         throw new Error("Cannot bump current PCR while a revision workspace is open.");
       }
       incrementVersion(locked.version, level);
     },
     prepareStage({ stageDir }) {
       const manifestPath = path.join(stageDir, "manifest.yaml");
-      const manifest = parseYaml(readFileSync(manifestPath, "utf8"));
+      const manifest = parseYaml(readRequiredText(manifestPath, "PCR manifest"));
       if (["published", "deprecated"].includes(manifest.status)) {
         throw new Error(`Cannot bump ${manifest.status} PCR in place.`);
       }
@@ -550,10 +608,14 @@ export function bump(options) {
       writeFileSync(manifestPath, renderYaml(manifest));
     },
     validateStage({ stageDir }) {
-      const manifest = parseYaml(readFileSync(path.join(stageDir, "manifest.yaml"), "utf8"));
+      const manifest = parseYaml(
+        readRequiredText(path.join(stageDir, "manifest.yaml"), "PCR manifest"),
+      );
+      const managed = inspectManagedState(root, stageDir);
       const problems = [
         ...manifestSchemaProblems(manifest, "PCR manifest"),
         ...manifestLifecycleProblems(manifest),
+        ...managed.problems,
       ];
       if (problems.length > 0) {
         throw operationError("PCR bump staged-state validation failed", root, paths.pcrDir, problems);
@@ -585,7 +647,11 @@ export function lifecycle(options) {
     throw new Error("Cannot change current lifecycle while a revision workspace is open.");
   }
 
-  const currentManifest = parseYaml(readFileSync(paths.manifestPath, "utf8"));
+  const currentManifest = parseYaml(readRequiredText(paths.manifestPath, "PCR manifest"));
+  const translationProblems = translationTargetProblems(currentManifest, translation);
+  if (translationProblems.length > 0) {
+    throw operationError("PCR lifecycle translation target rejected", root, paths.pcrDir, translationProblems);
+  }
   if (workspace === "current" && currentManifest.status === "published") {
     const exactDeprecation = status === "deprecated" && contentMaturity === "deprecated_methodology" && !translation;
     if (!exactDeprecation) {
@@ -615,7 +681,7 @@ export function lifecycle(options) {
       if (workspace === "current" && lockedState.revision) {
         throw new Error("Cannot change current lifecycle while a revision workspace is open.");
       }
-      const locked = parseYaml(readFileSync(paths.manifestPath, "utf8"));
+      const locked = parseYaml(readRequiredText(paths.manifestPath, "PCR manifest"));
       if (workspace === "current" && locked.status === "published") {
         const exactDeprecation = status === "deprecated" && contentMaturity === "deprecated_methodology" && !translation;
         if (!exactDeprecation) {
@@ -629,6 +695,15 @@ export function lifecycle(options) {
       }
       if (workspace === "revision" && status && !["candidate", "active"].includes(status)) {
         throw new Error("Revision lifecycle status must remain candidate or active until pcr:publish promotes it.");
+      }
+      const lockedTranslationProblems = translationTargetProblems(locked, translation);
+      if (lockedTranslationProblems.length > 0) {
+        throw operationError(
+          "PCR lifecycle translation target rejected",
+          root,
+          paths.pcrDir,
+          lockedTranslationProblems,
+        );
       }
       const proposed = structuredClone(locked);
       if (status) proposed.status = status;
@@ -648,7 +723,16 @@ export function lifecycle(options) {
       const workspaceDir = workspace === "current" ? stageDir : revisionWorkspaceAt(stageDir);
       const manifestName = workspace === "current" ? "manifest.yaml" : "manifest.next.yaml";
       const manifestPath = path.join(workspaceDir, manifestName);
-      const current = parseYaml(readFileSync(manifestPath, "utf8"));
+      const current = parseYaml(readRequiredText(manifestPath, "PCR manifest"));
+      const stagedTranslationProblems = translationTargetProblems(current, translation);
+      if (stagedTranslationProblems.length > 0) {
+        throw operationError(
+          "PCR lifecycle translation target rejected",
+          root,
+          paths.pcrDir,
+          stagedTranslationProblems,
+        );
+      }
       const next = structuredClone(current);
       changed.length = 0;
       if (status) {
@@ -678,7 +762,7 @@ export function lifecycle(options) {
       const workspaceDir = workspace === "current" ? stageDir : revisionWorkspaceAt(stageDir);
       const manifestName = workspace === "current" ? "manifest.yaml" : "manifest.next.yaml";
       const manifestPath = path.join(workspaceDir, manifestName);
-      const manifest = parseYaml(readFileSync(manifestPath, "utf8"));
+      const manifest = parseYaml(readRequiredText(manifestPath, "PCR manifest"));
       const schemaProblems = manifestSchemaProblems(manifest, "PCR manifest");
       if (schemaProblems.length > 0) {
         throw operationError("PCR lifecycle staged-state validation failed", root, paths.pcrDir, schemaProblems);
@@ -733,7 +817,7 @@ export function revise(options) {
   const now = new Date().toISOString();
   const state = inspectManagedState(root, paths.pcrDir);
   const problems = [...state.problems];
-  const currentManifest = parseYaml(readFileSync(paths.manifestPath, "utf8"));
+  const currentManifest = parseYaml(readRequiredText(paths.manifestPath, "PCR manifest"));
   if (currentManifest.status !== "published") {
     problems.push(`pcr:revise requires current status published; found ${currentManifest.status}`);
   }
@@ -765,7 +849,7 @@ export function revise(options) {
     preflight() {
       const lockedState = inspectManagedState(root, paths.pcrDir);
       const lockedProblems = [...lockedState.problems];
-      const lockedManifest = parseYaml(readFileSync(paths.manifestPath, "utf8"));
+      const lockedManifest = parseYaml(readRequiredText(paths.manifestPath, "PCR manifest"));
       if (lockedManifest.status !== "published") {
         lockedProblems.push(`pcr:revise requires current status published; found ${lockedManifest.status}`);
       }
@@ -800,7 +884,9 @@ export function revise(options) {
           [...stageState.problems, ...(stageState.revision ? ["a revision workspace is already open"] : [])],
         );
       }
-      const manifest = parseYaml(readFileSync(path.join(stageDir, "manifest.yaml"), "utf8"));
+      const manifest = parseYaml(
+        readRequiredText(path.join(stageDir, "manifest.yaml"), "PCR manifest"),
+      );
       if (manifest.status !== "published" || manifest.version !== currentManifest.version) {
         throw new Error("Published current state changed before the revision transaction acquired its lock.");
       }
@@ -819,7 +905,7 @@ export function revise(options) {
       delete nextManifest.release_artifacts;
 
       const englishText = updateMarkdownFrontmatter(
-        readFileSync(path.join(stageDir, PCR_EN_FILE), "utf8"),
+        readRequiredText(path.join(stageDir, PCR_EN_FILE), "canonical Markdown file"),
         {
           status: "candidate",
           content_maturity: "authored_methodology",
@@ -827,7 +913,7 @@ export function revise(options) {
         },
       );
       const chineseText = updateMarkdownFrontmatter(
-        readFileSync(path.join(stageDir, PCR_ZH_FILE), "utf8"),
+        readRequiredText(path.join(stageDir, PCR_ZH_FILE), "translated Markdown file"),
         {
           status: "candidate",
           content_maturity: "authored_methodology",
@@ -983,7 +1069,10 @@ export function publish(options) {
         now,
       });
       assertPublicationPlan(root, paths.pcrDir, lockedPlan);
-      const lockedMarkdown = readFileSync(path.join(lockedWorkspace, PCR_EN_FILE), "utf8");
+      const lockedMarkdown = readRequiredText(
+        path.join(lockedWorkspace, PCR_EN_FILE),
+        "canonical Markdown file",
+      );
       const lockedInspection = inspectPcrDirectory({
         root,
         pcrDir: lockedWorkspace,

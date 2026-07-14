@@ -8,7 +8,7 @@ owner: tiangong-lca-pcr
 language: en
 whenToUse:
   - when authoring or reviewing PCR Markdown and structured PCR rule files
-  - when filling CPC-generated empty PCR scaffolds
+  - when promoting retained legacy CPC PCR scaffolds
 whenToUpdate:
   - when PCR authoring workflow changes
   - when required PCR files or maturity states change
@@ -147,12 +147,23 @@ the implemented subset of foreground collection package requirements, and inspec
 before interpreting a result as complete. If Agent use of `guidance` reveals missing or ambiguous instructions,
 capture that through feedback issue templates or `npm --silent run tiangong-pcr -- feedback draft`.
 
-## Legacy CPC Scaffold Compatibility
+## Retained Legacy CPC Scaffold Compatibility
 
-CPC-generated PCR directories are migration-era placeholders until reviewed PCR content is written. They are excluded
-from default material browsing and are not accepted mappings merely because old mapping entries still reference them.
-The existing importer still creates these directories; Phase 2 will stop that per-leaf behavior before any physical
-scaffold removal. Until then, when promoting one of these retained records into a material PCR:
+Retained CPC-generated PCR directories are migration-era placeholders until reviewed PCR content is written. They are
+excluded from default material browsing and are not accepted mappings merely because old mapping entries still
+reference them. Canonical `import-cpc` requires an explicit `--source` for every run. It creates zero PCR records by
+default, writes raw/metadata/normalized classification artifacts, validates and preserves an existing mapping
+byte-for-byte, and creates only a zero-edge mapping when none exists. A non-3.0 import requires a registered coverage
+descriptor. The importer locks the system/version coordinate, rejects symlinked managed inputs, verifies its baseline
+before commit, stages outputs, and installs the mapping last.
+
+The fail-fast `scaffold-cpc` compatibility alias requires explicit `--legacy-scaffolds`. That flag is only for
+migration reproduction or tests, not new imports. It may append identity and a legacy edge for an unmapped leaf and
+may create a complete four-file scaffold only when its target is absent. If the target exists, all four files must
+match the deterministic legacy template byte-for-byte; partial or authored targets fail closed instead of being
+repaired or overwritten. Existing legacy artifacts remain because Phase 2 has completed only this importer-cutover
+step; explicit acceptance/mapping contraction, alias/redirect, and physical migration remain pending. When promoting
+one of these retained records into a material PCR:
 
 - keep the existing `classification_refs` and CPC-to-PCR mapping unless the classification match is wrong
 - update both `pcr.en-US.md` and `pcr.zh-CN.md` as paired renderings of the same rule

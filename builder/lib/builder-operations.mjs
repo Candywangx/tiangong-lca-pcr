@@ -1,4 +1,13 @@
-import { existsSync, mkdirSync, writeFileSync } from "node:fs";
+import {
+  closeSync,
+  constants as fsConstants,
+  fstatSync,
+  lstatSync,
+  mkdirSync,
+  openSync,
+  realpathSync,
+  writeFileSync,
+} from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -9,33 +18,104 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const defaultRoot = path.resolve(__dirname, "../..");
 
 function rootFromOptions(options) {
-  return path.resolve(String(options.root ?? defaultRoot));
+  const resolved = path.resolve(String(options.root ?? defaultRoot));
+  let stats = lstatSync(resolved, { throwIfNoEntry: false });
+  if (!stats) {
+    mkdirSync(resolved, { recursive: true, mode: 0o755 });
+    stats = lstatSync(resolved);
+  }
+  const root = realpathSync(resolved);
+  if (!lstatSync(root).isDirectory()) {
+    throw new Error(`PCR repository root is not a directory: ${root}`);
+  }
+  return root;
 }
 
 function ensureDir(root, relativePath) {
-  mkdirSync(path.join(root, relativePath), { recursive: true });
+  const segments = relativePath.split("/");
+  let current = root;
+  for (const segment of segments) {
+    current = path.join(current, segment);
+    let stats = lstatSync(current, { throwIfNoEntry: false });
+    if (!stats) {
+      try {
+        mkdirSync(current, { mode: 0o755 });
+      } catch (error) {
+        if (error?.code !== "EEXIST") {
+          throw error;
+        }
+      }
+      stats = lstatSync(current, { throwIfNoEntry: false });
+    }
+    if (!stats?.isDirectory() || stats.isSymbolicLink()) {
+      throw new Error(`PCR scaffold path is not a safe directory: ${relativePath}`);
+    }
+  }
+  return current;
 }
 
 function writeIfMissing(root, relativePath, content) {
+  const portablePath = relativePath.split(path.sep).join("/");
+  if (
+    path.posix.isAbsolute(portablePath)
+    || path.posix.normalize(portablePath) !== portablePath
+    || portablePath.includes("\\")
+  ) {
+    throw new Error(`Invalid PCR scaffold path: ${relativePath}`);
+  }
+  const parent = ensureDir(root, path.posix.dirname(portablePath));
   const target = path.join(root, relativePath);
-  if (existsSync(target)) {
+  const existing = lstatSync(target, { throwIfNoEntry: false });
+  if (existing) {
+    if (!existing.isFile() || existing.isSymbolicLink()) {
+      throw new Error(`PCR scaffold target is not a safe regular file: ${relativePath}`);
+    }
     return false;
   }
-  mkdirSync(path.dirname(target), { recursive: true });
-  writeFileSync(target, content);
-  return true;
+  let descriptor;
+  try {
+    descriptor = openSync(
+      path.join(parent, path.basename(target)),
+      fsConstants.O_WRONLY
+        | fsConstants.O_CREAT
+        | fsConstants.O_EXCL
+        | (fsConstants.O_NOFOLLOW ?? 0),
+      0o644,
+    );
+    if (!fstatSync(descriptor).isFile()) {
+      throw new Error(`PCR scaffold target is not a regular file: ${relativePath}`);
+    }
+    writeFileSync(descriptor, content);
+    return true;
+  } finally {
+    if (descriptor !== undefined) {
+      closeSync(descriptor);
+    }
+  }
 }
 
 function normalizeSlug(value) {
-  return String(value ?? "")
+  const slug = String(value ?? "")
     .trim()
     .replace(/^\/+|\/+$/gu, "")
     .replaceAll("\\", "/")
     .replace(/\/{2,}/gu, "/");
+  const segments = slug.split("/");
+  if (
+    segments.length !== 3
+    || segments.some((segment) => !/^[a-z0-9][a-z0-9-]*$/u.test(segment))
+    || path.posix.normalize(slug) !== slug
+  ) {
+    throw new Error(
+      "--sample-pcr must be a safe <domain>/<subdomain>/<pcr-slug> path using lowercase letters, digits, and hyphens",
+    );
+  }
+  return slug;
 }
 
 export function init(options) {
   const root = rootFromOptions(options);
+  const sampleSlug = options["sample-pcr"] ? normalizeSlug(options["sample-pcr"]) : null;
   for (const dir of REQUIRED_DIRS) {
     ensureDir(root, dir);
   }
@@ -122,8 +202,7 @@ Use this index to route to the smallest relevant builder documentation for the c
 `,
   );
 
-  if (options["sample-pcr"]) {
-    const sampleSlug = normalizeSlug(options["sample-pcr"]);
+  if (sampleSlug) {
     const sampleRoot = path.join("library/pcrs", sampleSlug);
     writeIfMissing(root, path.join(sampleRoot, "manifest.yaml"), pcrManifest(options));
     writeIfMissing(root, path.join(sampleRoot, PCR_EN_FILE), pcrMarkdown(options, "en-US"));

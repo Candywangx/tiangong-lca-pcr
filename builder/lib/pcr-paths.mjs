@@ -1,4 +1,4 @@
-import { existsSync, lstatSync, realpathSync } from "node:fs";
+import { existsSync, lstatSync, readdirSync, realpathSync } from "node:fs";
 import path from "node:path";
 
 export const PCR_WORKSPACES = Object.freeze(["current", "revision"]);
@@ -30,6 +30,96 @@ function isInside(parent, candidate, { allowEqual = false } = {}) {
 
 function slashPath(value) {
   return value.replaceAll(path.sep, "/");
+}
+
+function filesystemCanonicalEntryName(parent, requestedName, label) {
+  const target = path.join(parent, requestedName);
+  const targetEntry = lstatSync(target);
+  const matches = readdirSync(parent).filter((entryName) => {
+    try {
+      const candidate = lstatSync(path.join(parent, entryName));
+      return candidate.dev === targetEntry.dev && candidate.ino === targetEntry.ino;
+    } catch (error) {
+      if (error?.code === "ENOENT") {
+        return false;
+      }
+      throw error;
+    }
+  });
+  if (matches.length !== 1) {
+    fail(
+      "PCR_PATH_CANONICAL_IDENTITY_INVALID",
+      `${label} does not have one unambiguous filesystem-canonical directory entry: ${target}`,
+    );
+  }
+  return matches[0];
+}
+
+function filesystemCanonicalSegments(pcrRoot, requestedSegments, label) {
+  const canonical = [];
+  let parent = pcrRoot;
+  for (const requestedName of requestedSegments) {
+    const canonicalName = filesystemCanonicalEntryName(parent, requestedName, label);
+    canonical.push(canonicalName);
+    parent = path.join(parent, canonicalName);
+  }
+  return canonical;
+}
+
+function alternateCase(value) {
+  let changed = false;
+  const alternate = [...value].map((character) => {
+    const lower = character.toLocaleLowerCase("en-US");
+    const upper = character.toLocaleUpperCase("en-US");
+    if (lower === upper) {
+      return character;
+    }
+    changed = true;
+    return character === lower ? upper : lower;
+  }).join("");
+  return changed && alternate !== value ? alternate : null;
+}
+
+/**
+ * Detect case-folding from an existing directory entry without creating a probe file. Comparing
+ * inode identity is important on case-sensitive Darwin volumes where two differently-cased,
+ * legitimate directory names may coexist.
+ */
+function directoryEntryLookupIsCaseInsensitive(target) {
+  const alternateName = alternateCase(path.basename(target));
+  if (alternateName === null) {
+    return false;
+  }
+  const alternatePath = path.join(path.dirname(target), alternateName);
+  try {
+    const actual = lstatSync(target);
+    const alternate = lstatSync(alternatePath);
+    return actual.dev === alternate.dev && actual.ino === alternate.ino;
+  } catch (error) {
+    if (error?.code === "ENOENT") {
+      return false;
+    }
+    throw error;
+  }
+}
+
+function filesystemUsesCaseInsensitiveLookup(identity, domainRealpath, subdomainRealpath) {
+  return [subdomainRealpath, domainRealpath, identity.pcrRootRealpath]
+    .some((target) => directoryEntryLookupIsCaseInsensitive(target));
+}
+
+function validatedRecordedPcrPath(value) {
+  if (typeof value !== "string" || value.includes("\\")) {
+    return null;
+  }
+  const segments = value.split("/");
+  if (
+    segments.length !== 3 ||
+    segments.some((segment) => segment.length === 0 || segment === "." || segment === "..")
+  ) {
+    return null;
+  }
+  return segments;
 }
 
 function rejectTraversalSyntax(rawPcr) {
@@ -104,10 +194,31 @@ function lexicalIdentity(rootValue, pcrValue) {
   }
 
   const candidate = path.isAbsolute(rawPcr) ? path.resolve(rawPcr) : path.resolve(root, rawPcr);
-  if (!isInside(pcrRoot, candidate)) {
-    fail("PCR_PATH_OUTSIDE_ROOT", `PCR path must be inside ${pcrRoot}: ${rawPcr}`);
+  let relativePcrPath;
+  if (isInside(pcrRoot, candidate)) {
+    relativePcrPath = slashPath(path.relative(pcrRoot, candidate));
+  } else {
+    // macOS commonly exposes /var through the /private/var realpath. Resolve the existing parent
+    // so lexical aliases are accepted only when filesystem identity still proves containment.
+    if (!isInside(root, candidate) && !isInside(rootRealpath, candidate)) {
+      fail("PCR_PATH_OUTSIDE_ROOT", `PCR path must be inside ${pcrRoot}: ${rawPcr}`);
+    }
+    let candidateParentRealpath;
+    try {
+      candidateParentRealpath = realpathSync(path.dirname(candidate));
+    } catch (error) {
+      if (error?.code === "ENOENT") {
+        fail("PCR_PATH_OUTSIDE_ROOT", `PCR path must be inside ${pcrRoot}: ${rawPcr}`);
+      }
+      throw error;
+    }
+    if (!isInside(pcrRootRealpath, candidateParentRealpath)) {
+      fail("PCR_PATH_OUTSIDE_ROOT", `PCR path must be inside ${pcrRoot}: ${rawPcr}`);
+    }
+    relativePcrPath = slashPath(
+      path.join(path.relative(pcrRootRealpath, candidateParentRealpath), path.basename(candidate)),
+    );
   }
-  const relativePcrPath = slashPath(path.relative(pcrRoot, candidate));
   const segments = relativePcrPath.split("/");
   if (segments.length !== 3 || segments.some((segment) => segment.length === 0)) {
     fail(
@@ -139,6 +250,50 @@ function requireSafePcrAncestors(identity) {
   return realTarget;
 }
 
+function existingFilesystemIdentity(identity) {
+  requireSafePcrAncestors(identity);
+  const segments = filesystemCanonicalSegments(
+    identity.pcrRoot,
+    [identity.domain, identity.subdomain, identity.slug],
+    "PCR directory",
+  );
+  const pcrDir = path.join(identity.pcrRoot, ...segments);
+  const pcrRealpath = realpathSync(pcrDir);
+  return Object.freeze({
+    ...identity,
+    pcrDir,
+    relativePcrPath: segments.join("/"),
+    domain: segments[0],
+    subdomain: segments[1],
+    slug: segments[2],
+    pcrRealpath,
+    filesystemCaseInsensitive: filesystemUsesCaseInsensitiveLookup(
+      identity,
+      path.dirname(path.dirname(pcrRealpath)),
+      path.dirname(pcrRealpath),
+    ),
+  });
+}
+
+/**
+ * Compare a journal/owner PCR identity with a resolved filesystem identity. Case aliases are
+ * equivalent only after the containing filesystem has been proven case-insensitive.
+ */
+export function pcrPathMatchesFilesystemIdentity(location, recordedPcrPath) {
+  const recordedSegments = validatedRecordedPcrPath(recordedPcrPath);
+  if (recordedSegments === null) {
+    return false;
+  }
+  const recorded = recordedSegments.join("/");
+  if (recorded === location.relativePcrPath) {
+    return true;
+  }
+  if (!location.filesystemCaseInsensitive) {
+    return false;
+  }
+  return recorded.toLocaleLowerCase("en-US") === location.relativePcrPath.toLocaleLowerCase("en-US");
+}
+
 /**
  * Resolve an existing canonical PCR workspace. This is the strict path entrypoint for normal commands.
  * It always requires a direct top-level manifest.yaml, even when the selected workspace is revision.
@@ -150,8 +305,8 @@ export function resolvePcrWorkspacePaths({ root, pcr, workspace = "current" }) {
       `PCR workspace must be one of ${PCR_WORKSPACES.join(" or ")}; received ${workspace}.`,
     );
   }
-  const identity = lexicalIdentity(root, pcr);
-  const pcrRealpath = requireSafePcrAncestors(identity);
+  const identity = existingFilesystemIdentity(lexicalIdentity(root, pcr));
+  const { pcrRealpath } = identity;
 
   const currentManifestPath = path.join(identity.pcrDir, "manifest.yaml");
   requirePlainFile(currentManifestPath, "Canonical PCR manifest");
@@ -186,23 +341,59 @@ export function resolvePcrWorkspacePaths({ root, pcr, workspace = "current" }) {
 }
 
 /**
- * Resolve only the lexical PCR identity and its existing parents. Recovery may call this while the
- * leaf is temporarily absent between the two directory renames of a transaction.
+ * Resolve the filesystem-canonical PCR identity from its existing parents. Recovery may call this
+ * while the leaf is temporarily absent between the two directory renames of a transaction.
  */
 export function resolvePcrLocationForRecovery({ root, pcr }) {
-  const identity = lexicalIdentity(root, pcr);
-  const domainDir = path.join(identity.pcrRoot, identity.domain);
-  const subdomainDir = path.join(domainDir, identity.subdomain);
+  const lexical = lexicalIdentity(root, pcr);
+  const domainDir = path.join(lexical.pcrRoot, lexical.domain);
+  const subdomainDir = path.join(domainDir, lexical.subdomain);
   requirePlainDirectory(domainDir, "PCR domain directory");
   requirePlainDirectory(subdomainDir, "PCR subdomain directory");
-  realpathInside(identity.pcrRoot, domainDir, "PCR domain directory");
-  realpathInside(identity.pcrRoot, subdomainDir, "PCR subdomain directory");
+  const domainRealpath = realpathInside(lexical.pcrRoot, domainDir, "PCR domain directory").realTarget;
+  const subdomainRealpath = realpathInside(
+    lexical.pcrRoot,
+    subdomainDir,
+    "PCR subdomain directory",
+  ).realTarget;
+  const parentSegments = filesystemCanonicalSegments(
+    lexical.pcrRoot,
+    [lexical.domain, lexical.subdomain],
+    "PCR subdomain directory",
+  );
+  const filesystemCaseInsensitive = filesystemUsesCaseInsensitiveLookup(
+    lexical,
+    domainRealpath,
+    subdomainRealpath,
+  );
 
-  if (existsSync(identity.pcrDir)) {
-    requirePlainDirectory(identity.pcrDir, "PCR directory");
-    realpathInside(identity.pcrRoot, identity.pcrDir, "PCR directory");
+  let pcrDir = path.join(subdomainRealpath, lexical.slug);
+  let relativePcrPath = [...parentSegments, lexical.slug].join("/");
+  let pcrRealpath = null;
+
+  if (existsSync(lexical.pcrDir)) {
+    requirePlainDirectory(lexical.pcrDir, "PCR directory");
+    pcrRealpath = realpathInside(lexical.pcrRoot, lexical.pcrDir, "PCR directory").realTarget;
+    const pcrSegments = filesystemCanonicalSegments(
+      lexical.pcrRoot,
+      [lexical.domain, lexical.subdomain, lexical.slug],
+      "PCR directory",
+    );
+    pcrDir = pcrRealpath;
+    relativePcrPath = pcrSegments.join("/");
   }
-  return Object.freeze(identity);
+  return Object.freeze({
+    ...lexical,
+    pcrDir,
+    relativePcrPath,
+    domain: parentSegments[0],
+    subdomain: parentSegments[1],
+    slug: relativePcrPath.split("/")[2],
+    domainRealpath,
+    subdomainRealpath,
+    pcrRealpath,
+    filesystemCaseInsensitive,
+  });
 }
 
 export function repoRelativePcrPath(paths) {

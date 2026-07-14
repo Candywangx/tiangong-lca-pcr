@@ -16,6 +16,12 @@ This directory defines how agents construct, update, validate, and publish PCR r
 - Do not list Tiangong database rows in `Data Sources` when they only support UUID identity. Tiangong is the default source for UUID-bearing rows.
 - List external literature, official guidance, standards, methods, and non-default quantitative evidence in `Data Sources`.
 - Keep classification codes in `classifications/mappings/**` and `classification_refs`, not in canonical PCR directory names.
+- Keep CPC import classification-only by default. `import-cpc` creates zero PCR records, validates and preserves an
+  existing mapping byte-for-byte, and creates only a zero-edge mapping when one is absent. Register a coverage
+  descriptor before importing a non-3.0 version.
+- Treat `scaffold-cpc` as a fail-fast compatibility alias. It requires explicit `--legacy-scaffolds`; that mode may
+  append legacy identity and edges only for unmapped leaves and create one complete scaffold directory only when the
+  target is absent, but it must not repair a partial target, replace accepted mappings, or overwrite PCR content.
 - PCR production always synthesizes the current best PCR for the target product category from available evidence. Existing PCR content is prior evidence and a canonical write target, not a separate reasoning mode.
 - Use public evidence and domain common sense to initialize candidate processes, qualifiers, and likely flows; UUIDs and quantitative ranges must be evidence-backed before they are treated as final PCR content.
 
@@ -51,14 +57,15 @@ For feedback issue intake or accepted feedback updates:
 - inspect the issue body or feedback draft before editing
 - inspect public CLI files under `packages/**` only when feedback concerns consumption behavior rather than PCR methodology
 
-For classification scaffold or mapping work:
+For classification import, legacy scaffold compatibility, or mapping work:
 
 - read `docs/classification-policy.md`
 - inspect the affected files under `classifications/systems/**` or `classifications/mappings/**`
 - inspect `builder/schemas/classification-mapping.schema.json` when mapping shape changes
-- inspect `builder/cli/`, `builder/scripts/`, or `builder/templates/` only when scaffold generation behavior changes
+- inspect `builder/cli/`, `builder/lib/`, `builder/scripts/`, or `builder/templates/` when import or legacy scaffold
+  behavior changes
 
-For CLI, schema, template, or scaffold behavior changes:
+For CLI, schema, template, import, or scaffold behavior changes:
 
 - read `builder/README.md`
 - inspect the affected files under `builder/cli/`, `builder/scripts/`, `builder/schemas/`, `builder/templates/`, or `builder/vocab/`

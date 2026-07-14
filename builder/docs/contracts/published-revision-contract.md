@@ -136,6 +136,10 @@ version, publication timestamp, predecessor version, snapshot path, and exact-by
 and snapshot paths must be unique, history order must match the predecessor chain, and `current_version` must equal
 the latest entry. The current published manifest also records the exact-byte hashes of both Markdown files and
 `structured.yaml` in `release_artifacts` so consumers can detect mixed or tampered current-release reads.
+The three artifact hashes must agree across the actual snapshot bytes, `manifest.snapshot.yaml.release_artifacts`,
+and `release.yaml.artifacts`. Builder-owned release, history, revision, and snapshot YAML must be valid UTF-8 in the
+canonical builder rendering; duplicate keys, trailing content, alternate formatting, and calendar-invalid UTC dates
+fail closed rather than creating ambiguous audit facts.
 
 ## Transaction and Recovery Boundary
 
@@ -160,12 +164,17 @@ Recover a recorded transaction before retrying mutation work:
 npm run pcr:recover -- --pcr <library/pcrs/...>
 ```
 
-Recovery refuses a lock owned by a live local process. Use `--force-stale-lock` only for explicit recovery of
-malformed, foreign-host, or otherwise stale lock/journal state after verifying no writer is active:
+Recovery refuses a lock owned by a live local process. Use `--force-stale-lock` only after verifying no writer is
+active, for a malformed/foreign stale lock or for the uniquely safe pre-journal crash shape where current is intact,
+backup is absent, and the stale owner left only a staging tree:
 
 ```bash
 npm run pcr:recover -- --pcr <library/pcrs/...> --force-stale-lock
 ```
+
+Force never authorizes guessing from a malformed journal, an unexplained backup, or tree bytes that do not match a
+trusted journal. Lock ownership tokens and filesystem-canonical PCR identity prevent an older cleanup or a
+case-variant path from deleting a successor writer's live lock.
 
 Always run `npm run validate` after recovery and before resuming mutation work.
 

@@ -1,7 +1,11 @@
 import { createHash } from "node:crypto";
 import {
+  closeSync,
+  constants as fsConstants,
   existsSync,
+  fstatSync,
   lstatSync,
+  openSync,
   readFileSync,
   readdirSync,
 } from "node:fs";
@@ -14,6 +18,7 @@ import { parseYaml, renderYaml } from "../../packages/pcr-core/src/yaml-lite.mjs
 import {
   compareSemver,
   isValidSemver,
+  isValidUtcTimestamp,
   manifestLifecycleProblems,
 } from "./lifecycle-policy.mjs";
 import {
@@ -40,24 +45,42 @@ export const REVISION_FILES = Object.freeze([
   "structured.yaml",
 ]);
 
+const UTF8_DECODER = new TextDecoder("utf-8", { fatal: true });
+
 export function byteSha256(value) {
-  return `sha256:${createHash("sha256").update(value).digest("hex")}`;
+  return `sha256:${createHash("sha256").update(asBytes(value)).digest("hex")}`;
 }
 
-export function releaseArtifactHashes({ manifestText, englishText, chineseText, structuredText }) {
+export function releaseArtifactHashes({
+  manifestBytes,
+  englishBytes,
+  chineseBytes,
+  structuredBytes,
+  manifestText,
+  englishText,
+  chineseText,
+  structuredText,
+}) {
   return {
-    manifest_snapshot_sha256: byteSha256(manifestText),
-    pcr_en_us_sha256: byteSha256(englishText),
-    pcr_zh_cn_sha256: byteSha256(chineseText),
-    structured_sha256: byteSha256(structuredText),
+    manifest_snapshot_sha256: byteSha256(manifestBytes ?? manifestText),
+    pcr_en_us_sha256: byteSha256(englishBytes ?? englishText),
+    pcr_zh_cn_sha256: byteSha256(chineseBytes ?? chineseText),
+    structured_sha256: byteSha256(structuredBytes ?? structuredText),
   };
 }
 
-export function manifestReleaseArtifacts({ englishText, chineseText, structuredText }) {
+export function manifestReleaseArtifacts({
+  englishBytes,
+  chineseBytes,
+  structuredBytes,
+  englishText,
+  chineseText,
+  structuredText,
+}) {
   return {
-    pcr_en_us_sha256: byteSha256(englishText),
-    pcr_zh_cn_sha256: byteSha256(chineseText),
-    structured_sha256: byteSha256(structuredText),
+    pcr_en_us_sha256: byteSha256(englishBytes ?? englishText),
+    pcr_zh_cn_sha256: byteSha256(chineseBytes ?? chineseText),
+    structured_sha256: byteSha256(structuredBytes ?? structuredText),
   };
 }
 
@@ -107,7 +130,8 @@ export function inspectPublishedRevisionState({ root, pcrDir }) {
     return { problems, warnings, history: null, revision: null, releases: [] };
   }
 
-  const manifestText = readText(manifestPath, root, problems);
+  const manifestArtifact = readArtifact(manifestPath, root, problems);
+  const manifestText = manifestArtifact?.text ?? null;
   const manifest = parseDocument(manifestText, manifestPath, root, problems);
   if (!manifest) {
     return { problems, warnings, history: null, revision: null, releases: [] };
@@ -143,8 +167,9 @@ export function inspectPublishedRevisionState({ root, pcrDir }) {
     return { problems, warnings, history: null, revision: null, releases: [] };
   }
 
-  const historyText = readText(historyPath, root, problems);
-  const history = parseDocument(historyText, historyPath, root, problems);
+  const historyArtifact = readArtifact(historyPath, root, problems);
+  const historyText = historyArtifact?.text ?? null;
+  const history = parseAuditDocument(historyText, historyPath, root, problems);
   if (!history) {
     return { problems, warnings, history: null, revision: null, releases: [] };
   }
@@ -166,6 +191,9 @@ export function inspectPublishedRevisionState({ root, pcrDir }) {
   }
   if (history.pcr_id !== manifest.id) {
     problems.push(`${relative(root, historyPath)}: pcr_id must match manifest id ${manifest.id}`);
+  }
+  if (!isValidSemver(history.current_version)) {
+    problems.push(`${relative(root, historyPath)}: current_version must be a valid SemVer identity`);
   }
 
   const releaseDirectories = readdirSync(releasesDir, { withFileTypes: true })
@@ -208,6 +236,10 @@ export function inspectPublishedRevisionState({ root, pcrDir }) {
       previousEntry = entry;
       continue;
     }
+    const entryTimestampValid = isValidUtcTimestamp(entry.published_at_utc);
+    if (!entryTimestampValid) {
+      problems.push(`${entryContext} published_at_utc is not a real canonical UTC timestamp`);
+    }
 
     const expectedPath = `releases/${entry.version}`;
     if (entry.path !== expectedPath) {
@@ -229,7 +261,9 @@ export function inspectPublishedRevisionState({ root, pcrDir }) {
     }
     if (
       previousEntry &&
-      Date.parse(String(entry.published_at_utc)) < Date.parse(String(previousEntry.published_at_utc))
+      entryTimestampValid &&
+      isValidUtcTimestamp(previousEntry.published_at_utc) &&
+      Date.parse(entry.published_at_utc) < Date.parse(previousEntry.published_at_utc)
     ) {
       problems.push(`${entryContext} published_at_utc must not precede the prior release`);
     }
@@ -272,7 +306,7 @@ export function inspectPublishedRevisionState({ root, pcrDir }) {
       root,
       pcrDir: directory,
       manifest,
-      manifestText,
+      manifestBytes: manifestArtifact.bytes,
       latest,
       problems,
     });
@@ -301,14 +335,22 @@ function inspectReleaseDirectory({ root, releaseDir, historyEntry, pcrId, proble
   }
   requireExactFiles(releaseDir, RELEASE_FILES, root, "release", problems);
   const paths = Object.fromEntries(RELEASE_FILES.map((name) => [name, path.join(releaseDir, name)]));
-  const texts = Object.fromEntries(
-    Object.entries(paths).map(([name, filePath]) => [name, readText(filePath, root, problems)]),
+  const artifacts = Object.fromEntries(
+    Object.entries(paths).map(([name, filePath]) => [name, readArtifact(filePath, root, problems)]),
   );
-  if (Object.values(texts).some((value) => value === null)) {
+  if (Object.values(artifacts).some((value) => value === null)) {
     return null;
   }
-  const release = parseDocument(texts["release.yaml"], paths["release.yaml"], root, problems);
-  const snapshotManifest = parseDocument(
+  const texts = Object.fromEntries(
+    Object.entries(artifacts).map(([name, artifact]) => [name, artifact.text]),
+  );
+  const release = parseAuditDocument(
+    texts["release.yaml"],
+    paths["release.yaml"],
+    root,
+    problems,
+  );
+  const snapshotManifest = parseAuditDocument(
     texts["manifest.snapshot.yaml"],
     paths["manifest.snapshot.yaml"],
     root,
@@ -367,19 +409,50 @@ function inspectReleaseDirectory({ root, releaseDir, historyEntry, pcrId, proble
   if (snapshotManifest.status !== "published" || snapshotManifest.content_maturity !== "published_methodology") {
     problems.push(`${relative(root, paths["manifest.snapshot.yaml"])}: snapshot must be published/published_methodology`);
   }
+  if (!isValidUtcTimestamp(release.published_at_utc)) {
+    problems.push(`${relative(root, paths["release.yaml"])}: published_at_utc is not a real canonical UTC timestamp`);
+  }
+  if (!isValidUtcTimestamp(snapshotManifest.published_at_utc)) {
+    problems.push(`${relative(root, paths["manifest.snapshot.yaml"])}: published_at_utc is not a real canonical UTC timestamp`);
+  }
+  if (!isValidUtcTimestamp(snapshotManifest.updated_at_utc)) {
+    problems.push(`${relative(root, paths["manifest.snapshot.yaml"])}: updated_at_utc is not a real canonical UTC timestamp`);
+  }
 
   const expectedHashes = releaseArtifactHashes({
-    manifestText: texts["manifest.snapshot.yaml"],
-    englishText: texts["pcr.en-US.md"],
-    chineseText: texts["pcr.zh-CN.md"],
-    structuredText: texts["structured.yaml"],
+    manifestBytes: artifacts["manifest.snapshot.yaml"].bytes,
+    englishBytes: artifacts["pcr.en-US.md"].bytes,
+    chineseBytes: artifacts["pcr.zh-CN.md"].bytes,
+    structuredBytes: artifacts["structured.yaml"].bytes,
   });
   for (const [field, expected] of Object.entries(expectedHashes)) {
     if (release.artifacts?.[field] !== expected) {
       problems.push(`${relative(root, paths["release.yaml"])}: artifacts.${field} does not match snapshot bytes`);
     }
   }
-  if (historyEntry.release_sha256 !== byteSha256(texts["release.yaml"])) {
+  const expectedManifestArtifacts = manifestReleaseArtifacts({
+    englishBytes: artifacts["pcr.en-US.md"].bytes,
+    chineseBytes: artifacts["pcr.zh-CN.md"].bytes,
+    structuredBytes: artifacts["structured.yaml"].bytes,
+  });
+  if (!isDeepStrictEqual(snapshotManifest.release_artifacts, expectedManifestArtifacts)) {
+    problems.push(
+      `${relative(root, paths["manifest.snapshot.yaml"])}: release_artifacts do not match snapshot artifact bytes`,
+    );
+  }
+  const releaseManifestArtifacts = release.artifacts
+    ? {
+        pcr_en_us_sha256: release.artifacts.pcr_en_us_sha256,
+        pcr_zh_cn_sha256: release.artifacts.pcr_zh_cn_sha256,
+        structured_sha256: release.artifacts.structured_sha256,
+      }
+    : null;
+  if (!isDeepStrictEqual(releaseManifestArtifacts, snapshotManifest.release_artifacts)) {
+    problems.push(
+      `${relative(root, paths["release.yaml"])}: artifact hashes must match manifest.snapshot.yaml release_artifacts`,
+    );
+  }
+  if (historyEntry.release_sha256 !== byteSha256(artifacts["release.yaml"].bytes)) {
     problems.push(`${relative(root, paths["release.yaml"])}: release_sha256 does not match release.yaml bytes`);
   }
 
@@ -400,37 +473,52 @@ function inspectReleaseDirectory({ root, releaseDir, historyEntry, pcrId, proble
   return {
     version: historyEntry.version,
     manifest: snapshotManifest,
+    manifestBytes: artifacts["manifest.snapshot.yaml"].bytes,
     manifestText: texts["manifest.snapshot.yaml"],
+    englishBytes: artifacts["pcr.en-US.md"].bytes,
     englishText: texts["pcr.en-US.md"],
+    chineseBytes: artifacts["pcr.zh-CN.md"].bytes,
     chineseText: texts["pcr.zh-CN.md"],
+    structuredBytes: artifacts["structured.yaml"].bytes,
     structuredText: texts["structured.yaml"],
     release,
   };
 }
 
-function validateCurrentAgainstLatest({ root, pcrDir, manifest, manifestText, latest, problems }) {
-  const englishText = readText(path.join(pcrDir, "pcr.en-US.md"), root, problems);
-  const chineseText = readText(path.join(pcrDir, "pcr.zh-CN.md"), root, problems);
-  const structuredText = readText(path.join(pcrDir, "structured.yaml"), root, problems);
+function validateCurrentAgainstLatest({
+  root,
+  pcrDir,
+  manifest,
+  manifestBytes,
+  latest,
+  problems,
+}) {
+  const englishArtifact = readArtifact(path.join(pcrDir, "pcr.en-US.md"), root, problems);
+  const chineseArtifact = readArtifact(path.join(pcrDir, "pcr.zh-CN.md"), root, problems);
+  const structuredArtifact = readArtifact(path.join(pcrDir, "structured.yaml"), root, problems);
   for (const [name, actual, expected] of [
-    ["pcr.en-US.md", englishText, latest.englishText],
-    ["pcr.zh-CN.md", chineseText, latest.chineseText],
-    ["structured.yaml", structuredText, latest.structuredText],
+    ["pcr.en-US.md", englishArtifact?.bytes, latest.englishBytes],
+    ["pcr.zh-CN.md", chineseArtifact?.bytes, latest.chineseBytes],
+    ["structured.yaml", structuredArtifact?.bytes, latest.structuredBytes],
   ]) {
-    if (actual !== null && actual !== expected) {
+    if (actual && !actual.equals(expected)) {
       problems.push(`${relative(root, path.join(pcrDir, name))}: current file differs from latest release snapshot`);
     }
   }
 
-  const expectedArtifacts = englishText !== null && chineseText !== null && structuredText !== null
-    ? manifestReleaseArtifacts({ englishText, chineseText, structuredText })
+  const expectedArtifacts = englishArtifact && chineseArtifact && structuredArtifact
+    ? manifestReleaseArtifacts({
+        englishBytes: englishArtifact.bytes,
+        chineseBytes: chineseArtifact.bytes,
+        structuredBytes: structuredArtifact.bytes,
+      })
     : null;
   if (expectedArtifacts && !isDeepStrictEqual(manifest.release_artifacts, expectedArtifacts)) {
     problems.push(`${relative(root, path.join(pcrDir, "manifest.yaml"))}: release_artifacts do not match current bytes`);
   }
 
   if (manifest.status === "published") {
-    if (manifestText !== latest.manifestText) {
+    if (!manifestBytes.equals(latest.manifestBytes)) {
       problems.push(`${relative(root, path.join(pcrDir, "manifest.yaml"))}: current manifest differs from latest release snapshot`);
     }
     return;
@@ -440,15 +528,20 @@ function validateCurrentAgainstLatest({ root, pcrDir, manifest, manifestText, la
     return;
   }
 
-  const allowedLifecycleOverlay = {
-    ...manifest,
-    status: latest.manifest.status,
-    content_maturity: latest.manifest.content_maturity,
-    updated_at_utc: latest.manifest.updated_at_utc,
+  const expectedDeprecatedManifest = {
+    ...latest.manifest,
+    status: "deprecated",
+    content_maturity: "deprecated_methodology",
+    updated_at_utc: manifest.updated_at_utc,
   };
-  if (!isDeepStrictEqual(allowedLifecycleOverlay, latest.manifest)) {
+  if (!isDeepStrictEqual(manifest, expectedDeprecatedManifest)) {
     problems.push(
       `${relative(root, path.join(pcrDir, "manifest.yaml"))}: deprecated manifest changed fields outside the lifecycle overlay`,
+    );
+  }
+  if (!manifestBytes.equals(Buffer.from(renderYaml(expectedDeprecatedManifest)))) {
+    problems.push(
+      `${relative(root, path.join(pcrDir, "manifest.yaml"))}: deprecated manifest bytes must equal the canonical lifecycle overlay`,
     );
   }
 }
@@ -468,10 +561,12 @@ function inspectRevisionDirectory({
   requireExactFiles(revisionDir, REVISION_FILES, root, "revision", problems);
   const revisionPath = path.join(revisionDir, "revision.yaml");
   const nextManifestPath = path.join(revisionDir, "manifest.next.yaml");
-  const revisionText = readText(revisionPath, root, problems);
-  const nextManifestText = readText(nextManifestPath, root, problems);
-  const revision = parseDocument(revisionText, revisionPath, root, problems);
-  const nextManifest = parseDocument(nextManifestText, nextManifestPath, root, problems);
+  const revisionArtifact = readArtifact(revisionPath, root, problems);
+  const nextManifestArtifact = readArtifact(nextManifestPath, root, problems);
+  const revisionText = revisionArtifact?.text ?? null;
+  const nextManifestText = nextManifestArtifact?.text ?? null;
+  const revision = parseAuditDocument(revisionText, revisionPath, root, problems);
+  const nextManifest = parseAuditDocument(nextManifestText, nextManifestPath, root, problems);
   if (!revision || !nextManifest) {
     return null;
   }
@@ -496,6 +591,20 @@ function inspectRevisionDirectory({
 
   if (manifest.status !== "published") {
     problems.push(`${relative(root, revisionDir)}: an open revision requires published current state`);
+  }
+  for (const [field, value] of [
+    ["base_version", revision.base_version],
+    ["target_version", revision.target_version],
+  ]) {
+    if (!isValidSemver(value)) {
+      problems.push(`${relative(root, revisionPath)}: ${field} is not a valid SemVer identity`);
+    }
+  }
+  if (!isValidUtcTimestamp(revision.opened_at_utc)) {
+    problems.push(`${relative(root, revisionPath)}: opened_at_utc is not a real canonical UTC timestamp`);
+  }
+  if (!isValidUtcTimestamp(nextManifest.updated_at_utc)) {
+    problems.push(`${relative(root, nextManifestPath)}: updated_at_utc is not a real canonical UTC timestamp`);
   }
   for (const [field, actual, expected] of [
     ["revision pcr_id", revision.pcr_id, manifest.id],
@@ -601,7 +710,22 @@ function parseDocument(text, filePath, root, problems) {
   }
 }
 
-function readText(filePath, root, problems) {
+function parseAuditDocument(text, filePath, root, problems) {
+  const value = parseDocument(text, filePath, root, problems);
+  if (!value) {
+    return null;
+  }
+  if (renderYaml(value) !== text) {
+    problems.push(
+      `${relative(root, filePath)}: audit YAML must use canonical builder rendering; ` +
+        "duplicate keys, trailing content, comments, and alternate formatting are not allowed",
+    );
+    return null;
+  }
+  return value;
+}
+
+function readArtifact(filePath, root, problems) {
   if (!existsSync(filePath)) {
     problems.push(`${relative(root, filePath)}: required file is missing`);
     return null;
@@ -611,7 +735,43 @@ function readText(filePath, root, problems) {
     problems.push(`${relative(root, filePath)}: required artifact must be a regular file`);
     return null;
   }
-  return readFileSync(filePath, "utf8");
+  let descriptor;
+  try {
+    descriptor = openSync(filePath, fsConstants.O_RDONLY | (fsConstants.O_NOFOLLOW ?? 0));
+    if (!fstatSync(descriptor).isFile()) {
+      problems.push(`${relative(root, filePath)}: required artifact must be a regular file`);
+      return null;
+    }
+    const bytes = readFileSync(descriptor);
+    try {
+      return { bytes, text: UTF8_DECODER.decode(bytes) };
+    } catch {
+      problems.push(`${relative(root, filePath)}: required artifact is not valid UTF-8`);
+      return null;
+    }
+  } catch (error) {
+    problems.push(
+      `${relative(root, filePath)}: required artifact could not be read (${error.code ?? error.message})`,
+    );
+    return null;
+  } finally {
+    if (descriptor !== undefined) {
+      closeSync(descriptor);
+    }
+  }
+}
+
+function asBytes(value) {
+  if (Buffer.isBuffer(value)) {
+    return value;
+  }
+  if (value instanceof Uint8Array) {
+    return Buffer.from(value.buffer, value.byteOffset, value.byteLength);
+  }
+  if (typeof value === "string") {
+    return Buffer.from(value, "utf8");
+  }
+  throw new TypeError("SHA-256 input must be a Buffer, Uint8Array, or string");
 }
 
 function isRealDirectory(directory, root, problems) {

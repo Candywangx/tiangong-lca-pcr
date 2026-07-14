@@ -2,6 +2,11 @@
 
 Use this workflow when the current best PCR for a target product category has no existing canonical PCR record and must be written as a new PCR directory.
 
+Ordinary classification import does not create a PCR placeholder. `import-cpc` creates zero PCR records by default;
+the fail-fast `scaffold-cpc` alias and `--legacy-scaffolds` exist only for migration compatibility. If a retained
+legacy scaffold already exists, this workflow may promote it in place, but neither import mode may replace existing
+PCR content or an accepted mapping edge.
+
 ## Inputs
 
 - target PCR directory under `library/pcrs/**`
@@ -15,29 +20,34 @@ The AI produces the current best PCR from available evidence. This workflow writ
 ## Steps
 
 1. Read `builder/AGENTS.md`, `builder/docs/tools/tiangong-lca-cli.md`, `builder/docs/tools/data-sources-and-tools.md`, `builder/docs/contracts/pcr-markdown-contract.md`, `builder/docs/contracts/evidence-and-source-contract.md`, and `builder/vocab/*.yaml`.
-2. Inspect `manifest.yaml`, classification refs, and mapping entries.
+2. Inspect the classification coordinate, coverage state, accepted mapping entries, and any retained legacy scaffold.
+   A newly imported unmapped leaf normally has no `manifest.yaml`.
 3. Confirm that no existing canonical PCR record covers the same semantic product category.
-4. Write scope, exclusions, product category identity, typical market state, candidate processes, and likely flows from the current PCR synthesis.
-5. Define product category identity with canonical PCR id, classification refs, covered products, excluded products, representative product, production route, and market state.
-6. Define functional unit and reference flow objects using `Field | Value` tables.
-7. Use Tiangong CLI or database search to select UUID-bearing flow, flow property, and unit group references. Unresolved UUIDs stay blank and are tracked in `manifest.yaml` review metadata.
-8. Define measurement and unit rules where they affect consistency, conversion, or validation.
-9. Populate `Boundary Abstraction` with the resulting declared starting condition, role, classification scope, recursive input rule, upstream dataset requirement, and disclosure.
-10. Define common data production processes before writing detailed inventory rows.
-11. For each process, write inventory rows by direction and flow type: product, waste, elementary.
-12. Record amounts, exact values, formulas, foreground collection requirements, evidence-backed ranges, and clearly labelled provisional reasoned ranges with controlled `value_mode`, `specificity`, `basis_kind`, `evidence_kind`, and `range` metadata.
-13. Link collected foreground rows and calculated foreground rows to `collection_protocol_id`.
-14. Define data collection protocols with raw fields, collection method, unit, frequency, coverage, scope, aggregation rule, and quality evidence.
-15. Define calculation rules from collected fields to normalized PCR values.
-16. Define data quality requirements for identity, measurement, temporal coverage, completeness, and disclosure.
-17. Define the published dataset profile with dataset role, downstream use, allowed use, excluded use, metadata, quality disclosure, and update trigger.
-18. Add external data sources and reference their source ids from inventory or rule rows.
-19. Keep authoring traces, unresolved review notes, and lifecycle state in `manifest.yaml`, issue records, or PR records.
-20. Write `pcr.en-US.md` first.
-21. Write `pcr.zh-CN.md` as an aligned rendering of the same rule.
-22. Run `npm run pcr:sync-structured -- --pcr <library/pcrs/...>`.
-23. Run `npm run validate`.
-24. Update `manifest.yaml` lifecycle fields with `npm run pcr:lifecycle -- --pcr <library/pcrs/...> ...` when content maturity or translation state changes.
+4. Choose a semantic PCR slug that does not contain the classification code. Explicitly initialize the four-file PCR
+   directory, or promote the matching retained legacy scaffold in place after checking its identity.
+5. Write scope, exclusions, product category identity, typical market state, candidate processes, and likely flows from the current PCR synthesis.
+6. Define product category identity with canonical PCR id, classification refs, covered products, excluded products, representative product, production route, and market state.
+7. Define functional unit and reference flow objects using `Field | Value` tables.
+8. Use Tiangong CLI or database search to select UUID-bearing flow, flow property, and unit group references. Unresolved UUIDs stay blank and are tracked in `manifest.yaml` review metadata.
+9. Define measurement and unit rules where they affect consistency, conversion, or validation.
+10. Populate `Boundary Abstraction` with the resulting declared starting condition, role, classification scope, recursive input rule, upstream dataset requirement, and disclosure.
+11. Define common data production processes before writing detailed inventory rows.
+12. For each process, write inventory rows by direction and flow type: product, waste, elementary.
+13. Record amounts, exact values, formulas, foreground collection requirements, evidence-backed ranges, and clearly labelled provisional reasoned ranges with controlled `value_mode`, `specificity`, `basis_kind`, `evidence_kind`, and `range` metadata.
+14. Link collected foreground rows and calculated foreground rows to `collection_protocol_id`.
+15. Define data collection protocols with raw fields, collection method, unit, frequency, coverage, scope, aggregation rule, and quality evidence.
+16. Define calculation rules from collected fields to normalized PCR values.
+17. Define data quality requirements for identity, measurement, temporal coverage, completeness, and disclosure.
+18. Define the published dataset profile with dataset role, downstream use, allowed use, excluded use, metadata, quality disclosure, and update trigger.
+19. Add external data sources and reference their source ids from inventory or rule rows.
+20. Keep authoring traces, unresolved review notes, and lifecycle state in `manifest.yaml`, issue records, or PR records.
+21. Write `pcr.en-US.md` first.
+22. Write `pcr.zh-CN.md` as an aligned rendering of the same rule.
+23. Run `npm run pcr:sync-structured -- --pcr <library/pcrs/...>`.
+24. Run `npm run validate`.
+25. Update `manifest.yaml` lifecycle fields with `npm run pcr:lifecycle -- --pcr <library/pcrs/...> ...` when content maturity or translation state changes.
+26. Only after semantic scope and methodology review, add or accept the classification mapping edge and run
+    `npm run catalog:build`. Never use an empty PCR merely to make classification coverage appear mapped.
 
 ## Required PCR Facts
 

@@ -10,16 +10,21 @@ import {
   realpathSync,
 } from "node:fs";
 import path from "node:path";
+import { TextDecoder } from "node:util";
 
 import { assertCoreContract } from "./contracts.mjs";
 import {
   CLASSIFICATION_COVERAGE_STATUS_VALUES,
+  CLASSIFICATION_MAPPING_RELATION_VALUES,
 } from "./generated/controlled-vocabulary.mjs";
+import { parseYaml } from "./yaml-lite.mjs";
 
 export const CLASSIFICATION_COVERAGE_STATUSES = CLASSIFICATION_COVERAGE_STATUS_VALUES;
 export const CLASSIFICATION_COVERAGE_CONTRACT_VERSION = "1";
 export const CLASSIFICATION_COVERAGE_GENERATOR = "builder/scripts/build-catalog.mjs";
 export const CLASSIFICATION_COVERAGE_GENERATOR_VERSION = "1";
+
+const CLASSIFICATION_MAPPING_RELATIONS = new Set(CLASSIFICATION_MAPPING_RELATION_VALUES);
 
 export class PcrClassificationCoverageNotFoundError extends Error {
   constructor({ system, version, relativePath }) {
@@ -100,9 +105,9 @@ export function readClassificationCoverage({ root, system, version }) {
     });
   }
 
-  let coverageBytes;
+  let coverageSource;
   try {
-    coverageBytes = readContainedRegularFile({
+    coverageSource = readContainedUtf8RegularFile({
       root: normalizedRoot,
       relativePath,
       label: "coverage index",
@@ -117,7 +122,7 @@ export function readClassificationCoverage({ root, system, version }) {
 
   let coverage;
   try {
-    coverage = JSON.parse(coverageBytes.toString("utf8"));
+    coverage = JSON.parse(coverageSource.text);
   } catch (error) {
     throw new PcrClassificationCoverageSemanticError({
       ...normalized,
@@ -257,25 +262,61 @@ function assertCoverageSemantics({ coverage, normalized, source }) {
 
 function assertCoverageSources({ coverage, normalized, root, source }) {
   const issues = [];
-  for (const [sourceName, descriptor] of [
-    ["normalized_leaves", coverage.source.normalized_leaves],
-    ["mapping", coverage.source.mapping],
+  const verifiedSources = {};
+  for (const [sourceName, descriptor, canonicalPath] of [
+    [
+      "normalized_leaves",
+      coverage.source.normalized_leaves,
+      canonicalNormalizedLeavesPath(normalized),
+    ],
+    ["mapping", coverage.source.mapping, canonicalMappingPath(normalized)],
   ]) {
-    let bytes;
+    if (descriptor.path !== canonicalPath) {
+      issues.push(sourcePathBindingIssue({ sourceName, descriptor, canonicalPath, normalized }));
+      continue;
+    }
+
+    let sourceFile;
     try {
-      bytes = readContainedRegularFile({
+      sourceFile = readContainedUtf8RegularFile({
         root,
-        relativePath: descriptor.path,
+        relativePath: canonicalPath,
         label: `source ${sourceName}`,
       });
     } catch (error) {
       issues.push(error instanceof Error ? error.message : String(error));
       continue;
     }
-    const actualSha256 = exactByteSha256(bytes);
+    const actualSha256 = exactByteSha256(sourceFile.bytes);
     if (actualSha256 !== descriptor.sha256) {
       issues.push(
         `source ${sourceName} exact-byte SHA-256 mismatch: expected ${descriptor.sha256}, received ${actualSha256}`,
+      );
+      continue;
+    }
+    verifiedSources[sourceName] = sourceFile;
+  }
+
+  if (verifiedSources.normalized_leaves && verifiedSources.mapping) {
+    let normalizedLeaves;
+    let mapping;
+    try {
+      normalizedLeaves = JSON.parse(verifiedSources.normalized_leaves.text);
+    } catch (error) {
+      issues.push(
+        `source normalized_leaves is not valid JSON (${error instanceof Error ? error.message : String(error)})`,
+      );
+    }
+    try {
+      mapping = parseYaml(verifiedSources.mapping.text);
+    } catch (error) {
+      issues.push(
+        `source mapping is not valid YAML (${error instanceof Error ? error.message : String(error)})`,
+      );
+    }
+    if (normalizedLeaves && mapping) {
+      issues.push(
+        ...coverageProjectionIssues({ coverage, normalized, normalizedLeaves, mapping }),
       );
     }
   }
@@ -288,7 +329,204 @@ function assertCoverageSources({ coverage, normalized, root, source }) {
   }
 }
 
-function readContainedRegularFile({ root, relativePath, label }) {
+function sourcePathBindingIssue({ sourceName, descriptor, canonicalPath, normalized }) {
+  const reportedPath = String(descriptor.path);
+  const normalizedPath = path.posix.normalize(reportedPath);
+  const escapesRoot = (
+    path.posix.isAbsolute(reportedPath)
+    || normalizedPath === ".."
+    || normalizedPath.startsWith("../")
+  );
+  const reason = escapesRoot
+    ? "escapes the repository root and does not match"
+    : "does not match";
+  return `source ${sourceName} path ${reportedPath} ${reason} canonical path ${canonicalPath} for ${normalized.system}:${normalized.version}`;
+}
+
+function coverageProjectionIssues({ coverage, normalized, normalizedLeaves, mapping }) {
+  const issues = [];
+  if (
+    String(normalizedLeaves.classification_system).toLowerCase() !== normalized.system
+    || String(normalizedLeaves.classification_version) !== normalized.version
+  ) {
+    issues.push(
+      `source normalized_leaves coordinate ${String(normalizedLeaves.classification_system)}:${String(normalizedLeaves.classification_version)} does not match ${normalized.system}:${normalized.version}`,
+    );
+  }
+  if (
+    String(mapping.classification_system).toLowerCase() !== normalized.system
+    || String(mapping.classification_version) !== normalized.version
+  ) {
+    issues.push(
+      `source mapping coordinate ${String(mapping.classification_system)}:${String(mapping.classification_version)} does not match ${normalized.system}:${normalized.version}`,
+    );
+  }
+
+  if (!Array.isArray(normalizedLeaves.leaves)) {
+    issues.push("source normalized_leaves.leaves must be an array");
+    return issues;
+  }
+  if (!Array.isArray(mapping.mappings)) {
+    issues.push("source mapping.mappings must be an array");
+    return issues;
+  }
+
+  const leavesByCode = new Map();
+  for (const leaf of normalizedLeaves.leaves) {
+    const code = sourceCode(leaf);
+    if (code === null) {
+      issues.push("source normalized_leaves contains a leaf without a code");
+      continue;
+    }
+    if (!isProjectedLeaf(leaf)) {
+      issues.push(`source normalized leaf ${code} cannot be projected deterministically`);
+      continue;
+    }
+    if (leavesByCode.has(code)) {
+      issues.push(`source normalized_leaves contains duplicate code ${code}`);
+      continue;
+    }
+    leavesByCode.set(code, leaf);
+  }
+
+  const entriesByCode = new Map(coverage.entries.map((entry) => [String(entry.code), entry]));
+  const sourceCodes = [...leavesByCode.keys()].sort(compareText);
+  const entryCodes = coverage.entries.map((entry) => String(entry.code));
+  if (!sameStringArrays(entryCodes, sourceCodes)) {
+    issues.push("coverage entries do not match the deterministic normalized-leaf code order");
+  }
+  for (const code of sourceCodes) {
+    const leaf = leavesByCode.get(code);
+    const entry = entriesByCode.get(code);
+    if (!entry) {
+      issues.push(`coverage entries are missing normalized leaf ${code}`);
+      continue;
+    }
+    if (entry.label !== leaf.title) {
+      issues.push(`coverage entry ${code} label does not match normalized leaf title`);
+    }
+    if (!sameStringArrays(entry.path_codes, leaf.path_codes)) {
+      issues.push(`coverage entry ${code} path_codes do not match normalized leaf path_codes`);
+    }
+    if (!sameStringArrays(entry.path_titles, leaf.path_titles)) {
+      issues.push(`coverage entry ${code} path_titles do not match normalized leaf path_titles`);
+    }
+  }
+  for (const code of entryCodes) {
+    if (!leavesByCode.has(code)) {
+      issues.push(`coverage entries contain code ${code} absent from normalized leaves`);
+    }
+  }
+
+  const mappingsByCode = new Map();
+  for (const candidate of mapping.mappings) {
+    const code = sourceCode(candidate);
+    if (code === null) {
+      issues.push("source mapping contains an edge without a code");
+      continue;
+    }
+    if (!leavesByCode.has(code)) {
+      issues.push(`source mapping code ${code} is absent from normalized leaves`);
+    }
+    if (!isProjectedMapping(candidate)) {
+      issues.push(`source mapping for ${code} cannot be projected deterministically`);
+      continue;
+    }
+    if (mappingsByCode.has(code)) {
+      issues.push(`source mapping contains duplicate code ${code}`);
+      continue;
+    }
+    mappingsByCode.set(code, candidate);
+  }
+
+  for (const [code, entry] of entriesByCode) {
+    const sourceMapping = mappingsByCode.get(code);
+    if (!sourceMapping) {
+      if (entry.mapping || entry.legacy_reference) {
+        issues.push(`coverage entry ${code} projects an edge absent from canonical mapping`);
+      }
+      continue;
+    }
+    if (entry.mapping) {
+      for (const field of ["pcr_id", "mapping_type", "confidence"]) {
+        if (entry.mapping[field] !== sourceMapping[field]) {
+          issues.push(`coverage entry ${code} mapping.${field} does not match canonical mapping`);
+        }
+      }
+      continue;
+    }
+    if (entry.legacy_reference) {
+      if (entry.legacy_reference.pcr_id !== sourceMapping.pcr_id) {
+        issues.push(`coverage entry ${code} legacy_reference.pcr_id does not match canonical mapping`);
+      }
+      continue;
+    }
+    issues.push(`coverage entry ${code} does not represent its canonical mapping edge`);
+  }
+  return issues;
+}
+
+function sourceCode(value) {
+  if (!value || typeof value !== "object" || value.code === undefined || value.code === null) {
+    return null;
+  }
+  const code = String(value.code);
+  return code.length > 0 ? code : null;
+}
+
+function isProjectedLeaf(leaf) {
+  return (
+    leaf
+    && typeof leaf === "object"
+    && typeof leaf.title === "string"
+    && leaf.title.length > 0
+    && isStringArray(leaf.path_codes)
+    && leaf.path_codes.length > 0
+    && isStringArray(leaf.path_titles)
+    && leaf.path_titles.length > 0
+  );
+}
+
+function isProjectedMapping(mapping) {
+  return (
+    mapping
+    && typeof mapping === "object"
+    && typeof mapping.pcr_id === "string"
+    && mapping.pcr_id.startsWith("pcr.")
+    && CLASSIFICATION_MAPPING_RELATIONS.has(mapping.mapping_type)
+    && typeof mapping.confidence === "string"
+    && mapping.confidence.length > 0
+  );
+}
+
+function isStringArray(value) {
+  return Array.isArray(value) && value.every((item) => typeof item === "string");
+}
+
+function sameStringArrays(left, right) {
+  return (
+    isStringArray(left)
+    && isStringArray(right)
+    && left.length === right.length
+    && left.every((value, index) => value === right[index])
+  );
+}
+
+function compareText(left, right) {
+  const normalizedLeft = String(left);
+  const normalizedRight = String(right);
+  return normalizedLeft < normalizedRight ? -1 : normalizedLeft > normalizedRight ? 1 : 0;
+}
+
+function canonicalNormalizedLeavesPath({ system, version }) {
+  return `classifications/systems/${system}/${version}/normalized/leaves.json`;
+}
+
+function canonicalMappingPath({ system, version }) {
+  return `classifications/mappings/${system}-${version}-to-pcr.yaml`;
+}
+
+function readContainedUtf8RegularFile({ root, relativePath, label }) {
   if (typeof relativePath !== "string" || relativePath.length === 0) {
     throw new Error(`${label} path must be a non-empty repository-relative path`);
   }
@@ -312,8 +550,69 @@ function readContainedRegularFile({ root, relativePath, label }) {
     throw new Error(`${label} path escapes the repository root: ${relativePath}`);
   }
 
+  assertRegularPathChain({
+    resolvedRoot,
+    containedRelativePath,
+    relativePath,
+    label,
+  });
+  assertRealPathContained({
+    root: resolvedRoot,
+    candidate: resolvedPath,
+    label,
+    relativePath,
+  });
+
+  let descriptor;
+  let bytes;
+  try {
+    descriptor = openSync(
+      resolvedPath,
+      fsConstants.O_RDONLY | fsConstants.O_NOFOLLOW | fsConstants.O_NONBLOCK,
+    );
+    const openedStats = fstatSync(descriptor);
+    if (!openedStats.isFile()) {
+      throw new Error(`${label} is not a regular file: ${relativePath}`);
+    }
+    const currentStats = assertRegularPathChain({
+      resolvedRoot,
+      containedRelativePath,
+      relativePath,
+      label,
+    });
+    assertRealPathContained({
+      root: resolvedRoot,
+      candidate: resolvedPath,
+      label,
+      relativePath,
+    });
+    if (openedStats.dev !== currentStats.dev || openedStats.ino !== currentStats.ino) {
+      throw new Error(`${label} path changed while it was being opened: ${relativePath}`);
+    }
+    bytes = readFileSync(descriptor);
+  } catch (error) {
+    if (error instanceof Error && error.message.startsWith(`${label} `)) {
+      throw error;
+    }
+    throw new Error(
+      `${label} could not be opened without following symbolic links: ${relativePath} (${error instanceof Error ? error.code ?? error.message : String(error)})`,
+    );
+  } finally {
+    if (descriptor !== undefined) {
+      closeSync(descriptor);
+    }
+  }
+
+  return {
+    bytes,
+    text: decodeFatalUtf8(bytes, { label, relativePath }),
+  };
+}
+
+function assertRegularPathChain({ resolvedRoot, containedRelativePath, relativePath, label }) {
   const segments = containedRelativePath.split(path.sep);
   let currentPath = resolvedRoot;
+  let finalStats;
   for (const [index, segment] of segments.entries()) {
     currentPath = path.join(currentPath, segment);
     let stats;
@@ -334,32 +633,20 @@ function readContainedRegularFile({ root, relativePath, label }) {
     if (!isLastSegment && !stats.isDirectory()) {
       throw new Error(`${label} parent is not a directory: ${relativePath}`);
     }
+    if (isLastSegment) {
+      finalStats = stats;
+    }
   }
-  assertRealPathContained({
-    root: resolvedRoot,
-    candidate: resolvedPath,
-    label,
-    relativePath,
-  });
+  return finalStats;
+}
 
-  let descriptor;
+function decodeFatalUtf8(bytes, { label, relativePath }) {
   try {
-    descriptor = openSync(resolvedPath, fsConstants.O_RDONLY | fsConstants.O_NOFOLLOW);
-    if (!fstatSync(descriptor).isFile()) {
-      throw new Error(`${label} is not a regular file: ${relativePath}`);
-    }
-    return readFileSync(descriptor);
+    return new TextDecoder("utf-8", { fatal: true }).decode(bytes);
   } catch (error) {
-    if (error instanceof Error && error.message.startsWith(`${label} is not`)) {
-      throw error;
-    }
     throw new Error(
-      `${label} could not be opened without following symbolic links: ${relativePath} (${error instanceof Error ? error.code ?? error.message : String(error)})`,
+      `${label} is not valid UTF-8: ${relativePath} (${error instanceof Error ? error.message : String(error)})`,
     );
-  } finally {
-    if (descriptor !== undefined) {
-      closeSync(descriptor);
-    }
   }
 }
 

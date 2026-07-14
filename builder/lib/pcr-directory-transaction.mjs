@@ -20,6 +20,7 @@ import os from "node:os";
 import path from "node:path";
 
 import {
+  pcrPathMatchesFilesystemIdentity,
   repoRelativePcrPath,
   resolvePcrLocationForRecovery,
   resolvePcrWorkspacePaths,
@@ -34,6 +35,10 @@ export const PCR_TRANSACTION_PHASES = Object.freeze([
 
 const STATE_SCHEMA_VERSION = 1;
 const DIGEST_PATTERN = /^[0-9a-f]{64}$/u;
+const STATE_KEY_PATTERN = /^[0-9a-f]{64}$/u;
+const UUID_PATTERN = "[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}";
+const UUID_V4_PATTERN = new RegExp(`^${UUID_PATTERN}$`, "u");
+const RELEASED_LOCK_PATTERN = new RegExp(`^\\.lock\\.released\\.(${UUID_PATTERN})$`, "u");
 const JOURNAL_TEMP_PATTERN = /^\.journal\.json\.\d+\.[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}\.tmp$/u;
 
 export class PcrDirectoryTransactionError extends Error {
@@ -243,12 +248,93 @@ function stateKey(relativePcrPath) {
   return createHash("sha256").update(relativePcrPath).digest("hex");
 }
 
+function recordedPcrPathsInStateDirectory(transactionDir) {
+  const candidates = [path.join(transactionDir, "journal.json")];
+  const lockDir = path.join(transactionDir, "lock");
+  try {
+    if (existsSync(lockDir)) {
+      requirePlainDirectory(lockDir, "PCR transaction lock");
+      candidates.push(path.join(lockDir, "owner.json"));
+    }
+  } catch {
+    // Identity discovery never follows an unsafe lock directory. If this state directory is
+    // selected by its canonical key, recovery will report the concrete malformed-state error.
+  }
+  const recorded = [];
+  for (const candidate of candidates) {
+    if (!existsSync(candidate)) {
+      continue;
+    }
+    try {
+      const value = readJsonFile(candidate, "PCR transaction identity state");
+      if (typeof value?.pcr_path === "string") {
+        recorded.push(value.pcr_path);
+      }
+    } catch {
+      // Identity discovery never trusts malformed state. The selected recovery path will report
+      // the precise malformed-state error if this directory is otherwise addressable.
+    }
+  }
+  return recorded;
+}
+
+function existingStateDirectoryForLocation(location, stateRoot, defaultTransactionDir) {
+  if (!existsSync(stateRoot)) {
+    return Object.freeze({ transactionDir: defaultTransactionDir, canonicalPcrPath: null });
+  }
+  assertStateDirectorySafe(stateRoot, "PCR transaction state root");
+
+  const matches = [];
+  for (const entry of readdirSync(stateRoot)) {
+    if (!STATE_KEY_PATTERN.test(entry)) {
+      continue;
+    }
+    const candidate = path.join(stateRoot, entry);
+    requirePlainDirectory(candidate, "PCR transaction state directory");
+    const matchingRecordedPaths = recordedPcrPathsInStateDirectory(candidate)
+      .filter((recorded) => pcrPathMatchesFilesystemIdentity(location, recorded));
+    if (matchingRecordedPaths.length > 0) {
+      const canonicalPcrPath = matchingRecordedPaths.find((recorded) => stateKey(recorded) === entry)
+        ?? matchingRecordedPaths[0];
+      matches.push({ transactionDir: candidate, canonicalPcrPath });
+    }
+  }
+  if (matches.length > 1) {
+    throw transactionError(
+      "PCR_TRANSACTION_AMBIGUOUS_STATE_IDENTITY",
+      `Multiple transaction state directories claim filesystem identity ${location.relativePcrPath}: ${matches.map((match) => match.transactionDir).join(", ")}`,
+    );
+  }
+  if (matches.length === 1) {
+    return Object.freeze(matches[0]);
+  }
+  return Object.freeze({ transactionDir: defaultTransactionDir, canonicalPcrPath: null });
+}
+
 export function transactionStatePaths({ root, pcr }) {
   const location = resolvePcrLocationForRecovery({ root, pcr });
   const stateRoot = path.join(location.root, "library", ".pcr-builder-state");
-  const transactionDir = path.join(stateRoot, stateKey(location.relativePcrPath));
+  const defaultTransactionDir = path.join(stateRoot, stateKey(location.relativePcrPath));
+  const stateIdentity = existingStateDirectoryForLocation(
+    location,
+    stateRoot,
+    defaultTransactionDir,
+  );
+  const transactionDir = stateIdentity.transactionDir;
+  const canonicalPcrPath = stateIdentity.canonicalPcrPath;
+  const canonicalSegments = canonicalPcrPath?.split("/") ?? null;
+  const resolvedLocation = canonicalSegments === null
+    ? location
+    : {
+        ...location,
+        relativePcrPath: canonicalPcrPath,
+        domain: canonicalSegments[0],
+        subdomain: canonicalSegments[1],
+        slug: canonicalSegments[2],
+        pcrDir: path.join(location.pcrRoot, ...canonicalSegments),
+      };
   return Object.freeze({
-    ...location,
+    ...resolvedLocation,
     stateRoot,
     transactionDir,
     lockDir: path.join(transactionDir, "lock"),
@@ -293,10 +379,11 @@ function ensureStateContainer(paths) {
   assertStateDirectorySafe(paths.transactionDir, "PCR transaction state directory");
 }
 
-function lockOwner(paths, command) {
+function lockOwner(paths, command, invocationToken) {
   return {
     schema_version: STATE_SCHEMA_VERSION,
     pcr_path: paths.relativePcrPath,
+    invocation_token: invocationToken,
     pid: process.pid,
     hostname: os.hostname(),
     command,
@@ -304,7 +391,7 @@ function lockOwner(paths, command) {
   };
 }
 
-function acquireLock(paths, command) {
+function acquireLock(paths, command, invocationToken = randomUUID()) {
   try {
     mkdirSync(paths.lockDir, { mode: 0o700 });
   } catch (error) {
@@ -318,23 +405,73 @@ function acquireLock(paths, command) {
     throw error;
   }
   try {
-    writeJsonAtomic(paths.lockOwnerPath, lockOwner(paths, command));
+    writeJsonAtomic(paths.lockOwnerPath, lockOwner(paths, command, invocationToken));
   } catch (error) {
     rmSync(paths.lockDir, { recursive: true, force: true });
     throw error;
   }
+  return invocationToken;
 }
 
-function releaseLock(paths) {
-  rmSync(paths.lockDir, { recursive: true, force: true });
+function moveOwnedLockToReleasedResidue(paths, invocationToken) {
+  if (!existsSync(paths.lockDir)) {
+    return null;
+  }
+  let owner;
+  try {
+    owner = readJsonFile(paths.lockOwnerPath, "PCR transaction lock owner");
+  } catch {
+    return null;
+  }
+  if (!validLockOwner(owner, paths) || owner.invocation_token !== invocationToken) {
+    return null;
+  }
+
+  const releasedLockDir = path.join(paths.transactionDir, `.lock.released.${invocationToken}`);
+  try {
+    renameSync(paths.lockDir, releasedLockDir);
+  } catch (error) {
+    if (error?.code === "ENOENT") {
+      return null;
+    }
+    throw error;
+  }
+
+  const movedOwnerPath = path.join(releasedLockDir, "owner.json");
+  const movedOwner = readJsonFile(movedOwnerPath, "Released PCR transaction lock owner");
+  if (!validLockOwner(movedOwner, paths) || movedOwner.invocation_token !== invocationToken) {
+    if (!existsSync(paths.lockDir)) {
+      renameSync(releasedLockDir, paths.lockDir);
+    }
+    throw transactionError(
+      "PCR_TRANSACTION_LOCK_OWNERSHIP_CHANGED",
+      "PCR transaction lock ownership changed while release was in progress; the lock was preserved.",
+    );
+  }
+  return releasedLockDir;
 }
 
-function removeEmptyStateContainers(paths) {
+function releaseLock(paths, invocationToken) {
+  const releasedLockDir = moveOwnedLockToReleasedResidue(paths, invocationToken);
+  if (releasedLockDir === null) {
+    return false;
+  }
+  rmSync(releasedLockDir, { recursive: true });
+  return true;
+}
+
+function removeEmptyStateContainers(paths, { allowSuccessorLock = false } = {}) {
   try {
     rmdirSync(paths.transactionDir);
   } catch (error) {
     if (error?.code !== "ENOENT") {
       if (error?.code === "ENOTEMPTY") {
+        const entries = readdirSync(paths.transactionDir);
+        if (allowSuccessorLock && entries.length === 1 && entries[0] === "lock") {
+          // Once this invocation atomically renamed away its lock, a new invocation may acquire
+          // the shared lock before container cleanup. That live handoff is not recovery evidence.
+          return;
+        }
         throw transactionError(
           "PCR_TRANSACTION_STATE_NOT_EMPTY",
           `PCR transaction state directory still contains recovery evidence: ${paths.transactionDir}`,
@@ -379,8 +516,47 @@ function recoveryUnexpectedEntries(paths) {
   }
   const known = new Set(["lock", "journal.json", "stage", "backup"]);
   return readdirSync(paths.transactionDir).filter(
-    (entry) => !known.has(entry) && !JOURNAL_TEMP_PATTERN.test(entry),
+    (entry) =>
+      !known.has(entry) &&
+      !JOURNAL_TEMP_PATTERN.test(entry) &&
+      !RELEASED_LOCK_PATTERN.test(entry),
   );
+}
+
+function releasedLockPaths(paths) {
+  if (!existsSync(paths.transactionDir)) {
+    return [];
+  }
+  return readdirSync(paths.transactionDir)
+    .map((entry) => ({ entry, match: RELEASED_LOCK_PATTERN.exec(entry) }))
+    .filter(({ match }) => match !== null)
+    .map(({ entry, match }) => {
+      const releasedLockDir = path.join(paths.transactionDir, entry);
+      requirePlainDirectory(releasedLockDir, "Released PCR transaction lock");
+      const owner = readJsonFile(
+        path.join(releasedLockDir, "owner.json"),
+        "Released PCR transaction lock owner",
+      );
+      if (!validLockOwner(owner, paths) || owner.invocation_token !== match[1]) {
+        throw transactionError(
+          "PCR_TRANSACTION_RELEASED_LOCK_UNTRUSTED",
+          `Released lock residue does not have a matching trustworthy owner token: ${releasedLockDir}`,
+        );
+      }
+      if (readdirSync(releasedLockDir).some((name) => name !== "owner.json")) {
+        throw transactionError(
+          "PCR_TRANSACTION_RELEASED_LOCK_UNTRUSTED",
+          `Released lock residue contains unrecognized entries: ${releasedLockDir}`,
+        );
+      }
+      return releasedLockDir;
+    });
+}
+
+function removeReleasedLockResidues(paths) {
+  for (const releasedLockDir of releasedLockPaths(paths)) {
+    rmSync(releasedLockDir, { recursive: true });
+  }
 }
 
 function assertRecoveryEntriesRecognized(paths) {
@@ -391,6 +567,9 @@ function assertRecoveryEntriesRecognized(paths) {
       `PCR transaction state directory contains unrecognized recovery evidence: ${unexpected.join(", ")}.`,
     );
   }
+  // A process can stop after atomically relinquishing lock/ but before deleting its tokenized
+  // tombstone. Only exact, owner-token-matched residues are recognized for later cleanup.
+  releasedLockPaths(paths);
 }
 
 function journalValue(paths, command, transactionId, oldDigest, newDigest) {
@@ -423,7 +602,7 @@ function validJournal(value, paths) {
       value.schema_version === STATE_SCHEMA_VERSION &&
       typeof value.transaction_id === "string" &&
       value.transaction_id.length > 0 &&
-      value.pcr_path === paths.relativePcrPath &&
+      pcrPathMatchesFilesystemIdentity(paths, value.pcr_path) &&
       typeof value.command === "string" &&
       value.command.length > 0 &&
       PCR_TRANSACTION_PHASES.includes(value.phase) &&
@@ -483,6 +662,61 @@ function removeKnownTree(directory) {
   }
 }
 
+function directoryIdentity(directory, label) {
+  const stats = requirePlainDirectory(directory, label);
+  return Object.freeze({ device: stats.dev, inode: stats.ino });
+}
+
+function sameDirectoryIdentity(left, right) {
+  return left.device === right.device && left.inode === right.inode;
+}
+
+function movedBackupMatches(paths, expectedDigest, expectedIdentity) {
+  return (
+    sameDirectoryIdentity(
+      directoryIdentity(paths.backupDir, "PCR transaction backup"),
+      expectedIdentity,
+    ) && digestDirectoryTree(paths.backupDir) === expectedDigest
+  );
+}
+
+function restoreMovedBackupBeforeInstall(paths) {
+  if (existsSync(paths.pcrDir)) {
+    throw transactionError(
+      "PCR_TRANSACTION_CURRENT_REAPPEARED",
+      "The current PCR path reappeared while the original tree was in backup; recovery evidence was preserved.",
+    );
+  }
+  renameSync(paths.backupDir, paths.pcrDir);
+}
+
+function restoreMovedBackupAfterInstall(paths, expectedNewDigest) {
+  if (digestDirectoryTree(paths.pcrDir) !== expectedNewDigest) {
+    throw transactionError(
+      "PCR_TRANSACTION_INSTALLED_TREE_CHANGED",
+      "The installed PCR tree changed while a concurrent source edit was being preserved; recovery evidence was preserved.",
+    );
+  }
+  if (existsSync(paths.stageDir)) {
+    throw transactionError(
+      "PCR_TRANSACTION_STAGE_REAPPEARED",
+      "The transaction stage path reappeared after installation; recovery evidence was preserved.",
+    );
+  }
+  renameSync(paths.pcrDir, paths.stageDir);
+  renameSync(paths.backupDir, paths.pcrDir);
+}
+
+function removeExpectedBackup(paths, expectedDigest, expectedIdentity) {
+  if (!movedBackupMatches(paths, expectedDigest, expectedIdentity)) {
+    throw transactionError(
+      "PCR_TRANSACTION_BACKUP_CHANGED",
+      "The moved original PCR tree changed before cleanup; it was preserved for explicit recovery.",
+    );
+  }
+  rmSync(paths.backupDir, { recursive: true });
+}
+
 function rollbackPreparedTransaction(paths, journal) {
   const trees = inspectRecoveryTrees(paths, journal);
   if (isOld(trees.current)) {
@@ -540,11 +774,17 @@ function cleanupRecoveredState(paths) {
   removeKnownTree(paths.backupDir);
   rmSync(paths.journalPath, { force: true });
   removeJournalTemporaryFiles(paths);
+  removeReleasedLockResidues(paths);
 }
 
-function cleanupCommittedState(paths) {
-  removeKnownTree(paths.stageDir);
-  removeKnownTree(paths.backupDir);
+function cleanupCommittedState(paths, expectedOldDigest, expectedOldIdentity) {
+  if (existsSync(paths.stageDir)) {
+    throw transactionError(
+      "PCR_TRANSACTION_STAGE_REAPPEARED",
+      "The transaction stage path reappeared after installation; it was preserved for explicit recovery.",
+    );
+  }
+  removeExpectedBackup(paths, expectedOldDigest, expectedOldIdentity);
   rmSync(paths.journalPath, { force: true });
 }
 
@@ -580,13 +820,15 @@ export function runPcrDirectoryTransaction(options) {
   assertNormalStateClean(paths);
 
   ensureStateContainer(paths);
-  acquireLock(paths, command);
+  const transactionId = randomUUID();
+  const invocationToken = acquireLock(paths, command, transactionId);
   let createdStage = false;
   let journal = null;
   let phase = null;
   let oldDigest = null;
   let newDigest = null;
-  const transactionId = randomUUID();
+  let oldIdentity = null;
+  let lockReleased = false;
 
   try {
     assertNormalStateClean(paths, { ignoreOwnedLock: true });
@@ -610,6 +852,7 @@ export function runPcrDirectoryTransaction(options) {
       callbackContext(paths, { transactionId, oldTreeSha256: oldDigest, newTreeSha256: newDigest }),
       "validateStage",
     );
+    oldIdentity = directoryIdentity(paths.pcrDir, "Current PCR directory before replacement");
     if (digestDirectoryTree(paths.pcrDir) !== oldDigest) {
       throw transactionError(
         "PCR_TRANSACTION_SOURCE_CHANGED",
@@ -622,10 +865,43 @@ export function runPcrDirectoryTransaction(options) {
     phase = "prepared";
     invokeSync(options.onPhase, callbackContext(paths, { phase, journal: Object.freeze({ ...journal }) }), "onPhase");
 
+    if (digestDirectoryTree(paths.pcrDir) !== oldDigest) {
+      // No replacement rename has occurred. Remove only this invocation's journal so the normal
+      // pre-journal cleanup path can discard its stage without touching the concurrent edit.
+      rmSync(paths.journalPath);
+      journal = null;
+      phase = null;
+      throw transactionError(
+        "PCR_TRANSACTION_SOURCE_CHANGED",
+        "The current PCR tree changed immediately before replacement; no replacement was attempted.",
+      );
+    }
+
     renameSync(paths.pcrDir, paths.backupDir);
+    if (!movedBackupMatches(paths, oldDigest, oldIdentity)) {
+      restoreMovedBackupBeforeInstall(paths);
+      rmSync(paths.journalPath);
+      journal = null;
+      phase = null;
+      throw transactionError(
+        "PCR_TRANSACTION_SOURCE_CHANGED",
+        "The current PCR tree changed during replacement rename; the concurrent tree was restored.",
+      );
+    }
     journal = writeJournalPhase(paths, journal, "current_moved");
     phase = "current_moved";
     invokeSync(options.onPhase, callbackContext(paths, { phase, journal: Object.freeze({ ...journal }) }), "onPhase");
+
+    if (!movedBackupMatches(paths, oldDigest, oldIdentity)) {
+      restoreMovedBackupBeforeInstall(paths);
+      rmSync(paths.journalPath);
+      journal = null;
+      phase = null;
+      throw transactionError(
+        "PCR_TRANSACTION_SOURCE_CHANGED",
+        "The moved original PCR tree changed before installation; the concurrent edit was restored.",
+      );
+    }
 
     renameSync(paths.stageDir, paths.pcrDir);
     journal = writeJournalPhase(paths, journal, "new_installed");
@@ -643,14 +919,29 @@ export function runPcrDirectoryTransaction(options) {
         "Post-validation changed the installed PCR tree after its digest was recorded.",
       );
     }
+    if (!movedBackupMatches(paths, oldDigest, oldIdentity)) {
+      restoreMovedBackupAfterInstall(paths, newDigest);
+      rmSync(paths.journalPath);
+      journal = null;
+      phase = null;
+      throw transactionError(
+        "PCR_TRANSACTION_SOURCE_CHANGED",
+        "The moved original PCR tree changed before commit; the concurrent edit was restored.",
+      );
+    }
 
     journal = writeJournalPhase(paths, journal, "committed");
     phase = "committed";
     invokeSync(options.onPhase, callbackContext(paths, { phase, journal: Object.freeze({ ...journal }) }), "onPhase");
 
-    cleanupCommittedState(paths);
-    releaseLock(paths);
-    removeEmptyStateContainers(paths);
+    cleanupCommittedState(paths, oldDigest, oldIdentity);
+    lockReleased = releaseLock(paths, invocationToken);
+    invokeSync(
+      options.onLockReleased,
+      callbackContext(paths, { transactionId, invocationToken }),
+      "onLockReleased",
+    );
+    removeEmptyStateContainers(paths, { allowSuccessorLock: lockReleased });
     return Object.freeze({
       committed: true,
       recoveryRequired: false,
@@ -663,8 +954,8 @@ export function runPcrDirectoryTransaction(options) {
     if (phase === "committed") {
       const warning = `Transaction ${transactionId} committed, but cleanup did not finish: ${error.message}`;
       try {
-        releaseLock(paths);
-        removeEmptyStateContainers(paths);
+        lockReleased = releaseLock(paths, invocationToken) || lockReleased;
+        removeEmptyStateContainers(paths, { allowSuccessorLock: lockReleased });
       } catch {
         // The committed journal is intentionally retained for explicit forward recovery.
       }
@@ -692,8 +983,8 @@ export function runPcrDirectoryTransaction(options) {
       rollbackError = candidateRollbackError;
     }
     try {
-      releaseLock(paths);
-      removeEmptyStateContainers(paths);
+      lockReleased = releaseLock(paths, invocationToken) || lockReleased;
+      removeEmptyStateContainers(paths, { allowSuccessorLock: lockReleased });
     } catch (candidateCleanupError) {
       rollbackError ??= candidateCleanupError;
     }
@@ -712,7 +1003,9 @@ function validLockOwner(owner, paths) {
   return Boolean(
     owner &&
       owner.schema_version === STATE_SCHEMA_VERSION &&
-      owner.pcr_path === paths.relativePcrPath &&
+      pcrPathMatchesFilesystemIdentity(paths, owner.pcr_path) &&
+      typeof owner.invocation_token === "string" &&
+      UUID_V4_PATTERN.test(owner.invocation_token) &&
       Number.isInteger(owner.pid) &&
       owner.pid > 0 &&
       typeof owner.hostname === "string" &&
@@ -737,7 +1030,7 @@ function pidIsLive(pid) {
 
 function inspectExistingRecoveryLock(paths, force) {
   if (!existsSync(paths.lockDir)) {
-    return false;
+    return Object.freeze({ exists: false, owner: null, trusted: false, forced: false });
   }
   let owner = null;
   try {
@@ -751,8 +1044,7 @@ function inspectExistingRecoveryLock(paths, force) {
         { cause: error },
       );
     }
-    rmSync(paths.lockDir, { recursive: true, force: true });
-    return true;
+    return Object.freeze({ exists: true, owner: null, trusted: false, forced: true });
   }
   if (!validLockOwner(owner, paths)) {
     if (!force) {
@@ -761,8 +1053,7 @@ function inspectExistingRecoveryLock(paths, force) {
         `PCR transaction lock owner is malformed; recovery requires force: ${paths.lockOwnerPath}`,
       );
     }
-    rmSync(paths.lockDir, { recursive: true, force: true });
-    return true;
+    return Object.freeze({ exists: true, owner, trusted: false, forced: true });
   }
   if (owner.hostname !== os.hostname()) {
     if (!force) {
@@ -771,8 +1062,7 @@ function inspectExistingRecoveryLock(paths, force) {
         `PCR transaction lock belongs to foreign host ${owner.hostname}; recovery requires force.`,
       );
     }
-    rmSync(paths.lockDir, { recursive: true, force: true });
-    return true;
+    return Object.freeze({ exists: true, owner, trusted: true, forced: true });
   }
   if (pidIsLive(owner.pid)) {
     throw transactionError(
@@ -780,8 +1070,29 @@ function inspectExistingRecoveryLock(paths, force) {
       `PCR transaction lock is owned by live process ${owner.pid} on ${owner.hostname}; recovery is refused.`,
     );
   }
-  rmSync(paths.lockDir, { recursive: true, force: true });
-  return false;
+  return Object.freeze({ exists: true, owner, trusted: true, forced: false });
+}
+
+function breakInspectedRecoveryLock(paths, inspection, { preserveReleasedResidue = false } = {}) {
+  if (!inspection.exists) {
+    return;
+  }
+  if (inspection.trusted) {
+    const released = preserveReleasedResidue
+      ? moveOwnedLockToReleasedResidue(paths, inspection.owner.invocation_token)
+      : releaseLock(paths, inspection.owner.invocation_token);
+    if (!released) {
+      throw transactionError(
+        "PCR_TRANSACTION_LOCK_CHANGED",
+        "PCR transaction lock changed after recovery inspected it; retry recovery against the current owner.",
+      );
+    }
+    return;
+  }
+
+  // An untrusted/malformed owner has no token that can support an ownership-checked handoff.
+  // The caller explicitly authorized this destructive stale-lock break with force.
+  rmSync(paths.lockDir, { recursive: true });
 }
 
 function readTrustedJournal(paths) {
@@ -840,6 +1151,51 @@ function readTrustedJournal(paths) {
   return journal;
 }
 
+function isOwnedPreJournalStageCandidate(paths) {
+  if (
+    existsSync(paths.journalPath) ||
+    !existsSync(paths.pcrDir) ||
+    !existsSync(paths.stageDir) ||
+    existsSync(paths.backupDir)
+  ) {
+    return false;
+  }
+
+  // If a complete temporary journal explains both trees, normal journal recovery remains more
+  // informative. Any other recognized temporary is not trustworthy, while current+stage and no
+  // backup proves that the first replacement rename has not happened.
+  const temporaryPaths = journalTemporaryPaths(paths);
+  if (temporaryPaths.length !== 1) {
+    return true;
+  }
+  try {
+    const journal = readJsonFile(temporaryPaths[0], "PCR transaction journal temporary file");
+    if (!validJournal(journal, paths)) {
+      return true;
+    }
+    inspectRecoveryTrees(paths, journal);
+    return false;
+  } catch {
+    return true;
+  }
+}
+
+function discardOwnedPreJournalStage(paths, options, forced) {
+  const currentDigest = digestDirectoryTree(paths.pcrDir);
+  // Validate both trees before deleting anything, then validate the preserved current tree while
+  // all crash evidence is still available if the callback rejects it.
+  digestDirectoryTree(paths.stageDir);
+  validateRecoveredTree(
+    paths,
+    options,
+    { action: "discarded_pre_journal_stage", forced, phase: null },
+    currentDigest,
+  );
+  removeKnownTree(paths.stageDir);
+  removeJournalTemporaryFiles(paths);
+  return "discarded_pre_journal_stage";
+}
+
 function validateRecoveredTree(paths, options, details, expectedDigest) {
   if (!existsSync(paths.pcrDir)) {
     throw transactionError(
@@ -875,46 +1231,78 @@ export function recoverPcrDirectoryTransaction(options) {
   }
   assertStateDirectorySafe(paths.stateRoot, "PCR transaction state root");
   assertStateDirectorySafe(paths.transactionDir, "PCR transaction state directory");
-  const forcedLock = inspectExistingRecoveryLock(paths, force);
+  assertRecoveryEntriesRecognized(paths);
+  // Validate recognized journal temporaries before changing lock ownership so malformed evidence
+  // is not hidden by a failed recovery attempt.
+  journalTemporaryPaths(paths);
+  const preJournalStage = isOwnedPreJournalStageCandidate(paths);
+  const lockInspection = inspectExistingRecoveryLock(paths, force);
+  const preJournalOwnerResidues = preJournalStage ? releasedLockPaths(paths) : [];
+  if (preJournalStage && !force) {
+    throw transactionError(
+      "PCR_TRANSACTION_FORCE_REQUIRED",
+      "A staged tree exists before any trustworthy journal, while current is intact and backup is absent; discarding the owned stage requires force.",
+    );
+  }
+  if (preJournalStage && !lockInspection.trusted && preJournalOwnerResidues.length === 0) {
+    throw transactionError(
+      "PCR_TRANSACTION_TRUSTED_OWNER_REQUIRED",
+      "The pre-journal staged tree has no trustworthy stale lock owner; recovery refuses to guess ownership.",
+    );
+  }
 
-  acquireLock(paths, String(options.command ?? "recover-pcr-directory-transaction"));
+  breakInspectedRecoveryLock(paths, lockInspection, {
+    preserveReleasedResidue: preJournalStage && lockInspection.trusted,
+  });
+  const invocationToken = acquireLock(
+    paths,
+    String(options.command ?? "recover-pcr-directory-transaction"),
+  );
   let action;
   let phase = null;
-  const forced = forcedLock;
+  const forced = lockInspection.forced || preJournalStage;
+  let lockReleased = false;
   try {
     assertRecoveryEntriesRecognized(paths);
-    // Validate recognized journal temporaries up front so a look-alike symlink or special file
-    // cannot be silently removed during successful recovery.
-    journalTemporaryPaths(paths);
-    const journal = readTrustedJournal(paths);
-    if (journal === null) {
+    if (preJournalStage) {
+      action = discardOwnedPreJournalStage(paths, options, forced);
+    } else {
+      const journal = readTrustedJournal(paths);
+      if (journal === null) {
       action = "cleared_stale_lock";
       validateRecoveredTree(paths, options, { action, forced, phase: null }, null);
       removeJournalTemporaryFiles(paths);
-    } else {
-      phase = journal.phase;
-      action =
-        phase === "committed"
-          ? finishCommittedTransaction(paths, journal)
-          : rollbackPreparedTransaction(paths, journal);
-      const expectedDigest = phase === "committed"
-        ? journal.new_tree_sha256
-        : journal.old_tree_sha256;
-      validateRecoveredTree(
-        paths,
-        options,
-        { action, forced, phase, journal: Object.freeze({ ...journal }) },
-        expectedDigest,
-      );
-      cleanupRecoveredState(paths);
+      } else {
+        phase = journal.phase;
+        action =
+          phase === "committed"
+            ? finishCommittedTransaction(paths, journal)
+            : rollbackPreparedTransaction(paths, journal);
+        const expectedDigest = phase === "committed"
+          ? journal.new_tree_sha256
+          : journal.old_tree_sha256;
+        validateRecoveredTree(
+          paths,
+          options,
+          { action, forced, phase, journal: Object.freeze({ ...journal }) },
+          expectedDigest,
+        );
+        cleanupRecoveredState(paths);
+      }
     }
-    releaseLock(paths);
-    removeEmptyStateContainers(paths);
+    removeReleasedLockResidues(paths);
+    lockReleased = releaseLock(paths, invocationToken);
+    invokeSync(
+      options.onLockReleased,
+      callbackContext(paths, { action, phase, invocationToken }),
+      "onLockReleased",
+    );
+    removeEmptyStateContainers(paths, { allowSuccessorLock: lockReleased });
     return Object.freeze({ action, phase, forced, warnings: Object.freeze([]) });
   } catch (error) {
     try {
-      releaseLock(paths);
-      removeEmptyStateContainers(paths);
+      lockReleased = releaseLock(paths, invocationToken) || lockReleased;
+      removeEmptyStateContainers(paths, { allowSuccessorLock: lockReleased });
     } catch {
       // Preserve the primary recovery error and all journal/tree evidence.
     }

@@ -4,7 +4,8 @@ Use this index to choose the smallest relevant builder context.
 
 ## Workflows
 
-- `workflows/create-pcr.md`: create a material PCR from an empty scaffold or classification-seeded placeholder.
+- `workflows/create-pcr.md`: explicitly create a material PCR after confirming its semantic boundary and material
+  methodology need, or promote a retained legacy scaffold without inventing classification-driven identity.
 - `workflows/update-pcr.md`: update an existing PCR from a user request, source file, reviewer note, dataset, or database alignment change.
 - `workflows/translate-pcr.md`: keep bilingual PCR renderings aligned.
 - `workflows/review-pcr.md`: review PCR methodology quality.

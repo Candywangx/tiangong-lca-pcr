@@ -864,7 +864,14 @@ function writeKnownUnmappedCoverage(root) {
     `${JSON.stringify({
       classification_system: "CPC",
       classification_version: "3.0",
-      leaves: ["X-1"],
+      leaves: [
+        {
+          code: "X-1",
+          title: "Known code without mapping",
+          path_codes: ["X", "X-1"],
+          path_titles: ["Fixture", "Known code without mapping"],
+        },
+      ],
     }, null, 2)}\n`,
   );
   const mappingPath = path.join(root, "classifications/mappings/cpc-3.0-to-pcr.yaml");

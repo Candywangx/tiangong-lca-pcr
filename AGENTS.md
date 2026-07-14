@@ -117,14 +117,34 @@ classifications/mappings/<system>-<version>-to-pcr.yaml
 
 Mapping files are the authoritative link from external classification codes to canonical PCR ids. Mapping relation types should include `exact`, `broader`, `narrower`, `proxy`, and `manual_review`.
 
-Only an accepted edge to a material PCR is a positive mapping. Classification coverage is a derived read model under
-`classifications/indexes/`; it combines normalized leaves with accepted mappings and coverage assessment for bounded
-CLI and viewer reads. It is not authoring truth and must be regenerated from its sources.
+`pcr:import:cpc -- --source <csv>` is classification-only by default. Every invocation requires an explicit source;
+the command writes raw source, source metadata, and normalized classification artifacts, creates zero PCR records,
+creates a zero-edge mapping only when the mapping is absent, and validates then preserves the exact bytes of any
+existing mapping. A retained raw artifact name is immutable: importing different bytes under the same name fails
+closed. A non-3.0 import requires a registered coverage descriptor.
+
+The `scaffold-cpc` compatibility alias must fail unless `--legacy-scaffolds` is explicit. That mode exists only for
+migration reproduction and tests, never for a new classification import. It may append leaf identity and a legacy
+edge only for a currently unmapped leaf. A missing target may be created as one complete four-file legacy scaffold;
+an existing target must already be complete and byte-for-byte equal to the expected legacy template or the import
+fails closed. It must never repair partial directories, replace an accepted edge, or overwrite PCR content.
+
+CPC import mutations are protected by one lock per classification coordinate, no-follow reads, a baseline
+compare-and-swap check, and staged writes. The mapping is the final committed artifact, so a failed import cannot
+publish an edge whose identity or PCR target was not installed.
+
+Only an explicitly accepted edge to a material PCR should become a positive mapping in the target contract.
+Classification coverage is a derived read model under `classifications/indexes/`; it combines normalized leaves,
+mapping input, target PCR state, and coverage assessment for bounded CLI and viewer reads. Each checked-in index must
+record exact-byte SHA-256 fingerprints for its normalized-leaf and mapping sources, and consumers must reject a stale
+or substituted source. The index is not authoring truth and must be regenerated from those sources.
 
 The material-first migration still retains old scaffold directories and their mapping entries for compatibility.
-Those retained entries do not prove methodology coverage. Phase 2 will stop the old CPC generator from creating a PCR
-for every new leaf and will separate positive mappings from legacy compatibility references; do not claim that
-physical scaffold deletion or mapping contraction has already happened.
+In Phase 1, the generated read model treats a valid non-manual-review edge to a material lifecycle pair as `mapped`;
+this is a deterministic compatibility rule, not evidence that per-edge acceptance governance has already been
+formalized. Retained scaffold entries do not prove methodology coverage. Only Phase 2 step 1, the importer cutover,
+is complete. Explicit edge acceptance and positive-mapping contraction, the alias registry, old-id redirects, and
+physical scaffold migration remain unimplemented. Do not describe those remaining migrations as complete.
 
 ## Builder CLI and Authoring Docs
 

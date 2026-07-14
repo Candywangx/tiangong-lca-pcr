@@ -12,7 +12,7 @@ whenToUse:
 whenToUpdate:
   - 当 PCR 目录结构变化时
   - 当分类导入或 mapping 架构变化时
-  - 当生成 scaffold 的治理规则变化时
+  - 当 classification import 或 legacy scaffold 的治理规则变化时
   - 当公开 PCR 消费 CLI、Agent skill 或 feedback intake 架构变化时
 checkPaths:
   - docs/architecture.md
@@ -183,17 +183,33 @@ classifications/mappings/<system>-<version>-to-pcr.yaml
 classifications/indexes/<system>-<version>-coverage.json
 ```
 
-同一个 PCR 可以被多个外部分类体系或多个分类 leaf 映射。新增分类体系通常应该新增 mapping，
-而不是复制一棵 PCR 目录树。
+同一个 PCR 可以被多个外部分类体系或多个分类 leaf 映射。新增分类体系首先新增 source、normalized data
+和已注册的 coverage descriptor；只有确认 reviewed semantic match 后才新增 mapping，不复制 PCR 目录树，
+也不为每个 leaf 预造 edge。
 
-Mapping 文件表达经过接受的 classification-to-PCR edge；coverage index 则是由 normalized leaf、mapping
-和迁移兼容信息确定性生成的 read model。Coverage index 不是新的 authoring truth，不能手工替代 mapping。
+Mapping 文件表达 classification-to-PCR edge 输入；coverage index 则是由 normalized leaf、mapping、PCR
+lifecycle state 和迁移兼容信息确定性生成的 read model。其 source descriptor 固定生成契约，以及两份输入
+的 exact-byte SHA-256；读取时输入路径或字节不一致都会 fail closed。Coverage index 不是新的 authoring
+truth，不能手工替代 mapping。
 已知 leaf 可以合法地处于 `unmapped`、`candidate_suggestion` 或 `manual_review`，此时不得为了让覆盖率
 看起来完整而自动创建 PCR id。
 
 当前迁移期仍保留旧 empty scaffold 目录及其 mapping entry，coverage 构建会把它们解释成
-`legacy_scaffold_reference`，而不是 material accepted edge。Phase 2 才会停止 CPC importer 的逐 leaf
-PCR 生成、收缩 positive mapping 并准备 alias；本阶段没有宣称物理删除已经完成。
+`legacy_scaffold_reference`，而不是 material mapping。Phase 1 把合法、非 `manual_review` 且指向 material
+lifecycle pair 的 edge 投影为 `mapped`，但这不等于 mapping source 已具备逐 edge acceptance 治理。
+
+Phase 2 只有步骤 1 importer cutover 已完成。Canonical `import-cpc` 每次都要求显式 `--source`，默认只写
+raw source、source metadata、normalized artifacts 和必要的 zero-edge mapping，创建 0 个 PCR；
+classification-only import 会先校验并逐字节保留既有 mapping，非 3.0 版本必须先注册 coverage
+descriptor。Importer 对每个 CPC system/version coordinate 加锁，以 no-follow 方式读取 managed input，
+在提交前检查 baseline 未变化，并从 staging 安装整组输出；mapping 最后提交，因此失败不能留下 dangling
+new edge。
+
+`scaffold-cpc` 是受保护的 compatibility alias，只有显式 `--legacy-scaffolds` 才能用于迁移复现或测试，
+不能用于新 import。该模式只为 unmapped leaf 追加 legacy edge 和 identity；目标缺失时可创建完整四文件
+legacy scaffold，目标已存在时则必须四文件齐全且与确定性 legacy template 逐字节一致，否则 fail closed，
+不得补齐 partial directory、覆盖 accepted edge 或改写 PCR。Explicit edge acceptance、positive mapping
+收缩、alias registry、旧 id redirect 和物理迁移仍未实现。
 
 ### Module
 
@@ -380,7 +396,7 @@ feedback 可以触发 PCR 内容更新、mapping 修复、UUID 修正、range ev
 | 调整 lifecycle / version / publish 状态 | 通过 `pcr:lifecycle`、unpublished-only `pcr:bump`、`pcr:publish` |
 | 恢复中断的 builder directory transaction | `npm run pcr:recover -- --pcr <library/pcrs/...>` |
 | 新增或修复分类映射 | `classifications/mappings/**` |
-| 新增分类体系 source | `classifications/systems/**` 和对应 mapping |
+| 新增 CPC source | 先注册所需 coverage descriptor，再通过 `pcr:import:cpc -- --source <csv>` 写 `classifications/systems/**`；只有 reviewed edge 才改 mapping |
 | 修改 PCR 构建、lint 或 projection 规则 | `builder/lib/**`、`builder/schemas/**`、`builder/vocab/**` |
 | 修改公开消费核心 API | `packages/pcr-core/**` |
 | 修改 CLI 命令或输出 | `packages/tiangong-pcr-cli/**` |
@@ -404,11 +420,13 @@ feedback 可以触发 PCR 内容更新、mapping 修复、UUID 修正、range ev
 
 ## 治理边界
 
-迁移期生成的 leaf PCR scaffold 仍可保持空状态，但它们不进入默认 material catalog。Governance 和
+迁移期保留的 leaf PCR scaffold 仍可保持空状态，但它们不进入默认 material catalog。Governance 和
 docpact 检查覆盖 builder assets、mappings、coverage indexes、modules、package surfaces、skills、feedback
 intake 和 project contracts；大型 legacy 目录 `library/pcrs/**` 在 PCR 文件成为 material authored
-records 前仍保持排除。新增 classification leaf 不应自动创建 PCR；旧生成行为要到 Phase 2 才移除，
-legacy 目录的物理迁移必须在 importer、positive mapping、alias 与 resolve 门禁就绪后另行执行。
+records 前仍保持排除。Phase 2 只有 importer cutover 这一步已实现：新增 classification leaf 默认创建 0
+个 PCR，只有显式 `--legacy-scaffolds` 才能在严格模板校验后 append-only 地补充兼容 artifact。Explicit
+edge acceptance、positive mapping 收缩、alias registry、old-id resolve redirect 和 legacy 目录物理迁移
+仍待实现。
 
 material PCR 的状态、成熟度和翻译状态必须满足 lifecycle 矩阵。进入 `active` 前会运行实质
 preflight；`publish` 只接受已 active、reviewed methodology、中文翻译已 reviewed、合法 semver、

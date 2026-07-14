@@ -82,13 +82,14 @@ lastReviewedCommit: c248880a854c1687567f3e4ea6c24e0dd78115ab
 
 ### P2：拆分 classification coverage 与 canonical methodology catalog
 
-状态：Phase 1 已完成；物理迁移阶段待推进。
+状态：Phase 2 进行中；迁移计划仅步骤 1 importer cutover 已完成，acceptance、mapping contraction、
+alias/redirect 和物理迁移待推进。
 
 1. 已实现：ADR、迁移计划、确定性 material index 和完整 classification coverage read model；CPC 3.0 基线为 2,877 leaf、3 mapped、2,874 unmapped、0 unknown。
 2. 已实现：catalog CLI 与 viewer 默认 material-first，legacy/all 只能显式请求；coverage summary/list 独立、受控并分页，known-unmapped resolve 不再伪装成方法学成功。
 3. 已实现：legacy scaffold compatibility 保留旧 id 和 exact resolve，同时明确 `record_kind`、`resolution_status` 与不可用 readiness；viewer 不再内联空 Markdown 或 scaffold guidance error。
-4. 待实现：停止 CPC importer 的逐 leaf PCR scaffold 生成，只生成 source、normalized classification 和 coverage inputs；新 canonical PCR 必须由稳定产品语义边界与方法学需求驱动。
-5. 待实现：收缩 positive mapping、建立 legacy alias registry，先做小范围 pilot，再分批物理删除 2,874 个模板等价目录。
+4. 已实现：canonical `import-cpc` 每次要求显式 source，默认 classification-only，缺失时创建 zero-edge mapping，校验并逐字节保留既有 mapping，创建 0 个 PCR；coordinate lock、no-follow read、baseline CAS、staged writes 和 mapping-last commit 防止并发覆盖及 dangling edge。`scaffold-cpc` 只有显式 `--legacy-scaffolds` 才能为 unmapped leaf append legacy edge/identity；现有目标必须四文件齐全且逐字节等于 legacy template，否则 fail closed。非 3.0 import 必须先注册 coverage descriptor。
+5. 待实现：为 positive edge 建立显式 acceptance 并收缩 mapping、建立 legacy alias/redirect registry，先做小范围 pilot，再分批物理删除 2,874 个模板等价目录。
 
 退出条件：canonical PCR 数量反映方法学实体数量，而不是外部分类叶子数量；新增分类体系不会复制 PCR 树。
 

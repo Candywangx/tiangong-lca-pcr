@@ -21,6 +21,10 @@ import {
   runPcrDirectoryTransaction,
   transactionStatePaths,
 } from "../lib/pcr-directory-transaction.mjs";
+import {
+  CPC_3_COVERAGE_PATH,
+  createCatalogArtifacts,
+} from "../scripts/build-catalog.mjs";
 
 const cliPath = path.resolve("builder/cli/index.mjs");
 const sampleCpcPath = path.resolve("builder/fixtures/cpc-structure.sample.csv");
@@ -82,6 +86,22 @@ function runCliFailure(args, options = {}) {
 
 function sha256(value) {
   return `sha256:${createHash("sha256").update(value).digest("hex")}`;
+}
+
+function directoryByteSnapshot(root, current = root) {
+  const snapshot = [];
+  for (const entry of readdirSync(current, { withFileTypes: true })) {
+    const absolutePath = path.join(current, entry.name);
+    if (entry.isDirectory()) {
+      snapshot.push(...directoryByteSnapshot(root, absolutePath));
+    } else if (entry.isFile()) {
+      snapshot.push([
+        path.relative(root, absolutePath).split(path.sep).join("/"),
+        createHash("sha256").update(readFileSync(absolutePath)).digest("hex"),
+      ]);
+    }
+  }
+  return snapshot.sort(([left], [right]) => left.localeCompare(right));
 }
 
 function writePublicationReadyPcr(
@@ -2354,13 +2374,18 @@ test("bump rejects published and deprecated PCR records without writing", () => 
     );
     assert.equal(readFileSync(manifestPath, "utf8"), published);
 
-    const deprecated = published
-      .replace(/status: "?published"?/u, "status: deprecated")
-      .replace(
-        /content_maturity: "?published_methodology"?/u,
-        "content_maturity: deprecated_methodology",
-      );
-    writeFileSync(manifestPath, deprecated);
+    runCli([
+      "lifecycle",
+      "--root",
+      root,
+      "--pcr",
+      pcrOption,
+      "--status",
+      "deprecated",
+      "--content-maturity",
+      "deprecated_methodology",
+    ]);
+    const deprecated = readFileSync(manifestPath, "utf8");
     assert.throws(
       () => runCliFailure(["bump", "--root", root, "--pcr", pcrOption, "--level", "minor"]),
       (error) => {
@@ -2858,6 +2883,133 @@ test("lint rejects symbolic links inside the PCR directory tree", () => {
   }
 });
 
+test("lint never reads a symlinked PCR input and its findings do not depend on outside bytes", () => {
+  const root = makeTempRoot();
+  const outside = makeTempRoot();
+  try {
+    runCli([
+      "init",
+      "--root",
+      root,
+      "--sample-pcr",
+      "agriculture/crops/wheat-seed",
+      "--pcr-id",
+      "pcr.agriculture.crops.wheat-seed",
+      "--title-en",
+      "Wheat seed production",
+      "--title-zh-CN",
+      "小麦种子生产",
+    ]);
+    const englishPath = path.join(
+      root,
+      "library/pcrs/agriculture/crops/wheat-seed/pcr.en-US.md",
+    );
+    const outsidePath = path.join(outside, "outside.md");
+    unlinkSync(englishPath);
+    writeFileSync(outsidePath, "OUTSIDE_SECRET_ONE: [invalid\n");
+    symlinkSync(outsidePath, englishPath);
+
+    const lintError = () => {
+      try {
+        runCliFailure(["lint", "--root", root]);
+        assert.fail("lint unexpectedly accepted a symlinked managed input");
+      } catch (error) {
+        return String(error.stderr);
+      }
+    };
+    const first = lintError();
+    writeFileSync(outsidePath, "OUTSIDE_SECRET_TWO: completely different bytes\n");
+    const second = lintError();
+
+    assert.equal(second, first);
+    assert.match(first, /pcr\.en-US\.md: managed input must be a canonical regular file/u);
+    assert.doesNotMatch(first, /OUTSIDE_SECRET/u);
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+    rmSync(outside, { recursive: true, force: true });
+  }
+});
+
+test("lint fails closed when a PCR managed file path is not a regular file", () => {
+  const root = makeTempRoot();
+  try {
+    runCli([
+      "init",
+      "--root",
+      root,
+      "--sample-pcr",
+      "agriculture/crops/wheat-seed",
+      "--pcr-id",
+      "pcr.agriculture.crops.wheat-seed",
+      "--title-en",
+      "Wheat seed production",
+      "--title-zh-CN",
+      "小麦种子生产",
+    ]);
+    const structuredPath = path.join(
+      root,
+      "library/pcrs/agriculture/crops/wheat-seed/structured.yaml",
+    );
+    unlinkSync(structuredPath);
+    mkdirSync(structuredPath);
+
+    assert.throws(
+      () => runCliFailure(["lint", "--root", root]),
+      (error) => {
+        assert.match(
+          String(error.stderr),
+          /structured\.yaml: managed input must be a canonical regular file/u,
+        );
+        return true;
+      },
+    );
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+  }
+});
+
+test("lint never reads a symlinked open-revision input", () => {
+  const root = makeTempRoot();
+  const outside = makeTempRoot();
+  try {
+    const { pcrDir, pcrOption } = createManagedPublishedPcr(root);
+    runCli([
+      "revise",
+      "--root",
+      root,
+      "--pcr",
+      pcrOption,
+      "--version",
+      "1.1.0",
+    ]);
+    const revisionEnglishPath = path.join(pcrDir, "revision/pcr.en-US.md");
+    const outsidePath = path.join(outside, "revision.md");
+    unlinkSync(revisionEnglishPath);
+    writeFileSync(outsidePath, "REVISION_OUTSIDE_ONE: [invalid\n");
+    symlinkSync(outsidePath, revisionEnglishPath);
+
+    const lintError = () => {
+      try {
+        runCliFailure(["lint", "--root", root]);
+        assert.fail("lint unexpectedly accepted a symlinked revision input");
+      } catch (error) {
+        return String(error.stderr);
+      }
+    };
+    const first = lintError();
+    writeFileSync(outsidePath, "REVISION_OUTSIDE_TWO: different bytes\n");
+    const second = lintError();
+
+    assert.equal(second, first);
+    assert.match(first, /revision\/pcr\.en-US\.md/u);
+    assert.match(first, /regular file/u);
+    assert.doesNotMatch(first, /REVISION_OUTSIDE/u);
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+    rmSync(outside, { recursive: true, force: true });
+  }
+});
+
 test("unknown builder command fails explicitly", () => {
   assert.throws(
     () => runCliFailure(["nope"]),
@@ -2867,6 +3019,89 @@ test("unknown builder command fails explicitly", () => {
       return true;
     },
   );
+});
+
+test("builder argument parsing rejects ambiguous inputs before command dispatch", () => {
+  const parent = makeTempRoot();
+  try {
+    const typoRoot = path.join(parent, "typo-root");
+    assert.throws(
+      () => runCliFailure(["init", "--rooot", typoRoot]),
+      (error) => {
+        assert.match(String(error.stderr), /Unknown option for init: --rooot/u);
+        return true;
+      },
+    );
+    assert.equal(existsSync(typoRoot), false);
+
+    const positionalRoot = path.join(parent, "positional-root");
+    assert.throws(
+      () => runCliFailure(["init", "unexpected", "--root", positionalRoot]),
+      (error) => {
+        assert.match(String(error.stderr), /Unexpected positional argument for init: unexpected/u);
+        return true;
+      },
+    );
+    assert.equal(existsSync(positionalRoot), false);
+
+    const duplicateRoot = path.join(parent, "duplicate-root");
+    assert.throws(
+      () =>
+        runCliFailure([
+          "init",
+          "--root",
+          duplicateRoot,
+          `--root=${path.join(parent, "other-root")}`,
+        ]),
+      (error) => {
+        assert.match(String(error.stderr), /Duplicate option for init: --root/u);
+        return true;
+      },
+    );
+    assert.equal(existsSync(duplicateRoot), false);
+
+    assert.throws(
+      () => runCliFailure(["init", "--root", "--help"]),
+      (error) => {
+        assert.match(String(error.stderr), /--root requires a value/u);
+        return true;
+      },
+    );
+    assert.throws(
+      () => runCliFailure(["lint", "--pcr", "library/pcrs/example"]),
+      (error) => {
+        assert.match(String(error.stderr), /Unknown option for lint: --pcr/u);
+        return true;
+      },
+    );
+    assert.throws(
+      () => runCliFailure(["recover", "--force-stale-lock=true"]),
+      (error) => {
+        assert.match(String(error.stderr), /--force-stale-lock is a boolean flag/u);
+        return true;
+      },
+    );
+  } finally {
+    rmSync(parent, { recursive: true, force: true });
+  }
+});
+
+test("builder argument parsing supports --key=value and command help is non-mutating", () => {
+  const parent = makeTempRoot();
+  try {
+    const root = path.join(parent, "equals-root");
+    const output = runCli(["init", `--root=${root}`]);
+    assert.match(output, /Initialized PCR library scaffold/u);
+    assert.equal(existsSync(path.join(root, "library/pcrs")), true);
+
+    const helpRoot = path.join(parent, "help-root");
+    const help = runCli(["init", "--help", `--root=${helpRoot}`]);
+    assert.match(help, /PCR Library Builder CLI/u);
+    assert.match(help, /import-cpc creates zero PCR records by default/u);
+    assert.equal(existsSync(helpRoot), false);
+  } finally {
+    rmSync(parent, { recursive: true, force: true });
+  }
 });
 
 test("builder mutation commands report actionable missing target errors", () => {
@@ -2896,12 +3131,12 @@ test("builder mutation commands report actionable missing target errors", () => 
   }
 });
 
-test("scaffold-cpc creates PCR directories only for CPC leaf classes", () => {
+test("import-cpc defaults to classification-only artifacts without inventing PCR identity", () => {
   const root = makeTempRoot();
   try {
     runCli(["init", "--root", root]);
     const output = runCli([
-      "scaffold-cpc",
+      "import-cpc",
       "--root",
       root,
       "--source",
@@ -2910,7 +3145,9 @@ test("scaffold-cpc creates PCR directories only for CPC leaf classes", () => {
       "3.0",
     ]);
 
-    assert.match(output, /scaffolded 3 CPC leaf PCR records/i);
+    assert.match(output, /Imported 8 CPC rows with 8 nodes and 3 leaf classes/i);
+    assert.match(output, /PCR records created: 0/i);
+    assert.match(output, /npm run catalog:build/i);
 
     const wheatSeedDir = path.join(
       root,
@@ -2925,15 +3162,7 @@ test("scaffold-cpc creates PCR directories only for CPC leaf classes", () => {
       "library/pcrs/agriculture-forestry-and-fishery-products/products-of-agriculture-horticulture-and-market-gardening/0111-wheat",
     );
 
-    assert.equal(existsSync(path.join(wheatSeedDir, "manifest.yaml")), true);
-    assert.equal(existsSync(path.join(wheatSeedDir, "pcr.en-US.md")), true);
-    assert.equal(existsSync(path.join(wheatSeedDir, "pcr.zh-CN.md")), true);
-    assert.equal(existsSync(path.join(wheatSeedDir, "structured.yaml")), true);
-    assert.deepEqual(
-      parseYaml(readFileSync(path.join(wheatSeedDir, "structured.yaml"), "utf8"))
-        .system_boundary,
-      { rules: [] },
-    );
+    assert.equal(existsSync(wheatSeedDir), false);
     assert.equal(existsSync(codedWheatSeedDir), false);
     assert.equal(existsSync(wheatDir), false);
 
@@ -2946,6 +3175,69 @@ test("scaffold-cpc creates PCR directories only for CPC leaf classes", () => {
     assert.deepEqual(
       leaves.leaves.map((entry) => entry.code),
       ["01111", "01112", "01121"],
+    );
+
+    assert.equal(
+      existsSync(
+        path.join(root, "classifications/systems/cpc/3.0/normalized/leaf-slugs.json"),
+      ),
+      false,
+    );
+
+    const mapping = parseYaml(
+      readFileSync(
+        path.join(root, "classifications/mappings/cpc-3.0-to-pcr.yaml"),
+        "utf8",
+      ),
+    );
+    assert.deepEqual(mapping.mappings, []);
+    assert.match(runCli(["lint", "--root", root]), /PCR library lint passed/i);
+    const catalogBuild = createCatalogArtifacts(root);
+    const coverage = catalogBuild.artifacts.find(
+      (artifact) => artifact.path === CPC_3_COVERAGE_PATH,
+    ).value;
+    assert.deepEqual(catalogBuild.issues, []);
+    assert.deepEqual(coverage.summary, {
+      total: 3,
+      mapped: 0,
+      unmapped: 3,
+      candidate_suggestion: 0,
+      manual_review: 0,
+      unknown: 0,
+    });
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+  }
+});
+
+test("scaffold-cpc creates legacy leaf PCRs only with an explicit compatibility flag", () => {
+  const root = makeTempRoot();
+  try {
+    runCli(["init", "--root", root]);
+    const output = runCli([
+      "scaffold-cpc",
+      "--legacy-scaffolds",
+      "--root",
+      root,
+      "--source",
+      sampleCpcPath,
+      "--classification-version",
+      "3.0",
+    ]);
+
+    assert.match(output, /Legacy mappings appended: 3; PCR records created: 3/i);
+    const wheatSeedDir = path.join(
+      root,
+      "library/pcrs/agriculture-forestry-and-fishery-products/products-of-agriculture-horticulture-and-market-gardening/wheat-seed",
+    );
+    assert.equal(existsSync(path.join(wheatSeedDir, "manifest.yaml")), true);
+    assert.equal(existsSync(path.join(wheatSeedDir, "pcr.en-US.md")), true);
+    assert.equal(existsSync(path.join(wheatSeedDir, "pcr.zh-CN.md")), true);
+    assert.equal(existsSync(path.join(wheatSeedDir, "structured.yaml")), true);
+    assert.deepEqual(
+      parseYaml(readFileSync(path.join(wheatSeedDir, "structured.yaml"), "utf8"))
+        .system_boundary,
+      { rules: [] },
     );
 
     const slugs = JSON.parse(
@@ -2973,7 +3265,330 @@ test("scaffold-cpc creates PCR directories only for CPC leaf classes", () => {
   }
 });
 
-test("scaffold-cpc keeps generated PCR directory segments short for long CPC titles", () => {
+test("import-cpc preserves existing mappings and legacy identity artifacts byte-for-byte", () => {
+  const root = makeTempRoot();
+  try {
+    runCli(["init", "--root", root]);
+    const mappingPath = path.join(root, "classifications/mappings/cpc-3.0-to-pcr.yaml");
+    const leafSlugsPath = path.join(
+      root,
+      "classifications/systems/cpc/3.0/normalized/leaf-slugs.json",
+    );
+    const pcrManifestPath = path.join(
+      root,
+      "library/pcrs/existing/domain/pcr/manifest.yaml",
+    );
+    mkdirSync(path.dirname(mappingPath), { recursive: true });
+    mkdirSync(path.dirname(leafSlugsPath), { recursive: true });
+    mkdirSync(path.dirname(pcrManifestPath), { recursive: true });
+    const mappingSource = `schema_version: 1
+classification_system: CPC
+classification_version: "3.0"
+status: current
+mappings:
+  - code: "01111"
+    label: "Wheat, seed"
+    pcr_id: "pcr.existing.domain.pcr"
+    mapping_type: exact
+    confidence: reviewed
+`;
+    writeFileSync(mappingPath, mappingSource);
+    writeFileSync(leafSlugsPath, "legacy identity sentinel\n");
+    writeFileSync(pcrManifestPath, "existing PCR sentinel\n");
+
+    const output = runCli([
+      "import-cpc",
+      "--root",
+      root,
+      "--source",
+      sampleCpcPath,
+      "--classification-version",
+      "3.0",
+    ]);
+
+    assert.match(output, /Mapping action: preserved_exact_bytes/i);
+    assert.equal(readFileSync(mappingPath, "utf8"), mappingSource);
+    assert.equal(readFileSync(leafSlugsPath, "utf8"), "legacy identity sentinel\n");
+    assert.equal(readFileSync(pcrManifestPath, "utf8"), "existing PCR sentinel\n");
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+  }
+});
+
+test("import-cpc help explains the classification-only default and legacy boundary", () => {
+  const output = runCli(["import-cpc", "--help"]);
+
+  assert.match(output, /Creates no PCR records/i);
+  assert.match(output, /--legacy-scaffolds/);
+  assert.match(output, /Existing mappings are validated and preserved byte-for-byte/i);
+});
+
+test("scaffold-cpc fails fast without the explicit legacy compatibility flag", () => {
+  assert.throws(
+    () => runCliFailure(["scaffold-cpc", "--source", sampleCpcPath]),
+    (error) => {
+      assert.match(String(error.stderr), /requires --legacy-scaffolds/);
+      assert.match(String(error.stderr), /use import-cpc/);
+      return true;
+    },
+  );
+});
+
+test("import-cpc is byte-idempotent for an unchanged source and preserved mapping", () => {
+  const root = makeTempRoot();
+  try {
+    const args = [
+      "import-cpc",
+      "--root",
+      root,
+      "--source",
+      sampleCpcPath,
+      "--classification-version",
+      "3.0",
+      "--source-url",
+      "https://example.test/cpc.csv",
+    ];
+    runCli(args);
+    const first = directoryByteSnapshot(root);
+    const output = runCli(args);
+    const second = directoryByteSnapshot(root);
+
+    assert.match(output, /Mapping action: preserved_exact_bytes/i);
+    assert.deepEqual(second, first);
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+  }
+});
+
+test("legacy CPC compatibility merges only unmapped leaves and is idempotent", () => {
+  const root = makeTempRoot();
+  try {
+    const mappingPath = path.join(root, "classifications/mappings/cpc-3.0-to-pcr.yaml");
+    mkdirSync(path.dirname(mappingPath), { recursive: true });
+    writeFileSync(
+      mappingPath,
+      `schema_version: 1
+classification_system: CPC
+classification_version: "3.0"
+status: current
+mappings:
+  - code: "01111"
+    label: "Wheat, seed"
+    pcr_id: "pcr.material.wheat-seed"
+    mapping_type: exact
+    confidence: reviewed
+`,
+    );
+    const args = [
+      "import-cpc",
+      "--legacy-scaffolds",
+      "--root",
+      root,
+      "--source",
+      sampleCpcPath,
+      "--classification-version",
+      "3.0",
+    ];
+    const firstOutput = runCli(args);
+    const wheatSeedDir = path.join(
+      root,
+      "library/pcrs/agriculture-forestry-and-fishery-products/products-of-agriculture-horticulture-and-market-gardening/wheat-seed",
+    );
+    const wheatOtherManifest = path.join(
+      root,
+      "library/pcrs/agriculture-forestry-and-fishery-products/products-of-agriculture-horticulture-and-market-gardening/wheat-other/manifest.yaml",
+    );
+
+    assert.match(firstOutput, /Legacy mappings appended: 2; PCR records created: 2/);
+    assert.equal(existsSync(wheatSeedDir), false);
+    assert.equal(existsSync(wheatOtherManifest), true);
+    const mergedMapping = parseYaml(readFileSync(mappingPath, "utf8"));
+    assert.equal(mergedMapping.mappings.length, 3);
+    assert.equal(mergedMapping.mappings[0].pcr_id, "pcr.material.wheat-seed");
+    const leafInventoryPath = path.join(
+      root,
+      "classifications/systems/cpc/3.0/normalized/leaf-slugs.json",
+    );
+    const inventory = JSON.parse(readFileSync(leafInventoryPath, "utf8"));
+    assert.deepEqual(inventory.leaves.map((entry) => entry.code), ["01112", "01121"]);
+
+    writeFileSync(wheatOtherManifest, "preserved legacy PCR sentinel\n");
+    const mappingBytes = readFileSync(mappingPath);
+    const inventoryBytes = readFileSync(leafInventoryPath);
+    const secondOutput = runCli(args);
+    assert.match(secondOutput, /Legacy mappings appended: 0; PCR records created: 0/);
+    assert.match(secondOutput, /already-mapped leaves skipped: 3/);
+    assert.equal(readFileSync(wheatOtherManifest, "utf8"), "preserved legacy PCR sentinel\n");
+    assert.deepEqual(readFileSync(mappingPath), mappingBytes);
+    assert.deepEqual(readFileSync(leafInventoryPath), inventoryBytes);
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+  }
+});
+
+test("import-cpc rejects unsafe or inconsistent inputs before initializing the repository", async (t) => {
+  await t.test("classification version traversal", () => {
+    const root = makeTempRoot();
+    try {
+      assert.throws(
+        () => runCliFailure([
+          "import-cpc",
+          "--root",
+          root,
+          "--source",
+          sampleCpcPath,
+          "--classification-version",
+          "../outside",
+        ]),
+        (error) => {
+          assert.match(String(error.stderr), /Invalid CPC classification version/);
+          return true;
+        },
+      );
+      assert.equal(existsSync(path.join(root, "library/catalog.yaml")), false);
+    } finally {
+      rmSync(root, { recursive: true, force: true });
+    }
+  });
+
+  await t.test("duplicate CPC code", () => {
+    const root = makeTempRoot();
+    try {
+      const sourcePath = path.join(root, "duplicate.csv");
+      writeFileSync(
+        sourcePath,
+        "Code,Title\n0,Root\n01,Leaf one\n01,Leaf duplicate\n",
+      );
+      assert.throws(
+        () => runCliFailure(["import-cpc", "--root", root, "--source", sourcePath]),
+        (error) => {
+          assert.match(String(error.stderr), /Duplicate CPC code/);
+          return true;
+        },
+      );
+      assert.equal(existsSync(path.join(root, "library/catalog.yaml")), false);
+    } finally {
+      rmSync(root, { recursive: true, force: true });
+    }
+  });
+
+  await t.test("unterminated CSV quote", () => {
+    const root = makeTempRoot();
+    try {
+      const sourcePath = path.join(root, "unterminated.csv");
+      writeFileSync(sourcePath, "Code,Title\n0,\"unterminated\n");
+      assert.throws(
+        () => runCliFailure(["import-cpc", "--root", root, "--source", sourcePath]),
+        (error) => {
+          assert.match(String(error.stderr), /unterminated quoted field/);
+          return true;
+        },
+      );
+      assert.equal(existsSync(path.join(root, "library/catalog.yaml")), false);
+    } finally {
+      rmSync(root, { recursive: true, force: true });
+    }
+  });
+
+  await t.test("invalid existing mapping", () => {
+    const root = makeTempRoot();
+    try {
+      const mappingPath = path.join(root, "classifications/mappings/cpc-3.0-to-pcr.yaml");
+      mkdirSync(path.dirname(mappingPath), { recursive: true });
+      writeFileSync(mappingPath, "invalid mapping\n");
+      assert.throws(
+        () => runCliFailure([
+          "import-cpc",
+          "--root",
+          root,
+          "--source",
+          sampleCpcPath,
+        ]),
+        (error) => {
+          assert.match(String(error.stderr), /schema validation failed/);
+          return true;
+        },
+      );
+      assert.equal(
+        existsSync(path.join(root, "classifications/systems/cpc/3.0/normalized/leaves.json")),
+        false,
+      );
+      assert.equal(existsSync(path.join(root, "library/catalog.yaml")), false);
+    } finally {
+      rmSync(root, { recursive: true, force: true });
+    }
+  });
+
+  await t.test("mapping code removed from source", () => {
+    const root = makeTempRoot();
+    try {
+      const mappingPath = path.join(root, "classifications/mappings/cpc-3.0-to-pcr.yaml");
+      mkdirSync(path.dirname(mappingPath), { recursive: true });
+      writeFileSync(
+        mappingPath,
+        `schema_version: 1
+classification_system: CPC
+classification_version: "3.0"
+status: current
+mappings:
+  - code: "99999"
+    label: "Removed"
+    pcr_id: "pcr.removed"
+    mapping_type: exact
+    confidence: reviewed
+`,
+      );
+      assert.throws(
+        () => runCliFailure([
+          "import-cpc",
+          "--root",
+          root,
+          "--source",
+          sampleCpcPath,
+        ]),
+        (error) => {
+          assert.match(String(error.stderr), /mapping code 99999 is absent/);
+          return true;
+        },
+      );
+      assert.equal(
+        existsSync(path.join(root, "classifications/systems/cpc/3.0/normalized/leaves.json")),
+        false,
+      );
+      assert.equal(existsSync(path.join(root, "library/catalog.yaml")), false);
+    } finally {
+      rmSync(root, { recursive: true, force: true });
+    }
+  });
+
+  await t.test("managed classification path symlink", () => {
+    const root = makeTempRoot();
+    const outside = makeTempRoot();
+    try {
+      symlinkSync(outside, path.join(root, "classifications"));
+      assert.throws(
+        () => runCliFailure([
+          "import-cpc",
+          "--root",
+          root,
+          "--source",
+          sampleCpcPath,
+        ]),
+        (error) => {
+          assert.match(String(error.stderr), /managed path contains a symbolic link/);
+          return true;
+        },
+      );
+      assert.deepEqual(readdirSync(outside), []);
+      assert.equal(existsSync(path.join(root, "library/catalog.yaml")), false);
+    } finally {
+      rmSync(root, { recursive: true, force: true });
+      rmSync(outside, { recursive: true, force: true });
+    }
+  });
+});
+
+test("legacy CPC scaffolding keeps generated PCR directory segments short for long titles", () => {
   const root = makeTempRoot();
   try {
     const csvPath = path.join(root, "long-cpc.csv");
@@ -2990,6 +3605,7 @@ test("scaffold-cpc keeps generated PCR directory segments short for long CPC tit
     runCli(["init", "--root", root]);
     runCli([
       "scaffold-cpc",
+      "--legacy-scaffolds",
       "--root",
       root,
       "--source",

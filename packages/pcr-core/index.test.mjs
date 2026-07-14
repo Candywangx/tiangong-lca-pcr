@@ -1162,7 +1162,32 @@ mappings:
     `${JSON.stringify({
       classification_system: "CPC",
       classification_version: "3.0",
-      leaves: ["01111", "92200", "99997", "99998"],
+      leaves: [
+        {
+          code: "01111",
+          title: "Wheat, seed",
+          path_codes: ["0", "01", "011", "0111", "01111"],
+          path_titles: ["Agriculture", "Crops", "Cereals", "Wheat", "Wheat, seed"],
+        },
+        {
+          code: "92200",
+          title: "Primary education services",
+          path_codes: ["9", "92", "922", "9220", "92200"],
+          path_titles: ["Services", "Education", "Primary", "Primary", "Primary education services"],
+        },
+        {
+          code: "99997",
+          title: "Candidate only",
+          path_codes: ["9", "99", "999", "9999", "99997"],
+          path_titles: ["Services", "Other", "Other", "Other", "Candidate only"],
+        },
+        {
+          code: "99998",
+          title: "Known without mapping",
+          path_codes: ["9", "99", "999", "9999", "99998"],
+          path_titles: ["Services", "Other", "Other", "Other", "Known without mapping"],
+        },
+      ],
     }, null, 2)}\n`,
   );
 

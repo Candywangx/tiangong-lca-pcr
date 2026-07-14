@@ -1,5 +1,15 @@
 import assert from "node:assert/strict";
-import { mkdtempSync, mkdirSync, rmSync, symlinkSync, unlinkSync, writeFileSync } from "node:fs";
+import {
+  existsSync,
+  lstatSync,
+  mkdtempSync,
+  mkdirSync,
+  realpathSync,
+  rmSync,
+  symlinkSync,
+  unlinkSync,
+  writeFileSync,
+} from "node:fs";
 import os from "node:os";
 import path from "node:path";
 import test from "node:test";
@@ -26,6 +36,20 @@ function fixture({ revision = true } = {}) {
   return { root, relative, pcrDir };
 }
 
+function caseAlias(target) {
+  return path.join(path.dirname(target), path.basename(target).toUpperCase());
+}
+
+function filesystemEntryIsCaseInsensitive(target) {
+  const alias = caseAlias(target);
+  if (!existsSync(alias)) {
+    return false;
+  }
+  const actual = lstatSync(target);
+  const alternate = lstatSync(alias);
+  return actual.dev === alternate.dev && actual.ino === alternate.ino;
+}
+
 test.afterEach(() => {
   for (const root of temporaryRoots.splice(0)) {
     rmSync(root, { recursive: true, force: true });
@@ -43,6 +67,42 @@ test("resolves only direct current and revision manifests from a canonical three
   const revision = resolvePcrWorkspacePaths({ root, pcr: pcrDir, workspace: "revision" });
   assert.equal(revision.workspaceDir, path.join(pcrDir, "revision"));
   assert.equal(revision.manifestPath, path.join(pcrDir, "revision", "manifest.next.yaml"));
+});
+
+test("accepts the filesystem realpath form of a tmpdir root alias without weakening containment", () => {
+  const { root, pcrDir } = fixture({ revision: false });
+  const realPcrDir = realpathSync(pcrDir);
+  const current = resolvePcrWorkspacePaths({ root, pcr: realPcrDir });
+  assert.equal(current.relativePcrPath, "agriculture/crops/wheat-seed");
+  assert.equal(realpathSync(current.pcrDir), realPcrDir);
+
+  const outside = mkdtempSync(path.join(os.tmpdir(), "pcr-paths-real-outside-"));
+  temporaryRoots.push(outside);
+  mkdirSync(path.join(outside, "agriculture", "crops", "wheat-seed"), { recursive: true });
+  assert.throws(
+    () => resolvePcrLocationForRecovery({
+      root,
+      pcr: path.join(outside, "agriculture", "crops", "wheat-seed"),
+    }),
+    { code: "PCR_PATH_OUTSIDE_ROOT" },
+  );
+});
+
+test("filesystem-canonical identity accepts case aliases only on a case-insensitive filesystem", (t) => {
+  const { root, pcrDir } = fixture({ revision: false });
+  if (!filesystemEntryIsCaseInsensitive(path.dirname(pcrDir))) {
+    t.skip("fixture filesystem is case-sensitive");
+    return;
+  }
+  const alias = path.join(
+    path.dirname(path.dirname(path.dirname(pcrDir))),
+    "AGRICULTURE",
+    "CROPS",
+    "WHEAT-SEED",
+  );
+  const current = resolvePcrWorkspacePaths({ root, pcr: alias });
+  assert.equal(current.relativePcrPath, "agriculture/crops/wheat-seed");
+  assert.equal(realpathSync(current.pcrDir), realpathSync(pcrDir));
 });
 
 test("rejects non-canonical depth, traversal syntax, invalid workspaces, and nested-only manifests", () => {

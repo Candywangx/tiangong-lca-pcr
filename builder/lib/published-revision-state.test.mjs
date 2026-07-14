@@ -14,6 +14,7 @@ import { fileURLToPath } from "node:url";
 import { parseYaml, renderYaml } from "../../packages/pcr-core/src/yaml-lite.mjs";
 import {
   buildReleaseRecord,
+  byteSha256,
   inspectPublishedRevisionState,
   manifestReleaseArtifacts,
 } from "./published-revision-state.mjs";
@@ -60,6 +61,58 @@ test("detects a one-byte release artifact tamper through its exact byte hash", (
   );
 });
 
+test("hashes raw artifact bytes and rejects malformed UTF-8 instead of replacing it", (t) => {
+  assert.notEqual(
+    byteSha256(Buffer.from([0xff])),
+    byteSha256(Buffer.from("\uFFFD", "utf8")),
+    "raw 0xff must not hash as the UTF-8 replacement character",
+  );
+
+  const fixture = createPublishedFixture(t);
+  const chinesePath = path.join(fixture.pcrDir, "releases", "1.0.0", "pcr.zh-CN.md");
+  writeFileSync(
+    chinesePath,
+    Buffer.concat([readFileSync(chinesePath), Buffer.from([0xff])]),
+  );
+
+  const result = inspect(fixture);
+
+  assert.ok(
+    result.problems.some((problem) =>
+      problem.includes("pcr.zh-CN.md: required artifact is not valid UTF-8"),
+    ),
+    result.problems.join("\n"),
+  );
+});
+
+test("binds snapshot manifest release_artifacts to the same exact bytes as release.yaml", (t) => {
+  const fixture = createPublishedFixture(t);
+  const snapshotPath = path.join(
+    fixture.pcrDir,
+    "releases",
+    "1.0.0",
+    "manifest.snapshot.yaml",
+  );
+  const snapshot = readYaml(snapshotPath);
+  snapshot.release_artifacts.pcr_en_us_sha256 = `sha256:${"0".repeat(64)}`;
+  writeFileSync(snapshotPath, renderYaml(snapshot));
+
+  const result = inspect(fixture);
+
+  assert.ok(
+    result.problems.some((problem) =>
+      problem.includes("manifest.snapshot.yaml: release_artifacts do not match snapshot artifact bytes"),
+    ),
+    result.problems.join("\n"),
+  );
+  assert.ok(
+    result.problems.some((problem) =>
+      problem.includes("release.yaml: artifact hashes must match manifest.snapshot.yaml release_artifacts"),
+    ),
+    result.problems.join("\n"),
+  );
+});
+
 test("detects a current release_artifacts hash mismatch", (t) => {
   const fixture = createPublishedFixture(t);
   const manifestPath = path.join(fixture.pcrDir, "manifest.yaml");
@@ -72,6 +125,27 @@ test("detects a current release_artifacts hash mismatch", (t) => {
   assert.ok(
     result.problems.some((problem) =>
       problem.includes("release_artifacts do not match current bytes"),
+    ),
+    result.problems.join("\n"),
+  );
+});
+
+test("deprecated current manifests must retain canonical builder rendering", (t) => {
+  const fixture = createPublishedFixture(t);
+  const manifestPath = path.join(fixture.pcrDir, "manifest.yaml");
+  const manifest = readYaml(manifestPath);
+  manifest.status = "deprecated";
+  manifest.content_maturity = "deprecated_methodology";
+  manifest.updated_at_utc = "2026-07-14T12:34:56Z";
+  writeFileSync(manifestPath, renderYaml(manifest));
+  assert.deepEqual(inspect(fixture).problems, []);
+
+  writeFileSync(manifestPath, `# manual formatting change\n${renderYaml(manifest)}`);
+  const result = inspect(fixture);
+
+  assert.ok(
+    result.problems.some((problem) =>
+      problem.includes("deprecated manifest bytes must equal the canonical lifecycle overlay"),
     ),
     result.problems.join("\n"),
   );
@@ -107,6 +181,23 @@ test("enforces strictly increasing release-history version order", (t) => {
   );
 });
 
+test("rejects calendar-normalized audit timestamps such as February 31", (t) => {
+  const fixture = createPublishedFixture(t);
+  const historyPath = path.join(fixture.pcrDir, "release-history.yaml");
+  const history = readYaml(historyPath);
+  history.releases[0].published_at_utc = "2026-02-31T00:00:00Z";
+  writeFileSync(historyPath, renderYaml(history));
+
+  const result = inspect(fixture);
+
+  assert.ok(
+    result.problems.some((problem) =>
+      problem.includes("published_at_utc is not a real canonical UTC timestamp"),
+    ),
+    result.problems.join("\n"),
+  );
+});
+
 test("reports malformed release versions without resolving paths outside releases", (t) => {
   const fixture = createPublishedFixture(t);
   const historyPath = path.join(fixture.pcrDir, "release-history.yaml");
@@ -124,6 +215,113 @@ test("reports malformed release versions without resolving paths outside release
     ),
     result.problems.join("\n"),
   );
+});
+
+test("rejects invalid numeric SemVer prerelease tokens in revision metadata", (t) => {
+  const fixture = createPublishedFixture(t);
+  createRevision(fixture, {
+    revision: { target_version: "1.1.0-01" },
+    nextManifest: { version: "1.1.0-01" },
+  });
+
+  const result = inspect(fixture);
+
+  assert.ok(
+    result.problems.some((problem) =>
+      problem.includes("target_version is not a valid SemVer identity"),
+    ),
+    result.problems.join("\n"),
+  );
+});
+
+test("rejects non-canonical audit YAML so duplicate keys and trailing content fail closed", async (t) => {
+  await t.test("release metadata duplicate key", (subtest) => {
+    const fixture = createPublishedFixture(subtest);
+    const releasePath = path.join(fixture.pcrDir, "releases", "1.0.0", "release.yaml");
+    writeFileSync(releasePath, `${readFileSync(releasePath, "utf8")}version: "1.0.0"\n`);
+
+    const result = inspect(fixture);
+
+    assert.ok(
+      result.problems.some((problem) =>
+        problem.includes("release.yaml: audit YAML must use canonical builder rendering"),
+      ),
+      result.problems.join("\n"),
+    );
+  });
+
+  await t.test("release history trailing content", (subtest) => {
+    const fixture = createPublishedFixture(subtest);
+    const historyPath = path.join(fixture.pcrDir, "release-history.yaml");
+    writeFileSync(historyPath, `${readFileSync(historyPath, "utf8")}not valid audit yaml\n`);
+
+    const result = inspect(fixture);
+
+    assert.ok(
+      result.problems.some((problem) =>
+        problem.includes("release-history.yaml: audit YAML must use canonical builder rendering"),
+      ),
+      result.problems.join("\n"),
+    );
+  });
+
+  await t.test("snapshot manifest duplicate key", (subtest) => {
+    const fixture = createPublishedFixture(subtest);
+    const snapshotPath = path.join(
+      fixture.pcrDir,
+      "releases",
+      "1.0.0",
+      "manifest.snapshot.yaml",
+    );
+    writeFileSync(snapshotPath, `${readFileSync(snapshotPath, "utf8")}version: "1.0.0"\n`);
+
+    const result = inspect(fixture);
+
+    assert.ok(
+      result.problems.some((problem) =>
+        problem.includes("manifest.snapshot.yaml: audit YAML must use canonical builder rendering"),
+      ),
+      result.problems.join("\n"),
+    );
+  });
+
+  await t.test("revision metadata duplicate key", (subtest) => {
+    const fixture = createPublishedFixture(subtest);
+    const revisionDir = createRevision(fixture);
+    const revisionPath = path.join(revisionDir, "revision.yaml");
+    writeFileSync(
+      revisionPath,
+      `${readFileSync(revisionPath, "utf8")}target_version: "1.1.0"\n`,
+    );
+
+    const result = inspect(fixture);
+
+    assert.ok(
+      result.problems.some((problem) =>
+        problem.includes("revision.yaml: audit YAML must use canonical builder rendering"),
+      ),
+      result.problems.join("\n"),
+    );
+  });
+
+  await t.test("next manifest trailing content", (subtest) => {
+    const fixture = createPublishedFixture(subtest);
+    const revisionDir = createRevision(fixture);
+    const nextManifestPath = path.join(revisionDir, "manifest.next.yaml");
+    writeFileSync(
+      nextManifestPath,
+      `${readFileSync(nextManifestPath, "utf8")}not valid audit yaml\n`,
+    );
+
+    const result = inspect(fixture);
+
+    assert.ok(
+      result.problems.some((problem) =>
+        problem.includes("manifest.next.yaml: audit YAML must use canonical builder rendering"),
+      ),
+      result.problems.join("\n"),
+    );
+  });
 });
 
 test("reports a schema-invalid release history without throwing during semantic inspection", (t) => {

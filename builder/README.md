@@ -44,6 +44,9 @@ builder/docs/
 npm run init
 npm run lint
 npm run vocab:generate
+npm run pcr:import:cpc -- --source <cpc-structure.csv> --classification-version 3.0
+npm run pcr:import:cpc -- --source <cpc-structure.csv> --classification-version 3.0 --legacy-scaffolds  # migration compatibility only
+npm run pcr:scaffold:cpc -- --source <cpc-structure.csv> --classification-version 3.0 --legacy-scaffolds  # protected legacy alias
 npm run pcr:sync-structured -- --pcr <library/pcrs/...> [--workspace current|revision]
 npm run pcr:lifecycle -- --pcr <library/pcrs/...> [--workspace current|revision] --status active --content-maturity reviewed_methodology --translation zh-CN=reviewed
 npm run pcr:bump -- --pcr <library/pcrs/...> --level patch
@@ -56,13 +59,33 @@ npm run validate
 
 - `init` creates required scaffold directories and guide files.
 - `lint` executes the JSON Schema contracts for the catalog, classification mappings, PCR manifests, bilingual Markdown frontmatter, and material structured projections. It also checks required repository paths, bilingual PCR directory completeness, lifecycle compatibility, process inventory structure, range coverage for important flows, and deterministic `structured.yaml` freshness for every material PCR. Candidate PCRs may pass with range warnings; reviewed or published PCRs fail when important flows lack ranges.
+- `pcr:import:cpc` requires an explicit `--source` on every invocation. It imports raw CPC source metadata and
+  normalized hierarchy, leaves, and paths; its default classification-only mode creates zero PCR records. It creates a
+  zero-edge mapping scaffold only when no mapping exists. An existing mapping must validate and is preserved
+  byte-for-byte in classification-only mode. Register a coverage descriptor before importing a non-3.0 version.
+- `--legacy-scaffolds` is migration/test-only. It appends identity and a legacy edge only for an unmapped leaf. It may
+  create one complete four-file target when that target is absent; an existing target must already be complete and
+  byte-for-byte equal to the expected legacy template. Partial or divergent targets fail closed instead of being
+  repaired. The protected `pcr:scaffold:cpc` compatibility alias fails unless this flag is explicit. Never use this
+  alias or flag for a new classification import.
+- CPC imports hold a system/version coordinate lock, use no-follow reads and a baseline compare-and-swap check, stage
+  each file replacement or complete legacy directory, and commit the mapping last. A preflight, concurrency, or
+  installation failure therefore cannot leave a dangling new mapping edge, although already installed
+  classification-only projections may be regenerated on the next run. Preflight rejects invalid UTF-8, non-empty
+  incomplete rows, missing parent
+  hierarchy, a parseable header version that disagrees with `--classification-version`, and a same-name retained raw
+  artifact whose bytes differ. Successful output reports the import mode, row/node/leaf counts, mapping action, PCR
+  count, and the next action. When source artifacts changed, it also marks coverage/catalog artifacts stale; review
+  accepted mappings and run `npm run catalog:build` for a registered coordinate. Treat any retained-source,
+  legacy-target, or template mismatch error as a compatibility risk that requires manual review; do not force or
+  repair around it.
 - `pcr:sync-structured` regenerates `structured.yaml` from canonical PCR Markdown, including boundary, allocation, validation, process-inventory rules, and deterministic projection metadata. `--workspace` defaults to `current`; published and deprecated current files are immutable, so an open revision must be synced with `--workspace revision`.
 - `pcr:lifecycle` validates manifest lifecycle transitions and runs a material preflight before a PCR becomes active. Use `--workspace revision` for revision review state. A published current record permits only the one-way transition to `deprecated/deprecated_methodology`; a deprecated record cannot be reopened.
 - `pcr:bump` updates a valid semver only for an unpublished current workspace. It rejects malformed, published, deprecated, or open-revision state because a revision target version is fixed when `pcr:revise` opens it.
 - `pcr:revise` opens one explicit `revision/` workspace from a managed published release, records a greater target semver in `revision.yaml`, preserves the consumer-facing top-level release, and marks the Chinese revision out of sync. It rejects deprecated and already-open records.
 - `pcr:publish` first validates the proposed published manifest and freshly generated projection without writing. First publication uses `--workspace current --version <semver>`; later publication uses `--workspace revision` and the version locked by `pcr:revise`. Publication requires the complete identity contract, active reviewed methodology, reviewed non-empty Chinese Markdown with aligned normative rule ids, valid semver, and no unresolved review blocker.
 - Every successful publication writes an immutable `releases/<semver>/` snapshot and appends `release-history.yaml`. Release metadata and the current manifest carry exact-byte SHA-256 evidence; lint validates the release chain, snapshot contents, projection integrity, and current-to-latest consistency.
-- `pcr:sync-structured`, `pcr:bump`, `pcr:lifecycle`, `pcr:revise`, and `pcr:publish` replace the complete PCR leaf through a recoverable directory transaction whose state is stored under `library/.pcr-builder-state/`. `pcr:recover` rolls back interrupted pre-commit phases or finishes committed cleanup. `--force-stale-lock` is an explicit stale-state override and must not be used while a writer is active.
+- `pcr:sync-structured`, `pcr:bump`, `pcr:lifecycle`, `pcr:revise`, and `pcr:publish` replace the complete PCR leaf through a recoverable directory transaction whose state is stored under `library/.pcr-builder-state/`. `pcr:recover` rolls back interrupted pre-commit phases or finishes committed cleanup. Lock ownership is tokenized and keyed by filesystem-canonical PCR identity. `--force-stale-lock` is an explicit stale-lock/pre-journal-stage override, must not be used while a writer is active, and never permits guessing from malformed journal or unexplained tree state.
 - `vocab:generate` validates every vocabulary source and deterministically regenerates the checked-in runtime constants and shared JSON Schema.
 - `lint` rejects stale generated vocabulary artifacts before inspecting repository content; `validate` then runs lint plus tests.
 
@@ -77,8 +100,9 @@ Schema failures are returned in a stable machine-readable shape with the contrac
 and sorted field-level errors.
 
 Authoring Markdown remains the canonical, flexible methodology source. Strict material projection validation
-starts only after Markdown is compiled to `structured.yaml`. Empty scaffolds remain discoverable authoring
-targets and are not required to satisfy the material projection Schema or fingerprint contract.
+starts only after Markdown is compiled to `structured.yaml`. Retained legacy scaffolds remain discoverable authoring
+targets and are not required to satisfy the material projection Schema or fingerprint contract; ordinary
+classification imports do not create new ones.
 
 For a material PCR, lint requires all four conditions together:
 
@@ -93,7 +117,7 @@ The consumption core repeats the Schema, fingerprint, and material completeness 
 readiness. Guidance and validation output are also asserted against their public JSON Schema contracts before
 they are returned.
 
-Generated PCR scaffolds use the current authoring skeleton:
+Explicitly created PCR scaffolds and migration-only legacy scaffolds use the current authoring skeleton:
 
 - language-specific Markdown templates: `builder/templates/pcr.en-US.md.hbs` and `builder/templates/pcr.zh-CN.md.hbs`
 - process inventory organized by process, then inputs/outputs, then product/waste/elementary flows

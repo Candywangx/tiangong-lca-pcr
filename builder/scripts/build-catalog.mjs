@@ -1,7 +1,13 @@
 import {
+  closeSync,
+  constants as fsConstants,
   existsSync,
+  fstatSync,
+  lstatSync,
   mkdirSync,
+  openSync,
   readFileSync,
+  realpathSync,
   readdirSync,
   renameSync,
   unlinkSync,
@@ -10,6 +16,7 @@ import {
 import { createHash } from "node:crypto";
 import path from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
+import { TextDecoder } from "node:util";
 
 import {
   CLASSIFICATION_MAPPING_RELATION_VALUES,
@@ -24,24 +31,23 @@ import {
 } from "../../packages/pcr-core/src/classification-coverage.mjs";
 import { createSchemaRegistry } from "../../packages/pcr-core/src/schema-validation.mjs";
 import { parseYaml, renderYaml } from "../../packages/pcr-core/src/yaml-lite.mjs";
+import {
+  CPC_3_COVERAGE_PATH,
+  CPC_3_LEAVES_PATH,
+  CPC_3_MAPPING_PATH,
+  COVERAGE_SOURCE_DESCRIPTORS,
+} from "../lib/classification-coverage-sources.mjs";
 
 const REPOSITORY_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../..");
 
 export const CATALOG_PATH = "library/catalog.yaml";
 export const MATERIAL_INDEX_PATH = "library/indexes/pcr-index.yaml";
-export const CPC_3_COVERAGE_PATH = "classifications/indexes/cpc-3.0-coverage.json";
-export const CPC_3_LEAVES_PATH = "classifications/systems/cpc/3.0/normalized/leaves.json";
-export const CPC_3_MAPPING_PATH = "classifications/mappings/cpc-3.0-to-pcr.yaml";
-
-export const COVERAGE_SOURCE_DESCRIPTORS = Object.freeze([
-  Object.freeze({
-    classificationSystem: "cpc",
-    classificationVersion: "3.0",
-    normalizedLeavesPath: CPC_3_LEAVES_PATH,
-    mappingPath: CPC_3_MAPPING_PATH,
-    coveragePath: CPC_3_COVERAGE_PATH,
-  }),
-]);
+export {
+  CPC_3_COVERAGE_PATH,
+  CPC_3_LEAVES_PATH,
+  CPC_3_MAPPING_PATH,
+  COVERAGE_SOURCE_DESCRIPTORS,
+};
 
 const COMPATIBILITY_MAPPING_PATHS = Object.freeze([
   "classifications/mappings/cpc-2.1-to-pcr.yaml",
@@ -55,6 +61,9 @@ const CATALOG_SCHEMA_ID = "https://tiangong-lca.org/schemas/pcr/v1/catalog.schem
 const MAPPING_RELATIONS = new Set(CLASSIFICATION_MAPPING_RELATION_VALUES);
 const PCR_STATUSES = new Set(PCR_STATUS_VALUES);
 const CONTENT_MATURITIES = new Set(CONTENT_MATURITY_VALUES);
+const MANAGED_READ_FLAGS =
+  fsConstants.O_RDONLY | fsConstants.O_NOFOLLOW | fsConstants.O_NONBLOCK;
+const FATAL_UTF8_DECODER = new TextDecoder("utf-8", { fatal: true });
 
 const schemaRegistry = createSchemaRegistry([
   readJsonFromUrl(new URL("../schemas/catalog.schema.json", import.meta.url)),
@@ -378,7 +387,20 @@ export function staleArtifactIssues(root, artifacts) {
       issues.push(`${artifact.path} is missing; run npm run catalog:build`);
       continue;
     }
-    if (readFileSync(outputPath, "utf8") !== artifact.content) {
+    let actualContent;
+    try {
+      actualContent = readManagedUtf8File({
+        root,
+        filePath: outputPath,
+        label: artifact.path,
+      }).text;
+    } catch (error) {
+      issues.push(
+        `${artifact.path} could not be safely read: ${error.message}; run npm run catalog:build`,
+      );
+      continue;
+    }
+    if (actualContent !== artifact.content) {
       issues.push(`${artifact.path} is stale; run npm run catalog:build`);
     }
   }
@@ -399,12 +421,17 @@ function readManifestRecords(root) {
     const directory = path.dirname(manifestPath);
     const relativePath = portablePath(path.relative(root, directory));
     try {
+      const source = readManagedUtf8File({
+        root,
+        filePath: manifestPath,
+        label: `${relativePath}/manifest.yaml`,
+      });
       records.push({
         path: relativePath,
-        manifest: parseYaml(readFileSync(manifestPath, "utf8")),
+        manifest: parseYaml(source.text),
       });
     } catch (error) {
-      issues.push(`${relativePath}/manifest.yaml could not be parsed: ${error.message}`);
+      issues.push(`${relativePath}/manifest.yaml could not be read or parsed: ${error.message}`);
     }
   }
 
@@ -575,17 +602,151 @@ function assertArtifactSchemas({ catalog, materialIndex, coverages }) {
 }
 
 function readYamlSource(root, relativePath) {
-  const bytes = readFileSync(path.join(root, relativePath));
-  return { bytes, value: parseYaml(bytes.toString("utf8")) };
+  const source = readManagedUtf8File({
+    root,
+    filePath: path.join(root, relativePath),
+    label: relativePath,
+  });
+  return { bytes: source.bytes, value: parseYaml(source.text) };
 }
 
 function readJsonSource(root, relativePath) {
-  const bytes = readFileSync(path.join(root, relativePath));
-  return { bytes, value: JSON.parse(bytes.toString("utf8")) };
+  const source = readManagedUtf8File({
+    root,
+    filePath: path.join(root, relativePath),
+    label: relativePath,
+  });
+  return { bytes: source.bytes, value: JSON.parse(source.text) };
 }
 
 function readJsonFromUrl(url) {
-  return JSON.parse(readFileSync(url, "utf8"));
+  const filePath = fileURLToPath(url);
+  return JSON.parse(
+    readManagedUtf8File({
+      root: REPOSITORY_ROOT,
+      filePath,
+      label: portablePath(path.relative(REPOSITORY_ROOT, filePath)),
+    }).text,
+  );
+}
+
+function readManagedUtf8File({ root, filePath, label }) {
+  const resolvedRoot = path.resolve(root);
+  const resolvedFilePath = path.resolve(filePath);
+  const relativePath = path.relative(resolvedRoot, resolvedFilePath);
+  if (
+    !relativePath ||
+    path.isAbsolute(relativePath) ||
+    relativePath === ".." ||
+    relativePath.startsWith(`..${path.sep}`)
+  ) {
+    throw new Error(`${label} escapes the repository root: ${resolvedFilePath}`);
+  }
+
+  const displayPath = portablePath(relativePath);
+  assertManagedPathChain({
+    resolvedRoot,
+    relativePath,
+    displayPath,
+    label,
+  });
+  assertManagedRealPathContained({
+    resolvedRoot,
+    resolvedFilePath,
+    displayPath,
+    label,
+  });
+
+  let fileDescriptor;
+  try {
+    fileDescriptor = openSync(resolvedFilePath, MANAGED_READ_FLAGS);
+  } catch (error) {
+    if (error?.code === "ENOENT") {
+      throw new Error(`Missing ${label}: ${displayPath}`, { cause: error });
+    }
+    if (error?.code === "ELOOP") {
+      throw new Error(`${label} must not be a symbolic link: ${displayPath}`, { cause: error });
+    }
+    throw error;
+  }
+
+  try {
+    const stat = fstatSync(fileDescriptor);
+    if (!stat.isFile()) {
+      throw new Error(`${label} must be a regular file: ${displayPath}`);
+    }
+    const currentStat = assertManagedPathChain({
+      resolvedRoot,
+      relativePath,
+      displayPath,
+      label,
+    });
+    assertManagedRealPathContained({
+      resolvedRoot,
+      resolvedFilePath,
+      displayPath,
+      label,
+    });
+    if (stat.dev !== currentStat.dev || stat.ino !== currentStat.ino) {
+      throw new Error(`${label} changed while it was being opened: ${displayPath}`);
+    }
+    const bytes = readFileSync(fileDescriptor);
+    try {
+      return { bytes, text: FATAL_UTF8_DECODER.decode(bytes) };
+    } catch (error) {
+      throw new Error(`${label} must contain valid UTF-8: ${displayPath}`, { cause: error });
+    }
+  } finally {
+    closeSync(fileDescriptor);
+  }
+}
+
+function assertManagedPathChain({ resolvedRoot, relativePath, displayPath, label }) {
+  const segments = relativePath.split(path.sep);
+  let currentPath = resolvedRoot;
+  let finalStat;
+  for (const [index, segment] of segments.entries()) {
+    currentPath = path.join(currentPath, segment);
+    let stat;
+    try {
+      stat = lstatSync(currentPath);
+    } catch (error) {
+      throw new Error(`Missing ${label}: ${displayPath}`, { cause: error });
+    }
+    if (stat.isSymbolicLink()) {
+      throw new Error(`${label} path contains a symbolic link: ${displayPath}`);
+    }
+    const finalSegment = index === segments.length - 1;
+    if (finalSegment && !stat.isFile()) {
+      throw new Error(`${label} must be a regular file: ${displayPath}`);
+    }
+    if (!finalSegment && !stat.isDirectory()) {
+      throw new Error(`${label} parent must be a directory: ${displayPath}`);
+    }
+    if (finalSegment) {
+      finalStat = stat;
+    }
+  }
+  return finalStat;
+}
+
+function assertManagedRealPathContained({
+  resolvedRoot,
+  resolvedFilePath,
+  displayPath,
+  label,
+}) {
+  const realRoot = realpathSync(resolvedRoot);
+  const realFilePath = realpathSync(resolvedFilePath);
+  const relativePath = path.relative(realRoot, realFilePath);
+  if (
+    !relativePath ||
+    path.isAbsolute(relativePath) ||
+    relativePath === ".." ||
+    relativePath.startsWith(`..${path.sep}`)
+  ) {
+    throw new Error(`${label} real path escapes the repository root: ${displayPath}`);
+  }
 }
 
 function discoverCanonicalManifests(directory, root) {
@@ -596,15 +757,7 @@ function discoverCanonicalManifests(directory, root) {
   )) {
     const candidate = path.join(directory, entry.name);
     const relativePath = portablePath(path.relative(root, candidate));
-    if (entry.isSymbolicLink()) {
-      issues.push(`PCR discovery rejects symbolic link ${relativePath}`);
-      continue;
-    }
-    if (entry.isDirectory()) {
-      const nested = discoverCanonicalManifests(candidate, root);
-      files.push(...nested.files);
-      issues.push(...nested.issues);
-    } else if (entry.isFile() && entry.name === "manifest.yaml") {
+    if (entry.name === "manifest.yaml") {
       const segments = portablePath(path.relative(path.join(root, "library/pcrs"), candidate)).split(
         "/",
       );
@@ -615,6 +768,16 @@ function discoverCanonicalManifests(directory, root) {
       } else {
         files.push(candidate);
       }
+      continue;
+    }
+    if (entry.isSymbolicLink()) {
+      issues.push(`PCR discovery rejects symbolic link ${relativePath}`);
+      continue;
+    }
+    if (entry.isDirectory()) {
+      const nested = discoverCanonicalManifests(candidate, root);
+      files.push(...nested.files);
+      issues.push(...nested.issues);
     }
   }
   return { files, issues };

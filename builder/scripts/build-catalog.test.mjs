@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { spawnSync } from "node:child_process";
 import {
   existsSync,
   mkdirSync,
@@ -170,6 +171,42 @@ test("catalog build refuses dangling mappings before writing any artifact", () =
   }
 });
 
+test("catalog build fails closed when a mapping targets a half-valid PCR lifecycle pair", () => {
+  const root = makeCatalogFixture({
+    leaves: [fixtureLeaf("1")],
+    mappings: [fixtureMapping("1", "pcr.invalid")],
+    manifests: [
+      {
+        relativeDirectory: "domain/subdomain/invalid",
+        manifest: fixtureManifest("pcr.invalid", {
+          status: "candidate",
+          content_maturity: "empty_scaffold",
+        }),
+      },
+    ],
+  });
+  try {
+    const result = createCatalogArtifacts(root);
+    const coverage = result.artifacts.find(
+      (artifact) => artifact.path === CPC_3_COVERAGE_PATH,
+    ).value;
+    assert.equal(coverage.entries[0].coverage_status, "unknown");
+    assert.equal(coverage.entries[0].mapping.pcr_id, "pcr.invalid");
+    assert.ok(
+      result.issues.some((issue) =>
+        issue.includes("mapping for 1 points to invalid PCR lifecycle pair pcr.invalid"),
+      ),
+    );
+    assert.throws(
+      () => buildOrCheckCatalog(root),
+      /points to invalid PCR lifecycle pair pcr\.invalid/u,
+    );
+    assert.equal(existsSync(path.join(root, CPC_3_COVERAGE_PATH)), false);
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+  }
+});
+
 test("manifest discovery excludes wrong-level records and reports the contract violation", () => {
   const root = makeCatalogFixture({
     manifests: [
@@ -200,6 +237,88 @@ test("manifest discovery excludes wrong-level records and reports the contract v
   } finally {
     rmSync(root, { recursive: true, force: true });
   }
+});
+
+test("catalog managed inputs reject symbolic links, FIFOs, and invalid UTF-8", async (t) => {
+  await t.test("normalized leaves symbolic link", () => {
+    const root = makeCatalogFixture();
+    try {
+      const leavesPath = path.join(
+        root,
+        COVERAGE_SOURCE_DESCRIPTORS[0].normalizedLeavesPath,
+      );
+      const sourcePath = `${leavesPath}.source`;
+      renameSync(leavesPath, sourcePath);
+      symlinkSync(path.basename(sourcePath), leavesPath);
+
+      assert.throws(
+        () => createCatalogArtifacts(root),
+        /normalized\/leaves\.json path contains a symbolic link/u,
+      );
+    } finally {
+      rmSync(root, { recursive: true, force: true });
+    }
+  });
+
+  await t.test("mapping FIFO", (subtest) => {
+    const root = makeCatalogFixture();
+    try {
+      const mappingPath = path.join(root, CPC_3_MAPPING_PATH);
+      rmSync(mappingPath);
+      const result = spawnSync("mkfifo", [mappingPath], { encoding: "utf8" });
+      if (result.error?.code === "ENOENT") {
+        subtest.skip("mkfifo is unavailable on this platform");
+        return;
+      }
+      assert.equal(result.status, 0, result.stderr);
+      assert.throws(
+        () => createCatalogArtifacts(root),
+        /cpc-3\.0-to-pcr\.yaml must be a regular file/u,
+      );
+    } finally {
+      rmSync(root, { recursive: true, force: true });
+    }
+  });
+
+  await t.test("mapping invalid UTF-8", () => {
+    const root = makeCatalogFixture();
+    try {
+      writeFileSync(path.join(root, CPC_3_MAPPING_PATH), Buffer.from([0xff]));
+      assert.throws(
+        () => createCatalogArtifacts(root),
+        /cpc-3\.0-to-pcr\.yaml must contain valid UTF-8/u,
+      );
+    } finally {
+      rmSync(root, { recursive: true, force: true });
+    }
+  });
+
+  await t.test("manifest invalid UTF-8", () => {
+    const root = makeCatalogFixture({
+      manifests: [
+        {
+          relativeDirectory: "domain/subdomain/invalid-utf8",
+          manifest: fixtureManifest("pcr.invalid-utf8"),
+        },
+      ],
+    });
+    try {
+      const manifestPath = path.join(
+        root,
+        "library/pcrs/domain/subdomain/invalid-utf8/manifest.yaml",
+      );
+      writeFileSync(manifestPath, Buffer.from([0xff]));
+
+      const result = createCatalogArtifacts(root);
+      assert.ok(
+        result.issues.some((issue) =>
+          issue.includes("manifest.yaml must contain valid UTF-8"),
+        ),
+      );
+    } finally {
+      rmSync(root, { recursive: true, force: true });
+    }
+  });
 });
 
 test("material index uses fail-closed methodology, legacy, and invalid lifecycle states", () => {

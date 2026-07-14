@@ -6,6 +6,8 @@ import {
 
 const SEMVER_PATTERN =
   /^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-((?:0|[1-9]\d*|\d*[A-Za-z-][0-9A-Za-z-]*)(?:\.(?:0|[1-9]\d*|\d*[A-Za-z-][0-9A-Za-z-]*))*))?(?:\+([0-9A-Za-z-]+(?:\.[0-9A-Za-z-]+)*))?$/u;
+const UTC_TIMESTAMP_PATTERN =
+  /^(\d{4})-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])T([01]\d|2[0-3]):([0-5]\d):([0-5]\d)(?:\.(\d+))?Z$/u;
 
 const STATUS_MATURITY = new Map([
   ["scaffold", new Set(["empty_scaffold"])],
@@ -69,6 +71,28 @@ function collectReviewBlockers(value, prefix = "review_metadata") {
 
 export function isValidSemver(value) {
   return SEMVER_PATTERN.test(String(value ?? ""));
+}
+
+export function isValidUtcTimestamp(value) {
+  const text = String(value ?? "");
+  const match = UTC_TIMESTAMP_PATTERN.exec(text);
+  if (!match) {
+    return false;
+  }
+  const parsed = Date.parse(text);
+  if (Number.isNaN(parsed)) {
+    return false;
+  }
+  const instant = new Date(parsed);
+  const [, year, month, day, hour, minute, second] = match;
+  return (
+    instant.getUTCFullYear() === Number(year) &&
+    instant.getUTCMonth() + 1 === Number(month) &&
+    instant.getUTCDate() === Number(day) &&
+    instant.getUTCHours() === Number(hour) &&
+    instant.getUTCMinutes() === Number(minute) &&
+    instant.getUTCSeconds() === Number(second)
+  );
 }
 
 export function compareSemver(left, right) {
@@ -220,6 +244,12 @@ export function manifestLifecycleProblems(manifest) {
   if (manifest?.version !== undefined && !isValidSemver(manifest.version)) {
     problems.push(`manifest version "${manifest.version}" is not valid semver`);
   }
+  if (manifest?.updated_at_utc !== undefined && !isValidUtcTimestamp(manifest.updated_at_utc)) {
+    problems.push(`manifest updated_at_utc "${manifest.updated_at_utc}" is not a valid UTC timestamp`);
+  }
+  if (manifest?.published_at_utc !== undefined && !isValidUtcTimestamp(manifest.published_at_utc)) {
+    problems.push(`manifest published_at_utc "${manifest.published_at_utc}" is not a valid UTC timestamp`);
+  }
 
   if (status === "active") {
     const zhStatus = translationStatus?.["zh-CN"];
@@ -237,7 +267,7 @@ export function manifestLifecycleProblems(manifest) {
     if (!isValidSemver(manifest?.version)) {
       problems.push("published PCR requires a valid semver version");
     }
-    if (!manifest?.published_at_utc || Number.isNaN(Date.parse(String(manifest.published_at_utc)))) {
+    if (!isValidUtcTimestamp(manifest?.published_at_utc)) {
       problems.push("published PCR requires a valid published_at_utc timestamp");
     }
     for (const blocker of manifestReviewBlockers(manifest)) {

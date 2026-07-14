@@ -48,7 +48,7 @@ Classification leaf 的存在不再自动产生 canonical PCR identity。只有�
 - 11,496 个重复模板文件，仓库目录约占 45 MB；
 - 完整 depth-3 tree JSON 约 4.41 MB；
 - viewer JSON 约 8.71 MB，其中绝大部分是不可用 scaffold 及其 `guidance_error`；
-- 新增分类体系会按 leaf 数量复制 PCR identity 和目录，而不是复用方法学实体。
+- 旧 importer 行为会按 leaf 数量复制 PCR identity 和目录，而不是复用方法学实体。
 
 ## Representation Decision
 
@@ -123,7 +123,7 @@ Target 必须满足：
 
 ## 迁移与兼容
 
-第一阶段是完全 additive：生成 material index 和完整 coverage index，公共默认改为 material-first，同时保留全部旧目录和旧 ID 解析。物理删除必须在 importer 停止创建 scaffold、positive mapping 收缩、alias 生效且 resolve 能返回 unmapped coverage 之后分批执行。
+第一阶段是完全 additive：生成 material index 和完整 coverage index，公共默认改为 material-first，同时保留全部旧目录和旧 ID 解析。Phase 2 的 importer cutover 已完成：canonical `import-cpc` 默认创建 0 个 PCR，缺失时建立 zero-edge mapping，校验并逐字节保留既有 mapping；非 3.0 版本先注册 coverage descriptor。Fail-fast `scaffold-cpc` 只有显式 `--legacy-scaffolds` 才能为 unmapped leaf append legacy edge、identity 和缺失 scaffold，且不能覆盖 accepted edge 或 PCR。物理删除仍必须等待 positive mapping 收缩、alias 生效及 old-id resolve redirect 就绪后分批执行。
 
 详细顺序、基线、pilot、回滚和验收见 `docs/migrations/p2-classification-coverage-migration.md`。
 

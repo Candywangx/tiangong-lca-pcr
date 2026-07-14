@@ -1,9 +1,13 @@
 import {
+  closeSync,
+  constants as fsConstants,
   cpSync,
   existsSync,
+  fstatSync,
   lstatSync,
   mkdirSync,
   mkdtempSync,
+  openSync,
   readFileSync,
   realpathSync,
   readdirSync,
@@ -13,6 +17,7 @@ import {
 } from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import { TextDecoder } from "node:util";
 
 import {
   buildGuidance,
@@ -31,6 +36,9 @@ const defaultOutDir = path.join(packageRoot, "dist");
 const staticDir = path.join(packageRoot, "static");
 const languages = ["en-US", "zh-CN"];
 const viewerScopes = new Set(PCR_CATALOG_SCOPES);
+const MANAGED_READ_FLAGS =
+  fsConstants.O_RDONLY | fsConstants.O_NOFOLLOW | fsConstants.O_NONBLOCK;
+const FATAL_UTF8_DECODER = new TextDecoder("utf-8", { fatal: true });
 export const VIEWER_BUILD_MARKER = ".tiangong-pcr-viewer-build";
 
 export function buildViewer({ root = repoRoot, outDir = defaultOutDir, scope = "material" } = {}) {
@@ -283,8 +291,7 @@ function validateCoverageIndexDeclaration(value, index) {
     value.includes("\\") ||
     path.posix.isAbsolute(value) ||
     path.posix.normalize(value) !== value ||
-    !value.startsWith("classifications/indexes/") ||
-    !/^[A-Za-z0-9._/-]+-coverage\.json$/u.test(value)
+    !/^classifications\/indexes\/[A-Za-z0-9._-]+-coverage\.json$/u.test(value)
   ) {
     throw new Error(
       `Invalid PCR catalog coverage declaration at classification_coverage_indexes[${index}]: ${value}.`,
@@ -323,23 +330,119 @@ function readRequiredJsonFile({ root, filePath, label }) {
 }
 
 function readRequiredRealFile({ root, filePath, label }) {
-  let stat;
+  const resolvedRoot = path.resolve(root);
+  const resolvedFilePath = path.resolve(filePath);
+  const relativePath = path.relative(resolvedRoot, resolvedFilePath);
+  if (
+    !relativePath ||
+    path.isAbsolute(relativePath) ||
+    relativePath === ".." ||
+    relativePath.startsWith(`..${path.sep}`)
+  ) {
+    throw new Error(`${label} escapes the PCR repository root: ${resolvedFilePath}`);
+  }
+
+  const displayPath = toPosix(relativePath);
+  assertManagedPathChain({
+    resolvedRoot,
+    relativePath,
+    displayPath,
+    label,
+  });
+  assertManagedRealPathContained({
+    resolvedRoot,
+    resolvedFilePath,
+    displayPath,
+    label,
+  });
+
+  let fileDescriptor;
   try {
-    stat = lstatSync(filePath);
+    fileDescriptor = openSync(resolvedFilePath, MANAGED_READ_FLAGS);
   } catch (error) {
     if (error?.code === "ENOENT") {
-      throw new Error(`Missing ${label}: ${toPosix(path.relative(root, filePath))}`);
+      throw new Error(`Missing ${label}: ${displayPath}`, { cause: error });
+    }
+    if (error?.code === "ELOOP") {
+      throw new Error(`${label} must not be a symbolic link: ${displayPath}`, { cause: error });
     }
     throw error;
   }
-  if (stat.isSymbolicLink() || !stat.isFile()) {
-    throw new Error(`${label} must be a real file: ${toPosix(path.relative(root, filePath))}`);
+
+  try {
+    const stat = fstatSync(fileDescriptor);
+    if (!stat.isFile()) {
+      throw new Error(`${label} must be a regular file: ${displayPath}`);
+    }
+    const currentStat = assertManagedPathChain({
+      resolvedRoot,
+      relativePath,
+      displayPath,
+      label,
+    });
+    assertManagedRealPathContained({
+      resolvedRoot,
+      resolvedFilePath,
+      displayPath,
+      label,
+    });
+    if (stat.dev !== currentStat.dev || stat.ino !== currentStat.ino) {
+      throw new Error(`${label} changed while it was being opened: ${displayPath}`);
+    }
+    const bytes = readFileSync(fileDescriptor);
+    try {
+      return FATAL_UTF8_DECODER.decode(bytes);
+    } catch (error) {
+      throw new Error(`${label} must contain valid UTF-8: ${displayPath}`, { cause: error });
+    }
+  } finally {
+    closeSync(fileDescriptor);
   }
-  const realFilePath = realpathSync(filePath);
-  if (realFilePath !== root && !isAncestor(root, realFilePath)) {
-    throw new Error(`${label} escapes the PCR repository root: ${realFilePath}`);
+}
+
+function assertManagedPathChain({ resolvedRoot, relativePath, displayPath, label }) {
+  const segments = relativePath.split(path.sep);
+  let currentPath = resolvedRoot;
+  let finalStat;
+  for (const [index, segment] of segments.entries()) {
+    currentPath = path.join(currentPath, segment);
+    let stat;
+    try {
+      stat = lstatSync(currentPath);
+    } catch (error) {
+      if (error?.code === "ENOENT") {
+        throw new Error(`Missing ${label}: ${displayPath}`, { cause: error });
+      }
+      throw error;
+    }
+    if (stat.isSymbolicLink()) {
+      throw new Error(`${label} path contains a symbolic link: ${displayPath}`);
+    }
+    const finalSegment = index === segments.length - 1;
+    if (finalSegment && !stat.isFile()) {
+      throw new Error(`${label} must be a regular file: ${displayPath}`);
+    }
+    if (!finalSegment && !stat.isDirectory()) {
+      throw new Error(`${label} parent must be a directory: ${displayPath}`);
+    }
+    if (finalSegment) {
+      finalStat = stat;
+    }
   }
-  return readFileSync(realFilePath, "utf8");
+  return finalStat;
+}
+
+function assertManagedRealPathContained({
+  resolvedRoot,
+  resolvedFilePath,
+  displayPath,
+  label,
+}) {
+  const realRoot = realpathSync(resolvedRoot);
+  const realFilePath = realpathSync(resolvedFilePath);
+  if (realFilePath !== realRoot && !isAncestor(realRoot, realFilePath)) {
+    throw new Error(`${label} real path escapes the PCR repository root: ${displayPath}`);
+  }
 }
 
 function toPosix(value) {
