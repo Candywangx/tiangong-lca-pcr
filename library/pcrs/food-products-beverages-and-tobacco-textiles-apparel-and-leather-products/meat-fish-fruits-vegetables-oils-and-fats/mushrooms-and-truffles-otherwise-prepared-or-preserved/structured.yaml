@@ -1,10 +1,947 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "21397"
-  title: "Mushrooms and truffles, otherwise prepared or preserved"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.food-products-beverages-and-tobacco-textiles-apparel-and-leather-products.meat-fish-fruits-vegetables-oils-and-fats.mushrooms-and-truffles-otherwise-prepared-or-preserved"
+  classification_refs: "CPC 3.0: 21397 — Mushrooms and truffles, otherwise prepared or preserved"
+  covered_products: "Edible mushrooms and truffles materially prepared or preserved other than by vinegar or acetic acid, including thermally stabilized sealed products, non-acetic fermented products, and other substantively cooked, seasoned, or oil-formulated products"
+  excluded_products: "Fresh product; simply frozen product; dried product; vinegar- or acetic-acid-preserved product; provisional preserves not ready for immediate consumption; extracts and concentrates; homogenized vegetable preparations; complete dishes or meals"
+  representative_product: "Declared species of prepared or preserved mushrooms or truffles, in the marketed style and formulation, at the processing facility gate"
+  production_route: "Exactly one of thermal_container, fermented_non_acetic, or other_prepared; route precedence and preservation mechanism shall be disclosed"
+  market_state: "Finished saleable product at factory gate; storage regime, net-content basis, packing medium or formulation, container format, and declared shelf life shall be specified"
+functional_unit:
+  what: "Provide an edible, saleable mushroom or truffle product that has been prepared or preserved by the declared in-scope route"
+  how_much: "1 kg net product, including edible packing medium or formulation sold as part of the product and excluding primary packaging"
+  how_well: "Meets the declared species, style, formulation, preservation route, storage regime, food-safety release criteria, and applicable quality specification"
+  how_long_or_cycle: "Maintains the declared product specification from factory release through the producer-declared shelf-life period under the declared storage conditions"
+  reference_flow_link: "One kilogram of the exact generic CPC-classified reference product flow, normalized at the processing facility gate"
+system_boundary:
+  rules:
+    - rule_id: boundary_gate_to_gate
+      applies_to: "Foreground production"
+      rule: "Include receiving, sorting, cleaning, trimming, route-specific preparation or preservation, filling or formulation, container handling, stabilization, cooling where applicable, and treatment or transfer of foreground wastes through the processing facility gate. Represent cultivation, ingredients, utilities, packaging production, and inbound transport as upstream inputs."
+      source_ids:
+        - eu-pef-2021
+        - codex-cxs-38-1981
+        - codex-cxs-297-2009
+    - rule_id: boundary_route_exclusivity
+      applies_to: "Route selection"
+      rule: "Select exactly one route process. Never model the three route processes as consecutive or simultaneous steps for one reference flow. A batch using lactic fermentation remains fermented_non_acetic even when it receives declared post-fermentation stabilization; hermetically sealed heat-stable non-fermented product is thermal_container."
+      source_ids:
+        - codex-cxs-38-1981
+        - codex-cxs-297-2009
+    - rule_id: boundary_classification_exclusions
+      applies_to: "Product eligibility"
+      rule: "Exclude vinegar- or acetic-acid-preserved mushrooms, simple frozen or dried products, provisional preserves, extracts or concentrates, homogenized vegetable preparations, and complete dishes or meals."
+      source_ids:
+        - unsd-cpc-3-0
+        - codex-cxs-38-1981
+    - rule_id: boundary_capital_goods
+      applies_to: "Equipment and infrastructure"
+      rule: "Exclude capital goods from the foreground inventory unless required by the goal and scope or shown material in screening; disclose the decision consistently for all compared scenarios."
+      source_ids:
+        - eu-pef-2021
+boundary_abstraction:
+  declared_starting_condition: "Edible mushrooms or truffles received at the processing facility, with species, origin type, incoming preservation state, moisture or solids basis when available, supplier, geography, and transport hand-off declared"
+  starting_condition_role: "processing_gate_input"
+  product_classification_scope: "CPC 3.0 subclass 21397 as a classification reference; canonical PCR scope remains the semantic product boundary stated in Sections 1 and 2"
+  recursive_input_rule: "If an input is already a product in this same PCR category, record it once as a direct technosphere input with its upstream dataset and declared preparation state; do not recursively re-expand its production inside this foreground package"
+  upstream_dataset_requirement: "Use representative upstream datasets for mushrooms or truffles, ingredients, packing media, packaging materials, electricity, fuels, water supply, and inbound transport, preserving geography, technology, temporal period, and supplier specificity where available"
+  disclosure: "Declare route code and precedence decision; species and origin; incoming material state; processing and preservation mechanism; edible packing medium; container; storage regime; shelf life; excluded stages; data gaps; proxies; co-products; and allocation decisions"
+reference_flow_definition:
+  reference_amount: "1 kg net prepared or preserved product at factory gate"
+  product_flow_ref:
+    name: "Mushrooms and truffles, otherwise prepared or preserved"
+    uuid: "a73856a4-8862-40be-b505-65863a6cfb66"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "mushroom or truffle species and cultivated or wild origin"
+    - "product style and particle form"
+    - "route code"
+    - "preservation mechanism"
+    - "recipe and edible packing-medium share"
+    - "net-content basis"
+    - "primary container"
+    - "storage regime"
+    - "production geography and technology"
+    - "declared shelf life"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "Reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Report net product mass excluding primary, secondary, and tertiary packaging. Include edible packing medium or formulation sold as part of the product and disclose its mass share."
+  - id: wet_mass_basis
+    applies_to: "Mushrooms, truffles, intermediates, ingredients, products, and solid residues"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Record as-received or as-produced wet mass. If dry matter is also used, report measured moisture or solids and retain the conversion calculation; do not substitute dry mass for the reference mass."
+  - id: route_separation
+    applies_to: "All foreground records"
+    required_property_ref:
+      name: "Route code"
+      uuid: ""
+    required_unit: "one declared route code"
+    rule: "Assign each production batch to exactly one route code. Shared preprocessing may be allocated to that selected route, but inventories of alternative routes shall not be summed into one product system."
+  - id: energy_conversion
+    applies_to: "Electricity, steam, heat, and fuels"
+    required_property_ref:
+      name: "Energy or carrier-specific property"
+      uuid: ""
+    required_unit: "kWh or MJ, with original units retained"
+    rule: "Retain original meter or invoice units and document all conversion factors. Do not combine electricity and thermal energy before preserving carrier identity and source."
+  - id: mass_balance
+    applies_to: "Each selected route"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Reconcile input mushrooms or truffles, edible ingredients and media, saleable product, recoverable co-products, wastewater-associated solids where measured, and solid losses over the same batch and moisture basis."
+process_map:
+  - id: preprocessing
+    name: "Receiving, sorting, cleaning, and size preparation"
+    inclusion: "required"
+    inclusion_condition: "Applies to all routes; operations with no physical occurrence shall be recorded as zero rather than invented"
+    role: "Common foreground preparation"
+    quantitative_reference: "kg prepared mushroom or truffle intermediate"
+  - id: thermal_container
+    name: "Filling, hermetic sealing, and thermal stabilization"
+    inclusion: "conditional"
+    inclusion_condition: "Include only when route code is thermal_container"
+    role: "Mutually exclusive preservation route"
+    quantitative_reference: "kg net saleable reference product"
+  - id: fermented_non_acetic
+    name: "Non-acetic fermentation and finishing"
+    inclusion: "conditional"
+    inclusion_condition: "Include only when route code is fermented_non_acetic"
+    role: "Mutually exclusive preservation route"
+    quantitative_reference: "kg net saleable reference product"
+  - id: other_prepared
+    name: "Other substantive cooking or formulation and packing"
+    inclusion: "conditional"
+    inclusion_condition: "Include only when route code is other_prepared and neither preceding route definition applies"
+    role: "Mutually exclusive preparation route"
+    quantitative_reference: "kg net saleable reference product"
+process_inventory:
+  - id: preprocessing
+    label: "Receiving, sorting, cleaning, and size preparation"
+    inputs:
+      product:
+        - row_id: raw_fungi_input
+          role: "Incoming edible mushrooms or truffles"
+          name: "Edible mushrooms or truffles, species and incoming state declared"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Incoming raw material crosses the processing gate and carries cultivation or collection and inbound supply-chain burdens."
+          amount:
+            expression: "measured lot mass accepted into preprocessing"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg prepared intermediate output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_preprocessing_batch
+              source_ids:
+                - codex-cxs-38-1981
+            ranges: []
+        - row_id: preprocessing_water
+          role: "Cleaning and blanching water"
+          name: "Process water"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Water is recorded when supplied for washing, cleaning, blanching, or cooling in the common preprocessing stage."
+          amount:
+            expression: "metered or batch-apportioned water supplied, net of documented closed-loop recirculation"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg prepared intermediate output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_preprocessing_utilities
+              source_ids:
+                - codex-cxs-38-1981
+                - codex-cxs-297-2009
+            ranges: []
+        - row_id: preprocessing_energy
+          role: "Preprocessing energy"
+          name: "Electricity and thermal energy carriers, supplier and carrier declared"
+          flow_type: "product"
+          property_unit: "Energy / kWh or MJ with original unit retained"
+          description: "Electricity and thermal carriers used for conveying, washing, cutting, blanching, cooling, and sanitation are kept carrier-specific."
+          amount:
+            expression: "measured meter, equipment submeter, or documented batch allocation"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg prepared intermediate output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_preprocessing_utilities
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: prepared_fungi_intermediate
+          role: "Prepared mushroom or truffle intermediate"
+          name: "Prepared mushroom or truffle intermediate, species and physical state declared"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "This intermediate is the cleaned, sorted, and cut or otherwise size-prepared material transferred to exactly one selected route."
+          amount:
+            expression: "measured transfer mass to the selected route"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg prepared intermediate output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_preprocessing_batch
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: preprocessing_solid_residues
+          role: "Sorting and trimming residues"
+          name: "Organic processing residues, treatment route declared"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Rejected fungi, soil-bearing trim, and other separated organic material are recorded by actual management destination."
+          amount:
+            expression: "measured residue mass or mass-balance result when direct weighing is unavailable"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per kg prepared intermediate output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_preprocessing_batch
+              source_ids: []
+            ranges: []
+        - row_id: preprocessing_wastewater
+          role: "Preprocessing wastewater"
+          name: "Food-processing wastewater, treatment destination declared"
+          flow_type: "waste"
+          property_unit: "Mass or volume / kg or m3"
+          description: "Wastewater transferred to onsite or offsite treatment is recorded with destination and measured volume or mass."
+          amount:
+            expression: "measured discharge or documented water-balance result"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per kg prepared intermediate output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_preprocessing_utilities
+              source_ids: []
+            ranges: []
+      elementary:
+        []
+  - id: thermal_container
+    label: "Filling, hermetic sealing, and thermal stabilization"
+    inputs:
+      product:
+        - row_id: thermal_fungi_input
+          role: "Prepared fungi transferred to thermal route"
+          name: "Prepared mushroom or truffle intermediate"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only the prepared intermediate assigned to thermal_container enters this route."
+          amount:
+            expression: "measured batch input"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg net saleable reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_thermal_batch
+              source_ids: []
+            ranges: []
+        - row_id: thermal_ingredients
+          role: "Packing medium and recipe ingredients"
+          name: "Declared edible packing medium and formulation ingredients"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Water, salt, oil, sauce, seasonings, or other edible ingredients are recorded separately by material; vinegar or acetic acid as a preservation mechanism is not eligible for this PCR."
+          amount:
+            expression: "measured issued mass less documented return to inventory"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg net saleable reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_thermal_batch
+              source_ids:
+                - codex-cxs-297-2009
+            ranges: []
+        - row_id: thermal_packaging
+          role: "Container and closure materials"
+          name: "Packaging materials by material and format"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Primary container, closure, label, and route-attributable secondary packaging are recorded by material and mass."
+          amount:
+            expression: "purchase or issue records reconciled to accepted packed units"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg net saleable reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_thermal_batch
+              source_ids: []
+            ranges: []
+        - row_id: thermal_energy
+          role: "Thermal-route energy"
+          name: "Electricity and thermal energy carriers, supplier and carrier declared"
+          flow_type: "product"
+          property_unit: "Energy / kWh or MJ with original unit retained"
+          description: "Electricity and thermal carriers for filling, sealing, retorting or equivalent heat treatment, cooling, and sanitation are retained separately."
+          amount:
+            expression: "measured meter or documented batch allocation"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg net saleable reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_thermal_energy
+              source_ids:
+                - codex-cxs-38-1981
+                - codex-cxs-297-2009
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: thermal_reference_product
+          role: "Saleable thermal-route product"
+          name: "Mushrooms and truffles, otherwise prepared or preserved"
+          flow_type: "product"
+          flow_ref:
+            uuid: "a73856a4-8862-40be-b505-65863a6cfb66"
+          property_unit: "Mass / kg"
+          description: "The route output uses the exact generic CPC-classified flow and is counted only for accepted saleable units."
+          amount:
+            expression: "measured net product mass excluding packaging"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "1 kg net saleable reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_thermal_batch
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: thermal_rejects
+          role: "Thermal-route rejected product and packaging"
+          name: "Route rejects by material and treatment destination"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Rejected product, packing medium, and packaging are recorded separately by material and treatment destination."
+          amount:
+            expression: "measured rejects or batch mass-balance result"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per kg net saleable reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_thermal_batch
+              source_ids: []
+            ranges: []
+      elementary:
+        - row_id: thermal_direct_air_emissions
+          role: "Direct thermal-route emissions to air"
+          name: "Substance-specific direct emissions to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Direct combustion and refrigerant emissions are reported substance by substance when they cross the environmental boundary."
+          amount:
+            expression: "measured emissions or calculation from collected fuel and refrigerant records using documented factors"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per kg net saleable reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_thermal_energy
+              source_ids:
+                - eu-pef-2021
+            ranges: []
+  - id: fermented_non_acetic
+    label: "Non-acetic fermentation and finishing"
+    inputs:
+      product:
+        - row_id: fermentation_fungi_input
+          role: "Prepared fungi transferred to fermentation route"
+          name: "Prepared mushroom or truffle intermediate"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only the prepared intermediate assigned to fermented_non_acetic enters this route."
+          amount:
+            expression: "measured batch input"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg net saleable reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_fermentation_batch
+              source_ids: []
+            ranges: []
+        - row_id: fermentation_ingredients
+          role: "Fermentation and finishing ingredients"
+          name: "Declared fermentation and finishing ingredients"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Salt, water, starter where used, spices, oil, and other non-acetic ingredients are recorded separately; added vinegar or acetic acid as the preservation mechanism makes the product ineligible."
+          amount:
+            expression: "measured issued mass less documented return to inventory"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg net saleable reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_fermentation_batch
+              source_ids:
+                - codex-cxs-38-1981
+            ranges: []
+        - row_id: fermentation_packaging
+          role: "Fermented-product packaging"
+          name: "Packaging materials by material and format"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Primary container, closure, label, and route-attributable secondary packaging are recorded by material and mass."
+          amount:
+            expression: "purchase or issue records reconciled to accepted packed units"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg net saleable reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_fermentation_batch
+              source_ids: []
+            ranges: []
+        - row_id: fermentation_energy
+          role: "Fermentation-route energy"
+          name: "Electricity and thermal energy carriers, supplier and carrier declared"
+          flow_type: "product"
+          property_unit: "Energy / kWh or MJ with original unit retained"
+          description: "Electricity and thermal carriers for fermentation control, pumping, finishing, any declared post-fermentation stabilization, cooling, and sanitation are retained separately."
+          amount:
+            expression: "measured meter or documented batch allocation"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg net saleable reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_fermentation_energy
+              source_ids:
+                - codex-cxs-38-1981
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: fermentation_reference_product
+          role: "Saleable fermented-route product"
+          name: "Mushrooms and truffles, otherwise prepared or preserved"
+          flow_type: "product"
+          flow_ref:
+            uuid: "a73856a4-8862-40be-b505-65863a6cfb66"
+          property_unit: "Mass / kg"
+          description: "The route output uses the exact generic CPC-classified flow and is counted only for accepted saleable units."
+          amount:
+            expression: "measured net product mass excluding packaging"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "1 kg net saleable reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_fermentation_batch
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: fermentation_wastes
+          role: "Fermentation brine, rejects, and packaging losses"
+          name: "Fermentation wastes by material and treatment destination"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Spent brine or liquid, rejected product, and packaging losses are separated by waste type and treatment destination."
+          amount:
+            expression: "measured waste or batch mass-balance result"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per kg net saleable reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_fermentation_batch
+              source_ids: []
+            ranges: []
+      elementary:
+        - row_id: fermentation_direct_air_emissions
+          role: "Direct fermentation-route emissions to air"
+          name: "Substance-specific direct emissions to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Direct fuel, refrigerant, and process emissions are reported substance by substance when applicable."
+          amount:
+            expression: "measured emissions or calculation from collected activity records using documented factors"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per kg net saleable reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_fermentation_energy
+              source_ids:
+                - eu-pef-2021
+            ranges: []
+  - id: other_prepared
+    label: "Other substantive cooking or formulation and packing"
+    inputs:
+      product:
+        - row_id: other_fungi_input
+          role: "Prepared fungi transferred to other-prepared route"
+          name: "Prepared mushroom or truffle intermediate"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only the prepared intermediate assigned to other_prepared enters this route."
+          amount:
+            expression: "measured batch input"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg net saleable reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_other_batch
+              source_ids: []
+            ranges: []
+        - row_id: other_ingredients
+          role: "Cooking, seasoning, or oil-formulation ingredients"
+          name: "Declared cooking, seasoning, or formulation ingredients"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "All edible ingredients are recorded separately. The formulation shall not be a complete dish or meal and shall not use vinegar or acetic acid as the preservation mechanism."
+          amount:
+            expression: "measured issued mass less documented return to inventory"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg net saleable reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_other_batch
+              source_ids:
+                - codex-cxs-38-1981
+            ranges: []
+        - row_id: other_packaging
+          role: "Other-prepared packaging"
+          name: "Packaging materials by material and format"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Primary container, closure, label, and route-attributable secondary packaging are recorded by material and mass."
+          amount:
+            expression: "purchase or issue records reconciled to accepted packed units"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg net saleable reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_other_batch
+              source_ids: []
+            ranges: []
+        - row_id: other_energy
+          role: "Other-prepared route energy"
+          name: "Electricity and thermal energy carriers, supplier and carrier declared"
+          flow_type: "product"
+          property_unit: "Energy / kWh or MJ with original unit retained"
+          description: "Electricity and thermal carriers for cooking, mixing, filling, cooling, cold holding when required, and sanitation are retained separately."
+          amount:
+            expression: "measured meter or documented batch allocation"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg net saleable reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_other_energy
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: other_reference_product
+          role: "Saleable other-prepared product"
+          name: "Mushrooms and truffles, otherwise prepared or preserved"
+          flow_type: "product"
+          flow_ref:
+            uuid: "a73856a4-8862-40be-b505-65863a6cfb66"
+          property_unit: "Mass / kg"
+          description: "The route output uses the exact generic CPC-classified flow and is counted only for accepted saleable units."
+          amount:
+            expression: "measured net product mass excluding packaging"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "1 kg net saleable reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_other_batch
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: other_wastes
+          role: "Other-prepared route rejects and losses"
+          name: "Route wastes by material and treatment destination"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Cooking losses, rejected product, wastewater, and packaging losses are separated by material and treatment destination."
+          amount:
+            expression: "measured waste or batch mass-balance result"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per kg net saleable reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_other_batch
+              source_ids: []
+            ranges: []
+      elementary:
+        - row_id: other_direct_air_emissions
+          role: "Direct other-prepared-route emissions to air"
+          name: "Substance-specific direct emissions to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Direct combustion and refrigerant emissions are reported substance by substance when applicable."
+          amount:
+            expression: "measured emissions or calculation from collected activity records using documented factors"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per kg net saleable reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_other_energy
+              source_ids:
+                - eu-pef-2021
+            ranges: []
+allocation_rules:
+  - rule_id: allocation_avoid
+    applies_to: "Shared and multifunctional foreground operations"
+    rule: "First avoid allocation through batch, line, time, meter, or recipe subdivision. Keep route-specific operations separate and assign common preprocessing to the selected route using measured batch transfers."
+    source_ids:
+      - eu-pef-2021
+  - rule_id: allocation_co_products
+    applies_to: "Saleable co-products other than the reference product"
+    rule: "Where subdivision is not possible, apply a documented physical relationship that reflects the causal use of the process. If no defensible physical relationship exists, use economic allocation with contemporaneous factory-gate prices and test sensitivity."
+    source_ids:
+      - eu-pef-2021
+  - rule_id: allocation_wastes
+    applies_to: "Residues and waste treatment"
+    rule: "Do not assign avoided burdens to residues merely because they leave the site. Record their treatment or recovery route and apply any substitution or recycling model only in the downstream study with the method, quality, and displaced product disclosed."
+    source_ids:
+      - eu-pef-2021
+  - rule_id: allocation_packing_medium
+    applies_to: "Edible packing medium and recipe ingredients"
+    rule: "Treat edible medium sold with the product as part of the reference product mass, not as a co-product. Packaging remains a separate input and is excluded from reference mass."
+    source_ids:
+      - codex-cxs-297-2009
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_preprocessing_batch
+      process_id: "preprocessing"
+      flow_role: "incoming material, prepared intermediate, and residues"
+      record_type: "batch production record"
+      raw_fields: "batch_id; species; origin_type; supplier; incoming_state; input_mass; intermediate_mass; residue_mass; moisture_or_solids_if_measured; disposition"
+      collection_method: "calibrated scales, receiving tickets, production and waste logs"
+      unit: "kg wet mass"
+      frequency: "every batch"
+      temporal_coverage: "representative continuous 12-month period or all production in a shorter declared campaign"
+      site_scope: "each included facility and line"
+      aggregation_rule: "sum like flows by batch, reconcile mass balance, then divide by prepared intermediate output"
+      quality_evidence: "scale calibration; signed batch record; supplier specification; reconciliation record"
+    - protocol_id: cp_preprocessing_utilities
+      process_id: "preprocessing"
+      flow_role: "water, energy, and wastewater"
+      record_type: "meter and allocation record"
+      raw_fields: "meter_id; period; water_in; water_recirculated; wastewater_out; electricity; steam; fuel; production_hours; batch_id; allocation_driver"
+      collection_method: "submeters preferred; otherwise documented engineering or production allocation"
+      unit: "original units plus kg water, m3 wastewater, kWh electricity, and MJ thermal energy"
+      frequency: "batch or at least monthly"
+      temporal_coverage: "same period as production data"
+      site_scope: "each included facility and utility system"
+      aggregation_rule: "subtract documented recirculation only once, allocate shared totals by causal driver, and normalize to prepared intermediate output"
+      quality_evidence: "meter calibration; invoices; allocation worksheet; completeness check"
+    - protocol_id: cp_thermal_batch
+      process_id: "thermal_container"
+      flow_role: "route material inputs, packaging, product, and rejects"
+      record_type: "batch and packaging record"
+      raw_fields: "batch_id; route_code; intermediate_mass; ingredient_mass_by_material; packaging_mass_by_material; filled_units; net_content; accepted_units; rejected_product; rejected_packaging; treatment_destination"
+      collection_method: "formulation sheets, issue records, checkweigher or net-content records, packaging bills, and reject logs"
+      unit: "kg and unit count"
+      frequency: "every batch"
+      temporal_coverage: "representative continuous 12-month period or all production in a shorter declared campaign"
+      site_scope: "each thermal line and container format"
+      aggregation_rule: "retain material identity, calculate accepted net product mass, reconcile route mass, and normalize to accepted net product"
+      quality_evidence: "calibrated scales; approved recipe; net-content verification; container specification; reject log"
+    - protocol_id: cp_thermal_energy
+      process_id: "thermal_container"
+      flow_role: "route energy and direct emissions"
+      record_type: "meter, fuel, refrigerant, and process record"
+      raw_fields: "batch_id; meter_id; electricity; steam; fuel_by_type; retort_or_heat_cycle; cooling; refrigerant_makeup; measured_emissions; factor_source"
+      collection_method: "submeters and cycle logs; invoices and documented allocation only where submetering is unavailable"
+      unit: "original units plus kWh, MJ, and kg emission"
+      frequency: "batch or at least monthly"
+      temporal_coverage: "same period as thermal-route production"
+      site_scope: "each thermal line and utility system"
+      aggregation_rule: "keep carriers separate, allocate by causal cycle or operating time, calculate substance-specific emissions, and normalize to accepted net product"
+      quality_evidence: "meter calibration; cycle record; fuel invoice; refrigerant log; factor citation; calculation worksheet"
+    - protocol_id: cp_fermentation_batch
+      process_id: "fermented_non_acetic"
+      flow_role: "route material inputs, packaging, product, and wastes"
+      record_type: "fermentation lot record"
+      raw_fields: "lot_id; route_code; species; intermediate_mass; water; salt; starter; ingredient_mass_by_material; fermentation_time; control_measurements; packaging_mass; net_product_mass; spent_liquid; rejects; destinations"
+      collection_method: "approved formulation, issue records, tank records, control logs, scales, and packaging records"
+      unit: "kg, hours, and declared control units"
+      frequency: "every lot"
+      temporal_coverage: "representative continuous 12-month period or all production in a shorter declared campaign"
+      site_scope: "each fermentation vessel, finishing line, and product formulation"
+      aggregation_rule: "retain ingredient identity, aggregate only comparable lots, reconcile mass, and normalize to accepted net product"
+      quality_evidence: "calibrated instruments; approved formulation; fermentation control log; release record; waste transfer record"
+    - protocol_id: cp_fermentation_energy
+      process_id: "fermented_non_acetic"
+      flow_role: "route energy and direct emissions"
+      record_type: "meter, fuel, refrigerant, and process record"
+      raw_fields: "lot_id; meter_id; electricity; heat; cooling; fuel_by_type; refrigerant_makeup; stabilization_cycle_if_any; measured_emissions; factor_source"
+      collection_method: "submeters and equipment logs; documented allocation where direct measurement is unavailable"
+      unit: "original units plus kWh, MJ, and kg emission"
+      frequency: "lot or at least monthly"
+      temporal_coverage: "same period as fermentation-route production"
+      site_scope: "each fermentation and finishing system"
+      aggregation_rule: "keep carriers separate, allocate by causal operating time or vessel use, calculate substance-specific emissions, and normalize to accepted net product"
+      quality_evidence: "meter calibration; equipment log; fuel invoice; refrigerant log; factor citation; calculation worksheet"
+    - protocol_id: cp_other_batch
+      process_id: "other_prepared"
+      flow_role: "route material inputs, packaging, product, and wastes"
+      record_type: "batch and packaging record"
+      raw_fields: "batch_id; route_code; preparation_description; intermediate_mass; ingredient_mass_by_material; packaging_mass_by_material; net_product_mass; rejects; wastewater; destinations"
+      collection_method: "approved recipe, issue records, calibrated scales, packaging records, and waste logs"
+      unit: "kg and unit count"
+      frequency: "every batch"
+      temporal_coverage: "representative continuous 12-month period or all production in a shorter declared campaign"
+      site_scope: "each cooking or formulation line and product style"
+      aggregation_rule: "retain ingredient identity, aggregate only comparable recipes and storage regimes, reconcile mass, and normalize to accepted net product"
+      quality_evidence: "calibrated scales; approved recipe; release record; container specification; waste log"
+    - protocol_id: cp_other_energy
+      process_id: "other_prepared"
+      flow_role: "route energy and direct emissions"
+      record_type: "meter, fuel, refrigerant, and process record"
+      raw_fields: "batch_id; meter_id; electricity; heat; cooling; cold_holding_time; fuel_by_type; refrigerant_makeup; measured_emissions; factor_source"
+      collection_method: "submeters and equipment logs; documented allocation where direct measurement is unavailable"
+      unit: "original units plus kWh, MJ, and kg emission"
+      frequency: "batch or at least monthly"
+      temporal_coverage: "same period as other-prepared-route production"
+      site_scope: "each cooking, formulation, cooling, and storage system"
+      aggregation_rule: "keep carriers separate, allocate by causal cycle or operating time, calculate substance-specific emissions, and normalize to accepted net product"
+      quality_evidence: "meter calibration; equipment log; fuel invoice; refrigerant log; factor citation; calculation worksheet"
+  calculation_rules:
+    - id: calc_reference_normalization
+      applies_to: "Selected route"
+      rule: "normalized amount = period or batch amount / accepted net product mass in kg; packaging mass is excluded from the denominator and edible packing medium is included"
+      inputs:
+        - "flow amount"
+        - "accepted units"
+        - "measured net content"
+        - "edible-medium status"
+      output: "amount per 1 kg reference product"
+      source_ids:
+        - eu-pef-2021
+        - codex-cxs-297-2009
+    - id: calc_preprocessing_transfer
+      applies_to: "Common preprocessing"
+      rule: "route-attributed preprocessing amount = total preprocessing amount × measured intermediate mass transferred to selected route / total prepared intermediate mass; use a more causal measured driver when documented"
+      inputs:
+        - "common preprocessing records"
+        - "route transfer masses"
+      output: "preprocessing inventory assigned to selected route"
+      source_ids:
+        - eu-pef-2021
+    - id: calc_route_mass_balance
+      applies_to: "Each selected route"
+      rule: "mass balance difference = total measured mass inputs − saleable net product − separately measured co-products − separately measured wastes; investigate rather than silently allocate an unexplained material difference"
+      inputs:
+        - "batch material"
+        - product
+        - co-product
+        - "and waste masses on consistent wet-mass basis"
+      output: "disclosed reconciliation difference and completeness flag"
+      source_ids:
+        - eu-pef-2021
+    - id: calc_direct_emissions
+      applies_to: "Onsite fuel and refrigerant use"
+      rule: "emission by substance = collected activity × documented applicable factor, with oxidation, density, and unit conversions retained; use direct measurements where available"
+      inputs:
+        - "fuel by carrier"
+        - "refrigerant makeup"
+        - "measured emission"
+        - "factor and conversion records"
+      output: "kg substance-specific elementary flow per kg reference product"
+      source_ids:
+        - eu-pef-2021
+  data_quality_requirements:
+    - id: dq_identity
+      applies_to: "Product and route"
+      requirement: "Verify the exact generic reference-flow UUID, species or declared mixture, product style, incoming state, route code, preservation mechanism, container, storage regime, and shelf life."
+      evidence: "Product specification, approved recipe, label, batch release, and route decision record"
+    - id: dq_route_exclusivity
+      applies_to: "Process map"
+      requirement: "Demonstrate that exactly one route process supplies the reference product and that alternative-route inventories are absent."
+      evidence: "Batch route code, process flow diagram, and inventory completeness review"
+    - id: dq_measurement
+      applies_to: "Mass, water, and energy"
+      requirement: "Use calibrated instruments or reconciled supplier records; retain raw units, conversions, allocation drivers, and meter coverage."
+      evidence: "Calibration certificates, invoices, meter maps, batch records, and calculation worksheets"
+    - id: dq_temporal
+      applies_to: "Foreground dataset"
+      requirement: "Prefer a representative continuous 12-month period; a shorter seasonal or campaign period shall cover the full campaign and disclose why it represents the product."
+      evidence: "Dated production calendar and coverage calculation"
+    - id: dq_completeness
+      applies_to: "Foreground inventory"
+      requirement: "Reconcile material balance, include utilities and direct emissions, and identify every excluded flow, missing month, proxy, and waste destination."
+      evidence: "Mass balance, utility reconciliation, emission-factor register, and gap log"
+    - id: dq_provisional_estimates
+      applies_to: "Missing foreground quantity"
+      requirement: "No default numeric estimate is supplied by this PCR. If a quantity is temporarily gap-filled, tag it as reasoned_estimate, state the applicable route, technology, geography, and basis, state that it is provisional, and replace it when representative batch records, calibrated measurements, supplier primary data, or reviewed evidence become available. Such estimates shall not support verified comparative assertions."
+      evidence: "Assumption register, applicability statement, uncertainty disclosure, owner, and explicit replacement trigger"
+validation_rules:
+  - rule_id: validate_reference_identity
+    applies_to: "Reference flow"
+    rule: "Require the product-flow UUID a73856a4-8862-40be-b505-65863a6cfb66, Mass property UUID 93a60a56-a3c8-11da-a746-0800200b9a66, Units of mass UUID 93a60a57-a4c8-11da-a746-0800200c9a66, and reference unit kg."
+    source_ids: []
+  - rule_id: validate_scope
+    applies_to: "Product eligibility"
+    rule: "Reject fresh, simply frozen, dried, vinegar- or acetic-acid-preserved, provisionally preserved, extract or concentrate, homogenized, or complete-meal products."
+    source_ids:
+      - unsd-cpc-3-0
+      - codex-cxs-38-1981
+  - rule_id: validate_route
+    applies_to: "Route processes"
+    rule: "Require exactly one of thermal_container, fermented_non_acetic, or other_prepared to produce the reference flow. Reject a dataset that sums alternative routes or lacks the route precedence decision."
+    source_ids:
+      - codex-cxs-38-1981
+      - codex-cxs-297-2009
+  - rule_id: validate_reference_mass
+    applies_to: "Quantitative reference"
+    rule: "Require 1 kg accepted net product excluding packaging and including edible medium or formulation sold as product; require the edible-medium share and net-content basis."
+    source_ids:
+      - codex-cxs-297-2009
+  - rule_id: validate_inventory
+    applies_to: "Foreground completeness"
+    rule: "Require incoming fungi or truffles, ingredients and media, packaging, water where used, carrier-specific energy, saleable output, residues, wastewater where generated, rejects, and applicable direct emissions; require consistent period and mass basis."
+    source_ids:
+      - eu-pef-2021
+  - rule_id: validate_mass_balance
+    applies_to: "Material inventory"
+    rule: "Require a documented route mass balance and investigation of unexplained difference; do not accept silent balancing through an unspecified waste flow."
+    source_ids:
+      - eu-pef-2021
+  - rule_id: validate_data_quality
+    applies_to: "Dataset production"
+    rule: "Require temporal coverage, site and technology representation, calibration or reconciliation evidence, upstream dataset metadata, proxy disclosure, and replacement triggers for every reasoned_estimate."
+    source_ids:
+      - eu-pef-2021
+published_dataset_profile:
+  dataset_role: "Factory-gate foreground data package for one declared prepared or preserved mushroom or truffle product and one mutually exclusive route"
+  downstream_use: "secondary_dataset; background_dataset after review of representativeness, projection readiness, and data quality"
+  allowed_use: "Product carbon or environmental footprint modelling, supply-chain inventory, process improvement, and scenario analysis for products matching the declared species, formulation, route, geography, technology, storage regime, and reference-mass basis"
+  excluded_use: "Fresh, simply frozen, dried, vinegar- or acetic-acid-preserved, provisional, extract or concentrate, homogenized, or complete-meal products; aggregation of mutually exclusive routes; verified comparative assertions based on unreviewed proxies or reasoned_estimate values"
+  required_metadata: "PCR id and version state; exact flow UUIDs; species and origin type; product style; route code and precedence decision; preservation mechanism; recipe and edible-medium share; net-content basis; container; storage regime; shelf life; facility geography; technology; data period; upstream dataset identities; allocation method"
+  required_quality_disclosure: "Meter and batch coverage; calibration and reconciliation; material-balance difference; excluded flows; missing data; proxies and provisional estimates; factor sources; uncertainty; representativeness limits; co-products and waste destinations"
+  update_trigger: "New or changed product-flow identity; classification scope; preservation route; recipe or edible-medium share; container; storage regime; technology; supplier or geography; material allocation basis; evidence affecting rules; or replacement of provisional estimates by representative batch, supplier, or reviewed evidence"
+data_sources:
+  - id: "unsd-cpc-3-0"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, Central Product Classification Version 3.0, Explanatory Notes, 30 June 2025, https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Exp_Notes_30Jun2025.pdf (retrieved 2026-08-11)"
+    used_for: "CPC identity and exclusions for vinegar or acetic acid preservation, simple freezing, drying, provisional preservation, and complete dishes"
+  - id: "codex-cxs-38-1981"
+    type: "standard"
+    reference: "Codex Alimentarius, CXS 38-1981, General Standard for Edible Fungi and Fungus Products, amended 2022 and 2023, https://workspace.fao.org/sites/codex/Standards/CXS%2038-1981/CXS_038e.pdf (retrieved 2026-08-11)"
+    used_for: "Edible-fungi identity, raw-material quality, and decomposition of non-acetic fermentation, thermal stabilization, and oil-preserved routes"
+  - id: "codex-cxs-297-2009"
+    type: "standard"
+    reference: "Codex Alimentarius, CXS 297-2009, Standard for Certain Canned Vegetables, including Annex on Certain Mushrooms, amended 2022 and 2023, https://workspace.fao.org/sites/codex/Standards/CXS%20297-2009/CXS_297e.pdf (retrieved 2026-08-11)"
+    used_for: "Canned-route process decomposition, net product and packing-medium interpretation, mushroom styles, filling, hermetic sealing, and heat stabilization"
+  - id: "eu-pef-2021"
+    type: "official_guidance"
+    reference: "European Commission Recommendation (EU) 2021/2279 of 15 December 2021 on Environmental Footprint methods, Annex I Product Environmental Footprint Method, CELEX 32021H2279, https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32021H2279 (retrieved 2026-08-11)"
+    used_for: "Functional unit, system boundary, company-specific inventory, allocation hierarchy, data quality, modelling, and disclosure rules"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:5db374b7d1bd441e1da7f382bf1486fceeb4659eb56defd372d0973de5a61649"
+  generated_content_sha256: "sha256:720bef5eeb77056fed15e05557298b9d4a8abb32d9f33e4b0ff4e69a86768515"

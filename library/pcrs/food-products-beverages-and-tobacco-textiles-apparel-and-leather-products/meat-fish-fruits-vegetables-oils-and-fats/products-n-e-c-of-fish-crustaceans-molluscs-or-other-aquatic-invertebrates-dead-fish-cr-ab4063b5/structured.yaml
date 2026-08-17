@@ -1,10 +1,665 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "21299"
-  title: "Products n.e.c. of fish, crustaceans, molluscs or other aquatic invertebrates; dead fish, crustaceans, molluscs or other aquatic invertebrates unfit for human consumption"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.food-products-beverages-and-tobacco-textiles-apparel-and-leather-products.meat-fish-fruits-vegetables-oils-and-fats.products-n-e-c-of-fish-crustaceans-molluscs-or-other-aquatic-invertebrates-dead-fish-cr-ab4063b5"
+  classification_refs: "CPC 3.0: 21299, exact"
+  covered_products: "Otherwise unclassified non-food products of fish, crustaceans, molluscs or other aquatic invertebrates; dead aquatic animals unfit for human consumption and supplied as products for a declared non-food use"
+  excluded_products: "Products intended or represented as food; live aquatic animals; CPC 21291 inedible flours, meals and pellets; packaging; free liquid or removable ice reported separately; outputs having legal waste status at the reference point"
+  representative_product: "A lot of dead or derived aquatic material, explicitly classified as non-food, dispatched in bulk or packaged form for a declared non-food use"
+  production_route: "Exactly one route code per dataset: direct_dispatch, chilled_or_iced, frozen_or_glazed, salted_or_brined, or dried_or_other_stabilized"
+  market_state: "Non-food product at the foreground site gate; whole, pieces, mixed aquatic material or another declared form, with preservation state and destination declared"
+functional_unit:
+  what: "Provision of a qualified CPC 21299 aquatic product explicitly intended for non-food use"
+  how_much: "1 kg net product mass at the foreground site gate"
+  how_well: "Product identity, non-food status and reason, intended use, route, form, condition and applicable mass qualifiers are declared and traceable to the lot"
+  how_long_or_cycle: "One production lot at final mass determination and dispatch; no service duration is implied"
+  reference_flow_link: "The functional unit is realized by the single Tiangong reference product flow below"
+system_boundary:
+  rules:
+    - rule_id: boundary_foreground_gate
+      applies_to: "Foreground system"
+      rule: "Begin with receipt of the declared aquatic source material or supplied CPC 21299 product and include on-site receipt, non-food identity verification, sorting, the one selected conditioning route, final mass determination, packaging when used, and handling of rejects, wastewater or spent brine to the next treatment or transfer interface."
+      source_ids:
+        - codex-cxc-52-2003
+        - eu-pef-2021-2279
+    - rule_id: boundary_non_food_identity
+      applies_to: "All product-bearing processes"
+      rule: "Preserve explicit non-food identity and intended non-food destination throughout; Codex handling concepts are used for traceability, temperature and measurement practice only and shall not be interpreted as food conformity."
+      source_ids:
+        - unsd-cpc-3-0-21299
+        - codex-cxc-52-2003
+    - rule_id: boundary_route_exclusivity
+      applies_to: "Conditioning"
+      rule: "Select exactly one route code. Include conditioning_stabilization only when the route is not direct_dispatch, and record only inputs and outputs used by the selected route."
+      source_ids:
+        - eu-pef-2021-2279
+    - rule_id: boundary_exclusions
+      applies_to: "Foreground system"
+      rule: "Exclude capture, aquaculture, landing, supplier processing, distribution after the site gate, non-food use and end-of-life; link material upstream datasets and disclose any study-specific extension instead of silently truncating it."
+      source_ids:
+        - eu-pef-2021-2279
+boundary_abstraction:
+  declared_starting_condition: "Aquatic material or an existing CPC 21299 product received at the foreground site with supplier, lot, physical state, temperature or preservation state, legal product-or-waste status, and reason for non-food disposition declared"
+  starting_condition_role: "Foreground input gate for non-food classification, optional conditioning and dispatch"
+  product_classification_scope: "Exact generic CPC 3.0 subclass 21299 only; CPC 21291 meals, flours and pellets and food products remain outside scope"
+  recursive_input_rule: "A purchased input already within CPC 21299 remains an explicit product input and is linked once to its supplier dataset; do not reproduce the same category's upstream production recursively inside the receiving process"
+  upstream_dataset_requirement: "Use supplier- or route-representative upstream datasets for capture, aquaculture, landing, earlier processing, transport to site and any supplied CPC 21299 input; disclose gaps and substitutions"
+  disclosure: "Declare source identity, legal status, non-food reason and destination, route code, excluded upstream stages, mass basis, moisture, salinity or salt content, glaze or drained mass where applicable, packaging and all waste or recovery destinations"
+reference_flow_definition:
+  reference_amount: "1 kg qualified product net mass"
+  product_flow_ref:
+    name: "Products n.e.c. of fish, crustaceans, molluscs or other aquatic invertebrates; dead fish, crustaceans, molluscs or other aquatic invertebrates unfit for human consumption"
+    uuid: "96594bec-f1eb-4559-b4b2-2be03ec8f1cf"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "non-food status and reason for unfitness or non-food disposition"
+    - "intended non-food use and destination"
+    - "aquatic taxon or declared mixed-material composition"
+    - whole
+    - "pieces or other physical form"
+    - "route code"
+    - "preservation and temperature state"
+    - "source legal status as product or waste"
+    - "net product mass and weighing basis"
+    - "moisture content or declared wet/dry basis when material"
+    - "salt content or brine salinity for salted_or_brined"
+    - "gross and deglazed net mass plus deglazing method for frozen_or_glazed"
+    - "drained mass"
+    - "gross mass and draining method for product packed in liquid"
+    - "packaging state"
+    - site
+    - "geography and lot period"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_net_mass
+    applies_to: "Reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Normalize all inventory to 1 kg net product mass after excluding packaging, free packing liquid and separately removable ice or glaze. Record calibrated gross, tare and excluded masses."
+  - id: moisture_basis
+    applies_to: "Wet, dried or composition-sensitive product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Declare whether mass is as-received, wet, drained or dry; measure moisture on a representative lot sample when conversion between wet and dry bases materially changes results."
+  - id: salt_brine_basis
+    applies_to: "salted_or_brined route"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Report salt addition and removed or retained brine separately; declare product salt content or brine salinity, sampling method and whether the value is measured or calculated."
+  - id: glaze_and_drained_mass
+    applies_to: "frozen_or_glazed or liquid-packed product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Report gross mass, deglazed or drained net mass, excluded glaze or free liquid mass, and the documented deglazing or draining method; use only the qualified net product mass as reference."
+process_map:
+  - id: receipt_classification
+    name: "Receipt, non-food classification and sorting"
+    inclusion: "required"
+    inclusion_condition: "Always"
+    role: "Establish eligible CPC 21299 identity and lot mass balance without treating the material as food"
+    quantitative_reference: "kg received lot and kg eligible lot"
+  - id: conditioning_stabilization
+    name: "Route-specific conditioning or stabilization"
+    inclusion: "conditional"
+    inclusion_condition: "Include only for chilled_or_iced, frozen_or_glazed, salted_or_brined, or dried_or_other_stabilized; exactly one route is selected"
+    role: "Preserve or adjust the declared non-food product state"
+    quantitative_reference: "kg route output"
+  - id: final_mass_dispatch
+    name: "Net-mass determination, packaging and dispatch"
+    inclusion: "required"
+    inclusion_condition: "Always; packaging inputs are recorded only when used"
+    role: "Produce the qualified non-food reference product at the site gate"
+    quantitative_reference: "1 kg qualified net product"
+process_inventory:
+  - id: receipt_classification
+    label: "Receipt, non-food classification and sorting"
+    inputs:
+      product:
+        - row_id: incoming_aquatic_lot
+          role: "Incoming aquatic source lot"
+          name: "Aquatic source material or supplied CPC 21299 product"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "The received lot crosses the foreground gate for identity verification and sorting. Record supplier mass, legal status, physical state and the documented reason for non-food disposition."
+          amount:
+            expression: "measured received net mass for the lot"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg qualified reference product dispatched from the same lot"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_receipt_lot
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "1.00"
+                upper: "2.00"
+                unit: "kg/kg reference product"
+                basis: "received lot mass per kg qualified reference product"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: eligible_non_food_lot
+          role: "Eligible non-food lot"
+          name: "Eligible non-food aquatic material"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "This intermediate output contains only material that retains product status and meets the declared CPC 21299 non-food identity."
+          amount:
+            expression: "received net mass minus measured rejects and measured retained foreign matter"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per receipt lot"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_receipt_lot
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: receipt_rejects
+          role: "Receipt and sorting rejects"
+          name: "Sorting rejects, destination-specific"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record rejected matter with legal status and destination; material unfit for human consumption is not automatically waste."
+          amount:
+            expression: "measured reject mass by destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg received aquatic lot"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_receipt_lot
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.50"
+                unit: "kg/kg received lot"
+                basis: "reject mass fraction of the received lot"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        []
+  - id: conditioning_stabilization
+    label: "Route-specific conditioning or stabilization"
+    inputs:
+      product:
+        - row_id: route_material_input
+          role: "Eligible lot entering the selected route"
+          name: "Eligible non-food aquatic material"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the eligible mass entering the single declared route; bypassed material belongs to direct_dispatch and does not enter this process."
+          amount:
+            expression: "measured route input mass"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per route batch"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_conditioning_route
+              source_ids: []
+            ranges: []
+        - row_id: conditioning_water_or_ice
+          role: "Water or ice for the selected route"
+          name: "Process water or ice"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record only water or ice that crosses the process boundary for the selected chilling, glazing, rinsing or other conditioning operation."
+          amount:
+            expression: "metered or weighed water and ice supplied, with recovered water excluded from gross supply and recorded separately"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per kg route output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_conditioning_route
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "2.0"
+                unit: "kg/kg route output"
+                basis: "supplied water and ice per kg route output"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: conditioning_salt_or_brine
+          role: "Salt or prepared brine"
+          name: "Salt or prepared brine"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record this row only for the salted_or_brined route, separating dry salt, make-up water and reused brine where records permit."
+          amount:
+            expression: "measured salt and brine input, with brine salinity declared"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per kg salted or brined route output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_conditioning_route
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.50"
+                unit: "kg/kg route output"
+                basis: "salt plus prepared brine input per kg route output"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: conditioning_electricity
+          role: "Electricity for conditioning"
+          name: "Electricity, site supply mix"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record metered electricity for freezing, cooling, drying, pumping or other selected-route equipment; exclude uses belonging to another route."
+          amount:
+            expression: "submetered use, or allocated equipment-meter use following section 7"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg route output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_conditioning_route
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "5.0"
+                unit: "kWh/kg route output"
+                basis: "electricity used by selected-route equipment per kg route output"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: conditioned_route_output
+          role: "Conditioned non-food route output"
+          name: "Conditioned non-food aquatic product"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record route output mass together with moisture, salt, glaze or drained-mass qualifiers applicable to the selected route."
+          amount:
+            expression: "measured qualified route output mass on the declared basis"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per route batch"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_conditioning_route
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: conditioning_liquid_waste
+          role: "Wastewater or spent brine"
+          name: "Wastewater or spent brine, destination-specific"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record discharged water or brine by treatment destination; reused liquid remains an internal loop and is disclosed separately."
+          amount:
+            expression: "measured discharge mass, or calculated from metered inputs, retained water and inventory change"
+            value_mode: "calculated_value"
+            specificity: "route_specific"
+            basis:
+              text: "per kg route output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_conditioning_route
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "2.0"
+                unit: "kg/kg route output"
+                basis: "liquid waste sent to treatment per kg route output"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        []
+  - id: final_mass_dispatch
+    label: "Net-mass determination, packaging and dispatch"
+    inputs:
+      product:
+        - row_id: final_lot_input
+          role: "Lot entering final mass determination"
+          name: "Qualified non-food aquatic lot before final mass determination"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Use the eligible direct-dispatch lot or the output of the one selected conditioning route, never both for the same product mass."
+          amount:
+            expression: "measured lot mass entering final weighing"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per dispatch lot"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_final_mass_dispatch
+              source_ids: []
+            ranges: []
+        - row_id: dispatch_packaging
+          role: "Packaging materials used"
+          name: "Packaging material, material-specific"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record each packaging material only when used; bulk unpackaged dispatch records zero packaging."
+          amount:
+            expression: "measured or purchase-reconciled packaging mass excluding reusable packaging outside the declared boundary"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg qualified reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_final_mass_dispatch
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.50"
+                unit: "kg/kg reference product"
+                basis: "packaging mass per kg qualified net product"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: reference_product_output
+          role: "Qualified CPC 21299 non-food reference product"
+          name: "Products n.e.c. of fish, crustaceans, molluscs or other aquatic invertebrates; dead fish, crustaceans, molluscs or other aquatic invertebrates unfit for human consumption"
+          flow_type: "product"
+          flow_ref:
+            uuid: "96594bec-f1eb-4559-b4b2-2be03ec8f1cf"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This is the exact generic CPC 21299 product flow. Keep the unfit-for-human-consumption or other declared non-food identity explicit; do not model it as food."
+          amount:
+            expression: "exactly 1 kg qualified net product by definition after applying all applicable mass exclusions and conversions"
+            value_mode: "fixed_value"
+            specificity: "not_applicable"
+            basis:
+              text: "1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "method_formula"
+              source_ids:
+                - mass-balance-identity
+            ranges:
+              - role: allowed_range
+                lower: "1"
+                upper: "1"
+                unit: "kg/kg reference flow"
+                basis: "qualified net product mass per one reference flow"
+                basis_kind: "reference_flow"
+                evidence_kind: "method_formula"
+                source_ids:
+                  - mass-balance-identity
+      waste:
+        - row_id: dispatch_rejects
+          role: "Final weighing or packing rejects"
+          name: "Final-stage rejects, destination-specific"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record product loss, spilled material and damaged packaging separately by legal status and destination."
+          amount:
+            expression: "measured reject mass by material and destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg qualified reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_final_mass_dispatch
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.20"
+                unit: "kg/kg reference product"
+                basis: "final-stage reject mass per kg qualified net product"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocation_subdivision
+    applies_to: "Shared foreground operations"
+    rule: "Avoid allocation by separate route batches, direct metering or process subdivision wherever technically feasible."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: allocation_output_status
+    applies_to: "Products, co-products and waste"
+    rule: "Classify each output from documented intended use, legal status and destination. Non-food or unfit-for-human-consumption status alone does not make an output waste and does not justify zero burden."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: allocation_fallback
+    applies_to: "Unavoidable shared burdens"
+    rule: "When subdivision is not feasible, use a demonstrable physical causal relationship; if none can be established, use an economic or other justified relationship and disclose the method, prices or physical parameters, period and sensitivity."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: allocation_recovery
+    applies_to: "Recycling, recovery or waste treatment"
+    rule: "Keep treatment burdens and recovered-material or energy benefits consistent with the selected PEF-compatible end-of-life approach; do not add an avoided-product credit without declaring the substituted function and method."
+    source_ids:
+      - eu-pef-2021-2279
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_receipt_lot
+      process_id: "receipt_classification"
+      flow_role: "incoming lot, eligible lot and rejects"
+      record_type: "scale tickets, supplier records, inspection and disposition records"
+      raw_fields: "lot_id; supplier; taxon_or_composition; legal_status; non_food_reason; intended_destination; gross_mass; tare_mass; net_received_mass; reject_mass_by_destination; eligible_mass; receipt_condition; receipt_time"
+      collection_method: "Calibrated weighing plus documented lot inspection and reconciliation"
+      unit: "kg"
+      frequency: "Every lot"
+      temporal_coverage: "Representative reporting period, normally at least 12 months or all campaigns if seasonal"
+      site_scope: "Every included foreground site"
+      aggregation_rule: "Sum by lot and destination, then normalize to qualified reference-product mass; investigate unresolved mass difference"
+      quality_evidence: "Calibration records, supplier declaration, inspection record, disposition record and signed reconciliation"
+    - protocol_id: cp_conditioning_route
+      process_id: "conditioning_stabilization"
+      flow_role: "route inputs, output and liquid waste"
+      record_type: "batch log and meter records"
+      raw_fields: "batch_id; route_code; input_mass; water_mass; ice_mass; salt_or_brine_mass; salinity; electricity_kwh; output_mass; moisture; glaze_mass; drained_mass; liquid_waste_mass; inventory_change"
+      collection_method: "Calibrated weighing, meters, route log and applicable moisture or salinity tests"
+      unit: "kg; kWh; declared composition unit"
+      frequency: "Every conditioning batch"
+      temporal_coverage: "Representative period covering seasonal and route variation"
+      site_scope: "Each route and site separately"
+      aggregation_rule: "Aggregate within one route and site; reconcile mass; normalize to route output and reference product"
+      quality_evidence: "Calibration, test method, route log, batch reconciliation and exception record"
+    - protocol_id: cp_final_mass_dispatch
+      process_id: "final_mass_dispatch"
+      flow_role: "net product, excluded mass, packaging and rejects"
+      record_type: "dispatch weighing and packing record"
+      raw_fields: "lot_id; route_code; gross_mass; tare_mass; packaging_mass; glaze_or_ice_mass; free_liquid_mass; drained_mass; net_product_mass; moisture; salt_or_salinity; reject_mass; destination; dispatch_time"
+      collection_method: "Calibrated gross-tare weighing, applicable deglazing or draining, and packaging reconciliation"
+      unit: "kg; declared composition unit"
+      frequency: "Every dispatch lot"
+      temporal_coverage: "Representative period, normally at least 12 months or all seasonal campaigns"
+      site_scope: "Every included foreground site"
+      aggregation_rule: "Separate net product from packaging, removable glaze, free liquid and rejects; normalize to 1 kg net product"
+      quality_evidence: "Calibration, deglazing or draining record, packaging specification, dispatch record and lot sign-off"
+  calculation_rules:
+    - id: calc_received_net_mass
+      applies_to: "Receipt lot"
+      rule: "received net mass = gross received mass - tare mass"
+      inputs:
+        - gross_mass
+        - tare_mass
+      output: "net_received_mass"
+      source_ids:
+        - mass-balance-identity
+    - id: calc_reference_net_mass
+      applies_to: "Final dispatch lot"
+      rule: "reference net mass = gross dispatch mass - tare and packaging mass - separately removable glaze or ice - free packing liquid; use documented drained mass when liquid-packed"
+      inputs:
+        - gross_mass
+        - tare_mass
+        - packaging_mass
+        - glaze_or_ice_mass
+        - free_liquid_mass
+        - drained_mass
+      output: "qualified_net_product_mass"
+      source_ids:
+        - codex-cxc-52-2003
+        - mass-balance-identity
+    - id: calc_route_mass_balance
+      applies_to: "Each receipt or conditioning batch"
+      rule: "unresolved mass difference = measured inputs + opening inventory - measured products - measured wastes - closing inventory; disclose evaporation or retained water separately when material"
+      inputs:
+        - input_masses
+        - opening_inventory
+        - product_masses
+        - waste_masses
+        - closing_inventory
+        - moisture_or_water_change
+      output: "unresolved_mass_difference"
+      source_ids:
+        - mass-balance-identity
+        - eu-pef-2021-2279
+    - id: calc_normalized_inventory
+      applies_to: "All inventory rows"
+      rule: "normalized amount = reporting-period attributable amount / qualified net reference-product mass from the same route and period"
+      inputs:
+        - attributable_amount
+        - qualified_net_product_mass
+      output: "amount per kg reference product"
+      source_ids:
+        - eu-pef-2021-2279
+        - mass-balance-identity
+  data_quality_requirements:
+    - id: dq_identity_traceability
+      applies_to: "Every lot"
+      requirement: "Retain taxon or mixed-material description, supplier, legal status, non-food reason, intended destination, route and lot linkage; no record may imply food conformity."
+      evidence: "Supplier declaration, inspection and disposition record, lot identifier and dispatch record"
+    - id: dq_measurement
+      applies_to: "Mass, energy, moisture and salinity records"
+      requirement: "Use calibrated instruments or documented purchase reconciliation; retain test method, precision and conversions for moisture, salinity, glaze and drained mass."
+      evidence: "Calibration certificates, meter records, laboratory or operational test sheets and calculation workbook"
+    - id: dq_temporal_route_coverage
+      applies_to: "Foreground averages"
+      requirement: "Cover representative seasonal and route variation; keep route-specific data separate and disclose excluded campaigns, abnormal events and data gaps."
+      evidence: "Coverage table by month, site and route; exception log"
+    - id: dq_completeness_balance
+      applies_to: "Each process and reporting period"
+      requirement: "Reconcile material inputs, qualified output, rejects, liquid wastes and material inventory; investigate and disclose material unresolved differences."
+      evidence: "Signed lot or batch mass balance and corrective-action record"
+    - id: dq_secondary_data
+      applies_to: "Upstream and treatment links"
+      requirement: "Record geography, technology, time period, cut-off, allocation and substitution rationale for each secondary dataset."
+      evidence: "Dataset metadata and PEF data-quality assessment"
+validation_rules:
+  - rule_id: validate_identity_non_food
+    applies_to: "Product identity"
+    rule: "The canonical id and CPC 3.0 code 21299 are declared; non-food status, reason, intended use and destination are explicit; neither names nor metadata represent the reference product as food."
+    source_ids:
+      - unsd-cpc-3-0-21299
+  - rule_id: validate_reference_mass
+    applies_to: "Reference flow"
+    rule: "The reference amount equals 1 kg qualified net product using the stated UUIDs and Mass/kg basis; packaging, removable glaze or ice and free liquid are excluded, and moisture, salt or salinity, deglazed or drained mass qualifiers are present when applicable."
+    source_ids:
+      - codex-cxc-52-2003
+      - mass-balance-identity
+  - rule_id: validate_route_exclusivity
+    applies_to: "Process map"
+    rule: "Exactly one route code is declared; conditioning inventory is absent for direct_dispatch, and only the selected route's inputs and outputs are present otherwise."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: validate_mass_balance
+    applies_to: "Receipt, conditioning and dispatch"
+    rule: "Lot and batch mass balances reconcile within the site's documented scale and inventory uncertainty; any unresolved difference is quantified, investigated and disclosed rather than hidden in the reference product."
+    source_ids:
+      - mass-balance-identity
+      - eu-pef-2021-2279
+  - rule_id: validate_allocation_destinations
+    applies_to: "Shared burdens and outputs"
+    rule: "Subdivision is attempted first; every co-product and waste has legal status and destination; any fallback allocation or recovery credit is justified, parameterized and sensitivity-tested."
+    source_ids:
+      - eu-pef-2021-2279
+published_dataset_profile:
+  dataset_role: "Foreground production dataset for an exact generic CPC 21299 non-food aquatic product"
+  downstream_use: "secondary_dataset; background_dataset; input to process and lifecyclemodel projections"
+  allowed_use: "Modelling a declared non-food CPC 21299 product from the stated receiving condition through the site gate for the same route, mass basis, legal status and geography"
+  excluded_use: "Food products; CPC 21291 meals, flours or pellets; undeclared route mixtures; substitution for capture, aquaculture, rendering, feed, fertilizer, disposal, use or end-of-life datasets without an explicit scope extension"
+  required_metadata: "Canonical PCR id, CPC reference, product UUID, Mass and unit-group UUIDs, non-food reason and destination, taxon or composition, legal status, route, condition, site and period, upstream links, net-mass basis, moisture, salinity or salt, glaze or drained mass where applicable, packaging, allocation and waste destinations"
+  required_quality_disclosure: "Primary-data share, route and seasonal coverage, calibration and test methods, mass-balance differences, reasoned-estimate substitutions, secondary-dataset quality, allocation sensitivity and limitations"
+  update_trigger: "Replace each provisional reasoned estimate when reviewed route- and site-specific evidence is available or before active review; update when product legal status, route, reference-flow UUID, measurement method, allocation method or material process technology changes"
+data_sources:
+  - id: "unsd-cpc-3-0-21299"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, Central Product Classification Version 3.0, subclass 21299, https://unstats.un.org/unsd/classifications/Econ/cpc, authoring reference date 2026-08-11"
+    used_for: "Exact product-category identity, scope and non-food wording"
+  - id: "codex-cxc-52-2003"
+    type: "standard"
+    reference: "Codex Alimentarius Commission, CXC 52-2003, Code of Practice for Fish and Fishery Products, https://www.fao.org/fao-who-codexalimentarius/codex-texts/codes-of-practice/en/, authoring reference date 2026-08-11"
+    used_for: "Directly relevant fishery-product handling concepts, lot controls, temperature and water or ice records, and net, deglazed or drained mass practice; not evidence of food status"
+  - id: "eu-pef-2021-2279"
+    type: "official_guidance"
+    reference: "European Commission Recommendation (EU) 2021/2279 on the use of Environmental Footprint methods, CELEX 32021H2279, https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32021H2279, authoring reference date 2026-08-11"
+    used_for: "System boundary, process subdivision, allocation hierarchy, recovery consistency, data quality and normalization"
+  - id: "mass-balance-identity"
+    type: "method_factor"
+    reference: "Conservation-of-mass identity applied to measured foreground inputs, outputs and inventory change"
+    used_for: "Net-mass calculation, normalization and process mass-balance validation"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:ec24defa5f819cbca8ba93bd2df2550faed206492edccf4be43470a1923de863"
+  generated_content_sha256: "sha256:5dea4b3a9eb9f407e6435dea979096a861224e38eb1d7998e4da153cb3a00c97"

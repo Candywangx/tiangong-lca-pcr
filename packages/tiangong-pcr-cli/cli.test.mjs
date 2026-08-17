@@ -255,7 +255,7 @@ test("coverage summary is bounded and coverage list exposes stable pagination co
   ]));
 
   assert.equal(summary.summary.total, 2877);
-  assert.equal(summary.summary.mapped, 3);
+  assert.equal(summary.summary.mapped, 303);
   assert.equal(summary.completeness.bounded, true);
   assert.equal(summary.completeness.entry_details_included, false);
   assert.equal(Object.hasOwn(summary, "entries"), false);
@@ -265,7 +265,7 @@ test("coverage summary is bounded and coverage list exposes stable pagination co
   assert.equal(page.completeness.page, 1);
   assert.equal(page.completeness.page_size, 2);
   assert.equal(page.completeness.returned_count, 2);
-  assert.equal(page.completeness.total_count, 2874);
+  assert.equal(page.completeness.total_count, 2574);
   assert.equal(page.completeness.has_more, true);
   assert.ok(page.items.every((entry) => entry.coverage_status === "unmapped"));
   assert.ok(page.items.every((entry) => entry.mapping === null));

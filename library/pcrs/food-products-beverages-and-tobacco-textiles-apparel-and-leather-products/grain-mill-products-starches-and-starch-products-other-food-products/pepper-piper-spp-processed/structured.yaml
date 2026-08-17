@@ -1,10 +1,3417 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "23921"
-  title: "Pepper (piper spp.), processed"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.food-products-beverages-and-tobacco-textiles-apparel-and-leather-products.grain-mill-products-starches-and-starch-products-other-food-products.pepper-piper-spp-processed"
+  classification_refs: "CPC:3.0:23921 (exact)"
+  covered_products: "Black pepper with intact pericarp; white pepper after pericarp removal; dehydrated green pepper; each as whole, broken, cracked, coarsely ground, ground, or powdered processed *Piper* pepper"
+  excluded_products: "Raw farm-gate pepper; *Capsicum* or *Pimenta* peppers; brined, canned, or frozen green pepper; blends; oleoresin; essential oil; purified piperine; products with undeclared class, form, or route"
+  representative_product: "1 kg net processed *Piper nigrum* pepper, at factory gate, meeting the declared product class, presentation, grade, moisture specification, and package format"
+  production_route: "Declared route vector: incoming material state -> separation -> wet pretreatment if used -> white-pepper retting and/or depericarping if used -> route-specific drying -> cleaning/grading -> milling if used -> sanitization if used -> packaging -> storage"
+  market_state: "Dry, food-grade processed pepper at factory gate; product class, presentation, grade, final moisture, and package format declared"
+functional_unit:
+  what: "Processed *Piper* pepper delivered at the reporting facility gate"
+  how_much: "1 kg net pepper product, excluding packaging"
+  how_well: "Meets the declared black, white, or dehydrated-green product class; declared whole-to-powder presentation; applicable Codex or buyer grade; declared final moisture and food-safety specification"
+  how_long_or_cycle: "One representative production campaign or a production-weighted reporting period of up to 12 consecutive months"
+  reference_flow_link: "processed_pepper_reference_output"
+system_boundary:
+  rules:
+    - rule_id: system_boundary_rule_1
+      applies_to: "foreground_system_boundary"
+      rule: "The foreground starts at receipt of the declared pepper material state and ends when packaged processed pepper is released at the factory gate. Receiving, separation, wet-route steps, drying, dry cleaning and grading, size reduction, sanitization, equipment cleaning, packaging, finished-goods storage, on-site utilities, direct emissions, wastes, and wastewater are included when they occur. Cultivation, supplier processing, purchased energy, purchased materials, treatment of exported waste, and inbound transport require upstream datasets but are not silently absorbed into foreground measurements."
+      source_ids: []
+    - rule_id: sb_route_gate
+      applies_to: "All foreground records"
+      rule: "Apply the product and route selection gate before aggregation; mutually exclusive product classes, presentations, wet treatments, depericarping routes, and drying routes shall not be averaged implicitly."
+      source_ids:
+        - codex-cxs-326-2017
+        - ipc-pepper-standard-2015
+        - fao-gi-control-plan-2009
+    - rule_id: sb_required_operations
+      applies_to: "Unit-process coverage"
+      rule: "Include every listed required process and every conditional process whose gate condition is met; document a zero or not-applicable result rather than deleting an occurring route."
+      source_ids:
+        - ipc-pepper-standard-2015
+        - fao-spice-quality-assurance
+    - rule_id: sb_recursive_input
+      applies_to: "Same-category processed pepper input"
+      rule: "Link the upstream processed-pepper dataset and model only added foreground conversion; prevent recursion and double counting."
+      source_ids:
+        - eu-pef-method-2021
+    - rule_id: sb_upstream_linkage
+      applies_to: "Purchased inputs and exported treatments"
+      rule: "Link upstream datasets for received pepper, utilities, chemicals, packaging, inbound transport, and treatment of wastes or wastewater outside the site."
+      source_ids:
+        - eu-pef-method-2021
+    - rule_id: sb_factory_gate
+      applies_to: "Reference product"
+      rule: "End the foreground after final release and storage at the reporting facility; exclude outbound distribution, retail, use, and end-of-life unless a broader study adds them transparently."
+      source_ids:
+        - eu-pef-method-2021
+    - rule_id: sb_atomic_flows
+      applies_to: "All inventory exchanges"
+      rule: "Use one row per identified carrier, material, chemical, packaging material, waste stream, wastewater stream, refrigerant, and elementary emission; grouped placeholders do not conform."
+      source_ids:
+        - fao-spice-quality-assurance
+        - ipcc-stationary-combustion-2006
+boundary_abstraction:
+  declared_starting_condition: "Physical state, product class, species or cultivar, moisture, cleanliness, supplier processing, packaging, location, and time of the pepper material received at the reporting facility"
+  starting_condition_role: "Foreground gate input whose upstream cultivation, preprocessing, and inbound transport are represented by linked supplier or secondary datasets"
+  product_classification_scope: "Processed *Piper* pepper associated with CPC 3.0 code 23921; classification is mapping context and does not replace product and route qualifiers"
+  recursive_input_rule: "If already processed pepper in this same category is received for cleaning, milling, sanitization, repacking, or storage, record it once as same_category_processed_pepper_input, link its upstream dataset, and model only the additional foreground operations; do not recursively reconstruct or double count its earlier processing"
+  upstream_dataset_requirement: "A geographically, temporally, technologically, product-class-, presentation-, moisture-, and route-matched dataset is required for each received pepper material, energy carrier, water supply, chemical, and packaging material"
+  disclosure: "Disclose gate vector, supplier starting state, excluded operations, allocation, cut-offs, route shares, mass and moisture balance, energy carriers, wastewater destination, direct emissions, packaging, refrigerants, and data gaps"
+reference_flow_definition:
+  reference_amount: "1 kg net product"
+  product_flow_ref:
+    name: "Pepper (Piper spp.), processed"
+    uuid: "99d5d3c5-870f-458f-b492-a610d37c8034"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - species_or_cultivar
+    - pepper_colour_class
+    - presentation_style
+    - incoming_material_state
+    - wet_pretreatment_route
+    - depericarping_route
+    - drying_route
+    - sanitization_route
+    - grade_or_specification
+    - final_moisture_percent_wet_basis
+    - packaging_format
+    - production_site
+    - production_period
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_net_mass
+    applies_to: "Reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Normalize to net pepper mass at factory gate; exclude packaging mass and retain the measured product moisture."
+  - id: moisture_wet_basis
+    applies_to: "Incoming, intermediate, and final pepper"
+    required_property_ref:
+      name: "Mass fraction"
+      uuid: ""
+    required_unit: "% wet basis"
+    rule: "Report moisture as 100 × water mass / wet sample mass; identify the test method and sample time."
+  - id: dry_matter_conversion
+    applies_to: "Route yield and material balance"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg dry matter"
+    rule: "Calculate dry matter as wet mass × (1 - moisture fraction wet basis); do not compare wet-route yields without this conversion."
+  - id: energy_carrier_identity
+    applies_to: "Electricity, steam, hot water, natural gas, LPG, diesel, and biomass"
+    required_property_ref:
+      name: "Energy and carrier quantity"
+      uuid: ""
+    required_unit: "kWh, MJ, kg, L, or m3"
+    rule: "Preserve each carrier as a separate flow; retain supplier quantity, lower heating value when used, and conversion factor."
+  - id: water_volume
+    applies_to: "Washing, blanching, retting, steam, and cleaning water"
+    required_property_ref:
+      name: "Volume"
+      uuid: ""
+    required_unit: "m3"
+    rule: "Meter or reconcile each water use separately; do not combine process water with wastewater volume."
+  - id: packaging_net_mass
+    applies_to: "Every packaging layer"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Record purchased or issued mass by material and subtract verified unused returns; do not use package count without a measured mass-per-item conversion."
+  - id: wastewater_load
+    applies_to: "Each wastewater stream"
+    required_property_ref:
+      name: "Volume and concentration"
+      uuid: ""
+    required_unit: "m3 and kg/m3"
+    rule: "Report volume separately from COD or other pollutant concentration; calculate load as volume × concentration."
+  - id: refrigerant_mass_balance
+    applies_to: "Any refrigerant-consuming storage equipment"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Report each refrigerant chemical separately using opening charge + additions - closing charge - recovered mass."
+  - id: direct_emission_mass
+    applies_to: "On-site fuel combustion and dust releases"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Prefer stack or equipment records; otherwise calculate each pollutant separately from the recorded fuel and an identified factor source."
+process_map:
+  - id: receiving_and_lot_qualification
+    name: "Receiving and lot qualification"
+    inclusion: "required"
+    inclusion_condition: "All datasets"
+    role: "Foreground receiving, identity gate, weighing, sampling, and rejection"
+    quantitative_reference: "Per 1 kg released reference product"
+  - id: threshing
+    name: "Threshing and spike separation"
+    inclusion: "conditional"
+    inclusion_condition: "Include only when berries on spikes or clusters cross the starting gate"
+    role: "Foreground mechanical separation"
+    quantitative_reference: "Per kg separated berries"
+  - id: wet_pretreatment
+    name: "Washing or blanching pretreatment"
+    inclusion: "conditional"
+    inclusion_condition: "Include only when rapid washing, blanching, or dehydrated-green preservative treatment is declared"
+    role: "Foreground wet conditioning"
+    quantitative_reference: "Per kg pretreated pepper"
+  - id: white_pepper_retting
+    name: "White-pepper water retting"
+    inclusion: "conditional"
+    inclusion_condition: "Include only for a declared water-retting route"
+    role: "Foreground wet pericarp softening"
+    quantitative_reference: "Per kg retted berries"
+  - id: depericarping
+    name: "Pericarp removal and kernel washing"
+    inclusion: "conditional"
+    inclusion_condition: "Include for white pepper whenever manual, mechanical, steam-assisted, or post-retting pericarp removal occurs"
+    role: "Foreground separation"
+    quantitative_reference: "Per kg white pepper kernel"
+  - id: dry_cleaning_and_grading
+    name: "Dry cleaning and grading"
+    inclusion: "required"
+    inclusion_condition: "All datasets; operations may occur before or after drying and milling but shall be located explicitly"
+    role: "Foreground removal of foreign matter and off-grade berries"
+    quantitative_reference: "Per kg cleaned pepper"
+  - id: sun_drying
+    name: "Open-sun drying"
+    inclusion: "conditional"
+    inclusion_condition: "Include only for the declared open-sun route"
+    role: "Foreground moisture removal"
+    quantitative_reference: "Per kg sun-dried pepper"
+  - id: enclosed_solar_drying
+    name: "Enclosed solar drying"
+    inclusion: "conditional"
+    inclusion_condition: "Include only for the declared enclosed-solar route"
+    role: "Foreground protected solar moisture removal"
+    quantitative_reference: "Per kg solar-dried pepper"
+  - id: hot_air_drying
+    name: "Mechanical hot-air drying"
+    inclusion: "conditional"
+    inclusion_condition: "Include only for the declared mechanical route or declared stage in a sequential route"
+    role: "Foreground forced-air moisture removal"
+    quantitative_reference: "Per kg hot-air-dried pepper"
+  - id: milling_and_sieving
+    name: "Crushing, grinding, and sieving"
+    inclusion: "conditional"
+    inclusion_condition: "Include for broken, cracked, coarsely ground, ground, or powdered presentation"
+    role: "Foreground size reduction"
+    quantitative_reference: "Per kg milled pepper"
+  - id: product_sanitization
+    name: "Product sanitization"
+    inclusion: "conditional"
+    inclusion_condition: "Include only when steam, dry heat, irradiation, or another identified treatment occurs"
+    role: "Foreground microbial reduction"
+    quantitative_reference: "Per kg sanitized pepper"
+  - id: equipment_cleaning
+    name: "Equipment and room cleaning"
+    inclusion: "required"
+    inclusion_condition: "All datasets; dry and wet cleaning records shall be distinguished"
+    role: "Foreground hygiene support"
+    quantitative_reference: "Per production campaign and normalized to reference product"
+  - id: packaging
+    name: "Primary, secondary, and tertiary packaging"
+    inclusion: "required"
+    inclusion_condition: "All datasets"
+    role: "Foreground filling and packaging"
+    quantitative_reference: "Per 1 kg released reference product"
+  - id: finished_goods_storage
+    name: "Finished-goods storage and release"
+    inclusion: "required"
+    inclusion_condition: "All datasets"
+    role: "Foreground ambient or conditioned storage and final release"
+    quantitative_reference: "Per 1 kg released reference product"
+process_inventory:
+  - id: receiving_and_lot_qualification
+    label: "Receiving and lot qualification"
+    inputs:
+      product:
+        - row_id: fresh_black_pepper_berries_input
+          role: "Fresh or mature berries for black-pepper production"
+          name: "Fresh *Piper* berries for black-pepper production"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record this named flow as a separate atomic exchange for the unit process; preserve its declared route, source or disposition and do not aggregate it with another flow."
+          amount:
+            expression: "Weighed accepted input for lots declared black; record species or cultivar, maturity, moisture, supplier state, and foreign matter before processing"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "Per 1 kg released reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_receiving_lot_records
+              source_ids:
+                - codex-cxs-326-2017
+                - ipc-pepper-standard-2015
+            ranges: []
+        - row_id: ripe_white_pepper_berries_input
+          role: "Fully mature berries for white-pepper production"
+          name: "Fully mature or ripe *Piper* berries for white-pepper production"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record this named flow as a separate atomic exchange for the unit process; preserve its declared route, source or disposition and do not aggregate it with another flow."
+          amount:
+            expression: "Weighed accepted input for lots declared white; record species or cultivar, maturity, moisture, supplier state, and intended depericarping route"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "Per 1 kg released reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_receiving_lot_records
+              source_ids:
+                - codex-cxs-326-2017
+                - ipc-pepper-standard-2015
+                - azman-retting-water-2020
+            ranges: []
+        - row_id: green_pepper_berries_input
+          role: "Green berries for dehydrated-green pepper"
+          name: "Green *Piper* berries for dehydrated-green pepper"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record this named flow as a separate atomic exchange for the unit process; preserve its declared route, source or disposition and do not aggregate it with another flow."
+          amount:
+            expression: "Weighed accepted input only for lots declared dehydrated_green; record maturity, moisture, preservation treatment, and drying route"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "Per 1 kg released reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_receiving_lot_records
+              source_ids:
+                - codex-cxs-326-2017
+                - ipc-pepper-standard-2015
+            ranges: []
+        - row_id: same_category_processed_pepper_input
+          role: "Same-category processed whole pepper"
+          name: "Processed *Piper* pepper received for additional cleaning, milling, sanitization, repacking, or storage"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record this named flow as a separate atomic exchange for the unit process; preserve its declared route, source or disposition and do not aggregate it with another flow."
+          amount:
+            expression: "Weighed input only when an upstream processed-pepper dataset is linked; record product class, presentation, moisture, earlier route, and upstream dataset identity"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "Per 1 kg released reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_receiving_lot_records
+              source_ids:
+                - eu-pef-method-2021
+            ranges: []
+        - row_id: receiving_electricity_input
+          role: "Electricity for receiving and sampling"
+          name: "Electricity, facility supply mix"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record this named flow as a separate atomic exchange for the unit process; preserve its declared route, source or disposition and do not aggregate it with another flow."
+          amount:
+            expression: "Metered or equipment-runtime electricity used for receiving conveyors, samplers, scales, aspiration, and receiving-room services"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "Per 1 kg released reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_carrier_records
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: accepted_pepper_lot_output
+          role: "Accepted declared pepper lot"
+          name: "Accepted *Piper* pepper lot with declared starting state"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record this named flow as a separate atomic exchange for the unit process; preserve its declared route, source or disposition and do not aggregate it with another flow."
+          amount:
+            expression: "Accepted input mass after separately weighing all rejected pepper and foreign matter"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "Per receiving lot"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_receiving_lot_records
+              source_ids:
+                - fao-spice-quality-assurance
+            ranges: []
+      waste:
+        - row_id: rejected_pepper_berries_waste
+          role: "Rejected pepper berries"
+          name: "Rejected *Piper* pepper berries"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record this named flow as a separate atomic exchange for the unit process; preserve its declared route, source or disposition and do not aggregate it with another flow."
+          amount:
+            expression: "Weighed mouldy, infested, damaged, or specification-failing berries sent to the declared treatment or use"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "Per 1 kg released reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_records
+              source_ids:
+                - fao-spice-quality-assurance
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "1"
+                unit: "kg/kg received pepper"
+                basis: "Screening bound from no rejection to rejection of the complete received pepper mass; replace with reviewed site evidence"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: receiving_vegetative_matter_waste
+          role: "Separated vegetative foreign matter"
+          name: "Pepper stems, leaves, chaff, and other vegetative foreign matter"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record this named flow as a separate atomic exchange for the unit process; preserve its declared route, source or disposition and do not aggregate it with another flow."
+          amount:
+            expression: "Weighed vegetative matter removed during receiving; do not combine with stones, soil, or rejected berries"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "Per 1 kg released reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_records
+              source_ids:
+                - codex-cxs-326-2017
+                - ipc-pepper-standard-2015
+            ranges: []
+        - row_id: receiving_stones_soil_waste
+          role: "Separated stones and soil"
+          name: "Stones, sand, and soil removed from pepper"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record this named flow as a separate atomic exchange for the unit process; preserve its declared route, source or disposition and do not aggregate it with another flow."
+          amount:
+            expression: "Weighed mineral foreign matter removed during receiving; do not combine with vegetative matter"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "Per 1 kg released reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_records
+              source_ids:
+                - codex-cxs-326-2017
+                - fao-spice-quality-assurance
+            ranges: []
+        - row_id: incoming_jute_sack_waste
+          role: "Discarded incoming jute sacks"
+          name: "Used jute sacks from incoming pepper"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record this named flow as a separate atomic exchange for the unit process; preserve its declared route, source or disposition and do not aggregate it with another flow."
+          amount:
+            expression: "Weighed jute packaging discarded after receipt; returned or reused sacks are recorded separately and not treated as waste"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "Per 1 kg released reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_records
+              source_ids: []
+            ranges: []
+        - row_id: incoming_polypropylene_sack_waste
+          role: "Discarded incoming polypropylene sacks"
+          name: "Used woven polypropylene sacks from incoming pepper"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record this named flow as a separate atomic exchange for the unit process; preserve its declared route, source or disposition and do not aggregate it with another flow."
+          amount:
+            expression: "Weighed polypropylene packaging discarded after receipt; returned or reused sacks are recorded separately and not treated as waste"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "Per 1 kg released reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_records
+              source_ids: []
+            ranges: []
+      elementary:
+        []
+  - id: threshing
+    label: "Threshing and spike separation"
+    inputs:
+      product:
+        - row_id: pepper_spikes_input
+          role: "Pepper spikes or clusters"
+          name: "*Piper* pepper berries on spikes or clusters"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record this named flow as a separate atomic exchange for the unit process; preserve its declared route, source or disposition and do not aggregate it with another flow."
+          amount:
+            expression: "Weighed accepted pepper spikes entering threshing; include only when the declared starting state contains spikes or clusters"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "Per kg separated berries"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_threshing_records
+              source_ids:
+                - ipc-pepper-standard-2015
+            ranges: []
+        - row_id: threshing_electricity_input
+          role: "Electricity for threshing"
+          name: "Electricity, facility supply mix"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record this named flow as a separate atomic exchange for the unit process; preserve its declared route, source or disposition and do not aggregate it with another flow."
+          amount:
+            expression: "Metered or rated-power × runtime electricity for the thresher and associated conveyor"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "Per kg separated berries"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_carrier_records
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: separated_pepper_berries_output
+          role: "Separated pepper berries"
+          name: "Separated *Piper* pepper berries"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record this named flow as a separate atomic exchange for the unit process; preserve its declared route, source or disposition and do not aggregate it with another flow."
+          amount:
+            expression: "Weighed berries leaving threshing, before wet treatment or drying"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "Per threshing batch"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_threshing_records
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: pepper_spikes_stalks_waste
+          role: "Pepper spikes and stalks"
+          name: "Pepper spikes and stalks removed by threshing"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record this named flow as a separate atomic exchange for the unit process; preserve its declared route, source or disposition and do not aggregate it with another flow."
+          amount:
+            expression: "Weighed separated spikes and stalks by destination; do not combine with rejected berries"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "Per kg separated berries"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_records
+              source_ids:
+                - ipc-pepper-standard-2015
+            ranges: []
+      elementary:
+        - row_id: threshing_pepper_dust_to_air
+          role: "Pepper dust released during threshing"
+          name: "Pepper particulate matter released to air during threshing"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record this named flow as a separate atomic exchange for the unit process; preserve its declared route, source or disposition and do not aggregate it with another flow."
+          amount:
+            expression: "Measured captured-plus-emitted dust balance or technology-specific emission estimate; report captured dust as waste and uncaptured dust here"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "Per kg separated berries"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_dust_emission_records
+              source_ids: []
+            ranges: []
+  - id: wet_pretreatment
+    label: "Washing or blanching pretreatment"
+    inputs:
+      product:
+        - row_id: wet_pretreatment_pepper_input
+          role: "Pepper berries entering wet pretreatment"
+          name: "Declared *Piper* pepper berries entering washing, blanching, or dehydrated-green treatment"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record this named flow as a separate atomic exchange for the unit process; preserve its declared route, source or disposition and do not aggregate it with another flow."
+          amount:
+            expression: "Weighed route-segregated pepper input; identify black, white, or dehydrated_green and the exact treatment"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "Per kg pretreated pepper"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wet_pretreatment_records
+              source_ids:
+                - fao-spice-quality-assurance
+                - shango-pepper-quality-2021
+            ranges: []
+        - row_id: wet_pretreatment_process_water_input
+          role: "Process water for washing or blanching"
+          name: "Process water for pepper washing or blanching"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "Record this named flow as a separate atomic exchange for the unit process; preserve its declared route, source or disposition and do not aggregate it with another flow."
+          amount:
+            expression: "Metered make-up water supplied to the declared wet-treatment batch; subtract only separately metered reuse and do not combine with cleaning water"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "Per kg pretreated pepper"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water_and_wastewater_records
+              source_ids:
+                - fao-spice-quality-assurance
+            ranges:
+              - role: default_estimate
+                lower: "0.001"
+                upper: "0.02"
+                unit: "m3/kg pretreated pepper"
+                basis: "Broad screening interval for rapid washing or blanching; route measurements replace this estimate"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: wet_pretreatment_electricity_input
+          role: "Electricity for wet pretreatment"
+          name: "Electricity, facility supply mix"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record this named flow as a separate atomic exchange for the unit process; preserve its declared route, source or disposition and do not aggregate it with another flow."
+          amount:
+            expression: "Metered or equipment-runtime electricity for pumps, conveyors, agitators, and controls"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "Per kg pretreated pepper"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_carrier_records
+              source_ids: []
+            ranges: []
+        - row_id: wet_pretreatment_steam_input
+          role: "Purchased steam for blanching"
+          name: "Purchased steam"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Record this named flow as a separate atomic exchange for the unit process; preserve its declared route, source or disposition and do not aggregate it with another flow."
+          amount:
+            expression: "Metered purchased steam only when the batch uses steam heating; do not combine with hot water or onsite fuel"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "Per kg pretreated pepper"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_carrier_records
+              source_ids: []
+            ranges: []
+        - row_id: wet_pretreatment_hot_water_input
+          role: "Purchased hot water for blanching"
+          name: "Purchased hot water"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Record this named flow as a separate atomic exchange for the unit process; preserve its declared route, source or disposition and do not aggregate it with another flow."
+          amount:
+            expression: "Metered imported hot-water energy only when used; retain water volume separately and do not combine with steam"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "Per kg pretreated pepper"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_carrier_records
+              source_ids: []
+            ranges: []
+        - row_id: wet_pretreatment_natural_gas_input
+          role: "Natural gas for wet-treatment heating"
+          name: "Natural gas combusted onsite for wet-treatment heating"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "Record this named flow as a separate atomic exchange for the unit process; preserve its declared route, source or disposition and do not aggregate it with another flow."
+          amount:
+            expression: "Metered natural gas only when the selected route heats water onsite with natural gas; keep separate from LPG and diesel"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "Per kg pretreated pepper"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_carrier_records
+              source_ids:
+                - ipcc-stationary-combustion-2006
+            ranges: []
+        - row_id: wet_pretreatment_lpg_input
+          role: "Liquefied petroleum gas for wet-treatment heating"
+          name: "Liquefied petroleum gas combusted onsite for wet-treatment heating"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record this named flow as a separate atomic exchange for the unit process; preserve its declared route, source or disposition and do not aggregate it with another flow."
+          amount:
+            expression: "Weighed or invoice-reconciled LPG only when used; keep separate from natural gas and diesel"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "Per kg pretreated pepper"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_carrier_records
+              source_ids:
+                - ipcc-stationary-combustion-2006
+            ranges: []
+        - row_id: wet_pretreatment_diesel_input
+          role: "Diesel for wet-treatment heating"
+          name: "Diesel combusted onsite for wet-treatment heating"
+          flow_type: "product"
+          property_unit: "Volume / L"
+          description: "Record this named flow as a separate atomic exchange for the unit process; preserve its declared route, source or disposition and do not aggregate it with another flow."
+          amount:
+            expression: "Metered diesel only when used; keep separate from natural gas and LPG"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "Per kg pretreated pepper"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_carrier_records
+              source_ids:
+                - ipcc-stationary-combustion-2006
+            ranges: []
+        - row_id: green_pepper_sulfur_dioxide_input
+          role: "Sulfur dioxide preservative for dehydrated green pepper"
+          name: "Sulfur dioxide food additive"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record this named flow as a separate atomic exchange for the unit process; preserve its declared route, source or disposition and do not aggregate it with another flow."
+          amount:
+            expression: "Measured addition only for dehydrated_green; black and white pepper shall record zero; verify the applicable legal and buyer limit"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "Per kg dehydrated green pepper"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_chemical_input_records
+              source_ids:
+                - codex-cxs-326-2017
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: wet_pretreated_pepper_output
+          role: "Wet-pretreated pepper"
+          name: "Washed, blanched, or treated *Piper* pepper"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record this named flow as a separate atomic exchange for the unit process; preserve its declared route, source or disposition and do not aggregate it with another flow."
+          amount:
+            expression: "Weighed output with treatment route, temperature-time record, and moisture after draining"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "Per wet-treatment batch"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wet_pretreatment_records
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: wet_pretreatment_wastewater
+          role: "Pepper washing or blanching wastewater"
+          name: "Pepper washing or blanching wastewater"
+          flow_type: "waste"
+          property_unit: "Volume / m3"
+          description: "Record this named flow as a separate atomic exchange for the unit process; preserve its declared route, source or disposition and do not aggregate it with another flow."
+          amount:
+            expression: "Metered wastewater discharged from wet pretreatment, net of separately measured water retained in product or evaporated; record destination and treatment"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "Per kg pretreated pepper"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water_and_wastewater_records
+              source_ids:
+                - fao-spice-quality-assurance
+            ranges: []
+        - row_id: wet_pretreatment_sediment_waste
+          role: "Wet-treatment sediment and removed debris"
+          name: "Sediment, soil, and pepper debris removed from wet-treatment water"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record this named flow as a separate atomic exchange for the unit process; preserve its declared route, source or disposition and do not aggregate it with another flow."
+          amount:
+            expression: "Weighed dewatered solids removed from screens, filters, or tanks; do not combine with wastewater volume"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "Per kg pretreated pepper"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_records
+              source_ids: []
+            ranges: []
+      elementary:
+        - row_id: wet_pretreatment_fossil_co2_to_air
+          role: "Fossil carbon dioxide from wet-treatment heating"
+          name: "Carbon dioxide, fossil, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record this named flow as a separate atomic exchange for the unit process; preserve its declared route, source or disposition and do not aggregate it with another flow."
+          amount:
+            expression: "Calculate separately from each recorded fossil fuel quantity, lower heating value, and selected CO2 factor; zero for purchased steam or hot water to avoid double counting"
+            value_mode: "calculated_value"
+            specificity: "route_specific"
+            basis:
+              text: "Per kg pretreated pepper"
+              kind: "process_output"
+            evidence:
+              kind: "method_formula"
+              collection_protocol_id: cp_combustion_emission_records
+              source_ids:
+                - ipcc-stationary-combustion-2006
+            ranges: []
+        - row_id: wet_pretreatment_ch4_to_air
+          role: "Methane from wet-treatment heating"
+          name: "Methane to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record this named flow as a separate atomic exchange for the unit process; preserve its declared route, source or disposition and do not aggregate it with another flow."
+          amount:
+            expression: "Calculate from each recorded onsite fuel and technology-appropriate CH4 factor; zero for purchased heat"
+            value_mode: "calculated_value"
+            specificity: "route_specific"
+            basis:
+              text: "Per kg pretreated pepper"
+              kind: "process_output"
+            evidence:
+              kind: "method_formula"
+              collection_protocol_id: cp_combustion_emission_records
+              source_ids:
+                - ipcc-stationary-combustion-2006
+            ranges: []
+        - row_id: wet_pretreatment_n2o_to_air
+          role: "Nitrous oxide from wet-treatment heating"
+          name: "Nitrous oxide to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record this named flow as a separate atomic exchange for the unit process; preserve its declared route, source or disposition and do not aggregate it with another flow."
+          amount:
+            expression: "Calculate from each recorded onsite fuel and technology-appropriate N2O factor; zero for purchased heat"
+            value_mode: "calculated_value"
+            specificity: "route_specific"
+            basis:
+              text: "Per kg pretreated pepper"
+              kind: "process_output"
+            evidence:
+              kind: "method_formula"
+              collection_protocol_id: cp_combustion_emission_records
+              source_ids:
+                - ipcc-stationary-combustion-2006
+            ranges: []
+  - id: white_pepper_retting
+    label: "White-pepper water retting"
+    inputs:
+      product:
+        - row_id: white_retting_berries_input
+          role: "Mature berries entering water retting"
+          name: "Fully mature *Piper* berries for white-pepper water retting"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record this named flow as a separate atomic exchange for the unit process; preserve its declared route, source or disposition and do not aggregate it with another flow."
+          amount:
+            expression: "Weighed segregated berries entering the declared water-retting batch; record cultivar, maturity, incoming moisture, tank, and start time"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "Per kg retted berries"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_retting_records
+              source_ids:
+                - azman-retting-water-2020
+                - shango-pepper-quality-2021
+            ranges: []
+        - row_id: white_retting_water_input
+          role: "Water for white-pepper retting"
+          name: "Process water for white-pepper retting"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "Record this named flow as a separate atomic exchange for the unit process; preserve its declared route, source or disposition and do not aggregate it with another flow."
+          amount:
+            expression: "Metered initial and replacement water for each retting tank; running-water and static-tank routes remain separate"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "Per kg berries entering retting"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water_and_wastewater_records
+              source_ids:
+                - azman-retting-water-2020
+            ranges:
+              - role: qa_guardrail
+                lower: "0.006"
+                upper: "0.018"
+                unit: "m3/kg berries entering retting"
+                basis: "Range represented by the reported 18 L tanks loaded with 1-3 kg berries; use only as a screening comparison, not an industrial default"
+                basis_kind: "process_output"
+                evidence_kind: "external_source"
+                source_ids:
+                  - azman-retting-water-2020
+        - row_id: white_retting_electricity_input
+          role: "Electricity for retting circulation"
+          name: "Electricity, facility supply mix"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record this named flow as a separate atomic exchange for the unit process; preserve its declared route, source or disposition and do not aggregate it with another flow."
+          amount:
+            expression: "Metered or equipment-runtime electricity for water circulation, aeration, pumps, and tank handling"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "Per kg berries entering retting"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_carrier_records
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: retted_pepper_berries_output
+          role: "Retted pepper berries"
+          name: "Retted *Piper* berries with softened pericarp"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record this named flow as a separate atomic exchange for the unit process; preserve its declared route, source or disposition and do not aggregate it with another flow."
+          amount:
+            expression: "Weighed drained output after declared retting duration; record moisture and retained water before depericarping"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "Per retting batch"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_retting_records
+              source_ids:
+                - azman-retting-water-2020
+            ranges: []
+      waste:
+        - row_id: white_retting_wastewater
+          role: "White-pepper retting wastewater"
+          name: "White-pepper retting wastewater"
+          flow_type: "waste"
+          property_unit: "Volume / m3"
+          description: "Record this named flow as a separate atomic exchange for the unit process; preserve its declared route, source or disposition and do not aggregate it with another flow."
+          amount:
+            expression: "Metered spent retting water by tank and discharge event; record treatment, reuse, destination, pH, COD, dissolved oxygen, and turbidity when applicable"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "Per kg berries entering retting"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water_and_wastewater_records
+              source_ids:
+                - azman-retting-water-2020
+            ranges:
+              - role: qa_guardrail
+                lower: "0.008"
+                upper: "3.25"
+                unit: "kg COD/m3 wastewater"
+                basis: "Approximate span of initial through day-seven COD observations in the cited static-tank experiment; not a discharge limit"
+                basis_kind: "process_output"
+                evidence_kind: "external_source"
+                source_ids:
+                  - azman-retting-water-2020
+      elementary:
+        []
+  - id: depericarping
+    label: "Pericarp removal and kernel washing"
+    inputs:
+      product:
+        - row_id: depericarping_pepper_input
+          role: "Pepper berries entering pericarp removal"
+          name: "Retted, steamed, or ripe *Piper* berries entering declared pericarp removal"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record this named flow as a separate atomic exchange for the unit process; preserve its declared route, source or disposition and do not aggregate it with another flow."
+          amount:
+            expression: "Weighed input segregated by water_retting_plus_removal, mechanical_peeling, steam_assisted_peeling, or another exact sequence"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "Per kg white pepper kernel"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_depericarping_records
+              source_ids:
+                - codex-cxs-326-2017
+                - shango-pepper-quality-2021
+            ranges: []
+        - row_id: depericarping_wash_water_input
+          role: "Water for kernel washing"
+          name: "Process water for white-pepper kernel washing"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "Record this named flow as a separate atomic exchange for the unit process; preserve its declared route, source or disposition and do not aggregate it with another flow."
+          amount:
+            expression: "Metered water used after or during pericarp removal; do not combine with retting or equipment-cleaning water"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "Per kg white pepper kernel"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water_and_wastewater_records
+              source_ids: []
+            ranges: []
+        - row_id: depericarping_electricity_input
+          role: "Electricity for mechanical depericarping"
+          name: "Electricity, facility supply mix"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record this named flow as a separate atomic exchange for the unit process; preserve its declared route, source or disposition and do not aggregate it with another flow."
+          amount:
+            expression: "Metered or rated-power × runtime electricity for mechanical peelers, pumps, and separators; zero for fully manual routes without powered equipment"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "Per kg white pepper kernel"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_carrier_records
+              source_ids: []
+            ranges: []
+        - row_id: depericarping_steam_input
+          role: "Purchased steam for steam-assisted peeling"
+          name: "Purchased steam"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Record this named flow as a separate atomic exchange for the unit process; preserve its declared route, source or disposition and do not aggregate it with another flow."
+          amount:
+            expression: "Metered steam only for the declared steam-assisted route; do not combine with onsite fuel or steam sanitization"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "Per kg white pepper kernel"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_carrier_records
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: white_pepper_kernels_output
+          role: "White pepper kernels"
+          name: "White *Piper* pepper kernels after pericarp removal"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record this named flow as a separate atomic exchange for the unit process; preserve its declared route, source or disposition and do not aggregate it with another flow."
+          amount:
+            expression: "Weighed washed and drained kernels; record retained-pericarp fraction and moisture before drying"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "Per depericarping batch"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_depericarping_records
+              source_ids:
+                - codex-cxs-326-2017
+            ranges: []
+      waste:
+        - row_id: pepper_pericarp_waste
+          role: "Removed pepper pericarp"
+          name: "Pepper pericarp removed during white-pepper production"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record this named flow as a separate atomic exchange for the unit process; preserve its declared route, source or disposition and do not aggregate it with another flow."
+          amount:
+            expression: "Weighed wet or dry pericarp by destination; record moisture and do not combine with kernel rejects"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "Per kg white pepper kernel"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_records
+              source_ids: []
+            ranges: []
+        - row_id: depericarping_wash_wastewater
+          role: "Depericarping wash wastewater"
+          name: "White-pepper depericarping wash wastewater"
+          flow_type: "waste"
+          property_unit: "Volume / m3"
+          description: "Record this named flow as a separate atomic exchange for the unit process; preserve its declared route, source or disposition and do not aggregate it with another flow."
+          amount:
+            expression: "Metered wash effluent after peeling; keep separate from retting wastewater and equipment-cleaning wastewater"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "Per kg white pepper kernel"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water_and_wastewater_records
+              source_ids: []
+            ranges: []
+      elementary:
+        - row_id: depericarping_pepper_dust_to_air
+          role: "Pepper dust from mechanical peeling"
+          name: "Pepper particulate matter released to air during mechanical peeling"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record this named flow as a separate atomic exchange for the unit process; preserve its declared route, source or disposition and do not aggregate it with another flow."
+          amount:
+            expression: "Calculate uncaptured dust from measured collected dust and an equipment or stack balance; zero for routes without dust generation"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "Per kg white pepper kernel"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_dust_emission_records
+              source_ids: []
+            ranges: []
+  - id: dry_cleaning_and_grading
+    label: "Dry cleaning and grading"
+    inputs:
+      product:
+        - row_id: dry_cleaning_pepper_input
+          role: "Pepper entering dry cleaning and grading"
+          name: "Whole or milled *Piper* pepper entering dry cleaning and grading"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record this named flow as a separate atomic exchange for the unit process; preserve its declared route, source or disposition and do not aggregate it with another flow."
+          amount:
+            expression: "Weighed input with product class, presentation, moisture, and process position declared"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "Per kg cleaned pepper"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cleaning_grading_records
+              source_ids:
+                - ipc-pepper-standard-2015
+                - fao-spice-quality-assurance
+            ranges: []
+        - row_id: dry_cleaning_electricity_input
+          role: "Electricity for cleaning and grading"
+          name: "Electricity, facility supply mix"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record this named flow as a separate atomic exchange for the unit process; preserve its declared route, source or disposition and do not aggregate it with another flow."
+          amount:
+            expression: "Metered or rated-power × runtime electricity for aspirators, destoners, magnets, graders, and conveyors"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "Per kg cleaned pepper"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_carrier_records
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: cleaned_graded_pepper_output
+          role: "Cleaned and graded pepper"
+          name: "Cleaned and graded *Piper* pepper"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record this named flow as a separate atomic exchange for the unit process; preserve its declared route, source or disposition and do not aggregate it with another flow."
+          amount:
+            expression: "Weighed conforming output by declared grade and presentation"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "Per cleaning and grading batch"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cleaning_grading_records
+              source_ids:
+                - codex-cxs-326-2017
+                - ipc-pepper-standard-2015
+            ranges: []
+      waste:
+        - row_id: light_berries_pinheads_waste
+          role: "Light berries and pinheads"
+          name: "Light pepper berries and pinheads removed during grading"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record this named flow as a separate atomic exchange for the unit process; preserve its declared route, source or disposition and do not aggregate it with another flow."
+          amount:
+            expression: "Weighed separated light berries and pinheads by destination; do not combine with stones, vegetative matter, or off-spec powder"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "Per kg cleaned pepper"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_records
+              source_ids:
+                - codex-cxs-326-2017
+                - ipc-pepper-standard-2015
+            ranges: []
+        - row_id: dry_cleaning_vegetative_matter_waste
+          role: "Vegetative matter from dry cleaning"
+          name: "Pepper stems, leaves, and chaff removed during dry cleaning"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record this named flow as a separate atomic exchange for the unit process; preserve its declared route, source or disposition and do not aggregate it with another flow."
+          amount:
+            expression: "Weighed vegetative matter removed by aspirator or manual sorting; keep separate from mineral matter"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "Per kg cleaned pepper"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_records
+              source_ids: []
+            ranges: []
+        - row_id: dry_cleaning_stones_soil_waste
+          role: "Stones and soil from destoning"
+          name: "Stones, sand, and soil removed during destoning"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record this named flow as a separate atomic exchange for the unit process; preserve its declared route, source or disposition and do not aggregate it with another flow."
+          amount:
+            expression: "Weighed mineral matter removed by destoner or manual sorting; keep separate from vegetative matter"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "Per kg cleaned pepper"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_records
+              source_ids: []
+            ranges: []
+      elementary:
+        - row_id: dry_cleaning_pepper_dust_to_air
+          role: "Pepper dust from dry cleaning"
+          name: "Pepper particulate matter released to air during aspiration and grading"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record this named flow as a separate atomic exchange for the unit process; preserve its declared route, source or disposition and do not aggregate it with another flow."
+          amount:
+            expression: "Calculate uncaptured dust separately from captured pepper dust waste"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "Per kg cleaned pepper"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_dust_emission_records
+              source_ids:
+                - fao-spice-quality-assurance
+            ranges: []
+  - id: sun_drying
+    label: "Open-sun drying"
+    inputs:
+      product:
+        - row_id: sun_drying_wet_pepper_input
+          role: "Wet pepper entering open-sun drying"
+          name: "Wet *Piper* pepper for open-sun drying"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record this named flow as a separate atomic exchange for the unit process; preserve its declared route, source or disposition and do not aggregate it with another flow."
+          amount:
+            expression: "Weighed route-segregated input with product class and moisture before spreading"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "Per kg sun-dried pepper"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_drying_batch_records
+              source_ids:
+                - fao-spice-quality-assurance
+                - shango-pepper-quality-2021
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: sun_dried_pepper_output
+          role: "Sun-dried pepper"
+          name: "Open-sun-dried *Piper* pepper"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record this named flow as a separate atomic exchange for the unit process; preserve its declared route, source or disposition and do not aggregate it with another flow."
+          amount:
+            expression: "Weighed output after the declared drying endpoint; record final moisture, duration, turning, cover events, and contamination controls"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "Per sun-drying batch"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_drying_batch_records
+              source_ids:
+                - codex-cxs-326-2017
+                - fao-spice-quality-assurance
+            ranges: []
+      waste:
+        []
+      elementary:
+        - row_id: sun_drying_water_to_air
+          role: "Water evaporated during sun drying"
+          name: "Water emitted to air from pepper drying"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record this named flow as a separate atomic exchange for the unit process; preserve its declared route, source or disposition and do not aggregate it with another flow."
+          amount:
+            expression: "Calculate from wet and dry pepper mass and moisture measurements using calc_moisture_removed"
+            value_mode: "calculated_value"
+            specificity: "route_specific"
+            basis:
+              text: "Per kg sun-dried pepper"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_drying_batch_records
+              source_ids: []
+            ranges: []
+  - id: enclosed_solar_drying
+    label: "Enclosed solar drying"
+    inputs:
+      product:
+        - row_id: solar_drying_wet_pepper_input
+          role: "Wet pepper entering enclosed solar drying"
+          name: "Wet *Piper* pepper for enclosed solar drying"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record this named flow as a separate atomic exchange for the unit process; preserve its declared route, source or disposition and do not aggregate it with another flow."
+          amount:
+            expression: "Weighed route-segregated input with product class and moisture before loading"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "Per kg solar-dried pepper"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_drying_batch_records
+              source_ids: []
+            ranges: []
+        - row_id: solar_drying_electricity_input
+          role: "Electricity for solar-dryer fans"
+          name: "Electricity, facility supply mix"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record this named flow as a separate atomic exchange for the unit process; preserve its declared route, source or disposition and do not aggregate it with another flow."
+          amount:
+            expression: "Metered or rated-power × runtime electricity for fans, controls, and conveyors; passive solar dryers record zero"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "Per kg solar-dried pepper"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_carrier_records
+              source_ids: []
+            ranges:
+              - role: default_estimate
+                lower: "0"
+                upper: "2"
+                unit: "kWh/kg solar-dried pepper"
+                basis: "Broad passive-to-forced-air screening interval; replace with dryer-specific records"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: solar_dried_pepper_output
+          role: "Enclosed-solar-dried pepper"
+          name: "Enclosed-solar-dried *Piper* pepper"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record this named flow as a separate atomic exchange for the unit process; preserve its declared route, source or disposition and do not aggregate it with another flow."
+          amount:
+            expression: "Weighed output with final moisture, drying duration, temperature, airflow, and protection state recorded"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "Per solar-drying batch"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_drying_batch_records
+              source_ids:
+                - fao-spice-quality-assurance
+                - shango-pepper-quality-2021
+            ranges: []
+      waste:
+        []
+      elementary:
+        - row_id: solar_drying_water_to_air
+          role: "Water evaporated during enclosed solar drying"
+          name: "Water emitted to air from pepper drying"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record this named flow as a separate atomic exchange for the unit process; preserve its declared route, source or disposition and do not aggregate it with another flow."
+          amount:
+            expression: "Calculate from wet and dry pepper mass and moisture measurements using calc_moisture_removed"
+            value_mode: "calculated_value"
+            specificity: "route_specific"
+            basis:
+              text: "Per kg solar-dried pepper"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_drying_batch_records
+              source_ids: []
+            ranges: []
+  - id: hot_air_drying
+    label: "Mechanical hot-air drying"
+    inputs:
+      product:
+        - row_id: hot_air_drying_wet_pepper_input
+          role: "Wet pepper entering hot-air drying"
+          name: "Wet *Piper* pepper for mechanical hot-air drying"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record this named flow as a separate atomic exchange for the unit process; preserve its declared route, source or disposition and do not aggregate it with another flow."
+          amount:
+            expression: "Weighed route-segregated input with product class, presentation, and moisture before loading"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "Per kg hot-air-dried pepper"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_drying_batch_records
+              source_ids:
+                - shango-pepper-quality-2021
+            ranges: []
+        - row_id: hot_air_drying_electricity_input
+          role: "Electricity for hot-air drying"
+          name: "Electricity, facility supply mix"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record this named flow as a separate atomic exchange for the unit process; preserve its declared route, source or disposition and do not aggregate it with another flow."
+          amount:
+            expression: "Metered electricity for fans, heaters, pumps, controls, and conveyors; electrically heated and fuel-heated routes remain separate"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "Per kg hot-air-dried pepper"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_carrier_records
+              source_ids: []
+            ranges:
+              - role: default_estimate
+                lower: "0.05"
+                upper: "20"
+                unit: "kWh/kg hot-air-dried pepper"
+                basis: "Deliberately broad first-pass range covering fan-only through electric-heater systems; replace with equipment records"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: hot_air_drying_steam_input
+          role: "Purchased steam for hot-air drying"
+          name: "Purchased steam"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Record this named flow as a separate atomic exchange for the unit process; preserve its declared route, source or disposition and do not aggregate it with another flow."
+          amount:
+            expression: "Metered steam supplied to the dryer heat exchanger only when selected; do not combine with onsite fuels"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "Per kg hot-air-dried pepper"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_carrier_records
+              source_ids: []
+            ranges: []
+        - row_id: hot_air_drying_natural_gas_input
+          role: "Natural gas for hot-air drying"
+          name: "Natural gas combusted onsite for hot-air drying"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "Record this named flow as a separate atomic exchange for the unit process; preserve its declared route, source or disposition and do not aggregate it with another flow."
+          amount:
+            expression: "Metered natural gas only for a declared gas-fired dryer; keep separate from LPG, diesel, biomass, and purchased steam"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "Per kg hot-air-dried pepper"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_carrier_records
+              source_ids:
+                - ipcc-stationary-combustion-2006
+            ranges: []
+        - row_id: hot_air_drying_lpg_input
+          role: "Liquefied petroleum gas for hot-air drying"
+          name: "Liquefied petroleum gas combusted onsite for hot-air drying"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record this named flow as a separate atomic exchange for the unit process; preserve its declared route, source or disposition and do not aggregate it with another flow."
+          amount:
+            expression: "Weighed or invoice-reconciled LPG only for a declared LPG-fired dryer; keep separate from other carriers"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "Per kg hot-air-dried pepper"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_carrier_records
+              source_ids:
+                - ipcc-stationary-combustion-2006
+            ranges: []
+        - row_id: hot_air_drying_diesel_input
+          role: "Diesel for hot-air drying"
+          name: "Diesel combusted onsite for hot-air drying"
+          flow_type: "product"
+          property_unit: "Volume / L"
+          description: "Record this named flow as a separate atomic exchange for the unit process; preserve its declared route, source or disposition and do not aggregate it with another flow."
+          amount:
+            expression: "Metered diesel only for a declared diesel-fired dryer; keep separate from other carriers"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "Per kg hot-air-dried pepper"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_carrier_records
+              source_ids:
+                - ipcc-stationary-combustion-2006
+            ranges: []
+        - row_id: hot_air_drying_pepper_biomass_input
+          role: "Pepper biomass used as dryer fuel"
+          name: "Dry pepper stalk, pericarp, or other identified pepper biomass combusted onsite"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record this named flow as a separate atomic exchange for the unit process; preserve its declared route, source or disposition and do not aggregate it with another flow."
+          amount:
+            expression: "Weighed dry biomass by exact residue type and measured moisture; do not combine with purchased biomass of another identity"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "Per kg hot-air-dried pepper"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_carrier_records
+              source_ids:
+                - ipcc-stationary-combustion-2006
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: hot_air_dried_pepper_output
+          role: "Hot-air-dried pepper"
+          name: "Mechanical-hot-air-dried *Piper* pepper"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record this named flow as a separate atomic exchange for the unit process; preserve its declared route, source or disposition and do not aggregate it with another flow."
+          amount:
+            expression: "Weighed output with final moisture, temperature-time profile, airflow, and fuel or heat route recorded"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "Per drying batch"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_drying_batch_records
+              source_ids:
+                - codex-cxs-326-2017
+                - shango-pepper-quality-2021
+            ranges: []
+      waste:
+        []
+      elementary:
+        - row_id: hot_air_drying_water_to_air
+          role: "Water evaporated during hot-air drying"
+          name: "Water emitted to air from pepper drying"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record this named flow as a separate atomic exchange for the unit process; preserve its declared route, source or disposition and do not aggregate it with another flow."
+          amount:
+            expression: "Calculate from wet and dry pepper mass and moisture measurements using calc_moisture_removed"
+            value_mode: "calculated_value"
+            specificity: "route_specific"
+            basis:
+              text: "Per kg hot-air-dried pepper"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_drying_batch_records
+              source_ids: []
+            ranges: []
+        - row_id: hot_air_drying_fossil_co2_to_air
+          role: "Fossil carbon dioxide from dryer combustion"
+          name: "Carbon dioxide, fossil, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record this named flow as a separate atomic exchange for the unit process; preserve its declared route, source or disposition and do not aggregate it with another flow."
+          amount:
+            expression: "Calculate separately from natural gas, LPG, and diesel activity and selected CO2 factors; zero for electricity, purchased steam, and biomass to prevent double counting"
+            value_mode: "calculated_value"
+            specificity: "route_specific"
+            basis:
+              text: "Per kg hot-air-dried pepper"
+              kind: "process_output"
+            evidence:
+              kind: "method_formula"
+              collection_protocol_id: cp_combustion_emission_records
+              source_ids:
+                - ipcc-stationary-combustion-2006
+            ranges: []
+        - row_id: hot_air_drying_biogenic_co2_to_air
+          role: "Biogenic carbon dioxide from pepper-biomass combustion"
+          name: "Carbon dioxide, biogenic, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record this named flow as a separate atomic exchange for the unit process; preserve its declared route, source or disposition and do not aggregate it with another flow."
+          amount:
+            expression: "Calculate only from recorded pepper biomass fuel and a documented carbon or factor basis; report separately from fossil CO2"
+            value_mode: "calculated_value"
+            specificity: "route_specific"
+            basis:
+              text: "Per kg hot-air-dried pepper"
+              kind: "process_output"
+            evidence:
+              kind: "method_formula"
+              collection_protocol_id: cp_combustion_emission_records
+              source_ids:
+                - ipcc-stationary-combustion-2006
+            ranges: []
+        - row_id: hot_air_drying_ch4_to_air
+          role: "Methane from dryer combustion"
+          name: "Methane to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record this named flow as a separate atomic exchange for the unit process; preserve its declared route, source or disposition and do not aggregate it with another flow."
+          amount:
+            expression: "Calculate separately for each combusted fuel using technology-appropriate CH4 factors"
+            value_mode: "calculated_value"
+            specificity: "route_specific"
+            basis:
+              text: "Per kg hot-air-dried pepper"
+              kind: "process_output"
+            evidence:
+              kind: "method_formula"
+              collection_protocol_id: cp_combustion_emission_records
+              source_ids:
+                - ipcc-stationary-combustion-2006
+            ranges: []
+        - row_id: hot_air_drying_n2o_to_air
+          role: "Nitrous oxide from dryer combustion"
+          name: "Nitrous oxide to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record this named flow as a separate atomic exchange for the unit process; preserve its declared route, source or disposition and do not aggregate it with another flow."
+          amount:
+            expression: "Calculate separately for each combusted fuel using technology-appropriate N2O factors"
+            value_mode: "calculated_value"
+            specificity: "route_specific"
+            basis:
+              text: "Per kg hot-air-dried pepper"
+              kind: "process_output"
+            evidence:
+              kind: "method_formula"
+              collection_protocol_id: cp_combustion_emission_records
+              source_ids:
+                - ipcc-stationary-combustion-2006
+            ranges: []
+        - row_id: hot_air_drying_nox_to_air
+          role: "Nitrogen oxides from dryer combustion"
+          name: "Nitrogen oxides to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record this named flow as a separate atomic exchange for the unit process; preserve its declared route, source or disposition and do not aggregate it with another flow."
+          amount:
+            expression: "Record stack measurement or calculate for each fuel using an identified technology-specific regulatory factor; do not infer from the IPCC greenhouse-gas factors"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "Per kg hot-air-dried pepper"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_combustion_emission_records
+              source_ids: []
+            ranges: []
+        - row_id: hot_air_drying_so2_to_air
+          role: "Sulfur dioxide from dryer combustion"
+          name: "Sulfur dioxide to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record this named flow as a separate atomic exchange for the unit process; preserve its declared route, source or disposition and do not aggregate it with another flow."
+          amount:
+            expression: "Record stack measurement or calculate separately from sulfur content of the actual fuel; do not assign a generic value to gas, LPG, diesel, or biomass"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "Per kg hot-air-dried pepper"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_combustion_emission_records
+              source_ids: []
+            ranges: []
+        - row_id: hot_air_drying_particulate_to_air
+          role: "Particulate matter from dryer combustion"
+          name: "Particulate matter to air from dryer combustion"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record this named flow as a separate atomic exchange for the unit process; preserve its declared route, source or disposition and do not aggregate it with another flow."
+          amount:
+            expression: "Record stack measurement or calculate separately by fuel, combustion technology, and control device; do not combine with pepper product dust"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "Per kg hot-air-dried pepper"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_combustion_emission_records
+              source_ids: []
+            ranges: []
+  - id: milling_and_sieving
+    label: "Crushing, grinding, and sieving"
+    inputs:
+      product:
+        - row_id: milling_whole_pepper_input
+          role: "Whole pepper entering size reduction"
+          name: "Cleaned whole *Piper* pepper for crushing, grinding, or powdering"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record this named flow as a separate atomic exchange for the unit process; preserve its declared route, source or disposition and do not aggregate it with another flow."
+          amount:
+            expression: "Weighed input segregated by product class, target presentation, moisture, and mill campaign"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "Per kg milled pepper"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_milling_records
+              source_ids:
+                - ipc-pepper-standard-2015
+                - fao-spice-quality-assurance
+            ranges: []
+        - row_id: milling_electricity_input
+          role: "Electricity for milling and sieving"
+          name: "Electricity, facility supply mix"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record this named flow as a separate atomic exchange for the unit process; preserve its declared route, source or disposition and do not aggregate it with another flow."
+          amount:
+            expression: "Metered or rated-power × runtime electricity for crusher, mill, sieve, aspiration, and conveyors"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "Per kg milled pepper"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_carrier_records
+              source_ids: []
+            ranges:
+              - role: default_estimate
+                lower: "0.01"
+                upper: "5"
+                unit: "kWh/kg milled pepper"
+                basis: "Broad screen spanning coarse crushing through fine powdering; replace with presentation- and mill-specific records"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: milling_liquid_nitrogen_input
+          role: "Liquid nitrogen for cryogenic grinding"
+          name: "Liquid nitrogen"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record this named flow as a separate atomic exchange for the unit process; preserve its declared route, source or disposition and do not aggregate it with another flow."
+          amount:
+            expression: "Metered liquid nitrogen only for a declared cryogenic-grinding route; ambient milling records zero"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "Per kg cryogenically milled pepper"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_chemical_input_records
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: milled_pepper_output
+          role: "Milled and sieved pepper"
+          name: "Broken, cracked, coarsely ground, ground, or powdered *Piper* pepper"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record this named flow as a separate atomic exchange for the unit process; preserve its declared route, source or disposition and do not aggregate it with another flow."
+          amount:
+            expression: "Weighed conforming output by declared presentation and particle-size criterion; record rework separately"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "Per milling campaign"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_milling_records
+              source_ids:
+                - codex-cxs-326-2017
+                - ipc-pepper-standard-2015
+            ranges: []
+      waste:
+        - row_id: off_spec_milled_pepper_waste
+          role: "Off-specification milled pepper"
+          name: "Off-specification milled pepper sent to waste treatment"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record this named flow as a separate atomic exchange for the unit process; preserve its declared route, source or disposition and do not aggregate it with another flow."
+          amount:
+            expression: "Weighed material not reworked or sold as a product; record cause and destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "Per kg milled pepper"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_records
+              source_ids: []
+            ranges: []
+        - row_id: captured_milling_pepper_dust_waste
+          role: "Captured pepper dust from milling"
+          name: "Captured pepper dust collected as waste"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record this named flow as a separate atomic exchange for the unit process; preserve its declared route, source or disposition and do not aggregate it with another flow."
+          amount:
+            expression: "Weighed dust from filters or collectors that is not returned to product; keep separate from uncaptured air emission"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "Per kg milled pepper"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_records
+              source_ids: []
+            ranges: []
+      elementary:
+        - row_id: milling_pepper_dust_to_air
+          role: "Pepper dust released during milling"
+          name: "Pepper particulate matter released to air during milling"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record this named flow as a separate atomic exchange for the unit process; preserve its declared route, source or disposition and do not aggregate it with another flow."
+          amount:
+            expression: "Calculate uncaptured dust from stack measurement or captured-plus-emitted dust balance; do not combine with combustion particulate matter"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "Per kg milled pepper"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_dust_emission_records
+              source_ids:
+                - fao-spice-quality-assurance
+            ranges: []
+  - id: product_sanitization
+    label: "Product sanitization"
+    inputs:
+      product:
+        - row_id: sanitization_pepper_input
+          role: "Pepper entering sanitization"
+          name: "*Piper* pepper entering the declared sanitization technology"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record this named flow as a separate atomic exchange for the unit process; preserve its declared route, source or disposition and do not aggregate it with another flow."
+          amount:
+            expression: "Weighed input segregated by product class, presentation, moisture, and exact sanitization route"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "Per kg sanitized pepper"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_sanitization_records
+              source_ids:
+                - shango-pepper-quality-2021
+            ranges: []
+        - row_id: sanitization_electricity_input
+          role: "Electricity for product sanitization"
+          name: "Electricity, facility supply mix"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record this named flow as a separate atomic exchange for the unit process; preserve its declared route, source or disposition and do not aggregate it with another flow."
+          amount:
+            expression: "Metered electricity for steam generator auxiliaries, dry-heat equipment, irradiation equipment operated onsite, pumps, and controls; technology remains declared"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "Per kg sanitized pepper"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_carrier_records
+              source_ids: []
+            ranges: []
+        - row_id: sanitization_steam_input
+          role: "Purchased steam for product sanitization"
+          name: "Purchased steam"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Record this named flow as a separate atomic exchange for the unit process; preserve its declared route, source or disposition and do not aggregate it with another flow."
+          amount:
+            expression: "Metered steam only for the declared steam-sanitization route; do not combine with onsite fuel or wet-pretreatment steam"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "Per kg steam-sanitized pepper"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_carrier_records
+              source_ids: []
+            ranges:
+              - role: default_estimate
+                lower: "0.1"
+                upper: "20"
+                unit: "MJ/kg steam-sanitized pepper"
+                basis: "Broad first-pass interval for direct and indirect steam systems; replace with metered enthalpy"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: sanitization_process_water_input
+          role: "Process water for steam sanitization"
+          name: "Process water for steam sanitization"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "Record this named flow as a separate atomic exchange for the unit process; preserve its declared route, source or disposition and do not aggregate it with another flow."
+          amount:
+            expression: "Metered make-up water that crosses the product-sanitization boundary; keep separate from cleaning water"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "Per kg steam-sanitized pepper"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water_and_wastewater_records
+              source_ids: []
+            ranges: []
+        - row_id: sanitization_natural_gas_input
+          role: "Natural gas for onsite sanitization heat"
+          name: "Natural gas combusted onsite for product sanitization"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "Record this named flow as a separate atomic exchange for the unit process; preserve its declared route, source or disposition and do not aggregate it with another flow."
+          amount:
+            expression: "Metered natural gas only for the declared gas-fired dry-heat or steam route; keep separate from LPG and purchased steam"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "Per kg sanitized pepper"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_carrier_records
+              source_ids:
+                - ipcc-stationary-combustion-2006
+            ranges: []
+        - row_id: sanitization_lpg_input
+          role: "Liquefied petroleum gas for onsite sanitization heat"
+          name: "Liquefied petroleum gas combusted onsite for product sanitization"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record this named flow as a separate atomic exchange for the unit process; preserve its declared route, source or disposition and do not aggregate it with another flow."
+          amount:
+            expression: "Weighed or invoice-reconciled LPG only for the declared LPG-fired route; keep separate from natural gas and purchased steam"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "Per kg sanitized pepper"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_carrier_records
+              source_ids:
+                - ipcc-stationary-combustion-2006
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: sanitized_pepper_output
+          role: "Sanitized pepper"
+          name: "Sanitized *Piper* pepper"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record this named flow as a separate atomic exchange for the unit process; preserve its declared route, source or disposition and do not aggregate it with another flow."
+          amount:
+            expression: "Weighed treated output with product class, presentation, treatment technology, dose or time-temperature specification, moisture, and test result"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "Per sanitization batch"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_sanitization_records
+              source_ids:
+                - shango-pepper-quality-2021
+            ranges: []
+      waste:
+        - row_id: sanitization_condensate_wastewater
+          role: "Steam-sanitization condensate wastewater"
+          name: "Product-sanitization condensate wastewater"
+          flow_type: "waste"
+          property_unit: "Volume / m3"
+          description: "Record this named flow as a separate atomic exchange for the unit process; preserve its declared route, source or disposition and do not aggregate it with another flow."
+          amount:
+            expression: "Metered condensate discharged rather than recovered; keep separate from product wash and equipment-cleaning wastewater"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "Per kg steam-sanitized pepper"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water_and_wastewater_records
+              source_ids: []
+            ranges: []
+      elementary:
+        - row_id: sanitization_fossil_co2_to_air
+          role: "Fossil carbon dioxide from sanitization heat"
+          name: "Carbon dioxide, fossil, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record this named flow as a separate atomic exchange for the unit process; preserve its declared route, source or disposition and do not aggregate it with another flow."
+          amount:
+            expression: "Calculate separately from onsite natural gas and LPG; zero for purchased steam and electricity to prevent double counting"
+            value_mode: "calculated_value"
+            specificity: "route_specific"
+            basis:
+              text: "Per kg sanitized pepper"
+              kind: "process_output"
+            evidence:
+              kind: "method_formula"
+              collection_protocol_id: cp_combustion_emission_records
+              source_ids:
+                - ipcc-stationary-combustion-2006
+            ranges: []
+        - row_id: sanitization_ch4_to_air
+          role: "Methane from sanitization heat"
+          name: "Methane to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record this named flow as a separate atomic exchange for the unit process; preserve its declared route, source or disposition and do not aggregate it with another flow."
+          amount:
+            expression: "Calculate separately from each onsite fuel using technology-appropriate CH4 factors"
+            value_mode: "calculated_value"
+            specificity: "route_specific"
+            basis:
+              text: "Per kg sanitized pepper"
+              kind: "process_output"
+            evidence:
+              kind: "method_formula"
+              collection_protocol_id: cp_combustion_emission_records
+              source_ids:
+                - ipcc-stationary-combustion-2006
+            ranges: []
+        - row_id: sanitization_n2o_to_air
+          role: "Nitrous oxide from sanitization heat"
+          name: "Nitrous oxide to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record this named flow as a separate atomic exchange for the unit process; preserve its declared route, source or disposition and do not aggregate it with another flow."
+          amount:
+            expression: "Calculate separately from each onsite fuel using technology-appropriate N2O factors"
+            value_mode: "calculated_value"
+            specificity: "route_specific"
+            basis:
+              text: "Per kg sanitized pepper"
+              kind: "process_output"
+            evidence:
+              kind: "method_formula"
+              collection_protocol_id: cp_combustion_emission_records
+              source_ids:
+                - ipcc-stationary-combustion-2006
+            ranges: []
+        - row_id: sanitization_water_to_air
+          role: "Water vapour from steam or dry-heat sanitization"
+          name: "Water emitted to air during product sanitization"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record this named flow as a separate atomic exchange for the unit process; preserve its declared route, source or disposition and do not aggregate it with another flow."
+          amount:
+            expression: "Calculate from pepper moisture change and unrecovered steam balance; do not duplicate condensate wastewater"
+            value_mode: "calculated_value"
+            specificity: "route_specific"
+            basis:
+              text: "Per kg sanitized pepper"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_sanitization_records
+              source_ids: []
+            ranges: []
+  - id: equipment_cleaning
+    label: "Equipment and room cleaning"
+    inputs:
+      product:
+        - row_id: equipment_cleaning_water_input
+          role: "Water for equipment and room cleaning"
+          name: "Process water for equipment and room cleaning"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "Record this named flow as a separate atomic exchange for the unit process; preserve its declared route, source or disposition and do not aggregate it with another flow."
+          amount:
+            expression: "Metered water by cleaning event; keep separate from pepper washing, retting, depericarping, and sanitization water"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "Per production campaign and normalized to released product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cleaning_records
+              source_ids: []
+            ranges:
+              - role: default_estimate
+                lower: "0"
+                upper: "0.02"
+                unit: "m3/kg released pepper"
+                basis: "Broad dry-cleaning-to-wet-cleaning screen; replace with event-level water records"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: equipment_cleaning_electricity_input
+          role: "Electricity for cleaning equipment"
+          name: "Electricity, facility supply mix"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record this named flow as a separate atomic exchange for the unit process; preserve its declared route, source or disposition and do not aggregate it with another flow."
+          amount:
+            expression: "Metered or equipment-runtime electricity for vacuums, pressure washers, pumps, and cleaning support"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "Per production campaign and normalized to released product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_carrier_records
+              source_ids: []
+            ranges: []
+        - row_id: equipment_cleaning_sodium_hypochlorite_input
+          role: "Sodium hypochlorite cleaning agent"
+          name: "Sodium hypochlorite"
+          flow_type: "product"
+          property_unit: "Mass / kg active substance"
+          description: "Record this named flow as a separate atomic exchange for the unit process; preserve its declared route, source or disposition and do not aggregate it with another flow."
+          amount:
+            expression: "Dosed active mass from product concentration × solution mass only when used; do not combine with other disinfectants"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "Per production campaign and normalized to released product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_chemical_input_records
+              source_ids: []
+            ranges: []
+        - row_id: equipment_cleaning_sodium_hydroxide_input
+          role: "Sodium hydroxide cleaning agent"
+          name: "Sodium hydroxide"
+          flow_type: "product"
+          property_unit: "Mass / kg active substance"
+          description: "Record this named flow as a separate atomic exchange for the unit process; preserve its declared route, source or disposition and do not aggregate it with another flow."
+          amount:
+            expression: "Dosed active mass from product concentration × solution mass only when used; do not combine with other cleaning chemicals"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "Per production campaign and normalized to released product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_chemical_input_records
+              source_ids: []
+            ranges: []
+        - row_id: equipment_cleaning_peracetic_acid_input
+          role: "Peracetic acid cleaning agent"
+          name: "Peracetic acid"
+          flow_type: "product"
+          property_unit: "Mass / kg active substance"
+          description: "Record this named flow as a separate atomic exchange for the unit process; preserve its declared route, source or disposition and do not aggregate it with another flow."
+          amount:
+            expression: "Dosed active mass from product concentration × solution mass only when used; do not combine with sodium hypochlorite or another disinfectant"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "Per production campaign and normalized to released product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_chemical_input_records
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: equipment_cleaning_wastewater
+          role: "Equipment-cleaning wastewater"
+          name: "Equipment and room cleaning wastewater"
+          flow_type: "waste"
+          property_unit: "Volume / m3"
+          description: "Record this named flow as a separate atomic exchange for the unit process; preserve its declared route, source or disposition and do not aggregate it with another flow."
+          amount:
+            expression: "Metered wet-cleaning effluent by cleaning event; retain chemical identity and concentration and keep separate from process wastewater"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "Per production campaign and normalized to released product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cleaning_records
+              source_ids: []
+            ranges: []
+        - row_id: spent_cleaning_filters_wipes_waste
+          role: "Spent cleaning filters and wipes"
+          name: "Spent filters and cleaning wipes contaminated with pepper dust"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record this named flow as a separate atomic exchange for the unit process; preserve its declared route, source or disposition and do not aggregate it with another flow."
+          amount:
+            expression: "Weighed spent filters and wipes by material and destination; if materials differ, create additional atomic rows in the data package"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "Per production campaign and normalized to released product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_records
+              source_ids: []
+            ranges: []
+        - row_id: empty_hdpe_chemical_container_waste
+          role: "Empty high-density polyethylene chemical containers"
+          name: "Empty high-density polyethylene cleaning-chemical containers"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record this named flow as a separate atomic exchange for the unit process; preserve its declared route, source or disposition and do not aggregate it with another flow."
+          amount:
+            expression: "Weighed HDPE containers not returned to supplier; containers of another polymer require a separate atomic row"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "Per production campaign and normalized to released product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_records
+              source_ids: []
+            ranges: []
+      elementary:
+        []
+  - id: packaging
+    label: "Primary, secondary, and tertiary packaging"
+    inputs:
+      product:
+        - row_id: pepper_for_packaging_input
+          role: "Pepper for packaging"
+          name: "Processed pepper awaiting packaging"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record this named flow as a separate atomic exchange for the unit process; preserve its declared route, source or disposition and do not aggregate it with another flow."
+          amount:
+            expression: "Weighed pepper transferred to the packaging line, retaining product-class, presentation, grade, moisture, sanitization, and route qualifiers"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "Per 1 kg released reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_records
+              source_ids: []
+            ranges: []
+        - row_id: packaging_electricity_input
+          role: "Electricity for filling and packaging"
+          name: "Electricity, facility supply mix"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record this named flow as a separate atomic exchange for the unit process; preserve its declared route, source or disposition and do not aggregate it with another flow."
+          amount:
+            expression: "Metered or equipment-power-by-runtime electricity for filling, sealing, labelling, conveying, and pallet wrapping"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "Per packaging campaign and normalized to released product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_carrier_records
+              source_ids: []
+            ranges: []
+        - row_id: kraft_paper_packaging_input
+          role: "Kraft paper packaging"
+          name: "Kraft paper packaging"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record this named flow as a separate atomic exchange for the unit process; preserve its declared route, source or disposition and do not aggregate it with another flow."
+          amount:
+            expression: "Issued mass of kraft paper bags or layers minus measured unused returns; use only for the declared package format"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "Per 1 kg released reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_records
+              source_ids: []
+            ranges: []
+        - row_id: polyethylene_liner_input
+          role: "Polyethylene liner"
+          name: "Polyethylene packaging liner"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record this named flow as a separate atomic exchange for the unit process; preserve its declared route, source or disposition and do not aggregate it with another flow."
+          amount:
+            expression: "Issued mass of polyethylene liners minus measured unused returns; do not combine with polypropylene or other polymers"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "Per 1 kg released reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_records
+              source_ids: []
+            ranges: []
+        - row_id: woven_polypropylene_sack_input
+          role: "Woven polypropylene sack"
+          name: "Woven polypropylene packaging sack"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record this named flow as a separate atomic exchange for the unit process; preserve its declared route, source or disposition and do not aggregate it with another flow."
+          amount:
+            expression: "Issued sack mass minus measured unused returns; exclude polyethylene liners recorded separately"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "Per 1 kg released reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_records
+              source_ids: []
+            ranges: []
+        - row_id: glass_jar_input
+          role: "Glass jar"
+          name: "Glass packaging jar"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record this named flow as a separate atomic exchange for the unit process; preserve its declared route, source or disposition and do not aggregate it with another flow."
+          amount:
+            expression: "Mass of glass jars filled for the declared retail format, excluding closures and labels recorded separately"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "Per 1 kg released reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_records
+              source_ids: []
+            ranges: []
+        - row_id: metal_closure_input
+          role: "Metal closure"
+          name: "Metal packaging closure"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record this named flow as a separate atomic exchange for the unit process; preserve its declared route, source or disposition and do not aggregate it with another flow."
+          amount:
+            expression: "Mass of metal closures applied to the declared package; any polymer insert shall be recorded separately when material"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "Per 1 kg released reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_records
+              source_ids: []
+            ranges: []
+        - row_id: paperboard_carton_input
+          role: "Paperboard carton"
+          name: "Paperboard packaging carton"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record this named flow as a separate atomic exchange for the unit process; preserve its declared route, source or disposition and do not aggregate it with another flow."
+          amount:
+            expression: "Issued paperboard carton mass minus verified unused returns"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "Per 1 kg released reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_records
+              source_ids: []
+            ranges: []
+        - row_id: wooden_pallet_input
+          role: "Wooden pallet"
+          name: "Wooden transport pallet"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record this named flow as a separate atomic exchange for the unit process; preserve its declared route, source or disposition and do not aggregate it with another flow."
+          amount:
+            expression: "Net pallet mass consumed or assigned by verified trip count and reuse history; do not count returned pallets as single-use inputs"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "Per 1 kg released reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_records
+              source_ids: []
+            ranges: []
+        - row_id: polyethylene_stretch_film_input
+          role: "Polyethylene stretch film"
+          name: "Polyethylene pallet stretch film"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record this named flow as a separate atomic exchange for the unit process; preserve its declared route, source or disposition and do not aggregate it with another flow."
+          amount:
+            expression: "Issued film mass minus unused roll remainder, allocated to dispatched palletized product"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "Per 1 kg released reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_records
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: packaged_pepper_output
+          role: "Packaged processed pepper"
+          name: "Packaged processed *Piper* pepper before storage and final release"
+          flow_type: "product"
+          property_unit: "Mass / kg net pepper"
+          description: "Record this named flow as a separate atomic exchange for the unit process; preserve its declared route, source or disposition and do not aggregate it with another flow."
+          amount:
+            expression: "Net pepper mass packed and accepted after filling losses, excluding packaging mass"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "Per packaging campaign"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_records
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: kraft_paper_packaging_scrap
+          role: "Kraft paper packaging scrap"
+          name: "Kraft paper packaging scrap"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record this named flow as a separate atomic exchange for the unit process; preserve its declared route, source or disposition and do not aggregate it with another flow."
+          amount:
+            expression: "Weighed kraft paper trim, damaged bags, and rejected paper packaging by destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "Per packaging campaign and normalized to released product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_records
+              source_ids: []
+            ranges: []
+        - row_id: polyethylene_packaging_scrap
+          role: "Polyethylene packaging scrap"
+          name: "Polyethylene packaging scrap"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record this named flow as a separate atomic exchange for the unit process; preserve its declared route, source or disposition and do not aggregate it with another flow."
+          amount:
+            expression: "Weighed rejected liners and stretch-film scrap; keep other polymers separate"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "Per packaging campaign and normalized to released product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_records
+              source_ids: []
+            ranges: []
+        - row_id: polypropylene_packaging_scrap
+          role: "Polypropylene packaging scrap"
+          name: "Woven polypropylene packaging scrap"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record this named flow as a separate atomic exchange for the unit process; preserve its declared route, source or disposition and do not aggregate it with another flow."
+          amount:
+            expression: "Weighed damaged or rejected polypropylene sacks; keep liners and other polymers separate"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "Per packaging campaign and normalized to released product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_records
+              source_ids: []
+            ranges: []
+        - row_id: glass_packaging_breakage_waste
+          role: "Glass packaging breakage"
+          name: "Broken glass packaging waste"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record this named flow as a separate atomic exchange for the unit process; preserve its declared route, source or disposition and do not aggregate it with another flow."
+          amount:
+            expression: "Weighed broken or rejected glass jars, excluding metal closures and pepper residues"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "Per packaging campaign and normalized to released product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_records
+              source_ids: []
+            ranges: []
+        - row_id: metal_closure_scrap
+          role: "Metal closure scrap"
+          name: "Metal packaging closure scrap"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record this named flow as a separate atomic exchange for the unit process; preserve its declared route, source or disposition and do not aggregate it with another flow."
+          amount:
+            expression: "Weighed rejected metal closures, with non-metal inserts separated when material"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "Per packaging campaign and normalized to released product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_records
+              source_ids: []
+            ranges: []
+        - row_id: paperboard_packaging_scrap
+          role: "Paperboard packaging scrap"
+          name: "Paperboard packaging scrap"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record this named flow as a separate atomic exchange for the unit process; preserve its declared route, source or disposition and do not aggregate it with another flow."
+          amount:
+            expression: "Weighed damaged cartons and paperboard trim by destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "Per packaging campaign and normalized to released product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_records
+              source_ids: []
+            ranges: []
+        - row_id: wooden_pallet_waste
+          role: "Wooden pallet waste"
+          name: "Discarded wooden pallet waste"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record this named flow as a separate atomic exchange for the unit process; preserve its declared route, source or disposition and do not aggregate it with another flow."
+          amount:
+            expression: "Weighed pallet mass retired from service and assigned using its documented reuse history"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "Per packaging campaign and normalized to released product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_waste_records
+              source_ids: []
+            ranges: []
+      elementary:
+        []
+  - id: finished_goods_storage
+    label: "Finished-goods storage and release"
+    inputs:
+      product:
+        - row_id: packaged_pepper_storage_input
+          role: "Packaged pepper for storage"
+          name: "Packaged processed *Piper* pepper entering finished-goods storage"
+          flow_type: "product"
+          property_unit: "Mass / kg net pepper"
+          description: "Record this named flow as a separate atomic exchange for the unit process; preserve its declared route, source or disposition and do not aggregate it with another flow."
+          amount:
+            expression: "Net packaged pepper mass received into storage, linked to the exact route, lot, and package format"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "Per 1 kg released reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_storage_records
+              source_ids: []
+            ranges: []
+        - row_id: storage_electricity_input
+          role: "Electricity for finished-goods storage"
+          name: "Electricity, facility supply mix"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record this named flow as a separate atomic exchange for the unit process; preserve its declared route, source or disposition and do not aggregate it with another flow."
+          amount:
+            expression: "Metered storage, ventilation, lighting, and cooling electricity allocated by occupied mass-time or another disclosed causal driver"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "Per storage period and normalized to released product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_carrier_records
+              source_ids: []
+            ranges: []
+        - row_id: storage_refrigerant_r134a_input
+          role: "Refrigerant R-134a"
+          name: "1,1,1,2-Tetrafluoroethane (HFC-134a) refrigerant"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record this named flow as a separate atomic exchange for the unit process; preserve its declared route, source or disposition and do not aggregate it with another flow."
+          amount:
+            expression: "Recorded additions of R-134a to finished-goods storage equipment only; zero when no such equipment or chemical is used"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "Per reporting period and normalized to released product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_refrigerant_records
+              source_ids: []
+            ranges: []
+        - row_id: storage_refrigerant_r410a_input
+          role: "Refrigerant R-410A"
+          name: "R-410A refrigerant blend"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record this named flow as a separate atomic exchange for the unit process; preserve its declared route, source or disposition and do not aggregate it with another flow."
+          amount:
+            expression: "Recorded additions of R-410A to finished-goods storage equipment only; do not combine with another refrigerant"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "Per reporting period and normalized to released product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_refrigerant_records
+              source_ids: []
+            ranges: []
+        - row_id: storage_refrigerant_r32_input
+          role: "Refrigerant R-32"
+          name: "Difluoromethane (HFC-32) refrigerant"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record this named flow as a separate atomic exchange for the unit process; preserve its declared route, source or disposition and do not aggregate it with another flow."
+          amount:
+            expression: "Recorded additions of R-32 to finished-goods storage equipment only; do not combine with another refrigerant"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "Per reporting period and normalized to released product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_refrigerant_records
+              source_ids: []
+            ranges: []
+        - row_id: storage_refrigerant_r404a_input
+          role: "Refrigerant R-404A"
+          name: "R-404A refrigerant blend"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record this named flow as a separate atomic exchange for the unit process; preserve its declared route, source or disposition and do not aggregate it with another flow."
+          amount:
+            expression: "Recorded additions of R-404A to finished-goods storage equipment only; do not combine with another refrigerant"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "Per reporting period and normalized to released product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_refrigerant_records
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: processed_pepper_reference_output
+          role: "Released processed pepper reference product"
+          name: "Pepper (Piper spp.), processed"
+          flow_type: "product"
+          flow_ref:
+            uuid: "99d5d3c5-870f-458f-b492-a610d37c8034"
+          property_unit: "Mass / kg"
+          description: "Record this named flow as a separate atomic exchange for the unit process; preserve its declared route, source or disposition and do not aggregate it with another flow."
+          amount:
+            expression: "Exactly 1 kg net released pepper at factory gate, excluding packaging mass and carrying every required product and route qualifier"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "Reference amount of 1 kg"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_storage_records
+              source_ids:
+                - codex-cxs-326-2017
+                - un-cpc-v3
+            ranges: []
+      waste:
+        []
+      elementary:
+        - row_id: storage_refrigerant_r134a_to_air
+          role: "R-134a emission to air"
+          name: "1,1,1,2-Tetrafluoroethane (HFC-134a), emission to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record this named flow as a separate atomic exchange for the unit process; preserve its declared route, source or disposition and do not aggregate it with another flow."
+          amount:
+            expression: "Opening charge + R-134a additions - closing charge - recovered R-134a; record zero only with a complete balance"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "Per reporting period and normalized to released product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_refrigerant_records
+              source_ids: []
+            ranges: []
+        - row_id: storage_refrigerant_r410a_to_air
+          role: "R-410A emission to air"
+          name: "R-410A refrigerant blend, emission to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record this named flow as a separate atomic exchange for the unit process; preserve its declared route, source or disposition and do not aggregate it with another flow."
+          amount:
+            expression: "Opening charge + R-410A additions - closing charge - recovered R-410A; do not substitute a generic refrigerant loss"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "Per reporting period and normalized to released product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_refrigerant_records
+              source_ids: []
+            ranges: []
+        - row_id: storage_refrigerant_r32_to_air
+          role: "R-32 emission to air"
+          name: "Difluoromethane (HFC-32), emission to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record this named flow as a separate atomic exchange for the unit process; preserve its declared route, source or disposition and do not aggregate it with another flow."
+          amount:
+            expression: "Opening charge + R-32 additions - closing charge - recovered R-32; do not substitute a generic refrigerant loss"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "Per reporting period and normalized to released product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_refrigerant_records
+              source_ids: []
+            ranges: []
+        - row_id: storage_refrigerant_r404a_to_air
+          role: "R-404A emission to air"
+          name: "R-404A refrigerant blend, emission to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record this named flow as a separate atomic exchange for the unit process; preserve its declared route, source or disposition and do not aggregate it with another flow."
+          amount:
+            expression: "Opening charge + R-404A additions - closing charge - recovered R-404A; do not substitute a generic refrigerant loss"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "Per reporting period and normalized to released product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_refrigerant_records
+              source_ids: []
+            ranges: []
+allocation_rules:
+  - rule_id: alloc_avoid_by_subdivision
+    applies_to: "foreground_burden_allocation"
+    rule: "Avoid allocation by separating product class, presentation, wet route, depericarping route, drying route, sanitization route, and packaging-format records."
+    source_ids:
+      - eu-pef-method-2021
+  - rule_id: alloc_route_specific_records
+    applies_to: "foreground_burden_allocation"
+    rule: "Do not allocate or average across mutually exclusive route-gate values; calculate an intentional mix only from independently modelled routes and disclosed production weights."
+    source_ids:
+      - codex-cxs-326-2017
+      - ipc-pepper-standard-2015
+  - rule_id: alloc_residue_classification
+    applies_to: "foreground_burden_allocation"
+    rule: "Treat removed stalks, pericarp, dust, off-grade pepper, and rejected product as waste unless sale, specification, and a receiving market demonstrate a co-product."
+    source_ids:
+      - eu-pef-method-2021
+  - rule_id: alloc_physical_relationship
+    applies_to: "foreground_burden_allocation"
+    rule: "When subdivision is impossible and a causal physical relationship exists, allocate shared inputs by the measured driver, such as pepper dry matter, equipment runtime, occupied mass-time, or treated volume."
+    source_ids:
+      - eu-pef-method-2021
+  - rule_id: alloc_economic_fallback
+    applies_to: "foreground_burden_allocation"
+    rule: "Use economic allocation only when no defensible physical relationship exists; use a representative price period and test price sensitivity."
+    source_ids:
+      - eu-pef-method-2021
+  - rule_id: allocation_rule_6
+    applies_to: "foreground_burden_allocation"
+    rule: "No avoided-burden credit is allowed inside the foreground inventory without an explicitly declared consequential study. Exported waste treatment and any substitution claim shall remain separate linked modelling choices."
+    source_ids: []
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_receiving_lot_records
+      process_id: "receiving_and_lot_qualification"
+      flow_role: "Received pepper, sampling, rejection, and accepted lots"
+      record_type: "lot_record"
+      raw_fields: "Scale tickets, supplier lot, route gate, moisture, foreign matter, and inspection"
+      collection_method: "Calibrated weighing and controlled lot records"
+      unit: "kg; mass fraction"
+      frequency: "Every lot"
+      temporal_coverage: "Complete reporting period"
+      site_scope: "Every receiving point in scope"
+      aggregation_rule: "Reconcile accepted plus rejected mass to received mass"
+      quality_evidence: "Scale verification, lot genealogy, and inspection record"
+    - protocol_id: cp_energy_carrier_records
+      process_id: "hot_air_drying"
+      flow_role: "Electricity, steam, hot water, natural gas, LPG, diesel, and biomass"
+      record_type: "meter_and_invoice_record"
+      raw_fields: "Meter, invoice, tank or cylinder balance, runtime, heating value, and allocation driver"
+      collection_method: "Meter reading and source-document reconciliation"
+      unit: "kWh; MJ; kg; m3"
+      frequency: "Every campaign or monthly"
+      temporal_coverage: "Complete reporting period"
+      site_scope: "Every energy-consuming process in scope"
+      aggregation_rule: "Reconcile process records to facility totals using the declared driver"
+      quality_evidence: "Meter verification, invoices, and reconciliation worksheet"
+    - protocol_id: cp_waste_records
+      process_id: "dry_cleaning_and_grading"
+      flow_role: "Every solid waste material"
+      record_type: "waste_transfer_record"
+      raw_fields: "Material identity, container tare and gross mass, destination, receipt, and route"
+      collection_method: "Calibrated weighing and transfer-document review"
+      unit: "kg"
+      frequency: "Every removal"
+      temporal_coverage: "Complete reporting period"
+      site_scope: "Every waste-generating process in scope"
+      aggregation_rule: "Aggregate by material, process, route, and campaign"
+      quality_evidence: "Scale verification, transfer receipt, and route record"
+    - protocol_id: cp_threshing_records
+      process_id: "threshing"
+      flow_role: "Spike separation"
+      record_type: "batch_record"
+      raw_fields: "Input, separated berries, stalks, runtime, and electricity"
+      collection_method: "Batch weighing and meter reading"
+      unit: "kg; h; kWh"
+      frequency: "Every batch"
+      temporal_coverage: "Complete reporting period"
+      site_scope: "Every threshing line in scope"
+      aggregation_rule: "Close wet-mass balance by batch, then aggregate released mass"
+      quality_evidence: "Scale and meter verification plus batch sheet"
+    - protocol_id: cp_dust_emission_records
+      process_id: "milling_and_sieving"
+      flow_role: "Pepper dust releases"
+      record_type: "emission_measurement_record"
+      raw_fields: "Capture efficiency, collected dust, stack or room measurement, and operating time"
+      collection_method: "Representative measurement or transparent mass-balance calculation"
+      unit: "kg; mg/m3; h"
+      frequency: "Each campaign or representative monitored test"
+      temporal_coverage: "Representative operating conditions and reporting period"
+      site_scope: "Every dust release point in scope"
+      aggregation_rule: "Apply measurements only to documented matching operating hours"
+      quality_evidence: "Test report, sampling method, and operating log"
+    - protocol_id: cp_wet_pretreatment_records
+      process_id: "wet_pretreatment"
+      flow_role: "Washing, blanching, and preservative treatment"
+      record_type: "batch_record"
+      raw_fields: "Pepper mass, water, temperature-time profile, chemical identity and dose, and drains"
+      collection_method: "Batch weighing, metering, and controlled dosing records"
+      unit: "kg; m3; degC; min"
+      frequency: "Every batch"
+      temporal_coverage: "Complete reporting period"
+      site_scope: "Every wet-pretreatment vessel or line in scope"
+      aggregation_rule: "Reconcile water and chemical issues by batch"
+      quality_evidence: "Calibration, batch sheet, and chemical issue log"
+    - protocol_id: cp_water_and_wastewater_records
+      process_id: "white_pepper_retting"
+      flow_role: "Water supply and each wastewater stream"
+      record_type: "meter_and_sample_record"
+      raw_fields: "Inlet meter, effluent meter or tank balance, sample time, concentration, and destination"
+      collection_method: "Metered volume paired with time-matched sampling"
+      unit: "m3; kg/m3"
+      frequency: "Every campaign"
+      temporal_coverage: "Complete reporting period with matched sampling intervals"
+      site_scope: "Every water inlet and discharge point in scope"
+      aggregation_rule: "Match sample and volume periods before calculating load"
+      quality_evidence: "Meter verification, sampling plan, laboratory result, and destination record"
+    - protocol_id: cp_chemical_input_records
+      process_id: "product_sanitization"
+      flow_role: "Every cleaning, pretreatment, and sanitizing chemical"
+      record_type: "chemical_issue_record"
+      raw_fields: "Product mass, active concentration, safety data sheet, dilution, and issue log"
+      collection_method: "Controlled issue records and dose calculation"
+      unit: "kg product; kg active substance"
+      frequency: "Every dose"
+      temporal_coverage: "Complete reporting period"
+      site_scope: "Every chemical-using process in scope"
+      aggregation_rule: "Calculate active mass separately by chemical and process"
+      quality_evidence: "Product specification, safety data sheet, and issue log"
+    - protocol_id: cp_combustion_emission_records
+      process_id: "hot_air_drying"
+      flow_role: "On-site fuel combustion"
+      record_type: "fuel_and_emission_record"
+      raw_fields: "Fuel identity and amount, lower heating value, equipment, factor or test result, and calculation"
+      collection_method: "Metered fuel with source-specific factor or measurement"
+      unit: "kg; m3; MJ; kg pollutant"
+      frequency: "Every reporting period"
+      temporal_coverage: "Complete reporting period"
+      site_scope: "Every stationary combustion unit in scope"
+      aggregation_rule: "Calculate separately by fuel, equipment, and pollutant"
+      quality_evidence: "Fuel record, factor source or test report, and calculation worksheet"
+    - protocol_id: cp_retting_records
+      process_id: "white_pepper_retting"
+      flow_role: "White-pepper water retting"
+      record_type: "batch_record"
+      raw_fields: "Berry mass, water fills and changes, vessel volume, duration, temperature, wastewater volume, and sample results"
+      collection_method: "Batch weighing, vessel records, metering, and sampling"
+      unit: "kg; m3; h; degC"
+      frequency: "Every retting batch"
+      temporal_coverage: "Complete reporting period"
+      site_scope: "Every retting vessel and discharge route in scope"
+      aggregation_rule: "Keep retting batches separate from non-retting routes"
+      quality_evidence: "Batch sheet, meter verification, and laboratory result"
+    - protocol_id: cp_depericarping_records
+      process_id: "depericarping"
+      flow_role: "Pericarp removal and kernel washing"
+      record_type: "batch_record"
+      raw_fields: "Input, kernel, pericarp, wash water, electricity, and route technology"
+      collection_method: "Batch weighing and utility metering"
+      unit: "kg; m3; kWh"
+      frequency: "Every batch"
+      temporal_coverage: "Complete reporting period"
+      site_scope: "Every depericarping line in scope"
+      aggregation_rule: "Close wet- and dry-matter balances by batch"
+      quality_evidence: "Scale and meter verification plus batch sheet"
+    - protocol_id: cp_cleaning_grading_records
+      process_id: "dry_cleaning_and_grading"
+      flow_role: "Dry cleaning, aspiration, grading, and sorting"
+      record_type: "lot_record"
+      raw_fields: "Input, accepted pepper, each reject, dust, electricity, and equipment setting"
+      collection_method: "Lot weighing, meter reading, and equipment log"
+      unit: "kg; kWh"
+      frequency: "Every lot or campaign"
+      temporal_coverage: "Complete reporting period"
+      site_scope: "Every cleaning and grading line in scope"
+      aggregation_rule: "Close mass balance by lot or campaign"
+      quality_evidence: "Scale and meter verification plus equipment log"
+    - protocol_id: cp_drying_batch_records
+      process_id: "hot_air_drying"
+      flow_role: "Sun, enclosed-solar, and hot-air drying"
+      record_type: "batch_record"
+      raw_fields: "Input/output mass and moisture, time, temperature, weather or dryer settings, and each carrier"
+      collection_method: "Paired batch weighing, moisture testing, and operating log"
+      unit: "kg; mass fraction; h; degC; kWh; MJ"
+      frequency: "Every batch"
+      temporal_coverage: "Complete reporting period and declared season"
+      site_scope: "Every drying route and dryer in scope"
+      aggregation_rule: "Calculate removed water and dry-matter loss separately by route"
+      quality_evidence: "Scale, moisture-method, and instrument verification plus batch log"
+    - protocol_id: cp_milling_records
+      process_id: "milling_and_sieving"
+      flow_role: "Crushing, grinding, and sieving"
+      record_type: "campaign_record"
+      raw_fields: "Feed, accepted fractions, oversize return, dust, rejects, electricity, and settings"
+      collection_method: "Campaign weighing, metering, and equipment log"
+      unit: "kg; kWh"
+      frequency: "Every campaign and presentation"
+      temporal_coverage: "Complete reporting period"
+      site_scope: "Every milling and sieving line in scope"
+      aggregation_rule: "Close mass balance separately by presentation"
+      quality_evidence: "Scale and meter verification plus equipment log"
+    - protocol_id: cp_sanitization_records
+      process_id: "product_sanitization"
+      flow_role: "Steam, dry heat, irradiation, or other identified treatment"
+      record_type: "treatment_batch_record"
+      raw_fields: "Technology, input/output mass, time-dose-temperature, utilities, rejects, and certificate"
+      collection_method: "Batch weighing and treatment-controller records"
+      unit: "kg; min; degC; treatment-specific dose; kWh; MJ"
+      frequency: "Every batch"
+      temporal_coverage: "Complete reporting period"
+      site_scope: "Every sanitization technology and line in scope"
+      aggregation_rule: "Keep technology routes separate and reconcile treated mass"
+      quality_evidence: "Treatment certificate, controller record, and scale verification"
+    - protocol_id: cp_cleaning_records
+      process_id: "equipment_cleaning"
+      flow_role: "Dry and wet equipment or room cleaning"
+      record_type: "cleaning_event_record"
+      raw_fields: "Event, area or equipment, water, chemical, waste, wastewater, and campaign assignment"
+      collection_method: "Controlled cleaning log, metering, and issue records"
+      unit: "event; m3; kg"
+      frequency: "Every event"
+      temporal_coverage: "Complete reporting period"
+      site_scope: "Every cleaned area and equipment item in scope"
+      aggregation_rule: "Normalize through documented campaign linkage"
+      quality_evidence: "Cleaning log, meter verification, and chemical issue record"
+    - protocol_id: cp_packaging_records
+      process_id: "packaging"
+      flow_role: "Filling and every packaging layer"
+      record_type: "packaging_issue_record"
+      raw_fields: "Net pepper, material identity, issued and returned mass, scrap, counts, and tare"
+      collection_method: "Calibrated weighing and material issue-return records"
+      unit: "kg; item"
+      frequency: "Every format and campaign"
+      temporal_coverage: "Complete reporting period"
+      site_scope: "Every packaging line and format in scope"
+      aggregation_rule: "Reconcile input to packed product plus scrap and returns"
+      quality_evidence: "Scale verification, packaging specification, and issue-return record"
+    - protocol_id: cp_storage_records
+      process_id: "finished_goods_storage"
+      flow_role: "Finished-goods storage and release"
+      record_type: "lot_release_record"
+      raw_fields: "Lot receipt, release mass, duration, conditions, losses, and release test"
+      collection_method: "Warehouse lot records and calibrated weighing"
+      unit: "kg; day; degC"
+      frequency: "Every lot"
+      temporal_coverage: "Complete reporting period"
+      site_scope: "Every finished-goods storage location in scope"
+      aggregation_rule: "Reconcile stored, rejected, lost, and released mass"
+      quality_evidence: "Warehouse record, release test, and scale verification"
+    - protocol_id: cp_refrigerant_records
+      process_id: "finished_goods_storage"
+      flow_role: "Each storage refrigerant chemical"
+      record_type: "equipment_charge_record"
+      raw_fields: "Equipment register, chemical label, opening and closing charge, additions, recovery, and service"
+      collection_method: "Equipment-level refrigerant mass balance"
+      unit: "kg"
+      frequency: "At least annually and every service"
+      temporal_coverage: "Complete reporting period"
+      site_scope: "Every refrigerated storage unit in scope"
+      aggregation_rule: "Close balance separately by equipment and chemical"
+      quality_evidence: "Equipment register, service record, and refrigerant invoice"
+  calculation_rules:
+    - id: calc_normalize_reference
+      applies_to: "All foreground exchanges"
+      rule: "Exchange per reference = campaign exchange / released net pepper mass"
+      inputs:
+        - "Exchange and released net mass from the same boundary and period"
+      output: "Exchange per 1 kg reference product"
+      source_ids: []
+    - id: calc_moisture_removed
+      applies_to: "Drying"
+      rule: "Water removed = wet input × moisture fraction in - dry output × moisture fraction out"
+      inputs:
+        - "Input/output mass and paired wet-basis moisture"
+      output: "kg water removed"
+      source_ids: []
+    - id: calc_dry_matter_balance
+      applies_to: "Wet treatment, depericarping, drying, and milling"
+      rule: "Dry-matter closure = (output dry matter + dry-matter wastes) / input dry matter"
+      inputs:
+        - "Paired masses and moisture for product and residues"
+      output: "Dimensionless closure ratio"
+      source_ids: []
+    - id: calc_wastewater_load
+      applies_to: "Each wastewater stream"
+      rule: "Pollutant load = matched wastewater volume × matched concentration"
+      inputs:
+        - "m3 wastewater and kg/m3 concentration"
+      output: "kg pollutant"
+      source_ids:
+        - azman-retting-water-2020
+    - id: calc_fuel_emissions
+      applies_to: "On-site fuel combustion"
+      rule: "Pollutant mass = fuel amount × lower heating value × identified pollutant factor, with unit conversion"
+      inputs:
+        - "Atomic fuel record"
+        - "heating value"
+        - "factor source"
+        - "and equipment scope"
+      output: "kg CO2, CH4, or N2O per pollutant row"
+      source_ids:
+        - ipcc-stationary-combustion-2006
+    - id: calc_refrigerant_loss
+      applies_to: "Refrigerated storage"
+      rule: "Loss = opening charge + additions - closing charge - recovered mass"
+      inputs:
+        - "Equipment- and chemical-specific charge records"
+      output: "kg refrigerant emitted to air"
+      source_ids:
+        - eu-pef-method-2021
+    - id: calc_packaging_mass
+      applies_to: "Packaging"
+      rule: "Consumed packaging = issued mass - verified unused return; reusable share uses measured mass divided by documented uses"
+      inputs:
+        - "Material identity"
+        - "issue/return"
+        - "measured mass"
+        - "and reuse history"
+      output: "kg of each packaging material"
+      source_ids: []
+    - id: calc_weighted_mix
+      applies_to: "Explicitly declared product mix"
+      rule: "Mixed exchange = sum of independently modelled route exchange × disclosed released-mass share"
+      inputs:
+        - "Route-specific datasets and shares summing to 1"
+      output: "Disclosed intentional product mix only"
+      source_ids:
+        - eu-pef-method-2021
+  data_quality_requirements:
+    - id: dq_identity
+      applies_to: "All foreground batches"
+      requirement: "Product and route gate is complete and linked to every foreground batch."
+      evidence: "Lot genealogy, declared gate vector, and product specification"
+    - id: dq_calibration
+      applies_to: "All measured exchanges"
+      requirement: "Mass, energy, water, temperature, and concentration measurements are traceable and fit for purpose."
+      evidence: "Calibration or verification record and instrument identity"
+    - id: dq_temporal
+      applies_to: "Reporting period"
+      requirement: "Data cover a representative contiguous period not exceeding 12 months unless seasonality requires a disclosed multi-period model."
+      evidence: "Period, production volume, downtime, and representativeness statement"
+    - id: dq_mass_moisture
+      applies_to: "Wet treatment, depericarping, drying, and milling"
+      requirement: "Wet mass and moisture are paired at comparable sample times and dry-matter closure is reviewed."
+      evidence: "Scale records, test method, sample time, and balance calculation"
+    - id: dq_route_completeness
+      applies_to: "Declared route vector"
+      requirement: "Every occurring conditional process and every actual carrier, material, chemical, waste, wastewater, refrigerant, and emission is represented atomically."
+      evidence: "Route walk-through, purchase and waste reconciliation, and zero/not-applicable justification"
+    - id: dq_emissions
+      applies_to: "Direct elementary emissions"
+      requirement: "Direct dust, fuel-combustion pollutants, and refrigerant losses use measured or transparent calculated records."
+      evidence: "Test report or input record, factor source, formula, units, and reviewer"
+    - id: dq_wastewater
+      applies_to: "Each wastewater stream"
+      requirement: "Wastewater volumes and concentration samples share a valid time and stream basis."
+      evidence: "Meter or tank balance, sampling plan, laboratory result, and destination"
+    - id: dq_packaging_refrigerant
+      applies_to: "Packaging and refrigerated storage"
+      requirement: "Package layers and refrigerant chemicals are identified separately and reconciled."
+      evidence: "Specifications, issue/return records, equipment register, and mass balances"
+    - id: dq_representativeness
+      applies_to: "Published dataset"
+      requirement: "Geography, technology, capacity, product class, presentation, and season match the declared dataset."
+      evidence: "Site and line description, campaign list, and deviation statement"
+    - id: dq_source_traceability
+      applies_to: "External values"
+      requirement: "Every external value retains a stable source, locator, applicability statement, and transformation."
+      evidence: "Source ID, URL or DOI, page/table/section, calculation, and access record"
+validation_rules:
+  - rule_id: val_identity_gate
+    applies_to: "Product identity and route selection"
+    rule: "Error: Every required gate has one declared value and the dataset scope matches CPC 3.0 23921 processed *Piper* pepper."
+    source_ids:
+      - un-cpc-v3
+      - codex-cxs-326-2017
+  - rule_id: val_reference_flow
+    applies_to: "Reference product object"
+    rule: "Error: processed_pepper_reference_output is exactly 1 kg net product with UUID 99d5d3c5-870f-458f-b492-a610d37c8034, Product flow, and Mass; packaging is excluded."
+    source_ids:
+      - un-cpc-v3
+  - rule_id: val_no_implicit_averaging
+    applies_to: "Mutually exclusive routes and forms"
+    rule: "Error: Product classes, presentations, wet treatments, depericarping, drying, sanitization, and packaging formats are separate or combined only with disclosed route datasets and weights."
+    source_ids:
+      - codex-cxs-326-2017
+      - ipc-pepper-standard-2015
+  - rule_id: val_process_gate
+    applies_to: "Required and conditional processes"
+    rule: "Error: All required processes and every triggered conditional process are present; map tokens are only required or conditional."
+    source_ids:
+      - ipc-pepper-standard-2015
+      - fao-spice-quality-assurance
+  - rule_id: val_atomic_flows
+    applies_to: "Atomic inventory"
+    rule: "Error: Every actual carrier, material, chemical, packaging material, waste, wastewater, refrigerant, and elementary emission has its own flow card; no grouped placeholder is used."
+    source_ids:
+      - fao-spice-quality-assurance
+      - ipcc-stationary-combustion-2006
+  - rule_id: val_only_reference_uuid
+    applies_to: "UUID ownership"
+    rule: "Error: The reference product flow is the only flow card with a UUID; all other flow UUIDs remain blank for author mapping."
+    source_ids:
+      - un-cpc-v3
+  - rule_id: val_mass_moisture_balance
+    applies_to: "Wet- and dry-matter closure"
+    rule: "Error: Process input, product, waste, and moisture records support reviewed wet-mass and dry-matter balances, with deviations explained."
+    source_ids:
+      - fao-spice-quality-assurance
+      - codex-cxs-326-2017
+  - rule_id: val_final_moisture
+    applies_to: "Released-product moisture"
+    rule: "Error: Final moisture is measured by a declared method and meets the declared applicable grade or buyer specification."
+    source_ids:
+      - codex-cxs-326-2017
+      - ipc-pepper-standard-2015
+  - rule_id: val_energy_separation
+    applies_to: "Energy carrier identity"
+    rule: "Error: Electricity, steam, hot water, natural gas, LPG, diesel, biomass, and any other actual carrier are separate and route-specific."
+    source_ids:
+      - eu-pef-method-2021
+  - rule_id: val_wastewater
+    applies_to: "Wet-route wastewater"
+    rule: "Error: Every wet-process and cleaning wastewater stream has separate volume, destination, and matched pollutant results when tested."
+    source_ids:
+      - azman-retting-water-2020
+      - fao-spice-quality-assurance
+  - rule_id: val_combustion_emissions
+    applies_to: "Fuel emissions"
+    rule: "Error: Each used on-site fuel has separate CO2, CH4, and N2O measurement or transparent fuel-specific calculation."
+    source_ids:
+      - ipcc-stationary-combustion-2006
+  - rule_id: val_packaging
+    applies_to: "Package layers and scrap"
+    rule: "Error: Every actual primary, secondary, and tertiary packaging material and its scrap is recorded separately and mass-reconciled."
+    source_ids:
+      - fao-spice-quality-assurance
+  - rule_id: val_refrigerants
+    applies_to: "Refrigerant identity and loss"
+    rule: "Error: Each actual refrigerant chemical has separate addition and air-emission cards with an equipment-level charge balance; ambient storage records zero and not applicable."
+    source_ids:
+      - eu-pef-method-2021
+  - rule_id: val_allocation
+    applies_to: "Allocation hierarchy"
+    rule: "Error: Subdivision is attempted first; any remaining physical or economic allocation has complete driver, formula, source, and sensitivity disclosure."
+    source_ids:
+      - eu-pef-method-2021
+  - rule_id: val_temporal_completeness
+    applies_to: "Period reconciliation"
+    rule: "Error: Input, output, utility, waste, wastewater, emission, packaging, and storage records cover the same representative production period."
+    source_ids:
+      - eu-pef-method-2021
+  - rule_id: val_source_closure
+    applies_to: "Evidence traceability"
+    rule: "Error: Every external method or number resolves to a listed Data Sources entry; each reasoned estimate is labelled with rationale, range, sensitivity, and provisional status."
+    source_ids:
+      - eu-pef-method-2021
+published_dataset_profile:
+  dataset_role: "Foreground processing dataset for a single declared processed-pepper product and route vector"
+  downstream_use: "May serve as secondary_dataset or background_dataset only when the consuming model matches its qualifiers and boundary"
+  allowed_use: "Exact or explicitly justified match for species/cultivar, class, presentation, starting state, wet treatment, depericarping, drying, sanitization, grade, moisture, packaging, geography, technology, and period"
+  excluded_use: "Unqualified generic pepper, implicit black/white/green mix, implicit whole/powder mix, undeclared wet or drying route, *Capsicum* pepper, or farm-gate raw pepper"
+  required_metadata: "Reference flow, gate vector, process map, period, geography, capacity, net output, final moisture, allocation, cut-offs, source IDs, uncertainty, and evidence gaps"
+  required_quality_disclosure: "Report primary-data share, measured versus calculated exchanges, reasoned estimates, mass/moisture closure, route representativeness, and unresolved gaps"
+  update_trigger: "Re-author when product class, presentation, supplier starting state, wet or depericarping route, dryer, sanitization, package format, site, or material data period changes materially"
+data_sources:
+  - id: "un-cpc-v3"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, Central Product Classification (CPC) Version 3.0, class 23921. https://unstats.un.org/unsd/classifications/Econ/CPC"
+    used_for: "Official classification identity and scope context for processed *Piper* pepper"
+  - id: "codex-cxs-326-2017"
+    type: "standard"
+    reference: "Codex Alimentarius, CXS 326-2017, Standard for Black, White and Green Peppers. https://www.fao.org/fao-who-codexalimentarius/sh-proxy/en/?lnk=1&url=https%253A%252F%252Fworkspace.fao.org%252Fsites%252Fcodex%252FStandards%252FCXS%2B326-2017%252FCXS_326e.pdf"
+    used_for: "Product classes, styles, quality and moisture specifications, and product release gate"
+  - id: "ipc-pepper-standard-2015"
+    type: "standard"
+    reference: "International Pepper Community, Pepper Standard Specifications, 2015, reproduced in Codex meeting document SC03/CRD07. https://www.fao.org/fao-who-codexalimentarius/sh-proxy/en/?lnk=1&url=https%3A%2F%2Fworkspace.fao.org%2Fsites%2Fcodex%2FMeetings%2FCX-736-03%2FCRD%2Fsc03_CRD07x.pdf"
+    used_for: "Processing operations, product styles, route decomposition, sampling, and quality controls"
+  - id: "fao-spice-quality-assurance"
+    type: "official_guidance"
+    reference: "FAO, Quality assurance for small-scale rural food industries, Chapter 3: Spice processing. https://www.fao.org/4/v5380e/v5380e09.htm"
+    used_for: "Washing, drying, cleaning, grading, grinding, packaging, dust control, lot records, and factory QA"
+  - id: "azman-retting-water-2020"
+    type: "literature"
+    reference: "Azman et al., “Evaluation of Various Soaking Agents as a Novel Tool for Heavy Metal Residues Mitigation from Pepper,” *Processes* 8(10), 1255 (2020). https://doi.org/10.3390/pr8101255 ; full text: https://psecommunity.org/wp-content/plugins/wpor/includes/file/2104/LAPSE-2021.0247-1v1.pdf"
+    used_for: "White-pepper retting water ratio and wastewater pH, COD, turbidity, and dissolved-oxygen evidence"
+  - id: "shango-pepper-quality-2021"
+    type: "literature"
+    reference: "Shango et al., “Post-harvest practices and loss assessment in pepper value chain,” *CABI Reviews* 16, 031 (2021). https://doi.org/10.1079/PAVSNNR202116031 ; full text: https://www.suaire.sua.ac.tz/server/api/core/bitstreams/4ec5af44-5ad3-410b-8f76-dc93e5d87340/content"
+    used_for: "Post-harvest unit operations, alternative white-pepper routes, drying, sorting, packaging, storage, and loss points"
+  - id: "fao-gi-control-plan-2009"
+    type: "official_guidance"
+    reference: "FAO, *Linking People, Places and Products*, control-plan guidance (2009). https://www.fao.org/4/i1057e/i1057e04.pdf"
+    used_for: "Measurable product and route qualifiers, traceability, and control-plan evidence"
+  - id: "eu-pef-method-2021"
+    type: "official_guidance"
+    reference: "European Commission Recommendation (EU) 2021/2279 on the use of the Environmental Footprint methods. https://eur-lex.europa.eu/eli/reco/2021/2279/2021-12-30/eng"
+    used_for: "System boundary, upstream linkage, subdivision, allocation hierarchy, data quality, and reporting"
+  - id: "ipcc-stationary-combustion-2006"
+    type: "method_factor"
+    reference: "IPCC, 2006 Guidelines for National Greenhouse Gas Inventories, Volume 2, Chapter 2: Stationary Combustion. https://www.ipcc-nggip.iges.or.jp/public/2006gl/pdf/2_Volume2/V2_2_Ch2_Stationary_Combustion.pdf"
+    used_for: "Fuel-separated CO2, CH4, and N2O calculation structure and factor traceability"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:5e919555e6e83226a6ecaafd42996621f88f1b0faf03f835c416a1a3e133129a"
+  generated_content_sha256: "sha256:6e41f25a53baa0ab5bb51d2b49d443dbc621036be836410c16a49ccfbdec92bf"

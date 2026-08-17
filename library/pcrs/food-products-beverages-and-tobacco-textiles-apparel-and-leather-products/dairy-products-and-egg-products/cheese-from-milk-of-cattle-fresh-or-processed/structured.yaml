@@ -1,10 +1,768 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "22251"
-  title: "Cheese from milk of cattle, fresh or processed"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.food-products-beverages-and-tobacco-textiles-apparel-and-leather-products.dairy-products-and-egg-products.cheese-from-milk-of-cattle-fresh-or-processed"
+  classification_refs: "CPC 3.0 22251, Cheese from milk of cattle, fresh or processed"
+  covered_products: "cattle-milk fresh/unripened cheese, ripened and mould-ripened cheese, cheese curd, whey cheese marketed as cheese, grated or powdered cheese, and processed cheese"
+  excluded_products: "cheese solely from non-cattle milk; plant-based analogues; butter; milk or whey powders; whey streams not marketed as cheese; mixed-species cheese without separable cattle-milk inventory"
+  representative_product: "finished cattle-milk cheese at the manufacturing plant gate"
+  production_route: "route-specific natural/fresh cheese manufacture or processed-cheese manufacture, including applicable finishing, packaging, cold storage, cleaning, and wastewater operations"
+  market_state: "finished product, manufactured, packaged or unpackaged as declared, ready for dispatch at plant gate"
+functional_unit:
+  what: "finished cheese from milk of cattle produced by the declared fresh, natural/ripened, or processed-cheese route"
+  how_much: "1 kg net cheese product"
+  how_well: "conforms to the declared cheese specification, cattle-milk origin, product form, moisture/fat basis, ripening state, ingredient formulation, and packaging state"
+  how_long_or_cycle: "one production batch through the plant gate; the full declared ripening or holding period is included when applicable"
+  reference_flow_link: "finished_cattle_milk_cheese"
+system_boundary:
+  rules:
+    - rule_id: boundary_route_operations
+      applies_to: "foreground manufacturing"
+      rule: "Include every unit operation performed at the reporting plant from dairy-input receipt through dispatch-ready cheese, including route-specific milk preparation, coagulation, curd treatment, drainage, salting, pressing, ripening, processing, drying, packaging, refrigeration, cleaning, and on-site wastewater handling."
+      source_ids:
+        - us-epa-ap42-9-6-1-cheese
+    - rule_id: boundary_product_identity
+      applies_to: "product inclusion"
+      rule: "Confirm that the output is cheese made from cattle milk or cattle-milk products and disclose whether it is fresh/unripened, ripened, mould-ripened, whey cheese, grated/powdered, or processed."
+      source_ids:
+        - codex-cxs-283-1978-2024
+    - rule_id: boundary_upstream_links
+      applies_to: "purchased inputs"
+      rule: "Keep farm milk production and manufacture of purchased materials outside the foreground gate but link representative upstream datasets; do not treat an omitted upstream dataset as zero burden."
+      source_ids:
+        - eu-2021-2279-environmental-footprint
+    - rule_id: boundary_whey_recovery
+      applies_to: "whey and acid whey"
+      rule: "Record separated whey and its destination; include on-site concentration, drying, reuse, feed preparation, or wastewater routing when performed at the plant."
+      source_ids:
+        - us-epa-ap42-9-6-1-cheese
+        - eu-2019-2031-fdm-bat
+boundary_abstraction:
+  declared_starting_condition: "cattle milk or cattle-milk cheese received at the manufacturing plant, with mass, composition, temperature, origin, and upstream dataset reference declared"
+  starting_condition_role: "purchased dairy input and foreground plant-gate starting condition"
+  product_classification_scope: "cattle-milk cheese matching CPC 3.0 22251 and the declared cheese specification"
+  recursive_input_rule: "a cattle-milk cheese input used to make processed cheese remains an explicit technosphere input and links to its own upstream dataset; this PCR is not recursively reapplied inside the same foreground process"
+  upstream_dataset_requirement: "link cattle milk, natural cheese, ingredients, packaging, electricity, fuel, water supply, and waste treatment to representative upstream datasets for the declared geography and technology"
+  disclosure: "declare route, plant location, reporting period, dairy-input origin and composition, product form, ripening/holding time, packaging state, co-product destinations, excluded operations, and proxy datasets"
+reference_flow_definition:
+  reference_amount: "1 kg"
+  product_flow_ref:
+    name: "Cheese from milk of cattle, fresh or processed"
+    uuid: "221efbce-690d-492b-9d15-79d0ac862e35"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "cattle-milk share"
+    - "fresh/unripened"
+    - ripened
+    - mould-ripened
+    - grated
+    - powdered
+    - whey-cheese
+    - "or processed form"
+    - "milk heat-treatment state"
+    - "moisture or fat-in-dry-matter basis"
+    - "ripening duration and conditions"
+    - "ingredient and additive formulation"
+    - "packaged/unpackaged state"
+    - "packaging materials"
+    - "manufacturing geography"
+    - "plant-gate condition"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Express the reference output as net kg of finished cheese at the declared plant gate; exclude transport packaging not sold with the product from the product mass."
+  - id: ingredient_mass_basis
+    applies_to: "milk, cheese, whey, ingredients, salt, cleaning chemicals, packaging, and solid wastes"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Record wet mass as received and disclose dry-matter, fat, protein, or concentration basis whenever that basis affects yield, allocation, or comparability."
+  - id: energy_conversion
+    applies_to: "purchased electricity, fuel, steam, and thermal energy"
+    required_property_ref:
+      name: "Energy"
+      uuid: ""
+    required_unit: "kWh or MJ"
+    rule: "Preserve the measured carrier and unit; use 1 kWh = 3.6 MJ only for reported conversion and do not combine electricity and thermal energy before carrier-specific upstream datasets are linked."
+  - id: water_volume_mass_conversion
+    applies_to: "process water and wastewater"
+    required_property_ref:
+      name: "Volume or Mass"
+      uuid: ""
+    required_unit: "m3 or kg"
+    rule: "Preserve metered volume; if converted to mass, declare density and temperature assumptions. Annual BAT comparisons remain per tonne of raw materials and must not be relabelled as per tonne of cheese."
+process_map:
+  - id: natural_cheese_manufacture
+    name: "Natural or fresh cheese manufacture"
+    inclusion: "conditional"
+    inclusion_condition: "include for cheese made from cattle milk by coagulation and curd/whey separation"
+    role: "foreground production"
+    quantitative_reference: "1 kg finished natural, fresh, ripened, whey, grated, or powdered cheese"
+  - id: processed_cheese_manufacture
+    name: "Processed-cheese manufacture"
+    inclusion: "conditional"
+    inclusion_condition: "include when natural cheese is cleaned, blended, melted, emulsified, or otherwise processed"
+    role: "foreground production"
+    quantitative_reference: "1 kg finished processed cheese"
+  - id: site_utilities_cleaning_and_dispatch
+    name: "Site utilities, cleaning, packaging, cold storage, and dispatch"
+    inclusion: "required"
+    inclusion_condition: "include operations attributable to the declared product and reporting period"
+    role: "foreground support and finishing"
+    quantitative_reference: "1 kg finished cheese at plant gate"
+process_inventory:
+  - id: natural_cheese_manufacture
+    label: "Natural or fresh cheese manufacture"
+    inputs:
+      product:
+        - row_id: cattle_milk_input
+          role: "Cattle milk received for cheesemaking"
+          name: "Raw milk of cattle"
+          flow_type: "product"
+          flow_ref:
+            uuid: "aa8aebbb-724a-417b-8372-2dccd499ce71"
+          property_unit: "Mass / kg"
+          description: "Record cattle milk crossing the plant boundary, including accepted and rejected loads, composition, temperature, and upstream dataset identity."
+          amount:
+            expression: "measured accepted cattle-milk mass normalized to finished cheese output"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg finished cheese from the natural/fresh route"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_natural_route_batch_balance
+              source_ids:
+                - codex-cxs-283-1978-2024
+            ranges:
+              - role: qa_guardrail
+                lower: "5"
+                upper: "20"
+                unit: "kg cattle milk/kg finished cheese"
+                basis: "per kg finished cheese from the natural/fresh route"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: cheesemaking_ingredients
+          role: "Starter, rennet, salt, and route-specific ingredients"
+          name: "Rennet (chymosin) ; separate selected flows for cultures, salt, water, and other ingredients"
+          flow_type: "product"
+          flow_ref:
+            uuid: "d71ffeab-e448-497c-9246-30967da0da78"
+          property_unit: "Mass / kg"
+          description: "Record each ingredient separately in the data package even when this PCR groups their collection rule. Product specifications determine which cultures, enzymes, salts, water, and permitted ingredients apply."
+          amount:
+            expression: "measured quantity of each ingredient issued to the batch, with concentration and active-content basis disclosed where relevant"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg finished cheese from the natural/fresh route"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_natural_route_batch_balance
+              source_ids:
+                - codex-cxs-283-1978-2024
+                - us-epa-ap42-9-6-1-cheese
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: finished_cattle_milk_cheese
+          role: "Finished cattle-milk cheese"
+          name: "Cheese from milk of cattle, fresh or processed"
+          flow_type: "product"
+          flow_ref:
+            uuid: "221efbce-690d-492b-9d15-79d0ac862e35"
+          property_unit: "Mass / kg"
+          description: "Record net conforming product mass after the full declared route, including ripening, drying, or grating losses when those operations occur before the plant gate."
+          amount:
+            expression: "fixed reference output supported by measured batch yield"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_natural_route_batch_balance
+              source_ids: []
+            ranges: []
+        - row_id: whey_coproduct
+          role: "Separated whey or recovered whey product"
+          name: "Whey"
+          flow_type: "product"
+          flow_ref:
+            uuid: "7ee9083e-5a51-476e-b96f-1501752e169a"
+          property_unit: "Mass / kg"
+          description: "Record wet whey mass, solids content, destination, and whether it is sold, internally processed, fed, digested, or treated as wastewater."
+          amount:
+            expression: "measured or mass-balance-calculated whey leaving curd separation"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg finished cheese from the natural/fresh route"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_natural_route_batch_balance
+              source_ids:
+                - us-epa-ap42-9-6-1-cheese
+                - eu-2019-2031-fdm-bat
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "20"
+                unit: "kg wet whey/kg finished cheese"
+                basis: "per kg finished cheese from the natural/fresh route; zero applies only when no separable whey stream exists"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        - row_id: natural_route_solid_loss
+          role: "Off-spec curd, cheese losses, and unrecovered solids"
+          name: "route- and destination-specific waste flow"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Keep food-grade co-products separate from waste. Record off-spec solids and their destination only when they are not recovered as a product."
+          amount:
+            expression: "measured rejects, trimmings, floor loss, and unrecovered product solids"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg finished cheese from the natural/fresh route"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_natural_route_batch_balance
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.2"
+                unit: "kg/kg finished cheese"
+                basis: "per kg finished cheese from the natural/fresh route"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        []
+  - id: processed_cheese_manufacture
+    label: "Processed-cheese manufacture"
+    inputs:
+      product:
+        - row_id: natural_cheese_input
+          role: "Natural cattle-milk cheese for processing"
+          name: "Cheese from milk of cattle, fresh or processed"
+          flow_type: "product"
+          flow_ref:
+            uuid: "221efbce-690d-492b-9d15-79d0ac862e35"
+          property_unit: "Mass / kg"
+          description: "Record each natural-cheese input and link its upstream dataset without recursively embedding this PCR in the processed-cheese foreground process."
+          amount:
+            expression: "measured natural-cheese mass charged to the processed-cheese batch"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg finished processed cheese"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_processed_route_batch_balance
+              source_ids:
+                - us-epa-ap42-9-6-1-cheese
+            ranges:
+              - role: qa_guardrail
+                lower: "0.5"
+                upper: "1.5"
+                unit: "kg natural cheese/kg finished processed cheese"
+                basis: "per kg finished processed cheese"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: processed_cheese_ingredients
+          role: "Added dairy materials, water, emulsifying salts, and other ingredients"
+          name: "separate route-specific product flows for each formulation component"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record every formulation component separately with concentration and dry-matter basis. Do not infer permitted ingredients from this PCR; use the applicable product specification and jurisdiction."
+          amount:
+            expression: "measured batch formulation quantity for each component"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg finished processed cheese"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_processed_route_batch_balance
+              source_ids:
+                - us-epa-ap42-9-6-1-cheese
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: finished_processed_cheese
+          role: "Finished processed cattle-milk cheese"
+          name: "Cheese from milk of cattle, fresh or processed"
+          flow_type: "product"
+          flow_ref:
+            uuid: "221efbce-690d-492b-9d15-79d0ac862e35"
+          property_unit: "Mass / kg"
+          description: "Record net conforming processed cheese after blending, melting/emulsification, forming, cooling, and any in-line packaging included in the route."
+          amount:
+            expression: "fixed reference output supported by measured batch yield"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_processed_route_batch_balance
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: processed_route_solid_loss
+          role: "Processed-cheese trimmings and off-spec product"
+          name: "route- and destination-specific waste flow"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record cleaned rinds, trimmings, start-up losses, and off-spec product by destination; exclude internally reworked material from waste and disclose rework."
+          amount:
+            expression: "measured non-reworked solid loss"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg finished processed cheese"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_processed_route_batch_balance
+              source_ids:
+                - us-epa-ap42-9-6-1-cheese
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.2"
+                unit: "kg/kg finished processed cheese"
+                basis: "per kg finished processed cheese"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        []
+  - id: site_utilities_cleaning_and_dispatch
+    label: "Site utilities, cleaning, packaging, cold storage, and dispatch"
+    inputs:
+      product:
+        - row_id: site_energy_input
+          role: "Purchased electricity and thermal energy"
+          name: "geography- and carrier-specific electricity, fuel, or steam flow"
+          flow_type: "product"
+          property_unit: "Energy / kWh or MJ"
+          description: "Record electricity, fuels, purchased steam, and recovered heat as separate carriers. Allocate shared site utilities using metering or a documented causal driver."
+          amount:
+            expression: "metered or invoice-reconciled carrier-specific use attributable to the declared cheese route"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg finished cheese at plant gate"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_site_utility_records
+              source_ids:
+                - eu-2019-2031-fdm-bat
+            ranges:
+              - role: qa_guardrail
+                lower: "0.01"
+                upper: "5"
+                unit: "kWh-equivalent/kg finished cheese"
+                basis: "broad screening range only; electricity and thermal carriers remain separate in the inventory"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: site_water_input
+          role: "Process and cleaning water"
+          name: "geography- and source-specific water supply flow"
+          flow_type: "product"
+          property_unit: "Mass or Volume / kg or m3"
+          description: "Record product water, brine make-up, cooling water make-up, cleaning-in-place water, and other water uses separately when meters or engineering balances permit."
+          amount:
+            expression: "metered water intake minus demonstrably unrelated site uses"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg finished cheese at plant gate"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cleaning_water_wastewater_records
+              source_ids:
+                - eu-2019-2031-fdm-bat
+            ranges:
+              - role: qa_guardrail
+                lower: "0.1"
+                upper: "20"
+                unit: "kg water/kg finished cheese"
+                basis: "per kg finished cheese at plant gate"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: packaging_material_input
+          role: "Packaging materials supplied at plant"
+          name: "material- and geography-specific packaging flow"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record each primary, secondary, and tertiary packaging material by material type and distinguish reusable transport packaging."
+          amount:
+            expression: "packaging bill of materials reconciled to packed product output"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg packaged finished cheese; zero for declared unpackaged product"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_records
+              source_ids:
+                - us-epa-ap42-9-6-1-cheese
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.5"
+                unit: "kg packaging/kg finished cheese"
+                basis: "per kg finished cheese at plant gate"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: site_wastewater_output
+          role: "Cheese-plant wastewater sent to treatment"
+          name: "treatment- and destination-specific wastewater flow"
+          flow_type: "waste"
+          property_unit: "Volume or Mass / m3 or kg"
+          description: "Record wastewater volume or mass, destination, and measured pollutant data; keep recovered whey and saleable solids out of wastewater."
+          amount:
+            expression: "metered discharge or validated water balance, net of separately reused water"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg finished cheese at plant gate"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cleaning_water_wastewater_records
+              source_ids:
+                - eu-2019-2031-fdm-bat
+            ranges:
+              - role: qa_guardrail
+                lower: "0.1"
+                upper: "20"
+                unit: "kg wastewater/kg finished cheese"
+                basis: "per kg finished cheese at plant gate"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: site_support_waste
+          role: "Packaging and cleaning wastes"
+          name: "material- and treatment-specific waste flow"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record discarded packaging, spent filters, cleaning-agent containers, and sludge by treatment destination; do not merge them with wastewater or product losses."
+          amount:
+            expression: "measured or waste-contractor-recorded mass by waste class"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg finished cheese at plant gate"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cleaning_water_wastewater_records
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.5"
+                unit: "kg/kg finished cheese"
+                basis: "per kg finished cheese at plant gate"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        - row_id: direct_site_emissions
+          role: "Direct refrigerant and on-site combustion emissions"
+          name: "substance- and compartment-specific elementary flow"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record refrigerant losses and measured or calculated on-site combustion emissions as separate elementary flows with the selected refrigerant or fuel-specific emission factor."
+          amount:
+            expression: "refrigerant inventory balance and fuel-specific monitored or calculated emissions"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg finished cheese at plant gate"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_site_utility_records
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.1"
+                unit: "kg substance/kg finished cheese"
+                basis: "broad screening range requiring substance-specific replacement"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+allocation_rules:
+  - rule_id: allocation_avoid_first
+    applies_to: "multifunctional plant and shared operations"
+    rule: "Avoid allocation where possible by unit-process subdivision, route-specific metering, or system expansion; collect inventory only for operations directly attributable to the declared cheese when subdivision is feasible."
+    source_ids:
+      - eu-2021-2279-environmental-footprint
+  - rule_id: allocation_physical_relation
+    applies_to: "inseparable cheese, whey, cream, and other co-products"
+    rule: "If allocation cannot be avoided, use a documented causal physical relationship relevant to the co-product functions; do not select wet mass solely because it is convenient."
+    source_ids:
+      - eu-2021-2279-environmental-footprint
+  - rule_id: allocation_other_relation
+    applies_to: "multifunctional output without defensible physical relation"
+    rule: "If no relevant physical relationship can be demonstrated, use an explicitly justified other relationship such as economic allocation, disclose price geography and averaging period, and provide a sensitivity result for material co-products."
+    source_ids:
+      - eu-2021-2279-environmental-footprint
+  - rule_id: allocation_whey_status
+    applies_to: "separated whey and acid whey"
+    rule: "Classify recovered whey as a co-product when it has a further use or market destination and record its amount and destination; classify it as waste only when discarded to treatment under the declared conditions."
+    source_ids:
+      - eu-2019-2031-fdm-bat
+      - us-epa-ap42-9-6-1-cheese
+  - rule_id: allocation_rework
+    applies_to: "internal rework"
+    rule: "Return internally reworked cheese or curd to the batch mass balance without creating a co-product credit; disclose the rework quantity and associated additional utilities."
+    source_ids: []
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_natural_route_batch_balance
+      process_id: "natural_cheese_manufacture"
+      flow_role: "dairy inputs, ingredients, cheese, whey, and solid losses"
+      record_type: "batch production and laboratory records"
+      raw_fields: "batch id; cattle-milk kg; composition; ingredient kg; cheese kg; whey kg; reject kg; moisture/FDM; timestamps"
+      collection_method: "calibrated tanks/scales reconciled with batch sheets and laboratory results"
+      unit: "kg and composition units"
+      frequency: "each batch"
+      temporal_coverage: "representative continuous 12-month period or all batches in declared campaign"
+      site_scope: "all included natural/fresh cheese lines"
+      aggregation_rule: "sum accepted flows by product, apply rework consistently, and normalize to conforming cheese kg"
+      quality_evidence: "meter/scale calibration, batch reconciliation, laboratory methods, and signed yield review"
+    - protocol_id: cp_processed_route_batch_balance
+      process_id: "processed_cheese_manufacture"
+      flow_role: "natural cheese, formulation ingredients, finished product, and losses"
+      record_type: "formulation and batch records"
+      raw_fields: "batch id; input cheese kg; component kg; rework kg; output kg; reject kg; formulation; timestamps"
+      collection_method: "calibrated scales and recipe system reconciled to packed output"
+      unit: "kg"
+      frequency: "each batch"
+      temporal_coverage: "representative continuous 12-month period or all batches in declared campaign"
+      site_scope: "all included processed-cheese lines"
+      aggregation_rule: "sum non-reworked inputs and outputs by product and normalize to conforming output kg"
+      quality_evidence: "scale calibration, approved formulation, batch reconciliation, and release record"
+    - protocol_id: cp_site_utility_records
+      process_id: "site_utilities_cleaning_and_dispatch"
+      flow_role: "electricity, fuels, steam, refrigeration, and direct emissions"
+      record_type: "meter, invoice, fuel, and refrigerant records"
+      raw_fields: "carrier; meter id; quantity; unit; period; allocation driver; refrigerant charge/addition/recovery"
+      collection_method: "calibrated submeter where available, otherwise invoice reconciliation and documented engineering allocation"
+      unit: "kWh; MJ; kg"
+      frequency: "monthly with annual reconciliation"
+      temporal_coverage: "same period as production data, normally 12 consecutive months"
+      site_scope: "included plant and attributable shared services"
+      aggregation_rule: "subtract unrelated loads, allocate shared loads by causal driver, and normalize by product output"
+      quality_evidence: "meter calibration, invoice totals, fuel records, and refrigerant service logs"
+    - protocol_id: cp_cleaning_water_wastewater_records
+      process_id: "site_utilities_cleaning_and_dispatch"
+      flow_role: "water, cleaning chemicals, wastewater, and support waste"
+      record_type: "meter, chemical issue, discharge, and waste-contractor records"
+      raw_fields: "water source; intake; reuse; discharge; cleaning chemical kg; COD/BOD/TSS where available; waste class; destination; period"
+      collection_method: "meters and invoices reconciled by water balance; representative effluent sampling"
+      unit: "m3; kg; mg/L"
+      frequency: "daily or batch capture with monthly aggregation"
+      temporal_coverage: "same period as production data, normally 12 consecutive months"
+      site_scope: "included plant and attributable wastewater system"
+      aggregation_rule: "water intake - reusable/product water = discharge + evaporation/other documented losses; normalize by raw-material and cheese mass"
+      quality_evidence: "meter calibration, balance closure, sampling plan, laboratory accreditation, and disposal receipts"
+    - protocol_id: cp_packaging_records
+      process_id: "site_utilities_cleaning_and_dispatch"
+      flow_role: "primary, secondary, and tertiary packaging"
+      record_type: "packaging bill of materials and issue records"
+      raw_fields: "packaging item; material; unit mass; units issued; returns; product kg"
+      collection_method: "approved bill of materials reconciled with warehouse issues and packed output"
+      unit: "kg"
+      frequency: "each packaging specification and monthly issue reconciliation"
+      temporal_coverage: "same period as packed production"
+      site_scope: "all packaging supplied with or used to dispatch the declared product"
+      aggregation_rule: "net packaging issued less reusable returns, divided by packed product kg"
+      quality_evidence: "supplier specification, unit-mass check, and warehouse reconciliation"
+  calculation_rules:
+    - id: normalize_batch_flows
+      applies_to: "each route-specific inventory row"
+      rule: "normalized amount = included flow amount / conforming finished cheese amount"
+      inputs:
+        - "batch or period flow record"
+        - "conforming output kg"
+      output: "flow amount per 1 kg finished cheese"
+      source_ids: []
+    - id: close_dairy_mass_balance
+      applies_to: "natural and processed routes"
+      rule: "compare dairy and ingredient inputs with cheese, whey, recovered products, wastewater solids, wastes, evaporation, samples, and inventory change; investigate unexplained imbalance before release"
+      inputs:
+        - "all mass records from route protocol"
+      output: "mass-balance closure and unexplained difference"
+      source_ids:
+        - codex-cxs-283-1978-2024
+        - us-epa-ap42-9-6-1-cheese
+    - id: calculate_bat_energy_indicator
+      applies_to: "cheese-dominant installation"
+      rule: "annual carrier energy converted to MWh / annual tonnes of raw materials; compare 0.10-0.22 MWh/t raw materials only when cheese is at least 80% of production and the BAT applicability note is met"
+      inputs:
+        - "annual energy by carrier"
+        - "annual raw-material tonnes"
+      output: "contextual BAT energy indicator and variance explanation"
+      source_ids:
+        - eu-2019-2031-fdm-bat
+    - id: calculate_bat_wastewater_indicator
+      applies_to: "cheese-dominant installation"
+      rule: "annual wastewater discharge m3 / annual tonnes of raw materials; compare 0.75-2.5 m3/t raw materials only when cheese is at least 80% of production"
+      inputs:
+        - "annual wastewater discharge"
+        - "annual raw-material tonnes"
+      output: "contextual BAT wastewater indicator and variance explanation"
+      source_ids:
+        - eu-2019-2031-fdm-bat
+    - id: calculate_allocation_factors
+      applies_to: "multifunctional operations"
+      rule: "allocation factor = declared causal physical quantity or other justified allocation variable for each co-product / sum of that variable across co-products"
+      inputs:
+        - "co-product quantities"
+        - "physical-property or price evidence"
+      output: "allocation factors summing to 1 for the allocated burden"
+      source_ids:
+        - eu-2021-2279-environmental-footprint
+  data_quality_requirements:
+    - id: dq_product_identity
+      applies_to: "reference product and route"
+      requirement: "Retain product specification, cattle-milk share, formulation, fresh/ripened/processed status, moisture or FDM basis, ripening duration, and packaging state."
+      evidence: "approved specification, label, formulation, and release record"
+    - id: dq_mass_balance
+      applies_to: "dairy inputs, cheese, whey, and wastes"
+      requirement: "Use calibrated measurements and reconcile at batch or reporting-period level; explain material stock changes, evaporation, rework, and unexplained loss."
+      evidence: "calibration records, batch sheets, inventory records, and signed reconciliation"
+    - id: dq_temporal_coverage
+      applies_to: "all foreground records"
+      requirement: "Use the same representative period for inputs, outputs, utilities, and wastes; normally cover 12 consecutive months or disclose a shorter complete campaign and its seasonality limitation."
+      evidence: "data-period register and production calendar"
+    - id: dq_shared_services
+      applies_to: "utilities, cleaning, cold storage, and wastewater"
+      requirement: "Prefer submeters; when allocation is required, retain the causal driver and uncertainty or sensitivity evidence."
+      evidence: "meter map, engineering calculation, and allocation review"
+    - id: dq_upstream_identity
+      applies_to: "purchased flows and waste treatment"
+      requirement: "Record supplier, geography, technology, dataset identity, and proxy justification for every material upstream or treatment link."
+      evidence: "supplier and dataset mapping register"
+    - id: dq_source_ranges
+      applies_to: "provisional ranges"
+      requirement: "Treat every reasoned_estimate range as a replaceable QA screen, not as a default inventory value or publication-critical allowed range."
+      evidence: "review log showing replacement or explicit acceptance before publication"
+validation_rules:
+  - rule_id: validate_reference_flow
+    applies_to: "reference product"
+    rule: "Confirm exactly 1 kg net finished cheese uses product flow 221efbce-690d-492b-9d15-79d0ac862e35, Mass property 93a60a56-a3c8-11da-a746-0800200b9a66, Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66, and unit kg."
+    source_ids: []
+  - rule_id: validate_route_and_qualifiers
+    applies_to: "dataset identity"
+    rule: "Reject conformance when cattle-milk share, product form, route, moisture/FDM basis, ripening condition, formulation, packaging state, geography, or plant gate is missing."
+    source_ids:
+      - codex-cxs-283-1978-2024
+  - rule_id: validate_process_completeness
+    applies_to: "foreground process inventory"
+    rule: "Require one applicable cheese-manufacturing route plus site utilities/cleaning/dispatch; every performed route operation and every material input, co-product, waste, and direct emission must be represented or explicitly justified as not applicable."
+    source_ids:
+      - us-epa-ap42-9-6-1-cheese
+  - rule_id: validate_whey_and_allocation
+    applies_to: "whey and other co-products"
+    rule: "Require amount, composition basis, destination, product/waste classification, allocation decision, and allocation-factor sum; do not accept zero-burden recovered whey or undocumented economic allocation."
+    source_ids:
+      - eu-2019-2031-fdm-bat
+      - eu-2021-2279-environmental-footprint
+  - rule_id: validate_bat_context
+    applies_to: "cheese-dominant installation"
+    rule: "When applicability conditions are met, report—not silently convert—the annual energy and wastewater indicators per tonne raw materials and explain values outside 0.10-0.22 MWh/t and 0.75-2.5 m3/t respectively; these indicative values are QA context, not product-output limits."
+    source_ids:
+      - eu-2019-2031-fdm-bat
+  - rule_id: validate_provisional_ranges
+    applies_to: "reasoned-estimate ranges"
+    rule: "Flag each provisional range for replacement or explicit methodology review; never substitute the range midpoint for missing foreground data."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "unit_process foreground data package"
+  downstream_use: "secondary_dataset; background_dataset"
+  allowed_use: "modelling cattle-milk cheese manufactured by a route, geography, product form, composition, ripening condition, and packaging state matching the dataset disclosures"
+  excluded_use: "non-cattle cheese; plant-based analogues; farm-gate milk production; retail or consumer-stage claims; comparative assertions across unlike cheese forms without functional and compositional adjustment"
+  required_metadata: "PCR id; reference-flow UUIDs; product and route qualifiers; plant geography; reporting period; raw-material origin; process map; upstream dataset links; allocation method; co-product destinations; packaging state; data-quality evidence"
+  required_quality_disclosure: "temporal and site coverage; measurement and balance closure; shared-service allocation; proxy datasets; missing flow UUIDs; provisional ranges; BAT indicator applicability and variance explanations"
+  update_trigger: "material change in formulation, milk origin, product form, process technology, ripening/holding, packaging, energy or water system, co-product destination, allocation method, geography, or data quality"
+data_sources:
+  - id: "codex-cxs-283-1978-2024"
+    type: "standard"
+    reference: "FAO/WHO Codex Alimentarius, General Standard for Cheese, CXS 283-1978, amended 2024, https://www.fao.org/fao-who-codexalimentarius/sh-proxy/en/?lnk=1&url=https%3A%2F%2Fworkspace.fao.org%2Fsites%2Fcodex%2FStandards%2FCXS+283-1978%2FCXS_283e.pdf (retrieved 2026-08-10)"
+    used_for: "product identity, raw materials, permitted ingredients, cheese form, and mass-balance context"
+  - id: "us-epa-ap42-9-6-1-cheese"
+    type: "official_guidance"
+    reference: "United States Environmental Protection Agency, AP-42 Section 9.6.1 Natural and Processed Cheese, Supplement C, August 1997, https://www.epa.gov/sites/default/files/2020-10/documents/c9s06-1.pdf (retrieved 2026-08-10)"
+    used_for: "natural and processed cheese process decomposition, whey handling, packaging, and emission points"
+  - id: "eu-2019-2031-fdm-bat"
+    type: "standard"
+    reference: "Commission Implementing Decision (EU) 2019/2031, BAT conclusions for the food, drink and milk industries, https://eur-lex.europa.eu/eli/dec_impl/2019/2031/oj (retrieved 2026-08-10)"
+    used_for: "cheese-site energy and wastewater contextual indicators and whey recovery rules"
+  - id: "eu-2021-2279-environmental-footprint"
+    type: "official_guidance"
+    reference: "Commission Recommendation (EU) 2021/2279 on the use of the Environmental Footprint methods, https://eur-lex.europa.eu/eli/reco/2021/2279/oj (retrieved 2026-08-10)"
+    used_for: "system-boundary linkage, allocation hierarchy, and allocation-factor evidence"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:437ac1331e3f8623bd0256d0a0c65c3929609da33c698004524a4341e4392fa2"
+  generated_content_sha256: "sha256:a741112260fa5576108a4a4e65e49f14aa803f377cdac65bfca88651a903569b"

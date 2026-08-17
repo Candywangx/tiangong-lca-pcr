@@ -1,10 +1,925 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "22270"
-  title: "Ice cream and other edible ice"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.food-products-beverages-and-tobacco-textiles-apparel-and-leather-products.dairy-products-and-egg-products.ice-cream-and-other-edible-ice"
+  classification_refs: "CPC 3.0: 22270, Ice cream and other edible ice (exact)"
+  covered_products: "Dairy ice cream and frozen dairy desserts; plant-based frozen edible desserts; water-based edible ices including sorbet, flavoured ice, water ice, and frozen novelties; products with declared cocoa, fruit, nut, confectionery, sauce, or similar inclusions"
+  excluded_products: "Ice for cooling or industrial use; unfrozen dairy beverages; unfrozen yoghurt or fermented milk; food-service preparation or sale; products outside the declared frozen edible-dessert function"
+  representative_product: "Ice cream is the representative dairy form. It is not a silent proxy for every covered formulation: water-based, plant-based, soft-serve, novelty, and other variants must declare their actual identity and use a more specific public Tiangong flow when one exists."
+  production_route: "Ingredient receipt and formulation; blending; validated hazard control where required; optional homogenization and conditioning; freezing and optional aeration; optional inclusion addition; filling and packaging; hardening or equivalent frozen stabilization; on-site frozen storage; cleaning and wastewater handling"
+  market_state: "Finished frozen edible product, packaged or bulk as declared, at the factory gate after hardening or equivalent stabilization and any included on-site storage"
+functional_unit:
+  what: "A finished frozen edible-dessert product of the declared product family and formulation, ready for dispatch from the manufacturing site"
+  how_much: "1 kg net edible product, excluding primary, secondary, and tertiary packaging mass"
+  how_well: "Meets the declared composition, sensory and microbiological release specification, overrun or density specification where aerated, inclusion specification, and frozen-state release criteria"
+  how_long_or_cycle: "At the factory gate after the declared hardening or frozen-stabilization step and declared on-site frozen-storage duration; no consumer service life is represented"
+  reference_flow_link: "reference_product_ice_cream"
+system_boundary:
+  rules:
+    - rule_id: system_boundary_01
+      applies_to: "Foreground manufacturing"
+      rule: "Include ingredient receipt and preparation, formulation and blending, required hazard control, freezing and finishing, filling and packaging, hardening or equivalent stabilization, included on-site frozen storage, cleaning, and on-site waste and wastewater handling."
+      source_ids:
+        - uoguelph-ice-cream-manufacture
+        - codex-cxc-57-2004
+        - konstantas-et-al-2019
+    - rule_id: system_boundary_02
+      applies_to: "Upstream inputs"
+      rule: "Represent ingredient, packaging, energy, water, refrigerant, and off-site treatment burdens through specific upstream datasets; do not treat them as burden-free because only manufacturing is foreground."
+      source_ids:
+        - ec-jrc-fdm-bref-2019
+        - konstantas-et-al-2019
+    - rule_id: system_boundary_03
+      applies_to: "Product variants"
+      rule: "Apply formulation- and technology-specific steps. A dairy heat-treatment and homogenization sequence must not be silently assigned to a water-based ice, and a dairy or egg input must not be inferred for a plant-based product. Any omitted common step requires a route justification."
+      source_ids:
+        - codex-gsfa-category-03
+        - uoguelph-ice-cream-manufacture
+    - rule_id: system_boundary_04
+      applies_to: "Releases and losses"
+      rule: "Include rejected mix and product, inclusion and packaging losses, cleaning water, wastewater, direct effluent releases where applicable, and refrigerant losses from freezing and frozen-storage equipment."
+      source_ids:
+        - ec-jrc-fdm-bref-2019
+        - konstantas-et-al-2019
+    - rule_id: system_boundary_05
+      applies_to: "Downstream stages"
+      rule: "Exclude outbound distribution, retail storage, food service, consumer storage or serving, and end-of-life from the factory-gate dataset unless an extended scenario is explicitly modelled and reported separately."
+      source_ids:
+        - ghg-protocol-product-standard-2011
+        - konstantas-et-al-2019
+boundary_abstraction:
+  declared_starting_condition: "Ingredients and additives meeting the declared recipe specification, packaging materials, utility supplies, and refrigerant make-up are received at the manufacturing-site boundary; their production is represented by linked upstream datasets."
+  starting_condition_role: "Foreground manufacturing-gate input condition for production of the finished frozen edible product"
+  product_classification_scope: "The complete semantic category of ice cream and other edible ice, including dairy, plant-based, and water-based routes; route-specific steps are applied only when relevant and their applicability is disclosed."
+  recursive_input_rule: "Purchased ice cream, edible ice, rework received from another site, or another same-category product is recorded once as a product input with its own upstream dataset. Do not recursively apply this PCR inside the same foreground system or double-count burdens already carried by that input."
+  upstream_dataset_requirement: "Link upstream datasets for each material ingredient, packaging material, electricity mix, fuel or thermal utility, water supply, refrigerant make-up, and off-site waste or wastewater treatment input that materially crosses the boundary."
+  disclosure: "Declare product family, formulation, site, production route, inapplicable or omitted route steps, hazard-control method, packaging state, hardening and storage conditions, allocation methods, rework treatment, cut-offs, and whether the boundary stops at the factory gate or is explicitly extended."
+reference_flow_definition:
+  reference_amount: "1 kg net edible product"
+  product_flow_ref:
+    name: "Ice cream"
+    uuid: "00b6b084-f103-4934-9d2a-cf449572cf12"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "product family: dairy"
+    - plant-based
+    - "or water-based"
+    - "recipe and principal ingredient origins"
+    - "fat and total-solids specification where applicable"
+    - "aeration or overrun and measured density where applicable"
+    - "heat-treatment or other hazard-control route"
+    - "inclusion type and fraction"
+    - "frozen-drawing and hardening route"
+    - "release temperature"
+    - "on-site frozen-storage duration and temperature profile"
+    - "packaging configuration"
+    - "production geography"
+    - "data period"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_net_mass
+    applies_to: "Reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Report 1 kg net edible product. Exclude all packaging mass and separately inventory packaging inputs."
+  - id: volume_to_mass_conversion
+    applies_to: "Volume-based production, sales, or meter records"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Convert volume to mass using batch- or product-specific measured density at a declared temperature and process state. Do not use one default density across different aeration or product families."
+  - id: overrun_and_density
+    applies_to: "Aerated products"
+    required_property_ref:
+      name: "Mass and measured volume"
+      uuid: ""
+    required_unit: "kg and declared volume unit"
+    rule: "Record unfrozen-mix mass and volume and finished-product mass and volume on a consistent temperature basis; calculate overrun using the declared plant convention and retain the equation. Mass output remains the quantitative reference."
+  - id: energy_conversion
+    applies_to: "Electricity, fuel, steam, and refrigeration energy"
+    required_property_ref:
+      name: "Metered energy or fuel quantity"
+      uuid: ""
+    required_unit: "Original meter unit and converted kWh or MJ"
+    rule: "Preserve the original meter or invoice unit, conversion factor, and allocation basis. Do not combine electricity, thermal energy, and fuel mass or volume without explicit conversion."
+  - id: refrigerant_accounting
+    applies_to: "Freezing, hardening, and frozen storage"
+    required_property_ref:
+      name: "Refrigerant mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Record refrigerant identity, opening and closing stock where available, purchases, charge additions, recoveries, and transfers. Calculate unaccounted loss by mass balance and do not infer leakage solely from equipment nameplate charge."
+process_map:
+  - id: mix_preparation_and_control
+    name: "Mix preparation and validated hazard control"
+    inclusion: "required"
+    inclusion_condition: "All products require declared formulation, blending, and a validated food-safety control route; the exact control technology is product- and jurisdiction-specific."
+    role: "Foreground preparation of a safe, declared mix or solution for freezing"
+    quantitative_reference: "kg prepared mix leaving the process"
+  - id: freezing_and_finishing
+    name: "Freezing, aeration, and finishing"
+    inclusion: "required"
+    inclusion_condition: "Applies to every product; aeration, homogenization, conditioning, and inclusion addition are recorded only when used."
+    role: "Formation of the frozen edible product and its declared structure"
+    quantitative_reference: "kg unfinished or bulk frozen product leaving the freezer"
+  - id: packaging_hardening_storage
+    name: "Filling, packaging, hardening, and on-site frozen storage"
+    inclusion: "required"
+    inclusion_condition: "Packaging may be absent for declared bulk transfer; hardening may be replaced by another validated frozen-stabilization route, but the release state and storage duration remain required."
+    role: "Delivery of the reference product at the factory gate"
+    quantitative_reference: "1 kg net edible reference product"
+  - id: cleaning_and_wastewater
+    name: "Cleaning, sanitation, and wastewater handling"
+    inclusion: "required"
+    inclusion_condition: "Apply to all production routes and allocate shared clean-in-place or sanitation systems using measured causal drivers."
+    role: "Supporting foreground hygiene and environmental-control process"
+    quantitative_reference: "kg reference product supported"
+process_inventory:
+  - id: mix_preparation_and_control
+    label: "Mix preparation and validated hazard control"
+    inputs:
+      product:
+        - row_id: recipe_ingredients
+          role: "Recipe ingredients and additives"
+          name: "Product- and supplier-specific Tiangong product flow for each actual ingredient; no universal ingredient UUID is prescribed by this category-wide PCR"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record each material ingredient separately, including dairy or plant base, water incorporated into product, sugars or sweeteners, fats or oils, cocoa, fruit, stabilizers, emulsifiers, flavours, colours, and egg or other components actually used. Do not collapse materially different ingredients into a generic mix input."
+          amount:
+            expression: "Measured issued quantity minus documented return to unchanged stock for each ingredient and production batch"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg prepared mix and subsequently per 1 kg reference product"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_batch_recipe_and_mass
+              source_ids:
+                - codex-gsfa-category-03
+                - uoguelph-ice-cream-manufacture
+            ranges: []
+        - row_id: mix_treatment_utilities
+          role: "Mix-treatment utilities"
+          name: "Site- and carrier-specific electricity, fuel, steam, or heat product flow selected for the actual utility supply"
+          flow_type: "product"
+          property_unit: "Energy or carrier-specific property / original meter unit, converted to kWh or MJ with the factor retained"
+          description: "Record electricity, fuel, steam, hot water, or other utilities consumed by blending, pasteurization or another validated hazard-control step, homogenization, cooling, and conditioning. Split utility carriers and preserve their original meter units."
+          amount:
+            expression: "Submetered consumption or allocated shared-meter consumption for the declared batch and route"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg prepared mix leaving this process"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_and_runtime
+              source_ids:
+                - codex-cxc-57-2004
+                - ec-jrc-fdm-bref-2019
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: prepared_mix
+          role: "Prepared mix or solution"
+          name: "Foreground intermediate product flow specific to the declared formulation; no universal public UUID is prescribed"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the food-safe prepared mix or solution transferred to freezing. Its identity and composition must match the declared dairy, plant-based, or water-based product route."
+          amount:
+            expression: "Measured transfer mass or calculated batch mass reconciled with ingredient additions, retained vessel heel, samples, rework, and losses"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per batch and per kg prepared mix output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_batch_recipe_and_mass
+              source_ids:
+                - mass-balance-identity
+            ranges: []
+      waste:
+        - row_id: mix_preparation_losses
+          role: "Mix preparation losses"
+          name: "Waste flow matching the actual material state and treatment destination"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record spills, filter residues, off-specification mix not returned as controlled rework, and other food material leaving the process as waste."
+          amount:
+            expression: "Measured waste mass or mass-balance residual after separately identifying retained heel, samples, and controlled rework"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg prepared mix output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_and_rework
+              source_ids:
+                - mass-balance-identity
+            ranges: []
+      elementary:
+        []
+  - id: freezing_and_finishing
+    label: "Freezing, aeration, and finishing"
+    inputs:
+      product:
+        - row_id: prepared_mix_input
+          role: "Prepared mix input"
+          name: "Same foreground intermediate product identity as prepared_mix"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the prepared mix transferred from the preceding process without duplicating its upstream ingredient burdens."
+          amount:
+            expression: "Measured transfer mass into the freezing and finishing line"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg bulk frozen product output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_batch_recipe_and_mass
+              source_ids:
+                - mass-balance-identity
+            ranges: []
+        - row_id: finishing_inclusions
+          role: "Finishing inclusions"
+          name: "Product-specific Tiangong product flow for each actual inclusion; omit the row only when no finishing inclusion is used"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record fruit, nuts, cocoa preparations, confectionery pieces, sauces, ripples, coatings, or other materials added after mix preparation, each as a separate actual product input."
+          amount:
+            expression: "Measured issued quantity minus documented unchanged returns for the batch"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg bulk frozen product output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_batch_recipe_and_mass
+              source_ids:
+                - uoguelph-ice-cream-manufacture
+            ranges: []
+        - row_id: freezing_finishing_utilities
+          role: "Freezing and finishing utilities"
+          name: "Site- and carrier-specific electricity or energy product flow selected for the actual supply"
+          flow_type: "product"
+          property_unit: "Energy or carrier-specific property / original meter unit, converted to kWh or MJ with the factor retained"
+          description: "Record electricity and any other energy carriers used for freezing, aeration, pumping, inclusion feeding, and finishing. Record refrigerant make-up separately from energy."
+          amount:
+            expression: "Submetered consumption or documented allocation of shared refrigeration and line energy"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg bulk frozen product output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_and_runtime
+              source_ids:
+                - konstantas-et-al-2019
+                - ec-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: freezing_refrigerant_makeup
+          role: "Refrigerant make-up for freezing equipment"
+          name: "Refrigerant-specific product flow matching the substance actually charged"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record each refrigerant added to freezer or shared refrigeration equipment and link it to the equipment boundary and accounting period."
+          amount:
+            expression: "Purchased or transferred refrigerant mass added to equipment serving this process, allocated only when equipment is shared"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg bulk frozen product output over the same refrigerant accounting period"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cold_chain_and_refrigerant
+              source_ids:
+                - konstantas-et-al-2019
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: bulk_frozen_product
+          role: "Bulk frozen edible product"
+          name: "Foreground intermediate flow specific to the declared product family and formulation"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the frozen product leaving the freezer before final packaging and hardening, with measured density or overrun where aeration is used."
+          amount:
+            expression: "Measured output mass, reconciled with prepared mix, finishing inclusions, retained product, controlled rework, and rejects"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per kg bulk frozen product output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_batch_recipe_and_mass
+              source_ids:
+                - mass-balance-identity
+                - uoguelph-ice-cream-manufacture
+            ranges: []
+      waste:
+        - row_id: freezing_finishing_rejects
+          role: "Freezing and finishing rejects"
+          name: "Waste flow matching the actual food material and treatment destination"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record off-specification product, start-up and shutdown purge, dropped inclusions, and other food material not returned as controlled rework."
+          amount:
+            expression: "Measured reject mass, separated from controlled rework"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg bulk frozen product output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_and_rework
+              source_ids:
+                - mass-balance-identity
+            ranges: []
+      elementary:
+        - row_id: freezing_refrigerant_loss
+          role: "Direct refrigerant loss from freezing"
+          name: "Refrigerant-specific elementary emission to air matching the substance actually lost"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record direct loss of each refrigerant to air only when supported by equipment-level or allocated refrigerant mass balance; do not equate all make-up automatically with current-period emission when transfers or stock changes exist."
+          amount:
+            expression: "Opening stock plus purchases and transfers in minus closing stock, recovery, transfers out, and documented non-emission uses, allocated to this process by causal equipment service"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per kg bulk frozen product output over the refrigerant accounting period"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_cold_chain_and_refrigerant
+              source_ids:
+                - konstantas-et-al-2019
+            ranges: []
+  - id: packaging_hardening_storage
+    label: "Filling, packaging, hardening, and on-site frozen storage"
+    inputs:
+      product:
+        - row_id: bulk_frozen_product_input
+          role: "Bulk frozen product input"
+          name: "Same foreground intermediate identity as bulk_frozen_product"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the transferred bulk frozen product without duplicating burdens already carried by the intermediate flow."
+          amount:
+            expression: "Measured mass entering filling or bulk transfer"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net edible reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_batch_recipe_and_mass
+              source_ids:
+                - mass-balance-identity
+            ranges: []
+        - row_id: packaging_materials
+          role: "Packaging materials"
+          name: "Material- and format-specific Tiangong product flow for each actual packaging component"
+          flow_type: "product"
+          property_unit: "Mass / kg; retain item count and measured unit mass where procurement data are count-based"
+          description: "Record each primary, secondary, and tertiary packaging component used within the factory-gate boundary, including containers, wrappers, sticks, lids, seals, labels, cartons, and allocated pallet or film use."
+          amount:
+            expression: "Issued item count multiplied by verified unit mass, less unchanged returns, plus separately recorded packaging losses"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net edible reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_records
+              source_ids:
+                - konstantas-et-al-2019
+            ranges: []
+        - row_id: hardening_storage_utilities
+          role: "Hardening and frozen-storage utilities"
+          name: "Site- and carrier-specific electricity or energy product flow selected for the actual supply"
+          flow_type: "product"
+          property_unit: "Energy or carrier-specific property / original meter unit, converted to kWh or MJ with the factor retained"
+          description: "Record electricity and other energy carriers for hardening, blast freezing, frozen rooms, conveyors, fans, defrosting, and included on-site storage. Preserve storage duration, temperature profile, occupancy, and throughput."
+          amount:
+            expression: "Submetered use or documented allocation by measured equipment runtime, storage occupancy, mass throughput, and storage duration"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net edible reference product over the declared on-site storage duration"
+              kind: "storage_duration"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_cold_chain_and_refrigerant
+              source_ids:
+                - konstantas-et-al-2019
+                - ec-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: storage_refrigerant_makeup
+          role: "Refrigerant make-up for hardening and storage"
+          name: "Refrigerant-specific product flow matching the substance actually charged"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record each refrigerant added to hardening and frozen-storage systems and retain the equipment served and accounting period."
+          amount:
+            expression: "Purchased or transferred refrigerant mass added to equipment serving hardening and storage, allocated only when equipment is shared"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net edible reference product over the refrigerant accounting period"
+              kind: "storage_duration"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cold_chain_and_refrigerant
+              source_ids:
+                - konstantas-et-al-2019
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: reference_product_ice_cream
+          role: "Reference product: finished ice cream or other edible ice"
+          name: "Ice cream ; conditional replacement rule applies for more specific covered products"
+          flow_type: "product"
+          flow_ref:
+            uuid: "00b6b084-f103-4934-9d2a-cf449572cf12"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Record the net edible mass released at the factory gate. The selected public Ice cream flow represents dairy ice cream; replace it with a more specific flow for another covered product when available and always declare the actual product family and formulation."
+          amount:
+            expression: "exactly 1 kg net edible product at the declared factory-gate release state"
+            value_mode: "fixed_value"
+            specificity: "not_applicable"
+            basis:
+              text: "1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "identity_reference"
+              source_ids: []
+            ranges:
+              - role: allowed_range
+                lower: "1"
+                upper: "1"
+                unit: "kg"
+                basis: "per declared reference flow"
+                basis_kind: "reference_flow"
+                evidence_kind: "method_formula"
+                source_ids:
+                  - mass-balance-identity
+      waste:
+        - row_id: packaging_and_product_losses
+          role: "Packaging and final-product losses"
+          name: "Material- and treatment-specific waste flow for each actual loss stream"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record damaged packaging, trim, label and film losses, leaked or damaged product, and off-specification packaged product, separating food and packaging material by treatment route."
+          amount:
+            expression: "Measured waste mass or item count multiplied by verified unit mass; food and packaging waste must not be combined"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net edible reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_records
+              source_ids:
+                - mass-balance-identity
+            ranges: []
+      elementary:
+        - row_id: storage_refrigerant_loss
+          role: "Direct refrigerant loss from hardening and storage"
+          name: "Refrigerant-specific elementary emission to air matching the substance actually lost"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record direct loss of each refrigerant to air using the refrigerant mass-balance rule and the same accounting period as frozen-storage activity."
+          amount:
+            expression: "Refrigerant mass-balance loss allocated to hardening and storage by causal equipment service"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net edible reference product over the refrigerant accounting period"
+              kind: "storage_duration"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_cold_chain_and_refrigerant
+              source_ids:
+                - konstantas-et-al-2019
+            ranges: []
+  - id: cleaning_and_wastewater
+    label: "Cleaning, sanitation, and wastewater handling"
+    inputs:
+      product:
+        - row_id: cleaning_inputs
+          role: "Cleaning water, agents, and utilities"
+          name: "Actual site-specific water-supply, cleaning-agent, and utility product flows; no single combined flow is permitted in the completed dataset"
+          flow_type: "product"
+          property_unit: "Mass, volume, energy, or carrier-specific property / original meter or purchase unit with documented conversions"
+          description: "Record water, detergents, sanitizers, electricity, heat, and other materials used for production-related cleaning and sanitation. Split water, each chemical, and each energy carrier in the completed inventory."
+          amount:
+            expression: "Metered or purchase-and-stock-balanced consumption allocated to product lines using cleaning event, circuit volume, runtime, or another measured causal driver"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net edible reference product supported"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_cleaning_and_effluent
+              source_ids:
+                - codex-cxc-57-2004
+                - ec-jrc-fdm-bref-2019
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: wastewater_to_treatment
+          role: "Wastewater to treatment"
+          name: "Wastewater flow matching the actual treatment route and composition class"
+          flow_type: "waste"
+          property_unit: "Volume or mass / original monitored unit with conversion retained"
+          description: "Record process and cleaning wastewater sent to on-site or off-site treatment, with route, volume or mass, and monitored load parameters kept distinct from direct elementary releases."
+          amount:
+            expression: "Metered wastewater quantity or validated water-balance estimate over the production period"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net edible reference product supported"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cleaning_and_effluent
+              source_ids:
+                - ec-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: cleaning_residues
+          role: "Food residues and treatment solids"
+          name: "Waste flow matching the actual residue and treatment destination"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record captured product residues, screenings, sludge, and other treatment solids by actual destination, excluding material already recorded as process reject."
+          amount:
+            expression: "Measured collected mass or documented treatment-system mass balance"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net edible reference product supported"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cleaning_and_effluent
+              source_ids:
+                - ec-jrc-fdm-bref-2019
+            ranges: []
+      elementary:
+        - row_id: direct_effluent_releases
+          role: "Direct effluent releases"
+          name: "Substance- and receiving-compartment-specific elementary flow selected from the actual monitoring parameter"
+          flow_type: "elementary"
+          property_unit: "Mass / kg or monitored mass unit converted with the factor retained"
+          description: "When treated water is discharged directly to the environment within the foreground boundary, record each monitored substance as a separate elementary flow. Omit this row when all wastewater leaves as a technosphere waste flow."
+          amount:
+            expression: "Measured discharge volume multiplied by representative concentration, with sampling and aggregation method retained"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net edible reference product supported"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_cleaning_and_effluent
+              source_ids:
+                - ec-jrc-fdm-bref-2019
+            ranges: []
+allocation_rules:
+  - rule_id: allocation_01
+    applies_to: "Shared production and utility processes"
+    rule: "Avoid allocation where practicable by submetering, batch tracing, and subdivision of mix preparation, freezing, packaging, cleaning, and cold-storage operations."
+    source_ids:
+      - ghg-protocol-product-standard-2011
+  - rule_id: allocation_02
+    applies_to: "Unavoidable shared burdens"
+    rule: "Use a causal physical driver: measured mass or batch time for formulation and line operations, metered energy or equipment runtime for freezing and hardening, storage occupancy multiplied by duration for frozen rooms, and cleaning event or circuit volume for sanitation."
+    source_ids:
+      - ghg-protocol-product-standard-2011
+  - rule_id: allocation_03
+    applies_to: "Multiple saleable products"
+    rule: "If a physical relationship cannot be established, use economic or another justified relationship only after documenting why subdivision and physical allocation are not feasible; disclose prices, period, geography, and sensitivity to the alternative allocation."
+    source_ids:
+      - ghg-protocol-product-standard-2011
+  - rule_id: allocation_04
+    applies_to: "Rework and internal loops"
+    rule: "Return controlled rework to the receiving batch without creating a second product output or duplicating upstream burdens. Record cross-period or cross-product transfers and apply the same causal allocation basis used for the receiving production."
+    source_ids:
+      - mass-balance-identity
+  - rule_id: allocation_05
+    applies_to: "Waste and recovered material"
+    rule: "Treat outputs with no economic value as waste and include their treatment burdens. If a recovered output is sold or used as a co-product, disclose its quantity, destination, value status, and allocation or substitution method; do not grant an undocumented credit."
+    source_ids:
+      - ghg-protocol-product-standard-2011
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_batch_recipe_and_mass
+      process_id: "mix_preparation_and_control_freezing_and_finishing_packaging_hardening_storage"
+      flow_role: "Ingredient, inclusion, intermediate, reference-product, and batch mass flows"
+      record_type: "Batch production and recipe records"
+      raw_fields: "product code; batch id; ingredient and inclusion id; supplier and origin; issued mass; returned mass; prepared-mix transfer mass; freezer output mass; packaged net mass; density; overrun convention; sample and heel mass; timestamps"
+      collection_method: "Calibrated scales, formulation system, filling checks, and batch reconciliation"
+      unit: "kg; declared volume unit where used for density"
+      frequency: "Each batch or production campaign"
+      temporal_coverage: "Representative production period covering declared formulations and seasonal operation"
+      site_scope: "Each manufacturing site and line in scope"
+      aggregation_rule: "Sum valid batch records by product and divide by released net edible mass; keep formulation variants separate until an aggregation rule is justified"
+      quality_evidence: "Scale calibration; recipe authorization; batch reconciliation; release records; density or fill-weight checks"
+    - protocol_id: cp_energy_and_runtime
+      process_id: "mix_preparation_and_control_freezing_and_finishing"
+      flow_role: "Electricity, fuel, steam, heat, and line runtime"
+      record_type: "Meter, invoice, and equipment log"
+      raw_fields: "meter id; opening and closing reading; carrier; unit; conversion factor; equipment runtime; batch id; throughput; shared users; allocation driver"
+      collection_method: "Submeter preferred; otherwise reconcile invoices to site meters and allocate with measured runtime or throughput"
+      unit: "original meter unit; kWh; MJ; carrier mass or volume"
+      frequency: "Meter interval and each production campaign"
+      temporal_coverage: "Same period as product output, including representative start-up and shutdown operation"
+      site_scope: "Each site, utility system, and production line in scope"
+      aggregation_rule: "Subtract non-production use where evidenced, then allocate shared use by documented causal driver and normalize to output"
+      quality_evidence: "Meter calibration or verification; invoice reconciliation; runtime logs; conversion-factor source"
+    - protocol_id: cp_cold_chain_and_refrigerant
+      process_id: "freezing_and_finishing_packaging_hardening_storage"
+      flow_role: "Freezing, hardening, frozen-storage energy, duration, temperature, and refrigerant"
+      record_type: "Meter, warehouse, maintenance, and refrigerant ledger"
+      raw_fields: "equipment id; refrigerant substance; nameplate charge; opening and closing stock; purchases; additions; recovery; transfers; meter readings; runtime; storage entry and exit; mass stored; temperature profile; defrost events"
+      collection_method: "Equipment or system meter plus refrigerant mass-balance ledger and warehouse records"
+      unit: "kg refrigerant; kWh or MJ; kg product; hour or day; °C"
+      frequency: "Continuous or per meter interval; refrigerant reconciliation at least for the declared data period"
+      temporal_coverage: "Full declared production and on-site storage period"
+      site_scope: "Each refrigeration system, freezer, hardening unit, and frozen room serving the product"
+      aggregation_rule: "Calculate system loss by mass balance; allocate energy and loss by causal equipment service, occupancy, throughput, and duration; retain uncertainty for shared systems"
+      quality_evidence: "Maintenance invoices; calibrated scales; leak-test and recovery records; meter checks; warehouse movement and temperature logs"
+    - protocol_id: cp_packaging_records
+      process_id: "packaging_hardening_storage"
+      flow_role: "Packaging inputs, packaging losses, and packaged-product losses"
+      record_type: "Purchase, bill-of-materials, count, and waste records"
+      raw_fields: "component id; material; supplier; item count; verified unit mass; issued and returned count; damaged count; waste mass; product-loss mass; pallet and film allocation"
+      collection_method: "Procurement reconciliation, representative unit weighing, line counters, and segregated waste weighing"
+      unit: "item; kg"
+      frequency: "Each packaging lot and production campaign"
+      temporal_coverage: "Same period as product output"
+      site_scope: "Each packaging line and pack format in scope"
+      aggregation_rule: "Convert counts to mass using verified unit mass; allocate shared tertiary packaging by shipped units or mass and document reuse cycles"
+      quality_evidence: "Scale calibration; supplier specification; line-counter checks; waste tickets; bill-of-materials revision"
+    - protocol_id: cp_waste_and_rework
+      process_id: "mix_preparation_and_control_freezing_and_finishing"
+      flow_role: "Food losses, rejects, samples, retained heel, and controlled rework"
+      record_type: "Batch disposition and waste records"
+      raw_fields: "batch id; material state; quantity; reason; destination; rework source and receiving batch; waste ticket; treatment route"
+      collection_method: "Segregated weighing and batch disposition tracking"
+      unit: "kg"
+      frequency: "Each event and batch"
+      temporal_coverage: "Same period as product output"
+      site_scope: "Each site and line in scope"
+      aggregation_rule: "Sum by material state and destination; link rework once to receiving batch and prevent duplicate waste or product output"
+      quality_evidence: "Scale checks; disposition approval; receiving-batch link; waste contractor record"
+    - protocol_id: cp_cleaning_and_effluent
+      process_id: "cleaning_and_wastewater"
+      flow_role: "Cleaning water, agents, energy, wastewater, residues, and direct discharges"
+      record_type: "Cleaning event, utility, stock, flow, and analytical records"
+      raw_fields: "cleaning circuit and event; water meter; chemical opening and closing stock; purchases; energy meter; discharge volume; sample time; concentration; parameter; receiving compartment; sludge and residue mass; treatment route"
+      collection_method: "Event logs, meters, stock balance, representative sampling, and laboratory analysis"
+      unit: "m3 or kg water; kg agent or residue; kWh or MJ; kg pollutant"
+      frequency: "Each cleaning event and monitoring interval"
+      temporal_coverage: "Representative period including product changeovers and sanitation cycles"
+      site_scope: "Each relevant circuit, treatment system, and outfall"
+      aggregation_rule: "Allocate shared cleaning by measured event, circuit volume, runtime, or contacted production; calculate direct releases as discharge volume times representative concentration"
+      quality_evidence: "Meter and dosing calibration; chemical inventory reconciliation; sampling plan; laboratory QA/QC; discharge permit or treatment record"
+  calculation_rules:
+    - id: calc_net_reference_mass
+      applies_to: "Reference product"
+      rule: "Net edible mass = gross filled unit mass - packaging tare; aggregate released units only."
+      inputs:
+        - "Gross filled mass"
+        - "packaging tare"
+        - "released unit count"
+      output: "kg net edible reference product"
+      source_ids:
+        - mass-balance-identity
+    - id: calc_volume_to_mass
+      applies_to: "Volume-based product records"
+      rule: "Product mass = measured volume × batch- or product-specific density at the declared temperature and state."
+      inputs:
+        - Volume
+        - "measured density"
+        - temperature
+        - "process state"
+      output: "kg product"
+      source_ids:
+        - mass-balance-identity
+    - id: calc_overrun
+      applies_to: "Aerated product"
+      rule: "Use the plant-declared overrun equation based on paired unfrozen-mix and finished-product mass-per-volume measurements; retain equation, temperature basis, and replicate results rather than assuming a universal value."
+      inputs:
+        - "Mix mass and volume"
+        - "finished-product mass and volume"
+        - temperature
+      output: "Declared overrun value and uncertainty"
+      source_ids:
+        - uoguelph-ice-cream-manufacture
+    - id: calc_process_mass_balance
+      applies_to: "Each production process"
+      rule: "Inputs = product outputs + controlled rework + measured waste and samples + inventory change + disclosed unexplained difference."
+      inputs:
+        - "Batch material inputs"
+        - outputs
+        - rework
+        - waste
+        - samples
+        - "opening and closing work in progress"
+      output: "Reconciled process mass balance and unexplained difference"
+      source_ids:
+        - mass-balance-identity
+    - id: calc_refrigerant_loss
+      applies_to: "Refrigeration systems"
+      rule: "Loss = opening stock + purchases + transfers in - closing stock - recovered quantity - transfers out - documented non-emission use; allocate only the share serving the product system."
+      inputs:
+        - "Refrigerant ledger fields"
+        - "equipment service allocation"
+      output: "kg refrigerant loss by substance and process"
+      source_ids:
+        - konstantas-et-al-2019
+    - id: calc_direct_effluent
+      applies_to: "Direct discharge"
+      rule: "Release mass = discharge volume × representative concentration, with unit conversion, sampling representativeness, and non-detect treatment documented."
+      inputs:
+        - "Discharge volume"
+        - concentration
+        - "sampling metadata"
+        - "unit factors"
+      output: "kg substance to named receiving compartment"
+      source_ids:
+        - ec-jrc-fdm-bref-2019
+  data_quality_requirements:
+    - id: dq_product_identity
+      applies_to: "Product and reference flow"
+      requirement: "Retain product code, product family, complete recipe revision, inclusion and packaging format, dairy or non-dairy status, density or overrun where applicable, hazard-control route, release state, and the reason for any reference-flow replacement."
+      evidence: "Approved specification, recipe, label, batch record, and Tiangong flow readback"
+    - id: dq_temporal_representativeness
+      applies_to: "All foreground data"
+      requirement: "Use one common declared period that captures representative product mix, start-up, shutdown, changeover, defrost, cleaning, and seasonal effects; disclose exclusions or shorter campaign data."
+      evidence: "Dated production, meter, warehouse, maintenance, and cleaning records"
+    - id: dq_measurement_traceability
+      applies_to: "Mass, energy, water, temperature, refrigerant, and analytical data"
+      requirement: "Identify measuring device, unit, calibration or verification status, reading frequency, data gaps, substitutions, and conversion factors."
+      evidence: "Calibration certificates, meter checks, laboratory QA/QC, invoices, and data-gap log"
+    - id: dq_completeness
+      applies_to: "Process map and inventory"
+      requirement: "Account for every required process and every material recipe, packaging, utility, refrigerant, waste, wastewater, and direct-release stream, or explicitly justify its absence or non-applicability."
+      evidence: "Completeness checklist cross-referenced to bills of materials, meters, purchase records, waste tickets, and process map"
+    - id: dq_mass_balance
+      applies_to: "Batch and period aggregation"
+      requirement: "Reconcile material inputs, product outputs, rework, waste, samples, and inventory change. Report the absolute and relative unexplained difference rather than forcing it to zero."
+      evidence: "Signed batch reconciliation and period-level mass-balance report"
+    - id: dq_shared_systems
+      applies_to: "Utilities, cleaning, storage, and refrigeration"
+      requirement: "Document shared users, causal allocation driver, numerator and denominator, data period, and sensitivity to a plausible alternative allocation."
+      evidence: "Meter topology, runtime or occupancy records, allocation workbook, and sensitivity result"
+    - id: dq_source_and_geography
+      applies_to: "Upstream datasets"
+      requirement: "Match ingredient origin, electricity geography, fuel and water supply, packaging material, refrigerant substance, and waste treatment route as closely as available; disclose proxies."
+      evidence: "Supplier records, invoices, origin declarations, upstream dataset metadata, and proxy log"
+validation_rules:
+  - rule_id: validation_01
+    applies_to: "Reference flow"
+    rule: "Confirm that the reference amount is exactly 1 kg net edible product, uses Mass 93a60a56-a3c8-11da-a746-0800200b9a66, Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66, and excludes packaging mass."
+    source_ids:
+      - mass-balance-identity
+  - rule_id: validation_02
+    applies_to: "Representative product coverage"
+    rule: "Confirm that Ice cream 00b6b084-f103-4934-9d2a-cf449572cf12 is not used as an undeclared compositional proxy for water-based, plant-based, or otherwise more specific products; require the actual product family and any flow replacement decision."
+    source_ids:
+      - un-cpc-3-0-22270
+      - codex-gsfa-category-03
+  - rule_id: validation_03
+    applies_to: "Required qualifiers"
+    rule: "Reject an incomplete package when product family, formulation, density or overrun applicability, hazard-control route, inclusions, release temperature, hardening or stabilization route, storage duration, packaging, geography, or data period is missing."
+    source_ids:
+      - codex-cxc-57-2004
+      - uoguelph-ice-cream-manufacture
+  - rule_id: validation_04
+    applies_to: "Process coverage"
+    rule: "Confirm that all four required processes are represented. Permit variant-specific operations to be marked not applicable only with a product-route justification."
+    source_ids:
+      - uoguelph-ice-cream-manufacture
+      - codex-cxc-57-2004
+  - rule_id: validation_05
+    applies_to: "Mass balance and rework"
+    rule: "Verify batch and period mass balances, ensure controlled rework is linked once to a receiving batch, and require disclosure of the unexplained difference."
+    source_ids:
+      - mass-balance-identity
+  - rule_id: validation_06
+    applies_to: "Energy and cold chain"
+    rule: "Confirm separate accounting for mix treatment, freezing, hardening, on-site storage, storage duration, temperature profile, and refrigerant identity and loss; reject use of nameplate charge as an emission amount without a mass balance."
+    source_ids:
+      - konstantas-et-al-2019
+      - ec-jrc-fdm-bref-2019
+  - rule_id: validation_07
+    applies_to: "Packaging, cleaning, and releases"
+    rule: "Confirm packaging mass is separate from edible reference mass and that cleaning inputs, wastewater, food residues, packaging losses, and direct effluent releases are accounted for without double counting."
+    source_ids:
+      - ec-jrc-fdm-bref-2019
+      - konstantas-et-al-2019
+  - rule_id: validation_08
+    applies_to: "Allocation"
+    rule: "Confirm subdivision or causal physical allocation is attempted before economic or other allocation, and require the shared-system driver and sensitivity disclosure."
+    source_ids:
+      - ghg-protocol-product-standard-2011
+  - rule_id: validation_09
+    applies_to: "Boundary consistency"
+    rule: "Reject a factory-gate result that silently includes or omits outbound distribution, retail storage, consumer storage or serving, or end-of-life; extended scenarios must be reported separately."
+    source_ids:
+      - ghg-protocol-product-standard-2011
+      - konstantas-et-al-2019
+published_dataset_profile:
+  dataset_role: "Product-specific foreground manufacturing dataset for finished ice cream or another declared edible-ice product at the factory gate"
+  downstream_use: "May be used as a secondary_dataset or background_dataset for food products, catering, retail, cold-chain, packaging, and lifecyclemodel systems when product identity, geography, technology, formulation, packaging, and time period are representative."
+  allowed_use: "Attributional modelling of declared factory-gate production; hotspot analysis; scenario analysis with separately modelled downstream cold chain; internal improvement and supply-chain studies consistent with the stated boundary and allocation."
+  excluded_use: "Undeclared substitution between dairy, plant-based, and water-based product families; nutritional or sensory equivalence claims; public comparative assertions without a common functional equivalence, boundary, allocation, data-quality, and review framework; use as an unpackaged product when packaging burdens are embedded but not separable."
+  required_metadata: "PCR id and version state; product and flow identity; full required qualifiers; recipe and packaging revision; site and geography; production technology; hazard-control route; reference period; cut-offs; allocation; upstream dataset versions; release temperature; hardening and on-site storage conditions; data-quality and uncertainty statements."
+  required_quality_disclosure: "Foreground versus secondary-data shares; meter coverage; mass-balance unexplained difference; proxy list; missing data and substitutions; shared-system allocation; refrigerant accounting basis; storage duration; formulation coverage; temporal, geographic, and technological representativeness; review status."
+  update_trigger: "Change in product family or recipe, principal ingredient origin, packaging format, hazard-control or freezing technology, refrigerant substance or refrigeration system, hardening or storage conditions, site or energy supply, allocation basis, upstream dataset, regulation, or evidence that materially changes the inventory."
+data_sources:
+  - id: "un-cpc-3-0-22270"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, Central Product Classification Version 3.0, subclass 22270, Ice cream and other edible ice, 2025. https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Exp_Notes_30Jun2025.pdf (retrieved 2026-08-11)"
+    used_for: "Classification scope and category identity"
+  - id: "codex-gsfa-category-03"
+    type: "official_guidance"
+    reference: "FAO/WHO Codex Alimentarius, General Standard for Food Additives Online, Food Category 03.0, Edible ices, including sherbet and sorbet. https://www.fao.org/gsfaonline/foods/details.html?id=52&print=true (retrieved 2026-08-11)"
+    used_for: "Water-based edible-ice scope and distinction from primarily dairy frozen desserts"
+  - id: "codex-cxc-57-2004"
+    type: "official_guidance"
+    reference: "FAO/WHO Codex Alimentarius, CXC 57-2004, Code of Hygienic Practice for Milk and Milk Products. https://www.fao.org/fao-who-codexalimentarius/sh-proxy/en/?lnk=1&url=https%253A%252F%252Fworkspace.fao.org%252Fsites%252Fcodex%252FStandards%252FCXC%2B57-2004%252FCXC_057e.pdf (retrieved 2026-08-11)"
+    used_for: "Validated microbiocidal controls, hazard control, hygiene, and dairy-route data requirements"
+  - id: "uoguelph-ice-cream-manufacture"
+    type: "handbook"
+    reference: "University of Guelph, Ice Cream Technology e-Book, Ice Cream Manufacture. https://books.lib.uoguelph.ca/icecreamtechnologyebook/part/ice-cream-manufacture-2/ (retrieved 2026-08-11)"
+    used_for: "Typical ice-cream process sequence, conditional homogenization and ageing, freezing, packaging, and hardening"
+  - id: "ec-jrc-fdm-bref-2019"
+    type: "official_guidance"
+    reference: "European Commission Joint Research Centre, Best Available Techniques Reference Document for the Food, Drink and Milk Industries, EUR 29978 EN, JRC118627, 2019, DOI: 10.2760/243911. https://publications.jrc.ec.europa.eu/repository/handle/JRC118627 (retrieved 2026-08-11)"
+    used_for: "Energy and water monitoring, cleaning, wastewater, releases, and environmental performance of food and dairy manufacturing"
+  - id: "konstantas-et-al-2019"
+    type: "literature"
+    reference: "Konstantas, A.; Stamford, L.; Azapagic, A. (2019), Environmental impacts of ice cream, Journal of Cleaner Production 209: 259-272. DOI: 10.1016/j.jclepro.2018.10.237"
+    used_for: "Ice-cream life-cycle process decomposition and importance of ingredients, manufacturing energy, packaging, deep freezing, storage duration, and refrigerant type and losses"
+  - id: "ghg-protocol-product-standard-2011"
+    type: "standard"
+    reference: "WRI and WBCSD, Product Life Cycle Accounting and Reporting Standard, 2011. https://ghgprotocol.org/sites/default/files/standards/Product-Life-Cycle-Accounting-Reporting-Standard-EReader_041613_0.pdf (retrieved 2026-08-11)"
+    used_for: "Boundary disclosure, data quality, and allocation hierarchy"
+  - id: "mass-balance-identity"
+    type: "method_factor"
+    reference: "Mass conservation identity applied to batch, process, packaging, rework, refrigerant, and wastewater balances"
+    used_for: "Calculation and QA rules without an empirical default factor"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:0f6c7869aca94da3af17df3e7b73e6fc6f1f9bc0dcdd059a16af3e1109014899"
+  generated_content_sha256: "sha256:116a6303b4801eaae24cf15002ded6dad23c937f42c0e26ef6816986642704c6"

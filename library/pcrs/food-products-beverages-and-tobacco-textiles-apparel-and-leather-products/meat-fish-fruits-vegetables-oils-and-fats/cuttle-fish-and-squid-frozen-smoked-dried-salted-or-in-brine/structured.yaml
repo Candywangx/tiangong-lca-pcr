@@ -1,10 +1,854 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "21266"
-  title: "Cuttle fish and squid, frozen, smoked, dried, salted or in brine"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.food-products-beverages-and-tobacco-textiles-apparel-and-leather-products.meat-fish-fruits-vegetables-oils-and-fats.cuttle-fish-and-squid-frozen-smoked-dried-salted-or-in-brine"
+  classification_refs: "CPC 3.0: 21266 — Cuttle fish and squid, frozen, smoked, dried, salted or in brine"
+  covered_products: "Edible cuttlefish and squid products whose declared preservation and market state is dried"
+  excluded_products: "Frozen products; smoked products; salt-cured products; products preserved or marketed in brine; mixed seafood products without separable cephalopod records; non-food products"
+  representative_product: "Dried cephalopod products; a narrower Tiangong flow representative within CPC 21266"
+  production_route: "Reception and preparation, then exactly one declared drying technology route, then finishing and packaging; controlled solar/open-air and heated-air routes are mutually exclusive unless a measured hybrid is explicitly declared"
+  market_state: "Conforming saleable dried product at the factory gate, excluding packaging mass"
+functional_unit:
+  what: "Provision of a saleable dried cuttlefish or squid product from a declared dried-product route"
+  how_much: "1 kg net mass of conforming saleable product, excluding packaging"
+  how_well: "Meets the producer's declared species, grade, moisture, salt-content, food-safety, and market specifications; is not frozen, smoked, salt-cured, or preserved in brine"
+  how_long_or_cycle: "One production batch through the factory gate; no shelf-life service is credited"
+  reference_flow_link: "One kilogram of the reference product flow defined below"
+system_boundary:
+  rules:
+    - rule_id: boundary_foreground_operations
+      applies_to: "Processing-site foreground"
+      rule: "Include raw-material reception, edible preparation, route-specific drying, finishing, grading, and packaging, together with directly metered utilities, process water, rejects, residues, wastewater, and on-site emissions."
+      source_ids:
+        - codex-cxc-52-2003
+        - eu-pef-2021-2279
+    - rule_id: boundary_upstream_links
+      applies_to: "Purchased inputs"
+      rule: "Keep received cephalopod material, energy carriers, water, packaging, and other purchased inputs as product flows linked to representative upstream datasets; disclose geography, technology, and data age."
+      source_ids:
+        - eu-pef-2021-2279
+    - rule_id: boundary_route_limit
+      applies_to: "Product applicability"
+      rule: "Apply only to the dried representative route. Frozen, smoked, salt-cured, and brine-preserved products are excluded even though CPC 21266 names them."
+      source_ids:
+        - unsd-cpc-3-0-21266
+    - rule_id: boundary_downstream_exclusion
+      applies_to: "Downstream stages"
+      rule: "Exclude outbound distribution, retail, consumer storage and preparation, consumption, and end-of-life unless the study explicitly extends the boundary and reports those additions separately."
+      source_ids:
+        - eu-pef-2021-2279
+boundary_abstraction:
+  declared_starting_condition: "Edible cuttlefish or squid material received at the processing-site gate, with species group, supplier, origin, capture or aquaculture status, received mass, temperature or preservation state, moisture basis when available, and any prior processing declared"
+  starting_condition_role: "Foreground processing begins at receipt; upstream production, landing, primary chilling, and inbound transport are represented by linked upstream datasets"
+  product_classification_scope: "CPC 3.0 code 21266 classification context, methodologically narrowed to dried cephalopod products only"
+  recursive_input_rule: "A purchased dried cephalopod input remains an explicit product input linked to an upstream dried-product dataset and is not recursively regenerated inside this foreground system"
+  upstream_dataset_requirement: "Use geographically, technologically, and temporally representative datasets for source cephalopods, electricity, fuels or heat, water, packaging, transport, and waste treatment; disclose substitutions and data gaps"
+  disclosure: "Declare the drying route, any hybrid energy split, source-material state, excluded CPC 21266 preservation routes, moisture and salt bases, net-mass basis, glaze status, drained-mass applicability, cut-offs, allocation, and all upstream dataset choices"
+reference_flow_definition:
+  reference_amount: "1 kg net conforming saleable product at factory gate, excluding packaging"
+  product_flow_ref:
+    name: "Dried cephalopod products"
+    uuid: "ae437668-712c-407b-b8d5-7f3daf53040e"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "species or declared species group"
+    - "dried preservation route"
+    - "source material state at reception"
+    - "declared drying technology"
+    - "batch and site"
+    - "net-mass basis excluding packaging"
+    - "moisture content on a declared wet or dry basis and test method"
+    - "salt content or salinity and test method"
+    - "ice-glaze fraction declared as zero or not applicable"
+    - "drained mass declared as not applicable"
+    - "product grade"
+    - "geographic and temporal coverage"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_net_mass
+    applies_to: "Reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Normalize to 1 kg net saleable dried product at factory gate; exclude packaging, pallets, non-product glaze, and free liquid."
+  - id: mass_state_consistency
+    applies_to: "All cephalopod material flows"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Record wet mass at the measured material state and retain moisture content and test basis so dry-matter and wet-mass balances are not mixed."
+  - id: moisture_reporting
+    applies_to: "Incoming, dried-bulk, and reference-product lots"
+    required_property_ref:
+      name: "Mass fraction"
+      uuid: ""
+    required_unit: "kg/kg"
+    rule: "Report moisture content with wet-basis or dry-basis designation, sampling point, method, and batch coverage; do not convert bases without showing the formula."
+  - id: salt_glaze_drained_mass
+    applies_to: "Reference product"
+    required_property_ref:
+      name: "Mass fraction and mass"
+      uuid: ""
+    required_unit: "kg/kg and kg"
+    rule: "Report salt content or salinity. Declare glaze as zero or not applicable and drained mass as not applicable for the dried route; any contrary declaration triggers scope review."
+  - id: energy_carrier_separation
+    applies_to: "Drying utilities"
+    required_property_ref:
+      name: "Carrier-specific energy"
+      uuid: ""
+    required_unit: "kWh or MJ"
+    rule: "Keep electricity and each thermal fuel or purchased heat separate; do not combine primary fuel energy and delivered heat without a documented conversion and no double counting."
+process_map:
+  - id: raw_material_reception_and_preparation
+    name: "Raw-material reception and preparation"
+    inclusion: "required"
+    inclusion_condition: "Always for received cephalopod material"
+    role: "Foreground receiving, cleaning, trimming, cutting, and other declared edible preparation"
+    quantitative_reference: "Prepared cephalopod material transferred to drying"
+  - id: route_specific_drying
+    name: "Route-specific drying"
+    inclusion: "required"
+    inclusion_condition: "Select one route per batch: controlled solar/open-air, heated-air, or explicitly measured hybrid"
+    role: "Foreground moisture removal and drying control"
+    quantitative_reference: "Dried bulk cephalopod product"
+  - id: finishing_and_packaging
+    name: "Finishing and packaging"
+    inclusion: "required"
+    inclusion_condition: "Always for saleable packed output"
+    role: "Foreground equilibration, sorting, grading, packing, and release"
+    quantitative_reference: "1 kg net conforming saleable dried product"
+process_inventory:
+  - id: raw_material_reception_and_preparation
+    label: "Raw-material reception and preparation"
+    inputs:
+      product:
+        - row_id: received_cephalopod_material
+          role: "Received edible cephalopod material"
+          name: "Received edible cephalopod material"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the mass and state of edible cuttlefish or squid material crossing the site gate. Retain supplier, origin, species group, capture or aquaculture status, prior preservation, temperature, moisture basis when available, and batch identity."
+          amount:
+            expression: "Measured received mass allocated to the declared dried-product batch"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net conforming saleable dried product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_reception_mass_and_state
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "1.0"
+                upper: "10.0"
+                unit: "kg/kg reference product"
+                basis: "candidate screening for wet or partly dried input; replace with batch mass balance or reviewed material-state evidence"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: preparation_water
+          role: "Preparation water"
+          name: "Process water"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record water crossing the foreground boundary for washing, thawing only when the received ingredient is temporarily frozen, cleaning, or equipment contact attributable to the batch. Temporary thawing does not make frozen finished products in scope."
+          amount:
+            expression: "Metered or batch-allocated water use, net of documented recirculation without counting the same water twice"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net conforming saleable dried product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_preparation_utilities
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "10"
+                unit: "kg/kg reference product"
+                basis: "candidate screening where water-contact preparation occurs; replace with meter or batch records or reviewed site evidence"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: preparation_electricity
+          role: "Preparation electricity"
+          name: "Electricity, site supply"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record metered or allocated electricity for reception, washing, cutting, pumping, and other preparation equipment."
+          amount:
+            expression: "Metered electricity or calculated share from equipment power and operating time"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net conforming saleable dried product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_preparation_utilities
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "1"
+                unit: "kWh/kg reference product"
+                basis: "candidate screening for preparation equipment; replace with submetered data or reviewed equipment calculations"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: prepared_cephalopod_material
+          role: "Prepared cephalopod material"
+          name: "Prepared edible cephalopod material"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Calculate the prepared edible material transferred to drying after separately measuring residues and other outputs."
+          amount:
+            expression: "Measured transfer mass; reconcile received material, residues, wastewater-carried solids, and retained material"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net conforming saleable dried product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_reception_mass_and_state
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "1.0"
+                upper: "10.0"
+                unit: "kg/kg reference product"
+                basis: "candidate screening across received moisture states; replace with measured transfer and final-product masses"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        - row_id: preparation_residues
+          role: "Preparation residues"
+          name: "Cephalopod preparation residues"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record heads, viscera, skin, pens, trimmings, spoiled material, or other residues by actual destination and by-product status; do not classify a saleable co-product as waste."
+          amount:
+            expression: "Measured residue mass by destination and regulatory status"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net conforming saleable dried product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_residue_and_wastewater
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "5"
+                unit: "kg/kg reference product"
+                basis: "candidate screening dependent on incoming preparation state; replace with weighed residue records and destination evidence"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: preparation_wastewater
+          role: "Preparation wastewater"
+          name: "Wastewater from cephalopod preparation"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record wastewater leaving the site boundary or entering on-site treatment, including the measured or estimated water volume and any monitored load required by the receiving treatment dataset."
+          amount:
+            expression: "Metered discharge or water-balance calculation, linked to the actual treatment destination"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net conforming saleable dried product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_residue_and_wastewater
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "10"
+                unit: "kg/kg reference product"
+                basis: "candidate screening where water-contact preparation occurs; replace with discharge metering or a documented site water balance"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        []
+  - id: route_specific_drying
+    label: "Route-specific drying"
+    inputs:
+      product:
+        - row_id: drying_feed
+          role: "Prepared cephalopod material to drying"
+          name: "Prepared edible cephalopod material"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the measured prepared mass and moisture basis entering the declared drying route."
+          amount:
+            expression: "Measured feed mass with moisture content and sampling basis"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net conforming saleable dried product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_drying_batch_controls
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "1.0"
+                upper: "10.0"
+                unit: "kg/kg reference product"
+                basis: "candidate screening across declared incoming moisture states; replace with batch feed mass and moisture tests"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: drying_electricity
+          role: "Drying electricity"
+          name: "Electricity, site supply"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record fans, heaters, controls, conveyors, dehumidification, and auxiliary electricity attributable to the selected route. For controlled solar/open-air drying, include only measured auxiliary electricity. For heated-air drying, include measured process electricity. A hybrid must disclose its measured split."
+          amount:
+            expression: "Metered route-specific electricity or calculated value from equipment power and operating time"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net conforming saleable dried product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_drying_energy
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "15"
+                unit: "kWh/kg reference product"
+                basis: "candidate screening only for the declared drying technology; replace with route-specific meter data or reviewed technology evidence"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: drying_thermal_energy
+          role: "Drying thermal energy carriers"
+          name: "Declared thermal fuel or purchased heat"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Record each fuel or purchased-heat carrier separately for heated-air or declared hybrid drying. This row is zero or not applicable for an unheated solar/open-air route; do not count both fuel input and delivered heat for the same energy."
+          amount:
+            expression: "Metered carrier quantity converted with a disclosed net-calorific-value or delivered-heat basis"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net conforming saleable dried product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_drying_energy
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "50"
+                unit: "MJ/kg reference product"
+                basis: "candidate screening for heated-air or declared hybrid drying only; replace with fuel, heat-meter, and conversion records"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: dried_bulk_product
+          role: "Dried bulk cephalopod product"
+          name: "Dried bulk cephalopod product"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record dried bulk output before final grading and packing, with moisture content, salt content, and batch identity."
+          amount:
+            expression: "Measured dried-bulk mass at declared moisture and salt bases"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net conforming saleable dried product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_drying_batch_controls
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "1.0"
+                upper: "1.5"
+                unit: "kg/kg reference product"
+                basis: "candidate screening for finishing loss before packing; replace with measured dried-bulk and saleable masses"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        - row_id: drying_rejects
+          role: "Drying rejects"
+          name: "Rejected dried cephalopod material"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record scorched, contaminated, dropped, or otherwise rejected dried material by destination; separately identify material returned for rework."
+          amount:
+            expression: "Measured reject mass by batch, cause, and destination"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net conforming saleable dried product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_drying_batch_controls
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.5"
+                unit: "kg/kg reference product"
+                basis: "candidate screening for the declared drying technology; replace with batch reject and rework records"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        - row_id: water_removed_to_air
+          role: "Water removed to air"
+          name: "Water to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Calculate evaporated water from measured feed and output masses and moisture contents. Do not treat this calculated water balance as a measured emission factor."
+          amount:
+            expression: "Calculated by the wet-mass and moisture balance in calc_drying_water_loss"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net conforming saleable dried product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_drying_batch_controls
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "9"
+                unit: "kg/kg reference product"
+                basis: "candidate screening where moisture removal is the dominant mass loss; replace with batch mass and moisture calculations"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+  - id: finishing_and_packaging
+    label: "Finishing and packaging"
+    inputs:
+      product:
+        - row_id: finishing_feed
+          role: "Dried bulk product for finishing"
+          name: "Dried bulk cephalopod product"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the batch-linked dried bulk product entering equilibration, sorting, grading, and packaging."
+          amount:
+            expression: "Measured transfer mass linked to the drying batch"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net conforming saleable dried product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finished_product_release
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "1.0"
+                upper: "1.5"
+                unit: "kg/kg reference product"
+                basis: "candidate screening for grading and packing losses; replace with measured transfer and saleable masses"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: packaging_materials
+          role: "Packaging materials"
+          name: "Packaging materials by material type"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record primary, secondary, and tertiary packaging by material and measured mass; packaging is not part of the 1 kg reference product mass."
+          amount:
+            expression: "Purchased or issued packaging mass minus documented returns, normalized to saleable product"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net conforming saleable dried product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_and_finishing_utilities
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.5"
+                unit: "kg/kg reference product"
+                basis: "candidate screening for retail or bulk packs; replace with bill-of-materials and packaging issue records"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: finishing_electricity
+          role: "Finishing electricity"
+          name: "Electricity, site supply"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record electricity for equilibration controls, sorting, sealing, coding, and packing attributable to the batch."
+          amount:
+            expression: "Metered electricity or calculated share from equipment power and operating time"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net conforming saleable dried product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_and_finishing_utilities
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "1"
+                unit: "kWh/kg reference product"
+                basis: "candidate screening for finishing and packaging equipment; replace with submetered or reviewed equipment data"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: reference_dried_cephalopod_product
+          role: "Conforming saleable dried cephalopod product"
+          name: "Dried cephalopod products"
+          flow_type: "product"
+          flow_ref:
+            uuid: "ae437668-712c-407b-b8d5-7f3daf53040e"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This is the quantitative reference output. Record net product mass after final quality release and exclude all packaging."
+          amount:
+            expression: "Fixed at 1 kg net conforming saleable product per reference flow"
+            value_mode: "fixed_value"
+            specificity: "generic"
+            basis:
+              text: "1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "source_rule"
+              source_ids:
+                - eu-pef-2021-2279
+            ranges:
+              - role: allowed_range
+                lower: "1"
+                upper: "1"
+                unit: "kg"
+                basis: "exact net reference amount after packaging exclusion"
+                basis_kind: "reference_flow"
+                evidence_kind: "external_source"
+                source_ids:
+                  - eu-pef-2021-2279
+      waste:
+        - row_id: finishing_and_packaging_waste
+          role: "Finishing rejects and packaging waste"
+          name: "Finishing rejects and packaging waste by type"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record product rejects, rework transfers, and packaging scrap separately by material and destination; rework returned to a process remains a visible internal transfer."
+          amount:
+            expression: "Measured waste or rework mass by batch, material, cause, and destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net conforming saleable dried product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_and_finishing_utilities
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.5"
+                unit: "kg/kg reference product"
+                basis: "candidate screening for grading rejects and packaging scrap; replace with weighed waste and rework records"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocation_subdivide_routes
+    applies_to: "All batches and route technologies"
+    rule: "Use physical batch segregation and process subdivision first. Do not combine controlled solar/open-air and heated-air inventories or any excluded preservation route into one average unless an explicitly measured hybrid batch and energy split are documented."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: allocation_rework_and_residues
+    applies_to: "Rework, residues, and co-products"
+    rule: "Treat internal rework as an internal transfer without duplicate burden. Record waste treatment by destination. If a residue is a saleable co-product, first seek a separable process or physical relationship; document and justify any remaining allocation."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: allocation_fallback
+    applies_to: "Unavoidable shared inputs or outputs"
+    rule: "When subdivision and a defensible physical relationship cannot resolve a multifunctional process, use an economic allocation based on contemporaneous prices, disclose the price basis and period, and test sensitivity; do not apply this fallback silently."
+    source_ids:
+      - eu-pef-2021-2279
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_reception_mass_and_state
+      process_id: "raw_material_reception_and_preparation"
+      flow_role: "received and prepared cephalopod mass and state"
+      record_type: "batch receipt and transfer records"
+      raw_fields: "batch id; species group; origin; capture or aquaculture status; supplier; received mass; prepared mass; temperature; prior preservation; moisture result and basis"
+      collection_method: "calibrated scales plus receiving and transfer logs"
+      unit: "kg; °C; kg/kg"
+      frequency: "every batch"
+      temporal_coverage: "representative production period, normally 12 consecutive months or the full campaign if shorter"
+      site_scope: "each included site and line"
+      aggregation_rule: "retain batch values, then mass-weight by saleable output; do not average incompatible material states without disclosure"
+      quality_evidence: "scale calibration; supplier documents; laboratory method; reconciliation sign-off"
+    - protocol_id: cp_preparation_utilities
+      process_id: "raw_material_reception_and_preparation"
+      flow_role: "preparation water and electricity"
+      record_type: "meter, submeter, or equipment log"
+      raw_fields: "meter openings and closings; recirculation; equipment power; run time; batch allocation driver"
+      collection_method: "direct metering preferred; otherwise documented engineering calculation"
+      unit: "kg water; kWh"
+      frequency: "each batch or at least daily with justified allocation"
+      temporal_coverage: "same period as reference-product output"
+      site_scope: "each included site and utility system"
+      aggregation_rule: "subtract documented recirculation only once and allocate shared use using measured time, mass throughput, or another disclosed driver"
+      quality_evidence: "meter calibration; invoices; equipment specifications; allocation worksheet"
+    - protocol_id: cp_residue_and_wastewater
+      process_id: "raw_material_reception_and_preparation"
+      flow_role: "residues and wastewater"
+      record_type: "weigh tickets, discharge meter, treatment and destination records"
+      raw_fields: "residue type; mass; by-product or waste status; destination; water discharge; monitored load where available"
+      collection_method: "weigh each batch or reconciled container; meter discharge or calculate site water balance"
+      unit: "kg"
+      frequency: "every batch or disposal event"
+      temporal_coverage: "same period as production"
+      site_scope: "each site and treatment route"
+      aggregation_rule: "aggregate separately by material status and destination; link treatment datasets without merging unlike routes"
+      quality_evidence: "scale or meter calibration; manifests; treatment invoices; water-balance reconciliation"
+    - protocol_id: cp_drying_batch_controls
+      process_id: "route_specific_drying"
+      flow_role: "feed, dried output, moisture, salt, rejects, and operating controls"
+      record_type: "batch production and laboratory records"
+      raw_fields: "route id; feed and output mass; feed and output moisture with basis; salt content; time; temperature; humidity or equivalent control; rejects; rework"
+      collection_method: "calibrated scales and documented test methods; retain route-control logs consistent with the Codex code"
+      unit: "kg; kg/kg; °C; h"
+      frequency: "every batch"
+      temporal_coverage: "representative production period by technology route"
+      site_scope: "each dryer, line, or controlled drying area"
+      aggregation_rule: "keep routes separate; aggregate only batches with the same declared technology and compatible product specification"
+      quality_evidence: "scale and sensor calibration; test reports; route log; release record"
+    - protocol_id: cp_drying_energy
+      process_id: "route_specific_drying"
+      flow_role: "electricity and thermal energy by carrier"
+      record_type: "meters, fuel purchase and inventory, heat meter, equipment log"
+      raw_fields: "route id; electricity; fuel quantity; net calorific value; purchased heat; start and end inventory; run time; allocation driver"
+      collection_method: "direct metering preferred; reconcile fuel inventory and invoices; document conversions"
+      unit: "kWh; MJ; carrier unit"
+      frequency: "every batch or at least daily with batch allocation"
+      temporal_coverage: "same period as route-specific output"
+      site_scope: "each dryer and energy system"
+      aggregation_rule: "report each carrier separately; forbid duplicate fuel and delivered-heat accounting; disclose hybrid split"
+      quality_evidence: "meter calibration; invoices; tank reconciliation; conversion source; allocation worksheet"
+    - protocol_id: cp_finished_product_release
+      process_id: "finishing_and_packaging"
+      flow_role: "saleable net mass and required qualifiers"
+      record_type: "batch release, weigh, and laboratory records"
+      raw_fields: "batch id; dried-bulk input; saleable net mass; grade; moisture and basis; salt content; glaze declaration; drained-mass applicability; rejects"
+      collection_method: "calibrated scales and documented quality tests before release"
+      unit: "kg; kg/kg"
+      frequency: "every batch"
+      temporal_coverage: "same period as included production"
+      site_scope: "each finishing line and product specification"
+      aggregation_rule: "sum only conforming saleable net product; exclude packaging; retain product-specific moisture and salt results"
+      quality_evidence: "scale calibration; laboratory report; release authorization; label specification"
+    - protocol_id: cp_packaging_and_finishing_utilities
+      process_id: "finishing_and_packaging"
+      flow_role: "packaging, finishing electricity, and waste"
+      record_type: "bills of materials, issue records, meter or equipment log, waste records"
+      raw_fields: "packaging material and mass; returns; electricity; equipment time; product rejects; packaging scrap; destination"
+      collection_method: "measured issue and return records; metering or documented calculation; waste weighing"
+      unit: "kg; kWh"
+      frequency: "every batch or production day"
+      temporal_coverage: "same period as saleable output"
+      site_scope: "each finishing line"
+      aggregation_rule: "normalize net packaging use and utility share to saleable net product; keep each material and destination separate"
+      quality_evidence: "supplier specification; stock reconciliation; meter or equipment evidence; waste manifest"
+  calculation_rules:
+    - id: calc_reference_net_mass
+      applies_to: "Reference product"
+      rule: "Net saleable product mass equals gross packed mass minus packaging and any non-product mass. Glaze must be zero or not applicable and drained mass must be not applicable; otherwise stop and review scope."
+      inputs:
+        - "gross packed mass"
+        - "packaging mass"
+        - "glaze declaration"
+        - "drained-mass applicability"
+        - "release status"
+      output: "kg net conforming saleable dried product"
+      source_ids:
+        - eu-pef-2021-2279
+    - id: calc_normalize_inventory
+      applies_to: "All inventory rows"
+      rule: "Divide the batch-attributable quantity by batch net conforming saleable product mass to report the quantity per 1 kg reference flow."
+      inputs:
+        - "batch flow quantity"
+        - "batch net saleable product mass"
+      output: "normalized inventory amount"
+      source_ids:
+        - eu-pef-2021-2279
+    - id: calc_drying_water_loss
+      applies_to: "Drying water balance"
+      rule: "Water removed equals feed wet mass multiplied by feed moisture fraction minus dried-output wet mass multiplied by output moisture fraction, after aligning both moisture results to wet basis and accounting separately for sampled rejects or transfers."
+      inputs:
+        - "feed mass and moisture"
+        - "dried-output mass and moisture"
+        - "reject and transfer masses and moisture"
+      output: "kg calculated water removed"
+      source_ids: []
+    - id: calc_process_mass_balance
+      applies_to: "Each foreground process"
+      rule: "Reconcile measured input mass with product, waste, transfer, retained-stock change, and calculated water outputs; investigate rather than force-close material discrepancies."
+      inputs:
+        - "all batch mass records"
+        - "stock change"
+        - "moisture results"
+      output: "documented process mass-balance residual"
+      source_ids: []
+    - id: calc_route_energy
+      applies_to: "Drying energy"
+      rule: "Report electricity and each thermal carrier separately. Convert fuel with a disclosed calorific basis and never add delivered heat produced from the same counted fuel."
+      inputs:
+        - "electricity meters"
+        - "fuel records"
+        - "calorific value"
+        - "purchased heat"
+        - "hybrid split"
+      output: "kWh and MJ per kg reference product by carrier"
+      source_ids:
+        - eu-pef-2021-2279
+  data_quality_requirements:
+    - id: dq_scope_identity
+      applies_to: "Product and batch identity"
+      requirement: "Demonstrate that the product is a dried cuttlefish or squid product and not a frozen, smoked, salt-cured, or brine-preserved product; retain all required reference-flow qualifiers."
+      evidence: "product specification; label; batch release; route declaration; unsd-cpc-3-0-21266"
+    - id: dq_route_separation
+      applies_to: "Drying technology"
+      requirement: "Keep controlled solar/open-air, heated-air, and measured hybrid batches distinguishable; disclose any hybrid split and exclude route averages that mix incompatible technologies."
+      evidence: "route logs; energy records; batch genealogy"
+    - id: dq_measurement
+      applies_to: "Mass, moisture, salt, temperature, and utilities"
+      requirement: "Use calibrated instruments or documented methods at the declared sampling point and retain units, moisture basis, detection limits where relevant, and conversion formulas."
+      evidence: "calibration certificates; laboratory reports; meter records; codex-cxc-52-2003"
+    - id: dq_temporal_coverage
+      applies_to: "Foreground averages"
+      requirement: "Prefer 12 consecutive months; if seasonal production or a shorter campaign is represented, cover the full campaign and disclose omitted periods, atypical downtime, and production weighting."
+      evidence: "production calendar; batch register; coverage calculation"
+    - id: dq_completeness
+      applies_to: "Foreground inventory"
+      requirement: "Reconcile product, residue, wastewater, water, and energy records; disclose missing flows, cut-offs, substitutions, and mass-balance residuals rather than replacing them silently."
+      evidence: "reconciliation workbook; data-gap register; eu-pef-2021-2279"
+    - id: dq_estimate_replacement
+      applies_to: "All reasoned_estimate ranges"
+      requirement: "Treat reasoned estimates only as candidate screening guardrails. Replace each used estimate with protocol-based foreground records or reviewed route-specific evidence before methodology activation or dataset release for normal use."
+      evidence: "record-to-range replacement log; reviewer decision; cited replacement source"
+validation_rules:
+  - rule_id: validation_scope
+    applies_to: "Product applicability"
+    rule: "Confirm the output is dried cuttlefish or squid and that frozen, smoked, salt-cured, and brine-preserved market routes are absent; non-zero glaze or applicable drained mass fails scope."
+    source_ids:
+      - unsd-cpc-3-0-21266
+  - rule_id: validation_reference_flow
+    applies_to: "Quantitative reference"
+    rule: "Confirm exactly 1 kg net conforming saleable output uses product-flow UUID ae437668-712c-407b-b8d5-7f3daf53040e, Mass UUID 93a60a56-a3c8-11da-a746-0800200b9a66, Units of mass UUID 93a60a57-a4c8-11da-a746-0800200c9a66, and kg, with every required qualifier declared."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: validation_route_exclusivity
+    applies_to: "Drying process"
+    rule: "Confirm one technology route per batch. A controlled solar/open-air and heated-air combination is allowed only as an explicitly documented hybrid with measured energy split; never average an excluded preservation route into the dataset."
+    source_ids: []
+  - rule_id: validation_mass_and_quality
+    applies_to: "Process and product records"
+    rule: "Reconcile received, prepared, dried-bulk, saleable, reject, residue, wastewater, stock-change, and calculated moisture-loss records; verify moisture and salt bases and explain material residuals."
+    source_ids:
+      - codex-cxc-52-2003
+  - rule_id: validation_energy
+    applies_to: "Drying utilities"
+    rule: "Confirm electricity and each thermal carrier are separately reported, conversions are disclosed, and fuel is not double counted with heat produced from that fuel."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: validation_estimates
+    applies_to: "Candidate quantitative screening"
+    rule: "Flag every value that still relies on reasoned_estimate; such a value is provisional and cannot satisfy normal-use release until replaced by collected records or reviewed route-specific evidence."
+    source_ids: []
+  - rule_id: validation_sources_and_destinations
+    applies_to: "Upstream and waste links"
+    rule: "Confirm every material input, energy carrier, packaging input, wastewater, residue, reject, and other waste has an identified source or destination dataset and that substitutions and allocation are disclosed."
+    source_ids:
+      - eu-pef-2021-2279
+published_dataset_profile:
+  dataset_role: "Foreground production data package for one declared dried cephalopod product and drying technology"
+  downstream_use: "May be published as a secondary_dataset or background_dataset after review, complete upstream linking, and replacement of relied-upon reasoned estimates"
+  allowed_use: "Factory-gate modelling of dried cuttlefish or squid products matching the declared species group, source-material state, drying technology, moisture, salt, net-mass, geography, and time period"
+  excluded_use: "Frozen, smoked, salt-cured, or brine-preserved products; liquid-packed products; products with non-zero glaze; mixed seafood without separable records; generic representation of all CPC 21266 routes"
+  required_metadata: "PCR id; product-flow UUID; species group; origin and capture or aquaculture status; site; period; source-material state; drying technology and hybrid split if any; net-mass basis; moisture content and basis; salt content; glaze declaration; drained-mass applicability; grade; allocation; upstream datasets; waste destinations"
+  required_quality_disclosure: "Data coverage; instrument and method evidence; batch weighting; mass and energy reconciliation; cut-offs; substitutions; allocation; reasoned-estimate replacement status; route exclusions; uncertainty and data gaps"
+  update_trigger: "Change in species mix, raw-material state, drying technology or energy carrier, product moisture or salt specification, packaging, site, allocation, upstream dataset, regulation, or reviewed evidence; any observed value outside a screening guardrail also triggers review rather than automatic rejection"
+data_sources:
+  - id: "unsd-cpc-3-0-21266"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, Central Product Classification Version 3.0, subclass 21266, official CPC classification materials, https://unstats.un.org/unsd/classifications/Econ/cpc, retrieved 2026-08-11"
+    used_for: "Official CPC identity and full classification title; used to state that this methodology is intentionally narrower than the classification label"
+  - id: "codex-cxc-52-2003"
+    type: "standard"
+    reference: "Codex Alimentarius, CXC 52-2003, Code of Practice for Fish and Fishery Products, official Codex texts, https://www.fao.org/fao-who-codexalimentarius/codex-texts/codes-of-practice/en/, retrieved 2026-08-11"
+    used_for: "Fishery-product receiving, hygienic processing, drying-control, monitoring, and product-quality record structure; not used as quantitative LCI evidence"
+  - id: "eu-pef-2021-2279"
+    type: "official_guidance"
+    reference: "European Commission Recommendation (EU) 2021/2279 on the use of the Environmental Footprint methods, https://eur-lex.europa.eu/eli/reco/2021/2279/oj, retrieved 2026-08-11"
+    used_for: "Functional-unit and reference-flow framing, inventory completeness, data quality, upstream dataset linking, allocation hierarchy, and disclosure"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:9a1f832eb2f05d90a1e8fb5b4d64b509cca400923f6d1104985cdee87005e75c"
+  generated_content_sha256: "sha256:842abf06f48d03d46e53f73ede254c22a0deb3b699561afc645b16ef4aaf425e"

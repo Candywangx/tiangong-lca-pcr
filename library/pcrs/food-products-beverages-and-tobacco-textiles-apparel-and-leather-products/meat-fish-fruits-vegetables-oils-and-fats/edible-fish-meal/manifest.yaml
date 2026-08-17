@@ -2,10 +2,10 @@ schema_version: 1
 id: pcr.food-products-beverages-and-tobacco-textiles-apparel-and-leather-products.meat-fish-fruits-vegetables-oils-and-fats.edible-fish-meal
 title:
   en-US: "Edible fish meal"
-  zh-CN: null
-status: scaffold
+  zh-CN: "食用鱼粉"
+status: candidate
 pcr_kind: product_category_rule
-content_maturity: empty_scaffold
+content_maturity: authored_methodology
 domains:
   - "food-products-beverages-and-tobacco-textiles-apparel-and-leather-products"
 modules:
@@ -22,16 +22,72 @@ target_entities:
   - flow
   - process
   - lifecyclemodel
+  - dataset
 languages:
   canonical: en-US
   available:
     - en-US
     - zh-CN
 translation_status:
-  zh-CN: scaffold_pending_translation
+  zh-CN: aligned
 classification_refs:
   - system: CPC
     version: "3.0"
     code: "21233"
     title: "Edible fish meal"
     mapping_type: exact
+review_metadata:
+  inventory_contract:
+    atomic_flows: v1
+  notes:
+    - "Candidate methodology requires independent technical review before activation or publication."
+    - "Inventory flow identities were remediated into atomic exchanges. UUID-bearing rows were verified through flow-hybrid-search and state_code=100 Tiangong flow list/get reads; unresolved rows remain concrete atomic names and require row-level identity review before publication."
+    - "Water, electricity and thermal energy, ice or cold preservation, salt or smoke inputs, packaging, raw-material yield and residuals, wastewater, and refrigerant-loss ranges are deliberately broad replaceable reasoned-estimate QA guardrails, not industry defaults. Replace them with representative foreground records or reviewed source-backed ranges."
+    - "Product-form and food-safety implementation details must be checked against the applicable jurisdiction, species, preservation route, and current Codex requirements during review."
+  unresolved_flow_references:
+    - "prepared_fish_output | Prepared edible fish | no exact prepared-fish intermediate product flow; finished fish products were rejected because they do not preserve the foreground intermediate condition"
+    - "preparation_residuals | Inedible fish offal | no exact waste-flow match; the inedible raw-offal candidate is a product flow and was rejected for flow-type mismatch"
+    - "prepared_fish_input | Prepared edible fish | no exact prepared-fish intermediate product flow; finished fish products were rejected because they do not preserve the foreground intermediate condition"
+    - "processing_hot_water_input | Industrial hot water | no temperature- and supply-scenario-matched product flow; steam/heat candidates were rejected because they combine carriers or use incompatible reference properties"
+    - "processing_heavy_fuel_oil_input | Heavy fuel oil | the Bayer-process Fuel Oil candidate had incompatible industry context and the heavy-fuel-oil candidate used Volume instead of the required Mass reference property"
+    - "processing_biomass_wood_chips_input | Untreated wood chips | no mass-referenced untreated wood-chip fuel flow; the returned biomass candidate represented emergy and rock/ice context"
+    - "liquid_smoke_input | Liquid smoke flavouring | hybrid search returned unrelated chemicals and no food-grade liquid-smoke product flow"
+    - "smoking_wood_chips_input | Untreated hardwood chips for food smoking | no mass-referenced food-smoking wood-chip flow; volume-referenced generic wood-chip candidates were rejected"
+    - "dried_material_output | Dried stabilized edible fish | no exact foreground intermediate flow; dried/salted finished-fish candidates were rejected as a different product state"
+    - "process_wastewater_output | Fish-processing wastewater | the only Waste flow candidate was untreated landing-site wastewater discharged to water and was rejected for origin and destination mismatch"
+    - "separated_fish_solids_output | Separated fish solids | no composition-specific fish-processing waste flow; generic organic residues were rejected as broader"
+    - "dryer_fines_output | Fish dryer fines | no exact fish-dryer fines waste flow"
+    - "direct_fossil_co2_air | Carbon dioxide, fossil, to air | multiple candidates differed by elementary-flow compartment; no exact air-compartment row was selected without site release context"
+    - "direct_nox_air | Nitrogen oxides, to air | multiple elementary-flow candidates differed by compartment; no exact stack-air row was confirmed"
+    - "direct_so2_air | Sulfur dioxide, to air | multiple elementary-flow candidates differed by compartment; no exact stack-air row was confirmed"
+    - "direct_pm25_air | Particulate matter, 0.2-2.5 micrometres, to air | no particle-size- and air-compartment-matched candidate was confirmed"
+    - "direct_cod_water | Chemical oxygen demand, to water | no receiving-water-compartment-matched elementary flow was confirmed"
+    - "direct_total_n_water | Total nitrogen, to water | no receiving-water-compartment-matched elementary flow was confirmed"
+    - "dried_material_input | Dried stabilized edible fish | no exact foreground intermediate flow; finished dried-fish candidates were rejected"
+    - "milling_dust_output | Collected fish-meal dust | no exact fish-meal dust waste flow"
+    - "milling_offspec_meal_output | Off-spec edible fish meal | no off-spec edible-fish-meal waste flow; the finished product flow was rejected for waste-role mismatch"
+    - "milling_sieve_oversize_output | Fish-meal sieve oversize | no exact sieve-oversize waste flow"
+    - "packaging_pp_woven_sack_input | Polypropylene woven sack | the matching 25 kg bag candidate used Number of items rather than the retained Mass reference property"
+    - "packaging_steel_drum_input | Food-grade steel drum | steel-drum candidates used CTUe as the reference property and did not establish food-grade service"
+    - "storage_r717_makeup_input | Refrigeration-grade ammonia R717 | the anhydrous-liquid-ammonia candidate was an industrial reagent/feedstock and was rejected for refrigeration-role mismatch"
+    - "storage_r744_makeup_input | Refrigeration-grade carbon dioxide R744 | candidates represented chemical-industry waste or welding gas and used incompatible reference properties"
+    - "storage_r134a_emission_air | HFC-134a, to air | multiple HFC-134a elementary flows had indistinguishable names and different compartments; no exact air-compartment UUID was selected"
+    - "storage_r404a_emission_air | Refrigerant R404A, to air | no exact R404A elementary emission flow was returned; chemically unrelated results were rejected"
+    - "storage_r717_emission_air | Ammonia from R717, to air | multiple ammonia elementary flows differed by compartment; no exact refrigeration-leak air row was confirmed"
+    - "storage_r744_emission_air | Carbon dioxide from R744, to air | fossil/biogenic carbon-dioxide candidates were rejected because neither establishes R744 leakage origin"
+    - "treatment_hot_water_input | Industrial hot water | no temperature- and supply-scenario-matched product flow"
+    - "treatment_heavy_fuel_oil_input | Heavy fuel oil | industry-context and reference-property mismatches caused all candidates to be rejected"
+    - "treatment_biomass_wood_chips_input | Untreated wood chips | no mass-referenced untreated wood-chip fuel flow"
+    - "treatment_sodium_hydroxide_input | Sodium hydroxide solution | no concentration- and treatment-context-matched product flow was returned"
+    - "treatment_ferric_chloride_input | Ferric chloride solution | no concentration- and treatment-context-matched product flow was returned"
+    - "treatment_polyacrylamide_input | Polyacrylamide flocculant | no wastewater-treatment-grade polyacrylamide product flow was returned"
+    - "treatment_fish_wastewater_input | Fish-processing wastewater | landing-site untreated wastewater discharged to water was rejected for origin and treatment-boundary mismatch"
+    - "treatment_fish_solids_input | Separated fish solids | no composition-specific fish-processing waste flow"
+    - "recovered_fish_oil_output | Recovered fish oil | no recovered fish-oil product flow with the required foreground state was returned"
+    - "recovered_fish_solubles_output | Concentrated fish solubles | no exact concentrated-fish-solubles product flow was returned"
+    - "treatment_sludge_output | Fish-processing wastewater-treatment sludge | no origin-specific treatment-sludge waste flow was returned"
+    - "treatment_methane_air | Methane, to air | multiple elementary-flow candidates differed by fossil/biogenic origin and compartment; no exact treatment-release row was confirmed"
+    - "treatment_n2o_air | Nitrous oxide, to air | no treatment-source and air-compartment-matched elementary flow was confirmed"
+    - "treatment_cod_water | Chemical oxygen demand, to water | no receiving-water-compartment-matched elementary flow was confirmed"
+    - "treatment_total_n_water | Total nitrogen, to water | no receiving-water-compartment-matched elementary flow was confirmed"
+    - "treatment_total_p_water | Total phosphorus, to water | no receiving-water-compartment-matched elementary flow was confirmed"

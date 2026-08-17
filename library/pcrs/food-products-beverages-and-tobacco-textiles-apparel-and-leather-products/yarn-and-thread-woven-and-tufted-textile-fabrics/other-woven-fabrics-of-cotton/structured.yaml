@@ -1,10 +1,1067 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "26690"
-  title: "Other woven fabrics of cotton"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.food-products-beverages-and-tobacco-textiles-apparel-and-leather-products.yarn-and-thread-woven-and-tufted-textile-fabrics.other-woven-fabrics-of-cotton"
+  classification_refs: "CPC 3.0: 26690, Other woven fabrics of cotton"
+  covered_products: "Saleable greige, prepared, bleached, dyed, printed, or finished woven cotton fabrics that belong to the residual other-cotton-woven-fabric category after more specific subclasses are ruled out"
+  excluded_products: "Yarn and fibre; knitted, crocheted, tufted, nonwoven, narrow, pile, terry, gauze, and special fabrics classified elsewhere; made-up textile articles; products whose declared principal textile identity is not cotton"
+  representative_product: "Printed cotton cloth is one tightly woven, light- to medium-weight, printed apparel-grade representative route only; it does not represent every product in the category"
+  production_route: "Supplied yarn -> warping and optional sizing -> weaving -> inspection/repair -> optional desizing, scouring, bleaching, or mercerising -> optional dyeing or printing -> optional functional or mechanical finishing and thermal treatment -> final inspection and packaging"
+  market_state: "Saleable dry fabric at factory gate, in roll, bale, or equivalent bulk form, with packaging excluded from reference mass and reported separately"
+functional_unit:
+  what: "Provision of saleable woven cotton fabric at the factory gate with a declared fibre composition, weave/construction, route, area mass, usable width, finish, and quality grade"
+  how_much: "1 kg of saleable fabric, excluding packaging"
+  how_well: "Conforming to the producer's declared product specification and applicable contract or verified performance grade; no category-wide printing or finishing grade is implied"
+  how_long_or_cycle: "One production lot through factory-gate release; use-stage lifetime is not part of this intermediate-product reference flow"
+  reference_flow_link: "The reference product output row saleable_cotton_woven_fabric is normalized to 1 kg"
+system_boundary:
+  rules:
+    - rule_id: boundary_route_specific
+      applies_to: "foreground_system_boundary"
+      rule: "Include every process actually performed from supplied yarn through factory-gate release. Mark pretreatment, dyeing, printing, finishing, direct heating, and on-site treatment as conditional rather than assuming the printed representative route."
+      source_ids:
+        - eu-txt-bat-2022
+    - rule_id: boundary_inputs_outputs
+      applies_to: "foreground_system_boundary"
+      rule: "For each included process, inventory material and chemical inputs, water, energy, products, wastes, wastewater, and relevant direct emissions. Maintain a process flow sheet that relates outputs and emissions to their source process."
+      source_ids:
+        - eu-txt-bat-2022
+    - rule_id: boundary_recursive_inputs
+      applies_to: "foreground_system_boundary"
+      rule: "Represent purchased same-category fabric as a linked upstream dataset with its own reference flow and qualifiers; prohibit a self-referential foreground loop."
+      source_ids:
+        - eu-pef-2021-2279
+    - rule_id: boundary_shared_services
+      applies_to: "foreground_system_boundary"
+      rule: "Include directly associated shared utilities, thermal treatment, air-emission control, and wastewater treatment and allocate them using the hierarchy in Section 7."
+      source_ids:
+        - eu-txt-bat-2022
+        - eu-pef-2021-2279
+    - rule_id: boundary_omissions
+      applies_to: "foreground_system_boundary"
+      rule: "Avoid unquantified cut-offs. Any excluded flow or process shall be named, screened for material, energy, and environmental significance, justified, and included in the completeness disclosure."
+      source_ids:
+        - eu-pef-2021-2279
+boundary_abstraction:
+  declared_starting_condition: "Purchased yarn, processing chemicals, packaging, utilities, and other supplied materials crossing the fabric-production site gate, with their actual supplier, state, and upstream dataset linkage declared"
+  starting_condition_role: "Foreground fabric manufacturing starts at receipt of yarn and ends at release of saleable woven fabric at the factory gate"
+  product_classification_scope: "Residual woven cotton fabric category; classification does not force a printed route and requires exclusion of more specific fabric categories before use"
+  recursive_input_rule: "If an input is another product within this PCR category, record it as a purchased intermediate with an independently modelled upstream dataset and declared route; do not recursively reproduce its manufacturing inside the receiving process"
+  upstream_dataset_requirement: "Link representative upstream datasets for yarn/fibre supply, chemicals, electricity, fuels/heat, water supply, packaging, transport, and off-site treatment; disclose geography, technology, time, and proxy gaps"
+  disclosure: "Declare included and excluded route stages, on-site versus off-site wet processing, treatment location, product composition and construction, reference-flow moisture basis, recovered/recycled flows, cut-offs, proxies, and allocation choices"
+reference_flow_definition:
+  reference_amount: "1"
+  product_flow_ref:
+    name: "Printed cotton cloth / 印花棉布"
+    uuid: "00665421-6d29-46d6-83cb-28766e3dec4b"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "actual route: greige/prepared/bleached/dyed/printed/finished"
+    - "fibre composition by dry mass"
+    - "yarn type/count"
+    - "weave and construction"
+    - "area mass in g/m2"
+    - "usable width"
+    - "moisture condition at weighing"
+    - "colour/print technology when applicable"
+    - "chemical or mechanical finish"
+    - "performance/quality grade and test basis"
+    - "production geography"
+    - "technology and reporting period"
+    - "packaging treatment"
+    - "co-product and scrap classification"
+    - "allocation method"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "Saleable reference fabric"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Normalize all foreground quantities to 1 kg of accepted saleable fabric. Exclude cores, wraps, pallets, and other packaging from fabric mass and inventory them separately. Record the weighing basis and moisture condition."
+  - id: dry_mass_and_moisture
+    applies_to: "Yarn, fabric intermediates, and saleable fabric"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Use consistent dry-mass or declared commercial-moisture accounting across the lot. If commercial mass is used, record measured or specified moisture and the conversion used for mass-balance comparison."
+  - id: area_mass_check
+    applies_to: "Saleable fabric"
+    required_property_ref:
+      name: "Area, mass, length, and usable width"
+      uuid: ""
+    required_unit: "m2, kg, m, m, g/m2"
+    rule: "Cross-check lot mass against usable length x usable width x measured area mass. Investigate a material mismatch; do not replace measured reference mass with the area calculation without explanation."
+  - id: composition_basis
+    applies_to: "Fibre composition"
+    required_property_ref:
+      name: "Mass fraction"
+      uuid: ""
+    required_unit: "% by mass"
+    rule: "Report constituent fibre fractions on one declared mass basis and require the total to equal 100% within documented rounding tolerance."
+  - id: water_accounting
+    applies_to: "Wet processes and cleaning"
+    required_property_ref:
+      name: "Volume"
+      uuid: ""
+    required_unit: "m3"
+    rule: "Record gross fresh-water intake, internally reused/recycled water, and net water consumption separately; do not subtract water that is merely transferred to another on-site process without documenting the transfer."
+  - id: energy_accounting
+    applies_to: "Electricity, fuels, steam, and heat"
+    required_property_ref:
+      name: "Energy or carrier-specific property"
+      uuid: ""
+    required_unit: "kWh, MJ, kg, or m3"
+    rule: "Record purchased electricity, each fuel carrier, imported steam/heat, on-site generation, recovered energy, and exports separately. Apply conversion factors with their source and do not mix lower and higher heating values."
+process_map:
+  - id: weaving
+    name: "Weaving preparation and weaving"
+    inclusion: "required"
+    inclusion_condition: "Include yarn receipt, warping, drawing-in, optional sizing, weaving, loom cleaning, and intermediate inspection actually performed at the site"
+    role: "Converts supplied yarn into greige woven fabric"
+    quantitative_reference: "Per 1 kg saleable reference fabric"
+  - id: pretreatment
+    name: "Cotton fabric pretreatment"
+    inclusion: "conditional"
+    inclusion_condition: "Include when singeing, desizing, washing/scouring, bleaching, mercerising, rinsing, drying, or related preparation occurs within the reporting boundary"
+    role: "Prepares greige fabric for sale or subsequent colouration/finishing"
+    quantitative_reference: "Per 1 kg saleable reference fabric"
+  - id: colouration_printing
+    name: "Dyeing or printing"
+    inclusion: "conditional"
+    inclusion_condition: "Include the actual dyeing and/or printing technology, fixation, washing, drying, equipment cleaning, and paste management performed within the reporting boundary"
+    role: "Applies colour or printed design; printed cloth is one representative route only"
+    quantitative_reference: "Per 1 kg saleable reference fabric"
+  - id: finishing
+    name: "Mechanical, chemical, and thermal finishing"
+    inclusion: "conditional"
+    inclusion_condition: "Include only treatments actually applied, such as softening, easy-care, coating within scope, calendaring, raising, sanforising, drying, curing, or heat-setting"
+    role: "Delivers declared handle, dimensions, appearance, or functional performance"
+    quantitative_reference: "Per 1 kg saleable reference fabric"
+  - id: utilities_treatment
+    name: "Site utilities and emission/effluent treatment"
+    inclusion: "conditional"
+    inclusion_condition: "Include on-site boilers, direct heating, compressed air, water preparation, heat recovery, air abatement, and wastewater treatment that serve included processes"
+    role: "Supplies shared services and records direct site emissions and treatment outputs"
+    quantitative_reference: "Per 1 kg saleable reference fabric"
+  - id: inspection_packaging
+    name: "Final inspection, grading, and packaging"
+    inclusion: "required"
+    inclusion_condition: "Include final measurement, testing, grading, trimming, roll/bale preparation, and packaging before factory-gate release"
+    role: "Produces accepted saleable reference fabric and identifies off-spec material"
+    quantitative_reference: "1 kg accepted saleable fabric"
+process_inventory:
+  - id: weaving
+    label: "Weaving preparation and weaving"
+    inputs:
+      product:
+        - row_id: yarn_input
+          role: "Supplied cotton yarn and declared blend yarns"
+          name: "Cotton yarn or declared blend yarn"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record each yarn input by fibre composition, yarn count/type, supplier, lot, and mass. Link supplier datasets and keep blend components distinguishable."
+          amount:
+            expression: "measured received or issued mass attributable to the production lot, adjusted to the declared moisture basis"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg saleable reference fabric"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_weaving_batch
+              source_ids: []
+            ranges: []
+        - row_id: weaving_chemicals
+          role: "Sizing and weaving preparation chemicals"
+          name: "Site-specific sizing or weaving preparation chemical"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record each size, lubricant, antistatic agent, cleaning agent, and other preparation chemical when used; retain product identity and concentration."
+          amount:
+            expression: "opening stock plus receipts minus closing stock and documented transfers, reconciled to batch dosing records"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg saleable reference fabric"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_weaving_batch
+              source_ids:
+                - eu-txt-bat-2022
+            ranges: []
+        - row_id: weaving_energy
+          role: "Weaving electricity and directly used energy"
+          name: "Electricity and site-specific energy carrier"
+          flow_type: "product"
+          property_unit: "Energy / kWh or MJ; carrier-specific property where required"
+          description: "Record meter-based electricity and each directly used energy carrier. Shared services may be recorded in utilities_treatment and allocated once, but shall not be omitted or double counted."
+          amount:
+            expression: "submetered consumption or documented allocation from a reconciled site meter"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg saleable reference fabric"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_weaving_batch
+              source_ids:
+                - eu-txt-bat-2022
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: greige_fabric
+          role: "Greige woven fabric intermediate"
+          name: "Greige woven cotton fabric"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the mass transferred to subsequent on-site processing or released as greige saleable fabric, with construction, usable width, area mass, and moisture basis."
+          amount:
+            expression: "measured accepted and transferred mass by lot"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg saleable reference fabric"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_weaving_batch
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: weaving_waste
+          role: "Yarn ends, loom waste, and rejected greige fabric"
+          name: "Site-specific cotton textile residue or waste"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Separate internally reusable material, externally recovered co-product, and waste sent to treatment; do not net these outputs against yarn input."
+          amount:
+            expression: "measured mass by disposition and destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg saleable reference fabric"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_weaving_batch
+              source_ids: []
+            ranges: []
+      elementary:
+        []
+  - id: pretreatment
+    label: "Cotton fabric pretreatment"
+    inputs:
+      product:
+        - row_id: pretreatment_fabric_input
+          role: "Greige fabric entering pretreatment"
+          name: "Greige woven cotton fabric"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the transferred greige fabric mass and link it to the weaving output or purchased upstream intermediate."
+          amount:
+            expression: "measured batch input mass on the declared moisture basis"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg saleable reference fabric"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_pretreatment_batch
+              source_ids: []
+            ranges: []
+        - row_id: pretreatment_materials
+          role: "Pretreatment water and chemicals"
+          name: "Process water and site-specific pretreatment chemical"
+          flow_type: "product"
+          property_unit: "Volume / m3 for water; Mass / kg for chemicals"
+          description: "Record water and each desizing, scouring, bleaching, mercerising, pH-control, washing, or cleaning chemical actually used. Keep water and chemical rows separable in the data package even when summarized by this role."
+          amount:
+            expression: "meter or batch-controller records for water; reconciled dosing or inventory records for each chemical"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg saleable reference fabric"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_pretreatment_batch
+              source_ids:
+                - eu-txt-bat-2022
+            ranges: []
+        - row_id: pretreatment_energy
+          role: "Pretreatment electricity and heat"
+          name: "Electricity, steam, heat, or site-specific fuel"
+          flow_type: "product"
+          property_unit: "Energy / kWh or MJ; carrier-specific property where required"
+          description: "Record electricity, steam, heat, and directly combusted fuels separately, including recovered energy used by the process."
+          amount:
+            expression: "submetered or batch-attributed consumption reconciled to site totals"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg saleable reference fabric"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_pretreatment_batch
+              source_ids:
+                - eu-txt-bat-2022
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: prepared_fabric
+          role: "Prepared cotton fabric"
+          name: "Prepared woven cotton fabric"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the mass and declared state of desized, scoured, bleached, mercerised, or otherwise prepared fabric transferred or sold."
+          amount:
+            expression: "measured accepted output mass by batch"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg saleable reference fabric"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_pretreatment_batch
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: pretreatment_wastewater
+          role: "Pretreatment wastewater and separated residues"
+          name: "Wastewater from cotton pretreatment and site-specific residues"
+          flow_type: "waste"
+          property_unit: "Volume / m3 for wastewater; Mass / kg for residues"
+          description: "Record wastewater volume and relevant load sent to on-site or off-site treatment, plus separately measured residues and empty chemical containers by destination."
+          amount:
+            expression: "flow-meter or batch volume and measured/analysed pollutant load; weigh residues by disposition"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg saleable reference fabric"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_pretreatment_batch
+              source_ids:
+                - eu-txt-bat-2022
+            ranges: []
+      elementary:
+        []
+  - id: colouration_printing
+    label: "Dyeing or printing"
+    inputs:
+      product:
+        - row_id: colouration_fabric_input
+          role: "Fabric entering dyeing or printing"
+          name: "Woven cotton fabric intermediate"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the actual prepared or greige fabric input and its route state. Printing is conditional and shall not be inferred from the representative flow UUID."
+          amount:
+            expression: "measured batch input mass"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg saleable reference fabric"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_colouration_batch
+              source_ids: []
+            ranges: []
+        - row_id: colouration_materials
+          role: "Dyes, pigments, printing pastes, auxiliaries, and water"
+          name: "Site-specific colourant, printing chemical, auxiliary, and process water"
+          flow_type: "product"
+          property_unit: "Mass / kg for chemicals; Volume / m3 for water"
+          description: "Record each colourant, binder, thickener, fixation agent, auxiliary, printing paste component, cleaning chemical, and water input. Identify the actual technology and retain concentration and safety-data identifiers."
+          amount:
+            expression: "recipe/dosing records reconciled with inventory movement; metered or batch-controlled water including equipment cleaning"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg saleable reference fabric"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_colouration_batch
+              source_ids:
+                - eu-txt-bat-2022
+            ranges: []
+        - row_id: colouration_energy
+          role: "Dyeing or printing energy"
+          name: "Electricity, steam, heat, or site-specific fuel"
+          flow_type: "product"
+          property_unit: "Energy / kWh or MJ; carrier-specific property where required"
+          description: "Record electricity, steam, heat, and directly used fuels for application, fixation, washing, drying, and equipment cleaning."
+          amount:
+            expression: "submetered or batch-attributed use reconciled to site totals"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg saleable reference fabric"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_colouration_batch
+              source_ids:
+                - eu-txt-bat-2022
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: coloured_fabric
+          role: "Dyed or printed fabric"
+          name: "Dyed or printed woven cotton fabric"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record accepted output mass, colour or print route, fixation and wash state, and applicable quality-test result."
+          amount:
+            expression: "measured accepted batch output mass"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg saleable reference fabric"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_colouration_batch
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: colouration_waste
+          role: "Colouration wastewater, residual paste, and cleaning residues"
+          name: "Dyeing/printing wastewater and site-specific colouration residue"
+          flow_type: "waste"
+          property_unit: "Volume / m3 for wastewater; Mass / kg for paste and solids"
+          description: "Measure wastewater and segregate recovered/reused paste from residual paste and other wastes sent to treatment. Do not assume recovery or reuse without records."
+          amount:
+            expression: "metered discharge plus measured residues by type and disposition"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg saleable reference fabric"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_colouration_batch
+              source_ids:
+                - eu-txt-bat-2022
+            ranges: []
+      elementary:
+        - row_id: colouration_air_emissions
+          role: "Direct colouration and printing emissions to air"
+          name: "Site-specific direct emission to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record relevant measured releases from printing, fixation, drying, and cleaning after any process-integrated controls; the pollutant set shall follow the chemical inventory and permit relevance assessment."
+          amount:
+            expression: "measured concentration x validated exhaust volume over the production period, or another documented permit-compliant mass method"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg saleable reference fabric"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_colouration_batch
+              source_ids:
+                - eu-txt-bat-2022
+            ranges: []
+  - id: finishing
+    label: "Mechanical, chemical, and thermal finishing"
+    inputs:
+      product:
+        - row_id: finishing_fabric_input
+          role: "Fabric entering finishing"
+          name: "Woven cotton fabric intermediate"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the fabric state and mass entering each finishing sequence."
+          amount:
+            expression: "measured batch input mass"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg saleable reference fabric"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing_batch
+              source_ids: []
+            ranges: []
+        - row_id: finishing_inputs
+          role: "Finishing chemicals, water, and energy"
+          name: "Site-specific finishing chemical, process water, electricity, steam, heat, or fuel"
+          flow_type: "product"
+          property_unit: "Mass / kg, Volume / m3, or Energy / kWh or MJ as applicable"
+          description: "Record each applied finish, carrier or process water, and electricity/heat input for mechanical treatment, application, drying, curing, or heat-setting."
+          amount:
+            expression: "recipe/dosing and metering records reconciled to batch and site totals"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg saleable reference fabric"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing_batch
+              source_ids:
+                - eu-txt-bat-2022
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: finished_fabric
+          role: "Finished woven fabric"
+          name: "Finished woven cotton fabric"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record accepted output mass and every claimed chemical, mechanical, dimensional, appearance, or functional finish."
+          amount:
+            expression: "measured accepted batch output mass"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg saleable reference fabric"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing_batch
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: finishing_waste
+          role: "Finishing wastewater and residues"
+          name: "Finishing wastewater and site-specific residue"
+          flow_type: "waste"
+          property_unit: "Volume / m3 or Mass / kg"
+          description: "Record wastewater, residual finish, filter media, containers, and other treatment-bound residues separately by destination."
+          amount:
+            expression: "metered or weighed amount by type and disposition"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg saleable reference fabric"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing_batch
+              source_ids:
+                - eu-txt-bat-2022
+            ranges: []
+      elementary:
+        - row_id: finishing_air_emissions
+          role: "Direct finishing and thermal-treatment emissions"
+          name: "Site-specific direct emission to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record relevant direct air releases after abatement using a pollutant list derived from applied chemicals and thermal operations."
+          amount:
+            expression: "measured concentration x validated exhaust volume over the production period, or another documented permit-compliant mass method"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg saleable reference fabric"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_finishing_batch
+              source_ids:
+                - eu-txt-bat-2022
+            ranges: []
+  - id: utilities_treatment
+    label: "Site utilities and emission/effluent treatment"
+    inputs:
+      product:
+        - row_id: utility_inputs
+          role: "Utility fuels, purchased energy, treatment chemicals, and make-up water"
+          name: "Site-specific fuel, purchased energy, treatment chemical, or supplied water"
+          flow_type: "product"
+          property_unit: "Carrier-specific mass/volume or Energy / kWh or MJ"
+          description: "Record each carrier and treatment material separately, including boiler fuel, imported electricity/steam, water-treatment chemicals, wastewater-treatment chemicals, and make-up water."
+          amount:
+            expression: "supplier invoice and meter/stock reconciliation, allocated only after direct submetering is exhausted"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg saleable reference fabric"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_utilities_treatment
+              source_ids:
+                - eu-txt-bat-2022
+            ranges: []
+      waste:
+        - row_id: wastewater_to_site_treatment
+          role: "Wastewater received for on-site treatment"
+          name: "Textile-process wastewater to treatment"
+          flow_type: "waste"
+          property_unit: "Volume / m3 and pollutant-specific Mass / kg"
+          description: "Link wastewater inputs to the generating process without duplicating their volume or pollutant load."
+          amount:
+            expression: "reconciled inflow volume and analysed load by source stream"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg saleable reference fabric"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_utilities_treatment
+              source_ids:
+                - eu-txt-bat-2022
+            ranges: []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: recovered_utility
+          role: "Recovered water or energy transferred internally"
+          name: "Recovered process water, condensate, or heat"
+          flow_type: "product"
+          property_unit: "Volume / m3 or Energy / MJ"
+          description: "Record internal recovery as a tracked transfer that reduces gross demand; do not create an avoided-burden credit unless the chosen downstream model explicitly supports it."
+          amount:
+            expression: "metered transfer actually reused within the included system"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg saleable reference fabric"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_utilities_treatment
+              source_ids:
+                - eu-txt-bat-2022
+            ranges: []
+      waste:
+        - row_id: treatment_residue
+          role: "Treatment sludge and abatement residues"
+          name: "Wastewater-treatment sludge or air-abatement residue"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record dry and wet mass basis, composition where required, hazardous status, and treatment destination."
+          amount:
+            expression: "measured dispatched mass with moisture or dry-solids content"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg saleable reference fabric"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_utilities_treatment
+              source_ids:
+                - eu-txt-bat-2022
+            ranges: []
+      elementary:
+        - row_id: treated_direct_emissions
+          role: "Treated effluent and utility emissions"
+          name: "Site-specific elementary emission to water or air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record final pollutant releases to water and air after treatment, including direct combustion emissions, without also reporting the same load as an untreated direct release."
+          amount:
+            expression: "measured concentration x validated discharge/exhaust volume over the reporting period, with below-detection treatment documented"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg saleable reference fabric"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_utilities_treatment
+              source_ids:
+                - eu-txt-bat-2022
+            ranges: []
+  - id: inspection_packaging
+    label: "Final inspection, grading, and packaging"
+    inputs:
+      product:
+        - row_id: final_fabric_input
+          role: "Fabric entering final release checks"
+          name: "Woven cotton fabric for final inspection"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the mass, length, width, area mass, route state, and lot identity of fabric submitted for final inspection."
+          amount:
+            expression: "measured submitted lot mass"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg saleable reference fabric"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_final_release
+              source_ids: []
+            ranges: []
+        - row_id: packaging_input
+          role: "Packaging materials"
+          name: "Site-specific packaging material"
+          flow_type: "product"
+          property_unit: "Mass / kg or Item / unit as applicable"
+          description: "Record each core, wrap, strap, label, pallet, and other packaging component separately and exclude it from reference fabric mass."
+          amount:
+            expression: "measured or bill-of-material quantity reconciled to released rolls or bales"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg saleable reference fabric"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_final_release
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: saleable_cotton_woven_fabric
+          role: "Saleable other woven fabric of cotton"
+          name: "Printed cotton cloth as representative identity; actual product description required"
+          flow_type: "product"
+          flow_ref:
+            uuid: "00665421-6d29-46d6-83cb-28766e3dec4b"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This is the quantitative reference output. Record the actual product name and qualifiers; use \"Printed cotton cloth\" only when the product is in fact printed cloth matching that representative route."
+          amount:
+            expression: "exactly 1 kg accepted saleable fabric after normalization, excluding packaging"
+            value_mode: "fixed_value"
+            specificity: "product_specific"
+            basis:
+              text: "1 kg saleable reference fabric"
+              kind: "reference_flow"
+            evidence:
+              kind: "identity_reference"
+              collection_protocol_id: cp_final_release
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: final_release_waste
+          role: "Off-spec fabric, trimmings, and packaging waste"
+          name: "Site-specific textile residue or packaging waste"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record each material by actual disposition. Reworked material remaining inside the same lot is an internal transfer, not an output; externally recovered material and waste shall remain distinct."
+          amount:
+            expression: "measured mass by material and disposition"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg saleable reference fabric"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_final_release
+              source_ids: []
+            ranges: []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocation_subdivision
+    applies_to: "Dedicated lines, batch steps, meters, and treatment trains"
+    rule: "Avoid allocation first by subdividing processes and using direct batch, line, meter, or treatment records attributable to the reference fabric. Do not pool route-specific wet processing with unprocessed greige production when separable records exist."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: allocation_physical
+    applies_to: "Unavoidable shared operations with multiple fabric outputs"
+    rule: "When subdivision or defensible system expansion is not possible, use a documented causal physical relationship such as machine time, metered energy, liquor volume, treatment load, or processed mass. Select the driver that best explains consumption or emission formation, not automatically product mass."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: allocation_economic_last_resort
+    applies_to: "Multi-output operation lacking a defensible physical relationship"
+    rule: "Use revenue-based allocation only as a last resort. Record product quantities, prices, currency, geography, price period, treatment of zero/negative values, and sensitivity to price variation."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: allocation_residues
+    applies_to: "Yarn waste, fabric scrap, recovered paste, sludge, and off-spec material"
+    rule: "Classify each output before allocation. Internal reuse is a tracked internal transfer; an externally marketable output is a co-product handled by the hierarchy; a waste output carries treatment according to the selected waste model. Do not claim avoided burdens in the foreground inventory without an explicit downstream method."
+    source_ids:
+      - eu-pef-2021-2279
+      - eu-txt-bat-2022
+  - rule_id: allocation_shared_treatment
+    applies_to: "Utilities, wastewater treatment, and air-abatement systems"
+    rule: "Prefer process-specific meters and pollutant loads. Otherwise allocate electricity/heat by causal demand and treatment burdens by measured volume and relevant pollutant load; disclose any remaining shared-site allocation."
+    source_ids:
+      - eu-txt-bat-2022
+      - eu-pef-2021-2279
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_weaving_batch
+      process_id: "weaving"
+      flow_role: "Yarn, chemicals, energy, greige output, and weaving residues"
+      record_type: "Batch issue/return, stock, meter, production, and waste records"
+      raw_fields: "lot_id; yarn_id/composition/count; opening/receipt/issue/return/closing mass; chemical_id/concentration; meter_start/end; greige_mass; width; length; area_mass; moisture; residue_mass/disposition"
+      collection_method: "Reconcile warehouse and batch records with calibrated scales and electricity/energy meters"
+      unit: "kg; kWh; MJ; m; m2; g/m2; %"
+      frequency: "Each lot and monthly reconciliation"
+      temporal_coverage: "Representative continuous 12-month period or full shorter campaign with seasonality limitation"
+      site_scope: "Every included weaving line at the reporting site"
+      aggregation_rule: "Sum attributable records, resolve stock changes and rework, then normalize with calc_reference_normalization"
+      quality_evidence: "Scale/meter calibration; signed stock reconciliation; lot traveller; production and waste tickets"
+    - protocol_id: cp_pretreatment_batch
+      process_id: "pretreatment"
+      flow_role: "Fabric input/output, water, chemicals, energy, wastewater, and residues"
+      record_type: "Recipe, batch-controller, meter, laboratory, stock, and dispatch records"
+      raw_fields: "batch_id; input/output_mass; moisture; water_intake/reuse/discharge; chemical_id/concentration/dose; electricity/steam/heat/fuel; wastewater_volume/analysis; residue_mass/destination"
+      collection_method: "Read batch controls and submeters; reconcile chemical inventory and laboratory samples"
+      unit: "kg; m3; kWh; MJ; mg/L or kg pollutant"
+      frequency: "Each batch; discharge sampling per applicable permit; monthly reconciliation"
+      temporal_coverage: "Representative continuous 12-month period or full campaign"
+      site_scope: "Every included pretreatment line and linked treatment stream"
+      aggregation_rule: "Sum by route and lot; keep gross/reused/net water distinct; normalize to accepted reference output"
+      quality_evidence: "Meter calibration; recipe authorization; laboratory QA/QC; mass and water balance; waste manifests"
+    - protocol_id: cp_colouration_batch
+      process_id: "colouration_printing"
+      flow_role: "Fabric, colourants/pastes/auxiliaries, water, energy, wastes, and emissions"
+      record_type: "Recipe, dosing, meter, paste-return, laboratory, exhaust, and waste records"
+      raw_fields: "batch/design_id; technology; fabric_mass; chemical_id/concentration/dose; paste_prepared/returned/reused/waste; water; electricity/heat; wastewater_volume/analysis; exhaust_flow/concentration/time; output_mass; test_result"
+      collection_method: "Capture machine recipe and dosing data, meter readings, paste reconciliation, and validated sampling"
+      unit: "kg; m3; kWh; MJ; mg/L; mg/Nm3; Nm3; h"
+      frequency: "Each batch/design; emission sampling per permit; monthly reconciliation"
+      temporal_coverage: "Representative continuous 12-month period or full campaign"
+      site_scope: "Every included dyeing/printing/fixation/washing/drying line"
+      aggregation_rule: "Reconcile prepared paste and chemicals; calculate measured emission loads; normalize to accepted output"
+      quality_evidence: "Calibrated dosing/meter systems; laboratory QA/QC; paste balance; sampling reports; lot quality certificate"
+    - protocol_id: cp_finishing_batch
+      process_id: "finishing"
+      flow_role: "Fabric, finish chemicals, water, energy, residues, and air emissions"
+      record_type: "Recipe, dosing, meter, line, laboratory, and waste records"
+      raw_fields: "batch_id; finish/function; input/output_mass; chemical_id/concentration/dose; water; electricity/steam/heat/fuel; exhaust_flow/concentration/time; wastewater/residue; process_temperature/time; quality_test"
+      collection_method: "Capture line recipes and meters, retain chemical identity, and use validated emission/test methods"
+      unit: "kg; m3; kWh; MJ; mg/Nm3; Nm3; h; degC"
+      frequency: "Each batch; sampling per permit; monthly reconciliation"
+      temporal_coverage: "Representative continuous 12-month period or full campaign"
+      site_scope: "Every included finishing and thermal-treatment line"
+      aggregation_rule: "Aggregate only equivalent finish routes; calculate loads and normalize to accepted output"
+      quality_evidence: "Calibration; recipe approval; safety data; sampling QA/QC; product test report"
+    - protocol_id: cp_utilities_treatment
+      process_id: "utilities_treatment"
+      flow_role: "Fuels, purchased/generated energy, water, treatment materials, wastewater loads, recovered utilities, sludge, and direct emissions"
+      record_type: "Invoice, meter, stock, treatment log, laboratory, and dispatch records"
+      raw_fields: "carrier_id; quantity; heating_value_basis; electricity/steam/heat import/generation/export; water_withdrawal/supply/reuse; chemical_id/dose; inflow/outflow_volume/concentration; exhaust_flow/concentration; sludge_mass/dry_solids/destination"
+      collection_method: "Reconcile site and submeter totals; use flow-proportional or documented representative sampling and traceable laboratory methods"
+      unit: "kg; m3; kWh; MJ; mg/L; mg/Nm3; kg pollutant; % solids"
+      frequency: "Continuous/daily meters, batch logs, monthly balance, sampling per permit"
+      temporal_coverage: "Same period as production data"
+      site_scope: "All utility and treatment assets serving included processes"
+      aggregation_rule: "Subtract documented exports only once; allocate after direct attribution; calculate loads and normalize"
+      quality_evidence: "Meter/calibration records; fuel certificates; laboratory QA/QC; permit reports; treatment and waste logs"
+    - protocol_id: cp_final_release
+      process_id: "inspection_packaging"
+      flow_role: "Submitted/accepted fabric, qualifiers, quality results, packaging, off-spec material, and reference mass"
+      record_type: "Lot traveller, scale, dimensional, test, bill-of-material, grading, and dispatch records"
+      raw_fields: "lot_id; product_name; composition; route; yarn/weave; input/accepted/rejected_mass; moisture; length; usable_width; area_mass; colour/print/finish; test_method/result/grade; packaging_id/mass; disposition"
+      collection_method: "Calibrated weighing and dimensional measurement; applicable verified quality testing; dispatch reconciliation"
+      unit: "kg; m; m2; g/m2; %; test-specific unit"
+      frequency: "Every released lot"
+      temporal_coverage: "Same period as process inventory"
+      site_scope: "All released reference products at the reporting site"
+      aggregation_rule: "Sum accepted mass only; retain rejected/reworked quantities separately; set normalized output to exactly 1 kg"
+      quality_evidence: "Scale and dimensional calibration; test report; signed release certificate; packaging BOM; dispatch record"
+  calculation_rules:
+    - id: calc_reference_normalization
+      applies_to: "Every foreground inventory amount"
+      rule: "normalized quantity = quantity attributable to the included product / accepted saleable fabric mass on the reference moisture basis"
+      inputs:
+        - "Attributable quantity"
+        - "accepted saleable fabric mass"
+        - "moisture conversion where used"
+      output: "Quantity per 1 kg reference fabric"
+      source_ids: []
+    - id: calc_area_mass_crosscheck
+      applies_to: "Final fabric lot"
+      rule: "calculated mass kg = usable length m x usable width m x area mass g/m2 / 1000; compare with calibrated measured mass and investigate material discrepancy"
+      inputs:
+        - Length
+        - "usable width"
+        - "area mass"
+        - "measured mass"
+      output: "Mass consistency result and discrepancy"
+      source_ids: []
+    - id: calc_net_water
+      applies_to: "Each wet process and site total"
+      rule: "net water consumption = gross external water input - water exported from the boundary; report internally reused/recycled water separately and do not subtract it twice"
+      inputs:
+        - "Water intake"
+        - "internal reuse/recycle"
+        - export
+        - discharge
+        - "stock change where relevant"
+      output: "Gross, reused/recycled, net, and discharged water per reference flow"
+      source_ids:
+        - eu-txt-bat-2022
+    - id: calc_direct_emission_load
+      applies_to: "Measured wastewater and air releases"
+      rule: "pollutant load = representative concentration x validated discharge or exhaust volume for the same period, with unit conversion and below-detection treatment documented"
+      inputs:
+        - Concentration
+        - "matched volume/flow and duration"
+        - "detection limit"
+        - "operating period"
+      output: "Pollutant mass per reference flow"
+      source_ids:
+        - eu-txt-bat-2022
+    - id: calc_mass_balance
+      applies_to: "Yarn-to-fabric and chemical/paste stages"
+      rule: "input + opening stock = accepted output + residues/wastes + exports/transfers + closing stock + documented moisture change; report unresolved difference rather than forcing closure"
+      inputs:
+        - "Batch and stock masses"
+        - transfers
+        - "moisture basis"
+      output: "Stage mass balance and unexplained difference"
+      source_ids:
+        - eu-txt-bat-2022
+    - id: calc_allocation
+      applies_to: "Shared process or facility"
+      rule: "Apply Section 7 in order: subdivision/system expansion where defensible, causal physical relationship, then economic allocation as last resort; allocation factors shall sum to 1 within documented rounding"
+      inputs:
+        - "Direct records"
+        - "causal driver quantities"
+        - "co-product quantities"
+        - "prices only if needed"
+      output: "Allocated inventory and disclosed factor set"
+      source_ids:
+        - eu-pef-2021-2279
+  data_quality_requirements:
+    - id: dq_product_identity
+      applies_to: "Reference product and intermediates"
+      requirement: "Preserve lot-level composition, yarn, weave/construction, area mass, width, route, colour/print, finish, moisture basis, grade, and actual product name. Explicitly state whether the product matches or differs from printed cotton cloth."
+      evidence: "Product specification; lot traveller; laboratory/test report; release certificate"
+    - id: dq_primary_period
+      applies_to: "Foreground activity data"
+      requirement: "Use a continuous representative 12-month period where operations are year-round. A shorter campaign is allowed only when it covers the full campaign and discloses seasonality, downtime, and representativeness limits."
+      evidence: "Dated meter, production, stock, and dispatch series; coverage statement"
+    - id: dq_site_coverage
+      applies_to: "Included foreground boundary"
+      requirement: "Include all lines, utilities, and treatment assets serving the declared product route, or disclose and quantify the excluded share and proxy method."
+      evidence: "Site process map; line list; meter map; production reconciliation"
+    - id: dq_completeness
+      applies_to: "Inputs, outputs, wastes, and direct emissions"
+      requirement: "Screen all process inputs and outputs; name and justify omissions and show that the same wastewater or emission load is not counted both before and after treatment."
+      evidence: "Input-output inventory; chemical register; mass/water/energy balances; omission log"
+    - id: dq_measurement
+      applies_to: "Mass, water, energy, and emission data"
+      requirement: "Retain calibration status, sampling method, laboratory QA/QC, detection-limit treatment, and unit conversions. Prefer direct batch/line meters before shared-site allocation."
+      evidence: "Calibration certificates; sampling plan; laboratory reports; conversion-factor register"
+    - id: dq_representativeness
+      applies_to: "Upstream and proxy datasets"
+      requirement: "Assess and disclose technological, geographical, temporal, and precision representativeness, plus methodological consistency and completeness."
+      evidence: "Dataset metadata and data-quality assessment"
+    - id: dq_traceability
+      applies_to: "Calculated and allocated values"
+      requirement: "Preserve raw record identifiers, formulas, allocation drivers/factors, source identifiers, reviewer, and reproducible calculation version."
+      evidence: "Calculation workbook or script output; approval record; source register"
+validation_rules:
+  - rule_id: validation_identity
+    applies_to: "foreground_dataset_conformance"
+    rule: "Fail if the data package lacks actual product name, fibre composition, weave/construction, route, area mass, usable width, moisture basis, finish/grade, or evidence that more specific product categories were considered."
+    source_ids:
+      - unsd-cpc-3-0
+  - rule_id: validation_representative_route
+    applies_to: "foreground_dataset_conformance"
+    rule: "Fail if an unprinted or otherwise semantically different fabric is described as Printed cotton cloth without an explicit representative-identity limitation and actual product description."
+    source_ids: []
+  - rule_id: validation_reference_flow
+    applies_to: "foreground_dataset_conformance"
+    rule: "Fail if accepted fabric output is not exactly 1 kg after normalization, if packaging is included in fabric mass, or if the Mass flow property, unit group, or kg unit differs from Section 3."
+    source_ids: []
+  - rule_id: validation_route_coverage
+    applies_to: "foreground_dataset_conformance"
+    rule: "Fail if any performed weaving preparation, wet processing, dyeing/printing, finishing, utility, treatment, inspection, or packaging stage is omitted without quantified justification."
+    source_ids:
+      - eu-txt-bat-2022
+  - rule_id: validation_inventory_balance
+    applies_to: "foreground_dataset_conformance"
+    rule: "Require reconciled yarn/fabric mass balance; gross/reused/net water reporting for wet routes; and separately traceable electricity, fuels, steam/heat, recovery, and exports. Flag unexplained differences and double counting."
+    source_ids:
+      - eu-txt-bat-2022
+  - rule_id: validation_chemicals_emissions
+    applies_to: "foreground_dataset_conformance"
+    rule: "Require route-specific chemical identity and quantity, measured wastewater volume/load, relevant direct air releases, treatment destination, and non-duplication of pre- and post-treatment emissions."
+    source_ids:
+      - eu-txt-bat-2022
+  - rule_id: validation_allocation
+    applies_to: "foreground_dataset_conformance"
+    rule: "Fail if allocation is used before available subdivision, lacks a causal or last-resort economic basis, has factors that do not sum to 1 within disclosed rounding, or treats waste/reuse/co-products inconsistently."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: validation_quality
+    applies_to: "foreground_dataset_conformance"
+    rule: "Require declared applicable performance/quality tests and results for the actual product. Do not impose printed-fabric or EU Ecolabel thresholds on products for which they are not applicable."
+    source_ids:
+      - eu-ecolabel-textiles-2014-350
+  - rule_id: validation_data_quality
+    applies_to: "foreground_dataset_conformance"
+    rule: "Require coverage period, site/line scope, primary/proxy split, representativeness assessment, calibration/sampling evidence, source traceability, and an explicit limitations statement."
+    source_ids:
+      - eu-pef-2021-2279
+published_dataset_profile:
+  dataset_role: "Foreground factory-gate dataset for the declared woven cotton fabric route, suitable for later reviewed publication as a secondary or background dataset"
+  downstream_use: "secondary_dataset; background_dataset; source for process and lifecyclemodel projections when all route and quality qualifiers are preserved"
+  allowed_use: "Product-specific cradle-to-gate or life-cycle models that need a factory-gate woven cotton fabric input and can accept the declared composition, construction, route, geography, technology, period, allocation, and data-quality profile"
+  excluded_use: "A generic market-average for all cotton fabrics; automatic use for knitted/nonwoven/special fabrics; substitution for cotton cultivation, spinning, garment manufacture, use, or end-of-life; representing every CPC 26690 product as printed cloth; comparative claims without compatible functional and quality specifications"
+  required_metadata: "Canonical PCR id; actual product name; CPC context; composition; yarn and weave/construction; area mass; usable width; moisture basis; actual greige/pretreatment/dyeing/printing/finishing route; performance grade and tests; reference flow; site geography; technology; reporting period; process map; upstream dataset links; treatment; allocation; packaging; reviewer and calculation version"
+  required_quality_disclosure: "Primary versus secondary data share; line/site and temporal coverage; mass/water/energy reconciliation; meter and sampling quality; chemical and emissions coverage; proxy representativeness; omissions; allocation sensitivity; limitations of the printed representative identity"
+  update_trigger: "Material change to product composition/construction, route, site or equipment, printing/finishing chemistry, energy/water supply, treatment, allocation, classification, product-flow identity, regulation or BAT basis, or foreground data older than the organization's review interval"
+data_sources:
+  - id: "unsd-cpc-3-0"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, Central Product Classification Version 3.0 resources, https://unstats.un.org/unsd/classifications/Econ/CPC (retrieved 2026-08-11)"
+    used_for: "CPC classification context and residual category title"
+  - id: "eu-txt-bat-2022"
+    type: "official_guidance"
+    reference: "European Commission, Commission Implementing Decision (EU) 2022/2508 establishing BAT conclusions for the textiles industry, ELI: https://data.europa.eu/eli/dec_impl/2022/2508/oj (accessed through EUR-Lex; retrieved 2026-08-11)"
+    used_for: "Process decomposition; input-output inventory; cotton pretreatment; printing and finishing; water, energy, chemicals, emissions, monitoring, recovery, and treatment records"
+  - id: "eu-pef-2021-2279"
+    type: "official_guidance"
+    reference: "European Commission, Commission Recommendation (EU) 2021/2279 on Environmental Footprint methods, ELI: https://data.europa.eu/eli/reco/2021/2279/oj (accessed through EUR-Lex; retrieved 2026-08-11)"
+    used_for: "Reference-flow discipline; multifunctionality hierarchy; cut-off disclosure; completeness, representativeness, and data-quality requirements"
+  - id: "eu-ecolabel-textiles-2014-350"
+    type: "standard"
+    reference: "European Commission, Commission Decision 2014/350/EU establishing EU Ecolabel criteria for textile products, consolidated text: https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:02014D0350-20201201 (retrieved 2026-08-11)"
+    used_for: "Examples of route- and product-specific fitness-for-use attributes for intermediate woven fabric, including dimensional change and colour-fastness testing; not a universal threshold for this PCR"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:56d94bdc02532a336a8e2bdaef68a80ec0a1fb1e51a7bbee1e9f94003203ee69"
+  generated_content_sha256: "sha256:3b077ae45d6c917341066a8176f65c392ee982d4b07597d7767949eac93cdf98"

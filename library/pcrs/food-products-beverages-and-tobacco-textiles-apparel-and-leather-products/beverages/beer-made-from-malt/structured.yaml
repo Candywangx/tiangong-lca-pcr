@@ -1,10 +1,855 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "24310"
-  title: "Beer made from malt"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.food-products-beverages-and-tobacco-textiles-apparel-and-leather-products.beverages.beer-made-from-malt"
+  classification_refs: "CPC 3.0: 24310, Beer made from malt, exact"
+  covered_products: "Alcoholic finished beer made from malt, packaged or in bulk dispatch form"
+  excluded_products: "Non-alcoholic beer; cider; perry; mead; wine; malt; industrial ethanol fermentation broth; generic brewery services"
+  representative_product: "Industrially brewed malt beer at the brewery gate"
+  production_route: "Wort production; fermentation and finishing; filling or bulk dispatch preparation"
+  market_state: "Finished, saleable beer with declared beer type, alcoholic strength, package format, and shelf life"
+functional_unit:
+  what: "Finished alcoholic malt beer at the brewery gate"
+  how_much: "0.1 m3 (1 hl)"
+  how_well: "Fit for sale; declared beer type, alcoholic strength by volume, and package or bulk-dispatch format"
+  how_long_or_cycle: "Declared minimum shelf life of at least one month; continuous 12-month production reporting period"
+  reference_flow_link: "Beer 6da29594-9e39-48eb-82d1-c7a4484d3740"
+system_boundary:
+  rules:
+    - rule_id: boundary_brewery_gate
+      applies_to: "Foreground dataset"
+      rule: "Include wort production, fermentation, finishing, filling or bulk preparation, cleaning, refrigeration, on-site utilities, wastewater, losses, wastes, and co-products from delivered brewery inputs to dispatch-ready beer."
+      source_ids:
+        - ec-jrc-fdm-bref-2019
+        - brewers-europe-beer-pefcr-2025
+    - rule_id: boundary_upstream_inputs
+      applies_to: "Lifecycle model"
+      rule: "Link upstream ingredient, malt, energy, water, chemical, refrigerant, packaging, and inbound-transport datasets; prefer supplier-specific data where available."
+      source_ids:
+        - brewers-europe-beer-pefcr-2025
+    - rule_id: boundary_downstream_profile
+      applies_to: "Lifecycle model"
+      rule: "Add distribution, cooling, product losses, packaging end-of-life, and other downstream stages for the declared market and package system when cradle-to-grave results are required."
+      source_ids:
+        - brewers-europe-beer-pefcr-2025
+    - rule_id: boundary_no_cutoff
+      applies_to: "Included stages"
+      rule: "Do not omit an identified relevant flow by mass, energy, or environmental-significance cutoff. Estimate missing quantities transparently, mark them for replacement, and test materiality."
+      source_ids:
+        - brewers-europe-beer-pefcr-2025
+boundary_abstraction:
+  declared_starting_condition: "Malt, adjuncts, hops or hop products, yeast, water, energy, cleaning materials, packaging, and other inputs delivered to the brewery"
+  starting_condition_role: "Background-to-foreground interface at brewery receipt"
+  product_classification_scope: "Alcoholic beer made from malt under CPC 24310"
+  recursive_input_rule: "Finished beer received from another site is an upstream beer dataset; only local finishing, blending, or packaging remains in the reporting-site foreground."
+  upstream_dataset_requirement: "Link representative production and transport datasets for delivered materials and utilities; use supplier-specific datasets when available."
+  disclosure: "Declare brewery site, reporting period, starting material condition, package system, outsourced operations, missing flows, estimates, and deviations."
+reference_flow_definition:
+  reference_amount: "0.1 m3"
+  product_flow_ref:
+    name: "Beer"
+    uuid: "6da29594-9e39-48eb-82d1-c7a4484d3740"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-22da-a746-0800200c9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a3c8-12da-a746-0800200c9a66"
+  reference_unit: "m3"
+  required_qualifiers:
+    - "beer type"
+    - "alcoholic strength by volume"
+    - "packaged or bulk format"
+    - "package material and returnability"
+    - "brewery site"
+    - "reporting period"
+    - "minimum shelf life"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_volume
+    applies_to: "Beer reference product and beer intermediates"
+    required_property_ref:
+      name: "Volume"
+      uuid: "93a60a56-a3c8-22da-a746-0800200c9a66"
+    required_unit: "m3"
+    rule: "Record volume at a declared measurement temperature; convert litres or hectolitres exactly to m3 and preserve the original reading."
+  - id: inventory_mass
+    applies_to: "Ingredients, packaging, co-products, wastes, and emissions measured by mass"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Record dry or as-received basis and moisture where material; use the verified Units of mass group 93a60a57-a4c8-11da-a746-0800200c9a66."
+  - id: energy_sum
+    applies_to: "Electricity, fuels, steam, heat, cooling, and other energy"
+    required_property_ref:
+      name: "Energy"
+      uuid: ""
+    required_unit: "MWh"
+    rule: "Preserve native quantities, conversion factors, calorific-value basis, and meter scope; convert to MWh only for the total-energy calculation."
+  - id: period_normalization
+    applies_to: "All foreground flows"
+    required_property_ref:
+      name: "Reference-flow property"
+      uuid: ""
+    required_unit: "per 0.1 m3"
+    rule: "Aggregate one continuous 12-month period, reconcile stock changes and losses, allocate if needed, then normalize to conforming beer output."
+process_map:
+  - id: wort_production
+    name: "Wort production"
+    inclusion: "required"
+    inclusion_condition: "All covered beer production"
+    role: "Convert brewing ingredients and water into cooled hopped wort"
+    quantitative_reference: "Cooled wort transfer volume"
+  - id: fermentation_and_finishing
+    name: "Fermentation and finishing"
+    inclusion: "required"
+    inclusion_condition: "All covered beer production"
+    role: "Ferment, mature, filter or otherwise finish beer"
+    quantitative_reference: "Finished beer transfer volume"
+  - id: filling_and_packaging
+    name: "Filling and packaging"
+    inclusion: "required"
+    inclusion_condition: "Include bulk dispatch preparation when no retail package is applied"
+    role: "Prepare finished beer for dispatch and provide the reference output"
+    quantitative_reference: "0.1 m3 dispatch-ready beer"
+process_inventory:
+  - id: wort_production
+    label: "Wort production"
+    inputs:
+      product:
+        - row_id: malted_cereals_and_adjuncts
+          role: "Malted cereals and adjuncts"
+          name: "Malted cereals and brewing adjuncts"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "The principal fermentable materials cross the brewery boundary here; receipt, recipe, and inventory records determine quantity."
+          amount:
+            expression: "Record each ingredient on a consistent dry or as-received basis and reconcile purchases, stock, and recipe use."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 0.1 m3 finished beer at brewery gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_receipts
+              source_ids:
+                - brewers-europe-beer-pefcr-2025
+            ranges:
+              - role: qa_guardrail
+                lower: "6.13"
+                upper: "16"
+                unit: "kg"
+                basis: "per 0.1 m3 finished beer"
+                basis_kind: "reference_flow"
+                evidence_kind: "external_source"
+                source_ids:
+                  - brewers-europe-beer-pefcr-2025
+        - row_id: hops_and_hop_products
+          role: "Hops and hop products"
+          name: "Hops, hop pellets, or hop extract"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Hops, pellets, or extracts cross into wort production; purchase and recipe records determine quantities while preserving product form and concentration."
+          amount:
+            expression: "Record each hop product separately on its purchased basis."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 0.1 m3 finished beer at brewery gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_receipts
+              source_ids:
+                - brewers-europe-beer-pefcr-2025
+            ranges: []
+        - row_id: wort_brewing_water
+          role: "Brewing water"
+          name: "Brewing water for wort production"
+          flow_type: "product"
+          property_unit: "Volume 93a60a56-a3c8-22da-a746-0800200c9a66 / m3"
+          description: "Water crosses into mashing, lautering, sparging, and boiling; process metering or batch-volume reconciliation determines quantity."
+          amount:
+            expression: "Measure process water and exclude cleaning water from this row."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 0.1 m3 finished beer at brewery gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_utility_meters
+              source_ids:
+                - ec-jrc-fdm-bref-2019
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.60"
+                unit: "m3"
+                basis: "per 0.1 m3 finished beer"
+                basis_kind: "reference_flow"
+                evidence_kind: "external_source"
+                source_ids:
+                  - ec-jrc-fdm-bref-2019
+        - row_id: wort_energy
+          role: "Wort-production energy"
+          name: "Wort-production heat and electricity"
+          flow_type: "product"
+          property_unit: "Energy / MWh"
+          description: "Heat and electricity cross into milling, mashing, boiling, pumping, separation, and cooling; meters or equipment calculations determine quantity."
+          amount:
+            expression: "Calculate from submetering or equipment load and operating time with documented factors."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 0.1 m3 finished beer at brewery gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_utility_meters
+              source_ids:
+                - ec-jrc-fdm-bref-2019
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.05"
+                unit: "MWh"
+                basis: "per 0.1 m3 finished beer; not a wort-production benchmark"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: cooled_wort
+          role: "Cooled wort"
+          name: "Cooled hopped wort"
+          flow_type: "product"
+          property_unit: "Volume 93a60a56-a3c8-22da-a746-0800200c9a66 / m3"
+          description: "Cooled hopped wort crosses to fermentation; transfer volume and density or extract records determine quantity."
+          amount:
+            expression: "Record at the measurement temperature and reconcile evaporation, trub, and line losses."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 0.1 m3 finished beer at brewery gate"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wort_batch_records
+              source_ids:
+                - ec-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: brewers_spent_grain
+          role: "Brewers' spent grain"
+          name: "Wet brewers' spent grain"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Spent grain leaves wort separation for use or treatment; weights, moisture measurements, and dispatch records determine quantity."
+          amount:
+            expression: "Record wet mass, moisture, destination, and storage change."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 0.1 m3 finished beer at brewery gate"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_coproduct_records
+              source_ids:
+                - ec-jrc-fdm-bref-2019
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "50"
+                unit: "kg"
+                basis: "wet mass per 0.1 m3 finished beer"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+  - id: fermentation_and_finishing
+    label: "Fermentation and finishing"
+    inputs:
+      product:
+        - row_id: cooled_wort_input
+          role: "Cooled wort input"
+          name: "Cooled hopped wort from wort_production"
+          flow_type: "product"
+          property_unit: "Volume 93a60a56-a3c8-22da-a746-0800200c9a66 / m3"
+          description: "This intermediate crosses from wort production; matched batch-transfer records determine quantity."
+          amount:
+            expression: "Equal the paired cooled_wort output after explicit transfer losses."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 0.1 m3 finished beer at brewery gate"
+              kind: "n_input"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_fermentation_records
+              source_ids:
+                - ec-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: brewing_yeast
+          role: "Brewing yeast"
+          name: "Brewing yeast"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Purchased or propagated yeast crosses into fermentation; propagation and dosing records determine quantity without double-counting internal reuse."
+          amount:
+            expression: "Record fresh mass and distinguish new, propagated, reused, and surplus yeast."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 0.1 m3 finished beer at brewery gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_fermentation_records
+              source_ids:
+                - ec-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: fermentation_energy
+          role: "Fermentation and finishing energy"
+          name: "Fermentation and finishing energy"
+          flow_type: "product"
+          property_unit: "Energy / MWh"
+          description: "Energy crosses into refrigeration, pumping, filtration, stabilization, and carbonation; submetering or equipment records determine quantity."
+          amount:
+            expression: "Calculate from submetering or equipment load, tank occupancy, and operating time."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 0.1 m3 finished beer at brewery gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_utility_meters
+              source_ids:
+                - ec-jrc-fdm-bref-2019
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.05"
+                unit: "MWh"
+                basis: "per 0.1 m3 finished beer; not a fermentation benchmark"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: finished_beer_before_filling
+          role: "Finished beer before filling"
+          name: "Finished beer before filling"
+          flow_type: "product"
+          property_unit: "Volume 93a60a56-a3c8-22da-a746-0800200c9a66 / m3"
+          description: "Finished beer crosses to filling or bulk preparation; tank-transfer volume determines quantity after explicit filtration and transfer losses."
+          amount:
+            expression: "Record at the declared measurement temperature and reconcile tank and filtration losses."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 0.1 m3 finished beer at brewery gate"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_fermentation_records
+              source_ids:
+                - ec-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: surplus_yeast
+          role: "Surplus yeast"
+          name: "Surplus yeast"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Surplus yeast leaves fermentation for reuse, sale, or treatment; tank and dispatch records determine quantity."
+          amount:
+            expression: "Record wet mass, dry matter, internal reuse, and destination."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 0.1 m3 finished beer at brewery gate"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_coproduct_records
+              source_ids:
+                - ec-jrc-fdm-bref-2019
+            ranges: []
+      waste:
+        []
+      elementary:
+        - row_id: fermentation_carbon_dioxide
+          role: "Fermentation carbon dioxide"
+          name: "Biogenic carbon dioxide to air"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Biogenic carbon dioxide crosses to air unless recovered; extract conversion and recovery records determine generated and emitted quantities."
+          amount:
+            expression: "Report generated, recovered, internally reused, sold, and vented quantities separately."
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 0.1 m3 finished beer at brewery gate"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_fermentation_records
+              source_ids:
+                - ec-jrc-fdm-bref-2019
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "20"
+                unit: "kg"
+                basis: "per 0.1 m3 finished beer"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+  - id: filling_and_packaging
+    label: "Filling and packaging"
+    inputs:
+      product:
+        - row_id: finished_beer_input
+          role: "Finished beer input"
+          name: "Finished beer from fermentation_and_finishing"
+          flow_type: "product"
+          property_unit: "Volume 93a60a56-a3c8-22da-a746-0800200c9a66 / m3"
+          description: "Finished beer crosses into filling from finishing; matched tank-transfer records determine quantity."
+          amount:
+            expression: "Equal the paired finished_beer_before_filling output after explicit transfer losses."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 0.1 m3 finished beer at brewery gate"
+              kind: "n_input"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_records
+              source_ids:
+                - brewers-europe-beer-pefcr-2025
+            ranges: []
+        - row_id: primary_packaging_materials
+          role: "Primary packaging"
+          name: "Primary packaging materials"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Bottles, cans, kegs, closures, labels, and other packaging cross into filling; bills of material and line records determine quantity."
+          amount:
+            expression: "Record each material and format, process losses, and reusable-container trip count separately."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 0.1 m3 finished beer at brewery gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_records
+              source_ids:
+                - brewers-europe-beer-pefcr-2025
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "100"
+                unit: "kg"
+                basis: "per 0.1 m3 finished beer; package-specific reconciliation is authoritative"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: packaging_utilities
+          role: "Filling and packaging utilities"
+          name: "Filling and packaging utilities"
+          flow_type: "product"
+          property_unit: "Energy / MWh"
+          description: "Utilities cross into filling, container washing, and packing; meters and operating records determine quantities."
+          amount:
+            expression: "Record electricity, heat, water, chemicals, and refrigerants in native units; convert energy only for summation and record leakage separately."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 0.1 m3 finished beer at brewery gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_utility_meters
+              source_ids:
+                - brewers-europe-beer-pefcr-2025
+                - ec-jrc-fdm-bref-2019
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.05"
+                unit: "MWh"
+                basis: "per 0.1 m3 finished beer; not a packaging benchmark"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: beer_reference_product
+          role: "Beer reference product"
+          name: "Beer"
+          flow_type: "product"
+          flow_ref:
+            uuid: "6da29594-9e39-48eb-82d1-c7a4484d3740"
+          property_unit: "Volume 93a60a56-a3c8-22da-a746-0800200c9a66 / m3"
+          description: "The dispatch-ready product crosses the brewery gate as the quantitative reference output; conforming volume fixes its quantity."
+          amount:
+            expression: "Fixed at 0.1 m3 of conforming finished beer at brewery gate."
+            value_mode: "fixed_value"
+            specificity: "product_specific"
+            basis:
+              text: "0.1 m3 finished beer at brewery gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "identity_reference"
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0.1"
+                upper: "0.1"
+                unit: "m3"
+                basis: "finished beer at brewery gate"
+                basis_kind: "reference_flow"
+                evidence_kind: "identity_reference"
+                source_ids: []
+      waste:
+        - row_id: brewery_wastewater
+          role: "Brewery wastewater"
+          name: "Brewery wastewater before external treatment"
+          flow_type: "waste"
+          property_unit: "Volume 93a60a56-a3c8-22da-a746-0800200c9a66 / m3"
+          description: "Wastewater crosses from brewery operations to external treatment or discharge; effluent metering or water balance determines quantity."
+          amount:
+            expression: "Reconcile intake, beer, evaporation, co-product moisture, recycling, and other losses; record treatment and pollutant loads separately."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 0.1 m3 finished beer at brewery gate"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_utility_meters
+              source_ids:
+                - ec-jrc-fdm-bref-2019
+                - eu-bat-fdm-2019
+            ranges:
+              - role: qa_guardrail
+                lower: "0.15"
+                upper: "0.60"
+                unit: "m3"
+                basis: "per 0.1 m3 finished beer; investigate outside values rather than automatically reject them"
+                basis_kind: "reference_flow"
+                evidence_kind: "external_source"
+                source_ids:
+                  - ec-jrc-fdm-bref-2019
+                  - eu-bat-fdm-2019
+        - row_id: packaging_waste
+          role: "Packaging waste"
+          name: "Packaging waste"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Packaging losses cross from filling to recovery or treatment; material reconciliation and waste records determine quantity."
+          amount:
+            expression: "Record by material and treatment route; reconcile purchases, stock, packed product, and waste."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 0.1 m3 finished beer at brewery gate"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_coproduct_records
+              source_ids:
+                - brewers-europe-beer-pefcr-2025
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "20"
+                unit: "kg"
+                basis: "per 0.1 m3 finished beer; material reconciliation is authoritative"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocation_subdivide_coproduction
+    applies_to: "Shared brewery operations"
+    rule: "First subdivide meters, batches, lines, tanks, and cleaning events where feasible. Directly assign beer-specific ingredients and packaging."
+    source_ids:
+      - brewers-europe-beer-pefcr-2025
+  - rule_id: allocation_beverages_by_volume
+    applies_to: "Multiple beverages"
+    rule: "Allocate residual shared brewery inputs and outputs among beverage products by finished volume produced in the same period; disclose denominator and included products."
+    source_ids:
+      - brewers-europe-beer-pefcr-2025
+  - rule_id: allocation_feed_coproducts
+    applies_to: "Brewers' grains or comparable residues used as feed"
+    rule: "Assign brewery burdens to beer and no burden to the feed co-product while reporting quantity and destination. Any avoided-product credit is a separately disclosed scenario."
+    source_ids:
+      - brewers-europe-beer-pefcr-2025
+  - rule_id: allocation_non_feed_coproduct_review
+    applies_to: "Recovered carbon dioxide, yeast, extracts, or other non-feed co-products"
+    rule: "Prefer subdivision or physical causal assignment. Otherwise document function, marketability, quantity, price, basis, and sensitivity; do not automatically apply the feed rule."
+    source_ids:
+      - brewers-europe-beer-pefcr-2025
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_material_receipts
+      process_id: "wort_production"
+      flow_role: "brewing ingredients"
+      record_type: "purchase, recipe, and stock records"
+      raw_fields: "material; form; mass; moisture; batch; stock change"
+      collection_method: "Reconcile purchases, transfers, recipe issues, and inventory"
+      unit: "kg"
+      frequency: "per receipt and batch"
+      temporal_coverage: "continuous 12 months"
+      site_scope: "brewery and product"
+      aggregation_rule: "annual net use divided by conforming output"
+      quality_evidence: "invoices; recipe system; inventory reconciliation"
+    - protocol_id: cp_wort_batch_records
+      process_id: "wort_production"
+      flow_role: "wort and residues"
+      record_type: "brew-house batch record"
+      raw_fields: "volume; temperature; extract; evaporation; residue; transfer loss"
+      collection_method: "Capture mash, kettle, separation, cooling, and transfer records"
+      unit: "m3; kg"
+      frequency: "per batch"
+      temporal_coverage: "continuous 12 months"
+      site_scope: "brew house and product"
+      aggregation_rule: "sum conforming batches and normalize"
+      quality_evidence: "calibrated instruments; batch reconciliation"
+    - protocol_id: cp_utility_meters
+      process_id: "wort_production_fermentation_and_finishing_filling_and_packaging"
+      flow_role: "water and energy"
+      record_type: "meter and equipment record"
+      raw_fields: "meter value; fuel; steam; heat; runtime; factor; scope"
+      collection_method: "Read calibrated meters or calculate from equipment load and logged runtime"
+      unit: "native unit; MWh; m3"
+      frequency: "daily to monthly"
+      temporal_coverage: "continuous 12 months"
+      site_scope: "meter area and brewery"
+      aggregation_rule: "reconcile site total, subdivide, allocate, normalize"
+      quality_evidence: "calibration; bills; meter map; calculation sheet"
+    - protocol_id: cp_fermentation_records
+      process_id: "fermentation_and_finishing"
+      flow_role: "wort, yeast, beer, carbon dioxide"
+      record_type: "tank and laboratory record"
+      raw_fields: "volume; extract; temperature; yeast; transfer; loss; recovered CO2"
+      collection_method: "Reconcile tank receipts, fermentation conversion, transfers, recovery, and finished volume"
+      unit: "m3; kg"
+      frequency: "per tank or batch"
+      temporal_coverage: "continuous 12 months"
+      site_scope: "fermentation train and product"
+      aggregation_rule: "sum conforming production and normalize"
+      quality_evidence: "tank log; laboratory result; recovery meter"
+    - protocol_id: cp_packaging_records
+      process_id: "filling_and_packaging"
+      flow_role: "beer and packaging"
+      record_type: "filler, bill-of-material, and dispatch record"
+      raw_fields: "filled volume; rejects; material; package; trip count; loss"
+      collection_method: "Reconcile filler counters, package issues, stock, rejects, and saleable output"
+      unit: "m3; kg"
+      frequency: "per production run"
+      temporal_coverage: "continuous 12 months"
+      site_scope: "line and product"
+      aggregation_rule: "sum conforming runs and normalize"
+      quality_evidence: "line counter; material issue; dispatch reconciliation"
+    - protocol_id: cp_waste_coproduct_records
+      process_id: "wort_production_fermentation_and_finishing_filling_and_packaging"
+      flow_role: "co-products and wastes"
+      record_type: "weighbridge, transfer, and treatment record"
+      raw_fields: "quantity; moisture; destination; treatment; stock change"
+      collection_method: "Reconcile measured dispatch, storage change, sale, reuse, and treatment"
+      unit: "kg; m3"
+      frequency: "per movement and monthly"
+      temporal_coverage: "continuous 12 months"
+      site_scope: "brewery"
+      aggregation_rule: "annual net output divided by conforming beer"
+      quality_evidence: "tickets; contracts; stock survey; treatment record"
+  calculation_rules:
+    - id: calc_normalize_reference
+      applies_to: "All foreground flows"
+      rule: "Allocated annual net quantity / annual conforming beer volume x 0.1 m3"
+      inputs:
+        - "net flow quantity"
+        - "conforming beer volume"
+      output: "quantity per reference flow"
+      source_ids: []
+    - id: calc_total_energy
+      applies_to: "Brewery energy"
+      rule: "Convert electricity, fuel, steam, heat, and refrigeration to MWh with documented factors, sum before allocation, then apply the declared rule"
+      inputs:
+        - "native energy records"
+        - "conversion factors"
+        - "allocation data"
+      output: "MWh/hl"
+      source_ids:
+        - eu-bat-fdm-2019
+    - id: calc_water_balance
+      applies_to: "Brewery water"
+      rule: "Intake = beer + wastewater + evaporation + co-product moisture + other losses + stock change; report recycled water separately"
+      inputs:
+        - "intake and outlet records"
+      output: "reconciled m3/hl and residual"
+      source_ids:
+        - ec-jrc-fdm-bref-2019
+    - id: calc_material_balance
+      applies_to: "Brewing and filling"
+      rule: "Reconcile ingredient dry matter, wort volume and extract, beer transfers, losses, co-products, wastes, and stock changes for the same period"
+      inputs:
+        - "process and inventory records"
+      output: "balance and unexplained residual"
+      source_ids:
+        - eu-bat-fdm-2019
+    - id: calc_fermentation_co2
+      applies_to: "Fermentation"
+      rule: "Calculate generation from measured extract conversion or documented stoichiometry; report generated, recovered, reused, sold, and vented amounts distinctly"
+      inputs:
+        - "extract conversion"
+        - "recovery and vent records"
+      output: "kg biogenic CO2/hl by route"
+      source_ids:
+        - ec-jrc-fdm-bref-2019
+    - id: calc_reusable_packaging
+      applies_to: "Reusable containers"
+      rule: "Divide container manufacture by documented expected trips and include washing, rejection, and replacement; test uncertain trip counts"
+      inputs:
+        - "pool records"
+        - "packaging and utility data"
+      output: "allocated packaging and washing per hl"
+      source_ids:
+        - brewers-europe-beer-pefcr-2025
+    - id: calc_downstream_scaling
+      applies_to: "Consumed-beer lifecycle profile"
+      rule: "Use 0.102 m3 sold per 0.1 m3 consumed for default 2% loss; use 7% only under the shelf-life condition or replace with representative evidence"
+      inputs:
+        - "consumed amount"
+        - "loss rate"
+      output: "sold amount for downstream model"
+      source_ids:
+        - brewers-europe-beer-pefcr-2025
+  data_quality_requirements:
+    - id: dq_reporting_period
+      applies_to: "Foreground records"
+      requirement: "Use a continuous 12-month period covering normal and seasonal production."
+      evidence: "dated source-system extracts and production reconciliation"
+    - id: dq_data_age
+      applies_to: "Company-specific data"
+      requirement: "Use data no more than three years old unless a longer period is demonstrably representative."
+      evidence: "data vintage and representativeness justification"
+    - id: dq_product_specificity
+      applies_to: "Ingredients and packaging"
+      requirement: "Collect at beer-product or product-family level; site averages require an infeasibility and allocation record."
+      evidence: "recipe, packaging bill, meter map, and allocation worksheet"
+    - id: dq_inventory_completeness
+      applies_to: "Brewery"
+      requirement: "Maintain water, energy, raw-material, wastewater, waste-gas, waste, and co-product inventories with flow sheets and balances."
+      evidence: "inventory register, process map, mass and volume balances"
+    - id: dq_traceability
+      applies_to: "Material foreground values"
+      requirement: "Record source system, meter or document, frequency, gaps, stock change, conversion, allocation denominator, and uncertainty."
+      evidence: "collection protocol evidence and audit trail"
+    - id: dq_representativeness
+      applies_to: "Upstream and PEF-aligned data"
+      requirement: "Prefer supplier-specific data, assess temporal, geographical, technological, and precision or uncertainty quality, and target company-specific DQR of 1.5 or better where required."
+      evidence: "supplier records and documented quality assessment"
+validation_rules:
+  - rule_id: validate_identity_qualifiers
+    applies_to: "Dataset metadata"
+    rule: "Confirm CPC 24310 alcoholic malt beer and record beer type, alcoholic strength, package, site, period, and shelf life; reject non-alcoholic beer and industrial ethanol broth."
+    source_ids:
+      - brewers-europe-beer-pefcr-2025
+  - rule_id: validate_reference_volume
+    applies_to: "Reference flow"
+    rule: "Require exactly 0.1 m3 of active Beer flow 6da29594-9e39-48eb-82d1-c7a4484d3740 as the quantitative reference."
+    source_ids: []
+  - rule_id: validate_process_completeness
+    applies_to: "Foreground"
+    rule: "Require all three process-map stages with utilities, losses, wastes, and co-products."
+    source_ids:
+      - ec-jrc-fdm-bref-2019
+  - rule_id: validate_total_energy
+    applies_to: "Brewery total"
+    rule: "Compare normalized annual energy with 0.02-0.05 MWh/hl; investigate, reconcile, and explain outside values without replacing measurements."
+    source_ids:
+      - eu-bat-fdm-2019
+  - rule_id: validate_water_use
+    applies_to: "Brewery total"
+    rule: "Compare total intake with the 0.60 m3/hl screening ceiling; higher values require water-balance and boundary review."
+    source_ids:
+      - ec-jrc-fdm-bref-2019
+  - rule_id: validate_wastewater
+    applies_to: "Brewery total"
+    rule: "Compare wastewater with 0.15-0.60 m3/hl; review discharge, evaporation, product, co-product moisture, recycling, and treatment boundary outside this range."
+    source_ids:
+      - ec-jrc-fdm-bref-2019
+      - eu-bat-fdm-2019
+  - rule_id: validate_mass_volume_balance
+    applies_to: "Processes and period"
+    rule: "Reconcile ingredients, water, wort, beer, carbon dioxide, co-products, wastes, evaporation, wastewater, filling loss, stock change, and internal transfers; disclose residual uncertainty."
+    source_ids:
+      - eu-bat-fdm-2019
+  - rule_id: validate_allocation
+    applies_to: "Multi-product site"
+    rule: "Verify subdivision first, direct assignment of beer-specific materials, volume allocation of residual shared beverage operations, and disclosed denominators and co-product treatment."
+    source_ids:
+      - brewers-europe-beer-pefcr-2025
+  - rule_id: validate_temporal_quality
+    applies_to: "Foreground data"
+    rule: "Require continuous 12-month coverage and flag company data older than three years unless representativeness is justified."
+    source_ids:
+      - brewers-europe-beer-pefcr-2025
+  - rule_id: validate_downstream_scaling
+    applies_to: "Lifecycle model"
+    rule: "Reconcile sold and consumed volumes and verify the declared 2%, 7%, or evidence-based loss without changing the brewery-gate reference flow."
+    source_ids:
+      - brewers-europe-beer-pefcr-2025
+published_dataset_profile:
+  dataset_role: "Brewery-gate foreground dataset normalized to 0.1 m3 finished malt beer"
+  downstream_use: "Project to a unit process or connect upstream and downstream datasets in a lifecyclemodel"
+  allowed_use: "Brewery inventory; hotspot screening; supplier-data collection; process improvement; disclosed cradle-to-gate or cradle-to-grave study"
+  excluded_use: "Comparative assertion or PEF claim without all applicable impact assessment, quality, review, and reporting provisions"
+  required_metadata: "Beer type; alcoholic strength; package or bulk format; brewery site; reporting period; shelf life; reference-flow UUID; CPC identity"
+  required_quality_disclosure: "Packaging mix; allocation; co-product destinations; recovered carbon dioxide; data gaps; temporary estimates; representativeness; deviations"
+  update_trigger: "Material change in recipe, strength, package mix, production technology, site, allocation, co-product destination, background data, or applicable external method"
+data_sources:
+  - id: "brewers-europe-beer-pefcr-2025"
+    type: "standard"
+    reference: "The Brewers of Europe. *Product Environmental Footprint Category Rules for Beer*, revised version approved 21 March 2025, accessed 2026-08-10. https://brewersofeurope.eu/wp-content/uploads/2025/05/FINAL-Revised-draft-updated-PEFCR-as-approved-by-review-panel.pdf"
+    used_for: "Beer identity and performance; lifecycle boundary; company data; allocation; brewery operations; data quality; product-loss scaling. EU PEF scope is broader than this brewery-gate foreground PCR."
+  - id: "ec-jrc-fdm-bref-2019"
+    type: "official_guidance"
+    reference: "European Commission Joint Research Centre. *Best Available Techniques Reference Document for the Food, Drink and Milk Industries*, 2019, accessed 2026-08-10. https://bureau-industrial-transformation.jrc.ec.europa.eu/sites/default/files/2020-01/JRC118627_FDM_Bref_2019_published.pdf"
+    used_for: "Brewing process map; resources and residues; water; wastewater; heat; operational records. Reported values are screening evidence for European installations, not product specifications."
+  - id: "eu-bat-fdm-2019"
+    type: "standard"
+    reference: "European Commission. Commission Implementing Decision (EU) 2019/2031, 2019-11-12, accessed 2026-08-10. https://eur-lex.europa.eu/eli/dec_impl/2019/2031/oj"
+    used_for: "Environmental inventory and beer BAT-associated energy and wastewater levels. These are installation reference ranges, not fixed inventory values or product conformity limits."
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:c8c7b410dc7cbaeff1978e313c9e4e5d6110b19248cb5d7ed0be3079eb39ac59"
+  generated_content_sha256: "sha256:733b9730605a05411622ba4dcea7d928c428b9d1d0807404b32d100a89f9d16d"

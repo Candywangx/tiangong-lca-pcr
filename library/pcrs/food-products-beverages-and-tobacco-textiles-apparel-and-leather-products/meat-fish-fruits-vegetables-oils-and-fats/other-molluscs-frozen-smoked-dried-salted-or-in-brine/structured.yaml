@@ -1,10 +1,946 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "21268"
-  title: "Other molluscs, frozen, smoked, dried, salted or in brine"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.food-products-beverages-and-tobacco-textiles-apparel-and-leather-products.meat-fish-fruits-vegetables-oils-and-fats.other-molluscs-frozen-smoked-dried-salted-or-in-brine"
+  classification_refs: "CPC 3.0 21268, Other molluscs, frozen, smoked, dried, salted or in brine"
+  covered_products: "Edible mollusc products in the stated frozen, smoked, smoke-dried, dried, salted, or in-brine market states"
+  excluded_products: "Non-food products; fish and crustaceans; live or fresh-only molluscs outside the stated preserved states; products whose taxon or processing route is not declared"
+  representative_product: "A declared cephalopod product when Tiangong flow f8506281-c8fe-4960-b1eb-331d5d75811f is used; the flow is narrower than the full category"
+  production_route: "Common receipt and preparation followed by exactly one route family: frozen; smoked/smoke-dried/dried; or salted/in brine"
+  market_state: "Conforming edible product at the processor factory gate, with preservation state, mass basis, and packaging inclusion declared"
+functional_unit:
+  what: "A conforming edible mollusc product in one declared CPC 21268 preservation state"
+  how_much: "1 kg of qualifying product on the declared reference mass basis"
+  how_well: "Meets the declared product specification and applicable food-safety acceptance criteria; taxon and route are identified"
+  how_long_or_cycle: "One production lot released at the factory gate; storage duration is declared when storage is included"
+  reference_flow_link: "The reference amount is the measured qualifying output after route-specific mass-basis adjustments below"
+system_boundary:
+  rules:
+    - rule_id: system_boundary_rule_1
+      applies_to: "foreground_system_boundary"
+      rule: "The foreground begins when edible molluscs and ancillary materials are accepted at the processing facility and ends when the conforming preserved product is packaged and released at the factory gate. Include actual cleaning, evisceration or shell removal when performed, grading, route-specific preservation, cold or ambient holding attributable to the lot, packaging, direct water and energy use, food rejects, wastewater or spent brine, refrigerant leakage when applicable, and other direct emissions that cross the foreground boundary."
+      source_ids: []
+    - rule_id: system_boundary_rule_2
+      applies_to: "foreground_system_boundary"
+      rule: "Purchased raw molluscs, ingredients, utilities, refrigerants, and packaging require linked upstream datasets. Excluded capital goods or minor inputs may be omitted only under the applicable study rules and must be disclosed; the PCR sets no unsupported numeric cut-off. Transport within the declared foreground and transport separately purchased for the lot must not be double counted."
+      source_ids: []
+    - rule_id: system_boundary_rule_3
+      applies_to: "foreground_system_boundary"
+      rule: "boundary_route_exclusivity: Include prepare_molluscs and exactly one finishing route family: freeze_product, smoke_or_dry_product, or salt_or_brine_product. A combined commercial product must be assigned to the route that defines its declared market state and must disclose any additional unit operations without activating a second reference-product route."
+      source_ids: []
+    - rule_id: system_boundary_rule_4
+      applies_to: "foreground_system_boundary"
+      rule: "boundary_non_food: Material not accepted as edible product must remain a waste or explicitly identified non-food co-product. It must not be counted in the reference flow or silently modelled as food."
+      source_ids: []
+    - rule_id: system_boundary_rule_5
+      applies_to: "foreground_system_boundary"
+      rule: "boundary_completeness: Include all material, energy, water, direct-emission, waste, and treatment flows that materially cross the declared foreground; disclose any rule-based exclusions and the rule applied."
+      source_ids: []
+boundary_abstraction:
+  declared_starting_condition: "Edible received molluscs at the processing-facility gate, with taxon, prior preservation state, supplier or source, temperature where relevant, and received mass declared"
+  starting_condition_role: "Foreground processing input; capture/aquaculture and earlier handling are upstream"
+  product_classification_scope: "CPC 3.0 subclass 21268 for the qualifying finished product; the Cephalopod UUID is a narrower representative"
+  recursive_input_rule: "A purchased input already in this PCR category is recorded once as an upstream product dataset with its state and mass basis; do not recursively reproduce its earlier preservation route in the foreground"
+  upstream_dataset_requirement: "Link representative datasets for received molluscs and all material purchased inputs, energy, packaging, refrigerants, and inbound transport included in the study scope"
+  disclosure: "Declare starting state, selected route, route exclusions, storage, packaging, mass-basis adjustments, non-food outputs, omitted flows, and upstream data substitutions"
+reference_flow_definition:
+  reference_amount: "1 kg conforming product"
+  product_flow_ref:
+    name: "Cephalopod"
+    uuid: "f8506281-c8fe-4960-b1eb-331d5d75811f"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "scientific or commercial taxon"
+    - "preservation route and technique"
+    - "edible/food-grade status"
+    - "net mass basis"
+    - "product moisture content for dried or smoke-dried products"
+    - "salt content or salinity basis for salted or brined products"
+    - "glaze percentage and whether glaze is excluded for frozen products"
+    - "drained mass and drainage method for products in brine"
+    - "packaging inclusion"
+    - "facility geography"
+    - "production period"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "Reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Normalize all inventory results to 1 kg qualifying product on the declared net, drained, glaze-excluded, and moisture/salt basis as applicable."
+  - id: route_mass_basis
+    applies_to: "Route input and output masses"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Record received mass, prepared mass, qualifying output, rejects, packaging, glaze water, and brine separately; do not treat covering liquid, glaze, or packaging as edible reference product."
+  - id: moisture_salt_conversion
+    applies_to: "Dried, smoked, salted, or brined product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Preserve measured as-sold moisture and salt/salinity data. Any dry-matter, salt-free, or drained-mass conversion must show the measured inputs and formula."
+  - id: energy_conversion
+    applies_to: "Electricity, thermal energy, and fuel"
+    required_property_ref:
+      name: "Declared energy or fuel property"
+      uuid: ""
+    required_unit: "kWh, MJ, or physical fuel unit"
+    rule: "Preserve primary records and document conversion factors; do not combine electricity and thermal energy without a traceable conversion."
+process_map:
+  - id: prepare_molluscs
+    name: "Receive and prepare molluscs"
+    inclusion: "required"
+    inclusion_condition: "Always; record only preparation operations actually performed"
+    role: "Common foreground preparation"
+    quantitative_reference: "kg prepared edible molluscs"
+  - id: freeze_product
+    name: "Freeze and finish product"
+    inclusion: "conditional"
+    inclusion_condition: "Selected only when the declared route family is frozen"
+    role: "Mutually exclusive finishing route"
+    quantitative_reference: "kg qualifying frozen product excluding glaze"
+  - id: smoke_or_dry_product
+    name: "Smoke or dry and finish product"
+    inclusion: "conditional"
+    inclusion_condition: "Selected only when the declared route family is smoked, smoke-dried, or dried; declare the technique"
+    role: "Mutually exclusive finishing route"
+    quantitative_reference: "kg qualifying as-sold product with moisture declared"
+  - id: salt_or_brine_product
+    name: "Salt or brine and finish product"
+    inclusion: "conditional"
+    inclusion_condition: "Selected only when the declared route family is salted or in brine; declare dry-salt or brine technique"
+    role: "Mutually exclusive finishing route"
+    quantitative_reference: "kg qualifying product on declared net or drained basis"
+process_inventory:
+  - id: prepare_molluscs
+    label: "Receive and prepare molluscs"
+    inputs:
+      product:
+        - row_id: received_molluscs
+          role: "Received edible molluscs"
+          name: "Facility-specific edible mollusc input"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record the accepted food-grade mollusc mass entering foreground preparation, including taxon and prior state."
+          amount:
+            expression: "measured accepted input mass"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg qualifying finished product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_lot_mass_quality
+              source_ids: []
+            ranges:
+              - role: default_estimate
+                lower: "1"
+                upper: "10"
+                unit: "kg/kg qualifying finished product"
+                basis: "received edible mass per 1 kg qualifying product; broad enough for frozen through dried routes"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: preparation_water
+          role: "Preparation water"
+          name: "Process water"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record metered or allocated water crossing the facility boundary for washing, thawing, cleaning, or de-salting."
+          amount:
+            expression: "measured water use allocated to the lot"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg prepared edible molluscs"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_preparation_records
+              source_ids:
+                - codex-cxc-52-2003
+            ranges:
+              - role: default_estimate
+                lower: "0"
+                upper: "20"
+                unit: "kg/kg prepared edible molluscs"
+                basis: "route- and facility-dependent preparation water"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: prepared_molluscs
+          role: "Prepared edible molluscs"
+          name: "Prepared edible molluscs, facility-specific intermediate"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Calculate prepared edible mass from measured accepted input and separately measured rejects or retained non-food fractions."
+          amount:
+            expression: "calculated prepared output mass reconciled to lot records"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per preparation lot"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_lot_mass_quality
+              source_ids:
+                - codex-cxc-52-2003
+            ranges: []
+      waste:
+        - row_id: preparation_rejects
+          role: "Food rejects and non-food fractions"
+          name: "Organic processing residue or destination-specific non-food co-product"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record separately the measured material rejected from food use and its actual waste treatment or non-food destination."
+          amount:
+            expression: "measured rejected mass by destination"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg received edible molluscs"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_preparation_records
+              source_ids:
+                - codex-cxc-52-2003
+            ranges:
+              - role: default_estimate
+                lower: "0"
+                upper: "1"
+                unit: "kg/kg received edible molluscs"
+                basis: "rejected or separated fraction of received mass"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: preparation_wastewater
+          role: "Preparation wastewater"
+          name: "Wastewater, treatment-specific"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record wastewater crossing the foreground boundary; characterize salinity or organic loading when relevant to treatment selection."
+          amount:
+            expression: "metered, balanced, or allocated wastewater volume converted to mass with the declared density"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg prepared edible molluscs"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_preparation_records
+              source_ids: []
+            ranges:
+              - role: default_estimate
+                lower: "0"
+                upper: "25"
+                unit: "kg/kg prepared edible molluscs"
+                basis: "preparation wastewater leaving the process"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        []
+  - id: freeze_product
+    label: "Freeze and finish product"
+    inputs:
+      product:
+        - row_id: frozen_route_input
+          role: "Prepared mollusc input"
+          name: "Prepared edible molluscs, facility-specific intermediate"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record prepared edible molluscs transferred into the freezing route without duplicating upstream preparation."
+          amount:
+            expression: "measured transfer mass"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg qualifying frozen product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_frozen_route_records
+              source_ids: []
+            ranges: []
+        - row_id: freezing_electricity
+          role: "Freezing electricity"
+          name: "Electricity, delivered"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record metered electricity for freezing, attributable frozen storage, and finishing."
+          amount:
+            expression: "meter or engineering allocation to the lot"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg qualifying frozen product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_frozen_route_records
+              source_ids: []
+            ranges:
+              - role: default_estimate
+                lower: "0.05"
+                upper: "3"
+                unit: "kWh/kg qualifying frozen product"
+                basis: "electricity for the declared frozen-route foreground"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: glazing_water
+          role: "Glazing water"
+          name: "Process water"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record water incorporated as glaze only when glazing is applied; it is excluded from the edible reference mass."
+          amount:
+            expression: "measured glaze application minus recovered water, reconciled with product glaze percentage"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg frozen product excluding glaze"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_frozen_route_records
+              source_ids: []
+            ranges:
+              - role: default_estimate
+                lower: "0"
+                upper: "0.5"
+                unit: "kg/kg frozen product excluding glaze"
+                basis: "applied glaze water per net edible product mass"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: frozen_packaging
+          role: "Frozen-route packaging"
+          name: "Packaging material, material-specific"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record primary, secondary, and route-attributable tertiary packaging by material; packaging is excluded from reference mass."
+          amount:
+            expression: "purchasing or packing-line records allocated to qualifying product"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg qualifying frozen product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_frozen_route_records
+              source_ids: []
+            ranges:
+              - role: default_estimate
+                lower: "0"
+                upper: "0.2"
+                unit: "kg/kg qualifying frozen product"
+                basis: "total packaging mass by material"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        - row_id: refrigerant_release
+          role: "Refrigerant released"
+          name: "Refrigerant emission, substance-specific"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Include attributable refrigerant leakage when mechanical refrigeration is within the foreground."
+          amount:
+            expression: "service-log mass balance allocated by documented operating driver"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg qualifying frozen product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_frozen_route_records
+              source_ids: []
+            ranges:
+              - role: default_estimate
+                lower: "0"
+                upper: "0.01"
+                unit: "kg/kg qualifying frozen product"
+                basis: "substance-specific foreground refrigerant release"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+    outputs:
+      product:
+        - row_id: frozen_product
+          role: "Qualifying frozen product"
+          name: "Cephalopod"
+          flow_type: "product"
+          flow_ref:
+            uuid: "f8506281-c8fe-4960-b1eb-331d5d75811f"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Report the measured conforming output net of packaging and glaze and normalize it to the reference flow."
+          amount:
+            expression: "1 kg qualifying product on the declared glaze-excluded net mass basis"
+            value_mode: "fixed_value"
+            specificity: "product_specific"
+            basis:
+              text: "1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "source_rule"
+              source_ids:
+                - unsd-cpc-3-0-21268
+                - eu-pef-recommendation-2021-2279
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+  - id: smoke_or_dry_product
+    label: "Smoke or dry and finish product"
+    inputs:
+      product:
+        - row_id: smoke_dry_route_input
+          role: "Prepared mollusc input"
+          name: "Prepared edible molluscs, facility-specific intermediate"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record prepared edible molluscs transferred into the declared smoked, smoke-dried, or dried route."
+          amount:
+            expression: "measured transfer mass"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg qualifying as-sold product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_smoke_dry_records
+              source_ids:
+                - codex-cxc-52-2003
+            ranges: []
+        - row_id: smoke_dry_energy
+          role: "Route energy"
+          name: "Electricity, fuel, or heat, energy-carrier-specific"
+          flow_type: "product"
+          property_unit: "Energy or fuel property / kWh, MJ, or physical fuel unit"
+          description: "Record electricity, fuel, and purchased heat separately for smoking, drying, cooling, and attributable holding."
+          amount:
+            expression: "metered or reconciled energy-carrier records allocated to the lot"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg qualifying as-sold product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_smoke_dry_records
+              source_ids: []
+            ranges:
+              - role: default_estimate
+                lower: "0.1"
+                upper: "30"
+                unit: "MJ-equivalent/kg qualifying as-sold product"
+                basis: "screening aggregate only; final inventory must retain separate energy carriers"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: smoking_material
+          role: "Smoking material"
+          name: "Smoking medium, material-specific"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record wood, smoke condensate, or other smoking medium only when used; identify material and whether it is consumed or recovered."
+          amount:
+            expression: "purchasing and batch-use records"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg qualifying product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_smoke_dry_records
+              source_ids:
+                - codex-cxc-52-2003
+            ranges:
+              - role: default_estimate
+                lower: "0"
+                upper: "2"
+                unit: "kg/kg qualifying product"
+                basis: "smoking medium charged to the declared route"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: smoke_dry_packaging
+          role: "Smoke/dry-route packaging"
+          name: "Packaging material, material-specific"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record packaging by material and exclude it from the reference product mass."
+          amount:
+            expression: "purchasing or packing-line records allocated to qualifying product"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg qualifying product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_smoke_dry_records
+              source_ids: []
+            ranges:
+              - role: default_estimate
+                lower: "0"
+                upper: "0.3"
+                unit: "kg/kg qualifying product"
+                basis: "total packaging mass by material"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: smoke_dry_product
+          role: "Qualifying smoked or dried product"
+          name: "Cephalopod"
+          flow_type: "product"
+          flow_ref:
+            uuid: "f8506281-c8fe-4960-b1eb-331d5d75811f"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Report the conforming as-sold product with route technique and measured moisture content."
+          amount:
+            expression: "1 kg qualifying product on the declared as-sold moisture basis"
+            value_mode: "fixed_value"
+            specificity: "product_specific"
+            basis:
+              text: "1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "source_rule"
+              source_ids:
+                - unsd-cpc-3-0-21268
+                - codex-cxc-52-2003
+                - eu-pef-recommendation-2021-2279
+            ranges: []
+      waste:
+        - row_id: smoke_dry_residues
+          role: "Smoke/dry rejects and residues"
+          name: "Route-specific waste"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record off-spec food rejects, spent smoking material, ash, and other treatment-specific residues separately by destination."
+          amount:
+            expression: "measured waste mass by type and destination"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg qualifying product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_smoke_dry_records
+              source_ids: []
+            ranges:
+              - role: default_estimate
+                lower: "0"
+                upper: "1"
+                unit: "kg/kg qualifying product"
+                basis: "combined route residue used only for screening; final data separate waste types"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        []
+  - id: salt_or_brine_product
+    label: "Salt or brine and finish product"
+    inputs:
+      product:
+        - row_id: salt_brine_route_input
+          role: "Prepared mollusc input"
+          name: "Prepared edible molluscs, facility-specific intermediate"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record prepared edible molluscs transferred into dry salting or brining."
+          amount:
+            expression: "measured transfer mass"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg qualifying product on declared net or drained basis"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_salt_brine_records
+              source_ids:
+                - codex-cxc-52-2003
+            ranges: []
+        - row_id: salt_input
+          role: "Salt input"
+          name: "Salt"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record salt and other curing ingredients separately; do not infer salt uptake from charged salt without a mass balance."
+          amount:
+            expression: "purchasing and batch-charge records, reconciled with recovery and spent brine"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg qualifying product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_salt_brine_records
+              source_ids:
+                - codex-cxc-52-2003
+            ranges:
+              - role: default_estimate
+                lower: "0.01"
+                upper: "2"
+                unit: "kg/kg qualifying product"
+                basis: "salt charged before recovered or discharged salt is reconciled"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: brine_water
+          role: "Brine water"
+          name: "Process water"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record water used to prepare covering or process brine when the in-brine technique is selected."
+          amount:
+            expression: "measured batch charge less documented reuse, with brine salinity recorded"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg qualifying drained product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_salt_brine_records
+              source_ids: []
+            ranges:
+              - role: default_estimate
+                lower: "0"
+                upper: "10"
+                unit: "kg/kg qualifying drained product"
+                basis: "fresh brine water charged after documented reuse"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: salt_brine_packaging
+          role: "Salt/brine-route packaging"
+          name: "Packaging material, material-specific"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record packaging and containers by material; covering brine and packaging are excluded from drained reference mass."
+          amount:
+            expression: "purchasing or packing-line records allocated to qualifying product"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg qualifying product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_salt_brine_records
+              source_ids: []
+            ranges:
+              - role: default_estimate
+                lower: "0"
+                upper: "0.5"
+                unit: "kg/kg qualifying product"
+                basis: "total packaging mass by material"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: salt_brine_product
+          role: "Qualifying salted or brined product"
+          name: "Cephalopod"
+          flow_type: "product"
+          flow_ref:
+            uuid: "f8506281-c8fe-4960-b1eb-331d5d75811f"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Report the conforming product with salt or salinity basis and, for product in brine, the declared drained-mass method."
+          amount:
+            expression: "1 kg qualifying product on the declared net or drained mass basis"
+            value_mode: "fixed_value"
+            specificity: "product_specific"
+            basis:
+              text: "1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "source_rule"
+              source_ids:
+                - unsd-cpc-3-0-21268
+                - codex-cxc-52-2003
+                - eu-pef-recommendation-2021-2279
+            ranges: []
+      waste:
+        - row_id: spent_brine
+          role: "Spent brine and salt-bearing wastewater"
+          name: "Salt-bearing wastewater or spent brine"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record spent brine and salt-bearing wastewater separately from ordinary wastewater, including salinity and treatment destination."
+          amount:
+            expression: "measured discharge or batch balance less documented reuse"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg qualifying product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_salt_brine_records
+              source_ids: []
+            ranges:
+              - role: default_estimate
+                lower: "0"
+                upper: "12"
+                unit: "kg/kg qualifying product"
+                basis: "spent brine or salt-bearing wastewater after documented reuse"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocation_rule_1
+    applies_to: "foreground_burden_allocation"
+    rule: "allocation_subdivide_first: Keep preparation and the selected preservation route at lot or line level and subdivide shared utilities whenever records permit. Do not average inactive routes into the reference product."
+    source_ids: []
+  - rule_id: allocation_rule_2
+    applies_to: "foreground_burden_allocation"
+    rule: "allocation_physical_then_economic: Where subdivision or system expansion is not feasible, use a physical relationship that reflects the process causality. Mass allocation is allowed only when mass is a defensible causal relationship and the same declared mass basis is used. If no defensible physical relationship exists, use economic allocation with representative prices, period, geography, and sensitivity disclosed, following the PEF hierarchy."
+    source_ids: []
+  - rule_id: allocation_rule_3
+    applies_to: "foreground_burden_allocation"
+    rule: "allocation_non_food_outputs: Food rejects, inedible fractions, spent brine, and wastes receive no edible reference product. If an output is sold or used as a non-food co-product, document its quantity, destination, substituted function if any, allocation treatment, and the effect of treating it as waste instead."
+    source_ids: []
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_lot_mass_quality
+      process_id: "prepare_molluscs"
+      flow_role: "received, prepared, rejected, and qualifying masses and quality"
+      record_type: "weighbridge/batch/quality records"
+      raw_fields: "lot_id; taxon; supplier/source; prior_state; received_mass; prepared_mass; reject_mass; edible_status; temperature; timestamp"
+      collection_method: "calibrated scales plus acceptance and release records"
+      unit: "kg; °C where applicable"
+      frequency: "each lot"
+      temporal_coverage: "representative production period, with season disclosed"
+      site_scope: "each included facility"
+      aggregation_rule: "sum by lot and reconcile transfers before normalization"
+      quality_evidence: "calibration, lot traceability, acceptance/release record, discrepancy explanation"
+    - protocol_id: cp_preparation_records
+      process_id: "prepare_molluscs"
+      flow_role: "water, wastewater, rejects, and preparation operations"
+      record_type: "meter/batch/waste records"
+      raw_fields: "lot_id; operation; water_reading; wastewater_reading_or_balance; reject_type; reject_mass; destination; operating_time"
+      collection_method: "submeters where available; documented allocation otherwise"
+      unit: "kg or m3 with density; kg waste"
+      frequency: "each lot or meter period"
+      temporal_coverage: "same period as product records"
+      site_scope: "each included line/facility"
+      aggregation_rule: "allocate only across documented drivers and retain raw totals"
+      quality_evidence: "meter identification, density/conversion, destination receipt, allocation check"
+    - protocol_id: cp_frozen_route_records
+      process_id: "freeze_product"
+      flow_role: "transfers, electricity, glaze, packaging, refrigerant, and frozen output"
+      record_type: "meter/line/service records"
+      raw_fields: "lot_id; input_mass; output_mass; electricity; storage_time; glaze_added; glaze_percent; packaging_by_material; refrigerant_charge_and_service"
+      collection_method: "batch meters, scales, packing records, and refrigerant service mass balance"
+      unit: "kg; kWh; h"
+      frequency: "each lot; service event for refrigerant"
+      temporal_coverage: "representative frozen-route campaigns"
+      site_scope: "each included freezing line"
+      aggregation_rule: "sum by lot, allocate shared refrigeration by documented operating driver, normalize to glaze-excluded output"
+      quality_evidence: "meter and scale calibration, service logs, glaze test, allocation rationale"
+    - protocol_id: cp_smoke_dry_records
+      process_id: "smoke_or_dry_product"
+      flow_role: "transfers, energy carriers, smoking medium, packaging, moisture, residues, and output"
+      record_type: "batch/meter/quality records"
+      raw_fields: "lot_id; technique; input_mass; output_mass; electricity; fuel; heat; smoking_material; packaging_by_material; moisture; residue_mass_and_destination"
+      collection_method: "meters, invoices reconciled to stock, scales, and moisture test"
+      unit: "kg; kWh; MJ; fuel unit; mass fraction"
+      frequency: "each lot or meter period"
+      temporal_coverage: "representative technique-specific campaigns"
+      site_scope: "each included smoking/drying line"
+      aggregation_rule: "retain energy carriers separately, allocate shared use by documented driver, normalize to as-sold output"
+      quality_evidence: "meter/scale calibration, fuel reconciliation, moisture method, waste receipt"
+    - protocol_id: cp_salt_brine_records
+      process_id: "salt_or_brine_product"
+      flow_role: "transfers, salt, brine water, salinity, packaging, spent brine, drained mass, and output"
+      record_type: "batch/quality/discharge records"
+      raw_fields: "lot_id; technique; input_mass; salt_charge; water_charge; reuse; brine_salinity; product_salt_content; net_contents; drained_mass; drainage_method; packaging_by_material; spent_brine_mass; destination"
+      collection_method: "scales, batch sheets, salinity test, standardized declared drainage method, and discharge records"
+      unit: "kg; salinity or mass fraction"
+      frequency: "each lot"
+      temporal_coverage: "representative dry-salt or brine campaigns"
+      site_scope: "each included curing line"
+      aggregation_rule: "close salt/water balance where practicable and normalize to declared net or drained output"
+      quality_evidence: "calibration, salinity method, drainage method, batch reconciliation, destination receipt"
+  calculation_rules:
+    - id: calc_reference_normalization
+      applies_to: "all selected route inventories"
+      rule: "normalized amount = route-attributable amount / measured qualifying reference-product mass"
+      inputs:
+        - "route amount"
+        - "qualifying output on declared mass basis"
+      output: "amount per 1 kg reference flow"
+      source_ids:
+        - eu-pef-recommendation-2021-2279
+    - id: calc_preparation_balance
+      applies_to: "prepare_molluscs"
+      rule: "reconcile received mass with prepared transfer, rejects, retained material, and documented mass change; explain unresolved difference rather than forcing balance"
+      inputs:
+        - received
+        - prepared
+        - reject
+        - retained
+        - "and wastewater records"
+      output: "preparation yield and reconciliation"
+      source_ids:
+        - codex-cxc-52-2003
+    - id: calc_glaze_exclusion
+      applies_to: "freeze_product"
+      rule: "qualifying mass = gross frozen mass - measured glaze mass - excluded packaging mass"
+      inputs:
+        - "gross mass"
+        - "glaze test or glaze mass"
+        - "packaging mass"
+      output: "glaze-excluded net product mass"
+      source_ids:
+        - codex-cxc-52-2003
+    - id: calc_drained_mass
+      applies_to: "salt_or_brine_product"
+      rule: "use the declared standardized drainage result for reference mass; retain net contents and covering-liquid mass separately"
+      inputs:
+        - "net contents"
+        - "drained mass test"
+        - "drainage method"
+      output: "qualifying drained product mass and conversion"
+      source_ids:
+        - codex-cxc-52-2003
+    - id: calc_refrigerant_release
+      applies_to: "freeze_product"
+      rule: "attributable release = documented system loss multiplied by a disclosed allocation share based on operating records"
+      inputs:
+        - charge
+        - additions
+        - recovery
+        - "inventory change"
+        - "operating driver"
+      output: "substance-specific refrigerant release"
+      source_ids:
+        - eu-pef-recommendation-2021-2279
+  data_quality_requirements:
+    - id: dq_identity
+      applies_to: "reference product and inputs"
+      requirement: "Retain taxon, product state, route, edible status, supplier/source, and lot traceability; do not use the Cephalopod UUID for a non-cephalopod product."
+      evidence: "product specification, lot and flow-identity review; unsd-cpc-3-0-21268"
+    - id: dq_measurement
+      applies_to: "mass, water, energy, salt, brine, moisture, glaze, and waste"
+      requirement: "Use calibrated or controlled measurements and retain conversion, allocation, sampling, drainage, moisture, and salinity methods."
+      evidence: "calibration and method records; codex-cxc-52-2003"
+    - id: dq_representativeness
+      applies_to: "all foreground values"
+      requirement: "Cover representative route-specific production, disclose season, technology, geography, capacity utilization, and anomalies, and keep inactive routes out of averages."
+      evidence: "campaign coverage report and PEF data-quality review; eu-pef-recommendation-2021-2279"
+    - id: dq_completeness
+      applies_to: "all foreground processes"
+      requirement: "Reconcile lot transfers and account for material inputs, utilities, packaging, direct emissions, wastes, and treatment destinations; explain missing or zero values."
+      evidence: "mass/energy checks and completeness register; eu-pef-recommendation-2021-2279"
+    - id: dq_estimate_replacement
+      applies_to: "every reasoned_estimate"
+      requirement: "Mark estimates provisional and replace them when representative foreground records or reviewed external quantitative evidence become available; methodology review must resolve or explicitly accept remaining estimates."
+      evidence: "replacement log and reviewer decision"
+validation_rules:
+  - rule_id: validation_rule_1
+    applies_to: "foreground_dataset_conformance"
+    rule: "validate_scope: Confirm the product is an edible mollusc in one declared covered market state and is not a non-food product, fish, crustacean, or an undeclared fresh-only product."
+    source_ids: []
+  - rule_id: validation_rule_2
+    applies_to: "foreground_dataset_conformance"
+    rule: "validate_reference_identity: If product flow f8506281-c8fe-4960-b1eb-331d5d75811f is used, confirm the product is a cephalopod and disclose that the flow is narrower than CPC 21268; otherwise require a verified taxon-appropriate flow."
+    source_ids: []
+  - rule_id: validation_rule_3
+    applies_to: "foreground_dataset_conformance"
+    rule: "validate_route: Require prepare_molluscs and exactly one finishing route family. Reject datasets that combine two route outputs or average inactive routes without an explicit combined-product specification and allocation model."
+    source_ids: []
+  - rule_id: validation_rule_4
+    applies_to: "foreground_dataset_conformance"
+    rule: "validate_reference_basis: Require 1 kg qualifying output and all applicable net-mass, moisture, salt/salinity, glaze, drained-mass, packaging, geography, and period qualifiers. Recalculate the normalization from raw records."
+    source_ids: []
+  - rule_id: validation_rule_5
+    applies_to: "foreground_dataset_conformance"
+    rule: "validate_inventory: Confirm that selected-process inputs, utilities, packaging, direct emissions, rejects, wastewater or spent brine, and output destinations are present or explicitly justified as not applicable; require traceable upstream datasets for purchased inputs."
+    source_ids: []
+  - rule_id: validation_rule_6
+    applies_to: "foreground_dataset_conformance"
+    rule: "validate_balance_and_allocation: Reperform mass and route-transfer reconciliations and verify subdivision/allocation choices and non-food output treatment; unresolved differences or undocumented allocation make validation inconclusive."
+    source_ids: []
+  - rule_id: validation_rule_7
+    applies_to: "foreground_dataset_conformance"
+    rule: "validate_estimates: Identify every reasoned_estimate; fail reviewed use when replacement evidence is available but not applied, or when an estimate is used as a mandatory conformance limit without explicit reviewer acceptance."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "Route-specific foreground product dataset for a declared edible mollusc product"
+  downstream_use: "May be used as a secondary_dataset or background_dataset after review and publication"
+  allowed_use: "LCA process or lifecycle-model construction matching the declared taxon, route, geography, technology, time, and mass basis"
+  excluded_use: "Generic representation of all CPC 21268 products from the Cephalopod UUID; non-food products; undeclared mixed routes; nutritional or food-safety certification"
+  required_metadata: "PCR id; CPC reference; product-flow UUID and semantic limitation; taxon; route/technique; edible status; net/drained/glaze/moisture/salt basis; facility geography; technology; production period; storage; packaging; upstream dataset choices; allocation"
+  required_quality_disclosure: "data coverage and representativeness; measurement and conversion methods; mass reconciliation; allocation; exclusions; substitutions; estimates and uncertainty; treatment of non-food outputs"
+  update_trigger: "New product-flow identity; change in taxon, route, technology, facility, specification, mass basis, or allocation; revised Codex/CPC/PEF rule; or availability of representative measurements or reviewed evidence that can replace a reasoned_estimate"
+data_sources:
+  - id: "unsd-cpc-3-0-21268"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, Central Product Classification (CPC) Version 3.0, subclass 21268, “Other molluscs, frozen, smoked, dried, salted or in brine”, https://unstats.un.org/unsd/classifications/Econ/cpc (retrieved 2026-08-11)"
+    used_for: "Classification scope and official product-category wording; not quantitative evidence"
+  - id: "codex-cxc-52-2003"
+    type: "standard"
+    reference: "Codex Alimentarius, CXC 52-2003, Code of Practice for Fish and Fishery Products, https://www.fao.org/fao-who-codexalimentarius/codex-texts/codes-of-practice/en/ (accessed 2026-08-11)"
+    used_for: "Relevant receiving, hygienic handling, freezing, smoking/drying, salting/brining, product-condition, and recordkeeping process structure; no inventory default amounts"
+  - id: "eu-pef-recommendation-2021-2279"
+    type: "official_guidance"
+    reference: "European Commission Recommendation (EU) 2021/2279 on the use of the Environmental Footprint methods, https://eur-lex.europa.eu/eli/reco/2021/2279/oj (accessed 2026-08-11)"
+    used_for: "Reference-unit normalization, boundary completeness, allocation hierarchy, representativeness, data quality, and reporting rules; no product-specific inventory default amounts"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:d53f554db4c25fc16ac808beda7a2322ab6522a3b5b390843c7a0f34392526a7"
+  generated_content_sha256: "sha256:663ec9df0ca617cb09f1e41c924d1e03739bf69e8a752aad2da8c83a569af4ae"

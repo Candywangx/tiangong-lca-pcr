@@ -1,10 +1,816 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "21631"
-  title: "Sunflower-seed and safflower-seed oil, crude"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.food-products-beverages-and-tobacco-textiles-apparel-and-leather-products.meat-fish-fruits-vegetables-oils-and-fats.sunflower-seed-and-safflower-seed-oil-crude"
+  classification_refs: "CPC 3.0 21631, Sunflower-seed and safflower-seed oil, crude"
+  covered_products: "crude sunflower-seed oil; crude safflower-seed oil; mechanically pressed crude oil; solvent-extracted crude oil; crude oil from a declared pre-press plus solvent-extraction route"
+  excluded_products: "refined, bleached, deodorised, winterised, hydrogenated, interesterified, blended, formulated, or packaged retail oil; crude oils from other oilseeds; biodiesel and other chemical derivatives"
+  representative_product: "one kilogram of separately identified crude sunflower-seed oil or crude safflower-seed oil at the oil mill gate"
+  production_route: "received oilseed preparation followed by declared mechanical pressing, solvent extraction, or combined pre-press/solvent extraction, then solvent removal where applicable and crude-oil clarification"
+  market_state: "unrefined bulk crude vegetable oil at the oil mill gate, before downstream refining or retail packaging"
+functional_unit:
+  what: "provision of crude sunflower-seed oil or crude safflower-seed oil as an intermediate oil product at the oil mill gate"
+  how_much: "1 kg"
+  how_well: "species and oil type identified; crude and unrefined state demonstrated; extraction route, solvent use, degumming status, and quality basis declared"
+  how_long_or_cycle: "one production batch or campaign; no use-duration function is assigned"
+  reference_flow_link: "1 kg of the qualifying reference product flow at the declared mill gate"
+system_boundary:
+  rules:
+    - rule_id: boundary_required_operations
+      applies_to: "all foreground mill routes"
+      rule: "Include seed receipt, weighing and quality checks, cleaning and preparation, route-specific oil extraction, crude-oil clarification, on-site storage before dispatch, attributable utilities, co-products, residues, waste water, and direct emissions."
+      source_ids:
+        - fao-ebrd-sunflower-oils-2010
+        - eu-fdm-bat-2019-2031
+    - rule_id: boundary_solvent_route
+      applies_to: "solvent extraction or combined pre-press/solvent route"
+      rule: "Include solvent input, solvent recovery and reuse, oil and meal desolventising, make-up solvent, solvent in oil/meal/water/waste, and vented or fugitive losses; do not represent a solvent route as mechanical pressing only."
+      source_ids:
+        - fao-ebrd-sunflower-oils-2010
+        - us-epa-ap42-9-11-1-1995
+        - eu-fdm-bat-2019-2031
+    - rule_id: boundary_excluded_operations
+      applies_to: "downstream and upstream stages"
+      rule: "Exclude oilseed cultivation from mill foreground operations and link it as an upstream dataset; exclude neutralisation, bleaching, deodorisation, winterisation, retail packaging, distribution, use, and end-of-life from this crude-oil reference flow."
+      source_ids:
+        - fao-ebrd-sunflower-oils-2010
+        - us-epa-ap42-9-11-1-1995
+    - rule_id: boundary_shared_services
+      applies_to: "shared mill utilities and treatment systems"
+      rule: "Include the measured share of shared electricity, steam, water, storage, dust control, solvent recovery, and waste-water treatment only when an auditable meter, engineering driver, or allocation rule links it to the declared campaign."
+      source_ids:
+        - eu-fdm-bat-2019-2031
+boundary_abstraction:
+  declared_starting_condition: "separately identified sunflower-seed or safflower-seed lots received at the oil mill gate, with mass, moisture, origin, and oil type declared"
+  starting_condition_role: "upstream agricultural dataset linkage point and foreground seed-receipt control point"
+  product_classification_scope: "CPC 3.0 21631, limited to crude sunflower-seed and safflower-seed oil"
+  recursive_input_rule: "purchased crude oil in the same category that is blended with site output is recorded as an upstream product input with its own dataset and share; its production is not recursively replayed inside the foreground mill model"
+  upstream_dataset_requirement: "species-, geography-, period-, and farm-gate-representative sunflower-seed or safflower-seed production dataset plus transport to the declared mill gate when transport is in study scope"
+  disclosure: "disclose oilseed species and oil type, seed moisture basis, route, solvent use, solvent recovery, degumming status, included preparation steps, crude-oil quality basis, co-products, allocation method, geography, period, and any excluded shared utilities"
+reference_flow_definition:
+  reference_amount: "1 kg"
+  product_flow_ref:
+    name: "Sunflower-seed and safflower-seed oil, crude"
+    uuid: "e48ecaca-7bfe-427a-a117-7eeeb8253565"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "oilseed species"
+    - "variety or oil type"
+    - "extraction route"
+    - "solvent used and recovery arrangement"
+    - "degumming status"
+    - "crude quality specification"
+    - "moisture and volatile-matter basis"
+    - geography
+    - "production period"
+    - "mill gate"
+    - "allocation method"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "reference crude oil"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Express the reference flow as net mass of qualifying crude oil at the mill gate; exclude container, transport vehicle, free water, and separately measured settled solids."
+  - id: species_route_separation
+    applies_to: "oilseed and crude-oil production records"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Keep sunflower and safflower campaigns, and materially different mechanical or solvent routes, separate unless a documented production-weighted aggregation is reported."
+  - id: moisture_basis
+    applies_to: "received and prepared oilseed"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Record measured mass and moisture content for each lot; convert seed-input comparisons to the declared moisture basis without silently treating wet mass as dry mass."
+  - id: energy_conversion
+    applies_to: "purchased electricity and thermal energy"
+    required_property_ref:
+      name: "energy"
+      uuid: ""
+    required_unit: "kWh and MJ"
+    rule: "Preserve meter units and conversion factors; 1 kWh equals 3.6 MJ. Report electricity and thermal energy separately before any combined energy indicator is calculated."
+  - id: hexane_loss_basis
+    applies_to: "solvent route"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg/t cleaned seed"
+    rule: "Calculate annual or campaign hexane loss from verified make-up, stock change, recovered solvent returned to inventory, and solvent leaving in products, wastes, water, or air; normalise to tonnes of cleaned seed processed."
+process_map:
+  - id: seed_receipt_and_preparation
+    name: "Seed receipt and preparation"
+    inclusion: "required"
+    inclusion_condition: ""
+    role: "foreground preparation"
+    quantitative_reference: "kg prepared oilseed leaving preparation"
+  - id: crude_oil_extraction_and_clarification
+    name: "Crude-oil extraction and clarification"
+    inclusion: "required"
+    inclusion_condition: "route-specific pressing and/or solvent operations are selected from the declared production route"
+    role: "foreground production"
+    quantitative_reference: "1 kg qualifying crude oil at the mill gate"
+process_inventory:
+  - id: seed_receipt_and_preparation
+    label: "Seed receipt and preparation"
+    inputs:
+      product:
+        - row_id: received_oilseed
+          role: "Received sunflower or safflower oilseed"
+          name: "Select a public Tiangong sunflower-seed or safflower-seed product flow matching the declared lot"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record separately identified oilseed lots entering mill preparation. The selected flow must match the declared species and oil type; no combined sunflower/safflower seed flow is assumed."
+          amount:
+            expression: "measured received seed mass at measured moisture content, reconciled to stock change and normalised to qualifying crude-oil output"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg qualifying crude oil at the mill gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_received_oilseed
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "3.34"
+                upper: "4.06"
+                unit: "kg clean sunflower seed/kg crude sunflower oil"
+                basis: "FAO conversion examples for solvent-extraction and pressing routes using sunflower seed with 44% oil content"
+                basis_kind: "reference_flow"
+                evidence_kind: "external_source"
+                source_ids:
+                  - fao-ebrd-sunflower-oils-2010
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: prepared_oilseed
+          role: "Prepared oilseed to extraction"
+          name: "Site-specific prepared sunflower-seed or safflower-seed intermediate flow"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the mass transferred to pressing or solvent extraction after cleaning, optional dehulling, size reduction, conditioning, and optional flaking. This is a site intermediate, not the reference product."
+          amount:
+            expression: "measured transfer mass after preparation, reconciled with separated material and preparation stock change"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg received oilseed and per 1 kg qualifying crude-oil output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_prepared_seed_mass
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0.75"
+                upper: "1.00"
+                unit: "kg prepared seed/kg received seed"
+                basis: "broad preparation-output fraction allowing route-specific cleaning and optional dehulling"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        - row_id: preparation_residues
+          role: "Screenings, foreign material, and non-valued hulls"
+          name: "Select route-specific preparation residue or waste flow"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record removed foreign material, rejected seed, and hulls as waste only when they have no intended co-product use or economic value; otherwise classify the relevant fraction as a product co-product."
+          amount:
+            expression: "measured separated residue mass by disposition"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg received oilseed"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_coproduct_residue_mass
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.25"
+                unit: "kg/kg received oilseed"
+                basis: "includes optional hull removal and other preparation by-products reported for sunflower processing"
+                basis_kind: "process_output"
+                evidence_kind: "external_source"
+                source_ids:
+                  - fao-ebrd-sunflower-oils-2010
+      elementary:
+        - row_id: preparation_dust_to_air
+          role: "Preparation dust emitted to air"
+          name: "Select the Tiangong particulate-matter elementary flow matching the monitored size fraction and compartment"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record measured or calculated dust passing final abatement from seed receiving, cleaning, dehulling, grinding, conditioning, and conveying. Do not report captured dust again as an elementary emission."
+          amount:
+            expression: "stack or fugitive measurement, or activity multiplied by a documented site emission factor and control efficiency"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per tonne received oilseed and per 1 kg qualifying crude-oil output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_air_emissions
+              source_ids: []
+            ranges:
+              - role: default_estimate
+                lower: "0"
+                upper: "1"
+                unit: "kg/t received oilseed"
+                basis: "broad replaceable first-pass estimate after site dust control"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+  - id: crude_oil_extraction_and_clarification
+    label: "Crude-oil extraction and clarification"
+    inputs:
+      product:
+        - row_id: prepared_oilseed_input
+          role: "Prepared oilseed input"
+          name: "Site-specific prepared sunflower-seed or safflower-seed intermediate flow"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Transfer the measured prepared oilseed from the preparation process without changing species, campaign, moisture basis, or route identity."
+          amount:
+            expression: "equal to reconciled prepared-oilseed output assigned to this extraction campaign"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg qualifying crude-oil output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_prepared_seed_mass
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0.75"
+                upper: "1.00"
+                unit: "kg/kg received oilseed"
+                basis: "transfer fraction from the matched preparation process"
+                basis_kind: "process_output"
+                evidence_kind: "method_formula"
+                source_ids:
+                  - fao-ebrd-sunflower-oils-2010
+        - row_id: purchased_electricity
+          role: "Purchased electricity"
+          name: "Select geography-, voltage-, and period-representative electricity supply flow"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record electricity for preparation, pressing, conveying, pumps, solvent recovery, clarification, abatement, and attributable storage. Sub-meter route-specific loads where practicable."
+          amount:
+            expression: "measured meter consumption minus exports and unrelated loads, allocated only through a documented driver when shared"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg qualifying crude-oil output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_records
+              source_ids: []
+            ranges:
+              - role: default_estimate
+                lower: "0.05"
+                upper: "1.10"
+                unit: "kWh/kg crude oil"
+                basis: "broad replaceable range bounded to cover mill configurations; not the integrated crushing-and-refining BAT range"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: thermal_energy
+          role: "Thermal energy and steam"
+          name: "Select technology- and geography-representative fuel, steam, or heat flow"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Record fuel-derived or purchased heat for conditioning, pressing, solvent distillation, desolventising, drying, and other attributable operations. Record fuel inputs and direct combustion emissions when heat is generated on site."
+          amount:
+            expression: "measured fuel lower-heating-value input or purchased heat/steam energy, separated from electricity"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg qualifying crude-oil output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_records
+              source_ids: []
+            ranges:
+              - role: default_estimate
+                lower: "0"
+                upper: "5"
+                unit: "MJ/kg crude oil"
+                basis: "broad replaceable route-sensitive range; zero is allowed only for a documented unheated route without attributable thermal utility"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: hexane_makeup
+          role: "Hexane make-up"
+          name: "Select a public Tiangong hexane product flow with verified chemical identity"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Include this row only when hexane or a hexane-containing extraction solvent is used. Record purchased make-up and campaign stock changes; recovered and reused internal solvent is not counted repeatedly as new external input."
+          amount:
+            expression: "purchased make-up plus opening stock minus closing stock, corrected for transfers and inventory changes"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per tonne cleaned seed processed and per 1 kg qualifying crude-oil output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_hexane_balance
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0.2"
+                upper: "0.7"
+                unit: "kg/t cleaned sunflower seed"
+                basis: "yearly average total hexane consumed per tonne of cleaned sunflower seed processed; apply only to a solvent route in the BAT scope"
+                basis_kind: "process_output"
+                evidence_kind: "external_source"
+                source_ids:
+                  - eu-fdm-bat-2019-2031
+        - row_id: process_water
+          role: "Process and cleaning water"
+          name: "Select location-specific process-water supply flow"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "Record water crossing the foreground boundary for conditioning, solvent recovery, clarification, equipment cleaning, and emission control. Keep uncontaminated cooling water separately identified."
+          amount:
+            expression: "measured intake minus separately discharged uncontaminated water, with recycled internal water reported but not double-counted as external supply"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per tonne qualifying crude-oil output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water_wastewater
+              source_ids: []
+            ranges:
+              - role: default_estimate
+                lower: "0"
+                upper: "1.0"
+                unit: "m3/t crude oil"
+                basis: "broad replaceable range for crude-oil operations only; do not substitute the integrated crushing-and-refining BAT range without matching scope"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: crude_oil_reference_output
+          role: "Qualifying crude sunflower-seed or safflower-seed oil"
+          name: "Sunflower-seed and safflower-seed oil, crude"
+          flow_type: "product"
+          flow_ref:
+            uuid: "e48ecaca-7bfe-427a-a117-7eeeb8253565"
+          property_unit: "Mass / kg"
+          description: "The reference output is measured after route-specific solvent removal and clarification at the declared mill gate, before downstream refining. Species-specific production remains separately reported."
+          amount:
+            expression: "measured net qualifying crude-oil mass; all exchanges are normalised to exactly 1 kg reference output"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "1 kg qualifying crude oil at the mill gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_crude_oil_output_quality
+              source_ids: []
+            ranges:
+              - role: allowed_range
+                lower: "1"
+                upper: "1"
+                unit: "kg"
+                basis: "normalized PCR reference output"
+                basis_kind: "reference_flow"
+                evidence_kind: "method_formula"
+                source_ids:
+                  - codex-cxs-210-1999-2026
+        - row_id: oilseed_coproducts
+          role: "Press cake, extracted meal, and valued hull co-products"
+          name: "Select species- and product-state-specific press-cake, meal, or hull product flows"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record each saleable or intentionally used cake, meal, or hull fraction as a separate product flow with moisture, residual oil, disposition, and market value. Do not use a soybean-meal flow as a proxy for sunflower or safflower meal."
+          amount:
+            expression: "measured co-product mass at declared moisture content, separated by product and disposition"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg qualifying crude-oil output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_coproduct_residue_mass
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0.88"
+                upper: "1.83"
+                unit: "kg meal/kg crude sunflower oil"
+                basis: "FAO general yield statement and route conversion examples; verify actual moisture and route before use"
+                basis_kind: "reference_flow"
+                evidence_kind: "external_source"
+                source_ids:
+                  - fao-ebrd-sunflower-oils-2010
+      waste:
+        - row_id: clarification_residues
+          role: "Clarification solids and non-valued process residues"
+          name: "Select treatment-route-specific residue or waste flow"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record filter cake, settled solids, spent filter aid, contaminated absorbent, and other non-valued residues by treatment route. A residue with intended feed, fuel, or material use is a co-product, not waste."
+          amount:
+            expression: "measured residue mass leaving the process, net of recovered oil returned to the process"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg qualifying crude-oil output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_coproduct_residue_mass
+              source_ids: []
+            ranges:
+              - role: default_estimate
+                lower: "0"
+                upper: "0.05"
+                unit: "kg/kg crude oil"
+                basis: "broad replaceable first-pass estimate for clarification residues"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: process_wastewater
+          role: "Process waste water"
+          name: "Select a waste-water flow matching composition and treatment route"
+          flow_type: "waste"
+          property_unit: "Volume / m3"
+          description: "Record contaminated water sent to on-site or off-site treatment. Keep separately discharged uncontaminated cooling water outside this row and disclose it separately."
+          amount:
+            expression: "measured discharge by destination, corrected for internal recycle and stock change"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per tonne qualifying crude-oil output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water_wastewater
+              source_ids: []
+            ranges:
+              - role: default_estimate
+                lower: "0"
+                upper: "1.0"
+                unit: "m3/t crude oil"
+                basis: "broad replaceable range for crude-oil operations only"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        - row_id: hexane_to_air
+          role: "Hexane emitted to air"
+          name: "Select the Tiangong hexane elementary flow for emission to air with verified chemical identity and compartment"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Include this row only for a solvent route. Reconcile measured or calculated channelled and fugitive emissions with the campaign solvent balance and do not assume that all make-up solvent reaches air when measured solvent leaves in oil, meal, water, or waste."
+          amount:
+            expression: "measured emissions plus documented fugitive estimate, reconciled with the total hexane balance"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per tonne cleaned seed processed and per 1 kg qualifying crude-oil output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_hexane_balance
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0.2"
+                upper: "0.7"
+                unit: "kg/t cleaned sunflower seed"
+                basis: "yearly average total hexane loss; air emissions are the reconciled air fraction rather than an automatic copy of total loss"
+                basis_kind: "process_output"
+                evidence_kind: "external_source"
+                source_ids:
+                  - eu-fdm-bat-2019-2031
+allocation_rules:
+  - rule_id: allocation_avoid
+    applies_to: "independently measurable preparation, pressing, extraction, clarification, and treatment operations"
+    rule: "Avoid allocation by subdivision and direct measurement wherever the operation or utility can be separated; do not allocate a separately metered route through a plant-wide revenue key."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: allocation_coproducts
+    applies_to: "crude oil, press cake, extracted meal, and valued hulls from an inseparable campaign"
+    rule: "After subdivision is exhausted, use a documented physical relationship only when it represents a verified causal relationship between inputs and co-product functions. Otherwise allocate remaining shared burdens by relative economic value at the mill gate using contemporaneous prices, and report a mass-allocation sensitivity result."
+    source_ids:
+      - eu-pef-2021-2279
+      - fao-ebrd-sunflower-oils-2010
+  - rule_id: allocation_residue_status
+    applies_to: "hulls, screenings, clarification solids, spent filter aid, and waste water"
+    rule: "Determine product, co-product, or waste status from intended use, legal status, and economic value. Assign waste handling to the generating process; do not grant an avoided-product credit without an empirically supported substitution scenario."
+    source_ids:
+      - eu-pef-2021-2279
+      - eu-fdm-bat-2019-2031
+  - rule_id: allocation_documentation
+    applies_to: "every multifunctional or shared operation"
+    rule: "Retain unallocated quantities, co-product masses and moisture, prices and currency, price period, allocation factors, excluded flows, and sensitivity results so the allocation is reproducible and sums to one."
+    source_ids:
+      - eu-pef-2021-2279
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_received_oilseed
+      process_id: "seed_receipt_and_preparation"
+      flow_role: "received oilseed"
+      record_type: "weighbridge and lot-quality record"
+      raw_fields: "lot id; species; variety/oil type; origin; gross mass; tare; net mass; moisture; damaged/foreign matter; receipt time"
+      collection_method: "calibrated weighbridge plus representative lot sampling"
+      unit: "kg; %"
+      frequency: "each received lot"
+      temporal_coverage: "complete declared campaign"
+      site_scope: "all receiving points serving the campaign"
+      aggregation_rule: "sum accepted lot net mass; retain rejected lots separately; report production-weighted moisture"
+      quality_evidence: "scale calibration; sampling procedure; lot certificates; reconciliation to inventory"
+    - protocol_id: cp_prepared_seed_mass
+      process_id: "seed_receipt_and_preparation"
+      flow_role: "prepared oilseed and separated preparation material"
+      record_type: "transfer scale and preparation log"
+      raw_fields: "campaign id; preparation route; input mass; output mass; hulls; screenings; moisture; stock change"
+      collection_method: "calibrated belt scale, hopper scale, or batch mass reconciliation"
+      unit: "kg; %"
+      frequency: "each batch or continuous shift total"
+      temporal_coverage: "complete declared campaign"
+      site_scope: "all preparation lines serving the campaign"
+      aggregation_rule: "input plus opening stock minus outputs and closing stock; normalise after moisture-basis disclosure"
+      quality_evidence: "calibration; batch log; mass-balance closure"
+    - protocol_id: cp_energy_records
+      process_id: "crude_oil_extraction_and_clarification"
+      flow_role: "electricity, fuel, heat, and steam"
+      record_type: "meter, invoice, and fuel-stock record"
+      raw_fields: "meter id; opening/closing readings; fuel quantity; heating value; steam mass/enthalpy; exports; shared-load driver; downtime"
+      collection_method: "sub-meter reading or reconciled purchase and stock records"
+      unit: "kWh; MJ; kg fuel"
+      frequency: "continuous or each shift; reconcile monthly"
+      temporal_coverage: "all months overlapping the campaign"
+      site_scope: "all utility meters and supply points serving the campaign"
+      aggregation_rule: "subtract exports and unrelated loads; convert with documented factors; allocate shared loads only through an auditable driver"
+      quality_evidence: "meter calibration; invoice; fuel certificate; reconciliation"
+    - protocol_id: cp_hexane_balance
+      process_id: "crude_oil_extraction_and_clarification"
+      flow_role: "hexane make-up, recovery, and losses"
+      record_type: "purchase, tank, recovery, product, waste-water, waste, and emission records"
+      raw_fields: "solvent composition; purchases; opening/closing stock; transfers; recovered volume; density/temperature; oil/meal/water/waste solvent; channelled/fugitive emissions"
+      collection_method: "mass balance supported by calibrated tanks/meters and analytical measurements"
+      unit: "kg"
+      frequency: "daily operating record; campaign and annual reconciliation"
+      temporal_coverage: "complete declared campaign and annual reconciliation period"
+      site_scope: "every solvent-extraction line in scope"
+      aggregation_rule: "convert volumes at measured temperature/density; total input minus recovered closing inventory and quantified outputs equals unresolved loss; report air fraction separately"
+      quality_evidence: "tank calibration; purchase records; laboratory results; leak/vent monitoring; closure statement"
+    - protocol_id: cp_water_wastewater
+      process_id: "crude_oil_extraction_and_clarification"
+      flow_role: "process water and waste water"
+      record_type: "water-meter and discharge record"
+      raw_fields: "intake; recycle; segregated cooling water; discharge volume; destination; COD/TOC; TSS; oil and grease; pH; temperature"
+      collection_method: "calibrated meters and representative sampling at relevant discharge points"
+      unit: "m3; mg/L; pH"
+      frequency: "continuous volume; sampling per permit or monitoring plan"
+      temporal_coverage: "complete declared campaign"
+      site_scope: "all relevant water intake and discharge points"
+      aggregation_rule: "prevent double counting recycled water; report direct, indirect, and separately discharged uncontaminated water by route"
+      quality_evidence: "calibration; chain of custody; laboratory accreditation; discharge reconciliation"
+    - protocol_id: cp_crude_oil_output_quality
+      process_id: "crude_oil_extraction_and_clarification"
+      flow_role: "qualifying crude-oil output"
+      record_type: "tank gauge/scale, dispatch, and laboratory record"
+      raw_fields: "species; oil type; extraction route; batch; net mass; water/volatile matter; insoluble impurities; density; quality tests; degumming status; dispatch time"
+      collection_method: "calibrated tank/scale measurement and representative laboratory testing"
+      unit: "kg; %; g/ml"
+      frequency: "each tank batch and dispatch"
+      temporal_coverage: "complete declared campaign"
+      site_scope: "all in-scope crude-oil tanks and dispatch points"
+      aggregation_rule: "sum only batches meeting the declared crude-oil identity; normalise all exchanges to net qualifying mass"
+      quality_evidence: "calibration; laboratory method and result; batch release; dispatch reconciliation"
+    - protocol_id: cp_coproduct_residue_mass
+      process_id: "seed_receipt_and_preparation_crude_oil_extraction_and_clarification"
+      flow_role: "co-products, hulls, screenings, meal, cake, and residues"
+      record_type: "scale, stock, dispatch, and waste-transfer record"
+      raw_fields: "material id; product/waste status; mass; moisture; residual oil; destination; price; currency; disposal/treatment"
+      collection_method: "calibrated scale plus stock and dispatch reconciliation"
+      unit: "kg; %; currency/kg"
+      frequency: "each batch or dispatch"
+      temporal_coverage: "complete declared campaign"
+      site_scope: "all preparation, extraction, storage, and waste-transfer points"
+      aggregation_rule: "aggregate by material, moisture basis, status, and destination; do not merge valued products with wastes"
+      quality_evidence: "calibration; sales invoice; waste manifest; inventory closure"
+    - protocol_id: cp_air_emissions
+      process_id: "seed_receipt_and_preparation_crude_oil_extraction_and_clarification"
+      flow_role: "dust and route-specific air emissions"
+      record_type: "stack test, continuous monitor, leak survey, and operating-hour record"
+      raw_fields: "pollutant/flow; compartment; concentration; flow rate; operating time; control device; efficiency; fugitive method"
+      collection_method: "applicable standard measurement or documented activity-factor calculation"
+      unit: "kg; mg/Nm3"
+      frequency: "per permit/monitoring plan and after material changes"
+      temporal_coverage: "representative normal operation plus abnormal-event disclosure"
+      site_scope: "all relevant emission points, fugitive sources, and control devices"
+      aggregation_rule: "calculate mass emission from measured concentration, gas flow, and time; add separately estimated fugitives; avoid double counting captured material"
+      quality_evidence: "test report; instrument calibration; operating log; control-device record"
+  calculation_rules:
+    - id: calc_seed_input
+      applies_to: "received oilseed"
+      rule: "accepted received seed kg assigned to campaign / qualifying crude-oil kg"
+      inputs:
+        - cp_received_oilseed
+        - cp_crude_oil_output_quality
+      output: "kg received seed/kg crude oil"
+      source_ids:
+        - fao-ebrd-sunflower-oils-2010
+    - id: calc_preparation_balance
+      applies_to: "seed preparation"
+      rule: "received seed + opening stock = prepared seed + separated co-products/residues + closing stock + quantified loss"
+      inputs:
+        - cp_received_oilseed
+        - cp_prepared_seed_mass
+        - cp_coproduct_residue_mass
+      output: "preparation mass-balance closure and unresolved difference"
+      source_ids:
+        - fao-ebrd-sunflower-oils-2010
+    - id: calc_energy_intensity
+      applies_to: "electricity and thermal energy"
+      rule: "attributable energy / qualifying crude-oil mass; retain electricity and thermal results separately"
+      inputs:
+        - cp_energy_records
+        - cp_crude_oil_output_quality
+      output: "kWh/kg oil and MJ/kg oil"
+      source_ids:
+        - eu-fdm-bat-2019-2031
+    - id: calc_hexane_loss
+      applies_to: "solvent route"
+      rule: "(make-up + opening stock + imports - closing stock - exports - recovered stock change) / cleaned seed tonnes; reconcile oil, meal, water, waste, and air fractions"
+      inputs:
+        - cp_hexane_balance
+        - cp_prepared_seed_mass
+      output: "kg total hexane loss/t cleaned seed and kg hexane-to-air/t cleaned seed"
+      source_ids:
+        - eu-fdm-bat-2019-2031
+        - us-epa-ap42-9-11-1-1995
+    - id: calc_water_intensity
+      applies_to: "process water and waste water"
+      rule: "external water or waste-water discharge / qualifying crude-oil tonnes, reported separately"
+      inputs:
+        - cp_water_wastewater
+        - cp_crude_oil_output_quality
+      output: "m3/t crude oil"
+      source_ids:
+        - eu-fdm-bat-2019-2031
+    - id: calc_allocation_factors
+      applies_to: "inseparable shared burdens"
+      rule: "selected driver value for each co-product / sum of driver values; verify factors sum to 1.000 within rounding tolerance"
+      inputs:
+        - cp_coproduct_residue_mass
+        - "allocation decision record"
+      output: "allocation factors and mass-allocation sensitivity factors"
+      source_ids:
+        - eu-pef-2021-2279
+    - id: calc_extraction_mass_balance
+      applies_to: "extraction and clarification"
+      rule: "prepared seed + material auxiliaries = crude oil + co-products + wastes + measured stock change + quantified emissions + unresolved difference"
+      inputs:
+        - cp_prepared_seed_mass
+        - cp_crude_oil_output_quality
+        - cp_coproduct_residue_mass
+        - cp_hexane_balance
+        - cp_water_wastewater
+        - cp_air_emissions
+      output: "campaign mass-balance closure and unresolved difference"
+      source_ids:
+        - fao-ebrd-sunflower-oils-2010
+        - eu-fdm-bat-2019-2031
+  data_quality_requirements:
+    - id: dq_identity
+      applies_to: "reference product and oilseed input"
+      requirement: "Demonstrate species, oil type, crude/unrefined state, route, solvent use, degumming status, and mill gate for every included batch."
+      evidence: "lot certificates; route log; laboratory release; reference-flow UUID check"
+    - id: dq_measurement
+      applies_to: "mass, energy, solvent, and water records"
+      requirement: "Use calibrated instruments or reconciled purchase/stock records; retain units, conversions, missing-data treatment, and instrument coverage."
+      evidence: "calibration certificates; invoices; stock reconciliation; calculation workbook"
+    - id: dq_temporal
+      applies_to: "declared reporting period"
+      requirement: "Use a continuous campaign or at least 12 representative months for an annual dataset; disclose shutdowns, abnormal releases, and seasonality."
+      evidence: "production calendar; operating log; exception record"
+    - id: dq_completeness
+      applies_to: "foreground inventory"
+      requirement: "Cover all material seed, crude-oil, co-product, utility, solvent, water, residue, waste-water, and direct-emission flows; quantify or justify exclusions."
+      evidence: "signed completeness checklist; mass/energy/solvent reconciliation"
+    - id: dq_representativeness
+      applies_to: "geography and technology"
+      requirement: "Match seed source, mill geography, extraction route, solvent-recovery technology, and production scale, or document and assess extrapolation."
+      evidence: "site description; supplier geography; technology record; extrapolation note"
+    - id: dq_source_scope
+      applies_to: "external QA ranges"
+      requirement: "Apply the FAO sunflower ranges only to matching sunflower routes and the EU BAT-AEL only to matching regulated solvent-route scope; do not silently transfer them to safflower or mechanical-only cases."
+      evidence: "applicability assessment linked to source ids"
+validation_rules:
+  - rule_id: validate_reference_identity
+    applies_to: "reference flow"
+    rule: "Fail if the reference UUID, Mass property, Units of mass group, 1 kg amount, species qualifier, crude/unrefined state, or mill gate is missing or inconsistent."
+    source_ids:
+      - codex-cxs-210-1999-2026
+  - rule_id: validate_route_completeness
+    applies_to: "process map and inventory"
+    rule: "Fail if the declared mechanical, solvent, or combined route omits a required route operation; a solvent route must include solvent recovery/desolventising and solvent balance, while refining operations must not be included in the crude-oil foreground result."
+    source_ids:
+      - fao-ebrd-sunflower-oils-2010
+      - us-epa-ap42-9-11-1-1995
+  - rule_id: validate_species_separation
+    applies_to: "combined datasets"
+    rule: "Fail if sunflower and safflower batches are aggregated without production weights, species-specific input/output records, and disclosure of the aggregation method."
+    source_ids:
+      - codex-cxs-210-1999-2026
+  - rule_id: validate_mass_balance
+    applies_to: "each process and campaign"
+    rule: "Flag an unexplained preparation or extraction mass-balance difference above 2% of the largest material throughput; require correction or documented investigation rather than forced closure."
+    source_ids:
+      - fao-ebrd-sunflower-oils-2010
+      - eu-fdm-bat-2019-2031
+  - rule_id: validate_hexane_balance
+    applies_to: "solvent route"
+    rule: "Fail if make-up, stock change, recovered solvent, quantified product/water/waste fractions, and air emissions are not reconciled; flag a matching-scope sunflower yearly loss outside 0.2-0.7 kg/t cleaned seed for investigation, not automatic replacement."
+    source_ids:
+      - eu-fdm-bat-2019-2031
+      - us-epa-ap42-9-11-1-1995
+  - rule_id: validate_allocation
+    applies_to: "co-products and shared services"
+    rule: "Fail if allocation is used before documented subdivision review, factors do not sum to one, waste and co-product status is inconsistent, or price/physical-driver evidence and sensitivity results are absent."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: validate_quality_and_coverage
+    applies_to: "published foreground package"
+    rule: "Fail if required qualifiers, protocol coverage, calibration evidence, temporal coverage, direct emissions, quality tests, or excluded-flow justifications are missing."
+    source_ids:
+      - codex-cxs-210-1999-2026
+      - eu-fdm-bat-2019-2031
+published_dataset_profile:
+  dataset_role: "unit_process foreground data package for crude-oil production"
+  downstream_use: "secondary_dataset; background_dataset"
+  allowed_use: "LCA models requiring crude sunflower-seed or safflower-seed oil at a matching mill gate, species/oil type, geography, period, extraction route, solvent practice, degumming status, and allocation method"
+  excluded_use: "refined or packaged edible oil; other oilseed oils; undisclosed sunflower/safflower averages; routes or geographies with materially different extraction and recovery technology; direct food-compliance claims without applicable testing"
+  required_metadata: "PCR id and version; reference-flow UUID; oilseed species and variety/oil type; geography; period; mill gate; route; solvent and recovery; degumming status; crude quality basis; upstream seed dataset; allocation method; protocol coverage; data-quality assessment"
+  required_quality_disclosure: "measured versus calculated coverage; missing-data substitutions; provisional-range use; instrument calibration; mass, energy, water, and solvent reconciliation; co-product status and allocation sensitivity; abnormal operations; excluded flows"
+  update_trigger: "material change in oilseed species/oil type, seed source, extraction or solvent-recovery route, degumming/clarification, geography, energy or water system, co-product market, allocation method, legal status, reference UUID, or evidence base"
+data_sources:
+  - id: "fao-ebrd-sunflower-oils-2010"
+    type: "official_guidance"
+    reference: "FAO/EBRD, *Sunflower Crude and Refined Oils: Agribusiness Handbook*, 2010, https://www.fao.org/fileadmin/user_upload/tci/docs/1_AH10-Sunflower%20Crude%20%26%20Refined%20Oils.pdf (retrieved 2026-08-10)"
+    used_for: "sunflower process decomposition; seed preparation, pressing, solvent extraction, clarification, co-products, and route conversion benchmarks"
+  - id: "codex-cxs-210-1999-2026"
+    type: "standard"
+    reference: "Codex Alimentarius CXS 210-1999, *Standard for Named Vegetable Oils*, official 2026 corrected text, https://openknowledge.fao.org/handle/20.500.14283/cd9108en (retrieved 2026-08-10)"
+    used_for: "sunflower/safflower product identity, crude-oil trade applicability, quality and physical-property context"
+  - id: "eu-fdm-bat-2019-2031"
+    type: "standard"
+    reference: "Commission Implementing Decision (EU) 2019/2031, https://eur-lex.europa.eu/eli/dec_impl/2019/2031/oj (retrieved 2026-08-10)"
+    used_for: "foreground inventory, monitoring, energy/water/solvent accounting, oilseed dust and sunflower-route hexane-loss QA"
+  - id: "us-epa-ap42-9-11-1-1995"
+    type: "official_guidance"
+    reference: "U.S. EPA AP-42 Section 9.11.1, *Vegetable Oil Processing*, November 1995, https://www.epa.gov/sites/default/files/2020-10/documents/c9s11-1.pdf (retrieved 2026-08-10)"
+    used_for: "solvent-route process decomposition, crude-versus-refined boundary, dust and hexane emission accounting"
+  - id: "eu-pef-2021-2279"
+    type: "standard"
+    reference: "Commission Recommendation (EU) 2021/2279 on Environmental Footprint methods, https://eur-lex.europa.eu/eli/reco/2021/2279/oj (retrieved 2026-08-10)"
+    used_for: "allocation hierarchy, physical/economic allocation evidence, sensitivity and documentation requirements"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:56b0fa410c84f1bbd6ab6d54c1a90a5f9269cf15cec2cfbae88f8ef85d105df5"
+  generated_content_sha256: "sha256:f47151245beb7576fde80267ff2f958575d58a07d9fc2a2f255a5eecb5f31463"

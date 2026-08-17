@@ -2,10 +2,11 @@ schema_version: 1
 id: pcr.food-products-beverages-and-tobacco-textiles-apparel-and-leather-products.textile-articles-other-than-apparel.carpets-and-other-textile-floor-coverings-knotted
 title:
   en-US: "Carpets and other textile floor coverings, knotted"
-  zh-CN: null
-status: scaffold
+  zh-CN: "打结地毯及其他铺地织物"
+status: candidate
 pcr_kind: product_category_rule
-content_maturity: empty_scaffold
+content_maturity: authored_methodology
+updated_at_utc: "2026-08-12T17:52:58Z"
 domains:
   - "food-products-beverages-and-tobacco-textiles-apparel-and-leather-products"
 modules:
@@ -22,16 +23,59 @@ target_entities:
   - flow
   - process
   - lifecyclemodel
+  - dataset
 languages:
   canonical: en-US
   available:
     - en-US
     - zh-CN
 translation_status:
-  zh-CN: scaffold_pending_translation
+  zh-CN: aligned
 classification_refs:
   - system: CPC
     version: "3.0"
     code: "27210"
     title: "Carpets and other textile floor coverings, knotted"
     mapping_type: exact
+review_metadata:
+  inventory_contract:
+    atomic_flows: v1
+  identity_gate:
+    checked_at_utc: "2026-08-12T17:44:36Z"
+    search_method: "flow-hybrid-search followed by Tiangong CLI flow get with state_code 100"
+    reference_product:
+      flow_uuid: a718c51e-66e1-40e5-bd73-00cb16f1b722
+      flow_type: Product flow
+      cpc_version: "3.0"
+      cpc_code: "27210"
+      flow_property_uuid: 93a60a56-a3c8-11da-a746-0800200b9a66
+      unit_group_uuid: 93a60a57-a4c8-11da-a746-0800200c9a66
+      reference_unit: kg
+    accepted_inventory_flows:
+      - row_ids:
+          - wool_pile_yarn_input
+        flow_uuid: 10c7de33-bef0-4310-98e7-734d8e2e4c9f
+        decision: "state_code 100 Product flow; exact wool-yarn material class; Mass reference property"
+      - row_ids:
+          - cotton_warp_yarn_input
+          - cotton_weft_yarn_input
+          - cotton_binding_yarn_input
+        flow_uuid: 526fe0a1-be6d-4384-b609-4ca604628ec4
+        decision: "state_code 100 Product flow; exact cotton-yarn material class; Mass reference property"
+      - row_ids:
+          - process_water_input
+        flow_uuid: 94a04f7e-2d5c-41f0-b182-d54a3b373a02
+        decision: "state_code 100 Product flow; Process Water; Mass reference property"
+  unresolved_flow_references:
+    - row_id: carpet_washing_detergent_input
+      reason: "Hybrid candidates did not identify the actual nonionic carpet-washing formulation; UUID rejected pending supplier formulation mapping."
+    - row_id: low_voltage_electricity_input
+      reason: "Alternating-current candidates did not encode the required low-voltage delivery level; UUID rejected."
+    - row_id: ldpe_packaging_film_input
+      reason: "Packaging-film candidates were generic, resin-only, or classification-inconsistent; no exact low-density polyethylene stretch-film UUID accepted."
+    - row_id: wool_pile_trimmings_output
+      reason: "Waste candidates were broader textile waste and did not preserve wool pile-trimming identity; UUID rejected."
+    - row_id: cotton_yarn_offcuts_output
+      reason: "Waste candidates were broader textile waste and did not preserve cotton warp/weft offcut identity; UUID rejected."
+    - row_id: carpet_washing_wastewater_output
+      reason: "Wastewater candidates were generic, route-incomplete, destination-misaligned, or not confirmed at state_code 100; UUID rejected."

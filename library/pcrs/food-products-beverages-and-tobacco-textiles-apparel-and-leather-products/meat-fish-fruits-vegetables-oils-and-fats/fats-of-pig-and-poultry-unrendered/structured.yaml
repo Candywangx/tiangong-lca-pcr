@@ -1,10 +1,929 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "21511"
-  title: "Fats, of pig and poultry, unrendered"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.food-products-beverages-and-tobacco-textiles-apparel-and-leather-products.meat-fish-fruits-vegetables-oils-and-fats.fats-of-pig-and-poultry-unrendered"
+  classification_refs: "UNSD CPC Version 3.0 subclass 21511, Fats, of pig and poultry, unrendered"
+  covered_products: "Unrendered pig fat tissue or unrendered poultry fat tissue/raw fat material separated after slaughter or cutting; fresh, chilled, or frozen; edible, feed-grade, or technical destination only when the destination and disposition are declared"
+  excluded_products: "Rendered pig fat or lard (CPC 21521); rendered poultry fat (CPC 21522); tallow and other rendered animal fats or oils in CPC 21523-21529; refined, fractionated, hydrogenated, or otherwise chemically modified fat; unspecified pig-poultry averages or inseparable mixtures"
+  representative_product: "1 kg net mass of one declared pig or poultry unrendered fat tissue/product form at a declared handover point"
+  production_route: "Slaughter or cutting co-product identification -> hygienic separation/trimming and sorting -> weighing -> conditional chilling/freezing -> conditional packaging and storage -> declared transport handover; no rendering or refining"
+  market_state: "Fresh, chilled, or frozen unrendered fat tissue/raw fat material, in bulk or declared packaging, before any rendering operation"
+functional_unit:
+  what: "Provide unrendered fat tissue/raw fat material from one declared animal source, pig or poultry, for subsequent use or processing."
+  how_much: "1 kg net product mass at the declared handover point."
+  how_well: "Animal source, species, anatomical tissue/product form, physical state, disposition/grade, packaging, handover temperature or condition, and absence of rendering are declared."
+  how_long_or_cycle: "One product handover; any cold-storage duration and transport leg included before handover are declared."
+  reference_flow_link: "The reference flow is the net mass required to provide the declared 1 kg intermediate-product function."
+system_boundary:
+  rules:
+    - rule_id: boundary_unrendered_identity
+      applies_to: "product identity and process list"
+      rule: "The reference product shall remain unrendered tissue/raw fat. Any rendering, fat melting, extraction, refining, fractionation, hydrogenation, or manufacture of named rendered fat is excluded and requires another product system."
+      source_ids:
+        - unsd-cpc-3-0-2025
+        - codex-cxs-211-1999
+    - rule_id: boundary_foreground_operations
+      applies_to: "foreground system"
+      rule: "Include attributable separation/trimming, sorting, hygienic handling, weighing, conditional chilling/freezing, packaging, storage, loading, and transport controlled before the declared handover."
+      source_ids:
+        - codex-cxc-58-2005
+        - eu-pef-2021-2279
+    - rule_id: boundary_cold_chain
+      applies_to: "chilled or frozen product"
+      rule: "Record cooling/freezing, cold-storage duration, temperature control, losses, and any included refrigerated transport; do not infer a universal temperature or holding time from this PCR."
+      source_ids:
+        - codex-cxc-58-2005
+    - rule_id: boundary_transport_handover
+      applies_to: "outbound logistics"
+      rule: "Include transport only to the declared contractual or physical handover point and identify every included leg; downstream transport after handover is excluded unless explicitly brought into the study scope."
+      source_ids:
+        - codex-cxc-58-2005
+        - eu-pef-2021-2279
+    - rule_id: boundary_upstream_coproduct
+      applies_to: "slaughter and cutting joint processes"
+      rule: "Identify the point at which fat becomes a co-product and keep separately attributable post-separation burdens with the fat; jointly incurred slaughter/cutting burdens require the allocation rules in section 7."
+      source_ids:
+        - eu-pef-2021-2279
+boundary_abstraction:
+  declared_starting_condition: "Fatty tissue or raw fat material from a declared pig or poultry species has been identified after slaughter/dressing/post-mortem disposition and/or cutting, has not been rendered, and is available for separation or has just been separated as a co-product."
+  starting_condition_role: "Co-product/raw-material handover from a slaughter or cutting system into the unrendered-fat foreground; the exact burden-transfer point is declared."
+  product_classification_scope: "CPC 3.0 21511 only; rendered pig fat 21521, rendered poultry fat 21522, and other rendered fats/oils 21523-21529 are excluded."
+  recursive_input_rule: "Purchased CPC 21511 material entering a foreground operation is recorded as a separate product input with its own upstream dataset and qualifiers; it is not absorbed recursively into the reference output. A single dataset shall not merge pig and poultry inputs into an unspecified reference product."
+  upstream_dataset_requirement: "When slaughter, dressing, or cutting occurs before the declared starting point, use a separately documented upstream dataset and its co-product allocation. When those operations are inside the foreground, collect the joint-process inputs and all co-product/waste outputs needed for allocation."
+  disclosure: "Declare animal source, species, tissue/product form, disposition/grade, fresh/chilled/frozen state, separation point, included operations, packaging, cold-storage duration, handover point, included transport, and whether upstream slaughter/cutting burdens are included."
+reference_flow_definition:
+  reference_amount: "1 kg"
+  product_flow_ref:
+    name: "Fats, of pig and poultry, unrendered"
+    uuid: "0ba97549-7663-496e-8451-8396d31d2bcf"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "animal_source (pig or poultry"
+    - "exactly one)"
+    - species
+    - anatomical_tissue_or_product_form
+    - "physical_state (fresh"
+    - chilled
+    - "or frozen)"
+    - disposition_or_grade
+    - "rendering_status (unrendered)"
+    - packaging_form
+    - handover_point
+    - handover_temperature_or_condition
+    - storage_duration_if_any
+    - included_transport_if_any
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "reference product at handover"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Report 1 kg net unrendered fat at the declared physical state and handover point; exclude packaging and transport equipment tare."
+  - id: gross_to_net_mass
+    applies_to: "packaged or containerized product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "If only gross mass is recorded, subtract measured container and packaging tare for the same packaging type or lot and retain both records."
+  - id: animal_and_form_segregation
+    applies_to: "all reference and inventory quantities"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Measure and normalize pig and poultry separately and retain separate records for materially different tissue forms and fresh/chilled/frozen states; do not use an undocumented combined average."
+  - id: handover_state_mass
+    applies_to: "moisture, drip, blood, lean-tissue, or trim differences"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Do not apply a dry-fat or rendered-fat conversion. Report mass as handed over and record drained liquid, rejected trim, or other mass change as a separate flow."
+  - id: transport_work
+    applies_to: "included outbound transport"
+    required_property_ref:
+      name: "Mass and distance"
+      uuid: ""
+    required_unit: "tonne-kilometre"
+    rule: "Calculate each leg as loaded product mass in tonnes multiplied by loaded distance in kilometres; state whether return travel or capacity utilization is included in the selected transport dataset."
+  - id: cold_storage_normalization
+    applies_to: "cooling, freezing, and cold storage"
+    required_property_ref:
+      name: "Energy and time"
+      uuid: ""
+    required_unit: "kWh and h"
+    rule: "Record energy by declared physical state and storage period and normalize to the net mass passing through that operation."
+process_map:
+  - id: separation_preparation
+    name: "Co-product identification, separation, trimming, sorting, and weighing"
+    inclusion: "required"
+    inclusion_condition: "Always; the exact starting point and already-completed operations are declared."
+    role: "Establish unrendered product identity and net mass while retaining joint-process allocation evidence."
+    quantitative_reference: "kg net separated unrendered fat"
+  - id: temperature_management
+    name: "Cooling, chilling, freezing, and cold storage"
+    inclusion: "conditional"
+    inclusion_condition: "Include when any temperature reduction or controlled cold storage occurs before handover."
+    role: "Preserve declared physical state and record energy, duration, refrigerant, and losses."
+    quantitative_reference: "kg product through operation and storage hours"
+  - id: packaging_handover
+    name: "Packaging, final weighing, storage, loading, and handover"
+    inclusion: "required"
+    inclusion_condition: "Packaging inputs are conditional for unpackaged bulk transfer; weighing and handover records are always required."
+    role: "Produce the reference flow at the declared gate."
+    quantitative_reference: "kg net reference product"
+  - id: outbound_transport
+    name: "Outbound transport to declared handover"
+    inclusion: "conditional"
+    inclusion_condition: "Include only when the reporting entity controls or includes transport before handover."
+    role: "Connect dispatch to the declared delivered gate without extending into downstream rendering."
+    quantitative_reference: "tonne-kilometre by leg and kg delivered"
+process_inventory:
+  - id: separation_preparation
+    label: "Co-product identification, separation, trimming, sorting, and weighing"
+    inputs:
+      product:
+        - row_id: eligible_fatty_material_input
+          role: "Eligible pig or poultry fatty tissue/parts"
+          name: "Declared pig or poultry carcass part, fatty tissue, or cutting material; facility-specific product input"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the mass entering the foreground separation step and its linkage to the slaughter or cutting batch."
+          amount:
+            expression: "measured input mass by batch and animal source"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg net unrendered fat output from separation"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_batch_identity_mass
+              source_ids:
+                - codex-cxc-58-2005
+            ranges: []
+        - row_id: separation_water
+          role: "Cleaning and process water"
+          name: "Facility-specific water supply"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "Record water that crosses the process boundary for equipment or product-contact cleaning attributable to this step."
+          amount:
+            expression: "metered or reconciled water use attributable to separation and hygiene operations"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg net unrendered fat output from separation"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_utility_and_water_records
+              source_ids:
+                - codex-cxc-58-2005
+                - eu-fdm-bat-2019-2031
+            ranges: []
+        - row_id: separation_electricity_measured
+          role: "Separation electricity, measured"
+          name: "Facility-specific electricity supply"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Use sub-meter, meter reconciliation, or utility records when electricity can be attributed to trimming, conveying, sorting, weighing, and sanitation."
+          amount:
+            expression: "measured electricity attributable to the process over the production period"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg net unrendered fat output from separation"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_utility_and_water_records
+              source_ids:
+                - eu-pef-2021-2279
+                - eu-fdm-bat-2019-2031
+            ranges: []
+        - row_id: separation_electricity_provisional
+          role: "Separation electricity, provisional fallback"
+          name: "Facility-specific electricity supply"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Use only in a candidate dataset when measured electricity is unavailable. Estimate equipment electricity from rated power, recorded operating time, and a documented site-specific load factor; never use one pig-poultry average. Replace this row as soon as representative sub-meter, reconciled utility, or equipment-test records become available."
+          amount:
+            expression: "sum of rated power multiplied by recorded operating time and documented load factor for included equipment"
+            value_mode: "modelled_estimate"
+            specificity: "site_specific"
+            basis:
+              text: "per kg net unrendered fat output from separation"
+              kind: "process_output"
+            evidence:
+              kind: "reasoned_estimate"
+              collection_protocol_id: cp_utility_and_water_records
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: separated_unrendered_fat
+          role: "Unrendered pig or poultry fat after separation"
+          name: "Fats, of pig and poultry, unrendered"
+          flow_type: "product"
+          flow_ref:
+            uuid: "0ba97549-7663-496e-8451-8396d31d2bcf"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record the net output mass before any rendering, retaining the declared animal and tissue/form qualifiers."
+          amount:
+            expression: "measured net mass after separation and trimming"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "process output mass before downstream included operations"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_batch_identity_mass
+              source_ids:
+                - unsd-cpc-3-0-2025
+            ranges: []
+        - row_id: other_coproducts
+          role: "Other saleable slaughter or cutting co-products"
+          name: "Facility-specific co-product records by product identity"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record all other saleable outputs at a joint-process boundary when slaughter or cutting burdens are allocated in this data package."
+          amount:
+            expression: "measured mass and disposition by co-product over the allocation period"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "joint slaughter or cutting process output period"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_coproduct_allocation_records
+              source_ids:
+                - eu-pef-2021-2279
+            ranges: []
+      waste:
+        - row_id: rejected_material
+          role: "Rejected or condemned material"
+          name: "Facility-specific rejected or condemned animal material"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record material rejected from the reference product and its documented disposition; do not silently count it as product or co-product."
+          amount:
+            expression: "measured mass by disposition route"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg net unrendered fat output from separation"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_batch_identity_mass
+              source_ids:
+                - codex-cxc-58-2005
+                - eu-pef-2021-2279
+            ranges: []
+        - row_id: separation_wastewater
+          role: "Separation wastewater"
+          name: "Facility-specific wastewater to declared treatment route"
+          flow_type: "waste"
+          property_unit: "Volume / m3"
+          description: "Record wastewater leaving the foreground and identify whether treatment occurs on-site or downstream."
+          amount:
+            expression: "metered or water-balance-derived wastewater volume attributable to the process"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per kg net unrendered fat output from separation"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_utility_and_water_records
+              source_ids:
+                - eu-fdm-bat-2019-2031
+            ranges: []
+      elementary:
+        []
+  - id: temperature_management
+    label: "Cooling, chilling, freezing, and cold storage"
+    inputs:
+      product:
+        - row_id: fat_to_temperature_management
+          role: "Separated unrendered fat entering temperature control"
+          name: "Fats, of pig and poultry, unrendered"
+          flow_type: "product"
+          flow_ref:
+            uuid: "0ba97549-7663-496e-8451-8396d31d2bcf"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record the mass and product qualifiers entering the included cooling, freezing, or storage operation."
+          amount:
+            expression: "measured mass entering the cooling, freezing, or storage operation"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg temperature-managed output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_temperature_storage_records
+              source_ids:
+                - codex-cxc-58-2005
+            ranges: []
+        - row_id: temperature_electricity
+          role: "Refrigeration electricity"
+          name: "Facility-specific electricity supply"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record electricity for the included temperature-management operation and its declared storage period."
+          amount:
+            expression: "metered or reconciled electricity for cooling/freezing and storage, allocated by a documented causal driver when shared"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg temperature-managed output and declared storage duration"
+              kind: "storage_duration"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_temperature_storage_records
+              source_ids:
+                - codex-cxc-58-2005
+                - eu-pef-2021-2279
+            ranges: []
+        - row_id: refrigerant_makeup
+          role: "Refrigerant make-up"
+          name: "Refrigerant identified by substance and facility record"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record substance-specific additions to the refrigeration system so releases can be reconciled without a generic refrigerant assumption."
+          amount:
+            expression: "purchased or charged refrigerant attributable to the included refrigeration system over the reporting period"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg temperature-managed output over the same reporting period"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_temperature_storage_records
+              source_ids:
+                - eu-pef-2021-2279
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: temperature_managed_fat
+          role: "Chilled or frozen unrendered fat"
+          name: "Fats, of pig and poultry, unrendered"
+          flow_type: "product"
+          flow_ref:
+            uuid: "0ba97549-7663-496e-8451-8396d31d2bcf"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record the product mass and physical state leaving temperature management, still before rendering."
+          amount:
+            expression: "measured net mass at declared exit temperature and physical state"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "process output mass"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_temperature_storage_records
+              source_ids:
+                - codex-cxc-58-2005
+            ranges: []
+      waste:
+        - row_id: temperature_management_loss
+          role: "Drip, purge, or rejected material during temperature management"
+          name: "Facility-specific organic loss to declared treatment route"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record all product mass not retained in the temperature-managed output and its disposition."
+          amount:
+            expression: "measured or mass-balance-derived loss, reported separately by type and disposition"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per kg temperature-managed output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_temperature_storage_records
+              source_ids:
+                - codex-cxc-58-2005
+            ranges: []
+      elementary:
+        - row_id: refrigerant_emission
+          role: "Refrigerant emitted to air"
+          name: "Declared refrigerant substance emitted to air; substance-specific flow to be selected by dataset author"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Calculate substance-specific releases from refrigeration service and stock records for the included system."
+          amount:
+            expression: "refrigerant balance from additions, removals, recovery, and stock change for the included system"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per kg temperature-managed output over the reporting period"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_temperature_storage_records
+              source_ids:
+                - eu-pef-2021-2279
+            ranges: []
+  - id: packaging_handover
+    label: "Packaging, final weighing, storage, loading, and handover"
+    inputs:
+      product:
+        - row_id: fat_to_handover
+          role: "Unrendered fat entering handover preparation"
+          name: "Fats, of pig and poultry, unrendered"
+          flow_type: "product"
+          flow_ref:
+            uuid: "0ba97549-7663-496e-8451-8396d31d2bcf"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record the product mass entering packaging or bulk handover preparation with its batch identity intact."
+          amount:
+            expression: "measured mass entering packaging or bulk handover preparation"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg net reference product at handover"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_handover_records
+              source_ids:
+                - codex-cxc-58-2005
+            ranges: []
+        - row_id: packaging_materials
+          role: "Packaging materials"
+          name: "Each primary, secondary, pallet, liner, container, or reusable packaging material separately identified"
+          flow_type: "product"
+          property_unit: "Mass / kg; count converted using measured unit mass when necessary"
+          description: "Record each material placed on the market with the product, net of documented return or reuse within the boundary."
+          amount:
+            expression: "issued minus returned/reused packaging attributable to dispatched reference product"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per kg net reference product at handover"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_handover_records
+              source_ids:
+                - eu-pef-2021-2279
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: reference_product_output
+          role: "Reference product at declared handover"
+          name: "Fats, of pig and poultry, unrendered"
+          flow_type: "product"
+          flow_ref:
+            uuid: "0ba97549-7663-496e-8451-8396d31d2bcf"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This is the sole quantitative reference output. It remains unrendered and carries all required qualifiers."
+          amount:
+            expression: "measured net handover mass after subtracting tare"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_handover_records
+              source_ids:
+                - unsd-cpc-3-0-2025
+                - codex-cxc-58-2005
+            ranges: []
+      waste:
+        - row_id: packaging_waste
+          role: "Packaging loss and discarded packaging"
+          name: "Each packaging waste material and treatment route separately identified"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record packaging discarded within the foreground rather than included with the handed-over product."
+          amount:
+            expression: "measured discarded packaging attributable to the dispatch period"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg net reference product at handover"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_handover_records
+              source_ids:
+                - eu-pef-2021-2279
+            ranges: []
+      elementary:
+        []
+  - id: outbound_transport
+    label: "Outbound transport to declared handover"
+    inputs:
+      product:
+        - row_id: dispatched_product
+          role: "Dispatched unrendered fat"
+          name: "Fats, of pig and poultry, unrendered"
+          flow_type: "product"
+          flow_ref:
+            uuid: "0ba97549-7663-496e-8451-8396d31d2bcf"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record the net product mass loaded for each included transport leg."
+          amount:
+            expression: "measured loaded net mass by shipment"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg delivered at the declared handover"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_transport_records
+              source_ids:
+                - codex-cxc-58-2005
+            ranges: []
+        - row_id: outbound_freight_service
+          role: "Freight transport service"
+          name: "Route-, mode-, vehicle-, payload-, and refrigeration-specific transport service selected by dataset author"
+          flow_type: "product"
+          property_unit: "Transport work / tonne-kilometre"
+          description: "Record route-specific transport work to the declared handover without double counting a separate direct-fleet model."
+          amount:
+            expression: "measured loaded product tonnes multiplied by actual loaded distance for each included leg"
+            value_mode: "calculated_value"
+            specificity: "route_specific"
+            basis:
+              text: "per kg delivered at the declared handover"
+              kind: "transport_service"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_transport_records
+              source_ids:
+                - codex-cxc-58-2005
+                - eu-pef-2021-2279
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: delivered_product
+          role: "Delivered unrendered fat"
+          name: "Fats, of pig and poultry, unrendered"
+          flow_type: "product"
+          flow_ref:
+            uuid: "0ba97549-7663-496e-8451-8396d31d2bcf"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record the accepted product mass at the delivered handover point, retaining all reference-product qualifiers."
+          amount:
+            expression: "measured accepted net mass at the declared delivered handover point"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "1 kg delivered reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_transport_records
+              source_ids:
+                - codex-cxc-58-2005
+            ranges: []
+      waste:
+        - row_id: transport_loss
+          role: "Transport loss or rejected delivery"
+          name: "Product loss or rejected load to declared destination"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record the reconciled difference between dispatch and acceptance and its documented disposition."
+          amount:
+            expression: "dispatch mass minus accepted delivered mass, reconciled for documented measurement differences"
+            value_mode: "calculated_value"
+            specificity: "route_specific"
+            basis:
+              text: "per kg accepted delivered product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_transport_records
+              source_ids:
+                - codex-cxc-58-2005
+            ranges: []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocation_direct_subdivision
+    applies_to: "separation, cooling, packaging, and transport burdens"
+    rule: "Assign directly metered or otherwise directly attributable inputs, emissions, and wastes to the unrendered-fat operations before allocating any joint burden."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: allocation_joint_slaughter_cutting
+    applies_to: "upstream slaughter or cutting joint process"
+    rule: "If subdivision is not possible, document the selected PEF-compatible hierarchy. For a PEF pig study, apply the current pig-specific slaughterhouse provisions of Recommendation (EU) 2021/2279. For poultry, do not reuse pig factors: apply a justified causal physical relation where demonstrated, otherwise use economic allocation from contemporaneous prices at the joint production stage."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: allocation_no_cross_species_default
+    applies_to: "any generic or multi-site result"
+    rule: "Never average pig and poultry allocation factors, yields, prices, utility intensities, or tissue compositions into an undocumented category default. Publish separate datasets or separately parameterized scenarios."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: allocation_output_status
+    applies_to: "products, co-products, residues, and wastes"
+    rule: "Record mass, disposition, and economic status for all relevant joint-process outputs. A material treated as waste receives the applicable waste-treatment modelling; a saleable unrendered fat reference product shall not be relabelled as burden-free waste."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: allocation_rendering_excluded
+    applies_to: "downstream rendering"
+    rule: "Do not assign rendering, melting, refining, or rendered-fat treatment burdens to this reference product. The handover to a downstream renderer is the end of this foreground unless transport to that handover is explicitly included."
+    source_ids:
+      - unsd-cpc-3-0-2025
+      - codex-cxs-211-1999
+  - rule_id: allocation_disclosure
+    applies_to: "allocated datasets"
+    rule: "Report joint-process boundary, allocation hierarchy, variables, prices and price period where economic allocation is used, outputs receiving burdens, and sensitivity or limitation relevant to interpretation."
+    source_ids:
+      - eu-pef-2021-2279
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_batch_identity_mass
+      process_id: "separation_preparation"
+      flow_role: "identity, input, product, reject"
+      record_type: "batch record and scale record"
+      raw_fields: "batch_id; animal_source; species; tissue_or_product_form; slaughter_or_cutting_lot; post_mortem_disposition; intended_grade; rendering_status; input_mass; output_mass; rejected_mass; tare; timestamp; scale_id"
+      collection_method: "trace batch to source lot and record calibrated scale readings before and after separation"
+      unit: "kg"
+      frequency: "each batch or lot"
+      temporal_coverage: "all batches in the reporting period or a documented representative sampling frame"
+      site_scope: "each slaughter/cutting site and line"
+      aggregation_rule: "aggregate only within identical animal source, species, tissue/form, state, and boundary; production-weight by net output mass"
+      quality_evidence: "calibration record; lot trace; disposition record; mass reconciliation"
+    - protocol_id: cp_utility_and_water_records
+      process_id: "separation_preparation"
+      flow_role: "electricity, water, wastewater"
+      record_type: "meter, invoice, runtime, and water-balance record"
+      raw_fields: "meter_start; meter_end; invoice_quantity; equipment_id; rated_power; runtime; load_factor_basis; water_input; water_to_product_if_any; wastewater_output; allocation_driver; production_mass"
+      collection_method: "use sub-meter first, then documented meter or invoice reconciliation; retain equipment runtime inputs for provisional estimation"
+      unit: "kWh; m3; h; kg output"
+      frequency: "each production period used by the source records"
+      temporal_coverage: "representative operating period covering declared product and site"
+      site_scope: "each facility and declared utility-meter boundary"
+      aggregation_rule: "separate pig and poultry and materially different process routes; normalize by net process output"
+      quality_evidence: "meter identifiers; invoices; production logs; reconciliation; documented estimate assumptions"
+    - protocol_id: cp_coproduct_allocation_records
+      process_id: "separation_preparation"
+      flow_role: "joint products, co-products, residues, wastes"
+      record_type: "joint-process mass and value ledger"
+      raw_fields: "allocation_period; process_boundary; output_id; output_status; mass; price; currency; price_date; destination; directly_attributable_burden; allocation_method"
+      collection_method: "reconcile production, sales, waste, and disposition records at one joint-process boundary"
+      unit: "kg; currency/kg"
+      frequency: "each allocation period"
+      temporal_coverage: "same period as included joint-process burdens"
+      site_scope: "each site and animal source separately"
+      aggregation_rule: "do not aggregate pig and poultry; apply one documented allocation hierarchy per boundary"
+      quality_evidence: "mass balance; sales invoices; disposition records; allocation workbook"
+    - protocol_id: cp_temperature_storage_records
+      process_id: "temperature_management"
+      flow_role: "product mass, temperature, energy, refrigerant, loss"
+      record_type: "batch temperature log, meter, refrigeration service record"
+      raw_fields: "batch_id; entry_mass; exit_mass; entry_temperature; exit_temperature; physical_state; storage_start; storage_end; electricity; refrigerant_type; opening_stock; additions; recovery; closing_stock; loss_mass"
+      collection_method: "link temperature and storage records to batch; reconcile refrigeration meters and service logs"
+      unit: "kg; degree C; h; kWh"
+      frequency: "each batch for identity/temperature and each reporting period for shared utilities"
+      temporal_coverage: "all included cooling/freezing/storage before handover"
+      site_scope: "each facility, refrigeration system, and declared storage boundary"
+      aggregation_rule: "separate by animal source, state, route, and storage regime; allocate shared energy using a documented causal driver"
+      quality_evidence: "continuous or periodic temperature records; meter record; service invoice; mass reconciliation"
+    - protocol_id: cp_packaging_handover_records
+      process_id: "packaging_handover"
+      flow_role: "packaging, tare, reference output, packaging waste"
+      record_type: "packaging issue/return, scale, and dispatch record"
+      raw_fields: "batch_id; packaging_material; units_issued; units_returned; unit_mass; reusable_cycles_if_known; gross_mass; tare_mass; net_mass; handover_point; handover_time; condition; waste_mass"
+      collection_method: "reconcile packaging stock and dispatch weights; use measured packaging unit mass"
+      unit: "kg; count"
+      frequency: "each dispatch with period stock reconciliation"
+      temporal_coverage: "all dispatches in reporting period"
+      site_scope: "each packing line, bulk-loading point, and declared handover gate"
+      aggregation_rule: "aggregate only matching product qualifiers and packaging form; normalize to net product mass"
+      quality_evidence: "scale calibration; packaging specification; stock ledger; dispatch acceptance"
+    - protocol_id: cp_transport_records
+      process_id: "outbound_transport"
+      flow_role: "shipment mass, distance, mode, refrigeration, accepted mass"
+      record_type: "carrier, dispatch, route, and receiving record"
+      raw_fields: "shipment_id; dispatch_mass; accepted_mass; origin; destination; actual_distance; mode; vehicle_class; payload; capacity_utilization; refrigeration; return_trip_treatment; temperature_log; rejection_or_loss"
+      collection_method: "obtain carrier/telematics distance and receiving acceptance; model each leg separately"
+      unit: "kg; km; tonne-kilometre"
+      frequency: "each shipment"
+      temporal_coverage: "all included shipments in reporting period"
+      site_scope: "each origin-destination route and declared handover gate"
+      aggregation_rule: "sum leg-specific tonne-kilometres and losses; do not merge routes before calculation"
+      quality_evidence: "bill of lading; carrier record; route evidence; receiving record; temperature record"
+  calculation_rules:
+    - id: calc_net_handover_mass
+      applies_to: "reference product"
+      rule: "net_mass_kg = gross_mass_kg - measured_tare_mass_kg"
+      inputs:
+        - "gross mass"
+        - "tare mass"
+      output: "net kg at handover"
+      source_ids:
+        - codex-cxc-58-2005
+    - id: calc_reference_normalization
+      applies_to: "all inventory rows"
+      rule: "normalized_quantity = period_or_batch_quantity / net_reference_product_kg over the same boundary and period"
+      inputs:
+        - "flow quantity"
+        - "matched net output mass"
+      output: "quantity per kg reference product"
+      source_ids:
+        - eu-pef-2021-2279
+    - id: calc_provisional_separation_electricity
+      applies_to: "separation_electricity_provisional"
+      rule: "estimated_kWh = sum(rated_power_kW x operating_time_h x documented_load_factor); use only when measured electricity is absent and replace when representative measured or reconciled records become available"
+      inputs:
+        - "equipment rating"
+        - "operating time"
+        - "site-specific load-factor basis"
+        - "net output mass"
+      output: "provisional kWh/kg tagged reasoned_estimate"
+      source_ids: []
+    - id: calc_wastewater_balance
+      applies_to: "separation wastewater"
+      rule: "wastewater = metered discharge, or water inputs minus documented water retained in product, evaporation, and separately routed streams"
+      inputs:
+        - "water meter records"
+        - "retained water"
+        - "other outlets"
+      output: "m3 wastewater per kg output"
+      source_ids:
+        - eu-fdm-bat-2019-2031
+    - id: calc_refrigerant_balance
+      applies_to: "refrigerant emission"
+      rule: "emitted_mass = opening_stock + additions - recovered_or_returned - closing_stock, adjusted only for documented transfers"
+      inputs:
+        - "refrigerant stock and service records"
+      output: "kg substance emitted per kg output"
+      source_ids:
+        - eu-pef-2021-2279
+    - id: calc_transport_work
+      applies_to: "each included transport leg"
+      rule: "tonne_km = loaded_net_mass_kg / 1000 x actual_loaded_distance_km"
+      inputs:
+        - "shipment mass"
+        - distance
+      output: "tonne-kilometre by leg per kg delivered"
+      source_ids:
+        - eu-pef-2021-2279
+    - id: calc_mass_balance
+      applies_to: "each foreground process"
+      rule: "input_mass = product_outputs + co_products + wastes + measured_or_explained_stock_change and losses, using consistent wet-state mass"
+      inputs:
+        - input
+        - output
+        - waste
+        - "and stock records"
+      output: "reconciled mass balance and unexplained residual"
+      source_ids:
+        - eu-pef-2021-2279
+  data_quality_requirements:
+    - id: dqr_product_identity
+      applies_to: "reference product and all product rows"
+      requirement: "Declare exactly one animal source, pig or poultry, plus species, tissue/product form, physical state, disposition/grade, and unrendered status; keep lot linkage through handover."
+      evidence: "batch, inspection/disposition, and handover records"
+    - id: dqr_measurement
+      applies_to: "mass, energy, water, temperature, and time"
+      requirement: "Use calibrated or controlled instruments and retain meter/scale identity, date, method, and unit conversions."
+      evidence: "calibration, meter, scale, and operating records"
+    - id: dqr_temporal
+      applies_to: "all foreground data"
+      requirement: "Align flow records, production mass, prices, allocation period, and handover records to the same representative period; disclose gaps and seasonality."
+      evidence: "timestamped records and coverage statement"
+    - id: dqr_completeness
+      applies_to: "process inventory"
+      requirement: "Reconcile product, co-product, waste, energy, water/wastewater, packaging, refrigerant, storage, and included transport records; explain every omitted applicable process."
+      evidence: "process flow diagram, ledgers, balances, and omission statement"
+    - id: dqr_allocation
+      applies_to: "slaughter/cutting co-product burdens"
+      requirement: "Preserve direct attribution before allocation and retain the joint-process outputs, selected hierarchy, variables, and price evidence where applicable."
+      evidence: "allocation workbook, output ledger, invoices, and method statement"
+    - id: dqr_reasoned_estimate_replacement
+      applies_to: "provisional electricity fallback"
+      requirement: "Mark the row as reasoned_estimate, disclose equipment, runtime, and load-factor assumptions, and replace it when representative sub-meter, reconciled utility, or equipment-test evidence becomes available or reviewed product-specific evidence supersedes it."
+      evidence: "estimate worksheet, data-gap statement, and replacement review trigger"
+    - id: dqr_source_limits
+      applies_to: "use of external standards"
+      requirement: "Do not convert CXC hygiene guidance into universal temperature limits, CXS rendered-fat composition into unrendered-fat specifications, PEF pig allocation values into poultry defaults, or FDM BAT applicability/performance statements into generic legal limits."
+      evidence: "source-use and limitation statement"
+validation_rules:
+  - rule_id: validate_reference_identity
+    applies_to: "reference flow"
+    rule: "The product-flow UUID shall be 0ba97549-7663-496e-8451-8396d31d2bcf, reference property UUID 93a60a56-a3c8-11da-a746-0800200b9a66, unit-group UUID 93a60a57-a4c8-11da-a746-0800200c9a66, and reference unit kg."
+    source_ids: []
+  - rule_id: validate_required_qualifiers
+    applies_to: "dataset metadata"
+    rule: "Fail if animal_source is absent, is not exactly pig or poultry, or if species, anatomical tissue/product form, physical state, disposition/grade, rendering status, packaging, or handover condition is missing."
+    source_ids:
+      - unsd-cpc-3-0-2025
+  - rule_id: validate_unrendered_boundary
+    applies_to: "process map and product description"
+    rule: "Fail if rendering, fat melting/extraction, refining, fractionation, or manufacture of a CPC 21521-21529 rendered fat is included as a foreground production step for the reference product."
+    source_ids:
+      - unsd-cpc-3-0-2025
+      - codex-cxs-211-1999
+  - rule_id: validate_species_separation
+    applies_to: "foreground records and published result"
+    rule: "Fail if actual pig and poultry parameters are averaged or combined without separate datasets/scenarios and retained disaggregated records."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: validate_mass_and_tare
+    applies_to: "reference amount and process balances"
+    rule: "Confirm net mass excludes packaging tare and that each included process has a reconciled input/output/co-product/waste/stock-change balance or a disclosed residual."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: validate_cold_chain
+    applies_to: "chilled or frozen product"
+    rule: "When temperature management applies, confirm physical state, temperature records, storage duration, energy, losses, and refrigerated transport treatment are present; otherwise report the check as skipped with reason."
+    source_ids:
+      - codex-cxc-58-2005
+  - rule_id: validate_allocation
+    applies_to: "slaughter or cutting joint burdens"
+    rule: "When upstream joint burdens are included, confirm direct subdivision is applied first, animal-specific allocation is documented, and no pig-specific factor is applied to poultry."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: validate_transport_gate
+    applies_to: "outbound transport"
+    rule: "Confirm included legs terminate at the declared handover, shipment mass and distance support tonne-kilometres, and downstream rendering transport is excluded unless explicitly part of the handover."
+    source_ids:
+      - codex-cxc-58-2005
+      - eu-pef-2021-2279
+  - rule_id: validate_reasoned_estimate
+    applies_to: "provisional electricity fallback"
+    rule: "Accept the fallback only when measured electricity is unavailable, assumptions are documented, it is not used together with the measured row, and a replacement trigger is recorded; otherwise issue an error finding."
+    source_ids: []
+  - rule_id: validate_completeness
+    applies_to: "validation result"
+    rule: "Report accepted inputs, checks performed, checks skipped, findings, and completeness. Missing identity, boundary, allocation, or measurement evidence makes validation inconclusive or failing rather than silently complete."
+    source_ids:
+      - eu-pef-2021-2279
+published_dataset_profile:
+  dataset_role: "Foreground data package for one declared pig or poultry unrendered fat tissue/product form at a declared handover gate."
+  downstream_use: "May become a secondary_dataset or background_dataset after methodology review, source/measurement QA, and validation; supports downstream process and lifecyclemodel projections."
+  allowed_use: "Modelling fresh, chilled, or frozen unrendered pig or poultry fat before rendering, with matching animal source, species, tissue/form, state, geography, technology, allocation boundary, and handover conditions."
+  excluded_use: "Rendered or refined fats and oils; lard or rendered poultry fat; unspecified pig-poultry averages; mixed animal material without separate parameterization; claims of food safety compliance; substitution for jurisdiction-specific legal requirements or product specifications."
+  required_metadata: "PCR id/version; product-flow, property, and unit UUIDs; animal source; species; anatomical tissue/product form; disposition/grade; rendering status; physical state; net mass/tare method; site/geography; technology; period; separation point; included processes; cold-storage duration; packaging; handover point; transport legs; allocation method; source ids."
+  required_quality_disclosure: "Record coverage and representativeness; calibration and reconciliation; mass-balance residual; direct versus allocated burdens; allocation variables and price period; data gaps; skipped checks; uncertainty; every reasoned_estimate; and source limitations."
+  update_trigger: "New measured site or species/tissue evidence; availability of sub-meter data replacing the provisional energy estimate; change in animal source, product form, physical state, slaughter/cutting boundary, allocation method or prices, cooling/freezing route, packaging, storage duration, transport handover, Tiangong identity, CPC scope, or governing source revision."
+data_sources:
+  - id: "unsd-cpc-3-0-2025"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, *Central Product Classification (CPC) Version 3.0 Explanatory Notes*, 30 June 2025. https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Exp_Notes_30Jun2025.pdf (retrieved 2026-08-11)"
+    used_for: "Category identity and the unrendered/rendered boundary: 21511 versus rendered pig fat 21521, rendered poultry fat 21522, and other rendered fats 21523-21529. Limitation: classification defines scope, not LCA quantities, hygiene limits, or composition."
+  - id: "codex-cxc-58-2005"
+    type: "standard"
+    reference: "Codex Alimentarius, *Code of Hygienic Practice for Meat (CXC 58-2005)*. https://www.fao.org/fao-who-codexalimentarius/sh-proxy/en/?lnk=1&url=https%253A%252F%252Fworkspace.fao.org%252Fsites%252Fcodex%252FStandards%252FCXC%2B58-2005%252FCXC_058e.pdf (retrieved 2026-08-11)"
+    used_for: "Process-control completeness for post-mortem handling, trimming/cutting, cooling/freezing, packaging, storage, transport, temperature records, segregation, and trace-back. Limitation: used as hygiene/process context only; this PCR does not promote its provisions into universal legal thresholds or LCA performance values."
+  - id: "codex-cxs-211-1999"
+    type: "standard"
+    reference: "Codex Alimentarius, *Standard for Named Animal Fats (CXS 211-1999)*, current official text amended 2024. https://www.fao.org/fao-who-codexalimentarius/sh-proxy/pl/?lnk=1&url=https%253A%252F%252Fworkspace.fao.org%252Fsites%252Fcodex%252FStandards%252FCXS%2B211-1999%252FCXS_211e.pdf (retrieved 2026-08-11)"
+    used_for: "Negative boundary evidence: its named products include rendered lard and rendered pork fat. Limitation: it does not define unrendered pig/poultry fat as a category recipe, and none of its composition or quality values are used as defaults here."
+  - id: "eu-pef-2021-2279"
+    type: "official_guidance"
+    reference: "European Commission, *Recommendation (EU) 2021/2279 on the use of the Environmental Footprint methods*, Annex I PEF method. https://eur-lex.europa.eu/eli/reco/2021/2279/2021-12-30/eng (retrieved 2026-08-11)"
+    used_for: "Functional/declared unit, reference flow, system boundary, company-specific data, process inventory, data quality, allocation hierarchy, and slaughterhouse co-product handling. Limitation: pig-specific slaughterhouse provisions are not poultry evidence and shall not be averaged or transferred to poultry; EF-specific defaults apply only in the EF context for which they are prescribed."
+  - id: "eu-fdm-bat-2019-2031"
+    type: "official_guidance"
+    reference: "European Commission, *Commission Implementing Decision (EU) 2019/2031 establishing BAT conclusions for the food, drink and milk industries*. https://eur-lex.europa.eu/eli/dec_impl/2019/2031/oj/eng (retrieved 2026-08-11)"
+    used_for: "Conditional checklist for process flow sheets and inventories of water, energy, raw materials, wastewater, waste gas, and monitoring parameters where the facility/activity is within scope. Limitation: no legal applicability threshold, BAT-associated performance level, emission limit, or sector value is generalized by this PCR; slaughterhouse applicability must be determined separately."
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:30192cf44c1eb2703c03f2c23188a9d24bf70a4d065263ab13c289c66b9bb0b1"
+  generated_content_sha256: "sha256:9134b1f5be4791bc177e2e905ecd58ef614fa57278503b1f94612e5f0471e31a"

@@ -1,10 +1,3716 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "21138"
-  title: "Meat of horses and other equines, frozen"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.food-products-beverages-and-tobacco-textiles-apparel-and-leather-products.meat-fish-fruits-vegetables-oils-and-fats.meat-of-horses-and-other-equines-frozen"
+  classification_refs: "CPC 3.0 subclass 21138, exact"
+  covered_products: "Frozen meat of horses and other equines within CPC 21138, with species, carcass or cut form, and bone state declared"
+  excluded_products: "Fresh or chilled equine meat; edible offal; meat from non-equine species; prepared or preserved products outside CPC 21138"
+  representative_product: "Net conforming frozen equine meat at frozen-store release"
+  production_route: "Live-animal reception; slaughter; bleeding; skinning; evisceration; carcass dressing; cutting; prechilling; freezing; packaging; frozen storage; sanitation; conditional on-site wastewater treatment"
+  market_state: "Frozen product released from the reporting facility"
+functional_unit:
+  what: "Net conforming frozen meat of horses or other equines at frozen-store release"
+  how_much: "1 kg net product, excluding every packaging component"
+  how_well: "Meets the declared commercial and food-safety release specification; species, carcass or cut form, bone state, and frozen state are declared"
+  how_long_or_cycle: "One production lot through frozen-store release; storage duration and release condition are declared"
+  reference_flow_link: "Reference output row pkg_reference_frozen_equine_meat in process packaging_frozen_storage_and_release"
+system_boundary:
+  rules:
+    - rule_id: sb_foreground_gate_to_gate
+      applies_to: "foreground_system_boundary"
+      rule: "Begin at receipt of live equine animals at the slaughter-facility gate and end at release of 1 kg net conforming frozen equine meat from frozen storage; include reception, slaughter, dressing, cutting, prechilling, freezing, packaging, frozen storage, sanitation, and conditional on-site wastewater treatment."
+      source_ids:
+        - ec-jrc-sa-bref-2024
+        - eu-recommendation-2021-2279-pef
+    - rule_id: sb_upstream_exclusions
+      applies_to: "upstream_boundary"
+      rule: "Equine raising and inbound transport remain outside the foreground boundary; a cradle-to-gate study links transparent upstream datasets without folding those activities into these foreground process records."
+      source_ids:
+        - ec-jrc-sa-bref-2024
+        - eu-recommendation-2021-2279-pef
+    - rule_id: sb_downstream_exclusions
+      applies_to: "downstream_boundary"
+      rule: "Outbound distribution, retail, thawing, cooking, use, and end-of-life activities remain outside the foreground boundary."
+      source_ids:
+        - un-cpc-3-0
+        - eu-recommendation-2021-2279-pef
+    - rule_id: sb_product_scope
+      applies_to: "product_classification_scope"
+      rule: "The reference product is CPC 3.0 subclass 21138 frozen meat of horses and other equines; fresh or chilled equine meat and edible offal are excluded as reference products."
+      source_ids:
+        - un-cpc-3-0
+    - rule_id: sb_same_category_recursion
+      applies_to: "recursive_product_input"
+      rule: "If a frozen equine meat input within this same category enters the foreground system, record it once as an explicit product input and link its upstream dataset; do not recursively reapply this PCR to that input inside the same foreground boundary."
+      source_ids:
+        - eu-recommendation-2021-2279-pef
+    - rule_id: sb_inventory_completeness
+      applies_to: "foreground_inventory"
+      rule: "Collect every known raw-material, utility, product, co-product, waste, and elementary exchange for each included process; retain electricity, steam, hot water, each fuel, each refrigerant, each chemical, each packaging material, each waste, and each emission as separate records."
+      source_ids:
+        - ec-jrc-sa-bref-2024
+        - eu-recommendation-2021-2279-pef
+    - rule_id: sb_conditional_treatment
+      applies_to: "onsite_wastewater_treatment"
+      rule: "Include on-site wastewater treatment only when operated by the reporting facility for in-scope wastewater; otherwise keep each wastewater stream as a transfer leaving the foreground system and disclose its destination."
+      source_ids:
+        - ec-jrc-sa-bref-2024
+        - eu-recommendation-2021-2279-pef
+boundary_abstraction:
+  declared_starting_condition: "Live equine animals received at the slaughter-facility gate, with species, supplier lot, net live weight, and reception time declared"
+  starting_condition_role: "Foreground product input; raising and inbound transport remain linked upstream activities"
+  product_classification_scope: "CPC 3.0 subclass 21138 frozen meat of horses and other equines; fresh or chilled equine meat and edible offal excluded"
+  recursive_input_rule: "Record any same-category frozen equine meat input once as an explicit product input with its upstream dataset; do not re-enter this PCR recursively inside the foreground system"
+  upstream_dataset_requirement: "Link transparent upstream datasets for animal raising, feed, veterinary inputs, mortality, and inbound transport when the study extends upstream"
+  disclosure: "Declare gate location, equine species, incoming condition, lot basis, foreground start time, upstream links, exclusions, and data gaps"
+reference_flow_definition:
+  reference_amount: "1 kg net conforming frozen product; packaging mass excluded"
+  product_flow_ref:
+    name: "Meat of horses and other equines, frozen"
+    uuid: "b1d61fc0-90f2-4ef0-959b-b62596caca1a"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "equine species"
+    - "carcass or cut form"
+    - "bone state"
+    - "frozen state at release"
+    - "reporting facility"
+    - geography
+    - "reporting period"
+    - "frozen-storage duration"
+    - "frozen-storage condition"
+    - "packaging configuration"
+    - "co-product status"
+    - "allocation method"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Set the reference output to exactly 1 kg net conforming frozen meat after subtracting every packaging component."
+  - id: product_mass
+    applies_to: "live animal, carcass, meat, co-product, solid waste"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Use calibrated gross, tare, and net records; declare live-weight or wet-matter basis where applicable."
+  - id: water_volume
+    applies_to: "process water and each wastewater stream"
+    required_property_ref:
+      name: "Volume"
+      uuid: ""
+    required_unit: "m3"
+    rule: "Use metered volume or a documented stage water balance; keep each originating wastewater stream separate."
+  - id: electricity_energy
+    applies_to: "stage electricity"
+    required_property_ref:
+      name: "Energy"
+      uuid: ""
+    required_unit: "kWh"
+    rule: "Record electricity separately for each process stage and disclose any shared-meter allocation driver."
+  - id: purchased_steam_mass
+    applies_to: "purchased steam"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Record delivered steam mass separately for each stage; do not merge it with hot water or fuel."
+  - id: purchased_hot_water_mass
+    applies_to: "purchased hot water"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Record delivered hot-water mass separately for each stage; do not merge it with steam or fuel."
+  - id: natural_gas_energy
+    applies_to: "natural gas"
+    required_property_ref:
+      name: "Energy"
+      uuid: ""
+    required_unit: "MJ"
+    rule: "Convert metered quantity using the declared calorific-value basis and retain the original record."
+  - id: diesel_mass
+    applies_to: "diesel fuel"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Convert volume only with a documented density applicable to the record and retain the original unit."
+  - id: lpg_mass
+    applies_to: "liquefied petroleum gas"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Convert volume only with a documented density applicable to the record and retain the original unit."
+  - id: refrigerant_mass
+    applies_to: "each refrigerant make-up and emission"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Balance each named refrigerant separately by stage; no default leakage rate is allowed."
+  - id: packaging_mass
+    applies_to: "each packaging input or waste"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Record each material separately and exclude every packaging mass from the 1 kg net reference product."
+  - id: emission_mass
+    applies_to: "each air or water emission"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg or the card-specific equivalent"
+    rule: "Calculate each named emission separately from matched foreground records with units and factor basis disclosed."
+process_map:
+  - id: live_equine_receiving_and_lairage
+    name: "Live equine receiving and lairage"
+    inclusion: "required"
+    inclusion_condition: "Always included from the facility gate through release to slaughter."
+    role: "Foreground reception stage"
+    quantitative_reference: "kg accepted live equine animal"
+  - id: equine_slaughter_bleeding_skinning_evisceration
+    name: "Equine slaughter, bleeding, skinning, and evisceration"
+    inclusion: "required"
+    inclusion_condition: "Always included for slaughter and primary separation of carcass, blood, hide, organs, and digestive contents."
+    role: "Foreground slaughter stage"
+    quantitative_reference: "kg equine carcass output"
+  - id: equine_carcass_dressing_and_cutting
+    name: "Equine carcass dressing and cutting"
+    inclusion: "required"
+    inclusion_condition: "Always included from carcass receipt through release of unfrozen meat cuts to chilling and freezing."
+    role: "Foreground dressing and cutting stage"
+    quantitative_reference: "kg unfrozen equine meat cuts"
+  - id: prechilling_and_freezing
+    name: "Prechilling and freezing"
+    inclusion: "required"
+    inclusion_condition: "Always included from unfrozen meat-cut receipt through release of frozen meat to packaging."
+    role: "Foreground freezing stage"
+    quantitative_reference: "kg frozen equine meat before packaging"
+  - id: packaging_frozen_storage_and_release
+    name: "Packaging, frozen storage, and release"
+    inclusion: "required"
+    inclusion_condition: "Always included from frozen-meat receipt through net product release at the frozen-store gate."
+    role: "Foreground packaging and frozen-storage stage"
+    quantitative_reference: "1 kg net frozen reference product"
+  - id: cleaning_and_disinfection
+    name: "Cleaning and disinfection"
+    inclusion: "required"
+    inclusion_condition: "Always included for sanitation attributable to in-scope slaughter, cutting, freezing, packaging, and storage operations."
+    role: "Shared foreground sanitation stage"
+    quantitative_reference: "1 kg net frozen reference product"
+  - id: onsite_wastewater_treatment
+    name: "On-site wastewater treatment"
+    inclusion: "conditional"
+    inclusion_condition: "Include when the reporting facility treats any in-scope wastewater before discharge or transfer; otherwise record each wastewater stream leaving the foreground system."
+    role: "Conditional foreground wastewater-treatment stage"
+    quantitative_reference: "1 kg net frozen reference product"
+process_inventory:
+  - id: live_equine_receiving_and_lairage
+    label: "Live equine receiving and lairage"
+    inputs:
+      product:
+        - row_id: rec_live_equine_input
+          role: "Live equine animal received at the facility gate"
+          name: "Live equine animal"
+          flow_type: "product"
+          property_unit: "Mass / kg live weight"
+          description: "The live equine animal crosses the foreground boundary at the slaughter facility gate; species and supplier lot remain declared attributes of this one input."
+          amount:
+            expression: "Record verified net live weight by lot from calibrated scales after tare correction."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg accepted live equine animal"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_live_equine_receiving_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: rec_process_water
+          role: "Live equine receiving and lairage process water"
+          name: "Process water"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "Process water crosses the live equine receiving and lairage boundary for equipment operation, washing, or hygiene duties assigned to this stage."
+          amount:
+            expression: "Record the metered or reconciled volume consumed by this stage during the reporting period."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg accepted live equine animal"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_live_equine_receiving_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: rec_electricity
+          role: "Live equine receiving and lairage grid electricity"
+          name: "Electricity, grid"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Grid electricity crosses the live equine receiving and lairage boundary to operate equipment assigned to this stage."
+          amount:
+            expression: "Record the stage meter reading; when only a shared meter exists, allocate the measured total with a documented operating driver."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg accepted live equine animal"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_live_equine_receiving_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: rec_purchased_steam
+          role: "Live equine receiving and lairage purchased steam"
+          name: "Purchased steam"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Purchased steam crosses the live equine receiving and lairage boundary when the facility supplies steam to this stage."
+          amount:
+            expression: "Record the metered or supplier-reconciled steam mass attributable to this stage; report zero only with evidence of absence."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg accepted live equine animal"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_live_equine_receiving_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: rec_purchased_hot_water
+          role: "Live equine receiving and lairage purchased hot water"
+          name: "Purchased hot water"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Purchased hot water crosses the live equine receiving and lairage boundary when hot water is supplied as a separately delivered utility."
+          amount:
+            expression: "Record the delivered hot-water mass attributable to this stage from meters, delivery records, or a documented balance."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg accepted live equine animal"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_live_equine_receiving_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: rec_natural_gas
+          role: "Live equine receiving and lairage natural gas"
+          name: "Natural gas"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Natural gas crosses the live equine receiving and lairage boundary when directly combusted by equipment assigned to this stage."
+          amount:
+            expression: "Record fuel consumption and convert to energy using the declared metering and calorific-value basis."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg accepted live equine animal"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_live_equine_receiving_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: rec_diesel
+          role: "Live equine receiving and lairage diesel fuel"
+          name: "Diesel fuel"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Diesel fuel crosses the live equine receiving and lairage boundary when stationary or mobile equipment assigned to this stage consumes diesel on site."
+          amount:
+            expression: "Record issued or metered diesel mass assigned to this stage and reconcile it to stock records."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg accepted live equine animal"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_live_equine_receiving_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: rec_lpg
+          role: "Live equine receiving and lairage liquefied petroleum gas"
+          name: "Liquefied petroleum gas"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Liquefied petroleum gas crosses the live equine receiving and lairage boundary when equipment assigned to this stage consumes it on site."
+          amount:
+            expression: "Record delivered or issued LPG mass assigned to this stage and reconcile it to stock records."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg accepted live equine animal"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_live_equine_receiving_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: rec_accepted_live_equine
+          role: "Accepted live equine animal released to slaughter"
+          name: "Accepted live equine animal"
+          flow_type: "product"
+          property_unit: "Mass / kg live weight"
+          description: "The accepted animal leaves reception as the quantified internal product transferred to the slaughter stage."
+          amount:
+            expression: "Record net accepted live weight after documented reception rejection and mortality adjustments."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg accepted live equine animal"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_live_equine_receiving_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+      waste:
+        - row_id: rec_dead_equine_carcass
+          role: "Dead equine carcass arising during reception"
+          name: "Dead equine carcass from reception"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "A dead equine carcass leaves reception as a separately weighed waste stream with its treatment destination recorded."
+          amount:
+            expression: "Record actual carcass mass or a documented scale-based mass balance for each event."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg accepted live equine animal"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_live_equine_receiving_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: rec_lairage_manure
+          role: "Lairage manure"
+          name: "Lairage manure"
+          flow_type: "waste"
+          property_unit: "Mass / kg wet matter"
+          description: "Lairage manure leaves the reception area as a distinct solid or semi-solid waste stream before any off-site treatment."
+          amount:
+            expression: "Record collected wet mass and the documented destination for the reporting period."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg accepted live equine animal"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_live_equine_receiving_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: rec_lairage_wash_wastewater
+          role: "Lairage wash wastewater"
+          name: "Lairage wash wastewater"
+          flow_type: "waste"
+          property_unit: "Volume / m3"
+          description: "Lairage wash wastewater leaves reception as one separately quantified liquid waste stream before on-site or off-site treatment."
+          amount:
+            expression: "Record metered discharge volume or calculate it from the documented water balance for this area."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg accepted live equine animal"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_live_equine_receiving_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+      elementary:
+        - row_id: rec_carbon_dioxide_to_air
+          role: "Live equine receiving and lairage fossil carbon dioxide emission"
+          name: "Carbon dioxide, fossil, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Fossil carbon dioxide emission crosses from live equine receiving and lairage equipment to air as one separately reported elementary exchange."
+          amount:
+            expression: "Calculate from collected stage fuel records and the dataset's disclosed measurement or emission-factor basis; assign no PCR default."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per kg accepted live equine animal"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_live_equine_receiving_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: rec_nitrogen_oxides_to_air
+          role: "Live equine receiving and lairage nitrogen oxides emission"
+          name: "Nitrogen oxides to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg NO2-equivalent"
+          description: "Nitrogen oxides emission crosses from live equine receiving and lairage equipment to air as one separately reported elementary exchange."
+          amount:
+            expression: "Calculate from collected stage fuel records and the dataset's disclosed measurement or emission-factor basis; assign no PCR default."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per kg accepted live equine animal"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_live_equine_receiving_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: rec_sulfur_dioxide_to_air
+          role: "Live equine receiving and lairage sulfur dioxide emission"
+          name: "Sulfur dioxide to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Sulfur dioxide emission crosses from live equine receiving and lairage equipment to air as one separately reported elementary exchange."
+          amount:
+            expression: "Calculate from collected stage fuel records and the dataset's disclosed measurement or emission-factor basis; assign no PCR default."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per kg accepted live equine animal"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_live_equine_receiving_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: rec_particulate_matter_to_air
+          role: "Live equine receiving and lairage fine particulate emission"
+          name: "Particulate matter, <2.5 um, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Fine particulate emission crosses from live equine receiving and lairage equipment to air as one separately reported elementary exchange."
+          amount:
+            expression: "Calculate from collected stage fuel records and the dataset's disclosed measurement or emission-factor basis; assign no PCR default."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per kg accepted live equine animal"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_live_equine_receiving_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+  - id: equine_slaughter_bleeding_skinning_evisceration
+    label: "Equine slaughter, bleeding, skinning, and evisceration"
+    inputs:
+      product:
+        - row_id: sla_accepted_live_equine
+          role: "Accepted live equine animal transferred from reception"
+          name: "Accepted live equine animal"
+          flow_type: "product"
+          property_unit: "Mass / kg live weight"
+          description: "The accepted live animal enters slaughter as the quantified internal input from reception."
+          amount:
+            expression: "Use the reconciled accepted live weight transferred from reception by lot."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg equine carcass output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_equine_slaughter_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: sla_process_water
+          role: "Equine slaughter, bleeding, skinning, and evisceration process water"
+          name: "Process water"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "Process water crosses the equine slaughter, bleeding, skinning, and evisceration boundary for equipment operation, washing, or hygiene duties assigned to this stage."
+          amount:
+            expression: "Record the metered or reconciled volume consumed by this stage during the reporting period."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg equine carcass output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_equine_slaughter_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: sla_electricity
+          role: "Equine slaughter, bleeding, skinning, and evisceration grid electricity"
+          name: "Electricity, grid"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Grid electricity crosses the equine slaughter, bleeding, skinning, and evisceration boundary to operate equipment assigned to this stage."
+          amount:
+            expression: "Record the stage meter reading; when only a shared meter exists, allocate the measured total with a documented operating driver."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg equine carcass output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_equine_slaughter_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: sla_purchased_steam
+          role: "Equine slaughter, bleeding, skinning, and evisceration purchased steam"
+          name: "Purchased steam"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Purchased steam crosses the equine slaughter, bleeding, skinning, and evisceration boundary when the facility supplies steam to this stage."
+          amount:
+            expression: "Record the metered or supplier-reconciled steam mass attributable to this stage; report zero only with evidence of absence."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg equine carcass output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_equine_slaughter_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: sla_purchased_hot_water
+          role: "Equine slaughter, bleeding, skinning, and evisceration purchased hot water"
+          name: "Purchased hot water"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Purchased hot water crosses the equine slaughter, bleeding, skinning, and evisceration boundary when hot water is supplied as a separately delivered utility."
+          amount:
+            expression: "Record the delivered hot-water mass attributable to this stage from meters, delivery records, or a documented balance."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg equine carcass output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_equine_slaughter_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: sla_natural_gas
+          role: "Equine slaughter, bleeding, skinning, and evisceration natural gas"
+          name: "Natural gas"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Natural gas crosses the equine slaughter, bleeding, skinning, and evisceration boundary when directly combusted by equipment assigned to this stage."
+          amount:
+            expression: "Record fuel consumption and convert to energy using the declared metering and calorific-value basis."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg equine carcass output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_equine_slaughter_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: sla_diesel
+          role: "Equine slaughter, bleeding, skinning, and evisceration diesel fuel"
+          name: "Diesel fuel"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Diesel fuel crosses the equine slaughter, bleeding, skinning, and evisceration boundary when stationary or mobile equipment assigned to this stage consumes diesel on site."
+          amount:
+            expression: "Record issued or metered diesel mass assigned to this stage and reconcile it to stock records."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg equine carcass output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_equine_slaughter_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: sla_lpg
+          role: "Equine slaughter, bleeding, skinning, and evisceration liquefied petroleum gas"
+          name: "Liquefied petroleum gas"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Liquefied petroleum gas crosses the equine slaughter, bleeding, skinning, and evisceration boundary when equipment assigned to this stage consumes it on site."
+          amount:
+            expression: "Record delivered or issued LPG mass assigned to this stage and reconcile it to stock records."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg equine carcass output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_equine_slaughter_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: sla_equine_carcass
+          role: "Equine carcass released to dressing"
+          name: "Equine carcass"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "The dressed but uncut equine carcass leaves primary slaughter as the internal product transferred to carcass dressing."
+          amount:
+            expression: "Record verified warm carcass mass by lot after the declared dressing point."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg equine carcass output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_equine_slaughter_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: sla_equine_blood
+          role: "Recovered equine blood"
+          name: "Equine blood"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Equine blood leaves the bleeding step as a separately recovered co-product only when its product status and destination are documented."
+          amount:
+            expression: "Record collected blood mass delivered to the documented product destination."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg equine carcass output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_equine_slaughter_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: sla_raw_equine_hide
+          role: "Recovered raw equine hide"
+          name: "Raw equine hide"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "The raw equine hide leaves skinning as one separately weighed co-product when transferred to a documented product use."
+          amount:
+            expression: "Record net hide mass by lot after removing unassociated foreign material."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg equine carcass output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_equine_slaughter_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: sla_equine_edible_organs
+          role: "Recovered equine edible organs"
+          name: "Equine edible organs"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Equine edible organs leave evisceration as one segregated co-product stream when accepted for the declared product destination."
+          amount:
+            expression: "Record accepted organ mass from inspection and dispatch records."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg equine carcass output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_equine_slaughter_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+      waste:
+        - row_id: sla_discarded_equine_blood
+          role: "Discarded equine blood"
+          name: "Discarded equine blood"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Blood not accepted as a product leaves the bleeding step as a separately quantified waste stream."
+          amount:
+            expression: "Record the segregated wet mass and treatment destination from lot or dispatch records."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg equine carcass output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_equine_slaughter_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: sla_rejected_equine_hide
+          role: "Rejected equine hide"
+          name: "Rejected equine hide"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "A hide rejected from product use leaves skinning as a separately weighed waste stream."
+          amount:
+            expression: "Record the segregated wet mass and treatment destination from lot or dispatch records."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg equine carcass output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_equine_slaughter_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: sla_inedible_equine_organs
+          role: "Inedible equine organs"
+          name: "Inedible equine organs"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Organs classified as inedible leave evisceration as one separately recorded waste stream."
+          amount:
+            expression: "Record the segregated wet mass and treatment destination from lot or dispatch records."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg equine carcass output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_equine_slaughter_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: sla_equine_stomach_contents
+          role: "Equine stomach contents"
+          name: "Equine stomach contents"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Stomach contents leave evisceration as a distinct wet waste stream before treatment."
+          amount:
+            expression: "Record the segregated wet mass and treatment destination from lot or dispatch records."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg equine carcass output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_equine_slaughter_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: sla_equine_intestinal_contents
+          role: "Equine intestinal contents"
+          name: "Equine intestinal contents"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Intestinal contents leave evisceration as a distinct wet waste stream before treatment."
+          amount:
+            expression: "Record the segregated wet mass and treatment destination from lot or dispatch records."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg equine carcass output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_equine_slaughter_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: sla_condemned_equine_carcass
+          role: "Condemned equine carcass"
+          name: "Condemned equine carcass"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "A carcass condemned at slaughter leaves as a separately weighed waste stream with its destination documented."
+          amount:
+            expression: "Record the segregated wet mass and treatment destination from lot or dispatch records."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg equine carcass output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_equine_slaughter_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: sla_high_organic_load_wastewater
+          role: "High-organic-load slaughter wastewater"
+          name: "High-organic-load slaughter wastewater"
+          flow_type: "waste"
+          property_unit: "Volume / m3"
+          description: "Blood-contaminated slaughter wastewater leaves this stage as one separately quantified liquid waste stream before treatment."
+          amount:
+            expression: "Record the segregated flow-meter volume or calculate it from a documented area water balance."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg equine carcass output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_equine_slaughter_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+      elementary:
+        - row_id: sla_carbon_dioxide_to_air
+          role: "Equine slaughter, bleeding, skinning, and evisceration fossil carbon dioxide emission"
+          name: "Carbon dioxide, fossil, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Fossil carbon dioxide emission crosses from equine slaughter, bleeding, skinning, and evisceration equipment to air as one separately reported elementary exchange."
+          amount:
+            expression: "Calculate from collected stage fuel records and the dataset's disclosed measurement or emission-factor basis; assign no PCR default."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per kg equine carcass output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_equine_slaughter_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: sla_nitrogen_oxides_to_air
+          role: "Equine slaughter, bleeding, skinning, and evisceration nitrogen oxides emission"
+          name: "Nitrogen oxides to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg NO2-equivalent"
+          description: "Nitrogen oxides emission crosses from equine slaughter, bleeding, skinning, and evisceration equipment to air as one separately reported elementary exchange."
+          amount:
+            expression: "Calculate from collected stage fuel records and the dataset's disclosed measurement or emission-factor basis; assign no PCR default."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per kg equine carcass output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_equine_slaughter_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: sla_sulfur_dioxide_to_air
+          role: "Equine slaughter, bleeding, skinning, and evisceration sulfur dioxide emission"
+          name: "Sulfur dioxide to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Sulfur dioxide emission crosses from equine slaughter, bleeding, skinning, and evisceration equipment to air as one separately reported elementary exchange."
+          amount:
+            expression: "Calculate from collected stage fuel records and the dataset's disclosed measurement or emission-factor basis; assign no PCR default."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per kg equine carcass output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_equine_slaughter_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: sla_particulate_matter_to_air
+          role: "Equine slaughter, bleeding, skinning, and evisceration fine particulate emission"
+          name: "Particulate matter, <2.5 um, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Fine particulate emission crosses from equine slaughter, bleeding, skinning, and evisceration equipment to air as one separately reported elementary exchange."
+          amount:
+            expression: "Calculate from collected stage fuel records and the dataset's disclosed measurement or emission-factor basis; assign no PCR default."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per kg equine carcass output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_equine_slaughter_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+  - id: equine_carcass_dressing_and_cutting
+    label: "Equine carcass dressing and cutting"
+    inputs:
+      product:
+        - row_id: cut_equine_carcass
+          role: "Equine carcass transferred from slaughter"
+          name: "Equine carcass"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "The equine carcass enters dressing and cutting as the quantified internal product from slaughter."
+          amount:
+            expression: "Use the reconciled carcass mass transferred from slaughter by lot."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg unfrozen equine meat cuts"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_equine_cutting_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: cut_process_water
+          role: "Equine carcass dressing and cutting process water"
+          name: "Process water"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "Process water crosses the equine carcass dressing and cutting boundary for equipment operation, washing, or hygiene duties assigned to this stage."
+          amount:
+            expression: "Record the metered or reconciled volume consumed by this stage during the reporting period."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg unfrozen equine meat cuts"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_equine_cutting_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: cut_electricity
+          role: "Equine carcass dressing and cutting grid electricity"
+          name: "Electricity, grid"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Grid electricity crosses the equine carcass dressing and cutting boundary to operate equipment assigned to this stage."
+          amount:
+            expression: "Record the stage meter reading; when only a shared meter exists, allocate the measured total with a documented operating driver."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg unfrozen equine meat cuts"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_equine_cutting_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: cut_purchased_steam
+          role: "Equine carcass dressing and cutting purchased steam"
+          name: "Purchased steam"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Purchased steam crosses the equine carcass dressing and cutting boundary when the facility supplies steam to this stage."
+          amount:
+            expression: "Record the metered or supplier-reconciled steam mass attributable to this stage; report zero only with evidence of absence."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg unfrozen equine meat cuts"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_equine_cutting_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: cut_purchased_hot_water
+          role: "Equine carcass dressing and cutting purchased hot water"
+          name: "Purchased hot water"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Purchased hot water crosses the equine carcass dressing and cutting boundary when hot water is supplied as a separately delivered utility."
+          amount:
+            expression: "Record the delivered hot-water mass attributable to this stage from meters, delivery records, or a documented balance."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg unfrozen equine meat cuts"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_equine_cutting_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: cut_natural_gas
+          role: "Equine carcass dressing and cutting natural gas"
+          name: "Natural gas"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Natural gas crosses the equine carcass dressing and cutting boundary when directly combusted by equipment assigned to this stage."
+          amount:
+            expression: "Record fuel consumption and convert to energy using the declared metering and calorific-value basis."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg unfrozen equine meat cuts"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_equine_cutting_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: cut_diesel
+          role: "Equine carcass dressing and cutting diesel fuel"
+          name: "Diesel fuel"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Diesel fuel crosses the equine carcass dressing and cutting boundary when stationary or mobile equipment assigned to this stage consumes diesel on site."
+          amount:
+            expression: "Record issued or metered diesel mass assigned to this stage and reconcile it to stock records."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg unfrozen equine meat cuts"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_equine_cutting_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: cut_lpg
+          role: "Equine carcass dressing and cutting liquefied petroleum gas"
+          name: "Liquefied petroleum gas"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Liquefied petroleum gas crosses the equine carcass dressing and cutting boundary when equipment assigned to this stage consumes it on site."
+          amount:
+            expression: "Record delivered or issued LPG mass assigned to this stage and reconcile it to stock records."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg unfrozen equine meat cuts"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_equine_cutting_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: cut_unfrozen_equine_meat
+          role: "Unfrozen equine meat cuts released to freezing"
+          name: "Unfrozen equine meat cuts"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Conforming unfrozen equine meat cuts leave cutting as the internal product transferred to prechilling and freezing."
+          amount:
+            expression: "Record verified net meat mass by lot after trimming and before prechilling."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg unfrozen equine meat cuts"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_equine_cutting_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: cut_recovered_equine_fat
+          role: "Recovered equine fat"
+          name: "Recovered equine fat"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Segregated equine fat leaves cutting as a co-product only when a documented product destination accepts it."
+          amount:
+            expression: "Record weighed accepted fat mass and its dispatch destination."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg unfrozen equine meat cuts"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_equine_cutting_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: cut_recovered_equine_bones
+          role: "Recovered equine bones"
+          name: "Recovered equine bones"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Segregated equine bones leave cutting as a co-product only when a documented product destination accepts them."
+          amount:
+            expression: "Record weighed accepted bone mass and its dispatch destination."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg unfrozen equine meat cuts"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_equine_cutting_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: cut_edible_equine_trimmings
+          role: "Recovered edible equine meat trimmings"
+          name: "Edible equine meat trimmings"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Edible meat trimmings leave cutting as a segregated co-product when accepted for a documented food product use."
+          amount:
+            expression: "Record weighed accepted trimming mass by lot."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg unfrozen equine meat cuts"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_equine_cutting_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+      waste:
+        - row_id: cut_inedible_equine_fat
+          role: "Inedible equine fat"
+          name: "Inedible equine fat"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Fat not accepted as a product leaves cutting as a separately weighed waste stream."
+          amount:
+            expression: "Record segregated wet mass and documented treatment destination."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg unfrozen equine meat cuts"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_equine_cutting_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: cut_discarded_equine_bones
+          role: "Discarded equine bones"
+          name: "Discarded equine bones"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Bones not accepted as a product leave cutting as a separately weighed waste stream."
+          amount:
+            expression: "Record segregated wet mass and documented treatment destination."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg unfrozen equine meat cuts"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_equine_cutting_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: cut_condemned_equine_meat
+          role: "Condemned equine meat"
+          name: "Condemned equine meat"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Meat condemned during dressing or cutting leaves as a separately weighed waste stream."
+          amount:
+            expression: "Record segregated wet mass and documented treatment destination."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg unfrozen equine meat cuts"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_equine_cutting_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: cut_inedible_equine_muscle_tissue
+          role: "Inedible equine muscle tissue"
+          name: "Inedible equine muscle tissue"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Inedible muscle tissue removed during trimming leaves as one separately recorded solid waste stream."
+          amount:
+            expression: "Record segregated wet mass and documented treatment destination."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg unfrozen equine meat cuts"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_equine_cutting_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: cut_floor_wash_wastewater
+          role: "Cutting-floor wash wastewater"
+          name: "Cutting-floor wash wastewater"
+          flow_type: "waste"
+          property_unit: "Volume / m3"
+          description: "Cutting-floor wash wastewater leaves this stage as one separately quantified liquid waste stream before treatment."
+          amount:
+            expression: "Record metered discharge volume or calculate it from the documented cutting-area water balance."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg unfrozen equine meat cuts"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_equine_cutting_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+      elementary:
+        - row_id: cut_carbon_dioxide_to_air
+          role: "Equine carcass dressing and cutting fossil carbon dioxide emission"
+          name: "Carbon dioxide, fossil, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Fossil carbon dioxide emission crosses from equine carcass dressing and cutting equipment to air as one separately reported elementary exchange."
+          amount:
+            expression: "Calculate from collected stage fuel records and the dataset's disclosed measurement or emission-factor basis; assign no PCR default."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per kg unfrozen equine meat cuts"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_equine_cutting_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: cut_nitrogen_oxides_to_air
+          role: "Equine carcass dressing and cutting nitrogen oxides emission"
+          name: "Nitrogen oxides to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg NO2-equivalent"
+          description: "Nitrogen oxides emission crosses from equine carcass dressing and cutting equipment to air as one separately reported elementary exchange."
+          amount:
+            expression: "Calculate from collected stage fuel records and the dataset's disclosed measurement or emission-factor basis; assign no PCR default."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per kg unfrozen equine meat cuts"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_equine_cutting_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: cut_sulfur_dioxide_to_air
+          role: "Equine carcass dressing and cutting sulfur dioxide emission"
+          name: "Sulfur dioxide to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Sulfur dioxide emission crosses from equine carcass dressing and cutting equipment to air as one separately reported elementary exchange."
+          amount:
+            expression: "Calculate from collected stage fuel records and the dataset's disclosed measurement or emission-factor basis; assign no PCR default."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per kg unfrozen equine meat cuts"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_equine_cutting_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: cut_particulate_matter_to_air
+          role: "Equine carcass dressing and cutting fine particulate emission"
+          name: "Particulate matter, <2.5 um, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Fine particulate emission crosses from equine carcass dressing and cutting equipment to air as one separately reported elementary exchange."
+          amount:
+            expression: "Calculate from collected stage fuel records and the dataset's disclosed measurement or emission-factor basis; assign no PCR default."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per kg unfrozen equine meat cuts"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_equine_cutting_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+  - id: prechilling_and_freezing
+    label: "Prechilling and freezing"
+    inputs:
+      product:
+        - row_id: frz_unfrozen_equine_meat
+          role: "Unfrozen equine meat cuts transferred from cutting"
+          name: "Unfrozen equine meat cuts"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Unfrozen equine meat cuts enter prechilling and freezing as the quantified internal product from cutting."
+          amount:
+            expression: "Use the reconciled net meat mass transferred from cutting by lot."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg frozen equine meat before packaging"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_prechilling_freezing_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: frz_process_water
+          role: "Prechilling and freezing process water"
+          name: "Process water"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "Process water crosses the prechilling and freezing boundary for equipment operation, washing, or hygiene duties assigned to this stage."
+          amount:
+            expression: "Record the metered or reconciled volume consumed by this stage during the reporting period."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg frozen equine meat before packaging"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_prechilling_freezing_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: frz_electricity
+          role: "Prechilling and freezing grid electricity"
+          name: "Electricity, grid"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Grid electricity crosses the prechilling and freezing boundary to operate equipment assigned to this stage."
+          amount:
+            expression: "Record the stage meter reading; when only a shared meter exists, allocate the measured total with a documented operating driver."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg frozen equine meat before packaging"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_prechilling_freezing_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: frz_purchased_steam
+          role: "Prechilling and freezing purchased steam"
+          name: "Purchased steam"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Purchased steam crosses the prechilling and freezing boundary when the facility supplies steam to this stage."
+          amount:
+            expression: "Record the metered or supplier-reconciled steam mass attributable to this stage; report zero only with evidence of absence."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg frozen equine meat before packaging"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_prechilling_freezing_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: frz_purchased_hot_water
+          role: "Prechilling and freezing purchased hot water"
+          name: "Purchased hot water"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Purchased hot water crosses the prechilling and freezing boundary when hot water is supplied as a separately delivered utility."
+          amount:
+            expression: "Record the delivered hot-water mass attributable to this stage from meters, delivery records, or a documented balance."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg frozen equine meat before packaging"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_prechilling_freezing_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: frz_natural_gas
+          role: "Prechilling and freezing natural gas"
+          name: "Natural gas"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Natural gas crosses the prechilling and freezing boundary when directly combusted by equipment assigned to this stage."
+          amount:
+            expression: "Record fuel consumption and convert to energy using the declared metering and calorific-value basis."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg frozen equine meat before packaging"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_prechilling_freezing_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: frz_diesel
+          role: "Prechilling and freezing diesel fuel"
+          name: "Diesel fuel"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Diesel fuel crosses the prechilling and freezing boundary when stationary or mobile equipment assigned to this stage consumes diesel on site."
+          amount:
+            expression: "Record issued or metered diesel mass assigned to this stage and reconcile it to stock records."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg frozen equine meat before packaging"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_prechilling_freezing_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: frz_lpg
+          role: "Prechilling and freezing liquefied petroleum gas"
+          name: "Liquefied petroleum gas"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Liquefied petroleum gas crosses the prechilling and freezing boundary when equipment assigned to this stage consumes it on site."
+          amount:
+            expression: "Record delivered or issued LPG mass assigned to this stage and reconcile it to stock records."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg frozen equine meat before packaging"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_prechilling_freezing_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: frz_ammonia_refrigerant
+          role: "Ammonia refrigerant make-up"
+          name: "Ammonia refrigerant (R-717)"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Ammonia refrigerant make-up crosses the freezing boundary only when the site's R-717 circuit receives a recorded charge."
+          amount:
+            expression: "Record the stage-attributed purchased or issued make-up mass from refrigerant service logs; report zero only with an intact-system record."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg frozen equine meat before packaging"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_prechilling_freezing_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: frz_r134a_refrigerant
+          role: "R-134a refrigerant make-up"
+          name: "1,1,1,2-Tetrafluoroethane refrigerant (R-134a)"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "R-134a refrigerant make-up crosses the freezing boundary only when the site's R-134a circuit receives a recorded charge."
+          amount:
+            expression: "Record the stage-attributed purchased or issued make-up mass from refrigerant service logs; report zero only with an intact-system record."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg frozen equine meat before packaging"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_prechilling_freezing_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: frz_frozen_equine_meat
+          role: "Frozen equine meat released to packaging"
+          name: "Frozen equine meat before packaging"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Conforming frozen equine meat leaves freezing as the internal product transferred to packaging."
+          amount:
+            expression: "Record verified net frozen meat mass by lot at release to packaging."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg frozen equine meat before packaging"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_prechilling_freezing_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+      waste:
+        - row_id: frz_freezer_defrost_wastewater
+          role: "Freezer defrost wastewater"
+          name: "Freezer defrost wastewater"
+          flow_type: "waste"
+          property_unit: "Volume / m3"
+          description: "Freezer defrost wastewater leaves the freezing stage as one separately quantified liquid waste stream before treatment."
+          amount:
+            expression: "Record metered volume or calculate it from documented defrost-cycle water records."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg frozen equine meat before packaging"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_prechilling_freezing_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+      elementary:
+        - row_id: frz_ammonia_to_air
+          role: "Ammonia refrigerant emission"
+          name: "Ammonia to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Ammonia refrigerant emission crosses from the freezing refrigeration circuit to air as one separately reported elementary exchange."
+          amount:
+            expression: "Calculate the stage loss from opening inventory, documented additions, closing inventory, and recovered mass; assign no default leakage rate."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per kg frozen equine meat before packaging"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_prechilling_freezing_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: frz_r134a_to_air
+          role: "R-134a refrigerant emission"
+          name: "1,1,1,2-Tetrafluoroethane to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "R-134a refrigerant emission crosses from the freezing refrigeration circuit to air as one separately reported elementary exchange."
+          amount:
+            expression: "Calculate the stage loss from opening inventory, documented additions, closing inventory, and recovered mass; assign no default leakage rate."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per kg frozen equine meat before packaging"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_prechilling_freezing_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: frz_carbon_dioxide_to_air
+          role: "Prechilling and freezing fossil carbon dioxide emission"
+          name: "Carbon dioxide, fossil, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Fossil carbon dioxide emission crosses from prechilling and freezing equipment to air as one separately reported elementary exchange."
+          amount:
+            expression: "Calculate from collected stage fuel records and the dataset's disclosed measurement or emission-factor basis; assign no PCR default."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per kg frozen equine meat before packaging"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_prechilling_freezing_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: frz_nitrogen_oxides_to_air
+          role: "Prechilling and freezing nitrogen oxides emission"
+          name: "Nitrogen oxides to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg NO2-equivalent"
+          description: "Nitrogen oxides emission crosses from prechilling and freezing equipment to air as one separately reported elementary exchange."
+          amount:
+            expression: "Calculate from collected stage fuel records and the dataset's disclosed measurement or emission-factor basis; assign no PCR default."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per kg frozen equine meat before packaging"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_prechilling_freezing_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: frz_sulfur_dioxide_to_air
+          role: "Prechilling and freezing sulfur dioxide emission"
+          name: "Sulfur dioxide to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Sulfur dioxide emission crosses from prechilling and freezing equipment to air as one separately reported elementary exchange."
+          amount:
+            expression: "Calculate from collected stage fuel records and the dataset's disclosed measurement or emission-factor basis; assign no PCR default."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per kg frozen equine meat before packaging"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_prechilling_freezing_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: frz_particulate_matter_to_air
+          role: "Prechilling and freezing fine particulate emission"
+          name: "Particulate matter, <2.5 um, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Fine particulate emission crosses from prechilling and freezing equipment to air as one separately reported elementary exchange."
+          amount:
+            expression: "Calculate from collected stage fuel records and the dataset's disclosed measurement or emission-factor basis; assign no PCR default."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per kg frozen equine meat before packaging"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_prechilling_freezing_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+  - id: packaging_frozen_storage_and_release
+    label: "Packaging, frozen storage, and release"
+    inputs:
+      product:
+        - row_id: pkg_frozen_equine_meat_input
+          role: "Frozen equine meat transferred from freezing"
+          name: "Frozen equine meat before packaging"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Frozen equine meat enters packaging as the quantified internal product from the freezing stage."
+          amount:
+            expression: "Use the reconciled net frozen meat mass transferred from freezing by lot."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_frozen_storage_release_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: pkg_process_water
+          role: "Packaging, frozen storage, and release process water"
+          name: "Process water"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "Process water crosses the packaging, frozen storage, and release boundary for equipment operation, washing, or hygiene duties assigned to this stage."
+          amount:
+            expression: "Record the metered or reconciled volume consumed by this stage during the reporting period."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_frozen_storage_release_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: pkg_electricity
+          role: "Packaging, frozen storage, and release grid electricity"
+          name: "Electricity, grid"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Grid electricity crosses the packaging, frozen storage, and release boundary to operate equipment assigned to this stage."
+          amount:
+            expression: "Record the stage meter reading; when only a shared meter exists, allocate the measured total with a documented operating driver."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_frozen_storage_release_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: pkg_purchased_steam
+          role: "Packaging, frozen storage, and release purchased steam"
+          name: "Purchased steam"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Purchased steam crosses the packaging, frozen storage, and release boundary when the facility supplies steam to this stage."
+          amount:
+            expression: "Record the metered or supplier-reconciled steam mass attributable to this stage; report zero only with evidence of absence."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_frozen_storage_release_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: pkg_purchased_hot_water
+          role: "Packaging, frozen storage, and release purchased hot water"
+          name: "Purchased hot water"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Purchased hot water crosses the packaging, frozen storage, and release boundary when hot water is supplied as a separately delivered utility."
+          amount:
+            expression: "Record the delivered hot-water mass attributable to this stage from meters, delivery records, or a documented balance."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_frozen_storage_release_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: pkg_natural_gas
+          role: "Packaging, frozen storage, and release natural gas"
+          name: "Natural gas"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Natural gas crosses the packaging, frozen storage, and release boundary when directly combusted by equipment assigned to this stage."
+          amount:
+            expression: "Record fuel consumption and convert to energy using the declared metering and calorific-value basis."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_frozen_storage_release_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: pkg_diesel
+          role: "Packaging, frozen storage, and release diesel fuel"
+          name: "Diesel fuel"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Diesel fuel crosses the packaging, frozen storage, and release boundary when stationary or mobile equipment assigned to this stage consumes diesel on site."
+          amount:
+            expression: "Record issued or metered diesel mass assigned to this stage and reconcile it to stock records."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_frozen_storage_release_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: pkg_lpg
+          role: "Packaging, frozen storage, and release liquefied petroleum gas"
+          name: "Liquefied petroleum gas"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Liquefied petroleum gas crosses the packaging, frozen storage, and release boundary when equipment assigned to this stage consumes it on site."
+          amount:
+            expression: "Record delivered or issued LPG mass assigned to this stage and reconcile it to stock records."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_frozen_storage_release_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: pkg_ammonia_refrigerant
+          role: "Ammonia refrigerant make-up for frozen storage"
+          name: "Ammonia refrigerant (R-717)"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Ammonia refrigerant make-up crosses the frozen-storage boundary only when the site's R-717 circuit receives a recorded charge."
+          amount:
+            expression: "Record the frozen-store-attributed purchased or issued make-up mass from refrigerant service logs; report zero only with an intact-system record."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_frozen_storage_release_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: pkg_r134a_refrigerant
+          role: "R-134a refrigerant make-up for frozen storage"
+          name: "1,1,1,2-Tetrafluoroethane refrigerant (R-134a)"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "R-134a refrigerant make-up crosses the frozen-storage boundary only when the site's R-134a circuit receives a recorded charge."
+          amount:
+            expression: "Record the frozen-store-attributed purchased or issued make-up mass from refrigerant service logs; report zero only with an intact-system record."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_frozen_storage_release_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: pkg_ldpe_film
+          role: "Low-density polyethylene packaging film"
+          name: "Low-density polyethylene packaging film"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Low-density polyethylene film crosses the packaging boundary as one material-specific primary packaging input."
+          amount:
+            expression: "Record issued net material mass attributable to released product after documented reuse allocation where relevant."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_frozen_storage_release_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: pkg_polyamide_film
+          role: "Polyamide packaging film"
+          name: "Polyamide packaging film"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Polyamide film crosses the packaging boundary as one material-specific barrier packaging input."
+          amount:
+            expression: "Record issued net material mass attributable to released product after documented reuse allocation where relevant."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_frozen_storage_release_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: pkg_paperboard_carton
+          role: "Corrugated paperboard carton"
+          name: "Corrugated paperboard carton"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "A corrugated paperboard carton crosses the packaging boundary as one secondary packaging component."
+          amount:
+            expression: "Record issued net material mass attributable to released product after documented reuse allocation where relevant."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_frozen_storage_release_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: pkg_hdpe_crate
+          role: "High-density polyethylene reusable crate"
+          name: "High-density polyethylene reusable crate"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "A high-density polyethylene reusable crate crosses the packaging boundary as one transport packaging component; allocation over reuse cycles is documented from site records."
+          amount:
+            expression: "Record issued net material mass attributable to released product after documented reuse allocation where relevant."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_frozen_storage_release_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: pkg_wooden_pallet
+          role: "Wooden pallet"
+          name: "Wooden pallet"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "A wooden pallet crosses the packaging boundary as one transport packaging component; allocation over reuse cycles is documented from site records."
+          amount:
+            expression: "Record issued net material mass attributable to released product after documented reuse allocation where relevant."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_frozen_storage_release_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: pkg_reference_frozen_equine_meat
+          role: "Reference frozen equine meat released from the frozen store"
+          name: "Meat of horses and other equines, frozen"
+          flow_type: "product"
+          flow_ref:
+            uuid: "b1d61fc0-90f2-4ef0-959b-b62596caca1a"
+          property_unit: "Mass / kg"
+          description: "The verified Tiangong Product flow is the sole reference output; it represents net conforming frozen equine meat at frozen-store release, excluding packaging mass."
+          amount:
+            expression: "Set exactly 1 kg net reference product after excluding all packaging mass."
+            value_mode: "fixed_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "identity_reference"
+              collection_protocol_id: cp_packaging_frozen_storage_release_records
+              source_ids:
+                - un-cpc-3-0
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+      waste:
+        - row_id: pkg_packaging_area_wash_wastewater
+          role: "Packaging-area wash wastewater"
+          name: "Packaging-area wash wastewater"
+          flow_type: "waste"
+          property_unit: "Volume / m3"
+          description: "Packaging-area wash wastewater leaves packaging as one separately quantified liquid waste stream before treatment."
+          amount:
+            expression: "Record metered volume or calculate it from the documented area water balance."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_frozen_storage_release_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: pkg_frozen_store_defrost_wastewater
+          role: "Frozen-store defrost wastewater"
+          name: "Frozen-store defrost wastewater"
+          flow_type: "waste"
+          property_unit: "Volume / m3"
+          description: "Frozen-store defrost wastewater leaves frozen storage as one separately quantified liquid waste stream before treatment."
+          amount:
+            expression: "Record metered volume or calculate it from the documented area water balance."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_frozen_storage_release_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: pkg_waste_ldpe_film
+          role: "Waste low-density polyethylene packaging film"
+          name: "Waste low-density polyethylene packaging film"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Discarded low-density polyethylene film leaves packaging as one material-specific waste stream."
+          amount:
+            expression: "Record segregated net mass and the documented treatment destination."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_frozen_storage_release_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: pkg_waste_polyamide_film
+          role: "Waste polyamide packaging film"
+          name: "Waste polyamide packaging film"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Discarded polyamide film leaves packaging as one material-specific waste stream."
+          amount:
+            expression: "Record segregated net mass and the documented treatment destination."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_frozen_storage_release_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: pkg_waste_paperboard_carton
+          role: "Waste corrugated paperboard carton"
+          name: "Waste corrugated paperboard carton"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Discarded corrugated paperboard cartons leave packaging as one material-specific waste stream."
+          amount:
+            expression: "Record segregated net mass and the documented treatment destination."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_frozen_storage_release_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: pkg_damaged_hdpe_crate
+          role: "Damaged high-density polyethylene crate"
+          name: "Damaged high-density polyethylene crate"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "A damaged high-density polyethylene crate leaves packaging as one material-specific waste stream after its recorded reuse life."
+          amount:
+            expression: "Record segregated net mass and the documented treatment destination."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_frozen_storage_release_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: pkg_waste_wooden_pallet
+          role: "Waste wooden pallet"
+          name: "Waste wooden pallet"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "A discarded wooden pallet leaves packaging as one material-specific waste stream after its recorded reuse life."
+          amount:
+            expression: "Record segregated net mass and the documented treatment destination."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_frozen_storage_release_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: pkg_condemned_frozen_equine_meat
+          role: "Condemned frozen equine meat"
+          name: "Condemned frozen equine meat"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Frozen equine meat rejected before release leaves as a separately weighed product waste stream."
+          amount:
+            expression: "Record segregated net mass and the documented treatment destination."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_frozen_storage_release_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+      elementary:
+        - row_id: pkg_ammonia_to_air
+          role: "Ammonia refrigerant emission from frozen storage"
+          name: "Ammonia to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Ammonia refrigerant emission crosses from the frozen-storage refrigeration circuit to air as one separately reported elementary exchange."
+          amount:
+            expression: "Calculate the frozen-store loss from opening inventory, documented additions, closing inventory, and recovered mass; assign no default leakage rate."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_frozen_storage_release_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: pkg_r134a_to_air
+          role: "R-134a refrigerant emission from frozen storage"
+          name: "1,1,1,2-Tetrafluoroethane to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "R-134a refrigerant emission crosses from the frozen-storage refrigeration circuit to air as one separately reported elementary exchange."
+          amount:
+            expression: "Calculate the frozen-store loss from opening inventory, documented additions, closing inventory, and recovered mass; assign no default leakage rate."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_frozen_storage_release_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: pkg_carbon_dioxide_to_air
+          role: "Packaging, frozen storage, and release fossil carbon dioxide emission"
+          name: "Carbon dioxide, fossil, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Fossil carbon dioxide emission crosses from packaging, frozen storage, and release equipment to air as one separately reported elementary exchange."
+          amount:
+            expression: "Calculate from collected stage fuel records and the dataset's disclosed measurement or emission-factor basis; assign no PCR default."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_frozen_storage_release_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: pkg_nitrogen_oxides_to_air
+          role: "Packaging, frozen storage, and release nitrogen oxides emission"
+          name: "Nitrogen oxides to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg NO2-equivalent"
+          description: "Nitrogen oxides emission crosses from packaging, frozen storage, and release equipment to air as one separately reported elementary exchange."
+          amount:
+            expression: "Calculate from collected stage fuel records and the dataset's disclosed measurement or emission-factor basis; assign no PCR default."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_frozen_storage_release_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: pkg_sulfur_dioxide_to_air
+          role: "Packaging, frozen storage, and release sulfur dioxide emission"
+          name: "Sulfur dioxide to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Sulfur dioxide emission crosses from packaging, frozen storage, and release equipment to air as one separately reported elementary exchange."
+          amount:
+            expression: "Calculate from collected stage fuel records and the dataset's disclosed measurement or emission-factor basis; assign no PCR default."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_frozen_storage_release_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: pkg_particulate_matter_to_air
+          role: "Packaging, frozen storage, and release fine particulate emission"
+          name: "Particulate matter, <2.5 um, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Fine particulate emission crosses from packaging, frozen storage, and release equipment to air as one separately reported elementary exchange."
+          amount:
+            expression: "Calculate from collected stage fuel records and the dataset's disclosed measurement or emission-factor basis; assign no PCR default."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_frozen_storage_release_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+  - id: cleaning_and_disinfection
+    label: "Cleaning and disinfection"
+    inputs:
+      product:
+        - row_id: cip_process_water
+          role: "Cleaning and disinfection process water"
+          name: "Process water"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "Process water crosses the cleaning and disinfection boundary for equipment operation, washing, or hygiene duties assigned to this stage."
+          amount:
+            expression: "Record the metered or reconciled volume consumed by this stage during the reporting period."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net reference product using a documented sanitation allocation driver"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cleaning_disinfection_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: cip_electricity
+          role: "Cleaning and disinfection grid electricity"
+          name: "Electricity, grid"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Grid electricity crosses the cleaning and disinfection boundary to operate equipment assigned to this stage."
+          amount:
+            expression: "Record the stage meter reading; when only a shared meter exists, allocate the measured total with a documented operating driver."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net reference product using a documented sanitation allocation driver"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cleaning_disinfection_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: cip_purchased_steam
+          role: "Cleaning and disinfection purchased steam"
+          name: "Purchased steam"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Purchased steam crosses the cleaning and disinfection boundary when the facility supplies steam to this stage."
+          amount:
+            expression: "Record the metered or supplier-reconciled steam mass attributable to this stage; report zero only with evidence of absence."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net reference product using a documented sanitation allocation driver"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cleaning_disinfection_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: cip_purchased_hot_water
+          role: "Cleaning and disinfection purchased hot water"
+          name: "Purchased hot water"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Purchased hot water crosses the cleaning and disinfection boundary when hot water is supplied as a separately delivered utility."
+          amount:
+            expression: "Record the delivered hot-water mass attributable to this stage from meters, delivery records, or a documented balance."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net reference product using a documented sanitation allocation driver"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cleaning_disinfection_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: cip_natural_gas
+          role: "Cleaning and disinfection natural gas"
+          name: "Natural gas"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Natural gas crosses the cleaning and disinfection boundary when directly combusted by equipment assigned to this stage."
+          amount:
+            expression: "Record fuel consumption and convert to energy using the declared metering and calorific-value basis."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net reference product using a documented sanitation allocation driver"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cleaning_disinfection_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: cip_diesel
+          role: "Cleaning and disinfection diesel fuel"
+          name: "Diesel fuel"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Diesel fuel crosses the cleaning and disinfection boundary when stationary or mobile equipment assigned to this stage consumes diesel on site."
+          amount:
+            expression: "Record issued or metered diesel mass assigned to this stage and reconcile it to stock records."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net reference product using a documented sanitation allocation driver"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cleaning_disinfection_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: cip_lpg
+          role: "Cleaning and disinfection liquefied petroleum gas"
+          name: "Liquefied petroleum gas"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Liquefied petroleum gas crosses the cleaning and disinfection boundary when equipment assigned to this stage consumes it on site."
+          amount:
+            expression: "Record delivered or issued LPG mass assigned to this stage and reconcile it to stock records."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net reference product using a documented sanitation allocation driver"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cleaning_disinfection_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: cip_sodium_hydroxide
+          role: "Sodium hydroxide cleaning solution"
+          name: "Sodium hydroxide cleaning solution"
+          flow_type: "product"
+          property_unit: "Mass / kg solution"
+          description: "Sodium hydroxide cleaning solution crosses the sanitation boundary only when a site record confirms its use."
+          amount:
+            expression: "Record issued solution mass and concentration from stock, dosing, and batch records; report zero only with evidence of absence."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net reference product using a documented sanitation allocation driver"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cleaning_disinfection_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: cip_nitric_acid
+          role: "Nitric acid cleaning solution"
+          name: "Nitric acid cleaning solution"
+          flow_type: "product"
+          property_unit: "Mass / kg solution"
+          description: "Nitric acid cleaning solution crosses the sanitation boundary only when a site record confirms its use."
+          amount:
+            expression: "Record issued solution mass and concentration from stock, dosing, and batch records; report zero only with evidence of absence."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net reference product using a documented sanitation allocation driver"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cleaning_disinfection_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: cip_sodium_hypochlorite
+          role: "Sodium hypochlorite disinfectant"
+          name: "Sodium hypochlorite disinfectant"
+          flow_type: "product"
+          property_unit: "Mass / kg solution"
+          description: "Sodium hypochlorite disinfectant crosses the sanitation boundary only when a site record confirms its use."
+          amount:
+            expression: "Record issued solution mass and concentration from stock, dosing, and batch records; report zero only with evidence of absence."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net reference product using a documented sanitation allocation driver"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cleaning_disinfection_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: cip_peracetic_acid
+          role: "Peracetic acid disinfectant"
+          name: "Peracetic acid disinfectant"
+          flow_type: "product"
+          property_unit: "Mass / kg solution"
+          description: "Peracetic acid disinfectant crosses the sanitation boundary only when a site record confirms its use."
+          amount:
+            expression: "Record issued solution mass and concentration from stock, dosing, and batch records; report zero only with evidence of absence."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net reference product using a documented sanitation allocation driver"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cleaning_disinfection_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: cip_sanitation_wastewater
+          role: "Sanitation wastewater"
+          name: "Sanitation wastewater"
+          flow_type: "waste"
+          property_unit: "Volume / m3"
+          description: "Sanitation wastewater leaves cleaning and disinfection as one separately quantified liquid waste stream before treatment."
+          amount:
+            expression: "Record metered discharge volume or calculate it from the documented sanitation water balance."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net reference product using a documented sanitation allocation driver"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cleaning_disinfection_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+      elementary:
+        - row_id: cip_carbon_dioxide_to_air
+          role: "Cleaning and disinfection fossil carbon dioxide emission"
+          name: "Carbon dioxide, fossil, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Fossil carbon dioxide emission crosses from cleaning and disinfection equipment to air as one separately reported elementary exchange."
+          amount:
+            expression: "Calculate from collected stage fuel records and the dataset's disclosed measurement or emission-factor basis; assign no PCR default."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net reference product using a documented sanitation allocation driver"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_cleaning_disinfection_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: cip_nitrogen_oxides_to_air
+          role: "Cleaning and disinfection nitrogen oxides emission"
+          name: "Nitrogen oxides to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg NO2-equivalent"
+          description: "Nitrogen oxides emission crosses from cleaning and disinfection equipment to air as one separately reported elementary exchange."
+          amount:
+            expression: "Calculate from collected stage fuel records and the dataset's disclosed measurement or emission-factor basis; assign no PCR default."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net reference product using a documented sanitation allocation driver"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_cleaning_disinfection_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: cip_sulfur_dioxide_to_air
+          role: "Cleaning and disinfection sulfur dioxide emission"
+          name: "Sulfur dioxide to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Sulfur dioxide emission crosses from cleaning and disinfection equipment to air as one separately reported elementary exchange."
+          amount:
+            expression: "Calculate from collected stage fuel records and the dataset's disclosed measurement or emission-factor basis; assign no PCR default."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net reference product using a documented sanitation allocation driver"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_cleaning_disinfection_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: cip_particulate_matter_to_air
+          role: "Cleaning and disinfection fine particulate emission"
+          name: "Particulate matter, <2.5 um, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Fine particulate emission crosses from cleaning and disinfection equipment to air as one separately reported elementary exchange."
+          amount:
+            expression: "Calculate from collected stage fuel records and the dataset's disclosed measurement or emission-factor basis; assign no PCR default."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net reference product using a documented sanitation allocation driver"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_cleaning_disinfection_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+  - id: onsite_wastewater_treatment
+    label: "On-site wastewater treatment"
+    inputs:
+      product:
+        - row_id: wwt_process_water
+          role: "On-site wastewater treatment process water"
+          name: "Process water"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "Process water crosses the on-site wastewater treatment boundary for equipment operation, washing, or hygiene duties assigned to this stage."
+          amount:
+            expression: "Record the metered or reconciled volume consumed by this stage during the reporting period."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net reference product using measured treated volume"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_onsite_wastewater_treatment_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: wwt_electricity
+          role: "On-site wastewater treatment grid electricity"
+          name: "Electricity, grid"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Grid electricity crosses the on-site wastewater treatment boundary to operate equipment assigned to this stage."
+          amount:
+            expression: "Record the stage meter reading; when only a shared meter exists, allocate the measured total with a documented operating driver."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net reference product using measured treated volume"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_onsite_wastewater_treatment_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: wwt_purchased_steam
+          role: "On-site wastewater treatment purchased steam"
+          name: "Purchased steam"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Purchased steam crosses the on-site wastewater treatment boundary when the facility supplies steam to this stage."
+          amount:
+            expression: "Record the metered or supplier-reconciled steam mass attributable to this stage; report zero only with evidence of absence."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net reference product using measured treated volume"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_onsite_wastewater_treatment_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: wwt_purchased_hot_water
+          role: "On-site wastewater treatment purchased hot water"
+          name: "Purchased hot water"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Purchased hot water crosses the on-site wastewater treatment boundary when hot water is supplied as a separately delivered utility."
+          amount:
+            expression: "Record the delivered hot-water mass attributable to this stage from meters, delivery records, or a documented balance."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net reference product using measured treated volume"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_onsite_wastewater_treatment_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: wwt_natural_gas
+          role: "On-site wastewater treatment natural gas"
+          name: "Natural gas"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Natural gas crosses the on-site wastewater treatment boundary when directly combusted by equipment assigned to this stage."
+          amount:
+            expression: "Record fuel consumption and convert to energy using the declared metering and calorific-value basis."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net reference product using measured treated volume"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_onsite_wastewater_treatment_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: wwt_diesel
+          role: "On-site wastewater treatment diesel fuel"
+          name: "Diesel fuel"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Diesel fuel crosses the on-site wastewater treatment boundary when stationary or mobile equipment assigned to this stage consumes diesel on site."
+          amount:
+            expression: "Record issued or metered diesel mass assigned to this stage and reconcile it to stock records."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net reference product using measured treated volume"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_onsite_wastewater_treatment_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: wwt_lpg
+          role: "On-site wastewater treatment liquefied petroleum gas"
+          name: "Liquefied petroleum gas"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Liquefied petroleum gas crosses the on-site wastewater treatment boundary when equipment assigned to this stage consumes it on site."
+          amount:
+            expression: "Record delivered or issued LPG mass assigned to this stage and reconcile it to stock records."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net reference product using measured treated volume"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_onsite_wastewater_treatment_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: wwt_ferric_chloride
+          role: "Ferric chloride treatment solution"
+          name: "Ferric chloride solution"
+          flow_type: "product"
+          property_unit: "Mass / kg solution"
+          description: "Ferric chloride solution crosses the wastewater-treatment boundary only when a dosing record confirms its use."
+          amount:
+            expression: "Record dosed solution mass and concentration from treatment logs; report zero only with evidence of absence."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net reference product using measured treated volume"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_onsite_wastewater_treatment_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: wwt_polyacrylamide
+          role: "Polyacrylamide flocculant"
+          name: "Polyacrylamide flocculant"
+          flow_type: "product"
+          property_unit: "Mass / kg solution"
+          description: "Polyacrylamide flocculant crosses the wastewater-treatment boundary only when a dosing record confirms its use."
+          amount:
+            expression: "Record dosed solution mass and concentration from treatment logs; report zero only with evidence of absence."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net reference product using measured treated volume"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_onsite_wastewater_treatment_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+      waste:
+        - row_id: wwt_lairage_wash_wastewater
+          role: "Lairage wash wastewater entering treatment"
+          name: "Lairage wash wastewater"
+          flow_type: "waste"
+          property_unit: "Volume / m3"
+          description: "Lairage wash wastewater enters on-site treatment as one separately reconciled waste input from its originating foreground stage."
+          amount:
+            expression: "Use the originating stage volume and reconcile it to the treatment inlet flow balance."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net reference product using measured treated volume"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_onsite_wastewater_treatment_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: wwt_high_organic_load_wastewater
+          role: "High-organic-load slaughter wastewater entering treatment"
+          name: "High-organic-load slaughter wastewater"
+          flow_type: "waste"
+          property_unit: "Volume / m3"
+          description: "High-organic-load slaughter wastewater enters on-site treatment as one separately reconciled waste input from its originating foreground stage."
+          amount:
+            expression: "Use the originating stage volume and reconcile it to the treatment inlet flow balance."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net reference product using measured treated volume"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_onsite_wastewater_treatment_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: wwt_cutting_floor_wastewater
+          role: "Cutting-floor wash wastewater entering treatment"
+          name: "Cutting-floor wash wastewater"
+          flow_type: "waste"
+          property_unit: "Volume / m3"
+          description: "Cutting-floor wash wastewater enters on-site treatment as one separately reconciled waste input from its originating foreground stage."
+          amount:
+            expression: "Use the originating stage volume and reconcile it to the treatment inlet flow balance."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net reference product using measured treated volume"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_onsite_wastewater_treatment_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: wwt_freezer_defrost_wastewater
+          role: "Freezer defrost wastewater entering treatment"
+          name: "Freezer defrost wastewater"
+          flow_type: "waste"
+          property_unit: "Volume / m3"
+          description: "Freezer defrost wastewater enters on-site treatment as one separately reconciled waste input from its originating foreground stage."
+          amount:
+            expression: "Use the originating stage volume and reconcile it to the treatment inlet flow balance."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net reference product using measured treated volume"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_onsite_wastewater_treatment_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: wwt_packaging_area_wastewater
+          role: "Packaging-area wash wastewater entering treatment"
+          name: "Packaging-area wash wastewater"
+          flow_type: "waste"
+          property_unit: "Volume / m3"
+          description: "Packaging-area wash wastewater enters on-site treatment as one separately reconciled waste input from its originating foreground stage."
+          amount:
+            expression: "Use the originating stage volume and reconcile it to the treatment inlet flow balance."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net reference product using measured treated volume"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_onsite_wastewater_treatment_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: wwt_frozen_store_defrost_wastewater
+          role: "Frozen-store defrost wastewater entering treatment"
+          name: "Frozen-store defrost wastewater"
+          flow_type: "waste"
+          property_unit: "Volume / m3"
+          description: "Frozen-store defrost wastewater enters on-site treatment as one separately reconciled waste input from its originating foreground stage."
+          amount:
+            expression: "Use the originating stage volume and reconcile it to the treatment inlet flow balance."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net reference product using measured treated volume"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_onsite_wastewater_treatment_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: wwt_sanitation_wastewater
+          role: "Sanitation wastewater entering treatment"
+          name: "Sanitation wastewater"
+          flow_type: "waste"
+          property_unit: "Volume / m3"
+          description: "Sanitation wastewater enters on-site treatment as one separately reconciled waste input from its originating foreground stage."
+          amount:
+            expression: "Use the originating stage volume and reconcile it to the treatment inlet flow balance."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net reference product using measured treated volume"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_onsite_wastewater_treatment_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: wwt_treated_wastewater
+          role: "Treated slaughterhouse wastewater"
+          name: "Treated slaughterhouse wastewater"
+          flow_type: "waste"
+          property_unit: "Volume / m3"
+          description: "Treated slaughterhouse wastewater leaves on-site treatment as one quantified water-carrier waste flow before discharge or further transfer."
+          amount:
+            expression: "Record final effluent flow-meter volume and discharge or transfer destination."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net reference product using measured treated volume"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_onsite_wastewater_treatment_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: wwt_sludge
+          role: "Slaughterhouse wastewater-treatment sludge"
+          name: "Slaughterhouse wastewater-treatment sludge"
+          flow_type: "waste"
+          property_unit: "Mass / kg wet matter"
+          description: "Wastewater-treatment sludge leaves the treatment process as one separately weighed wet waste stream."
+          amount:
+            expression: "Record dewatered wet mass and treatment destination from operating records."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net reference product using measured treated volume"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_onsite_wastewater_treatment_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: wwt_screenings
+          role: "Slaughterhouse wastewater screenings"
+          name: "Slaughterhouse wastewater screenings"
+          flow_type: "waste"
+          property_unit: "Mass / kg wet matter"
+          description: "Screenings removed from slaughterhouse wastewater leave treatment as one separately weighed wet waste stream."
+          amount:
+            expression: "Record dewatered wet mass and treatment destination from operating records."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net reference product using measured treated volume"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_onsite_wastewater_treatment_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+      elementary:
+        - row_id: wwt_cod_to_water
+          role: "Chemical oxygen demand discharge"
+          name: "Chemical oxygen demand to water"
+          flow_type: "elementary"
+          property_unit: "Mass / kg O2-equivalent"
+          description: "Chemical oxygen demand discharge crosses from the on-site treatment outlet to the receiving water compartment as one separately reported elementary exchange."
+          amount:
+            expression: "Calculate discharged COD mass from matched effluent volume and laboratory concentration records after blank, unit, and time alignment checks."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net reference product using measured treated volume"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_onsite_wastewater_treatment_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: wwt_total_nitrogen_to_water
+          role: "Total nitrogen discharge"
+          name: "Total nitrogen to water"
+          flow_type: "elementary"
+          property_unit: "Mass / kg N"
+          description: "Total nitrogen discharge crosses from the on-site treatment outlet to the receiving water compartment as one separately reported elementary exchange."
+          amount:
+            expression: "Calculate discharged total nitrogen mass from matched effluent volume and laboratory concentration records after blank, unit, and time alignment checks."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net reference product using measured treated volume"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_onsite_wastewater_treatment_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: wwt_total_phosphorus_to_water
+          role: "Total phosphorus discharge"
+          name: "Total phosphorus to water"
+          flow_type: "elementary"
+          property_unit: "Mass / kg P"
+          description: "Total phosphorus discharge crosses from the on-site treatment outlet to the receiving water compartment as one separately reported elementary exchange."
+          amount:
+            expression: "Calculate discharged total phosphorus mass from matched effluent volume and laboratory concentration records after blank, unit, and time alignment checks."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net reference product using measured treated volume"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_onsite_wastewater_treatment_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: wwt_total_suspended_solids_to_water
+          role: "Total suspended solids discharge"
+          name: "Total suspended solids to water"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Total suspended solids discharge crosses from the on-site treatment outlet to the receiving water compartment as one separately reported elementary exchange."
+          amount:
+            expression: "Calculate discharged total suspended solids mass from matched effluent volume and laboratory concentration records after blank, unit, and time alignment checks."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net reference product using measured treated volume"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_onsite_wastewater_treatment_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: wwt_carbon_dioxide_to_air
+          role: "On-site wastewater treatment fossil carbon dioxide emission"
+          name: "Carbon dioxide, fossil, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Fossil carbon dioxide emission crosses from on-site wastewater treatment equipment to air as one separately reported elementary exchange."
+          amount:
+            expression: "Calculate from collected stage fuel records and the dataset's disclosed measurement or emission-factor basis; assign no PCR default."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net reference product using measured treated volume"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_onsite_wastewater_treatment_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: wwt_nitrogen_oxides_to_air
+          role: "On-site wastewater treatment nitrogen oxides emission"
+          name: "Nitrogen oxides to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg NO2-equivalent"
+          description: "Nitrogen oxides emission crosses from on-site wastewater treatment equipment to air as one separately reported elementary exchange."
+          amount:
+            expression: "Calculate from collected stage fuel records and the dataset's disclosed measurement or emission-factor basis; assign no PCR default."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net reference product using measured treated volume"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_onsite_wastewater_treatment_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: wwt_sulfur_dioxide_to_air
+          role: "On-site wastewater treatment sulfur dioxide emission"
+          name: "Sulfur dioxide to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Sulfur dioxide emission crosses from on-site wastewater treatment equipment to air as one separately reported elementary exchange."
+          amount:
+            expression: "Calculate from collected stage fuel records and the dataset's disclosed measurement or emission-factor basis; assign no PCR default."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net reference product using measured treated volume"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_onsite_wastewater_treatment_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: wwt_particulate_matter_to_air
+          role: "On-site wastewater treatment fine particulate emission"
+          name: "Particulate matter, <2.5 um, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Fine particulate emission crosses from on-site wastewater treatment equipment to air as one separately reported elementary exchange."
+          amount:
+            expression: "Calculate from collected stage fuel records and the dataset's disclosed measurement or emission-factor basis; assign no PCR default."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net reference product using measured treated volume"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_onsite_wastewater_treatment_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+allocation_rules:
+  - rule_id: alloc_subdivision_first
+    applies_to: "separable_processes"
+    rule: "Avoid allocation first by subdividing metered operations and directly assigning stage utilities, packaging, chemicals, wastes, and emissions to the process output that causes them."
+    source_ids:
+      - eu-recommendation-2021-2279-pef
+  - rule_id: alloc_product_waste_status
+    applies_to: "all_non_reference_outputs"
+    rule: "Classify every blood, hide, organ, fat, bone, trimming, condemned-material, digestive-content, sludge, screening, and packaging output as a product, co-product, or waste from documented legal, technical, and destination evidence; do not infer saleable status."
+    source_ids:
+      - ec-jrc-sa-bref-2024
+      - eu-recommendation-2021-2279-pef
+  - rule_id: alloc_physical_relation
+    applies_to: "joint_products"
+    rule: "When subdivision cannot avoid burden sharing and a causal physical relation can be demonstrated, allocate the residual burden with that documented physical relation and report the driver values."
+    source_ids:
+      - eu-recommendation-2021-2279-pef
+  - rule_id: alloc_economic_fallback
+    applies_to: "joint_products"
+    rule: "When no defensible physical relation exists, use a documented economic relation for the same representative period and disclose prices, currency, geography, period, and sensitivity; this PCR supplies no default shares."
+    source_ids:
+      - eu-recommendation-2021-2279-pef
+  - rule_id: alloc_waste_no_credit
+    applies_to: "waste_outputs"
+    rule: "Assign no co-product credit to a waste output unless the foreground record demonstrates recovered product status and a receiving product use; preserve treatment burdens and destination records otherwise."
+    source_ids:
+      - ec-jrc-sa-bref-2024
+      - eu-recommendation-2021-2279-pef
+  - rule_id: alloc_reference_consistency
+    applies_to: "reference_product"
+    rule: "Normalize only after applying one consistently documented allocation method across the reporting period, and reconcile allocated burdens to the unallocated foreground total."
+    source_ids:
+      - eu-recommendation-2021-2279-pef
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_live_equine_receiving_records
+      process_id: "live_equine_receiving_and_lairage"
+      flow_role: "all_atomic_exchanges"
+      record_type: "site_measurement_record"
+      raw_fields: "timestamp;lot_id;flow_name;gross_amount;tare_amount;net_amount;meter_reading;unit;destination;evidence_ref"
+      collection_method: "direct_measurement_plus_record_reconciliation"
+      unit: "native_record_unit_then_card_unit"
+      frequency: "continuous_meter_or_per_lot_record"
+      temporal_coverage: "declared_reporting_period_covering_all_in_scope_operations"
+      site_scope: "reporting_facility"
+      aggregation_rule: "sum_valid_records_then_normalize_to_process_output"
+      quality_evidence: "calibration_log;weigh_ticket;meter_log;invoice;stock_record;dispatch_record"
+    - protocol_id: cp_equine_slaughter_records
+      process_id: "equine_slaughter_bleeding_skinning_evisceration"
+      flow_role: "all_atomic_exchanges"
+      record_type: "site_measurement_record"
+      raw_fields: "timestamp;lot_id;flow_name;gross_amount;tare_amount;net_amount;meter_reading;unit;destination;inspection_status;evidence_ref"
+      collection_method: "direct_measurement_plus_mass_balance_reconciliation"
+      unit: "native_record_unit_then_card_unit"
+      frequency: "continuous_meter_or_per_lot_record"
+      temporal_coverage: "declared_reporting_period_covering_all_in_scope_operations"
+      site_scope: "reporting_facility"
+      aggregation_rule: "sum_valid_records_then_normalize_to_process_output"
+      quality_evidence: "calibration_log;weigh_ticket;meter_log;invoice;inspection_record;dispatch_record"
+    - protocol_id: cp_equine_cutting_records
+      process_id: "equine_carcass_dressing_and_cutting"
+      flow_role: "all_atomic_exchanges"
+      record_type: "site_measurement_record"
+      raw_fields: "timestamp;lot_id;flow_name;input_mass;output_mass;meter_reading;unit;destination;inspection_status;evidence_ref"
+      collection_method: "direct_measurement_plus_mass_balance_reconciliation"
+      unit: "native_record_unit_then_card_unit"
+      frequency: "continuous_meter_or_per_lot_record"
+      temporal_coverage: "declared_reporting_period_covering_all_in_scope_operations"
+      site_scope: "reporting_facility"
+      aggregation_rule: "sum_valid_records_then_normalize_to_process_output"
+      quality_evidence: "calibration_log;weigh_ticket;meter_log;invoice;inspection_record;dispatch_record"
+    - protocol_id: cp_prechilling_freezing_records
+      process_id: "prechilling_and_freezing"
+      flow_role: "all_atomic_exchanges"
+      record_type: "site_measurement_record"
+      raw_fields: "timestamp;lot_id;flow_name;input_mass;output_mass;meter_reading;refrigerant_opening_stock;refrigerant_addition;refrigerant_closing_stock;refrigerant_recovery;unit;evidence_ref"
+      collection_method: "direct_measurement_plus_inventory_balance"
+      unit: "native_record_unit_then_card_unit"
+      frequency: "continuous_meter_or_per_lot_record"
+      temporal_coverage: "declared_reporting_period_covering_all_in_scope_operations"
+      site_scope: "reporting_facility"
+      aggregation_rule: "sum_valid_records_then_normalize_to_process_output"
+      quality_evidence: "calibration_log;weigh_ticket;meter_log;invoice;refrigerant_service_log;stock_record"
+    - protocol_id: cp_packaging_frozen_storage_release_records
+      process_id: "packaging_frozen_storage_and_release"
+      flow_role: "all_atomic_exchanges"
+      record_type: "site_measurement_record"
+      raw_fields: "timestamp;lot_id;flow_name;issued_mass;returned_mass;waste_mass;product_net_mass;meter_reading;storage_duration;refrigerant_opening_stock;refrigerant_addition;refrigerant_closing_stock;refrigerant_recovery;unit;evidence_ref"
+      collection_method: "direct_measurement_plus_inventory_balance"
+      unit: "native_record_unit_then_card_unit"
+      frequency: "continuous_meter_or_per_lot_record"
+      temporal_coverage: "declared_reporting_period_covering_all_in_scope_operations"
+      site_scope: "reporting_facility"
+      aggregation_rule: "sum_valid_records_then_normalize_to_reference_output"
+      quality_evidence: "calibration_log;weigh_ticket;meter_log;invoice;packaging_issue_record;release_record;refrigerant_service_log"
+    - protocol_id: cp_cleaning_disinfection_records
+      process_id: "cleaning_and_disinfection"
+      flow_role: "all_atomic_exchanges"
+      record_type: "site_measurement_record"
+      raw_fields: "timestamp;cleaning_event;flow_name;issued_mass;solution_concentration;meter_reading;discharge_volume;unit;served_area;served_process;evidence_ref"
+      collection_method: "direct_measurement_plus_sanitation_allocation"
+      unit: "native_record_unit_then_card_unit"
+      frequency: "per_cleaning_event_plus_continuous_meter"
+      temporal_coverage: "declared_reporting_period_covering_all_in_scope_operations"
+      site_scope: "reporting_facility"
+      aggregation_rule: "sum_valid_records_then_allocate_with_documented_sanitation_driver"
+      quality_evidence: "meter_log;dosing_log;stock_record;cleaning_schedule;calibration_log"
+    - protocol_id: cp_onsite_wastewater_treatment_records
+      process_id: "onsite_wastewater_treatment"
+      flow_role: "all_atomic_exchanges"
+      record_type: "site_measurement_record"
+      raw_fields: "timestamp;flow_name;inlet_volume;outlet_volume;chemical_dose;wet_residue_mass;sample_time;concentration;unit;destination;evidence_ref"
+      collection_method: "direct_measurement_plus_matched_flow_concentration_calculation"
+      unit: "native_record_unit_then_card_unit"
+      frequency: "continuous_flow_plus_each_compliance_sample"
+      temporal_coverage: "declared_reporting_period_covering_all_in_scope_operations"
+      site_scope: "reporting_facility"
+      aggregation_rule: "time_align_valid_records_then_normalize_to_reference_output"
+      quality_evidence: "flow_meter_log;laboratory_report;chain_of_custody;dosing_log;residue_dispatch_record;calibration_log"
+  calculation_rules:
+    - id: calc_receiving_mass_balance
+      applies_to: "live equine receiving"
+      rule: "accepted live mass = received live mass - dead carcass mass - documented reception mass adjustment; retain lot-level reconciliation"
+      inputs:
+        - "received live mass"
+        - "dead carcass mass"
+        - "documented adjustment"
+      output: "accepted live equine animal mass"
+      source_ids:
+        - ec-jrc-sa-bref-2024
+        - eu-recommendation-2021-2279-pef
+    - id: calc_slaughter_mass_balance
+      applies_to: "slaughter outputs"
+      rule: "reconcile accepted live mass to carcass, blood, hide, organ, digestive-content, condemned-material, wastewater-solids, and documented process-loss records without assigning a default yield"
+      inputs:
+        - "accepted live mass"
+        - "every weighed slaughter output"
+        - "documented stock change"
+      output: "slaughter mass-balance residual"
+      source_ids:
+        - ec-jrc-sa-bref-2024
+        - eu-recommendation-2021-2279-pef
+    - id: calc_cutting_mass_balance
+      applies_to: "dressing and cutting outputs"
+      rule: "reconcile carcass input to unfrozen meat, fat, bone, trimming, condemned-meat, inedible-tissue, and stock-change records without assigning a default yield"
+      inputs:
+        - "carcass mass"
+        - "every weighed cutting output"
+        - "documented stock change"
+      output: "cutting mass-balance residual"
+      source_ids:
+        - ec-jrc-sa-bref-2024
+        - eu-recommendation-2021-2279-pef
+    - id: calc_stage_utility_normalization
+      applies_to: "stage utilities"
+      rule: "stage quantity per basis = validated stage meter, invoice, or stock quantity divided by the matching process output or reference-product mass"
+      inputs:
+        - "validated stage quantity"
+        - "matching denominator mass"
+      output: "normalized atomic utility quantity"
+      source_ids:
+        - eu-recommendation-2021-2279-pef
+    - id: calc_refrigerant_loss
+      applies_to: "each refrigerant circuit"
+      rule: "refrigerant loss = opening stock + documented additions - closing stock - documented recovered or transferred mass; calculate separately for each named refrigerant and stage"
+      inputs:
+        - "opening stock"
+        - additions
+        - "closing stock"
+        - "recovered mass"
+        - "transferred mass"
+      output: "named refrigerant emission mass"
+      source_ids:
+        - ec-jrc-sa-bref-2024
+        - eu-recommendation-2021-2279-pef
+    - id: calc_packaging_material_balance
+      applies_to: "each packaging material"
+      rule: "packaging consumed = issued mass - returned unused mass - closing work-in-process stock; reusable packaging allocation uses recorded cycles with the method disclosed"
+      inputs:
+        - "issued mass"
+        - "returned mass"
+        - "stock change"
+        - "recorded reuse cycles"
+      output: "material-specific packaging input per reference product"
+      source_ids:
+        - eu-recommendation-2021-2279-pef
+    - id: calc_combustion_emission
+      applies_to: "each stage combustion emission"
+      rule: "emission mass = stage fuel quantity multiplied by the disclosed site-measurement or factor basis; calculate each named air emission separately and do not assign a PCR default factor"
+      inputs:
+        - "stage fuel quantity"
+        - "disclosed measurement or factor"
+        - "oxidation and unit-conversion records"
+      output: "single air-emission mass"
+      source_ids:
+        - ec-jrc-sa-bref-2024
+        - eu-recommendation-2021-2279-pef
+    - id: calc_wastewater_flow_balance
+      applies_to: "on-site wastewater treatment"
+      rule: "treated volume balance = sum of separately recorded inlet wastewater volumes plus treatment water - treated wastewater volume - documented water retained in sludge - documented evaporation"
+      inputs:
+        - "each inlet volume"
+        - "treatment water"
+        - "effluent volume"
+        - "sludge water"
+        - "evaporation record"
+      output: "wastewater-treatment volume-balance residual"
+      source_ids:
+        - ec-jrc-sa-bref-2024
+        - eu-recommendation-2021-2279-pef
+    - id: calc_effluent_pollutant_load
+      applies_to: "each water emission"
+      rule: "discharged mass = time-matched final-effluent volume multiplied by validated final-effluent concentration with unit conversion; calculate each analyte separately"
+      inputs:
+        - "final-effluent volume"
+        - "analyte concentration"
+        - "sample time"
+        - "unit conversion"
+      output: "single water-emission mass"
+      source_ids:
+        - ec-jrc-sa-bref-2024
+        - eu-recommendation-2021-2279-pef
+    - id: calc_reference_product_mass
+      applies_to: "reference product"
+      rule: "net reference mass = gross released packaged lot mass - all packaging-component mass; normalize the foreground inventory to exactly 1 kg net conforming frozen product"
+      inputs:
+        - "gross released mass"
+        - "each packaging-component mass"
+        - "release status"
+      output: "1 kg net reference product"
+      source_ids:
+        - un-cpc-3-0
+        - eu-recommendation-2021-2279-pef
+  data_quality_requirements:
+    - id: dq_technological
+      applies_to: "all foreground stages"
+      requirement: "Represent the actual slaughter, cutting, freezing, packaging, sanitation, and wastewater technologies used during the declared reporting period."
+      evidence: "equipment list; process diagram; operating log"
+    - id: dq_temporal
+      applies_to: "all collected records"
+      requirement: "Use one declared reporting period that covers all in-scope operations and disclose shutdowns, atypical lots, missing intervals, and substitutions."
+      evidence: "dated meter logs; production calendar; gap register"
+    - id: dq_geographical
+      applies_to: "facility and utilities"
+      requirement: "Declare facility location, electricity supply geography, water source, fuel supply basis, wastewater destination, and co-product destination."
+      evidence: "site metadata; invoices; permits; dispatch records"
+    - id: dq_completeness
+      applies_to: "all atomic exchanges"
+      requirement: "Collect every known material, utility, product, co-product, waste, and air, water, or soil emission; explain any verified zero and do not hide a flow through aggregation."
+      evidence: "flow register; completeness reconciliation; zero-evidence record"
+    - id: dq_mass_balance
+      applies_to: "animal, carcass, meat, co-product, and waste masses"
+      requirement: "Maintain lot or reporting-period mass balances with gross, tare, net, stock-change, moisture, and destination records sufficient to explain residuals."
+      evidence: "weigh tickets; stock records; balance worksheet"
+    - id: dq_energy
+      applies_to: "electricity, steam, hot water, natural gas, diesel, and LPG"
+      requirement: "Keep each carrier separate by stage and reconcile meters, invoices, stock movements, allocation drivers, and unit conversions."
+      evidence: "meter logs; invoices; tank records; allocation worksheet"
+    - id: dq_refrigerant
+      applies_to: "each named refrigerant"
+      requirement: "Keep make-up and emission balances separate by refrigerant and by freezing or frozen-storage stage; disclose maintenance, recovery, and data gaps."
+      evidence: "service logs; cylinder records; inventory balance"
+    - id: dq_wastewater
+      applies_to: "each wastewater and water emission"
+      requirement: "Preserve originating wastewater streams, treatment flow balance, matched sampling times, analytical method, detection-limit treatment, and discharge destination."
+      evidence: "flow logs; laboratory reports; chain of custody; permit record"
+    - id: dq_allocation
+      applies_to: "reference product and recovered outputs"
+      requirement: "Disclose subdivision, physical relation, economic data period when used, waste classification, destination, and sensitivity for every burden-sharing decision."
+      evidence: "allocation worksheet; sales or physical-driver evidence; sensitivity result"
+    - id: dq_verification
+      applies_to: "published foreground data package"
+      requirement: "Retain traceable source records, calculation formulas, reviewer checks, corrections, and unresolved identity records so an independent reviewer can reproduce every reported exchange."
+      evidence: "audit trail; formula workbook; review record; manifest review metadata"
+validation_rules:
+  - rule_id: val_identity
+    applies_to: "reference_flow"
+    rule: "The sole reference flow UUID shall be b1d61fc0-90f2-4ef0-959b-b62596caca1a, public state 100, version 01.01.000, Product, exact CPC 21138, Mass property 93a60a56-a3c8-11da-a746-0800200b9a66, Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66, and kg."
+    source_ids:
+      - un-cpc-3-0
+  - rule_id: val_reference_mass
+    applies_to: "reference_quantity"
+    rule: "The quantitative reference shall equal exactly 1 kg net conforming frozen product, and every packaging-component mass shall be excluded from that net mass."
+    source_ids:
+      - un-cpc-3-0
+      - eu-recommendation-2021-2279-pef
+  - rule_id: val_scope_state
+    applies_to: "product_scope"
+    rule: "Dataset metadata shall identify frozen equine meat and shall not present fresh or chilled meat or edible offal as the reference product."
+    source_ids:
+      - un-cpc-3-0
+  - rule_id: val_process_coverage
+    applies_to: "process_map"
+    rule: "All six required processes shall contain records; on-site wastewater treatment shall be present when its inclusion condition is met and explicitly marked not applicable with evidence otherwise."
+    source_ids:
+      - ec-jrc-sa-bref-2024
+      - eu-recommendation-2021-2279-pef
+  - rule_id: val_atomic_inventory
+    applies_to: "process_inventory"
+    rule: "Every inventory card shall contain one named atomic exchange; no utility, refrigerant, chemical, packaging, waste, or emission selector may replace a flow identity."
+    source_ids:
+      - ec-jrc-sa-bref-2024
+      - eu-recommendation-2021-2279-pef
+  - rule_id: val_uuid_integrity
+    applies_to: "inventory_flow_identity"
+    rule: "Only the verified reference UUID may be populated from the supplied evidence; every non-reference UUID remains blank until hybrid discovery and public state-100 direct read independently confirm exact semantics, type, property, unit group, and unit, with unresolved row metadata updated together."
+    source_ids:
+      - eu-recommendation-2021-2279-pef
+  - rule_id: val_value_mode
+    applies_to: "inventory_amounts"
+    rule: "The reference output alone uses fixed_value; measured records use foreground_record, derived balances use calculated_value, and no author-estimated range or default amount is permitted."
+    source_ids:
+      - eu-recommendation-2021-2279-pef
+  - rule_id: val_card_completeness
+    applies_to: "process_inventory"
+    rule: "Every card shall have a non-empty description, selected flow, property and unit, amount rule, controlled value mode, specificity, basis, basis kind, evidence kind, collection protocol, and source ids."
+    source_ids:
+      - eu-recommendation-2021-2279-pef
+  - rule_id: val_mass_balance
+    applies_to: "foreground_mass_flows"
+    rule: "Reception, slaughter, cutting, freezing, packaging, and wastewater volume or mass balances shall be reconciled and residuals explained without inserting a default yield."
+    source_ids:
+      - ec-jrc-sa-bref-2024
+      - eu-recommendation-2021-2279-pef
+  - rule_id: val_stage_energy
+    applies_to: "energy_inventory"
+    rule: "Electricity, purchased steam, purchased hot water, natural gas, diesel, and LPG shall remain separate by stage, with shared-meter allocation drivers documented."
+    source_ids:
+      - ec-jrc-sa-bref-2024
+      - eu-recommendation-2021-2279-pef
+  - rule_id: val_refrigerants
+    applies_to: "refrigeration_inventory"
+    rule: "Make-up and air emission shall be separately balanced for each named refrigerant at freezing and frozen storage; any additional site-used refrigerant requires its own atomic input and emission records before release."
+    source_ids:
+      - ec-jrc-sa-bref-2024
+      - eu-recommendation-2021-2279-pef
+  - rule_id: val_wastewater
+    applies_to: "wastewater_inventory"
+    rule: "Each originating wastewater stream, treated wastewater, sludge, screenings, and each water emission shall be separately reconciled to flow and analytical records with destination disclosed."
+    source_ids:
+      - ec-jrc-sa-bref-2024
+      - eu-recommendation-2021-2279-pef
+  - rule_id: val_allocation
+    applies_to: "allocation"
+    rule: "Every joint-output burden decision shall follow the declared hierarchy, disclose data and period, preserve waste status evidence, and reconcile allocated totals."
+    source_ids:
+      - eu-recommendation-2021-2279-pef
+  - rule_id: val_sources
+    applies_to: "evidence"
+    rule: "Method claims shall cite only the three declared sources; foreground quantities shall trace to facility records rather than a source-derived default."
+    source_ids:
+      - un-cpc-3-0
+      - ec-jrc-sa-bref-2024
+      - eu-recommendation-2021-2279-pef
+  - rule_id: val_bilingual_alignment
+    applies_to: "localized_markdown"
+    rule: "English and Chinese files shall preserve identical ordered process_id, row_id, direction, flow_type, UUID, controlled amount fields, collection protocol, and source-id sequences."
+    source_ids:
+      - eu-recommendation-2021-2279-pef
+published_dataset_profile:
+  dataset_role: "Site-specific foreground data package for 1 kg net conforming frozen meat of horses or other equines at frozen-store release"
+  downstream_use: "Input to reviewed process datasets and lifecycle models that require a CPC 21138 foreground manufacturing inventory"
+  allowed_use: "Facility-specific gate-to-gate modelling; cradle-to-gate modelling when transparent upstream datasets are linked; comparative use only after equivalent scope, quality, allocation, and product qualifiers are confirmed"
+  excluded_use: "Representation of fresh or chilled equine meat, edible offal, non-equine meat, retail, cooking, consumption, or undisclosed generic industry averages"
+  required_metadata: "canonical PCR id; CPC code; reference UUID; species; carcass or cut form; bone state; frozen state; facility; geography; reporting period; technology; storage duration; storage condition; packaging; process inclusion; allocation; destinations"
+  required_quality_disclosure: "Primary-data coverage; meter allocation; mass-balance residuals; refrigerant balances; wastewater sampling; analytical methods; source records; zero evidence; data gaps; substitutions; allocation sensitivity; reviewer findings"
+  update_trigger: "Material change in product scope, facility technology, freezing system, refrigerant, packaging, storage condition, wastewater treatment, co-product destination, allocation relation, reporting period, or verified Tiangong identity"
+data_sources:
+  - id: "un-cpc-3-0"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division. Central Product Classification Version 3.0 Structure and Explanatory Notes, subclass 21138, 30 June 2025. Retained raw: classifications/systems/cpc/3.0/raw/CPC_Ver_3.0_Structure_30Jun2025.csv. https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Exp_Notes_30Jun2025.pdf"
+    used_for: "Exact frozen-equine-meat classification boundary and exclusion of fresh or chilled meat and edible offal"
+  - id: "ec-jrc-sa-bref-2024"
+    type: "official_guidance"
+    reference: "European Commission, Joint Research Centre. Best Available Techniques Reference Document for the Slaughterhouses, Animal By-products and/or Edible Co-products Industries. JRC135916, 2024. DOI: 10.2760/18199. https://publications.jrc.ec.europa.eu/repository/handle/JRC135916"
+    used_for: "Reception, slaughter, dressing, cutting, chilling, freezing, sanitation, utilities, wastewater, co-product, waste, and emission process structure; no default quantity adopted"
+  - id: "eu-recommendation-2021-2279-pef"
+    type: "official_guidance"
+    reference: "European Commission. Recommendation (EU) 2021/2279 on the use of the Environmental Footprint methods, consolidated text. https://eur-lex.europa.eu/eli/reco/2021/2279/2021-12-30/eng"
+    used_for: "Product-specific bill of materials, company-specific foreground data, complete life-cycle inventory, allocation hierarchy, data quality, transparency, and verification"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:027690e3a7c897de6178a58c260af7f9267146be61542195312a8b5c2b17a319"
+  generated_content_sha256: "sha256:3613fb1da118468a520aef351dc2d7dbb4eafefc3963bc90ad9f3063316c1643"

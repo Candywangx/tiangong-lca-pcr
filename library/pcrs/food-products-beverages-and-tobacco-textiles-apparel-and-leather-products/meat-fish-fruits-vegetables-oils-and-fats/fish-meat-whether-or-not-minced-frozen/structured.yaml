@@ -1,10 +1,822 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "21223"
-  title: "Fish meat, whether or not minced, frozen"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.food-products-beverages-and-tobacco-textiles-apparel-and-leather-products.meat-fish-fruits-vegetables-oils-and-fats.fish-meat-whether-or-not-minced-frozen"
+  classification_refs: "CPC 3.0: 21223, Fish meat, whether or not minced, frozen (exact mapping context)"
+  covered_products: "Unseasoned frozen fish meat, flesh pieces, blocks, portions, or minced fish flesh that are neither fish fillets nor otherwise preserved"
+  excluded_products: "Frozen fish fillets; whole frozen fish; fish livers and roes; surimi or formulated preparations; cooked, smoked, dried, salted, marinated, canned, or otherwise preserved fish; crustaceans, molluscs, and other aquatic invertebrates"
+  representative_product: "Unseasoned frozen boneless fish flesh, minced or non-minced as declared, optionally glazed and packaged"
+  production_route: "Receipt of fish or fish flesh; chilled holding where used; trimming/deboning/skin removal and size reduction; optional mincing; forming or block loading where used; freezing; optional glazing; packaging; frozen storage; dispatch at the processing-facility gate"
+  market_state: "Frozen product at the processing-facility gate, with product form, glaze status, packaging, and storage condition declared"
+functional_unit:
+  what: "Frozen fish meat supplied in the declared minced or non-minced form"
+  how_much: "1 kg net mass of frozen fish meat"
+  how_well: "Conforming to the declared species, product form, composition, glaze status, packaging, market specification, and applicable food-safety controls"
+  how_long_or_cycle: "One production lot through the declared frozen-storage period to the processing-facility dispatch gate"
+  reference_flow_link: "frozen_fish_meat_reference"
+system_boundary:
+  rules:
+    - rule_id: sb_facility_gate
+      applies_to: "foreground_system"
+      rule: "Include receipt, handling, preparation, optional mincing and forming, freezing, optional glazing, packaging, frozen storage, on-site utilities, cleaning, wastewater and residue handling, and refrigerant recharge attributable to the declared product until facility dispatch."
+      source_ids:
+        - codex-cxc-52-2003
+        - eu-pef-2021-2279
+    - rule_id: sb_cold_chain
+      applies_to: "freezing_and_storage"
+      rule: "Include the freezing operation and every on-site frozen holding or transfer stage needed to maintain the declared product condition; disclose storage duration and the monitored control regime."
+      source_ids:
+        - codex-cxc-52-2003
+    - rule_id: sb_upstream_traceability
+      applies_to: "received_fish_inputs"
+      rule: "Link received fish and fish-flesh inputs to upstream datasets representing their actual production and prior processing; do not substitute unreported cut-offs for missing upstream burdens."
+      source_ids:
+        - eu-pef-2021-2279
+    - rule_id: sb_food_safety_controls
+      applies_to: "processing_and_storage"
+      rule: "Retain applicable hazard-control, hygiene, time/temperature, foreign-material, packaging-integrity, and corrective-action records as foreground quality evidence."
+      source_ids:
+        - codex-cxc-52-2003
+        - codex-cxs-190-1995
+boundary_abstraction:
+  declared_starting_condition: "Fish, fish portions, or fish flesh received at the processing facility, with species, origin, upstream dataset, received form, mass, temperature state, and any prior processing declared"
+  starting_condition_role: "Upstream product input to the foreground frozen-fish-meat manufacturing system"
+  product_classification_scope: "Frozen fish meat, whether minced or not; excludes separately classified frozen fillets and other preserved or formulated fish products"
+  recursive_input_rule: "A same-category frozen fish-meat input shall be represented by a separate upstream dataset and identified as reprocessing or blending input; its production shall not be recursively rebuilt inside this foreground system."
+  upstream_dataset_requirement: "Use traceable datasets for fishing or aquaculture and any upstream slaughter, heading, filleting, deboning, or chilling already embodied in the received input; disclose exclusions and proxy use."
+  disclosure: "Declare included operations, fish species and source, received condition, product form, glaze and packaging scope, freezing technology, storage period, temperature-control regime, co-products, waste routes, allocation choices, data period, geography, and omitted flows."
+reference_flow_definition:
+  reference_amount: "1 kg net product mass, excluding transport packaging and excluding external ice glaze from fish-meat mass"
+  product_flow_ref:
+    name: "Frozen Fish"
+    uuid: "bbae8c72-d732-4f53-bdd5-aff8a0f39d48"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "species or species group"
+    - "wild-caught or aquaculture origin and upstream dataset"
+    - "minced or non-minced form"
+    - "boning and skin status"
+    - "additives or ingredients"
+    - "if any"
+    - "glaze presence and glaze fraction"
+    - "packaging format and included packaging layers"
+    - "freezing technology"
+    - "frozen-storage temperature-control regime and duration"
+    - "production geography and period"
+    - "facility-gate condition"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_net_mass
+    applies_to: "Reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Normalize all inventory results to 1 kg net fish-meat mass. Exclude external ice glaze and transport packaging from the fish-meat reference mass; report their masses separately."
+  - id: glaze_mass_separation
+    applies_to: "Glazed product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Measure gross frozen mass and glaze mass with a documented method, then calculate net fish-meat mass without treating glaze as product yield."
+  - id: energy_consistency
+    applies_to: "Electricity and fuels"
+    required_property_ref:
+      name: "Energy property declared by the selected exact flow"
+      uuid: ""
+    required_unit: "kWh, MJ, or another declared convertible energy unit"
+    rule: "Preserve metered units and conversion factors; convert only with a disclosed factor and do not mix delivered electricity with fuel energy."
+  - id: storage_time_basis
+    applies_to: "Frozen storage"
+    required_property_ref:
+      name: "Mass and elapsed time"
+      uuid: ""
+    required_unit: "kg and day"
+    rule: "Record storage energy against throughput and the declared storage duration; do not compare storage results without normalizing or disclosing duration."
+process_map:
+  - id: reception_preparation
+    name: "Receipt and preparation of fish flesh"
+    inclusion: "required"
+    inclusion_condition: "Always"
+    role: "Foreground receipt, sorting, trimming, deboning, skin removal, washing where used, and mass separation"
+    quantitative_reference: "kg prepared fish flesh"
+  - id: mincing_forming
+    name: "Mincing and forming"
+    inclusion: "conditional"
+    inclusion_condition: "Include when the declared product is minced, comminuted, formed, or block-loaded in a separately measured step"
+    role: "Foreground size reduction and product forming"
+    quantitative_reference: "kg formed fish meat"
+  - id: freezing_glazing
+    name: "Freezing and optional glazing"
+    inclusion: "required"
+    inclusion_condition: "Always; glazing rows apply only when glaze is used"
+    role: "Foreground freezing, temperature control, and glaze application"
+    quantitative_reference: "kg net frozen fish meat"
+  - id: packaging_storage
+    name: "Packaging and frozen storage"
+    inclusion: "required"
+    inclusion_condition: "Always; packaging rows reflect the declared packaging scope"
+    role: "Foreground packaging, frozen storage, internal handling, and facility-gate dispatch"
+    quantitative_reference: "kg reference product"
+process_inventory:
+  - id: reception_preparation
+    label: "Receipt and preparation of fish flesh"
+    inputs:
+      product:
+        - row_id: received_fish_input
+          role: "Received fish or fish-flesh input"
+          name: "Exact Tiangong product flow pending review"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record every received fish input by species, origin, prior-processing state, and upstream dataset; aggregate only materially equivalent inputs."
+          amount:
+            expression: "measured received mass allocated to the declared production lot"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net frozen fish-meat reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_mass
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "1"
+                upper: "5"
+                unit: "kg received fish or fish flesh/kg net reference product"
+                basis: "per 1 kg net frozen fish-meat reference product"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: preparation_water_ice
+          role: "Process water and ice"
+          name: "Exact Tiangong product flow pending review"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record metered or otherwise reconciled water and ice entering washing, chilling, and preparation; do not count external ice glaze here."
+          amount:
+            expression: "measured water plus purchased or manufactured ice assigned to the preparation lot"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg prepared fish flesh"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water_ice
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "20"
+                unit: "kg water and ice/kg prepared fish flesh"
+                basis: "per 1 kg prepared fish flesh"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: prepared_fish_flesh
+          role: "Prepared fish flesh"
+          name: "Exact Tiangong product flow pending review"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Calculate prepared flesh from measured output mass before optional mincing or freezing."
+          amount:
+            expression: "measured prepared fish-flesh mass"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per preparation lot"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_mass
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0.2"
+                upper: "1"
+                unit: "kg prepared fish flesh/kg received fish or fish flesh"
+                basis: "mass ratio to received fish or fish-flesh input"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        - row_id: preparation_residues
+          role: "Trimmings, skin, bone, rejects, and other separated material"
+          name: "Exact Tiangong waste or co-product flow pending review"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Separate saleable co-products from waste and record each destination; do not combine wastewater with solid residues."
+          amount:
+            expression: "measured separated material by destination and regulatory status"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg received fish or fish flesh"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_residue_mass
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.8"
+                unit: "kg separated material/kg received fish or fish flesh"
+                basis: "mass ratio to received fish or fish-flesh input"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        []
+  - id: mincing_forming
+    label: "Mincing and forming"
+    inputs:
+      product:
+        - row_id: mincing_input
+          role: "Prepared fish flesh for mincing or forming"
+          name: "Exact Tiangong product flow pending review"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record prepared fish flesh transferred into the conditional mincing or forming operation."
+          amount:
+            expression: "measured transfer mass"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per mincing or forming lot"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_mass
+              source_ids: []
+            ranges: []
+        - row_id: mincing_electricity
+          role: "Electricity for mincing and forming"
+          name: "Exact Tiangong electricity product flow pending geography review"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record sub-metered electricity or calculate it from reconciled equipment runtime and power data."
+          amount:
+            expression: "measured or calculated electricity use"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg formed fish meat"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_energy
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "2"
+                unit: "kWh/kg formed fish meat"
+                basis: "per 1 kg formed fish meat"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: formed_fish_meat
+          role: "Minced or formed fish meat"
+          name: "Exact Tiangong product flow pending review"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the product mass transferred to freezing and disclose any formulation ingredients separately."
+          amount:
+            expression: "measured formed fish-meat mass"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per mincing or forming lot"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_mass
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+  - id: freezing_glazing
+    label: "Freezing and optional glazing"
+    inputs:
+      product:
+        - row_id: freezing_input
+          role: "Fish meat entering freezing"
+          name: "Exact Tiangong product flow pending review"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record prepared or formed fish meat entering the freezer by product lot."
+          amount:
+            expression: "measured input mass"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per freezing lot"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_mass
+              source_ids: []
+            ranges: []
+        - row_id: freezing_electricity
+          role: "Electricity for freezing"
+          name: "Exact Tiangong electricity product flow pending geography review"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record freezer, compressor, pump, fan, and attributable auxiliary electricity using sub-metering or a documented allocation from a shared meter."
+          amount:
+            expression: "measured or calculated electricity use"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net frozen fish meat"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_energy
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0.05"
+                upper: "5"
+                unit: "kWh/kg net frozen fish meat"
+                basis: "per 1 kg net frozen fish meat"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: glazing_water
+          role: "Glazing water"
+          name: "Exact Tiangong water product flow pending review"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Include only when glaze is applied; collect water supplied and determine retained glaze separately from water not retained on product."
+          amount:
+            expression: "measured glazing water supplied and retained glaze mass"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net frozen fish meat"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water_ice
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "1"
+                unit: "kg supplied water/kg net frozen fish meat"
+                basis: "per 1 kg net frozen fish meat"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: freezing_refrigerant
+          role: "Refrigerant recharge attributable to freezing"
+          name: "Exact Tiangong refrigerant product flow pending substance review"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record refrigerant recharge by substance and calculate the portion attributable to the freezing system and declared product; do not invent a direct emission flow UUID."
+          amount:
+            expression: "calculated attributable refrigerant recharge from service records"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net frozen fish meat"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_refrigerant
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.02"
+                unit: "kg refrigerant/kg net frozen fish meat"
+                basis: "per 1 kg net frozen fish meat"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: frozen_fish_meat_reference
+          role: "Net frozen fish meat"
+          name: "Frozen Fish"
+          flow_type: "product"
+          flow_ref:
+            uuid: "bbae8c72-d732-4f53-bdd5-aff8a0f39d48"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This row is the quantitative reference and records net fish-meat mass separately from glaze and packaging."
+          amount:
+            expression: "fixed reference amount of 1 kg net frozen fish meat"
+            value_mode: "fixed_value"
+            specificity: "not_applicable"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "identity_reference"
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: freezing_rejects
+          role: "Freezing rejects, drip, and non-retained glaze water"
+          name: "Exact Tiangong waste flow pending review"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record product rejects and water losses separately by physical form and destination when records permit."
+          amount:
+            expression: "measured rejected material and non-retained water"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net frozen fish meat"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_residue_mass
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "1"
+                unit: "kg rejects and non-retained water/kg net frozen fish meat"
+                basis: "per 1 kg net frozen fish meat"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        []
+  - id: packaging_storage
+    label: "Packaging and frozen storage"
+    inputs:
+      product:
+        - row_id: packaging_materials
+          role: "Packaging materials"
+          name: "Exact Tiangong packaging product flows pending material review"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record primary, secondary, and tertiary packaging separately by material and include only layers inside the declared packaging scope."
+          amount:
+            expression: "measured packaging issued minus reconciled unused returns"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net frozen fish meat"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.5"
+                unit: "kg packaging/kg net frozen fish meat"
+                basis: "per 1 kg net frozen fish meat"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: storage_electricity
+          role: "Electricity for frozen storage and internal handling"
+          name: "Exact Tiangong electricity product flow pending geography review"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record cold-store and internal-handling electricity and allocate shared meters using a disclosed physical driver that includes storage duration."
+          amount:
+            expression: "calculated electricity from meter data, product throughput, occupied capacity where relevant, and storage duration"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference product for the declared frozen-storage period"
+              kind: "storage_duration"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_energy
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "3"
+                unit: "kWh/kg reference product per declared storage cycle"
+                basis: "per 1 kg reference product for the declared frozen-storage period"
+                basis_kind: "storage_duration"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: packaged_frozen_fish_meat
+          role: "Packaged frozen fish meat at dispatch"
+          name: "Frozen Fish"
+          flow_type: "product"
+          flow_ref:
+            uuid: "bbae8c72-d732-4f53-bdd5-aff8a0f39d48"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record the dispatched reference product and reconcile it to the quantitative-reference row without adding packaging or glaze to net fish-meat mass."
+          amount:
+            expression: "measured dispatched net fish-meat mass, normalized to 1 kg reference product"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_material_mass
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocation_avoid
+    applies_to: "multifunctional_foreground_processes"
+    rule: "First avoid allocation by collecting separate process data, subdividing operations, or expanding the product system when a defensible substituted function is known."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: allocation_physical
+    applies_to: "joint_products_and_co-products"
+    rule: "When avoidance is not feasible, allocate inputs and outputs using a documented causal physical relationship. Mass may be used only when it represents that relationship; do not assign burdens by mass automatically."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: allocation_economic
+    applies_to: "residual_multifunctionality"
+    rule: "Use economic allocation only when no defensible causal physical relationship can be established; use a representative price period and report a sensitivity case for material co-products."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: allocation_waste_status
+    applies_to: "trimmings_skin_bone_rejects_and_recovered_material"
+    rule: "Record whether each separated material is a co-product, recyclable material, animal-feed input, treatment input, or waste under the declared jurisdiction, and disclose any credit, avoided product, or burden transfer."
+    source_ids:
+      - eu-pef-2021-2279
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_material_mass
+      process_id: "reception_preparation_mincing_forming_freezing_glazing_packaging_storage"
+      flow_role: "received, intermediate, net reference, glaze, and dispatched masses"
+      record_type: "calibrated scale, batch, production, or inventory records"
+      raw_fields: "timestamp; lot_id; species; origin; product_form; gross_mass; tare_mass; glaze_mass; net_mass; reject_mass; destination"
+      collection_method: "reconcile scales and lot records, keeping gross, tare, glaze, and net fish mass distinct"
+      unit: "kg"
+      frequency: "each lot and monthly reconciliation"
+      temporal_coverage: "declared production period covering representative operating conditions"
+      site_scope: "all facilities and lines in the dataset"
+      aggregation_rule: "sum equivalent flows by lot and normalize to 1 kg net reference product"
+      quality_evidence: "scale calibration; lot traceability; reconciliation record; operator review"
+    - protocol_id: cp_water_ice
+      process_id: "reception_preparation_freezing_glazing"
+      flow_role: "preparation water, ice, and glazing water"
+      record_type: "meters, ice-production logs, purchase records, and glaze tests"
+      raw_fields: "meter_start; meter_end; ice_mass; purchased_water; glaze_test_gross; glaze_test_net; lot_id"
+      collection_method: "reconcile supplied water and ice to lots or allocate shared supply by a disclosed physical driver"
+      unit: "kg or m3 with density/conversion record"
+      frequency: "each shift or lot and monthly reconciliation"
+      temporal_coverage: "same period as product mass records"
+      site_scope: "all relevant preparation and glazing operations"
+      aggregation_rule: "subtract unrelated use and normalize to the applicable process output"
+      quality_evidence: "meter checks; invoice reconciliation; glaze-test record"
+    - protocol_id: cp_energy
+      process_id: "mincing_forming_freezing_glazing_packaging_storage"
+      flow_role: "electricity and fuel use"
+      record_type: "sub-meters, utility meters, invoices, equipment runtime, rated power, and storage logs"
+      raw_fields: "meter_start; meter_end; fuel_quantity; equipment_id; runtime; rated_power; throughput; storage_days; occupied_capacity"
+      collection_method: "prefer sub-metering; otherwise calculate and allocate shared utilities with a documented physical driver"
+      unit: "kWh, MJ, or declared fuel unit"
+      frequency: "continuous, shift, or monthly"
+      temporal_coverage: "same period as production and storage records"
+      site_scope: "all included equipment and shared utilities"
+      aggregation_rule: "reconcile to invoices and normalize to process output or reference product and declared storage duration"
+      quality_evidence: "meter calibration; invoice reconciliation; allocation worksheet"
+    - protocol_id: cp_residue_mass
+      process_id: "reception_preparation_freezing_glazing"
+      flow_role: "solid residues, rejects, wastewater-associated solids, and destinations"
+      record_type: "scales, bins, manifests, sales, treatment, or disposal records"
+      raw_fields: "material_type; mass; moisture_state; destination; regulatory_status; revenue; lot_id"
+      collection_method: "weigh by destination or reconcile container counts with verified unit mass"
+      unit: "kg"
+      frequency: "each removal and monthly reconciliation"
+      temporal_coverage: "same period as production records"
+      site_scope: "all included residue and reject points"
+      aggregation_rule: "aggregate by material and destination; reconcile with mass balance"
+      quality_evidence: "scale checks; manifests; sales or treatment records"
+    - protocol_id: cp_packaging
+      process_id: "packaging_storage"
+      flow_role: "primary, secondary, and tertiary packaging"
+      record_type: "bills of materials, issue/return records, and supplier specifications"
+      raw_fields: "material; layer; units_issued; units_returned; unit_mass; recycled_content; supplier_id"
+      collection_method: "calculate used packaging from reconciled units and verified unit mass"
+      unit: "kg"
+      frequency: "each product format and monthly reconciliation"
+      temporal_coverage: "same period as dispatched product"
+      site_scope: "all packaging lines and included packaging layers"
+      aggregation_rule: "aggregate by material and normalize to 1 kg net product"
+      quality_evidence: "supplier specification; unit-mass check; inventory reconciliation"
+    - protocol_id: cp_refrigerant
+      process_id: "freezing_glazing_packaging_storage"
+      flow_role: "refrigerant recharge and attributable loss"
+      record_type: "service, purchase, charge, recovery, and leak-repair records"
+      raw_fields: "refrigerant_name; opening_charge; added_mass; recovered_mass; closing_charge; service_date; equipment_id; operating_driver"
+      collection_method: "calculate mass balance by substance and attribute shared systems using documented operating drivers"
+      unit: "kg"
+      frequency: "each service event and annual reconciliation"
+      temporal_coverage: "period overlapping the production dataset"
+      site_scope: "all refrigeration systems serving included operations"
+      aggregation_rule: "aggregate net recharge by substance and allocate to included product"
+      quality_evidence: "technician record; purchase record; charge reconciliation; leak-repair evidence"
+    - protocol_id: cp_cold_chain_quality
+      process_id: "freezing_glazing_packaging_storage"
+      flow_role: "freezing and frozen-storage control"
+      record_type: "validated sensors, batch records, alarms, corrective actions, and packaging checks"
+      raw_fields: "lot_id; timestamp; process_stage; product_temperature_or_validated_proxy; set_point; alarm; corrective_action; package_integrity"
+      collection_method: "retain continuous monitoring where available and lot-linked checks under the facility food-safety plan"
+      unit: "declared temperature unit and time"
+      frequency: "continuous or each lot as applicable"
+      temporal_coverage: "entire included freezing and storage period"
+      site_scope: "all included freezers, cold rooms, and transfer stages"
+      aggregation_rule: "report excursions and affected mass separately; do not average away non-conformance"
+      quality_evidence: "sensor calibration; HACCP record; alarm history; corrective-action closure; package inspection"
+  calculation_rules:
+    - id: calc_net_reference_mass
+      applies_to: "reference product"
+      rule: "net fish-meat mass = gross frozen product mass - external glaze mass; packaging is excluded independently"
+      inputs:
+        - "gross frozen mass"
+        - "glaze mass"
+        - "packaging mass"
+      output: "kg net frozen fish meat"
+      source_ids:
+        - codex-cxs-190-1995
+    - id: calc_normalized_inventory
+      applies_to: "all inventory rows"
+      rule: "normalized amount = included period amount / dispatched net fish-meat mass"
+      inputs:
+        - "reconciled flow amount"
+        - "dispatched net mass"
+      output: "amount per kg reference product"
+      source_ids:
+        - eu-pef-2021-2279
+    - id: calc_process_yield
+      applies_to: "preparation, mincing, and freezing"
+      rule: "yield = measured net output mass / measured input mass for the same reconciled lot or period"
+      inputs:
+        - "input mass"
+        - "output mass"
+        - "lot or period link"
+      output: "kg/kg process yield"
+      source_ids: []
+    - id: calc_mass_balance
+      applies_to: "each process and complete foreground system"
+      rule: "reconcile measured inputs with net product, separated co-products, waste, retained glaze, wastewater-associated outputs, and documented inventory change; investigate unexplained imbalance"
+      inputs:
+        - input
+        - output
+        - waste
+        - glaze
+        - water
+        - "and inventory-change records"
+      output: "mass-balance residual and explanation"
+      source_ids: []
+    - id: calc_shared_energy
+      applies_to: "shared utilities"
+      rule: "allocate shared energy using a documented physical driver such as metered runtime, throughput, refrigeration load, occupied capacity, and storage duration; retain allocation factors"
+      inputs:
+        - "shared meter"
+        - "driver quantities"
+        - "included output"
+      output: "energy per process output or reference product"
+      source_ids:
+        - eu-pef-2021-2279
+    - id: calc_refrigerant_recharge
+      applies_to: "refrigeration systems"
+      rule: "net recharge = added refrigerant - recovered refrigerant - documented closing-charge increase, evaluated by named substance and attributed with a disclosed physical driver"
+      inputs:
+        - "service and charge records"
+        - "operating driver"
+      output: "kg refrigerant attributable to included operations"
+      source_ids: []
+  data_quality_requirements:
+    - id: dq_product_identity
+      applies_to: "all product and material records"
+      requirement: "Preserve species or species group, origin production system, upstream dataset, received form, minced/non-minced form, glaze status, additives, and packaging format at the level needed to avoid combining materially different products."
+      evidence: "lot traceability, supplier specification, product specification, and upstream dataset references; cpc-v3-21223; codex-cxc-52-2003"
+    - id: dq_temporal_representativeness
+      applies_to: "foreground activity data"
+      requirement: "Use a declared period representative of operating seasons, production mix, and storage duration; disclose shutdowns, abnormal lots, missing months, and extrapolation."
+      evidence: "dated meter, production, storage, and utility records; eu-pef-2021-2279"
+    - id: dq_technology_geography
+      applies_to: "processes and utilities"
+      requirement: "Identify freezing, mincing, glazing, packaging, refrigeration, and wastewater technologies and use geography-specific electricity, water, fuel, treatment, and upstream fish datasets where available."
+      evidence: "equipment register, site records, supplier data, and dataset metadata; eu-pef-2021-2279"
+    - id: dq_completeness
+      applies_to: "foreground system"
+      requirement: "Reconcile product, major materials, water/ice, energy, packaging, refrigerant, residues, wastewater, and co-products; list every excluded flow and justification rather than applying an undocumented cut-off."
+      evidence: "mass/energy reconciliation, exclusion log, and source-to-row matrix; eu-pef-2021-2279"
+    - id: dq_food_safety_quality
+      applies_to: "freezing and frozen storage"
+      requirement: "Retain records showing that applicable hazard-control, hygiene, freezing, temperature-control, package-integrity, and corrective-action requirements were applied throughout the included product cycle."
+      evidence: "HACCP plan and records, monitoring logs, calibration, alarms, inspections, and corrective actions; codex-cxc-52-2003; codex-cxs-190-1995 when applicable"
+    - id: dq_estimate_replacement
+      applies_to: "provisional QA ranges"
+      requirement: "Treat every reasoned_estimate range as a screening flag only; replace it with representative foreground or reviewed source-backed evidence before using it as a publication-critical allowed range."
+      evidence: "review record and replacement source or representative dataset"
+validation_rules:
+  - rule_id: validate_reference_identity
+    applies_to: "reference_flow"
+    rule: "Require product-flow UUID bbae8c72-d732-4f53-bdd5-aff8a0f39d48, Mass UUID 93a60a56-a3c8-11da-a746-0800200b9a66, unit-group UUID 93a60a57-a4c8-11da-a746-0800200c9a66, unit kg, and exactly 1 kg net fish-meat reference mass."
+    source_ids: []
+  - rule_id: validate_scope_qualifiers
+    applies_to: "dataset_identity"
+    rule: "Reject guidance as incomplete when species/origin, upstream dataset, product form, minced status, glaze, packaging scope, freezing technology, storage regime and duration, geography, or data period are missing."
+    source_ids:
+      - cpc-v3-21223
+      - codex-cxc-52-2003
+  - rule_id: validate_process_coverage
+    applies_to: "process_inventory"
+    rule: "Require every required process and each applicable conditional process, including the complete on-site frozen chain, or a documented zero/not-applicable statement supported by facility evidence."
+    source_ids:
+      - codex-cxc-52-2003
+  - rule_id: validate_mass_reconciliation
+    applies_to: "mass_balance"
+    rule: "Require lot- or period-consistent reconciliation of received input, net product, glaze, co-products, residues, rejects, wastewater-associated material, and inventory change; flag unexplained residuals for review."
+    source_ids: []
+  - rule_id: validate_allocation
+    applies_to: "multifunctionality"
+    rule: "Require allocation avoidance evidence or the selected physical/economic method, factors, co-product status, price period when relevant, and sensitivity disclosure."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: validate_cold_chain_quality
+    applies_to: "food_safety_and_quality"
+    rule: "Require linked control records for freezing, storage, package integrity, excursions, and corrective actions under applicable requirements; do not infer compliance from an average temperature alone."
+    source_ids:
+      - codex-cxc-52-2003
+      - codex-cxs-190-1995
+  - rule_id: validate_data_quality
+    applies_to: "foreground_dataset"
+    rule: "Require temporal, technological, geographical, completeness, traceability, calibration, and uncertainty/estimate disclosures, including identification of every provisional range used."
+    source_ids:
+      - eu-pef-2021-2279
+published_dataset_profile:
+  dataset_role: "Foreground production dataset for frozen fish-meat manufacturing at the processing-facility gate"
+  downstream_use: "secondary_dataset; background_dataset"
+  allowed_use: "LCA of declared frozen fish meat when species/origin, upstream production, product form, facility technology, glaze, packaging, storage duration, geography, time period, and allocation are representative"
+  excluded_use: "Direct representation of fishing or aquaculture, whole frozen fish, separately classified frozen fillets, livers or roes, surimi/formulated products, other preservation routes, downstream distribution, retail, cooking, consumption, or end-of-life without added datasets"
+  required_metadata: "PCR id and version context; product-flow UUID; species/origin; upstream datasets; minced status; product and packaging form; glaze fraction; additives; included operations; freezing and refrigeration technology; storage regime/duration; geography; data period; allocation method; co-product/waste status; cut-offs/proxies; data owner and review status"
+  required_quality_disclosure: "Source-to-row traceability; measurement and calculation methods; calibration and reconciliation; temporal, technological, and geographical representativeness; mass balance; food-safety control evidence; allocation sensitivity; missing data; provisional estimates; uncertainty and limitations"
+  update_trigger: "Material change in fish source or species mix, received form, product specification, mincing/freezing/glazing technology, refrigerant, energy supply, packaging, storage duration, allocation/co-product route, regulation, facility configuration, or representative data period"
+data_sources:
+  - id: "cpc-v3-21223"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, Central Product Classification (CPC) Version 3.0, subclass 21223, https://unstats.un.org/unsd/classifications/Econ/cpc (retrieved 2026-08-11)"
+    used_for: "Product-category identity and exclusions from adjacent CPC product forms"
+  - id: "codex-cxc-52-2003"
+    type: "official_guidance"
+    reference: "Codex Alimentarius, Code of Practice for Fish and Fishery Products, CXC 52-2003, https://www.fao.org/input/download/standards/10273/CXP_052e.pdf (retrieved 2026-08-11)"
+    used_for: "Process decomposition, hygienic handling, freezing and frozen-storage controls, hazard-control records, packaging, and quality requirements"
+  - id: "codex-cxs-190-1995"
+    type: "standard"
+    reference: "Codex Alimentarius, Standard for Quick Frozen Fish Fillets, CXS 190-1995, https://workspace.fao.org/sites/codex/Standards/CXS%20190-1995/CXS_190e.pdf (retrieved 2026-08-11)"
+    used_for: "Conditional benchmark for net contents, glaze separation, and product-quality controls when the declared non-minced form is technically subject to this standard; not used to expand scope to CPC 21222"
+  - id: "eu-pef-2021-2279"
+    type: "official_guidance"
+    reference: "European Commission Recommendation (EU) 2021/2279 on the use of the Environmental Footprint methods, CELEX 32021H2279, https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32021H2279 (retrieved 2026-08-11)"
+    used_for: "Life-cycle boundary completeness, normalization, multifunctionality and allocation hierarchy, representativeness, data quality, and disclosure"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:9b544cfae2f1c5c44aca75ceb8c8cb5128f06edc46a57a9692da593c5e3d2cf7"
+  generated_content_sha256: "sha256:7e9cf1edc421ca3e662576d4c7e0a2b013dd2c5287914422a3db5be346fee817"

@@ -1,10 +1,3534 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "21135"
-  title: "Meat of sheep, frozen"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.food-products-beverages-and-tobacco-textiles-apparel-and-leather-products.meat-fish-fruits-vegetables-oils-and-fats.meat-of-sheep-frozen"
+  classification_refs: "CPC 3.0: 21135, Meat of sheep, frozen"
+  covered_products: "Frozen sheep carcasses, sides and declared meat cuts; bone-in or boneless; unprepared and released in a frozen state"
+  excluded_products: "Fresh or chilled sheep meat; edible offal as reference product; goat or other-species meat; cooked, seasoned, cured or otherwise prepared meat; packaging"
+  representative_product: "Net conforming frozen sheep meat released from on-site frozen storage"
+  production_route: "Live-sheep receipt; slaughter and dressing; cutting; pre-chilling and freezing; packaging; frozen storage; facility-gate release"
+  market_state: "Frozen, packaged or bulk as declared, and released at the processing-facility gate"
+functional_unit:
+  what: "Supply of net conforming unprepared frozen meat of sheep at the processing-facility gate"
+  how_much: "1 kg net frozen sheep meat, excluding packaging"
+  how_well: "Sheep species, frozen state, product form, bone status, release specification and cold-storage condition are declared and conforming"
+  how_long_or_cycle: "One production lot through release from on-site frozen storage; actual frozen-storage duration is disclosed"
+  reference_flow_link: "reference_product_output"
+system_boundary:
+  rules:
+    - rule_id: boundary_foreground_start
+      applies_to: "Facility-gate receipt"
+      rule: "Begin foreground collection at accepted live-sheep receipt; model farming and inbound transport in upstream datasets rather than duplicating them in slaughter operations."
+      source_ids:
+        - un-cpc-3-0
+        - ec-jrc-sa-bref-2024
+        - eu-recommendation-2021-2279-pef
+    - rule_id: boundary_required_operations
+      applies_to: "Slaughter and frozen-meat manufacture"
+      rule: "Include receiving, slaughter, carcass dressing, cutting, pre-chilling, freezing, packaging, on-site frozen storage, cleaning and release; include on-site wastewater treatment when performed."
+      source_ids:
+        - ec-jrc-sa-bref-2024
+        - eu-recommendation-2021-2279-pef
+    - rule_id: boundary_downstream_exclusion
+      applies_to: "Facility-gate output"
+      rule: "Exclude distribution after the facility gate, retail, thawing, cooking or other use, and end-of-life unless the declared study explicitly expands the downstream boundary."
+      source_ids:
+        - un-cpc-3-0
+        - eu-recommendation-2021-2279-pef
+    - rule_id: boundary_product_scope
+      applies_to: "Reference product"
+      rule: "Keep fresh or chilled sheep meat, edible offal as reference product, other species and prepared meat outside CPC 21135."
+      source_ids:
+        - un-cpc-3-0
+    - rule_id: boundary_complete_lci
+      applies_to: "Included foreground processes"
+      rule: "Record all known material, energy and water inputs and every product, co-product, emission and waste output for each included process."
+      source_ids:
+        - ec-jrc-sa-bref-2024
+        - eu-recommendation-2021-2279-pef
+boundary_abstraction:
+  declared_starting_condition: "Live sheep accepted at the processing-facility gate with measured live weight, lot identity, origin and upstream dataset reference"
+  starting_condition_role: "Foreground slaughter and frozen-meat processing begins at facility receipt; sheep farming and inbound transport are upstream"
+  product_classification_scope: "CPC 3.0 subclass 21135 only: meat of sheep, frozen"
+  recursive_input_rule: "If frozen sheep meat re-enters the represented site as rework, record the exact internal or external product flow once and disclose its prior processing boundary; do not recursively reproduce the same foreground chain"
+  upstream_dataset_requirement: "Link live-sheep supply and inbound transport to compatible upstream datasets with geography, production system, allocation and reference period disclosed"
+  disclosure: "Declare site, sheep origin, product form, freezing technology, frozen-storage condition and duration, packaging, wastewater destination, co-product status, allocation and all excluded life-cycle stages"
+reference_flow_definition:
+  reference_amount: "1 kg net conforming frozen sheep meat, excluding packaging"
+  product_flow_ref:
+    name: "Meat of sheep, frozen"
+    uuid: "7a898ac1-b845-4943-bae3-94e7c24ae06d"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "sheep species identity"
+    - "carcass or cut form"
+    - "bone-in or boneless state"
+    - "frozen state at release"
+    - "processing site and geography"
+    - "reference period"
+    - "frozen-storage duration and condition"
+    - "packaging format with packaging excluded from net mass"
+    - "co-product status and allocation method"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_product_mass
+    applies_to: "Quantitative reference"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Report exactly 1 kg net conforming frozen sheep meat; exclude all packaging mass from the denominator."
+  - id: live_weight_measurement
+    applies_to: "Live sheep receipt and transfer"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg live weight"
+    rule: "Use calibrated live-weight records and preserve lot identity between receipt, lairage and slaughter."
+  - id: intermediate_product_mass
+    applies_to: "Carcass, cut and frozen-intermediate transfers"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Use net measured mass at each transfer point; do not substitute counts or nominal package mass without a documented conversion."
+  - id: co_product_and_waste_mass
+    applies_to: "Blood, skin, organs, fat, bones, contents, sludge and solid wastes"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Record each physical stream independently and state whether its measured basis is wet mass, drained mass or another declared condition."
+  - id: refrigerant_mass_balance
+    applies_to: "R-717 and R-134a systems"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Calculate make-up and unrecovered emissions independently for each refrigerant substance from reconciled stock and service records."
+  - id: energy_identity_and_conversion
+    applies_to: "Electricity, steam, hot water and fuels"
+    required_property_ref:
+      name: "Declared carrier property"
+      uuid: ""
+    required_unit: "Card-specific unit"
+    rule: "Keep each carrier in its card unit; disclose calorific-value or enthalpy conventions for conversions and do not count both purchased heat and its upstream generating fuel."
+process_map:
+  - id: live_sheep_receiving_and_lairage
+    name: "Live sheep receiving and lairage"
+    inclusion: "required"
+    inclusion_condition: "Always included from live-sheep acceptance at the facility gate through transfer to slaughter"
+    role: "Foreground receipt, holding and animal mass reconciliation"
+    quantitative_reference: "kg accepted live sheep transferred to slaughter"
+  - id: slaughter_bleeding_skinning_evisceration
+    name: "Slaughter, bleeding, skinning and evisceration"
+    inclusion: "required"
+    inclusion_condition: "Always included for sheep slaughter represented by the dataset"
+    role: "Foreground slaughter and separation of carcass, blood, skin, organs and digestive contents"
+    quantitative_reference: "kg dressed sheep carcass transferred to dressing"
+  - id: carcass_dressing_and_cutting
+    name: "Carcass dressing and cutting"
+    inclusion: "required"
+    inclusion_condition: "Always included through production of the declared unfrozen carcass or cut form"
+    role: "Foreground trimming, carcass dressing, deboning or cutting"
+    quantitative_reference: "kg conforming unfrozen sheep meat transferred to freezing"
+  - id: prechilling_and_freezing
+    name: "Pre-chilling and freezing"
+    inclusion: "required"
+    inclusion_condition: "Always included until the declared product reaches its recorded frozen state"
+    role: "Foreground cooling, freezing and frozen-intermediate release"
+    quantitative_reference: "kg conforming frozen sheep meat transferred to packaging"
+  - id: packaging_frozen_storage_and_release
+    name: "Packaging, frozen storage and release"
+    inclusion: "required"
+    inclusion_condition: "Always included through packaging, on-site frozen storage and facility-gate release"
+    role: "Foreground packaging, frozen storage and quantitative reference release"
+    quantitative_reference: "1 kg net conforming frozen sheep meat, excluding packaging"
+  - id: cleaning_and_disinfection
+    name: "Cleaning and disinfection"
+    inclusion: "required"
+    inclusion_condition: "Always included for cleaning and disinfection serving the represented production processes"
+    role: "Foreground sanitation service and associated wastewater and residue generation"
+    quantitative_reference: "cleaning service allocated to 1 kg net conforming frozen sheep meat"
+  - id: onsite_wastewater_treatment
+    name: "On-site wastewater treatment"
+    inclusion: "conditional"
+    inclusion_condition: "Include when ordinary or high-organic-load wastewater is treated at the represented facility before discharge or transfer"
+    role: "Foreground wastewater treatment, sludge generation and direct water emissions"
+    quantitative_reference: "m3 wastewater treated on site"
+process_inventory:
+  - id: live_sheep_receiving_and_lairage
+    label: "Live sheep receiving and lairage"
+    inputs:
+      product:
+        - row_id: live_sheep_input
+          role: "Live sheep received at the facility gate"
+          name: "Live sheep"
+          flow_type: "product"
+          property_unit: "Mass / kg live weight"
+          description: "Live sheep cross the foreground boundary at facility receipt; farming and inbound transport remain in the linked upstream dataset."
+          amount:
+            expression: "Measured live weight of sheep accepted into the represented receipt lot"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg accepted live sheep transferred to slaughter"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_receiving_lairage_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: receiving_electricity
+          role: "Receiving and lairage grid electricity"
+          name: "Electricity, grid"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Grid electricity used for receiving and lairage is recorded independently from all thermal carriers."
+          amount:
+            expression: "Measured or sub-meter-allocated grid electricity used by receiving and lairage"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg accepted live sheep transferred to slaughter"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_receiving_lairage_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: receiving_purchased_steam
+          role: "Receiving and lairage purchased steam"
+          name: "Purchased steam"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Purchased steam used for receiving and lairage is recorded separately from hot water and fuels."
+          amount:
+            expression: "Measured purchased steam assigned to receiving and lairage when used"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg accepted live sheep transferred to slaughter"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_receiving_lairage_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: receiving_purchased_hot_water
+          role: "Receiving and lairage purchased hot water"
+          name: "Purchased hot water"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Purchased hot water used for receiving and lairage is recorded separately from steam."
+          amount:
+            expression: "Measured purchased hot-water mass assigned to receiving and lairage when used"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg accepted live sheep transferred to slaughter"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_receiving_lairage_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: receiving_natural_gas
+          role: "Receiving and lairage natural gas"
+          name: "Natural gas"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Natural gas used by equipment serving receiving and lairage is recorded independently from diesel and LPG."
+          amount:
+            expression: "Metered natural-gas energy assigned to receiving and lairage using the documented calorific-value convention"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg accepted live sheep transferred to slaughter"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_receiving_lairage_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: receiving_diesel
+          role: "Receiving and lairage diesel"
+          name: "Diesel fuel"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Diesel used by directly operated equipment serving receiving and lairage is recorded independently."
+          amount:
+            expression: "Metered or stock-reconciled diesel mass assigned to receiving and lairage when used"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg accepted live sheep transferred to slaughter"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_receiving_lairage_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: receiving_lpg
+          role: "Receiving and lairage LPG"
+          name: "Liquefied petroleum gas"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "LPG used by equipment serving receiving and lairage is recorded independently from natural gas and diesel."
+          amount:
+            expression: "Stock-reconciled LPG mass assigned to receiving and lairage when used"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg accepted live sheep transferred to slaughter"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_receiving_lairage_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: receiving_process_water
+          role: "Receiving and lairage process water"
+          name: "Process water"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "Fresh process water used for receiving and lairage is measured separately from internally reused water."
+          amount:
+            expression: "Measured fresh process-water intake assigned to receiving and lairage"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg accepted live sheep transferred to slaughter"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_receiving_lairage_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: accepted_live_sheep_output
+          role: "Accepted live sheep transferred to slaughter"
+          name: "Accepted live sheep"
+          flow_type: "product"
+          property_unit: "Mass / kg live weight"
+          description: "Accepted live sheep are weighed and transferred as one internal product flow to slaughter."
+          amount:
+            expression: "Measured live weight transferred from lairage to slaughter"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg accepted live sheep transferred to slaughter"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_receiving_lairage_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+      waste:
+        - row_id: dead_on_arrival_sheep_waste
+          role: "Dead-on-arrival sheep waste"
+          name: "Dead-on-arrival sheep"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Sheep identified dead on arrival are recorded independently from manure and wastewater."
+          amount:
+            expression: "Measured mass of dead-on-arrival sheep sent to the documented waste destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg accepted live sheep transferred to slaughter"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_receiving_lairage_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: lairage_manure_waste
+          role: "Lairage sheep manure"
+          name: "Sheep manure from lairage"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Manure removed from sheep holding areas is measured as a distinct solid waste."
+          amount:
+            expression: "Measured or weigh-recorded lairage manure sent to the documented destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg accepted live sheep transferred to slaughter"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_receiving_lairage_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: lairage_wastewater
+          role: "Lairage wastewater"
+          name: "Lairage wastewater"
+          flow_type: "waste"
+          property_unit: "Volume / m3"
+          description: "Wastewater from lairage washing is recorded separately from high-organic-load slaughter wastewater."
+          amount:
+            expression: "Measured lairage wastewater volume sent to on-site treatment or off-site destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg accepted live sheep transferred to slaughter"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_receiving_lairage_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+      elementary:
+        - row_id: receiving_carbon_dioxide_air
+          role: "Receiving and lairage fossil carbon dioxide emission"
+          name: "Carbon dioxide, fossil, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Fossil carbon dioxide from fuels used for receiving and lairage is reported as its own air exchange."
+          amount:
+            expression: "Calculated from each measured receiving and lairage fuel amount and its documented carbon or emission factor"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg accepted live sheep transferred to slaughter"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_receiving_lairage_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: receiving_nitrogen_oxides_air
+          role: "Receiving and lairage nitrogen oxides emission"
+          name: "Nitrogen oxides to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg NO2-equivalent"
+          description: "Nitrogen oxides from fuel combustion serving receiving and lairage are reported separately from sulfur dioxide."
+          amount:
+            expression: "Measured or calculated from stage fuel use, equipment records and the documented NOx factor"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg accepted live sheep transferred to slaughter"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_receiving_lairage_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: receiving_sulfur_dioxide_air
+          role: "Receiving and lairage sulfur dioxide emission"
+          name: "Sulfur dioxide to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Sulfur dioxide from fuel combustion serving receiving and lairage is reported separately from nitrogen oxides."
+          amount:
+            expression: "Measured or calculated from stage fuel use, sulfur content and equipment records"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg accepted live sheep transferred to slaughter"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_receiving_lairage_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: receiving_pm25_air
+          role: "Receiving and lairage fine particulate emission"
+          name: "Particulate matter, <2.5 um, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Fine particulate matter from fuel combustion serving receiving and lairage is reported as a size-specific air exchange."
+          amount:
+            expression: "Measured or calculated from stage fuel use and equipment-specific records"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg accepted live sheep transferred to slaughter"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_receiving_lairage_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+  - id: slaughter_bleeding_skinning_evisceration
+    label: "Slaughter, bleeding, skinning and evisceration"
+    inputs:
+      product:
+        - row_id: accepted_live_sheep_input
+          role: "Accepted live sheep input"
+          name: "Accepted live sheep"
+          flow_type: "product"
+          property_unit: "Mass / kg live weight"
+          description: "Accepted live sheep transferred from lairage enter the slaughter process as one internal product flow."
+          amount:
+            expression: "Measured live weight entering slaughter"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg dressed sheep carcass transferred to dressing"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_slaughter_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: slaughter_electricity
+          role: "Slaughter grid electricity"
+          name: "Electricity, grid"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Grid electricity used for slaughter is recorded independently from all thermal carriers."
+          amount:
+            expression: "Measured or sub-meter-allocated grid electricity used by slaughter"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg dressed sheep carcass transferred to dressing"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_slaughter_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: slaughter_purchased_steam
+          role: "Slaughter purchased steam"
+          name: "Purchased steam"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Purchased steam used for slaughter is recorded separately from hot water and fuels."
+          amount:
+            expression: "Measured purchased steam assigned to slaughter when used"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg dressed sheep carcass transferred to dressing"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_slaughter_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: slaughter_purchased_hot_water
+          role: "Slaughter purchased hot water"
+          name: "Purchased hot water"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Purchased hot water used for slaughter is recorded separately from steam."
+          amount:
+            expression: "Measured purchased hot-water mass assigned to slaughter when used"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg dressed sheep carcass transferred to dressing"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_slaughter_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: slaughter_natural_gas
+          role: "Slaughter natural gas"
+          name: "Natural gas"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Natural gas used by equipment serving slaughter is recorded independently from diesel and LPG."
+          amount:
+            expression: "Metered natural-gas energy assigned to slaughter using the documented calorific-value convention"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg dressed sheep carcass transferred to dressing"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_slaughter_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: slaughter_diesel
+          role: "Slaughter diesel"
+          name: "Diesel fuel"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Diesel used by directly operated equipment serving slaughter is recorded independently."
+          amount:
+            expression: "Metered or stock-reconciled diesel mass assigned to slaughter when used"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg dressed sheep carcass transferred to dressing"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_slaughter_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: slaughter_lpg
+          role: "Slaughter LPG"
+          name: "Liquefied petroleum gas"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "LPG used by equipment serving slaughter is recorded independently from natural gas and diesel."
+          amount:
+            expression: "Stock-reconciled LPG mass assigned to slaughter when used"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg dressed sheep carcass transferred to dressing"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_slaughter_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: slaughter_process_water
+          role: "Slaughter process water"
+          name: "Process water"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "Fresh process water used for slaughter is measured separately from internally reused water."
+          amount:
+            expression: "Measured fresh process-water intake assigned to slaughter"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg dressed sheep carcass transferred to dressing"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_slaughter_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: dressed_sheep_carcass_output
+          role: "Dressed sheep carcass"
+          name: "Dressed sheep carcass"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "The dressed sheep carcass transferred to carcass dressing is recorded separately from all co-products and wastes."
+          amount:
+            expression: "Measured dressed-carcass mass released from slaughter"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg dressed sheep carcass transferred to dressing"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_slaughter_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: sheep_blood_coproduct
+          role: "Recovered sheep blood co-product"
+          name: "Sheep blood"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Sheep blood with documented product status and beneficial use is measured as a distinct co-product."
+          amount:
+            expression: "Measured recovered sheep-blood mass transferred to its product destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg dressed sheep carcass transferred to dressing"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_slaughter_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: raw_sheepskin_coproduct
+          role: "Raw sheepskin co-product"
+          name: "Raw sheepskin"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Raw sheepskin with documented product status is weighed independently from rejected skin waste."
+          amount:
+            expression: "Measured raw-sheepskin mass transferred to its product destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg dressed sheep carcass transferred to dressing"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_slaughter_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: sheep_edible_organs_coproduct
+          role: "Sheep edible organs co-product"
+          name: "Sheep edible organs"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Edible sheep organs released as a co-product are recorded separately from the reference meat and inedible organs."
+          amount:
+            expression: "Measured mass of released edible sheep organs transferred to their product destination"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg dressed sheep carcass transferred to dressing"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_slaughter_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+      waste:
+        - row_id: sheep_blood_waste
+          role: "Discarded sheep blood waste"
+          name: "Discarded sheep blood"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Sheep blood without product status is recorded as waste and is not merged with recovered blood."
+          amount:
+            expression: "Measured discarded sheep-blood mass sent to the documented waste destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg dressed sheep carcass transferred to dressing"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_slaughter_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: rejected_sheepskin_waste
+          role: "Rejected sheepskin waste"
+          name: "Rejected sheepskin"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Rejected sheepskin without product status is measured separately from saleable raw sheepskin."
+          amount:
+            expression: "Measured rejected-sheepskin mass sent to the documented waste destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg dressed sheep carcass transferred to dressing"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_slaughter_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: sheep_inedible_organs_waste
+          role: "Inedible sheep organs waste"
+          name: "Inedible sheep organs"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Inedible sheep organs are weighed as a specific waste stream."
+          amount:
+            expression: "Measured inedible-organ mass sent to the documented waste destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg dressed sheep carcass transferred to dressing"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_slaughter_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: sheep_stomach_contents_waste
+          role: "Sheep stomach contents waste"
+          name: "Sheep stomach contents"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Removed sheep stomach contents are recorded independently from intestinal contents and wastewater."
+          amount:
+            expression: "Measured or container-weighed stomach-content mass sent to the documented destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg dressed sheep carcass transferred to dressing"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_slaughter_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: sheep_intestinal_contents_waste
+          role: "Sheep intestinal contents waste"
+          name: "Sheep intestinal contents"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Removed sheep intestinal contents are recorded independently from stomach contents."
+          amount:
+            expression: "Measured or container-weighed intestinal-content mass sent to the documented destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg dressed sheep carcass transferred to dressing"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_slaughter_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: condemned_sheep_carcass_waste
+          role: "Condemned sheep carcass waste"
+          name: "Condemned sheep carcass"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "A condemned sheep carcass is weighed separately from normal carcass output and organ waste."
+          amount:
+            expression: "Measured condemned-carcass mass sent to the documented waste destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg dressed sheep carcass transferred to dressing"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_slaughter_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: slaughter_high_load_wastewater
+          role: "High-organic-load slaughter wastewater"
+          name: "High-organic-load slaughter wastewater"
+          flow_type: "waste"
+          property_unit: "Volume / m3"
+          description: "Blood- and tissue-bearing slaughter wastewater is recorded separately from ordinary wastewater."
+          amount:
+            expression: "Measured high-organic-load wastewater volume transferred to treatment or off-site destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg dressed sheep carcass transferred to dressing"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_slaughter_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+      elementary:
+        - row_id: slaughter_carbon_dioxide_air
+          role: "Slaughter fossil carbon dioxide emission"
+          name: "Carbon dioxide, fossil, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Fossil carbon dioxide from fuels used for slaughter is reported as its own air exchange."
+          amount:
+            expression: "Calculated from each measured slaughter fuel amount and its documented carbon or emission factor"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg dressed sheep carcass transferred to dressing"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_slaughter_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: slaughter_nitrogen_oxides_air
+          role: "Slaughter nitrogen oxides emission"
+          name: "Nitrogen oxides to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg NO2-equivalent"
+          description: "Nitrogen oxides from fuel combustion serving slaughter are reported separately from sulfur dioxide."
+          amount:
+            expression: "Measured or calculated from stage fuel use, equipment records and the documented NOx factor"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg dressed sheep carcass transferred to dressing"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_slaughter_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: slaughter_sulfur_dioxide_air
+          role: "Slaughter sulfur dioxide emission"
+          name: "Sulfur dioxide to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Sulfur dioxide from fuel combustion serving slaughter is reported separately from nitrogen oxides."
+          amount:
+            expression: "Measured or calculated from stage fuel use, sulfur content and equipment records"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg dressed sheep carcass transferred to dressing"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_slaughter_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: slaughter_pm25_air
+          role: "Slaughter fine particulate emission"
+          name: "Particulate matter, <2.5 um, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Fine particulate matter from fuel combustion serving slaughter is reported as a size-specific air exchange."
+          amount:
+            expression: "Measured or calculated from stage fuel use and equipment-specific records"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg dressed sheep carcass transferred to dressing"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_slaughter_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+  - id: carcass_dressing_and_cutting
+    label: "Carcass dressing and cutting"
+    inputs:
+      product:
+        - row_id: dressed_sheep_carcass_input
+          role: "Dressed sheep carcass input"
+          name: "Dressed sheep carcass"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "The measured dressed carcass enters dressing and cutting as one internal product flow."
+          amount:
+            expression: "Measured dressed-carcass mass entering dressing and cutting"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg conforming unfrozen sheep meat transferred to freezing"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_dressing_cutting_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: dressing_electricity
+          role: "Carcass dressing and cutting grid electricity"
+          name: "Electricity, grid"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Grid electricity used for carcass dressing and cutting is recorded independently from all thermal carriers."
+          amount:
+            expression: "Measured or sub-meter-allocated grid electricity used by carcass dressing and cutting"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg conforming unfrozen sheep meat transferred to freezing"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_dressing_cutting_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: dressing_purchased_steam
+          role: "Carcass dressing and cutting purchased steam"
+          name: "Purchased steam"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Purchased steam used for carcass dressing and cutting is recorded separately from hot water and fuels."
+          amount:
+            expression: "Measured purchased steam assigned to carcass dressing and cutting when used"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg conforming unfrozen sheep meat transferred to freezing"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_dressing_cutting_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: dressing_purchased_hot_water
+          role: "Carcass dressing and cutting purchased hot water"
+          name: "Purchased hot water"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Purchased hot water used for carcass dressing and cutting is recorded separately from steam."
+          amount:
+            expression: "Measured purchased hot-water mass assigned to carcass dressing and cutting when used"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg conforming unfrozen sheep meat transferred to freezing"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_dressing_cutting_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: dressing_natural_gas
+          role: "Carcass dressing and cutting natural gas"
+          name: "Natural gas"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Natural gas used by equipment serving carcass dressing and cutting is recorded independently from diesel and LPG."
+          amount:
+            expression: "Metered natural-gas energy assigned to carcass dressing and cutting using the documented calorific-value convention"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg conforming unfrozen sheep meat transferred to freezing"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_dressing_cutting_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: dressing_diesel
+          role: "Carcass dressing and cutting diesel"
+          name: "Diesel fuel"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Diesel used by directly operated equipment serving carcass dressing and cutting is recorded independently."
+          amount:
+            expression: "Metered or stock-reconciled diesel mass assigned to carcass dressing and cutting when used"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg conforming unfrozen sheep meat transferred to freezing"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_dressing_cutting_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: dressing_lpg
+          role: "Carcass dressing and cutting LPG"
+          name: "Liquefied petroleum gas"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "LPG used by equipment serving carcass dressing and cutting is recorded independently from natural gas and diesel."
+          amount:
+            expression: "Stock-reconciled LPG mass assigned to carcass dressing and cutting when used"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg conforming unfrozen sheep meat transferred to freezing"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_dressing_cutting_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: dressing_process_water
+          role: "Carcass dressing and cutting process water"
+          name: "Process water"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "Fresh process water used for carcass dressing and cutting is measured separately from internally reused water."
+          amount:
+            expression: "Measured fresh process-water intake assigned to carcass dressing and cutting"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg conforming unfrozen sheep meat transferred to freezing"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_dressing_cutting_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: unfrozen_sheep_meat_cuts_output
+          role: "Unfrozen sheep meat cuts"
+          name: "Unfrozen sheep meat cuts"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Conforming sheep meat before freezing is measured in the declared carcass or cut form."
+          amount:
+            expression: "Measured net conforming sheep-meat mass transferred to pre-chilling and freezing"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg conforming unfrozen sheep meat transferred to freezing"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_dressing_cutting_records
+              source_ids:
+                - un-cpc-3-0
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: recovered_sheep_fat_coproduct
+          role: "Recovered sheep fat co-product"
+          name: "Recovered sheep fat"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Separated sheep fat with documented product status is measured as a distinct co-product."
+          amount:
+            expression: "Measured recovered sheep-fat mass transferred to its product destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg conforming unfrozen sheep meat transferred to freezing"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_dressing_cutting_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: sheep_bones_coproduct
+          role: "Recovered sheep bones co-product"
+          name: "Recovered sheep bones"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Sheep bones with documented product status are measured separately from discarded bone waste."
+          amount:
+            expression: "Measured recovered sheep-bone mass transferred to its product destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg conforming unfrozen sheep meat transferred to freezing"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_dressing_cutting_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+      waste:
+        - row_id: discarded_sheep_fat_waste
+          role: "Discarded sheep fat waste"
+          name: "Discarded sheep fat"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Sheep fat without product status is recorded as waste and is not merged with recovered fat."
+          amount:
+            expression: "Measured discarded sheep-fat mass sent to the documented waste destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg conforming unfrozen sheep meat transferred to freezing"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_dressing_cutting_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: sheep_bone_waste
+          role: "Discarded sheep bone waste"
+          name: "Discarded sheep bones"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Sheep bones without product status are recorded independently from recovered bones."
+          amount:
+            expression: "Measured discarded sheep-bone mass sent to the documented waste destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg conforming unfrozen sheep meat transferred to freezing"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_dressing_cutting_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: offspec_unfrozen_sheep_meat_waste
+          role: "Off-spec unfrozen sheep meat waste"
+          name: "Off-spec unfrozen sheep meat"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Unfrozen sheep meat rejected before freezing is weighed as a distinct product loss."
+          amount:
+            expression: "Measured off-spec unfrozen sheep-meat mass sent to the documented destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg conforming unfrozen sheep meat transferred to freezing"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_dressing_cutting_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: cutting_tissue_residue_waste
+          role: "Sheep meat trimming residue"
+          name: "Sheep meat trimming residue"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Non-product tissue residue from dressing and cutting is measured independently from fat and bones."
+          amount:
+            expression: "Measured trimming-residue mass sent to the documented waste destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg conforming unfrozen sheep meat transferred to freezing"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_dressing_cutting_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: cutting_wastewater
+          role: "Carcass cutting wastewater"
+          name: "Carcass cutting wastewater"
+          flow_type: "waste"
+          property_unit: "Volume / m3"
+          description: "Wastewater from dressing and cutting is recorded separately from high-organic-load slaughter wastewater."
+          amount:
+            expression: "Measured dressing-and-cutting wastewater volume transferred to treatment or off-site destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg conforming unfrozen sheep meat transferred to freezing"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_dressing_cutting_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+      elementary:
+        - row_id: dressing_carbon_dioxide_air
+          role: "Carcass dressing and cutting fossil carbon dioxide emission"
+          name: "Carbon dioxide, fossil, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Fossil carbon dioxide from fuels used for carcass dressing and cutting is reported as its own air exchange."
+          amount:
+            expression: "Calculated from each measured carcass dressing and cutting fuel amount and its documented carbon or emission factor"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg conforming unfrozen sheep meat transferred to freezing"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_dressing_cutting_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: dressing_nitrogen_oxides_air
+          role: "Carcass dressing and cutting nitrogen oxides emission"
+          name: "Nitrogen oxides to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg NO2-equivalent"
+          description: "Nitrogen oxides from fuel combustion serving carcass dressing and cutting are reported separately from sulfur dioxide."
+          amount:
+            expression: "Measured or calculated from stage fuel use, equipment records and the documented NOx factor"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg conforming unfrozen sheep meat transferred to freezing"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_dressing_cutting_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: dressing_sulfur_dioxide_air
+          role: "Carcass dressing and cutting sulfur dioxide emission"
+          name: "Sulfur dioxide to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Sulfur dioxide from fuel combustion serving carcass dressing and cutting is reported separately from nitrogen oxides."
+          amount:
+            expression: "Measured or calculated from stage fuel use, sulfur content and equipment records"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg conforming unfrozen sheep meat transferred to freezing"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_dressing_cutting_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: dressing_pm25_air
+          role: "Carcass dressing and cutting fine particulate emission"
+          name: "Particulate matter, <2.5 um, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Fine particulate matter from fuel combustion serving carcass dressing and cutting is reported as a size-specific air exchange."
+          amount:
+            expression: "Measured or calculated from stage fuel use and equipment-specific records"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg conforming unfrozen sheep meat transferred to freezing"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_dressing_cutting_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+  - id: prechilling_and_freezing
+    label: "Pre-chilling and freezing"
+    inputs:
+      product:
+        - row_id: unfrozen_sheep_meat_input
+          role: "Unfrozen sheep meat input"
+          name: "Unfrozen sheep meat cuts"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Conforming sheep meat enters pre-chilling and freezing in its declared carcass or cut form."
+          amount:
+            expression: "Measured conforming sheep-meat mass entering pre-chilling and freezing"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg conforming frozen sheep meat transferred to packaging"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_freezing_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: freezing_electricity
+          role: "Pre-chilling and freezing grid electricity"
+          name: "Electricity, grid"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Grid electricity used for pre-chilling and freezing is recorded independently from all thermal carriers."
+          amount:
+            expression: "Measured or sub-meter-allocated grid electricity used by pre-chilling and freezing"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg conforming frozen sheep meat transferred to packaging"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_freezing_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: freezing_purchased_steam
+          role: "Pre-chilling and freezing purchased steam"
+          name: "Purchased steam"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Purchased steam used for pre-chilling and freezing is recorded separately from hot water and fuels."
+          amount:
+            expression: "Measured purchased steam assigned to pre-chilling and freezing when used"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg conforming frozen sheep meat transferred to packaging"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_freezing_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: freezing_purchased_hot_water
+          role: "Pre-chilling and freezing purchased hot water"
+          name: "Purchased hot water"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Purchased hot water used for pre-chilling and freezing is recorded separately from steam."
+          amount:
+            expression: "Measured purchased hot-water mass assigned to pre-chilling and freezing when used"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg conforming frozen sheep meat transferred to packaging"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_freezing_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: freezing_natural_gas
+          role: "Pre-chilling and freezing natural gas"
+          name: "Natural gas"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Natural gas used by equipment serving pre-chilling and freezing is recorded independently from diesel and LPG."
+          amount:
+            expression: "Metered natural-gas energy assigned to pre-chilling and freezing using the documented calorific-value convention"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg conforming frozen sheep meat transferred to packaging"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_freezing_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: freezing_diesel
+          role: "Pre-chilling and freezing diesel"
+          name: "Diesel fuel"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Diesel used by directly operated equipment serving pre-chilling and freezing is recorded independently."
+          amount:
+            expression: "Metered or stock-reconciled diesel mass assigned to pre-chilling and freezing when used"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg conforming frozen sheep meat transferred to packaging"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_freezing_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: freezing_lpg
+          role: "Pre-chilling and freezing LPG"
+          name: "Liquefied petroleum gas"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "LPG used by equipment serving pre-chilling and freezing is recorded independently from natural gas and diesel."
+          amount:
+            expression: "Stock-reconciled LPG mass assigned to pre-chilling and freezing when used"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg conforming frozen sheep meat transferred to packaging"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_freezing_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: freezing_process_water
+          role: "Pre-chilling and freezing process water"
+          name: "Process water"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "Fresh process water used for pre-chilling and freezing is measured separately from internally reused water."
+          amount:
+            expression: "Measured fresh process-water intake assigned to pre-chilling and freezing"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg conforming frozen sheep meat transferred to packaging"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_freezing_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: freezing_r717_makeup
+          role: "Pre-chilling and freezing R-717 refrigerant make-up"
+          name: "Ammonia refrigerant (R-717)"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Ammonia refrigerant make-up for pre-chilling and freezing is balanced separately from R-134a."
+          amount:
+            expression: "Calculated net R-717 make-up assigned to pre-chilling and freezing from stock and service records"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg conforming frozen sheep meat transferred to packaging"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_freezing_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: freezing_r134a_makeup
+          role: "Pre-chilling and freezing R-134a refrigerant make-up"
+          name: "1,1,1,2-Tetrafluoroethane refrigerant (R-134a)"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "R-134a refrigerant make-up for pre-chilling and freezing is balanced separately from R-717."
+          amount:
+            expression: "Calculated net R-134a make-up assigned to pre-chilling and freezing from stock and service records"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg conforming frozen sheep meat transferred to packaging"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_freezing_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: frozen_sheep_meat_intermediate_output
+          role: "Frozen sheep meat intermediate"
+          name: "Frozen sheep meat intermediate"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Frozen sheep meat transferred to packaging is measured after the declared freezing operation."
+          amount:
+            expression: "Measured net conforming frozen sheep-meat mass transferred to packaging"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg conforming frozen sheep meat transferred to packaging"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_freezing_records
+              source_ids:
+                - un-cpc-3-0
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+      waste:
+        - row_id: freezing_defrost_wastewater
+          role: "Freezing-system defrost wastewater"
+          name: "Freezing-system defrost wastewater"
+          flow_type: "waste"
+          property_unit: "Volume / m3"
+          description: "Defrost wastewater from the freezing stage is recorded separately from cleaning and slaughter wastewater."
+          amount:
+            expression: "Measured defrost wastewater volume transferred to treatment or off-site destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg conforming frozen sheep meat transferred to packaging"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_freezing_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: offspec_frozen_meat_waste
+          role: "Off-spec frozen sheep meat waste"
+          name: "Off-spec frozen sheep meat"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Frozen sheep meat rejected before packaging is weighed as a distinct product loss."
+          amount:
+            expression: "Measured off-spec frozen sheep-meat mass sent to the documented destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg conforming frozen sheep meat transferred to packaging"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_freezing_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+      elementary:
+        - row_id: freezing_r717_air
+          role: "Pre-chilling and freezing R-717 emission"
+          name: "Ammonia to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Unrecovered R-717 loss from refrigeration serving pre-chilling and freezing is reported as ammonia to air."
+          amount:
+            expression: "Calculated unrecovered R-717 loss assigned to pre-chilling and freezing from the refrigerant mass balance"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg conforming frozen sheep meat transferred to packaging"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_freezing_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: freezing_r134a_air
+          role: "Pre-chilling and freezing R-134a emission"
+          name: "1,1,1,2-Tetrafluoroethane to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Unrecovered R-134a loss from refrigeration serving pre-chilling and freezing is reported as its own air exchange."
+          amount:
+            expression: "Calculated unrecovered R-134a loss assigned to pre-chilling and freezing from the refrigerant mass balance"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg conforming frozen sheep meat transferred to packaging"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_freezing_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: freezing_carbon_dioxide_air
+          role: "Pre-chilling and freezing fossil carbon dioxide emission"
+          name: "Carbon dioxide, fossil, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Fossil carbon dioxide from fuels used for pre-chilling and freezing is reported as its own air exchange."
+          amount:
+            expression: "Calculated from each measured pre-chilling and freezing fuel amount and its documented carbon or emission factor"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg conforming frozen sheep meat transferred to packaging"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_freezing_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: freezing_nitrogen_oxides_air
+          role: "Pre-chilling and freezing nitrogen oxides emission"
+          name: "Nitrogen oxides to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg NO2-equivalent"
+          description: "Nitrogen oxides from fuel combustion serving pre-chilling and freezing are reported separately from sulfur dioxide."
+          amount:
+            expression: "Measured or calculated from stage fuel use, equipment records and the documented NOx factor"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg conforming frozen sheep meat transferred to packaging"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_freezing_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: freezing_sulfur_dioxide_air
+          role: "Pre-chilling and freezing sulfur dioxide emission"
+          name: "Sulfur dioxide to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Sulfur dioxide from fuel combustion serving pre-chilling and freezing is reported separately from nitrogen oxides."
+          amount:
+            expression: "Measured or calculated from stage fuel use, sulfur content and equipment records"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg conforming frozen sheep meat transferred to packaging"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_freezing_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: freezing_pm25_air
+          role: "Pre-chilling and freezing fine particulate emission"
+          name: "Particulate matter, <2.5 um, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Fine particulate matter from fuel combustion serving pre-chilling and freezing is reported as a size-specific air exchange."
+          amount:
+            expression: "Measured or calculated from stage fuel use and equipment-specific records"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg conforming frozen sheep meat transferred to packaging"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_freezing_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+  - id: packaging_frozen_storage_and_release
+    label: "Packaging, frozen storage and release"
+    inputs:
+      product:
+        - row_id: frozen_sheep_meat_intermediate_input
+          role: "Frozen sheep meat intermediate input"
+          name: "Frozen sheep meat intermediate"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Conforming frozen sheep meat enters packaging and frozen storage as one internal product flow."
+          amount:
+            expression: "Measured frozen sheep-meat mass entering packaging"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net conforming frozen sheep meat released"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_storage_release_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: packaging_storage_electricity
+          role: "Packaging and frozen storage grid electricity"
+          name: "Electricity, grid"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Grid electricity used for packaging and frozen storage is recorded independently from all thermal carriers."
+          amount:
+            expression: "Measured or sub-meter-allocated grid electricity used by packaging and frozen storage"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net conforming frozen sheep meat released"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_storage_release_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: packaging_storage_purchased_steam
+          role: "Packaging and frozen storage purchased steam"
+          name: "Purchased steam"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Purchased steam used for packaging and frozen storage is recorded separately from hot water and fuels."
+          amount:
+            expression: "Measured purchased steam assigned to packaging and frozen storage when used"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net conforming frozen sheep meat released"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_storage_release_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: packaging_storage_purchased_hot_water
+          role: "Packaging and frozen storage purchased hot water"
+          name: "Purchased hot water"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Purchased hot water used for packaging and frozen storage is recorded separately from steam."
+          amount:
+            expression: "Measured purchased hot-water mass assigned to packaging and frozen storage when used"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net conforming frozen sheep meat released"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_storage_release_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: packaging_storage_natural_gas
+          role: "Packaging and frozen storage natural gas"
+          name: "Natural gas"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Natural gas used by equipment serving packaging and frozen storage is recorded independently from diesel and LPG."
+          amount:
+            expression: "Metered natural-gas energy assigned to packaging and frozen storage using the documented calorific-value convention"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net conforming frozen sheep meat released"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_storage_release_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: packaging_storage_diesel
+          role: "Packaging and frozen storage diesel"
+          name: "Diesel fuel"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Diesel used by directly operated equipment serving packaging and frozen storage is recorded independently."
+          amount:
+            expression: "Metered or stock-reconciled diesel mass assigned to packaging and frozen storage when used"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net conforming frozen sheep meat released"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_storage_release_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: packaging_storage_lpg
+          role: "Packaging and frozen storage LPG"
+          name: "Liquefied petroleum gas"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "LPG used by equipment serving packaging and frozen storage is recorded independently from natural gas and diesel."
+          amount:
+            expression: "Stock-reconciled LPG mass assigned to packaging and frozen storage when used"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net conforming frozen sheep meat released"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_storage_release_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: packaging_storage_process_water
+          role: "Packaging and frozen storage process water"
+          name: "Process water"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "Fresh process water used for packaging and frozen storage is measured separately from internally reused water."
+          amount:
+            expression: "Measured fresh process-water intake assigned to packaging and frozen storage"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net conforming frozen sheep meat released"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_storage_release_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: packaging_storage_r717_makeup
+          role: "Packaging and frozen storage R-717 refrigerant make-up"
+          name: "Ammonia refrigerant (R-717)"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Ammonia refrigerant make-up for packaging and frozen storage is balanced separately from R-134a."
+          amount:
+            expression: "Calculated net R-717 make-up assigned to packaging and frozen storage from stock and service records"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net conforming frozen sheep meat released"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_storage_release_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: packaging_storage_r134a_makeup
+          role: "Packaging and frozen storage R-134a refrigerant make-up"
+          name: "1,1,1,2-Tetrafluoroethane refrigerant (R-134a)"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "R-134a refrigerant make-up for packaging and frozen storage is balanced separately from R-717."
+          amount:
+            expression: "Calculated net R-134a make-up assigned to packaging and frozen storage from stock and service records"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net conforming frozen sheep meat released"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_storage_release_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: packaging_ldpe_packaging_film
+          role: "Low-density polyethylene packaging film"
+          name: "Low-density polyethylene packaging film"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Low-density polyethylene film used for the declared pack is recorded independently."
+          amount:
+            expression: "Measured net consumption of low-density polyethylene packaging film assigned to released product"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net conforming frozen sheep meat released"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_storage_release_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: packaging_pa_pe_vacuum_bag
+          role: "Polyamide/polyethylene vacuum bag"
+          name: "Polyamide/polyethylene multilayer vacuum bag"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "The multilayer PA/PE vacuum bag is recorded as one specified packaging product and not merged with LDPE film."
+          amount:
+            expression: "Measured net consumption of polyamide/polyethylene multilayer vacuum bag assigned to released product"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net conforming frozen sheep meat released"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_storage_release_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: packaging_corrugated_carton
+          role: "Corrugated paperboard carton"
+          name: "Corrugated paperboard carton"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Corrugated paperboard cartons used for frozen-meat shipment are recorded independently from polymer packaging."
+          amount:
+            expression: "Measured net consumption of corrugated paperboard carton assigned to released product"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net conforming frozen sheep meat released"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_storage_release_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: packaging_hdpe_reusable_crate
+          role: "High-density polyethylene reusable crate"
+          name: "High-density polyethylene reusable crate"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Net consumption of reusable HDPE crates is recorded with documented returns and reuse cycles."
+          amount:
+            expression: "Measured net consumption of high-density polyethylene reusable crate assigned to released product"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net conforming frozen sheep meat released"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_storage_release_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: packaging_wooden_pallet
+          role: "Wooden pallet"
+          name: "Wooden pallet"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Net wooden-pallet consumption is recorded independently from cartons and polymer packaging."
+          amount:
+            expression: "Measured net consumption of wooden pallet assigned to released product"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net conforming frozen sheep meat released"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_storage_release_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: reference_product_output
+          role: "Reference frozen sheep meat output"
+          name: "Meat of sheep, frozen"
+          flow_type: "product"
+          flow_ref:
+            uuid: "7a898ac1-b845-4943-bae3-94e7c24ae06d"
+          property_unit: "Mass / kg"
+          description: "This is the quantitative reference: net conforming frozen sheep meat released at the facility gate, excluding packaging mass."
+          amount:
+            expression: "Exactly 1 kg net conforming frozen sheep meat released; packaging mass is excluded"
+            value_mode: "fixed_value"
+            specificity: "product_specific"
+            basis:
+              text: "per declared reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "identity_reference"
+              collection_protocol_id: cp_packaging_storage_release_records
+              source_ids:
+                - un-cpc-3-0
+            ranges: []
+      waste:
+        - row_id: offspec_packaged_frozen_sheep_meat_waste
+          role: "Off-spec packaged frozen sheep meat waste"
+          name: "Off-spec packaged frozen sheep meat"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Packaged frozen sheep meat rejected before release is weighed as a distinct product loss."
+          amount:
+            expression: "Measured off-spec packaged frozen sheep-meat mass sent to the documented destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net conforming frozen sheep meat released"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_storage_release_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: waste_ldpe_packaging_film
+          role: "Waste low-density polyethylene packaging film"
+          name: "Waste low-density polyethylene packaging film"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Discarded low-density polyethylene packaging film is recorded as its own packaging-waste stream."
+          amount:
+            expression: "Measured discarded low-density polyethylene packaging film mass sent to the documented destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net conforming frozen sheep meat released"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_storage_release_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: waste_pa_pe_vacuum_bag
+          role: "Waste polyamide/polyethylene vacuum bag"
+          name: "Waste polyamide/polyethylene multilayer vacuum bag"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Discarded polyamide/polyethylene multilayer vacuum bag is recorded as its own packaging-waste stream."
+          amount:
+            expression: "Measured discarded polyamide/polyethylene multilayer vacuum bag mass sent to the documented destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net conforming frozen sheep meat released"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_storage_release_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: waste_corrugated_carton
+          role: "Waste corrugated paperboard carton"
+          name: "Waste corrugated paperboard carton"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Discarded corrugated paperboard carton is recorded as its own packaging-waste stream."
+          amount:
+            expression: "Measured discarded corrugated paperboard carton mass sent to the documented destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net conforming frozen sheep meat released"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_storage_release_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: waste_hdpe_reusable_crate
+          role: "Waste high-density polyethylene reusable crate"
+          name: "Waste high-density polyethylene reusable crate"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Discarded high-density polyethylene reusable crate is recorded as its own packaging-waste stream."
+          amount:
+            expression: "Measured discarded high-density polyethylene reusable crate mass sent to the documented destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net conforming frozen sheep meat released"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_storage_release_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: waste_wooden_pallet
+          role: "Waste wooden pallet"
+          name: "Waste wooden pallet"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Discarded wooden pallet is recorded as its own packaging-waste stream."
+          amount:
+            expression: "Measured discarded wooden pallet mass sent to the documented destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net conforming frozen sheep meat released"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_storage_release_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: packaging_area_wash_wastewater
+          role: "Packaging-area wash wastewater"
+          name: "Packaging-area wash wastewater"
+          flow_type: "waste"
+          property_unit: "Volume / m3"
+          description: "Wastewater from packaging-area washing is recorded independently from frozen-store defrost water."
+          amount:
+            expression: "Measured packaging-area wash wastewater volume transferred to treatment or off-site destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net conforming frozen sheep meat released"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_storage_release_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: frozen_store_defrost_wastewater
+          role: "Frozen-store defrost wastewater"
+          name: "Frozen-store defrost wastewater"
+          flow_type: "waste"
+          property_unit: "Volume / m3"
+          description: "Defrost wastewater from on-site frozen storage is recorded independently from packaging-area wash water."
+          amount:
+            expression: "Measured frozen-store defrost wastewater volume transferred to treatment or off-site destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net conforming frozen sheep meat released"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_storage_release_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+      elementary:
+        - row_id: packaging_storage_r717_air
+          role: "Packaging and frozen storage R-717 emission"
+          name: "Ammonia to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Unrecovered R-717 loss from refrigeration serving packaging and frozen storage is reported as ammonia to air."
+          amount:
+            expression: "Calculated unrecovered R-717 loss assigned to packaging and frozen storage from the refrigerant mass balance"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net conforming frozen sheep meat released"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_storage_release_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: packaging_storage_r134a_air
+          role: "Packaging and frozen storage R-134a emission"
+          name: "1,1,1,2-Tetrafluoroethane to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Unrecovered R-134a loss from refrigeration serving packaging and frozen storage is reported as its own air exchange."
+          amount:
+            expression: "Calculated unrecovered R-134a loss assigned to packaging and frozen storage from the refrigerant mass balance"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net conforming frozen sheep meat released"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_storage_release_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: packaging_storage_carbon_dioxide_air
+          role: "Packaging and frozen storage fossil carbon dioxide emission"
+          name: "Carbon dioxide, fossil, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Fossil carbon dioxide from fuels used for packaging and frozen storage is reported as its own air exchange."
+          amount:
+            expression: "Calculated from each measured packaging and frozen storage fuel amount and its documented carbon or emission factor"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net conforming frozen sheep meat released"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_storage_release_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: packaging_storage_nitrogen_oxides_air
+          role: "Packaging and frozen storage nitrogen oxides emission"
+          name: "Nitrogen oxides to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg NO2-equivalent"
+          description: "Nitrogen oxides from fuel combustion serving packaging and frozen storage are reported separately from sulfur dioxide."
+          amount:
+            expression: "Measured or calculated from stage fuel use, equipment records and the documented NOx factor"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net conforming frozen sheep meat released"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_storage_release_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: packaging_storage_sulfur_dioxide_air
+          role: "Packaging and frozen storage sulfur dioxide emission"
+          name: "Sulfur dioxide to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Sulfur dioxide from fuel combustion serving packaging and frozen storage is reported separately from nitrogen oxides."
+          amount:
+            expression: "Measured or calculated from stage fuel use, sulfur content and equipment records"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net conforming frozen sheep meat released"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_storage_release_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: packaging_storage_pm25_air
+          role: "Packaging and frozen storage fine particulate emission"
+          name: "Particulate matter, <2.5 um, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Fine particulate matter from fuel combustion serving packaging and frozen storage is reported as a size-specific air exchange."
+          amount:
+            expression: "Measured or calculated from stage fuel use and equipment-specific records"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net conforming frozen sheep meat released"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_storage_release_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+  - id: cleaning_and_disinfection
+    label: "Cleaning and disinfection"
+    inputs:
+      product:
+        - row_id: cleaning_electricity
+          role: "Cleaning and disinfection grid electricity"
+          name: "Electricity, grid"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Grid electricity used for cleaning and disinfection is recorded independently from all thermal carriers."
+          amount:
+            expression: "Measured or sub-meter-allocated grid electricity used by cleaning and disinfection"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net conforming frozen sheep meat released"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cleaning_disinfection_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: cleaning_purchased_steam
+          role: "Cleaning and disinfection purchased steam"
+          name: "Purchased steam"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Purchased steam used for cleaning and disinfection is recorded separately from hot water and fuels."
+          amount:
+            expression: "Measured purchased steam assigned to cleaning and disinfection when used"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net conforming frozen sheep meat released"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cleaning_disinfection_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: cleaning_purchased_hot_water
+          role: "Cleaning and disinfection purchased hot water"
+          name: "Purchased hot water"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Purchased hot water used for cleaning and disinfection is recorded separately from steam."
+          amount:
+            expression: "Measured purchased hot-water mass assigned to cleaning and disinfection when used"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net conforming frozen sheep meat released"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cleaning_disinfection_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: cleaning_natural_gas
+          role: "Cleaning and disinfection natural gas"
+          name: "Natural gas"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Natural gas used by equipment serving cleaning and disinfection is recorded independently from diesel and LPG."
+          amount:
+            expression: "Metered natural-gas energy assigned to cleaning and disinfection using the documented calorific-value convention"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net conforming frozen sheep meat released"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cleaning_disinfection_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: cleaning_diesel
+          role: "Cleaning and disinfection diesel"
+          name: "Diesel fuel"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Diesel used by directly operated equipment serving cleaning and disinfection is recorded independently."
+          amount:
+            expression: "Metered or stock-reconciled diesel mass assigned to cleaning and disinfection when used"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net conforming frozen sheep meat released"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cleaning_disinfection_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: cleaning_lpg
+          role: "Cleaning and disinfection LPG"
+          name: "Liquefied petroleum gas"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "LPG used by equipment serving cleaning and disinfection is recorded independently from natural gas and diesel."
+          amount:
+            expression: "Stock-reconciled LPG mass assigned to cleaning and disinfection when used"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net conforming frozen sheep meat released"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cleaning_disinfection_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: cleaning_process_water
+          role: "Cleaning and disinfection process water"
+          name: "Process water"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "Fresh process water used for cleaning and disinfection is measured separately from internally reused water."
+          amount:
+            expression: "Measured fresh process-water intake assigned to cleaning and disinfection"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net conforming frozen sheep meat released"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cleaning_disinfection_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: cleaning_sodium_hydroxide
+          role: "Sodium hydroxide cleaning solution"
+          name: "Sodium hydroxide cleaning solution"
+          flow_type: "product"
+          property_unit: "Mass / kg formulated product"
+          description: "Sodium hydroxide cleaning solution is recorded separately from every other cleaner and disinfectant."
+          amount:
+            expression: "Measured issued sodium hydroxide cleaning solution mass minus documented unused return"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net conforming frozen sheep meat released"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cleaning_disinfection_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: cleaning_nitric_acid
+          role: "Nitric acid cleaning solution"
+          name: "Nitric acid cleaning solution"
+          flow_type: "product"
+          property_unit: "Mass / kg formulated product"
+          description: "Nitric acid cleaning solution is recorded separately from every other cleaner and disinfectant."
+          amount:
+            expression: "Measured issued nitric acid cleaning solution mass minus documented unused return"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net conforming frozen sheep meat released"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cleaning_disinfection_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: cleaning_sodium_hypochlorite
+          role: "Sodium hypochlorite disinfectant"
+          name: "Sodium hypochlorite disinfectant"
+          flow_type: "product"
+          property_unit: "Mass / kg formulated product"
+          description: "Sodium hypochlorite disinfectant is recorded separately from every other cleaner and disinfectant."
+          amount:
+            expression: "Measured issued sodium hypochlorite disinfectant mass minus documented unused return"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net conforming frozen sheep meat released"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cleaning_disinfection_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: cleaning_peracetic_acid
+          role: "Peracetic acid disinfectant"
+          name: "Peracetic acid disinfectant"
+          flow_type: "product"
+          property_unit: "Mass / kg formulated product"
+          description: "Peracetic acid disinfectant is recorded separately from every other cleaner and disinfectant."
+          amount:
+            expression: "Measured issued peracetic acid disinfectant mass minus documented unused return"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net conforming frozen sheep meat released"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cleaning_disinfection_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: cleaning_disinfection_wastewater
+          role: "Sanitation wastewater"
+          name: "Sanitation wastewater"
+          flow_type: "waste"
+          property_unit: "Volume / m3"
+          description: "Wastewater generated by cleaning and disinfection is measured separately from production-stage wastewater."
+          amount:
+            expression: "Measured sanitation wastewater volume transferred to treatment or off-site destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net conforming frozen sheep meat released"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cleaning_disinfection_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: cleaning_solid_residue_waste
+          role: "Cleaning solid residue"
+          name: "Cleaning solid residue"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Solid residue collected during cleaning is weighed separately from wastewater-treatment sludge."
+          amount:
+            expression: "Measured cleaning-residue mass sent to the documented waste destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net conforming frozen sheep meat released"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cleaning_disinfection_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+      elementary:
+        - row_id: cleaning_carbon_dioxide_air
+          role: "Cleaning and disinfection fossil carbon dioxide emission"
+          name: "Carbon dioxide, fossil, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Fossil carbon dioxide from fuels used for cleaning and disinfection is reported as its own air exchange."
+          amount:
+            expression: "Calculated from each measured cleaning and disinfection fuel amount and its documented carbon or emission factor"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net conforming frozen sheep meat released"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_cleaning_disinfection_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: cleaning_nitrogen_oxides_air
+          role: "Cleaning and disinfection nitrogen oxides emission"
+          name: "Nitrogen oxides to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg NO2-equivalent"
+          description: "Nitrogen oxides from fuel combustion serving cleaning and disinfection are reported separately from sulfur dioxide."
+          amount:
+            expression: "Measured or calculated from stage fuel use, equipment records and the documented NOx factor"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net conforming frozen sheep meat released"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_cleaning_disinfection_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: cleaning_sulfur_dioxide_air
+          role: "Cleaning and disinfection sulfur dioxide emission"
+          name: "Sulfur dioxide to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Sulfur dioxide from fuel combustion serving cleaning and disinfection is reported separately from nitrogen oxides."
+          amount:
+            expression: "Measured or calculated from stage fuel use, sulfur content and equipment records"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net conforming frozen sheep meat released"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_cleaning_disinfection_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: cleaning_pm25_air
+          role: "Cleaning and disinfection fine particulate emission"
+          name: "Particulate matter, <2.5 um, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Fine particulate matter from fuel combustion serving cleaning and disinfection is reported as a size-specific air exchange."
+          amount:
+            expression: "Measured or calculated from stage fuel use and equipment-specific records"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net conforming frozen sheep meat released"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_cleaning_disinfection_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+  - id: onsite_wastewater_treatment
+    label: "On-site wastewater treatment"
+    inputs:
+      product:
+        - row_id: wastewater_treatment_electricity
+          role: "On-site wastewater treatment grid electricity"
+          name: "Electricity, grid"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Grid electricity used for on-site wastewater treatment is recorded independently from all thermal carriers."
+          amount:
+            expression: "Measured or sub-meter-allocated grid electricity used by on-site wastewater treatment"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per m3 wastewater treated on site"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_onsite_wastewater_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: wastewater_treatment_purchased_steam
+          role: "On-site wastewater treatment purchased steam"
+          name: "Purchased steam"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Purchased steam used for on-site wastewater treatment is recorded separately from hot water and fuels."
+          amount:
+            expression: "Measured purchased steam assigned to on-site wastewater treatment when used"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per m3 wastewater treated on site"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_onsite_wastewater_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: wastewater_treatment_purchased_hot_water
+          role: "On-site wastewater treatment purchased hot water"
+          name: "Purchased hot water"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Purchased hot water used for on-site wastewater treatment is recorded separately from steam."
+          amount:
+            expression: "Measured purchased hot-water mass assigned to on-site wastewater treatment when used"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per m3 wastewater treated on site"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_onsite_wastewater_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: wastewater_treatment_natural_gas
+          role: "On-site wastewater treatment natural gas"
+          name: "Natural gas"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Natural gas used by equipment serving on-site wastewater treatment is recorded independently from diesel and LPG."
+          amount:
+            expression: "Metered natural-gas energy assigned to on-site wastewater treatment using the documented calorific-value convention"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per m3 wastewater treated on site"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_onsite_wastewater_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: wastewater_treatment_diesel
+          role: "On-site wastewater treatment diesel"
+          name: "Diesel fuel"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Diesel used by directly operated equipment serving on-site wastewater treatment is recorded independently."
+          amount:
+            expression: "Metered or stock-reconciled diesel mass assigned to on-site wastewater treatment when used"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per m3 wastewater treated on site"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_onsite_wastewater_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: wastewater_treatment_lpg
+          role: "On-site wastewater treatment LPG"
+          name: "Liquefied petroleum gas"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "LPG used by equipment serving on-site wastewater treatment is recorded independently from natural gas and diesel."
+          amount:
+            expression: "Stock-reconciled LPG mass assigned to on-site wastewater treatment when used"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per m3 wastewater treated on site"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_onsite_wastewater_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: wastewater_treatment_process_water
+          role: "On-site wastewater treatment process water"
+          name: "Process water"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "Fresh process water used for on-site wastewater treatment is measured separately from internally reused water."
+          amount:
+            expression: "Measured fresh process-water intake assigned to on-site wastewater treatment"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per m3 wastewater treated on site"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_onsite_wastewater_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: wastewater_treatment_ferric_chloride
+          role: "Ferric chloride treatment solution"
+          name: "Ferric chloride solution"
+          flow_type: "product"
+          property_unit: "Mass / kg formulated product"
+          description: "Ferric chloride solution used for on-site treatment is recorded separately from polymer flocculant."
+          amount:
+            expression: "Measured ferric-chloride solution mass issued to on-site treatment"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per m3 wastewater treated on site"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_onsite_wastewater_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: wastewater_treatment_polyacrylamide
+          role: "Polyacrylamide flocculant"
+          name: "Polyacrylamide flocculant"
+          flow_type: "product"
+          property_unit: "Mass / kg formulated product"
+          description: "Polyacrylamide flocculant used for on-site treatment is recorded as one specified chemical input."
+          amount:
+            expression: "Measured polyacrylamide flocculant mass issued to on-site treatment"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per m3 wastewater treated on site"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_onsite_wastewater_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+      waste:
+        - row_id: ordinary_wastewater_input
+          role: "Ordinary slaughterhouse wastewater input"
+          name: "Ordinary slaughterhouse wastewater"
+          flow_type: "waste"
+          property_unit: "Volume / m3"
+          description: "Ordinary wastewater entering on-site treatment is measured separately from high-organic-load wastewater."
+          amount:
+            expression: "Measured ordinary wastewater volume entering on-site treatment"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per m3 wastewater treated on site"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_onsite_wastewater_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: high_load_wastewater_input
+          role: "High-organic-load wastewater input"
+          name: "High-organic-load slaughterhouse wastewater"
+          flow_type: "waste"
+          property_unit: "Volume / m3"
+          description: "High-organic-load wastewater entering on-site treatment is measured independently from ordinary wastewater."
+          amount:
+            expression: "Measured high-organic-load wastewater volume entering on-site treatment"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per m3 wastewater treated on site"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_onsite_wastewater_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: treated_slaughterhouse_wastewater
+          role: "Treated slaughterhouse wastewater"
+          name: "Treated slaughterhouse wastewater"
+          flow_type: "waste"
+          property_unit: "Volume / m3"
+          description: "Treated wastewater leaving the on-site plant is recorded before discharge or off-site transfer."
+          amount:
+            expression: "Measured treated-wastewater volume leaving the on-site plant"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per m3 wastewater treated on site"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_onsite_wastewater_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: wastewater_treatment_sludge
+          role: "Wastewater-treatment sludge"
+          name: "Slaughterhouse wastewater-treatment sludge"
+          flow_type: "waste"
+          property_unit: "Mass / kg wet sludge"
+          description: "Sludge removed from on-site wastewater treatment is weighed as a distinct waste stream."
+          amount:
+            expression: "Measured wet sludge mass sent to the documented destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per m3 wastewater treated on site"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_onsite_wastewater_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: wastewater_treatment_screenings
+          role: "Wastewater-treatment screenings"
+          name: "Slaughterhouse wastewater screenings"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Screenings removed during on-site wastewater treatment are weighed separately from sludge."
+          amount:
+            expression: "Measured screenings mass sent to the documented waste destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per m3 wastewater treated on site"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_onsite_wastewater_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+      elementary:
+        - row_id: wastewater_treatment_chemical_oxygen_demand_water
+          role: "Chemical oxygen demand emission to water"
+          name: "Chemical oxygen demand to water"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Chemical oxygen demand to water from the on-site treatment discharge is reported as its own water exchange."
+          amount:
+            expression: "Measured discharge volume multiplied by the matched COD concentration"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per m3 wastewater treated on site"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_onsite_wastewater_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: wastewater_treatment_total_nitrogen_water
+          role: "Total nitrogen emission to water"
+          name: "Total nitrogen to water"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Total nitrogen to water from the on-site treatment discharge is reported as its own water exchange."
+          amount:
+            expression: "Measured discharge volume multiplied by the matched total-nitrogen concentration"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per m3 wastewater treated on site"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_onsite_wastewater_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: wastewater_treatment_total_phosphorus_water
+          role: "Total phosphorus emission to water"
+          name: "Total phosphorus to water"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Total phosphorus to water from the on-site treatment discharge is reported as its own water exchange."
+          amount:
+            expression: "Measured discharge volume multiplied by the matched total-phosphorus concentration"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per m3 wastewater treated on site"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_onsite_wastewater_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: wastewater_treatment_total_suspended_solids_water
+          role: "Total suspended solids emission to water"
+          name: "Total suspended solids to water"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Total suspended solids to water from the on-site treatment discharge is reported as its own water exchange."
+          amount:
+            expression: "Measured discharge volume multiplied by the matched total-suspended-solids concentration"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per m3 wastewater treated on site"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_onsite_wastewater_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: wastewater_treatment_carbon_dioxide_air
+          role: "On-site wastewater treatment fossil carbon dioxide emission"
+          name: "Carbon dioxide, fossil, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Fossil carbon dioxide from fuels used for on-site wastewater treatment is reported as its own air exchange."
+          amount:
+            expression: "Calculated from each measured on-site wastewater treatment fuel amount and its documented carbon or emission factor"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per m3 wastewater treated on site"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_onsite_wastewater_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: wastewater_treatment_nitrogen_oxides_air
+          role: "On-site wastewater treatment nitrogen oxides emission"
+          name: "Nitrogen oxides to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg NO2-equivalent"
+          description: "Nitrogen oxides from fuel combustion serving on-site wastewater treatment are reported separately from sulfur dioxide."
+          amount:
+            expression: "Measured or calculated from stage fuel use, equipment records and the documented NOx factor"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per m3 wastewater treated on site"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_onsite_wastewater_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: wastewater_treatment_sulfur_dioxide_air
+          role: "On-site wastewater treatment sulfur dioxide emission"
+          name: "Sulfur dioxide to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Sulfur dioxide from fuel combustion serving on-site wastewater treatment is reported separately from nitrogen oxides."
+          amount:
+            expression: "Measured or calculated from stage fuel use, sulfur content and equipment records"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per m3 wastewater treated on site"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_onsite_wastewater_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+        - row_id: wastewater_treatment_pm25_air
+          role: "On-site wastewater treatment fine particulate emission"
+          name: "Particulate matter, <2.5 um, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Fine particulate matter from fuel combustion serving on-site wastewater treatment is reported as a size-specific air exchange."
+          amount:
+            expression: "Measured or calculated from stage fuel use and equipment-specific records"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per m3 wastewater treated on site"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_onsite_wastewater_records
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-recommendation-2021-2279-pef
+            ranges: []
+allocation_rules:
+  - rule_id: allocation_avoid_by_subdivision
+    applies_to: "Multi-output slaughter and cutting"
+    rule: "First subdivide receiving, slaughter, dressing, freezing, packaging, sanitation and wastewater treatment using meters, batch records and transfer measurements so directly attributable burdens require no allocation."
+    source_ids:
+      - ec-jrc-sa-bref-2024
+      - eu-recommendation-2021-2279-pef
+  - rule_id: allocation_product_status
+    applies_to: "Blood, sheepskin, edible organs, fat and bones"
+    rule: "Treat a stream as a co-product only when it has documented product status and a beneficial destination; otherwise keep its treatment burden as waste."
+    source_ids:
+      - ec-jrc-sa-bref-2024
+      - eu-recommendation-2021-2279-pef
+  - rule_id: allocation_residual_shared_burdens
+    applies_to: "Saleable meat and co-products"
+    rule: "After subdivision, allocate only residual shared burdens using the governing study method; document the physical or economic relation, factors, reference period and affected processes."
+    source_ids:
+      - eu-recommendation-2021-2279-pef
+  - rule_id: allocation_waste_no_credit
+    applies_to: "Condemned carcass, digestive contents, rejected material, wastewater, sludge and packaging waste"
+    rule: "Do not assign avoided-product credit solely because a waste stream has incidental revenue; disclose downstream treatment and any separately justified recovery model."
+    source_ids:
+      - ec-jrc-sa-bref-2024
+      - eu-recommendation-2021-2279-pef
+  - rule_id: allocation_consistency_and_sensitivity
+    applies_to: "Foreground and upstream datasets"
+    rule: "Preserve disclosed upstream allocation, apply one consistent foreground method during the reference period and test a material alternative when the allocation choice materially changes the reference-product result."
+    source_ids:
+      - eu-recommendation-2021-2279-pef
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_receiving_lairage_records
+      process_id: "live_sheep_receiving_and_lairage"
+      flow_role: "Live sheep; stage utilities; accepted sheep; dead-on-arrival sheep; manure; lairage wastewater; direct air emissions"
+      record_type: "Weighbridge or livestock scale, receipt log, meter, invoice, stock record and waste transfer record"
+      raw_fields: "timestamp; lot; supplier and origin; live weight; acceptance; meter or stock quantity by exact carrier; water; output mass or volume; destination; emission measurement or factor"
+      collection_method: "Record each receipt and exact exchange, then reconcile accepted live weight to slaughter transfer"
+      unit: "kg, kWh, MJ or m3 as specified by the card"
+      frequency: "Each receipt and each meter period"
+      temporal_coverage: "At least one representative continuous 12-month period or every campaign in a disclosed shorter seasonal period"
+      site_scope: "Every included receiving and lairage area"
+      aggregation_rule: "Aggregate only identical exchanges within the same site and period; retain rejected lots and destinations separately"
+      quality_evidence: "Scale and meter calibration; supplier record; invoice; stock reconciliation; signed waste transfer record"
+    - protocol_id: cp_slaughter_records
+      process_id: "slaughter_bleeding_skinning_evisceration"
+      flow_role: "Accepted sheep; stage utilities; carcass; blood; sheepskin; organs; digestive contents; condemned carcass; high-load wastewater; direct air emissions"
+      record_type: "Slaughter lot record, calibrated scale, meter, collection vessel record, laboratory result and waste transfer record"
+      raw_fields: "lot; input live weight; carcass mass; exact co-product or waste identity; mass; wastewater volume; destination; meter or stock quantity; emission basis"
+      collection_method: "Record each slaughter lot and separately weigh or meter every named output and utility"
+      unit: "kg, kWh, MJ or m3 as specified by the card"
+      frequency: "Each lot or production shift"
+      temporal_coverage: "Same period as reference-product output"
+      site_scope: "Every included slaughter line"
+      aggregation_rule: "Reconcile live weight, carcass, co-products, wastes and quantified losses by lot and reporting period"
+      quality_evidence: "Scale and meter calibration; signed lot record; inspection or release record; destination evidence; mass-balance worksheet"
+    - protocol_id: cp_dressing_cutting_records
+      process_id: "carcass_dressing_and_cutting"
+      flow_role: "Carcass; stage utilities; meat cuts; fat; bones; trimmings; off-spec meat; wastewater; direct air emissions"
+      record_type: "Cutting-lot record, calibrated scale, meter, product release and waste record"
+      raw_fields: "lot; carcass input; net meat output; exact co-product or waste identity; mass; wastewater volume; destination; meter or stock quantity; emission basis"
+      collection_method: "Record each dressing or cutting lot and preserve bone-in or boneless product identity"
+      unit: "kg, kWh, MJ or m3 as specified by the card"
+      frequency: "Each lot or shift"
+      temporal_coverage: "Same period as reference-product output"
+      site_scope: "Every included dressing and cutting line"
+      aggregation_rule: "Reconcile input carcass mass to meat, co-products, wastes and stock change without merging stream identities"
+      quality_evidence: "Scale and meter calibration; cut specification; release record; waste record; reconciliation worksheet"
+    - protocol_id: cp_freezing_records
+      process_id: "prechilling_and_freezing"
+      flow_role: "Unfrozen meat; stage utilities; R-717; R-134a; frozen intermediate; defrost wastewater; off-spec meat; direct emissions"
+      record_type: "Batch or continuous-line record, energy meter, refrigerant service and inventory record, temperature log and scale"
+      raw_fields: "lot; input and output mass; start and end time; declared frozen-state evidence; electricity and each thermal carrier; refrigerant stock, purchase, recharge, recovery and closing stock; wastewater; rejects"
+      collection_method: "Record each freezing lot or campaign and reconcile product, energy, refrigerant and wastewater records"
+      unit: "kg, kWh, MJ, m3 and recorded temperature unit"
+      frequency: "Each lot or campaign; refrigerant at each service event"
+      temporal_coverage: "Same period as reference-product output"
+      site_scope: "Every included pre-chilling and freezing system"
+      aggregation_rule: "Keep each energy carrier and refrigerant separate; calculate net refrigerant loss by substance; aggregate only conforming like product forms"
+      quality_evidence: "Scale, meter and temperature-sensor calibration; service certificate; stock reconciliation; batch release"
+    - protocol_id: cp_packaging_storage_release_records
+      process_id: "packaging_frozen_storage_and_release"
+      flow_role: "Frozen meat; exact packaging products; stage utilities; R-717; R-134a; reference product; product loss; each packaging waste; wastewater; direct emissions"
+      record_type: "Filler or packing scale, packaging issue record, warehouse movement, refrigerant record, meter and release record"
+      raw_fields: "lot; frozen input; net packed output; exact packaging identity and mass; return and reuse; waste mass; storage time and condition; refrigerant fields; meter quantity; release status"
+      collection_method: "Record each lot through released warehouse quantity and exclude packaging from net product mass"
+      unit: "kg, kWh, MJ, m3 and recorded storage-condition unit"
+      frequency: "Each lot plus continuous storage meters"
+      temporal_coverage: "Same period as reference-product output"
+      site_scope: "Every included packing line and on-site frozen store"
+      aggregation_rule: "Net product excludes packaging; keep every product, packaging material, waste and refrigerant identity separate"
+      quality_evidence: "Scale and meter calibration; packaging specification; warehouse reconciliation; release record; refrigerant service evidence"
+    - protocol_id: cp_cleaning_disinfection_records
+      process_id: "cleaning_and_disinfection"
+      flow_role: "Stage utilities; sodium hydroxide; nitric acid; sodium hypochlorite; peracetic acid; sanitation wastewater; solid residue; direct air emissions"
+      record_type: "Sanitation schedule, chemical issue record, water and energy meter, wastewater record and residue transfer record"
+      raw_fields: "serviced process; time; exact chemical; formulated mass and concentration; unused return; water; energy carrier; wastewater volume; residue mass; destination; emission basis"
+      collection_method: "Record each sanitation event and allocate only shared service using a documented causal driver"
+      unit: "kg, kWh, MJ or m3 as specified by the card"
+      frequency: "Each sanitation event and meter period"
+      temporal_coverage: "Same period as reference-product output"
+      site_scope: "All sanitation serving included processes"
+      aggregation_rule: "Keep each chemical and energy carrier separate; do not double count water reused internally"
+      quality_evidence: "Chemical certificate and issue reconciliation; meter calibration; sanitation verification; wastewater and waste record"
+    - protocol_id: cp_onsite_wastewater_records
+      process_id: "onsite_wastewater_treatment"
+      flow_role: "Ordinary wastewater; high-load wastewater; exact treatment chemicals; stage utilities; treated wastewater; sludge; screenings; air and water emissions"
+      record_type: "Influent and effluent meter, composite sample, laboratory report, chemical issue, energy meter, sludge scale and transfer record"
+      raw_fields: "date and time; influent class and volume; chemical identity and quantity; energy carrier; effluent volume; COD; total nitrogen; total phosphorus; suspended solids; sludge and screenings mass; destination; air-emission basis"
+      collection_method: "Match flow-weighted samples to discharge volume and keep ordinary and high-load influent separate"
+      unit: "kg, kWh, MJ, m3 and concentration unit"
+      frequency: "Continuous volume with sampling frequency disclosed"
+      temporal_coverage: "Same period as reference-product output"
+      site_scope: "Every included on-site treatment line and discharge point"
+      aggregation_rule: "Calculate each water pollutant independently from matched volume and concentration; separately reconcile sludge and screenings"
+      quality_evidence: "Flowmeter and laboratory QA; sampling plan; chemical issue; sludge scale; discharge and transfer records"
+  calculation_rules:
+    - id: calc_reference_normalization
+      applies_to: "All included inventory"
+      rule: "normalized amount = reporting-period exchange amount divided by net conforming frozen sheep-meat mass released; packaging is excluded from the denominator"
+      inputs:
+        - "period exchange amount"
+        - "released net reference-product mass"
+      output: "amount per 1 kg reference product"
+      source_ids:
+        - eu-recommendation-2021-2279-pef
+    - id: calc_process_mass_balance
+      applies_to: "Each foreground process"
+      rule: "opening stock plus external and internal inputs equals closing stock plus products, co-products, wastes, internal transfers and quantified loss; report the residual without forcing closure"
+      inputs:
+        - stock
+        - input
+        - output
+        - "transfer and reject records"
+      output: "process mass-balance residual"
+      source_ids:
+        - ec-jrc-sa-bref-2024
+        - eu-recommendation-2021-2279-pef
+    - id: calc_live_to_carcass_reconciliation
+      applies_to: "Receiving and slaughter"
+      rule: "reconcile accepted live weight to dressed carcass, blood, skin, organs, digestive contents, condemned material and documented residual"
+      inputs:
+        - live-weight
+        - "carcass and separated-stream records"
+      output: "slaughter mass-balance residual"
+      source_ids:
+        - ec-jrc-sa-bref-2024
+    - id: calc_stage_utility_allocation
+      applies_to: "Shared utilities"
+      rule: "assign a directly metered quantity first; allocate only the reconciled shared residual using a documented causal driver such as operating time, throughput or measured load"
+      inputs:
+        - sub-meter
+        - "site total"
+        - export
+        - "operating driver and process output"
+      output: "carrier amount by process"
+      source_ids:
+        - ec-jrc-sa-bref-2024
+        - eu-recommendation-2021-2279-pef
+    - id: calc_combustion_emissions
+      applies_to: "Natural gas, diesel and LPG use"
+      rule: "calculate each named air emission from the measured fuel amount and the documented site measurement or emission factor; preserve factor basis and fuel convention"
+      inputs:
+        - "fuel amount"
+        - "measured concentration or factor"
+        - "operating record"
+      output: "kg of each named air emission"
+      source_ids:
+        - ec-jrc-sa-bref-2024
+        - eu-recommendation-2021-2279-pef
+    - id: calc_refrigerant_loss
+      applies_to: "R-717 and R-134a systems"
+      rule: "unrecovered loss = opening stock plus purchases plus recharge transfers in minus recovered quantity minus closing stock minus documented transfers out; calculate separately by substance"
+      inputs:
+        - "refrigerant stock and service records"
+      output: "kg make-up and kg unrecovered emission by substance"
+      source_ids:
+        - ec-jrc-sa-bref-2024
+        - eu-recommendation-2021-2279-pef
+    - id: calc_wastewater_load
+      applies_to: "On-site treatment discharge"
+      rule: "pollutant load = matched treated-wastewater volume multiplied by the measured concentration; calculate COD, total nitrogen, total phosphorus and suspended solids independently"
+      inputs:
+        - "discharge volume"
+        - "matched concentration"
+        - "sampling period"
+      output: "kg of each named water emission"
+      source_ids:
+        - ec-jrc-sa-bref-2024
+        - eu-recommendation-2021-2279-pef
+    - id: calc_coproduct_allocation
+      applies_to: "Residual shared burdens"
+      rule: "allocated burden for output i = residual shared burden multiplied by the disclosed allocation factor for output i; factors shall sum to one across the allocated outputs"
+      inputs:
+        - "residual burden"
+        - "product quantities"
+        - "physical relation or economic value"
+        - "reference period"
+      output: "allocated residual burden and sensitivity result"
+      source_ids:
+        - eu-recommendation-2021-2279-pef
+  data_quality_requirements:
+    - id: dq_product_identity
+      applies_to: "Reference product and intermediate meat"
+      requirement: "Demonstrate sheep species, frozen state, product form, bone status, lot identity and conformity; do not use the CPC 21135 UUID for edible offal or prepared meat."
+      evidence: "Product specification; lot record; release record; selected Tiangong UUID"
+    - id: dq_temporal_representativeness
+      applies_to: "All foreground records"
+      requirement: "Use one representative continuous 12-month period for year-round operation or all production campaigns in a shorter disclosed seasonal period; register gaps and substitutions."
+      evidence: "Meter and batch coverage; production calendar; gap register"
+    - id: dq_geographic_and_technical_scope
+      applies_to: "Site and upstream datasets"
+      requirement: "Match actual slaughter geography, sheep supply, process technology, freezing system and wastewater route; disclose every proxy and material mismatch."
+      evidence: "Site metadata; supplier origin; equipment records; dataset geography and technology"
+    - id: dq_inventory_completeness
+      applies_to: "All included processes"
+      requirement: "Cover all known energy, water, material and chemical inputs and every product, co-product, waste and direct emission output; document a specific non-applicability or cut-off reason for omissions."
+      evidence: "Complete LCI checklist; bills; stock records; meters; batch and waste records"
+    - id: dq_mass_balance
+      applies_to: "Sheep, carcass, meat and separated streams"
+      requirement: "Reconcile live weight and each process mass balance, disclose measurement uncertainty and investigate material residuals instead of inserting an unmeasured loss."
+      evidence: "Signed balance worksheets; calibrated scales; residual investigation"
+    - id: dq_cold_chain_and_release
+      applies_to: "Pre-chilling, freezing and frozen storage"
+      requirement: "Retain lot-linked evidence of the declared frozen state, storage condition, duration and release status without inventing a default temperature or residence time."
+      evidence: "Temperature log; sensor calibration; warehouse movement; release record"
+    - id: dq_emissions_and_wastewater
+      applies_to: "Air and water emissions"
+      requirement: "Link every calculated emission to measured activity data, a documented measurement or factor, applicable compartment and reference period."
+      evidence: "Measurement report; factor source; fuel record; laboratory QA; calculation worksheet"
+    - id: dq_coproduct_and_waste_status
+      applies_to: "Blood, skin, organs, fat, bones and rejected material"
+      requirement: "Document destination and legal or commercial product status for each stream before treating it as a co-product; retain waste transfer evidence otherwise."
+      evidence: "Sales or transfer record; product specification; waste manifest; allocation worksheet"
+    - id: dq_data_provenance_and_review
+      applies_to: "Foreground data package"
+      requirement: "Retain company-specific source records, transformations, allocation, data-quality ratings, reviewer findings and limitations sufficient to reproduce the inventory."
+      evidence: "Data lineage register; calculation workbook; review record; limitation disclosure"
+validation_rules:
+  - rule_id: validation_reference_identity
+    applies_to: "Reference flow"
+    rule: "The selected flow UUID shall be 7a898ac1-b845-4943-bae3-94e7c24ae06d, a Product flow for exact CPC 21135 using Mass and kg; do not apply it to fresh or chilled sheep meat, edible offal, other species or prepared meat."
+    source_ids:
+      - un-cpc-3-0
+  - rule_id: validation_reference_amount
+    applies_to: "Quantitative reference"
+    rule: "The reference output shall equal exactly 1 kg net conforming frozen sheep meat using Mass 93a60a56-a3c8-11da-a746-0800200b9a66 and kg from unit group 93a60a57-a4c8-11da-a746-0800200c9a66; packaging mass shall be excluded."
+    source_ids:
+      - un-cpc-3-0
+  - rule_id: validation_process_selection
+    applies_to: "Process map"
+    rule: "Include all six required processes and include onsite_wastewater_treatment whenever wastewater is treated at the represented facility."
+    source_ids:
+      - ec-jrc-sa-bref-2024
+      - eu-recommendation-2021-2279-pef
+  - rule_id: validation_atomic_inventory
+    applies_to: "Foreground inventory"
+    rule: "Each card shall contain one exact exchange and one property-unit pair. Reject collection labels, selectors, combined energy carriers, multiple chemicals, multiple packaging materials, multiple wastes or multiple emissions in one Selected flow."
+    source_ids:
+      - ec-jrc-sa-bref-2024
+      - eu-recommendation-2021-2279-pef
+  - rule_id: validation_inventory_coverage
+    applies_to: "Foreground inventory"
+    rule: "Verify separate cards for live sheep, stage water and each energy carrier, each refrigerant make-up and emission, each cleaner and disinfectant, each packaging product and packaging waste, each product or co-product, each waste stream and each direct air or water emission actually present."
+    source_ids:
+      - ec-jrc-sa-bref-2024
+      - eu-recommendation-2021-2279-pef
+  - rule_id: validation_mass_balance
+    applies_to: "Foreground processes"
+    rule: "Report process and reporting-period mass-balance residuals with measurement uncertainty and investigate material residuals; do not fabricate closure."
+    source_ids:
+      - ec-jrc-sa-bref-2024
+      - eu-recommendation-2021-2279-pef
+  - rule_id: validation_frozen_state
+    applies_to: "Reference product"
+    rule: "Demonstrate the declared frozen state and preserve lot-linked pre-chilling, freezing, frozen-storage duration, condition and release evidence; no default temperature or duration may be inferred."
+    source_ids:
+      - un-cpc-3-0
+      - ec-jrc-sa-bref-2024
+  - rule_id: validation_no_utility_double_counting
+    applies_to: "Utilities"
+    rule: "Verify that purchased steam and fuels, purchased hot water and its upstream heat supply, fresh and reused water, and shared utility allocations are each counted once."
+    source_ids:
+      - ec-jrc-sa-bref-2024
+      - eu-recommendation-2021-2279-pef
+  - rule_id: validation_refrigerants
+    applies_to: "Refrigeration"
+    rule: "Reconcile each refrigerant substance independently; a make-up product flow and its corresponding unrecovered air emission shall not be merged or duplicated."
+    source_ids:
+      - ec-jrc-sa-bref-2024
+      - eu-recommendation-2021-2279-pef
+  - rule_id: validation_wastewater
+    applies_to: "Wastewater and on-site treatment"
+    rule: "Keep ordinary and high-organic-load wastewater distinct, reconcile influent, effluent and sludge, and calculate each reported water emission from matched flow and concentration records."
+    source_ids:
+      - ec-jrc-sa-bref-2024
+      - eu-recommendation-2021-2279-pef
+  - rule_id: validation_allocation
+    applies_to: "Co-products and shared operations"
+    rule: "Subdivide directly attributable burdens before allocation; residual allocation factors shall sum to one and the method, period, product status and material sensitivity result shall be disclosed."
+    source_ids:
+      - eu-recommendation-2021-2279-pef
+  - rule_id: validation_collection_links
+    applies_to: "Collected and calculated rows"
+    rule: "Every collected or calculated row shall reference an implemented collection protocol; every calculation shall identify its rule or reproducible worksheet."
+    source_ids:
+      - eu-recommendation-2021-2279-pef
+  - rule_id: validation_data_quality_and_transparency
+    applies_to: "Published data package"
+    rule: "Disclose company-specific data coverage, sources, transformations, proxies, gaps, cut-offs, uncertainty, allocation, data quality and reviewer findings."
+    source_ids:
+      - eu-recommendation-2021-2279-pef
+published_dataset_profile:
+  dataset_role: "Site-specific foreground data package for frozen sheep meat, publishable as a unit process or reviewed gate-to-gate dataset"
+  downstream_use: "secondary_dataset; background_dataset"
+  allowed_use: "Attributional product LCA, supply-chain modelling, facility improvement, hotspot analysis and comparison of like frozen sheep-meat forms when geography, technology, allocation and frozen-state specification are compatible"
+  excluded_use: "Claims for fresh or chilled meat, edible offal, goat or other species, prepared meat, food-safety certification, nutrition claims, or use outside the represented geography, period and technology without representativeness review"
+  required_metadata: "PCR id and lifecycle state; CPC 21135 product identity and Tiangong UUID; sheep origin; facility and geography; carcass or cut form; bone status; freezing and storage technology; frozen-storage duration and condition; reference period; system boundary; upstream datasets; packaging; wastewater route; co-product status; allocation; data owners and review status"
+  required_quality_disclosure: "Primary-data coverage; scale, meter, sensor and laboratory methods; live-weight and process mass-balance residuals; unresolved flow UUIDs; proxy datasets; temporal, geographic and technology limitations; cut-offs; allocation sensitivity; uncertainty; data-quality ratings and reviewer findings"
+  update_trigger: "Change in product form, sheep supply, slaughter or freezing technology, energy system, refrigerant, packaging, wastewater route, co-product status or allocation; new verified Tiangong identity; better representative foreground data; corrected mass balance or source revision"
+data_sources:
+  - id: "un-cpc-3-0"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division. Central Product Classification, Version 3.0, structure and explanatory notes, 30 June 2025; retained raw structure file CPC_Ver_3.0_Structure_30Jun2025.csv. https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Exp_Notes_30Jun2025.pdf. Retrieved 2026-08-13."
+    used_for: "Exact CPC 21135 frozen sheep-meat scope and exclusions from fresh or chilled meat and edible-offal categories"
+  - id: "ec-jrc-sa-bref-2024"
+    type: "official_guidance"
+    reference: "Karlis, P., Presicce, F., Giner Santonja, G., Brinkmann, T. and Roudier, S. Best Available Techniques (BAT) Reference Document for the Slaughterhouses, Animal By-products and/or Edible Co-products Industries. European Commission Joint Research Centre, EUR 31752 EN, JRC135916, 2024. https://doi.org/10.2760/18199; https://publications.jrc.ec.europa.eu/repository/handle/JRC135916. Retrieved 2026-08-13."
+    used_for: "Slaughterhouse process decomposition, utilities, cleaning, refrigeration, wastewater, co-products, wastes, emissions and foreground quality records"
+  - id: "eu-recommendation-2021-2279-pef"
+    type: "official_guidance"
+    reference: "European Commission. Commission Recommendation (EU) 2021/2279 of 15 December 2021 on the use of the Environmental Footprint methods to measure and communicate the life cycle environmental performance of products and organisations, consolidated text 30 December 2021. https://eur-lex.europa.eu/eli/reco/2021/2279/2021-12-30/eng. Retrieved 2026-08-13."
+    used_for: "Product-specific bill of materials, company-specific data, complete LCI, allocation, normalization, transparency, data quality and verification"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:3aac329cd7274e44ca371442fee225b5ac4f2aa028d14d669bd7acfd61b50d5c"
+  generated_content_sha256: "sha256:465f39fb2c2bf66fa82fe2cd8a03ccafe1b5542d2ac9442395a2741bf6351af6"

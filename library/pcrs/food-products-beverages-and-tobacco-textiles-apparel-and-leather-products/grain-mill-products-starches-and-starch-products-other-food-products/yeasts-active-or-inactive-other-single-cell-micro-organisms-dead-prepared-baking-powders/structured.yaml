@@ -1,10 +1,1048 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "23996"
-  title: "Yeasts (active or inactive); other single-cell micro-organisms, dead; prepared baking powders"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.food-products-beverages-and-tobacco-textiles-apparel-and-leather-products.grain-mill-products-starches-and-starch-products-other-food-products.yeasts-active-or-inactive-other-single-cell-micro-organisms-dead-prepared-baking-powders"
+  classification_refs: "CPC 3.0: 23996"
+  covered_products: "Active or inactive yeasts; other dead single-cell micro-organisms sold as products; prepared baking powders"
+  excluded_products: "Products outside CPC 23996; downstream baked foods or fermentation services; separately sold baking-powder ingredients; downstream use and end-of-life unless explicitly included"
+  representative_product: "Dried yeast, specifically the declared dried-yeast form; the Tiangong record is feed-grade and is representative only when that identity matches"
+  production_route: "Route-specific microbial cultivation, recovery, inactivation and/or drying; or dry-ingredient receiving, dosing, blending and packing for prepared baking powder"
+  market_state: "One declared factory-gate product with specified biological state, form, moisture or dry-matter basis, grade, formulation where applicable, and packaging state"
+functional_unit:
+  what: "Provision of the declared CPC 23996 yeast, dead single-cell micro-organism, or prepared baking powder at the factory gate"
+  how_much: "1 kg net mass of conforming declared product"
+  how_well: "Meets the declared product specification for identity, biological activity or dead/inactive state, physical form, moisture or dry matter, grade, formulation where applicable, and packaging state"
+  how_long_or_cycle: "One production batch or reporting-period output at the factory gate; no use-stage duration is implied"
+  reference_flow_link: "The reference product output of packaging_and_dispatch, normalized to 1 kg net declared product"
+system_boundary:
+  rules:
+    - rule_id: boundary_route_specific_operations
+      applies_to: "Foreground manufacturing"
+      rule: "Include every applicable controlled operation from input receipt through the declared factory-gate product. For microbial products this may include culture and feed preparation, aerobic cultivation, recovery, inactivation, drying and finishing; for prepared baking powder it includes ingredient receipt, dosing, blending, quality control and packing."
+      source_ids:
+        - us-epa-ap42-yeast-1995
+        - canada-cfcs-baking-powder
+    - rule_id: boundary_upstream_links
+      applies_to: "Purchased inputs and services"
+      rule: "Keep purchased materials, cultures, ingredients, energy, water supply, packaging, transport services, and external treatment as explicit inputs linked to appropriate upstream datasets; do not omit a material input merely because it is outside direct operational control."
+      source_ids:
+        - iso-14044-2006
+        - eu-commission-pef-2021
+    - rule_id: boundary_direct_releases
+      applies_to: "Direct emissions and wastes"
+      rule: "Record direct releases and treatment transfers from applicable fermentation, separation, drying, powder handling, cleaning, and wastewater operations using facility records; do not use the absence of a default factor as evidence of zero."
+      source_ids:
+        - us-epa-ap42-yeast-1995
+        - iso-14044-2006
+    - rule_id: boundary_category_not_route_average
+      applies_to: "Product and route selection"
+      rule: "Include only the process modules that apply to the declared product. Do not apply a dried-yeast process, biological activity assumption, or reference UUID to inactive yeast, other dead single-cell organisms, or prepared baking powder without an explicit match."
+      source_ids:
+        - un-cpc-v3-23996
+    - rule_id: boundary_packaging_and_dispatch
+      applies_to: "Factory-gate market state"
+      rule: "Include packaging and dispatch preparation when they are part of the declared market state, keep packaging mass outside net product mass, and disclose any deliberate packaging exclusion."
+      source_ids:
+        - eu-commission-pef-2021
+boundary_abstraction:
+  declared_starting_condition: "Purchased substrates, cultures, ingredients, processing aids, utilities, and packaging are received at the reporting facility in their documented as-received state."
+  starting_condition_role: "Foreground manufacturing gate; upstream production remains in linked supplier or background datasets."
+  product_classification_scope: "CPC 3.0 subclass 23996, while each data package represents one specifically declared product and route."
+  recursive_input_rule: "A purchased input that is itself in CPC 23996 remains a visible product input linked to a separate upstream dataset; do not recursively absorb it into the same foreground process or relabel it with the representative UUID."
+  upstream_dataset_requirement: "Link all material purchased substrates, ingredients, cultures, nutrients, utilities, packaging materials, and externally treated wastes to geographically, temporally, technologically, and product-form appropriate datasets."
+  disclosure: "Declare the actual product family, biological state, formulation or organism, physical form, moisture basis, grade, production route, reporting period, facility coverage, packaging state, excluded operations, same-category inputs, and product-flow substitution decision."
+reference_flow_definition:
+  reference_amount: "1 kg net declared product at factory gate"
+  product_flow_ref:
+    name: "dried yeast, feed-grade"
+    uuid: "3ea5b163-5e50-4f40-bf13-8a6c3f10d1b6"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "product family"
+    - "organism and strain when applicable"
+    - active
+    - inactive
+    - "or dead state"
+    - "product form"
+    - "moisture or dry-matter basis"
+    - "grade and intended use"
+    - "formulation or ingredient classes when applicable"
+    - "production route"
+    - geography
+    - "technology and reporting period"
+    - "packaging state"
+    - "exact Tiangong flow-match decision"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "Reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Normalize the inventory to 1 kg net mass of conforming declared product at the factory gate."
+  - id: net_mass_excludes_packaging
+    applies_to: "Reference product and packaging"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Exclude packaging mass from the 1 kg reference amount and record packaging as separate inventory inputs."
+  - id: moisture_basis_disclosure
+    applies_to: "Wet, cream, compressed, dried, or powdered microbial products"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Record as-sold mass and moisture or dry-matter fraction. Convert between wet and dry bases only from product-specific measured values and retain the calculation."
+  - id: formulation_mass_basis
+    applies_to: "Prepared baking powder"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Record each formulation ingredient on the same as-received mass basis and reconcile ingredient, product, waste, and stock-change masses."
+  - id: representative_flow_match
+    applies_to: "Product-flow identity"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Use the representative dried-yeast UUID only for a matching dried-yeast, feed-grade product; otherwise replace it with the closest verified real product flow and disclose the decision."
+process_map:
+  - id: raw_material_preparation
+    name: "Raw-material, ingredient, or culture preparation"
+    inclusion: "required"
+    inclusion_condition: "Always; apply the route-specific preparation steps and inputs"
+    role: "Foreground input receiving, storage, dosing, preparation, clarification or sanitation"
+    quantitative_reference: "Mass of prepared feed, ingredient blend, or material transferred to the next applicable process"
+  - id: microbial_biomass_production
+    name: "Microbial cultivation or propagation"
+    inclusion: "conditional"
+    inclusion_condition: "Include when the declared yeast or single-cell product is cultivated at the reporting facility"
+    role: "Foreground biological production"
+    quantitative_reference: "Mass of recovered-broth or culture output transferred to recovery"
+  - id: biomass_recovery_and_finishing
+    name: "Biomass recovery, inactivation, drying, and finishing"
+    inclusion: "conditional"
+    inclusion_condition: "Include for microbial products when separation, killing/inactivation, concentration, extrusion, drying, milling, or finishing occurs"
+    role: "Foreground recovery and product-form creation"
+    quantitative_reference: "Mass of finished microbial product transferred to packaging"
+  - id: baking_powder_formulation
+    name: "Prepared baking-powder formulation"
+    inclusion: "conditional"
+    inclusion_condition: "Include when the declared product is prepared baking powder"
+    role: "Foreground dosing, blending, quality control and bulk finishing"
+    quantitative_reference: "Mass of conforming prepared baking powder transferred to packaging"
+  - id: packaging_and_dispatch
+    name: "Packaging and factory-gate dispatch"
+    inclusion: "required"
+    inclusion_condition: "Always; record bulk delivery explicitly when no packaging is used"
+    role: "Foreground creation of declared factory-gate market state"
+    quantitative_reference: "Net mass of conforming declared product dispatched"
+process_inventory:
+  - id: raw_material_preparation
+    label: "Raw-material, ingredient, or culture preparation"
+    inputs:
+      product:
+        - row_id: raw_primary_materials
+          role: "Declared primary materials"
+          name: "Route-specific purchased primary materials"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record all as-received primary materials for the selected route: culture and carbon source, nutrients and processing aids for microbial production, or bicarbonate, acid-reacting material, starch or other neutral carrier for prepared baking powder."
+          amount:
+            expression: "Measured as-received mass transferred into the batch or reporting period, corrected for documented returns and stock change"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "Per 1 kg net declared product at factory gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_raw_material_preparation
+              source_ids:
+                - us-epa-ap42-yeast-1995
+                - canada-cfcs-baking-powder
+            ranges: []
+        - row_id: raw_preparation_water
+          role: "Preparation water"
+          name: "Process water"
+          flow_type: "product"
+          property_unit: "Mass or volume / kg or m3 with measured density conversion where needed"
+          description: "Record water entering dilution, cleaning, clarification, sanitation, or other route-specific preparation when it crosses the foreground boundary."
+          amount:
+            expression: "Metered or batch-recorded water attributable to this process"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "Per 1 kg net declared product at factory gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_raw_material_preparation
+              source_ids: []
+            ranges: []
+        - row_id: raw_preparation_energy
+          role: "Preparation energy"
+          name: "Purchased electricity and thermal-energy carriers by carrier"
+          flow_type: "product"
+          property_unit: "Energy / kWh for electricity and MJ for thermal energy or fuel-specific physical units"
+          description: "Record purchased electricity and thermal-energy carriers used for receiving, storage, dosing, dissolution, clarification, sterilization, sanitation, and ingredient handling."
+          amount:
+            expression: "Metered or allocated energy use for the applicable preparation operations"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "Per 1 kg net declared product at factory gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_raw_material_preparation
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: prepared_route_material
+          role: "Prepared route feed or ingredient set"
+          name: "Route-specific prepared feed or ingredient intermediate"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the prepared material transferred to cultivation, recovery, or formulation without treating the intermediate as the reference product."
+          amount:
+            expression: "Measured transfer mass by batch or reporting period"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "Per process output transferred to the next applicable process"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_raw_material_preparation
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: raw_preparation_waste
+          role: "Preparation residues and wastewater"
+          name: "Route-specific preparation waste or wastewater"
+          flow_type: "waste"
+          property_unit: "Mass or volume / kg or m3"
+          description: "Record rejected ingredients, clarification residues, cleaning wastewater, and other preparation wastes separately by destination and treatment route."
+          amount:
+            expression: "Weighed, metered, or transfer-document amount by waste type and destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "Per 1 kg net declared product at factory gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_raw_material_preparation
+              source_ids: []
+            ranges: []
+      elementary:
+        []
+  - id: microbial_biomass_production
+    label: "Microbial cultivation or propagation"
+    inputs:
+      product:
+        - row_id: cultivation_feed_and_inoculum
+          role: "Prepared culture feed and inoculum"
+          name: "Product-specific cultivation feed, inoculum, nutrients, and additives"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record prepared carbon source, inoculum, nutrients, vitamins, pH-control agents, and other product inputs actually used in cultivation."
+          amount:
+            expression: "Batch or reporting-period material issue records reconciled with returns and stock change"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "Per kg recovered-broth or culture output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_microbial_biomass_production
+              source_ids:
+                - us-epa-ap42-yeast-1995
+            ranges: []
+        - row_id: cultivation_water
+          role: "Cultivation water"
+          name: "Process water"
+          flow_type: "product"
+          property_unit: "Mass or volume / kg or m3"
+          description: "Record process and cleaning water attributable to cultivation, distinguishing water retained in product from wastewater where measured."
+          amount:
+            expression: "Metered or batch-recorded cultivation and cleaning water"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "Per kg recovered-broth or culture output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_microbial_biomass_production
+              source_ids:
+                - us-epa-ap42-yeast-1995
+            ranges: []
+        - row_id: cultivation_energy
+          role: "Aeration and cultivation energy"
+          name: "Purchased electricity and thermal-energy carriers by carrier"
+          flow_type: "product"
+          property_unit: "Energy / kWh or MJ"
+          description: "Record electricity for aeration, agitation, pumps and controls and thermal energy for sterilization or temperature control by actual carrier."
+          amount:
+            expression: "Metered use or justified equipment-level allocation for cultivation"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "Per kg recovered-broth or culture output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_microbial_biomass_production
+              source_ids:
+                - us-epa-ap42-yeast-1995
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: cultivation_biomass_output
+          role: "Cultivation broth or wet biomass"
+          name: "Product-specific cultivation broth or wet biomass"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the mass and solids or dry-matter content of broth or wet biomass transferred to recovery."
+          amount:
+            expression: "Measured transfer mass with measured solids or dry-matter fraction"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "Per cultivation batch"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_microbial_biomass_production
+              source_ids:
+                - us-epa-ap42-yeast-1995
+            ranges: []
+      waste:
+        - row_id: cultivation_wastewater
+          role: "Cultivation wastewater and discarded broth"
+          name: "Cultivation wastewater or discarded broth"
+          flow_type: "waste"
+          property_unit: "Mass or volume / kg or m3"
+          description: "Record discharged or treated broth, cleaning liquid, and other cultivation wastewater by treatment destination."
+          amount:
+            expression: "Metered discharge or treatment-transfer amount"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "Per kg recovered-broth or culture output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_microbial_biomass_production
+              source_ids:
+                - us-epa-ap42-yeast-1995
+            ranges: []
+      elementary:
+        - row_id: cultivation_carbon_dioxide
+          role: "Direct cultivation carbon dioxide"
+          name: "Carbon dioxide to air, with fossil or biogenic identity declared"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record biogenic or fossil carbon dioxide released directly from cultivation according to the declared carbon accounting method; do not infer zero from missing default data."
+          amount:
+            expression: "Site measurement or an approved carbon-balance calculation from collected foreground records"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "Per kg recovered-broth or culture output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_microbial_biomass_production
+              source_ids:
+                - us-epa-ap42-yeast-1995
+            ranges: []
+        - row_id: cultivation_voc
+          role: "Direct cultivation volatile organic compounds"
+          name: "Product- and jurisdiction-appropriate VOC elementary flow to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record facility-specific volatile organic compound releases when applicable. EPA AP-42 factors shall not replace site records without an explicit suitability review because the source reports high variation among facilities and batches."
+          amount:
+            expression: "Measured or facility-approved calculated release by reporting period"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "Per kg recovered-broth or culture output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_microbial_biomass_production
+              source_ids:
+                - us-epa-ap42-yeast-1995
+            ranges: []
+  - id: biomass_recovery_and_finishing
+    label: "Biomass recovery, inactivation, drying, and finishing"
+    inputs:
+      product:
+        - row_id: recovery_biomass_input
+          role: "Cultivation broth or wet biomass input"
+          name: "Product-specific cultivation broth or wet biomass"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the incoming microbial intermediate with measured mass and solids or dry-matter content."
+          amount:
+            expression: "Measured transfer mass reconciled to the cultivation output"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "Per kg finished microbial product"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_biomass_recovery_finishing
+              source_ids:
+                - us-epa-ap42-yeast-1995
+            ranges: []
+        - row_id: recovery_finishing_aids
+          role: "Recovery and finishing aids"
+          name: "Product-specific recovery and finishing aids"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record water, emulsifiers, cutting oils, carriers, anti-caking agents, and other aids only when actually used, with the product-specific function disclosed."
+          amount:
+            expression: "Batch issue or dosing record"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "Per kg finished microbial product"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_biomass_recovery_finishing
+              source_ids:
+                - us-epa-ap42-yeast-1995
+            ranges: []
+        - row_id: recovery_drying_energy
+          role: "Recovery and drying energy"
+          name: "Purchased electricity and thermal-energy carriers by carrier"
+          flow_type: "product"
+          property_unit: "Energy / kWh or MJ"
+          description: "Record electricity and thermal energy for centrifugation, filtration, inactivation, extrusion, drying, milling, cooling and other applicable finishing operations by carrier."
+          amount:
+            expression: "Metered use or justified equipment-level allocation for the applicable operations"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "Per kg finished microbial product"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_biomass_recovery_finishing
+              source_ids:
+                - us-epa-ap42-yeast-1995
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: finished_microbial_product
+          role: "Finished microbial product"
+          name: "Product-specific finished microbial product"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the conforming active or inactive yeast or other dead single-cell microbial product in its declared as-sold form, together with moisture or dry-matter and biological-state evidence."
+          amount:
+            expression: "Measured conforming product mass transferred to packaging"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "Per recovery and finishing batch"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_biomass_recovery_finishing
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: recovery_waste
+          role: "Recovery liquid and rejected biomass"
+          name: "Route-specific recovery waste or wastewater"
+          flow_type: "waste"
+          property_unit: "Mass or volume / kg or m3"
+          description: "Record separation liquid, rejected biomass, filter residues, off-specification material, and cleaning wastewater separately by treatment or recovery route."
+          amount:
+            expression: "Weighed, metered, or transfer-document amount by waste type"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "Per kg finished microbial product"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_biomass_recovery_finishing
+              source_ids:
+                - us-epa-ap42-yeast-1995
+            ranges: []
+      elementary:
+        - row_id: recovery_drying_air_emissions
+          role: "Recovery and drying air emissions"
+          name: "Pollutant-specific elementary flows to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record direct dust, particulate, VOC, combustion, or other releases from applicable recovery and drying equipment using facility-specific measurement or approved calculations."
+          amount:
+            expression: "Measured or facility-approved calculated releases by pollutant and reporting period"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "Per kg finished microbial product"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_biomass_recovery_finishing
+              source_ids:
+                - us-epa-ap42-yeast-1995
+            ranges: []
+  - id: baking_powder_formulation
+    label: "Prepared baking-powder formulation"
+    inputs:
+      product:
+        - row_id: baking_powder_bicarbonate
+          role: "Bicarbonate component"
+          name: "Sodium or potassium bicarbonate used in the declared formulation"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the actual sodium or potassium bicarbonate ingredient by supplier, grade, and lot."
+          amount:
+            expression: "Weighed batch dose reconciled with inventory issue records"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "Per kg conforming prepared baking powder"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_baking_powder_formulation
+              source_ids:
+                - canada-cfcs-baking-powder
+            ranges: []
+        - row_id: baking_powder_acid_component
+          role: "Acid-reacting component"
+          name: "Declared acid-reacting material"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record each acid-reacting material in the declared formulation by chemical identity, supplier, grade, and lot."
+          amount:
+            expression: "Weighed batch dose reconciled with inventory issue records"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "Per kg conforming prepared baking powder"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_baking_powder_formulation
+              source_ids:
+                - canada-cfcs-baking-powder
+            ranges: []
+        - row_id: baking_powder_carrier
+          role: "Starch or neutral carrier"
+          name: "Declared starch or neutral carrier"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record starch or other neutral material in the declared formulation by material identity, supplier, grade, and lot."
+          amount:
+            expression: "Weighed batch dose reconciled with inventory issue records"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "Per kg conforming prepared baking powder"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_baking_powder_formulation
+              source_ids:
+                - canada-cfcs-baking-powder
+            ranges: []
+        - row_id: baking_powder_energy
+          role: "Formulation energy"
+          name: "Purchased electricity and other energy carriers by carrier"
+          flow_type: "product"
+          property_unit: "Energy / kWh or MJ"
+          description: "Record electricity and other energy used for conveying, sieving, dosing, blending, dust collection, quality control, and bulk transfer."
+          amount:
+            expression: "Metered use or justified equipment-level allocation"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "Per kg conforming prepared baking powder"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_baking_powder_formulation
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: finished_baking_powder
+          role: "Conforming prepared baking powder"
+          name: "Prepared baking powder matching the declared formulation"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the conforming bulk blend with formulation identifier and product-quality release evidence before packaging."
+          amount:
+            expression: "Measured conforming product mass released to packaging"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "Per formulation batch"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_baking_powder_formulation
+              source_ids:
+                - canada-cfcs-baking-powder
+            ranges: []
+      waste:
+        - row_id: baking_powder_waste
+          role: "Off-specification blend and collected powder"
+          name: "Prepared-baking-powder production waste by destination"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record off-specification blend, recovered dust, spills, and cleaning residues separately by reuse, rework, treatment, or disposal destination."
+          amount:
+            expression: "Weighed waste, rework, or transfer amount by batch"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "Per kg conforming prepared baking powder"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_baking_powder_formulation
+              source_ids: []
+            ranges: []
+      elementary:
+        - row_id: baking_powder_air_emissions
+          role: "Powder-handling air emissions"
+          name: "Pollutant-specific elementary flows to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record direct particulate or ingredient-specific air releases after control when applicable; a dust-collection record alone is not evidence that the release is zero."
+          amount:
+            expression: "Measured or facility-approved calculated release by reporting period"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "Per kg conforming prepared baking powder"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_baking_powder_formulation
+              source_ids: []
+            ranges: []
+  - id: packaging_and_dispatch
+    label: "Packaging and factory-gate dispatch"
+    inputs:
+      product:
+        - row_id: bulk_conforming_product
+          role: "Bulk conforming product"
+          name: "Declared bulk conforming product"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the conforming microbial product or prepared baking powder transferred into packaging or bulk dispatch."
+          amount:
+            expression: "Measured transfer mass reconciled with the applicable upstream process output"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "Per kg net declared product dispatched"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_and_dispatch
+              source_ids: []
+            ranges: []
+        - row_id: packaging_materials
+          role: "Packaging materials"
+          name: "Packaging components by material and component type"
+          flow_type: "product"
+          property_unit: "Mass or item count converted with measured component mass / kg"
+          description: "Record primary, secondary, and tertiary packaging placed on the market or consumed in dispatch, separately by material and component."
+          amount:
+            expression: "Purchased or issued packaging reconciled with packaged output, rejects, returns, and stock change"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "Per kg net declared product dispatched"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_and_dispatch
+              source_ids:
+                - eu-commission-pef-2021
+            ranges: []
+        - row_id: packaging_dispatch_energy
+          role: "Packaging and dispatch energy"
+          name: "Purchased electricity and other energy carriers by carrier"
+          flow_type: "product"
+          property_unit: "Energy / kWh or MJ"
+          description: "Record electricity and other energy used for filling, sealing, labelling, palletizing, bulk loading, controlled storage, and factory-gate dispatch preparation."
+          amount:
+            expression: "Metered use or justified equipment-level allocation"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "Per kg net declared product dispatched"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_and_dispatch
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: factory_gate_reference_product
+          role: "Factory-gate reference product"
+          name: "dried yeast, feed-grade"
+          flow_type: "product"
+          flow_ref:
+            uuid: "3ea5b163-5e50-4f40-bf13-8a6c3f10d1b6"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This is the reference output. The selected Tiangong UUID represents dried yeast, feed-grade only. Replace it for any non-matching product or form and retain the product-flow identity decision with the data package."
+          amount:
+            expression: "1 kg net conforming declared product at factory gate; packaging mass is excluded"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "PCR reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_and_dispatch
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: packaging_dispatch_waste
+          role: "Packaging rejects and dispatch losses"
+          name: "Packaging and dispatch waste by material and destination"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record rejected packaging, damaged product, recovered product, spills, and dispatch-preparation waste separately by material and destination."
+          amount:
+            expression: "Weighed or documented waste and recovery amount"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "Per kg net declared product dispatched"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_and_dispatch
+              source_ids: []
+            ranges: []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocation_avoid_by_subdivision
+    applies_to: "Separable products, routes, batches, and operations"
+    rule: "Avoid allocation by separately measuring and modelling distinct product routes, batches, unit operations, rework loops, and waste-treatment activities whenever practical."
+    source_ids:
+      - iso-14044-2006
+  - rule_id: allocation_physical_driver
+    applies_to: "Unavoidable shared inputs and emissions"
+    rule: "When subdivision is not practical, allocate shared burdens using a documented causal physical driver such as metered equipment use, processing time, dry-matter throughput, or another measurable relationship appropriate to the shared operation."
+    source_ids:
+      - iso-14044-2006
+  - rule_id: allocation_other_relationship
+    applies_to: "Shared burdens without a defensible physical relationship"
+    rule: "Use another relationship, including economic allocation, only when no defensible causal physical basis exists; disclose the method, data period, prices or other parameters, and a sensitivity check."
+    source_ids:
+      - iso-14044-2006
+  - rule_id: allocation_co_product_accounting
+    applies_to: "Saleable co-products, recovered materials, and rework"
+    rule: "Keep co-product quantities and destinations explicit. Do not treat internal rework as a second product, and do not credit exported material or energy without an explicitly declared system-expansion, substitution, or allocation method consistent with the study goal."
+    source_ids:
+      - iso-14044-2006
+      - eu-commission-pef-2021
+  - rule_id: allocation_category_routes
+    applies_to: "Mixed production of microbial products and prepared baking powder"
+    rule: "Do not allocate category-wide average burdens across materially different organisms, biological states, formulations, or product forms without documented representativeness and product-specific output quantities."
+    source_ids:
+      - un-cpc-v3-23996
+      - iso-14044-2006
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_raw_material_preparation
+      process_id: "raw_material_preparation"
+      flow_role: "Primary materials, water, energy, intermediate output, residues, wastewater"
+      record_type: "Purchase and issue records; scales; meters; batch and cleaning logs; waste transfers"
+      raw_fields: "material_id; supplier; lot; opening_stock; receipts; issues; returns; closing_stock; measured_mass; water_volume; energy_by_carrier; intermediate_mass; waste_mass; wastewater_volume; timestamp"
+      collection_method: "Reconcile material and utility records to each batch or stable reporting period and retain route-specific identities"
+      unit: "kg; m3; kWh; MJ"
+      frequency: "Each batch with reporting-period reconciliation"
+      temporal_coverage: "Declared representative production period covering routine and material campaign variation"
+      site_scope: "Every facility included in the dataset"
+      aggregation_rule: "Sum verified inputs and outputs, apply stock-change corrections, then normalize to net conforming factory-gate output"
+      quality_evidence: "Calibrated scale and meter records; signed batch sheets; invoices; stock reconciliation; waste manifests"
+    - protocol_id: cp_microbial_biomass_production
+      process_id: "microbial_biomass_production"
+      flow_role: "Cultivation inputs, wet biomass, wastewater, direct CO2 and VOC"
+      record_type: "Fermentor batch records; dosing systems; utility meters; laboratory solids tests; discharge and emission records"
+      raw_fields: "strain; batch_id; feed_mass; inoculum_mass; nutrient_mass; water; electricity; thermal_energy; aeration; broth_mass; solids_fraction; wastewater; measured_emissions; operating_time"
+      collection_method: "Collect per fermentor or campaign and reconcile transfers to recovery; distinguish measured emissions from calculations"
+      unit: "kg; m3; kWh; MJ; h"
+      frequency: "Each cultivation batch or campaign"
+      temporal_coverage: "Declared representative period including material product and seasonal variation"
+      site_scope: "Each cultivation line and facility included"
+      aggregation_rule: "Aggregate only comparable product and operating states; normalize to measured recovered-broth or culture output and then to reference product"
+      quality_evidence: "Batch release records; calibrated meters; laboratory results; emission-monitoring method and calculation file"
+    - protocol_id: cp_biomass_recovery_finishing
+      process_id: "biomass_recovery_and_finishing"
+      flow_role: "Recovery inputs, finished microbial product, wastes, wastewater, and direct air releases"
+      record_type: "Transfer scales; moisture or solids tests; dosing and utility records; dryer and filter logs; waste and emission records"
+      raw_fields: "batch_id; incoming_mass; incoming_solids; aids; water; electricity; thermal_energy; product_mass; moisture; biological_state_test; waste_mass; wastewater; pollutant_mass"
+      collection_method: "Reconcile each recovery and finishing batch from incoming intermediate through conforming product and all losses"
+      unit: "kg; m3; kWh; MJ"
+      frequency: "Each batch with reporting-period reconciliation"
+      temporal_coverage: "Declared representative period covering all included product forms and technologies"
+      site_scope: "Each recovery, inactivation, drying, or finishing line included"
+      aggregation_rule: "Normalize to conforming product at the declared moisture basis; keep routes and forms separate unless representativeness is demonstrated"
+      quality_evidence: "Calibrated scale and meter records; laboratory moisture and state tests; equipment logs; waste manifests; emission records"
+    - protocol_id: cp_baking_powder_formulation
+      process_id: "baking_powder_formulation"
+      flow_role: "Formulation ingredients, energy, conforming blend, off-specification material, recovered dust, and releases"
+      record_type: "Supplier and lot records; calibrated dosing scales; batch sheets; utility meters; release tests; dust and waste records"
+      raw_fields: "formulation_id; ingredient_identity; supplier; lot; dose_mass; opening_stock; closing_stock; energy; product_mass; release_result; rework_mass; waste_mass; collected_dust; emitted_dust"
+      collection_method: "Collect each ingredient dose and output by batch and reconcile the complete formulation mass balance"
+      unit: "kg; kWh; MJ"
+      frequency: "Each formulation batch"
+      temporal_coverage: "Declared representative period covering all included formulations"
+      site_scope: "Each blending line and facility included"
+      aggregation_rule: "Keep formulations separate unless a weighted average is justified by production volumes and equivalent performance"
+      quality_evidence: "Approved formulation; supplier certificates; calibrated scale records; signed batch and release records; waste and dust-control records"
+    - protocol_id: cp_packaging_and_dispatch
+      process_id: "packaging_and_dispatch"
+      flow_role: "Bulk product, packaging, energy, reference output, rejects and dispatch losses"
+      record_type: "Transfer and dispatch scales; packaging issue records; component weights; utility meters; packing logs; waste records"
+      raw_fields: "product_id; batch_id; bulk_mass; package_component; component_mass; component_count; energy; dispatched_net_mass; packaging_mass; reject_mass; recovered_product; timestamp"
+      collection_method: "Reconcile bulk input, net dispatched product, packaging issued, rejects, recovered product, and stock change"
+      unit: "kg; item; kWh; MJ"
+      frequency: "Each packing or bulk-dispatch batch"
+      temporal_coverage: "Same period as upstream foreground production"
+      site_scope: "Every packing line, bulk-loading line, and facility included"
+      aggregation_rule: "Sum net conforming dispatch mass and normalize all inventory to 1 kg net product; exclude packaging mass from reference amount"
+      quality_evidence: "Calibrated dispatch scale; packaging specifications; issue records; shipment records; waste records"
+  calculation_rules:
+    - id: calc_reference_normalization
+      applies_to: "All inventory rows"
+      rule: "Normalized amount = verified reporting-period or batch amount divided by net conforming factory-gate product mass on the declared basis."
+      inputs:
+        - "row amount"
+        - "net conforming product mass"
+        - "moisture basis where applicable"
+      output: "Amount per 1 kg net declared product"
+      source_ids:
+        - iso-14044-2006
+    - id: calc_stock_reconciliation
+      applies_to: "Purchased and intermediate materials"
+      rule: "Material consumed = opening stock + receipts - closing stock - documented returns; investigate material differences before normalization."
+      inputs:
+        - "opening stock"
+        - receipts
+        - "closing stock"
+        - returns
+        - "issue records"
+      output: "Reconciled material consumption"
+      source_ids:
+        - iso-14044-2006
+    - id: calc_dry_matter_conversion
+      applies_to: "Microbial products reported on wet and dry bases"
+      rule: "Dry mass = as-sold mass multiplied by measured dry-matter fraction. Do not use a generic moisture factor across product forms or lots."
+      inputs:
+        - "as-sold mass"
+        - "measured dry-matter fraction"
+      output: "Dry mass and retained conversion record"
+      source_ids:
+        - iso-14044-2006
+    - id: calc_shared_utility_allocation
+      applies_to: "Shared utility meters"
+      rule: "Use direct submeters first; otherwise allocate by a measured causal driver such as equipment power multiplied by operating time and document unallocated baseload."
+      inputs:
+        - "meter total"
+        - "submeter values"
+        - "equipment power"
+        - "operating time"
+        - throughput
+      output: "Product- and process-specific utility amount"
+      source_ids:
+        - iso-14044-2006
+    - id: calc_direct_emissions
+      applies_to: "Direct air and water releases"
+      rule: "Use validated facility measurement or a documented calculation from collected concentration, flow, operating time, carbon balance, or mass balance. Do not treat AP-42 factors as product defaults."
+      inputs:
+        - "measured concentration"
+        - "standardized gas or water flow"
+        - "operating time"
+        - "collected material and carbon records"
+      output: "Pollutant-specific direct release"
+      source_ids:
+        - us-epa-ap42-yeast-1995
+        - iso-14044-2006
+    - id: calc_packaging_normalization
+      applies_to: "Packaging"
+      rule: "Packaging per reference flow = reconciled component mass placed on the market divided by net conforming product mass dispatched."
+      inputs:
+        - "packaging component counts and masses"
+        - "net dispatched product mass"
+        - "rejects and returns"
+      output: "kg packaging component per 1 kg net product"
+      source_ids:
+        - eu-commission-pef-2021
+  data_quality_requirements:
+    - id: dq_product_identity
+      applies_to: "Reference product and all product outputs"
+      requirement: "Demonstrate the specific product family, organism and strain when relevant, biological state, form, moisture basis, grade, formulation when relevant, and exact Tiangong flow-match decision."
+      evidence: "Approved product specification; batch release; flow readback or documented unresolved identity gap"
+    - id: dq_route_separation
+      applies_to: "Mixed facilities and product portfolios"
+      requirement: "Keep materially different microbial routes, biological states, drying technologies, formulations, and packaging states separate unless a production-weighted aggregation is justified and disclosed."
+      evidence: "Product-route matrix; batch list; production volumes; aggregation rationale"
+    - id: dq_temporal_representativeness
+      applies_to: "All foreground data"
+      requirement: "Use one consistent, declared period that represents routine operation and captures material campaigns, seasonal conditions, downtime, rework, and abnormal exclusions."
+      evidence: "Reporting-period statement; production schedule; exclusion log; reconciliation"
+    - id: dq_measurement_control
+      applies_to: "Mass, water, energy, moisture, emissions, and waste"
+      requirement: "Use calibrated or verified instruments and retain units, conversion factors, detection limits where relevant, and responsible records."
+      evidence: "Calibration certificates; meter checks; laboratory methods; chain of custody; calculation files"
+    - id: dq_completeness
+      applies_to: "Foreground inventory"
+      requirement: "Reconcile material, product, waste, water, energy, and direct-release records and document every material gap, estimate, exclusion, and cut-off decision."
+      evidence: "Mass and utility reconciliation; completeness checklist; variance investigation; exclusion register"
+    - id: dq_upstream_fit
+      applies_to: "Linked upstream datasets"
+      requirement: "Select datasets that match material identity, product form, technology, geography, time, and supplier situation; disclose proxies and substitution choices."
+      evidence: "Supplier data; dataset metadata; proxy justification; sensitivity or improvement plan"
+    - id: dq_source_traceability
+      applies_to: "All calculated and source-constrained values"
+      requirement: "Preserve the raw foreground record, formula, allocation driver, source identifier, operator, and revision so every normalized value can be reproduced."
+      evidence: "Audit trail; versioned calculation workbook or script; source register; reviewer record"
+    - id: dq_review_and_verification
+      applies_to: "Shared or published datasets"
+      requirement: "Review product identity, boundary, allocation, data quality, and reproducibility before publication; third-party disclosed studies follow the applicable verification requirements."
+      evidence: "Review checklist; issue resolution; verification statement where applicable; eu-commission-pef-2021"
+validation_rules:
+  - rule_id: validate_product_identity
+    applies_to: "Product category and dataset metadata"
+    rule: "Fail conformance when the concrete product family, biological state, form, moisture or dry-matter basis, grade, formulation when applicable, production route, or packaging state is missing."
+    source_ids:
+      - un-cpc-v3-23996
+  - rule_id: validate_reference_flow
+    applies_to: "Reference flow"
+    rule: "Require exactly 1 kg net conforming declared product at factory gate, Mass property, Units of mass unit group, kg reference unit, and all required qualifiers."
+    source_ids:
+      - iso-14044-2006
+  - rule_id: validate_representative_uuid
+    applies_to: "Tiangong product-flow identity"
+    rule: "Reject silent use of 3ea5b163-5e50-4f40-bf13-8a6c3f10d1b6 for a product that is not matching dried yeast, feed-grade; require a closer verified flow when available and an explicit identity gap when none is available."
+    source_ids:
+      - un-cpc-v3-23996
+  - rule_id: validate_route_coverage
+    applies_to: "Process map and inventory"
+    rule: "Require all and only applicable route modules: preparation and dispatch always, microbial cultivation and recovery/finishing for relevant microbial routes, and baking-powder formulation for prepared baking powder."
+    source_ids:
+      - us-epa-ap42-yeast-1995
+      - canada-cfcs-baking-powder
+  - rule_id: validate_mass_and_units
+    applies_to: "Measurement and normalization"
+    rule: "Require consistent mass units, stock-change reconciliation, net-product normalization, separate packaging mass, and measured moisture conversion when wet and dry bases are compared."
+    source_ids:
+      - iso-14044-2006
+  - rule_id: validate_inventory_completeness
+    applies_to: "Materials, utilities, wastes, and direct releases"
+    rule: "Require material input, water, energy, product, waste, wastewater, packaging, and applicable direct-emission records; a missing default factor does not justify a zero flow."
+    source_ids:
+      - us-epa-ap42-yeast-1995
+      - eu-commission-pef-2021
+  - rule_id: validate_allocation
+    applies_to: "Shared processes and co-products"
+    rule: "Require subdivision where practical or a documented causal allocation driver; otherwise require the selected relationship, parameters, justification, and sensitivity check."
+    source_ids:
+      - iso-14044-2006
+  - rule_id: validate_data_quality
+    applies_to: "Foreground evidence"
+    rule: "Require the collection period, site and line coverage, instruments, raw records, formulas, exclusions, proxies, and quality evidence needed to reproduce every material normalized value."
+    source_ids:
+      - iso-14044-2006
+      - eu-commission-pef-2021
+  - rule_id: validate_source_traceability
+    applies_to: "Evidence-backed rules"
+    rule: "Require every cited source id to resolve in Data Sources and distinguish source-constrained rules from foreground measurements and author judgment."
+    source_ids:
+      - iso-14044-2006
+published_dataset_profile:
+  dataset_role: "Foreground factory-gate production dataset for one specifically declared CPC 23996 product and route"
+  downstream_use: "secondary_dataset; background_dataset after methodology review, quality review, and publication approval"
+  allowed_use: "Product carbon-footprint or LCA modelling when product identity, route, geography, technology, time, moisture basis, grade, formulation and packaging state match the study and all upstream links are complete"
+  excluded_use: "Generic representation of all CPC 23996 products; silent use of the dried-yeast UUID for another form; use-stage performance modelling; biological activity equivalence; cross-form or cross-formulation comparison without functional equivalence; public comparative claims without applicable review and verification"
+  required_metadata: "Canonical PCR id; CPC reference; product and organism or formulation identity; active, inactive or dead state; form; moisture or dry-matter basis; grade and intended use; production route; geography; technology; reporting period; facility and line coverage; packaging state; product-flow substitution decision; allocation; exclusions; source ids"
+  required_quality_disclosure: "Foreground-data share; meter and scale coverage; batch and temporal coverage; mass and utility reconciliation; emission method; allocation drivers; proxy datasets; cut-offs and exclusions; uncertainty and representativeness limits; review status"
+  update_trigger: "Change in product identity, strain or formulation, biological state, product form, moisture basis, process technology, major supplier or energy source, packaging, facility boundary, allocation method, product-flow UUID, regulation or source evidence, or a material shift in measured inventory"
+data_sources:
+  - id: "un-cpc-v3-23996"
+    type: "standard"
+    reference: "United Nations Statistics Division, Central Product Classification Version 3.0, subclass 23996, https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Exp_Notes_30Jun2025.pdf (retrieved 2026-08-10)"
+    used_for: "Product-category scope and the requirement to distinguish yeasts, other dead single-cell micro-organisms, and prepared baking powders"
+  - id: "us-epa-ap42-yeast-1995"
+    type: "official_guidance"
+    reference: "U.S. Environmental Protection Agency, AP-42 Chapter 9.13.4 Yeast Production, January 1995, https://www.epa.gov/sites/default/files/2020-10/documents/c9s13-4.pdf (retrieved 2026-08-10)"
+    used_for: "Baker's-yeast process decomposition, inputs, fermentation, recovery, blending, drying, packaging, wastewater, VOC and CO2 inventory checkpoints; emission factors are not adopted as defaults"
+  - id: "canada-cfcs-baking-powder"
+    type: "standard"
+    reference: "Canadian Food Inspection Agency, Canadian Food Compositional Standards, Volume 3 Baking Powder, section 3.1.1, https://inspection.canada.ca/en/about-cfia/acts-and-regulations/list-acts-and-regulations/documents-incorporated-reference/canadian-food-compositional-standards-0 (retrieved 2026-08-10)"
+    used_for: "Prepared baking-powder product and formulation identity: bicarbonate, acid-reacting material, and starch or another neutral material"
+  - id: "iso-14044-2006"
+    type: "standard"
+    reference: "ISO 14044:2006, Environmental management — Life cycle assessment — Requirements and guidelines, including current amendments listed by ISO, https://www.iso.org/standard/38498.html (retrieved 2026-08-10)"
+    used_for: "Goal and scope, inventory completeness, allocation hierarchy, data quality, reporting, review and traceability rules"
+  - id: "eu-commission-pef-2021"
+    type: "official_guidance"
+    reference: "European Commission, Commission Recommendation (EU) 2021/2279 on the use of the Environmental Footprint methods, C(2021) 9332 final, https://environment.ec.europa.eu/document/download/cb899bd7-bb06-491d-9989-c856a401fcd0_en?filename=CommissionRecommendationontheuseoftheEnvironmentalFootprintmethods_0.pdf (retrieved 2026-08-10)"
+    used_for: "Life-cycle scope, modelling and data-quality expectations, packaging and supply-chain completeness, and verification expectations"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:035688f5052e02da193ef6108aaa08ecbc3ce2ee81962ac12f5a2b94a3c1dbb3"
+  generated_content_sha256: "sha256:f5a3c0ac2e522d7429cc4c9161f80f37a65ae35b6b8e53c7eb5d6df61059cae8"

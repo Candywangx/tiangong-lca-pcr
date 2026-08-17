@@ -1,10 +1,727 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "21652"
-  title: "Palm oil, refined"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.food-products-beverages-and-tobacco-textiles-apparel-and-leather-products.meat-fish-fruits-vegetables-oils-and-fats.palm-oil-refined"
+  classification_refs: "CPC 3.0:21652 Palm oil, refined"
+  covered_products: "Bulk refined palm oil derived from the fleshy mesocarp oil of Elaeis guineensis, including RBD palm oil from physical refining and NBD palm oil from chemical refining when the route and grade are declared"
+  excluded_products: "Crude palm oil; palm-kernel oil; palm olein, palm stearin, palm superolein, and other fractionated products; blended cooking oils; margarine and formulated fats; biodiesel; packaged retail products"
+  representative_product: "Bulk refined, bleached and deodorised palm oil at the refinery gate"
+  production_route: "Crude palm oil receipt and storage, degumming, bleaching and filtration, physical deacidification/deodorisation or declared chemical neutralisation/deodorisation, cooling, polishing filtration, and bulk storage"
+  market_state: "Bulk finished product at refinery gate, normally semi-solid at room temperature; edible or technical grade must be declared"
+functional_unit:
+  what: "Production of bulk refined palm oil from crude palm oil at a refinery"
+  how_much: "1,000 kg of conforming refined palm oil"
+  how_well: "The declared physical or chemical refining route, product grade, specification, geography, and bulk state are met; edible product claims must identify the applicable food specification, such as Codex CXS 210-1999"
+  how_long_or_cycle: "One production batch or the declared reporting period, normalised to 1,000 kg of conforming output; no use duration is assigned"
+  reference_flow_link: "The reference product output of palm_oil_refining, before fractionation or retail packaging"
+system_boundary:
+  rules:
+    - rule_id: boundary_refinery_operations
+      applies_to: "Foreground palm oil refinery"
+      rule: "Include crude palm oil receipt and storage, degumming, bleaching and spent-earth removal, route-specific deacidification or neutralisation, deodorisation, cooling, polishing filtration, bulk storage, utilities, direct emissions, wastewater, wastes, and co-products."
+      source_ids:
+        - mpob-yung-2020-refining-lca
+    - rule_id: boundary_inbound_transport
+      applies_to: "Crude palm oil delivery"
+      rule: "Include inbound transport when controlled by the refinery or included in the declared study scope; otherwise disclose its exclusion and retain the upstream delivery condition."
+      source_ids:
+        - mpob-yung-2020-refining-lca
+    - rule_id: boundary_upstream_linkage
+      applies_to: "Purchased crude palm oil and other product inputs"
+      rule: "Keep upstream production outside the foreground refinery process but link every purchased input to a geographically and temporally appropriate upstream dataset."
+      source_ids:
+        - mpob-yung-2020-refining-lca
+    - rule_id: boundary_route_specificity
+      applies_to: "Physical and chemical refining"
+      rule: "Declare the route. Physical refining must represent PFAD from deodorisation; chemical refining must represent caustic neutralisation and its soapstock or palm-acid-oil route when present."
+      source_ids:
+        - mpob-yung-2020-refining-lca
+    - rule_id: boundary_downstream_exclusions
+      applies_to: "Fractionation and downstream stages"
+      rule: "Exclude fractionation, retail packaging, distribution, use, biodiesel conversion, and end-of-life from the default foreground system; add them only as explicitly separate processes for an expanded study scope."
+      source_ids:
+        - mpob-yung-2020-refining-lca
+    - rule_id: boundary_completeness
+      applies_to: "Foreground inventory"
+      rule: "Do not omit crude palm oil, electricity, steam or boiler fuel, refining aids, refined oil, route-specific co-products, spent bleaching earth, wastewater, or direct fuel-combustion emissions. Disclose and justify any other omitted flow and assess its materiality."
+      source_ids:
+        - mpob-yung-2020-refining-lca
+boundary_abstraction:
+  declared_starting_condition: "Crude palm oil is received at the refinery inlet with supplier, origin, delivery condition, mass, grade, and transport inclusion status declared."
+  starting_condition_role: "Upstream product input to the foreground refining system"
+  product_classification_scope: "Refined palm oil before fractionation, blending, formulation, or retail packaging"
+  recursive_input_rule: "Any refined palm oil entering the foreground system remains an explicit product input linked to a separate upstream dataset; it must not be merged into the reference output or recursively re-modelled as its own production."
+  upstream_dataset_requirement: "Crude palm oil and other purchased product inputs require upstream datasets matching declared geography, technology, time, and delivery condition; cultivation and milling burdens must not be silently treated as zero."
+  disclosure: "Declare physical or chemical refining, edible or technical grade, product specification, crude-palm-oil origin, inbound transport treatment, boiler-fuel mix, wastewater treatment, co-product status, allocation basis, reporting period, and whether any fractionation or packaging is added."
+reference_flow_definition:
+  reference_amount: "1,000 kg"
+  product_flow_ref:
+    name: "Palm oil, refined"
+    uuid: "029b6008-a809-4d77-8612-47451f7c98fa"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - refining_route
+    - product_grade
+    - applicable_product_specification
+    - production_geography
+    - reporting_period
+    - bulk_or_packaged_state
+    - fractionation_status
+    - allocation_basis
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "Reference refined palm oil output"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Set the quantitative reference to exactly 1,000 kg of conforming bulk refined palm oil and scale all foreground quantities to that mass."
+  - id: material_mass_conversion
+    applies_to: "Crude palm oil, refining aids, co-products, and solid wastes"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Convert measured masses to kg using documented conversion factors; do not infer mass from volume without a recorded density and measurement condition."
+  - id: energy_carrier_separation
+    applies_to: "Purchased electricity, steam, and boiler fuels"
+    required_property_ref:
+      name: "Declared carrier property"
+      uuid: ""
+    required_unit: "kWh, MJ, kg, or m3 as applicable"
+    rule: "Keep purchased electricity, purchased steam, and each boiler fuel as separate flows in their measured units; record any energy conversion factor and heating-value basis used."
+  - id: water_volume
+    applies_to: "Process water and wastewater"
+    required_property_ref:
+      name: "Declared volume property"
+      uuid: ""
+    required_unit: "m3"
+    rule: "Convert metered litres to m3 with 1,000 L = 1 m3 and retain the original meter readings."
+  - id: transport_service
+    applies_to: "Inbound crude palm oil transport when included"
+    required_property_ref:
+      name: "Transport service"
+      uuid: ""
+    required_unit: "tkm"
+    rule: "Calculate tonne-kilometres from transported crude-palm-oil mass in tonnes multiplied by loaded distance in kilometres; separately disclose empty return travel when modelled."
+process_map:
+  - id: cpo_inbound_transport
+    name: "Inbound transport of crude palm oil"
+    inclusion: "conditional"
+    inclusion_condition: "Include when controlled by the refinery or selected by the declared study scope"
+    role: "Delivery of crude palm oil from mill or supplier to refinery inlet"
+    quantitative_reference: "tkm of crude palm oil delivered"
+  - id: palm_oil_refining
+    name: "Crude palm oil refining to bulk refined palm oil"
+    inclusion: "required"
+    inclusion_condition: "Always"
+    role: "Receipt, degumming, bleaching, route-specific deacidification or neutralisation, deodorisation, cooling, filtration, and bulk storage"
+    quantitative_reference: "1,000 kg conforming refined palm oil output"
+  - id: wastewater_treatment
+    name: "Treatment of refinery wastewater"
+    inclusion: "conditional"
+    inclusion_condition: "Include when operated or controlled by the refinery; otherwise link wastewater to an external treatment dataset"
+    role: "Treatment of aqueous effluent before discharge or transfer"
+    quantitative_reference: "m3 wastewater treated"
+  - id: fractionation
+    name: "Fractionation of refined palm oil"
+    inclusion: "excluded_by_default"
+    inclusion_condition: "Add only for an explicitly expanded scope; it produces distinct palm olein and palm stearin products"
+    role: "Downstream separation of liquid and solid fractions"
+    quantitative_reference: "Not applicable to this PCR reference flow"
+process_inventory:
+  - id: cpo_inbound_transport
+    label: "Inbound transport of crude palm oil"
+    inputs:
+      product:
+        - row_id: cpo_transport_service
+          role: "Crude palm oil transport service"
+          name: "Freight transport service by the actual mode"
+          flow_type: "product"
+          property_unit: "Transport service / tkm"
+          description: "Record the loaded movement that brings crude palm oil to the refinery when this process is in scope."
+          amount:
+            expression: "transported CPO mass in tonnes multiplied by loaded distance in kilometres"
+            value_mode: "calculated_value"
+            specificity: "route_specific"
+            basis:
+              text: "per 1,000 kg conforming refined palm oil output"
+              kind: "transport_service"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_cpo_transport
+              source_ids:
+                - mpob-yung-2020-refining-lca
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        []
+      elementary:
+        []
+  - id: palm_oil_refining
+    label: "Crude palm oil refining to bulk refined palm oil"
+    inputs:
+      product:
+        - row_id: crude_palm_oil_feed
+          role: "Crude palm oil feed"
+          name: "Palm oil, crude"
+          flow_type: "product"
+          flow_ref:
+            uuid: "c25748fe-ebcf-4a0e-bcf9-544edb1645b1"
+          property_unit: "Mass / kg"
+          description: "Record all crude palm oil crossing the refinery gate for the reporting period, reconciled for opening and closing tank stocks."
+          amount:
+            expression: "measured accepted CPO mass adjusted for inventory change and normalised to conforming refined palm oil output; compare the result with the MPOB multi-refinery benchmark of 1.055 kg CPO per kg RBD palm oil without substituting that benchmark for foreground data"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg conforming refined palm oil output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_balance
+              source_ids:
+                - mpob-yung-2020-refining-lca
+            ranges: []
+        - row_id: refining_aids
+          role: "Refining aids"
+          name: "Route-specific refining aid"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record each refining aid separately, including phosphoric or citric acid, bleaching earth or clay, caustic soda for chemical refining, and any other route-specific chemical."
+          amount:
+            expression: "measured issue or dosing quantity by named material; do not aggregate different substances into one mass"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg conforming refined palm oil output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_balance
+              source_ids:
+                - mpob-yung-2020-refining-lca
+            ranges: []
+        - row_id: purchased_electricity
+          role: "Purchased electricity"
+          name: "Electricity supply matching the declared grid and voltage"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record metered electricity used by refining, pumps, vacuum systems, cooling, filtration, storage, and allocated common utilities."
+          amount:
+            expression: "meter readings or documented sub-meter allocation for the reporting period"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg conforming refined palm oil output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_and_water
+              source_ids:
+                - mpob-yung-2020-refining-lca
+            ranges: []
+        - row_id: thermal_energy_inputs
+          role: "Steam and boiler fuels"
+          name: "Purchased steam or named boiler fuel"
+          flow_type: "product"
+          property_unit: "Declared carrier property / MJ, kg, or m3 as measured"
+          description: "Record purchased steam and every fuel used to produce refinery steam separately; do not double count boiler fuel and purchased steam."
+          amount:
+            expression: "measured purchase, tank balance, or calibrated flow-meter quantity by carrier"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg conforming refined palm oil output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_and_water
+              source_ids:
+                - mpob-yung-2020-refining-lca
+            ranges: []
+        - row_id: process_water
+          role: "Process water"
+          name: "Water supply matching the actual source"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "Record freshwater and other supplied water used for steam generation, washing, cooling make-up, and route-specific refining operations."
+          amount:
+            expression: "metered withdrawal or documented tank balance by water source"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg conforming refined palm oil output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_and_water
+              source_ids:
+                - mpob-yung-2020-refining-lca
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: refined_palm_oil_output
+          role: "Refined palm oil reference product"
+          name: "Palm oil, refined"
+          flow_type: "product"
+          flow_ref:
+            uuid: "029b6008-a809-4d77-8612-47451f7c98fa"
+          property_unit: "Mass / kg"
+          description: "Record only conforming bulk refined palm oil before fractionation or retail packaging as the reference product."
+          amount:
+            expression: "exactly 1,000 kg after rejection, rework, and tank-stock adjustments"
+            value_mode: "fixed_value"
+            specificity: "product_specific"
+            basis:
+              text: "1,000 kg conforming refined palm oil output"
+              kind: "reference_flow"
+            evidence:
+              kind: "identity_reference"
+              source_ids:
+                - codex-cxs-210-1999
+                - mpob-yung-2020-refining-lca
+            ranges: []
+        - row_id: pfad_output
+          role: "Physical-refining co-product PFAD"
+          name: "Palm fatty acid distillate"
+          flow_type: "product"
+          flow_ref:
+            uuid: "3c7cf631-4a11-4b19-a183-b19aa396dab3"
+          property_unit: "Mass / kg"
+          description: "Record PFAD separated during physical deacidification and deodorisation when it leaves the process for sale, recovery, transfer, or further use."
+          amount:
+            expression: "measured PFAD tank, weighbridge, or dispatch mass adjusted for stock change"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg conforming refined palm oil output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_outputs_and_wastes
+              source_ids:
+                - mpob-yung-2020-refining-lca
+            ranges: []
+        - row_id: chemical_route_coproducts
+          role: "Chemical-refining co-products"
+          name: "Soapstock or palm acid oil matching the actual material"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "For chemical refining, separately record soapstock and palm acid oil when generated, recovered, sold, or transferred."
+          amount:
+            expression: "measured output by named co-product and destination"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg conforming refined palm oil output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_outputs_and_wastes
+              source_ids:
+                - mpob-yung-2020-refining-lca
+            ranges: []
+      waste:
+        - row_id: spent_bleaching_earth
+          role: "Spent bleaching earth and filter residues"
+          name: "Spent bleaching earth or named filter residue"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record spent bleaching earth and other filter residues with oil recovery, sale, treatment, or disposal destination distinguished."
+          amount:
+            expression: "measured outgoing mass adjusted for storage change and recovered oil"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg conforming refined palm oil output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_outputs_and_wastes
+              source_ids:
+                - mpob-yung-2020-refining-lca
+            ranges: []
+        - row_id: refinery_wastewater
+          role: "Refinery wastewater"
+          name: "Wastewater to the declared treatment route"
+          flow_type: "waste"
+          property_unit: "Volume / m3"
+          description: "Record wastewater sent to onsite or external treatment; keep volume and measured quality parameters such as BOD and COD with the receiving treatment route."
+          amount:
+            expression: "measured discharge volume after internal recycle and before the selected treatment process"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg conforming refined palm oil output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_outputs_and_wastes
+              source_ids:
+                - mpob-yung-2020-refining-lca
+            ranges: []
+      elementary:
+        - row_id: direct_refinery_emissions
+          role: "Direct boiler and process emissions"
+          name: "Substance-specific elementary emission to the correct compartment"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Calculate direct emissions from measured fuel use and controlled emission factors or stack measurements; keep biogenic and fossil carbon flows separate."
+          amount:
+            expression: "measured stack emission or measured fuel quantity multiplied by a documented carrier-, technology-, and geography-specific emission factor"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg conforming refined palm oil output"
+              kind: "fuel_inventory"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_energy_and_water
+              source_ids:
+                - mpob-yung-2020-refining-lca
+            ranges: []
+  - id: wastewater_treatment
+    label: "Treatment of refinery wastewater"
+    inputs:
+      product:
+        - row_id: wastewater_treatment_inputs
+          role: "Wastewater treatment services and inputs"
+          name: "Treatment input or service matching the actual system"
+          flow_type: "product"
+          property_unit: "Property and unit appropriate to each input"
+          description: "Record purchased treatment services, electricity, chemicals, and other inputs when wastewater treatment is within the foreground boundary."
+          amount:
+            expression: "measured or invoiced quantity assigned to refinery wastewater"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per m3 refinery wastewater treated"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wastewater_treatment
+              source_ids:
+                - mpob-yung-2020-refining-lca
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: wastewater_treatment_residues
+          role: "Treatment sludge and residual wastes"
+          name: "Treatment residue matching the actual material"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record sludge and other treatment residues by measured mass and destination."
+          amount:
+            expression: "measured outgoing mass adjusted for storage change"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per m3 refinery wastewater treated"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wastewater_treatment
+              source_ids:
+                - mpob-yung-2020-refining-lca
+            ranges: []
+      elementary:
+        - row_id: treated_water_emissions
+          role: "Treated-water emissions"
+          name: "Substance-specific elementary emission to water"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record measured pollutant loads discharged to water after treatment using concentration and flow data for the same period."
+          amount:
+            expression: "matched-period treated-water volume multiplied by measured discharge concentration, with unit conversion documented"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per m3 refinery wastewater treated"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_wastewater_treatment
+              source_ids:
+                - mpob-yung-2020-refining-lca
+            ranges: []
+allocation_rules:
+  - rule_id: allocation_avoid_where_separable
+    applies_to: "Separately metered processes and product campaigns"
+    rule: "Prefer subdivision or direct measurement so burdens are assigned to the process or product that causes them before applying allocation."
+    source_ids:
+      - mpob-yung-2020-refining-lca
+  - rule_id: allocation_pfads_economic
+    applies_to: "RBD palm oil and PFAD from physical refining"
+    rule: "When PFAD is a marketable co-product and subdivision is not possible, allocate shared refining burdens by the contemporaneous economic value of RBD palm oil and PFAD using masses and representative prices from the same declared period and market."
+    source_ids:
+      - mpob-yung-2020-refining-lca
+  - rule_id: allocation_chemical_route
+    applies_to: "Soapstock, palm acid oil, and other chemical-refining outputs"
+    rule: "Classify each output as co-product, internally recovered material, or waste from documented destination and market evidence; apply the same economic-allocation rule to marketable co-products and assign treatment burdens to wastes."
+    source_ids:
+      - mpob-yung-2020-refining-lca
+  - rule_id: allocation_internal_recovery
+    applies_to: "Internally recycled oil or material"
+    rule: "Do not allocate burdens to an internally recycled flow as a separate product; keep recovery operations and any displaced fresh input visible in the foreground mass balance."
+    source_ids:
+      - mpob-yung-2020-refining-lca
+  - rule_id: allocation_price_evidence
+    applies_to: "Economic allocation"
+    rule: "Retain product masses, price sources, currency, price basis, averaging period, and calculation. Do not reuse the historical 96.2:3.8 RBD-palm-oil:PFAD ratio without demonstrating that its market period represents the study."
+    source_ids:
+      - mpob-yung-2020-refining-lca
+  - rule_id: allocation_sensitivity
+    applies_to: "Material multi-output results"
+    rule: "Report a mass-allocation sensitivity when the allocation choice materially affects interpretation, and disclose the result beside the primary economic-allocation result."
+    source_ids:
+      - mpob-yung-2020-refining-lca
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_cpo_transport
+      process_id: "cpo_inbound_transport"
+      flow_role: "crude palm oil delivery"
+      record_type: "weighbridge and logistics records"
+      raw_fields: "shipment_mass_t; origin; destination; loaded_distance_km; mode; vehicle_class; empty_return"
+      collection_method: "Match shipment-level weighbridge tickets to route or carrier records"
+      unit: "t; km"
+      frequency: "Per shipment"
+      temporal_coverage: "Same reporting period as refinery output"
+      site_scope: "All included CPO deliveries"
+      aggregation_rule: "Sum shipment mass times loaded distance; treat empty returns separately"
+      quality_evidence: "Weighbridge tickets, carrier invoices, route evidence, and reconciliation to CPO receipts"
+    - protocol_id: cp_material_balance
+      process_id: "palm_oil_refining"
+      flow_role: "crude palm oil and refining aids"
+      record_type: "weighbridge, tank, invoice, and dosing records"
+      raw_fields: "opening_stock; receipts; issues_or_dosing; returns; closing_stock; rejected_or_reworked_mass; material_identity"
+      collection_method: "Reconcile calibrated meters, tank measurements, weighbridge tickets, invoices, and batch dosing logs"
+      unit: "kg by material"
+      frequency: "Per batch with monthly reconciliation"
+      temporal_coverage: "Complete declared reporting period and representative operating conditions"
+      site_scope: "All refinery lines and storage tanks serving the declared product"
+      aggregation_rule: "Consumption equals opening stock plus receipts minus closing stock minus documented transfers; normalise by conforming output"
+      quality_evidence: "Calibration records, stock reconciliation, supplier identity, batch logs, and exception records"
+    - protocol_id: cp_energy_and_water
+      process_id: "palm_oil_refining"
+      flow_role: "electricity, steam, boiler fuel, water, and direct emissions"
+      record_type: "meter, purchase, tank, boiler, and stack records"
+      raw_fields: "meter_readings; purchases; stocks; carrier_identity; heating_value; steam_import; water_source; emission_measurement_or_factor"
+      collection_method: "Use calibrated sub-meters where available; otherwise document allocation of common utilities from plant totals"
+      unit: "kWh; MJ; kg; m3; emission kg"
+      frequency: "Continuous or per shift, aggregated monthly"
+      temporal_coverage: "Same reporting period as product output"
+      site_scope: "All utility systems serving the declared refinery process"
+      aggregation_rule: "Reconcile purchases and stocks, prevent steam/fuel double counting, and normalise by conforming output"
+      quality_evidence: "Meter calibration, invoices, boiler logs, fuel analysis, factor provenance, and reconciliation"
+    - protocol_id: cp_outputs_and_wastes
+      process_id: "palm_oil_refining"
+      flow_role: "refined oil, co-products, wastes, and wastewater"
+      record_type: "tank, weighbridge, dispatch, waste-transfer, and laboratory records"
+      raw_fields: "opening_stock; production; dispatch; closing_stock; destination; market_status; wastewater_volume; BOD; COD"
+      collection_method: "Reconcile production and dispatch records with tanks and waste manifests; sample wastewater using the applicable site method"
+      unit: "kg; m3; mg/L"
+      frequency: "Per batch or shipment; wastewater per permit or operating plan"
+      temporal_coverage: "Same reporting period as material and utility inputs"
+      site_scope: "All output tanks and waste routes for the declared product"
+      aggregation_rule: "Sum net output after stock change by named product or waste and preserve destination"
+      quality_evidence: "Calibrated scales or tanks, sales records, waste manifests, sample chain of custody, and laboratory reports"
+    - protocol_id: cp_wastewater_treatment
+      process_id: "wastewater_treatment"
+      flow_role: "treatment inputs, residues, and treated-water emissions"
+      record_type: "treatment meter, chemical, sludge, and laboratory records"
+      raw_fields: "influent_volume; effluent_volume; chemical_use; energy_use; sludge_mass; analyte; concentration; sampling_time"
+      collection_method: "Match influent, effluent, chemical, energy, sludge, and laboratory records for the same treatment period"
+      unit: "m3; kg; kWh; mg/L"
+      frequency: "Continuous or per treatment batch; sampling per permit"
+      temporal_coverage: "Same reporting period as refinery wastewater"
+      site_scope: "Onsite system or documented external treatment route"
+      aggregation_rule: "Calculate loads from matched flow and concentration; normalise treatment inventory per m3 treated"
+      quality_evidence: "Meter calibration, treatment log, laboratory QA/QC, waste transfer record, and mass/load reconciliation"
+    - protocol_id: cp_product_quality
+      process_id: "palm_oil_refining"
+      flow_role: "refined palm oil conformity"
+      record_type: "batch certificate and laboratory results"
+      raw_fields: "batch_id; route; grade; specification; test_method; result; acceptance_status; rework_or_rejection"
+      collection_method: "Sample and test each declared product according to the applicable specification and site quality plan"
+      unit: "specification-dependent"
+      frequency: "Per batch or lot"
+      temporal_coverage: "Entire reporting period"
+      site_scope: "Every lot counted as conforming output"
+      aggregation_rule: "Only accepted output enters the reference amount; rejected or reworked oil remains in the mass balance"
+      quality_evidence: "Certificate of analysis, test method, laboratory QA/QC, and release record"
+  calculation_rules:
+    - id: calc_normalize_reference_mass
+      applies_to: "Every refinery inventory quantity"
+      rule: "normalised_quantity = reporting_period_quantity / conforming_refined_palm_oil_kg * 1000"
+      inputs:
+        - "reporting-period flow quantity"
+        - "conforming refined palm oil output in kg"
+      output: "Flow quantity per 1,000 kg reference product"
+      source_ids:
+        - mpob-yung-2020-refining-lca
+    - id: calc_cpo_transport
+      applies_to: "Inbound transport"
+      rule: "tkm = CPO shipment mass in tonnes * loaded distance in kilometres"
+      inputs:
+        - shipment_mass_t
+        - loaded_distance_km
+      output: "tkm per shipment and per reference flow"
+      source_ids:
+        - mpob-yung-2020-refining-lca
+    - id: calc_wastewater_load
+      applies_to: "Pollutant discharged to water"
+      rule: "load_kg = treated_water_volume_m3 * concentration_mg_per_L / 1000"
+      inputs:
+        - "matched treated-water volume"
+        - "analyte concentration"
+      output: "kg pollutant discharged"
+      source_ids:
+        - mpob-yung-2020-refining-lca
+    - id: calc_economic_allocation
+      applies_to: "Shared refining burdens for marketable co-products"
+      rule: "allocation_share_i = mass_i * representative_price_i / sum(mass_j * representative_price_j) for all marketable co-products j"
+      inputs:
+        - "co-product masses"
+        - "representative prices"
+        - "price period"
+        - "currency and basis"
+      output: "Allocation share for each marketable co-product"
+      source_ids:
+        - mpob-yung-2020-refining-lca
+    - id: calc_mass_balance
+      applies_to: "Refinery material balance"
+      rule: "balance_gap = total_mass_inputs - total_mass_outputs - net_inventory_change, with separately documented evaporation or measurement terms where material"
+      inputs:
+        - "measured material inputs"
+        - products
+        - co-products
+        - wastes
+        - "stock changes"
+      output: "Mass-balance gap and reconciliation statement"
+      source_ids:
+        - mpob-yung-2020-refining-lca
+  data_quality_requirements:
+    - id: dq_product_identity
+      applies_to: "Reference output"
+      requirement: "Demonstrate refined palm oil identity, route, grade, specification, bulk state, and exclusion of fractionated products; edible claims must identify the applicable specification."
+      evidence: "Batch release and certificate of analysis; codex-cxs-210-1999"
+    - id: dq_temporal_alignment
+      applies_to: "All foreground flows"
+      requirement: "Inputs, outputs, stock changes, utilities, wastes, and prices must cover the same declared period; disclose shutdowns, abnormal campaigns, missing months, and seasonal limitations."
+      evidence: "Reporting calendar, completeness matrix, and exception log; mpob-yung-2020-refining-lca"
+    - id: dq_site_coverage
+      applies_to: "Facility data"
+      requirement: "Include every line, tank, utility, and controlled waste route serving the declared product or document an allocation from complete facility totals."
+      evidence: "Process map, meter map, tank list, and site reconciliation"
+    - id: dq_mass_completeness
+      applies_to: "Material inventory"
+      requirement: "Reconcile crude palm oil, refined oil, co-products, refining aids, solid residues, wastewater, rework, and inventory changes; investigate material balance gaps before publication."
+      evidence: "Signed mass-balance worksheet and source-record cross-check"
+    - id: dq_utility_completeness
+      applies_to: "Energy and water"
+      requirement: "Keep electricity, steam, each boiler fuel, water source, and direct combustion emissions visible; prevent double counting of steam and its generating fuel."
+      evidence: "Meter and fuel reconciliation, boiler log, and calculation workbook"
+    - id: dq_allocation_evidence
+      applies_to: "Multi-output process"
+      requirement: "Preserve current mass and market evidence for economic allocation and provide the required sensitivity when material."
+      evidence: "Price references, product quantities, allocation workbook, and sensitivity result; mpob-yung-2020-refining-lca"
+    - id: dq_background_match
+      applies_to: "Linked upstream datasets"
+      requirement: "Match geography, technology, time, grade, delivery condition, electricity mix, fuels, water source, chemicals, transport, and waste treatment as closely as available; disclose material mismatches."
+      evidence: "Dataset metadata and mismatch register"
+    - id: dq_traceability
+      applies_to: "Foreground dataset"
+      requirement: "Every normalised value must trace to a source record, collection protocol, conversion, and calculation version."
+      evidence: "Record identifiers, calculation workbook, reviewer sign-off, and retained QA evidence"
+validation_rules:
+  - rule_id: validate_reference_identity
+    applies_to: "Reference flow"
+    rule: "The reference output must use Palm oil, refined 029b6008-a809-4d77-8612-47451f7c98fa, Mass 93a60a56-a3c8-11da-a746-0800200b9a66, Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66, and exactly 1,000 kg."
+    source_ids:
+      - codex-cxs-210-1999
+  - rule_id: validate_required_qualifiers
+    applies_to: "Dataset identity"
+    rule: "All required qualifiers must be present and must identify the refining route, grade, specification, geography, time, bulk state, fractionation status, and allocation basis."
+    source_ids:
+      - codex-cxs-210-1999
+      - mpob-yung-2020-refining-lca
+  - rule_id: validate_route_inventory
+    applies_to: "Process inventory"
+    rule: "Physical refining must include degumming, bleaching, spent bleaching earth, deodorisation, PFAD, electricity, thermal energy, water, wastewater, and direct emissions; chemical refining must replace the FFA-removal and co-product rules with its documented caustic-neutralisation route."
+    source_ids:
+      - mpob-yung-2020-refining-lca
+  - rule_id: validate_boundary_links
+    applies_to: "System boundary"
+    rule: "Upstream crude palm oil and every purchased input must have an upstream dataset or an explicit unresolved gap; fractionation and packaging must not be silently included in the reference process."
+    source_ids:
+      - mpob-yung-2020-refining-lca
+  - rule_id: validate_mass_balance
+    applies_to: "Material balance"
+    rule: "The normalised material balance must include stock changes, rework, co-products, wastes, and documented measurement terms, and every unexplained gap must be reported as a finding."
+    source_ids:
+      - mpob-yung-2020-refining-lca
+  - rule_id: validate_allocation
+    applies_to: "Co-products"
+    rule: "PFAD and any other marketable co-product must have documented status and allocation; economic allocation must use representative study-period evidence and must not copy a historical ratio without justification."
+    source_ids:
+      - mpob-yung-2020-refining-lca
+  - rule_id: validate_foreground_evidence
+    applies_to: "Data production"
+    rule: "Every foreground-record or calculated value must link to its collection protocol and retained source evidence for the declared period."
+    source_ids:
+      - mpob-yung-2020-refining-lca
+  - rule_id: validate_completeness
+    applies_to: "Publication readiness"
+    rule: "Validation must report accepted inputs, checks performed, checks skipped, findings, and completeness; missing identity, unresolved mass balance, missing required flow, unsupported allocation, or absent source record is an error or an inconclusive result."
+    source_ids:
+      - mpob-yung-2020-refining-lca
+published_dataset_profile:
+  dataset_role: "Foreground refinery data package and unit-process dataset for bulk refined palm oil production"
+  downstream_use: "secondary_dataset; background_dataset"
+  allowed_use: "Attributional product systems requiring declared bulk refined palm oil at refinery gate; linkage to matching upstream CPO and downstream users; regionalised studies when geography and technology are represented"
+  excluded_use: "Direct representation of crude palm oil, palm-kernel oil, fractionated palm olein or stearin, blended or packaged cooking oil, biodiesel, or a refinery route and geography not disclosed by the dataset"
+  required_metadata: "PCR id and version; Tiangong reference flow UUID; process UUID when available; refining route; grade and specification; geography; reporting period; technology; bulk state; fractionation status; CPO origin and delivery condition; transport scope; boiler-fuel mix; wastewater route; allocation basis; source ids; collection protocol ids"
+  required_quality_disclosure: "Site and line coverage; temporal coverage; meter and stock reconciliation; mass-balance result; product conformity; background-data mismatches; co-product status and price evidence; allocation sensitivity; missing or estimated records; wastewater and direct-emission calculation methods"
+  update_trigger: "Material change in refinery route, product grade or specification, reference flow identity, CPO supply geography, energy or fuel system, wastewater treatment, co-product market status, allocation evidence, reporting period, or external method evidence"
+data_sources:
+  - id: "codex-cxs-210-1999"
+    type: "standard"
+    reference: "Codex Alimentarius, Standard for Named Vegetable Oils, CXS 210-1999, amended 2024 and corrected 2026, https://www.fao.org/fao-who-codexalimentarius/sh-proxy/en/?lnk=1&url=https%253A%252F%252Fworkspace.fao.org%252Fsites%252Fcodex%252FStandards%252FCXS%2B210-1999%252FCXS_210e.pdf (retrieved 2026-08-10)"
+    used_for: "Palm-oil product identity, edible-product scope, specification disclosure, and product conformity"
+  - id: "mpob-yung-2020-refining-lca"
+    type: "literature"
+    reference: "Yung, C. L.; Subramaniam, V.; Yusoff, S. Life Cycle Assessment for Palm Oil Refining and Fractionation. Journal of Oil Palm Research. DOI: 10.21894/jopr.2020.0029. https://jopr.mpob.gov.my/wp-content/uploads/2020/06/joprinpress2020-chee.pdf (retrieved 2026-08-10)"
+    used_for: "Functional unit, physical-refining process decomposition, gate-to-gate boundary, inventory coverage, foreground collection practice, co-product allocation, quantitative benchmark context, data quality, and validation rules"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:91cf0e8d6206aeece2fb1318c41ad1d7f98892993e790c09ee4b168e348ac744"
+  generated_content_sha256: "sha256:41edd50e5cf4605202cfc8dd23d1139029ed38034fb66fdfba18cbca53303239"

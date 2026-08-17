@@ -1,10 +1,903 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "23722"
-  title: "Prepared dishes containing stuffed pasta; prepared couscous dishes"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.food-products-beverages-and-tobacco-textiles-apparel-and-leather-products.grain-mill-products-starches-and-starch-products-other-food-products.prepared-dishes-containing-stuffed-pasta-prepared-couscous-dishes"
+  classification_refs: "CPC 3.0: 23722 (exact)"
+  covered_products: "Complete prepared dishes containing stuffed pasta; prepared noodle dishes; dumplings when prepared and supplied as a complete dish; prepared couscous dishes"
+  excluded_products: "Pasta, noodles, stuffed pasta, or couscous that are cooked or otherwise prepared but not supplied as a complete dish; dry couscous sold as an ingredient; restaurant or household-prepared meals"
+  representative_product: "One saleable factory-produced prepared dish containing stuffed pasta or prepared couscous, packed for ambient, chilled, or frozen distribution"
+  production_route: "Ingredient receipt and storage; recipe preparation; dough/couscous and filling preparation as applicable; forming or dish assembly; thermal conditioning as applicable; cooling/chilling/freezing/drying as applicable; packaging; factory-gate storage"
+  market_state: "Finished manufactured product, production mix at plant; ambient, chilled, or frozen state declared by the data producer"
+functional_unit:
+  what: "Provide a complete prepared dish containing stuffed pasta, noodles, dumplings, or prepared couscous in its declared saleable condition"
+  how_much: "1 kg net mass of saleable prepared dish at the factory gate"
+  how_well: "Conforms to the declared recipe, food-safety controls, storage condition, packaging format, and intended preparation state"
+  how_long_or_cycle: "Through the declared shelf-life at the labelled storage condition; downstream storage losses and use-stage preparation are outside this foreground dataset"
+  reference_flow_link: "1 kg net saleable product output from packaging_and_storage"
+system_boundary:
+  rules:
+    - rule_id: boundary_foreground_operations
+      applies_to: "Manufacturing foreground"
+      rule: "Include all on-site operations from receipt through saleable packaged product, including sanitation, directly attributable utilities, losses, wastewater, and direct releases."
+      source_ids:
+        - eu-commission-pef-2021
+        - codex-cxc-1-1969-2022
+    - rule_id: boundary_upstream_links
+      applies_to: "Purchased materials and utilities"
+      rule: "Represent purchased ingredients, packaging, energy carriers, and externally supplied utilities with upstream datasets and disclose any proxy or gap."
+      source_ids:
+        - eu-commission-pef-2021
+    - rule_id: boundary_downstream_exclusion
+      applies_to: "Distribution, use, and end of life"
+      rule: "Exclude downstream distribution, retail, consumer preparation, and end of life from this foreground dataset; disclose the exclusion so downstream lifecycle models can add them consistently."
+      source_ids:
+        - eu-commission-pef-2021
+    - rule_id: boundary_recursive_category_input
+      applies_to: "Purchased same-category prepared dishes used as inputs"
+      rule: "Stop recursion at the purchased product input and require a separate upstream dataset for that input."
+      source_ids:
+        - eu-commission-pef-2021
+    - rule_id: boundary_waste_and_coproducts
+      applies_to: "Foreground outputs"
+      rule: "Identify and quantify saleable products, co-products, food losses, packaging waste, wastewater, and direct emissions before allocation."
+      source_ids:
+        - eu-commission-pef-2021
+boundary_abstraction:
+  declared_starting_condition: "Ingredients, processing aids, packaging materials, and utility services as received at the manufacturing site, with supplier identity, quantity, delivery state, and upstream dataset reference declared"
+  starting_condition_role: "Gate-to-gate foreground manufacturing starting point backed by receiving, purchasing, inventory, and supplier records"
+  product_classification_scope: "Complete prepared dishes containing stuffed pasta or prepared couscous, independent of recipe, protein filling, sauce, ambient/chilled/frozen state, or packaging format when the stated exclusions are respected"
+  recursive_input_rule: "A purchased input already within this PCR category is recorded as an upstream product input with its own compliant dataset; its manufacture is not recursively reconstructed inside this foreground dataset"
+  upstream_dataset_requirement: "Every material ingredient, packaging input, purchased energy carrier, and externally supplied utility shall link to a geographically, temporally, and technologically representative upstream dataset or be disclosed as a data gap"
+  disclosure: "Declare recipe family, preparation state, storage state, included and excluded operations, outsourced operations, allocation, upstream proxies, cut-offs, product losses, packaging composition, shelf-life, and reference period"
+reference_flow_definition:
+  reference_amount: "1 kg"
+  product_flow_ref:
+    name: "Prepared dishes containing stuffed pasta, prepared couscous dishes"
+    uuid: "6ff6840a-8860-4e91-be9a-40d993df7105"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "dish family and product name"
+    - "full recipe or bill of materials and filling share where applicable"
+    - ready-to-eat
+    - reheat-only
+    - "or further-cooking state"
+    - ambient
+    - chilled
+    - "or frozen storage state and temperature"
+    - "net product mass and primary packaging format"
+    - shelf-life
+    - "manufacturing geography and reference period"
+    - "on-site thermal treatment and preservation route"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "Reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Report exactly 1 kg net saleable food product, excluding packaging mass, at the factory gate."
+  - id: ingredient_mass_basis
+    applies_to: "Ingredients, processing aids, product, and food losses"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Record wet mass as received or discharged and separately declare dry-matter or moisture conversions when used. Do not mix wet and dry bases in one mass balance."
+  - id: packaging_mass_basis
+    applies_to: "Primary and secondary packaging crossing the foreground boundary"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Record packaging by material and mass per 1 kg net product; packaging mass is not part of the 1 kg reference product."
+  - id: energy_units
+    applies_to: "Purchased electricity, fuel, steam, heating, cooling, and refrigeration"
+    required_property_ref:
+      name: "Applicable energy property"
+      uuid: ""
+    required_unit: "kWh or MJ"
+    rule: "Preserve measured billing or meter units, record conversion factors, and normalize to 1 kg saleable product without treating electricity and thermal energy as interchangeable."
+  - id: temperature_time
+    applies_to: "Cooking, cooling, chilling, freezing, drying, and storage"
+    required_property_ref:
+      name: "Temperature and elapsed time"
+      uuid: ""
+    required_unit: "°C and min or h"
+    rule: "Retain the measured time-temperature profile or validated route set-point records for product-state and process-route verification."
+process_map:
+  - id: ingredient_preparation
+    name: "Ingredient receipt, storage, preparation, and recipe batching"
+    inclusion: "required"
+    inclusion_condition: "Always included"
+    role: "Foreground material preparation"
+    quantitative_reference: "kg prepared recipe or components transferred to assembly"
+  - id: dish_assembly
+    name: "Dough/couscous preparation, filling, forming, portioning, and dish assembly"
+    inclusion: "required"
+    inclusion_condition: "Always included; non-applicable substeps are reported as not used"
+    role: "Foreground product formation"
+    quantitative_reference: "kg assembled dish before conditioning"
+  - id: thermal_conditioning
+    name: "Cooking, cooling, chilling, freezing, or drying"
+    inclusion: "conditional"
+    inclusion_condition: "Included when any thermal or preservation operation occurs on site"
+    role: "Foreground conditioning and preservation"
+    quantitative_reference: "kg conditioned dish transferred to packaging"
+  - id: packaging_and_storage
+    name: "Packaging and factory-gate finished-product storage"
+    inclusion: "required"
+    inclusion_condition: "Always included"
+    role: "Finalization and quantitative reference production"
+    quantitative_reference: "1 kg net saleable product at factory gate"
+  - id: sanitation_and_waste_management
+    name: "Sanitation, wastewater, and directly attributable site waste management"
+    inclusion: "required"
+    inclusion_condition: "Always included"
+    role: "Cross-cutting foreground support"
+    quantitative_reference: "service allocated to 1 kg saleable product"
+process_inventory:
+  - id: ingredient_preparation
+    label: "Ingredient receipt, storage, preparation, and recipe batching"
+    inputs:
+      product:
+        - row_id: ingredient_input
+          role: "Recipe ingredients and processing aids"
+          name: "Product-specific ingredient or processing-aid flow; Tiangong UUID unresolved"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record every ingredient and processing aid by supplier, batch, received state, and recipe role. Ingredient groups shall not hide materially different cereals, fillings, sauces, fats, vegetables, meat, dairy, egg, seasonings, or additives."
+          amount:
+            expression: "calculated from batch issue records and bill of materials, net of returned unopened material"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net saleable prepared dish"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_batch_material_balance
+              source_ids:
+                - eu-commission-pef-2021
+                - codex-cxc-1-1969-2022
+            ranges:
+              - role: qa_guardrail
+                lower: "0.8"
+                upper: "1.5"
+                unit: "kg/kg net saleable product"
+                basis: "total wet ingredient input before processing losses or water gain per 1 kg net saleable product"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: process_water
+          role: "Recipe or direct-contact process water"
+          name: "Potable process water; Tiangong UUID unresolved"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record potable water incorporated into the recipe or directly contacting product separately from sanitation water."
+          amount:
+            expression: "measured or calculated from calibrated batch dosing records"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net saleable prepared dish"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_batch_material_balance
+              source_ids:
+                - codex-cxc-1-1969-2022
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "1.0"
+                unit: "kg/kg net saleable product"
+                basis: "recipe and direct-contact water per 1 kg net saleable product"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        - row_id: preparation_loss
+          role: "Rejected ingredients and preparation residues"
+          name: "Product-specific food preparation waste; Tiangong UUID unresolved"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record expired, damaged, spilled, trimmed, screened, or otherwise rejected ingredient material by destination."
+          amount:
+            expression: "measured waste-container mass or calculated closing batch mass balance"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net saleable prepared dish"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_batch_material_balance
+              source_ids:
+                - mass-balance-identity
+            ranges: []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: prepared_components
+          role: "Prepared recipe components transferred to assembly"
+          name: "Internal prepared component"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the measured wet mass of prepared dough, couscous base, filling, sauce, and other components transferred to dish assembly."
+          amount:
+            expression: "measured transfer mass by component"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per batch and per 1 kg net saleable prepared dish"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_batch_material_balance
+              source_ids:
+                - mass-balance-identity
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+  - id: dish_assembly
+    label: "Dough/couscous preparation, filling, forming, portioning, and dish assembly"
+    inputs:
+      product:
+        - row_id: assembly_components
+          role: "Prepared components received for assembly"
+          name: "Internal prepared component"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the internal prepared components used for the production batch, preserving component identity and filling or sauce share."
+          amount:
+            expression: "measured transfer mass into assembly"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per batch and per 1 kg net saleable prepared dish"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_batch_material_balance
+              source_ids:
+                - mass-balance-identity
+            ranges: []
+        - row_id: electricity_input
+          role: "Electricity for preparation and forming"
+          name: "Electricity supply matching site geography and voltage; Tiangong UUID unresolved"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record electricity for mixing, kneading, forming, portioning, pumping, and line auxiliaries using submeter data or a documented allocation from site meters."
+          amount:
+            expression: "measured submeter use or calculated allocation from equipment runtime and rated load"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net saleable prepared dish"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_energy_and_runtime
+              source_ids:
+                - eu-commission-pef-2021
+            ranges:
+              - role: qa_guardrail
+                lower: "0.05"
+                upper: "5"
+                unit: "kWh/kg net saleable product"
+                basis: "total manufacturing electricity per 1 kg net saleable product before route-specific review"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        - row_id: assembly_rejects
+          role: "Forming and assembly rejects"
+          name: "Product-specific food manufacturing waste; Tiangong UUID unresolved"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record off-spec portions, line start-up material, spills, and changeover residues by recovery or disposal route."
+          amount:
+            expression: "measured reject mass by batch and destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net saleable prepared dish"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_and_wastewater
+              source_ids:
+                - mass-balance-identity
+            ranges: []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: assembled_dish
+          role: "Assembled dish before conditioning"
+          name: "Internal assembled prepared dish"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the measured mass of formed or assembled product transferred to the declared conditioning route."
+          amount:
+            expression: "measured transfer mass"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per batch and per 1 kg net saleable prepared dish"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_batch_material_balance
+              source_ids:
+                - mass-balance-identity
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+  - id: thermal_conditioning
+    label: "Cooking, cooling, chilling, freezing, or drying"
+    inputs:
+      product:
+        - row_id: thermal_energy_input
+          role: "Thermal energy or fuel"
+          name: "Route-specific fuel, steam, or heat supply; Tiangong UUID unresolved"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Record fuel, steam, or purchased heat used for cooking, blanching, drying, hot-water generation, or other route-specific conditioning. Record zero only when the declared route uses no thermal energy carrier."
+          amount:
+            expression: "measured meter or invoice use, or calculated from equipment-specific runtime and efficiency"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net saleable prepared dish"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_energy_and_runtime
+              source_ids:
+                - eu-commission-pef-2021
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "10"
+                unit: "MJ/kg net saleable product"
+                basis: "total direct thermal energy per 1 kg net saleable product before technology-specific review"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: conditioned_dish
+          role: "Conditioned dish transferred to packaging"
+          name: "Internal conditioned prepared dish"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the mass and declared temperature or moisture state of the cooked, cooled, chilled, frozen, or dried dish transferred to packaging."
+          amount:
+            expression: "measured transfer mass with associated time-temperature or moisture record"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per batch and per 1 kg net saleable prepared dish"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_temperature_and_storage
+              source_ids:
+                - codex-cxc-1-1969-2022
+            ranges: []
+      waste:
+        - row_id: conditioning_loss
+          role: "Cooking, cooling, or conditioning losses"
+          name: "Product-specific conditioning waste; Tiangong UUID unresolved"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record food solids, condensate retained as waste, off-spec product, and other measurable route losses without double counting evaporated water as a waste flow."
+          amount:
+            expression: "calculated from measured input, output, separately measured waste, and moisture change"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net saleable prepared dish"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_batch_material_balance
+              source_ids:
+                - mass-balance-identity
+            ranges: []
+      elementary:
+        []
+  - id: packaging_and_storage
+    label: "Packaging and factory-gate finished-product storage"
+    inputs:
+      product:
+        - row_id: packaging_input
+          role: "Primary and allocated secondary packaging"
+          name: "Material-specific packaging flow; Tiangong UUID unresolved"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record each packaging material and component, including tray, pouch, film, carton, label, closure, absorbent pad, or modified-atmosphere gas where used."
+          amount:
+            expression: "component mass multiplied by units consumed, including measured line losses"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net saleable prepared dish"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_records
+              source_ids:
+                - codex-cxc-1-1969-2022
+            ranges:
+              - role: qa_guardrail
+                lower: "0.005"
+                upper: "0.30"
+                unit: "kg/kg net saleable product"
+                basis: "total primary and allocated secondary packaging per 1 kg net saleable product"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: reference_product
+          role: "Saleable prepared dish at factory gate"
+          name: "Prepared dishes containing stuffed pasta, prepared couscous dishes"
+          flow_type: "product"
+          flow_ref:
+            uuid: "6ff6840a-8860-4e91-be9a-40d993df7105"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This is the quantitative reference output. Record net food mass separately from packaging mass and preserve the declared preparation and storage state."
+          amount:
+            expression: "fixed quantitative reference of 1 kg net saleable food product"
+            value_mode: "fixed_value"
+            specificity: "product_specific"
+            basis:
+              text: "1 kg net saleable prepared dish at factory gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "identity_reference"
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: food_loss_output
+          role: "Packaging line waste and non-saleable product"
+          name: "Material-specific packaging waste or product-specific food waste; Tiangong UUID unresolved"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record packaging scrap separately from non-saleable food and identify recycling, recovery, treatment, or disposal destinations."
+          amount:
+            expression: "measured waste mass by material, batch, and destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net saleable prepared dish"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_and_wastewater
+              source_ids:
+                - mass-balance-identity
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.30"
+                unit: "kg food loss/kg net saleable product"
+                basis: "total non-saleable food across the foreground system per 1 kg net saleable product"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        []
+  - id: sanitation_and_waste_management
+    label: "Sanitation, wastewater, and directly attributable site waste management"
+    inputs:
+      product:
+        - row_id: sanitation_water
+          role: "Sanitation and cleaning water"
+          name: "Site-appropriate water supply; Tiangong UUID unresolved"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record water used for clean-in-place, open-plant cleaning, changeovers, and other sanitation activities separately from recipe water."
+          amount:
+            expression: "measured sanitation meter use or documented allocation from site water records"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net saleable prepared dish"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_water_and_cleaning
+              source_ids:
+                - codex-cxc-1-1969-2022
+            ranges:
+              - role: qa_guardrail
+                lower: "0.1"
+                upper: "20"
+                unit: "kg/kg net saleable product"
+                basis: "sanitation water allocated to 1 kg net saleable product"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: cleaning_agent_input
+          role: "Cleaning and disinfection agents"
+          name: "Product-specific cleaning or disinfection agent; Tiangong UUID unresolved"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record formulated cleaning and disinfection agents by product, concentration, and issued mass; do not report only active ingredient mass unless the conversion is documented."
+          amount:
+            expression: "measured issued formulation mass or calculated consumption from concentration and solution volume"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net saleable prepared dish"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_water_and_cleaning
+              source_ids:
+                - codex-cxc-1-1969-2022
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.10"
+                unit: "kg formulated agent/kg net saleable product"
+                basis: "formulated cleaning and disinfection agents allocated to 1 kg net saleable product"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: wastewater_output
+          role: "Process and sanitation wastewater"
+          name: "Wastewater to declared treatment; Tiangong UUID unresolved"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record wastewater leaving the site or entering on-site treatment, including measured quantity and declared treatment route. Avoid double counting water incorporated into product or separately recorded as evaporation."
+          amount:
+            expression: "measured effluent volume converted using measured or justified density, or reconciled water balance"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net saleable prepared dish"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_waste_and_wastewater
+              source_ids:
+                - mass-balance-identity
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "20"
+                unit: "kg/kg net saleable product"
+                basis: "wastewater leaving the foreground boundary per 1 kg net saleable product"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        - row_id: refrigerant_emission
+          role: "Refrigerant released from foreground refrigeration"
+          name: "Refrigerant-specific emission to air; Tiangong UUID unresolved"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "When refrigeration, chilling, or freezing is operated on site, calculate direct refrigerant release from verified inventory change, additions, recovery, and equipment records by refrigerant species."
+          amount:
+            expression: "calculated refrigerant loss allocated from equipment serving the foreground route"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net saleable prepared dish"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_refrigerant_inventory
+              source_ids:
+                - eu-commission-pef-2021
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.02"
+                unit: "kg/kg net saleable product"
+                basis: "direct refrigerant loss allocated to 1 kg net saleable product"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+allocation_rules:
+  - rule_id: allocation_avoid
+    applies_to: "Shared lines, utilities, sanitation, and storage"
+    rule: "Prefer subdivision using product-specific meters, batch records, equipment runtime, recipe records, and dedicated storage data; use system expansion only when the added function and reporting scope are explicit."
+    source_ids:
+      - eu-commission-pef-2021
+  - rule_id: allocation_physical
+    applies_to: "Unavoidable shared inputs and emissions"
+    rule: "When subdivision is not feasible, allocate using a documented causal physical relationship such as metered energy, equipment time, occupied chilled volume-time, or cleaned surface-time. Do not default automatically to product mass."
+    source_ids:
+      - eu-commission-pef-2021
+  - rule_id: allocation_mass_fallback
+    applies_to: "Shared production with no better physical driver"
+    rule: "Use saleable net product mass only when it reasonably represents the physical cause of the shared burden; disclose the denominator, period, included products, and sensitivity to an alternative driver."
+    source_ids:
+      - eu-commission-pef-2021
+  - rule_id: allocation_economic_fallback
+    applies_to: "Co-products with dissimilar functions and no defensible physical relation"
+    rule: "Use economic allocation only after documenting why subdivision, system expansion, and physical allocation are not feasible; use revenue excluding taxes over a representative period and disclose price volatility."
+    source_ids:
+      - eu-commission-pef-2021
+  - rule_id: allocation_waste_status
+    applies_to: "Food residues and packaging scrap"
+    rule: "Classify each output as saleable co-product, recoverable by-product, or waste using documented destination and economic status; do not assign avoided burdens inside the foreground dataset unless the chosen downstream method explicitly requires them."
+    source_ids:
+      - eu-commission-pef-2021
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_batch_material_balance
+      process_id: "ingredient_preparation_dish_assembly_thermal_conditioning"
+      flow_role: "ingredients, internal transfers, recipe water, product, and losses"
+      record_type: "Batch production, weighing, BOM, receiving, and inventory records"
+      raw_fields: "batch_id; product_code; ingredient_id; supplier_lot; opening_mass; issued_mass; returned_mass; transfer_mass; product_mass; reject_mass; moisture_basis"
+      collection_method: "Calibrated scales and reconciled batch records"
+      unit: "kg"
+      frequency: "Each batch"
+      temporal_coverage: "At least 12 consecutive representative months or the full campaign for seasonal production"
+      site_scope: "All lines producing the declared product at the site"
+      aggregation_rule: "Sum compatible wet-mass records, reconcile by batch, then divide by net saleable product mass"
+      quality_evidence: "Scale calibration; signed batch sheet; BOM revision; supplier and lot traceability; reconciliation residual"
+    - protocol_id: cp_energy_and_runtime
+      process_id: "dish_assembly_thermal_conditioning_packaging_and_storage"
+      flow_role: "electricity, fuel, steam, heat, cooling, and compressed air"
+      record_type: "Submeters, utility invoices, fuel stock, and equipment runtime"
+      raw_fields: "meter_id; opening_reading; closing_reading; fuel_quantity; steam_quantity; runtime; rated_load; product_code; output_mass"
+      collection_method: "Prefer submetering; otherwise allocate with a documented causal driver"
+      unit: "kWh; MJ; kg fuel; h"
+      frequency: "Batch, shift, or monthly meter period"
+      temporal_coverage: "At least 12 consecutive representative months or full campaign"
+      site_scope: "All foreground equipment and shared utilities included in the model"
+      aggregation_rule: "Subtract meter readings, apply documented conversions, allocate shared use, and divide by saleable output"
+      quality_evidence: "Meter calibration or invoice; conversion factor source; allocation-driver record; completeness reconciliation"
+    - protocol_id: cp_temperature_and_storage
+      process_id: "thermal_conditioning_packaging_and_storage"
+      flow_role: "product condition and cold or ambient storage"
+      record_type: "Validated route, logger, line control, and warehouse records"
+      raw_fields: "batch_id; step; set_point; measured_temperature; start_time; end_time; storage_temperature; shelf_life; deviation"
+      collection_method: "Calibrated sensors and retained route records"
+      unit: "°C; min; h; day"
+      frequency: "Each batch or validated continuous monitoring interval"
+      temporal_coverage: "Representative reference period including seasonal extremes where relevant"
+      site_scope: "All conditioning and storage zones serving the product"
+      aggregation_rule: "Preserve batch profiles and calculate residence time from timestamps"
+      quality_evidence: "Sensor calibration; route validation; deviation and corrective-action records"
+    - protocol_id: cp_packaging_records
+      process_id: "packaging_and_storage"
+      flow_role: "packaging materials and line loss"
+      record_type: "Packaging specification, purchase, issue, count, and scrap records"
+      raw_fields: "component_id; material; unit_mass; units_issued; units_returned; scrap_mass; product_units; net_content"
+      collection_method: "Component weighing plus issued-count and scrap reconciliation"
+      unit: "kg; item"
+      frequency: "Batch or packaging campaign"
+      temporal_coverage: "At least 12 consecutive representative months or full campaign"
+      site_scope: "All primary and allocated secondary packaging used for the product"
+      aggregation_rule: "Component mass × net units consumed plus measured scrap, divided by net product mass"
+      quality_evidence: "Approved packaging specification; scale calibration; purchase and scrap reconciliation"
+    - protocol_id: cp_water_and_cleaning
+      process_id: "sanitation_and_waste_management"
+      flow_role: "sanitation water and cleaning agents"
+      record_type: "Water meters, dosing logs, sanitation schedule, and chemical issue records"
+      raw_fields: "meter_id; water_volume; agent_id; formulation_mass; solution_volume; concentration; cleaned_line; start_time; end_time"
+      collection_method: "Submetering and controlled dosing records"
+      unit: "kg; m3; L; %"
+      frequency: "Each cleaning event or meter period"
+      temporal_coverage: "At least 12 consecutive representative months or full campaign"
+      site_scope: "All sanitation activities attributable to included lines"
+      aggregation_rule: "Convert volume with measured or justified density, allocate shared events by causal driver, and divide by product mass"
+      quality_evidence: "Meter calibration; dosing calibration; sanitation record; chemical inventory reconciliation"
+    - protocol_id: cp_waste_and_wastewater
+      process_id: "all_foreground_processes"
+      flow_role: "food loss, packaging waste, wastewater, and treatment route"
+      record_type: "Waste tickets, container weights, effluent meters, and disposal records"
+      raw_fields: "waste_id; material; gross_mass; tare_mass; destination; effluent_volume; density; treatment_route; batch_or_period"
+      collection_method: "Weighing and flow metering with destination reconciliation"
+      unit: "kg; m3"
+      frequency: "Batch, collection event, or meter period"
+      temporal_coverage: "At least 12 consecutive representative months or full campaign"
+      site_scope: "All foreground waste and effluent points"
+      aggregation_rule: "Net gross-minus-tare mass or volume × density, allocate by documented driver, and divide by product mass"
+      quality_evidence: "Scale or meter calibration; contractor ticket; treatment acceptance record; mass and water balance"
+    - protocol_id: cp_refrigerant_inventory
+      process_id: "thermal_conditioning_packaging_and_storage"
+      flow_role: "direct refrigerant release"
+      record_type: "Equipment register, charge, addition, recovery, and service records"
+      raw_fields: "equipment_id; refrigerant_species; opening_charge; additions; recovered_mass; closing_charge; service_date; served_product_or_zone"
+      collection_method: "Annual or campaign inventory balance by refrigerant species"
+      unit: "kg"
+      frequency: "Each service event and annual closure"
+      temporal_coverage: "At least 12 consecutive representative months"
+      site_scope: "Refrigeration equipment serving the product route"
+      aggregation_rule: "Opening charge + additions - recovered mass - closing charge, allocated by documented cooling service driver"
+      quality_evidence: "Certified service record; cylinder weights; equipment register; non-negative balance review"
+  calculation_rules:
+    - id: calc_reference_normalization
+      applies_to: "All inventory rows"
+      rule: "normalized amount = attributable foreground amount / net saleable product mass"
+      inputs:
+        - "Attributable amount"
+        - "net saleable product mass in the same period"
+      output: "Amount per 1 kg reference product"
+      source_ids:
+        - eu-commission-pef-2021
+    - id: calc_batch_mass_balance
+      applies_to: "Each production batch"
+      rule: "total material input = saleable product + internal closing inventory change + measured food loss + wastewater-borne product solids + measured retained samples + unexplained residual; report water evaporation or uptake separately"
+      inputs:
+        - "Wet-basis ingredient"
+        - water
+        - transfer
+        - product
+        - waste
+        - solids
+        - "and inventory records"
+      output: "Reconciled batch mass balance and residual"
+      source_ids:
+        - mass-balance-identity
+    - id: calc_energy_allocation
+      applies_to: "Shared energy services"
+      rule: "attributable energy = total measured energy × documented causal-driver share; mass share is allowed only under allocation_mass_fallback"
+      inputs:
+        - "Metered energy"
+        - "equipment time"
+        - "metered sub-load"
+        - volume-time
+        - "or approved fallback driver"
+      output: "Product-attributable kWh or MJ"
+      source_ids:
+        - eu-commission-pef-2021
+    - id: calc_packaging_mass
+      applies_to: "Packaging"
+      rule: "packaging mass = sum(component unit mass × net components consumed) + allocated measured packaging scrap"
+      inputs:
+        - "Component specifications"
+        - "counts issued and returned"
+        - scrap
+      output: "kg packaging per kg net product"
+      source_ids:
+        - mass-balance-identity
+    - id: calc_refrigerant_loss
+      applies_to: "Refrigeration equipment"
+      rule: "refrigerant loss = opening charge + additions - recovered mass - closing charge; negative results require record correction and shall not be reported as emissions"
+      inputs:
+        - "Charge and service inventory by refrigerant species"
+      output: "kg refrigerant emission allocated to product"
+      source_ids:
+        - mass-balance-identity
+  data_quality_requirements:
+    - id: dq_product_identity
+      applies_to: "Reference product and batches"
+      requirement: "Preserve product code, dish family, recipe/BOM revision, preparation state, storage state, packaging format, net content, shelf-life, manufacturing site, and reference period."
+      evidence: "Approved product specification and batch traceability records; codex-cxc-1-1969-2022"
+    - id: dq_temporal_coverage
+      applies_to: "Foreground activity data"
+      requirement: "Use at least 12 consecutive representative months unless the full production campaign is shorter; disclose shutdowns, new-product ramp-up, abnormal batches, and seasonal coverage."
+      evidence: "Dated production, meter, purchasing, and waste records; eu-commission-pef-2021"
+    - id: dq_measurement
+      applies_to: "Mass, energy, water, temperature, and time"
+      requirement: "Retain calibration or verification evidence for instruments and document every unit conversion, density, and allocation driver."
+      evidence: "Calibration certificates, meter checks, conversion records; codex-cxc-1-1969-2022"
+    - id: dq_completeness
+      applies_to: "Process map and inventory"
+      requirement: "Reconcile BOM, material, energy, water, packaging, waste, wastewater, and direct-release records to the included process map; quantify missing coverage and do not hide it as zero."
+      evidence: "Completeness checklist, batch mass balances, utility reconciliation; eu-commission-pef-2021"
+    - id: dq_representativeness
+      applies_to: "Foreground and upstream datasets"
+      requirement: "Assess technological, geographical, and time representativeness and precision; identify proxy datasets and material mismatches."
+      evidence: "Data-quality assessment and proxy register; eu-commission-pef-2021"
+    - id: dq_food_route_records
+      applies_to: "Cooking, cooling, chilling, freezing, drying, storage, and packaging"
+      requirement: "Retain route-specific time-temperature, moisture where relevant, packaging, allergen, deviation, and corrective-action evidence for the declared product state."
+      evidence: "Validated route and batch records; codex-cxc-1-1969-2022"
+validation_rules:
+  - rule_id: validate_reference_identity
+    applies_to: "Reference flow"
+    rule: "The product-flow UUID shall equal 6ff6840a-8860-4e91-be9a-40d993df7105, the reference flow property shall be Mass 93a60a56-a3c8-11da-a746-0800200b9a66, the unit group shall be Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66, and the reference unit shall be kg."
+    source_ids: []
+  - rule_id: validate_reference_amount
+    applies_to: "Reference output"
+    rule: "Net saleable food product shall equal 1 kg; packaging mass shall be reported separately and shall not be included in the reference mass."
+    source_ids:
+      - eu-commission-pef-2021
+  - rule_id: validate_required_qualifiers
+    applies_to: "Dataset metadata"
+    rule: "Every required qualifier in section 3 shall be present and internally consistent with the product specification and process route."
+    source_ids:
+      - codex-cxc-1-1969-2022
+  - rule_id: validate_process_route
+    applies_to: "Process map"
+    rule: "Every required process shall have inventory coverage; thermal_conditioning shall be included or explicitly marked not applicable with the declared ready-to-eat/reheat/further-cooking and ambient/chilled/frozen route."
+    source_ids:
+      - codex-cxc-1-1969-2022
+  - rule_id: validate_mass_balance
+    applies_to: "Batch and annual foreground inventory"
+    rule: "Inputs, product, measured losses, moisture change, wastewater-borne product material, and inventory change shall reconcile; report the residual and investigate material unexplained residuals rather than forcing closure."
+    source_ids:
+      - mass-balance-identity
+  - rule_id: validate_energy_water_waste_coverage
+    applies_to: "Foreground inventory"
+    rule: "Electricity, thermal energy, direct-contact water, sanitation water, packaging, food loss, packaging waste, wastewater, and direct refrigerant release shall each be quantified or explicitly documented as not applicable."
+    source_ids:
+      - eu-commission-pef-2021
+      - codex-cxc-1-1969-2022
+  - rule_id: validate_allocation
+    applies_to: "Shared processes and co-products"
+    rule: "Allocation shall follow the ordered rules in section 7 and disclose driver, denominator, period, co-products, waste classification, and any sensitivity test."
+    source_ids:
+      - eu-commission-pef-2021
+  - rule_id: validate_data_quality
+    applies_to: "Foreground and upstream data"
+    rule: "Temporal, technological, geographical, precision, completeness, measurement, and proxy evidence shall be reported; missing data shall be disclosed as gaps rather than entered as zero."
+    source_ids:
+      - eu-commission-pef-2021
+  - rule_id: validate_temporary_ranges
+    applies_to: "All reasoned_estimate ranges"
+    rule: "Treat each provisional range only as a QA screen; a foreground value outside the range requires review and explanation, while a value inside the range does not establish correctness. Replace these ranges with reviewed source-backed evidence before publication-critical use."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "Foreground factory-production dataset for a declared prepared stuffed-pasta, noodle, dumpling, or couscous dish"
+  downstream_use: "secondary_dataset; background_dataset"
+  allowed_use: "Product carbon footprint or LCA models that need factory-gate manufacture of a product matching the declared recipe, preparation state, storage state, geography, period, and packaging format"
+  excluded_use: "Agricultural or ingredient production without upstream datasets; generic restaurant meals; consumer cooking or reheating; distribution, retail, food loss after factory gate, or packaging end of life unless added separately; nutrition or food-safety certification"
+  required_metadata: "PCR id and version when published; product-flow UUID; product code; recipe/BOM revision; dish family; filling share where applicable; preparation state; ambient/chilled/frozen state and temperature; net mass; packaging composition; shelf-life; site geography; reference period; technology route; allocation; upstream dataset versions"
+  required_quality_disclosure: "Foreground coverage; temporal, geographical, and technological representativeness; precision; completeness; instrument calibration; mass-balance residual; allocation drivers; proxies; cut-offs; data gaps; temporary estimates; review status"
+  update_trigger: "Recipe or filling change; change in cooking, cooling, freezing, drying, packaging, sanitation, or storage technology; new site or geography; material change in energy or water supply; shelf-life or product-state change; allocation change; data older than the declared representativeness period; replacement of a temporary estimate with reviewed evidence"
+data_sources:
+  - id: "eu-commission-pef-2021"
+    type: "official_guidance"
+    reference: "European Commission, Commission Recommendation (EU) 2021/2279, Annex I, Product Environmental Footprint Method. https://eur-lex.europa.eu/legal-content/EN/TXT/PDF/?uri=CELEX:32021H2279 (retrieved 2026-08-11)"
+    used_for: "Functional unit and reference flow; system-boundary logic; foreground company-specific manufacturing data; allocation hierarchy; data quality and proxy disclosure"
+  - id: "codex-cxs-202-1995"
+    type: "standard"
+    reference: "Codex Alimentarius, CXS 202-1995, Standard for Couscous. https://www.fao.org/input/download/standards/65/CXS_202e.pdf (retrieved 2026-08-11)"
+    used_for: "Couscous identity, processing state, moisture/packaging context, and distinction from a complete prepared couscous dish"
+  - id: "codex-cxc-1-1969-2022"
+    type: "official_guidance"
+    reference: "Codex Alimentarius, CXC 1-1969, General Principles of Food Hygiene, revision current in the official 2022 Codex listing. https://www.fao.org/fao-who-codexalimentarius/sh-proxy/en/?lnk=1&url=https%3A%2F%2Fworkspace.fao.org%2Fsites%2Fcodex%2FStandards%2FCXC+1-1969%2FCXC_001e.pdf (retrieved 2026-08-11)"
+    used_for: "Incoming-material records; time-temperature control; packaging and water controls; lot traceability; process-route records; calibration and documentation expectations"
+  - id: "mass-balance-identity"
+    type: "method_factor"
+    reference: "Conservation-of-mass identity applied to batch and period inventory reconciliation"
+    used_for: "Batch material balance, packaging calculation, wastewater reconciliation, and refrigerant inventory balance"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:e8c4d7af6f95a22b55788bf6335180aff836e56d5a7852c9ade77a74fb960fb1"
+  generated_content_sha256: "sha256:ac024c7e0c06c2efb15cdf012b9f0f4cc0730757882398de18c3df1b7f36a0c3"

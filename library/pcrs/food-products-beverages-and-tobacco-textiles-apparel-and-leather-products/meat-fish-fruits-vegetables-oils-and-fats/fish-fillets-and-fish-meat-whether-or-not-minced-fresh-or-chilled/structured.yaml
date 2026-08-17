@@ -1,10 +1,742 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "21221"
-  title: "Fish fillets and fish meat (whether or not minced), fresh or chilled"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.food-products-beverages-and-tobacco-textiles-apparel-and-leather-products.meat-fish-fruits-vegetables-oils-and-fats.fish-fillets-and-fish-meat-whether-or-not-minced-fresh-or-chilled"
+  classification_refs: "CPC 3.0: 21221, exact"
+  covered_products: "Fresh or chilled fish fillets; fresh or chilled fish meat, whether or not minced"
+  excluded_products: "Whole fish; frozen fish or fish meat; dried, salted, smoked, cooked, canned, fermented, coated, or otherwise preserved fish; fish livers and roes; crustaceans, molluscs, and other aquatic invertebrates"
+  representative_product: "Packed fresh or chilled edible fish fillet at the processing-facility gate"
+  production_route: "Receipt under temperature control; preparation and filleting/meat recovery; optional skinning, deboning, trimming, or mincing; washing where used; chilling; packing; cold storage and dispatch"
+  market_state: "Fresh or chilled, not frozen, ready for sale or further food preparation"
+functional_unit:
+  what: "Edible fish fillet or fish meat supplied for food use"
+  how_much: "1 kg net product mass"
+  how_well: "Fresh or chilled, declared species and product form, meeting applicable food-safety and commercial quality requirements"
+  how_long_or_cycle: "One delivery of product at the processing-facility gate; no use duration is assigned"
+  reference_flow_link: "The reference flow is the net mass of conforming packed product leaving the foreground system"
+system_boundary:
+  rules:
+    - rule_id: boundary_gate_to_gate
+      applies_to: "Foreground system"
+      rule: "Include all on-site operations required to convert the declared received fish form into conforming fresh or chilled fillets or fish meat through packed cold dispatch, including refrigeration, sanitation, water, packaging, and management of offcuts and wastewater."
+      source_ids:
+        - codex-cxc-52-2003
+    - rule_id: boundary_upstream_identity
+      applies_to: "Received fish"
+      rule: "Keep fishing or aquaculture, landing, and inbound transport upstream unless they are operated by the reporting organization or intentionally added; always link the received form to an upstream dataset with matching origin and form."
+      source_ids:
+        - eu-pef-2021-2279
+    - rule_id: boundary_cold_chain
+      applies_to: "Product handling"
+      rule: "Keep time and temperature control within the foreground boundary from receipt through dispatch and record deviations; fresh product shall not be represented as frozen or as preserved by another treatment."
+      source_ids:
+        - codex-cxc-52-2003
+boundary_abstraction:
+  declared_starting_condition: "Fish or fish portions received at the processing facility, with species, origin, received form, mass, temperature condition, supplier or lot, and upstream dataset reference declared"
+  starting_condition_role: "Upstream product input entering the foreground fish-processing system"
+  product_classification_scope: "Edible fish fillets and fish meat, whether or not minced, fresh or chilled"
+  recursive_input_rule: "A purchased fresh or chilled fillet or fish-meat input already within this category is recorded once as an upstream product input and is not recursively reprocessed in the same model; only actual additional foreground operations are inventoried"
+  upstream_dataset_requirement: "Use a representative upstream dataset for the received fish form and declared capture or aquaculture origin; do not substitute a fillet dataset for whole or gutted fish without documenting the mass and co-product consequences"
+  disclosure: "Declare capture or aquaculture origin, species, received form, prior preservation, inbound temperature condition, included facility operations, outsourced processing, allocation method, co-product destinations, packaging, geographic scope, and reporting period"
+reference_flow_definition:
+  reference_amount: "1 kg"
+  product_flow_ref:
+    name: "Fish fillets and fish meat (whether or not minced), fresh or chilled"
+    uuid: "a1c31d45-a225-426f-908a-f79eae6c071f"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "fish species or species mix"
+    - "capture or aquaculture origin"
+    - "received form"
+    - "fillet or other meat form"
+    - "minced or non-minced"
+    - "skin and bone condition"
+    - "fresh or chilled claim"
+    - "product temperature criterion"
+    - "chilling medium"
+    - "packaging format"
+    - "net mass basis"
+    - "facility geography and reporting period"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "Reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Report exactly 1 kg net saleable product, excluding packaging, free drainage water, and loose ice unless the declared product specification explicitly includes an ice glaze or packing medium; disclose any included medium separately."
+  - id: wet_mass_basis
+    applies_to: "Fish inputs, edible outputs, offcuts, and waste"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Record actual wet mass at the point each flow crosses the process boundary and do not convert between live, landed, gutted, fillet, and minced mass without a documented calculation rule."
+  - id: temperature_record
+    applies_to: "Receipt, chilling, storage, and dispatch"
+    required_property_ref:
+      name: "Temperature"
+      uuid: ""
+    required_unit: "deg C"
+    rule: "Record measured product or representative core temperature, the criterion applied, measurement location, instrument identity, and timestamp; temperature is a quality and safety qualifier and is not converted into the reference mass."
+  - id: energy_conversion
+    applies_to: "Electricity and fuels"
+    required_property_ref:
+      name: "Energy"
+      uuid: ""
+    required_unit: "kWh or MJ"
+    rule: "Preserve metered units and conversion factors; convert only with a documented factor and report refrigeration separately when submetering or engineering allocation permits."
+process_map:
+  - id: receipt_cold_holding
+    name: "Receipt and temperature-controlled holding"
+    inclusion: "required"
+    inclusion_condition: "Always"
+    role: "Receive, weigh, inspect, and keep fish chilled before processing"
+    quantitative_reference: "kg accepted fish input"
+  - id: filleting_meat_preparation
+    name: "Filleting and fish-meat preparation"
+    inclusion: "required"
+    inclusion_condition: "Always; individual cutting, skinning, deboning, trimming, and mincing steps apply to the declared product route"
+    role: "Produce edible fillets or fish meat and separate co-products or residues"
+    quantitative_reference: "kg prepared edible output"
+  - id: washing_chilling_packing
+    name: "Washing, chilling, packing, and cold dispatch"
+    inclusion: "required"
+    inclusion_condition: "Always; washing and ice addition apply only when used"
+    role: "Bring product to the declared fresh or chilled market state and pack it"
+    quantitative_reference: "kg packed net product"
+  - id: sanitation_wastewater_support
+    name: "Sanitation, refrigeration support, and wastewater handling"
+    inclusion: "required"
+    inclusion_condition: "Always"
+    role: "Capture shared water, energy, cleaning agents, wastewater, and waste management"
+    quantitative_reference: "kg packed net product"
+process_inventory:
+  - id: receipt_cold_holding
+    label: "Receipt and temperature-controlled holding"
+    inputs:
+      product:
+        - row_id: received_fish
+          role: "Received fish or fish portions"
+          name: "Received fish or fish portions"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the actual received form that crosses the facility boundary. Do not assign an approximate Tiangong UUID before identity review."
+          amount:
+            expression: "measured accepted wet mass by lot"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg packed net product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_lot_mass_temperature
+              source_ids:
+                - codex-cxc-52-2003
+            ranges:
+              - role: qa_guardrail
+                lower: "1.25"
+                upper: "4.00"
+                unit: "kg received fish/kg packed net product"
+                basis: "per 1 kg packed net product; replace with species-, received-form-, and route-specific reviewed evidence"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: receipt_chilling_medium
+          role: "Chilling ice or chilled water at receipt"
+          name: "Ice or chilled water"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record purchased or internally supplied ice or chilled water that crosses the receipt process boundary."
+          amount:
+            expression: "measured or calculated from issued mass and return records"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg packed net product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_utilities_materials
+              source_ids:
+                - codex-cxc-52-2003
+            ranges: []
+      waste:
+        - row_id: receiving_rejects
+          role: "Rejected fish and receiving residues"
+          name: "Rejected fish and receiving residues"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record fish rejected at receipt and residues removed before accepted-input weighing, with destination and cause."
+          amount:
+            expression: "measured wet mass by destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg packed net product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_output_destination_mass
+              source_ids:
+                - codex-cxc-52-2003
+            ranges: []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: accepted_fish
+          role: "Accepted chilled fish for preparation"
+          name: "Accepted chilled fish"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record accepted wet mass transferred to preparation."
+          amount:
+            expression: "measured or mass-balanced transferred wet mass"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per kg accepted fish output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_lot_mass_temperature
+              source_ids:
+                - codex-cxc-52-2003
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+  - id: filleting_meat_preparation
+    label: "Filleting and fish-meat preparation"
+    inputs:
+      product:
+        - row_id: fish_for_preparation
+          role: "Accepted fish for cutting or meat recovery"
+          name: "Accepted chilled fish"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the accepted chilled fish transferred from receipt."
+          amount:
+            expression: "transferred wet mass"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg prepared edible output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_lot_mass_temperature
+              source_ids:
+                - codex-cxc-52-2003
+            ranges: []
+        - row_id: preparation_water
+          role: "Process water used in preparation"
+          name: "Process water"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record water used for product-contact rinsing, washing, or line operation in this process."
+          amount:
+            expression: "submetered volume converted using documented density, or allocated facility meter record"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg packed net product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_utilities_materials
+              source_ids:
+                - codex-cxc-52-2003
+            ranges:
+              - role: qa_guardrail
+                lower: "0.1"
+                upper: "20"
+                unit: "kg water/kg packed net product"
+                basis: "broad first-pass screen; replace with reviewed site or source evidence"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: prepared_edible_meat
+          role: "Prepared edible fillets or fish meat"
+          name: "Prepared edible fish fillets or fish meat"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record edible product after cutting, optional skinning or deboning, trimming, meat recovery, and optional mincing."
+          amount:
+            expression: "measured wet mass released to final chilling and packing"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg prepared edible output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_output_destination_mass
+              source_ids:
+                - codex-cxc-52-2003
+            ranges: []
+        - row_id: saleable_coproducts
+          role: "Saleable fish co-products"
+          name: "Saleable fish co-products"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record heads, frames, skins, trimmings, mince fractions, or other materials that leave as products, by destination and quality status."
+          amount:
+            expression: "measured wet mass by co-product and destination"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg prepared edible output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_output_destination_mass
+              source_ids:
+                - eu-pef-2021-2279
+            ranges: []
+      waste:
+        - row_id: processing_residues
+          role: "Non-saleable offcuts and spoiled material"
+          name: "Fish processing residues"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record non-product organic residues by treatment route; do not combine them with saleable co-products."
+          amount:
+            expression: "measured wet mass by treatment route"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg prepared edible output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_output_destination_mass
+              source_ids:
+                - codex-cxc-52-2003
+            ranges: []
+      elementary:
+        []
+  - id: washing_chilling_packing
+    label: "Washing, chilling, packing, and cold dispatch"
+    inputs:
+      product:
+        - row_id: prepared_product_for_packing
+          role: "Prepared edible fish product"
+          name: "Prepared edible fish fillets or fish meat"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record prepared edible output received for final conditioning and packing."
+          amount:
+            expression: "transferred wet mass"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg packed net product"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_lot_mass_temperature
+              source_ids:
+                - codex-cxc-52-2003
+            ranges: []
+        - row_id: final_water_ice
+          role: "Final-stage water and ice"
+          name: "Process water and ice"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record water and ice used for final washing, chilling, or packing, separated when records permit."
+          amount:
+            expression: "measured issued mass or metered volume with documented conversion"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg packed net product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_utilities_materials
+              source_ids:
+                - codex-cxc-52-2003
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "1"
+                unit: "kg ice/kg packed net product"
+                basis: "broad first-pass screen; replace with reviewed product- and route-specific evidence"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: packaging_materials
+          role: "Primary and secondary packaging"
+          name: "Packaging materials"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record each packaging material by material type and measured issued mass, net of documented returns."
+          amount:
+            expression: "measured or bill-of-material mass by packaging component"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg packed net product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_utilities_materials
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.2"
+                unit: "kg packaging/kg packed net product"
+                basis: "broad first-pass screen; replace with reviewed pack-format evidence"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: reference_product
+          role: "Packed fresh or chilled fish fillets or meat"
+          name: "Fish fillets and fish meat (whether or not minced), fresh or chilled"
+          flow_type: "product"
+          flow_ref:
+            uuid: "a1c31d45-a225-426f-908a-f79eae6c071f"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This is the reference product leaving the facility gate."
+          amount:
+            expression: "exactly 1 kg net product mass after allocation and normalization"
+            value_mode: "fixed_value"
+            specificity: "product_specific"
+            basis:
+              text: "1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "identity_reference"
+              collection_protocol_id: cp_lot_mass_temperature
+              source_ids:
+                - codex-cxc-52-2003
+            ranges: []
+      waste:
+        - row_id: packing_losses
+          role: "Packaging rejects and final product losses"
+          name: "Packing losses and packaging waste"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record rejected product and packaging waste by material and destination."
+          amount:
+            expression: "measured mass or reconciled issue-minus-product balance"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg packed net product"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_output_destination_mass
+              source_ids: []
+            ranges: []
+      elementary:
+        []
+  - id: sanitation_wastewater_support
+    label: "Sanitation, refrigeration support, and wastewater handling"
+    inputs:
+      product:
+        - row_id: facility_energy
+          role: "Electricity and fuels"
+          name: "Electricity and fuels by carrier"
+          flow_type: "product"
+          property_unit: "Energy / kWh or MJ"
+          description: "Record energy used by refrigeration, cutting, pumping, ice making, compressed air, lighting, and other included facility operations."
+          amount:
+            expression: "measured by submeter; otherwise allocate facility records using documented engineering drivers"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg packed net product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_utilities_materials
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0.02"
+                upper: "5"
+                unit: "kWh/kg packed net product"
+                basis: "broad first-pass screen for facility electricity; replace with reviewed site or source evidence"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: sanitation_inputs
+          role: "Cleaning water and agents"
+          name: "Cleaning water, detergent, and disinfectant by material"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record water, detergents, and disinfectants used for included sanitation activities."
+          amount:
+            expression: "measured issued quantity or procurement-and-stock balance"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg packed net product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_utilities_materials
+              source_ids:
+                - codex-cxc-52-2003
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: process_wastewater
+          role: "Process wastewater"
+          name: "Fish-processing wastewater"
+          flow_type: "waste"
+          property_unit: "Mass or volume / kg or m3"
+          description: "Record wastewater mass or volume and treatment destination, with measured load indicators when available."
+          amount:
+            expression: "metered discharge or water balance, segregated by treatment route"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg packed net product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wastewater_refrigerant
+              source_ids:
+                - codex-cxc-52-2003
+            ranges: []
+      elementary:
+        - row_id: refrigerant_release
+          role: "Direct refrigerant releases"
+          name: "Refrigerant emission to air by species"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record direct refrigerant loss to air from included refrigeration equipment by refrigerant species."
+          amount:
+            expression: "calculated from charge, additions, recovery, and inventory change"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg packed net product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_wastewater_refrigerant
+              source_ids: []
+            ranges: []
+allocation_rules:
+  - rule_id: allocation_avoid_first
+    applies_to: "Multi-output processing"
+    rule: "Avoid allocation by separately metering or subdividing filleting, mincing, chilling, and packing operations where technically feasible."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: allocation_physical_relation
+    applies_to: "Shared operations with saleable fish co-products"
+    rule: "Where subdivision is not feasible and a defensible physical relationship represents resource use, allocate shared inputs and emissions using that relationship; wet mass may be used only when it reasonably reflects the underlying process relationship."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: allocation_economic_fallback
+    applies_to: "Joint outputs without a defensible physical relationship"
+    rule: "Use a documented economic relationship only when subdivision and a representative physical relationship are not feasible; report prices, geography, time basis, averaging, and sensitivity to the allocation choice."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: allocation_waste_not_coproduct
+    applies_to: "Offcuts, spoiled fish, sludge, and packaging waste"
+    rule: "Classify an output as a co-product only when it leaves as a product with a documented destination and value or function; otherwise model it as waste and include treatment attributable to the foreground system."
+    source_ids:
+      - eu-pef-2021-2279
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_lot_mass_temperature
+      process_id: "receipt_cold_holding_filleting_meat_preparation_washing_chilling_packing"
+      flow_role: "Lot mass, product form, and temperature"
+      record_type: "weighbridge or scale record; receiving and dispatch log; temperature log"
+      raw_fields: "lot_id; species; origin; received_form; input_mass_kg; transferred_mass_kg; packed_net_mass_kg; temperature_deg_c; criterion; timestamp; instrument_id; rejection_mass_kg"
+      collection_method: "Calibrated scale and calibrated temperature instrument, linked to production lot"
+      unit: "kg; deg C"
+      frequency: "Each lot and each required control point"
+      temporal_coverage: "Representative continuous 12-month period or complete declared campaign"
+      site_scope: "Every included facility and outsourced foreground step"
+      aggregation_rule: "Sum masses by lot and product; calculate mass-weighted annual or campaign intensity; retain exceptional lots and explain exclusions"
+      quality_evidence: "Calibration records; lot traceability; temperature-monitoring record; reconciliation sign-off"
+    - protocol_id: cp_utilities_materials
+      process_id: "all_processes"
+      flow_role: "Water, ice, energy, packaging, and cleaning materials"
+      record_type: "meter; invoice; stock issue; bill of materials"
+      raw_fields: "period; meter_id; carrier_or_material; opening_stock; purchases; closing_stock; issued_quantity; returned_quantity; unit; allocation_driver"
+      collection_method: "Submetering preferred; otherwise reconciled procurement/stock record with documented engineering allocation"
+      unit: "kg; m3; kWh; MJ"
+      frequency: "Per batch where available and at least monthly"
+      temporal_coverage: "Same period as product output, normally 12 consecutive months"
+      site_scope: "Every included facility; separate material or energy carrier"
+      aggregation_rule: "Net use divided by allocated packed output after stock reconciliation"
+      quality_evidence: "Meter calibration; invoices; stock ledger; allocation worksheet"
+    - protocol_id: cp_output_destination_mass
+      process_id: "receipt_cold_holding_filleting_meat_preparation_washing_chilling_packing"
+      flow_role: "Product, co-product, reject, and waste mass and destination"
+      record_type: "scale ticket; dispatch record; waste manifest"
+      raw_fields: "lot_id; output_type; product_or_waste_status; mass_kg; destination; value_or_function; treatment_route; timestamp"
+      collection_method: "Weigh each material stream or use a documented mass balance when direct weighing is impracticable"
+      unit: "kg"
+      frequency: "Each dispatch or disposal event"
+      temporal_coverage: "Same period as reference product"
+      site_scope: "Every included facility and external destination category"
+      aggregation_rule: "Sum by output identity and destination; no netting of product and waste"
+      quality_evidence: "Scale calibration; sales or transfer record; waste manifest; mass-balance reconciliation"
+    - protocol_id: cp_wastewater_refrigerant
+      process_id: "sanitation_wastewater_support"
+      flow_role: "Wastewater and refrigerant release"
+      record_type: "discharge meter and sampling record; refrigerant service log"
+      raw_fields: "discharge_volume; load_indicator; concentration; treatment_route; refrigerant_species; opening_charge; additions; recovery; closing_charge"
+      collection_method: "Direct measurement where available; otherwise documented water balance and refrigerant mass balance"
+      unit: "m3; kg; concentration unit"
+      frequency: "Per discharge sample and service event; aggregate monthly"
+      temporal_coverage: "Same period as reference product"
+      site_scope: "Every included facility"
+      aggregation_rule: "Aggregate measured discharge and calculate species-specific refrigerant loss; allocate only shared support quantities"
+      quality_evidence: "Laboratory record; meter calibration; service invoice; charge reconciliation"
+  calculation_rules:
+    - id: calc_reference_normalization
+      applies_to: "All inventory rows"
+      rule: "normalized amount = allocated included-period amount / packed net reference-product mass"
+      inputs:
+        - "allocated amount"
+        - packed_net_mass_kg
+      output: "amount per 1 kg reference product"
+      source_ids: []
+    - id: calc_mass_balance
+      applies_to: "Each process and reporting period"
+      rule: "mass-balance difference = total mass inputs - total product outputs - total co-product outputs - total waste outputs - documented water carryover or evaporation"
+      inputs:
+        - "measured input and output wet masses"
+        - "documented moisture or carryover terms"
+      output: "absolute and relative reconciliation difference"
+      source_ids:
+        - codex-cxc-52-2003
+    - id: calc_refrigerant_loss
+      applies_to: "Refrigeration system"
+      rule: "refrigerant loss = opening charge + additions - recovered refrigerant - closing charge, not less than zero unless a documented correction is applied"
+      inputs:
+        - opening_charge
+        - additions
+        - recovery
+        - closing_charge
+      output: "kg refrigerant released by species"
+      source_ids: []
+    - id: calc_allocation
+      applies_to: "Shared multi-output operations"
+      rule: "Apply the selected subdivision, physical, or economic allocation rule consistently to all shared inputs and emissions; preserve unallocated totals and allocation fractions"
+      inputs:
+        - "shared totals"
+        - "output quantities"
+        - "physical driver or prices"
+      output: "allocated inventory by output"
+      source_ids:
+        - eu-pef-2021-2279
+  data_quality_requirements:
+    - id: dq_identity_traceability
+      applies_to: "Product and fish inputs"
+      requirement: "Preserve lot linkage among species, origin, received form, temperature records, processing route, and packed output."
+      evidence: "Lot records and traceability reconciliation; codex-cxc-52-2003"
+    - id: dq_temporal_representativeness
+      applies_to: "Foreground activity data"
+      requirement: "Use a representative continuous 12-month period where operations are ongoing; for seasonal or campaign production, cover the complete declared campaign and disclose why it is representative."
+      evidence: "Period coverage table and production summary; eu-pef-2021-2279"
+    - id: dq_geographic_technology_scope
+      applies_to: "Facilities and outsourced foreground steps"
+      requirement: "Include every facility and technology represented by the dataset or disclose exclusions and their share of output; do not pool materially different filleting, mincing, chilling, or packing routes without stratification or justification."
+      evidence: "Facility list, route description, coverage calculation; eu-pef-2021-2279"
+    - id: dq_measurement_control
+      applies_to: "Mass, temperature, utilities, and releases"
+      requirement: "Retain instrument identity, calibration or verification status, sampling method, missing-data treatment, and reconciliation evidence."
+      evidence: "Calibration certificates, meter logs, sampling records, and QA sign-off"
+    - id: dq_food_safety_context
+      applies_to: "Fresh or chilled product"
+      requirement: "Retain the applicable time-temperature criterion, monitoring results, corrective actions, and hygiene-control evidence; PCR conformance does not replace food-safety compliance."
+      evidence: "Temperature log, sanitation record, deviation and corrective-action record; codex-cxc-52-2003"
+validation_rules:
+  - rule_id: validate_reference_flow
+    applies_to: "Reference product"
+    rule: "Confirm exactly 1 kg net product mass, the specified product-flow UUID, Mass property UUID, unit-group UUID, kg unit, and all required qualifiers."
+    source_ids: []
+  - rule_id: validate_scope_state
+    applies_to: "Product identity and boundary"
+    rule: "Reject datasets for frozen or otherwise preserved product; verify that the received form and included processing route can produce the declared fresh or chilled fillet or fish-meat output."
+    source_ids:
+      - codex-cxc-52-2003
+  - rule_id: validate_cold_chain_records
+    applies_to: "Receipt through dispatch"
+    rule: "Require time-temperature records and documented response to deviations for every declared control point."
+    source_ids:
+      - codex-cxc-52-2003
+  - rule_id: validate_mass_balance
+    applies_to: "Each process and reporting period"
+    rule: "Reconcile fish inputs with edible output, saleable co-products, rejects, waste, and documented carryover; investigate rather than automatically accept values outside the provisional QA screen."
+    source_ids: []
+  - rule_id: validate_allocation
+    applies_to: "Multi-output operations"
+    rule: "Confirm that subdivision was considered first, the selected driver is justified, outputs are not double counted as both co-product and waste, and allocation fractions reconcile to the unallocated total."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: validate_provisional_ranges
+    applies_to: "QA guardrails"
+    rule: "Treat all reasoned_estimate ranges as non-normative screening values; flag exceedances for review and replace or confirm the ranges with reviewed evidence before activation."
+    source_ids: []
+  - rule_id: validate_data_completeness
+    applies_to: "Foreground package"
+    rule: "Require full facility, temporal, route, utility, packaging, co-product, waste, wastewater, refrigerant, and source disclosure or an explicit documented exclusion."
+    source_ids:
+      - eu-pef-2021-2279
+published_dataset_profile:
+  dataset_role: "Foreground production data package for fresh or chilled fish fillets and fish meat"
+  downstream_use: "secondary_dataset; background_dataset"
+  allowed_use: "Product and process LCA where species or species mix, origin, received form, processing route, market state, geography, technology, allocation, and data period are representative"
+  excluded_use: "Frozen, preserved, cooked, or non-fish products; upstream capture or aquaculture impacts without a linked upstream dataset; retail, consumer preparation, or end-of-life claims outside the declared boundary"
+  required_metadata: "PCR id and status; product-flow UUID; species and origin; received form; product form; skin/bone/mincing state; chilling medium and temperature criterion; packaging; facility geography; technology route; period; allocation method; co-product and waste destinations; upstream dataset references"
+  required_quality_disclosure: "Temporal, geographic, and technological representativeness; facility and output coverage; measurement and calibration evidence; mass-balance result; missing-data treatment; provisional estimate use; allocation sensitivity; food-safety criterion and deviations"
+  update_trigger: "Change in species mix, origin, received form, yield, equipment, refrigeration system, chilling or packing method, co-product destination, allocation driver, facility mix, regulation, or evidence that materially changes normalized results or scope"
+data_sources:
+  - id: "codex-cxc-52-2003"
+    type: "standard"
+    reference: "FAO/WHO Codex Alimentarius, CXC 52-2003, Code of Practice for Fish and Fishery Products, official PDF: https://www.fao.org/input/download/standards/10273/CXP_052e.pdf (retrieved 2026-08-11)"
+    used_for: "Fresh/chilled product meaning; filleting, skinning, trimming, washing and hygiene process decomposition; time-temperature and cold-chain controls; quality and food-safety records"
+  - id: "eu-pef-2021-2279"
+    type: "official_guidance"
+    reference: "European Commission Recommendation (EU) 2021/2279 on the use of the Environmental Footprint methods, Annex I Product Environmental Footprint method: https://eur-lex.europa.eu/eli/reco/2021/2279/oj/eng (retrieved 2026-08-11)"
+    used_for: "System-boundary disclosure; allocation hierarchy; foreground data quality, representativeness, completeness, and validation requirements"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:4b88889ddbf8105797f5a2b90eb3c8f79ae1e3fd7b4e0b0cfde5b099cf7ef284"
+  generated_content_sha256: "sha256:4735f3cfe59136a1a90d203e28624ed99e4ee58b9481de2963e74f852aaf501a"

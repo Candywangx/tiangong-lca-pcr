@@ -1,10 +1,1731 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "22130"
-  title: "Whey"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.food-products-beverages-and-tobacco-textiles-apparel-and-leather-products.dairy-products-and-egg-products.whey"
+  classification_refs: "CPC 3.0 22130 Whey"
+  covered_products: "sweet whey and acid whey marketed or transferred as fluid dairy products; untreated, clarified, pasteurised, cooled, or concentrated liquid whey when the state is declared"
+  excluded_products: "whey and acid whey powders; dried whey ingredients; whey protein concentrate or isolate sold as dry products; lactose; whey permeate powder; whey cheese; formulated whey beverages; cheese, casein, milk, cream, and non-dairy analogues"
+  representative_product: "saleable fluid whey at the declared plant gate"
+  production_route: "recovery after cheese or casein coagulation and curd separation, followed by route-specific conditioning, storage, and dispatch"
+  market_state: "bulk or packaged pumpable liquid; sweet or acid; declared solids, composition, temperature, treatment, and concentration state"
+functional_unit:
+  what: "conforming fluid whey supplied for food, feed, fermentation, ingredient manufacture, or another declared downstream use"
+  how_much: "1 kg wet product at the declared plant gate"
+  how_well: "meets the declared sweet/acid identity, source-process specification, solids and composition basis, pH or acidity, microbiological or commercial specification, and treatment state"
+  how_long_or_cycle: "one production batch or reporting-period output, normalized to 1 kg dispatched product"
+  reference_flow_link: "reference product output whey_reference_product from storage_and_dispatch"
+system_boundary:
+  rules:
+    - rule_id: system_boundary_rule_1
+      applies_to: "foreground_system_boundary"
+      rule: "The dataset shall represent the declared fluid-whey route without silently importing upstream cheese burdens, downstream powder manufacture, or disposal credits."
+      source_ids: []
+    - rule_id: boundary_product_identity
+      applies_to: "product inclusion"
+      rule: "Include only fluid whey separated from curd after coagulation in cheese, casein, or similar dairy manufacture and preserve sweet/acid and source-process identity."
+      source_ids:
+        - codex-cxs-289-1995-whey-powders
+        - fao-2013-milk-dairy-human-nutrition
+    - rule_id: boundary_start_and_end
+      applies_to: "foreground gate"
+      rule: "Start at whey separation into the recovery line or at purchased-fluid-whey receipt; end at conforming fluid whey ready for dispatch at the declared plant gate."
+      source_ids:
+        - codex-cxs-289-1995-whey-powders
+        - us-epa-ap42-9-6-1-cheese
+    - rule_id: boundary_included_operations
+      applies_to: "on-site whey handling"
+      rule: "Include collection, transfer, clarification, cooling, pasteurisation, liquid concentration, storage, cleaning, packaging, and on-site effluent handling when performed for the declared product."
+      source_ids:
+        - eu-2019-2031-fdm-bat
+        - us-epa-ap42-9-6-1-cheese
+    - rule_id: boundary_acid_whey_timing
+      applies_to: "acid whey route"
+      rule: "Record the time from separation to conditioning and avoid unreported holding that changes acidity; acid whey should be processed promptly and the actual residence time shall be disclosed."
+      source_ids:
+        - eu-2019-2031-fdm-bat
+    - rule_id: boundary_downstream_exclusions
+      applies_to: "powders and derived ingredients"
+      rule: "Exclude drying and downstream manufacture of whey powder, protein concentrates or isolates, lactose, permeate powder, whey cheese, and formulated beverages from the fluid-whey foreground gate."
+      source_ids:
+        - codex-cxs-289-1995-whey-powders
+        - fao-2013-milk-dairy-human-nutrition
+    - rule_id: boundary_recursive_whey_input
+      applies_to: "purchased or transferred fluid whey"
+      rule: "Record same-category whey as an input with an upstream dataset and do not double-count its upstream dairy or recovery burdens."
+      source_ids: []
+    - rule_id: boundary_emissions_and_waste
+      applies_to: "direct releases and treatment"
+      rule: "Include measured on-site wastewater, product losses, residues, refrigerant losses, combustion releases, and treatment outputs attributable to included operations; disclose off-site treatment links."
+      source_ids:
+        - eu-2019-2031-fdm-bat
+        - us-epa-ap42-9-6-1-cheese
+boundary_abstraction:
+  declared_starting_condition: "separated wet whey entering the recovery line, or purchased fluid whey received at the facility"
+  starting_condition_role: "product identity and upstream-burden hand-off for the fluid-whey foreground system"
+  product_classification_scope: "CPC 3.0 22130 Whey, interpreted as fluid whey rather than the separately classified powder product"
+  recursive_input_rule: "an input already classified as fluid whey is recorded as a product input with the Whey flow UUID, its wet mass and qualifiers, and a linked upstream dataset; do not recreate its upstream whey-production burdens inside the receiving process"
+  upstream_dataset_requirement: "link milk, cheese or casein production and shared coagulation/separation burdens through reviewed upstream datasets and the declared allocation treatment; link purchased whey when the foreground starts at receipt"
+  disclosure: "disclose whey origin, sweet/acid status, source dairy product, species, solids and composition basis, treatment state, receipt or separation point, included operations, allocation method, losses, co-products, effluent route, geography, period, and plant gate"
+reference_flow_definition:
+  reference_amount: "1 kg"
+  product_flow_ref:
+    name: "Whey"
+    uuid: "7ee9083e-5a51-476e-b96f-1501752e169a"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "sweet or acid whey"
+    - "originating dairy product and animal species"
+    - raw
+    - clarified
+    - pasteurised
+    - cooled
+    - "or concentrated state"
+    - "total solids or dry matter"
+    - protein
+    - fat
+    - lactose
+    - "ash or mineral basis when available"
+    - "pH or titratable acidity"
+    - temperature
+    - "bulk or packaging form"
+    - "manufacturing geography"
+    - "plant gate"
+    - "allocation treatment of upstream shared dairy operations"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_wet_mass
+    applies_to: "reference whey product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Express the reference flow as wet as-dispatched product mass; do not substitute dry-matter mass for the 1 kg reference amount."
+  - id: composition_basis
+    applies_to: "whey feedstock, intermediates, product, losses, and co-products"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg plus declared mass fraction"
+    rule: "Record wet mass and the sampling basis for total solids or dry matter; disclose whether protein, fat, lactose, ash, and acidity values are measured on wet or dry basis."
+  - id: concentration_conversion
+    applies_to: "concentrated liquid whey"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Convert feed and concentrate quantities through measured wet mass and solids mass balance; retain the concentration factor and evaporated or removed water separately."
+  - id: utility_conversion
+    applies_to: "electricity, fuels, steam, refrigeration, and water"
+    required_property_ref:
+      name: "applicable energy, mass, or volume property"
+      uuid: ""
+    required_unit: "kWh, MJ, kg, or m3"
+    rule: "Preserve measured utility units and document conversion factors; normalize utilities only after batch or reporting-period totals are reconciled to conforming product mass."
+process_map:
+  - id: whey_receipt_and_recovery
+    name: "Whey receipt and recovery"
+    inclusion: "required"
+    inclusion_condition: ""
+    role: "foreground collection and product hand-off"
+    quantitative_reference: "wet whey transferred to conditioning"
+  - id: liquid_whey_conditioning
+    name: "Liquid whey conditioning"
+    inclusion: "conditional"
+    inclusion_condition: "include clarification, cream/fines removal, pasteurisation, cooling, membrane treatment, or evaporation when performed before sale as fluid whey"
+    role: "foreground conditioning"
+    quantitative_reference: "conditioned pumpable whey"
+  - id: storage_and_dispatch
+    name: "Storage and dispatch"
+    inclusion: "required"
+    inclusion_condition: ""
+    role: "foreground storage and product dispatch"
+    quantitative_reference: "1 kg conforming fluid whey dispatched"
+  - id: onsite_effluent_management
+    name: "On-site effluent management"
+    inclusion: "conditional"
+    inclusion_condition: "include when wastewater or product losses are treated, equalised, digested, or discharged on site"
+    role: "foreground waste and emission management"
+    quantitative_reference: "treated effluent and residual outputs"
+process_inventory:
+  - id: whey_receipt_and_recovery
+    label: "Whey receipt and recovery"
+    inputs:
+      product:
+        - row_id: raw_whey_input
+          role: "Separated or purchased fluid whey feedstock"
+          name: "Whey"
+          flow_type: "product"
+          flow_ref:
+            uuid: "7ee9083e-5a51-476e-b96f-1501752e169a"
+          property_unit: "Mass / kg"
+          description: "Record the wet whey entering the foreground system, including origin, sweet/acid status, composition, temperature, and the linked upstream burden hand-off."
+          amount:
+            expression: "measured wet mass received or transferred into the whey recovery line"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg conforming fluid whey dispatched at the plant gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_whey_batch_mass_and_composition
+              source_ids:
+                - codex-cxs-289-1995-whey-powders
+                - fao-2013-milk-dairy-human-nutrition
+            ranges: []
+        - row_id: recovery_electricity
+          role: "Electricity for whey receipt, transfer, and initial cooling"
+          name: "Electricity supplied to the facility"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record electricity consumed by receipt, pumping, screening, transfer, and initial cooling as one stage-specific electricity exchange."
+          amount:
+            expression: "metered electricity or documented equipment allocation for whey receipt and recovery"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg conforming fluid whey dispatched at the plant gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_and_utilities
+              source_ids:
+                - eu-2019-2031-fdm-bat
+                - eu-2021-2279-environmental-footprint
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: recovered_whey_intermediate
+          role: "Recovered wet whey transferred to conditioning or storage"
+          name: "Whey"
+          flow_type: "product"
+          flow_ref:
+            uuid: "7ee9083e-5a51-476e-b96f-1501752e169a"
+          property_unit: "Mass / kg"
+          description: "Calculate the wet intermediate transferred after accounting for retained heel, samples, separately recovered outputs, and recorded whey losses."
+          amount:
+            expression: "measured transfer mass or reconciled batch mass balance"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg conforming fluid whey dispatched at the plant gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_whey_batch_mass_and_composition
+              source_ids:
+                - codex-cxs-289-1995-whey-powders
+                - fao-2013-milk-dairy-human-nutrition
+            ranges: []
+      waste:
+        - row_id: recovery_whey_loss
+          role: "Waste whey from receipt and recovery"
+          name: "Waste whey from recovery"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record whey spillage, retained heel, sampling loss, or rejected raw whey that is sent to one documented waste or treatment destination."
+          amount:
+            expression: "measured waste-whey mass or reconciled mass-balance difference assigned to its documented destination"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg conforming fluid whey dispatched at the plant gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_waste_effluent_and_emissions
+              source_ids:
+                - eu-2019-2031-fdm-bat
+                - us-epa-ap42-9-6-1-cheese
+            ranges: []
+      elementary:
+        []
+  - id: liquid_whey_conditioning
+    label: "Liquid whey conditioning"
+    inputs:
+      product:
+        - row_id: conditioning_whey_input
+          role: "Recovered whey entering conditioning"
+          name: "Whey"
+          flow_type: "product"
+          flow_ref:
+            uuid: "7ee9083e-5a51-476e-b96f-1501752e169a"
+          property_unit: "Mass / kg"
+          description: "Record the wet mass and composition of recovered whey entering the included conditioning operations."
+          amount:
+            expression: "measured transfer mass from recovery or receipt tank"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg conforming fluid whey dispatched at the plant gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_whey_batch_mass_and_composition
+              source_ids:
+                - codex-cxs-289-1995-whey-powders
+                - fao-2013-milk-dairy-human-nutrition
+            ranges: []
+        - row_id: conditioning_electricity
+          role: "Electricity for liquid whey conditioning"
+          name: "Electricity supplied to the facility"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record electricity for clarification, separation, pasteurisation auxiliaries, cooling, membrane treatment, evaporation auxiliaries, and associated pumps."
+          amount:
+            expression: "metered electricity or documented equipment allocation for included conditioning operations"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg conforming fluid whey dispatched at the plant gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_and_utilities
+              source_ids:
+                - eu-2019-2031-fdm-bat
+                - eu-2021-2279-environmental-footprint
+            ranges: []
+        - row_id: conditioning_purchased_steam
+          role: "Purchased steam for whey conditioning"
+          name: "Purchased steam"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record purchased steam crossing the facility boundary for pasteurisation or evaporation without combining it with hot water or fuels."
+          amount:
+            expression: "metered steam mass; retain pressure, temperature, condensate return, and enthalpy calculation in the foreground record"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg conforming fluid whey dispatched at the plant gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_and_utilities
+              source_ids:
+                - eu-2019-2031-fdm-bat
+                - eu-2021-2279-environmental-footprint
+            ranges: []
+        - row_id: conditioning_purchased_hot_water
+          role: "Purchased hot water for whey conditioning"
+          name: "Purchased hot water"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record purchased hot water used as a thermal utility as a separate carrier from process water and steam."
+          amount:
+            expression: "metered hot-water mass with supply and return temperatures retained for the heat calculation"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg conforming fluid whey dispatched at the plant gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_and_utilities
+              source_ids:
+                - eu-2019-2031-fdm-bat
+                - eu-2021-2279-environmental-footprint
+            ranges: []
+        - row_id: conditioning_natural_gas
+          role: "Natural gas combusted for whey conditioning"
+          name: "Natural gas"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Record natural gas supplied to an on-site boiler or direct heater used for included conditioning heat."
+          amount:
+            expression: "metered gas quantity converted with a documented net calorific value and allocated to conditioning"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg conforming fluid whey dispatched at the plant gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_energy_and_utilities
+              source_ids:
+                - eu-2019-2031-fdm-bat
+                - eu-2021-2279-environmental-footprint
+            ranges: []
+        - row_id: conditioning_diesel
+          role: "Diesel fuel combusted for whey conditioning"
+          name: "Diesel fuel"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record diesel supplied to an on-site boiler or heater used for included conditioning heat."
+          amount:
+            expression: "measured diesel issue or tank-stock difference allocated to conditioning"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg conforming fluid whey dispatched at the plant gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_energy_and_utilities
+              source_ids:
+                - eu-2019-2031-fdm-bat
+                - eu-2021-2279-environmental-footprint
+            ranges: []
+        - row_id: conditioning_lpg
+          role: "Liquefied petroleum gas combusted for whey conditioning"
+          name: "Liquefied petroleum gas"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record liquefied petroleum gas supplied to an on-site boiler or heater used for included conditioning heat."
+          amount:
+            expression: "measured LPG issue or tank-stock difference allocated to conditioning"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg conforming fluid whey dispatched at the plant gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_energy_and_utilities
+              source_ids:
+                - eu-2019-2031-fdm-bat
+                - eu-2021-2279-environmental-footprint
+            ranges: []
+        - row_id: conditioning_water
+          role: "Process and CIP water supplied to whey conditioning"
+          name: "Process water"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record cold or ambient process and cleaning water crossing the process boundary as one water-supply exchange; purchased hot water is recorded separately."
+          amount:
+            expression: "metered water or validated tank-volume record assigned to included conditioning and cleaning operations"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg conforming fluid whey dispatched at the plant gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cleaning_water_and_materials
+              source_ids:
+                - eu-2019-2031-fdm-bat
+            ranges: []
+        - row_id: conditioning_sodium_hydroxide
+          role: "Sodium hydroxide for CIP"
+          name: "Sodium hydroxide"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record sodium hydroxide supplied to the whey line by product mass and active concentration."
+          amount:
+            expression: "inventory issue, dosing-controller, or purchase mass of sodium hydroxide reconciled to included cleaning or disinfection cycles"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg conforming fluid whey dispatched at the plant gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cleaning_water_and_materials
+              source_ids:
+                - eu-2019-2031-fdm-bat
+            ranges: []
+        - row_id: conditioning_nitric_acid
+          role: "Nitric acid for CIP"
+          name: "Nitric acid"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record nitric acid supplied to the whey line separately from phosphoric acid and other cleaners."
+          amount:
+            expression: "inventory issue, dosing-controller, or purchase mass of nitric acid reconciled to included cleaning or disinfection cycles"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg conforming fluid whey dispatched at the plant gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cleaning_water_and_materials
+              source_ids:
+                - eu-2019-2031-fdm-bat
+            ranges: []
+        - row_id: conditioning_phosphoric_acid
+          role: "Phosphoric acid for CIP"
+          name: "Phosphoric acid"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record phosphoric acid supplied to the whey line separately from nitric acid and other cleaners."
+          amount:
+            expression: "inventory issue, dosing-controller, or purchase mass of phosphoric acid reconciled to included cleaning or disinfection cycles"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg conforming fluid whey dispatched at the plant gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cleaning_water_and_materials
+              source_ids:
+                - eu-2019-2031-fdm-bat
+            ranges: []
+        - row_id: conditioning_peracetic_acid
+          role: "Peracetic acid disinfectant"
+          name: "Peracetic acid"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record peracetic acid disinfectant supplied to the whey line by product mass and active concentration."
+          amount:
+            expression: "inventory issue, dosing-controller, or purchase mass of peracetic acid reconciled to included cleaning or disinfection cycles"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg conforming fluid whey dispatched at the plant gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cleaning_water_and_materials
+              source_ids:
+                - eu-2019-2031-fdm-bat
+            ranges: []
+        - row_id: conditioning_sodium_hypochlorite
+          role: "Sodium hypochlorite disinfectant"
+          name: "Sodium hypochlorite"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record sodium hypochlorite disinfectant only when it is actually supplied to the included whey line."
+          amount:
+            expression: "inventory issue, dosing-controller, or purchase mass of sodium hypochlorite reconciled to included cleaning or disinfection cycles"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg conforming fluid whey dispatched at the plant gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cleaning_water_and_materials
+              source_ids:
+                - eu-2019-2031-fdm-bat
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: conditioned_whey_output
+          role: "Conditioned fluid whey"
+          name: "Whey"
+          flow_type: "product"
+          flow_ref:
+            uuid: "7ee9083e-5a51-476e-b96f-1501752e169a"
+          property_unit: "Mass / kg"
+          description: "Record the wet mass, solids, pH or acidity, temperature, and treatment state of conditioned whey transferred to storage."
+          amount:
+            expression: "measured conditioned-whey transfer mass"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg conforming fluid whey dispatched at the plant gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_whey_batch_mass_and_composition
+              source_ids:
+                - codex-cxs-289-1995-whey-powders
+                - fao-2013-milk-dairy-human-nutrition
+            ranges: []
+        - row_id: conditioning_recovered_cream
+          role: "Recovered whey cream"
+          name: "Recovered whey cream"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record whey cream only when clarification or separation produces a physically separate, saleable cream stream."
+          amount:
+            expression: "measured wet mass and composition of the separately transferred recovered output"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg conforming fluid whey dispatched at the plant gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_coproduct_and_allocation
+              source_ids:
+                - eu-2019-2031-fdm-bat
+                - eu-2021-2279-environmental-footprint
+            ranges: []
+        - row_id: conditioning_recovered_milk_fat
+          role: "Recovered milk fat"
+          name: "Recovered milk fat"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record recovered milk fat only when it is a physically separate output distinct from whey cream."
+          amount:
+            expression: "measured wet mass and composition of the separately transferred recovered output"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg conforming fluid whey dispatched at the plant gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_coproduct_and_allocation
+              source_ids:
+                - eu-2019-2031-fdm-bat
+                - eu-2021-2279-environmental-footprint
+            ranges: []
+        - row_id: conditioning_recovered_dairy_fines
+          role: "Recovered separator fines from whey clarification"
+          name: "Recovered separator fines from whey clarification"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record separator fines as a product only when their quantity, quality, use, and destination establish a separate recovered output."
+          amount:
+            expression: "measured wet mass and composition of the separately transferred recovered output"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg conforming fluid whey dispatched at the plant gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_coproduct_and_allocation
+              source_ids:
+                - eu-2019-2031-fdm-bat
+                - eu-2021-2279-environmental-footprint
+            ranges: []
+        - row_id: conditioning_fluid_whey_permeate
+          role: "Fluid whey permeate"
+          name: "Fluid whey permeate"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record fluid whey permeate only when membrane treatment produces a separate pumpable output with a documented use or market destination."
+          amount:
+            expression: "measured wet mass and composition of the separately transferred recovered output"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg conforming fluid whey dispatched at the plant gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_coproduct_and_allocation
+              source_ids:
+                - eu-2019-2031-fdm-bat
+                - eu-2021-2279-environmental-footprint
+            ranges: []
+      waste:
+        - row_id: conditioning_evaporator_condensate
+          role: "Evaporator condensate sent to treatment"
+          name: "Evaporator condensate from whey concentration"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record separately collected evaporator condensate that leaves conditioning for wastewater management; internal reuse is tracked in the water balance but is not a boundary exchange."
+          amount:
+            expression: "measured waste-stream mass or volume converted with documented density and assigned to its destination"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg conforming fluid whey dispatched at the plant gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_waste_effluent_and_emissions
+              source_ids:
+                - eu-2019-2031-fdm-bat
+            ranges: []
+        - row_id: conditioning_rejected_dairy_fines
+          role: "Rejected separator fines from whey clarification"
+          name: "Rejected separator fines from whey clarification"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record separator fines that lack a documented product destination as one specific waste stream."
+          amount:
+            expression: "measured waste-stream mass or volume converted with documented density and assigned to its destination"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg conforming fluid whey dispatched at the plant gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_waste_effluent_and_emissions
+              source_ids:
+                - eu-2019-2031-fdm-bat
+            ranges: []
+        - row_id: conditioning_filter_residue
+          role: "Spent filter residue from whey conditioning"
+          name: "Spent filter residue from whey conditioning"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record spent residue physically removed from filters used in included whey conditioning."
+          amount:
+            expression: "measured waste-stream mass or volume converted with documented density and assigned to its destination"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg conforming fluid whey dispatched at the plant gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_waste_effluent_and_emissions
+              source_ids:
+                - eu-2019-2031-fdm-bat
+            ranges: []
+        - row_id: conditioning_rejected_whey
+          role: "Rejected whey from conditioning"
+          name: "Rejected whey from conditioning"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record an off-specification conditioned-whey batch as waste only when it is not recovered as product or returned internally."
+          amount:
+            expression: "measured waste-stream mass or volume converted with documented density and assigned to its destination"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg conforming fluid whey dispatched at the plant gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_waste_effluent_and_emissions
+              source_ids:
+                - eu-2019-2031-fdm-bat
+            ranges: []
+        - row_id: conditioning_wastewater
+          role: "Wastewater from whey conditioning and CIP"
+          name: "Dairy processing wastewater"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record the wastewater stream transferred from conditioning and CIP to on-site or off-site treatment, excluding separately recovered product and condensate."
+          amount:
+            expression: "measured waste-stream mass or volume converted with documented density and assigned to its destination"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg conforming fluid whey dispatched at the plant gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_waste_effluent_and_emissions
+              source_ids:
+                - eu-2019-2031-fdm-bat
+            ranges: []
+      elementary:
+        - row_id: conditioning_carbon_dioxide_fossil_to_air
+          role: "Fossil carbon dioxide from on-site conditioning heat"
+          name: "Carbon dioxide, fossil, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Calculate fossil carbon dioxide released from natural gas, diesel, or LPG actually combusted for included conditioning heat."
+          amount:
+            expression: "measured release or calculation from actual fuel use with a reviewed substance-specific factor and documented unit conversion"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg conforming fluid whey dispatched at the plant gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_waste_effluent_and_emissions
+              source_ids:
+                - eu-2021-2279-environmental-footprint
+            ranges: []
+        - row_id: conditioning_nitrogen_monoxide_to_air
+          role: "Nitrogen monoxide from on-site conditioning heat"
+          name: "Nitrogen monoxide to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record nitrogen monoxide as a separate substance when measured or derived from a reviewed species-specific combustion record."
+          amount:
+            expression: "measured release or calculation from actual fuel use with a reviewed substance-specific factor and documented unit conversion"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg conforming fluid whey dispatched at the plant gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_waste_effluent_and_emissions
+              source_ids:
+                - eu-2021-2279-environmental-footprint
+            ranges: []
+        - row_id: conditioning_nitrogen_dioxide_to_air
+          role: "Nitrogen dioxide from on-site conditioning heat"
+          name: "Nitrogen dioxide to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record nitrogen dioxide as a separate substance when measured or derived from a reviewed species-specific combustion record."
+          amount:
+            expression: "measured release or calculation from actual fuel use with a reviewed substance-specific factor and documented unit conversion"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg conforming fluid whey dispatched at the plant gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_waste_effluent_and_emissions
+              source_ids:
+                - eu-2021-2279-environmental-footprint
+            ranges: []
+        - row_id: conditioning_sulfur_dioxide_to_air
+          role: "Sulfur dioxide from on-site conditioning heat"
+          name: "Sulfur dioxide to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record sulfur dioxide as a separate substance when measured or calculated from documented fuel sulfur and a reviewed method."
+          amount:
+            expression: "measured release or calculation from actual fuel use with a reviewed substance-specific factor and documented unit conversion"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg conforming fluid whey dispatched at the plant gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_waste_effluent_and_emissions
+              source_ids:
+                - eu-2021-2279-environmental-footprint
+            ranges: []
+  - id: storage_and_dispatch
+    label: "Storage and dispatch"
+    inputs:
+      product:
+        - row_id: storage_whey_input
+          role: "Conditioned whey entering storage"
+          name: "Whey"
+          flow_type: "product"
+          flow_ref:
+            uuid: "7ee9083e-5a51-476e-b96f-1501752e169a"
+          property_unit: "Mass / kg"
+          description: "Record the mass, composition, temperature, and condition of fluid whey entering final storage and dispatch."
+          amount:
+            expression: "measured transfer mass into final storage"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg conforming fluid whey dispatched at the plant gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_whey_batch_mass_and_composition
+              source_ids:
+                - codex-cxs-289-1995-whey-powders
+                - fao-2013-milk-dairy-human-nutrition
+            ranges: []
+        - row_id: storage_electricity
+          role: "Electricity for storage, refrigeration, transfer, and loading"
+          name: "Electricity supplied to the facility"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record stage-specific electricity for tank agitation, refrigeration, transfer, and loading."
+          amount:
+            expression: "metered electricity or documented equipment allocation for storage and dispatch"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg conforming fluid whey dispatched at the plant gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_and_utilities
+              source_ids:
+                - eu-2019-2031-fdm-bat
+                - eu-2021-2279-environmental-footprint
+            ranges: []
+        - row_id: storage_ammonia_refrigerant_input
+          role: "R717 ammonia refrigerant make-up"
+          name: "Ammonia, anhydrous, refrigerant R717"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record anhydrous ammonia added to an R717 refrigeration circuit serving included whey storage or cooling."
+          amount:
+            expression: "measured refrigerant purchase or inventory balance assigned once to the included refrigeration system"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg conforming fluid whey dispatched at the plant gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_energy_and_utilities
+              source_ids:
+                - eu-2019-2031-fdm-bat
+            ranges: []
+        - row_id: packaging_ldpe_film_input
+          role: "Low-density polyethylene packaging film"
+          name: "Low-density polyethylene packaging film"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record low-density polyethylene packaging film crossing the declared product gate without combining it with another packaging material."
+          amount:
+            expression: "bill-of-materials or issue quantity converted with measured or supplier-documented item mass"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg conforming fluid whey dispatched at the plant gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_and_dispatch
+              source_ids:
+                - eu-2019-2031-fdm-bat
+                - eu-2021-2279-environmental-footprint
+            ranges: []
+        - row_id: packaging_hdpe_container_input
+          role: "High-density polyethylene packaging container"
+          name: "High-density polyethylene packaging container"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record high-density polyethylene packaging container crossing the declared product gate without combining it with another packaging material."
+          amount:
+            expression: "bill-of-materials or issue quantity converted with measured or supplier-documented item mass"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg conforming fluid whey dispatched at the plant gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_and_dispatch
+              source_ids:
+                - eu-2019-2031-fdm-bat
+                - eu-2021-2279-environmental-footprint
+            ranges: []
+        - row_id: packaging_paper_label_input
+          role: "Paper packaging label"
+          name: "Paper packaging label"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record paper packaging label crossing the declared product gate without combining it with another packaging material."
+          amount:
+            expression: "bill-of-materials or issue quantity converted with measured or supplier-documented item mass"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg conforming fluid whey dispatched at the plant gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_and_dispatch
+              source_ids:
+                - eu-2019-2031-fdm-bat
+                - eu-2021-2279-environmental-footprint
+            ranges: []
+        - row_id: packaging_corrugated_fibreboard_input
+          role: "Corrugated fibreboard packaging"
+          name: "Corrugated fibreboard packaging"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record corrugated fibreboard packaging crossing the declared product gate without combining it with another packaging material."
+          amount:
+            expression: "bill-of-materials or issue quantity converted with measured or supplier-documented item mass"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg conforming fluid whey dispatched at the plant gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_and_dispatch
+              source_ids:
+                - eu-2019-2031-fdm-bat
+                - eu-2021-2279-environmental-footprint
+            ranges: []
+        - row_id: packaging_steel_container_input
+          role: "Steel packaging container"
+          name: "Steel packaging container"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record steel packaging container crossing the declared product gate without combining it with another packaging material."
+          amount:
+            expression: "bill-of-materials or issue quantity converted with measured or supplier-documented item mass"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg conforming fluid whey dispatched at the plant gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_and_dispatch
+              source_ids:
+                - eu-2019-2031-fdm-bat
+                - eu-2021-2279-environmental-footprint
+            ranges: []
+        - row_id: packaging_aluminium_container_input
+          role: "Aluminium packaging container"
+          name: "Aluminium packaging container"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record aluminium packaging container crossing the declared product gate without combining it with another packaging material."
+          amount:
+            expression: "bill-of-materials or issue quantity converted with measured or supplier-documented item mass"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg conforming fluid whey dispatched at the plant gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_and_dispatch
+              source_ids:
+                - eu-2019-2031-fdm-bat
+                - eu-2021-2279-environmental-footprint
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: whey_reference_product
+          role: "Conforming fluid whey at the plant gate"
+          name: "Whey"
+          flow_type: "product"
+          flow_ref:
+            uuid: "7ee9083e-5a51-476e-b96f-1501752e169a"
+          property_unit: "Mass / kg"
+          description: "This is the reference product; record dispatched wet mass and every required qualifier for the declared fluid whey."
+          amount:
+            expression: "1 kg conforming wet product at the declared plant gate"
+            value_mode: "fixed_value"
+            specificity: "product_specific"
+            basis:
+              text: "PCR reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "method_formula"
+              source_ids:
+                - codex-cxs-289-1995-whey-powders
+                - eu-2021-2279-environmental-footprint
+            ranges: []
+      waste:
+        - row_id: storage_whey_loss
+          role: "Waste whey from storage and dispatch"
+          name: "Waste whey from storage and dispatch"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record off-specification product, tank heel, samples, spillage, or expired fluid whey sent to one documented waste destination."
+          amount:
+            expression: "measured loss or reconciled storage-and-dispatch mass balance"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg conforming fluid whey dispatched at the plant gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_waste_effluent_and_emissions
+              source_ids:
+                - eu-2019-2031-fdm-bat
+                - eu-2021-2279-environmental-footprint
+            ranges: []
+        - row_id: packaging_ldpe_film_waste
+          role: "Low-density polyethylene packaging-film scrap"
+          name: "Low-density polyethylene packaging film scrap"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record low-density polyethylene packaging film scrap generated before dispatch as one material-specific waste stream."
+          amount:
+            expression: "measured scrap or rejected-item mass assigned to its documented destination"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg conforming fluid whey dispatched at the plant gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_and_dispatch
+              source_ids:
+                - eu-2019-2031-fdm-bat
+                - eu-2021-2279-environmental-footprint
+            ranges: []
+        - row_id: packaging_hdpe_container_waste
+          role: "Rejected high-density polyethylene packaging containers"
+          name: "Rejected high-density polyethylene packaging containers"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record rejected high-density polyethylene packaging containers generated before dispatch as one material-specific waste stream."
+          amount:
+            expression: "measured scrap or rejected-item mass assigned to its documented destination"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg conforming fluid whey dispatched at the plant gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_and_dispatch
+              source_ids:
+                - eu-2019-2031-fdm-bat
+                - eu-2021-2279-environmental-footprint
+            ranges: []
+        - row_id: packaging_paper_label_waste
+          role: "Paper-label scrap"
+          name: "Paper packaging label scrap"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record paper packaging label scrap generated before dispatch as one material-specific waste stream."
+          amount:
+            expression: "measured scrap or rejected-item mass assigned to its documented destination"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg conforming fluid whey dispatched at the plant gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_and_dispatch
+              source_ids:
+                - eu-2019-2031-fdm-bat
+                - eu-2021-2279-environmental-footprint
+            ranges: []
+        - row_id: packaging_corrugated_fibreboard_waste
+          role: "Corrugated fibreboard packaging scrap"
+          name: "Corrugated fibreboard packaging scrap"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record corrugated fibreboard packaging scrap generated before dispatch as one material-specific waste stream."
+          amount:
+            expression: "measured scrap or rejected-item mass assigned to its documented destination"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg conforming fluid whey dispatched at the plant gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_and_dispatch
+              source_ids:
+                - eu-2019-2031-fdm-bat
+                - eu-2021-2279-environmental-footprint
+            ranges: []
+        - row_id: packaging_steel_container_waste
+          role: "Rejected steel packaging containers"
+          name: "Rejected steel packaging containers"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record rejected steel packaging containers generated before dispatch as one material-specific waste stream."
+          amount:
+            expression: "measured scrap or rejected-item mass assigned to its documented destination"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg conforming fluid whey dispatched at the plant gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_and_dispatch
+              source_ids:
+                - eu-2019-2031-fdm-bat
+                - eu-2021-2279-environmental-footprint
+            ranges: []
+        - row_id: packaging_aluminium_container_waste
+          role: "Rejected aluminium packaging containers"
+          name: "Rejected aluminium packaging containers"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record rejected aluminium packaging containers generated before dispatch as one material-specific waste stream."
+          amount:
+            expression: "measured scrap or rejected-item mass assigned to its documented destination"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg conforming fluid whey dispatched at the plant gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_and_dispatch
+              source_ids:
+                - eu-2019-2031-fdm-bat
+                - eu-2021-2279-environmental-footprint
+            ranges: []
+      elementary:
+        - row_id: storage_ammonia_refrigerant_to_air
+          role: "R717 ammonia refrigerant released to air"
+          name: "Ammonia to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record ammonia released from an R717 refrigeration circuit serving included whey storage or cooling."
+          amount:
+            expression: "measured leak or refrigerant inventory-balance loss assigned once to the included refrigeration system"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg conforming fluid whey dispatched at the plant gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_waste_effluent_and_emissions
+              source_ids:
+                - eu-2019-2031-fdm-bat
+            ranges: []
+  - id: onsite_effluent_management
+    label: "On-site effluent management"
+    inputs:
+      product:
+        - row_id: effluent_treatment_electricity
+          role: "Electricity for on-site whey-effluent treatment"
+          name: "Electricity supplied to the facility"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record electricity attributable to equalisation, pumping, aeration, separation, digestion, or final treatment of whey-line effluent."
+          amount:
+            expression: "metered treatment electricity or documented allocation based on whey-line hydraulic or pollutant load"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg conforming fluid whey dispatched at the plant gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_energy_and_utilities
+              source_ids:
+                - eu-2019-2031-fdm-bat
+                - eu-2021-2279-environmental-footprint
+            ranges: []
+      waste:
+        - row_id: whey_wastewater_input
+          role: "Whey-line wastewater entering on-site treatment"
+          name: "Dairy processing wastewater"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record the physical wastewater transfer from the conditioning boundary to on-site treatment once, with hydraulic load and composition."
+          amount:
+            expression: "measured wastewater mass or volume converted using documented density"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg conforming fluid whey dispatched at the plant gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_effluent_and_emissions
+              source_ids:
+                - eu-2019-2031-fdm-bat
+            ranges: []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: effluent_recovered_biogas
+          role: "Recovered biogas from anaerobic treatment"
+          name: "Recovered biogas"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Record biogas as a product only when anaerobic treatment produces a measured stream with documented use."
+          amount:
+            expression: "measured recovered quantity transferred to its documented use"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg conforming fluid whey dispatched at the plant gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_effluent_and_emissions
+              source_ids:
+                - eu-2019-2031-fdm-bat
+                - eu-2021-2279-environmental-footprint
+            ranges: []
+        - row_id: effluent_recovered_water
+          role: "Recovered water from whey-effluent treatment"
+          name: "Recovered water"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record recovered water as a product only when its quantity, quality, reuse, and destination are documented."
+          amount:
+            expression: "measured recovered quantity transferred to its documented use"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg conforming fluid whey dispatched at the plant gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_effluent_and_emissions
+              source_ids:
+                - eu-2019-2031-fdm-bat
+                - eu-2021-2279-environmental-footprint
+            ranges: []
+        - row_id: effluent_recovered_struvite
+          role: "Recovered struvite from phosphorus recovery"
+          name: "Recovered struvite"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record struvite only when phosphorus recovery produces a physically separate output with documented quality and use."
+          amount:
+            expression: "measured recovered quantity transferred to its documented use"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg conforming fluid whey dispatched at the plant gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_effluent_and_emissions
+              source_ids:
+                - eu-2019-2031-fdm-bat
+                - eu-2021-2279-environmental-footprint
+            ranges: []
+      waste:
+        - row_id: effluent_treatment_sludge
+          role: "Wastewater-treatment sludge"
+          name: "Wastewater treatment sludge"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record wastewater-treatment sludge as a distinct wet and, where material, dry-mass stream."
+          amount:
+            expression: "measured wet mass or volume converted with documented density; retain dry mass when material"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg conforming fluid whey dispatched at the plant gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_effluent_and_emissions
+              source_ids:
+                - eu-2019-2031-fdm-bat
+            ranges: []
+        - row_id: effluent_anaerobic_digestate
+          role: "Digestate from anaerobic whey-effluent treatment"
+          name: "Anaerobic treatment digestate"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record digestate from anaerobic treatment separately from aerobic sludge and screenings."
+          amount:
+            expression: "measured wet mass or volume converted with documented density; retain dry mass when material"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg conforming fluid whey dispatched at the plant gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_effluent_and_emissions
+              source_ids:
+                - eu-2019-2031-fdm-bat
+            ranges: []
+        - row_id: effluent_screenings
+          role: "Screenings from whey-effluent treatment"
+          name: "Wastewater treatment screenings"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record gross solids physically removed by screens or sieves as one separate waste stream."
+          amount:
+            expression: "measured wet mass or volume converted with documented density; retain dry mass when material"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg conforming fluid whey dispatched at the plant gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_effluent_and_emissions
+              source_ids:
+                - eu-2019-2031-fdm-bat
+            ranges: []
+        - row_id: effluent_treated_wastewater_to_sewer
+          role: "Treated whey wastewater transferred to sewer"
+          name: "Treated dairy wastewater to sewer"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record treated wastewater transferred to a sewer or off-site treatment system as a waste flow rather than a direct elementary release."
+          amount:
+            expression: "measured wet mass or volume converted with documented density; retain dry mass when material"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg conforming fluid whey dispatched at the plant gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_effluent_and_emissions
+              source_ids:
+                - eu-2019-2031-fdm-bat
+            ranges: []
+      elementary:
+        - row_id: effluent_water_to_surface_water
+          role: "Water discharged to surface water"
+          name: "Water to surface water"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record the treated water mass directly discharged to a receiving surface water body."
+          amount:
+            expression: "final-effluent volume converted to mass using documented density and normalized to reference product"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg conforming fluid whey dispatched at the plant gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_waste_effluent_and_emissions
+              source_ids:
+                - eu-2019-2031-fdm-bat
+            ranges: []
+        - row_id: effluent_chemical_oxygen_demand_to_water
+          role: "Chemical oxygen demand discharged to surface water"
+          name: "Chemical oxygen demand to surface water"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Calculate chemical oxygen demand as one monitored water-emission parameter from final-effluent flow and representative COD concentration."
+          amount:
+            expression: "final-effluent volume multiplied by representative COD concentration with documented unit conversion"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg conforming fluid whey dispatched at the plant gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_waste_effluent_and_emissions
+              source_ids:
+                - eu-2019-2031-fdm-bat
+            ranges: []
+        - row_id: effluent_total_nitrogen_to_water
+          role: "Total nitrogen discharged to surface water"
+          name: "Total nitrogen to surface water"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Calculate total nitrogen as one monitored water-emission parameter from final-effluent flow and representative TN concentration."
+          amount:
+            expression: "final-effluent volume multiplied by representative TN concentration with documented unit conversion"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg conforming fluid whey dispatched at the plant gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_waste_effluent_and_emissions
+              source_ids:
+                - eu-2019-2031-fdm-bat
+            ranges: []
+        - row_id: effluent_total_phosphorus_to_water
+          role: "Total phosphorus discharged to surface water"
+          name: "Total phosphorus to surface water"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Calculate total phosphorus as one monitored water-emission parameter from final-effluent flow and representative TP concentration."
+          amount:
+            expression: "final-effluent volume multiplied by representative TP concentration with documented unit conversion"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg conforming fluid whey dispatched at the plant gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_waste_effluent_and_emissions
+              source_ids:
+                - eu-2019-2031-fdm-bat
+            ranges: []
+        - row_id: effluent_total_suspended_solids_to_water
+          role: "Total suspended solids discharged to surface water"
+          name: "Total suspended solids to surface water"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Calculate total suspended solids as one monitored water-emission parameter from final-effluent flow and representative TSS concentration."
+          amount:
+            expression: "final-effluent volume multiplied by representative TSS concentration with documented unit conversion"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg conforming fluid whey dispatched at the plant gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_waste_effluent_and_emissions
+              source_ids:
+                - eu-2019-2031-fdm-bat
+            ranges: []
+allocation_rules:
+  - rule_id: allocation_avoid
+    applies_to: "separately measurable whey recovery, conditioning, storage, cleaning, and treatment operations"
+    rule: "Avoid allocation by subdividing metered processes and assigning directly attributable inputs, emissions, and wastes to whey operations."
+    source_ids:
+      - eu-2021-2279-environmental-footprint
+  - rule_id: allocation_system_expansion
+    applies_to: "explicitly expanded product systems"
+    rule: "Use system expansion only when the additional co-product function and substituted product are explicitly modelled and empirically justified; report the expanded-system result rather than silently crediting whey."
+    source_ids:
+      - eu-2021-2279-environmental-footprint
+  - rule_id: allocation_physical_relation
+    applies_to: "inseparable shared dairy or treatment operations"
+    rule: "When subdivision or justified system expansion is not possible, use a documented causal physical relationship relevant to the functions of whey and the other outputs; wet mass alone is not sufficient unless its functional relevance is demonstrated."
+    source_ids:
+      - eu-2021-2279-environmental-footprint
+  - rule_id: allocation_other_relation
+    applies_to: "multifunctional operations lacking a defensible physical relation"
+    rule: "Use another documented relationship, such as route-specific economic value at the co-product production stage, only after explaining why subdivision, system expansion, and physical allocation were rejected; disclose prices, period, geography, factors, and sensitivity."
+    source_ids:
+      - eu-2021-2279-environmental-footprint
+  - rule_id: allocation_upstream_whey
+    applies_to: "shared coagulation, curd separation, and upstream dairy operations"
+    rule: "Do not assign zero upstream burden to marketable whey by default. Link the reviewed upstream dataset and disclose whether whey entered as co-product, product, or waste under the actual route and destination."
+    source_ids:
+      - eu-2021-2279-environmental-footprint
+      - eu-2019-2031-fdm-bat
+  - rule_id: allocation_recovered_outputs
+    applies_to: "recovered cream, solids, biogas, reusable water, and other outputs"
+    rule: "Classify an output as a co-product only when quantity, quality, further use, and destination are documented; otherwise record it as waste or an emission according to the actual handling route."
+    source_ids:
+      - eu-2019-2031-fdm-bat
+      - eu-2021-2279-environmental-footprint
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_whey_batch_mass_and_composition
+      process_id: "whey_receipt_and_recovery_liquid_whey_conditioning_storage_and_dispatch"
+      flow_role: "whey feedstock, intermediates, product, co-products, and losses"
+      record_type: "batch, tank, laboratory, and dispatch records"
+      raw_fields: "batch/lot id; source process; species; sweet/acid status; timestamp; wet mass; total solids; protein/fat/lactose/ash when available; pH or acidity; temperature; treatment state; destination"
+      collection_method: "calibrated tank, load cell, flow meter, weighbridge, and representative laboratory sampling"
+      unit: "kg and declared composition units"
+      frequency: "each batch, transfer, or dispatch lot"
+      temporal_coverage: "representative continuous 12-month period or complete declared campaign"
+      site_scope: "all included whey lines, tanks, and dispatch points"
+      aggregation_rule: "reconcile opening stock + inputs = outputs + closing stock + losses, then normalize conforming dispatch mass to 1 kg"
+      quality_evidence: "calibration, sample chain of custody, laboratory method, batch reconciliation, and signed release record"
+    - protocol_id: cp_energy_and_utilities
+      process_id: "whey_receipt_and_recovery_liquid_whey_conditioning_storage_and_dispatch"
+      flow_role: "electricity, fuel, steam, heat, refrigeration, and other utilities"
+      record_type: "meter, invoice, and operating-hour records"
+      raw_fields: "meter id; start/end reading; fuel quantity; steam pressure/temperature or enthalpy; equipment hours/load; allocation driver; production mass"
+      collection_method: "dedicated meter preferred; otherwise documented engineering allocation reconciled to facility totals"
+      unit: "kWh, MJ, kg fuel, kg steam, or source unit"
+      frequency: "continuous or each billing period"
+      temporal_coverage: "same period as product output"
+      site_scope: "all included whey equipment and shared utility systems"
+      aggregation_rule: "subtract unrelated loads, allocate documented shared loads, convert with recorded factors, and divide by conforming product kg"
+      quality_evidence: "meter calibration, invoices, operating logs, conversion factors, and allocation reconciliation"
+    - protocol_id: cp_cleaning_water_and_materials
+      process_id: "liquid_whey_conditioning_storage_and_dispatch"
+      flow_role: "process water, CIP water, cleaning and disinfection products"
+      record_type: "water meter, CIP recipe, dosing, and purchase/issue records"
+      raw_fields: "CIP cycle id; water volume; rinse endpoint; chemical product and active concentration; dose; temperature; line/tank; recovered or discharged quantity"
+      collection_method: "submeter and dosing controller preferred; otherwise validated tank volume and recipe record"
+      unit: "kg or m3 water; kg product; active concentration"
+      frequency: "each cleaning cycle or daily"
+      temporal_coverage: "same period as product output"
+      site_scope: "all included lines, tanks, and loading systems"
+      aggregation_rule: "assign cycles to equipment and product route, reconcile purchases, and normalize to conforming product kg"
+      quality_evidence: "meter calibration, dosing calibration, CIP logs, conductivity/pH/turbidity endpoint, and purchase reconciliation"
+    - protocol_id: cp_packaging_and_dispatch
+      process_id: "storage_and_dispatch"
+      flow_role: "packaging and dispatched whey"
+      record_type: "bill of materials, packaging issue, count, loading, and dispatch records"
+      raw_fields: "packaging item/material; item mass; count; tare; gross/net product mass; bulk/packaged state; destination; lot id"
+      collection_method: "calibrated scale, item-count reconciliation, and dispatch documentation"
+      unit: "kg"
+      frequency: "each dispatch lot"
+      temporal_coverage: "same period as product output"
+      site_scope: "all included dispatch modes"
+      aggregation_rule: "convert counts to mass, exclude reusable assets unless loss/replacement is attributable, and normalize to dispatched product kg"
+      quality_evidence: "scale calibration, supplier specification, issue reconciliation, and dispatch record"
+    - protocol_id: cp_waste_effluent_and_emissions
+      process_id: "whey_receipt_and_recovery_liquid_whey_conditioning_storage_and_dispatch_onsite_effluent_management"
+      flow_role: "product loss, residues, wastewater, sludge, direct releases, and treatment outputs"
+      record_type: "waste transfer, flow-meter, sampling, laboratory, incident, and treatment records"
+      raw_fields: "stream id; source process; wet/dry mass; wastewater volume; sample time; concentration; destination; treatment route; recovery output; incident loss"
+      collection_method: "calibrated scales/meters and representative sampling under documented analytical methods"
+      unit: "kg, m3, mg/L, or pollutant-specific unit"
+      frequency: "each transfer and representative sampling event"
+      temporal_coverage: "same period as product output, covering operating and cleaning periods"
+      site_scope: "all included lines and on-site treatment"
+      aggregation_rule: "calculate pollutant mass from flow and concentration, reconcile whey losses with batch balance, and normalize to conforming product kg"
+      quality_evidence: "calibration, sampling plan, laboratory accreditation or QA, manifests, treatment logs, and mass reconciliation"
+    - protocol_id: cp_coproduct_and_allocation
+      process_id: "liquid_whey_conditioning_onsite_effluent_management_shared_upstream_dairy_operations"
+      flow_role: "co-product identity and allocation"
+      record_type: "production, composition, sales, transfer, and allocation records"
+      raw_fields: "output id; amount; composition/function; destination; price and currency where used; price period/geography; physical relation; subdivision evidence; allocation factor; factor sum"
+      collection_method: "collect process-specific records and document the allocation hierarchy decision"
+      unit: "kg, composition units, currency/kg, or physical driver"
+      frequency: "each allocation period and material route change"
+      temporal_coverage: "same period as shared inventory and outputs"
+      site_scope: "all multifunctional operations linked to the whey dataset"
+      aggregation_rule: "assign direct flows first, calculate reviewed factors for residual shared burdens, and require factors to sum to one within rounding tolerance"
+      quality_evidence: "signed methodology decision, source records, price or physical-driver evidence, sensitivity result, and factor-sum check"
+  calculation_rules:
+    - id: normalize_reference_mass
+      applies_to: "all inventory rows"
+      rule: "normalized amount = reporting-period amount / conforming dispatched wet whey kg"
+      inputs:
+        - "dispatched wet whey mass"
+        - "row amount"
+      output: "amount per 1 kg reference whey"
+      source_ids: []
+    - id: close_whey_mass_balance
+      applies_to: "recovery, conditioning, and storage"
+      rule: "opening stock + wet whey inputs + incorporated materials = conforming whey + co-products + wastes/losses + closing stock; investigate unexplained difference and retain solids balance for concentrated routes"
+      inputs:
+        - "batch masses"
+        - stocks
+        - solids
+        - co-products
+        - wastes
+      output: "wet-mass and solids-balance closure"
+      source_ids:
+        - codex-cxs-289-1995-whey-powders
+        - fao-2013-milk-dairy-human-nutrition
+    - id: calculate_concentration_factor
+      applies_to: "concentrated liquid whey"
+      rule: "concentration factor = feed wet mass / concentrate wet mass, cross-checked by feed and product solids mass after recorded losses"
+      inputs:
+        - "feed/product wet mass and solids fraction"
+      output: "concentration factor and removed-water balance"
+      source_ids: []
+    - id: calculate_utility_intensity
+      applies_to: "energy and water"
+      rule: "sum route-attributable metered use plus documented shared allocation, convert to the declared unit, and divide by conforming product kg"
+      inputs:
+        - "utility records"
+        - "allocation driver"
+        - "product mass"
+      output: "kWh, MJ, kg, or m3 per kg reference whey"
+      source_ids: []
+    - id: calculate_pollutant_release
+      applies_to: "direct releases to water"
+      rule: "pollutant kg = final-effluent volume x representative concentration x unit-conversion factor; use flow-weighted aggregation when multiple samples exist"
+      inputs:
+        - "flow meter"
+        - "laboratory result"
+        - "sampling coverage"
+      output: "pollutant kg per kg reference whey"
+      source_ids:
+        - eu-2019-2031-fdm-bat
+    - id: apply_allocation_hierarchy
+      applies_to: "shared multifunctional operations"
+      rule: "assign direct flows by subdivision; otherwise apply reviewed system expansion or a causal physical relation; use another relation only with documented rejection of prior steps and sensitivity"
+      inputs:
+        - "direct measurements"
+        - functions
+        - "physical driver"
+        - "market values"
+        - "output amounts"
+      output: "allocated shared inventory and factor set"
+      source_ids:
+        - eu-2021-2279-environmental-footprint
+  data_quality_requirements:
+    - id: dq_product_identity
+      applies_to: "reference whey and feedstock"
+      requirement: "Preserve source process, species, sweet/acid status, composition basis, treatment state, temperature, concentration, and bulk/packaged state for every included product lot."
+      evidence: "batch specification, laboratory results, and dispatch record"
+    - id: dq_mass_and_stock
+      applies_to: "all material flows"
+      requirement: "Use calibrated mass or volume measurements, document density conversions, and reconcile stock, transfers, co-products, losses, and product at batch or reporting-period level."
+      evidence: "calibration, inventory, batch, and reconciliation records"
+    - id: dq_composition
+      applies_to: "whey, co-products, and concentrated routes"
+      requirement: "Use representative samples and documented methods for total solids or dry matter, pH or acidity, and material composition fields used in identity, mass balance, or allocation."
+      evidence: "sampling plan, chain of custody, method, laboratory QA, and results"
+    - id: dq_temporal_coverage
+      applies_to: "foreground activity"
+      requirement: "Use a representative continuous 12-month period or a complete declared campaign and include cleaning, start-up, shutdown, rejects, and abnormal events; justify exclusions."
+      evidence: "production calendar, meter coverage, batch list, and incident log"
+    - id: dq_completeness
+      applies_to: "process map and inventory"
+      requirement: "Cover every required process and every conditional process that occurred; include utilities, cleaning, packaging, product losses, wastewater, direct emissions, and off-site treatment links when material."
+      evidence: "process-flow diagram, inclusion checklist, ledger reconciliation, and linked datasets"
+    - id: dq_allocation
+      applies_to: "shared dairy and treatment operations"
+      requirement: "Retain direct-assignment evidence, hierarchy decision, driver data, allocation factors summing to one, and sensitivity where another relation such as economic value is used."
+      evidence: "allocation workbook, source data, approval record, and sensitivity analysis"
+    - id: dq_uuid_and_source_traceability
+      applies_to: "database identities and external rules"
+      requirement: "Use reviewed Tiangong UUIDs without dataset versions and retain stable external source ids for non-default boundary, allocation, process, and validation rules."
+      evidence: "identity readback record, source register, and PCR conformance review"
+validation_rules:
+  - rule_id: validate_identity_and_scope
+    applies_to: "reference product"
+    rule: "Require the Whey UUID, Product flow type, CPC 3.0 code 22130, sweet/acid and source-process identity, wet-product state, composition basis, treatment, temperature, geography, and plant gate; reject powder and derived-ingredient products."
+    source_ids:
+      - codex-cxs-289-1995-whey-powders
+      - fao-2013-milk-dairy-human-nutrition
+  - rule_id: validate_reference_support
+    applies_to: "quantitative reference"
+    rule: "Require 1 kg wet whey, Mass UUID 93a60a56-a3c8-11da-a746-0800200b9a66, Units of mass UUID 93a60a57-a4c8-11da-a746-0800200c9a66, and reference unit kg."
+    source_ids: []
+  - rule_id: validate_process_coverage
+    applies_to: "foreground process map"
+    rule: "Require recovery/receipt and storage/dispatch; require conditioning and on-site effluent management when those operations occurred; prohibit silent inclusion of drying or downstream powder manufacture."
+    source_ids:
+      - eu-2019-2031-fdm-bat
+      - us-epa-ap42-9-6-1-cheese
+  - rule_id: validate_mass_and_solids_balance
+    applies_to: "whey feedstock, product, co-products, stocks, and losses"
+    rule: "Require wet-mass closure and, for concentrated routes, solids closure; investigate unexplained differences and prohibit double-counting the same whey as product and wastewater."
+    source_ids:
+      - codex-cxs-289-1995-whey-powders
+      - fao-2013-milk-dairy-human-nutrition
+  - rule_id: validate_acid_whey_timing
+    applies_to: "acid whey route"
+    rule: "Require separation-to-conditioning time, holding conditions, and acidity or pH records sufficient to identify material change during storage."
+    source_ids:
+      - eu-2019-2031-fdm-bat
+  - rule_id: validate_utilities_and_cleaning
+    applies_to: "electricity, steam, hot water, natural gas, diesel, LPG, water, refrigerants, and cleaning substances"
+    rule: "Require source records, unit conversions, allocation of shared services, temporal alignment, and cleaning-cycle coverage for each separately named exchange; no PCR default or numeric range substitutes for foreground data."
+    source_ids:
+      - eu-2019-2031-fdm-bat
+      - eu-2021-2279-environmental-footprint
+  - rule_id: validate_atomic_inventory_flows
+    applies_to: "all foreground exchanges"
+    rule: "Require one card per actual stage-specific electricity exchange, thermal carrier, fuel, refrigerant species, water supply, processing aid, cleaning or disinfection substance, packaging material, product, co-product, waste stream, and elementary emission; reject collection labels and require a new specific card for any actual exchange not enumerated here."
+    source_ids:
+      - eu-2019-2031-fdm-bat
+      - eu-2021-2279-environmental-footprint
+  - rule_id: validate_allocation
+    applies_to: "multifunctional processes"
+    rule: "Require the allocation hierarchy decision, direct assignments, selected driver, factors summing to one, source period/geography, and sensitivity where an economic or other fallback relation is used; reject undocumented zero-burden whey."
+    source_ids:
+      - eu-2021-2279-environmental-footprint
+  - rule_id: validate_wastewater_and_emissions
+    applies_to: "wastes and direct releases"
+    rule: "Require stream amount, destination, treatment link, representative sampling, calculation method, and exact elementary-flow identity before publication; do not accept pollutant concentrations without corresponding flow."
+    source_ids:
+      - eu-2019-2031-fdm-bat
+published_dataset_profile:
+  dataset_role: "unit_process foreground dataset for fluid whey recovery, conditioning, storage, and dispatch"
+  downstream_use: "secondary_dataset; background_dataset"
+  allowed_use: "fluid whey datasets with matching sweet/acid status, source dairy process and species, solids/composition basis, treatment and concentration state, temperature, packaging form, geography, time period, plant gate, and allocation method"
+  excluded_use: "whey or acid whey powder; dry whey ingredients; whey protein concentrate or isolate sold dry; lactose; whey permeate powder; whey cheese; formulated beverages; routes with incompatible product state or undisclosed upstream allocation"
+  required_metadata: "reference flow and UUIDs; CPC reference; source dairy process and species; sweet/acid status; wet mass and composition basis; pH/acidity; treatment and concentration state; temperature; bulk/packaged state; included processes; geography; period; allocation method; linked upstream and treatment datasets"
+  required_quality_disclosure: "meter and laboratory coverage; mass and solids balance; cleaning/start-up/shutdown coverage; allocation factors and sensitivity; unresolved quantitative evidence for range-free important flows; unresolved non-reference UUIDs; atomic waste and emission completeness; data quality assessment"
+  update_trigger: "material change in source dairy route, product identity, composition or concentration, processing technology, energy or water system, cleaning regime, allocation method or prices, treatment route, regulation, source evidence, geography, or data age"
+data_sources:
+  - id: "codex-cxs-289-1995-whey-powders"
+    type: "standard"
+    reference: "Codex Alimentarius, CXS 289-1995, Standard for Whey Powders, https://www.fao.org/input/download/standards/184/CXS_289e.pdf (retrieved 2026-08-10)"
+    used_for: "authoritative definition of whey and acid whey as fluid milk products separated from curd; distinction between fluid whey and powders"
+  - id: "fao-2013-milk-dairy-human-nutrition"
+    type: "official_guidance"
+    reference: "Food and Agriculture Organization of the United Nations, Milk and dairy products in human nutrition, 2013, https://www.fao.org/4/i3396e/i3396e.pdf (retrieved 2026-08-10)"
+    used_for: "sweet/acid whey identity, source routes, uses, and product-category exclusions"
+  - id: "eu-2019-2031-fdm-bat"
+    type: "standard"
+    reference: "Commission Implementing Decision (EU) 2019/2031 establishing BAT conclusions for the food, drink and milk industries, https://eur-lex.europa.eu/eli/dec_impl/2019/2031/oj (retrieved 2026-08-10)"
+    used_for: "prompt acid-whey processing, whey recovery routes, cleaning-in-place, water/material and energy management, low-GWP refrigerant options, wastewater monitoring parameters, and conditional treatment and recovery operations"
+  - id: "us-epa-ap42-9-6-1-cheese"
+    type: "official_guidance"
+    reference: "United States Environmental Protection Agency, AP-42 Section 9.6.1 Natural and Processed Cheese, Supplement C, August 1997, https://www.epa.gov/sites/default/files/2020-10/documents/c9s06-1.pdf (retrieved 2026-08-10)"
+    used_for: "whey separation and handling process decomposition and boundary between cheese manufacture, whey recovery, and drying"
+  - id: "eu-2021-2279-environmental-footprint"
+    type: "standard"
+    reference: "Commission Recommendation (EU) 2021/2279 on the use of the Environmental Footprint methods, https://eur-lex.europa.eu/eli/reco/2021/2279/oj (retrieved 2026-08-10)"
+    used_for: "complete foreground inventory of raw materials, energy, products, wastes, and emissions, plus multifunctionality hierarchy, subdivision, system expansion, physical allocation, and documented fallback relationships"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:12e25730837a3baf15505f1585ef29ebf3e37a536883d72cf885f83c36ef1703"
+  generated_content_sha256: "sha256:0dcae0d94a932662e4a18a989bf83e4701052843b90f35b6e13ddb381abdff7d"

@@ -1,10 +1,922 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "23620"
-  title: "Cocoa butter, fat and oil"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.food-products-beverages-and-tobacco-textiles-apparel-and-leather-products.grain-mill-products-starches-and-starch-products-other-food-products.cocoa-butter-fat-and-oil"
+  classification_refs: "CPC 3.0: 23620, Cocoa butter, fat and oil"
+  covered_products: "Cocoa butter, press cocoa butter, deodorized cocoa butter, and cocoa fat or oil obtained exclusively from cocoa beans or cocoa-derived mass/liquor"
+  excluded_products: "Cocoa mass/liquor, cocoa cake, cocoa powder, chocolate, confectionery, mixed vegetable fats, cocoa-butter equivalents from non-cocoa feedstocks, and products without traceable cocoa origin"
+  representative_product: "Bulk cocoa butter after recovery, filtration or conditioning, and any declared deodorization, ready for dispatch from the producing facility"
+  production_route: "Declared route from received cocoa beans, nibs, or cocoa mass/liquor through pressing or another documented fat-recovery operation, followed by finishing and factory-gate release"
+  market_state: "Business-to-business ingredient; liquid, semi-solid, or solid at the declared dispatch temperature; packaged or bulk"
+functional_unit:
+  what: "Edible cocoa butter, fat, or oil derived exclusively from cocoa beans and supplied as an ingredient for cocoa, chocolate, or other declared food manufacture"
+  how_much: "1 kg net mass of factory-gate product"
+  how_well: "Meets the declared commercial specification and product name; when conformance to Codex CXS 86-1981 is claimed, free fatty acids expressed as oleic acid are no more than 1.75% m/m and unsaponifiable matter is no more than 0.7% m/m, or no more than 0.35% m/m for press cocoa butter"
+  how_long_or_cycle: "One production batch or campaign at factory-gate release; no service life is assigned to this intermediate ingredient"
+  reference_flow_link: "Output cocoa_butter_product from process butter_finishing_and_release"
+system_boundary:
+  rules:
+    - rule_id: boundary_factory_gate
+      applies_to: "foreground cocoa butter production"
+      rule: "Include all controlled operations from the declared received starting condition through recovery, finishing, storage, and factory-gate release, including utilities, processing aids, packaging, wastes, co-products, and direct emissions."
+      source_ids:
+        - icco-processing-cocoa
+        - eu-pef-method-2021
+    - rule_id: boundary_route_disclosure
+      applies_to: "route-specific process selection"
+      rule: "Declare the starting material and include cleaning, roasting, winnowing, grinding, alkalization, pressing, extraction, filtration, deodorization, or packaging only when the operation is actually performed for the represented product."
+      source_ids:
+        - icco-processing-cocoa
+        - codex-cxs-86-1981
+    - rule_id: boundary_purchased_inputs
+      applies_to: "purchased cocoa intermediates and utilities"
+      rule: "Model purchased cocoa beans, nibs, liquor, energy, water, solvent, processing aids, and packaging with separate upstream datasets ending at the facility receiving condition."
+      source_ids:
+        - eu-pef-method-2021
+    - rule_id: boundary_same_category_recursion
+      applies_to: "cocoa butter used as rework, blend component, or purchased input"
+      rule: "Record externally supplied cocoa butter as a separate technosphere input with its own upstream dataset; do not recursively absorb it into this foreground product output."
+      source_ids:
+        - eu-pef-method-2021
+    - rule_id: boundary_direct_releases
+      applies_to: "direct emissions and wastes"
+      rule: "Record measured releases to air, water, and soil, as well as wastewater, shells, cake, spent filter media, solvent losses, off-spec material, and packaging waste, with destination and treatment route."
+      source_ids:
+        - eu-pef-method-2021
+boundary_abstraction:
+  declared_starting_condition: "Received fermented and dried cocoa beans, cocoa nibs, cocoa mass/liquor, or another justified cocoa-derived intermediate, with moisture, quality state, ownership boundary, and receiving location declared"
+  starting_condition_role: "Foreground entry point; upstream cultivation, fermentation, drying, and external transport remain in linked upstream datasets unless explicitly added to the study"
+  product_classification_scope: "Cocoa butter, fat, and oil obtained exclusively from cocoa feedstock; classification references provide mapping context but do not replace the semantic product boundary"
+  recursive_input_rule: "Externally supplied cocoa butter or same-category rework crossing the reporting boundary is a distinct input and requires a separate source dataset and non-duplicative mass accounting"
+  upstream_dataset_requirement: "Every purchased starting material, utility, solvent, processing aid, and packaging material requires an upstream dataset representative of its supplier, geography, technology, and time period"
+  disclosure: "Declare starting material, recovery technology, process sequence, allocation method, co-product destinations, energy and water basis, solvent use, product specification, packaging state, geography, data period, and exclusions"
+reference_flow_definition:
+  reference_amount: "1 kg"
+  product_flow_ref:
+    name: "Cocoa butter, fat and oil"
+    uuid: "402dbf23-610a-4be9-a34f-333ec03580a9"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "starting material"
+    - "recovery route"
+    - "press or non-press designation"
+    - "refining or deodorization state"
+    - "grade or specification"
+    - "physical state and dispatch temperature"
+    - "production geography"
+    - "data period"
+    - "packaging state"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "Reference cocoa butter product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Report 1 kg net cocoa butter, fat, or oil at the declared factory-gate condition; exclude container tare and separately report packaging."
+  - id: wet_dry_basis_disclosure
+    applies_to: "Cocoa beans, nibs, liquor, cake, and product"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Record the measured as-received mass and declare moisture or dry-matter basis whenever a conversion or mass balance uses a dry basis."
+  - id: energy_carrier_separation
+    applies_to: "Electricity, fuels, and purchased heat"
+    required_property_ref:
+      name: "Energy or carrier-specific property"
+      uuid: ""
+    required_unit: "kWh, MJ, or carrier mass/volume"
+    rule: "Preserve metered electricity, purchased heat, and each fuel carrier as separate records; document all conversion factors and do not merge them into an unsupported generic energy amount."
+  - id: solvent_accounting
+    applies_to: "Extraction route, when used"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Record solvent make-up, recovered solvent, solvent in product, solvent sent to treatment, and direct releases separately on a consistent batch mass basis."
+  - id: product_quality_basis
+    applies_to: "Product specification"
+    required_property_ref:
+      name: "Mass fraction"
+      uuid: ""
+    required_unit: "% m/m or kg/kg"
+    rule: "State analytical method, sampling point, and mass basis for free fatty acids, unsaponifiable matter, residual solvent, moisture, or other claimed release specifications."
+process_map:
+  - id: cocoa_material_preparation
+    name: "Cocoa material preparation"
+    inclusion: "conditional"
+    inclusion_condition: "Include when beans or nibs are cleaned, roasted, broken, winnowed, alkalized, or ground within the foreground facility"
+    role: "Convert received cocoa material to press-ready cocoa liquor or another declared recovery feed"
+    quantitative_reference: "kg prepared recovery feed"
+  - id: cocoa_fat_recovery
+    name: "Cocoa fat recovery and separation"
+    inclusion: "required"
+    inclusion_condition: "Always include the actual pressing, expelling, or documented extraction route used to recover cocoa fat"
+    role: "Separate cocoa butter/fat/oil from cocoa solids"
+    quantitative_reference: "kg crude or press cocoa fat recovered"
+  - id: butter_finishing_and_release
+    name: "Cocoa butter finishing and factory-gate release"
+    inclusion: "required"
+    inclusion_condition: "Always include filtration or conditioning and release; include deodorization, refining, storage, and packaging when performed"
+    role: "Produce the released reference product"
+    quantitative_reference: "1 kg released cocoa butter, fat, or oil"
+process_inventory:
+  - id: cocoa_material_preparation
+    label: "Cocoa material preparation"
+    inputs:
+      product:
+        - row_id: received_cocoa_material
+          role: "Received cocoa material"
+          name: "Cocoa beans or cocoa nibs; route-specific Tiangong flow UUID unresolved"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the cocoa beans or nibs entering foreground preparation. Cocoa liquor purchased as a ready recovery feed bypasses this process and is recorded directly in cocoa_fat_recovery."
+          amount:
+            expression: "measured as-received mass accepted into the represented batch"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg prepared recovery feed and normalized to 1 kg released cocoa butter"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_receipts
+              source_ids:
+                - icco-processing-cocoa
+                - codex-cxs-141-1983
+            ranges: []
+        - row_id: preparation_electricity
+          role: "Preparation electricity"
+          name: "Electricity supplied to the facility; Tiangong flow UUID unresolved"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record metered electricity for conveying, cleaning, roasting auxiliaries, winnowing, grinding, and dust control assigned to the represented preparation route."
+          amount:
+            expression: "metered or sub-metered electricity attributable to cocoa material preparation"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg prepared recovery feed and normalized to 1 kg released cocoa butter"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_and_fuel
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0.01"
+                upper: "5"
+                unit: "kWh/kg prepared recovery feed"
+                basis: "broad first-pass equipment-energy screen; replace with route-specific reviewed evidence"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: preparation_thermal_energy
+          role: "Preparation thermal energy"
+          name: "Purchased heat or route-specific fuel; Tiangong flow UUID unresolved"
+          flow_type: "product"
+          property_unit: "Energy / MJ, or carrier-specific mass or volume"
+          description: "Record purchased heat or each fuel used for roasting and thermal conditioning without combining unlike carriers."
+          amount:
+            expression: "metered heat or fuel consumption attributable to cocoa material preparation"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg prepared recovery feed and normalized to 1 kg released cocoa butter"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_and_fuel
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0.1"
+                upper: "30"
+                unit: "MJ/kg prepared recovery feed"
+                basis: "broad first-pass thermal-energy screen; replace with route-specific reviewed evidence"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: prepared_cocoa_feed
+          role: "Prepared cocoa recovery feed"
+          name: "Cocoa mass or cocoa liquor; Tiangong flow UUID unresolved"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record cocoa liquor or another declared press-ready or extraction-ready cocoa feed leaving material preparation."
+          amount:
+            expression: "measured prepared feed transferred to cocoa fat recovery"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per batch and normalized to 1 kg released cocoa butter"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_process_outputs
+              source_ids:
+                - icco-processing-cocoa
+                - codex-cxs-141-1983
+            ranges: []
+      waste:
+        - row_id: preparation_rejects
+          role: "Shells, foreign material, and preparation rejects"
+          name: "Cocoa preparation residues; Tiangong flow UUID unresolved"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record separated shells, foreign material, dust collector solids, and rejected cocoa material by destination; classify as co-product only when a documented economic use exists."
+          amount:
+            expression: "measured mass by residue type and destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg prepared recovery feed and normalized to 1 kg released cocoa butter"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_and_emissions
+              source_ids: []
+            ranges: []
+      elementary:
+        - row_id: preparation_air_emissions
+          role: "Direct preparation air emissions"
+          name: "Substance-specific emissions to air; Tiangong elementary-flow UUIDs unresolved"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record measured particulate matter and other directly emitted substances from roasting, cooling, breaking, winnowing, grinding, and onsite combustion after control equipment."
+          amount:
+            expression: "stack measurement, validated emission calculation, or mass balance by emitted substance"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per kg prepared recovery feed and normalized to 1 kg released cocoa butter"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_waste_and_emissions
+              source_ids: []
+            ranges: []
+  - id: cocoa_fat_recovery
+    label: "Cocoa fat recovery and separation"
+    inputs:
+      product:
+        - row_id: cocoa_recovery_feed
+          role: "Cocoa recovery feed"
+          name: "Cocoa mass, cocoa liquor, nibs, or declared cocoa-derived recovery feed; Tiangong flow UUID unresolved"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record purchased cocoa liquor, internally prepared liquor, nibs, or other declared cocoa feed entering the selected pressing or extraction route."
+          amount:
+            expression: "measured feed mass entering recovery"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg crude cocoa fat recovered and normalized to 1 kg released cocoa butter"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_receipts
+              source_ids:
+                - icco-processing-cocoa
+                - codex-cxs-141-1983
+            ranges:
+              - role: qa_guardrail
+                lower: "0.47"
+                upper: "0.60"
+                unit: "kg cocoa butter/kg cocoa mass or liquor"
+                basis: "measured or supplier-declared cocoa-butter mass fraction in qualifying cocoa mass or liquor; not a recovery-yield default"
+                basis_kind: "process_output"
+                evidence_kind: "external_source"
+                source_ids:
+                  - codex-cxs-141-1983
+        - row_id: recovery_electricity
+          role: "Recovery electricity"
+          name: "Electricity supplied to the facility; Tiangong flow UUID unresolved"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record electricity for pumping, hydraulic pressing, expelling, extraction, separation, cooling, and solvent recovery assigned to the selected route."
+          amount:
+            expression: "metered or sub-metered electricity attributable to cocoa fat recovery"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg crude cocoa fat recovered and normalized to 1 kg released cocoa butter"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_and_fuel
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0.01"
+                upper: "5"
+                unit: "kWh/kg crude cocoa fat"
+                basis: "broad first-pass equipment-energy screen; replace with route-specific reviewed evidence"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: recovery_thermal_energy
+          role: "Recovery thermal energy"
+          name: "Purchased heat or route-specific fuel; Tiangong flow UUID unresolved"
+          flow_type: "product"
+          property_unit: "Energy / MJ, or carrier-specific mass or volume"
+          description: "Record heat or fuel used to maintain liquor flow, support extraction or solvent recovery, and condition the press or separation line."
+          amount:
+            expression: "metered heat or fuel attributable to cocoa fat recovery"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg crude cocoa fat recovered and normalized to 1 kg released cocoa butter"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_and_fuel
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0.1"
+                upper: "30"
+                unit: "MJ/kg crude cocoa fat"
+                basis: "broad first-pass thermal-energy screen; replace with route-specific reviewed evidence"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: extraction_solvent_makeup
+          role: "Extraction solvent make-up"
+          name: "Route-specific extraction solvent; Tiangong flow UUID unresolved"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record solvent make-up only when a non-press extraction route is used; preserve solvent identity and separate recovered solvent from new input."
+          amount:
+            expression: "measured solvent delivered to the recovery system minus separately inventoried returned or recovered solvent, without netting direct releases"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg crude cocoa fat recovered and normalized to 1 kg released cocoa butter"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_solvent_balance
+              source_ids:
+                - codex-cxs-86-1981
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: crude_cocoa_fat
+          role: "Crude or press cocoa fat"
+          name: "Cocoa butter, fat and oil"
+          flow_type: "product"
+          flow_ref:
+            uuid: "402dbf23-610a-4be9-a34f-333ec03580a9"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record the recovered cocoa fat transferred to finishing, before any finishing losses are applied."
+          amount:
+            expression: "measured crude or press cocoa fat transferred to finishing"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per batch and normalized to 1 kg released cocoa butter"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_process_outputs
+              source_ids:
+                - icco-processing-cocoa
+                - codex-cxs-86-1981
+            ranges: []
+        - row_id: cocoa_cake_coproduct
+          role: "Cocoa cake or defatted cocoa solids"
+          name: "Cocoa cake or route-specific defatted cocoa solids; Tiangong flow UUID unresolved"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record cake or defatted solids as a co-product when it has an economic use; otherwise record it as waste with its treatment destination. Codex defines cocoa cake as the product obtained by partial or complete removal of fat from cocoa nib or cocoa mass."
+          amount:
+            expression: "measured co-product mass at the recovery-process exit"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg crude cocoa fat recovered and normalized to 1 kg released cocoa butter"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_process_outputs
+              source_ids:
+                - codex-cxs-141-1983
+                - icco-processing-cocoa
+            ranges: []
+      waste:
+        - row_id: recovery_wastes
+          role: "Recovery wastes and off-spec material"
+          name: "Route-specific cocoa recovery waste; Tiangong flow UUID unresolved"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record unrecoverable solids, spent treatment media, spills, and off-spec material not internally reworked, with treatment destination and any recovered value."
+          amount:
+            expression: "measured waste mass by type and destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg crude cocoa fat recovered and normalized to 1 kg released cocoa butter"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_and_emissions
+              source_ids: []
+            ranges: []
+      elementary:
+        - row_id: recovery_direct_emissions
+          role: "Direct solvent and recovery emissions"
+          name: "Substance-specific emissions to air, water, or soil; Tiangong elementary-flow UUIDs unresolved"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record direct substance-specific releases from extraction, solvent recovery, pressing, onsite combustion, and wastewater treatment after controls."
+          amount:
+            expression: "measured release or validated calculation from solvent, fuel, discharge, and control-device records"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per kg crude cocoa fat recovered and normalized to 1 kg released cocoa butter"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_waste_and_emissions
+              source_ids: []
+            ranges: []
+  - id: butter_finishing_and_release
+    label: "Cocoa butter finishing and factory-gate release"
+    inputs:
+      product:
+        - row_id: finishing_cocoa_fat_input
+          role: "Crude or press cocoa fat received for finishing"
+          name: "Cocoa butter, fat and oil"
+          flow_type: "product"
+          flow_ref:
+            uuid: "402dbf23-610a-4be9-a34f-333ec03580a9"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record crude or press cocoa fat entering filtration, conditioning, optional deodorization or refining, storage, and release."
+          amount:
+            expression: "measured cocoa fat mass entering finishing"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg released cocoa butter"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_receipts
+              source_ids:
+                - codex-cxs-86-1981
+            ranges: []
+        - row_id: finishing_electricity
+          role: "Finishing electricity"
+          name: "Electricity supplied to the facility; Tiangong flow UUID unresolved"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record electricity for filtration, pumping, cooling, deodorization or refining auxiliaries, storage, filling, and factory-gate handling."
+          amount:
+            expression: "metered or sub-metered electricity attributable to finishing and release"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg released cocoa butter"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_and_fuel
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0.005"
+                upper: "3"
+                unit: "kWh/kg released cocoa butter"
+                basis: "broad first-pass equipment-energy screen; replace with route-specific reviewed evidence"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: finishing_thermal_energy
+          role: "Finishing thermal energy"
+          name: "Purchased heat or route-specific fuel; Tiangong flow UUID unresolved"
+          flow_type: "product"
+          property_unit: "Energy / MJ, or carrier-specific mass or volume"
+          description: "Record purchased heat or fuel for melting, conditioning, deodorization or refining, and heated storage when performed."
+          amount:
+            expression: "metered heat or fuel attributable to finishing and release"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg released cocoa butter"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_and_fuel
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "20"
+                unit: "MJ/kg released cocoa butter"
+                basis: "broad first-pass thermal-energy screen including an unheated route; replace with route-specific reviewed evidence"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: finishing_process_water
+          role: "Process water"
+          name: "Process water; Tiangong flow UUID unresolved"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "Record water that crosses the process boundary for cleaning, cooling losses, steam generation, or direct product-contact operations; do not count closed-loop recirculation repeatedly."
+          amount:
+            expression: "metered make-up water attributable to finishing and release by use"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg released cocoa butter"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water_records
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.1"
+                unit: "m3/kg released cocoa butter"
+                basis: "broad first-pass make-up-water screen including a dry or fully recirculating route; replace with route-specific reviewed evidence"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: finishing_aids_and_packaging
+          role: "Filter media, processing aids, and packaging"
+          name: "Material-specific processing aid or packaging flow; Tiangong flow UUID unresolved"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record each consumed filter aid, refining or deodorization aid, inert gas, and packaging material separately; packaging is omitted only for genuinely unpackaged bulk dispatch."
+          amount:
+            expression: "purchased inventory adjusted for stock change and measured recovery or return"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg released cocoa butter"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_finishing_materials
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: cocoa_butter_product
+          role: "Released cocoa butter, fat, or oil"
+          name: "Cocoa butter, fat and oil"
+          flow_type: "product"
+          flow_ref:
+            uuid: "402dbf23-610a-4be9-a34f-333ec03580a9"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This is the PCR reference product at the declared dispatch condition and shall carry every required qualifier."
+          amount:
+            expression: "fixed reference amount of 1 kg net product after finishing losses and before container tare"
+            value_mode: "fixed_value"
+            specificity: "not_applicable"
+            basis:
+              text: "1 kg released cocoa butter, fat, or oil"
+              kind: "reference_flow"
+            evidence:
+              kind: "identity_reference"
+              source_ids:
+                - codex-cxs-86-1981
+            ranges: []
+      waste:
+        - row_id: finishing_wastes
+          role: "Finishing wastes and wastewater"
+          name: "Route-specific finishing waste or wastewater; Tiangong flow UUID unresolved"
+          flow_type: "waste"
+          property_unit: "Mass / kg or Volume / m3, kept as separate rows in a concrete dataset"
+          description: "Record spent filter media, refining residues, product losses, off-spec product not reworked, packaging waste, and wastewater by treatment destination."
+          amount:
+            expression: "measured waste or discharge quantity by type and destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg released cocoa butter"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_and_emissions
+              source_ids: []
+            ranges: []
+      elementary:
+        - row_id: finishing_direct_emissions
+          role: "Direct finishing emissions"
+          name: "Substance-specific emissions to air, water, or soil; Tiangong elementary-flow UUIDs unresolved"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record substance-specific releases from deodorization, refining, heated storage, onsite combustion, and wastewater treatment after control equipment."
+          amount:
+            expression: "measured release or validated calculation from operational and control-device records"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg released cocoa butter"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_waste_and_emissions
+              source_ids: []
+            ranges: []
+allocation_rules:
+  - rule_id: allocation_subdivide_first
+    applies_to: "cocoa butter and cocoa cake common processes"
+    rule: "Avoid allocation where feasible by sub-metering or engineering subdivision of preparation, recovery, finishing, storage, and packaging operations; assign butter-only finishing directly to cocoa butter and cake-only handling directly to cocoa cake."
+    source_ids:
+      - ghg-protocol-product-standard-2011
+  - rule_id: allocation_physical_then_economic
+    applies_to: "inseparable pressing or extraction burdens"
+    rule: "If common burdens remain after subdivision, use a documented physical relationship that reflects causal demand. When no defensible physical relationship exists, use economic allocation based on consistent prices at the common-process exit."
+    source_ids:
+      - ghg-protocol-product-standard-2011
+  - rule_id: allocation_waste_status
+    applies_to: "shells, cake, residues, and off-spec outputs"
+    rule: "Treat an output as waste only when it has no economic value and is sent to treatment; if it is sold or used as a product, record it as a co-product and apply the selected allocation rule."
+    source_ids:
+      - ghg-protocol-product-standard-2011
+  - rule_id: allocation_internal_rework
+    applies_to: "internally reworked cocoa fat"
+    rule: "Do not allocate a second burden to internal rework that never crosses the system boundary; preserve mass and energy records and prevent double counting in product output."
+    source_ids:
+      - ghg-protocol-product-standard-2011
+  - rule_id: allocation_disclosure
+    applies_to: "all multi-output datasets"
+    rule: "Report subdivision boundaries, allocation formula, physical parameter or price basis, price period and currency where relevant, output quantities, and a sensitivity case when economic allocation materially affects results."
+    source_ids:
+      - ghg-protocol-product-standard-2011
+      - eu-pef-method-2021
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_material_receipts
+      process_id: "cocoa_material_preparation_cocoa_fat_recovery_butter_finishing_and_release"
+      flow_role: "cocoa materials entering each process"
+      record_type: "weighbridge, calibrated scale, batch ticket, supplier certificate"
+      raw_fields: "material identity; lot; gross mass; tare; net mass; moisture or dry matter when used; fat fraction when measured; origin; timestamp"
+      collection_method: "reconcile receiving and batch records to physical inventory"
+      unit: "kg; % m/m"
+      frequency: "each lot or batch"
+      temporal_coverage: "representative production year or justified campaign"
+      site_scope: "all facilities and lines represented"
+      aggregation_rule: "sum accepted net mass by material and batch; reconcile opening and closing stock"
+      quality_evidence: "calibration record; lot certificate; stock reconciliation; rejected-lot record"
+    - protocol_id: cp_energy_and_fuel
+      process_id: "all_included_processes"
+      flow_role: "electricity, heat, and fuel"
+      record_type: "meter, sub-meter, invoice, fuel issue, runtime record"
+      raw_fields: "meter start/end; fuel quantity; unit; heating value source; equipment hours; batch assignment"
+      collection_method: "direct sub-metering preferred; otherwise documented engineering allocation"
+      unit: "kWh; MJ; carrier mass or volume"
+      frequency: "continuous or each batch; monthly reconciliation"
+      temporal_coverage: "same period as production output"
+      site_scope: "all included meters, boilers, and lines"
+      aggregation_rule: "subtract non-production loads; allocate shared utilities with documented causal driver"
+      quality_evidence: "meter calibration; invoices; fuel specification; allocation worksheet"
+    - protocol_id: cp_process_outputs
+      process_id: "cocoa_material_preparation_cocoa_fat_recovery"
+      flow_role: "prepared feed, crude fat, cake, and other outputs"
+      record_type: "batch scale, tank gauge, production log"
+      raw_fields: "output identity; net mass; moisture; fat content where relevant; destination; timestamp"
+      collection_method: "measure each transfer or batch and reconcile tanks and stock"
+      unit: "kg; % m/m"
+      frequency: "each batch"
+      temporal_coverage: "same period as input data"
+      site_scope: "every represented recovery line"
+      aggregation_rule: "sum by product and destination; retain internal-transfer links"
+      quality_evidence: "calibration; laboratory certificate; batch reconciliation"
+    - protocol_id: cp_solvent_balance
+      process_id: "cocoa_fat_recovery"
+      flow_role: "solvent make-up, recovery, residue, and release"
+      record_type: "purchase and stock records, recovery meter, product test, waste manifest, emission monitor"
+      raw_fields: "solvent identity; opening stock; purchases; closing stock; recovered quantity; product residue; waste; direct release"
+      collection_method: "complete solvent mass balance for each reporting period"
+      unit: "kg; mg/kg product"
+      frequency: "each batch plus period reconciliation"
+      temporal_coverage: "same period as extraction production"
+      site_scope: "every solvent-using line and recovery system"
+      aggregation_rule: "make-up plus opening stock equals recovered, closing stock, product residue, waste, and release within disclosed balance closure"
+      quality_evidence: "inventory reconciliation; laboratory result; monitor calibration; waste manifest"
+    - protocol_id: cp_water_records
+      process_id: "all_included_processes"
+      flow_role: "make-up water and wastewater"
+      record_type: "water meter, sub-meter, discharge meter, cleaning log"
+      raw_fields: "source; meter readings; use; recirculation; discharge volume; treatment route; batch assignment"
+      collection_method: "meter make-up and discharge separately; do not count recirculated volume as repeated input"
+      unit: "m3"
+      frequency: "continuous or each cleaning event; monthly reconciliation"
+      temporal_coverage: "same period as production output"
+      site_scope: "all included water systems"
+      aggregation_rule: "sum net make-up and discharge by use and normalize to product"
+      quality_evidence: "meter calibration; utility bill; discharge record; cleaning log"
+    - protocol_id: cp_finishing_materials
+      process_id: "butter_finishing_and_release"
+      flow_role: "filter media, aids, inert gas, and packaging"
+      record_type: "purchase, issue, return, stock, and batch records"
+      raw_fields: "material identity; lot; opening stock; receipts; issues; returns; closing stock; recovered amount; batch"
+      collection_method: "inventory difference cross-checked to batch issues"
+      unit: "kg or material-specific unit"
+      frequency: "each batch; monthly reconciliation"
+      temporal_coverage: "same period as production output"
+      site_scope: "all finishing and packaging lines"
+      aggregation_rule: "opening plus receipts minus closing, returns, and recovered amount; allocate to batches by documented use"
+      quality_evidence: "invoices; stock count; issue ticket; supplier specification"
+    - protocol_id: cp_waste_and_emissions
+      process_id: "all_included_processes"
+      flow_role: "wastes and direct releases"
+      record_type: "scale, waste manifest, discharge sample, stack test, continuous monitor, validated calculation input"
+      raw_fields: "substance or waste identity; quantity; medium; destination; treatment; concentration; flow rate; operating time; control efficiency"
+      collection_method: "direct measurement preferred; calculation retains formula and measured inputs"
+      unit: "kg; m3; concentration and flow units"
+      frequency: "each shipment or sampling event; continuous where monitored"
+      temporal_coverage: "same period as production output"
+      site_scope: "all included release points and waste destinations"
+      aggregation_rule: "calculate substance mass from concentration and flow where required; sum by medium and destination"
+      quality_evidence: "calibration; laboratory report; manifest; formula review; control-device record"
+  calculation_rules:
+    - id: calc_reference_normalization
+      applies_to: "all inventory rows"
+      rule: "normalized amount = period or batch amount × allocation share ÷ released cocoa butter net mass"
+      inputs:
+        - "measured amount"
+        - "allocation share"
+        - "released product mass"
+      output: "amount per 1 kg reference product"
+      source_ids:
+        - eu-pef-method-2021
+    - id: calc_route_yield
+      applies_to: "recovery and finishing"
+      rule: "route yield = released cocoa butter mass ÷ measured cocoa feed mass; report feed identity, moisture basis, and whether the denominator is beans, nibs, or liquor"
+      inputs:
+        - "released product mass"
+        - "recovery feed mass"
+        - "moisture basis"
+      output: "kg product/kg declared feed"
+      source_ids:
+        - icco-processing-cocoa
+        - codex-cxs-141-1983
+    - id: calc_mass_balance
+      applies_to: "each process and reporting period"
+      rule: "inputs plus opening stock = products plus co-products plus wastes plus direct mass releases plus closing stock; report balance closure and unexplained difference without forcing it to zero"
+      inputs:
+        - "all measured mass flows and stock changes"
+      output: "mass-balance closure and unexplained difference"
+      source_ids:
+        - eu-pef-method-2021
+    - id: calc_liquor_fat_check
+      applies_to: "cocoa mass or liquor feed"
+      rule: "compare measured or supplier-declared cocoa-butter fraction with 0.47–0.60 kg/kg only when CXS 141-1983 conformity is applicable; do not use that interval as a default recovery yield"
+      inputs:
+        - "cocoa liquor mass"
+        - "cocoa-butter fraction"
+        - "product conformity claim"
+      output: "composition QA finding"
+      source_ids:
+        - codex-cxs-141-1983
+    - id: calc_solvent_balance
+      applies_to: "solvent extraction route"
+      rule: "solvent loss = opening stock + purchases − closing stock − recovered solvent − solvent in products − solvent in wastes; negative or unexplained results require reconciliation"
+      inputs:
+        - "solvent inventory"
+        - purchase
+        - recovery
+        - product-test
+        - waste
+        - "and release records"
+      output: "kg solvent loss per kg product and closure finding"
+      source_ids:
+        - codex-cxs-86-1981
+    - id: calc_allocation_share
+      applies_to: "shared preparation and recovery burdens"
+      rule: "calculate the cocoa-butter share using the disclosed subdivision and allocation hierarchy; allocated shares across co-products shall sum to one"
+      inputs:
+        - "sub-process records"
+        - "output quantities"
+        - "physical parameter or prices"
+      output: "allocation share by output"
+      source_ids:
+        - ghg-protocol-product-standard-2011
+  data_quality_requirements:
+    - id: dq_identity
+      applies_to: "all product and material rows"
+      requirement: "Preserve lot-level material identity, starting condition, recovery route, product designation, and required qualifiers; do not merge press and non-press routes without a justified representative average."
+      evidence: "lot certificates; batch records; route map; product specification"
+    - id: dq_measurement
+      applies_to: "mass, energy, water, solvent, and emission data"
+      requirement: "Use calibrated or verified measurement systems; retain units, conversion factors, sampling methods, detection limits, and uncertainty or data limitations."
+      evidence: "calibration certificates; meter register; laboratory reports; conversion worksheet"
+    - id: dq_temporal
+      applies_to: "foreground period"
+      requirement: "Use a representative production year where available; a shorter campaign requires justification, coverage of material operating states, and disclosure of seasonal or batch limitations."
+      evidence: "production calendar; downtime and campaign records; representativeness statement"
+    - id: dq_completeness
+      applies_to: "process inventory"
+      requirement: "Reconcile material, solvent, and product balances and document every excluded flow, missing measurement, proxy, and cut-off; absence of a measured release is not evidence of zero."
+      evidence: "balance worksheets; gap log; exclusion register; source-to-row trace"
+    - id: dq_technology_geography
+      applies_to: "foreground and upstream datasets"
+      requirement: "Match represented technology, site geography, supplier region, energy system, and data period, or document the proxy and expected direction of bias."
+      evidence: "dataset metadata; supplier records; proxy justification"
+    - id: dq_allocation
+      applies_to: "multi-output processes"
+      requirement: "Retain the data and rationale needed to reproduce subdivision and allocation, including quantities and contemporaneous prices when economic allocation is used."
+      evidence: "allocation workbook; meter map; quantity and price records; sensitivity result"
+    - id: dq_source_traceability
+      applies_to: "external rules and estimates"
+      requirement: "Link every source-backed constraint to a listed source id and label every unsourced broad range as a replaceable reasoned_estimate."
+      evidence: "source register; projection source_ids; review record"
+validation_rules:
+  - rule_id: validate_reference_flow
+    applies_to: "reference product"
+    rule: "Confirm flow UUID 402dbf23-610a-4be9-a34f-333ec03580a9, Mass property 93a60a56-a3c8-11da-a746-0800200b9a66, Units of mass group 93a60a57-a4c8-11da-a746-0800200c9a66, reference unit kg, fixed amount 1, and all required qualifiers."
+    source_ids:
+      - codex-cxs-86-1981
+  - rule_id: validate_scope_route
+    applies_to: "process map and boundary"
+    rule: "Confirm the declared starting material and actual route match included process sections, and that omitted preparation, extraction, deodorization, or packaging steps are explicitly not performed or lie in linked upstream/downstream datasets."
+    source_ids:
+      - icco-processing-cocoa
+      - eu-pef-method-2021
+  - rule_id: validate_mass_and_solvent_balance
+    applies_to: "each process and solvent-using route"
+    rule: "Recalculate mass and solvent balances from raw records; unresolved differences, negative solvent losses, or product output exceeding physically available feed fat are errors or documented inconclusive findings."
+    source_ids:
+      - codex-cxs-141-1983
+      - codex-cxs-86-1981
+  - rule_id: validate_coproduct_allocation
+    applies_to: "cocoa cake and other valuable outputs"
+    rule: "Confirm valuable outputs are treated as co-products, allocation is avoided where feasible, the remaining method follows the stated hierarchy, and shares sum to one without double counting internal rework."
+    source_ids:
+      - ghg-protocol-product-standard-2011
+  - rule_id: validate_product_specification
+    applies_to: "released cocoa butter"
+    rule: "When CXS 86-1981 conformity is claimed, verify product designation, analytical results, applicable free-fatty-acid and unsaponifiable-matter limits, and residual hexane limit for non-press cocoa butter."
+    source_ids:
+      - codex-cxs-86-1981
+  - rule_id: validate_data_quality
+    applies_to: "foreground data package"
+    rule: "Check measurement calibration, temporal coverage, completeness, technological and geographical representativeness, source traceability, proxy disclosure, and replacement status of provisional estimates."
+    source_ids:
+      - eu-pef-method-2021
+published_dataset_profile:
+  dataset_role: "Foreground gate-to-gate unit-process dataset for factory-gate cocoa butter, fat, or oil production"
+  downstream_use: "secondary_dataset; background_dataset"
+  allowed_use: "Route-, site-, geography-, period-, and specification-matched LCA models for cocoa butter and downstream products, with upstream datasets linked at the declared starting condition"
+  excluded_use: "Unsupported product comparisons; substitution among press, extracted, refined, or deodorized products without qualifier alignment; representation of non-cocoa fats; use as a cradle-to-gate dataset when upstream cocoa production is absent"
+  required_metadata: "PCR id and version state; reference-flow UUID; starting material; route and process map; product designation and specification; plant geography; data period; technology; allocation method; co-product destinations; packaging state; source ids; data owner and review status"
+  required_quality_disclosure: "Measurement coverage and calibration; mass and solvent balance closure; temporal, technological, and geographical representativeness; missing UUIDs and flows; proxies; allocation sensitivity; cut-offs; provisional reasoned_estimate ranges; limitations"
+  update_trigger: "Material change in starting-material mix, recovery or finishing technology, energy or water supply, solvent system, product specification, co-product use or prices, allocation method, packaging, emissions control, site coverage, or data period; replacement of provisional estimates or unresolved flow identities"
+data_sources:
+  - id: "codex-cxs-86-1981"
+    type: "standard"
+    reference: "Codex Alimentarius, CXS 86-1981, Standard for Cocoa Butter, amended 2025, https://workspace.fao.org/sites/codex/Standards/CXS%2086-1981/CXS_086e.pdf (retrieved 2026-08-10)"
+    used_for: "Product definition and designation; quality limits; non-press hexane-residue criterion; release-specification validation"
+  - id: "codex-cxs-141-1983"
+    type: "standard"
+    reference: "Codex Alimentarius, CXS 141-1983, Standard for Cocoa (Cacao) Mass (Cocoa/Chocolate Liquor) and Cocoa Cake, amended 2025, https://workspace.fao.org/sites/codex/Standards/CXS%20141-1983/CXS_141e.pdf (retrieved 2026-08-10)"
+    used_for: "Cocoa liquor and cake identity; 47–60% cocoa-butter composition QA range; process mass-balance interpretation"
+  - id: "icco-processing-cocoa"
+    type: "official_guidance"
+    reference: "International Cocoa Organization, Processing Cocoa, https://www.icco.org/processing-cocoa/ (retrieved 2026-08-10)"
+    used_for: "Cocoa process decomposition; cleaning, roasting, winnowing, grinding, liquor pressing, cake, and cocoa-butter outputs"
+  - id: "ghg-protocol-product-standard-2011"
+    type: "standard"
+    reference: "WRI and WBCSD, Product Life Cycle Accounting and Reporting Standard, 2011, https://ghgprotocol.org/sites/default/files/ghgp/standards/Product-Life-Cycle-Accounting-Reporting-Standard-EReader_041613_0.pdf (retrieved 2026-08-10)"
+    used_for: "Co-product classification and allocation hierarchy: subdivision, physical relationship, then economic or other justified relationship"
+  - id: "eu-pef-method-2021"
+    type: "official_guidance"
+    reference: "European Commission, Recommendation (EU) 2021/2279, Annex I: Product Environmental Footprint Method, 2021, https://environment.ec.europa.eu/document/download/680503dc-5a19-4f6a-bb92-84d9bfc8f312_en?filename=Annexes%201%20to%202.pdf (retrieved 2026-08-10)"
+    used_for: "Functional-unit framing; system boundary; foreground and upstream data separation; activity-data normalization; completeness and data-quality requirements"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:0a1ad50aad29f7551a76640e96685be291debd9353d0fb0947753bf4fee2b547"
+  generated_content_sha256: "sha256:4730bda6ef73ad6a41ef70cb588685fd8f0a8437764f2459929cf154c777f9df"

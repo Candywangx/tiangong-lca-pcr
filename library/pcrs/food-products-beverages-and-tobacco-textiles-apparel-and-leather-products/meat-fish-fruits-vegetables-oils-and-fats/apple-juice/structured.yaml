@@ -1,10 +1,2901 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "21435"
-  title: "Apple juice"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.food-products-beverages-and-tobacco-textiles-apparel-and-leather-products.meat-fish-fruits-vegetables-oils-and-fats.apple-juice"
+  classification_refs: "CPC 3.0: 21435 (Apple juice; exact)"
+  covered_products: "Single-fruit apple juice; directly expressed/NFC apple juice; apple juice from concentrate; clear or cloudy apple juice; packaged or bulk apple juice at a declared manufacturing gate"
+  excluded_products: "Apple nectar; fermented cider or perry; vinegar; apple purée; apple juice concentrate when sold as the reference product; mixed-fruit juice; apple-flavoured drinks and beverages in which apple juice is only an ingredient"
+  representative_product: "Apple juice represented by the Tiangong category flow, with the actual juice route and market form declared"
+  production_route: "Declared combination of apple receiving and preparation, extraction, optional finishing or concentration, optional reconstitution, preservation, and filling or bulk dispatch"
+  market_state: "As-is liquid apple juice at the manufacturing gate; package/bulk state, clear/cloudy state, preservation state, storage regime, and soluble-solids specification declared"
+functional_unit:
+  what: "Provision of apple juice meeting the declared composition, authenticity, preservation, and market specification at the manufacturing gate"
+  how_much: "1 kg of as-is apple juice, excluding the mass of separate packaging"
+  how_well: "The directly expressed/NFC or from-concentrate route, apple-only identity, actual soluble solids, clear/cloudy or pulp state, preservation method, package/bulk state, storage regime, and applicable food-safety release status are declared"
+  how_long_or_cycle: "One production batch at the manufacturing gate; declared shelf life and temperature regime are product qualifiers, not an extension of the foreground time boundary"
+  reference_flow_link: "The reference amount and UUID-backed product flow below realize the functional unit"
+system_boundary:
+  rules:
+    - rule_id: boundary_route_gate
+      applies_to: "Foreground apple-juice route"
+      rule: "Include all operations under the reporting entity's control from the declared starting condition through finished apple juice at the manufacturing gate, including cleaning, utilities, residues, wastewater, and direct emissions."
+      source_ids:
+        - fao-fruit-juice-processing-2001
+        - eu-jrc-fdm-bref-2019
+    - rule_id: boundary_apple_condition
+      applies_to: "Routes receiving apples"
+      rule: "Include receiving inspection, rejection, sorting, washing, and the management of rejected fruit before milling or pressing; do not assume later thermal treatment removes patulin already present."
+      source_ids:
+        - codex-cxc-50-2003
+    - rule_id: boundary_route_variants
+      applies_to: "Route-specific operations"
+      rule: "Include clarification, filtration, depectinization, deaeration, concentration, aroma recovery, reconstitution, blending, homogenization, preservation, cold storage, or aseptic handling whenever performed for the declared product."
+      source_ids:
+        - codex-cxs-247-2005-2025
+        - fao-fruit-juice-processing-2001
+    - rule_id: boundary_food_safety_control
+      applies_to: "Preservation and release"
+      rule: "Record the actual validated control step, monitoring records, failures, rework, and final release status. A regulatory 5-log requirement, when applicable, is a product-safety constraint and not a substitute for measured energy or yield inventory."
+      source_ids:
+        - us-fda-juice-haccp-21-cfr-120-24
+    - rule_id: boundary_background_linkage
+      applies_to: "Upstream and downstream services"
+      rule: "Keep off-site agriculture, material production, purchased utilities, transport, and treatment outside the foreground only when their quantities and linked upstream or treatment datasets are retained."
+      source_ids:
+        - iso-14044-2006
+boundary_abstraction:
+  declared_starting_condition: "Declare one: apples at the receiving gate; purchased single-strength apple juice at the receiving gate; or purchased apple juice concentrate plus reconstitution inputs at the receiving gate"
+  starting_condition_role: "Foreground entry point that determines which preparation, extraction, concentration, and reconstitution operations are included"
+  product_classification_scope: "Apple juice within this PCR; apple juice concentrate is an intermediate or same-category recursive input unless concentrate itself is the separately governed reference product"
+  recursive_input_rule: "Record purchased single-strength apple juice or apple juice concentrate as a product input with amount, composition, supplier gate, and upstream dataset reference; do not recreate the same apple-juice category recursively inside the receiving process"
+  upstream_dataset_requirement: "Link upstream datasets for apples, purchased juice or concentrate, ingredients, processing aids, packaging, energy, transport, and treatment services that cross the foreground boundary"
+  disclosure: "Disclose the starting condition, included unit operations, outsourced operations, technology and preservation route, geography, reporting period, package/bulk state, and any excluded operation"
+reference_flow_definition:
+  reference_amount: "1 kg as-is apple juice at the declared manufacturing gate"
+  product_flow_ref:
+    name: "Apple juice"
+    uuid: "3db6b381-99a9-4976-8955-aa9b65903844"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "directly expressed/NFC or from-concentrate route"
+    - "country or market specification"
+    - "measured soluble solids and measurement condition"
+    - "clear/cloudy and pulp state"
+    - "preservation method"
+    - "package type and size or bulk state"
+    - "ambient/chilled/frozen storage regime"
+    - "manufacturing geography and gate"
+    - "shelf life"
+    - "apple-only or any declared permitted ingredients"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_product_mass
+    applies_to: "Reference apple juice output"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Measure net as-is juice mass at the declared gate. Exclude separate primary, secondary, and tertiary packaging mass and record each packaging material as an inventory input."
+  - id: volume_to_mass
+    applies_to: "Juice, water, and liquid ingredients recorded by volume"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Convert volume to mass only with a batch- or product-specific measured density and its measurement temperature; retain volume, density, temperature, and conversion evidence."
+  - id: soluble_solids_basis
+    applies_to: "Juice and concentrate composition"
+    required_property_ref:
+      name: "Product-specific soluble-solids record"
+      uuid: ""
+    required_unit: "degree Brix and measurement temperature"
+    rule: "Record measured soluble solids and the analytical method. Do not convert a Brix value directly to dry mass without a declared validated relationship."
+  - id: reconstituted_juice_brix
+    applies_to: "Apple juice reconstituted from concentrate"
+    required_property_ref:
+      name: "Product-specific soluble-solids record"
+      uuid: ""
+    required_unit: "degree Brix at the specified condition"
+    rule: "Apply the governing market rule. Codex CXS 247-2005 lists 11.5 degree Brix for reconstituted Malus domestica apple juice and recognizes country-specific natural variation subject to authenticity provisions, with a stated floor of 10 degree Brix for the described exception; do not apply this rule to directly expressed juice as a fixed formulation target."
+  - id: mass_balance_period
+    applies_to: "Each included foreground process"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Close input, product, co-product, residue, wastewater, evaporation, and documented stock-change masses over the same batch or reporting period before normalization."
+process_map:
+  - id: apple_receiving_preparation
+    name: "Apple receiving, sorting, and washing"
+    inclusion: "conditional"
+    inclusion_condition: "Include when whole apples cross the declared foreground gate"
+    role: "Prepare accepted apples and separate rejects before extraction"
+    quantitative_reference: "kg accepted apples delivered to milling"
+  - id: juice_extraction
+    name: "Milling and juice extraction"
+    inclusion: "conditional"
+    inclusion_condition: "Include when juice is extracted from apples in the foreground"
+    role: "Convert prepared apples to raw juice and pomace"
+    quantitative_reference: "kg raw juice leaving extraction"
+  - id: juice_finishing
+    name: "Juice finishing and clarification"
+    inclusion: "conditional"
+    inclusion_condition: "Include each finishing operation actually used, including enzymatic treatment, clarification, filtration, deaeration, or homogenization"
+    role: "Produce the declared clear, cloudy, or pulp-containing intermediate juice"
+    quantitative_reference: "kg finished intermediate juice"
+  - id: juice_concentration
+    name: "Juice concentration and aroma handling"
+    inclusion: "conditional"
+    inclusion_condition: "Include when apple juice is concentrated in the foreground, including an integrated concentrate/reconstitution route"
+    role: "Produce and account for concentrate, recovered fractions, condensate, and losses"
+    quantitative_reference: "kg apple juice concentrate and measured soluble solids"
+  - id: juice_reconstitution
+    name: "Reconstitution and formulation"
+    inclusion: "conditional"
+    inclusion_condition: "Include when concentrate, water, permitted restored components, or other permitted ingredients are combined in the foreground"
+    role: "Produce single-strength apple juice to the declared specification"
+    quantitative_reference: "kg reconstituted apple juice"
+  - id: preservation_packaging_dispatch
+    name: "Preservation, filling, and dispatch"
+    inclusion: "required"
+    inclusion_condition: "Always include the final foreground conditioning and dispatch step; packaging rows apply only when packaging occurs before the gate"
+    role: "Produce released apple juice in the declared packaged or bulk market state"
+    quantitative_reference: "1 kg reference apple juice output"
+process_inventory:
+  - id: apple_receiving_preparation
+    label: "Apple receiving, sorting, and washing"
+    inputs:
+      product:
+        - row_id: received_apples
+          role: "Apples received for juice production"
+          name: "Apple"
+          flow_type: "product"
+          flow_ref:
+            uuid: "dae75a0f-16b9-47ff-9ee7-63058aebcfe2"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record the mass of apples crossing the receiving gate and retain supplier, cultivar or blend where known, harvest/storage condition, lot identity, and acceptance results."
+          amount:
+            expression: "Weighed mass received, before rejected fruit is removed"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg accepted apples delivered to milling and ultimately normalized to 1 kg reference apple juice"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_receiving_records
+              source_ids:
+                - codex-cxc-50-2003
+            ranges: []
+        - row_id: receiving_potable_water
+          role: "Potable apple-washing water"
+          name: "Tap water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "d1e0e36c-07f0-4a75-bdcb-efb5d9e2ac36"
+          property_unit: "Mass / kg"
+          description: "Record water contacting apples before milling separately from detergent and sanitizer dosing."
+          amount:
+            expression: "Metered washing-water make-up attributable to receiving and preparation"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg accepted apples delivered to milling"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_receiving_records
+              source_ids:
+                - codex-cxc-50-2003
+            ranges: []
+        - row_id: receiving_sodium_hypochlorite
+          role: "Sodium hypochlorite sanitizer"
+          name: "Sodium hypochlorite"
+          flow_type: "product"
+          flow_ref:
+            uuid: "28c4ca0f-c924-4d2a-93dd-b9ac93009d25"
+          property_unit: "Mass / kg"
+          description: "Record sodium hypochlorite separately from water and from non-chlorine sanitizers."
+          amount:
+            expression: "Weighed or dosing-system-reconciled sodium hypochlorite input"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg accepted apples delivered to milling"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_receiving_records
+              source_ids:
+                - codex-cxc-50-2003
+            ranges: []
+        - row_id: receiving_peracetic_acid
+          role: "Peracetic acid sanitizer"
+          name: "Peracetic acid"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record peracetic acid separately when used instead of a chlorine sanitizer."
+          amount:
+            expression: "Weighed or dosing-system-reconciled peracetic acid input"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg accepted apples delivered to milling"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_receiving_records
+              source_ids:
+                - codex-cxc-50-2003
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: prepared_apples
+          role: "Accepted prepared apples"
+          name: "Prepared apples"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Measure accepted apples leaving sorting and washing for milling; keep internal transfers identifiable so they are not double counted as external products."
+          amount:
+            expression: "Weighed or mass-balance-calculated accepted apples transferred to extraction"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per kg accepted apples delivered to milling"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_receiving_records
+              source_ids:
+                - codex-cxc-50-2003
+            ranges: []
+      waste:
+        - row_id: rejected_apples
+          role: "Rejected apples"
+          name: "Rejected apples"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record mouldy, rotten, damaged, or otherwise rejected apples separately by destination and classification as waste or recovered material."
+          amount:
+            expression: "Weighed rejected mass by lot and destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg accepted apples delivered to milling"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_receiving_records
+              source_ids:
+                - codex-cxc-50-2003
+            ranges: []
+        - row_id: receiving_sorting_debris
+          role: "Fruit-line sorting debris"
+          name: "Fruit-line sorting debris"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record leaves, twigs, stones, and non-fruit debris removed from received apples separately from rejected fruit."
+          amount:
+            expression: "Weighed debris mass by lot and destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg accepted apples delivered to milling"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_receiving_records
+              source_ids:
+                - codex-cxc-50-2003
+            ranges: []
+        - row_id: receiving_wastewater
+          role: "Receiving and wash wastewater"
+          name: "Apple-washing wastewater"
+          flow_type: "waste"
+          property_unit: "Volume / m3 or Mass / kg, preserving the measured property and conversion basis"
+          description: "Record wastewater volume or mass, discharge destination, and any separately managed solids; do not infer the amount from water input without accounting for carryover and losses."
+          amount:
+            expression: "Metered discharge or documented water balance for receiving and washing"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg accepted apples delivered to milling"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_receiving_records
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+      elementary:
+        []
+  - id: juice_extraction
+    label: "Milling and juice extraction"
+    inputs:
+      product:
+        - row_id: prepared_apples_input
+          role: "Prepared apples supplied to extraction"
+          name: "Prepared apples"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Link this internal input to prepared_apples, or record purchased prepared fruit explicitly if it crosses the declared gate."
+          amount:
+            expression: "Same transfer quantity as the preceding process output after documented storage change"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per kg raw juice leaving extraction"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_extraction_records
+              source_ids:
+                - codex-cxc-50-2003
+                - fao-fruit-juice-processing-2001
+            ranges: []
+        - row_id: extraction_grid_electricity_low_voltage
+          role: "Low-voltage grid electricity for extraction"
+          name: "Grid electricity, low voltage"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record this atomic exchange separately under its stated applicability."
+          amount:
+            expression: "Metered milling and pressing electricity assigned to the low-voltage grid supply"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg raw juice leaving extraction"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_extraction_records
+              source_ids:
+                - fao-fruit-juice-processing-2001
+            ranges: []
+        - row_id: extraction_grid_electricity_medium_voltage
+          role: "Medium-voltage grid electricity for extraction"
+          name: "Grid electricity, medium voltage"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record this atomic exchange separately under its stated applicability."
+          amount:
+            expression: "Metered milling and pressing electricity assigned to the medium-voltage grid supply"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg raw juice leaving extraction"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_extraction_records
+              source_ids:
+                - fao-fruit-juice-processing-2001
+            ranges: []
+        - row_id: extraction_steam
+          role: "Extraction steam"
+          name: "Steam"
+          flow_type: "product"
+          flow_ref:
+            uuid: "293f9fd9-5182-4d35-8aa5-ce73d4f322b7"
+          property_unit: "Mass / kg"
+          description: "Record this atomic exchange separately under its stated applicability."
+          amount:
+            expression: "Metered steam supplied to extraction equipment"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg raw juice leaving extraction"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_extraction_records
+              source_ids:
+                - fao-fruit-juice-processing-2001
+            ranges: []
+        - row_id: extraction_natural_gas
+          role: "Extraction natural gas"
+          name: "Natural gas"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4bfd1abb-9106-495a-a291-ce410f205691"
+          property_unit: "Gross calorific value / MJ"
+          description: "Record this atomic exchange separately under its stated applicability."
+          amount:
+            expression: "Metered natural-gas energy used for extraction heat"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg raw juice leaving extraction"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_extraction_records
+              source_ids:
+                - fao-fruit-juice-processing-2001
+            ranges: []
+        - row_id: extraction_diesel_oil
+          role: "Extraction diesel oil"
+          name: "Diesel oil"
+          flow_type: "product"
+          flow_ref:
+            uuid: "9d258d75-6792-4f1c-9856-81602ed8f816"
+          property_unit: "Mass / kg"
+          description: "Record this atomic exchange separately under its stated applicability."
+          amount:
+            expression: "Weighed or invoice-reconciled diesel oil used for extraction heat"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg raw juice leaving extraction"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_extraction_records
+              source_ids:
+                - fao-fruit-juice-processing-2001
+            ranges: []
+        - row_id: extraction_lpg
+          role: "Extraction liquefied petroleum gas"
+          name: "Liquefied petroleum gas"
+          flow_type: "product"
+          flow_ref:
+            uuid: "3786072f-d3ce-4941-9249-ed5d346b21a6"
+          property_unit: "Mass / kg"
+          description: "Record this atomic exchange separately under its stated applicability."
+          amount:
+            expression: "Weighed or invoice-reconciled LPG used for extraction heat"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg raw juice leaving extraction"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_extraction_records
+              source_ids:
+                - fao-fruit-juice-processing-2001
+            ranges: []
+        - row_id: extraction_compressed_air
+          role: "Extraction compressed air"
+          name: "Compressed air"
+          flow_type: "product"
+          flow_ref:
+            uuid: "46e2b1e4-5a4e-4579-b6a2-65b03f9ce825"
+          property_unit: "Volume / m3"
+          description: "Record this atomic exchange separately under its stated applicability."
+          amount:
+            expression: "Metered compressed air attributable to extraction"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg raw juice leaving extraction"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_extraction_records
+              source_ids:
+                - fao-fruit-juice-processing-2001
+            ranges: []
+        - row_id: extraction_process_water
+          role: "Extraction process water"
+          name: "Process Water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "94a04f7e-2d5c-41f0-b182-d54a3b373a02"
+          property_unit: "Mass / kg"
+          description: "Record this atomic exchange separately under its stated applicability."
+          amount:
+            expression: "Metered process water attributable to milling and pressing"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg raw juice leaving extraction"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_extraction_records
+              source_ids:
+                - fao-fruit-juice-processing-2001
+            ranges: []
+        - row_id: extraction_filter_cloth
+          role: "Extraction filter cloth"
+          name: "Filter cloth"
+          flow_type: "product"
+          flow_ref:
+            uuid: "117b035a-6255-425d-92b9-6c65ff1be2ab"
+          property_unit: "Mass / kg"
+          description: "Record this atomic exchange separately under its stated applicability."
+          amount:
+            expression: "Issued filter-cloth mass adjusted for stock change and documented reuse"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg raw juice leaving extraction"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_extraction_records
+              source_ids:
+                - fao-fruit-juice-processing-2001
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: raw_apple_juice
+          role: "Raw extracted apple juice"
+          name: "Raw extracted apple juice"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Measure raw juice after pressing and before finishing losses. Record soluble solids, temperature, and whether free-run and press fractions are combined."
+          amount:
+            expression: "Weighed or tank-level-reconciled raw juice output"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg raw juice leaving extraction"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_extraction_records
+              source_ids:
+                - codex-cxc-50-2003
+                - fao-fruit-juice-processing-2001
+            ranges: []
+      waste:
+        - row_id: apple_pomace
+          role: "Apple pomace"
+          name: "Apple pomace"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg wet mass, with moisture content recorded when relevant"
+          description: "Record pomace, seeds, screenings, and press losses separately where their destinations differ. Classify a sold or used material as a co-product only with destination and revenue or physical-use evidence; otherwise retain the appropriate waste flow."
+          amount:
+            expression: "Weighed output or extraction mass balance by reporting period"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg raw juice leaving extraction"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_extraction_records
+              source_ids:
+                - fao-fruit-juice-processing-2001
+            ranges: []
+        - row_id: extraction_apple_seeds
+          role: "Apple seeds from extraction"
+          name: "Apple seeds"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record this atomic exchange separately under its stated applicability."
+          amount:
+            expression: "Weighed seed fraction by reporting period"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg raw juice leaving extraction"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_extraction_records
+              source_ids:
+                - fao-fruit-juice-processing-2001
+            ranges: []
+        - row_id: extraction_screen_rejects
+          role: "Extraction screen rejects"
+          name: "Apple extraction screen rejects"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record this atomic exchange separately under its stated applicability."
+          amount:
+            expression: "Weighed screen-reject mass by reporting period"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg raw juice leaving extraction"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_extraction_records
+              source_ids:
+                - fao-fruit-juice-processing-2001
+            ranges: []
+        - row_id: extraction_juice_loss
+          role: "Extraction apple-juice loss"
+          name: "Lost raw apple juice"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record this atomic exchange separately under its stated applicability."
+          amount:
+            expression: "Tank, floor-loss, or mass-balance record of raw juice loss"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg raw juice leaving extraction"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_extraction_records
+              source_ids:
+                - fao-fruit-juice-processing-2001
+            ranges: []
+      elementary:
+        []
+  - id: juice_finishing
+    label: "Juice finishing and clarification"
+    inputs:
+      product:
+        - row_id: finishing_juice_input
+          role: "Juice supplied to finishing"
+          name: "Single-strength apple juice"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record raw or purchased single-strength apple juice entering the actual finishing train, including its soluble solids and clear/cloudy state."
+          amount:
+            expression: "Weighed or tank-level-reconciled input to finishing"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg finished intermediate juice"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing_records
+              source_ids:
+                - codex-cxs-247-2005-2025
+            ranges: []
+        - row_id: finishing_pectinase
+          role: "Pectinase for finishing"
+          name: "Pectinase"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record this atomic exchange separately under its stated applicability."
+          amount:
+            expression: "Weighed pectinase dose by batch"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg finished intermediate juice"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing_records
+              source_ids:
+                - fao-fruit-juice-processing-2001
+            ranges: []
+        - row_id: finishing_amylase
+          role: "Amylase for finishing"
+          name: "amylase"
+          flow_type: "product"
+          flow_ref:
+            uuid: "ec31f8f1-1870-4f41-846a-3632072a5d9f"
+          property_unit: "Mass / kg"
+          description: "Record this atomic exchange separately under its stated applicability."
+          amount:
+            expression: "Weighed amylase dose by batch"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg finished intermediate juice"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing_records
+              source_ids:
+                - fao-fruit-juice-processing-2001
+            ranges: []
+        - row_id: finishing_gelatin
+          role: "Gelatin fining aid"
+          name: "gelatin"
+          flow_type: "product"
+          flow_ref:
+            uuid: "aa9b81c7-64ab-40a2-9419-50fedc25a2c7"
+          property_unit: "Mass / kg"
+          description: "Record this atomic exchange separately under its stated applicability."
+          amount:
+            expression: "Weighed gelatin dose by batch"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg finished intermediate juice"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing_records
+              source_ids:
+                - fao-fruit-juice-processing-2001
+            ranges: []
+        - row_id: finishing_bentonite
+          role: "Bentonite fining aid"
+          name: "Bentonite"
+          flow_type: "product"
+          flow_ref:
+            uuid: "e01d9941-db32-46cb-b577-ebc584597a2d"
+          property_unit: "Mass / kg"
+          description: "Record this atomic exchange separately under its stated applicability."
+          amount:
+            expression: "Weighed bentonite dose by batch"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg finished intermediate juice"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing_records
+              source_ids:
+                - fao-fruit-juice-processing-2001
+            ranges: []
+        - row_id: finishing_activated_carbon
+          role: "Activated carbon for finishing"
+          name: "Activated carbon"
+          flow_type: "product"
+          flow_ref:
+            uuid: "6b978f9e-864d-421d-8e63-8e44f17c5874"
+          property_unit: "Mass / kg"
+          description: "Record this atomic exchange separately under its stated applicability."
+          amount:
+            expression: "Weighed activated-carbon dose by batch"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg finished intermediate juice"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing_records
+              source_ids:
+                - fao-fruit-juice-processing-2001
+            ranges: []
+        - row_id: finishing_diatomaceous_earth
+          role: "Diatomaceous earth filter aid"
+          name: "Diatomaceous earth filter aid"
+          flow_type: "product"
+          flow_ref:
+            uuid: "af13e1e4-290c-412d-b3fe-dcba0b4c5b81"
+          property_unit: "Mass / kg"
+          description: "Record this atomic exchange separately under its stated applicability."
+          amount:
+            expression: "Weighed filter-aid charge and make-up"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg finished intermediate juice"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing_records
+              source_ids:
+                - fao-fruit-juice-processing-2001
+            ranges: []
+        - row_id: finishing_perlite
+          role: "Perlite filter aid"
+          name: "Perlite filter aid"
+          flow_type: "product"
+          flow_ref:
+            uuid: "45203225-538a-422b-bf66-16f2e7931f18"
+          property_unit: "Mass / kg"
+          description: "Record this atomic exchange separately under its stated applicability."
+          amount:
+            expression: "Weighed filter-aid charge and make-up"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg finished intermediate juice"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing_records
+              source_ids:
+                - fao-fruit-juice-processing-2001
+            ranges: []
+        - row_id: finishing_filter_cloth
+          role: "Finishing filter cloth"
+          name: "Filter cloth"
+          flow_type: "product"
+          flow_ref:
+            uuid: "117b035a-6255-425d-92b9-6c65ff1be2ab"
+          property_unit: "Mass / kg"
+          description: "Record this atomic exchange separately under its stated applicability."
+          amount:
+            expression: "Filter-cloth replacement mass adjusted for stock and reuse"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg finished intermediate juice"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing_records
+              source_ids:
+                - fao-fruit-juice-processing-2001
+            ranges: []
+        - row_id: finishing_process_water
+          role: "Finishing process water"
+          name: "Process Water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "94a04f7e-2d5c-41f0-b182-d54a3b373a02"
+          property_unit: "Mass / kg"
+          description: "Record this atomic exchange separately under its stated applicability."
+          amount:
+            expression: "Metered finishing-water input"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg finished intermediate juice"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing_records
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: finishing_grid_electricity_low_voltage
+          role: "Low-voltage grid electricity for finishing"
+          name: "Grid electricity, low voltage"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record this atomic exchange separately under its stated applicability."
+          amount:
+            expression: "Metered finishing electricity assigned to low-voltage supply"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg finished intermediate juice"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing_records
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: finishing_grid_electricity_medium_voltage
+          role: "Medium-voltage grid electricity for finishing"
+          name: "Grid electricity, medium voltage"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record this atomic exchange separately under its stated applicability."
+          amount:
+            expression: "Metered finishing electricity assigned to medium-voltage supply"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg finished intermediate juice"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing_records
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: finishing_steam
+          role: "Finishing steam"
+          name: "Steam"
+          flow_type: "product"
+          flow_ref:
+            uuid: "293f9fd9-5182-4d35-8aa5-ce73d4f322b7"
+          property_unit: "Mass / kg"
+          description: "Record this atomic exchange separately under its stated applicability."
+          amount:
+            expression: "Metered steam used by finishing operations"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg finished intermediate juice"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing_records
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: finishing_hot_water
+          role: "Finishing hot water"
+          name: "Industrial hot water"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Record this atomic exchange separately under its stated applicability."
+          amount:
+            expression: "Metered delivered hot-water heat"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg finished intermediate juice"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing_records
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: finishing_compressed_air
+          role: "Finishing compressed air"
+          name: "Compressed air"
+          flow_type: "product"
+          flow_ref:
+            uuid: "46e2b1e4-5a4e-4579-b6a2-65b03f9ce825"
+          property_unit: "Volume / m3"
+          description: "Record this atomic exchange separately under its stated applicability."
+          amount:
+            expression: "Metered compressed air attributable to finishing"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg finished intermediate juice"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing_records
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: finished_intermediate_juice
+          role: "Finished intermediate apple juice"
+          name: "Finished intermediate apple juice"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Measure juice leaving the finishing train and record its clear/cloudy state, soluble solids, pulp or turbidity descriptor, and temperature."
+          amount:
+            expression: "Weighed or tank-level-reconciled output from finishing"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg finished intermediate juice"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing_records
+              source_ids:
+                - codex-cxs-247-2005-2025
+            ranges: []
+      waste:
+        - row_id: finishing_retained_apple_solids
+          role: "Retained apple solids"
+          name: "Retained apple solids"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record this atomic exchange separately under its stated applicability."
+          amount:
+            expression: "Weighed wet solids with moisture content retained"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg finished intermediate juice"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing_records
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: finishing_spent_bentonite
+          role: "Spent bentonite"
+          name: "Spent bentonite"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record this atomic exchange separately under its stated applicability."
+          amount:
+            expression: "Weighed spent bentonite and retained solids"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg finished intermediate juice"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing_records
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: finishing_spent_activated_carbon
+          role: "Spent activated carbon"
+          name: "spent activated carbon"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "aff33890-3f08-40f9-9310-a7f77213de05"
+          property_unit: "Mass / kg"
+          description: "Record this atomic exchange separately under its stated applicability."
+          amount:
+            expression: "Weighed spent activated carbon"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg finished intermediate juice"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing_records
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: finishing_spent_diatomaceous_earth
+          role: "Spent diatomaceous earth"
+          name: "Spent diatomaceous earth"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record this atomic exchange separately under its stated applicability."
+          amount:
+            expression: "Weighed spent diatomaceous earth and retained solids"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg finished intermediate juice"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing_records
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: finishing_spent_perlite
+          role: "Spent perlite"
+          name: "Spent perlite"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record this atomic exchange separately under its stated applicability."
+          amount:
+            expression: "Weighed spent perlite and retained solids"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg finished intermediate juice"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing_records
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: finishing_spent_filter_cloth
+          role: "Spent filter cloth"
+          name: "Spent filter cloth"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record this atomic exchange separately under its stated applicability."
+          amount:
+            expression: "Weighed discarded filter cloth"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg finished intermediate juice"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing_records
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: finishing_wastewater
+          role: "Finishing wastewater"
+          name: "Apple-juice finishing wastewater"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record this atomic exchange separately under its stated applicability."
+          amount:
+            expression: "Metered discharge reconciled with water and product-loss records"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg finished intermediate juice"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing_records
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+      elementary:
+        []
+  - id: juice_concentration
+    label: "Juice concentration and aroma handling"
+    inputs:
+      product:
+        - row_id: concentration_juice_input
+          role: "Single-strength juice supplied to concentration"
+          name: "Single-strength apple juice"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record the mass and soluble solids of apple juice entering concentration and link an internal transfer or purchased input to its upstream dataset."
+          amount:
+            expression: "Weighed or tank-level-reconciled feed with measured soluble solids"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg concentrate output and ultimately per 1 kg reference apple juice"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_concentration_records
+              source_ids:
+                - codex-cxs-247-2005-2025
+            ranges: []
+        - row_id: concentration_grid_electricity_low_voltage
+          role: "Low-voltage grid electricity for concentration"
+          name: "Grid electricity, low voltage"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record this atomic exchange separately under its stated applicability."
+          amount:
+            expression: "Metered concentration electricity assigned to low-voltage supply"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg concentrate output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_concentration_records
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: concentration_grid_electricity_medium_voltage
+          role: "Medium-voltage grid electricity for concentration"
+          name: "Grid electricity, medium voltage"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record this atomic exchange separately under its stated applicability."
+          amount:
+            expression: "Metered concentration electricity assigned to medium-voltage supply"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg concentrate output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_concentration_records
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: concentration_steam
+          role: "Concentration steam"
+          name: "Steam"
+          flow_type: "product"
+          flow_ref:
+            uuid: "293f9fd9-5182-4d35-8aa5-ce73d4f322b7"
+          property_unit: "Mass / kg"
+          description: "Record this atomic exchange separately under its stated applicability."
+          amount:
+            expression: "Metered steam supplied to the evaporator"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg concentrate output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_concentration_records
+              source_ids:
+                - fao-fruit-juice-processing-2001
+            ranges: []
+        - row_id: concentration_hot_water
+          role: "Concentration hot water"
+          name: "Industrial hot water"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Record this atomic exchange separately under its stated applicability."
+          amount:
+            expression: "Metered delivered hot-water heat"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg concentrate output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_concentration_records
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: concentration_natural_gas
+          role: "Concentration natural gas"
+          name: "Natural gas"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4bfd1abb-9106-495a-a291-ce410f205691"
+          property_unit: "Gross calorific value / MJ"
+          description: "Record this atomic exchange separately under its stated applicability."
+          amount:
+            expression: "Metered natural-gas energy attributable to concentration"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg concentrate output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_concentration_records
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: concentration_diesel_oil
+          role: "Concentration diesel oil"
+          name: "Diesel oil"
+          flow_type: "product"
+          flow_ref:
+            uuid: "9d258d75-6792-4f1c-9856-81602ed8f816"
+          property_unit: "Mass / kg"
+          description: "Record this atomic exchange separately under its stated applicability."
+          amount:
+            expression: "Weighed or invoice-reconciled diesel oil attributable to concentration"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg concentrate output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_concentration_records
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: concentration_fuel_oil
+          role: "Concentration fuel oil"
+          name: "Heavy fuel oil"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record this atomic exchange separately under its stated applicability."
+          amount:
+            expression: "Weighed or invoice-reconciled heavy fuel oil attributable to concentration"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg concentrate output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_concentration_records
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: concentration_lpg
+          role: "Concentration liquefied petroleum gas"
+          name: "Liquefied petroleum gas"
+          flow_type: "product"
+          flow_ref:
+            uuid: "3786072f-d3ce-4941-9249-ed5d346b21a6"
+          property_unit: "Mass / kg"
+          description: "Record this atomic exchange separately under its stated applicability."
+          amount:
+            expression: "Weighed or invoice-reconciled LPG attributable to concentration"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg concentrate output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_concentration_records
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: concentration_compressed_air
+          role: "Concentration compressed air"
+          name: "Compressed air"
+          flow_type: "product"
+          flow_ref:
+            uuid: "46e2b1e4-5a4e-4579-b6a2-65b03f9ce825"
+          property_unit: "Volume / m3"
+          description: "Record this atomic exchange separately under its stated applicability."
+          amount:
+            expression: "Metered compressed air attributable to concentration"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg concentrate output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_concentration_records
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: concentration_cooling_water
+          role: "Concentration cooling water"
+          name: "Industrial cooling water"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record this atomic exchange separately under its stated applicability."
+          amount:
+            expression: "Metered cooling-water make-up attributable to concentration"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg concentrate output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_concentration_records
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: concentration_cleaning_water
+          role: "Concentration cleaning water"
+          name: "Process Water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "94a04f7e-2d5c-41f0-b182-d54a3b373a02"
+          property_unit: "Mass / kg"
+          description: "Record this atomic exchange separately under its stated applicability."
+          amount:
+            expression: "Metered cleaning-water input attributable to concentration campaigns"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg concentrate output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_concentration_records
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: concentration_sodium_hydroxide
+          role: "Concentration sodium hydroxide cleaner"
+          name: "Sodium hydroxide"
+          flow_type: "product"
+          flow_ref:
+            uuid: "e0abcced-0611-4c24-9290-5a2c5a0c4169"
+          property_unit: "Mass / kg"
+          description: "Record this atomic exchange separately under its stated applicability."
+          amount:
+            expression: "Weighed or dosing-system-reconciled sodium hydroxide input"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg concentrate output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_concentration_records
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: concentration_nitric_acid
+          role: "Concentration nitric acid cleaner"
+          name: "Nitric acid, 50% aqueous solution"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record this atomic exchange separately under its stated applicability."
+          amount:
+            expression: "Weighed or dosing-system-reconciled nitric acid solution input"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg concentrate output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_concentration_records
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: apple_juice_concentrate
+          role: "Apple juice concentrate intermediate"
+          name: "Apple juice concentrate"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Measure concentrate mass and soluble solids. This is an internal or purchased-input category intermediate under this PCR, not the reference output when concentrate is sold as concentrate."
+          amount:
+            expression: "Weighed concentrate output with measured soluble solids"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg concentrate output and ultimately per 1 kg reference apple juice"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_concentration_records
+              source_ids:
+                - codex-cxs-247-2005-2025
+            ranges: []
+        - row_id: recovered_apple_aroma
+          role: "Recovered apple aroma"
+          name: "Recovered apple aroma"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record this atomic exchange separately under its stated applicability."
+          amount:
+            expression: "Metered or mass-balance-calculated recovered aroma"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg concentrate output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_concentration_records
+              source_ids:
+                - fao-fruit-juice-processing-2001
+            ranges: []
+        - row_id: reusable_evaporator_condensate
+          role: "Reusable evaporator condensate"
+          name: "Reusable apple-juice evaporator condensate"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record this atomic exchange separately under its stated applicability."
+          amount:
+            expression: "Metered condensate transferred to the documented use"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg concentrate output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_concentration_records
+              source_ids:
+                - fao-fruit-juice-processing-2001
+            ranges: []
+      waste:
+        - row_id: concentration_wastewater
+          role: "Concentration wastewater"
+          name: "Apple-juice concentration wastewater"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record discarded condensate, cleaning wastewater, off-spec concentrate, and other losses by actual treatment destination."
+          amount:
+            expression: "Metered concentration discharge"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg concentrate output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_concentration_records
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: concentration_offspec_concentrate
+          role: "Off-spec apple juice concentrate"
+          name: "Off-spec apple juice concentrate"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record this atomic exchange separately under its stated applicability."
+          amount:
+            expression: "Weighed off-spec concentrate by destination"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg concentrate output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_concentration_records
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: concentration_waste_alkaline_liquor
+          role: "Waste alkaline cleaning liquor"
+          name: "Waste Alkaline Liquor"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "ce738ef0-a711-4650-a38b-34479efd7559"
+          property_unit: "Mass / kg"
+          description: "Record this atomic exchange separately under its stated applicability."
+          amount:
+            expression: "Metered or tank-reconciled spent alkaline liquor"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg concentrate output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_concentration_records
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: concentration_waste_acid_liquor
+          role: "Waste acid cleaning liquor"
+          name: "Waste Acid"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "5fc1e55d-c7b8-4e60-b514-f0bfdd99eea9"
+          property_unit: "Mass / kg"
+          description: "Record this atomic exchange separately under its stated applicability."
+          amount:
+            expression: "Metered or tank-reconciled spent acid liquor"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg concentrate output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_concentration_records
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+      elementary:
+        []
+  - id: juice_reconstitution
+    label: "Reconstitution and formulation"
+    inputs:
+      product:
+        - row_id: concentrate_input
+          role: "Apple juice concentrate supplied to reconstitution"
+          name: "Apple juice concentrate"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record mass, measured soluble solids, source, and upstream dataset for each concentrate lot. Do not model concentrate as single-strength apple juice without a solids balance."
+          amount:
+            expression: "Weighed concentrate input by lot"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg reconstituted apple juice output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_reconstitution_records
+              source_ids:
+                - codex-cxs-247-2005-2025
+            ranges: []
+        - row_id: reconstitution_potable_water
+          role: "Reconstitution potable water"
+          name: "Tap water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "d1e0e36c-07f0-4a75-bdcb-efb5d9e2ac36"
+          property_unit: "Mass / kg"
+          description: "Record this atomic exchange separately under its stated applicability."
+          amount:
+            expression: "Metered formulation water by batch"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg reconstituted apple juice output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_reconstitution_records
+              source_ids:
+                - codex-cxs-247-2005-2025
+            ranges: []
+        - row_id: reconstitution_apple_aroma
+          role: "Restored apple aroma"
+          name: "Restored apple aroma"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record this atomic exchange separately under its stated applicability."
+          amount:
+            expression: "Weighed or dosing-system-reconciled aroma addition by batch"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg reconstituted apple juice output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_reconstitution_records
+              source_ids:
+                - codex-cxs-247-2005-2025
+            ranges: []
+        - row_id: reconstitution_apple_pulp
+          role: "Restored apple pulp"
+          name: "Apple pulp"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record this atomic exchange separately under its stated applicability."
+          amount:
+            expression: "Weighed apple-pulp addition by batch"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg reconstituted apple juice output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_reconstitution_records
+              source_ids:
+                - codex-cxs-247-2005-2025
+            ranges: []
+        - row_id: reconstitution_ascorbic_acid
+          role: "Ascorbic acid ingredient"
+          name: "Ascorbic acid"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record this atomic exchange separately under its stated applicability."
+          amount:
+            expression: "Weighed ascorbic-acid addition by batch"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg reconstituted apple juice output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_reconstitution_records
+              source_ids:
+                - codex-cxs-247-2005-2025
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: reconstituted_apple_juice
+          role: "Reconstituted apple juice"
+          name: "Reconstituted apple juice"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Calculate and verify the output from collected masses and soluble-solids measurements; retain evidence of applicable authenticity and market-specification conformity."
+          amount:
+            expression: "Batch output mass verified by ingredient mass and soluble-solids balances"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per kg reconstituted apple juice output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_reconstitution_records
+              source_ids:
+                - codex-cxs-247-2005-2025
+            ranges: []
+      waste:
+        - row_id: reconstitution_spilled_juice
+          role: "Spilled reconstituted apple juice"
+          name: "Spilled reconstituted apple juice"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record this atomic exchange separately under its stated applicability."
+          amount:
+            expression: "Recorded spill mass reconciled to the batch balance"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg reconstituted apple juice output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_reconstitution_records
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: reconstitution_offspec_juice
+          role: "Off-spec reconstituted apple juice"
+          name: "Off-spec reconstituted apple juice"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record this atomic exchange separately under its stated applicability."
+          amount:
+            expression: "Weighed rejected batch mass by destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg reconstituted apple juice output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_reconstitution_records
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: reconstitution_wastewater
+          role: "Reconstitution cleaning wastewater"
+          name: "Apple-juice reconstitution wastewater"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record this atomic exchange separately under its stated applicability."
+          amount:
+            expression: "Metered discharge reconciled to water and product-loss records"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg reconstituted apple juice output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_reconstitution_records
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+      elementary:
+        []
+  - id: preservation_packaging_dispatch
+    label: "Preservation, filling, and dispatch"
+    inputs:
+      product:
+        - row_id: finalisation_juice_input
+          role: "Apple juice supplied to finalisation"
+          name: "Apple juice supplied to finalisation"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record the actual directly expressed, finished, or reconstituted juice entering preservation and dispatch, including its route and quality qualifiers."
+          amount:
+            expression: "Weighed or tank-level-reconciled juice input"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference apple juice output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finalisation_records
+              source_ids:
+                - codex-cxc-50-2003
+            ranges: []
+        - row_id: finalisation_grid_electricity_low_voltage
+          role: "Low-voltage grid electricity for finalisation"
+          name: "Grid electricity, low voltage"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record this atomic exchange separately under its stated applicability."
+          amount:
+            expression: "Metered finalisation electricity assigned to low-voltage grid supply"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg reference apple juice output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finalisation_records
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: finalisation_grid_electricity_medium_voltage
+          role: "Medium-voltage grid electricity for finalisation"
+          name: "Grid electricity, medium voltage"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record this atomic exchange separately under its stated applicability."
+          amount:
+            expression: "Metered finalisation electricity assigned to medium-voltage grid supply"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg reference apple juice output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finalisation_records
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: finalisation_photovoltaic_electricity
+          role: "On-site photovoltaic electricity for finalisation"
+          name: "On-site photovoltaic electricity"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record this atomic exchange separately under its stated applicability."
+          amount:
+            expression: "Metered photovoltaic electricity consumed by finalisation"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg reference apple juice output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finalisation_records
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: finalisation_cogeneration_electricity
+          role: "On-site cogeneration electricity for finalisation"
+          name: "On-site cogeneration electricity"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record this atomic exchange separately under its stated applicability."
+          amount:
+            expression: "Metered cogeneration electricity consumed by finalisation"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg reference apple juice output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finalisation_records
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: finalisation_steam
+          role: "Finalisation steam"
+          name: "Steam"
+          flow_type: "product"
+          flow_ref:
+            uuid: "293f9fd9-5182-4d35-8aa5-ce73d4f322b7"
+          property_unit: "Mass / kg"
+          description: "Record this atomic exchange separately under its stated applicability."
+          amount:
+            expression: "Metered steam used for preservation and filling"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg reference apple juice output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finalisation_records
+              source_ids:
+                - us-fda-juice-haccp-21-cfr-120-24
+            ranges: []
+        - row_id: finalisation_hot_water
+          role: "Finalisation hot water"
+          name: "Industrial hot water"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Record this atomic exchange separately under its stated applicability."
+          amount:
+            expression: "Metered hot-water heat used for preservation and filling"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg reference apple juice output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finalisation_records
+              source_ids:
+                - us-fda-juice-haccp-21-cfr-120-24
+            ranges: []
+        - row_id: finalisation_natural_gas
+          role: "Finalisation natural gas"
+          name: "Natural gas"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4bfd1abb-9106-495a-a291-ce410f205691"
+          property_unit: "Gross calorific value / MJ"
+          description: "Record this atomic exchange separately under its stated applicability."
+          amount:
+            expression: "Metered natural-gas energy attributable to finalisation"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg reference apple juice output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finalisation_records
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: finalisation_diesel_oil
+          role: "Finalisation diesel oil"
+          name: "Diesel oil"
+          flow_type: "product"
+          flow_ref:
+            uuid: "9d258d75-6792-4f1c-9856-81602ed8f816"
+          property_unit: "Mass / kg"
+          description: "Record this atomic exchange separately under its stated applicability."
+          amount:
+            expression: "Weighed or invoice-reconciled diesel oil attributable to finalisation"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg reference apple juice output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finalisation_records
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: finalisation_fuel_oil
+          role: "Finalisation fuel oil"
+          name: "Heavy fuel oil"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record this atomic exchange separately under its stated applicability."
+          amount:
+            expression: "Weighed or invoice-reconciled heavy fuel oil attributable to finalisation"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg reference apple juice output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finalisation_records
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: finalisation_lpg
+          role: "Finalisation liquefied petroleum gas"
+          name: "Liquefied petroleum gas"
+          flow_type: "product"
+          flow_ref:
+            uuid: "3786072f-d3ce-4941-9249-ed5d346b21a6"
+          property_unit: "Mass / kg"
+          description: "Record this atomic exchange separately under its stated applicability."
+          amount:
+            expression: "Weighed or invoice-reconciled LPG attributable to finalisation"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg reference apple juice output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finalisation_records
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: finalisation_compressed_air
+          role: "Finalisation compressed air"
+          name: "Compressed air"
+          flow_type: "product"
+          flow_ref:
+            uuid: "46e2b1e4-5a4e-4579-b6a2-65b03f9ce825"
+          property_unit: "Volume / m3"
+          description: "Record this atomic exchange separately under its stated applicability."
+          amount:
+            expression: "Metered compressed air attributable to finalisation"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg reference apple juice output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finalisation_records
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: finalisation_gaseous_nitrogen
+          role: "Gaseous nitrogen for filling"
+          name: "Gaseous nitrogen"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record this atomic exchange separately under its stated applicability."
+          amount:
+            expression: "Metered gaseous nitrogen used in filling"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg reference apple juice output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finalisation_records
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: finalisation_liquid_nitrogen
+          role: "Liquid nitrogen for filling"
+          name: "Liquid Nitrogen"
+          flow_type: "product"
+          flow_ref:
+            uuid: "dd17be27-229a-4236-ae93-29835cf7e1a8"
+          property_unit: "Mass / kg"
+          description: "Record this atomic exchange separately under its stated applicability."
+          amount:
+            expression: "Weighed liquid nitrogen used in filling"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg reference apple juice output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finalisation_records
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: finalisation_refrigerant_r134a
+          role: "R134a refrigerant make-up"
+          name: "Refrigerant R134a"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record this atomic exchange separately under its stated applicability."
+          amount:
+            expression: "Service-record make-up mass"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg reference apple juice output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finalisation_records
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: finalisation_refrigerant_r404a
+          role: "R404A refrigerant make-up"
+          name: "Refrigerant R404A"
+          flow_type: "product"
+          flow_ref:
+            uuid: "76513c71-a148-484e-865f-2ab54afb4331"
+          property_unit: "Mass / kg"
+          description: "Record this atomic exchange separately under its stated applicability."
+          amount:
+            expression: "Service-record make-up mass"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg reference apple juice output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finalisation_records
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: finalisation_refrigerant_r717
+          role: "R717 ammonia refrigerant make-up"
+          name: "Refrigeration-grade ammonia R717"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record this atomic exchange separately under its stated applicability."
+          amount:
+            expression: "Service-record make-up mass"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg reference apple juice output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finalisation_records
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: finalisation_refrigerant_r744
+          role: "R744 carbon dioxide refrigerant make-up"
+          name: "Refrigeration-grade carbon dioxide R744"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record this atomic exchange separately under its stated applicability."
+          amount:
+            expression: "Service-record make-up mass"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg reference apple juice output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finalisation_records
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: packaging_glass_bottle
+          role: "Glass bottle"
+          name: "Beverage glass bottle"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record this atomic exchange separately under its stated applicability."
+          amount:
+            expression: "Issued glass-bottle mass adjusted for stock change and rejects"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference apple juice output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finalisation_records
+              source_ids:
+                - fao-fruit-juice-processing-2001
+            ranges: []
+        - row_id: packaging_pet_bottle
+          role: "PET bottle"
+          name: "PET beverage bottle"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record this atomic exchange separately under its stated applicability."
+          amount:
+            expression: "Issued PET-bottle mass adjusted for stock change and rejects"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference apple juice output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finalisation_records
+              source_ids:
+                - fao-fruit-juice-processing-2001
+            ranges: []
+        - row_id: packaging_aseptic_carton
+          role: "Aseptic beverage carton"
+          name: "Aseptic beverage carton"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record this atomic exchange separately under its stated applicability."
+          amount:
+            expression: "Issued aseptic-carton mass adjusted for stock change and rejects"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference apple juice output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finalisation_records
+              source_ids:
+                - fao-fruit-juice-processing-2001
+            ranges: []
+        - row_id: packaging_bag_in_box_liner
+          role: "Bag-in-box liner"
+          name: "Polyethylene bag-in-box liner"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record this atomic exchange separately under its stated applicability."
+          amount:
+            expression: "Issued liner mass adjusted for stock change and rejects"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference apple juice output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finalisation_records
+              source_ids:
+                - fao-fruit-juice-processing-2001
+            ranges: []
+        - row_id: packaging_steel_drum
+          role: "Steel drum"
+          name: "Food-grade steel drum"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record this atomic exchange separately under its stated applicability."
+          amount:
+            expression: "Drum mass allocated by documented reuse cycles and adjusted for rejects"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference apple juice output"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_finalisation_records
+              source_ids:
+                - fao-fruit-juice-processing-2001
+            ranges: []
+        - row_id: packaging_reusable_ibc
+          role: "Reusable IBC"
+          name: "Reusable food-grade intermediate bulk container"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record this atomic exchange separately under its stated applicability."
+          amount:
+            expression: "IBC mass allocated by documented reuse cycles and adjusted for rejects"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference apple juice output"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_finalisation_records
+              source_ids:
+                - fao-fruit-juice-processing-2001
+            ranges: []
+        - row_id: packaging_plastic_cap
+          role: "Plastic closure cap"
+          name: "Plastic packaging closure cap"
+          flow_type: "product"
+          flow_ref:
+            uuid: "bab04179-3799-4eff-b12b-edaec382520c"
+          property_unit: "Mass / kg"
+          description: "Record this atomic exchange separately under its stated applicability."
+          amount:
+            expression: "Issued cap mass adjusted for stock change and rejects"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference apple juice output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finalisation_records
+              source_ids:
+                - fao-fruit-juice-processing-2001
+            ranges: []
+        - row_id: packaging_aluminium_cap
+          role: "Aluminium screw cap"
+          name: "Aluminium screw cap closure"
+          flow_type: "product"
+          flow_ref:
+            uuid: "c37f87ea-0b43-43d6-a300-b142ea358cb7"
+          property_unit: "Mass / kg"
+          description: "Record this atomic exchange separately under its stated applicability."
+          amount:
+            expression: "Issued cap mass adjusted for stock change and rejects"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference apple juice output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finalisation_records
+              source_ids:
+                - fao-fruit-juice-processing-2001
+            ranges: []
+        - row_id: packaging_paper_label
+          role: "Paper packaging label"
+          name: "Packaging label, paper"
+          flow_type: "product"
+          flow_ref:
+            uuid: "d5890643-6859-42b5-9e05-556b072c6a8c"
+          property_unit: "Mass / kg"
+          description: "Record this atomic exchange separately under its stated applicability."
+          amount:
+            expression: "Issued label mass adjusted for stock change and rejects"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference apple juice output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finalisation_records
+              source_ids:
+                - fao-fruit-juice-processing-2001
+            ranges: []
+        - row_id: packaging_corrugated_case
+          role: "Corrugated cardboard case"
+          name: "Corrugated cardboard"
+          flow_type: "product"
+          flow_ref:
+            uuid: "8bde297e-98df-463f-bcb4-0db52bf6e0b5"
+          property_unit: "Mass / kg"
+          description: "Record this atomic exchange separately under its stated applicability."
+          amount:
+            expression: "Issued corrugated-cardboard mass adjusted for stock change and rejects"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference apple juice output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finalisation_records
+              source_ids:
+                - fao-fruit-juice-processing-2001
+            ranges: []
+        - row_id: packaging_shrink_film
+          role: "Polyethylene shrink film"
+          name: "Plastic film"
+          flow_type: "product"
+          flow_ref:
+            uuid: "b01e4bd9-5ada-4676-8a90-be5f167c00fc"
+          property_unit: "Mass / kg"
+          description: "Record this atomic exchange separately under its stated applicability."
+          amount:
+            expression: "Issued shrink-film mass adjusted for stock change and rejects"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference apple juice output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finalisation_records
+              source_ids:
+                - fao-fruit-juice-processing-2001
+            ranges: []
+        - row_id: packaging_wooden_pallet
+          role: "Wooden pallet"
+          name: "Wooden pallet (EURO)"
+          flow_type: "product"
+          flow_ref:
+            uuid: "96b2b9ac-cfb6-46bf-8ad1-c056e338950a"
+          property_unit: "Mass / kg"
+          description: "Record this atomic exchange separately under its stated applicability."
+          amount:
+            expression: "Pallet mass allocated by documented reuse cycles and released product mass"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference apple juice output"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_finalisation_records
+              source_ids:
+                - fao-fruit-juice-processing-2001
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: apple_juice_output
+          role: "Released apple juice reference product"
+          name: "Apple juice"
+          flow_type: "product"
+          flow_ref:
+            uuid: "3db6b381-99a9-4976-8955-aa9b65903844"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record only product that passes the declared quality and release criteria. The category flow is representative; replace it with a more specific public flow when one matches the actual product state and retain all required qualifiers."
+          amount:
+            expression: "1 kg net as-is released apple juice at the manufacturing gate"
+            value_mode: "fixed_value"
+            specificity: "generic"
+            basis:
+              text: "1 kg reference apple juice output"
+              kind: "reference_flow"
+            evidence:
+              kind: "identity_reference"
+              source_ids:
+                - codex-cxs-247-2005-2025
+            ranges: []
+      waste:
+        - row_id: finalisation_offspec_juice
+          role: "Off-spec apple juice"
+          name: "Off-spec apple juice"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record this atomic exchange separately under its stated applicability."
+          amount:
+            expression: "Weighed rejected juice by destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference apple juice output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finalisation_records
+              source_ids:
+                - codex-cxc-50-2003
+            ranges: []
+        - row_id: finalisation_waste_glass_bottles
+          role: "Rejected glass bottles"
+          name: "Rejected beverage glass bottles"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record this atomic exchange separately under its stated applicability."
+          amount:
+            expression: "Weighed rejected glass bottles by destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference apple juice output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finalisation_records
+              source_ids:
+                - codex-cxc-50-2003
+            ranges: []
+        - row_id: finalisation_waste_pet_bottles
+          role: "Rejected PET bottles"
+          name: "Waste PET bottles"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "8874aca6-2ff9-4aef-be62-5cd02f20dc97"
+          property_unit: "Mass / kg"
+          description: "Record this atomic exchange separately under its stated applicability."
+          amount:
+            expression: "Weighed rejected PET bottles by destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference apple juice output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finalisation_records
+              source_ids:
+                - codex-cxc-50-2003
+            ranges: []
+        - row_id: finalisation_waste_aseptic_cartons
+          role: "Rejected aseptic cartons"
+          name: "Rejected aseptic beverage cartons"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record this atomic exchange separately under its stated applicability."
+          amount:
+            expression: "Weighed rejected aseptic cartons by destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference apple juice output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finalisation_records
+              source_ids:
+                - codex-cxc-50-2003
+            ranges: []
+        - row_id: finalisation_waste_plastic_packaging
+          role: "Rejected plastic closures and film"
+          name: "Rejected polyethylene packaging"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record this atomic exchange separately under its stated applicability."
+          amount:
+            expression: "Weighed rejected polyethylene packaging by destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference apple juice output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finalisation_records
+              source_ids:
+                - codex-cxc-50-2003
+            ranges: []
+        - row_id: finalisation_waste_aluminium_caps
+          role: "Rejected aluminium caps"
+          name: "Rejected aluminium screw caps"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record this atomic exchange separately under its stated applicability."
+          amount:
+            expression: "Weighed rejected aluminium caps by destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference apple juice output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finalisation_records
+              source_ids:
+                - codex-cxc-50-2003
+            ranges: []
+        - row_id: finalisation_waste_paper_cardboard
+          role: "Rejected paper and cardboard packaging"
+          name: "Paper and cardboard packaging waste"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "a318022d-c960-4eb5-a81c-04a9c4dda7e4"
+          property_unit: "Mass / kg"
+          description: "Record this atomic exchange separately under its stated applicability."
+          amount:
+            expression: "Weighed paper and cardboard packaging waste by destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference apple juice output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finalisation_records
+              source_ids:
+                - codex-cxc-50-2003
+            ranges: []
+        - row_id: finalisation_waste_wooden_pallets
+          role: "Rejected wooden pallets"
+          name: "Rejected wooden pallets"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record this atomic exchange separately under its stated applicability."
+          amount:
+            expression: "Weighed rejected pallet mass by destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference apple juice output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finalisation_records
+              source_ids:
+                - codex-cxc-50-2003
+            ranges: []
+        - row_id: finalisation_wastewater
+          role: "Finalisation cleaning wastewater"
+          name: "Apple-juice finalisation wastewater"
+          flow_type: "waste"
+          property_unit: "Volume / m3 or Mass / kg, preserving measured property and conversion basis"
+          description: "Record clean-in-place and filling-line wastewater, product losses to drain, and discharge or treatment destination."
+          amount:
+            expression: "Metered discharge or documented water balance for finalisation operations"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference apple juice output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finalisation_records
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+      elementary:
+        - row_id: emission_hfc_134a_to_air
+          role: "HFC-134a emission to air"
+          name: "HFC-134a to air, unspecified"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "fe0acd60-3ddc-11dd-a6d2-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Record this atomic exchange separately under its stated applicability."
+          amount:
+            expression: "Charge loss multiplied by the documented refrigerant mass fraction"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference apple juice output"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_finalisation_records
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: emission_hfc_125_to_air
+          role: "HFC-125 emission to air"
+          name: "HFC-125 to air, unspecified"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "2dc28f2f-a034-4644-aea9-3884c074f816"
+          property_unit: "Mass / kg"
+          description: "Record this atomic exchange separately under its stated applicability."
+          amount:
+            expression: "R404A charge loss multiplied by the documented HFC-125 mass fraction"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference apple juice output"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_finalisation_records
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: emission_hfc_143a_to_air
+          role: "HFC-143a emission to air"
+          name: "1,1,1-trifluoroethane to air, unspecified"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "3e21a7fb-a101-4fc4-90c9-d2b6a9bcaff1"
+          property_unit: "Mass / kg"
+          description: "Record this atomic exchange separately under its stated applicability."
+          amount:
+            expression: "R404A charge loss multiplied by the documented HFC-143a mass fraction"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference apple juice output"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_finalisation_records
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: emission_ammonia_to_air
+          role: "Ammonia emission to air"
+          name: "Ammonia to air, unspecified"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "b4b34336-1832-41e7-8ca5-f08e2517b036"
+          property_unit: "Mass / kg"
+          description: "Record this atomic exchange separately under its stated applicability."
+          amount:
+            expression: "R717 charge-balance or service-loss calculation"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference apple juice output"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_finalisation_records
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: emission_r744_co2_to_air
+          role: "Carbon dioxide emission to air"
+          name: "Carbon dioxide from R744 to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record this atomic exchange separately under its stated applicability."
+          amount:
+            expression: "R744 charge-balance or service-loss calculation"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference apple juice output"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_finalisation_records
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+allocation_rules:
+  - rule_id: allocation_separate_outputs
+    applies_to: "Pomace, recovered aroma, usable condensate, and other outputs"
+    rule: "Record gross process inputs and every output before allocation. A stream is a co-product only when its product status, destination, quantity, and beneficial use are evidenced; otherwise model it as waste with its treatment route."
+    source_ids:
+      - iso-14044-2006
+      - fao-fruit-juice-processing-2001
+  - rule_id: allocation_avoid_where_possible
+    applies_to: "Multi-output foreground processes"
+    rule: "First subdivide metered operations or apply a documented physical relationship that reflects the causal use of resources. Do not assign zero burden to a co-product merely because it is low value."
+    source_ids:
+      - iso-14044-2006
+  - rule_id: allocation_fallback
+    applies_to: "Multi-output process where subdivision or a causal physical relationship is not feasible"
+    rule: "Apply an economic allocation using contemporaneous quantities and prices at a common gate, run a sensitivity case when the allocation is material, and disclose method, period, currency, price source, and allocation factors."
+    source_ids:
+      - iso-14044-2006
+  - rule_id: allocation_internal_transfers
+    applies_to: "Juice, concentrate, recovered aroma, and rework transferred within the foreground"
+    rule: "Treat internal transfers consistently and count their burdens once. Rework returned to production is not a co-product and must retain the additional processing and loss burdens."
+    source_ids:
+      - iso-14044-2006
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_receiving_records
+      process_id: "apple_receiving_preparation"
+      flow_role: "apples; water; cleaners; prepared apples; rejects; wastewater"
+      record_type: "weighbridge, receiving, dosing, meter, quality, and discharge records"
+      raw_fields: "lot_id; supplier; received_mass_kg; accepted_mass_kg; rejected_mass_kg; water_m3; density; cleaner_mass_kg; wastewater_m3; destination; stock_change"
+      collection_method: "Calibrated scales and meters reconciled with lot acceptance and dispatch records"
+      unit: "kg; m3"
+      frequency: "Each lot or batch, aggregated monthly"
+      temporal_coverage: "Representative production period covering seasonal apple supply"
+      site_scope: "Each included receiving and preparation line"
+      aggregation_rule: "Sum accepted production records; allocate shared cleaning by measured run time or documented driver; reconcile stock change"
+      quality_evidence: "Calibration, lot acceptance, invoice, meter, cleaning, and waste-transfer records"
+    - protocol_id: cp_extraction_records
+      process_id: "juice_extraction"
+      flow_role: "prepared apples; energy; aids; raw juice; pomace"
+      record_type: "batch, scale, tank, meter, dosing, and residue records"
+      raw_fields: "batch_id; apple_mass_kg; juice_mass_kg; juice_brix; pomace_mass_kg; pomace_moisture; electricity_kWh; steam_kg; aid_mass_kg; destination"
+      collection_method: "Calibrated scales, tank measurements, meters, and production logs"
+      unit: "kg; kWh"
+      frequency: "Each batch or production run, aggregated monthly"
+      temporal_coverage: "Representative production period covering operating modes"
+      site_scope: "Each included mill and press line"
+      aggregation_rule: "Reconcile input, output, residue, moisture, evaporation, and stock change before normalization"
+      quality_evidence: "Scale and meter calibration, batch logs, laboratory results, and residue dispatch records"
+    - protocol_id: cp_finishing_records
+      process_id: "juice_finishing"
+      flow_role: "juice input; processing aids; utilities; finished juice; residues; wastewater"
+      record_type: "tank, dosing, meter, laboratory, filter-change, and discharge records"
+      raw_fields: "batch_id; input_mass_kg; output_mass_kg; input_brix; output_brix; aid_mass_kg; energy; water_m3; residue_mass_kg; wastewater_m3; technology"
+      collection_method: "Calibrated tank/scale measurements, dosing records, meters, and quality tests"
+      unit: "kg; m3; kWh"
+      frequency: "Each batch or filter campaign, aggregated monthly"
+      temporal_coverage: "Representative production period covering each declared finishing route"
+      site_scope: "Each included finishing line"
+      aggregation_rule: "Keep clear/cloudy technologies separate; reconcile product retained in filters and cleaning losses"
+      quality_evidence: "Calibration, batch recipe, filter logs, laboratory results, and waste records"
+    - protocol_id: cp_concentration_records
+      process_id: "juice_concentration"
+      flow_role: "juice feed; utilities; concentrate; recovered products; condensate and losses"
+      record_type: "tank, solids, utility meter, aroma recovery, and discharge records"
+      raw_fields: "campaign_id; feed_mass_kg; feed_brix; concentrate_mass_kg; concentrate_brix; steam; electricity; cooling; recovered_mass; condensate_m3; losses; stock_change"
+      collection_method: "Calibrated mass/tank measurements, soluble-solids analysis, utility meters, and recovery logs"
+      unit: "kg; m3; kWh; degree Brix"
+      frequency: "Each concentration campaign, aggregated monthly"
+      temporal_coverage: "Representative period covering evaporator loads and cleaning cycles"
+      site_scope: "Each included concentration and aroma-recovery train"
+      aggregation_rule: "Apply total-mass and soluble-solids balances; keep useful recovered streams separate by destination"
+      quality_evidence: "Calibration, laboratory, utility, recovery, cleaning, and discharge records"
+    - protocol_id: cp_reconstitution_records
+      process_id: "juice_reconstitution"
+      flow_role: "concentrate; water; permitted ingredients; reconstituted juice; losses"
+      record_type: "lot, recipe, scale, dosing, water meter, tank, and laboratory records"
+      raw_fields: "batch_id; concentrate_lot; concentrate_mass_kg; concentrate_brix; water_mass_kg; ingredient_mass_kg; output_mass_kg; output_brix; losses; market_specification"
+      collection_method: "Calibrated scales/meters plus approved batch recipe and laboratory verification"
+      unit: "kg; degree Brix"
+      frequency: "Each batch"
+      temporal_coverage: "Representative period covering formulations and suppliers"
+      site_scope: "Each included reconstitution line and formulation"
+      aggregation_rule: "Close total-mass and soluble-solids balances for each batch before aggregation"
+      quality_evidence: "Calibration, supplier certificate, approved recipe, laboratory result, and deviation record"
+    - protocol_id: cp_finalisation_records
+      process_id: "preservation_packaging_dispatch"
+      flow_role: "juice input; energy; packaging; released juice; rejects; wastewater; refrigerant"
+      record_type: "tank/scale, thermal or non-thermal control, utility meter, packaging issue, release, waste, cleaning, and service records"
+      raw_fields: "batch_id; juice_input_kg; process_parameters; energy; packaging_item_mass; items_used; product_output_kg; held_or_rejected_kg; wastewater_m3; refrigerant_charge_and_makeup_kg; release_status"
+      collection_method: "Calibrated meters and scales reconciled to line, release, warehouse, waste, and maintenance records"
+      unit: "kg; m3; kWh; route-specific control unit"
+      frequency: "Each batch and packaging run, aggregated monthly"
+      temporal_coverage: "Representative period covering product formats and operating modes"
+      site_scope: "Each included preservation, filling, storage, and bulk-dispatch system"
+      aggregation_rule: "Include released output only; separate formats and routes before weighted aggregation"
+      quality_evidence: "Calibration, validated process record, packaging specification, quality release, warehouse, waste, and service evidence"
+  calculation_rules:
+    - id: calc_reference_normalization
+      applies_to: "All foreground inventory rows"
+      rule: "normalized amount = period-attributable amount / kg released reference apple juice in the same period"
+      inputs:
+        - "attributable flow amount"
+        - "released apple juice mass"
+        - "stock change"
+        - "rework status"
+      output: "amount per 1 kg reference apple juice"
+      source_ids:
+        - iso-14044-2006
+    - id: calc_process_mass_balance
+      applies_to: "Every included process"
+      rule: "mass-balance residual = total mass inputs - product outputs - co-product outputs - waste outputs - measured wastewater constituents or bulk stream mass - evaporation - stock increase; investigate and disclose material residuals"
+      inputs:
+        - "process input/output masses"
+        - "moisture or solids data"
+        - evaporation
+        - "stock change"
+      output: "reconciled process mass balance and residual"
+      source_ids:
+        - iso-14044-2006
+    - id: calc_reconstitution_solids
+      applies_to: "Reconstituted juice batches"
+      rule: "dry-solids proxy balance = sum(input mass x measured soluble-solids fraction) compared with output mass x measured output soluble-solids fraction; use this as a QA balance, not as a universal conversion of Brix to dry matter"
+      inputs:
+        - concentrate
+        - water
+        - ingredient
+        - "and output masses"
+        - "measured soluble solids"
+      output: "batch solids-balance check and reconstitution ratio"
+      source_ids:
+        - codex-cxs-247-2005-2025
+    - id: calc_packaging_mass
+      applies_to: "Packaged apple juice"
+      rule: "packaging mass per kg juice = sum(items used x verified mass per item) / released juice mass, adjusted for rejects and documented reuse cycles"
+      inputs:
+        - "packaging counts"
+        - "item masses"
+        - rejects
+        - "reuse cycles"
+        - "released juice mass"
+      output: "packaging inventory per 1 kg reference product"
+      source_ids:
+        - fao-fruit-juice-processing-2001
+    - id: calc_allocation_factor
+      applies_to: "Evidenced co-products"
+      rule: "Calculate factors from the selected physical relationship or from contemporaneous output quantity x price at a common gate; factors for one process must sum to one"
+      inputs:
+        - "output quantities"
+        - "physical relation or prices"
+        - "period and currency"
+      output: "disclosed allocation factors and sensitivity result where material"
+      source_ids:
+        - iso-14044-2006
+  data_quality_requirements:
+    - id: dq_product_identity
+      applies_to: "Reference product and same-category inputs"
+      requirement: "Preserve product name, apple-only status, route, source, clear/cloudy state, soluble solids, preservation, package/bulk state, storage regime, and manufacturing gate."
+      evidence: "Product specification, label, recipe, supplier certificate, and laboratory record"
+    - id: dq_route_separation
+      applies_to: "Aggregated foreground data"
+      requirement: "Keep directly expressed/NFC, from-concentrate, clear/cloudy, concentration, preservation, and packaging routes separate until route-specific inventories are complete; weight only by released product mass and disclose shares."
+      evidence: "Production schedule, batch route, line, recipe, and warehouse records"
+    - id: dq_temporal_representativeness
+      applies_to: "All foreground records"
+      requirement: "Use a representative continuous period that captures seasonal apple supply, cleaning cycles, product formats, start-up/shutdown losses, and normal operating variability; justify exclusions."
+      evidence: "Dated record census, coverage statement, and exception log"
+    - id: dq_meter_and_conversion
+      applies_to: "Measured and converted quantities"
+      requirement: "Retain calibration status, original unit, density and temperature for liquid conversion, solids or moisture basis, and the calculation used."
+      evidence: "Calibration certificate, raw meter/scale record, laboratory result, and calculation sheet"
+    - id: dq_mass_balance
+      applies_to: "Each included process and the whole foreground"
+      requirement: "Reconcile product, co-product, residue, wastewater, evaporation, rework, and stock change on a consistent period and investigate material residuals."
+      evidence: "Signed mass-balance worksheet and corrective-action record"
+    - id: dq_coverage
+      applies_to: "Inventory completeness"
+      requirement: "Include all material inputs, utilities, processing aids, packaging, outputs, wastes, wastewater, and direct emissions; a zero entry requires evidence that the flow is absent, not merely unmeasured."
+      evidence: "Purchase, meter, recipe, maintenance, waste, discharge, and release record cross-check"
+    - id: dq_source_linkage
+      applies_to: "Purchased apples, juice, concentrate, ingredients, packaging, energy, and treatment"
+      requirement: "Link a temporally and geographically appropriate upstream or treatment dataset and disclose any proxy or data gap."
+      evidence: "Supplier identity, dataset UUID/reference, geography, year, and proxy rationale"
+validation_rules:
+  - rule_id: validate_reference_identity
+    applies_to: "Reference product"
+    rule: "Fail conformance if the reference flow is not apple juice, if net as-is mass is not 1 kg after normalization, or if packaging mass is included in product mass."
+    source_ids:
+      - codex-cxs-247-2005-2025
+  - rule_id: validate_required_qualifiers
+    applies_to: "Reference flow metadata"
+    rule: "Fail conformance when any required qualifier is absent, including route, soluble solids, clear/cloudy state, preservation, package/bulk state, storage regime, geography, gate, or shelf life."
+    source_ids:
+      - codex-cxs-247-2005-2025
+      - codex-cxc-50-2003
+  - rule_id: validate_route_processes
+    applies_to: "Process map and inventory"
+    rule: "Fail conformance when a process used by the declared route is omitted, when a process is included without corresponding inputs and outputs, or when a purchased same-category input lacks an upstream dataset."
+    source_ids:
+      - fao-fruit-juice-processing-2001
+      - eu-jrc-fdm-bref-2019
+  - rule_id: validate_reconstitution
+    applies_to: "From-concentrate route"
+    rule: "Fail conformance when concentrate mass, concentrate soluble solids, reconstitution water, output mass, output soluble solids, governing market specification, or batch solids-balance evidence is missing."
+    source_ids:
+      - codex-cxs-247-2005-2025
+  - rule_id: validate_apple_condition_control
+    applies_to: "Whole-apple route"
+    rule: "Fail conformance when receiving acceptance, sorting/rejection, washing, and apple-condition records are missing or when rejected fruit is hidden in a yield adjustment."
+    source_ids:
+      - codex-cxc-50-2003
+  - rule_id: validate_preservation_release
+    applies_to: "Released apple juice"
+    rule: "Fail conformance when the declared preservation or food-safety control lacks its applicable validation, monitoring, deviation, and product-release evidence; do not infer compliance from a process label."
+    source_ids:
+      - us-fda-juice-haccp-21-cfr-120-24
+      - codex-cxc-50-2003
+  - rule_id: validate_mass_balance
+    applies_to: "Each included process and complete foreground"
+    rule: "Fail conformance when mass-balance periods differ, internal transfers are double counted, stock or rework is omitted, or a material unexplained residual remains undisclosed."
+    source_ids:
+      - iso-14044-2006
+  - rule_id: validate_coproduct_status
+    applies_to: "Pomace and recovered streams"
+    rule: "Fail conformance when a claimed co-product lacks quantity, destination, beneficial-use evidence, and an explicit allocation treatment, or when a waste stream is silently assigned zero burden."
+    source_ids:
+      - iso-14044-2006
+  - rule_id: validate_uuid_selection
+    applies_to: "Tiangong-linked flow rows"
+    rule: "Fail conformance when the Apple juice, Mass, or Units of mass UUID differs from the declared reference object without a documented, semantically more specific replacement and public-record readback."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "Foreground apple-juice production dataset normalized to 1 kg net as-is apple juice at a declared manufacturing gate"
+  downstream_use: "secondary_dataset; background_dataset after review of representativeness, upstream linkage, allocation, and uncertainty disclosures"
+  allowed_use: "Product carbon footprint or LCA models matching the declared route, geography, period, product specification, package/bulk state, and gate; aggregation with route shares retained"
+  excluded_use: "Apple nectar, cider, vinegar, concentrate as the sold reference product, mixed-fruit beverages, generic global apple juice without route disclosure, or consumer use and end-of-life beyond the declared gate"
+  required_metadata: "PCR id and version context; reference flow UUID; route and starting condition; product and market qualifiers; geography; technology; reporting period; site coverage; package/bulk state; process list; upstream dataset references; allocation method; reviewer status"
+  required_quality_disclosure: "Record coverage; meter and conversion quality; mass-balance residuals; route shares; seasonal coverage; supplier and upstream data quality; proxies; co-product treatment; rejected/reworked quantities; wastewater and direct-emission coverage; uncertainty and known limitations"
+  update_trigger: "Change in starting condition, supplier or concentrate source, formulation or Brix specification, clear/cloudy route, extraction/finishing/concentration/preservation technology, package format, energy or water system, waste destination, allocation basis, regulation, or a material shift in yield or utilities"
+data_sources:
+  - id: "codex-cxs-247-2005-2025"
+    type: "standard"
+    reference: "Codex Alimentarius CXS 247-2005, General Standard for Fruit Juices and Nectars, amended 2025, https://www.fao.org/fao-who-codexalimentarius/sh-proxy/tr/?lnk=1&url=https%253A%252F%252Fworkspace.fao.org%252Fsites%252Fcodex%252FStandards%252FCXS%2B247-2005%252FCXS_247e.pdf (retrieved 2026-08-11)"
+    used_for: "Product definition, directly expressed and from-concentrate scope, permitted processing framework, authenticity/quality disclosure, and apple reconstitution soluble-solids rule"
+  - id: "codex-cxc-50-2003"
+    type: "official_guidance"
+    reference: "Codex Alimentarius CXC 50-2003, Code of Practice for the Prevention and Reduction of Patulin Contamination in Apple Juice and Apple Juice Ingredients in Other Beverages, https://www.fao.org/input/download/standards/405/CXP_050e.pdf (retrieved 2026-08-11)"
+    used_for: "Apple acceptance, sorting, washing, equipment cleaning, pressing, chilling, packaging, sampling, quality release, and the boundary warning that thermal treatment alone does not remove existing patulin"
+  - id: "fao-fruit-juice-processing-2001"
+    type: "handbook"
+    reference: "FAO Agricultural Services Bulletin 146, Principles and Practices of Small- and Medium-Scale Fruit Juice Processing, apple juice chapter, https://www.fao.org/4/y2515e/y2515e15.htm (retrieved 2026-08-11)"
+    used_for: "Apple-juice process decomposition, milling and pressing, clarification, pasteurization, concentration, filling, packaging, and pomace handling"
+  - id: "eu-jrc-fdm-bref-2019"
+    type: "official_guidance"
+    reference: "European Commission Joint Research Centre, Best Available Techniques Reference Document for the Food, Drink and Milk Industries, JRC118627, 2019, https://bureau-industrial-transformation.jrc.ec.europa.eu/sites/default/files/2020-01/JRC118627_FDM_Bref_2019_published.pdf (retrieved 2026-08-11)"
+    used_for: "Food-processing foreground coverage, utility and cleaning records, resource efficiency, wastewater, waste, and direct-emission monitoring context"
+  - id: "us-fda-juice-haccp-21-cfr-120-24"
+    type: "standard"
+    reference: "United States eCFR, 21 CFR 120.24, Process controls, https://www.ecfr.gov/current/title-21/chapter-I/subchapter-B/part-120/subpart-B/section-120.24 (retrieved 2026-08-11)"
+    used_for: "Applicable juice pathogen-reduction control, single-facility processing/packaging boundary, and validation/monitoring evidence"
+  - id: "iso-14044-2006"
+    type: "standard"
+    reference: "ISO 14044:2006, Environmental management — Life cycle assessment — Requirements and guidelines, including Amendments 1:2017 and 2:2020, https://www.iso.org/standard/38498.html (retrieved 2026-08-11)"
+    used_for: "LCI boundary consistency, inventory completeness, allocation documentation, data quality, interpretation, and reporting"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:ee79bb566bcb20f57308fb6ba3d60e1bde1e2522ab704d658dc9bc7db350f850"
+  generated_content_sha256: "sha256:d4806d8978acd4fa2e849501ac40010f554f1e1a745ff7be206054626864f4e7"

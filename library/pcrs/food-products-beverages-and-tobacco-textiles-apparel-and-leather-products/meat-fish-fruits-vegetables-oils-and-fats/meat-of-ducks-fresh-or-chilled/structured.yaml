@@ -1,10 +1,979 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "21122"
-  title: "Meat of ducks, fresh or chilled"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.food-products-beverages-and-tobacco-textiles-apparel-and-leather-products.meat-fish-fruits-vegetables-oils-and-fats.meat-of-ducks-fresh-or-chilled"
+  classification_refs: "CPC 3.0: 21122, Meat of ducks, fresh or chilled (exact mapping context)"
+  covered_products: "Edible duck carcasses and declared duck-meat cuts, bone-in or boneless and skin-on or skinless, supplied fresh or chilled and never frozen"
+  excluded_products: "Frozen duck meat; duck foie gras; edible duck offal marketed separately; rendered or unrendered poultry fat; mechanically separated meat; minced meat, meat preparations, cooked, cured, smoked, canned, or otherwise further-processed duck products"
+  representative_product: "Chilled, eviscerated saleable duck carcass or declared duck-meat cut at the primary-processing gate"
+  production_route: "Live-duck reception; ante-mortem controls; stunning and slaughter; bleeding; scalding and defeathering; evisceration; post-mortem inspection; washing; chilling; optional cutting and packaging"
+  market_state: "Fresh or chilled; never frozen; packaging, cut form, bone and skin status, edible-yield convention, and dispatch temperature declared"
+functional_unit:
+  what: "Edible meat of ducks supplied fresh or chilled at the primary-processing facility gate"
+  how_much: "1 kg net product mass"
+  how_well: "Fit for human consumption under applicable inspection and hygiene controls; never frozen; declared carcass or cut, bone and skin status, packaging, and product temperature"
+  how_long_or_cycle: "One production lot at facility-gate release; no use-stage duration is assigned"
+  reference_flow_link: "The reference amount is the measured net mass of the declared saleable duck-meat product, excluding transport packaging unless explicitly included and reported separately"
+system_boundary:
+  rules:
+    - rule_id: boundary_primary_processing
+      applies_to: "Required foreground route"
+      rule: "Include slaughter, blood and feather removal, evisceration, inspection, washing, cooling, and all resource use and wastes needed to make the declared saleable fresh or chilled product. Include cutting and packaging when performed before the declared facility gate."
+      source_ids:
+        - fao-leap-poultry-2016
+        - eu-sa-bref-2023
+    - rule_id: boundary_upstream_live_ducks
+      applies_to: "Delivered live-duck input"
+      rule: "Represent duck farming and feed production through an upstream dataset. Model inbound live-bird transport separately unless it is demonstrably included in the delivered-live-duck dataset."
+      source_ids:
+        - fao-leap-poultry-2016
+    - rule_id: boundary_hygiene_and_cold_chain
+      applies_to: "Dressing, washing, chilling, cutting, storage, and dispatch"
+      rule: "Include potable-water use, cleaning and sanitation, refrigeration energy, refrigerant losses, temperature control, and separation measures necessary to prevent contamination; do not exclude these activities merely because they are support operations."
+      source_ids:
+        - codex-cxc-58-2005
+        - eu-regulation-853-2004
+        - eu-sa-bref-2023
+    - rule_id: boundary_waste_and_treatment
+      applies_to: "Inedible material, condemned material, wastewater, sludge, and packaging waste"
+      rule: "Include on-site treatment and direct releases. For off-site treatment, record the waste flow at the facility gate and link a representative treatment dataset; retain quantity and destination evidence."
+      source_ids:
+        - fao-leap-poultry-2016
+        - eu-sa-bref-2023
+    - rule_id: boundary_exclusions
+      applies_to: "Downstream and non-reference products"
+      rule: "Exclude retail, consumer storage and cooking, consumption, and end-of-life after the processing gate. Exclude further processing and freezing unless explicitly added by the study, in which case report them as processes outside this PCR reference boundary."
+      source_ids:
+        - fao-leap-poultry-2016
+boundary_abstraction:
+  declared_starting_condition: "Live ducks are received at the slaughter facility with origin, delivered mass, mortality or condemnation status, and whether inbound transport is embedded in the upstream dataset declared"
+  starting_condition_role: "Upstream product input to the foreground slaughter and primary-processing system"
+  product_classification_scope: "Fresh or chilled edible duck meat corresponding semantically to CPC 3.0 code 21122; the classification reference does not define canonical PCR identity"
+  recursive_input_rule: "Any fresh or chilled duck meat rework or purchased meat entering the foreground system is recorded once as a product input with its own upstream dataset and is not recursively regenerated as the reference product; its quantity and disposition are disclosed"
+  upstream_dataset_requirement: "Use representative upstream datasets for delivered live ducks and for electricity, fuels, water supply, chemicals, packaging, refrigerants, transport, and treatment services; disclose geography, technology, time, and whether transport and losses are included"
+  disclosure: "Declare included unit operations, facility gate, cut and edible-yield convention, chilling system, on-site versus off-site by-product and wastewater treatment, packaging boundary, allocation method and keys, exclusions, data period, and any substitution of secondary for foreground data"
+reference_flow_definition:
+  reference_amount: "1 kg"
+  product_flow_ref:
+    name: "Meat of ducks, fresh or chilled"
+    uuid: "787f4c92-60eb-4533-8ee0-a0fbeda9d5c8"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "duck species or commercial type"
+    - "whole carcass or cut"
+    - "bone-in or boneless"
+    - "skin-on or skinless"
+    - "packaging inclusion"
+    - "fresh or chilled state"
+    - "never-frozen confirmation"
+    - "dispatch temperature"
+    - "edible-yield convention"
+    - "facility geography"
+    - "production period"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "Reference duck-meat product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Use verified net product mass at facility-gate release. State whether bones, skin, primary packaging, and absorbed or retained process water are included; do not use live weight as the reference amount."
+  - id: cold_product_state
+    applies_to: "Reference duck-meat product"
+    required_property_ref:
+      name: "Temperature and product-state record"
+      uuid: ""
+    required_unit: "°C and categorical state"
+    rule: "Record product temperature at release and demonstrate that the product remained fresh or chilled and was never frozen. Apply the governing jurisdictional limit; where EU Regulation (EC) No 853/2004 is the applicable rule, poultry meat is chilled as soon as possible to no more than 4 °C."
+  - id: normalization_units
+    applies_to: "All inventory rows"
+    required_property_ref:
+      name: "Row-appropriate property"
+      uuid: ""
+    required_unit: "kg, m3, kWh, MJ, or declared SI-convertible unit"
+    rule: "Preserve measured units in source records, document conversion factors, and normalize every amount to 1 kg reference product without mixing mass, volume, energy, and concentration quantities."
+  - id: mass_balance_basis
+    applies_to: "Live ducks, meat, co-products, waste, and retained matter"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Reconcile received live mass and any other material inputs with saleable meat, separately marketed co-products, waste, wastewater-carried solids where measured, and documented stock change on a consistent wet-mass basis."
+process_map:
+  - id: duck_slaughter_dressing
+    name: "Duck reception, slaughter, dressing, inspection, and washing"
+    inclusion: "required"
+    inclusion_condition: "Always included for slaughter-derived duck meat"
+    role: "Foreground primary processing"
+    quantitative_reference: "Per kg dressed carcass and normalized to 1 kg reference product"
+  - id: duck_chilling_cutting_packaging
+    name: "Chilling, optional cutting, packaging, and facility-gate release"
+    inclusion: "required"
+    inclusion_condition: "Chilling and release are always included; cutting and packaging are included when performed before the declared gate"
+    role: "Foreground conditioning and product finishing"
+    quantitative_reference: "Per kg saleable fresh or chilled duck meat"
+  - id: residuals_and_wastewater_management
+    name: "By-product, waste, and wastewater management"
+    inclusion: "conditional"
+    inclusion_condition: "Include on-site operations when present; otherwise record exported flows and connect off-site treatment datasets"
+    role: "Foreground or linked treatment"
+    quantitative_reference: "Per kg reference product and by treatment route"
+process_inventory:
+  - id: duck_slaughter_dressing
+    label: "Duck reception, slaughter, dressing, inspection, and washing"
+    inputs:
+      product:
+        - row_id: live_ducks_received
+          role: "Delivered live ducks"
+          name: "Live ducks; Tiangong UUID unresolved"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record live ducks crossing the slaughterhouse receiving gate, including delivered mass and disposition of dead-on-arrival or condemned birds."
+          amount:
+            expression: "Measured delivered live mass assigned to the processed lot"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference duck-meat output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_batch_mass_balance
+              source_ids:
+                - fao-leap-poultry-2016
+            ranges:
+              - role: default_estimate
+                lower: "1"
+                upper: "3"
+                unit: "kg delivered live duck/kg reference product"
+                basis: "broad first-pass screening interval pending duck-specific facility yield evidence"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: slaughter_process_water
+          role: "Potable process and sanitation water"
+          name: "Potable water; Tiangong UUID unresolved"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "Record metered water used for scalding, carcass washing, equipment cleaning, and sanitation in this process."
+          amount:
+            expression: "Metered water allocated to slaughter and dressing, less separately metered recirculated water"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference duck-meat output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water_and_wastewater
+              source_ids:
+                - codex-cxc-58-2005
+                - fao-leap-poultry-2016
+                - eu-sa-bref-2023
+            ranges:
+              - role: default_estimate
+                lower: "0.001"
+                upper: "0.1"
+                unit: "m3/kg reference product"
+                basis: "broad first-pass screening interval; not an allowed performance range"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: slaughter_energy
+          role: "Slaughter and dressing energy"
+          name: "Electricity and thermal-energy carriers; Tiangong UUIDs unresolved"
+          flow_type: "product"
+          property_unit: "Energy / kWh and MJ by carrier"
+          description: "Record electricity and fuels by carrier for stunning, scalding, defeathering, line operation, ventilation, hot water, and cleaning; do not combine carriers until energy conversions are documented."
+          amount:
+            expression: "Metered or invoice-reconciled facility energy allocated to this process"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference duck-meat output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_records
+              source_ids:
+                - fao-leap-poultry-2016
+                - eu-sa-bref-2023
+            ranges:
+              - role: default_estimate
+                lower: "0.05"
+                upper: "20"
+                unit: "MJ/kg reference product"
+                basis: "broad first-pass screening interval after documented conversion of all carriers to MJ"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: cleaning_agents
+          role: "Cleaning and sanitation agents"
+          name: "Cleaning and sanitation agents; Tiangong UUIDs unresolved"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record purchased and consumed cleaning and sanitation formulations by product and active concentration where available."
+          amount:
+            expression: "Stock-change-adjusted consumption assigned to the production period"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference duck-meat output"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_material_records
+              source_ids:
+                - codex-cxc-58-2005
+                - fao-leap-poultry-2016
+            ranges:
+              - role: default_estimate
+                lower: "0"
+                upper: "0.2"
+                unit: "kg formulation/kg reference product"
+                basis: "broad first-pass screening interval pending facility chemical records"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: dressed_duck_carcass
+          role: "Inspected dressed duck carcass"
+          name: "Dressed duck carcass; Tiangong UUID unresolved"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the mass passed to chilling after defeathering, evisceration, inspection, and washing, using the facility's declared edible-yield convention."
+          amount:
+            expression: "Measured dressed-carcass mass passed to chilling"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg output of this process and reconciled to the reference product"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_batch_mass_balance
+              source_ids:
+                - fao-leap-poultry-2016
+            ranges:
+              - role: qa_guardrail
+                lower: "0.3"
+                upper: "0.9"
+                unit: "kg dressed carcass/kg delivered live duck"
+                basis: "broad mass-balance screen pending duck-specific facility evidence"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: slaughter_coproducts
+          role: "Separated edible and marketable co-products"
+          name: "Declared duck-slaughter co-products; Tiangong UUIDs unresolved"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record edible offal and any other separately marketed material by distinct product and destination; these outputs are not part of the reference duck-meat mass."
+          amount:
+            expression: "Measured mass by co-product stream and disposition"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg delivered live duck and per 1 kg reference product"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_coproduct_and_waste_records
+              source_ids:
+                - fao-leap-poultry-2016
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.7"
+                unit: "kg/kg delivered live duck"
+                basis: "broad screen for all separated co-products combined"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        - row_id: slaughter_waste
+          role: "Condemned and inedible slaughter material"
+          name: "Duck slaughter residuals and waste; Tiangong UUIDs unresolved"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record condemned birds or parts, feathers, blood, viscera, and other inedible material as separate waste or residual streams according to actual legal and commercial disposition."
+          amount:
+            expression: "Measured mass by stream and destination, with waste and marketable co-product status kept separate"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference duck-meat output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_coproduct_and_waste_records
+              source_ids:
+                - fao-leap-poultry-2016
+                - eu-sa-bref-2023
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "2"
+                unit: "kg/kg reference product"
+                basis: "broad screen before stream-specific duck facility records are available"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: slaughter_wastewater
+          role: "Slaughter and cleaning wastewater"
+          name: "Slaughterhouse wastewater; Tiangong UUID unresolved"
+          flow_type: "waste"
+          property_unit: "Volume / m3, with pollutant concentrations in kg/m3 or mg/L"
+          description: "Record wastewater volume and, where available, pollutant concentrations or loads before on-site or off-site treatment."
+          amount:
+            expression: "Metered discharge volume and sampled concentration by reporting period"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference duck-meat output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water_and_wastewater
+              source_ids:
+                - fao-leap-poultry-2016
+                - eu-sa-bref-2023
+            ranges:
+              - role: default_estimate
+                lower: "0.001"
+                upper: "0.1"
+                unit: "m3/kg reference product"
+                basis: "broad first-pass screen; pollutant loads require measured volume and concentration"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        []
+  - id: duck_chilling_cutting_packaging
+    label: "Chilling, optional cutting, packaging, and facility-gate release"
+    inputs:
+      product:
+        - row_id: dressed_carcass_input
+          role: "Inspected dressed duck carcass input"
+          name: "Dressed duck carcass; Tiangong UUID unresolved"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Transfer the measured dressed-carcass mass from the preceding process without adding an upstream burden a second time."
+          amount:
+            expression: "Equal to the transferred output of dressed_duck_carcass, adjusted only for documented storage transfer differences"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference duck-meat output"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_batch_mass_balance
+              source_ids:
+                - fao-leap-poultry-2016
+            ranges: []
+        - row_id: chilling_electricity
+          role: "Refrigeration and cutting electricity"
+          name: "Electricity; Tiangong UUID unresolved"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record metered electricity for chilling, cold storage before release, cutting, packing, pumps, fans, and associated controls."
+          amount:
+            expression: "Submetered use or documented allocation from facility electricity records"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference duck-meat output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_records
+              source_ids:
+                - fao-leap-poultry-2016
+                - eu-sa-bref-2023
+            ranges:
+              - role: default_estimate
+                lower: "0.01"
+                upper: "5"
+                unit: "kWh/kg reference product"
+                basis: "broad first-pass screen sensitive to technology, climate, storage time, and cut form"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: refrigerant_makeup
+          role: "Refrigerant make-up"
+          name: "Declared refrigerant by chemical; Tiangong UUID unresolved"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record refrigerant purchases and stock changes for systems serving the declared foreground boundary."
+          amount:
+            expression: "Annual make-up mass allocated to the system served, with opening and closing stocks reconciled"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg reference duck-meat output"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_refrigerant_records
+              source_ids:
+                - fao-leap-poultry-2016
+                - eu-sa-bref-2023
+            ranges:
+              - role: default_estimate
+                lower: "0"
+                upper: "0.01"
+                unit: "kg refrigerant/kg reference product"
+                basis: "deliberately broad screen pending system-specific service and leakage records"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: packaging_materials
+          role: "Primary and secondary packaging"
+          name: "Packaging materials by polymer, paper, board, metal, or other material; Tiangong UUIDs unresolved"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record each packaging material placed with the product or consumed before the facility gate; disclose whether its mass is excluded from the 1 kg reference product."
+          amount:
+            expression: "Purchased quantity minus stock change and separately measured packaging waste"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference duck-meat output"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_material_records
+              source_ids:
+                - fao-leap-poultry-2016
+            ranges:
+              - role: default_estimate
+                lower: "0"
+                upper: "0.2"
+                unit: "kg packaging/kg reference product"
+                basis: "broad first-pass screen; unpackaged output may be zero"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: reference_duck_meat_output
+          role: "Fresh or chilled duck meat reference product"
+          name: "Meat of ducks, fresh or chilled"
+          flow_type: "product"
+          flow_ref:
+            uuid: "787f4c92-60eb-4533-8ee0-a0fbeda9d5c8"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record measured net mass at facility-gate release, aligned with all declared reference-flow qualifiers."
+          amount:
+            expression: "1 kg reference output after measured net-mass normalization"
+            value_mode: "fixed_value"
+            specificity: "product_specific"
+            basis:
+              text: "1 kg reference duck-meat output"
+              kind: "reference_flow"
+            evidence:
+              kind: "identity_reference"
+              collection_protocol_id: cp_batch_mass_balance
+              source_ids:
+                - fao-leap-poultry-2016
+                - eu-regulation-853-2004
+            ranges:
+              - role: allowed_range
+                lower: "1"
+                upper: "1"
+                unit: "kg/kg reference product"
+                basis: "fixed normalized reference flow"
+                basis_kind: "reference_flow"
+                evidence_kind: "method_formula"
+                source_ids:
+                  - fao-leap-poultry-2016
+      waste:
+        - row_id: finishing_waste
+          role: "Packaging and trimming waste"
+          name: "Packaging and finishing waste by material; Tiangong UUIDs unresolved"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record packaging scrap, non-marketable trim, and rejected product by material and actual destination."
+          amount:
+            expression: "Measured waste mass by stream and destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference duck-meat output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_coproduct_and_waste_records
+              source_ids:
+                - fao-leap-poultry-2016
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.5"
+                unit: "kg/kg reference product"
+                basis: "broad screen pending product-form and facility records"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        - row_id: refrigerant_to_air
+          role: "Refrigerant released to air"
+          name: "Refrigerant emission to air by chemical; Tiangong UUID unresolved"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record refrigerant leakage by chemical when it is not already included in a linked refrigeration service dataset."
+          amount:
+            expression: "Reconciled make-up minus documented recovery and stock change, allocated to the systems served"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg reference duck-meat output"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_refrigerant_records
+              source_ids:
+                - fao-leap-poultry-2016
+                - eu-sa-bref-2023
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.01"
+                unit: "kg refrigerant/kg reference product"
+                basis: "broad screen pending service and recovery records"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+  - id: residuals_and_wastewater_management
+    label: "By-product, waste, and wastewater management"
+    inputs:
+      product:
+        - row_id: treatment_inputs
+          role: "Treatment energy and chemicals"
+          name: "Treatment inputs by carrier or material; Tiangong UUIDs unresolved"
+          flow_type: "product"
+          property_unit: "Energy or Mass / kWh, MJ, or kg"
+          description: "When treatment is on site, record electricity, fuels, treatment chemicals, and any supplemental water separately by carrier or material."
+          amount:
+            expression: "Metered or stock-reconciled use assigned to the treatment operation"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg reference duck-meat output and per m3 or kg treated stream"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_treatment_records
+              source_ids:
+                - fao-leap-poultry-2016
+                - eu-sa-bref-2023
+            ranges:
+              - role: default_estimate
+                lower: "0"
+                upper: "20"
+                unit: "MJ-equivalent/kg reference product"
+                basis: "broad combined-energy screen; chemicals remain reported separately by mass"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        - row_id: streams_to_treatment
+          role: "Wastewater and residuals accepted for treatment"
+          name: "Declared waste and wastewater streams; Tiangong UUIDs unresolved"
+          flow_type: "waste"
+          property_unit: "Mass or Volume / kg or m3"
+          description: "Transfer each wastewater, sludge, condemned-material, and inedible-residual stream from the producing process without changing its recorded mass or volume."
+          amount:
+            expression: "Equal to the linked producing-process output after documented storage changes"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference duck-meat output"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_treatment_records
+              source_ids:
+                - fao-leap-poultry-2016
+                - eu-sa-bref-2023
+            ranges: []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: recovered_products
+          role: "Recovered or rendered products"
+          name: "Recovered products by actual identity; Tiangong UUIDs unresolved"
+          flow_type: "product"
+          property_unit: "Mass or Energy / kg, kWh, or MJ"
+          description: "Record any saleable rendered material, recovered fat, meal, or energy as a distinct product with measured quantity, destination, and revenue evidence."
+          amount:
+            expression: "Measured output by product and disposition"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference duck-meat output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_coproduct_and_waste_records
+              source_ids:
+                - fao-leap-poultry-2016
+                - eu-sa-bref-2023
+            ranges: []
+      waste:
+        - row_id: treatment_residues
+          role: "Treatment sludge and final waste"
+          name: "Treatment sludge and final waste; Tiangong UUIDs unresolved"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record sludge and final residues by dry or wet mass basis, moisture convention, and destination."
+          amount:
+            expression: "Measured output by stream and destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference duck-meat output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_treatment_records
+              source_ids:
+                - fao-leap-poultry-2016
+                - eu-sa-bref-2023
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "1"
+                unit: "kg wet residue/kg reference product"
+                basis: "broad screen pending treatment technology and moisture-basis records"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        - row_id: treated_wastewater_discharge
+          role: "Treated wastewater discharge"
+          name: "Treated wastewater and reported emissions to water; Tiangong UUIDs unresolved"
+          flow_type: "elementary"
+          property_unit: "Volume and Mass / m3 and kg pollutant"
+          description: "Record discharged volume and measured pollutant loads after on-site treatment; use a linked off-site treatment dataset instead when the facility exports untreated wastewater."
+          amount:
+            expression: "Discharge volume multiplied by representative concentration for each pollutant, with sampling basis retained"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference duck-meat output"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_water_and_wastewater
+              source_ids:
+                - fao-leap-poultry-2016
+                - eu-sa-bref-2023
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.1"
+                unit: "m3/kg reference product"
+                basis: "broad screen; pollutant loads require measured concentrations and are not estimated from this volume range"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+allocation_rules:
+  - rule_id: allocation_subdivision
+    applies_to: "Slaughter, cutting, rendering, refrigeration, and treatment operations"
+    rule: "First subdivide the system and directly assign measured inputs, outputs, and emissions to the process or product that causes them whenever technically feasible."
+    source_ids:
+      - fao-leap-poultry-2016
+  - rule_id: allocation_joint_products
+    applies_to: "Jointly generated edible meat and non-edible or separately marketed co-products"
+    rule: "When subdivision and a defensible physical causal relation are not feasible, allocate remaining joint burdens by the relative annual net revenue of the product groups at the point of separation. Use facility- and period-specific mass and revenue records; do not apply the illustrative chicken factors in the source as duck defaults."
+    source_ids:
+      - fao-leap-poultry-2016
+  - rule_id: allocation_residuals_and_waste
+    applies_to: "Residual materials and wastes"
+    rule: "A zero-burden cut-off applies only to a residual that has a subsequent use and no positive or negative economic value at the boundary. If the facility pays for treatment or disposal, classify the stream as waste and include treatment burdens in the foreground system or linked treatment dataset."
+    source_ids:
+      - fao-leap-poultry-2016
+  - rule_id: allocation_internal_energy_recovery
+    applies_to: "Energy recovered from on-site waste"
+    rule: "Credit only energy used on site by subtracting the displaced purchased energy within the documented facility balance. For exported energy, disclose and justify system expansion or an alternative allocation consistent with the study goal."
+    source_ids:
+      - fao-leap-poultry-2016
+  - rule_id: allocation_disclosure
+    applies_to: "All allocated foreground results"
+    rule: "Report product grouping, separation points, revenue period and currency basis, treatment of edible offal, fat, feathers, blood, bones, condemned material, and sensitivity to an alternative mass or economic allocation where the choice materially changes results."
+    source_ids:
+      - fao-leap-poultry-2016
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_batch_mass_balance
+      process_id: "duck_slaughter_dressing_duck_chilling_cutting_packaging"
+      flow_role: "Live input, dressed carcass, saleable meat, rework, loss, and stock change"
+      record_type: "Weighbridge, calibrated scale, batch and production records"
+      raw_fields: "lot_id; duck_type; live_mass; dead_or_condemned_mass; dressed_mass; saleable_mass; rework_mass; stock_change; cut_form; bone_skin_status"
+      collection_method: "Reconcile batch scales to daily production totals and investigate unmatched mass"
+      unit: "kg"
+      frequency: "Each lot, aggregated daily and monthly"
+      temporal_coverage: "At least 12 consecutive representative months where practicable"
+      site_scope: "Each included facility and line"
+      aggregation_rule: "Sum compatible wet-mass fields; retain lot-level traceability; normalize only after monthly reconciliation"
+      quality_evidence: "Calibration records, lot logs, reconciliation sign-off, and documented moisture or drip-loss convention"
+    - protocol_id: cp_water_and_wastewater
+      process_id: "duck_slaughter_dressing_residuals_and_wastewater_management"
+      flow_role: "Supplied water, reused water, wastewater volume, and pollutant load"
+      record_type: "Meters, invoices, flow meters, and representative laboratory samples"
+      raw_fields: "meter_start; meter_end; source; reuse_volume; discharge_volume; sample_time; COD; BOD; TSS; nitrogen; phosphorus; other_regulated_parameters"
+      collection_method: "Read meters at consistent intervals and pair flow-weighted or justified representative concentrations with discharge volumes"
+      unit: "m3 and mg/L or kg/m3"
+      frequency: "Metered continuously or daily; sampling per permit and process variability"
+      temporal_coverage: "At least 12 representative months"
+      site_scope: "Each facility; submeter major operations where available"
+      aggregation_rule: "Purchased or abstracted water minus documented non-process uses; pollutant load = volume × concentration with unit conversion"
+      quality_evidence: "Meter calibration, invoice reconciliation, laboratory accreditation or validated method, sampling plan"
+    - protocol_id: cp_energy_records
+      process_id: "duck_slaughter_dressing_duck_chilling_cutting_packaging_residuals_and_wastewater_management"
+      flow_role: "Electricity and fuel by process"
+      record_type: "Submeters, utility invoices, fuel receipts, tank and stock records"
+      raw_fields: "carrier; meter_start; meter_end; purchase; opening_stock; closing_stock; process_share; heating_value; conversion_factor"
+      collection_method: "Prefer submeters; otherwise allocate facility totals using documented equipment, runtime, or engineering evidence"
+      unit: "kWh, MJ, kg, L, or m3 by carrier"
+      frequency: "Monthly, with interval data retained when available"
+      temporal_coverage: "At least 12 representative months"
+      site_scope: "Each facility and major energy system"
+      aggregation_rule: "Reconcile purchases and stock; preserve carrier-specific totals; convert with documented lower or higher heating value consistently"
+      quality_evidence: "Meter and invoice reconciliation, fuel specifications, allocation worksheet, and energy-balance review"
+    - protocol_id: cp_material_records
+      process_id: "duck_slaughter_dressing_duck_chilling_cutting_packaging"
+      flow_role: "Cleaning agents and packaging"
+      record_type: "Purchase, formulation, stock, and waste records"
+      raw_fields: "material_id; formulation; active_concentration; purchase_mass; opening_stock; closing_stock; returned_mass; waste_mass; product_assignment"
+      collection_method: "Stock-change-adjusted material balance by declared formulation and packaging material"
+      unit: "kg"
+      frequency: "Monthly"
+      temporal_coverage: "At least 12 representative months"
+      site_scope: "Each facility and product family"
+      aggregation_rule: "Consumption = purchases + opening stock - closing stock - returns; reconcile packaging to packed output and waste"
+      quality_evidence: "Invoices, stock counts, bill of materials, packaging specifications, chemical safety data sheets"
+    - protocol_id: cp_temperature_records
+      process_id: "duck_chilling_cutting_packaging"
+      flow_role: "Chilling and facility-gate product state"
+      record_type: "Calibrated probes, continuous loggers, and release records"
+      raw_fields: "lot_id; timestamp; location; product_temperature; room_temperature; corrective_action; release_status; never_frozen_confirmation"
+      collection_method: "Measure representative product points and retain time-temperature history under the applicable food-safety plan"
+      unit: "°C"
+      frequency: "Continuous room monitoring and each lot at release"
+      temporal_coverage: "Full reporting period"
+      site_scope: "Each chilling, cutting, storage, and dispatch area"
+      aggregation_rule: "Retain raw values; report lot maxima and exceptions without averaging away non-conformance"
+      quality_evidence: "Probe calibration, logger records, HACCP verification, release authorization, corrective-action record"
+    - protocol_id: cp_coproduct_and_waste_records
+      process_id: "duck_slaughter_dressing_duck_chilling_cutting_packaging_residuals_and_wastewater_management"
+      flow_role: "Co-products, residuals, condemned material, and waste"
+      record_type: "Scales, transfer notes, invoices, disposal records, and destination confirmations"
+      raw_fields: "stream_id; status; mass; moisture_basis; destination; revenue; treatment_cost; currency; date; transport_inclusion"
+      collection_method: "Weigh each material stream where practicable and retain evidence distinguishing product, residual, and waste status"
+      unit: "kg and currency"
+      frequency: "Each shipment, aggregated monthly"
+      temporal_coverage: "Same period as the main production data"
+      site_scope: "Each facility and external destination"
+      aggregation_rule: "Sum by stream and status; use consistent net-revenue period for allocation; reconcile to mass balance"
+      quality_evidence: "Scale records, invoices, waste manifests, destination receipts, legal classification, allocation review"
+    - protocol_id: cp_refrigerant_records
+      process_id: "duck_chilling_cutting_packaging"
+      flow_role: "Refrigerant stock, make-up, recovery, and leakage"
+      record_type: "Service logs, cylinder records, leak inspections, and equipment inventory"
+      raw_fields: "refrigerant; charge; opening_stock; purchases; recovered; closing_stock; system_served; leak_event"
+      collection_method: "Reconcile each chemical and system; do not infer leakage from a generic factor when service records exist"
+      unit: "kg"
+      frequency: "Each service event and annual reconciliation"
+      temporal_coverage: "At least 12 representative months"
+      site_scope: "Each refrigeration system serving the foreground boundary"
+      aggregation_rule: "Estimated release = purchases + opening stock - closing stock - recovered - documented transfers, subject to non-negative reconciliation"
+      quality_evidence: "Certified service records, cylinder receipts, leak-test results, equipment inventory"
+    - protocol_id: cp_treatment_records
+      process_id: "residuals_and_wastewater_management"
+      flow_role: "On-site treatment inputs and outputs"
+      record_type: "Treatment meters, operator logs, laboratory results, and transfer records"
+      raw_fields: "treatment_route; input_mass_or_volume; energy; chemicals; recovered_product; sludge; discharge; operating_time"
+      collection_method: "Reconcile each treatment route to accepted streams and measured outputs"
+      unit: "kg, m3, kWh, and MJ"
+      frequency: "Daily or each batch, aggregated monthly"
+      temporal_coverage: "Same period as production data"
+      site_scope: "Each on-site treatment unit"
+      aggregation_rule: "Sum by treatment route; maintain dry/wet basis and pollutant-load calculations separately"
+      quality_evidence: "Operator logs, meter calibration, laboratory results, treatment performance review"
+  calculation_rules:
+    - id: calc_reference_normalization
+      applies_to: "Every inventory amount"
+      rule: "Normalized amount = period amount assigned to the product / period net mass of conforming reference duck meat"
+      inputs:
+        - "Assigned flow amount"
+        - "conforming reference-product mass"
+      output: "Flow amount per 1 kg reference product"
+      source_ids:
+        - fao-leap-poultry-2016
+    - id: calc_product_yield
+      applies_to: "Slaughter and finishing mass balance"
+      rule: "Product yield = net reference duck-meat mass / delivered live-duck mass; report dressed-carcass and edible-product conventions separately"
+      inputs:
+        - "Delivered live mass"
+        - "dressed mass"
+        - "saleable reference-product mass"
+      output: "Dimensionless yield and kg/kg live duck"
+      source_ids:
+        - fao-leap-poultry-2016
+    - id: calc_material_consumption
+      applies_to: "Cleaning agents, packaging, fuels, and refrigerants"
+      rule: "Consumption = purchases + opening stock - closing stock - returns or documented transfers; preserve chemical or carrier identity"
+      inputs:
+        - "Purchase and stock records"
+      output: "Consumed mass or energy by material"
+      source_ids:
+        - fao-leap-poultry-2016
+        - eu-sa-bref-2023
+    - id: calc_wastewater_load
+      applies_to: "Wastewater pollutant rows"
+      rule: "Pollutant load = representative discharge volume × concentration, with concentration and volume units converted explicitly; use flow-weighted averaging where data support it"
+      inputs:
+        - "Discharge volume"
+        - concentration
+        - "sampling basis"
+      output: "kg pollutant per period and per kg reference product"
+      source_ids:
+        - fao-leap-poultry-2016
+        - eu-sa-bref-2023
+    - id: calc_joint_economic_allocation
+      applies_to: "Remaining indivisible joint burdens"
+      rule: "Allocation fraction for product group i = net revenue of group i / sum of positive net revenues of all allocated product groups for the same facility and period"
+      inputs:
+        - "Product quantities"
+        - "contemporaneous prices or revenues"
+        - "separable burdens"
+      output: "Allocated foreground burden by product group"
+      source_ids:
+        - fao-leap-poultry-2016
+  data_quality_requirements:
+    - id: dq_identity
+      applies_to: "Reference product and inputs"
+      requirement: "Product identity, duck type, cut form, bone and skin status, packaging convention, fresh or chilled state, facility geography, and production period must be unambiguous."
+      evidence: "Product specification, lot and release records, and exact reference-flow UUID check"
+    - id: dq_temporal
+      applies_to: "Foreground activity data"
+      requirement: "Use at least 12 consecutive representative months where practicable to capture seasonality, downtime, cleaning, and refrigeration loads; justify a shorter campaign and disclose extrapolation."
+      evidence: "Dated raw records, coverage calculation, and representativeness statement"
+    - id: dq_measurement
+      applies_to: "Mass, water, energy, temperature, and emissions"
+      requirement: "Use calibrated or verified measurement systems; retain original readings and conversion factors; do not replace measurable foreground quantities with the provisional ranges in this PCR."
+      evidence: "Calibration certificates, meter logs, invoices, laboratory methods, and reconciliation records"
+    - id: dq_completeness
+      applies_to: "Process and material balance"
+      requirement: "Cover all required processes and at least 95% of assessed impact per reported category where the FAO LEAP method is used; known small flows remain in the inventory or are estimated and disclosed rather than silently omitted."
+      evidence: "Completeness checklist, cut-off register, scoping analysis, and mass/energy balance"
+    - id: dq_allocation
+      applies_to: "Co-products, residuals, and waste"
+      requirement: "Allocation status, separation points, facility-period quantities, net revenues, treatment costs, and alternative-method sensitivity must be reviewable."
+      evidence: "Allocation worksheet, invoices, destination records, and sensitivity calculation"
+    - id: dq_hygiene_temperature
+      applies_to: "Food-safety-related operating state"
+      requirement: "Retain records demonstrating inspection, sanitation, chilling, and release-temperature compliance under the applicable jurisdiction."
+      evidence: "HACCP or equivalent records, inspection disposition, sanitation logs, calibrated temperature logs"
+    - id: dq_secondary_data
+      applies_to: "Upstream and off-site datasets"
+      requirement: "Select data representative of geography, technology, time, and treatment route; disclose mismatches and avoid double counting transport, treatment, or refrigerant emissions."
+      evidence: "Dataset metadata, selection rationale, and boundary reconciliation"
+validation_rules:
+  - rule_id: validate_reference_identity
+    applies_to: "Reference flow"
+    rule: "The product-flow UUID must resolve exactly to an approved Product flow for Meat of ducks, fresh or chilled with CPC 21122 and the Mass reference property; stored PCR references must omit dataset versions."
+    source_ids: []
+  - rule_id: validate_reference_qualifiers
+    applies_to: "Dataset metadata and reference exchange"
+    rule: "Reject or mark incomplete any data package missing cut or carcass form, bone status, skin status, packaging inclusion, fresh or chilled state, never-frozen confirmation, release temperature, edible-yield convention, geography, or production period."
+    source_ids:
+      - fao-leap-poultry-2016
+      - eu-regulation-853-2004
+  - rule_id: validate_process_coverage
+    applies_to: "Foreground process map"
+    rule: "Confirm that slaughter and dressing, chilling and facility-gate release, process water, cleaning, energy, refrigeration, co-products, waste, and wastewater are present or explicitly justified as not applicable or represented by a linked dataset."
+    source_ids:
+      - fao-leap-poultry-2016
+      - codex-cxc-58-2005
+      - eu-sa-bref-2023
+  - rule_id: validate_mass_balance
+    applies_to: "Live-duck to product and residual flows"
+    rule: "Reconcile mass on consistent wet-mass and stock-change conventions. Investigate and disclose unexplained differences; do not force the balance by changing the fixed 1 kg reference output."
+    source_ids:
+      - fao-leap-poultry-2016
+  - rule_id: validate_temperature_state
+    applies_to: "Chilling, storage, and release"
+    rule: "Verify calibrated lot-level temperature evidence and never-frozen status against the applicable jurisdictional rule. When EU Regulation (EC) No 853/2004 applies, confirm chilling as soon as possible to no more than 4 °C."
+    source_ids:
+      - eu-regulation-853-2004
+      - codex-cxc-58-2005
+  - rule_id: validate_allocation
+    applies_to: "Co-product handling"
+    rule: "Confirm subdivision before allocation, consistent product grouping, contemporaneous facility-period net-revenue keys for remaining joint burdens, waste-treatment inclusion, and disclosed sensitivity where allocation choice is material."
+    source_ids:
+      - fao-leap-poultry-2016
+  - rule_id: validate_provisional_ranges
+    applies_to: "All reasoned-estimate ranges"
+    rule: "Treat provisional ranges only as screening signals. A value outside a range requires investigation, while a value inside a range does not prove quality; publication-critical defaults require reviewed source evidence."
+    source_ids: []
+  - rule_id: validate_data_coverage
+    applies_to: "Foreground data package"
+    rule: "Report accepted inputs, checks performed, checks skipped, findings, and completeness. Missing required raw records, unresolved units, or unsupported allocation makes validation inconclusive rather than silently passing."
+    source_ids:
+      - fao-leap-poultry-2016
+      - eu-sa-bref-2023
+published_dataset_profile:
+  dataset_role: "Foreground production dataset for fresh or chilled duck meat at the primary-processing facility gate"
+  downstream_use: "May serve as a secondary_dataset or background_dataset after methodology and data review"
+  allowed_use: "Product carbon footprint or LCA modelling where the declared product form, facility gate, geography, technology, data period, allocation, and temperature state match the study"
+  excluded_use: "Frozen duck meat; live-duck farm-gate production; edible offal, fat, or foie gras as the reference product; further-processed duck products; unqualified global or sector averages; comparative public claims without required review"
+  required_metadata: "PCR id and version when published; product-flow UUID; product qualifiers; facility geography; production period; process coverage; upstream dataset identities; allocation method and keys; packaging convention; release temperature; data-owner and review status"
+  required_quality_disclosure: "Foreground coverage; measurement and calibration evidence; temporal representativeness; mass and energy reconciliation; cut-offs; secondary-data substitutions; unresolved UUIDs; provisional-range use; allocation sensitivity; validation checks skipped"
+  update_trigger: "Material change in product form, slaughter or chilling technology, facility geography, energy or water system, refrigerant, packaging, treatment route, allocation economics, applicable hygiene rule, data older than the intended representativeness period, or resolution of provisional evidence and UUID gaps"
+data_sources:
+  - id: "codex-cxc-58-2005"
+    type: "standard"
+    reference: "Codex Alimentarius Commission. CXC 58-2005, Code of Hygienic Practice for Meat. Official FAO/WHO Codex PDF: https://www.fao.org/fao-who-codexalimentarius/sh-proxy/en/?lnk=1&url=https%253A%252F%252Fworkspace.fao.org%252Fsites%252Fcodex%252FStandards%252FCXC%2B58-2005%252FCXC_058e.pdf (retrieved 2026-08-11)."
+    used_for: "Slaughter and dressing hygiene, potable-water washing, sanitation, chilling facilities, contamination prevention, inspection and process-control records"
+  - id: "eu-regulation-853-2004"
+    type: "standard"
+    reference: "European Parliament and Council. Regulation (EC) No 853/2004 laying down specific hygiene rules for food of animal origin, consolidated version of 2026-05-07, Annex III Section II. https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:02004R0853-20260507 (retrieved 2026-08-11)."
+    used_for: "Current poultry slaughter, cutting, chilling, storage, and temperature-state requirements; 4 °C conditional rule when applicable"
+  - id: "eu-sa-bref-2023"
+    type: "official_guidance"
+    reference: "European Commission Joint Research Centre. Best Available Techniques Reference Document for Slaughterhouses, Animal By-products and/or Edible Co-products Industries, 2023. https://bureau-industrial-transformation.jrc.ec.europa.eu/sites/default/files/2024-02/SA%20BREF.pdf (retrieved 2026-08-11)."
+    used_for: "Slaughterhouse boundary, input-output inventories, water and energy management, refrigeration, waste, by-products, and wastewater treatment"
+  - id: "fao-leap-poultry-2016"
+    type: "official_guidance"
+    reference: "FAO. 2016. Greenhouse gas emissions and fossil energy use from poultry supply chains: Guidelines for assessment. Livestock Environmental Assessment and Performance Partnership. ISBN 978-92-5-109496-9. Official record: https://openknowledge.fao.org/handle/20.500.14283/i6421en (retrieved 2026-08-11)."
+    used_for: "Product-weight reference flow, primary-processing process map, material balance, foreground collection, system boundary, co-product allocation, cut-off disclosure, and data-quality rules"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:f9368c1a5e808e5e2987d9180fc0e80f99b1d6a3b48ff4c84c0f03fc02a6a389"
+  generated_content_sha256: "sha256:015dab50467d36256381bd2a9669c3ce02ec3e4ea36ea90231761da5abeade54"

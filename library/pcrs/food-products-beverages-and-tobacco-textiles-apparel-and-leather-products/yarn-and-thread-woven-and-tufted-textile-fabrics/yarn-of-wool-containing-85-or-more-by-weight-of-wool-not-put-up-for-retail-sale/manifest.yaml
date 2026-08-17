@@ -2,10 +2,10 @@ schema_version: 1
 id: pcr.food-products-beverages-and-tobacco-textiles-apparel-and-leather-products.yarn-and-thread-woven-and-tufted-textile-fabrics.yarn-of-wool-containing-85-or-more-by-weight-of-wool-not-put-up-for-retail-sale
 title:
   en-US: "Yarn of wool, containing 85% or more by weight of wool, not put up for retail sale"
-  zh-CN: null
-status: scaffold
+  zh-CN: "含羊毛重量达到或超过 85%、非供零售的羊毛纱"
+status: candidate
 pcr_kind: product_category_rule
-content_maturity: empty_scaffold
+content_maturity: authored_methodology
 domains:
   - "food-products-beverages-and-tobacco-textiles-apparel-and-leather-products"
 modules:
@@ -22,16 +22,43 @@ target_entities:
   - flow
   - process
   - lifecyclemodel
+  - dataset
 languages:
   canonical: en-US
   available:
     - en-US
     - zh-CN
 translation_status:
-  zh-CN: scaffold_pending_translation
+  zh-CN: aligned
 classification_refs:
   - system: CPC
     version: "3.0"
     code: "26320"
     title: "Yarn of wool, containing 85% or more by weight of wool, not put up for retail sale"
     mapping_type: exact
+review_metadata:
+  inventory_contract:
+    atomic_flows: v1
+  critical_unresolved: []
+  unresolved_identity:
+    wool_top_input:
+      selected_flow: "Wool top"
+      reason: "Hybrid retrieval returned UUID a19fde0b-23f4-4ab7-9832-317affa7ab44, but its verified CPC 26330 classification describes yarn containing less than 85% wool rather than wool top feedstock; candidate rejected."
+    prepared_wool_sliver_output:
+      selected_flow: "Prepared wool sliver"
+      reason: "Hybrid retrieval returned man-made-fibre blended slivers or Wool Top records with incompatible classification; no candidate preserved the all-wool prepared-sliver meaning."
+    prepared_wool_sliver_input:
+      selected_flow: "Prepared wool sliver"
+      reason: "Same physical intermediate as prepared_wool_sliver_output; no semantically exact state-100 flow was confirmed."
+    fibre_preparation_waste_output:
+      selected_flow: "Wool fibre preparation waste"
+      reason: "Hybrid retrieval returned generic textile-fibre wastes and wool spinning waste UUID db23708c-5c2f-4b7e-9098-910948275caa; flow get identifies the latter route as generated during spinning, so it was rejected for the fibre-preparation process."
+    spinning_lubricant_input:
+      selected_flow: "Mineral-oil-based wool spinning lubricant"
+      reason: "Hybrid retrieval returned Wool oil UUID 1f2ab611-6efb-44d1-b620-c42d0185c05f, but flow get identifies its route as Dyeing process and does not confirm spinning-lubricant use; candidate rejected."
+    unconditioned_wool_yarn_output:
+      selected_flow: "Unconditioned bulk wool yarn containing at least 85% wool by mass"
+      reason: "The CPC 26320 flow is explicitly a finished manufactured product and does not preserve the unconditioned intermediate state; it is reserved for the final reference output."
+    unconditioned_wool_yarn_input:
+      selected_flow: "Unconditioned bulk wool yarn containing at least 85% wool by mass"
+      reason: "Same physical intermediate as unconditioned_wool_yarn_output; no semantically exact state-100 flow was confirmed."

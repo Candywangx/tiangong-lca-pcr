@@ -2,10 +2,10 @@ schema_version: 1
 id: pcr.food-products-beverages-and-tobacco-textiles-apparel-and-leather-products.meat-fish-fruits-vegetables-oils-and-fats.fish-livers-and-roes-frozen
 title:
   en-US: "Fish livers and roes, frozen"
-  zh-CN: null
-status: scaffold
+  zh-CN: "冷冻鱼肝和鱼卵"
+status: candidate
 pcr_kind: product_category_rule
-content_maturity: empty_scaffold
+content_maturity: authored_methodology
 domains:
   - "food-products-beverages-and-tobacco-textiles-apparel-and-leather-products"
 modules:
@@ -22,16 +22,124 @@ target_entities:
   - flow
   - process
   - lifecyclemodel
+  - dataset
 languages:
   canonical: en-US
   available:
     - en-US
     - zh-CN
 translation_status:
-  zh-CN: scaffold_pending_translation
+  zh-CN: aligned
 classification_refs:
   - system: CPC
     version: "3.0"
     code: "21226"
     title: "Fish livers and roes, frozen"
     mapping_type: exact
+review_metadata:
+  inventory_contract:
+    atomic_flows: v1
+  review_notes:
+    - "Existing process boundaries, amount bases, evidence kinds, collection protocols, source references, and provisional reasoned-estimate ranges were retained while collection and selector rows were split into atomic exchanges."
+    - "The Codex -18 °C thermal-centre and frozen-storage requirements remain source-backed control requirements, not estimated operating averages."
+    - "EU PEF allocation and data-quality method application remains subject to methodology review before lifecycle activation."
+  unresolved_flow_identities:
+    - row_id: incoming_whole_fish_chilled
+      selected_flow: "Whole fish, chilled"
+      reason: "Hybrid search returned a combined \"Fish livers and roes, fresh or chilled\" flow or whole-fish candidates with incompatible route semantics; no single state_code=100 flow matched this atomic product and starting condition."
+    - row_id: incoming_fish_liver_chilled
+      selected_flow: "Fish liver, chilled"
+      reason: "Hybrid search returned a combined \"Fish livers and roes, fresh or chilled\" flow or whole-fish candidates with incompatible route semantics; no single state_code=100 flow matched this atomic product and starting condition."
+    - row_id: incoming_fish_roe_chilled
+      selected_flow: "Fish roe, chilled"
+      reason: "Hybrid search returned a combined \"Fish livers and roes, fresh or chilled\" flow or whole-fish candidates with incompatible route semantics; no single state_code=100 flow matched this atomic product and starting condition."
+    - row_id: separation_electricity_low_voltage
+      selected_flow: "Alternating current, low-voltage grid supply"
+      reason: "State_code=100 low- and medium-voltage consumption-mix candidates were China-specific, while the PCR facility geography is not fixed; the geography-mismatched UUIDs were rejected."
+    - row_id: separation_electricity_medium_voltage
+      selected_flow: "Alternating current, medium-voltage grid supply"
+      reason: "State_code=100 low- and medium-voltage consumption-mix candidates were China-specific, while the PCR facility geography is not fixed; the geography-mismatched UUIDs were rejected."
+    - row_id: cleaned_fish_liver_intermediate
+      selected_flow: "Cleaned edible fish liver"
+      reason: "No state_code=100 product flow matched this process-specific fish-organ intermediate without combining liver and roe."
+    - row_id: cleaned_fish_roe_intermediate
+      selected_flow: "Cleaned edible fish roe"
+      reason: "No state_code=100 product flow matched this process-specific fish-organ intermediate without combining liver and roe."
+    - row_id: fish_meat_coproduct
+      selected_flow: "Edible fish meat"
+      reason: "Search returned broad fish-meat or edible-offal categories; no state_code=100 flow matched this single co-product at the declared separation boundary."
+    - row_id: fish_tissue_trimming_waste
+      selected_flow: "Fish-tissue trimming waste"
+      reason: "Waste-flow candidates were generic offal or route-specific seafood residues and did not match this atomic fish-organ waste."
+    - row_id: rejected_fish_liver_waste
+      selected_flow: "Rejected fish liver"
+      reason: "Waste-flow candidates were generic offal or route-specific seafood residues and did not match this atomic fish-organ waste."
+    - row_id: rejected_fish_roe_waste
+      selected_flow: "Rejected fish roe"
+      reason: "Waste-flow candidates were generic offal or route-specific seafood residues and did not match this atomic fish-organ waste."
+    - row_id: process_wastewater
+      selected_flow: "Fish-processing wastewater"
+      reason: "The closest state_code=100 fishery wastewater candidate used Volume and an untreated-to-water route, not the Mass-based wastewater-to-treatment row."
+    - row_id: cleaned_fish_liver_to_freezing
+      selected_flow: "Cleaned edible fish liver"
+      reason: "No state_code=100 product flow matched this process-specific fish-organ intermediate without combining liver and roe."
+    - row_id: cleaned_fish_roe_to_freezing
+      selected_flow: "Cleaned edible fish roe"
+      reason: "No state_code=100 product flow matched this process-specific fish-organ intermediate without combining liver and roe."
+    - row_id: freezing_electricity_low_voltage
+      selected_flow: "Alternating current, low-voltage grid supply"
+      reason: "State_code=100 low- and medium-voltage consumption-mix candidates were China-specific, while the PCR facility geography is not fixed; the geography-mismatched UUIDs were rejected."
+    - row_id: freezing_electricity_medium_voltage
+      selected_flow: "Alternating current, medium-voltage grid supply"
+      reason: "State_code=100 low- and medium-voltage consumption-mix candidates were China-specific, while the PCR facility geography is not fixed; the geography-mismatched UUIDs were rejected."
+    - row_id: frozen_fish_liver_intermediate
+      selected_flow: "Frozen fish liver intermediate"
+      reason: "No state_code=100 product flow matched this process-specific fish-organ intermediate without combining liver and roe."
+    - row_id: frozen_fish_roe_intermediate
+      selected_flow: "Frozen fish roe intermediate"
+      reason: "No state_code=100 product flow matched this process-specific fish-organ intermediate without combining liver and roe."
+    - row_id: freezing_rejected_fish_liver
+      selected_flow: "Rejected frozen fish liver"
+      reason: "Waste-flow candidates were generic offal or route-specific seafood residues and did not match this atomic fish-organ waste."
+    - row_id: freezing_rejected_fish_roe
+      selected_flow: "Rejected frozen fish roe"
+      reason: "Waste-flow candidates were generic offal or route-specific seafood residues and did not match this atomic fish-organ waste."
+    - row_id: glazing_wastewater
+      selected_flow: "Glazing wastewater"
+      reason: "The closest state_code=100 fishery wastewater candidate used Volume and an untreated-to-water route, not the Mass-based wastewater-to-treatment row."
+    - row_id: freezer_r134a_emission
+      selected_flow: "HFC-134a to air"
+      reason: "HFC-134a elementary candidates could not be assigned to the required air compartment unambiguously by direct read."
+    - row_id: freezer_r404a_emission
+      selected_flow: "Refrigerant R404A to air"
+      reason: "Hybrid search returned no state_code=100 elementary flow representing R404A released to air."
+    - row_id: frozen_fish_liver_to_packaging
+      selected_flow: "Frozen fish liver intermediate"
+      reason: "No state_code=100 product flow matched this process-specific fish-organ intermediate without combining liver and roe."
+    - row_id: frozen_fish_roe_to_packaging
+      selected_flow: "Frozen fish roe intermediate"
+      reason: "No state_code=100 product flow matched this process-specific fish-organ intermediate without combining liver and roe."
+    - row_id: storage_electricity_low_voltage
+      selected_flow: "Alternating current, low-voltage grid supply"
+      reason: "State_code=100 low- and medium-voltage consumption-mix candidates were China-specific, while the PCR facility geography is not fixed; the geography-mismatched UUIDs were rejected."
+    - row_id: storage_electricity_medium_voltage
+      selected_flow: "Alternating current, medium-voltage grid supply"
+      reason: "State_code=100 low- and medium-voltage consumption-mix candidates were China-specific, while the PCR facility geography is not fixed; the geography-mismatched UUIDs were rejected."
+    - row_id: polyethylene_packaging_scrap
+      selected_flow: "Polyethylene-bag packaging scrap"
+      reason: "Waste-flow search did not confirm a state_code=100 identity for this single packaging waste material and boundary."
+    - row_id: corrugated_cardboard_scrap
+      selected_flow: "Corrugated-cardboard packaging scrap"
+      reason: "Waste-flow search did not confirm a state_code=100 identity for this single packaging waste material and boundary."
+    - row_id: unsaleable_frozen_fish_liver
+      selected_flow: "Unsaleable frozen fish liver"
+      reason: "Waste-flow candidates were generic offal or route-specific seafood residues and did not match this atomic fish-organ waste."
+    - row_id: unsaleable_frozen_fish_roe
+      selected_flow: "Unsaleable frozen fish roe"
+      reason: "Waste-flow candidates were generic offal or route-specific seafood residues and did not match this atomic fish-organ waste."
+    - row_id: cold_store_r134a_emission
+      selected_flow: "HFC-134a to air"
+      reason: "HFC-134a elementary candidates could not be assigned to the required air compartment unambiguously by direct read."
+    - row_id: cold_store_r404a_emission
+      selected_flow: "Refrigerant R404A to air"
+      reason: "Hybrid search returned no state_code=100 elementary flow representing R404A released to air."

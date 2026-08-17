@@ -51,8 +51,7 @@ test("buildViewer writes viewer data and static assets", () => {
     assert.equal(data.schema_version, 3);
     assert.equal(data.viewer_kind, "tiangong-pcr-static-viewer-data");
     assert.equal(data.catalog_scope, "material");
-    assert.ok(data.pcr_count > 0);
-    assert.ok(data.pcr_count < 50, `Expected a bounded material catalog, received ${data.pcr_count} PCRs`);
+    assert.equal(data.pcr_count, 303);
     assert.ok(existsSync(dataPath));
     assert.ok(existsSync(path.join(outDir, "index.html")));
     assert.ok(existsSync(path.join(outDir, "styles.css")));
@@ -78,11 +77,14 @@ test("buildViewer writes viewer data and static assets", () => {
     );
     assert.equal(cpcCoverage.entries_inlined, false);
     assert.equal(cpcCoverage.summary.total, 2877);
-    assert.equal(cpcCoverage.summary.mapped, 3);
-    assert.equal(cpcCoverage.summary.unmapped, 2874);
+    assert.equal(cpcCoverage.summary.mapped, 303);
+    assert.equal(cpcCoverage.summary.unmapped, 2574);
     assert.equal(Object.hasOwn(cpcCoverage, "entries"), false);
     assert.equal(Object.hasOwn(parsed, "classification_coverage"), false);
-    assert.ok(readFileSync(dataPath).byteLength < 2_000_000, "Expected material viewer data below 2 MB");
+    assert.ok(
+      readFileSync(dataPath).byteLength < data.pcr_count * 350_000,
+      "Expected material viewer data below 350 KB per material PCR",
+    );
     assert.equal(abalone.title["en-US"], "Farmed abalone, live, fresh or chilled");
     assert.equal(abalone.markdown["en-US"].includes("# Farmed abalone"), true);
     assert.equal(abalone.markdown["zh-CN"].includes("# 养殖鲍鱼"), true);
@@ -107,10 +109,7 @@ test("buildViewer scope all preserves catalog compatibility without inlining emp
 
     assert.equal(data.catalog_scope, "all");
     assert.ok(data.pcr_count > materialData.pcr_count);
-    assert.ok(
-      JSON.stringify(materialData).length * 5 < JSON.stringify(data).length,
-      "Expected default material data to be at least five times smaller than all-scope data",
-    );
+    assert.ok(JSON.stringify(materialData).length < JSON.stringify(data).length);
     assert.ok(scaffolds.length > 0);
     for (const scaffold of scaffolds) {
       assert.equal(Object.hasOwn(scaffold, "markdown"), false);

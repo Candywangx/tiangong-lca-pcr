@@ -1,10 +1,886 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "21423"
-  title: "Hazelnuts, shelled"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.food-products-beverages-and-tobacco-textiles-apparel-and-leather-products.meat-fish-fruits-vegetables-oils-and-fats.hazelnuts-shelled"
+  classification_refs: "CPC 3.0 subclass 21423, Hazelnuts, shelled (unsd-cpc-3-0-21423)"
+  covered_products: "Raw whole or broken hazelnut kernels marketed after shell removal, including bulk and packed kernels whose grade and condition are declared"
+  excluded_products: "In-shell hazelnuts; roasted, blanched, sliced, ground, flavoured, coated, or formulated hazelnut products; hazelnut oil and meal"
+  representative_product: "Raw shelled hazelnut kernels at the shelling or packing facility gate"
+  production_route: "Receipt and preparation of in-shell hazelnuts; shelling and kernel sorting; one declared final route followed by release or packing"
+  market_state: "Bulk or packed raw kernels, with kernel form, commercial type or variety where declared, origin, crop year or lot period, quality designation, size or calibre, moisture basis, final-treatment route, and packaging state reported"
+functional_unit:
+  what: "Make shelled hazelnut kernels available at the facility gate for further food distribution or processing"
+  how_much: "1 kg net mass of shelled hazelnut kernels, excluding packaging"
+  how_well: "Conforming to the declared kernel form, commercial type or variety where declared, quality designation, size or calibre, moisture basis, defect-screening criteria, and packaging state"
+  how_long_or_cycle: "One identified production lot or campaign through facility-gate release; no service life is assigned"
+  reference_flow_link: "Output row shelled_hazelnuts_reference of process final_conditioning_and_packing"
+system_boundary:
+  rules:
+    - rule_id: boundary_gate_to_gate
+      applies_to: "Foreground system"
+      rule: "Include receipt, on-site preparation, shelling, separation, sorting, the one selected final route, release or packing, direct utilities, direct elementary releases, wastes, and co-products from acceptance through facility-gate output."
+      source_ids:
+        - eu-pef-2021-2279
+    - rule_id: boundary_upstream_linkage
+      applies_to: "Upstream inputs"
+      rule: "Represent in-shell hazelnuts, pre-receipt operations, inbound transport, energy, water, and packaging by traceable upstream datasets consistent with the declared geography, period, and technology."
+      source_ids:
+        - eu-pef-2021-2279
+    - rule_id: boundary_route_choice
+      applies_to: "Final conditioning"
+      rule: "Apply either dry_route or wet_route to a represented lot. Water-contact washing and consequential drying belong only to wet_route; never add them to dry_route."
+      source_ids: []
+    - rule_id: boundary_direct_releases
+      applies_to: "Each foreground process"
+      rule: "Record each measured, calculated, permitted, or otherwise reportable direct elementary release as an individual flow; do not use a generic unspecified emission as a substitute."
+      source_ids:
+        - eu-pef-2021-2279
+boundary_abstraction:
+  declared_starting_condition: "In-shell hazelnuts accepted at the shelling-facility gate, with origin, lot period, incoming moisture basis, storage condition, and any prior drying or treatment declared"
+  starting_condition_role: "Upstream product input to the foreground shelling system"
+  product_classification_scope: "Shelled hazelnut kernels corresponding semantically to CPC 3.0 subclass 21423; the classification reference does not own PCR identity"
+  recursive_input_rule: "Purchased shelled hazelnut kernels entering blending or packing are represented by a separate upstream shelled-hazelnut dataset and bypass receipt and shelling in this foreground system; their mass share and attributes are disclosed and are not regenerated through this process chain"
+  upstream_dataset_requirement: "Link cultivation, harvest, pre-receipt conditioning, and inbound transport datasets appropriate to the declared origin, crop period, incoming condition, and logistics"
+  disclosure: "Report facility location, reporting period, source regions, incoming condition, included on-site preparation, selected final route, packaging state, co-product destinations, waste treatment, and all exclusions"
+reference_flow_definition:
+  reference_amount: "1 kg net mass"
+  product_flow_ref:
+    name: "Hazelnuts, shelled"
+    uuid: "310457e0-388d-4c3a-9090-b4bbc5288d05"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "raw kernel state"
+    - whole
+    - broken
+    - "or declared mixture"
+    - "commercial type or variety where declared"
+    - origin
+    - "crop year or lot period"
+    - "quality designation"
+    - "size or calibre"
+    - "moisture content and measurement basis"
+    - shell-fragment
+    - foreign-matter
+    - "and defect-screening criteria"
+    - "dry_route or wet_route"
+    - "bulk or packaging specification"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_net_mass
+    applies_to: "Reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Report net kernel mass after tare and packaging deduction at the facility-gate measurement point."
+  - id: consistent_moisture_basis
+    applies_to: "Incoming nuts, intermediate kernels, outputs, and losses"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Record moisture content, sampling point, method, and wet- or dry-basis convention. Convert masses between moisture bases only with the recorded measurements and an explicit equation."
+  - id: lot_mass_balance
+    applies_to: "Each foreground process"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Use calibrated scale records for input, product, co-product, and waste masses over the same lot or reconciled reporting period; disclose inventory change and moisture correction separately."
+  - id: route_exclusivity
+    applies_to: "Final conditioning"
+    required_property_ref:
+      name: "Route declaration"
+      uuid: ""
+    required_unit: "dry_route or wet_route"
+    rule: "Select exactly one final-treatment route per represented lot: dry_route has no intentional kernel washing, while wet_route includes intentional washing and the consequent drying step. Do not apply both routes to the same product mass."
+process_map:
+  - id: receipt_and_preparation
+    name: "Receipt and preparation of in-shell hazelnuts"
+    inclusion: "required"
+    inclusion_condition: "Always included; record only preparation actually performed after facility-gate acceptance"
+    role: "Establish the declared starting condition, remove extraneous material, and condition the in-shell feed where needed"
+    quantitative_reference: "Per 1 kg prepared in-shell hazelnuts transferred to shelling"
+  - id: shelling_and_sorting
+    name: "Shelling, separation, and kernel sorting"
+    inclusion: "required"
+    inclusion_condition: "Always included"
+    role: "Remove shells, separate kernel fractions, and classify each shell or kernel fraction once as product or waste"
+    quantitative_reference: "Per 1 kg sorted kernel intermediate transferred to final conditioning"
+  - id: final_conditioning_and_packing
+    name: "Final conditioning, release, and packing"
+    inclusion: "required"
+    inclusion_condition: "Always included; exactly one of dry_route or wet_route applies to each represented lot"
+    role: "Apply the declared route, verify release attributes, and produce bulk or packed reference product"
+    quantitative_reference: "Per 1 kg net shelled hazelnut reference product"
+process_inventory:
+  - id: receipt_and_preparation
+    label: "Receipt and preparation of in-shell hazelnuts"
+    inputs:
+      product:
+        - row_id: in_shell_hazelnuts_input
+          role: "Incoming in-shell hazelnuts"
+          name: "In-shell hazelnuts; resolve a Tiangong product-flow UUID in the produced dataset"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "The accepted lot crossing the facility gate is recorded separately by origin, lot period, incoming moisture basis, and prior treatment."
+          amount:
+            expression: "Measured net mass accepted into the represented lot or reconciled campaign"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net shelled hazelnut reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_receipt_mass_and_identity
+              source_ids: []
+            ranges:
+              - role: default_estimate
+                lower: "1"
+                upper: "5"
+                unit: "kg"
+                basis: "per 1 kg net shelled hazelnut reference product; candidate-only fallback subject to replacement before reviewed release"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: receipt_electricity
+          role: "Electricity for receipt and preparation"
+          name: "Electricity supply appropriate to the facility; resolve the product flow in the produced dataset"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Metered or allocated electricity covers receiving, conveying, pre-cleaning, ventilation, and conditioning equipment actually operated in this process."
+          amount:
+            expression: "Metered use, or documented allocation from a facility meter to the represented equipment and period"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg prepared in-shell hazelnuts transferred to shelling"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_receipt_utilities
+              source_ids: []
+            ranges:
+              - role: default_estimate
+                lower: "0"
+                upper: "0.5"
+                unit: "kWh"
+                basis: "per 1 kg prepared in-shell hazelnuts; broad candidate-only screen, not an LCI default"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: receipt_conditioning_heat
+          role: "Thermal energy for on-site conditioning"
+          name: "Site-specific heat or fuel supply; resolve each energy carrier separately in the produced dataset"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "This input is recorded only when heating or drying occurs after facility-gate acceptance and before shelling; pre-receipt drying remains upstream."
+          amount:
+            expression: "Metered or purchase-record energy attributed to the on-site conditioning operation"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg prepared in-shell hazelnuts transferred to shelling"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_receipt_utilities
+              source_ids: []
+            ranges:
+              - role: default_estimate
+                lower: "0"
+                upper: "20"
+                unit: "MJ"
+                basis: "per 1 kg prepared in-shell hazelnuts; broad candidate-only screen, not an LCI default"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: prepared_in_shell_hazelnuts
+          role: "Prepared in-shell hazelnuts"
+          name: "Prepared in-shell hazelnuts; internal product flow"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "The measured transfer to shelling preserves lot identity and reports any moisture correction separately."
+          amount:
+            expression: "Measured transfer mass to shelling_and_sorting"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg prepared in-shell hazelnuts transferred to shelling"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_receipt_mass_and_identity
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: receipt_removed_fraction
+          role: "Removed extraneous material and unusable in-shell fraction"
+          name: "Site-specific waste flow resolved by material and treatment route in the produced dataset"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Extraneous material and rejected incoming nuts leaving foreground control are recorded by actual destination and are not netted from utility records."
+          amount:
+            expression: "Measured mass sent to each waste treatment route"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted in-shell hazelnuts"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_receipt_mass_and_identity
+              source_ids: []
+            ranges:
+              - role: default_estimate
+                lower: "0"
+                upper: "1"
+                unit: "kg"
+                basis: "per 1 kg accepted in-shell hazelnuts; physically bounded candidate-only screen"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        []
+  - id: shelling_and_sorting
+    label: "Shelling, separation, and kernel sorting"
+    inputs:
+      product:
+        - row_id: prepared_in_shell_hazelnuts_input
+          role: "Prepared in-shell hazelnuts transferred to shelling"
+          name: "Prepared in-shell hazelnuts; internal product flow"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This internal product input equals the measured output of receipt_and_preparation after any disclosed inventory change."
+          amount:
+            expression: "Matched transfer mass from prepared_in_shell_hazelnuts"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg sorted kernel intermediate"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_shelling_mass_balance
+              source_ids: []
+            ranges: []
+        - row_id: shelling_electricity
+          role: "Electricity for shelling and sorting"
+          name: "Electricity supply appropriate to the facility; resolve the product flow in the produced dataset"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Electricity covers shell cracking, separation, aspiration, conveying, inspection, and sorting equipment actually used."
+          amount:
+            expression: "Metered use, or documented allocation from a facility meter to the represented equipment and period"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg sorted kernel intermediate"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_shelling_utilities
+              source_ids: []
+            ranges:
+              - role: default_estimate
+                lower: "0"
+                upper: "2"
+                unit: "kWh"
+                basis: "per 1 kg sorted kernel intermediate; broad candidate-only screen, not an LCI default"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: sorted_kernel_intermediate
+          role: "Sorted kernel intermediate"
+          name: "Hazelnut kernel intermediate; internal product flow"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "The kernel stream transferred to final conditioning is measured after shell and defect separation and before any final route-specific operation."
+          amount:
+            expression: "Measured transfer mass to final_conditioning_and_packing"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg sorted kernel intermediate"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_shelling_mass_balance
+              source_ids: []
+            ranges: []
+        - row_id: marketed_hazelnut_shells
+          role: "Marketed hazelnut shells"
+          name: "Hazelnut shells as a site-specific co-product; resolve the product flow in the produced dataset"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record shells here only when they meet the documented destination's product acceptance criteria and leave as a co-product. The same shell mass must not also be reported as waste."
+          amount:
+            expression: "Measured mass delivered for a documented beneficial use or sale"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg sorted kernel intermediate"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_shelling_mass_balance
+              source_ids: []
+            ranges: []
+        - row_id: usable_kernel_fractions
+          role: "Other usable kernel fractions"
+          name: "Site-specific usable hazelnut kernel fraction; resolve the product flow in the produced dataset"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record off-grade or broken kernels here only when transferred as a product with a documented use or customer; otherwise use the waste row below, never both."
+          amount:
+            expression: "Measured mass transferred as a product"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg sorted kernel intermediate"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_shelling_mass_balance
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: discarded_hazelnut_shells
+          role: "Discarded shells"
+          name: "Hazelnut shell waste resolved by treatment route in the produced dataset"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Shells sent to waste treatment are recorded here by destination. Shells reported as marketed_hazelnut_shells are excluded from this row."
+          amount:
+            expression: "Measured mass sent to each waste treatment route"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg prepared in-shell hazelnuts entering shelling"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_shelling_mass_balance
+              source_ids: []
+            ranges:
+              - role: default_estimate
+                lower: "0"
+                upper: "1"
+                unit: "kg"
+                basis: "per 1 kg prepared in-shell hazelnuts; physically bounded candidate-only screen"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: discarded_kernel_fraction
+          role: "Discarded kernel fractions and foreign matter"
+          name: "Site-specific food-processing waste resolved by material and treatment route in the produced dataset"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Kernel fractions and foreign matter without a documented product destination are reported by treatment route and are not counted as co-products."
+          amount:
+            expression: "Measured mass sent to each waste treatment route"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg prepared in-shell hazelnuts entering shelling"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_shelling_mass_balance
+              source_ids: []
+            ranges:
+              - role: default_estimate
+                lower: "0"
+                upper: "1"
+                unit: "kg"
+                basis: "per 1 kg prepared in-shell hazelnuts; physically bounded candidate-only screen"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        []
+  - id: final_conditioning_and_packing
+    label: "Final conditioning, release, and packing"
+    inputs:
+      product:
+        - row_id: sorted_kernel_input
+          role: "Sorted kernel intermediate transferred to final conditioning"
+          name: "Hazelnut kernel intermediate; internal product flow"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This internal product input equals the measured output sorted_kernel_intermediate after disclosed inventory change."
+          amount:
+            expression: "Matched transfer mass from sorted_kernel_intermediate"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net shelled hazelnut reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_final_mass_and_release
+              source_ids: []
+            ranges: []
+        - row_id: final_electricity
+          role: "Electricity for final conditioning and packing"
+          name: "Electricity supply appropriate to the facility; resolve the product flow in the produced dataset"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Electricity covers route-specific handling, final inspection, conveying, and packing equipment actually operated."
+          amount:
+            expression: "Metered use, or documented allocation from a facility meter to the represented equipment and period"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net shelled hazelnut reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_final_utilities_and_route
+              source_ids: []
+            ranges:
+              - role: default_estimate
+                lower: "0"
+                upper: "2"
+                unit: "kWh"
+                basis: "per 1 kg net shelled hazelnut reference product; broad candidate-only screen, not an LCI default"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: wet_route_water
+          role: "Processing water for the wet route"
+          name: "Process water appropriate to the facility; resolve the product flow in the produced dataset"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record water only for a declared wet_route; it is not present in the dry_route inventory."
+          amount:
+            expression: "Metered or batch-record water entering intentional kernel washing"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net shelled hazelnut reference product from wet_route"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_final_utilities_and_route
+              source_ids: []
+            ranges:
+              - role: default_estimate
+                lower: "0"
+                upper: "20"
+                unit: "kg"
+                basis: "per 1 kg net shelled hazelnut reference product from wet_route; broad candidate-only screen, not an LCI default"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: wet_route_drying_energy
+          role: "Thermal energy for wet-route drying"
+          name: "Site-specific heat or fuel supply; resolve each energy carrier in the produced dataset"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Record thermal energy only when washing is followed by drying in the declared wet_route; resolve each carrier separately."
+          amount:
+            expression: "Metered or purchase-record energy attributed to post-washing drying"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net shelled hazelnut reference product from wet_route"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_final_utilities_and_route
+              source_ids: []
+            ranges:
+              - role: default_estimate
+                lower: "0"
+                upper: "20"
+                unit: "MJ"
+                basis: "per 1 kg net shelled hazelnut reference product from wet_route; broad candidate-only screen, not an LCI default"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: packaging_materials
+          role: "Packaging materials"
+          name: "Each packaging material and component resolved separately in the produced dataset"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Packaging entering with the released product is recorded by material and component; the amount is zero only for a documented unpackaged bulk transfer."
+          amount:
+            expression: "Purchase or bill-of-material mass reconciled to packed output, with reusable packaging identified separately"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net shelled hazelnut reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_records
+              source_ids: []
+            ranges:
+              - role: default_estimate
+                lower: "0"
+                upper: "0.5"
+                unit: "kg"
+                basis: "per 1 kg net shelled hazelnut reference product; broad candidate-only screen covering bulk-to-packed states"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: shelled_hazelnuts_reference
+          role: "Shelled hazelnut reference product"
+          name: "Hazelnuts, shelled"
+          flow_type: "product"
+          flow_ref:
+            uuid: "310457e0-388d-4c3a-9090-b4bbc5288d05"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "The reference output is released only after its required qualifiers and selected route are recorded."
+          amount:
+            expression: "1 kg net product after normalization under calc_reference_normalization"
+            value_mode: "fixed_value"
+            specificity: "generic"
+            basis:
+              text: "per 1 kg net shelled hazelnut reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "method_formula"
+              source_ids:
+                - eu-pef-2021-2279
+            ranges:
+              - role: allowed_range
+                lower: "1"
+                upper: "1"
+                unit: "kg"
+                basis: "per 1 kg net shelled hazelnut reference product"
+                basis_kind: "reference_flow"
+                evidence_kind: "method_formula"
+                source_ids:
+                  - eu-pef-2021-2279
+      waste:
+        - row_id: wet_route_wastewater
+          role: "Wet-route wastewater"
+          name: "Wastewater to the documented treatment route in the produced dataset"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record wastewater only for wet_route, net of separately measured water retained in product or evaporated; resolve each treatment destination separately."
+          amount:
+            expression: "Metered discharge or calculated batch balance using collected water and retention records"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net shelled hazelnut reference product from wet_route"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_final_utilities_and_route
+              source_ids: []
+            ranges:
+              - role: default_estimate
+                lower: "0"
+                upper: "20"
+                unit: "kg"
+                basis: "per 1 kg net shelled hazelnut reference product from wet_route; broad candidate-only screen, not an LCI default"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: packaging_preparation_waste
+          role: "Packaging preparation waste"
+          name: "Packaging waste resolved by material and treatment route in the produced dataset"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record damaged, trimmed, or rejected packaging by material and treatment route; use zero only when verified by the packaging record."
+          amount:
+            expression: "Measured waste or reconciled packaging input minus packed and returned components"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net shelled hazelnut reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_records
+              source_ids: []
+            ranges:
+              - role: default_estimate
+                lower: "0"
+                upper: "0.5"
+                unit: "kg"
+                basis: "per 1 kg net shelled hazelnut reference product; broad candidate-only screen"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: alloc_avoid_by_subdivision
+    applies_to: "Shared operations"
+    rule: "First avoid allocation by separately metering or subdividing operations for different lots, routes, and product fractions where practicable."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: alloc_shell_and_kernel_status
+    applies_to: "Shells and non-reference kernel fractions"
+    rule: "Classify each physical fraction exactly once: as a product only with a documented product destination and acceptance, otherwise as waste to its treatment route. Do not report the same mass in both product and waste rows."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: alloc_remaining_joint_inputs
+    applies_to: "Reference kernels and co-products after subdivision"
+    rule: "If allocation remains necessary, use a documented physical relationship that reflects the underlying process relationship. Use economic allocation only when a defensible physical relationship is unavailable; align values to the reporting period, disclose the method and inputs, and test sensitivity."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: alloc_no_unstated_credit
+    applies_to: "Waste treatment and beneficial use"
+    rule: "Do not subtract an avoided-burden credit inside the foreground inventory unless the governing study method explicitly requires it; disclose any downstream substitution or recycling treatment separately."
+    source_ids:
+      - eu-pef-2021-2279
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_receipt_mass_and_identity
+      process_id: "receipt_and_preparation"
+      flow_role: "Incoming, prepared, and removed material mass and identity"
+      record_type: "Scale ticket, intake record, moisture test, and disposition record"
+      raw_fields: "lot_id; origin; crop_or_lot_period; gross_mass; tare_mass; accepted_mass; prepared_mass; removed_mass; moisture_value; moisture_basis; prior_treatment; destination"
+      collection_method: "Calibrated scales plus representative moisture sampling and lot reconciliation"
+      unit: "kg; moisture unit as reported"
+      frequency: "Each lot; aggregate over the declared reporting period"
+      temporal_coverage: "All represented receipt lots"
+      site_scope: "Each included facility"
+      aggregation_rule: "Sum compatible masses; keep moisture corrections and inventory changes separate; normalize only after reconciliation"
+      quality_evidence: "Scale calibration; sampling method; lot trace; signed disposition record"
+    - protocol_id: cp_receipt_utilities
+      process_id: "receipt_and_preparation"
+      flow_role: "Electricity and conditional on-site heat"
+      record_type: "Meter, sub-meter, invoice, fuel receipt, and equipment log"
+      raw_fields: "period; meter_start; meter_end; purchased_quantity; carrier; equipment_hours; allocation_driver; conditioned_mass"
+      collection_method: "Direct metering preferred; otherwise documented allocation to operated equipment and period"
+      unit: "kWh by electricity; MJ by heat or fuel energy"
+      frequency: "Meter interval and each conditioning campaign"
+      temporal_coverage: "Same period as represented prepared output"
+      site_scope: "Each included facility and energy carrier"
+      aggregation_rule: "Subtract documented non-process use; allocate residual by a disclosed causal driver; normalize to prepared mass"
+      quality_evidence: "Meter identity; invoice; equipment log; allocation worksheet"
+    - protocol_id: cp_shelling_mass_balance
+      process_id: "shelling_and_sorting"
+      flow_role: "Prepared input, sorted kernels, shells, usable fractions, and discarded fractions"
+      record_type: "Batch scale and destination record"
+      raw_fields: "batch_id; prepared_input_mass; sorted_kernel_mass; marketed_shell_mass; discarded_shell_mass; usable_fraction_mass; discarded_kernel_mass; inventory_change; moisture_value; destination"
+      collection_method: "Calibrated batch scales with fraction-specific destination reconciliation"
+      unit: "kg"
+      frequency: "Each batch or lot"
+      temporal_coverage: "All represented shelling batches"
+      site_scope: "Each included shelling line"
+      aggregation_rule: "Reconcile all outputs and inventory change to input on a consistent moisture basis; do not duplicate product and waste fractions"
+      quality_evidence: "Scale calibration; batch sheet; destination acceptance; waste receipt; moisture record"
+    - protocol_id: cp_shelling_utilities
+      process_id: "shelling_and_sorting"
+      flow_role: "Electricity"
+      record_type: "Meter, sub-meter, invoice, and equipment log"
+      raw_fields: "period; meter_start; meter_end; electricity_quantity; equipment_hours; allocation_driver; sorted_kernel_mass"
+      collection_method: "Direct metering preferred; otherwise documented allocation to shelling and sorting equipment"
+      unit: "kWh"
+      frequency: "Meter interval and each production campaign"
+      temporal_coverage: "Same period as represented sorted-kernel output"
+      site_scope: "Each included shelling line"
+      aggregation_rule: "Subtract documented non-process use and normalize to sorted kernel mass"
+      quality_evidence: "Meter identity; invoice; equipment log; allocation worksheet"
+    - protocol_id: cp_final_mass_and_release
+      process_id: "final_conditioning_and_packing"
+      flow_role: "Kernel input, reference output, route, and release attributes"
+      record_type: "Batch scale, release test, and lot record"
+      raw_fields: "lot_id; sorted_kernel_input_mass; gross_output_mass; tare_mass; net_output_mass; route; kernel_form; commercial_type_or_variety; origin; crop_or_lot_period; quality_designation; size_or_calibre; moisture_value; moisture_basis; defect_criteria; packaging_state"
+      collection_method: "Calibrated scales and documented release inspection or test"
+      unit: "kg; attribute-specific units"
+      frequency: "Each released lot"
+      temporal_coverage: "All represented released lots"
+      site_scope: "Each included final line"
+      aggregation_rule: "Calculate net output after tare; preserve lot attributes and route; aggregate only compatible product states"
+      quality_evidence: "Scale calibration; release authorization; sampling and test method; lot trace"
+    - protocol_id: cp_final_utilities_and_route
+      process_id: "final_conditioning_and_packing"
+      flow_role: "Electricity, wet-route water and heat, and wastewater"
+      record_type: "Meter, sub-meter, invoice, batch record, and discharge record"
+      raw_fields: "period; lot_id; route; electricity_quantity; wash_water_quantity; heat_quantity; energy_carrier; wastewater_quantity; retained_water; allocation_driver; net_output_mass"
+      collection_method: "Direct batch metering preferred; otherwise documented meter allocation and water balance"
+      unit: "kWh; kg water; MJ; kg wastewater"
+      frequency: "Meter interval and each final-treatment batch"
+      temporal_coverage: "Same period as represented released output"
+      site_scope: "Each included final line and utility"
+      aggregation_rule: "Assign washing water, drying heat, and wastewater only to wet_route; normalize to compatible route output"
+      quality_evidence: "Meter identity; invoice; batch route record; water balance; discharge record; allocation worksheet"
+    - protocol_id: cp_packaging_records
+      process_id: "final_conditioning_and_packing"
+      flow_role: "Packaging input and preparation waste"
+      record_type: "Bill of materials, purchase record, pack count, and waste record"
+      raw_fields: "packaging_material; component_mass; units_used; reusable_status; packed_output_mass; waste_mass; returned_mass; bulk_transfer_flag"
+      collection_method: "Reconcile packaging purchases or bill of materials to packed output, returns, and waste"
+      unit: "kg"
+      frequency: "Each packaging specification and reporting period"
+      temporal_coverage: "Same period as represented packed output"
+      site_scope: "Each included packing line"
+      aggregation_rule: "Sum by material; allocate shared components by pack count or measured mass; report documented bulk transfer separately"
+      quality_evidence: "Supplier specification; bill of materials; purchase record; waste receipt; reconciliation worksheet"
+  calculation_rules:
+    - id: calc_reference_normalization
+      applies_to: "Reference product and all normalized rows"
+      rule: "net reference mass = gross released mass - tare and included packaging mass; divide each reconciled inventory quantity by net reference mass in kg"
+      inputs:
+        - gross_output_mass
+        - tare_mass
+        - included_packaging_mass
+        - reconciled_inventory_quantity
+      output: "kg net reference product and inventory amount per kg reference product"
+      source_ids:
+        - eu-pef-2021-2279
+    - id: calc_moisture_conversion
+      applies_to: "Masses compared at different moisture contents"
+      rule: "dry matter = wet mass × (1 - moisture fraction on wet basis); convert only from recorded measurements and retain the original values and equation"
+      inputs:
+        - wet_mass
+        - moisture_fraction
+        - stated_basis
+      output: "dry-matter-equivalent mass and disclosed conversion"
+      source_ids: []
+    - id: calc_process_mass_balance
+      applies_to: "Each foreground process"
+      rule: "reconciled input = products + co-products + wastes + net inventory change + separately quantified moisture loss or gain; investigate and disclose unresolved residuals rather than forcing closure"
+      inputs:
+        - "input masses"
+        - "output masses"
+        - "waste masses"
+        - "inventory change"
+        - "moisture measurements"
+      output: "process balance and unresolved residual"
+      source_ids:
+        - eu-pef-2021-2279
+    - id: calc_utility_intensity
+      applies_to: "Each utility row"
+      rule: "normalized utility = reconciled process utility divided by the compatible process output mass; keep carrier and route separate"
+      inputs:
+        - metered_or_allocated_utility
+        - compatible_output_mass
+        - carrier
+        - route
+      output: "utility per process output or reference flow"
+      source_ids:
+        - eu-pef-2021-2279
+    - id: calc_wet_route_water_balance
+      applies_to: "wet_route"
+      rule: "wastewater = measured discharge when available; otherwise wash-water input - separately measured retained water - separately measured evaporation or other documented output"
+      inputs:
+        - wash_water_quantity
+        - measured_discharge
+        - retained_water
+        - evaporation_or_other_output
+      output: "wet-route wastewater quantity with method flag"
+      source_ids: []
+  data_quality_requirements:
+    - id: dq_identity_and_traceability
+      applies_to: "All lots and reference flow"
+      requirement: "Preserve supplier or origin, crop year or lot period, incoming condition, commercial type or variety where declared, kernel form, release designation, and Tiangong reference UUID through the data package."
+      evidence: "Lot trace, release record, and reference-flow metadata; product qualifiers informed by unsd-cpc-3-0-21423 and unece-ddp-04-2010"
+    - id: dq_measurement_consistency
+      applies_to: "Mass, moisture, utility, and route records"
+      requirement: "Use calibrated or verified instruments, retain raw readings and allocation worksheets, and compare masses only on a declared moisture basis and compatible route."
+      evidence: "Calibration evidence, meter records, moisture method, and calculation worksheet"
+    - id: dq_temporal_and_site_coverage
+      applies_to: "Foreground data"
+      requirement: "Cover every included site and the declared representative lots or campaigns in the reporting period; disclose shutdowns, missing intervals, substitutions, and exclusions."
+      evidence: "Site list, production calendar, completeness reconciliation, and gap log"
+    - id: dq_fraction_destination
+      applies_to: "Shells and non-reference kernel fractions"
+      requirement: "Retain evidence for product acceptance or waste treatment and reconcile each fraction once without product-waste duplication."
+      evidence: "Customer acceptance, transfer record, waste receipt, and mass balance"
+    - id: dq_reasoned_estimate_replacement
+      applies_to: "Every reasoned_estimate interval"
+      requirement: "Use the interval only conditionally when the named record is unavailable. Replace it when the first verified foreground record or reviewed quantitative source becomes available and before advancing this PCR to reviewed methodology; if retained for a study, label it provisional and report sensitivity."
+      evidence: "Estimate register, replacement review, supporting record or source, and sensitivity result"
+    - id: dq_pef_disclosure
+      applies_to: "Published dataset profile"
+      requirement: "Document boundary, allocation, data sources, data quality, limitations, and modelling choices needed to interpret downstream use."
+      evidence: "Dataset documentation aligned with eu-pef-2021-2279"
+validation_rules:
+  - rule_id: val_reference_identity
+    applies_to: "Reference flow"
+    rule: "The output must use Hazelnuts, shelled UUID 310457e0-388d-4c3a-9090-b4bbc5288d05, Mass UUID 93a60a56-a3c8-11da-a746-0800200b9a66, Units of mass UUID 93a60a57-a4c8-11da-a746-0800200c9a66, and kg, with every required qualifier populated."
+    source_ids:
+      - unsd-cpc-3-0-21423
+      - unece-ddp-04-2010
+  - rule_id: val_reference_amount
+    applies_to: "Reference flow"
+    rule: "Net reference output after tare and packaging deduction must normalize to exactly 1 kg."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: val_route_exclusivity
+    applies_to: "Final conditioning"
+    rule: "Each represented lot must declare exactly one of dry_route or wet_route; washing water, wet-route drying energy, and wastewater must be absent from dry_route and linked only to wet_route."
+    source_ids: []
+  - rule_id: val_process_completeness
+    applies_to: "Foreground system"
+    rule: "All three required processes must be represented, and any excluded on-site operation must be stated with evidence that it did not occur."
+    source_ids: []
+  - rule_id: val_mass_and_moisture_balance
+    applies_to: "Each foreground process"
+    rule: "Inputs, products, co-products, wastes, inventory change, and quantified moisture change must be reconciled on a consistent basis; unresolved residuals must be disclosed."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: val_fraction_exclusivity
+    applies_to: "Shells and other kernel fractions"
+    rule: "A physical fraction must occur in either a product row or a waste row for its destination, never both."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: val_estimate_status
+    applies_to: "Provisional ranges"
+    rule: "Every reasoned_estimate must carry its condition and replacement trigger; validation is inconclusive for reviewed use until it is replaced by verified foreground or reviewed source evidence."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "secondary_dataset or background_dataset after review; candidate foreground package before review"
+  downstream_use: "Product-footprint, process, and lifecycle-model studies needing facility-gate shelled hazelnut production, subject to geographic, temporal, route, and quality representativeness checks"
+  allowed_use: "Use when the incoming condition, source region, technology, final route, kernel form, quality designation, moisture basis, co-product handling, and packaging state match or are transparently adjusted"
+  excluded_use: "Direct representation of cultivation, in-shell hazelnuts, roasted or otherwise further-processed hazelnut products, retail, consumption, or an undeclared mixture of dry and wet final routes"
+  required_metadata: "PCR id and status; Tiangong reference UUIDs; facility and geography; reporting period; source regions; crop or lot period; incoming condition; kernel and quality qualifiers; moisture method and basis; route; process coverage; co-product and waste destinations; allocation; packaging; data sources"
+  required_quality_disclosure: "Foreground versus upstream data shares; meter and scale coverage; allocation method; mass-balance residuals; missing records; provisional estimates and sensitivities; source age; technological, geographic, and temporal limitations"
+  update_trigger: "New verified foreground records; replacement of any reasoned_estimate; changed origin mix, crop period, incoming moisture, equipment, route, quality designation, packaging, co-product destination, allocation basis, regulation, official standard, or source; or a material validation finding"
+data_sources:
+  - id: "unsd-cpc-3-0-21423"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, Central Product Classification (CPC) Version 3.0, subclass 21423, “Hazelnuts, shelled”"
+    used_for: "Classification context and category identity only"
+  - id: "unece-ddp-04-2010"
+    type: "standard"
+    reference: "United Nations Economic Commission for Europe, UNECE Standard DDP-04 concerning the marketing and commercial quality control of hazelnut kernels, 2010 edition, current adopted text"
+    used_for: "Kernel identity and quality or measurement qualifiers only; not LCI default amounts"
+  - id: "eu-pef-2021-2279"
+    type: "official_guidance"
+    reference: "Commission Recommendation (EU) 2021/2279 on the use of the Environmental Footprint methods, Annex I Product Environmental Footprint method"
+    used_for: "Functional-unit normalization, boundary linkage, allocation hierarchy, data quality, disclosure, and validation principles"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:63698a48a71f6eccc51a32f84299d5a8c09b9345979fdf5f717c3ddccaa2b320"
+  generated_content_sha256: "sha256:57d7bea0b52cd73270632e39e746dcc3fdd29be90c22edb5ea38fd9afaad6f51"

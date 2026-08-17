@@ -1,10 +1,1153 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "28232"
-  title: "Men's or boys' shirts, singlets, underpants, pyjamas, dressing gowns and similar articles, of textile fabric, not knitted or crocheted"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.food-products-beverages-and-tobacco-textiles-apparel-and-leather-products.knitted-or-crocheted-fabrics-wearing-apparel.men-s-or-boys-shirts-singlets-underpants-pyjamas-dressing-gowns-and-similar-articles-of-73979720"
+  classification_refs: "CPC 3.0: 28232"
+  covered_products: "Men's or boys' shirts, singlets, underpants, pyjamas, dressing gowns, and similar articles made from woven or other non-knitted and non-crocheted textile fabric"
+  excluded_products: "Knitted or crocheted apparel; women's or girls' apparel; babies' apparel; protective clothing; leather, fur, or primarily plastic apparel"
+  representative_product: "A finished, quality-approved men's woven long-sleeved shirt"
+  production_route: "Received finished woven fabric and components; cutting; sewing and assembly; conditional wet processing; pressing and finishing; inspection; packaging"
+  market_state: "Finished garment at the garment factory gate; packaging is inventoried separately and excluded from reference-product mass"
+functional_unit:
+  what: "Provide a finished men's or boys' woven-textile garment that fulfils its declared clothing function"
+  how_much: "1 kg of finished, quality-approved garment, excluding packaging mass"
+  how_well: "Conforms to the declared product specification, fibre composition, size, construction, finish, and quality acceptance criteria"
+  how_long_or_cycle: "One factory-gate production output event; consumer use duration is outside this foreground dataset"
+  reference_flow_link: "The finished reference garment output from packaging normalized to 1 kg"
+system_boundary:
+  rules:
+    - rule_id: boundary_factory_gate
+      applies_to: "foreground garment production"
+      rule: "Include received-material preparation, cutting, sewing and assembly, applicable garment wet processing, pressing and finishing, inspection, and packaging through accepted finished garment output at the factory gate."
+      source_ids:
+        - afw-pefcr-v3-1-2025
+        - olugbemi-bolson-2026-shirt-carbon
+    - rule_id: boundary_subcontracted_operations
+      applies_to: "outsourced foreground operations"
+      rule: "Include subcontracted cutting, sewing, washing, finishing, or packing as linked processes when they occur for the declared product; disclose the supplier geography and data source."
+      source_ids:
+        - afw-pefcr-v3-1-2025
+    - rule_id: boundary_upstream_inputs
+      applies_to: "purchased materials and utilities"
+      rule: "Link upstream production and transport represented outside the garment facility through explicit product inputs; do not silently omit them from the complete data package."
+      source_ids:
+        - ec-pef-method-2021
+        - afw-pefcr-v3-1-2025
+    - rule_id: boundary_downstream_exclusion
+      applies_to: "distribution, retail, use, and end of life"
+      rule: "Exclude downstream stages from this factory-gate foreground dataset and state that it is not a cradle-to-grave apparel footprint."
+      source_ids:
+        - afw-pefcr-v3-1-2025
+boundary_abstraction:
+  declared_starting_condition: "Finished woven textile fabric, sewing thread, garment components, packaging items, and utilities are received at the garment manufacturing site."
+  starting_condition_role: "Foreground gate at receipt of purchased materials and utilities"
+  product_classification_scope: "Men's or boys' garments within CPC 3.0 code 28232 and the reviewed semantic scope stated in Section 1"
+  recursive_input_rule: "If a finished or partly finished garment within this same semantic product category enters the foreground system, record it as an explicit product input and link its upstream dataset; do not recreate its upstream burdens inside the current process without disclosure."
+  upstream_dataset_requirement: "Each purchased fabric, component, packaging item, electricity supply, steam supply, water supply, and waste-treatment service requires a geographically and technologically representative upstream dataset."
+  disclosure: "Declare facility geography, reporting period, product specification, reference size, BOM coverage, subcontracted operations, wet-processing applicability, utility supply routes, packaging configuration, and all exclusions."
+reference_flow_definition:
+  reference_amount: "1 kg"
+  product_flow_ref:
+    name: "Men's or boys' shirts, singlets, underpants, pyjamas, dressing gowns and similar articles, of textile fabric, not knitted or crocheted"
+    uuid: "66e77e01-9118-4c94-a727-c8bbcf2d4eee"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "garment type"
+    - "men's or boys' designation"
+    - "woven or otherwise non-knitted and non-crocheted construction"
+    - "fibre composition by mass"
+    - "finished product mass"
+    - "reference size"
+    - "BOM coverage"
+    - "wet-processing route"
+    - "finish specification"
+    - "packaging configuration"
+    - "production geography"
+    - "reference year"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Weigh accepted finished garments without sales or transport packaging and normalize the foreground inventory to exactly 1 kg."
+  - id: component_mass
+    applies_to: "fabrics, thread, interlining, fasteners, labels, and packaging"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Record issued mass and returned unused mass separately; do not infer component mass from purchase value."
+  - id: electricity_energy
+    applies_to: "electricity inputs"
+    required_property_ref:
+      name: "Energy"
+      uuid: ""
+    required_unit: "kWh"
+    rule: "Preserve metered electricity in kWh and convert only with a documented unit conversion; do not combine electricity with steam or fuel."
+  - id: steam_energy
+    applies_to: "purchased steam inputs"
+    required_property_ref:
+      name: "Energy"
+      uuid: ""
+    required_unit: "MJ"
+    rule: "Record purchased steam separately from electricity; retain the supplier pressure or enthalpy basis in dataset documentation."
+  - id: water_mass
+    applies_to: "process-water and wastewater rows"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Use measured mass or convert metered volume with a disclosed density appropriate to the measured temperature."
+process_map:
+  - id: cutting
+    name: "Material preparation and cutting"
+    inclusion: "required"
+    inclusion_condition: "Always included for cut-and-sewn woven garments"
+    role: "Foreground conversion of finished woven fabric into garment panels"
+    quantitative_reference: "kg accepted cut panels"
+  - id: sewing_assembly
+    name: "Sewing and assembly"
+    inclusion: "required"
+    inclusion_condition: "Always included"
+    role: "Foreground assembly of panels and components"
+    quantitative_reference: "kg sewn garment shell"
+  - id: wet_processing
+    name: "Garment wet processing"
+    inclusion: "conditional"
+    inclusion_condition: "Include when the product is washed, dyed, rinsed, softened, or otherwise wet-processed after sewing"
+    role: "Foreground wet treatment"
+    quantitative_reference: "kg wet-processed garment"
+  - id: finishing_inspection
+    name: "Pressing, finishing, and inspection"
+    inclusion: "required"
+    inclusion_condition: "Always included; steam row applies only when steam is used"
+    role: "Foreground finishing and quality acceptance"
+    quantitative_reference: "kg accepted finished garment"
+  - id: packaging
+    name: "Product packaging"
+    inclusion: "required"
+    inclusion_condition: "Always included; record zero only for a documented packaging-free product"
+    role: "Foreground sales and shipment preparation"
+    quantitative_reference: "1 kg reference garment output"
+process_inventory:
+  - id: cutting
+    label: "Material preparation and cutting"
+    inputs:
+      product:
+        - row_id: woven_textile_fabric_input
+          role: "Finished woven fabric input"
+          name: "Woven textile fabric, finished"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Finished woven textile fabric crosses the factory boundary for spreading, marker placement, and cutting; obtain its mass from product-specific BOM and material-issue records net of returned unused rolls."
+          amount:
+            expression: "measured issued fabric mass minus measured unused fabric returned to stock"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted finished garment"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cutting_records
+              source_ids:
+                - afw-pefcr-v3-1-2025
+            ranges: []
+        - row_id: cutting_electricity_input
+          role: "Cutting electricity input"
+          name: "Electricity, low voltage, at factory"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Electricity supplied to spreading, cutting, extraction, and directly assigned cutting-area equipment is recorded from a dedicated meter or a documented allocation of the site meter."
+          amount:
+            expression: "measured cutting-process electricity consumption"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted finished garment"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cutting_records
+              source_ids:
+                - afw-pefcr-v3-1-2025
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: cut_garment_panels_output
+          role: "Cut garment panels output"
+          name: "Cut woven textile garment panels"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Accepted cut panels leave the cutting process and enter sewing; determine their mass from batch weighing or a reconciled cutting mass balance."
+          amount:
+            expression: "measured accepted cut-panel mass"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg accepted cut-panel output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cutting_records
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: textile_cutting_offcuts_output
+          role: "Textile cutting offcuts output"
+          name: "Waste woven textile cutting offcuts"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Woven fabric pieces separated during marker cutting cross the process boundary as one composition-specific waste stream; record their measured mass and treatment destination."
+          amount:
+            expression: "measured separated cutting-offcut mass"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg accepted cut-panel output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cutting_records
+              source_ids:
+                - afw-pefcr-v3-1-2025
+            ranges: []
+      elementary:
+        []
+  - id: sewing_assembly
+    label: "Sewing and assembly"
+    inputs:
+      product:
+        - row_id: cut_panels_input
+          role: "Cut panel input"
+          name: "Cut woven textile garment panels"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Accepted cut panels enter sewing as the main material input; transfer mass must reconcile with the preceding cutting output."
+          amount:
+            expression: "measured cut-panel mass issued to sewing"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg sewn garment-shell output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_sewing_records
+              source_ids: []
+            ranges: []
+        - row_id: sewing_thread_input
+          role: "Sewing thread input"
+          name: "Sewing thread"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Sewing thread incorporated into seams crosses the assembly boundary; record its fibre composition and issued mass net of returned cones."
+          amount:
+            expression: "measured issued thread mass minus measured unused thread returned to stock"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg sewn garment-shell output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_sewing_records
+              source_ids:
+                - afw-pefcr-v3-1-2025
+            ranges: []
+        - row_id: fusible_interlining_input
+          role: "Fusible interlining input"
+          name: "Fusible textile interlining"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Fusible textile interlining is recorded only when incorporated into collars, cuffs, plackets, or other declared garment parts; use product BOM and issue records."
+          amount:
+            expression: "measured interlining mass incorporated or issued net of returned unused material"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg sewn garment-shell output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_sewing_records
+              source_ids:
+                - afw-pefcr-v3-1-2025
+            ranges: []
+        - row_id: button_input
+          role: "Button input"
+          name: "Garment button"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Garment buttons are recorded as one material-specific component flow when the product specification includes buttons; convert counted pieces to mass using a retained batch-average weighing record."
+          amount:
+            expression: "button count multiplied by measured average mass per button for the production batch"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg sewn garment-shell output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_sewing_records
+              source_ids:
+                - afw-pefcr-v3-1-2025
+            ranges: []
+        - row_id: slide_fastener_input
+          role: "Slide fastener input"
+          name: "Garment slide fastener"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "A garment slide fastener is recorded only for products whose BOM includes this closure; use measured batch-average component mass and installed count."
+          amount:
+            expression: "installed fastener count multiplied by measured average fastener mass"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg sewn garment-shell output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_sewing_records
+              source_ids:
+                - afw-pefcr-v3-1-2025
+            ranges: []
+        - row_id: sewing_electricity_input
+          role: "Sewing electricity input"
+          name: "Electricity, low voltage, at factory"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Electricity supplied to sewing machines, fusing equipment, buttonholing, trimming, and directly assigned assembly equipment is recorded separately from thermal energy."
+          amount:
+            expression: "measured sewing and assembly electricity consumption"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg sewn garment-shell output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_sewing_records
+              source_ids:
+                - afw-pefcr-v3-1-2025
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: sewn_garment_shell_output
+          role: "Sewn garment shell output"
+          name: "Sewn woven textile garment shell"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "The assembled garment shell leaves sewing after in-line acceptance and before any garment wet treatment or final pressing; record its accepted mass."
+          amount:
+            expression: "measured accepted sewn garment-shell mass"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg sewn garment-shell output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_sewing_records
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: sewing_thread_offcuts_output
+          role: "Sewing thread offcuts output"
+          name: "Waste sewing thread offcuts"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Thread ends and trimmings separated at sewing are recorded as a distinct waste stream with their fibre composition and destination."
+          amount:
+            expression: "measured separated sewing-thread waste mass"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg sewn garment-shell output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_sewing_records
+              source_ids: []
+            ranges: []
+        - row_id: rejected_textile_components_output
+          role: "Rejected textile component output"
+          name: "Waste rejected woven textile garment components"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Uncorrectable cut parts or sewn textile components rejected during assembly are kept separate from thread offcuts and recorded by measured mass and destination."
+          amount:
+            expression: "measured mass of rejected textile components leaving sewing"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg sewn garment-shell output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_sewing_records
+              source_ids:
+                - afw-pefcr-v3-1-2025
+            ranges: []
+      elementary:
+        []
+  - id: wet_processing
+    label: "Garment wet processing"
+    inputs:
+      product:
+        - row_id: sewn_shell_wet_input
+          role: "Sewn shell wet-process input"
+          name: "Sewn woven textile garment shell"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "The sewn garment shell enters the wet-processing process only when the declared production route includes garment washing, rinsing, dyeing, or softening."
+          amount:
+            expression: "measured sewn garment-shell mass charged to wet-processing equipment"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg wet-processed garment output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wet_processing_records
+              source_ids:
+                - afw-pefcr-v3-1-2025
+            ranges: []
+        - row_id: wet_process_water_input
+          role: "Wet-process water input"
+          name: "Process water"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Process water supplied to garment washing, rinsing, or dyeing crosses the wet-processing boundary and is recorded from a dedicated meter or batch tank record."
+          amount:
+            expression: "measured process-water input"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg wet-processed garment output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wet_processing_records
+              source_ids:
+                - afw-pefcr-v3-1-2025
+            ranges: []
+        - row_id: garment_detergent_input
+          role: "Garment detergent input"
+          name: "Garment-washing detergent formulation"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "The exact garment-washing detergent formulation dosed to the batch is recorded as one purchased formulation flow; its trade name or formulation reference must be disclosed."
+          amount:
+            expression: "measured detergent formulation dose"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg wet-processed garment output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wet_processing_records
+              source_ids:
+                - afw-pefcr-v3-1-2025
+            ranges: []
+        - row_id: fabric_softener_input
+          role: "Fabric softener input"
+          name: "Fabric-softener formulation"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "The exact fabric-softener formulation dosed to the batch is recorded only when used; retain its trade name or formulation reference."
+          amount:
+            expression: "measured fabric-softener formulation dose"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg wet-processed garment output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wet_processing_records
+              source_ids:
+                - afw-pefcr-v3-1-2025
+            ranges: []
+        - row_id: wet_processing_electricity_input
+          role: "Wet-processing electricity input"
+          name: "Electricity, low voltage, at factory"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Electricity supplied to washers, pumps, extractors, dryers, and directly assigned wet-processing equipment is metered separately from steam."
+          amount:
+            expression: "measured wet-processing electricity consumption"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg wet-processed garment output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wet_processing_records
+              source_ids:
+                - afw-pefcr-v3-1-2025
+            ranges: []
+        - row_id: wet_processing_steam_input
+          role: "Wet-processing steam input"
+          name: "Steam, at factory gate"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Purchased steam delivered to wet-processing equipment is recorded as its own utility exchange when used; disclose pressure, condensate treatment, and supplier basis."
+          amount:
+            expression: "measured purchased steam delivered to wet processing"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg wet-processed garment output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wet_processing_records
+              source_ids:
+                - afw-pefcr-v3-1-2025
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: wet_processed_garment_output
+          role: "Wet-processed garment output"
+          name: "Wet-processed woven textile garment"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Accepted garment output after washing, rinsing, extraction, and applicable drying crosses to final finishing; record dry product mass at the declared conditioning state."
+          amount:
+            expression: "measured dry accepted garment mass after wet processing"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg wet-processed garment output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wet_processing_records
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: textile_washing_wastewater_output
+          role: "Textile washing wastewater output"
+          name: "Wastewater from garment washing"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Wastewater discharged from garment washing or rinsing is recorded separately from solid textile waste and linked to its actual treatment route."
+          amount:
+            expression: "measured wastewater discharge mass"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg wet-processed garment output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wet_processing_records
+              source_ids:
+                - afw-pefcr-v3-1-2025
+            ranges: []
+      elementary:
+        []
+  - id: finishing_inspection
+    label: "Pressing, finishing, and inspection"
+    inputs:
+      product:
+        - row_id: sewn_shell_finishing_input
+          role: "Sewn shell finishing input"
+          name: "Sewn woven textile garment shell"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "For a route without garment wet processing, the accepted sewn garment shell enters finishing directly and is recorded as a distinct conditional input."
+          amount:
+            expression: "measured sewn garment-shell mass entering finishing when wet processing is not applicable"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg accepted finished garment"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing_records
+              source_ids:
+                - afw-pefcr-v3-1-2025
+            ranges: []
+        - row_id: wet_garment_finishing_input
+          role: "Wet garment finishing input"
+          name: "Wet-processed woven textile garment"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "For a route with garment wet processing, the dry accepted wet-processed garment enters finishing and is recorded separately from the direct sewn-shell route."
+          amount:
+            expression: "measured wet-processed garment mass entering finishing"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg accepted finished garment"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing_records
+              source_ids:
+                - afw-pefcr-v3-1-2025
+            ranges: []
+        - row_id: finishing_electricity_input
+          role: "Finishing electricity input"
+          name: "Electricity, low voltage, at factory"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Electricity supplied to pressing controls, inspection lighting, trimming, and directly assigned finishing equipment is recorded separately from steam."
+          amount:
+            expression: "measured finishing and inspection electricity consumption"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg accepted finished garment"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing_records
+              source_ids:
+                - afw-pefcr-v3-1-2025
+            ranges: []
+        - row_id: finishing_steam_input
+          role: "Finishing steam input"
+          name: "Steam, at factory gate"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Purchased steam supplied to garment pressing equipment is recorded as one utility exchange when steam pressing is used."
+          amount:
+            expression: "measured purchased steam delivered to pressing equipment"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg accepted finished garment"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing_records
+              source_ids:
+                - afw-pefcr-v3-1-2025
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: finished_garment_output
+          role: "Finished garment output"
+          name: "Finished woven textile garment"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "The quality-approved finished garment leaves inspection and enters packaging; record its conditioned mass without packaging."
+          amount:
+            expression: "measured quality-approved finished garment mass excluding packaging"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg accepted finished garment"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing_records
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: defective_garment_output
+          role: "Defective garment output"
+          name: "Waste defective woven textile garment"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Finished garments rejected as uncorrectable during final inspection are recorded as a distinct waste stream with measured mass and destination."
+          amount:
+            expression: "measured mass of uncorrectable defective garments leaving inspection"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg accepted finished garment"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing_records
+              source_ids:
+                - afw-pefcr-v3-1-2025
+            ranges: []
+      elementary:
+        []
+  - id: packaging
+    label: "Product packaging"
+    inputs:
+      product:
+        - row_id: finished_garment_packaging_input
+          role: "Finished garment packaging input"
+          name: "Finished woven textile garment"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "The accepted finished garment enters product packaging; its measured mass must match the finishing output for the same production batch after accounting for documented handling rejects."
+          amount:
+            expression: "measured finished garment mass released to packaging"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference garment output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_records
+              source_ids: []
+            ranges: []
+        - row_id: polyethylene_bag_input
+          role: "Polyethylene bag input"
+          name: "Low-density polyethylene garment bag"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "The low-density polyethylene bag immediately covering the garment is recorded as one packaging-material flow when used."
+          amount:
+            expression: "installed bag count multiplied by measured average bag mass"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference garment output"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_records
+              source_ids:
+                - afw-pefcr-v3-1-2025
+            ranges: []
+        - row_id: paperboard_hangtag_input
+          role: "Paperboard hangtag input"
+          name: "Paperboard garment hangtag"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "The paperboard hangtag attached to or packed with the garment is recorded separately from the shipping carton."
+          amount:
+            expression: "installed hangtag count multiplied by measured average hangtag mass"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference garment output"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_records
+              source_ids:
+                - afw-pefcr-v3-1-2025
+            ranges: []
+        - row_id: corrugated_carton_input
+          role: "Corrugated carton input"
+          name: "Corrugated fibreboard shipping carton"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "The corrugated fibreboard carton used to group garments for shipment is recorded as one tertiary packaging flow and allocated by the measured number or mass of garments packed in the carton."
+          amount:
+            expression: "measured carton mass allocated by garment mass packed in that carton"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference garment output"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_records
+              source_ids:
+                - afw-pefcr-v3-1-2025
+            ranges: []
+        - row_id: packaging_electricity_input
+          role: "Packaging electricity input"
+          name: "Electricity, low voltage, at factory"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Electricity supplied to folding, bag sealing, labelling, carton sealing, and directly assigned packing equipment is recorded independently from other factory electricity."
+          amount:
+            expression: "measured packaging-process electricity consumption"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference garment output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_records
+              source_ids:
+                - afw-pefcr-v3-1-2025
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: reference_garment_output
+          role: "Reference garment output"
+          name: "Men's or boys' shirts, singlets, underpants, pyjamas, dressing gowns and similar articles, of textile fabric, not knitted or crocheted"
+          flow_type: "product"
+          flow_ref:
+            uuid: "66e77e01-9118-4c94-a727-c8bbcf2d4eee"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "The accepted garment is the declared reference product; the exchange amount is normalized to 1 kg of garment mass while all packaging remains in separate input rows."
+          amount:
+            expression: "exactly 1 kg after normalization from measured accepted garment mass"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "1 kg accepted finished garment excluding packaging"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_records
+              source_ids:
+                - un-cpc-3-0-28232
+            ranges: []
+      waste:
+        - row_id: waste_polyethylene_film_output
+          role: "Waste polyethylene film output"
+          name: "Waste low-density polyethylene film"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Damaged or unused low-density polyethylene garment bags leaving packaging are recorded separately from paper-based packaging waste."
+          amount:
+            expression: "measured waste polyethylene film mass"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference garment output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_records
+              source_ids: []
+            ranges: []
+        - row_id: waste_paperboard_output
+          role: "Waste paperboard output"
+          name: "Waste paperboard hangtags"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Rejected or unused paperboard hangtags leaving packaging are recorded as a distinct paperboard waste stream."
+          amount:
+            expression: "measured waste paperboard hangtag mass"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference garment output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_records
+              source_ids: []
+            ranges: []
+        - row_id: waste_corrugated_board_output
+          role: "Waste corrugated board output"
+          name: "Waste corrugated fibreboard"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Damaged or unused corrugated fibreboard cartons leaving packaging are recorded separately from hangtags and polymer film."
+          amount:
+            expression: "measured waste corrugated fibreboard mass"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference garment output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_records
+              source_ids: []
+            ranges: []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocation_subdivision_first
+    applies_to: "independently measurable garment processes or batches"
+    rule: "Avoid allocation by subdividing cutting, sewing, wet processing, finishing, and packaging whenever meters, issue records, batch records, or production counts permit direct assignment."
+    source_ids:
+      - ec-pef-method-2021
+      - afw-pefcr-v3-1-2025
+  - rule_id: allocation_shared_electricity
+    applies_to: "shared factory electricity"
+    rule: "Use product-specific metering first; when unavailable, allocate a documented shared-meter total by the mass of conforming production from the same equipment, site, and reporting interval."
+    source_ids:
+      - afw-pefcr-v3-1-2025
+  - rule_id: allocation_shared_steam
+    applies_to: "shared purchased steam"
+    rule: "Use product- or line-specific steam metering first; otherwise allocate measured delivered steam by a documented physical driver such as equipment operating time and verified load, then disclose the method."
+    source_ids:
+      - ec-pef-method-2021
+  - rule_id: allocation_textile_offcuts
+    applies_to: "cutting offcuts and rejected garment material"
+    rule: "Record offcuts and rejects as waste outputs with actual destinations; do not treat sales revenue or avoided disposal as a reason to remove their production burden from the foreground mass balance."
+    source_ids:
+      - afw-pefcr-v3-1-2025
+  - rule_id: allocation_no_undocumented_credit
+    applies_to: "recycling, reuse, or energy-recovery claims"
+    rule: "Keep any downstream credit outside this factory-gate foreground inventory unless the selected downstream LCA method explicitly requires it; disclose that method and all parameters."
+    source_ids:
+      - afw-pefcr-v3-1-2025
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_cutting_records
+      process_id: "cutting"
+      flow_role: "finished fabric, electricity, accepted panels, cutting offcuts"
+      record_type: "BOM, material issue and return log, batch scale record, meter record, waste ticket"
+      raw_fields: "batch_id; product_code; fabric_specification; issued_fabric_kg; returned_fabric_kg; accepted_panel_kg; offcut_kg; electricity_kWh; meter_id; timestamp"
+      collection_method: "reconcile material issue and return records to calibrated batch scales and the cutting-area electricity meter"
+      unit: "kg; kWh"
+      frequency: "each production batch with monthly meter reconciliation"
+      temporal_coverage: "at least 12 consecutive representative months or the full production campaign"
+      site_scope: "all cutting lines producing the declared product"
+      aggregation_rule: "sum verified batch records and normalize by accepted finished garment mass"
+      quality_evidence: "calibration certificate; signed issue and return log; meter photograph or export; waste receipt"
+    - protocol_id: cp_sewing_records
+      process_id: "sewing_assembly"
+      flow_role: "panels, thread, interlining, buttons, fasteners, electricity, sewn shells, sewing wastes"
+      record_type: "BOM, issue and return log, component counts, batch-average component weights, meter record, rejection log"
+      raw_fields: "batch_id; component_id; component_material; issued_kg; returned_kg; installed_count; average_component_kg; accepted_shell_kg; thread_waste_kg; rejected_component_kg; electricity_kWh"
+      collection_method: "collect product-specific material issues and counts, weigh representative component batches, and reconcile to accepted shell mass"
+      unit: "kg; count; kWh"
+      frequency: "each production batch"
+      temporal_coverage: "at least 12 consecutive representative months or the full production campaign"
+      site_scope: "all sewing and assembly lines producing the declared product"
+      aggregation_rule: "sum batch inputs, outputs, and separated wastes; normalize by accepted shell mass and then by reference garment mass"
+      quality_evidence: "approved BOM; calibrated scale record; line meter record; rejection disposition record"
+    - protocol_id: cp_wet_processing_records
+      process_id: "wet_processing"
+      flow_role: "garment charge, water, detergent, softener, electricity, steam, garment output, wastewater"
+      record_type: "batch sheet, dosing record, water meter, electricity meter, steam meter or invoice, wastewater meter"
+      raw_fields: "batch_id; garment_input_kg; water_kg; detergent_kg; softener_kg; electricity_kWh; steam_MJ; dry_output_kg; wastewater_kg; treatment_route"
+      collection_method: "capture each wet batch from calibrated meters and dosing systems; reconcile water input, product retention, and wastewater discharge"
+      unit: "kg; kWh; MJ"
+      frequency: "each wet-processing batch"
+      temporal_coverage: "at least 12 consecutive representative months or the full production campaign"
+      site_scope: "on-site and subcontracted wet-processing facilities used for the declared product"
+      aggregation_rule: "sum complete batch records and normalize by dry accepted wet-processed garment mass"
+      quality_evidence: "meter calibration; signed batch sheet; chemical issue record; wastewater discharge and treatment record"
+    - protocol_id: cp_finishing_records
+      process_id: "finishing_inspection"
+      flow_role: "garment input, electricity, steam, accepted garment, defective garment"
+      record_type: "production release, line meter, steam meter or invoice, final inspection log, calibrated scale record"
+      raw_fields: "batch_id; input_route; garment_input_kg; electricity_kWh; steam_MJ; accepted_garment_kg; defective_garment_kg; defect_code"
+      collection_method: "measure route-specific input mass, directly assigned utilities, accepted output, and rejects for each finishing batch"
+      unit: "kg; kWh; MJ"
+      frequency: "each production batch"
+      temporal_coverage: "at least 12 consecutive representative months or the full production campaign"
+      site_scope: "all finishing and inspection lines producing the declared product"
+      aggregation_rule: "sum accepted and rejected mass by route; normalize utilities and wastes by accepted garment mass"
+      quality_evidence: "line release; meter record; scale calibration; signed inspection and disposition log"
+    - protocol_id: cp_packaging_records
+      process_id: "packaging"
+      flow_role: "finished garment, polymer bag, hangtag, carton, electricity, reference garment, packaging wastes"
+      record_type: "packaging BOM, component count, average component weight, carton packing record, line meter, waste ticket"
+      raw_fields: "batch_id; garment_mass_kg; packaging_item_id; packaging_material; installed_count; average_item_kg; carton_mass_kg; packed_garment_mass_kg; electricity_kWh; packaging_waste_kg"
+      collection_method: "weigh garment output separately from packaging, weigh representative packaging-item batches, and reconcile issued items to packed items and waste"
+      unit: "kg; count; kWh"
+      frequency: "each packaging batch"
+      temporal_coverage: "at least 12 consecutive representative months or the full production campaign"
+      site_scope: "all packaging lines and packing contractors for the declared product"
+      aggregation_rule: "sum packaging material and energy by batch; normalize to 1 kg garment mass excluding packaging"
+      quality_evidence: "approved packaging specification; scale calibration; line meter record; waste receipt"
+  calculation_rules:
+    - id: calc_reference_normalization
+      applies_to: "all foreground exchanges"
+      rule: "normalized amount = verified exchange amount / verified accepted garment mass in kg"
+      inputs:
+        - "exchange amount"
+        - "accepted garment mass excluding packaging"
+      output: "exchange amount per 1 kg reference garment"
+      source_ids:
+        - ec-pef-method-2021
+    - id: calc_cutting_balance
+      applies_to: "cutting"
+      rule: "net fabric input = issued fabric - returned unused fabric; reconcile net input with accepted panels plus measured cutting offcuts and documented residual discrepancy"
+      inputs:
+        - "issued fabric mass"
+        - "returned fabric mass"
+        - "accepted panel mass"
+        - "offcut mass"
+      output: "cutting mass-balance statement"
+      source_ids:
+        - afw-pefcr-v3-1-2025
+    - id: calc_component_mass
+      applies_to: "counted buttons, fasteners, bags, and hangtags"
+      rule: "component mass = installed count × measured average mass per component from the same specification and batch or a documented representative sample"
+      inputs:
+        - "installed count"
+        - "average component mass"
+      output: "incorporated component mass"
+      source_ids:
+        - afw-pefcr-v3-1-2025
+    - id: calc_assembly_balance
+      applies_to: "sewing_assembly"
+      rule: "reconcile cut panels plus incorporated components with accepted sewn shells, separated thread offcuts, rejected textile components, and documented residual discrepancy"
+      inputs:
+        - "panel mass"
+        - "component masses"
+        - "accepted shell mass"
+        - "separated waste masses"
+      output: "assembly mass-balance statement"
+      source_ids:
+        - afw-pefcr-v3-1-2025
+    - id: calc_wet_process_balance
+      applies_to: "wet_processing"
+      rule: "reconcile garment input, water, chemical formulations, dry garment output, wastewater, retained moisture, and documented evaporation without netting electricity or steam into the mass balance"
+      inputs:
+        - "garment input mass"
+        - "water mass"
+        - "chemical formulation masses"
+        - "dry output mass"
+        - "wastewater mass"
+      output: "wet-process mass-balance statement"
+      source_ids:
+        - afw-pefcr-v3-1-2025
+    - id: calc_shared_electricity
+      applies_to: "shared electricity meter"
+      rule: "allocated kWh = shared-meter kWh × conforming product mass / total conforming mass produced by the same metered equipment and period"
+      inputs:
+        - "shared-meter kWh"
+        - "product conforming mass"
+        - "total conforming mass"
+      output: "product-specific electricity kWh"
+      source_ids:
+        - afw-pefcr-v3-1-2025
+  data_quality_requirements:
+    - id: dq_product_identity
+      applies_to: "reference product"
+      requirement: "Retain the approved specification showing garment type, men's or boys' designation, woven construction, fibre composition, reference size, finish, and product mass."
+      evidence: "approved product specification and dated BOM"
+    - id: dq_bom_coverage
+      applies_to: "material inventory"
+      requirement: "Product-specific primary BOM data must cover at least 95% of product mass and 100% of the main fabric, lining, padding, metals, and electronic parts when present; disclose the uncovered share."
+      evidence: "BOM coverage calculation and supplier specifications"
+    - id: dq_temporal_coverage
+      applies_to: "all foreground processes"
+      requirement: "Use at least 12 consecutive representative months unless the product is campaign-based; in that case use the complete campaign and disclose seasonality."
+      evidence: "dated batch records and reporting-period reconciliation"
+    - id: dq_metering
+      applies_to: "electricity, steam, water, and wastewater"
+      requirement: "Identify each meter, calibration status, reading interval, process coverage, and any allocation from a shared meter."
+      evidence: "calibration certificate, meter export, invoice reconciliation, and allocation worksheet"
+    - id: dq_mass_balance
+      applies_to: "cutting, sewing, wet processing, finishing, and packaging"
+      requirement: "Reconcile measured inputs, accepted outputs, separated wastes, moisture changes, and documented residual discrepancies at process level."
+      evidence: "signed process mass-balance worksheets and scale calibration records"
+    - id: dq_waste_destination
+      applies_to: "every waste flow"
+      requirement: "Record waste composition, mass, date, receiving operator, treatment route, and evidence of transfer; do not combine textile, polymer, paperboard, wastewater, or defective garment wastes."
+      evidence: "waste transfer note, treatment receipt, and waste register"
+    - id: dq_representativeness
+      applies_to: "linked upstream datasets"
+      requirement: "Document geographic, temporal, and technological representativeness and any proxy limitation for each linked fabric, component, utility, packaging, and waste-treatment dataset."
+      evidence: "dataset metadata and data-quality assessment"
+    - id: dq_uncertainty_disclosure
+      applies_to: "reported results"
+      requirement: "Disclose data gaps, proxy use, shared-meter allocations, residual mass-balance differences, and uncertainty relevant to result interpretation."
+      evidence: "data-quality report and verification record"
+validation_rules:
+  - rule_id: validate_reference_identity
+    applies_to: "reference flow"
+    rule: "The reference product UUID must equal 66e77e01-9118-4c94-a727-c8bbcf2d4eee, resolve as a state-100 Product flow classified to CPC 28232, and use Mass 93a60a56-a3c8-11da-a746-0800200b9a66 with kg from Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66."
+    source_ids:
+      - un-cpc-3-0-28232
+  - rule_id: validate_reference_amount
+    applies_to: "reference flow"
+    rule: "Accepted garment output must normalize to exactly 1 kg excluding packaging mass, and the unnormalized accepted mass must remain traceable."
+    source_ids:
+      - ec-pef-method-2021
+  - rule_id: validate_scope
+    applies_to: "product identity"
+    rule: "The declared product must be a men's or boys' garment made from textile fabric that is not knitted or crocheted and must not fall under an excluded product group."
+    source_ids:
+      - un-cpc-3-0-28232
+      - afw-pefcr-v3-1-2025
+  - rule_id: validate_process_coverage
+    applies_to: "foreground process map"
+    rule: "Cutting, sewing and assembly, finishing and inspection, and packaging must be present; wet processing must be present whenever the production route includes garment washing, dyeing, rinsing, or softening."
+    source_ids:
+      - afw-pefcr-v3-1-2025
+      - olugbemi-bolson-2026-shirt-carbon
+  - rule_id: validate_atomic_rows
+    applies_to: "process inventory"
+    rule: "Every inventory card must describe one specific exchange; electricity, steam, water, each component, each chemical formulation, each packaging item, and each waste stream must remain separate."
+    source_ids:
+      - ec-pef-method-2021
+  - rule_id: validate_uuid_evidence
+    applies_to: "UUID-bearing rows"
+    rule: "Store a Tiangong UUID only after hybrid-search candidate evidence and state-100 detail evidence agree on identity, flow type, classification where applicable, and reference property; otherwise leave the UUID absent and retain the manifest review item."
+    source_ids: []
+  - rule_id: validate_bom
+    applies_to: "material inputs"
+    rule: "BOM coverage and mass must satisfy dq_bom_coverage, and every incorporated component used by the declared product must be represented by an input row."
+    source_ids:
+      - afw-pefcr-v3-1-2025
+  - rule_id: validate_mass_balance
+    applies_to: "foreground processes"
+    rule: "Each process mass balance must identify accepted output, every separately measured waste, moisture change where relevant, and any residual discrepancy; unexplained netting is not conformant."
+    source_ids:
+      - afw-pefcr-v3-1-2025
+  - rule_id: validate_energy_allocation
+    applies_to: "electricity and steam"
+    rule: "Process-specific meter data must be used when available; every shared-meter allocation must state the metered boundary, period, physical driver, numerator, and denominator."
+    source_ids:
+      - afw-pefcr-v3-1-2025
+  - rule_id: validate_waste_routes
+    applies_to: "waste outputs"
+    rule: "Each waste row must have a recorded receiving treatment route and transfer evidence; a sale or recycling claim does not permit omission from the foreground inventory."
+    source_ids:
+      - afw-pefcr-v3-1-2025
+published_dataset_profile:
+  dataset_role: "secondary_dataset; eligible for background_dataset use after methodology and data review"
+  downstream_use: "Foreground process and lifecyclemodel construction for factory-gate production of CPC 28232 garments"
+  allowed_use: "Product-specific factory-gate studies whose garment scope, production route, geography, time period, BOM, wet-processing applicability, and packaging configuration match the dataset"
+  excluded_use: "Knitted or crocheted apparel; other demographic or product categories; protective apparel; cradle-to-grave claims without downstream stages; comparative assertions without a separately applicable comparison method and review"
+  required_metadata: "canonical PCR id; product flow UUID; CPC reference; product specification; fibre composition; reference size; BOM coverage; wet-processing route; facility and subcontractor geography; reference year; allocation methods; packaging configuration; waste destinations; source ids"
+  required_quality_disclosure: "primary-data coverage; meter coverage and calibration; shared-resource allocations; process mass-balance residuals; data gaps; proxy datasets; geographic, temporal, and technological representativeness; uncertainty and verification status"
+  update_trigger: "Change in garment construction or BOM, main fabric or finish, production route, wet-processing technology, facility geography, electricity or steam supply, packaging configuration, waste treatment, reference-flow identity, applicable PEF method, or evidence that materially changes a rule"
+data_sources:
+  - id: "un-cpc-3-0-28232"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, CPC Version 3.0, code 28232 classification detail and Draft CPC Ver. 3.0 Explanatory Notes, https://unstats.un.org/unsd/classifications/Econ/Detail/EN/3/28232 and https://unstats.un.org/unsd/classifications/Meetings/UNCEISC2024_2nd/Session7_Bk2_CPC3_Exp_Notes_1Nov2024.pdf, accessed 2026-08-13"
+    used_for: "Product scope, exclusions, and classification identity"
+  - id: "afw-pefcr-v3-1-2025"
+    type: "standard"
+    reference: "Product Environmental Footprint Category Rules: Apparel and Footwear, Version 3.1, 29 April 2025, https://www.carbonfact.com/hubfs/A%26FW_PEFCR_v3.1.pdf, accessed 2026-08-13; European Commission status page: https://green-forum.ec.europa.eu/green-business/environmental-footprint-methods/pef-method_en"
+    used_for: "Apparel subcategories, functional-unit context, BOM coverage, process decomposition, manufacturing losses, utilities, packaging, allocation, data collection, and validation"
+  - id: "ec-pef-method-2021"
+    type: "official_guidance"
+    reference: "Commission Recommendation (EU) 2021/2279 of 15 December 2021 on the use of the Environmental Footprint methods, consolidated text, https://eur-lex.europa.eu/eli/reco/2021/2279/2021-12-30/eng, accessed 2026-08-13"
+    used_for: "Completeness, company-specific manufacturing data, inventory classification, allocation hierarchy, reporting, and verification"
+  - id: "olugbemi-bolson-2026-shirt-carbon"
+    type: "literature"
+    reference: "Olugbemi, E. and Bolson, N.F. (2026), Uncertainty analysis of physical-based carbon accounting in cotton T-shirt manufacturing, Scientific Reports 16, 7586, https://doi.org/10.1038/s41598-026-38773-4"
+    used_for: "Independent process-chain corroboration and data-quality dimensions; no case-study quantity is adopted as a PCR default"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:fa716225789402eebbec5283accc420abbff094b420aea9e5a47aa0b859f59c1"
+  generated_content_sha256: "sha256:7398b4abeca236c2cab0342ed25be819e7585f04e63c4c1c0a67a003c5a40de3"

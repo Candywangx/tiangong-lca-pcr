@@ -1,10 +1,836 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "24422"
-  title: "Almond milk"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.food-products-beverages-and-tobacco-textiles-apparel-and-leather-products.beverages.almond-milk"
+  classification_refs: "CPC 3.0: 24422 Almond milk"
+  covered_products: "Ready-to-drink almond-based beverages whose characteristic plant source is almond; plain or flavoured; fortified or unfortified; refrigerated or shelf-stable"
+  excluded_products: "Animal milk; non-almond plant beverages; non-characteristic almond blends; fermented spoonable products; infant formula; powders and concentrates for further formulation; almond oil; raw or prepared almonds"
+  representative_product: "Plain packaged almond-based beverage at the beverage manufacturing gate"
+  production_route: "Received almond material or almond ingredient; preparation and aqueous extraction or formulation; optional separation; formulation; homogenisation or equivalent stabilisation; pasteurisation, UHT, or another validated heat treatment; cooling; filling and packaging"
+  market_state: "Finished liquid beverage, packaged, refrigerated or shelf-stable as declared"
+functional_unit:
+  what: "Provision of a finished liquid almond-based beverage for beverage use"
+  how_much: "1 kg net almond-based beverage"
+  how_well: "Meets the declared recipe, food-safety treatment, packaging configuration, and market-state specification"
+  how_long_or_cycle: "One production-batch output at the beverage plant gate; shelf life is declared but not modelled unless storage is included"
+  reference_flow_link: "One kilogram of packaged Almond milk output from beverage_finishing"
+system_boundary:
+  rules:
+    - rule_id: boundary_complete_foreground
+      applies_to: "Beverage plant foreground"
+      rule: "Include all material and energy flows for preparation/formulation, stabilisation, thermal treatment, filling, packaging, cleaning, and on-site waste handling that occur inside the declared plant boundary."
+      source_ids:
+        - eu-pef-2021
+        - iso-14044-2006
+    - rule_id: boundary_no_silent_cutoff
+      applies_to: "Inventory completeness"
+      rule: "Do not omit a known flow solely because no default amount is supplied; collect it, document a justified negligible-flow screen, or disclose the data gap."
+      source_ids:
+        - eu-pef-2021
+    - rule_id: boundary_upstream_links
+      applies_to: "Purchased inputs and treatment services"
+      rule: "Represent excluded upstream production and off-site treatment with linked datasets and disclose dataset geography, technology, and reference period."
+      source_ids:
+        - eu-pef-2021
+        - iso-14044-2006
+    - rule_id: boundary_route_disclosure
+      applies_to: "Product and process identity"
+      rule: "Declare whether the beverage is made by direct almond extraction or by formulation from almond ingredients and whether it is pasteurised, UHT-treated, or otherwise stabilised."
+      source_ids:
+        - fda-pbma-guidance-2023
+        - redan-2024-almond-beverage-htst
+boundary_abstraction:
+  declared_starting_condition: "Almonds or a declared almond ingredient and all other formulation, utility, cleaning, and packaging inputs received at the beverage plant"
+  starting_condition_role: "Foreground manufacturing-gate input condition"
+  product_classification_scope: "CPC 3.0 code 24422 as classification context; canonical scope is the almond-based beverage definition in this PCR"
+  recursive_input_rule: "An almond-milk or almond-beverage intermediate purchased from another producer is recorded once as an upstream product input with its own supplier dataset; do not recursively recreate its manufacturing inventory inside this foreground process."
+  upstream_dataset_requirement: "Link upstream datasets for almond material, other ingredients, water, energy carriers, packaging, transport to the plant, and external waste or wastewater treatment. Supplier-specific datasets are preferred when material."
+  disclosure: "Declare received almond form and origin, formulation route, on-site preparation and separation, thermal-treatment route, residue status and destination, packaging configuration, included transport, and any excluded or externally operated process."
+reference_flow_definition:
+  reference_amount: "1 kg"
+  product_flow_ref:
+    name: "Almond milk"
+    uuid: "c2d5b4f7-ef33-477e-8b8c-4114e05d3346"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "almond input form and almond content or dry-matter basis"
+    - "complete formulation and fortification status"
+    - "extraction or reconstitution route"
+    - "separation method and residue fate"
+    - "homogenisation or stabilisation route"
+    - "thermal-treatment route and validated time-temperature condition"
+    - "refrigerated or shelf-stable market state"
+    - "packaging material and net fill"
+    - "production geography and reference period"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "Reference product output"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Report net beverage mass excluding the packaging mass; normalize every foreground amount to 1 kg net packaged beverage."
+  - id: water_mass_consistency
+    applies_to: "Water incorporated into product and process water"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Record water incorporated into the beverage separately from cleaning, cooling, and other process water; convert volume records using a measured or documented density and retain the conversion basis."
+  - id: almond_basis_disclosure
+    applies_to: "Almonds, almond butter, paste, extract, concentrate, or powder"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Record the purchased input form and wet or dry basis; do not compare or aggregate almond inputs across forms without a documented dry-matter or solids conversion."
+  - id: energy_carrier_separation
+    applies_to: "Electricity, fuel, steam, and purchased heat"
+    required_property_ref:
+      name: "Energy"
+      uuid: ""
+    required_unit: "kWh or MJ"
+    rule: "Preserve the metered carrier and unit; convert only with a documented factor and do not merge electricity and thermal energy before upstream datasets are linked."
+  - id: packaging_net_mass
+    applies_to: "Primary, secondary, and tertiary packaging"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Report packaging mass separately from net beverage mass and identify packaging material and reusable or one-way status."
+process_map:
+  - id: almond_base_preparation
+    name: "Almond preparation, extraction, and formulation"
+    inclusion: "required"
+    inclusion_condition: "Always; individual operations are conditional on received almond form and declared recipe"
+    role: "Foreground raw-material preparation and beverage formulation"
+    quantitative_reference: "kg formulated almond beverage transferred to finishing"
+  - id: beverage_finishing
+    name: "Stabilisation, thermal treatment, filling, and packaging"
+    inclusion: "required"
+    inclusion_condition: "Always; the validated technology and market state are route-specific"
+    role: "Foreground finishing and reference-product production"
+    quantitative_reference: "1 kg net packaged almond milk"
+  - id: cleaning_and_wastewater
+    name: "Cleaning and wastewater management"
+    inclusion: "required"
+    inclusion_condition: "Always for the wet-processing equipment in scope; external treatment remains an upstream service"
+    role: "Foreground hygiene utilities and wastewater transfer"
+    quantitative_reference: "kg net packaged almond milk"
+process_inventory:
+  - id: almond_base_preparation
+    label: "Almond preparation, extraction, and formulation"
+    inputs:
+      product:
+        - row_id: almond_material_input
+          role: "Almond material supplied to the beverage process"
+          name: "Almond material appropriate to the declared purchased form"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record each received almond form separately, including whole or shelled almonds, almond butter or paste, almond extract, concentrate, or powder. Retain supplier, origin, moisture or solids basis, and lot identity."
+          amount:
+            expression: "measured received mass consumed by conforming batches, corrected for inventory change and returned material"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net packaged almond milk"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_almond_and_ingredient_records
+              source_ids:
+                - fda-pbma-guidance-2023
+            ranges:
+              - role: qa_guardrail
+                lower: "0.01"
+                upper: "0.50"
+                unit: "kg/kg net packaged beverage"
+                basis: "broad route- and formulation-dependent screening range; not a default recipe"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: formulation_water
+          role: "Formulation and preparation water"
+          name: "Water, process or potable quality as applicable"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record water incorporated into the beverage separately from soaking, rinsing, and other preparation water so that the product water balance remains auditable."
+          amount:
+            expression: "metered or batch-record water charged, separated by incorporated and non-incorporated use"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net packaged almond milk"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water_and_wastewater_records
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0.50"
+                upper: "10.0"
+                unit: "kg/kg net packaged beverage"
+                basis: "incorporated water plus route-dependent soaking, rinsing, and preparation water"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: formulation_ingredients
+          role: "Other formulation ingredients and processing aids"
+          name: "Recipe-specific ingredient or processing aid"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record oils, sweeteners, salt, stabilisers, emulsifiers, flavours, vitamin and mineral premixes, and processing aids by material identity. Zero use is valid only when the recipe and batch record confirm absence."
+          amount:
+            expression: "measured batch issue less documented returns, grouped only when upstream datasets and functions are equivalent"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net packaged almond milk"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_almond_and_ingredient_records
+              source_ids:
+                - fda-pbma-guidance-2023
+                - redan-2024-almond-beverage-htst
+            ranges: []
+        - row_id: preparation_electricity
+          role: "Electricity for preparation and formulation"
+          name: "Electricity, supplied to the site"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record electricity for preparation, wet milling, pumping, separation, mixing, and transfer using submetered data or a documented allocation from a shared meter."
+          amount:
+            expression: "metered electricity or calculated equipment load multiplied by operating time"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg formulated beverage transferred to finishing, then normalized to reference output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_records
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0.001"
+                upper: "1.0"
+                unit: "kWh/kg formulated beverage"
+                basis: "broad first-pass screening range for preparation and formulation equipment"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: formulated_beverage_output
+          role: "Formulated almond beverage transferred to finishing"
+          name: "Formulated almond beverage, intermediate"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Calculate the transferred beverage from calibrated vessel or flow measurements and reconcile it with batch inputs, retained material, samples, spills, and separated residue."
+          amount:
+            expression: "measured transfer mass or volume converted with measured batch density"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per production batch"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_batch_output_records
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: almond_residue
+          role: "Separated almond residue and preparation rejects"
+          name: "Almond residue or preparation reject, destination-specific"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record wet residue, skins, screening rejects, and other almond-derived material separately by actual destination and whether it is a saleable co-product, animal-feed material, recovered material, or waste."
+          amount:
+            expression: "measured dispatch or container mass, adjusted for inventory change and moisture basis"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net packaged almond milk"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_residue_and_loss_records
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "1.0"
+                unit: "kg wet residue/kg net packaged beverage"
+                basis: "route-dependent wet residue and rejects; zero is possible for some reconstitution routes"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        []
+  - id: beverage_finishing
+    label: "Stabilisation, thermal treatment, filling, and packaging"
+    inputs:
+      product:
+        - row_id: formulated_beverage_input
+          role: "Formulated beverage received from preparation"
+          name: "Formulated almond beverage, intermediate"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Link this intermediate directly to formulated_beverage_output without duplicating the upstream almond and ingredient inventory."
+          amount:
+            expression: "equal to the measured transfer into finishing after documented holding loss"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net packaged almond milk"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_batch_output_records
+              source_ids: []
+            ranges: []
+        - row_id: finishing_electricity
+          role: "Electricity for stabilisation and filling"
+          name: "Electricity, supplied to the site"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record electricity for homogenisation, pumping, heat-treatment auxiliaries, cooling, compressed air, filling, and packaging equipment."
+          amount:
+            expression: "metered electricity or documented shared-meter allocation to the conforming product campaign"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net packaged almond milk"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_records
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0.001"
+                upper: "2.0"
+                unit: "kWh/kg net packaged beverage"
+                basis: "broad first-pass screening range for stabilisation, cooling, filling, and packaging equipment"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: thermal_energy
+          role: "Fuel, steam, or purchased heat for thermal treatment"
+          name: "Route-specific fuel, steam, or purchased heat"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Record the actual energy carrier used to heat the beverage and any attributable hot-water system losses inside the declared boundary."
+          amount:
+            expression: "metered carrier use or calculated useful heat and documented efficiency"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net packaged almond milk"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_records
+              source_ids:
+                - redan-2024-almond-beverage-htst
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "10.0"
+                unit: "MJ/kg net packaged beverage"
+                basis: "broad route-dependent screening range; zero applies only when all thermal energy is represented through electricity"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: packaging_materials
+          role: "Packaging materials"
+          name: "Packaging material, material-specific"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record primary container, closure, label, secondary grouping, and attributable tertiary packaging separately by material and recycled-content specification."
+          amount:
+            expression: "purchased or issued packaging less returns and inventory change, cross-checked against filled unit count and bill of materials"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net packaged almond milk"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_records
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0.005"
+                upper: "0.25"
+                unit: "kg packaging/kg net packaged beverage"
+                basis: "broad screening range spanning lightweight and heavy packaging configurations"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: packaged_almond_milk
+          role: "Packaged almond milk reference product"
+          name: "Almond milk"
+          flow_type: "product"
+          flow_ref:
+            uuid: "c2d5b4f7-ef33-477e-8b8c-4114e05d3346"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This row is the quantitative reference. Net beverage mass excludes packaging and is reconciled to accepted filled units."
+          amount:
+            expression: "1 kg net packaged almond milk"
+            value_mode: "fixed_value"
+            specificity: "not_applicable"
+            basis:
+              text: "PCR reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "identity_reference"
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: off_spec_beverage
+          role: "Off-specification beverage and filling loss"
+          name: "Off-specification almond beverage, destination-specific"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record beverage not accepted as product by destination, including rework returned within the same batch system, recovered product, animal-feed use, wastewater discharge, or waste treatment."
+          amount:
+            expression: "measured rejected, spilled, sampled, or drained mass net of documented in-process rework"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net packaged almond milk"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_residue_and_loss_records
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.20"
+                unit: "kg/kg net packaged beverage"
+                basis: "broad campaign-level screening range before site evidence is available"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: packaging_scrap
+          role: "Packaging scrap"
+          name: "Packaging waste, material-specific"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record damaged and unused packaging by material and destination; exclude packaging returned to usable inventory."
+          amount:
+            expression: "measured scrap mass or rejected unit count multiplied by verified component mass"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net packaged almond milk"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_records
+              source_ids: []
+            ranges: []
+      elementary:
+        []
+  - id: cleaning_and_wastewater
+    label: "Cleaning and wastewater management"
+    inputs:
+      product:
+        - row_id: cleaning_water
+          role: "Cleaning and rinse water"
+          name: "Water, process or potable quality as applicable"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record cleaning-in-place, manual wash, and rinse water separately from formulation water and once-through cooling water."
+          amount:
+            expression: "metered cleaning water or validated cleaning-cycle volume multiplied by completed cycle count"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net packaged almond milk"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water_and_wastewater_records
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0.01"
+                upper: "20.0"
+                unit: "kg/kg net packaged beverage"
+                basis: "broad first-pass range for batch and continuous cleaning configurations"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: cleaning_agents
+          role: "Cleaning agents"
+          name: "Cleaning chemical, product-specific"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record alkali, acid, disinfectant, and other cleaning agents as supplied and retain concentration data needed to link the correct upstream dataset."
+          amount:
+            expression: "issued or dosed mass from chemical records and concentration settings"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net packaged almond milk"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cleaning_records
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.10"
+                unit: "kg supplied chemical/kg net packaged beverage"
+                basis: "broad site- and concentration-dependent screening range"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: process_wastewater
+          role: "Process wastewater transferred to treatment"
+          name: "Wastewater, treatment-route-specific"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record wastewater mass or volume and the receiving treatment route. Retain monitored pollutant data when available, including chemical oxygen demand, solids, pH, and nutrients relevant to the discharge permit or treatment model."
+          amount:
+            expression: "effluent meter reading or reconciled water balance, excluding separately measured uncontaminated cooling water"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net packaged almond milk"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water_and_wastewater_records
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0.01"
+                upper: "25.0"
+                unit: "kg/kg net packaged beverage"
+                basis: "broad screening range reconciled against non-incorporated water uses"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocation_avoid_first
+    applies_to: "Shared operations and outputs"
+    rule: "Avoid allocation first by process subdivision, separate metering, or expanding the data collection to preserve physical causality."
+    source_ids:
+      - iso-14044-2006
+      - eu-pef-2021
+  - rule_id: allocation_physical_then_economic
+    applies_to: "Unavoidable multifunctionality"
+    rule: "When subdivision is not feasible, use a documented physical relationship that reflects causality; use economic allocation only when a defensible physical relationship cannot be established, and disclose prices, period, currency, and sensitivity."
+    source_ids:
+      - iso-14044-2006
+      - eu-pef-2021
+  - rule_id: allocation_residue_status
+    applies_to: "Almond residue and recovered off-specification product"
+    rule: "Classify the output before allocation. Waste receives no co-product credit and carries its treatment; a saleable co-product receives the selected allocation only after its quantity, destination, and market status are evidenced."
+    source_ids:
+      - eu-pef-2021
+  - rule_id: allocation_shared_utilities
+    applies_to: "Shared energy, water, cleaning, and packaging lines"
+    rule: "Prefer submetered or cycle-specific use; otherwise allocate by documented equipment operating time, throughput, or another causal driver and report the driver."
+    source_ids:
+      - eu-pef-2021
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_almond_and_ingredient_records
+      process_id: "almond_base_preparation"
+      flow_role: "Almond and recipe inputs"
+      record_type: "Purchase, receiving, inventory, and batch-issue records"
+      raw_fields: "material id; supplier; origin; lot; input form; moisture or solids basis; opening and closing inventory; issued mass; returned mass"
+      collection_method: "Reconcile lot and batch records to calibrated scales"
+      unit: "kg as supplied and kg dry matter when converted"
+      frequency: "Each batch; monthly reconciliation"
+      temporal_coverage: "At least 12 consecutive representative months when available; otherwise the declared production period"
+      site_scope: "All included lines and products"
+      aggregation_rule: "Sum consumed mass equal to opening plus receipts minus closing, returns, and documented diversions; normalize to accepted output"
+      quality_evidence: "Scale calibration; supplier specification; signed batch record; inventory reconciliation"
+    - protocol_id: cp_water_and_wastewater_records
+      process_id: "almond_base_preparation_cleaning_and_wastewater"
+      flow_role: "Formulation, preparation, cleaning water, and wastewater"
+      record_type: "Meter, batch, cleaning-cycle, and effluent records"
+      raw_fields: "meter start and end; batch charge; cycle volume; incorporated water; cooling water; effluent volume or mass; density; pollutant tests; destination"
+      collection_method: "Read calibrated meters and reconcile with batch recipes and water balance"
+      unit: "kg or m3 with documented density"
+      frequency: "Each batch or shift; monthly reconciliation"
+      temporal_coverage: "Same reporting period as accepted product output, including seasonal and cleaning-cycle variation"
+      site_scope: "All included water users and discharge points"
+      aggregation_rule: "Separate incorporated, evaporated, recirculated, and discharged water; normalize net use and effluent to accepted output"
+      quality_evidence: "Meter calibration; recipe record; cleaning log; laboratory result; utility invoice reconciliation"
+    - protocol_id: cp_energy_records
+      process_id: "almond_base_preparation_beverage_finishing_cleaning_and_wastewater"
+      flow_role: "Electricity and thermal energy"
+      record_type: "Submeter, fuel, steam, purchased-heat, and equipment records"
+      raw_fields: "meter readings; carrier; energy unit; equipment load; run time; throughput; shared-meter allocation driver"
+      collection_method: "Prefer submetering; otherwise calculate from verified load and time or allocate a reconciled shared meter"
+      unit: "kWh or MJ by carrier"
+      frequency: "Each campaign or shift; monthly reconciliation"
+      temporal_coverage: "Same reporting period as accepted product output, including start-up, shutdown, and seasonal loads"
+      site_scope: "All foreground equipment and utilities"
+      aggregation_rule: "Sum by carrier; subtract unrelated loads; allocate shared use with a causal driver; normalize to accepted output"
+      quality_evidence: "Meter calibration; utility invoice; equipment specification; run log; allocation worksheet"
+    - protocol_id: cp_batch_output_records
+      process_id: "almond_base_preparation_beverage_finishing"
+      flow_role: "Intermediate transfer and accepted product"
+      record_type: "Vessel, flowmeter, density, filler, and quality-release records"
+      raw_fields: "batch id; transfer volume or mass; density; filled units; net fill; accepted units; samples; rework; hold and reject quantities"
+      collection_method: "Measure transfer and accepted fill; convert volume with measured batch density"
+      unit: "kg"
+      frequency: "Each batch"
+      temporal_coverage: "Every represented batch in the declared reporting period"
+      site_scope: "All included production lines"
+      aggregation_rule: "Reconcile formulated transfer to accepted output, losses, samples, rework, and inventory change"
+      quality_evidence: "Calibrated vessel or meter; density test; filler checks; release record; mass-balance sign-off"
+    - protocol_id: cp_packaging_records
+      process_id: "beverage_finishing"
+      flow_role: "Packaging inputs and scrap"
+      record_type: "Bill of materials, issue, unit-count, inventory, and scrap records"
+      raw_fields: "component id; material; mass per unit; recycled content; issued count or mass; accepted units; returned units; scrap; destination"
+      collection_method: "Reconcile component issue and measured scrap against accepted filled units"
+      unit: "kg"
+      frequency: "Each campaign; monthly reconciliation"
+      temporal_coverage: "Same reporting period and product-packaging configurations as accepted output"
+      site_scope: "Primary, secondary, and attributable tertiary packaging"
+      aggregation_rule: "Calculate consumed mass by material and normalize to net beverage mass; keep reusable assets separate"
+      quality_evidence: "Verified component mass; supplier specification; inventory record; scrap ticket"
+    - protocol_id: cp_residue_and_loss_records
+      process_id: "almond_base_preparation_beverage_finishing"
+      flow_role: "Almond residue, rejects, off-specification beverage, and packaging loss"
+      record_type: "Scale, dispatch, rework, waste-manifest, and destination records"
+      raw_fields: "material type; wet mass; dry-matter result when used; rework; destination; waste or co-product status; revenue if economic allocation is used"
+      collection_method: "Weigh each material stream or verify container mass and collection frequency"
+      unit: "kg wet and kg dry matter where relevant"
+      frequency: "Each batch or dispatch"
+      temporal_coverage: "Same reporting period as production, with dispatch timing and inventory change reconciled"
+      site_scope: "All included loss and residue streams"
+      aggregation_rule: "Subtract internal rework; aggregate by destination and status; normalize to accepted output"
+      quality_evidence: "Scale calibration; dispatch ticket; waste manifest; buyer record; dry-matter test"
+    - protocol_id: cp_cleaning_records
+      process_id: "cleaning_and_wastewater"
+      flow_role: "Cleaning agents and cleaning cycles"
+      record_type: "Chemical dosing, concentration, cycle, and inventory records"
+      raw_fields: "chemical id; supplied concentration; dose; cycle count; line; opening and closing inventory; returned chemical"
+      collection_method: "Read dosing system or reconcile issued chemical to completed cycles"
+      unit: "kg as supplied and kg active substance when converted"
+      frequency: "Each cleaning cycle; monthly reconciliation"
+      temporal_coverage: "Every cleaning cycle attributable to the declared production period"
+      site_scope: "All included wet-processing and filling equipment"
+      aggregation_rule: "Sum by chemical; separate active-substance conversions; normalize to accepted output"
+      quality_evidence: "Doser calibration; safety data sheet; concentration test; cleaning log; inventory reconciliation"
+    - protocol_id: cp_thermal_process_records
+      process_id: "beverage_finishing"
+      flow_role: "Food-safety and stabilisation route"
+      record_type: "Process-control and release records"
+      raw_fields: "treatment technology; inlet and outlet temperature; hold time; pressure; homogenisation settings; flow rate; cooling condition; deviations; disposition"
+      collection_method: "Capture validated control-system records and retain deviation review"
+      unit: "°C; s; bar; kg/h as applicable"
+      frequency: "Continuous or each batch"
+      temporal_coverage: "Every represented batch and deviation in the declared reporting period"
+      site_scope: "Every included thermal-treatment and stabilisation line"
+      aggregation_rule: "Report route and approved operating window; do not average away excursions"
+      quality_evidence: "Calibration; validation study; electronic process record; deviation and release approval"
+  calculation_rules:
+    - id: calc_reference_normalization
+      applies_to: "All foreground rows"
+      rule: "normalized amount = attributable batch amount / accepted net packaged beverage mass"
+      inputs:
+        - "Attributable amount"
+        - "accepted unit count"
+        - "verified net fill or accepted mass"
+      output: "Amount per 1 kg net packaged almond milk"
+      source_ids:
+        - iso-14044-2006
+    - id: calc_volume_to_mass
+      applies_to: "Water, beverage, and wastewater volume records"
+      rule: "mass = measured volume multiplied by measured or documented density at the applicable temperature"
+      inputs:
+        - Volume
+        - density
+        - "temperature and conversion basis"
+      output: "kg"
+      source_ids:
+        - iso-14044-2006
+    - id: calc_almond_dry_matter
+      applies_to: "Unlike almond input forms"
+      rule: "dry-matter input = as-supplied mass multiplied by measured solids fraction"
+      inputs:
+        - "As-supplied mass"
+        - "moisture or solids result"
+      output: "kg dry matter for comparability while retaining as-supplied mass"
+      source_ids: []
+    - id: calc_mass_balance
+      applies_to: "Each batch and reporting period"
+      rule: "input mass = accepted product + exported co-products + wastes and emissions + inventory change + documented mass-balance residual"
+      inputs:
+        - "Ingredient and water inputs"
+        - "intermediate inventory"
+        - "accepted output"
+        - residue
+        - "off-specification product"
+        - "wastewater and measured losses"
+      output: "Reconciled mass-balance residual and completeness flag"
+      source_ids:
+        - eu-pef-2021
+    - id: calc_shared_utility_allocation
+      applies_to: "Shared utilities"
+      rule: "attributable utility = reconciled shared total multiplied by documented causal driver share"
+      inputs:
+        - "Shared total"
+        - "equipment time"
+        - throughput
+        - "or cycle driver"
+      output: "Product-attributable utility by carrier"
+      source_ids:
+        - eu-pef-2021
+  data_quality_requirements:
+    - id: dq_product_identity
+      applies_to: "Reference product and scope"
+      requirement: "Retain the recipe, label or product specification, almond input form, almond content or solids basis, fortification, treatment route, packaging, and market state for every represented product family."
+      evidence: "Approved product specification; recipe; label; release record"
+    - id: dq_temporal_coverage
+      applies_to: "Foreground averages"
+      requirement: "Use at least 12 consecutive representative months when available; otherwise disclose the shorter period, seasonality, start-up or trial status, and why it represents the declared product."
+      evidence: "Dated production, utility, procurement, and waste records"
+    - id: dq_meter_and_scale_control
+      applies_to: "Measured quantities"
+      requirement: "Use calibrated or verified meters and scales; record conversion factors, density, missing-data substitutions, and shared-meter allocation drivers."
+      evidence: "Calibration certificates; meter logs; calculation workbook"
+    - id: dq_completeness
+      applies_to: "Inventory boundary"
+      requirement: "Account for all recipe inputs, major water and energy uses, packaging, accepted output, residue, off-specification product, wastewater, and known waste destinations; quantify or disclose every gap."
+      evidence: "Completeness checklist; mass and water balances; waste manifests"
+    - id: dq_thermal_route
+      applies_to: "Stabilisation and thermal treatment"
+      requirement: "Retain validated process route and actual control records; disclose deviations and rejected or reworked product instead of substituting a generic pasteurisation or UHT assumption."
+      evidence: "Validation study; electronic temperature-time record; deviation disposition"
+    - id: dq_upstream_representativeness
+      applies_to: "Linked datasets"
+      requirement: "Document supplier or database source, geography, technology, reference year, and any proxy for almonds, ingredients, utilities, packaging, transport, and treatment services."
+      evidence: "Dataset metadata and proxy justification"
+    - id: dq_allocation_transparency
+      applies_to: "Multifunctional operations and co-products"
+      requirement: "Report subdivision attempts, allocation basis, factors, price period if used, residue status, and a sensitivity result when allocation materially affects outcomes."
+      evidence: "Allocation worksheet; buyer or destination evidence; sensitivity result"
+validation_rules:
+  - rule_id: validate_reference_identity
+    applies_to: "Reference flow"
+    rule: "The product flow UUID, Mass flow-property UUID, mass unit-group UUID, kg unit, and 1 kg net amount must match the reference-flow definition."
+    source_ids: []
+  - rule_id: validate_required_qualifiers
+    applies_to: "Dataset metadata"
+    rule: "Fail completeness when any required qualifier is missing or when plant source, treatment route, packaging, or market state is ambiguous."
+    source_ids:
+      - fda-pbma-guidance-2023
+      - codex-stan-206-1999
+  - rule_id: validate_process_coverage
+    applies_to: "Foreground inventory"
+    rule: "Confirm that all three required process groups are represented and that omitted route-specific operations are explicitly not applicable rather than silently absent."
+    source_ids:
+      - redan-2024-almond-beverage-htst
+      - eu-pef-2021
+  - rule_id: validate_mass_balance
+    applies_to: "Batch and period inventory"
+    rule: "Require a documented mass-balance residual and investigate material unexplained differences before the dataset is released."
+    source_ids:
+      - eu-pef-2021
+  - rule_id: validate_water_separation
+    applies_to: "Water inventory"
+    rule: "Confirm that incorporated, preparation, cleaning, cooling, recirculated, and discharged water are separated or that any aggregation is justified and non-duplicative."
+    source_ids: []
+  - rule_id: validate_energy_carriers
+    applies_to: "Energy inventory"
+    rule: "Confirm that electricity and each thermal-energy carrier are reported separately and converted with documented factors."
+    source_ids:
+      - eu-pef-2021
+  - rule_id: validate_residue_allocation
+    applies_to: "Almond residue and off-specification output"
+    rule: "Confirm destination and waste or co-product status before applying allocation or treatment; no unsubstantiated avoided-product credit is allowed."
+    source_ids:
+      - iso-14044-2006
+      - eu-pef-2021
+  - rule_id: validate_reasoned_estimates
+    applies_to: "Provisional ranges"
+    rule: "Treat every reasoned_estimate range as a screening flag only; do not replace collected foreground values with its midpoint or publish it as an allowed range without review."
+    source_ids: []
+  - rule_id: validate_data_quality_disclosure
+    applies_to: "Published dataset package"
+    rule: "Confirm temporal, geographical, technological, completeness, meter-quality, proxy, allocation, and uncertainty disclosures and identify every skipped check."
+    source_ids:
+      - iso-14044-2006
+      - eu-pef-2021
+published_dataset_profile:
+  dataset_role: "Foreground manufacturing dataset for packaged almond milk at the beverage plant gate"
+  downstream_use: "secondary_dataset; background_dataset after review and publication"
+  allowed_use: "Product-system modelling in which the declared almond formulation, manufacturing route, geography, period, packaging, and market state are representative; comparison only after harmonising functional unit, boundary, allocation, and data quality"
+  excluded_use: "Nutritional equivalence claims; animal-milk substitution claims; unqualified extrapolation to other plant beverages, powders, concentrates, fermented products, or materially different extraction and treatment routes"
+  required_metadata: "PCR id and version; product and almond input identity; recipe or solids basis; fortification; extraction or reconstitution route; separation; homogenisation; thermal-treatment route; refrigeration or shelf-stable state; packaging; plant and geography; reference period; accepted output; upstream datasets; allocation; residue destinations"
+  required_quality_disclosure: "Record coverage and temporal representativeness; meter and scale status; mass- and water-balance residuals; route deviations; data gaps and substitutions; proxy datasets; allocation sensitivity; provisional reasoned-estimate ranges remaining in guidance"
+  update_trigger: "Material recipe, almond input form, plant or line, treatment technology, packaging, residue destination, allocation method, energy or water system, supplier geography, or evidence update; otherwise review at least every three years"
+data_sources:
+  - id: "eu-pef-2021"
+    type: "official_guidance"
+    reference: "European Commission, Commission Recommendation (EU) 2021/2279, Annex I Product Environmental Footprint Method. https://eur-lex.europa.eu/legal-content/EN/TXT/PDF/?uri=CELEX:32021H2279 (retrieved 2026-08-11)"
+    used_for: "Life-cycle boundary, inventory completeness, multifunctionality, data-quality, reporting, and verification framework"
+  - id: "iso-14044-2006"
+    type: "standard"
+    reference: "ISO 14044:2006, Environmental management — Life cycle assessment — Requirements and guidelines, confirmed current in 2022. https://www.iso.org/standard/38498.html (retrieved 2026-08-11)"
+    used_for: "Goal and scope, inventory, allocation, interpretation, reporting, and review principles"
+  - id: "fda-pbma-guidance-2023"
+    type: "official_guidance"
+    reference: "U.S. FDA, Draft Guidance for Industry: Labeling of Plant-Based Milk Alternatives and Voluntary Nutrient Statements, February 2023, FDA-2023-D-0451. https://www.fda.gov/media/165420/download (retrieved 2026-08-11; draft, nonbinding)"
+    used_for: "Plant-based beverage identity, direct extraction and formulation routes, composition variability, ingredient and fortification disclosure"
+  - id: "codex-stan-206-1999"
+    type: "standard"
+    reference: "Codex Alimentarius, General Standard for the Use of Dairy Terms, CODEX STAN 206-1999. https://www.fao.org/input/download/standards/332/CXS_206e.pdf (retrieved 2026-08-11)"
+    used_for: "Distinction between animal milk or milk products and the plant-based beverage category"
+  - id: "redan-2024-almond-beverage-htst"
+    type: "literature"
+    reference: "Redan et al., Effect of pilot-scale high-temperature short-time processing on the retention of key micronutrients in a fortified almond-based beverage: implications for fortification of plant-based milk alternatives, Frontiers in Nutrition (2024), DOI: 10.3389/fnut.2024.1468828"
+    used_for: "Almond-beverage formulation, homogenisation, thermal-treatment process decomposition, route disclosure, and process-record needs; experimental conditions are not category defaults"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:42ca9b2f68ff848ff52d6135a99fb78b7f63dcc9a66ebf71d8397eb9c029892e"
+  generated_content_sha256: "sha256:0b513b1323caf5d99f6700355b917859dccbf924f489b7401bb313b38b030145"

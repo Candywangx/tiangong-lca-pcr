@@ -1,10 +1,1903 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "21118"
-  title: "Meat of horses and other equines, fresh or chilled"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.food-products-beverages-and-tobacco-textiles-apparel-and-leather-products.meat-fish-fruits-vegetables-oils-and-fats.meat-of-horses-and-other-equines-fresh-or-chilled"
+  classification_refs: "CPC 3.0: 21118, Meat of horses and other equines, fresh or chilled"
+  covered_products: "Fresh or chilled edible skeletal meat from horses and other equines, as carcasses, sides, quarters, bone-in or boneless cuts"
+  excluded_products: "Frozen meat; edible and inedible offal; blood products; rendered fat; hides; bones; prepared or preserved meat; live equines; non-equine meat"
+  representative_product: "Factory-gate fresh or chilled equine skeletal meat with declared species, presentation, bone status, temperature state and packaging"
+  production_route: "Live-equine reception → slaughter and dressing → carcass chilling → cutting and deboning → cleaning and disinfection → packaging and chilled storage"
+  market_state: "Inspected fresh or chilled equine meat released at the slaughterhouse or cutting-plant factory gate"
+functional_unit:
+  what: "Provide edible equine skeletal meat in the declared carcass or cut presentation"
+  how_much: "1 kg net fresh or chilled equine meat, excluding removable packaging"
+  how_well: "Released under the producer's applicable inspection, identity, hygiene, presentation and temperature-state controls and never frozen"
+  how_long_or_cycle: "One production and chilled-storage lot at factory gate; shelf life is declared but does not change the 1 kg reference amount"
+  reference_flow_link: "reference_equine_meat"
+system_boundary:
+  rules:
+    - rule_id: system_boundary_rule_1
+      applies_to: "foreground_system_boundary"
+      rule: "The default boundary is cradle-to-factory-gate. Foreground control begins when live equines cross the slaughter-site boundary and ends when net fresh or chilled meat is released after packaging and controlled cold storage. The live-animal upstream dataset shall include husbandry and inbound transport. Retail, use and end-of-life are excluded."
+      source_ids: []
+boundary_abstraction:
+  declared_starting_condition: "Identified live horses or other equines arrive at the slaughter site with declared origin, liveweight, lot and upstream dataset"
+  starting_condition_role: "Foreground slaughter and meat-processing input"
+  product_classification_scope: "CPC 3.0 subclass 21118 fresh or chilled equine skeletal meat"
+  recursive_input_rule: "Purchased fresh or chilled equine meat entering further cutting or packing is recorded once with its upstream dataset; do not reconstruct the same category recursively"
+  upstream_dataset_requirement: "Live equine input covers husbandry and inbound transport; other product, chemical, energy and packaging inputs require representative upstream datasets"
+  disclosure: "Declare controlled sites, process inclusions, temperature state, co-products, wastes, emissions, packaging, allocation, temporal coverage and upstream proxy gaps"
+reference_flow_definition:
+  reference_amount: "1 kg"
+  product_flow_ref:
+    name: "Meat of horses and other equines, fresh or chilled"
+    uuid: "ac93b427-13d9-411d-9521-36baea644bb5"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "equine species"
+    - "animal origin"
+    - "carcass or cut presentation"
+    - "bone-in status"
+    - "fresh or chilled state"
+    - "chilling and storage technology"
+    - packaging
+    - "slaughter and cutting sites"
+    - "production period"
+    - "net meat mass"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_net_meat_mass
+    applies_to: "Reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Measure accepted edible skeletal meat only; include bones only for a declared bone-in presentation and exclude packaging, offal, blood, hide and separately removed fat."
+  - id: liveweight_measurement
+    applies_to: "Live equine input"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Use calibrated lot liveweight at the slaughter-site boundary and retain animal or lot identity."
+  - id: water_volume
+    applies_to: "Process water and wastewater"
+    required_property_ref:
+      name: "Volume"
+      uuid: ""
+    required_unit: "m3"
+    rule: "Use calibrated metering or documented process water balances; do not count internal recirculation repeatedly."
+  - id: utility_energy
+    applies_to: "Electricity, steam, hot water and fuels"
+    required_property_ref:
+      name: "Energy"
+      uuid: ""
+    required_unit: "kWh or MJ"
+    rule: "Preserve meter units and conversion factors; keep every stage and carrier separate and declare lower-heating-value basis for fuels."
+  - id: refrigerant_mass
+    applies_to: "R-717 make-up and release"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Reconcile charged, recovered and stock-change quantities for the declared refrigeration system."
+  - id: co_product_waste_mass
+    applies_to: "Co-products and wastes"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Weigh each named blood, organ, fat, hide, bone, tissue, solid and packaging stream separately with disposition and moisture basis where relevant."
+process_map:
+  - id: p_animal_reception
+    name: "Animal reception and lairage"
+    inclusion: "required"
+    inclusion_condition: "Always include reception, identity control and any controlled lairage at the slaughter site."
+    role: "Receive and hold live equines before slaughter."
+    quantitative_reference: "1 kg accepted live equine mass transferred to slaughter"
+  - id: p_slaughter_dressing
+    name: "Slaughter and carcass dressing"
+    inclusion: "required"
+    inclusion_condition: "Always include controlled stunning, bleeding, skinning, evisceration, splitting and carcass inspection."
+    role: "Convert accepted live equines into dressed carcasses and specifically identified co-products and wastes."
+    quantitative_reference: "1 kg accepted dressed equine carcass"
+  - id: p_carcass_chilling
+    name: "Carcass chilling"
+    inclusion: "required"
+    inclusion_condition: "Always include controlled chilling before cutting or dispatch."
+    role: "Cool dressed carcasses without freezing and maintain lot identity."
+    quantitative_reference: "1 kg accepted chilled equine carcass"
+  - id: p_cutting_deboning
+    name: "Cutting and deboning"
+    inclusion: "required"
+    inclusion_condition: "Include the actual standard cutting, trimming and deboning steps used for the declared meat presentation."
+    role: "Convert chilled carcasses into fresh or chilled equine meat cuts."
+    quantitative_reference: "1 kg accepted fresh or chilled equine meat before packaging"
+  - id: p_cleaning_sanitation
+    name: "Cleaning and disinfection"
+    inclusion: "required"
+    inclusion_condition: "Always include sanitation attributable to the declared slaughter, chilling, cutting and packing operations."
+    role: "Clean and disinfect product-contact equipment and controlled production areas."
+    quantitative_reference: "1 kg accepted fresh or chilled equine meat"
+  - id: p_packaging_cold_storage
+    name: "Packaging and chilled storage"
+    inclusion: "required"
+    inclusion_condition: "Always include packaging actually applied and chilled storage controlled before the factory gate."
+    role: "Package accepted meat, retain fresh or chilled state and release the reference product."
+    quantitative_reference: "1 kg net fresh or chilled equine meat"
+process_inventory:
+  - id: p_animal_reception
+    label: "Animal reception and lairage"
+    inputs:
+      product:
+        - row_id: reception_live_equine
+          role: "Live equine input"
+          name: "Live horse for slaughter"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Record live horses or other equines crossing the slaughter-site gate; farm production and inbound transport remain in the upstream animal dataset."
+          amount:
+            expression: "Calibrated liveweight received by identified lot"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted live equine mass"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_reception
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - ec-pef-method-2021-2279
+            ranges: []
+        - row_id: reception_process_water
+          role: "Reception water"
+          name: "Process water"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "Record water supplied for drinking, pen washing or animal cleaning during controlled reception."
+          amount:
+            expression: "Metered water attributable to received lots"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted live equine mass"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_reception
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - ec-pef-method-2021-2279
+            ranges: []
+        - row_id: reception_electricity
+          role: "Reception electricity"
+          name: "Grid electricity"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record electricity for reception lighting, ventilation, gates and directly attributable equipment."
+          amount:
+            expression: "Sub-metered electricity or documented equipment-time calculation"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted live equine mass"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_reception
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - ec-pef-method-2021-2279
+            ranges: []
+        - row_id: reception_straw_bedding
+          role: "Straw bedding input"
+          name: "Wheat straw bedding"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Record wheat straw bedding introduced into lairage pens when used."
+          amount:
+            expression: "Net issued dry bedding mass"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted live equine mass"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_reception
+              source_ids:
+                - ec-jrc-sa-bref-2024
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: accepted_live_equine
+          role: "Accepted live equine output"
+          name: "Accepted live horse for slaughter"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Record live equines accepted and transferred to the slaughter line after identity and fitness controls."
+          amount:
+            expression: "Calibrated accepted liveweight"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per reception lot"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_reception
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - ec-pef-method-2021-2279
+            ranges: []
+      waste:
+        - row_id: reception_manure
+          role: "Lairage manure"
+          name: "Equine manure"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Record manure removed from controlled reception and lairage as a distinct waste stream."
+          amount:
+            expression: "Weighed manure leaving the process"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted live equine mass"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_reception
+              source_ids:
+                - ec-jrc-sa-bref-2024
+            ranges: []
+        - row_id: reception_used_bedding
+          role: "Used bedding"
+          name: "Used wheat straw bedding"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Record spent straw bedding removed from pens separately from manure when managed separately."
+          amount:
+            expression: "Weighed used bedding by disposition"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted live equine mass"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_reception
+              source_ids:
+                - ec-jrc-sa-bref-2024
+            ranges: []
+        - row_id: reception_wastewater
+          role: "Reception wastewater"
+          name: "Lairage wash wastewater"
+          flow_type: "waste"
+          property_unit: "Volume / m3"
+          description: "Record wastewater from pen washing and animal cleaning crossing to treatment."
+          amount:
+            expression: "Metered discharge or documented water balance"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted live equine mass"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_reception
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - ec-pef-method-2021-2279
+            ranges: []
+        - row_id: reception_condemned_animal
+          role: "Animal rejected at reception"
+          name: "Condemned equine carcass"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Record a dead or rejected animal leaving reception for controlled treatment as one waste exchange."
+          amount:
+            expression: "Weighed condemned animal mass by disposition"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted live equine mass"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_reception
+              source_ids:
+                - ec-jrc-sa-bref-2024
+            ranges: []
+      elementary:
+        []
+  - id: p_slaughter_dressing
+    label: "Slaughter and carcass dressing"
+    inputs:
+      product:
+        - row_id: slaughter_live_equine
+          role: "Accepted live equine input"
+          name: "Accepted live horse for slaughter"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Record accepted live equines entering stunning and slaughter."
+          amount:
+            expression: "Lot transfer liveweight"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted dressed carcass"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_slaughter
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - ec-pef-method-2021-2279
+            ranges: []
+        - row_id: slaughter_process_water
+          role: "Slaughter process water"
+          name: "Process water"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "Record water used for carcass dressing, equipment rinsing and direct slaughter operations."
+          amount:
+            expression: "Metered process water attributable to slaughter lots"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted dressed carcass"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_slaughter
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - ec-pef-method-2021-2279
+            ranges: []
+        - row_id: slaughter_electricity
+          role: "Slaughter electricity"
+          name: "Grid electricity"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record electricity for stunning, hoists, cutting, pumps and directly attributable slaughter equipment."
+          amount:
+            expression: "Sub-metered electricity or documented equipment-time calculation"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted dressed carcass"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_slaughter
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - ec-pef-method-2021-2279
+            ranges: []
+        - row_id: slaughter_steam
+          role: "Slaughter steam"
+          name: "Purchased steam"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Record purchased steam crossing the facility boundary for slaughter operations when used."
+          amount:
+            expression: "Metered purchased steam energy"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted dressed carcass"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_slaughter
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - ec-pef-method-2021-2279
+            ranges: []
+        - row_id: slaughter_hot_water
+          role: "Slaughter hot water"
+          name: "Purchased hot water"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Record purchased hot water as a separate utility when it crosses the facility boundary."
+          amount:
+            expression: "Metered purchased hot-water energy"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted dressed carcass"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_slaughter
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - ec-pef-method-2021-2279
+            ranges: []
+        - row_id: slaughter_natural_gas
+          role: "Slaughter natural gas"
+          name: "Natural gas"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Record natural gas consumed by controlled slaughter-line heating equipment."
+          amount:
+            expression: "Metered fuel energy on a declared lower-heating-value basis"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted dressed carcass"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_slaughter
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - ec-pef-method-2021-2279
+            ranges: []
+        - row_id: slaughter_lpg
+          role: "Slaughter LPG"
+          name: "Liquefied petroleum gas"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Record LPG consumed by slaughter-line heating equipment when this fuel is used."
+          amount:
+            expression: "Stock-reconciled LPG energy on a declared lower-heating-value basis"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted dressed carcass"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_slaughter
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - ec-pef-method-2021-2279
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: dressed_equine_carcass
+          role: "Dressed carcass output"
+          name: "Dressed equine carcass"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Record accepted dressed carcasses transferred to chilling after removal of hide, blood and viscera."
+          amount:
+            expression: "Calibrated hot carcass mass"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per slaughter lot"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_slaughter
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - ec-pef-method-2021-2279
+            ranges: []
+        - row_id: edible_equine_blood
+          role: "Edible blood co-product"
+          name: "Edible equine blood"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Record hygienically collected blood directed to an edible use as a separate co-product."
+          amount:
+            expression: "Weighed collected edible blood"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted dressed carcass"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_slaughter
+              source_ids:
+                - ec-jrc-sa-bref-2024
+            ranges: []
+        - row_id: edible_equine_liver
+          role: "Edible liver co-product"
+          name: "Edible equine liver"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Record inspected equine liver released for edible use; offal is not part of the reference meat flow."
+          amount:
+            expression: "Weighed released liver mass"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted dressed carcass"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_slaughter
+              source_ids:
+                - ec-jrc-sa-bref-2024
+            ranges: []
+        - row_id: edible_equine_heart
+          role: "Edible heart co-product"
+          name: "Edible equine heart"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Record inspected equine heart released for edible use as a separate co-product."
+          amount:
+            expression: "Weighed released heart mass"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted dressed carcass"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_slaughter
+              source_ids:
+                - ec-jrc-sa-bref-2024
+            ranges: []
+        - row_id: equine_hide
+          role: "Hide co-product"
+          name: "Raw equine hide"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Record the raw hide leaving the slaughter process for further processing."
+          amount:
+            expression: "Weighed hide mass"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted dressed carcass"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_slaughter
+              source_ids:
+                - ec-jrc-sa-bref-2024
+            ranges: []
+        - row_id: equine_rendering_fat
+          role: "Fat co-product"
+          name: "Raw equine adipose tissue for rendering"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Record separated adipose tissue directed to rendering as a distinct co-product."
+          amount:
+            expression: "Weighed fat mass by destination"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted dressed carcass"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_slaughter
+              source_ids:
+                - ec-jrc-sa-bref-2024
+            ranges: []
+      waste:
+        - row_id: non_edible_equine_blood
+          role: "Non-edible blood waste"
+          name: "Non-edible equine blood"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Record blood not collected for edible use and sent to treatment or rendering as a distinct waste stream."
+          amount:
+            expression: "Measured or mass-balanced non-edible blood"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted dressed carcass"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_slaughter
+              source_ids:
+                - ec-jrc-sa-bref-2024
+            ranges: []
+        - row_id: gastrointestinal_contents
+          role: "Gastrointestinal contents"
+          name: "Equine gastrointestinal contents"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Record removed gastrointestinal contents leaving slaughter as a separate waste stream."
+          amount:
+            expression: "Weighed container change corrected for tare"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted dressed carcass"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_slaughter
+              source_ids:
+                - ec-jrc-sa-bref-2024
+            ranges: []
+        - row_id: condemned_viscera
+          role: "Condemned viscera"
+          name: "Condemned equine viscera"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Record inspected viscera rejected from edible use and sent to controlled treatment."
+          amount:
+            expression: "Weighed condemned viscera by disposition"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted dressed carcass"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_slaughter
+              source_ids:
+                - ec-jrc-sa-bref-2024
+            ranges: []
+        - row_id: slaughter_wastewater
+          role: "Slaughter wastewater"
+          name: "Slaughterhouse wastewater"
+          flow_type: "waste"
+          property_unit: "Volume / m3"
+          description: "Record wastewater from slaughter and carcass dressing crossing to treatment."
+          amount:
+            expression: "Metered discharge or process water balance"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted dressed carcass"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_slaughter
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - ec-pef-method-2021-2279
+            ranges: []
+      elementary:
+        - row_id: slaughter_fossil_co2
+          role: "Slaughter fossil carbon dioxide"
+          name: "Carbon dioxide, fossil, to air"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Calculate direct fossil carbon dioxide from on-site natural-gas or LPG combustion as an individual elementary flow."
+          amount:
+            expression: "Fuel record multiplied by a documented fuel-specific combustion factor"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted dressed carcass"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_slaughter
+              source_ids:
+                - ec-pef-method-2021-2279
+            ranges: []
+        - row_id: slaughter_nox
+          role: "Slaughter nitrogen oxides"
+          name: "Nitrogen oxides to air"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Record or calculate nitrogen oxides from controlled combustion as a separate elementary flow."
+          amount:
+            expression: "Monitoring result or fuel record multiplied by a documented equipment-specific factor"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted dressed carcass"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_slaughter
+              source_ids:
+                - ec-pef-method-2021-2279
+            ranges: []
+  - id: p_carcass_chilling
+    label: "Carcass chilling"
+    inputs:
+      product:
+        - row_id: chilling_dressed_carcass
+          role: "Dressed carcass input"
+          name: "Dressed equine carcass"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Record dressed carcasses entering controlled chilling."
+          amount:
+            expression: "Lot transfer mass"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted chilled carcass"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_chilling
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - ec-pef-method-2021-2279
+            ranges: []
+        - row_id: chilling_electricity
+          role: "Chilling electricity"
+          name: "Grid electricity"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record electricity consumed by carcass chillers, fans, pumps and controls."
+          amount:
+            expression: "Sub-metered refrigeration electricity or documented load-time calculation"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted chilled carcass"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_chilling
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - ec-pef-method-2021-2279
+            ranges: []
+        - row_id: chilling_refrigerant_r717
+          role: "Chilling refrigerant"
+          name: "Refrigerant ammonia (R-717)"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Record R-717 make-up crossing the foreground boundary when the declared refrigeration system uses it."
+          amount:
+            expression: "Maintenance stock issue attributable to the refrigeration system"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg accepted chilled carcass"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_chilling
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - ec-pef-method-2021-2279
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: chilled_equine_carcass
+          role: "Chilled carcass output"
+          name: "Chilled equine carcass"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Record accepted carcasses that remain fresh or chilled and have not been frozen."
+          amount:
+            expression: "Calibrated chilled carcass mass"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per chilling lot"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_chilling
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - ec-pef-method-2021-2279
+            ranges: []
+      waste:
+        - row_id: chilling_condensate
+          role: "Chiller condensate"
+          name: "Carcass chiller condensate wastewater"
+          flow_type: "waste"
+          property_unit: "Volume / m3"
+          description: "Record collected condensate discharged to treatment when it crosses the process boundary."
+          amount:
+            expression: "Metered condensate discharge"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted chilled carcass"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_chilling
+              source_ids:
+                - ec-jrc-sa-bref-2024
+            ranges: []
+        - row_id: chilling_rejected_carcass
+          role: "Rejected chilled carcass"
+          name: "Rejected chilled equine carcass"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Record carcasses rejected after chilling and sent to controlled treatment."
+          amount:
+            expression: "Weighed rejected carcass mass"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted chilled carcass"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_chilling
+              source_ids:
+                - ec-jrc-sa-bref-2024
+            ranges: []
+      elementary:
+        - row_id: chilling_ammonia_air
+          role: "R-717 emission to air"
+          name: "Ammonia (R-717) to air"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Calculate R-717 released from the declared refrigeration system as one specific elementary emission."
+          amount:
+            expression: "Refrigerant make-up minus documented recovery and retained stock change"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg accepted chilled carcass"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_chilling
+              source_ids:
+                - ec-pef-method-2021-2279
+            ranges: []
+  - id: p_cutting_deboning
+    label: "Cutting and deboning"
+    inputs:
+      product:
+        - row_id: cutting_chilled_carcass
+          role: "Chilled carcass input"
+          name: "Chilled equine carcass"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Record chilled carcasses or sides entering standard cutting and deboning."
+          amount:
+            expression: "Lot transfer mass"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted meat before packaging"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cutting
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - ec-pef-method-2021-2279
+            ranges: []
+        - row_id: cutting_process_water
+          role: "Cutting process water"
+          name: "Process water"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "Record water used directly for cutting-room rinsing or product-contact operations."
+          amount:
+            expression: "Metered cutting-room water"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted meat before packaging"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cutting
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - ec-pef-method-2021-2279
+            ranges: []
+        - row_id: cutting_electricity
+          role: "Cutting electricity"
+          name: "Grid electricity"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record electricity for saws, knives, conveyors, local cooling and directly attributable equipment."
+          amount:
+            expression: "Sub-metered electricity or documented equipment-time calculation"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted meat before packaging"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cutting
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - ec-pef-method-2021-2279
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: fresh_chilled_equine_meat_unpacked
+          role: "Unpacked meat output"
+          name: "Equine meat, fresh or chilled, unpacked"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Record accepted skeletal meat cuts transferred to packaging without freezing."
+          amount:
+            expression: "Calibrated accepted meat mass"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per cutting lot"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cutting
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - ec-pef-method-2021-2279
+            ranges: []
+        - row_id: equine_bones
+          role: "Bone co-product"
+          name: "Raw equine bones"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Record separated bones directed to a declared recovery or rendering use."
+          amount:
+            expression: "Weighed bone mass by destination"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted meat before packaging"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cutting
+              source_ids:
+                - ec-jrc-sa-bref-2024
+            ranges: []
+        - row_id: equine_fat_trimmings
+          role: "Fat trimming co-product"
+          name: "Raw equine fat trimmings"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Record edible or renderable fat trimmings separately from meat and other tissues."
+          amount:
+            expression: "Weighed fat trimming mass by destination"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted meat before packaging"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cutting
+              source_ids:
+                - ec-jrc-sa-bref-2024
+            ranges: []
+      waste:
+        - row_id: cutting_condemned_tissue
+          role: "Condemned cutting tissue"
+          name: "Condemned equine tissue"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Record tissue rejected during cutting and sent to controlled treatment."
+          amount:
+            expression: "Weighed condemned tissue by disposition"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted meat before packaging"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cutting
+              source_ids:
+                - ec-jrc-sa-bref-2024
+            ranges: []
+        - row_id: cutting_wastewater
+          role: "Cutting wastewater"
+          name: "Meat cutting wastewater"
+          flow_type: "waste"
+          property_unit: "Volume / m3"
+          description: "Record cutting-room wastewater crossing to treatment."
+          amount:
+            expression: "Metered discharge or documented water balance"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted meat before packaging"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cutting
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - ec-pef-method-2021-2279
+            ranges: []
+      elementary:
+        []
+  - id: p_cleaning_sanitation
+    label: "Cleaning and disinfection"
+    inputs:
+      product:
+        - row_id: sanitation_process_water
+          role: "Sanitation water"
+          name: "Process water"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "Record water used for cleaning and disinfection of controlled production areas."
+          amount:
+            expression: "Metered sanitation water or documented area-time allocation"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted meat"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_sanitation
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - ec-pef-method-2021-2279
+            ranges: []
+        - row_id: sanitation_electricity
+          role: "Sanitation electricity"
+          name: "Grid electricity"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record electricity for pumps, pressure washers, dosing and sanitation equipment."
+          amount:
+            expression: "Sub-metered electricity or documented equipment-time allocation"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted meat"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_sanitation
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - ec-pef-method-2021-2279
+            ranges: []
+        - row_id: sanitation_steam
+          role: "Sanitation steam"
+          name: "Purchased steam"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Record purchased steam used for sanitation when it crosses the facility boundary."
+          amount:
+            expression: "Metered purchased steam energy"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted meat"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_sanitation
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - ec-pef-method-2021-2279
+            ranges: []
+        - row_id: sanitation_hot_water
+          role: "Sanitation hot water"
+          name: "Purchased hot water"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Record purchased hot water crossing the facility boundary for cleaning and disinfection."
+          amount:
+            expression: "Metered purchased hot-water energy"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted meat"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_sanitation
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - ec-pef-method-2021-2279
+            ranges: []
+        - row_id: sanitation_natural_gas
+          role: "Sanitation boiler natural gas"
+          name: "Natural gas"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Record natural gas consumed by an on-site sanitation hot-water or steam system."
+          amount:
+            expression: "Metered fuel energy on a declared lower-heating-value basis"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted meat"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_sanitation
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - ec-pef-method-2021-2279
+            ranges: []
+        - row_id: sanitation_sodium_hydroxide
+          role: "Alkaline detergent input"
+          name: "Sodium hydroxide"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Record sodium hydroxide active substance used in the declared cleaning formulation."
+          amount:
+            expression: "Formulation issue multiplied by verified sodium-hydroxide concentration"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted meat"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_sanitation
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - ec-pef-method-2021-2279
+            ranges: []
+        - row_id: sanitation_peracetic_acid
+          role: "Disinfectant input"
+          name: "Peracetic acid"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Record peracetic acid active substance used in the declared disinfectant formulation."
+          amount:
+            expression: "Formulation issue multiplied by verified peracetic-acid concentration"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted meat"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_sanitation
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - ec-pef-method-2021-2279
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: sanitation_wastewater
+          role: "Sanitation wastewater"
+          name: "Slaughterhouse sanitation wastewater"
+          flow_type: "waste"
+          property_unit: "Volume / m3"
+          description: "Record spent cleaning and disinfection water crossing to treatment."
+          amount:
+            expression: "Metered sanitation discharge or water balance"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted meat"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_sanitation
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - ec-pef-method-2021-2279
+            ranges: []
+        - row_id: wastewater_screenings
+          role: "Wastewater screenings"
+          name: "Slaughterhouse wastewater screenings"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Record solids removed by wastewater screening as one waste stream."
+          amount:
+            expression: "Weighed screenings corrected for container tare"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted meat"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_sanitation
+              source_ids:
+                - ec-jrc-sa-bref-2024
+            ranges: []
+        - row_id: wastewater_sludge
+          role: "Wastewater-treatment sludge"
+          name: "Slaughterhouse wastewater-treatment sludge"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Record sludge leaving controlled wastewater treatment as a distinct waste stream."
+          amount:
+            expression: "Weighed sludge with declared dry-matter basis"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted meat"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_sanitation
+              source_ids:
+                - ec-jrc-sa-bref-2024
+            ranges: []
+      elementary:
+        - row_id: sanitation_fossil_co2
+          role: "Sanitation fossil carbon dioxide"
+          name: "Carbon dioxide, fossil, to air"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Calculate direct fossil carbon dioxide from sanitation boiler natural gas."
+          amount:
+            expression: "Fuel record multiplied by a documented combustion factor"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted meat"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_sanitation
+              source_ids:
+                - ec-pef-method-2021-2279
+            ranges: []
+        - row_id: sanitation_nox
+          role: "Sanitation nitrogen oxides"
+          name: "Nitrogen oxides to air"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Record or calculate nitrogen oxides from the sanitation boiler separately."
+          amount:
+            expression: "Monitoring result or fuel record multiplied by a documented equipment factor"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted meat"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_sanitation
+              source_ids:
+                - ec-pef-method-2021-2279
+            ranges: []
+  - id: p_packaging_cold_storage
+    label: "Packaging and chilled storage"
+    inputs:
+      product:
+        - row_id: packaging_unpacked_meat
+          role: "Unpacked meat input"
+          name: "Equine meat, fresh or chilled, unpacked"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Record accepted unpacked meat entering packaging and cold storage."
+          amount:
+            expression: "Lot transfer mass"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net reference meat"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_storage
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - ec-pef-method-2021-2279
+            ranges: []
+        - row_id: packaging_pa_pe_film
+          role: "Vacuum film input"
+          name: "Polyamide-polyethylene vacuum packaging film"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Record the declared PA/PE vacuum film used for primary packaging."
+          amount:
+            expression: "Roll issue less verified remainder"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net reference meat"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_storage
+              source_ids:
+                - ec-pef-method-2021-2279
+            ranges: []
+        - row_id: packaging_pet_tray
+          role: "PET tray input"
+          name: "Polyethylene terephthalate meat tray"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Record PET trays used for the declared product presentation."
+          amount:
+            expression: "Count multiplied by measured mean empty-tray mass"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net reference meat"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_storage
+              source_ids:
+                - ec-pef-method-2021-2279
+            ranges: []
+        - row_id: packaging_absorbent_pad
+          role: "Absorbent pad input"
+          name: "Cellulose absorbent meat pad"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Record cellulose absorbent pads applied to the declared pack."
+          amount:
+            expression: "Count multiplied by measured mean dry pad mass"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net reference meat"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_storage
+              source_ids:
+                - ec-pef-method-2021-2279
+            ranges: []
+        - row_id: packaging_label
+          role: "Label input"
+          name: "Printed paper meat label"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Record printed paper labels applied to packs or shipping units."
+          amount:
+            expression: "Count multiplied by measured mean label mass"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net reference meat"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_storage
+              source_ids:
+                - ec-pef-method-2021-2279
+            ranges: []
+        - row_id: packaging_corrugated_carton
+          role: "Shipping carton input"
+          name: "Corrugated paperboard meat shipping carton"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Record the attributable share of corrugated shipping cartons."
+          amount:
+            expression: "Empty-carton mass allocated by packed net meat mass"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net reference meat"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_storage
+              source_ids:
+                - ec-pef-method-2021-2279
+            ranges: []
+        - row_id: packaging_electricity
+          role: "Packaging electricity"
+          name: "Grid electricity"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record electricity for vacuum packaging, sealing, labelling and directly attributable equipment."
+          amount:
+            expression: "Sub-metered electricity or documented equipment-time calculation"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net reference meat"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_storage
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - ec-pef-method-2021-2279
+            ranges: []
+        - row_id: cold_storage_electricity
+          role: "Cold-storage electricity"
+          name: "Grid electricity"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record chilled-room refrigeration electricity separately from packaging electricity."
+          amount:
+            expression: "Sub-metered cold-room electricity allocated by occupied mass and time"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net reference meat"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_storage
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - ec-pef-method-2021-2279
+            ranges: []
+        - row_id: cold_storage_refrigerant_r717
+          role: "Cold-storage refrigerant"
+          name: "Refrigerant ammonia (R-717)"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Record R-717 make-up attributable to cold storage when this declared refrigeration technology is used."
+          amount:
+            expression: "Maintenance stock issue attributable to the cold-storage system"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net reference meat"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_storage
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - ec-pef-method-2021-2279
+            ranges: []
+        - row_id: backup_diesel
+          role: "Emergency-generator diesel"
+          name: "Diesel fuel"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Record diesel consumed by backup generation attributable to chilled storage when operated."
+          amount:
+            expression: "Metered or stock-reconciled diesel on a declared lower-heating-value basis"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net reference meat"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_storage
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - ec-pef-method-2021-2279
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: reference_equine_meat
+          role: "Reference meat output"
+          name: "Meat of horses and other equines, fresh or chilled"
+          flow_type: "product"
+          flow_ref:
+            uuid: "ac93b427-13d9-411d-9521-36baea644bb5"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Record released fresh or chilled equine skeletal meat at factory gate; removable packaging is excluded from reference mass."
+          amount:
+            expression: "Calibrated net meat mass normalized to 1 kg"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per packaging and storage lot"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_storage
+              source_ids:
+                - ec-pef-method-2021-2279
+            ranges: []
+      waste:
+        - row_id: packaging_film_waste
+          role: "Film packaging waste"
+          name: "Waste polyamide-polyethylene film"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Record damaged or trimmed PA/PE film leaving packaging as waste."
+          amount:
+            expression: "Weighed packaging waste"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net reference meat"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_storage
+              source_ids:
+                - ec-pef-method-2021-2279
+            ranges: []
+        - row_id: packaging_paperboard_waste
+          role: "Paperboard packaging waste"
+          name: "Waste corrugated paperboard"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Record damaged cartons and paperboard leaving packaging as waste."
+          amount:
+            expression: "Weighed paperboard waste"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net reference meat"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_storage
+              source_ids:
+                - ec-pef-method-2021-2279
+            ranges: []
+        - row_id: packaging_rejected_meat
+          role: "Rejected packaged meat"
+          name: "Rejected fresh or chilled equine meat"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Record packaged meat rejected before factory-gate release and sent to controlled treatment."
+          amount:
+            expression: "Weighed rejected net meat mass"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net reference meat"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_storage
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - ec-pef-method-2021-2279
+            ranges: []
+      elementary:
+        - row_id: cold_storage_ammonia_air
+          role: "Cold-storage R-717 emission"
+          name: "Ammonia (R-717) to air"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Calculate R-717 released from the cold-storage refrigeration system as a separate elementary flow."
+          amount:
+            expression: "Refrigerant make-up minus documented recovery and stock change"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net reference meat"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_storage
+              source_ids:
+                - ec-pef-method-2021-2279
+            ranges: []
+        - row_id: backup_diesel_co2
+          role: "Backup diesel carbon dioxide"
+          name: "Carbon dioxide, fossil, to air"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Calculate fossil carbon dioxide from diesel burned for backup cold-storage electricity."
+          amount:
+            expression: "Diesel record multiplied by a documented combustion factor"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net reference meat"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_storage
+              source_ids:
+                - ec-pef-method-2021-2279
+            ranges: []
+        - row_id: backup_diesel_nox
+          role: "Backup diesel nitrogen oxides"
+          name: "Nitrogen oxides to air"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Record or calculate nitrogen oxides from backup diesel combustion separately."
+          amount:
+            expression: "Monitoring result or diesel record multiplied by a documented equipment factor"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net reference meat"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_storage
+              source_ids:
+                - ec-pef-method-2021-2279
+            ranges: []
+allocation_rules:
+  - rule_id: allocation_rule_1
+    applies_to: "foreground_burden_allocation"
+    rule: "allocation_avoid_subdivision: First avoid allocation through animal and lot genealogy, separate weighing, sub-metering, process subdivision and destination-specific co-product records. Source: ec-pef-method-2021-2279."
+    source_ids: []
+  - rule_id: allocation_rule_2
+    applies_to: "foreground_burden_allocation"
+    rule: "allocation_record_gross_outputs: Record meat, edible blood, edible organs, hide, fat and bones at gross measured output before allocation; never net their quantities against waste or input amounts. Sources: ec-jrc-sa-bref-2024; ec-pef-method-2021-2279."
+    source_ids: []
+  - rule_id: allocation_rule_3
+    applies_to: "foreground_burden_allocation"
+    rule: "allocation_physical_relationship: For an inseparable multi-output slaughter process, apply a documented physical relationship only when it represents the causal resource relationship; disclose the property, units and affected exchanges. Source: ec-pef-method-2021-2279."
+    source_ids: []
+  - rule_id: allocation_rule_4
+    applies_to: "foreground_burden_allocation"
+    rule: "allocation_other_basis: When no representative physical relationship exists, follow the applicable PEF allocation hierarchy and disclose the chosen basis, prices or other parameters, reference period and sensitivity; this PCR supplies no default shares. Source: ec-pef-method-2021-2279."
+    source_ids: []
+  - rule_id: allocation_rule_5
+    applies_to: "foreground_burden_allocation"
+    rule: "allocation_waste_boundary: Classify a stream as co-product or waste using its documented legal and operational destination; external treatment of waste remains an explicit output and is not silently credited. Sources: ec-jrc-sa-bref-2024; ec-pef-method-2021-2279."
+    source_ids: []
+  - rule_id: allocation_rule_6
+    applies_to: "foreground_burden_allocation"
+    rule: "allocation_shared_utilities: Allocate shared electricity, heat, refrigeration and sanitation by the closest measured driver, such as equipment time and load, metered energy, occupied chilled mass-time, cleaned area-time or process water. Sources: ec-jrc-sa-bref-2024; ec-pef-method-2021-2279."
+    source_ids: []
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_reception
+      process_id: "p_animal_reception"
+      flow_role: "Live animals, water, electricity, accepted animals and reception wastes"
+      record_type: "Animal register, weighbridge, meter, bedding and waste records"
+      raw_fields: "animal_or_lot_id; species; origin; liveweight; arrival; acceptance; water; electricity; bedding; manure; wastewater; rejected mass"
+      collection_method: "Calibrated liveweight, meters, stock issue and waste weighing linked to lot identity"
+      unit: "kg; m3; kWh"
+      frequency: "Every lot"
+      temporal_coverage: "Representative production period, normally 12 consecutive months or the complete shorter campaign"
+      site_scope: "All controlled reception and lairage areas"
+      aggregation_rule: "Sum each atomic exchange and normalize by accepted liveweight"
+      quality_evidence: "Identity records; scale calibration; meters; stock and waste tickets"
+    - protocol_id: cp_slaughter
+      process_id: "p_slaughter_dressing"
+      flow_role: "Animals, water, stage energy, carcass, specific co-products, wastes and combustion emissions"
+      record_type: "Slaughter batch, meter, weighing, inspection and destination records"
+      raw_fields: "lot_id; liveweight; water; electricity; steam; hot_water; gas; LPG; carcass_mass; each co-product; each waste; destination; factor"
+      collection_method: "Calibrated scales, sub-meters, product and inspection records, destination tickets and documented emission calculations"
+      unit: "kg; m3; kWh; MJ"
+      frequency: "Every lot and meter period"
+      temporal_coverage: "Same period as reference production"
+      site_scope: "All controlled slaughter and dressing lines"
+      aggregation_rule: "Normalize each exchange by accepted dressed carcass mass and retain gross outputs"
+      quality_evidence: "Calibration; batch genealogy; meters; inspection; destination and factor records"
+    - protocol_id: cp_chilling
+      process_id: "p_carcass_chilling"
+      flow_role: "Carcass, electricity, R-717, chilled output, condensate, rejects and release"
+      record_type: "Lot transfer, refrigeration meter and maintenance records"
+      raw_fields: "lot_id; input_mass; output_mass; temperature_state; electricity; refrigerant_issue; recovery; stock_change; condensate; reject_mass"
+      collection_method: "Calibrated weighing, sub-metering, refrigeration logs and refrigerant balance"
+      unit: "kg; kWh; m3"
+      frequency: "Every lot and maintenance event"
+      temporal_coverage: "Same period as reference production"
+      site_scope: "All controlled carcass chillers"
+      aggregation_rule: "Normalize by accepted chilled carcass mass"
+      quality_evidence: "Lot record; meter; maintenance log; refrigerant reconciliation"
+    - protocol_id: cp_cutting
+      process_id: "p_cutting_deboning"
+      flow_role: "Chilled carcass, water, electricity, meat, bones, fat, condemned tissue and wastewater"
+      record_type: "Cutting batch, meter, weighing and destination records"
+      raw_fields: "lot_id; presentation; bone_status; input_mass; water; electricity; accepted_meat; bones; fat; condemned_tissue; wastewater"
+      collection_method: "Calibrated batch weighing, meters and destination records"
+      unit: "kg; m3; kWh"
+      frequency: "Every cutting lot"
+      temporal_coverage: "Same period as reference production"
+      site_scope: "All controlled cutting and deboning rooms"
+      aggregation_rule: "Normalize by accepted meat before packaging and reconcile named outputs"
+      quality_evidence: "Batch genealogy; calibration; meters; inspection and destination records"
+    - protocol_id: cp_sanitation
+      process_id: "p_cleaning_sanitation"
+      flow_role: "Water, energy, active chemicals, wastewater, screenings, sludge and emissions"
+      record_type: "Sanitation schedule, recipe, stock, meter and treatment records"
+      raw_fields: "area; duration; water; electricity; steam; hot_water; gas; formulation_mass; active_concentration; wastewater; screenings; sludge; factors"
+      collection_method: "Meters, verified formulation concentrations, stock reconciliation, waste weighing and documented emission calculations"
+      unit: "kg; m3; kWh; MJ"
+      frequency: "Every sanitation cycle and treatment period"
+      temporal_coverage: "Same period as reference production"
+      site_scope: "All controlled processing areas and on-site wastewater treatment"
+      aggregation_rule: "Allocate by cleaned area-time or measured process driver and normalize by accepted meat"
+      quality_evidence: "Schedule; SDS; recipe; meters; calibration; treatment and factor records"
+    - protocol_id: cp_packaging_storage
+      process_id: "p_packaging_cold_storage"
+      flow_role: "Meat, each package, stage electricity, R-717, diesel, reference output, wastes and emissions"
+      record_type: "Packaging BoM, count, weighing, meter, storage and maintenance records"
+      raw_fields: "lot_id; net_meat; package_SKU; count; unit_mass; packaging_electricity; storage_electricity; mass_time; refrigerant; diesel; rejects; waste"
+      collection_method: "Approved BoM, calibrated net weighing, component sampling, sub-metering and maintenance balance"
+      unit: "kg; count; kWh; MJ"
+      frequency: "Every lot, storage period and maintenance event"
+      temporal_coverage: "Same period as reference production"
+      site_scope: "All controlled packing and chilled-storage areas"
+      aggregation_rule: "Normalize by net released meat; allocate shared cold storage by occupied mass-time"
+      quality_evidence: "BoM; sample weights; scale and meter calibration; cold-room and maintenance logs"
+  calculation_rules:
+    - id: calc_reference_mass
+      applies_to: "Reference meat"
+      rule: "Accepted product mass minus removable packaging tare; include bone only for declared bone-in product"
+      inputs:
+        - "gross packed mass"
+        - "packaging tare"
+        - "bone status"
+      output: "kg net fresh or chilled equine meat"
+      source_ids:
+        - ec-pef-method-2021-2279
+    - id: calc_material_balance
+      applies_to: "Slaughter and cutting"
+      rule: "Live or carcass input = measured meat and named co-products + named wastes + documented stock or moisture change within uncertainty"
+      inputs:
+        - "all named input and output masses"
+      output: "reconciled kg and residual"
+      source_ids:
+        - ec-jrc-sa-bref-2024
+        - ec-pef-method-2021-2279
+    - id: calc_active_chemical
+      applies_to: "Sodium hydroxide and peracetic acid"
+      rule: "Formulated-product mass × verified active concentration"
+      inputs:
+        - "issued formulation mass"
+        - concentration
+      output: "kg named active substance"
+      source_ids:
+        - ec-pef-method-2021-2279
+    - id: calc_refrigerant_release
+      applies_to: "R-717 refrigeration"
+      rule: "Make-up refrigerant − documented recovered refrigerant − positive system stock change"
+      inputs:
+        - issue
+        - recovery
+        - "charge and stock records"
+      output: "kg ammonia to air"
+      source_ids:
+        - ec-pef-method-2021-2279
+    - id: calc_combustion_emission
+      applies_to: "Natural gas, LPG and diesel"
+      rule: "Multiply each foreground fuel record by a documented fuel- and equipment-specific factor for each named emission"
+      inputs:
+        - "fuel energy"
+        - "factor and unit"
+      output: "kg named elementary emission"
+      source_ids:
+        - ec-pef-method-2021-2279
+    - id: calc_component_packaging_mass
+      applies_to: "Counted packaging"
+      rule: "Count × measured mean empty unit mass for the same packaging SKU and period"
+      inputs:
+        - count
+        - "sampled unit masses"
+      output: "kg named packaging component"
+      source_ids:
+        - ec-pef-method-2021-2279
+    - id: calc_cold_storage_allocation
+      applies_to: "Shared chilled storage"
+      rule: "Metered cold-room electricity × declared product occupied mass-time / total occupied mass-time"
+      inputs:
+        - meter
+        - "product mass"
+        - "storage time"
+        - "total mass-time"
+      output: "kWh attributable to product lot"
+      source_ids:
+        - ec-pef-method-2021-2279
+  data_quality_requirements:
+    - id: dq_scope_identity
+      applies_to: "Reference product"
+      requirement: "Confirm equine skeletal meat, fresh or chilled and never frozen; keep offal and other co-products outside reference mass."
+      evidence: "CPC record, product specification, inspection and temperature-state records"
+    - id: dq_company_specific
+      applies_to: "Controlled foreground"
+      requirement: "Use company-specific process, BoM, utility, co-product, waste and direct-emission data for all controlled operations."
+      evidence: "Batch records, meters, invoices, destination records and ec-pef-method-2021-2279"
+    - id: dq_traceability
+      applies_to: "Animal-to-meat genealogy"
+      requirement: "Maintain lot links from live equines through carcass, cutting, packaging and release."
+      evidence: "Animal register, slaughter and cutting batches, pack lot"
+    - id: dq_completeness
+      applies_to: "LCI"
+      requirement: "Cover known raw materials, energy, products, co-products, wastes and emissions to air, water and soil without collection-flow placeholders."
+      evidence: "Process walk-through, BoM, meters, waste and emission reconciliation"
+    - id: dq_mass_balance
+      applies_to: "Reception, slaughter and cutting"
+      requirement: "Reconcile all named masses and disclose residuals, moisture changes and measurement uncertainty."
+      evidence: "Signed balance worksheet and calibrated weights"
+    - id: dq_temperature_state
+      applies_to: "Chilling and storage"
+      requirement: "Demonstrate that the reference meat remained fresh or chilled and was not frozen; declare monitoring basis and deviations."
+      evidence: "Chiller and cold-room records"
+    - id: dq_sanitation
+      applies_to: "Cleaning and disinfection"
+      requirement: "Record each active chemical separately with formulation identity and concentration; reconcile water, wastewater and treatment solids."
+      evidence: "SDS, recipe, stock, meter and treatment records"
+    - id: dq_allocation
+      applies_to: "Meat and co-products"
+      requirement: "Disclose gross outputs, classification, destination, allocation hierarchy, drivers, reference period and sensitivity."
+      evidence: "Allocation worksheet and destination evidence"
+    - id: dq_packaging
+      applies_to: "Packaging"
+      requirement: "Record every packaging component separately and exclude removable packaging from reference meat mass."
+      evidence: "Packaging BoM and unit-mass sampling"
+    - id: dq_unresolved_uuid
+      applies_to: "Non-reference rows"
+      requirement: "Leave UUID blank until exact hybrid and state-100 direct-read checks agree and retain the row-specific manifest gap."
+      evidence: "Manifest unresolved inventory rows"
+validation_rules:
+  - rule_id: validation_rule_1
+    applies_to: "foreground_dataset_conformance"
+    rule: "validate_reference_identity: Confirm Product flow UUID ac93b427-13d9-411d-9521-36baea644bb5, exact name, CPC 21118, state 100, Mass UUID 93a60a56-a3c8-11da-a746-0800200b9a66, Units of mass UUID 93a60a57-a4c8-11da-a746-0800200c9a66 and kg. Source: unsd-cpc-3-21118."
+    source_ids: []
+  - rule_id: validation_rule_2
+    applies_to: "foreground_dataset_conformance"
+    rule: "validate_scope: Reject frozen equine meat, offal-only products, prepared meat, live animals and non-equine meat; require fresh or chilled skeletal meat. Source: unsd-cpc-3-21118."
+    source_ids: []
+  - rule_id: validation_rule_3
+    applies_to: "foreground_dataset_conformance"
+    rule: "validate_boundary: Confirm husbandry and inbound animal transport are upstream and retail, use and end-of-life are downstream."
+    source_ids: []
+  - rule_id: validation_rule_4
+    applies_to: "foreground_dataset_conformance"
+    rule: "validate_process_map: Require reception, slaughter and dressing, chilling, applicable cutting, sanitation, packaging and controlled chilled storage. Source: ec-jrc-sa-bref-2024."
+    source_ids: []
+  - rule_id: validation_rule_5
+    applies_to: "foreground_dataset_conformance"
+    rule: "validate_reference_mass: Confirm 1 kg net accepted meat, with declared bone status and removable packaging excluded. Source: ec-pef-method-2021-2279."
+    source_ids: []
+  - rule_id: validation_rule_6
+    applies_to: "foreground_dataset_conformance"
+    rule: "validate_atomic_flows: Reject combined materials, utilities, fuels, chemicals, packaging, co-products, wastes or emissions."
+    source_ids: []
+  - rule_id: validation_rule_7
+    applies_to: "foreground_dataset_conformance"
+    rule: "validate_uuid_gate: Require every non-reference UUID to remain blank unless exact hybrid and state-100 direct-read confirmation exists and require a matching manifest row."
+    source_ids: []
+  - rule_id: validation_rule_8
+    applies_to: "foreground_dataset_conformance"
+    rule: "validate_lci_completeness: Reconcile company-specific raw materials, energy, products, co-products, waste and air, water and soil emissions. Source: ec-pef-method-2021-2279."
+    source_ids: []
+  - rule_id: validation_rule_9
+    applies_to: "foreground_dataset_conformance"
+    rule: "validate_mass_balance: Check liveweight, carcass, meat, named co-products, wastes and stock or moisture changes and investigate residuals. Sources: ec-jrc-sa-bref-2024; ec-pef-method-2021-2279."
+    source_ids: []
+  - rule_id: validation_rule_10
+    applies_to: "foreground_dataset_conformance"
+    rule: "validate_refrigerant: When R-717 refrigeration applies, require make-up, recovery, stock-change and separate ammonia-release records."
+    source_ids: []
+  - rule_id: validation_rule_11
+    applies_to: "foreground_dataset_conformance"
+    rule: "validate_combustion: When natural gas, LPG or diesel applies, require each fuel separately and each applicable direct emission separately."
+    source_ids: []
+  - rule_id: validation_rule_12
+    applies_to: "foreground_dataset_conformance"
+    rule: "validate_bilingual_alignment: Confirm identical ordered process ids, row ids, selected-flow names, controlled tokens, UUIDs, rule ids, protocol ids, calculation ids, quality ids and source ids."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "Foreground data package for factory-gate fresh or chilled equine meat production"
+  downstream_use: "secondary_dataset; background_dataset"
+  allowed_use: "Product LCA, Environmental Footprint studies, supplier datasets and downstream process or lifecyclemodel construction matching the declared product, route, geography and period"
+  excluded_use: "Frozen meat, offal products, prepared meat, non-equine meat, undisclosed temperature state, missing genealogy or unreported co-product allocation"
+  required_metadata: "PCR id; CPC; reference UUID; species; origin; sites; presentation; bone status; fresh/chilled state; refrigeration; packaging; net mass; period; geography; genealogy; allocation; co-product destinations; process inclusions; unresolved identities"
+  required_quality_disclosure: "Foreground coverage; meters and calculations; mass-balance residuals; temperature deviations; representativeness; upstream proxies; allocation sensitivity; chemical, refrigerant, waste and emission gaps; review state"
+  update_trigger: "Supplier or animal-origin change; process, product, packaging, refrigeration, sanitation or fuel change; new site or period; allocation or destination change; UUID resolution; new evidence or method revision"
+data_sources:
+  - id: "unsd-cpc-3-21118"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, Central Product Classification Version 3.0, subclass 21118 \"Meat of horses and other equines, fresh or chilled\", https://unstats.un.org/unsd/classifications/Econ/CPC; official repository raw CSV CPC_Ver_3.0_Structure_30Jun2025.csv"
+    used_for: "Product identity; fresh/chilled inclusion; frozen and offal exclusion"
+  - id: "ec-jrc-sa-bref-2024"
+    type: "official_guidance"
+    reference: "European Commission Joint Research Centre, Best Available Techniques Reference Document for the Slaughterhouses, Animal By-products and Edible Co-products Industries, JRC135916, DOI 10.2760/18199"
+    used_for: "Animal reception, slaughter, dressing, cutting, chilling, sanitation, utilities, wastewater and specific blood, fat, hide and bone streams"
+  - id: "ec-pef-method-2021-2279"
+    type: "official_guidance"
+    reference: "European Commission, Commission Recommendation (EU) 2021/2279, consolidated Environmental Footprint method, https://eur-lex.europa.eu/eli/reco/2021/2279/2021-12-30/eng"
+    used_for: "Product-specific data, company-specific manufacturing, complete LCI, allocation, transparency, data quality and validation"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:aa8ff7b1c4b8a447d0fab82e5aab0a5847c9c6b836ac4853fe5d44555367b2de"
+  generated_content_sha256: "sha256:e3d6c75051323fd351ab675e3b7c7e7c599b74eedb6652fad2c95f39de5b5fd1"

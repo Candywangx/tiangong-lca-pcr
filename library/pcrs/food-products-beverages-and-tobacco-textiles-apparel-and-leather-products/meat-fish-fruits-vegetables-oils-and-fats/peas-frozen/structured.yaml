@@ -1,10 +1,955 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "21312"
-  title: "Peas, frozen"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.food-products-beverages-and-tobacco-textiles-apparel-and-leather-products.meat-fish-fruits-vegetables-oils-and-fats.peas-frozen"
+  classification_refs: "CPC 3.0: 21312, Peas, frozen, exact scope reference"
+  covered_products: "Quick-frozen whole green or garden peas of *Pisum sativum* L.; sized or unsized; IQF or block-frozen; bulk or packaged; optional declared ingredients permitted by the applicable product specification"
+  excluded_products: "Fresh green peas; dry peas; canned peas; peas otherwise prepared or preserved but not frozen; field peas of *Vigna* spp.; pea-and-vegetable mixtures; seasoned or sauced pea dishes; products intended for further industrial processing when they do not meet the declared finished-product specification"
+  representative_product: "Unseasoned, individually quick-frozen garden peas, packaged or bulk, released from the factory cold store"
+  production_route: "Fresh-pea receipt and optional shelling; cleaning, sorting and washing; blanching; cooling and draining; quick freezing; inspection and packing; frozen storage"
+  market_state: "Finished frozen food at the factory cold-store gate, with thermal-centre freezing completed and product maintained at -18 °C or colder, subject only to declared competent-authority tolerances"
+functional_unit:
+  what: "Frozen edible peas that retain the declared product quality and are suitable for cold-chain distribution and subsequent cooking or consumption"
+  how_much: "1 kg net product mass, excluding all packaging"
+  how_well: "Clean, sound, whole, young and tender *Pisum sativum* peas; sufficiently blanched; quick-frozen; conforming to the declared grade, size and ingredient specification; thermal-centre temperature at or below -18 °C after stabilization"
+  how_long_or_cycle: "One declared production lot through release from the factory cold store; the on-site storage duration is reported"
+  reference_flow_link: "reference_frozen_peas"
+system_boundary:
+  rules:
+    - rule_id: boundary_factory_gate
+      applies_to: "Foreground production"
+      rule: "Include receipt and optional shelling, cleaning, sorting, washing, blanching, cooling, draining, quick freezing, inspection, packaging, on-site frozen storage, sanitation, direct releases, organic rejects, packaging waste and wastewater through factory cold-store release."
+      source_ids:
+        - codex-cxs-320-2015
+        - codex-cxc-8-1976
+        - usda-frozen-peas-standard
+        - eu-jrc-fdm-bref-2019
+    - rule_id: boundary_upstream_links
+      applies_to: "Purchased inputs and off-site treatment"
+      rule: "Keep purchased-input production and off-site treatment outside the foreground processes, but represent each material amount with a linked geographically and temporally appropriate upstream dataset."
+      source_ids:
+        - eu-pef-2021-2279
+    - rule_id: boundary_cold_chain
+      applies_to: "On-site and downstream cold chain"
+      rule: "Include on-site refrigeration through release. Outbound refrigerated transport, distribution and retail are downstream; when included in a lifecycle model, link separate cold-chain datasets and preserve temperature records."
+      source_ids:
+        - codex-cxc-8-1976
+    - rule_id: boundary_foreground_completeness
+      applies_to: "Measured foreground flows"
+      rule: "Record all measured material, water and energy inputs, product and waste outputs, wastewater, and direct refrigerant releases. Do not omit a foreground flow solely because its amount is small; disclose any unavailable measurement."
+      source_ids:
+        - eu-pef-2021-2279
+        - eu-jrc-fdm-bref-2019
+boundary_abstraction:
+  declared_starting_condition: "Fresh peas received at the processing-site gate, with whether pods are present, harvest condition, supplier, origin, receipt mass, receipt time and temperature declared"
+  starting_condition_role: "Foreground entry condition for conversion of fresh peas into finished frozen peas"
+  product_classification_scope: "Quick-frozen whole peas of *Pisum sativum* L. represented by CPC 3.0 code 21312 as an exact classification reference"
+  recursive_input_rule: "Internally generated frozen-pea rework remains inside the same lot mass balance and is not a new product input. Externally purchased frozen peas are recorded as a separate technosphere input with their own upstream dataset and are not recursively remodelled as this foreground production route."
+  upstream_dataset_requirement: "Link upstream datasets for received fresh peas, inbound transport when included in the study, electricity, fuels or purchased heat, water supply, packaging materials, refrigerant make-up, and off-site waste or wastewater treatment"
+  disclosure: "Declare shelling responsibility, process technologies, included sanitation and utilities, start and end gates, storage duration, temperature history, exclusions, allocation choices, rework treatment and all linked upstream or downstream datasets"
+reference_flow_definition:
+  reference_amount: "1 kg net frozen peas"
+  product_flow_ref:
+    name: "Peas, frozen"
+    uuid: "7ee41d34-76b1-42c5-8f39-c3cdae327118"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "pea species and declared variety or type"
+    - "sized or unsized and declared size class"
+    - "IQF or block-frozen presentation"
+    - "ingredient and additive statement"
+    - "applicable grade or quality specification"
+    - "bulk or packaging format"
+    - "net-mass basis"
+    - "fresh-pea input state at receipt"
+    - "production geography and period"
+    - "freezing technology"
+    - "product release temperature"
+    - "on-site frozen-storage duration"
+    - "foreground allocation method"
+    - "cold-chain boundary"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "Reference frozen-pea output"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Normalize the foreground inventory to exactly 1 kg net frozen peas at factory cold-store release; exclude primary, secondary and tertiary packaging mass."
+  - id: wet_mass_release_basis
+    applies_to: "Fresh, intermediate and final pea masses"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Use as-weighed wet mass at the recorded process point. Record tare correction, scale identity and measurement time; do not convert to dry matter unless a separately disclosed calculation is required."
+  - id: water_volume_basis
+    applies_to: "Purchased and recirculated water"
+    required_property_ref:
+      name: "Volume"
+      uuid: ""
+    required_unit: "m3"
+    rule: "Record net purchased water separately from internally recirculated water. Do not count recirculated water as a new technosphere input; disclose any density conversion used."
+  - id: energy_carrier_separation
+    applies_to: "Electricity, fuel and purchased steam or heat"
+    required_property_ref:
+      name: "Energy or Mass"
+      uuid: ""
+    required_unit: "kWh, MJ, or kg"
+    rule: "Preserve the metered carrier and unit. Convert only with a documented factor and do not combine electricity with thermal energy before inventory publication."
+  - id: cold_chain_temperature
+    applies_to: "Freezer exit and cold storage"
+    required_property_ref:
+      name: "Temperature"
+      uuid: ""
+    required_unit: "°C"
+    rule: "Measure product thermal-centre or validated representative package temperature after stabilization and maintain records demonstrating -18 °C or colder at release and during on-site storage."
+process_map:
+  - id: pea_receipt_preparation
+    name: "Pea receipt and preparation"
+    inclusion: "required"
+    inclusion_condition: "Always included; shelling is included when peas arrive in pods"
+    role: "Foreground material preparation"
+    quantitative_reference: "kg prepared peas leaving sorting and washing"
+  - id: blanching_cooling
+    name: "Blanching, cooling and draining"
+    inclusion: "required"
+    inclusion_condition: "Always included for product within this PCR"
+    role: "Foreground enzyme inactivation and conditioning"
+    quantitative_reference: "kg cooled blanched peas"
+  - id: quick_freezing
+    name: "Quick freezing"
+    inclusion: "required"
+    inclusion_condition: "Always included"
+    role: "Foreground freezing"
+    quantitative_reference: "kg frozen peas at freezer exit"
+  - id: packing_cold_storage
+    name: "Inspection, packing and on-site cold storage"
+    inclusion: "required"
+    inclusion_condition: "Always included; packaging material may be zero for declared unpackaged bulk transfer"
+    role: "Foreground finishing and storage"
+    quantitative_reference: "1 kg net frozen peas released from factory cold store"
+process_inventory:
+  - id: pea_receipt_preparation
+    label: "Pea receipt and preparation"
+    inputs:
+      product:
+        - row_id: fresh_peas_input
+          role: "Fresh peas received"
+          name: "Fresh green peas"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the as-received fresh pea mass crossing the site gate, including pods only when shelling occurs within the foreground boundary."
+          amount:
+            expression: "measured accepted and rejected receipt mass attributable to the production lot"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net frozen peas released"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_lot_mass_quality
+              source_ids:
+                - codex-cxs-320-2015
+                - usda-frozen-peas-standard
+            ranges:
+              - role: qa_guardrail
+                lower: "1.02"
+                upper: "1.30"
+                unit: "kg"
+                basis: "per 1 kg net frozen peas released; broad estimate to be replaced by reviewed yield evidence"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: preparation_water
+          role: "Preparation water"
+          name: "Process water"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "Record net purchased water used for washing, fluming and preparation; meter recirculated water separately without counting it again as a purchased input."
+          amount:
+            expression: "metered or invoice-reconciled net water supplied to preparation, allocated by process meter or documented engineering calculation"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg raw peas processed"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water_metering
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges:
+              - role: typical_range
+                lower: "5"
+                upper: "43"
+                unit: "m3"
+                basis: "per 1,000 kg raw fruit and vegetables; use only as a broad screening comparator, not a default value"
+                basis_kind: "process_output"
+                evidence_kind: "external_source"
+                source_ids:
+                  - eu-jrc-fdm-bref-2019
+        - row_id: preparation_electricity
+          role: "Preparation electricity"
+          name: "Electricity"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record electricity for conveyors, shellers, sorters, washers and preparation equipment."
+          amount:
+            expression: "submetered electricity or operating-hours multiplied by measured equipment demand"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg frozen peas produced"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_metering
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "28"
+                unit: "kWh"
+                basis: "per 1,000 kg frozen vegetables produced"
+                basis_kind: "process_output"
+                evidence_kind: "external_source"
+                source_ids:
+                  - eu-jrc-fdm-bref-2019
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: prepared_peas_output
+          role: "Prepared peas"
+          name: "Prepared green peas"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record peas accepted after shelling, cleaning, sorting and washing as the intermediate product transferred to blanching."
+          amount:
+            expression: "measured transfer mass or fresh-pea input minus measured preparation rejects"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net frozen peas released"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_lot_mass_quality
+              source_ids:
+                - usda-frozen-peas-standard
+            ranges: []
+      waste:
+        - row_id: preparation_rejects
+          role: "Preparation rejects"
+          name: "Organic and field preparation residues"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record pods, stones, soil, foreign plant material and peas rejected during preparation by destination and regulatory status."
+          amount:
+            expression: "measured reject mass by destination; do not subtract saleable material without applying the allocation rules"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net frozen peas released"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_wastewater
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges:
+              - role: qa_guardrail
+                lower: "0.01"
+                upper: "0.30"
+                unit: "kg"
+                basis: "per 1 kg net frozen peas released; broad estimate to be replaced by reviewed plant data"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        []
+  - id: blanching_cooling
+    label: "Blanching, cooling and draining"
+    inputs:
+      product:
+        - row_id: prepared_peas_input
+          role: "Prepared peas entering blancher"
+          name: "Prepared green peas"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the transferred prepared-pea mass without creating a second upstream burden."
+          amount:
+            expression: "equal to prepared_peas_output after documented transfer losses"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net frozen peas released"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_lot_mass_quality
+              source_ids:
+                - usda-frozen-peas-standard
+            ranges: []
+        - row_id: blanching_thermal_energy
+          role: "Blanching thermal energy"
+          name: "Purchased steam, fuel or heat"
+          flow_type: "product"
+          property_unit: "Energy or Mass / MJ, kWh, or kg"
+          description: "Record purchased steam, fuel or heat used to achieve the validated blanching schedule, keeping each carrier separate."
+          amount:
+            expression: "metered carrier use or calculated use from boiler fuel and documented efficiency"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg cooled blanched peas"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_metering
+              source_ids:
+                - codex-cxc-8-1976
+                - eu-jrc-fdm-bref-2019
+            ranges:
+              - role: qa_guardrail
+                lower: "0.02"
+                upper: "0.50"
+                unit: "kg steam-equivalent"
+                basis: "per 1 kg cooled blanched peas; broad technology-dependent estimate to be replaced by reviewed evidence"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: blanching_electricity
+          role: "Blanching and cooling electricity"
+          name: "Electricity"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record electricity for blancher drives, pumps, fans and process cooling assigned to this stage."
+          amount:
+            expression: "submetered use or operating-hours multiplied by measured equipment demand"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg frozen peas produced"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_metering
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges:
+              - role: typical_range
+                lower: "1"
+                upper: "30"
+                unit: "kWh"
+                basis: "per 1,000 kg frozen vegetables produced across cited blancher and cooling configurations"
+                basis_kind: "process_output"
+                evidence_kind: "external_source"
+                source_ids:
+                  - eu-jrc-fdm-bref-2019
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: cooled_blanched_peas
+          role: "Cooled blanched peas"
+          name: "Cooled blanched peas"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record peas after the validated blanching schedule, cooling and draining, immediately before quick freezing."
+          amount:
+            expression: "measured transfer mass; reconcile with prepared-pea mass, removed solids and wastewater-associated product loss"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net frozen peas released"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_lot_mass_quality
+              source_ids:
+                - codex-cxs-320-2015
+                - codex-cxc-8-1976
+            ranges: []
+      waste:
+        - row_id: blanching_wastewater
+          role: "Blanching and cooling wastewater"
+          name: "Food-processing wastewater"
+          flow_type: "waste"
+          property_unit: "Volume / m3"
+          description: "Record discharged blanching and cooling water after internal reuse, together with treatment destination and available load indicators."
+          amount:
+            expression: "measured discharge volume allocated to the lot; retain BOD, COD, suspended-solids, nitrogen and phosphorus analyses when available"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg frozen peas produced"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_wastewater
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "43"
+                unit: "m3"
+                basis: "per 1,000 kg raw peas; bounded by the broad frozen fruit-and-vegetable water-use evidence and to be replaced by reviewed discharge data"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        []
+  - id: quick_freezing
+    label: "Quick freezing"
+    inputs:
+      product:
+        - row_id: cooled_peas_input
+          role: "Cooled peas entering freezer"
+          name: "Cooled blanched peas"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the drained, cooled peas transferred to the quick-freezing equipment."
+          amount:
+            expression: "equal to cooled_blanched_peas after documented transfer loss"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net frozen peas released"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_lot_mass_quality
+              source_ids:
+                - codex-cxc-8-1976
+            ranges: []
+        - row_id: freezing_electricity
+          role: "Freezing electricity"
+          name: "Electricity"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record electricity for the freezing system, fans, conveyors, pumps and assigned defrost operation, net of separately recorded cold-storage electricity."
+          amount:
+            expression: "submetered electricity or allocated compressor-system electricity using documented operating data"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg frozen peas at freezer exit"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_metering
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges:
+              - role: typical_range
+                lower: "80"
+                upper: "280"
+                unit: "kWh"
+                basis: "per 1,000 kg frozen vegetables produced"
+                basis_kind: "process_output"
+                evidence_kind: "external_source"
+                source_ids:
+                  - eu-jrc-fdm-bref-2019
+        - row_id: refrigerant_makeup
+          role: "Refrigerant make-up"
+          name: "Refrigerant, technology-specific"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record refrigerant purchased or added to systems serving freezing and on-site cold storage, allocated using service records."
+          amount:
+            expression: "beginning inventory plus purchases minus ending inventory and documented recovery, allocated between freezing and storage"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net frozen peas released"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_refrigerant_inventory
+              source_ids:
+                - codex-cxc-8-1976
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.005"
+                unit: "kg"
+                basis: "per 1 kg net frozen peas released; deliberately broad estimate pending reviewed system-specific evidence"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: frozen_peas_bulk
+          role: "Frozen peas at freezer exit"
+          name: "Peas, frozen"
+          flow_type: "product"
+          flow_ref:
+            uuid: "7ee41d34-76b1-42c5-8f39-c3cdae327118"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record frozen peas only after the thermal-centre temperature reaches -18 °C or colder after stabilization."
+          amount:
+            expression: "measured net frozen-pea mass transferred to inspection and packing"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net frozen peas released"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_lot_mass_quality
+              source_ids:
+                - codex-cxs-320-2015
+                - codex-cxc-8-1976
+            ranges: []
+      waste:
+        []
+      elementary:
+        - row_id: refrigerant_emission
+          role: "Refrigerant released to air"
+          name: "Refrigerant emission to air, species-specific"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record verified leakage by refrigerant species; do not report total make-up as an emission when recovery or inventory change is documented."
+          amount:
+            expression: "refrigerant mass balance minus documented recovery and retained inventory, allocated to the production period"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net frozen peas released"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_refrigerant_inventory
+              source_ids:
+                - codex-cxc-8-1976
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.005"
+                unit: "kg"
+                basis: "per 1 kg net frozen peas released; broad upper screen pending reviewed equipment evidence"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+  - id: packing_cold_storage
+    label: "Inspection, packing and on-site cold storage"
+    inputs:
+      product:
+        - row_id: frozen_peas_bulk_input
+          role: "Frozen peas entering finishing"
+          name: "Peas, frozen"
+          flow_type: "product"
+          flow_ref:
+            uuid: "7ee41d34-76b1-42c5-8f39-c3cdae327118"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record the transfer from quick freezing without adding another upstream product burden."
+          amount:
+            expression: "equal to frozen_peas_bulk after documented transfer losses"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net frozen peas released"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_lot_mass_quality
+              source_ids:
+                - codex-cxc-8-1976
+            ranges: []
+        - row_id: packaging_materials
+          role: "Packaging materials"
+          name: "Packaging materials, material-specific"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record primary, secondary and tertiary packaging by material and mass, including bulk liners and pallets when attributable."
+          amount:
+            expression: "purchase or bill-of-material mass adjusted for inventory change and allocated to packed net product"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net frozen peas released"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_records
+              source_ids:
+                - codex-cxc-8-1976
+                - eu-pef-2021-2279
+            ranges:
+              - role: qa_guardrail
+                lower: "0.005"
+                upper: "0.20"
+                unit: "kg"
+                basis: "per 1 kg net frozen peas released; broad estimate covering bulk and retail formats pending reviewed packaging data"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: cold_storage_electricity
+          role: "Cold-storage electricity"
+          name: "Electricity"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record electricity attributable to on-site storage between freezer exit and factory release using volume, pallet-space, mass-time or direct submetering."
+          amount:
+            expression: "submetered use or documented allocation from cold-store electricity, occupied volume and storage duration"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per m3 occupied cold-storage volume per year"
+              kind: "storage_duration"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_temperature_storage
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+                - codex-cxc-8-1976
+            ranges:
+              - role: typical_range
+                lower: "20"
+                upper: "65"
+                unit: "kWh"
+                basis: "per m3 occupied cold-storage volume per year"
+                basis_kind: "storage_duration"
+                evidence_kind: "external_source"
+                source_ids:
+                  - eu-jrc-fdm-bref-2019
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: reference_frozen_peas
+          role: "Reference frozen peas"
+          name: "Peas, frozen"
+          flow_type: "product"
+          flow_ref:
+            uuid: "7ee41d34-76b1-42c5-8f39-c3cdae327118"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This is the packaged or declared bulk frozen-pea output that realizes the functional unit at factory cold-store release."
+          amount:
+            expression: "exactly 1 kg net product after normalization; packaging excluded"
+            value_mode: "fixed_value"
+            specificity: "product_specific"
+            basis:
+              text: "1 kg net frozen peas released"
+              kind: "reference_flow"
+            evidence:
+              kind: "method_formula"
+              source_ids:
+                - codex-cxs-320-2015
+                - eu-pef-2021-2279
+            ranges: []
+      waste:
+        - row_id: packing_rejects
+          role: "Packaging and final product rejects"
+          name: "Packaging and frozen-product rejects"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record damaged packaging, off-specification peas and spillages by material and destination; separately identify product rework returned within the system."
+          amount:
+            expression: "measured reject mass minus documented internal rework"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net frozen peas released"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_wastewater
+              source_ids:
+                - codex-cxc-8-1976
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.05"
+                unit: "kg"
+                basis: "per 1 kg net frozen peas released; replace with reviewed lot data"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocation_avoid
+    applies_to: "Shared processes and utilities"
+    rule: "Avoid allocation by subdividing processes and using process meters, lot masses, operating time, occupied cold-store volume and storage duration. System expansion may be used only when the additional function and substituted system are demonstrated and reported."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: allocation_internal_rework
+    applies_to: "Peas reworked within the same production system"
+    rule: "Treat internal rework as an internal transfer. Retain its mass in the lot balance and assign no avoided-product credit."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: allocation_residue_status
+    applies_to: "Pods, rejected peas and other organic residues"
+    rule: "Classify residues as waste unless a stable intended product function and market are documented. If they are co-products, first apply a relevant quantifiable physical relationship; use another relationship such as economic value only when physical allocation is not defensible, and disclose prices, period and sensitivity."
+    source_ids:
+      - eu-pef-2021-2279
+      - eu-jrc-fdm-bref-2019
+  - rule_id: allocation_waste_treatment
+    applies_to: "Waste and wastewater treatment"
+    rule: "Assign on-site treatment directly where measured. Allocate shared treatment using a documented causal driver such as wastewater volume and pollutant load; link off-site treatment to the measured outgoing waste flow."
+    source_ids:
+      - eu-pef-2021-2279
+      - eu-jrc-fdm-bref-2019
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_lot_mass_quality
+      process_id: "pea_receipt_preparation_blanching_cooling_quick_freezing_packing_cold_storage"
+      flow_role: "Pea inputs, intermediates, final output and product quality"
+      record_type: "Scale tickets, batch records and laboratory or quality-control records"
+      raw_fields: "lot_id; timestamp; gross_mass; tare_mass; net_mass; process_point; supplier; pea_type; size_grade; reject_reason; blanch_schedule; freezer_exit_temperature; final_grade"
+      collection_method: "Calibrated scales and documented sampling or release tests linked by lot"
+      unit: "kg; °C; min"
+      frequency: "Each lot and each material transfer"
+      temporal_coverage: "Full declared production campaign; aggregate no less than one complete representative campaign"
+      site_scope: "All foreground lines and storage locations represented by the dataset"
+      aggregation_rule: "Sum compatible net masses; retain lot traceability; calculate mass-weighted values per kg released product"
+      quality_evidence: "Calibration records; tare checks; sampling plan; release authorization; outlier log"
+    - protocol_id: cp_water_metering
+      process_id: "pea_receipt_preparation_blanching_cooling"
+      flow_role: "Purchased, reused and discharged water"
+      record_type: "Meter logs, invoices and reuse-loop records"
+      raw_fields: "meter_id; opening_reading; closing_reading; timestamp; process_area; reuse_volume; downtime; production_mass"
+      collection_method: "Calibrated meters reconciled to invoices; estimate only with documented engineering calculation"
+      unit: "m3"
+      frequency: "Daily or per batch, reconciled monthly"
+      temporal_coverage: "Same period as production data"
+      site_scope: "Site and process-area meters covering washing, blanching, cooling and sanitation"
+      aggregation_rule: "Net purchased water equals gross supply minus documented non-production uses; internal reuse reported separately"
+      quality_evidence: "Meter calibration; invoice reconciliation; missing-data log"
+    - protocol_id: cp_energy_metering
+      process_id: "pea_receipt_preparation_blanching_cooling_quick_freezing_packing_cold_storage"
+      flow_role: "Electricity and thermal-energy carriers"
+      record_type: "Submeters, fuel invoices, boiler and equipment logs"
+      raw_fields: "carrier; meter_id; opening_reading; closing_reading; fuel_mass_or_volume; steam_mass; operating_hours; equipment_power; production_mass"
+      collection_method: "Carrier-specific meter or invoice reconciliation; engineering calculation only where submetering is absent"
+      unit: "kWh; MJ; kg; m3"
+      frequency: "Continuous or daily, reconciled monthly"
+      temporal_coverage: "Same period as production data and seasonal campaign"
+      site_scope: "All processing, refrigeration, storage and shared utilities assigned to the declared site"
+      aggregation_rule: "Preserve carrier; subtract documented non-production use; allocate shared loads by causal driver"
+      quality_evidence: "Meter calibration; invoice reconciliation; equipment run logs; conversion-factor source"
+    - protocol_id: cp_waste_wastewater
+      process_id: "pea_receipt_preparation_blanching_cooling_packing_cold_storage"
+      flow_role: "Solid residues, rejects, packaging waste and wastewater"
+      record_type: "Weighbridge tickets, waste manifests, discharge meters and laboratory results"
+      raw_fields: "waste_type; mass; volume; destination; regulatory_status; rework_mass; BOD; COD; TSS; nitrogen; phosphorus; sampling_time"
+      collection_method: "Weighing and metering by stream; laboratory analysis under the site's applicable method"
+      unit: "kg; m3; mg/L"
+      frequency: "Each shipment or continuous discharge with representative sampling"
+      temporal_coverage: "Same period as production data"
+      site_scope: "All on-site waste and wastewater outlets"
+      aggregation_rule: "Sum by stream and destination; exclude documented internal rework from outgoing waste"
+      quality_evidence: "Scale and meter checks; manifests; laboratory reports; chain of custody"
+    - protocol_id: cp_refrigerant_inventory
+      process_id: "quick_freezing_packing_cold_storage"
+      flow_role: "Refrigerant make-up, recovery and release"
+      record_type: "Refrigerant inventory, purchase, maintenance and recovery records"
+      raw_fields: "refrigerant_species; opening_inventory; purchases; additions; recovered_mass; closing_inventory; equipment_id; service_date"
+      collection_method: "Annual or campaign mass balance by refrigerant species and equipment system"
+      unit: "kg"
+      frequency: "Each service event; reconciled annually or per complete campaign"
+      temporal_coverage: "Same period as production data, including shutdown service"
+      site_scope: "All refrigeration equipment serving freezing and on-site storage"
+      aggregation_rule: "Release equals opening plus purchases minus closing inventory and documented recovery, with unexplained imbalance disclosed"
+      quality_evidence: "Certified service records; cylinder weights; inventory reconciliation"
+    - protocol_id: cp_packaging_records
+      process_id: "packing_cold_storage"
+      flow_role: "Packaging material inputs"
+      record_type: "Bills of materials, purchase and inventory records"
+      raw_fields: "packaging_format; material; unit_mass; units_used; opening_stock; purchases; closing_stock; packed_product_mass"
+      collection_method: "Verified bill of materials reconciled to stock change"
+      unit: "kg"
+      frequency: "Each packaging format; reconciled monthly"
+      temporal_coverage: "Same period as production data"
+      site_scope: "All primary, secondary and attributable tertiary packaging"
+      aggregation_rule: "Material mass per kg net packed product; bulk unpackaged product reported as zero with evidence"
+      quality_evidence: "Supplier specification; sample weigh checks; stock reconciliation"
+    - protocol_id: cp_temperature_storage
+      process_id: "quick_freezing_packing_cold_storage"
+      flow_role: "Freezer completion, cold-store temperature and storage electricity allocation"
+      record_type: "Product-probe readings, continuous logger data and warehouse records"
+      raw_fields: "lot_id; probe_id; location; timestamp; product_temperature; store_temperature; pallet_days; occupied_volume; electricity; alarms; corrective_action"
+      collection_method: "Validated temperature probes and continuous cold-store monitoring linked to inventory movements"
+      unit: "°C; day; m3; kWh"
+      frequency: "Each lot at freezer exit; continuous storage monitoring"
+      temporal_coverage: "Entire on-site storage period for included lots"
+      site_scope: "Freezer exits and all cold rooms used by the dataset"
+      aggregation_rule: "Calculate mass- or volume-time-weighted storage demand; retain excursions separately"
+      quality_evidence: "Probe calibration; logger completeness; alarm and corrective-action records"
+  calculation_rules:
+    - id: calc_normalize_reference
+      applies_to: "All inventory amounts"
+      rule: "normalized amount = period or lot amount / net kg conforming frozen peas released"
+      inputs:
+        - "Collected flow amount"
+        - "reference_frozen_peas net mass"
+      output: "Amount per 1 kg reference flow"
+      source_ids:
+        - eu-pef-2021-2279
+    - id: calc_pea_mass_balance
+      applies_to: "Pea material through all four processes"
+      rule: "fresh pea input + external frozen-pea input = reference frozen peas + outgoing rejects + measured product losses + inventory change; internal transfers and rework cancel"
+      inputs:
+        - "Mass records from cp_lot_mass_quality and cp_waste_wastewater"
+      output: "Reconciled pea mass balance and unexplained difference"
+      source_ids:
+        - eu-pef-2021-2279
+    - id: calc_net_water
+      applies_to: "Purchased and reused water"
+      rule: "net technosphere water input = gross site supply - documented non-production use; internal reuse is reported but not added again"
+      inputs:
+        - "Meter and invoice fields from cp_water_metering"
+      output: "Net purchased water and reuse indicator"
+      source_ids:
+        - eu-jrc-fdm-bref-2019
+    - id: calc_refrigerant_release
+      applies_to: "Refrigeration systems"
+      rule: "release = opening inventory + purchases - closing inventory - documented recovery; negative or unexplained values require investigation"
+      inputs:
+        - "Refrigerant fields from cp_refrigerant_inventory"
+      output: "Species-specific direct air emission"
+      source_ids:
+        - codex-cxc-8-1976
+    - id: calc_storage_energy
+      applies_to: "On-site cold storage"
+      rule: "allocated storage electricity = cold-store electricity × lot occupied-volume-time / total occupied-volume-time, unless direct submetering is available"
+      inputs:
+        - kWh
+        - "occupied m3 and duration from cp_temperature_storage"
+      output: "kWh per kg reference flow"
+      source_ids:
+        - eu-jrc-fdm-bref-2019
+  data_quality_requirements:
+    - id: dq_identity_traceability
+      applies_to: "Product and reference flow"
+      requirement: "Maintain lot-level linkage from received peas through finished frozen-pea release and retain the exact Tiangong reference-flow UUID, flow-property UUID and unit-group UUID."
+      evidence: "Lot genealogy, batch records and dataset metadata"
+    - id: dq_temporal_coverage
+      applies_to: "Foreground activity data"
+      requirement: "Cover one complete representative production campaign for seasonal processing and all included on-site storage; disclose dates, downtime and any extrapolation. Prefer a consecutive 12-month period when the site operates year-round."
+      evidence: "Production calendar, meter coverage and missing-data log"
+    - id: dq_measurement_quality
+      applies_to: "Mass, water, energy, temperature and refrigerant records"
+      requirement: "Use calibrated instruments or reconciled invoices. Record estimation method, conversion factors, missing-data treatment and uncertainty whenever direct measurement is unavailable."
+      evidence: "Calibration certificates, invoices, reconciliation and calculation files"
+    - id: dq_completeness
+      applies_to: "Process inventory"
+      requirement: "Demonstrate reconciled pea mass, water and refrigerant balances; include all listed required processes and all measured direct releases, waste and wastewater streams. Quantify rather than silently discard unexplained differences."
+      evidence: "Balance worksheets, waste manifests, discharge records and review sign-off"
+    - id: dq_representativeness
+      applies_to: "Published dataset"
+      requirement: "Report technological, geographical and time representativeness and precision for company-specific activity data, with the declared pea type, processing route, freezing technology, packaging and storage configuration."
+      evidence: "Representativeness assessment and data-quality review record referencing eu-pef-2021-2279"
+    - id: dq_temperature_records
+      applies_to: "Quick freezing and storage"
+      requirement: "Retain validated records showing that freezing was completed at -18 °C or colder at the thermal centre after stabilization and that on-site cold-chain conditions were maintained."
+      evidence: "Probe calibration, freezer-exit checks, continuous logger data and corrective actions"
+validation_rules:
+  - rule_id: validate_reference_identity
+    applies_to: "Reference flow"
+    rule: "Fail validation unless the reference output is exactly 1 kg net Peas, frozen with product-flow UUID 7ee41d34-76b1-42c5-8f39-c3cdae327118, Mass UUID 93a60a56-a3c8-11da-a746-0800200b9a66, unit-group UUID 93a60a57-a4c8-11da-a746-0800200c9a66, and unit kg."
+    source_ids: []
+  - rule_id: validate_product_scope
+    applies_to: "Product identity"
+    rule: "Fail validation when the product is not whole quick-frozen *Pisum sativum* peas or when excluded mixtures, seasonings or preservation routes are represented without a separate PCR decision."
+    source_ids:
+      - codex-cxs-320-2015
+      - usda-frozen-peas-standard
+  - rule_id: validate_required_qualifiers
+    applies_to: "Dataset metadata"
+    rule: "Fail validation when any required qualifier is missing, including presentation, quality specification, fresh-pea receipt state, freezing technology, release temperature, storage duration and packaging format."
+    source_ids:
+      - codex-cxs-320-2015
+      - codex-cxc-8-1976
+  - rule_id: validate_process_coverage
+    applies_to: "Foreground boundary"
+    rule: "Fail validation unless all four required processes and their linked mass, water, energy, waste, wastewater and direct-emission records are present, or a documented zero/not-applicable value is provided."
+    source_ids:
+      - eu-jrc-fdm-bref-2019
+  - rule_id: validate_blanching
+    applies_to: "Blanching process"
+    rule: "Fail validation unless the blanching schedule and evidence of adequate enzyme-inactivation or equivalent declared quality outcome are retained."
+    source_ids:
+      - codex-cxs-320-2015
+      - codex-cxc-8-1976
+  - rule_id: validate_freezing_temperature
+    applies_to: "Freezer exit and cold storage"
+    rule: "Fail validation unless the product reaches -18 °C or colder at its thermal centre after stabilization and on-site storage records demonstrate maintenance at -18 °C or colder, subject only to declared competent-authority tolerances."
+    source_ids:
+      - codex-cxs-320-2015
+      - codex-cxc-8-1976
+  - rule_id: validate_mass_balance
+    applies_to: "Pea inputs and outputs"
+    rule: "Fail validation when the pea mass balance is absent or has an unexplained difference; the dataset shall disclose the balance result and disposition of rejects and rework."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: validate_allocation
+    applies_to: "Shared utilities and co-products"
+    rule: "Fail validation when allocation is used without documenting why subdivision or system expansion was not applied, the causal relationship selected, all factors and the treatment of organic residues."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: validate_provisional_ranges
+    applies_to: "Reasoned estimates"
+    rule: "Treat every reasoned_estimate range as a non-binding screening guardrail. Fail publication review if any such range is used as the reported foreground amount without accepted supporting evidence."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "Foreground production dataset for frozen peas at the factory cold-store gate"
+  downstream_use: "secondary_dataset; background_dataset"
+  allowed_use: "Site-, technology- and product-specific LCI modelling of qualifying frozen peas; linking as the manufacturing-stage dataset in a broader food product lifecycle model; comparison only when functional unit, scope, geography, time, quality, packaging and cold-chain assumptions are aligned"
+  excluded_use: "Agricultural pea cultivation; fresh, canned, dried or otherwise preserved peas; mixed or seasoned products; consumer cooking; downstream distribution without separate cold-chain modelling; public comparative claims without the required review"
+  required_metadata: "Canonical PCR id and version; Tiangong flow identity; CPC reference; pea species/type and size; ingredient and grade specification; fresh-pea receipt state; production geography, facility and period; technologies; packaging format; net mass; freezer-exit and release temperatures; on-site storage duration; process coverage; upstream datasets; allocation and cut-off choices"
+  required_quality_disclosure: "Data source by row; measured versus calculated amounts; meter and scale coverage; mass, water and refrigerant balance results; missing-data and estimation methods; technological, geographical and temporal representativeness; precision; provisional reasoned ranges; exclusions; independent review status"
+  update_trigger: "Change in product specification, raw-pea state, process route, blanching schedule, freezing or refrigeration technology, refrigerant, packaging format, storage profile, allocation method, source evidence, reference UUID, or material foreground performance; otherwise review when the represented production period is no longer current"
+data_sources:
+  - id: "codex-cxs-320-2015"
+    type: "standard"
+    reference: "FAO and WHO, CXS 320-2015, Standard for Quick-Frozen Vegetables, including Annex on Peas, official PDF: https://www.fao.org/input/download/standards/13928/CXS_320e_2015.pdf (retrieved 2026-08-11)"
+    used_for: "Product definition, covered pea characteristics, blanching, quick-freezing completion, -18 °C cold-chain condition, packaging and quality requirements"
+  - id: "codex-cxc-8-1976"
+    type: "official_guidance"
+    reference: "FAO and WHO, CXC 8-1976, Code of Practice for the Processing and Handling of Quick Frozen Foods, official Codex page: https://www.fao.org/fao-who-codexalimentarius/codex-texts/codes-of-practice/en/ (retrieved 2026-08-11)"
+    used_for: "Process decomposition, blanching, quick freezing, packaging, temperature measurement, frozen storage, transport boundary and refrigerant management"
+  - id: "usda-frozen-peas-standard"
+    type: "standard"
+    reference: "USDA Agricultural Marketing Service, United States Standards for Grades of Frozen Peas, official PDF: https://www.ams.usda.gov/sites/default/files/media/Frozen_Peas_Standard%5B1%5D.pdf (retrieved 2026-08-11)"
+    used_for: "Pea product identity, shelling, washing, blanching, sorting, draining, freezing, preservation and quality attributes"
+  - id: "eu-jrc-fdm-bref-2019"
+    type: "official_guidance"
+    reference: "European Commission Joint Research Centre, Best Available Techniques Reference Document for the Food, Drink and Milk Industries, JRC118627, 2019, official PDF: https://bureau-industrial-transformation.jrc.ec.europa.eu/sites/default/files/2020-01/JRC118627_FDM_Bref_2019_published.pdf (retrieved 2026-08-11)"
+    used_for: "Frozen-vegetable process structure; water, electricity and storage ranges; blanching technology; solid residues; wastewater and refrigerant-related inventory requirements"
+  - id: "eu-pef-2021-2279"
+    type: "official_guidance"
+    reference: "European Commission Recommendation (EU) 2021/2279, Product Environmental Footprint Method, official PDF: https://eur-lex.europa.eu/legal-content/EN/TXT/PDF/?uri=CELEX:32021H2279 (retrieved 2026-08-11)"
+    used_for: "Functional unit and reference flow, lifecycle inventory, upstream linkage, foreground completeness, allocation hierarchy, data quality and verification"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:42c643748cb613a2f5c6fabe7f60bd9b912069fc189110d92502ad75fc7b127f"
+  generated_content_sha256: "sha256:802d3b38331403cd2158b017c42f0acbd05f1a8230efd198925d9cc263d43f46"

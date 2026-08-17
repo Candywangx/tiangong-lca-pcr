@@ -1,10 +1,898 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "22212"
-  title: "Skim milk and whey powder"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.food-products-beverages-and-tobacco-textiles-apparel-and-leather-products.dairy-products-and-egg-products.skim-milk-and-whey-powder"
+  classification_refs: "CPC 3.0:22212 Skim milk and whey powder (exact scope reference)"
+  covered_products: "Skimmed milk powder; whey powder; acid whey powder; the same powders in bulk or packaged market form"
+  excluded_products: "Whole and partly skimmed milk powder; cream powder; whey protein concentrates or isolates; lactose powder; casein powder; infant formula; formulated dairy blends"
+  representative_product: "Saleable skimmed milk powder; whey powder and acid whey powder are covered variants identified by the mandatory powder_type qualifier"
+  production_route: "Declared liquid dairy feed reception and conditioning, concentration, drying, finishing, containment or packaging, and foreground cleaning and waste handling"
+  market_state: "Dry, saleable powder at the manufacturing factory gate, in a declared bulk or packaged format"
+functional_unit:
+  what: "Provision of a declared dry skimmed milk, whey, or acid whey powder suitable for the stated food, feed, or ingredient application"
+  how_much: "1 kg net saleable powder at the manufacturing factory gate"
+  how_well: "Powder type and route declared; composition and moisture verified against the applicable Codex identity or a disclosed stricter market specification; contaminated, off-specification, and rework mass excluded from saleable output"
+  how_long_or_cycle: "One completed production lot at factory gate; no storage life or downstream use duration is credited"
+  reference_flow_link: "packaged_reference_powder"
+system_boundary:
+  rules:
+    - rule_id: boundary_required_stages
+      applies_to: "foreground_powder_manufacturing"
+      rule: "Include feed receipt and conditioning, concentration, drying and powder finishing, containment or packaging, cleaning, and foreground waste or emission treatment when operated by or for the reporting site."
+      source_ids:
+        - eda-dairy-pefcr-2025
+        - eu-fdm-bat-2019
+    - rule_id: boundary_upstream_feed
+      applies_to: "supplied_liquid_dairy_feed"
+      rule: "Model production and transport of externally supplied skim milk, whey, acid whey, or raw milk through explicit upstream datasets; do not count those burdens again in foreground operations."
+      source_ids:
+        - eda-dairy-pefcr-2025
+    - rule_id: boundary_route_specificity
+      applies_to: "whey_and_acid_whey_routes"
+      rule: "Identify whether the feed is whey or acid whey and include declared route-specific operations such as clarification, neutralisation, demineralisation, crystallisation, or membrane treatment only when they actually occur."
+      source_ids:
+        - codex-cxs-289-1995
+    - rule_id: boundary_downstream_exclusion
+      applies_to: "factory_gate_dataset"
+      rule: "Exclude distribution, retail, consumer preparation, use, and end-of-life after the declared factory gate unless the study goal explicitly extends the boundary and reports those stages separately."
+      source_ids:
+        - eu-pef-method-2021
+boundary_abstraction:
+  declared_starting_condition: "The foreground begins when the declared liquid dairy feed is accepted at the powder-manufacturing site; raw milk separation is included only when performed by the reporting site."
+  starting_condition_role: "Gate-to-gate foreground starting condition linked to an upstream dataset for the supplied skim milk, whey, acid whey, or raw milk."
+  product_classification_scope: "Skimmed milk powder, whey powder, and acid whey powder within the semantic product boundary; classification code is supporting mapping context only."
+  recursive_input_rule: "A purchased skim milk or whey powder used as an ingredient is recorded as an upstream product input with its own dataset and is not recursively manufactured inside this PCR unless it is physically reprocessed on site."
+  upstream_dataset_requirement: "Require a geographically and temporally representative upstream dataset for each externally supplied liquid dairy feed and other material or energy input; disclose when a proxy is used."
+  disclosure: "Declare feed type and origin, whether separation is foreground or upstream, powder type, whey acidity or modification, allocation level, included shared utilities, treatment location, packaging format, and excluded downstream stages."
+reference_flow_definition:
+  reference_amount: "1 kg net saleable powder"
+  product_flow_ref:
+    name: "Skim milk powder"
+    uuid: "bf850eca-76f2-400d-9cfa-b62c10d64c0a"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - powder_type
+    - liquid_feed_type
+    - skim_milk_or_whey_origin
+    - whey_acidity_or_modification
+    - dry_matter_content
+    - moisture_content
+    - milkfat_content
+    - milk_protein_content
+    - packaging_format
+    - geography
+    - technology
+    - temporal_scope
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "Net saleable reference powder"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Determine net powder mass after excluding packaging, rejected powder, retained samples, rework not released as product, and moisture or composition corrections not accepted by the product specification."
+  - id: dry_matter_basis
+    applies_to: "Product, feed, and dairy co-products used in allocation"
+    required_property_ref:
+      name: "Mass and measured dry matter fraction"
+      uuid: ""
+    required_unit: "kg dry matter and kg wet mass"
+    rule: "Retain wet mass and dry matter fraction separately. Do not substitute nominal solids when representative lot or campaign measurements are available."
+  - id: energy_preservation
+    applies_to: "Electricity, thermal energy, and fuel records"
+    required_property_ref:
+      name: "Energy or fuel-specific property"
+      uuid: ""
+    required_unit: "kWh, MJ, or physical fuel unit"
+    rule: "Preserve the metered unit and conversion factor. Report electricity and thermal energy separately; do not convert the EU BAT installation indicator into a product-normalised default without measured throughput and yield."
+  - id: water_balance
+    applies_to: "Process water, condensate, cleaning water, and wastewater"
+    required_property_ref:
+      name: "Volume or Mass"
+      uuid: ""
+    required_unit: "m3 or kg"
+    rule: "Keep gross withdrawal, recovered or reused condensate, recirculation, and final wastewater discharge as distinct quantities to prevent double counting."
+process_map:
+  - id: feed_receipt_and_conditioning
+    name: "Liquid feed receipt and conditioning"
+    inclusion: "required"
+    inclusion_condition: "Always included; separation is activated only when raw milk is received"
+    role: "Foreground feed acceptance, storage, filtration, separation, and route-specific conditioning"
+    quantitative_reference: "Accepted kg of declared liquid feed"
+  - id: concentration_and_drying
+    name: "Concentration, drying, and powder finishing"
+    inclusion: "required"
+    inclusion_condition: "Always included; route-specific membrane, demineralisation, neutralisation, or crystallisation operations only when performed"
+    role: "Foreground water removal, drying, cooling, sieving, and powder recovery"
+    quantitative_reference: "kg of packable powder intermediate"
+  - id: packaging_and_storage
+    name: "Containment, packaging, and factory-gate storage"
+    inclusion: "required"
+    inclusion_condition: "Bulk containment is treated as the packaging format when retail or industrial packs are not used"
+    role: "Foreground final product mass, packaging, and warehouse handling"
+    quantitative_reference: "1 kg net saleable reference powder"
+  - id: cleaning_and_wastewater
+    name: "Cleaning and foreground wastewater management"
+    inclusion: "required"
+    inclusion_condition: "Include shared systems through direct metering or the disclosed allocation rule"
+    role: "Foreground cleaning inputs and wastewater or sludge outputs"
+    quantitative_reference: "Allocated service to the declared production lot"
+process_inventory:
+  - id: feed_receipt_and_conditioning
+    label: "Liquid feed receipt and conditioning"
+    inputs:
+      product:
+        - row_id: liquid_dairy_feed
+          role: "Accepted liquid dairy feed"
+          name: "Declared liquid skim milk, whey, acid whey, or raw milk product flow"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the measured mass of accepted skim milk, whey, acid whey, or raw milk that crosses the site boundary for the declared powder route. Supplier delivery, acceptance, composition, and origin records provide the value."
+          amount:
+            expression: "measured accepted mass net of rejected deliveries and returned material"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per declared production lot and per 1 kg net saleable powder"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_feed_and_composition
+              source_ids:
+                - codex-cxs-207-1999
+                - codex-cxs-289-1995
+            ranges: []
+        - row_id: conditioning_electricity
+          role: "Conditioning electricity"
+          name: "Electricity, declared supply mix"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record metered or allocated electricity for unloading, chilling, storage, pumping, filtration, and separation or route-specific conditioning performed inside this process."
+          amount:
+            expression: "metered electricity, or shared-meter electricity allocated by documented operating time and rated or submetered load"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per declared production lot and per 1 kg net saleable powder"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_processing_utilities
+              source_ids:
+                - eda-dairy-pefcr-2025
+            ranges: []
+      waste:
+        - row_id: conditioning_rejects
+          role: "Rejected feed and conditioning residues"
+          name: "Dairy processing residue or rejected feed waste"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record rejected liquid feed, filter residue, and other conditioning losses by destination without subtracting them from utility records."
+          amount:
+            expression: "measured or mass-balance-calculated residue sent to the declared destination"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per declared production lot and per 1 kg net saleable powder"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_feed_and_composition
+              source_ids: []
+            ranges: []
+      elementary:
+        - row_id: conditioning_refrigerant_loss
+          role: "Refrigerant leakage to air"
+          name: "Declared refrigerant emission to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record refrigerant leakage attributable to feed cooling and cold storage when refrigerant-containing equipment is inside the foreground."
+          amount:
+            expression: "service-log or inventory-balance refrigerant loss allocated to the production lot"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per declared production lot and per 1 kg net saleable powder"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_processing_utilities
+              source_ids: []
+            ranges: []
+    outputs:
+      product:
+        - row_id: conditioned_feed
+          role: "Conditioned liquid feed"
+          name: "Conditioned skim milk, whey, or acid whey intermediate"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the mass and dry matter of conditioned liquid feed transferred to concentration and drying. Cream or other co-products separated on site are recorded separately."
+          amount:
+            expression: "measured transfer mass and matched composition sample"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per declared production lot"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_feed_and_composition
+              source_ids:
+                - codex-cxs-207-1999
+                - codex-cxs-289-1995
+            ranges: []
+        - row_id: separated_dairy_coproduct
+          role: "Separated dairy co-product"
+          name: "Declared cream or dairy co-product"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record cream or another saleable dairy co-product only when separation or standardisation occurs inside the foreground."
+          amount:
+            expression: "measured co-product mass with measured dry matter fraction"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per declared production lot"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_feed_and_composition
+              source_ids:
+                - eda-dairy-pefcr-2025
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+  - id: concentration_and_drying
+    label: "Concentration, drying, and powder finishing"
+    inputs:
+      product:
+        - row_id: conditioned_feed_input
+          role: "Conditioned liquid feed input"
+          name: "Conditioned skim milk, whey, or acid whey intermediate"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Carry the measured conditioned feed and its dry matter into evaporation, membrane concentration, crystallisation, or drying without changing the upstream burden."
+          amount:
+            expression: "matched transfer mass from conditioned_feed"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per declared production lot"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_feed_and_composition
+              source_ids:
+                - codex-cxs-207-1999
+                - codex-cxs-289-1995
+            ranges: []
+        - row_id: drying_thermal_energy
+          role: "Thermal energy for concentration and drying"
+          name: "Declared steam, heat, or fuel product flow"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Record steam, heat, or fuel supplied to concentration and drying, separated from electricity and reported in its measured unit."
+          amount:
+            expression: "metered thermal energy or fuel quantity converted with a disclosed measured or supplier factor"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per declared production lot and per 1 kg net saleable powder"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_processing_utilities
+              source_ids:
+                - eu-fdm-bat-2019
+            ranges: []
+        - row_id: drying_electricity
+          role: "Process electricity"
+          name: "Electricity, declared supply mix"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record electricity for pumps, evaporators, membrane systems, spray or other dryers, fluidised beds, fans, cooling, sieving, conveying, and dust recovery that are inside the foreground."
+          amount:
+            expression: "metered electricity or documented shared-meter allocation"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per declared production lot and per 1 kg net saleable powder"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_processing_utilities
+              source_ids:
+                - eda-dairy-pefcr-2025
+                - eu-fdm-bat-2019
+            ranges: []
+        - row_id: drying_process_materials
+          role: "Process water and route-specific materials"
+          name: "Declared process water or route-specific material product flow"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record process water and any actually used neutralising, demineralising, membrane-cleaning, lactose-seeding, or anticaking material as separate measured inputs with their substance identities."
+          amount:
+            expression: "measured issue to the production lot; zero when the operation or material is absent"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per declared production lot and per 1 kg net saleable powder"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_processing_utilities
+              source_ids:
+                - codex-cxs-289-1995
+            ranges: []
+      waste:
+        []
+      elementary:
+        - row_id: drying_air_input
+          role: "Drying air intake"
+          name: "Air from technosphere or environment according to the target model"
+          flow_type: "elementary"
+          property_unit: "Volume / m3"
+          description: "Record drying air as an elementary input only when required by the target data model; do not assign an invented mass when airflow is unmetered."
+          amount:
+            expression: "measured dry-air volume corrected to the declared conditions, otherwise reported as unresolved rather than estimated"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per declared production lot"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_processing_utilities
+              source_ids:
+                - eu-fdm-bat-2019
+            ranges: []
+    outputs:
+      product:
+        - row_id: packable_powder
+          role: "Packable powder intermediate"
+          name: "Declared skim milk powder, whey powder, or acid whey powder intermediate"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the cooled and finished powder accepted for bulk containment or packaging, together with measured moisture and applicable composition results."
+          amount:
+            expression: "measured accepted powder mass before final packaging"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per declared production lot"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finished_powder
+              source_ids:
+                - codex-cxs-207-1999
+                - codex-cxs-289-1995
+            ranges: []
+        - row_id: recovered_condensate
+          role: "Recovered condensate"
+          name: "Recovered water or condensate product flow"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "Record condensate recovered for reuse or exported as a product stream separately from gross process-water withdrawal."
+          amount:
+            expression: "metered recovered condensate by reuse or export destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per declared production lot"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_processing_utilities
+              source_ids:
+                - eu-fdm-bat-2019
+            ranges: []
+      waste:
+        - row_id: powder_rejects
+          role: "Off-specification powder and unrecovered fines"
+          name: "Dairy powder residue or off-specification powder waste"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record powder rejected from saleable output and unrecovered fines by actual reuse, rework, feed, treatment, or disposal destination."
+          amount:
+            expression: "measured rejected powder plus mass-balance-calculated unrecovered fines"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per declared production lot and per 1 kg net saleable powder"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_finished_powder
+              source_ids: []
+            ranges: []
+      elementary:
+        - row_id: dryer_dust_to_air
+          role: "Channelled drying dust to air"
+          name: "Particulate matter or dust emission to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record measured residual dust emitted after the declared air-emission control system; recovered powder returned to product or rework is not an elementary emission."
+          amount:
+            expression: "measured concentration multiplied by corrected dry gas volume for the production period"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per declared production lot and per 1 kg net saleable powder"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_air_emissions
+              source_ids:
+                - eu-fdm-bat-2019
+            ranges: []
+  - id: packaging_and_storage
+    label: "Containment, packaging, and factory-gate storage"
+    inputs:
+      product:
+        - row_id: powder_for_packaging
+          role: "Powder transferred to packaging"
+          name: "Declared packable powder intermediate"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Transfer packable powder without duplicating the manufacturing burden."
+          amount:
+            expression: "matched transfer mass from packable_powder"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per declared production lot"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finished_powder
+              source_ids: []
+            ranges: []
+        - row_id: primary_packaging
+          role: "Primary containment and packaging"
+          name: "Product-specific packaging material flow"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record each bulk liner, sack, bag, carton, pallet wrap, or other primary containment material by material and mass. Packaging mass is not included in the 1 kg net product reference flow."
+          amount:
+            expression: "purchased or issued packaging mass reconciled with filled units and stock change"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per declared production lot and per 1 kg net saleable powder"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_and_dispatch
+              source_ids:
+                - eda-dairy-pefcr-2025
+            ranges: []
+        - row_id: packaging_electricity
+          role: "Packaging and warehouse electricity"
+          name: "Electricity, declared supply mix"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record electricity for filling, sealing, conveying, palletising, and in-boundary warehouse conditioning."
+          amount:
+            expression: "metered electricity or documented shared-meter allocation"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per declared production lot and per 1 kg net saleable powder"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_and_dispatch
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: packaged_reference_powder
+          role: "Net saleable skim milk or whey powder"
+          name: "Skim milk powder"
+          flow_type: "product"
+          flow_ref:
+            uuid: "bf850eca-76f2-400d-9cfa-b62c10d64c0a"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This is the quantitative reference output. Record accepted net powder mass at factory gate, excluding containment and packaging mass."
+          amount:
+            expression: "1 kg net accepted saleable powder, calculated from filled-unit or bulk-dispatch records and verified by lot mass balance"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "1 kg net saleable reference powder"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_and_dispatch
+              source_ids:
+                - codex-cxs-207-1999
+                - codex-cxs-289-1995
+            ranges: []
+      waste:
+        - row_id: packaging_waste
+          role: "Packaging losses"
+          name: "Material-specific packaging waste flow"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record damaged, trimmed, or rejected packaging by material and actual destination."
+          amount:
+            expression: "measured packaging waste or opening stock plus receipts minus closing stock minus packaging in dispatched units"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per declared production lot and per 1 kg net saleable powder"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_and_dispatch
+              source_ids: []
+            ranges: []
+      elementary:
+        []
+  - id: cleaning_and_wastewater
+    label: "Cleaning and foreground wastewater management"
+    inputs:
+      product:
+        - row_id: cleaning_water
+          role: "Cleaning water"
+          name: "Process water"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "Record fresh and reused cleaning water separately for cleaning-in-place and other sanitation attributable to the covered processes."
+          amount:
+            expression: "metered withdrawal less separately metered non-cleaning use; retain reused water as a distinct internal stream"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per declared production lot and per 1 kg net saleable powder"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cleaning_and_wastewater
+              source_ids:
+                - eu-fdm-bat-2019
+            ranges: []
+        - row_id: cleaning_agents
+          role: "Cleaning agents"
+          name: "Product-specific cleaning agent flow"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record each acid, alkali, disinfectant, and other cleaning agent by product mass and active concentration when relevant."
+          amount:
+            expression: "measured issue or purchase-and-stock-balance quantity attributable to the covered processes"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per declared production lot and per 1 kg net saleable powder"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cleaning_and_wastewater
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: process_wastewater
+          role: "Wastewater sent to treatment"
+          name: "Dairy processing wastewater"
+          flow_type: "waste"
+          property_unit: "Volume / m3"
+          description: "Record wastewater volume and pollutant measurements at the transfer to on-site or off-site treatment. Do not add recovered condensate or reused water to final discharge."
+          amount:
+            expression: "metered wastewater volume allocated to the covered processes with matched concentration or load samples"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per declared production lot and per 1 kg net saleable powder"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cleaning_and_wastewater
+              source_ids:
+                - eu-fdm-bat-2019
+            ranges: []
+        - row_id: wastewater_sludge
+          role: "Wastewater treatment sludge"
+          name: "Wastewater treatment sludge"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record allocated treatment sludge by measured wet mass, dry matter, and destination when treatment is inside the foreground."
+          amount:
+            expression: "measured sludge mass and dry matter allocated to the covered wastewater load"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per declared production lot and per 1 kg net saleable powder"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cleaning_and_wastewater
+              source_ids: []
+            ranges: []
+      elementary:
+        - row_id: treated_water_discharge
+          role: "Treated water discharge"
+          name: "Water and measured pollutant emissions to the receiving compartment"
+          flow_type: "elementary"
+          property_unit: "Volume / m3 for water and Mass / kg for each pollutant"
+          description: "Record final discharged water and measured pollutant loads only when treatment and discharge are inside the foreground."
+          amount:
+            expression: "measured discharge volume multiplied by matched pollutant concentration, net of explicitly modelled internal recirculation"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per declared production lot and per 1 kg net saleable powder"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_cleaning_and_wastewater
+              source_ids:
+                - eu-fdm-bat-2019
+            ranges: []
+allocation_rules:
+  - rule_id: allocation_direct_assignment
+    applies_to: "product_specific_processes_and_inputs"
+    rule: "First assign metered process energy, materials, packaging, wastes, and emissions directly to the product and stage that causes them. Subdivide independently measured processes before applying allocation."
+    source_ids:
+      - eda-dairy-pefcr-2025
+      - eu-pef-method-2021
+  - rule_id: allocation_dry_matter
+    applies_to: "joint_dairy_products"
+    rule: "When direct assignment is not possible for a joint dairy operation, allocate raw dairy feed, transport burdens, and joint processing burdens in proportion to each co-product's measured dry matter output: share_i = DM_i × Q_i / sum(DM_j × Q_j)."
+    source_ids:
+      - eda-dairy-pefcr-2025
+  - rule_id: allocation_factory_remainder
+    applies_to: "whole_factory_or_shared_utility_data"
+    rule: "Assign available product-specific data first, subtract those quantities from the verified factory total, then allocate only the remainder among covered co-products by measured dry matter output. Directly attributable packaging and ingredients are never included in this remainder."
+    source_ids:
+      - eda-dairy-pefcr-2025
+  - rule_id: allocation_waste_and_rework
+    applies_to: "rejected_product_rework_and_waste"
+    rule: "Keep internally reworked material inside the mass balance without counting a second product. Record exported residues and wastes by actual destination; do not claim avoided burdens unless the downstream substitution scenario and quality equivalence are explicitly modelled and disclosed."
+    source_ids:
+      - eu-pef-method-2021
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_feed_and_composition
+      process_id: "feed_receipt_and_conditioning"
+      flow_role: "Liquid feed, conditioned feed, and dairy co-products"
+      record_type: "Delivery, transfer-meter, laboratory, and rejection records"
+      raw_fields: "timestamp; supplier or upstream process; feed_type; wet_mass; dry_matter; fat; protein; moisture; acidity or pH; accepted_or_rejected; co_product_mass"
+      collection_method: "Calibrated weighbridge, tank level or mass-flow meter matched to representative laboratory samples and lot identity"
+      unit: "kg; mass fraction; pH"
+      frequency: "Each delivery or transfer and each representative lot sample"
+      temporal_coverage: "At least one representative operating year, with campaign-level traceability"
+      site_scope: "All sites and lines in the dataset"
+      aggregation_rule: "Sum accepted mass by route and lot; mass-weight composition; reconcile transfers, rejects, and co-products"
+      quality_evidence: "Calibration, sampling method, laboratory result, supplier record, and lot reconciliation"
+    - protocol_id: cp_processing_utilities
+      process_id: "concentration_and_drying"
+      flow_role: "Electricity, heat, fuels, water, condensate, and route-specific materials"
+      record_type: "Meter, invoice, batch issue, operating-hour, and stock records"
+      raw_fields: "meter_start; meter_end; fuel_or_steam_quantity; energy_unit; conversion_factor; water_withdrawal; condensate_reuse; material_issue; line; operating_time"
+      collection_method: "Submeter preferred; otherwise documented allocation from a complete site meter using operating time and measured or rated load"
+      unit: "kWh; MJ; kg; m3"
+      frequency: "Continuous or per batch, aggregated monthly"
+      temporal_coverage: "At least one representative operating year and all included campaigns"
+      site_scope: "All included powder lines and shared utilities"
+      aggregation_rule: "Sum by carrier and process; preserve original units; reconcile submeter totals to site totals before allocation"
+      quality_evidence: "Meter identification, calibration, invoices, stock reconciliation, and allocation workbook"
+    - protocol_id: cp_finished_powder
+      process_id: "concentration_and_drying"
+      flow_role: "Packable powder, off-specification powder, fines, and composition"
+      record_type: "Dryer, silo, laboratory, rework, and waste records"
+      raw_fields: "lot_id; powder_type; gross_powder_mass; accepted_mass; rejected_mass; recovered_fines; moisture; dry_matter; fat; protein; whey_pH_or_acidity"
+      collection_method: "Calibrated silo or packaging scales matched to lot laboratory release and rework records"
+      unit: "kg; mass fraction; pH"
+      frequency: "Each production lot"
+      temporal_coverage: "All lots in the representative period"
+      site_scope: "All included drying and finishing lines"
+      aggregation_rule: "Sum accepted and rejected mass separately; mass-weight composition; reconcile feed dry matter to powder, co-products, residues, wastewater, and measured losses"
+      quality_evidence: "Scale calibration, release certificate, sample plan, and lot mass-balance sign-off"
+    - protocol_id: cp_air_emissions
+      process_id: "concentration_and_drying"
+      flow_role: "Channelled drying dust"
+      record_type: "Stack test or continuous monitor and gas-flow records"
+      raw_fields: "source_id; control_device; concentration; dry_gas_flow; reference_conditions; operating_time; production_lot"
+      collection_method: "Applicable standard stack method with matched gas flow and production period"
+      unit: "mg/Nm3; Nm3; kg"
+      frequency: "At least the legally applicable frequency; EU BAT comparator uses at least annual monitoring for dairy drying"
+      temporal_coverage: "Representative operating conditions in the reporting period"
+      site_scope: "Every included drying emission point"
+      aggregation_rule: "Convert concentration and corrected gas volume to mass; subtract no recovered powder unless it is demonstrably returned before the emission point"
+      quality_evidence: "Test report, method, accreditation, reference conditions, and operating-state record"
+    - protocol_id: cp_packaging_and_dispatch
+      process_id: "packaging_and_storage"
+      flow_role: "Net product, packaging, packaging waste, and dispatch"
+      record_type: "Filling-scale, bill-of-material, stock, waste, and dispatch records"
+      raw_fields: "lot_id; filled_units; net_mass_per_unit; bulk_dispatch_mass; packaging_material; packaging_issue; packaging_stock_change; packaging_waste; dispatch_status"
+      collection_method: "Calibrated filling or bulk scales with stock reconciliation"
+      unit: "kg"
+      frequency: "Each lot and dispatch"
+      temporal_coverage: "All accepted lots in the representative period"
+      site_scope: "All included packing lines and bulk silos"
+      aggregation_rule: "Net product = accepted filled or bulk-dispatched powder excluding packaging; reconcile packaging issued to contained and waste mass"
+      quality_evidence: "Scale calibration, bill of materials, dispatch record, and stock reconciliation"
+    - protocol_id: cp_cleaning_and_wastewater
+      process_id: "cleaning_and_wastewater"
+      flow_role: "Cleaning water, agents, wastewater, sludge, and discharge"
+      record_type: "CIP recipe, flow meter, chemical issue, wastewater meter, sample, and sludge records"
+      raw_fields: "cleaning_event; process_line; water_withdrawal; reused_water; chemical_product; chemical_mass; wastewater_volume; pollutant_concentration; sludge_mass; sludge_dry_matter; destination"
+      collection_method: "Event or area meter matched to CIP logs and representative wastewater samples"
+      unit: "m3; kg; mg/L"
+      frequency: "Each cleaning event or continuous meter, aggregated monthly"
+      temporal_coverage: "At least one representative operating year"
+      site_scope: "All included lines and shared treatment systems"
+      aggregation_rule: "Sum gross and reused water separately; pollutant load = matched volume × concentration; allocate shared treatment after direct assignment"
+      quality_evidence: "Meter calibration, CIP log, chemical stock balance, sample chain of custody, and treatment record"
+  calculation_rules:
+    - id: calc_reference_output
+      applies_to: "Net saleable powder"
+      rule: "Sum accepted net filled-unit mass and accepted bulk-dispatch mass; exclude packaging, rejected lots, rework not released, retained samples, and stock not transferred to the declared factory gate."
+      inputs:
+        - filled_units
+        - net_mass_per_unit
+        - bulk_dispatch_mass
+        - dispatch_status
+        - rejected_mass
+        - retained_samples
+      output: "kg net saleable powder and normalized 1 kg reference flow"
+      source_ids:
+        - codex-cxs-207-1999
+        - codex-cxs-289-1995
+    - id: calc_dry_matter_allocation
+      applies_to: "Joint dairy co-products"
+      rule: "For every joint operation, calculate AFi = DMi × Qi / sum(DMj × Qj) using matched wet mass and dry matter measurements for every co-product in the denominator."
+      inputs:
+        - co_product_mass
+        - dry_matter
+        - joint_process_total
+      output: "product-specific allocation factor and allocated amount"
+      source_ids:
+        - eda-dairy-pefcr-2025
+    - id: calc_dryer_dust
+      applies_to: "Channelled drying dust"
+      rule: "Emitted dust mass = measured concentration × corrected dry gas volume for the matched operating period, with explicit unit conversion and no subtraction of already emitted material."
+      inputs:
+        - concentration
+        - dry_gas_flow
+        - operating_time
+        - reference_conditions
+      output: "kg dust emitted and kg/kg reference powder"
+      source_ids:
+        - eu-fdm-bat-2019
+    - id: calc_wastewater_load
+      applies_to: "Treated or untreated wastewater discharge"
+      rule: "Pollutant load = matched discharge volume × pollutant concentration; keep reused water and recovered condensate outside final discharge volume."
+      inputs:
+        - wastewater_volume
+        - pollutant_concentration
+        - reused_water
+        - condensate_reuse
+      output: "m3 discharge and kg pollutant per kg reference powder"
+      source_ids:
+        - eu-fdm-bat-2019
+  data_quality_requirements:
+    - id: dqr_identity_and_route
+      applies_to: "All data packages"
+      requirement: "Declare powder type, liquid feed type and origin, whey acidity or modification, process technology, packaging format, and the exact foreground starting condition."
+      evidence: "Dataset metadata, process map, supplier or upstream dataset references, and lot records"
+    - id: dqr_temporal_coverage
+      applies_to: "Foreground activity data"
+      requirement: "Use at least one representative operating year where seasonality and product mix affect shared utilities; preserve lot or campaign records and explain shutdowns, abnormal operation, and missing periods."
+      evidence: "Dated meter, production, laboratory, maintenance, and dispatch records"
+    - id: dqr_mass_balance
+      applies_to: "Feed, co-products, powder, residues, and wastewater"
+      requirement: "Close wet-mass and dry-matter balances at the most detailed measured process level; investigate and disclose unexplained differences instead of forcing closure by changing the saleable product amount."
+      evidence: "Signed wet-mass and dry-matter reconciliation by lot, campaign, and annual total"
+    - id: dqr_composition
+      applies_to: "Saleable powder"
+      requirement: "For skimmed milk powder, verify maximum milkfat 1.5% m/m, maximum water 5% m/m, and minimum milk protein in milk-solids-not-fat 34% m/m unless a stricter declared specification applies. For whey and acid whey powders, retain the applicable Codex composition and acidity results."
+      evidence: "Laboratory release results and applicable product specification; codex-cxs-207-1999; codex-cxs-289-1995"
+    - id: dqr_bat_comparison
+      applies_to: "Powder-dominant dairy installation QA"
+      requirement: "Where powder is at least 80% of production, retain annual raw-material throughput, total energy, and wastewater discharge so the unconverted EU BAT indicators of 0.2-0.5 MWh/t raw material and 1.2-2.7 m3/t raw material can be compared on their original basis. A value outside the interval is a review trigger, not automatic replacement or failure."
+      evidence: "Annual site balance and eu-fdm-bat-2019"
+    - id: dqr_data_gaps
+      applies_to: "Missing or shared foreground data"
+      requirement: "Identify every proxy, shared-meter allocation, unverified UUID, and default dry matter value; state its affected amount and sensitivity, and prioritise replacement with direct records."
+      evidence: "Data-gap register, allocation workbook, sensitivity result, and reviewer sign-off"
+validation_rules:
+  - rule_id: validate_reference_flow
+    applies_to: "reference_product"
+    rule: "Require exactly 1 kg net saleable powder with the Mass flow property, Units of mass unit group, kg reference unit, selected product-flow UUID, and all required qualifiers."
+    source_ids:
+      - codex-cxs-207-1999
+      - codex-cxs-289-1995
+  - rule_id: validate_route_scope
+    applies_to: "product_and_process_identity"
+    rule: "Reject a package that does not identify skimmed milk powder, whey powder, or acid whey powder and its liquid feed origin, or that includes an excluded concentrated protein, lactose, casein, infant-formula, or blended product without a reviewed scope extension."
+    source_ids:
+      - codex-cxs-207-1999
+      - codex-cxs-289-1995
+  - rule_id: validate_required_processes
+    applies_to: "foreground_process_map"
+    rule: "Require all four process-map entries and a quantitative record or explicit zero with reason for every conditional route-specific operation and every inventory row applicable to the site."
+    source_ids:
+      - eda-dairy-pefcr-2025
+      - eu-fdm-bat-2019
+  - rule_id: validate_mass_and_solids_balance
+    applies_to: "foreground_inventory"
+    rule: "Require wet-mass and dry-matter reconciliation across accepted feed, co-products, saleable powder, rework, wastes, wastewater solids, and measured losses; unresolved imbalance is a finding."
+    source_ids:
+      - eda-dairy-pefcr-2025
+  - rule_id: validate_allocation
+    applies_to: "shared_and_joint_operations"
+    rule: "Require direct assignment before allocation, complete dry-matter denominators for every joint co-product, reconciliation of allocated remainders to the verified total, and disclosure of allocation factors."
+    source_ids:
+      - eda-dairy-pefcr-2025
+      - eu-pef-method-2021
+  - rule_id: validate_energy_water_and_emissions
+    applies_to: "utilities_wastewater_and_drying_air"
+    rule: "Require separate energy carriers, gross and reused water, final wastewater discharge, and measured drying dust where applicable. Compare installation BAT indicators only on their original raw-material basis."
+    source_ids:
+      - eu-fdm-bat-2019
+  - rule_id: validate_composition
+    applies_to: "released_product"
+    rule: "Require lot evidence for the applicable Codex or declared stricter composition and acidity specification; off-specification material must not be counted as saleable reference output."
+    source_ids:
+      - codex-cxs-207-1999
+      - codex-cxs-289-1995
+published_dataset_profile:
+  dataset_role: "Product-specific foreground powder-manufacturing dataset"
+  downstream_use: "secondary_dataset; background_dataset"
+  allowed_use: "Product and supply-chain LCA where geography, technology, powder type, feed origin, composition, allocation method, packaging, and temporal coverage are representative or adjusted transparently"
+  excluded_use: "Unqualified comparison between skim milk and whey routes; substitution for whey protein concentrate, lactose, casein, infant formula, or other excluded products; use as a farm, cheese, casein, retail, consumer-use, or end-of-life dataset"
+  required_metadata: "PCR id and version state; powder type; liquid feed type and upstream dataset; whey acidity or modification; geography; site and technology; reference period; net product mass; composition; packaging; process map; allocation factors; electricity and heat supply; water and wastewater boundary; emission controls"
+  required_quality_disclosure: "Primary-data coverage; meter and laboratory methods; wet-mass and dry-matter balance; shared-data allocation; UUID gaps; proxy datasets; abnormal operation; BAT comparison basis; uncertainty and sensitivity for material gaps"
+  update_trigger: "Material change in feed source or product mix, powder route or technology, composition, allocation, packaging, energy or water system, emission control, regulatory or Codex requirement, site boundary, or a new representative period"
+data_sources:
+  - id: "codex-cxs-207-1999"
+    type: "standard"
+    reference: "FAO/WHO Codex Alimentarius, CXS 207-1999, Standard for Milk Powders and Cream Powder, amended through 2023, https://www.fao.org/fao-who-codexalimentarius/sh-proxy/en/?lnk=1&url=https%3A%2F%2Fworkspace.fao.org%2Fsites%2Fcodex%2FStandards%2FCXS%2B207-1999%2FCXS_207e.pdf (retrieved 2026-08-10)"
+    used_for: "Skimmed milk powder identity, scope, raw materials, composition, and release-quality requirements"
+  - id: "codex-cxs-289-1995"
+    type: "standard"
+    reference: "FAO/WHO Codex Alimentarius, CXS 289-1995, Standard for Whey Powders, amended through 2022, https://www.fao.org/fao-who-codexalimentarius/sh-proxy/en/?lnk=1&url=https%3A%2F%2Fworkspace.fao.org%2Fsites%2Fcodex%2FStandards%2FCXS%2B289-1995%2FCXS_289e.pdf (retrieved 2026-08-10)"
+    used_for: "Whey and acid whey definitions, feed origin, permitted route variation, composition, acidity, and product qualification"
+  - id: "eda-dairy-pefcr-2025"
+    type: "method_factor"
+    reference: "European Dairy Association, PEFCR for Dairy Products, partial revision, February 2025, https://eda.euromilk.org/wp-content/uploads/2025/02/PEFCR-DairyProducts_update_final.pdf (retrieved 2026-08-10)"
+    used_for: "Dairy process decomposition, mandatory company-specific dried-whey data, packaging data, direct assignment, dry-matter allocation, and data-quality rules"
+  - id: "eu-fdm-bat-2019"
+    type: "official_guidance"
+    reference: "Commission Implementing Decision (EU) 2019/2031 establishing BAT conclusions for the food, drink and milk industries, https://eur-lex.europa.eu/eli/dec_impl/2019/2031/oj (retrieved 2026-08-10)"
+    used_for: "Dairy powder energy and wastewater QA indicators, multistage drying, water accounting, and drying dust monitoring"
+  - id: "eu-pef-method-2021"
+    type: "official_guidance"
+    reference: "Commission Recommendation (EU) 2021/2279 on the use of Environmental Footprint methods, corrected 2022, https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX%3A32021H2279 (retrieved 2026-08-10)"
+    used_for: "Life-cycle boundary, allocation hierarchy, data-quality disclosure, and downstream-use limitations"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:d3ebaac23b8228bd9a0b1223a86ec501f2493577a108c6064dc9f07e4239d535"
+  generated_content_sha256: "sha256:b718bc88211b3dbdb4efbe0c84a5eb9178b5ae9742cc81c7084d2117949601ad"

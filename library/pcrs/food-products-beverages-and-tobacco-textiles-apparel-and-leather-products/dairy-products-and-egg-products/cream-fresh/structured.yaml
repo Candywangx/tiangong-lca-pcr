@@ -1,10 +1,991 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "22120"
-  title: "Cream, fresh"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.food-products-beverages-and-tobacco-textiles-apparel-and-leather-products.dairy-products-and-egg-products.cream-fresh"
+  classification_refs: "CPC 3.0: 22120, Cream, fresh"
+  covered_products: "Pourable fresh cream physically separated from milk; pasteurized or equivalently heat-treated; optionally fat-standardized and homogenized; packaged or bulk at dairy-facility gate"
+  excluded_products: "Raw high-fat milk; fermented, cultured, acidified, sweetened, flavoured, whipped, frozen, concentrated, dried, sterilized, or UHT cream; cream cheese; butter; anhydrous milkfat; reconstituted or recombined cream"
+  representative_product: "Refrigerated pasteurized fresh cream, physically separated from milk and filled at the dairy plant"
+  production_route: "Chilled raw-milk receiving; centrifugal separation and fat standardization; cream pasteurization; optional homogenization; cooling; filling; refrigerated storage; cleaning-in-place and wastewater dispatch"
+  market_state: "Finished liquid product, bulk or packaged, at dairy processing facility gate under declared refrigerated conditions"
+functional_unit:
+  what: "Fresh liquid cream obtained by physical separation of milk and prepared for direct consumption or further food processing"
+  how_much: "1 kg net fresh cream"
+  how_well: "Meets the declared milk species, milkfat content, physical-separation route, heat-treatment validation, packaging state, and applicable food-safety specification"
+  how_long_or_cycle: "One production batch represented at the dairy facility gate; declared shelf-life and cold-chain conditions are metadata, not additional product quantity"
+  reference_flow_link: "fresh_cream_at_plant"
+system_boundary:
+  rules:
+    - rule_id: boundary_required_operations
+      applies_to: "Dairy processing foreground"
+      rule: "Include raw-milk receiving and separation, cream standardization, heat treatment, cooling, filling, refrigerated on-site storage, cleaning, product losses, wastewater dispatch, and applicable direct refrigerant emissions. An operation may be reported as zero only with facility evidence that it did not occur."
+      source_ids:
+        - dairy-pefcr-2025
+        - epa-dairy-effluent-guidelines
+    - rule_id: boundary_upstream_separation
+      applies_to: "Raw milk and other incoming products"
+      rule: "Stop foreground recursion at the declared facility-gate inputs and require linked upstream datasets; do not omit their upstream burdens from a cradle-to-gate or broader study."
+      source_ids:
+        - dairy-pefcr-2025
+    - rule_id: boundary_heat_treatment
+      applies_to: "Fresh cream heat treatment"
+      rule: "Include the actual validated time-temperature treatment and associated heating and cooling. For cream pasteurization, use at least 75 degrees C for 15 seconds or a validated equivalent appropriate to product composition and applicable law; retain the validation record."
+      source_ids:
+        - codex-cxc-57-2004
+        - eu-reg-853-2004
+    - rule_id: boundary_cold_chain
+      applies_to: "Intermediate and finished cream"
+      rule: "Include on-site refrigeration until the declared facility-gate exit and record product temperature or equivalent refrigerated condition. Downstream refrigerated distribution is outside this foreground boundary unless explicitly added."
+      source_ids:
+        - codex-cxc-57-2004
+    - rule_id: boundary_no_silent_cutoff
+      applies_to: "Foreground activity data"
+      rule: "Collect the mandatory material, energy, water, chemical, refrigerant, co-product, wastewater, and direct-emission fields. Any omitted item must be shown immaterial and disclosed; a data gap is not a zero flow."
+      source_ids:
+        - dairy-pefcr-2025
+boundary_abstraction:
+  declared_starting_condition: "Chilled raw milk accepted at the dairy processing facility gate with recorded mass, milk species, milkfat and dry-matter or total-solids information, receipt time, temperature, and supplier or upstream-dataset identity"
+  starting_condition_role: "Foreground initial product input; upstream dairy farming and raw-milk production are outside the foreground boundary"
+  product_classification_scope: "Fresh cream physically separated from milk and delivered as a refrigerated liquid product; excludes the product forms listed in Section 1"
+  recursive_input_rule: "If fresh cream from the same category enters as rework or transferred intermediate, record it as a distinct product input with quantity, composition, origin, and an upstream dataset; do not recursively recreate its prior production inside this PCR boundary"
+  upstream_dataset_requirement: "Link raw milk, transferred dairy intermediates, electricity, thermal energy carriers, water supply, cleaning agents, refrigerants, packaging materials, transport, and off-site treatment to geographically and temporally representative datasets when those activities are in study scope"
+  disclosure: "Declare facility location, production period, milk species, product milkfat and dry matter, heat-treatment and homogenization status, packaging state, cold-chain exit condition, included process modules, allocation method and factors, exclusions, data gaps, and every use of a provisional estimate"
+reference_flow_definition:
+  reference_amount: "1 kg"
+  product_flow_ref:
+    name: "Cream, fresh"
+    uuid: "e58b11a6-5d86-40a3-bed6-e365a95d0981"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "milk species"
+    - "milkfat content as mass percent"
+    - "physical-separation route"
+    - "heat-treatment type and validated time-temperature condition"
+    - "homogenization status"
+    - "bulk or packaging format"
+    - "net product mass"
+    - "facility location"
+    - "production period"
+    - "product exit temperature or refrigerated condition"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "Reference fresh cream"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Report net product mass. Convert volume records to mass only with a lot- or product-specific measured density and retain the density, temperature, sampling method, and conversion record."
+  - id: milkfat_mass_fraction
+    applies_to: "Raw milk, separated cream, skimmed milk co-product, and reference cream"
+    required_property_ref:
+      name: "Milkfat mass fraction"
+      uuid: ""
+    required_unit: "% by mass"
+    rule: "Measure or obtain from verified compositional records for each representative batch or aggregation period; do not substitute a label category for a numeric mass fraction."
+  - id: dry_matter_mass_fraction
+    applies_to: "Reference cream and every dairy co-product used in allocation"
+    required_property_ref:
+      name: "Dry matter mass fraction"
+      uuid: ""
+    required_unit: "% by mass"
+    rule: "Use product-specific measured or verified formulation data for dry-matter allocation. A default may be used only as an exceptional, disclosed fallback and must not support a current PEF-conformity claim."
+  - id: energy_preservation
+    applies_to: "Electricity and thermal energy"
+    required_property_ref:
+      name: "Energy"
+      uuid: ""
+    required_unit: "kWh and MJ"
+    rule: "Preserve electricity and thermal energy separately. Convert units with explicit factors and do not combine heat and electricity before linking the corresponding background energy datasets."
+  - id: water_volume
+    applies_to: "Process and cleaning water; wastewater"
+    required_property_ref:
+      name: "Volume"
+      uuid: ""
+    required_unit: "m3 or L"
+    rule: "Preserve measured water and wastewater volumes by source and discharge route. Use 1 m3 = 1,000 L; do not infer wastewater mass from product mass without a measured or documented water balance."
+process_map:
+  - id: milk_receiving_and_separation
+    name: "Raw-milk receiving, separation, and fat standardization"
+    inclusion: "required"
+    inclusion_condition: "Always"
+    role: "Foreground separation producing cream and skimmed-milk co-product"
+    quantitative_reference: "Per measured kg of separated cream transferred to heat treatment"
+  - id: pasteurization_and_cooling
+    name: "Cream pasteurization, optional homogenization, and cooling"
+    inclusion: "required"
+    inclusion_condition: "Always; homogenization is included only when performed"
+    role: "Foreground microbiocidal treatment and refrigerated product preparation"
+    quantitative_reference: "Per measured kg of pasteurized cream transferred to filling"
+  - id: filling_and_cold_storage
+    name: "Filling, packaging, and on-site refrigerated storage"
+    inclusion: "required"
+    inclusion_condition: "Always; packaging input is zero only for documented bulk dispatch"
+    role: "Foreground finished-product preparation"
+    quantitative_reference: "Per 1 kg net fresh cream at facility gate"
+  - id: cleaning_and_wastewater
+    name: "Cleaning-in-place, sanitation, and wastewater dispatch"
+    inclusion: "required"
+    inclusion_condition: "Always"
+    role: "Shared foreground support process allocated to the represented cream line"
+    quantitative_reference: "Per 1 kg net fresh cream at facility gate after allocation"
+process_inventory:
+  - id: milk_receiving_and_separation
+    label: "Raw-milk receiving, separation, and fat standardization"
+    inputs:
+      product:
+        - row_id: raw_milk_input
+          role: "Accepted raw milk"
+          name: "Raw milk"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "Raw milk crosses the facility gate and supplies the milkfat and non-fat solids separated into cream and co-products."
+          amount:
+            expression: "measured accepted raw-milk mass attributable to the represented production period"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net fresh cream at facility gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_milk_and_composition
+              source_ids:
+                - dairy-pefcr-2025
+            ranges:
+              - role: qa_guardrail
+                lower: "1"
+                upper: "20"
+                unit: "kg raw milk"
+                basis: "per 1 kg net fresh cream at facility gate; broad authoring screen pending reviewed plant evidence"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: separation_electricity
+          role: "Separator and transfer electricity"
+          name: "Electricity, supplied to dairy processing"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Electricity used by receiving pumps, storage agitation, separation, standardization, and transfers is recorded separately from thermal energy."
+          amount:
+            expression: "metered electricity or calculated share from equipment power and operating time"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per measured kg of separated cream transferred to heat treatment"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_records
+              source_ids:
+                - dairy-pefcr-2025
+            ranges:
+              - role: qa_guardrail
+                lower: "0.001"
+                upper: "1"
+                unit: "kWh"
+                basis: "per kg of separated cream; broad authoring screen pending reviewed metering"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: separated_cream_intermediate
+          role: "Separated cream transferred to heat treatment"
+          name: "Cream, separated intermediate"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "The intermediate cream output is measured or calculated from calibrated tank and composition records before heat treatment."
+          amount:
+            expression: "measured transferred mass, reconciled with milkfat and total-mass balances"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net fresh cream at facility gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_product_coproduct_and_loss
+              source_ids:
+                - mass-balance-identity
+            ranges:
+              - role: qa_guardrail
+                lower: "1"
+                upper: "1.2"
+                unit: "kg separated cream"
+                basis: "per 1 kg net fresh cream at facility gate; includes downstream product losses"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: skimmed_milk_coproduct
+          role: "Skimmed-milk co-product"
+          name: "Skimmed milk, at separator"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Skimmed milk leaving separation is a co-product, not a negative raw-milk input or unreported avoided product."
+          amount:
+            expression: "measured co-product mass with measured dry matter or total solids"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net fresh cream at facility gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_product_coproduct_and_loss
+              source_ids:
+                - dairy-pefcr-2025
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "20"
+                unit: "kg skimmed milk"
+                basis: "per 1 kg net fresh cream at facility gate; broad authoring screen pending product-specific milkfat balance"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        - row_id: separation_product_loss
+          role: "Separation rejects and dairy product loss"
+          name: "Dairy processing residue or product loss"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Separator sludge, off-spec dairy material, spills, and unrecovered start-up or change-over product are recorded by destination."
+          amount:
+            expression: "measured or mass-balance-calculated loss sent to recovery, feed, wastewater treatment, or disposal"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per measured kg of separated cream"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_product_coproduct_and_loss
+              source_ids:
+                - epa-dairy-effluent-guidelines
+                - mass-balance-identity
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.1"
+                unit: "kg dairy material"
+                basis: "per kg of separated cream; broad authoring screen pending reviewed plant balance"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        []
+  - id: pasteurization_and_cooling
+    label: "Cream pasteurization, optional homogenization, and cooling"
+    inputs:
+      product:
+        - row_id: cream_to_pasteurizer
+          role: "Separated cream input"
+          name: "Cream, separated intermediate"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "The separated cream transferred from the prior foreground process is reconciled by batch or production period."
+          amount:
+            expression: "transferred mass from separated_cream_intermediate"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per measured kg of pasteurized cream output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_product_coproduct_and_loss
+              source_ids:
+                - mass-balance-identity
+            ranges:
+              - role: qa_guardrail
+                lower: "1"
+                upper: "1.1"
+                unit: "kg separated cream"
+                basis: "per kg of pasteurized cream output"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: pasteurization_heat
+          role: "Thermal energy for pasteurization and hot-water service"
+          name: "Thermal energy, supplied to dairy processing"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Fuel or purchased heat used for cream heat treatment and attributable hot-water service is recorded by carrier before conversion to MJ."
+          amount:
+            expression: "metered fuel or heat multiplied by documented net calorific value and allocated to the represented process"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per measured kg of pasteurized cream output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_records
+              source_ids:
+                - dairy-pefcr-2025
+                - codex-cxc-57-2004
+            ranges:
+              - role: qa_guardrail
+                lower: "0.01"
+                upper: "5"
+                unit: "MJ"
+                basis: "per kg of pasteurized cream output; broad authoring screen pending reviewed heat metering"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: thermal_process_electricity
+          role: "Pasteurizer, homogenizer, and cooling electricity"
+          name: "Electricity, supplied to dairy processing"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Electricity for heat-exchange pumping, optional homogenization, chilling, and transfers is recorded by equipment or allocation period."
+          amount:
+            expression: "metered electricity or calculated equipment-power-by-runtime use"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per measured kg of pasteurized cream output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_records
+              source_ids:
+                - dairy-pefcr-2025
+            ranges:
+              - role: qa_guardrail
+                lower: "0.001"
+                upper: "1"
+                unit: "kWh"
+                basis: "per kg of pasteurized cream output; broad authoring screen pending reviewed metering"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: pasteurized_cream_output
+          role: "Pasteurized and cooled cream"
+          name: "Cream, pasteurized and cooled"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Cream output is accepted only when the batch heat-treatment record and product specification meet the declared control criteria."
+          amount:
+            expression: "measured accepted mass transferred to filling"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per measured kg of pasteurized cream output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_heat_treatment_and_product_release
+              source_ids:
+                - codex-cxc-57-2004
+                - eu-reg-853-2004
+            ranges:
+              - role: qa_guardrail
+                lower: "1"
+                upper: "1"
+                unit: "kg pasteurized cream"
+                basis: "per kg of measured pasteurized cream output"
+                basis_kind: "process_output"
+                evidence_kind: "method_formula"
+                source_ids:
+                  - mass-balance-identity
+      waste:
+        - row_id: pasteurization_product_loss
+          role: "Pasteurizer start-up, shut-down, and off-spec loss"
+          name: "Dairy processing residue or product loss"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Rejected or unrecovered cream from thermal-process start-up, shut-down, change-over, or failed release is recorded by destination."
+          amount:
+            expression: "measured rejected mass or difference in the reconciled cream balance"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per measured kg of pasteurized cream output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_product_coproduct_and_loss
+              source_ids:
+                - epa-dairy-effluent-guidelines
+                - mass-balance-identity
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.1"
+                unit: "kg dairy material"
+                basis: "per kg of pasteurized cream output; broad authoring screen pending reviewed plant balance"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        - row_id: cooling_refrigerant_emission
+          role: "Refrigerant released from attributable cooling equipment"
+          name: "Refrigerant, emitted to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record actual refrigerant type and calculated leakage from inventory reconciliation for equipment serving the represented line or storage zone."
+          amount:
+            expression: "opening inventory plus additions minus closing inventory and documented recovery, allocated to the represented cream line"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per measured kg of pasteurized cream output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_refrigerant_inventory
+              source_ids:
+                - dairy-pefcr-2025
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.02"
+                unit: "kg refrigerant"
+                basis: "per kg of pasteurized cream output; intentionally broad authoring screen pending equipment-specific inventory"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+  - id: filling_and_cold_storage
+    label: "Filling, packaging, and on-site refrigerated storage"
+    inputs:
+      product:
+        - row_id: cream_to_filling
+          role: "Pasteurized cream transferred to filling"
+          name: "Cream, pasteurized and cooled"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Accepted pasteurized cream enters the filling system and is reconciled with net filled product and filling losses."
+          amount:
+            expression: "measured transferred mass from pasteurized_cream_output"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net fresh cream at facility gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_product_coproduct_and_loss
+              source_ids:
+                - mass-balance-identity
+            ranges:
+              - role: qa_guardrail
+                lower: "1"
+                upper: "1.1"
+                unit: "kg pasteurized cream"
+                basis: "per 1 kg net fresh cream at facility gate"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: packaging_materials
+          role: "Primary, secondary, and tertiary packaging"
+          name: "Packaging materials, by material"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Packaging is recorded by material, component, recycled content where known, and net mass. Bulk dispatch records zero primary packaging with the bulk-container arrangement disclosed."
+          amount:
+            expression: "bill-of-material mass attributable to accepted filled product"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net fresh cream at facility gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_and_finished_product
+              source_ids:
+                - dairy-pefcr-2025
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.3"
+                unit: "kg packaging"
+                basis: "per 1 kg net fresh cream at facility gate; zero allowed only for documented bulk dispatch"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: filling_storage_electricity
+          role: "Filling and cold-storage electricity"
+          name: "Electricity, supplied to dairy processing"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Electricity for filling, packaging, cold-room operation, and local warehouse storage through facility-gate exit is recorded."
+          amount:
+            expression: "metered use or documented allocation of line and cold-store electricity"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net fresh cream at facility gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_records
+              source_ids:
+                - dairy-pefcr-2025
+                - codex-cxc-57-2004
+            ranges:
+              - role: qa_guardrail
+                lower: "0.001"
+                upper: "1"
+                unit: "kWh"
+                basis: "per 1 kg net fresh cream at facility gate; broad authoring screen pending reviewed metering and storage duration"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: fresh_cream_at_plant
+          role: "Fresh cream at dairy facility gate"
+          name: "Cream, fresh"
+          flow_type: "product"
+          flow_ref:
+            uuid: "e58b11a6-5d86-40a3-bed6-e365a95d0981"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66 / kg"
+          description: "This is the reference product after acceptance of net mass, composition, heat treatment, packaging state, and refrigerated exit condition."
+          amount:
+            expression: "fixed reference output of 1 kg net fresh cream"
+            value_mode: "fixed_value"
+            specificity: "product_specific"
+            basis:
+              text: "reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "identity_reference"
+              source_ids:
+                - codex-cxs-288-1976
+            ranges:
+              - role: allowed_range
+                lower: "1"
+                upper: "1"
+                unit: "kg net fresh cream"
+                basis: "per declared reference flow"
+                basis_kind: "reference_flow"
+                evidence_kind: "method_formula"
+                source_ids:
+                  - mass-balance-identity
+      waste:
+        - row_id: filling_and_packaging_waste
+          role: "Filling loss and rejected packaging"
+          name: "Filling and packaging waste, by material"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record dairy product loss and rejected packaging as separate waste materials and preserve their recovery, treatment, or disposal routes."
+          amount:
+            expression: "measured reject mass by dairy and packaging material category"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net fresh cream at facility gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_and_finished_product
+              source_ids:
+                - epa-dairy-effluent-guidelines
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.1"
+                unit: "kg waste"
+                basis: "per 1 kg net fresh cream at facility gate; report dairy and packaging fractions separately"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        []
+  - id: cleaning_and_wastewater
+    label: "Cleaning-in-place, sanitation, and wastewater dispatch"
+    inputs:
+      product:
+        - row_id: cleaning_water
+          role: "Process and cleaning water"
+          name: "Water supplied to dairy processing, by source"
+          flow_type: "product"
+          property_unit: "Volume / L or m3"
+          description: "Record potable, reclaimed, and recirculated water separately by source and intended use; reclaimed water requires a documented hazard assessment."
+          amount:
+            expression: "measured make-up water and final-rinse water attributable to the represented process line"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net fresh cream at facility gate after allocation"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cleaning_water_chemicals_and_wastewater
+              source_ids:
+                - codex-cxc-57-2004
+                - dairy-pefcr-2025
+            ranges:
+              - role: qa_guardrail
+                lower: "0.1"
+                upper: "20"
+                unit: "L water"
+                basis: "per 1 kg net fresh cream at facility gate; broad authoring screen pending site water balance"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: cleaning_agents
+          role: "Cleaning and sanitation agents"
+          name: "Cleaning agent, by chemical"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Cleaning agents are recorded by chemical identity, concentration, delivered mass, and allocation to the represented line."
+          amount:
+            expression: "purchase, dosing, or batch-record mass reconciled for the production period"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net fresh cream at facility gate after allocation"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cleaning_water_chemicals_and_wastewater
+              source_ids:
+                - codex-cxc-57-2004
+                - dairy-pefcr-2025
+                - epa-dairy-effluent-guidelines
+            ranges:
+              - role: qa_guardrail
+                lower: "0.0001"
+                upper: "0.2"
+                unit: "kg cleaning agent"
+                basis: "per 1 kg net fresh cream at facility gate; broad authoring screen pending dosing records"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: dairy_wastewater
+          role: "Dairy-processing wastewater sent to treatment"
+          name: "Wastewater from dairy processing"
+          flow_type: "waste"
+          property_unit: "Volume / L or m3; COD / kg when available"
+          description: "Wastewater includes cleaning rinses and product-bearing discharges; record volume, COD where measured, discharge route, and treatment destination without netting product loss against water use."
+          amount:
+            expression: "measured wastewater volume and COD load attributable to the represented line or allocated facility remainder"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net fresh cream at facility gate after allocation"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cleaning_water_chemicals_and_wastewater
+              source_ids:
+                - dairy-pefcr-2025
+                - epa-dairy-effluent-guidelines
+            ranges:
+              - role: qa_guardrail
+                lower: "0.05"
+                upper: "20"
+                unit: "L wastewater"
+                basis: "per 1 kg net fresh cream at facility gate; broad authoring screen pending site discharge records"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocation_subdivide_first
+    applies_to: "Metered process inputs, wastes, and direct emissions"
+    rule: "Assign data directly to the specific process stage and product flow wherever line- or equipment-specific records exist. Do not allocate packaging or ingredients that are directly attributable to one product."
+    source_ids:
+      - dairy-pefcr-2025
+  - rule_id: allocation_dry_matter_joint_process
+    applies_to: "Raw milk and inseparable joint separation burdens for cream and skimmed-milk co-products"
+    rule: "When subdivision cannot resolve a joint dairy process, calculate each product allocation factor as (product mass x product dry-matter fraction) / sum(product mass x dry-matter fraction for all co-products). Use measured product-specific dry matter and retain the mass, dry-matter, period, and factor calculation."
+    source_ids:
+      - dairy-pefcr-2025
+  - rule_id: allocation_partial_metering
+    applies_to: "Facility totals with some directly assigned process data"
+    rule: "Assign the detailed data first, subtract those assigned quantities from the same facility-period totals, and allocate only the remaining unassigned energy, water, cleaning agents, chemicals, and wastewater by co-product dry-matter output."
+    source_ids:
+      - dairy-pefcr-2025
+  - rule_id: allocation_no_avoided_product_default
+    applies_to: "Skimmed milk and other dairy co-products"
+    rule: "Report co-products as positive outputs. Do not apply avoided-product substitution unless a separately declared study method requires it and provides a complete sensitivity result."
+    source_ids:
+      - dairy-pefcr-2025
+  - rule_id: allocation_mass_balance_disclosure
+    applies_to: "All allocation results"
+    rule: "Allocation factors for a joint process must sum to 1 within documented rounding tolerance, and allocated quantities must reconcile to the unallocated total. Disclose any default dry-matter value as a data limitation."
+    source_ids:
+      - dairy-pefcr-2025
+      - mass-balance-identity
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_milk_and_composition
+      process_id: "milk_receiving_and_separation"
+      flow_role: "Raw milk and dairy composition"
+      record_type: "Scale tickets, tank meters, laboratory results, supplier receipts"
+      raw_fields: "receipt_id; supplier; milk_species; gross_mass; tare_mass; accepted_mass; receipt_temperature; milkfat_mass_fraction; dry_matter_fraction; sample_id; test_method; timestamp"
+      collection_method: "Calibrated weighbridge or flow meter plus representative compositional sampling"
+      unit: "kg; degrees C; % by mass"
+      frequency: "Each receipt or tank lot"
+      temporal_coverage: "All receipts represented by the dataset period"
+      site_scope: "All suppliers and receiving points feeding the represented line"
+      aggregation_rule: "Sum accepted mass; mass-weight composition; retain rejected receipts separately"
+      quality_evidence: "Calibration certificates; chain of custody; laboratory QA; supplier reconciliation"
+    - protocol_id: cp_product_coproduct_and_loss
+      process_id: "milk_receiving_and_separation_pasteurization_and_cooling_filling_and_cold_storage"
+      flow_role: "Cream, skimmed milk, and dairy losses"
+      record_type: "Calibrated meters, tank levels, batch records, waste tickets"
+      raw_fields: "batch_id; flow_role; opening_mass; inflow_mass; outflow_mass; closing_mass; milkfat_fraction; dry_matter_fraction; destination; timestamp"
+      collection_method: "Batch or period mass and milk-solids reconciliation"
+      unit: "kg; % by mass"
+      frequency: "Each batch and monthly reconciliation"
+      temporal_coverage: "Complete represented production period"
+      site_scope: "All relevant tanks, separators, pasteurizers, fillers, and loss destinations"
+      aggregation_rule: "Sum flows by role; calculate mass and solids imbalance before normalization"
+      quality_evidence: "Meter calibration; signed batch record; destination ticket; reconciliation report"
+    - protocol_id: cp_energy_records
+      process_id: "milk_receiving_and_separation_pasteurization_and_cooling_filling_and_cold_storage_cleaning_and_wastewater"
+      flow_role: "Electricity and thermal energy"
+      record_type: "Submeters, utility invoices, fuel meters, equipment runtime"
+      raw_fields: "meter_id; carrier; opening_reading; closing_reading; unit; net_calorific_value; equipment_power; runtime; production_line; storage_duration; period"
+      collection_method: "Prefer line or equipment meters; otherwise documented same-period allocation"
+      unit: "kWh; MJ; fuel unit"
+      frequency: "Continuous or per batch, reconciled monthly"
+      temporal_coverage: "Same period as represented output"
+      site_scope: "Receiving, separator, pasteurizer, homogenizer, chiller, filler, cold store, and CIP serving the line"
+      aggregation_rule: "Difference readings; convert fuel to MJ; assign direct meters first; allocate only remainder"
+      quality_evidence: "Meter calibration; invoice match; conversion factor source; no overlapping meter hierarchy"
+    - protocol_id: cp_heat_treatment_and_product_release
+      process_id: "pasteurization_and_cooling"
+      flow_role: "Heat treatment, cooling, and accepted cream"
+      record_type: "Continuous recorder, batch chart, diversion log, product release record"
+      raw_fields: "batch_id; product_fat; inlet_temperature; legal_or_validated_target; holding_temperature; holding_time; flow_diversion_events; phosphatase_or_equivalent_result; outlet_temperature; release_status"
+      collection_method: "Validated time-temperature recorder and release review under HACCP"
+      unit: "degrees C; seconds or minutes; pass/fail"
+      frequency: "Every batch or continuous production run"
+      temporal_coverage: "All reference product represented"
+      site_scope: "Each pasteurizer and product route"
+      aggregation_rule: "Accept only released mass; segregate diversion and rejected output"
+      quality_evidence: "Calibration; validation study; signed release; deviation and corrective-action record"
+    - protocol_id: cp_packaging_and_finished_product
+      process_id: "filling_and_cold_storage"
+      flow_role: "Packaging, finished product, and filling rejects"
+      record_type: "Bill of materials, packaging issue/return record, checkweigher, warehouse release"
+      raw_fields: "sku; package_component; material; issued_mass; returned_mass; reject_mass; filled_units; net_mass; bulk_flag; exit_temperature; release_time"
+      collection_method: "Reconcile issued packaging and accepted net product by SKU"
+      unit: "kg; count; degrees C"
+      frequency: "Each batch or packaging campaign"
+      temporal_coverage: "Complete represented production period"
+      site_scope: "All filling lines and local warehouse releases in scope"
+      aggregation_rule: "Net material use and accepted product mass; separate dairy and packaging waste"
+      quality_evidence: "Supplier specification; checkweigher verification; stock reconciliation; release record"
+    - protocol_id: cp_cleaning_water_chemicals_and_wastewater
+      process_id: "cleaning_and_wastewater"
+      flow_role: "Water, cleaning agents, and wastewater"
+      record_type: "Water meters, CIP recipes, dosing logs, effluent meter and laboratory data"
+      raw_fields: "water_source; meter_reading; reuse_volume; use_category; chemical_name; concentration; dose_mass; rinse_volume; wastewater_volume; COD_concentration; discharge_route; period"
+      collection_method: "Metered balance plus recipe and effluent sampling"
+      unit: "L or m3; kg; kg COD/m3"
+      frequency: "Each CIP cycle where available; monthly reconciliation"
+      temporal_coverage: "Same period as represented output"
+      site_scope: "Process line and shared CIP or wastewater systems serving it"
+      aggregation_rule: "Direct assignment first; allocate facility remainder per Section 7; calculate COD load as volume x concentration"
+      quality_evidence: "Meter calibration; chemical stock reconciliation; laboratory QA; discharge invoice or permit record"
+    - protocol_id: cp_refrigerant_inventory
+      process_id: "pasteurization_and_cooling_filling_and_cold_storage"
+      flow_role: "Direct refrigerant emissions"
+      record_type: "Equipment register, service logs, purchase and recovery records"
+      raw_fields: "equipment_id; refrigerant_type; opening_charge; additions; recovered_mass; closing_charge; service_date; served_zone; period"
+      collection_method: "Refrigerant mass inventory reconciliation by equipment"
+      unit: "kg refrigerant"
+      frequency: "Each service event and annual closure"
+      temporal_coverage: "Period overlapping represented output; disclose mismatch"
+      site_scope: "Cooling equipment serving process and storage zones"
+      aggregation_rule: "Calculate leakage; assign direct equipment first; allocate shared remainder by documented cooling service"
+      quality_evidence: "Technician record; purchase/recovery evidence; charge verification; no negative leakage without correction"
+  calculation_rules:
+    - id: calc_reference_normalization
+      applies_to: "All foreground rows"
+      rule: "normalized amount = same-period attributable amount / accepted net fresh-cream mass; convert the denominator to kg before division"
+      inputs:
+        - "Attributable flow amount"
+        - "accepted net output mass"
+      output: "Amount per 1 kg fresh cream"
+      source_ids:
+        - mass-balance-identity
+    - id: calc_mass_and_solids_balance
+      applies_to: "Separation, pasteurization, and filling"
+      rule: "For each bounded process and period, reconcile opening inventory + inputs = outputs + closing inventory + measured losses for total mass; repeat for milkfat and dry matter where compositional data exist"
+      inputs:
+        - "Tank inventory"
+        - "input/output mass"
+        - milkfat
+        - "dry matter"
+        - "recorded losses"
+      output: "Mass, milkfat, and dry-matter imbalance with explanation"
+      source_ids:
+        - mass-balance-identity
+        - dairy-pefcr-2025
+    - id: calc_dry_matter_allocation
+      applies_to: "Joint dairy processing burdens"
+      rule: "AF_i = (Q_i x DM_i) / sum(Q_j x DM_j) for all co-products; allocate only the joint or residual burden by AF_i"
+      inputs:
+        - "Co-product mass Q"
+        - "product-specific dry-matter fraction DM"
+        - "joint burden"
+      output: "Product allocation factors and allocated quantities"
+      source_ids:
+        - dairy-pefcr-2025
+    - id: calc_wastewater_cod_load
+      applies_to: "Wastewater to treatment"
+      rule: "COD load = wastewater volume x COD concentration, with compatible volume and concentration units"
+      inputs:
+        - "Metered wastewater volume"
+        - "sampled COD concentration"
+      output: "kg COD for the period and normalized kg COD/kg cream"
+      source_ids:
+        - dairy-pefcr-2025
+    - id: calc_refrigerant_leakage
+      applies_to: "Cooling equipment"
+      rule: "leakage = opening charge + additions - recovered mass - closing charge; investigate negative or implausible values before allocation"
+      inputs:
+        - "Refrigerant inventory and service records"
+      output: "kg refrigerant released by type"
+      source_ids:
+        - mass-balance-identity
+  data_quality_requirements:
+    - id: dq_identity_and_composition
+      applies_to: "Reference product and dairy flows"
+      requirement: "Declare milk species, milkfat, dry matter, heat treatment, homogenization, package state, and reference flow UUID; composition must cover the represented products and co-products."
+      evidence: "Product specification; laboratory results; Tiangong identity; batch release"
+    - id: dq_temporal_alignment
+      applies_to: "All foreground data"
+      requirement: "Use the same production period for output, inputs, co-products, losses, utilities, wastewater, and allocation. Disclose any substituted or extrapolated period."
+      evidence: "Meter periods; production ledger; reconciliation workbook"
+    - id: dq_meter_hierarchy
+      applies_to: "Energy, water, and material data"
+      requirement: "Prefer product-line or equipment data; prevent double counting between submeter and parent meter; document the allocation of only the unassigned remainder."
+      evidence: "Meter tree; invoice reconciliation; allocation record"
+    - id: dq_mass_balance
+      applies_to: "Dairy materials"
+      requirement: "Quantify total mass and, where available, milkfat and dry-matter imbalance. Investigate discrepancies before accepting a dataset; do not hide imbalance as allocation."
+      evidence: "Signed balance and corrective-action record"
+    - id: dq_heat_treatment
+      applies_to: "Pasteurized cream"
+      requirement: "Retain validated time-temperature criteria and run-specific evidence. Record diversion, failed verification, rework, and rejected mass."
+      evidence: "Recorder chart; validation; calibration; release and deviation logs"
+    - id: dq_water_and_wastewater
+      applies_to: "Water use and wastewater"
+      requirement: "Distinguish potable, reclaimed, and recirculated water; preserve wastewater destination, volume, and COD measurement basis."
+      evidence: "Water balance; hazard assessment; effluent laboratory report; discharge record"
+    - id: dq_estimate_disclosure
+      applies_to: "Provisional ranges and substituted data"
+      requirement: "Every reasoned_estimate is a screening aid only. Replace it with foreground or reviewed source evidence, or disclose and explicitly accept it during methodology review before publication-critical use."
+      evidence: "Data-gap register; reviewer decision; replacement evidence"
+validation_rules:
+  - rule_id: validate_reference_identity
+    applies_to: "Reference flow"
+    rule: "Require exactly 1 kg of Cream, fresh e58b11a6-5d86-40a3-bed6-e365a95d0981 using the Mass property and Units of mass group UUIDs declared in Section 3."
+    source_ids: []
+  - rule_id: validate_required_qualifiers
+    applies_to: "Foreground data package"
+    rule: "Fail completeness when any required qualifier in Section 3 is absent or when the product falls within an excluded form."
+    source_ids:
+      - codex-cxs-288-1976
+  - rule_id: validate_pasteurization_record
+    applies_to: "Each represented production run"
+    rule: "Require a valid time-temperature record and release evidence. Cream pasteurization below the declared validated minimum, unexplained diversion, or missing applicable phosphatase/equivalent verification is an error."
+    source_ids:
+      - codex-cxc-57-2004
+      - eu-reg-853-2004
+  - rule_id: validate_process_coverage
+    applies_to: "Foreground inventory"
+    rule: "Require all four processes in the Process Map, including cold storage, cleaning, wastewater, losses, and applicable refrigerant emissions; zero values require facility evidence."
+    source_ids:
+      - dairy-pefcr-2025
+      - epa-dairy-effluent-guidelines
+  - rule_id: validate_mass_balance
+    applies_to: "Dairy material flows"
+    rule: "Require total-mass reconciliation and reported milkfat/dry-matter reconciliation where data exist. Unexplained negative losses, missing co-products, or an undisclosed imbalance are errors."
+    source_ids:
+      - mass-balance-identity
+  - rule_id: validate_allocation
+    applies_to: "Joint or shared burdens"
+    rule: "Require direct assignment before allocation, measured output mass and dry matter, factors summing to 1 within rounding tolerance, and reconciliation of allocated quantities to the joint total."
+    source_ids:
+      - dairy-pefcr-2025
+      - mass-balance-identity
+  - rule_id: validate_activity_data
+    applies_to: "Energy, water, chemicals, packaging, refrigerants, co-products, wastewater, and emissions"
+    rule: "Require same-period foreground values or an explicit data gap. A missing record must not be silently converted to zero."
+    source_ids:
+      - dairy-pefcr-2025
+  - rule_id: validate_estimate_status
+    applies_to: "Every amount range"
+    rule: "Treat a reasoned_estimate only as a replaceable screening range. It cannot establish legal compliance, an allowed production range, or publication-critical performance without reviewer acceptance."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "Foreground dairy-processing data package for physically separated fresh cream at the dairy facility gate"
+  downstream_use: "secondary_dataset; background_dataset after review, publication, and linkage of required upstream datasets"
+  allowed_use: "Product carbon-footprint or LCA modelling for a declared fresh-cream product, route, facility geography, production period, packaging state, and boundary; scenario comparison when allocation and data quality are consistent"
+  excluded_use: "Raw, fermented, acidified, sweetened, whipped, frozen, concentrated, dried, sterilized, UHT, reconstituted, or recombined cream; legal food-safety certification; current PEF-conformity claim; cross-product comparative assertion without a compatible reviewed method"
+  required_metadata: "PCR id and version; reference flow UUID; facility and geography; production period; milk species; milkfat and dry matter; heat treatment and validation; homogenization; package format; net mass; cold-chain exit; process coverage; allocation formula and factors; upstream datasets; data sources; estimation flags"
+  required_quality_disclosure: "Meter coverage; composition sampling; mass/solids imbalance; heat-treatment evidence; allocation level; co-product dry matter; water and wastewater basis; refrigerant inventory; temporal/geographic representativeness; unresolved UUIDs; all provisional estimates and data gaps"
+  update_trigger: "Change in milk source or species, product milkfat or formulation, separation or heat-treatment route, homogenization, packaging, refrigerant, energy system, wastewater route, allocation method, facility geography, production period, reference UUID, legal control criterion, or replacement evidence for an important flow"
+data_sources:
+  - id: "codex-cxs-288-1976"
+    type: "standard"
+    reference: "FAO/WHO Codex Alimentarius, CXS 288-1976, Standard for Cream and Prepared Creams, official PDF: https://www.fao.org/fao-who-codexalimentarius/sh-proxy/ua/?lnk=1&url=https%3A%2F%2Fworkspace.fao.org%2Fsites%2Fcodex%2FStandards%2FCXS+288-1976%2FCXS_288e.pdf (retrieved 2026-08-10)"
+    used_for: "Cream identity as a fluid fat-in-skimmed-milk emulsion obtained by physical separation; scope, product qualifiers, milkfat and heat-treatment disclosure"
+  - id: "codex-cxc-57-2004"
+    type: "official_guidance"
+    reference: "FAO/WHO Codex Alimentarius, CXC 57-2004, Code of Hygienic Practice for Milk and Milk Products, official PDF: https://www.fao.org/fao-who-codexalimentarius/sh-proxy/en/?lnk=1&url=https%253A%252F%252Fworkspace.fao.org%252Fsites%252Fcodex%252FStandards%252FCXC%2B57-2004%252FCXC_057e.pdf (retrieved 2026-08-10)"
+    used_for: "Validated process controls; minimum 75 degrees C for 15 seconds for cream or equivalent; verification records; cold chain; water reuse; cleaning and sanitation"
+  - id: "eu-reg-853-2004"
+    type: "standard"
+    reference: "European Union, consolidated Regulation (EC) No 853/2004, Annex III Section IX, 2026-01-27 consolidation: https://eur-lex.europa.eu/eli/reg/2004/853/2026-01-27/eng (retrieved 2026-08-10)"
+    used_for: "Legal-context heat-treatment alternatives, validation, and record expectations for milk and dairy products; facility-specific applicable law remains controlling"
+  - id: "dairy-pefcr-2025"
+    type: "standard"
+    reference: "European Dairy Association, Product Environmental Footprint Category Rules for Dairy Products, Final PEFCR, February 2025: https://eda.euromilk.org/wp-content/uploads/2025/02/PEFCR-DairyProducts_update_final.pdf (retrieved 2026-08-10; document states validity through December 2025)"
+    used_for: "Sector process inputs/outputs; mandatory company-specific activity data; meter hierarchy; co-product dry-matter allocation; technical evidence only, not a current PEF-conformity claim"
+  - id: "epa-dairy-effluent-guidelines"
+    type: "official_guidance"
+    reference: "United States Environmental Protection Agency, Dairy Products Processing Effluent Guidelines, 40 CFR Part 405 overview: https://www.epa.gov/eg/dairy-products-processing-effluent-guidelines (retrieved 2026-08-10)"
+    used_for: "Cleaning residues, spills, pasteurizer start-up/change-over losses, spoiled products, detergents, wastewater, BOD5, TSS, and pH inventory coverage"
+  - id: "mass-balance-identity"
+    type: "method_factor"
+    reference: "Conservation of total mass and constituent mass across a declared process boundary"
+    used_for: "Mass, milkfat, dry-matter, refrigerant, and allocation reconciliation formulas; no empirical performance range"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:f5428a8629ae79392e7a913da45935e6d9dd0e91d8caf918253763f44fb6c61a"
+  generated_content_sha256: "sha256:cbedfb31db2e9c9f47443eeaa7925f44601ecfa19e13890ab501e9623187535f"

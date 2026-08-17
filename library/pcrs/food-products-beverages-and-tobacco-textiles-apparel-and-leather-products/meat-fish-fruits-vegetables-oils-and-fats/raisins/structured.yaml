@@ -1,10 +1,907 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "21411"
-  title: "Raisins"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.food-products-beverages-and-tobacco-textiles-apparel-and-leather-products.meat-fish-fruits-vegetables-oils-and-fats.raisins"
+  classification_refs: "CPC 3.0: 21411 Raisins"
+  covered_products: "Marketable food-grade raisins from sound dried grapes of *Vitis vinifera* L., excluding currant types; seedless or seed-bearing; seeded, unseeded, or cluster form; untreated, treated, preserved, or coated when declared"
+  excluded_products: "Dried currants; dried fruit from other species; fried fruit; raisin-containing confectionery or mixtures not sold as raisins; grapes intended only for wine, juice, or fresh consumption"
+  representative_product: "One kilogram net mass of food-grade raisins, with the actual grape identity, drying route, moisture class, conditioning, treatment, style, and package declared"
+  production_route: "Receipt and pre-treatment of sound grapes; one declared primary drying technique or a documented sequential hybrid; moisture conditioning, cleaning and grading; net-mass packaging"
+  market_state: "Packaged bulk or retail raisins at the packaging-facility gate, fit for the declared food use"
+functional_unit:
+  what: "Food-grade raisins that preserve dried-grape identity and provide edible dried fruit"
+  how_much: "1 kg net edible product mass, excluding packaging"
+  how_well: "Sound dried *Vitis vinifera* L. grapes, excluding currant types, meeting the declared moisture, style, treatment, coating, cleanliness, and food-grade specifications"
+  how_long_or_cycle: "One released production batch at the packaging-facility gate; storage duration is not part of the functional unit and shall be declared separately when modelled"
+  reference_flow_link: "1 kg of the reference product flow realizes the functional unit"
+system_boundary:
+  rules:
+    - rule_id: boundary_foreground_chain
+      applies_to: "foreground raisin production"
+      rule: "Include receipt and actual pre-treatment, the declared drying route, finishing and moisture conditioning, and packaging, together with all material, water, energy, waste, and direct elementary flows that cross those process boundaries."
+      source_ids:
+        - codex-cxs-360-2020
+        - eu-pef-2021-2279
+    - rule_id: boundary_route_exclusivity
+      applies_to: "drying techniques"
+      rule: "Model the technique actually used. Sun or solar drying and heated dehydration are alternatives unless batch evidence shows a sequential hybrid; a hybrid shall state sequence and meter each energy input without duplicate drying burden."
+      source_ids:
+        - codex-cxs-360-2020
+    - rule_id: boundary_upstream_grapes
+      applies_to: "received grapes and partly processed grape inputs"
+      rule: "Keep cultivation and any supplier-side drying or treatment in linked upstream datasets, while preserving grape identity and received processing state at the foreground boundary."
+      source_ids:
+        - eu-pef-2021-2279
+    - rule_id: boundary_downstream
+      applies_to: "distribution, storage, use, and end of life"
+      rule: "Exclude these stages from the packaging-gate foreground dataset, identify the exclusion, and add representative downstream stages when a full life-cycle result is produced."
+      source_ids:
+        - eu-pef-2021-2279
+boundary_abstraction:
+  declared_starting_condition: "Sound grapes received at the raisin-producing facility, with supplier, grape identity, origin, received mass, and incoming moisture or equivalent condition declared"
+  starting_condition_role: "Upstream product input to the foreground raisin-production system"
+  product_classification_scope: "Raisins as a semantic product category, with CPC 3.0 code 21411 retained only as an external classification reference"
+  recursive_input_rule: "Purchased raisins or partly dried grapes used as an input shall remain a separate upstream product exchange with origin and processing state declared; do not relabel them as fresh grapes or recreate their upstream burdens inside the receiving process"
+  upstream_dataset_requirement: "Link representative grape-cultivation and other purchased-input datasets matching geography, technology, period, and declared treatment; disclose proxies and data gaps"
+  disclosure: "Declare grape identity, drying route and any sequential hybrid, treatment and conditioning steps, release moisture, yield, allocation, packaging configuration, temporal and geographic coverage, exclusions, and upstream dataset choices"
+reference_flow_definition:
+  reference_amount: "1 kg net mass"
+  product_flow_ref:
+    name: "Raisins"
+    uuid: "e2741aa4-2dfe-487f-a0fe-fd5d6dd3302d"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "grape species and variety or varietal group"
+    - "seed type and form"
+    - "drying technique"
+    - untreated
+    - treated
+    - "or preserved status"
+    - dipping
+    - sulphuring
+    - bleaching
+    - pasteurization
+    - coating
+    - "and seed-removal status"
+    - "release moisture content and test method"
+    - "conditioning method"
+    - "net-mass basis"
+    - "bulk or retail package format and packaging materials"
+    - "food-grade specification"
+    - "production geography and period"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_net_mass
+    applies_to: "reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Use released net edible raisin mass after conditioning and before or at packaging; exclude all packaging and tare."
+  - id: batch_mass_consistency
+    applies_to: "grapes, intermediate dried grapes, raisins, residues, and packaging"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Preserve measured batch masses and normalize only after closing the process-level mass balance; do not treat moisture loss as missing mass."
+  - id: release_moisture
+    applies_to: "packaged raisins"
+    required_property_ref:
+      name: "Mass fraction"
+      uuid: ""
+    required_unit: "% by mass"
+    rule: "Record the measured release moisture and method. For Codex CXS 360-2020 conformity, the maximum is 31% for Malaga Muscatel, 19% for Monukka and seed-bearing varieties, and 18% for all other styles or types; apply the limit matching the declared product."
+  - id: energy_carrier_separation
+    applies_to: "drying, finishing, and packaging energy"
+    required_property_ref:
+      name: "Energy"
+      uuid: ""
+    required_unit: "kWh or MJ"
+    rule: "Keep purchased electricity, each fuel, and recovered or on-site energy separate in their native units; state conversions and do not count solar drying energy as purchased heat."
+  - id: packaging_mass_separation
+    applies_to: "primary, secondary, and transport packaging"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Record each packaging material separately and report its mass per kilogram net raisins; package gross mass shall not replace net product mass."
+process_map:
+  - id: grape_receiving_pretreatment
+    name: "Grape receipt and route-specific pre-treatment"
+    inclusion: "required"
+    inclusion_condition: "Always; include only the washing, dipping, sulphuring, bleaching, seed-related, or other preparation operations actually performed"
+    role: "foreground preparation"
+    quantitative_reference: "kg prepared grapes transferred to drying"
+  - id: grape_drying
+    name: "Declared grape drying route"
+    inclusion: "required"
+    inclusion_condition: "Exactly one primary technique, or one documented sequential hybrid, per represented batch"
+    role: "foreground dehydration"
+    quantitative_reference: "kg dried grapes leaving the drying step"
+  - id: raisin_finishing
+    name: "Moisture conditioning, cleaning, sorting, and optional coating"
+    inclusion: "required"
+    inclusion_condition: "Always; optional unit operations and inputs only when performed"
+    role: "foreground finishing"
+    quantitative_reference: "kg conditioned raisins released to packaging"
+  - id: raisin_packaging
+    name: "Net-mass filling and packaging"
+    inclusion: "required"
+    inclusion_condition: "Always for the declared bulk or retail market state"
+    role: "foreground packaging"
+    quantitative_reference: "1 kg net packaged raisins"
+process_inventory:
+  - id: grape_receiving_pretreatment
+    label: "Grape receipt and route-specific pre-treatment"
+    inputs:
+      product:
+        - row_id: received_grapes
+          role: "Received sound grapes"
+          name: "Sound grapes, declared variety or varietal group"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record grapes by supplier lot, *Vitis vinifera* identity, origin, received mass, and incoming condition. Do not substitute generic fruit or already dried raisins for fresh grapes without declaring the changed starting condition."
+          amount:
+            expression: "measured received mass assigned to the represented batch"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net packaged raisins"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_receiving_batch
+              source_ids:
+                - codex-cxs-360-2020
+            ranges:
+              - role: qa_guardrail
+                lower: "2"
+                upper: "10"
+                unit: "kg/kg net packaged raisins"
+                basis: "received fresh-grape mass per 1 kg net packaged raisins; temporary until representative batch yield evidence is available"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: pretreatment_water
+          role: "Pre-treatment water"
+          name: "Process water"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record metered or reconciled water that contacts grapes during washing, dipping, rinsing, or solution preparation. Report zero only when no such water crosses the foreground boundary."
+          amount:
+            expression: "measured or reconciled water supplied to the batch"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net packaged raisins"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_receiving_batch
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "5"
+                unit: "kg/kg net packaged raisins"
+                basis: "water entering pre-treatment per 1 kg net packaged raisins; temporary until representative metered batches are available"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: pretreatment_materials
+          role: "Route-specific food-grade pre-treatment materials"
+          name: "Declared food-grade pre-treatment material, one exchange per material"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Create a separate exchange for every alkaline dipping material, oil, sulphuring or bleaching material, or other processing aid actually used. Preserve food-grade specification and concentration; do not add mutually exclusive route inputs to batches where they were not used."
+          amount:
+            expression: "measured material mass in supplied form; record zero or omit only with documented non-use"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per 1 kg net packaged raisins"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_receiving_batch
+              source_ids:
+                - codex-cxs-360-2020
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "2"
+                unit: "kg supplied material/kg net packaged raisins"
+                basis: "total supplied route-specific pre-treatment materials per 1 kg net packaged raisins; temporary until representative formulation records are available"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: prepared_grapes
+          role: "Prepared grapes transferred to drying"
+          name: "Prepared grapes for drying"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the actual mass transferred after separation of removed stems, rejected fruit, and drained treatment liquid."
+          amount:
+            expression: "measured transfer mass"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net packaged raisins"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_receiving_batch
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "1.5"
+                upper: "10"
+                unit: "kg/kg net packaged raisins"
+                basis: "prepared grapes transferred per 1 kg net packaged raisins; temporary until representative batch balances are available"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        - row_id: pretreatment_residues
+          role: "Pre-treatment residues and wastewater"
+          name: "Declared pre-treatment residue or wastewater, one exchange per waste type"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record wastewater, removed stems, rejected grapes, and spent treatment solution as separate waste exchanges in the produced dataset, retaining treatment destination and hazardous or food-process classification where applicable."
+          amount:
+            expression: "measured or mass-balance-reconciled quantity sent to each treatment or recovery route"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net packaged raisins"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_receiving_batch
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "6"
+                unit: "kg/kg net packaged raisins"
+                basis: "combined screening total before separation into individual waste exchanges; temporary until representative batch balances are available"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        []
+  - id: grape_drying
+    label: "Declared grape drying route"
+    inputs:
+      product:
+        - row_id: drying_grape_input
+          role: "Prepared grapes entering drying"
+          name: "Prepared grapes for drying"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Use the measured transfer from prepared_grapes; batch and grape identity shall remain unchanged."
+          amount:
+            expression: "linked measured output of grape_receiving_pretreatment"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net packaged raisins"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_drying_batch
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "1.5"
+                upper: "10"
+                unit: "kg/kg net packaged raisins"
+                basis: "prepared grapes entering the declared drying route per 1 kg net packaged raisins; temporary until representative batch balances are available"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: drying_energy
+          role: "Drying energy carriers"
+          name: "Declared electricity or fuel, one exchange per energy carrier"
+          flow_type: "product"
+          property_unit: "Energy / kWh or MJ"
+          description: "Record purchased electricity and each fuel separately. For sun or solar drying, record only measured auxiliary energy. For heated dehydration, record the actual heat source and efficiency basis. A sequential hybrid shall meter each stage and state the sequence."
+          amount:
+            expression: "metered, invoiced, or equipment-log energy assigned to the batch"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net packaged raisins"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_drying_batch
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "50"
+                unit: "MJ equivalent/kg net packaged raisins"
+                basis: "purchased electricity and fuels converted without counting ambient solar energy; temporary until route-representative metered batches are available"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: dried_grapes
+          role: "Dried grapes leaving the declared route"
+          name: "Dried grapes for raisin finishing"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record dried-grape mass and moisture at dryer exit before subsequent moisture conditioning. Preserve the declared drying technique and treatment history."
+          amount:
+            expression: "measured dryer-exit mass"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per 1 kg net packaged raisins"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_drying_batch
+              source_ids:
+                - codex-cxs-360-2020
+            ranges:
+              - role: qa_guardrail
+                lower: "1"
+                upper: "2"
+                unit: "kg/kg net packaged raisins"
+                basis: "dried grapes before finishing per 1 kg net packaged raisins; temporary until representative batch balances are available"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        - row_id: drying_water_to_air
+          role: "Water removed to air during drying"
+          name: "Water to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Calculate water removed from the batch mass-and-moisture balance. Report measured liquid drainage or wastewater separately and do not classify it as water to air."
+          amount:
+            expression: "calculated by calc_drying_water_balance"
+            value_mode: "calculated_value"
+            specificity: "route_specific"
+            basis:
+              text: "per 1 kg net packaged raisins"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_drying_batch
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0.5"
+                upper: "9"
+                unit: "kg/kg net packaged raisins"
+                basis: "calculated water removed to air per 1 kg net packaged raisins; temporary until representative batch moisture balances are available"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+  - id: raisin_finishing
+    label: "Moisture conditioning, cleaning, sorting, and optional coating"
+    inputs:
+      product:
+        - row_id: finishing_dried_grapes
+          role: "Dried grapes entering finishing"
+          name: "Dried grapes for raisin finishing"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Use the measured output of grape_drying; keep batch, grape, treatment, and drying-route identity linked."
+          amount:
+            expression: "linked measured output of grape_drying"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net packaged raisins"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_finishing_batch
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "1"
+                upper: "2"
+                unit: "kg/kg net packaged raisins"
+                basis: "dried grapes entering finishing per 1 kg net packaged raisins; temporary until representative batch balances are available"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: finishing_materials
+          role: "Conditioning water and food-grade finishing materials"
+          name: "Declared conditioning water or food-grade finishing material, one exchange per material"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record added water, edible oil, flour, or other food-grade coating or conditioning material separately. Declare the purpose, concentration, and supplier specification; record only materials actually applied."
+          amount:
+            expression: "measured applied mass in supplied form"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net packaged raisins"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing_batch
+              source_ids:
+                - codex-cxs-360-2020
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.5"
+                unit: "kg/kg net packaged raisins"
+                basis: "total added conditioning water and food-grade materials before separation into individual exchanges; temporary until representative formulation records are available"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: finishing_energy
+          role: "Finishing energy"
+          name: "Declared electricity or fuel, one exchange per energy carrier"
+          flow_type: "product"
+          property_unit: "Energy / kWh or MJ"
+          description: "Record electricity and heat for cleaning, stem or seed removal, moisture conditioning, pasteurization, sorting, grading, and coating only when those operations occur."
+          amount:
+            expression: "metered or equipment-log energy assigned to the batch"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net packaged raisins"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing_batch
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "10"
+                unit: "MJ equivalent/kg net packaged raisins"
+                basis: "purchased finishing energy per 1 kg net packaged raisins; temporary until representative metered batches are available"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: conditioned_raisins
+          role: "Conditioned food-grade raisins"
+          name: "Raisins"
+          flow_type: "product"
+          flow_ref:
+            uuid: "e2741aa4-2dfe-487f-a0fe-fd5d6dd3302d"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record release mass, moisture, style, treatment, coating, and food-grade disposition after sorting and before packaging."
+          amount:
+            expression: "measured accepted mass released to packaging"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net packaged raisins"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing_batch
+              source_ids:
+                - codex-cxs-360-2020
+            ranges:
+              - role: qa_guardrail
+                lower: "1"
+                upper: "1.5"
+                unit: "kg/kg net packaged raisins"
+                basis: "accepted raisins released to packaging per 1 kg net packaged raisins; temporary until representative batch balances are available"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        - row_id: finishing_residues
+          role: "Finishing rejects and wastewater"
+          name: "Declared finishing residue or wastewater, one exchange per waste type"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record removed stems, seeds, off-specification raisins, dust, wastewater, and spent materials as separate exchanges with their actual treatment or recovery destinations."
+          amount:
+            expression: "measured or mass-balance-reconciled quantity to each destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net packaged raisins"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing_batch
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "1"
+                unit: "kg/kg net packaged raisins"
+                basis: "combined screening total before separation into individual waste exchanges; temporary until representative batch balances are available"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        []
+  - id: raisin_packaging
+    label: "Net-mass filling and packaging"
+    inputs:
+      product:
+        - row_id: packaging_raisin_input
+          role: "Conditioned raisins supplied to packaging"
+          name: "Raisins"
+          flow_type: "product"
+          flow_ref:
+            uuid: "e2741aa4-2dfe-487f-a0fe-fd5d6dd3302d"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Use the measured accepted output of raisin_finishing; retain batch and all required product qualifiers."
+          amount:
+            expression: "linked measured output of raisin_finishing"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net packaged raisins"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_batch
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "1"
+                upper: "1.5"
+                unit: "kg/kg net packaged raisins"
+                basis: "conditioned raisins supplied to packaging per 1 kg net packaged raisins; temporary until representative filling balances are available"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: packaging_materials
+          role: "Packaging materials"
+          name: "Declared packaging material, one exchange per material"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record primary, secondary, and transport packaging separately by material and actual package configuration. Include labels, closures, liners, and pallets when they cross the declared boundary."
+          amount:
+            expression: "measured, bill-of-materials, or purchase-reconciled packaging mass"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net packaged raisins"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_batch
+              source_ids:
+                - codex-cxs-360-2020
+                - eu-pef-2021-2279
+            ranges:
+              - role: qa_guardrail
+                lower: "0.001"
+                upper: "0.5"
+                unit: "kg/kg net packaged raisins"
+                basis: "total packaging supplied per 1 kg net packaged raisins; temporary until representative bills of materials are available"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: packaging_energy
+          role: "Packaging energy"
+          name: "Declared electricity or fuel, one exchange per energy carrier"
+          flow_type: "product"
+          property_unit: "Energy / kWh or MJ"
+          description: "Record metered or equipment-log electricity and other energy for filling, sealing, coding, check-weighing, and pallet preparation."
+          amount:
+            expression: "metered or equipment-log energy assigned to packaged output"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net packaged raisins"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_batch
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "5"
+                unit: "MJ equivalent/kg net packaged raisins"
+                basis: "purchased packaging energy per 1 kg net packaged raisins; temporary until representative metered batches are available"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: packaged_raisins
+          role: "Net packaged raisins"
+          name: "Raisins"
+          flow_type: "product"
+          flow_ref:
+            uuid: "e2741aa4-2dfe-487f-a0fe-fd5d6dd3302d"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "The reference output is the verified net edible mass of released raisins. Packaging mass and tare remain separate inputs."
+          amount:
+            expression: "fixed normalization output of 1 kg verified net raisins"
+            value_mode: "fixed_value"
+            specificity: "generic"
+            basis:
+              text: "1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "method_formula"
+              source_ids:
+                - eu-pef-2021-2279
+            ranges:
+              - role: allowed_range
+                lower: "1"
+                upper: "1"
+                unit: "kg/kg reference flow"
+                basis: "exact normalized net product output"
+                basis_kind: "reference_flow"
+                evidence_kind: "method_formula"
+                source_ids:
+                  - eu-pef-2021-2279
+      waste:
+        - row_id: packaging_scrap
+          role: "Packaging scrap and rejected packs"
+          name: "Declared packaging scrap or rejected-pack component, one exchange per waste type"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record trim, damaged packaging, rejected packs, and recovered raisins separately; do not combine recovered product with packaging waste."
+          amount:
+            expression: "measured or material-balance-reconciled quantity to each treatment or recovery destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net packaged raisins"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_batch
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.2"
+                unit: "kg/kg net packaged raisins"
+                basis: "combined packaging scrap before separation into individual waste exchanges; temporary until representative packaging balances are available"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocation_subdivision_first
+    applies_to: "shared receiving, drying, finishing, and packaging operations"
+    rule: "Avoid allocation by subdividing batches, lines, or metered operations whenever separate records are available."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: allocation_physical_then_other
+    applies_to: "unavoidable multi-functional operations"
+    rule: "When subdivision is not possible, use and document a relevant causal physical relationship. Use another relationship, such as economic value, only when no defensible physical relationship exists; disclose quantities, prices, period, and sensitivity."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: allocation_residue_status
+    applies_to: "rejected grapes, stems, seeds, recovered raisins, and other outputs"
+    rule: "Treat an output sent for disposal as waste and assign its treatment to the process. If an output is sold or used as a co-product, preserve its mass and destination and apply the declared allocation hierarchy; do not award an undocumented avoided-burden credit."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: allocation_packaging_line
+    applies_to: "shared packaging utilities"
+    rule: "Allocate shared packaging energy and consumables using a measured driver that reflects causality, such as machine time, filled net mass, or package count; state the driver and ensure all line outputs are covered."
+    source_ids:
+      - eu-pef-2021-2279
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_receiving_batch
+      process_id: "grape_receiving_pretreatment"
+      flow_role: "received grapes, water, treatment materials, prepared grapes, and residues"
+      record_type: "batch record"
+      raw_fields: "batch_id; supplier_lot; grape_species; variety_group; origin; received_mass_kg; incoming_condition; water_kg; material_name; material_mass_kg; prepared_mass_kg; residue_type; residue_mass_kg; destination"
+      collection_method: "calibrated scales, meters, formulation sheets, and waste records reconciled to one batch"
+      unit: "kg"
+      frequency: "every batch"
+      temporal_coverage: "all batches in represented production period"
+      site_scope: "all included receiving and pre-treatment operations"
+      aggregation_rule: "sum by identified flow and batch, then divide by verified net packaged output"
+      quality_evidence: "calibration records; supplier certificates; formulation records; batch mass balance; waste transfer records"
+    - protocol_id: cp_drying_batch
+      process_id: "grape_drying"
+      flow_role: "grape input, energy carriers, dried output, moisture, and water removed"
+      record_type: "batch and meter record"
+      raw_fields: "batch_id; drying_technique; sequence; grape_input_kg; input_moisture_pct; energy_carrier; energy_quantity; energy_unit; dried_output_kg; exit_moisture_pct; liquid_loss_kg; drying_time"
+      collection_method: "batch-linked scales, moisture tests, utility meters, invoices, and equipment logs"
+      unit: "kg; % by mass; kWh; MJ; h"
+      frequency: "every batch and meter period"
+      temporal_coverage: "all represented drying batches, covering seasonal variation"
+      site_scope: "all declared drying equipment and stages"
+      aggregation_rule: "reconcile energy to batch; calculate output-weighted moisture and batch mass balance; normalize to net packaged output"
+      quality_evidence: "scale and moisture-method records; meter reconciliation; route log; mass-balance closure"
+    - protocol_id: cp_finishing_batch
+      process_id: "raisin_finishing"
+      flow_role: "dried input, conditioning materials, energy, accepted raisins, and residues"
+      record_type: "batch record"
+      raw_fields: "batch_id; dried_input_kg; operation; water_added_kg; material_name; material_mass_kg; energy_quantity; energy_unit; accepted_mass_kg; release_moisture_pct; style; treatment_status; residue_type; residue_mass_kg; destination"
+      collection_method: "calibrated scales, laboratory or validated moisture method, formulation sheets, meters, and disposition records"
+      unit: "kg; % by mass; kWh; MJ"
+      frequency: "every batch"
+      temporal_coverage: "all finishing batches in represented period"
+      site_scope: "all included conditioning, cleaning, sorting, coating, and pasteurization operations"
+      aggregation_rule: "sum separately by flow; mass-weight moisture results; normalize to net packaged output"
+      quality_evidence: "calibration and test records; food-grade supplier specification; batch release; residue reconciliation"
+    - protocol_id: cp_packaging_batch
+      process_id: "raisin_packaging"
+      flow_role: "raisin input, net output, packaging materials, energy, and scrap"
+      record_type: "packaging run record"
+      raw_fields: "batch_id; package_format; units_filled; declared_net_mass_kg; verified_net_mass_kg; tare_kg; material_name; material_mass_kg; energy_quantity; energy_unit; scrap_type; scrap_mass_kg; destination"
+      collection_method: "check-weigher or calibrated scales, packaging bill of materials, stock reconciliation, meters, and scrap records"
+      unit: "kg; kWh; MJ; count"
+      frequency: "every packaging run"
+      temporal_coverage: "all runs associated with represented raisin batches"
+      site_scope: "all included bulk and retail packaging configurations"
+      aggregation_rule: "calculate verified net output; sum each packaging material and waste route separately; normalize to net output"
+      quality_evidence: "scale checks; legal-metrology or internal verification record; bill of materials; stock and scrap reconciliation"
+  calculation_rules:
+    - id: calc_reference_normalization
+      applies_to: "every foreground flow"
+      rule: "normalized amount = batch-assigned flow quantity / verified net packaged raisin mass"
+      inputs:
+        - "batch flow quantity"
+        - "verified net packaged raisin mass"
+      output: "amount per 1 kg net packaged raisins"
+      source_ids:
+        - eu-pef-2021-2279
+    - id: calc_drying_water_balance
+      applies_to: "water removed to air"
+      rule: "water to air = prepared-grape input mass + added drying-stage materials - dried-grape output mass - separately measured liquid and solid outputs; compare with moisture-basis calculation and investigate material discrepancy"
+      inputs:
+        - "input and output masses"
+        - "input and exit moisture"
+        - "liquid and solid losses"
+      output: "kg water to air and mass-balance closure"
+      source_ids: []
+    - id: calc_net_packaged_mass
+      applies_to: "packaged reference output"
+      rule: "verified net mass = gross filled-package mass - measured tare, or sum of independently verified net contents; packaging mass shall not enter the reference output"
+      inputs:
+        - "gross mass"
+        - tare
+        - "check-weigher or net-content records"
+      output: "kg net packaged raisins"
+      source_ids:
+        - codex-cxs-360-2020
+    - id: calc_shared_operation_assignment
+      applies_to: "unavoidable shared utilities"
+      rule: "assigned amount = total shared quantity × documented causal driver share; shares across all outputs shall sum to one"
+      inputs:
+        - "total shared quantity"
+        - "driver for each output"
+      output: "assigned batch utility or material amount"
+      source_ids:
+        - eu-pef-2021-2279
+  data_quality_requirements:
+    - id: dq_product_identity
+      applies_to: "all represented batches"
+      requirement: "Trace the output to *Vitis vinifera* grape lots and retain variety or varietal group, seed type and form, drying technique, treatment history, conditioning, coating, moisture class, food-grade release, and package format."
+      evidence: "supplier lot records; route and formulation logs; batch release certificate"
+    - id: dq_measurement
+      applies_to: "mass, moisture, water, material, and energy records"
+      requirement: "Use calibrated or verified instruments and retain test methods, unit conversions, meter allocation, tare determination, and missing-data treatment."
+      evidence: "calibration certificates; moisture-method record; meter and scale checks; conversion worksheet"
+    - id: dq_temporal_coverage
+      applies_to: "represented production period"
+      requirement: "Cover all batches or a justified representative sample spanning relevant grape origins, drying routes, seasonal conditions, and package formats; state exclusions."
+      evidence: "production schedule; batch list; sampling rationale; coverage calculation"
+    - id: dq_completeness
+      applies_to: "each foreground process"
+      requirement: "Reconcile product inputs, product outputs, residues, wastewater, water to air, treatment materials, energy carriers, and packaging. Explain material mass-balance gaps and disclose unmeasured direct elementary flows."
+      evidence: "process mass balances; utility reconciliation; waste records; completeness checklist"
+    - id: dq_representativeness
+      applies_to: "foreground and linked upstream data"
+      requirement: "Assess and disclose technological, geographical, time-related representativeness, and precision for important datasets and flows."
+      evidence: "data-quality assessment following eu-pef-2021-2279; proxy justification"
+    - id: dq_provisional_ranges
+      applies_to: "every reasoned_estimate range"
+      requirement: "Treat the range only as a temporary QA screen when stronger evidence is unavailable. Do not substitute its midpoint for foreground data. Replace or retire it when representative batch measurements, audited supplier data, or reviewed transferable evidence are obtained, and document the replacement decision."
+      evidence: "range register; data-improvement plan; reviewed replacement evidence"
+validation_rules:
+  - rule_id: validation_reference_identity
+    applies_to: "reference flow"
+    rule: "Confirm the exact Raisins product-flow UUID, Mass property UUID, Units of mass UUID, 1 kg net amount, and every required qualifier; reject a gross-package-mass reference."
+    source_ids:
+      - unsd-cpc-3-21411
+      - codex-cxs-360-2020
+  - rule_id: validation_grape_identity
+    applies_to: "product and inputs"
+    rule: "Confirm sound dried *Vitis vinifera* grape identity and exclusion of currant types and other dried fruits; verify that upstream starting condition matches fresh, partly dried, or purchased-raisin inputs actually used."
+    source_ids:
+      - codex-cxs-360-2020
+  - rule_id: validation_route_exclusivity
+    applies_to: "drying inventory"
+    rule: "Confirm one declared primary drying technique per batch, or a documented sequential hybrid. Reject simultaneous sun/solar and heated-route burdens when no hybrid evidence exists."
+    source_ids:
+      - codex-cxs-360-2020
+  - rule_id: validation_moisture_and_conditioning
+    applies_to: "released raisins"
+    rule: "Confirm the release moisture result, applicable product style, test method, and all water addition, further drying, pasteurization, treatment, or coating records; apply the Codex maximum corresponding to the declared type."
+    source_ids:
+      - codex-cxs-360-2020
+  - rule_id: validation_mass_balance
+    applies_to: "all four processes"
+    rule: "Confirm linked intermediate masses and investigate unexplained mass-balance gaps; moisture removed to air, wastewater, residues, recovered product, and packaging scrap shall not be silently omitted or double counted."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: validation_packaging_net_mass
+    applies_to: "packaged output"
+    rule: "Confirm package format, packaging material masses, tare, verified net edible raisin mass, and separate packaging scrap; normalized net output shall equal exactly 1 kg."
+    source_ids:
+      - codex-cxs-360-2020
+      - eu-pef-2021-2279
+  - rule_id: validation_foreground_priority
+    applies_to: "important inventory flows"
+    rule: "Confirm that actual batch records produce inventory values. Flag any retained reasoned_estimate as provisional and require its applicability, temporary status, and replacement trigger to remain disclosed."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: validation_allocation
+    applies_to: "shared or multi-output operations"
+    rule: "Confirm subdivision first, documented causal allocation when unavoidable, full coverage of outputs, and disclosure of any non-physical relationship and sensitivity."
+    source_ids:
+      - eu-pef-2021-2279
+published_dataset_profile:
+  dataset_role: "Foreground raisin-production dataset from received grapes to packaged raisins at the packaging-facility gate"
+  downstream_use: "secondary_dataset; background_dataset when independently reviewed and sufficiently representative for reuse"
+  allowed_use: "Foreground food-production modelling, supply-chain inventories, packaging-gate comparisons within equivalent scope, and full life-cycle studies that add representative upstream and downstream stages"
+  excluded_use: "Claims about grape cultivation, consumer storage or use, packaging end of life, other dried fruits, or comparative assertions across unmatched drying routes, moisture classes, treatments, grape identities, or package formats without additional modelling and review"
+  required_metadata: "canonical PCR id and version used; product-flow UUID; grape and batch identity; geography and period; drying technique and sequence; treatment and conditioning; release moisture and method; seed type and form; coating; net mass and package format; foreground boundary; upstream datasets; allocation; exclusions"
+  required_quality_disclosure: "data coverage; scale, meter, and moisture-method quality; mass-balance closure; technological, geographical, and temporal representativeness; precision; proxies; missing flows; provisional reasoned estimates and replacement status"
+  update_trigger: "new reviewed Codex or classification scope; changed product-flow identity; material route, treatment, moisture, packaging, or allocation change; representative batch evidence that replaces a provisional range; audit finding; or data older than the declared representativeness period"
+data_sources:
+  - id: "unsd-cpc-3-21411"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, Central Product Classification Version 3.0, subclass 21411 “Raisins”, https://unstats.un.org/unsd/classifications/Econ/CPC (retrieved 2026-08-11)"
+    used_for: "external classification reference and product-category naming"
+  - id: "codex-cxs-360-2020"
+    type: "standard"
+    reference: "FAO/WHO Codex Alimentarius, CXS 360-2020, General Standard for Dried Fruits, including Annex C Raisins, https://www.fao.org/fao-who-codexalimentarius/sh-proxy/en/?lnk=1&url=https%3A%2F%2Fworkspace.fao.org%2Fsites%2Fcodex%2FStandards%2FCXS%2B360-2020%2FCXS_360e.pdf (retrieved 2026-08-11)"
+    used_for: "raisin identity, grape species, drying and treatment variants, food-grade quality, moisture limits, conditioning, packaging, and labelling qualifiers"
+  - id: "eu-pef-2021-2279"
+    type: "official_guidance"
+    reference: "European Commission, Recommendation (EU) 2021/2279, Annex I Product Environmental Footprint Method and Annex II PEFCR requirements, ELI http://data.europa.eu/eli/reco/2021/2279/2021-12-30/eng (retrieved 2026-08-11)"
+    used_for: "functional unit, reference flow, system boundary, inventory completeness, multi-functionality hierarchy, foreground data quality, representativeness, and dataset disclosure"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:487b025e6b6ebd04efe9010289bffae586a071194b9f0cacdeaa9291489751da"
+  generated_content_sha256: "sha256:bd052481451e2d1f6daf75b317d3ca871638254e98f90726db56718b60721589"

@@ -1,10 +1,679 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "23710"
-  title: "Uncooked pasta, not stuffed or otherwise prepared"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.food-products-beverages-and-tobacco-textiles-apparel-and-leather-products.grain-mill-products-starches-and-starch-products-other-food-products.uncooked-pasta-not-stuffed-or-otherwise-prepared"
+  classification_refs: "CPC 3.0: 23710 — Uncooked pasta, not stuffed or otherwise prepared"
+  covered_products: "Uncooked and unfilled pasta or noodles delivered without other preparation; dry, semi-dried, fresh-uncooked, or another explicitly declared moisture state; wheat-, rice-, other cereal-, pulse-, or mixed-material formulations"
+  excluded_products: "Filled pasta; cooked or pre-cooked pasta; seasoned or otherwise prepared pasta; complete dishes; sauces; couscous or another product classified outside CPC 23710"
+  representative_product: "Semi-dried noodles are the representative product/physical form because the verified Tiangong reference flow is specific to that form; the category remains broader than the representative flow"
+  production_route: "Ingredient receipt and preparation; dough or batter preparation; forming by extrusion, sheeting, cutting, or another declared method; product-specific conditioning or drying; inspection; and packaging or bulk release"
+  market_state: "Uncooked product at the declared factory-gate release condition, with moisture/conditioning and packaging state explicitly reported"
+functional_unit:
+  what: "Uncooked, unfilled, and not otherwise prepared pasta or noodles at the declared factory-gate release condition"
+  how_much: "1 kg net product mass, excluding packaging"
+  how_well: "Conforming to the producer's release specification and applicable legal or customer requirements for the declared product form, formulation, moisture/conditioning state, and packaging state"
+  how_long_or_cycle: "One production campaign or reporting period sufficient to represent the declared product until the factory-gate hand-off; shelf life is reported as metadata and does not change the 1 kg reference amount"
+  reference_flow_link: "One kilogram of the declared saleable uncooked pasta output; use the representative semi-dried-noodles UUID only when that identity is accurate, otherwise select a more specific real product flow"
+system_boundary:
+  rules:
+    - rule_id: boundary_foreground_manufacturing
+      applies_to: "All foreground datasets"
+      rule: "Include ingredient receipt/preparation, dough or batter preparation, forming, product-specific conditioning, inspection/rework accounting, and packaging or bulk release when performed within the reporting organization."
+      source_ids:
+        - unafpa-dry-pasta-pefcr-2020
+    - rule_id: boundary_dry_route
+      applies_to: "Dry or semi-dried routes"
+      rule: "Include the actual conditioning/drying operation, electricity, thermal energy or fuel, water or moisture removal, losses, and the declared released moisture state. Apply dry-pasta source rules only to a route that is demonstrably within their dry-pasta scope."
+      source_ids:
+        - unafpa-dry-pasta-pefcr-2020
+    - rule_id: boundary_upstream_connections
+      applies_to: "Ingredient, utility, and packaging production"
+      rule: "Represent upstream production and inbound services through separate datasets linked to the collected foreground bill of materials; do not treat an unverified generic proxy as product-specific data."
+      source_ids:
+        - unafpa-dry-pasta-pefcr-2020
+    - rule_id: boundary_downstream_exclusion
+      applies_to: "Default foreground product dataset"
+      rule: "Exclude distribution, consumer storage/cooking, packaging end-of-life, and food end-of-life from this factory-gate foreground dataset. Add them only in an explicitly declared downstream lifecycle model."
+      source_ids: []
+    - rule_id: boundary_recursive_category_input
+      applies_to: "Same-category purchased pasta or noodle input"
+      rule: "Record the purchased product at its actual entry state with a distinct upstream dataset and do not expand the same category recursively within the foreground process."
+      source_ids: []
+boundary_abstraction:
+  declared_starting_condition: "Accepted farinaceous ingredients, water, other formulation ingredients, utilities, and packaging materials at the manufacturing-site receipt point, together with the declared formulation, product form, and initial moisture state"
+  starting_condition_role: "Foreground manufacturing input gate; upstream production burdens are supplied by separate traceable datasets rather than recreated inside the pasta manufacturing process"
+  product_classification_scope: "CPC 3.0 code 23710 across declared uncooked and unfilled product forms; the semi-dried-noodles flow is representative, not category-wide identity authority"
+  recursive_input_rule: "Purchased uncooked pasta or noodle material from the same category that enters reprocessing shall be recorded once as a technosphere product input with its own upstream dataset and declared state; do not recursively reconstruct its manufacturing inside this foreground dataset"
+  upstream_dataset_requirement: "Each material ingredient, utility, and packaging input shall link to a geographically, technologically, and temporally representative upstream dataset or be disclosed as a data gap"
+  disclosure: "Declare product form, formulation, moisture/conditioning state, forming and conditioning technologies, packaging state, reporting gate, included sites, allocation method, data period, and any omitted or unresolved flows"
+reference_flow_definition:
+  reference_amount: "1 kg net uncooked pasta product"
+  product_flow_ref:
+    name: "semi-dried noodles — representative only; replace for a more specific actual product form"
+    uuid: "540fef24-1038-48b8-8ee1-8cc415df780a"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "actual product form and Tiangong product-flow identity"
+    - "principal farinaceous material"
+    - "formulation and egg/non-egg status"
+    - "forming technology"
+    - "moisture or conditioning state at release"
+    - "packaging or bulk state"
+    - "production geography and facility/route"
+    - "factory-gate reporting point"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "Reference product and mass-normalized product/intermediate rows"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Report the reference product as net product mass. Packaging mass is inventoried separately and is never included in the 1 kg reference amount."
+  - id: mass_conversion
+    applies_to: "Ingredient, intermediate, product, waste, and moisture-balance mass records"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Convert source records to kg using documented unit conversions before normalization; retain original units and conversion evidence."
+  - id: conditioning_state
+    applies_to: "Product and intermediate mass values"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Record the measurement point and product moisture/conditioning state. Do not compare or combine masses measured at materially different conditioning states without a documented moisture correction."
+  - id: energy_units
+    applies_to: "Electricity and thermal-energy inputs"
+    required_property_ref:
+      name: "Energy appropriate to the selected flow"
+      uuid: ""
+    required_unit: "kWh for electricity; MJ for fuel or delivered thermal energy"
+    rule: "Keep electricity and thermal energy as separate records and document any calorific-value or steam/heat conversion used."
+process_map:
+  - id: dough_forming
+    name: "Ingredient preparation, dough/batter preparation, and forming"
+    inclusion: "required"
+    inclusion_condition: ""
+    role: "Converts the declared formulation into a shaped uncooked intermediate while preserving product-specific formulation and forming records"
+    quantitative_reference: "kg formed uncooked intermediate"
+  - id: conditioning_release
+    name: "Conditioning, inspection, packaging, and factory-gate release"
+    inclusion: "required"
+    inclusion_condition: ""
+    role: "Brings the shaped intermediate to the declared moisture/conditioning and packaging state and releases the reference product"
+    quantitative_reference: "1 kg net saleable uncooked pasta product"
+process_inventory:
+  - id: dough_forming
+    label: "Ingredient preparation, dough/batter preparation, and forming"
+    inputs:
+      product:
+        - row_id: principal_farinaceous_input
+          role: "Principal farinaceous ingredient"
+          name: "Product-specific farinaceous ingredient flow; Tiangong UUID unresolved"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record every principal flour, semolina, meal, starch-bearing material, or equivalent farinaceous ingredient separately by material identity, supplier/origin when known, lot, moisture basis where relevant, and measured mass."
+          amount:
+            expression: "measured accepted ingredient mass charged to the declared product campaign"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg formed uncooked intermediate"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_ingredient_bom
+              source_ids:
+                - unafpa-dry-pasta-pefcr-2020
+            ranges: []
+        - row_id: process_water_input
+          role: "Process water"
+          name: "Site-specific water supply flow; Tiangong UUID unresolved"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record water intentionally incorporated into dough/batter or used as a direct formulation input. Cleaning water that does not become part of the product shall be recorded separately when it crosses the selected process boundary."
+          amount:
+            expression: "metered or batch-recipe water charged to the declared product campaign"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg formed uncooked intermediate"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_process_water
+              source_ids:
+                - unafpa-dry-pasta-pefcr-2020
+            ranges: []
+        - row_id: other_recipe_inputs
+          role: "Other formulation ingredients"
+          name: "Product-specific formulation ingredient flows; Tiangong UUIDs unresolved"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record eggs or egg products, salt, vegetables, spices, processing aids, and other deliberately added ingredients as separate product-specific rows whenever present. Do not infer absent ingredients from the representative semi-dried-noodles flow."
+          amount:
+            expression: "measured accepted mass of each ingredient charged to the declared product campaign"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg formed uncooked intermediate"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_ingredient_bom
+              source_ids:
+                - unafpa-dry-pasta-pefcr-2020
+            ranges: []
+        - row_id: dough_forming_electricity
+          role: "Dough preparation and forming electricity"
+          name: "Site- and period-specific electricity supply flow; Tiangong UUID unresolved"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record electricity for dosing, mixing/kneading, extrusion, sheeting, cutting, and directly assigned auxiliary equipment. Shared electricity is allocated only through the declared allocation rule."
+          amount:
+            expression: "submetered electricity or documented allocation of facility-meter electricity to the declared campaign"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg formed uncooked intermediate"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_dough_forming_energy
+              source_ids:
+                - unafpa-dry-pasta-pefcr-2020
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: formed_pasta_intermediate
+          role: "Formed uncooked pasta intermediate"
+          name: "Product-specific formed uncooked pasta intermediate; Tiangong UUID unresolved"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the measured mass and conditioning state of shaped product transferred to conditioning/release. This is an internal intermediate and shall not be substituted for the final reference product."
+          amount:
+            expression: "measured accepted intermediate mass transferred from forming"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg formed uncooked intermediate"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_intermediate_output
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: dough_forming_losses
+          role: "Preparation and forming losses"
+          name: "Treatment-specific food manufacturing waste flow; Tiangong UUID unresolved"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record spills, rejected dough, trimmings, and other material leaving the process as waste by actual treatment route. Material returned internally before the process output measurement is documented as an internal loop and is not double-counted as waste."
+          amount:
+            expression: "measured waste mass by treatment route, net of documented internal return"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg formed uncooked intermediate"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_manufacturing_waste
+              source_ids:
+                - unafpa-dry-pasta-pefcr-2020
+            ranges: []
+      elementary:
+        []
+  - id: conditioning_release
+    label: "Conditioning, inspection, packaging, and factory-gate release"
+    inputs:
+      product:
+        - row_id: formed_pasta_input
+          role: "Formed uncooked pasta input"
+          name: "Product-specific formed uncooked pasta intermediate; Tiangong UUID unresolved"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Transfer the preceding process output without changing its measured mass or declared conditioning state at the transfer point."
+          amount:
+            expression: "measured accepted intermediate mass received by conditioning/release"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net saleable uncooked pasta output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_intermediate_output
+              source_ids: []
+            ranges: []
+        - row_id: conditioning_electricity
+          role: "Conditioning and release electricity"
+          name: "Site- and period-specific electricity supply flow; Tiangong UUID unresolved"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record electricity for drying or moisture conditioning when present, conveying, cooling, inspection, and packaging/release equipment. Declare which operations are included."
+          amount:
+            expression: "submetered electricity or documented allocation of facility-meter electricity to the declared product"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net saleable uncooked pasta output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_conditioning_energy
+              source_ids:
+                - unafpa-dry-pasta-pefcr-2020
+            ranges: []
+        - row_id: conditioning_thermal_energy
+          role: "Thermal energy or fuel"
+          name: "Site- and technology-specific fuel, steam, or heat flow; Tiangong UUID unresolved"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Record each fuel, steam, or delivered-heat input used for drying or conditioning. This row is not applicable when the declared route uses no thermal-energy input; that absence shall be documented rather than assumed."
+          amount:
+            expression: "measured fuel or delivered thermal energy, with documented conversion from source meter units"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net saleable uncooked pasta output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_conditioning_energy
+              source_ids:
+                - unafpa-dry-pasta-pefcr-2020
+            ranges: []
+        - row_id: packaging_materials
+          role: "Primary and grouped packaging materials"
+          name: "Material-specific packaging product flows; Tiangong UUIDs unresolved"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record each packaging material and component by material, mass, and packaging configuration. For unpackaged bulk release, declare that state and record reusable transport packaging only when it crosses the reporting gate."
+          amount:
+            expression: "measured or purchase-and-stock-reconciled packaging material consumed for the declared output"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net saleable uncooked pasta output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_bom
+              source_ids:
+                - unafpa-dry-pasta-pefcr-2020
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: reference_uncooked_pasta
+          role: "Declared uncooked pasta reference product"
+          name: "semi-dried noodles — representative only and conditional on an actual identity match"
+          flow_type: "product"
+          flow_ref:
+            uuid: "540fef24-1038-48b8-8ee1-8cc415df780a"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record saleable output at the declared moisture/conditioning and packaging state. Select semi-dried noodles only when that is the actual product identity; otherwise replace the representative flow with a more specific verified Tiangong flow and preserve the Mass/kg support chain."
+          amount:
+            expression: "1 kg net saleable declared uncooked pasta output, excluding packaging mass"
+            value_mode: "fixed_value"
+            specificity: "product_specific"
+            basis:
+              text: "1 kg net declared uncooked pasta reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "identity_reference"
+              collection_protocol_id: cp_product_identity_output
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: conditioning_product_losses
+          role: "Conditioning and product losses"
+          name: "Treatment-specific food manufacturing waste flow; Tiangong UUID unresolved"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record rejected, broken, off-specification, or otherwise lost pasta leaving the foreground system by actual treatment route. Do not apply a generic dry-pasta loss default to semi-dried, fresh, or other forms."
+          amount:
+            expression: "measured waste mass by declared treatment route, net of documented internal return"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net saleable uncooked pasta output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_conditioning_waste
+              source_ids:
+                - unafpa-dry-pasta-pefcr-2020
+            ranges: []
+        - row_id: packaging_losses
+          role: "Packaging losses"
+          name: "Material- and treatment-specific packaging waste flows; Tiangong UUIDs unresolved"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record packaging offcuts, rejected packs, and damaged components that leave the foreground system, separated by material and actual treatment route."
+          amount:
+            expression: "measured packaging waste mass by material and treatment route"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net saleable uncooked pasta output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_bom
+              source_ids:
+                - unafpa-dry-pasta-pefcr-2020
+            ranges: []
+      elementary:
+        - row_id: moisture_to_air
+          role: "Moisture released to air"
+          name: "Water-to-air elementary flow appropriate to the inventory context; Tiangong UUID unresolved"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "For drying or moisture-conditioning routes, calculate water released to air from measured mass and moisture records after accounting for other measured losses. Select and verify the appropriate elementary-flow UUID before activation."
+          amount:
+            expression: "calculated by calculate_conditioning_moisture_release; not applicable when no measurable moisture-conditioning step occurs"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net saleable uncooked pasta output"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_conditioning_mass_moisture
+              source_ids:
+                - unafpa-dry-pasta-pefcr-2020
+            ranges: []
+allocation_rules:
+  - rule_id: allocation_avoid_by_subdivision
+    applies_to: "Shared or multi-output foreground operations"
+    rule: "First avoid allocation by submetering or subdividing ingredient preparation, forming, conditioning, and packaging operations and collecting product-specific inputs and outputs."
+    source_ids:
+      - unafpa-dry-pasta-pefcr-2020
+  - rule_id: allocation_physical_mass
+    applies_to: "Shared manufacturing burdens that cannot be subdivided"
+    rule: "Allocate shared manufacturing inputs and outputs by the mass of conforming product outputs only when mass represents the underlying physical relationship; disclose the products, period, denominator, and calculation."
+    source_ids:
+      - unafpa-dry-pasta-pefcr-2020
+  - rule_id: allocation_scrap_as_waste
+    applies_to: "Pasta scraps and off-specification product leaving the site"
+    rule: "Treat material leaving as waste by its actual treatment route unless auditable records establish it as a valuable co-product. Do not credit undocumented internal rework or avoided production."
+    source_ids:
+      - unafpa-dry-pasta-pefcr-2020
+  - rule_id: allocation_nonphysical_exception
+    applies_to: "Valuable co-products for which mass is not physically representative"
+    rule: "Do not apply mass allocation by default. Document the physical relationship assessment and use a reviewed alternative only with product-specific evidence and an explicit sensitivity disclosure."
+    source_ids: []
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_ingredient_bom
+      process_id: "dough_forming"
+      flow_role: "Principal and other formulation ingredients"
+      record_type: "Batch issue, recipe, supplier, and stock records"
+      raw_fields: "ingredient identity; supplier and origin when known; lot; accepted mass; source unit; moisture basis when relevant; product code; campaign"
+      collection_method: "Reconcile approved formulation and batch issues with receiving and inventory records"
+      unit: "kg and original source unit"
+      frequency: "Each batch with reporting-period reconciliation"
+      temporal_coverage: "Full declared reporting period; use 12 consecutive months for an annual dry-pasta dataset, or justify a representative campaign/season for other forms"
+      site_scope: "Every included manufacturing site and line"
+      aggregation_rule: "Sum accepted mass by ingredient and product; exclude unrelated products; normalize with normalize_dough_forming_totals"
+      quality_evidence: "Calibrated scales; lot traceability; recipe approval; inventory reconciliation; documented conversions"
+    - protocol_id: cp_process_water
+      process_id: "dough_forming"
+      flow_role: "Formulation and direct process water"
+      record_type: "Batch dosing, flowmeter, or recipe records"
+      raw_fields: "meter start/end or dose; water source; operation; product code; batch; timestamp; source unit"
+      collection_method: "Read dedicated meters or validated dosing systems; otherwise reconcile recipe dose to campaign counts"
+      unit: "kg or L with documented density conversion"
+      frequency: "Each batch or continuous meter interval"
+      temporal_coverage: "Same period as product output"
+      site_scope: "Every included line; shared meters require declared allocation"
+      aggregation_rule: "Sum water assigned to the declared product and normalize with normalize_dough_forming_totals"
+      quality_evidence: "Meter calibration; dosing-system checks; conversion record; shared-meter reconciliation"
+    - protocol_id: cp_dough_forming_energy
+      process_id: "dough_forming"
+      flow_role: "Mixing, kneading, extrusion/sheeting/cutting electricity"
+      record_type: "Submeter or facility-meter records and equipment runtime"
+      raw_fields: "meter readings; equipment/line; timestamp; product code; runtime; allocation driver; kWh"
+      collection_method: "Prefer line submetering; otherwise allocate reconciled facility electricity under section 7"
+      unit: "kWh"
+      frequency: "Meter interval and each reporting period"
+      temporal_coverage: "Same period as product output"
+      site_scope: "Every included line and directly supporting equipment"
+      aggregation_rule: "Sum direct electricity plus documented allocated share; normalize with normalize_dough_forming_totals"
+      quality_evidence: "Meter calibration; utility invoice reconciliation; allocation worksheet; downtime and unrelated-load exclusions"
+    - protocol_id: cp_intermediate_output
+      process_id: "dough_forming"
+      flow_role: "Formed uncooked intermediate transfer"
+      record_type: "Production and transfer records"
+      raw_fields: "product code; batch; mass; measurement point; moisture/conditioning state; destination; timestamp"
+      collection_method: "Weigh accepted intermediate at transfer or reconcile validated continuous mass measurement"
+      unit: "kg"
+      frequency: "Each batch or shift"
+      temporal_coverage: "Same period as input and energy records"
+      site_scope: "Every included line"
+      aggregation_rule: "Sum accepted transferred mass by product and state"
+      quality_evidence: "Scale calibration; batch reconciliation; state definition; rejected-mass segregation"
+    - protocol_id: cp_conditioning_energy
+      process_id: "conditioning_release"
+      flow_role: "Electricity, fuel, steam, or delivered heat"
+      record_type: "Utility meters, fuel invoices, boiler/steam meters, and equipment logs"
+      raw_fields: "energy carrier; meter readings or quantity; source unit; calorific value or conversion; equipment/line; product code; timestamp; allocation driver"
+      collection_method: "Prefer line meters; reconcile energy-carrier totals to invoices and document every conversion"
+      unit: "kWh for electricity; MJ for fuel or heat after conversion"
+      frequency: "Meter interval with reporting-period reconciliation"
+      temporal_coverage: "Same period as released product; 12 consecutive months for an annual dry-pasta dataset unless justified otherwise"
+      site_scope: "Every included conditioning, inspection, and release line"
+      aggregation_rule: "Sum by carrier and operation; allocate shared use under section 7; normalize with normalize_conditioning_totals"
+      quality_evidence: "Meter calibration; invoice reconciliation; conversion source; allocation worksheet; equipment scope"
+    - protocol_id: cp_packaging_bom
+      process_id: "conditioning_release"
+      flow_role: "Packaging inputs and packaging losses"
+      record_type: "Packaging specification, purchase/stock, line issue, and waste records"
+      raw_fields: "component identity; material; unit mass; units consumed; returned stock; waste mass; treatment route; product code; packaging configuration"
+      collection_method: "Reconcile packaging specifications and line issues to packed output and material-specific waste"
+      unit: "kg and component count"
+      frequency: "Each packaging campaign with period reconciliation"
+      temporal_coverage: "Same period as packed output"
+      site_scope: "Every included packaging line; declare bulk release separately"
+      aggregation_rule: "Packaging consumed equals opening stock plus receipts minus closing/returned stock; separate product packaging from waste"
+      quality_evidence: "Verified component weights; stock reconciliation; packaging specification; waste tickets"
+    - protocol_id: cp_manufacturing_waste
+      process_id: "dough_forming"
+      flow_role: "Pasta and ingredient losses by route"
+      record_type: "Waste scale, production rejection, rework, and treatment records"
+      raw_fields: "material/product; mass; cause; process; internal return flag; treatment route; hauler/record; timestamp"
+      collection_method: "Weigh or mass-balance each waste stream; reconcile internal return so it is not counted as waste output"
+      unit: "kg"
+      frequency: "Each batch/shift and waste shipment"
+      temporal_coverage: "Same period as product output"
+      site_scope: "Every included process and site"
+      aggregation_rule: "Sum material that leaves the foreground system by treatment route; exclude documented internal return"
+      quality_evidence: "Scale calibration; rejection log; waste transfer record; treatment evidence; mass-balance reconciliation"
+    - protocol_id: cp_conditioning_waste
+      process_id: "conditioning_release"
+      flow_role: "Conditioned-product losses by route"
+      record_type: "Finished-product rejection, rework, waste scale, and treatment records"
+      raw_fields: "product; released moisture/conditioning state; mass; cause; internal return flag; treatment route; hauler/record; timestamp"
+      collection_method: "Weigh each conditioning/release loss stream and reconcile internal return against finished-product records"
+      unit: "kg"
+      frequency: "Each batch/shift and waste shipment"
+      temporal_coverage: "Same period as released product output"
+      site_scope: "Every included conditioning/release line and site"
+      aggregation_rule: "Sum product that leaves the foreground system by treatment route; exclude documented internal return"
+      quality_evidence: "Scale calibration; release/rejection log; waste transfer record; treatment evidence; finished-product mass-balance reconciliation"
+    - protocol_id: cp_conditioning_mass_moisture
+      process_id: "conditioning_release"
+      flow_role: "Intermediate input, released output, moisture state, and moisture loss"
+      record_type: "Transfer weights, finished-product weights, moisture tests, and other loss records"
+      raw_fields: "input mass and moisture; output mass and moisture; sampling method; batch; other measured waste/loss; timestamp"
+      collection_method: "Pair mass measurements and representative moisture tests for the same campaign; calculate only after reconciling other losses"
+      unit: "kg and moisture fraction on a declared basis"
+      frequency: "Each product/campaign; moisture sampling at the declared control frequency"
+      temporal_coverage: "Same campaign and reporting period as output"
+      site_scope: "Every included conditioning line and product form"
+      aggregation_rule: "Apply calculate_conditioning_moisture_release; aggregate only like products and conditioning states"
+      quality_evidence: "Scale and moisture-method calibration; sample traceability; paired batch records; documented moisture basis"
+    - protocol_id: cp_product_identity_output
+      process_id: "conditioning_release"
+      flow_role: "Declared reference product identity and net saleable output"
+      record_type: "Product master, release specification, batch release, and finished-goods records"
+      raw_fields: "actual product name/form; Tiangong flow UUID; CPC; formulation; egg status; forming route; moisture/conditioning state; packaging state; net mass; site; reporting gate; release status"
+      collection_method: "Verify product identity against the product master and a full Tiangong flow readback; weigh only released conforming net product"
+      unit: "kg"
+      frequency: "Each released batch with period reconciliation"
+      temporal_coverage: "Full declared reporting period"
+      site_scope: "Every included site, line, and product variant"
+      aggregation_rule: "Sum conforming net output only after grouping identical required qualifiers; do not aggregate a mismatched flow identity"
+      quality_evidence: "Approved product master; release certificate; scale calibration; Tiangong identity evidence; qualifier completeness review"
+  calculation_rules:
+    - id: normalize_dough_forming_totals
+      applies_to: "Dough/forming input and output rows"
+      rule: "Divide each reconciled campaign or period total by the accepted formed-intermediate mass for the same product, line, and conditioning state."
+      inputs:
+        - "reconciled row total"
+        - "accepted formed-intermediate mass"
+        - "product/line/state keys"
+      output: "row amount per kg formed uncooked intermediate"
+      source_ids:
+        - unafpa-dry-pasta-pefcr-2020
+    - id: normalize_conditioning_totals
+      applies_to: "Conditioning, packaging, loss, and release rows"
+      rule: "Divide each reconciled product-specific total by net conforming released product mass, excluding packaging mass."
+      inputs:
+        - "reconciled row total"
+        - "net conforming released product mass"
+        - "qualifier keys"
+      output: "row amount per 1 kg reference product"
+      source_ids:
+        - unafpa-dry-pasta-pefcr-2020
+    - id: calculate_conditioning_moisture_release
+      applies_to: "Drying or moisture-conditioning water release"
+      rule: "Moisture released to air = formed-intermediate input mass minus net released product mass minus measured product/waste outputs and any other documented mass leaving the conditioning process; a negative or unexplained result is invalid."
+      inputs:
+        - "paired intermediate input mass"
+        - "released product mass"
+        - "measured waste/loss mass"
+        - "other documented mass outputs"
+        - "moisture-state records"
+      output: "kg calculated water-to-air candidate per reference flow"
+      source_ids:
+        - unafpa-dry-pasta-pefcr-2020
+    - id: allocate_shared_manufacturing
+      applies_to: "Unavoidable shared manufacturing data"
+      rule: "Allocated amount = reconciled shared total multiplied by declared conforming product mass divided by total conforming mass of all products sharing the operation during the same period, only after subdivision is shown impracticable and mass is physically representative."
+      inputs:
+        - "shared total"
+        - "declared product mass"
+        - "total shared-operation product mass"
+        - period
+        - "product list"
+      output: "allocated foreground amount with allocation disclosure"
+      source_ids:
+        - unafpa-dry-pasta-pefcr-2020
+  data_quality_requirements:
+    - id: dq_product_identity
+      applies_to: "Reference product and all product-specific rows"
+      requirement: "Required qualifiers shall be complete and internally consistent. The semi-dried-noodles UUID may remain only for an actual identity match; otherwise a more specific verified flow shall replace it."
+      evidence: "Product master, release specification, CPC check, and full Tiangong flow readback"
+    - id: dq_temporal_representativeness
+      applies_to: "Foreground activity data"
+      requirement: "Use one consistent reporting period. An annual dry-pasta dataset shall cover 12 consecutive months; another product form may use a representative campaign or seasonal period only with justification and production-volume coverage disclosure."
+      evidence: "Dated meter, batch, production, inventory, and waste records; coverage calculation; justification"
+    - id: dq_measurement_traceability
+      applies_to: "Mass, moisture, water, electricity, and thermal-energy records"
+      requirement: "Preserve original readings, units, meter/scale identity, calibration or verification status, conversions, and responsible record source."
+      evidence: "Calibration certificates, meter logs, laboratory method records, invoices, and conversion worksheet"
+    - id: dq_mass_balance
+      applies_to: "Both foreground processes"
+      requirement: "Reconcile material inputs with intermediate/product outputs, measured waste, moisture release where relevant, inventory change, and documented internal return. Investigate and disclose unexplained imbalance; do not force closure with an undocumented default."
+      evidence: "Campaign mass-balance worksheet and variance investigation"
+    - id: dq_completeness
+      applies_to: "Foreground inventory"
+      requirement: "Include all material ingredient, water, energy, packaging, product, and waste flows that cross the declared foreground boundary. Record not-applicable decisions and unresolved UUIDs explicitly."
+      evidence: "Completeness checklist tied to process map, BoM, utilities, waste register, and packaging records"
+    - id: dq_background_linkage
+      applies_to: "Upstream datasets"
+      requirement: "Match upstream datasets to actual ingredient, energy, water, packaging, and waste-treatment identities and disclose geographic, temporal, or technological proxies."
+      evidence: "Dataset references, supplier/origin records, proxy rationale, and data-gap register"
+    - id: dq_source_scope
+      applies_to: "Use of external dry-pasta evidence"
+      requirement: "Apply unafpa-dry-pasta-pefcr-2020 only to dry-pasta rules that fit the declared route. Use it as process/data-collection guidance, not as proof that a semi-dried, fresh, rice-, pulse-, or other broader CPC 23710 product conforms to that PEFCR."
+      evidence: "Product-scope comparison and methodology limitation statement"
+validation_rules:
+  - rule_id: validate_category_and_form
+    applies_to: "Product identity"
+    rule: "Confirm CPC 3.0 code 23710, uncooked state, absence of filling, and absence of other preparation; reject out-of-scope cooked, filled, seasoned/prepared, or complete-dish products."
+    source_ids:
+      - international-epd-pcr-2010-01
+  - rule_id: validate_representative_flow_use
+    applies_to: "Reference product flow"
+    rule: "Confirm actual product form against the full Tiangong flow record. If the product is not semi-dried noodles or a more specific matching real flow exists, UUID 540fef24-1038-48b8-8ee1-8cc415df780a shall be replaced; silent reuse is an error."
+    source_ids: []
+  - rule_id: validate_reference_support_chain
+    applies_to: "Reference amount and unit"
+    rule: "Confirm reference amount 1 kg net product, Mass UUID 93a60a56-a3c8-11da-a746-0800200b9a66, Units of mass UUID 93a60a57-a4c8-11da-a746-0800200c9a66, and reference unit kg; packaging mass shall remain separate."
+    source_ids: []
+  - rule_id: validate_process_coverage
+    applies_to: "Foreground process map"
+    rule: "Confirm that actual formulation, forming, conditioning/drying, inspection/rework accounting, and packaging or bulk release are represented and that non-applicable route steps are explicitly justified."
+    source_ids:
+      - unafpa-dry-pasta-pefcr-2020
+  - rule_id: validate_inventory_and_mass_balance
+    applies_to: "Foreground inventory"
+    rule: "Confirm collected ingredient/packaging BoM, energy, water, output, loss, and waste records; reconcile mass by process and product state without undocumented default values."
+    source_ids:
+      - unafpa-dry-pasta-pefcr-2020
+  - rule_id: validate_allocation
+    applies_to: "Shared operations and multi-output processes"
+    rule: "Confirm subdivision was attempted first and any remaining allocation has a physically representative driver, complete denominator, same-period records, and disclosure."
+    source_ids:
+      - unafpa-dry-pasta-pefcr-2020
+  - rule_id: validate_period_and_traceability
+    applies_to: "Dataset quality"
+    rule: "Confirm period alignment, site/line scope, calibration/conversion evidence, source traceability, upstream dataset linkage, and explicit data gaps."
+    source_ids:
+      - unafpa-dry-pasta-pefcr-2020
+published_dataset_profile:
+  dataset_role: "Foreground product-production dataset for one declared uncooked pasta form and factory-gate release condition"
+  downstream_use: "May be published as a secondary_dataset or background_dataset after methodology review, UUID completion, validation, and release controls"
+  allowed_use: "Product systems whose product form, formulation, forming/conditioning route, moisture state, packaging state, geography, technology, and reporting gate are compatible with the declared dataset"
+  excluded_use: "Silent use of the semi-dried-noodles UUID for another product form; cooked, filled, seasoned/prepared, or complete-dish products; use as a cradle-to-grave result without explicit downstream stages; unsupported cross-form or cross-route averages"
+  required_metadata: "Canonical PCR id; CPC; actual Tiangong product-flow UUID; all required qualifiers; site/geography; technology and process map; reporting period and gate; net product and packaging basis; allocation; source and proxy disclosures; unresolved-flow status"
+  required_quality_disclosure: "Record coverage, calibration/conversion evidence, mass-balance result, allocation rationale, temporal/geographic/technological representativeness, dry-pasta-source applicability, missing UUIDs, proxy datasets, and validation findings"
+  update_trigger: "Change in product form or flow identity, formulation, egg status, principal material, forming or conditioning technology, released moisture state, packaging configuration, site/energy supply, allocation basis, reporting gate, material supplier mix, legal specification, or evidence source"
+data_sources:
+  - id: "unafpa-dry-pasta-pefcr-2020"
+    type: "official_guidance"
+    reference: "UN.A.F.P.A. and Life Cycle Engineering, *Product Environmental Footprint Category Rules for Dry Pasta*, version 3.1, February 2020, hosted by the Slovak Environment Agency, https://www.sazp.sk/dokument/f/cestoviny.pdf (retrieved 2026-08-10)"
+    used_for: "Dry-pasta process decomposition; company-specific ingredient/packaging BoM and energy data; manufacturing water, auxiliary material, transport and waste records; 12-month plant activity period; subdivision-first and physical-mass allocation. Applied only where the declared product route fits the source's dry-pasta scope; no default quantitative loss or recipe values are adopted."
+  - id: "international-epd-pcr-2010-01"
+    type: "standard"
+    reference: "International EPD System, PCR 2010:01, *Uncooked pasta, not stuffed or otherwise prepared*, version 4.0.5, https://www.environdec.com/pcr-library/pcr2010-01 (retrieved 2026-08-10; programme page reports status expired and validity ended 2026-05-24)"
+    used_for: "Independent category-title and UN CPC 2371 scope corroboration only; not used as a current normative or quantitative requirement."
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:0d60197a6e6d218bbb062e0ff1e4c33d2f2a698e42ccec284b71465527dec3c7"
+  generated_content_sha256: "sha256:2e3a5927178bcba0c795436949a0a9a19794694fd7785a55f79675cc60b1d192"

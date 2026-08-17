@@ -1,10 +1,968 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "21231"
-  title: "Fish, dried, but not smoked; salted, but not dried or smoked; or in brine"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.food-products-beverages-and-tobacco-textiles-apparel-and-leather-products.meat-fish-fruits-vegetables-oils-and-fats.fish-dried-but-not-smoked-salted-but-not-dried-or-smoked-or-in-brine"
+  classification_refs: "CPC 3.0: 21231, exact classification context"
+  covered_products: "Edible finfish dried without smoking, fish salted without drying or smoking, and fish preserved or marketed in brine; whole, split, dressed, fillet, or other declared edible form"
+  excluded_products: "Smoked or smoke-dried fish; edible fish meal; separately marketed fish offal; cooked, canned, or otherwise prepared fish; caviar; crustaceans; molluscs; non-food products"
+  representative_product: "Packed edible fish in the declared dried, salted, or brined route and sale state"
+  production_route: "Received fish -> conditional thawing -> preparation -> route-specific salting/brining -> conditional non-smoking drying -> sorting/conditioning -> packaging -> route-required storage"
+  market_state: "Packed product at processing-facility gate; storage regime, species, product form, salting method, drying status, brine state, and packaging system declared"
+functional_unit:
+  what: "Edible fish supplied in the declared dried-but-not-smoked, salted-but-not-dried-or-smoked, or in-brine state"
+  how_much: "1 kg net mass of conforming product, excluding packaging"
+  how_well: "Meets the declared species, product form, preservation route, food-safety plan, quality specification, packaging, and storage regime"
+  how_long_or_cycle: "One production lot delivered at the processing-facility gate; shelf-life is separately declared and substantiated"
+  reference_flow_link: "The functional unit is realized by exactly 1 kg of the reference product flow on a net-product mass basis"
+system_boundary:
+  rules:
+    - rule_id: boundary_route_gate
+      applies_to: "Foreground process system"
+      rule: "Include every operation performed from accepted fish receipt through production of the packed reference product at the facility gate, including conditional thawing, preparation, salting/brining, drying, intermediate storage, packaging, refrigeration, sanitation-related material use when attributable, rejects, wastewater/brine, and waste handling."
+      source_ids:
+        - codex-cxc-52-2003
+    - rule_id: boundary_upstream_linking
+      applies_to: "Purchased fish and other technosphere inputs"
+      rule: "Represent production and delivery before the declared receiving gate with linked upstream datasets and disclose missing or proxy geography, technology, and time."
+      source_ids:
+        - eu-pef-2021-2279
+    - rule_id: boundary_route_exclusion
+      applies_to: "Smoking and out-of-scope preparation"
+      rule: "Do not include smoking or smoke-drying under this PCR; a dataset performing those operations requires the applicable product category rule."
+      source_ids:
+        - unsd-cpc-3-0-2025
+    - rule_id: boundary_food_safety_controls
+      applies_to: "All foreground steps"
+      rule: "Model the actual process sequence and retain the HACCP/prerequisite-programme records that establish relevant hazards, critical or operational limits, monitoring, corrective actions, verification, and lot release."
+      source_ids:
+        - codex-cxc-52-2003
+boundary_abstraction:
+  declared_starting_condition: "Eligible fresh, chilled, or frozen edible fish is received at the processing facility with measured mass, species/product form, origin, preservation state, temperature condition, supplier lot identity, and acceptance disposition."
+  starting_condition_role: "The received fish is a technosphere product input; fishing or aquaculture and delivery to the gate are upstream and linked through representative datasets."
+  product_classification_scope: "The foreground output is limited to CPC 3.0 code 21231 product states; smoking and other prepared-fish identities are outside this PCR."
+  recursive_input_rule: "A purchased input already in the same CPC 21231 category is recorded once as an upstream product input with its declared preservation route and is not recursively reprocessed unless the foreground facility performs a documented transformation."
+  upstream_dataset_requirement: "Link representative upstream datasets for received fish, salt, water, energy, packaging, refrigerants, transport, and waste treatment at the geographic, technological, and temporal resolution available."
+  disclosure: "Declare species, origin, input state, route steps, salting/brining method, drying technology and endpoint claim, storage regime, packaging, co-products, waste treatment, allocation, exclusions, and any data gaps."
+reference_flow_definition:
+  reference_amount: "1 kg net product mass"
+  product_flow_ref:
+    name: "Fish, dried but not smoked, salted but not dried or smoked, or in brine"
+    uuid: "39347f84-4a1d-414b-89f0-746f31b01aa6"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "fish species and scientific or trade identity"
+    - "wild or farmed origin where known"
+    - "whole/split/dressed/fillet form"
+    - "dried/salted/brined route"
+    - "salting or brining method"
+    - "drying method and endpoint claim where applicable"
+    - "drained or undrained sale basis for brined product"
+    - "storage temperature regime"
+    - "packaging system"
+    - "geographic and temporal scope"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_net_mass
+    applies_to: "Reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Report exactly 1 kg of conforming edible product excluding packaging; for brined products declare whether the commercial net quantity includes brine and also collect drained fish mass when relevant to the declared specification."
+  - id: mass_input_output_consistency
+    applies_to: "Fish, salt, water, brine, product, co-products, and wastes"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Preserve measured wet-basis amounts and calculate normalized amounts per 1 kg reference product; do not mix drained and undrained bases or dry- and wet-basis measurements without an explicit conversion."
+  - id: temperature_time_records
+    applies_to: "Chilled, thawing, salting, brining, maturing, drying, and storage steps"
+    required_property_ref:
+      name: "Temperature and elapsed time"
+      uuid: ""
+    required_unit: "°C and h"
+    rule: "Preserve measured temperature and time records in their original units and declare any conversion; route-specific limits come from the validated HACCP/quality plan and applicable specification."
+  - id: energy_conversion
+    applies_to: "Electricity and fuels"
+    required_property_ref:
+      name: "Energy"
+      uuid: ""
+    required_unit: "kWh and MJ"
+    rule: "Retain source meter or invoice units and conversion factors; allocate shared energy only under the rules in Section 7 and report the normalized result per 1 kg reference product."
+process_map:
+  - id: fish_receipt_and_conditioning
+    name: "Fish receipt and input conditioning"
+    inclusion: "required"
+    inclusion_condition: "Always; thawing and chilled/frozen holding are included only when used"
+    role: "Foreground receipt, acceptance, and condition control"
+    quantitative_reference: "kg accepted fish"
+  - id: fish_preparation
+    name: "Fish preparation and washing"
+    inclusion: "required"
+    inclusion_condition: "Preparation intensity follows whole/split/dressed/fillet form"
+    role: "Foreground edible preparation"
+    quantitative_reference: "kg prepared fish"
+  - id: salting_or_brining
+    name: "Salting, brining, or brine holding"
+    inclusion: "conditional"
+    inclusion_condition: "Required for salted and brined routes and when salt is used before drying"
+    role: "Foreground preservation"
+    quantitative_reference: "kg salted or brined fish"
+  - id: non_smoking_drying
+    name: "Non-smoking drying"
+    inclusion: "conditional"
+    inclusion_condition: "Required only for the dried-but-not-smoked route"
+    role: "Foreground moisture removal"
+    quantitative_reference: "kg dried fish"
+  - id: packing_and_storage
+    name: "Sorting, packing, and route-required storage"
+    inclusion: "required"
+    inclusion_condition: "Always; chilled storage applies when required by product state and validated plan"
+    role: "Final foreground product preparation"
+    quantitative_reference: "1 kg reference product"
+process_inventory:
+  - id: fish_receipt_and_conditioning
+    label: "Fish receipt and input conditioning"
+    inputs:
+      product:
+        - row_id: received_fish
+          role: "Received edible fish"
+          name: "Edible fish, route-appropriate raw material; Tiangong UUID pending exact identity review"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the mass and declared identity of every accepted fresh, chilled, or frozen fish lot crossing the facility gate."
+          amount:
+            expression: "Measured received fish mass attributable to the production lot"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg conforming reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_fish_receipt
+              source_ids:
+                - codex-cxc-52-2003
+                - codex-cxs-190-1995
+            ranges:
+              - role: qa_guardrail
+                lower: "1"
+                upper: "10"
+                unit: "kg/kg reference product"
+                basis: "received fish per 1 kg conforming product"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: receipt_conditioning_energy
+          role: "Cooling or thawing energy"
+          name: "Electricity and/or fuel carrier by actual facility supply; UUIDs pending exact identity review"
+          flow_type: "product"
+          property_unit: "Energy / kWh or MJ"
+          description: "Record metered electricity and measured fuels used for chilled/frozen holding or controlled thawing when these operations occur."
+          amount:
+            expression: "Metered energy or allocated shared-meter energy for the lot"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg conforming reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_fish_receipt
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "20"
+                unit: "kWh/kg reference product"
+                basis: "combined electrical-equivalent screen per 1 kg conforming product"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: accepted_conditioned_fish
+          role: "Accepted conditioned fish"
+          name: "Accepted fish intermediate; internal product flow"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Calculate the accepted mass transferred to preparation after rejection and any thaw-drip loss."
+          amount:
+            expression: "received fish minus rejected fish and measured conditioning losses"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per kg accepted conditioned fish"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_fish_receipt
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: receipt_rejects
+          role: "Rejected fish and thaw losses"
+          name: "Rejected fish or thaw loss by actual destination; UUID pending exact identity review"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record rejected material and separately identify edible diversion, by-product recovery, wastewater, or waste treatment destination."
+          amount:
+            expression: "Measured rejected fish plus separately measured or calculated thaw-drip loss"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg received fish"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_fish_receipt
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.5"
+                unit: "kg/kg received fish"
+                basis: "rejected material and thaw loss per kg received fish"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        []
+  - id: fish_preparation
+    label: "Fish preparation and washing"
+    inputs:
+      product:
+        - row_id: fish_for_preparation
+          role: "Accepted fish for preparation"
+          name: "Accepted fish intermediate; internal product flow"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Transfer the accepted intermediate without double counting its upstream burden."
+          amount:
+            expression: "measured or mass-balanced accepted conditioned fish"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per kg prepared fish output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_preparation
+              source_ids: []
+            ranges: []
+        - row_id: preparation_water
+          role: "Preparation water"
+          name: "Potable or process water by actual supply; UUID pending exact identity review"
+          flow_type: "product"
+          property_unit: "Volume / m3 or Mass / kg"
+          description: "Record potable or otherwise legally suitable water used for washing and preparation."
+          amount:
+            expression: "Metered water attributable to the lot"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg prepared fish output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_preparation
+              source_ids:
+                - codex-cxc-52-2003
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.1"
+                unit: "m3/kg prepared fish"
+                basis: "water used per kg prepared fish output"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: prepared_fish
+          role: "Prepared fish"
+          name: "Prepared fish intermediate; internal product flow"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record edible fish transferred to salting, brining, drying, or final handling."
+          amount:
+            expression: "measured prepared edible fish mass"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg prepared fish output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_preparation
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: preparation_offcuts
+          role: "Preparation offcuts and rejects"
+          name: "Fish offcuts or rejects by actual disposition; UUID pending exact identity review"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Separate marketable co-products from wastes and record each destination."
+          amount:
+            expression: "measured mass by disposition"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted fish input"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_preparation
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.8"
+                unit: "kg/kg accepted fish input"
+                basis: "preparation offcuts and rejects per kg accepted fish"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: preparation_wastewater
+          role: "Preparation wastewater"
+          name: "Wastewater by actual receiving treatment; UUID pending exact identity review"
+          flow_type: "waste"
+          property_unit: "Volume / m3 or Mass / kg"
+          description: "Record wastewater sent to treatment, including entrained solids when separately measured."
+          amount:
+            expression: "metered discharge or water input minus measured carryover and evaporation"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg prepared fish output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_preparation
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.1"
+                unit: "m3/kg prepared fish"
+                basis: "wastewater per kg prepared fish output"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        []
+  - id: salting_or_brining
+    label: "Salting, brining, or brine holding"
+    inputs:
+      product:
+        - row_id: fish_for_salting
+          role: "Prepared fish for preservation"
+          name: "Prepared fish intermediate; internal product flow"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record prepared fish entering the declared salting or brining route."
+          amount:
+            expression: "measured prepared fish mass"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg salted or brined fish output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_salting_batch
+              source_ids: []
+            ranges: []
+        - row_id: food_grade_salt
+          role: "Food-grade salt"
+          name: "Sodium chloride or food-grade salt by actual supply; UUID pending exact identity review"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record new food-grade salt added by dry salting, wet salting, brining, injection, pickling, or replenishment; do not assume reused salt."
+          amount:
+            expression: "weighed salt added to the production lot"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg salted or brined fish output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_salting_batch
+              source_ids:
+                - codex-cxc-52-2003
+            ranges:
+              - role: qa_guardrail
+                lower: "0.01"
+                upper: "5"
+                unit: "kg/kg salted or brined fish output"
+                basis: "food-grade salt input per kg preserved fish output"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: brine_water
+          role: "Brine make-up water"
+          name: "Potable water by actual supply; UUID pending exact identity review"
+          flow_type: "product"
+          property_unit: "Volume / m3 or Mass / kg"
+          description: "Record potable water used to prepare or replenish brine when the route uses brine."
+          amount:
+            expression: "metered or batch-weighed make-up water"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg salted or brined fish output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_salting_batch
+              source_ids:
+                - codex-cxc-52-2003
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.02"
+                unit: "m3/kg salted or brined fish output"
+                basis: "brine make-up water per kg preserved fish output"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: salted_or_brined_fish
+          role: "Salted or brined fish intermediate"
+          name: "Salted or brined fish intermediate; internal product flow"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record preserved fish mass and the route's measured salt/brine, time, temperature, and release criteria."
+          amount:
+            expression: "measured fish-plus-retained-brine mass on the explicitly declared basis"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg preserved fish intermediate"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_salting_batch
+              source_ids:
+                - codex-cxc-52-2003
+            ranges: []
+      waste:
+        - row_id: spent_brine
+          role: "Spent brine and salt-bearing wastewater"
+          name: "Spent brine or salt-bearing wastewater by actual treatment; UUID pending exact identity review"
+          flow_type: "waste"
+          property_unit: "Volume / m3 or Mass / kg"
+          description: "Record spent brine, drainage, and cleaning discharge separately from freshwater wastewater where treatment differs."
+          amount:
+            expression: "measured discharge or batch balance by destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg salted or brined fish output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_salting_batch
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.02"
+                unit: "m3/kg salted or brined fish output"
+                basis: "spent brine and salt-bearing wastewater per kg output"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        []
+  - id: non_smoking_drying
+    label: "Non-smoking drying"
+    inputs:
+      product:
+        - row_id: fish_for_drying
+          role: "Fish entering drying"
+          name: "Prepared or salted fish intermediate; internal product flow"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record fish mass entering non-smoking drying and its prior salting state."
+          amount:
+            expression: "measured mass at dryer entry"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg dried fish output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_drying_batch
+              source_ids: []
+            ranges: []
+        - row_id: drying_energy
+          role: "Drying energy"
+          name: "Electricity and/or fuel carrier by actual dryer technology; UUIDs pending exact identity review"
+          flow_type: "product"
+          property_unit: "Energy / kWh or MJ"
+          description: "Record electricity and fuels consumed by fans, heaters, dehumidification, controls, and attributable auxiliary equipment; exclude smoking fuel."
+          amount:
+            expression: "metered or engineering-allocated energy for the drying batch"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg dried product output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_drying_batch
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "50"
+                unit: "kWh/kg dried product"
+                basis: "combined electrical-equivalent screen per kg dried product output"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: dried_fish
+          role: "Dried fish intermediate"
+          name: "Dried fish intermediate; internal product flow"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record final dried fish mass and the product-specific validated drying endpoint; no universal moisture or water-activity limit is asserted by this PCR."
+          amount:
+            expression: "measured conforming dried fish mass"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg dried fish output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_drying_batch
+              source_ids:
+                - codex-cxc-52-2003
+            ranges: []
+      waste:
+        - row_id: drying_rejects
+          role: "Drying rejects"
+          name: "Off-specification dried fish by actual disposition; UUID pending exact identity review"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record off-specification fish removed after drying and its disposition."
+          amount:
+            expression: "measured rejected mass"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg fish entering drying"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_drying_batch
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.5"
+                unit: "kg/kg fish entering drying"
+                basis: "off-specification dried fish per kg dryer input"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        []
+  - id: packing_and_storage
+    label: "Sorting, packing, and route-required storage"
+    inputs:
+      product:
+        - row_id: fish_for_packing
+          role: "Conforming preserved fish for packing"
+          name: "Conforming preserved fish intermediate; internal product flow"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record dried, salted, or brined product transferred to sorting and packing without double counting internal transfers."
+          amount:
+            expression: "measured mass at packing entry"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packing_storage
+              source_ids: []
+            ranges: []
+        - row_id: packaging_materials
+          role: "Primary and secondary packaging"
+          name: "Packaging material by actual polymer, paper, metal, glass, wood, or composite; UUIDs pending exact identity review"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record each packaging material by type and measured or bill-of-material mass."
+          amount:
+            expression: "bill-of-material or weighed packaging issued minus returned unused packaging"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packing_storage
+              source_ids:
+                - codex-cxc-52-2003
+            ranges:
+              - role: qa_guardrail
+                lower: "0.001"
+                upper: "2"
+                unit: "kg/kg net reference product"
+                basis: "total packaging issued per kg net product"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: storage_energy
+          role: "Storage energy"
+          name: "Electricity and/or fuel carrier by actual storage system; UUIDs pending exact identity review"
+          flow_type: "product"
+          property_unit: "Energy / kWh or MJ"
+          description: "Record route-required refrigeration, ventilation, or humidity-control energy through the facility gate."
+          amount:
+            expression: "metered energy allocated by occupied capacity-time or another disclosed causal driver"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "storage_duration"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packing_storage
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "20"
+                unit: "kWh/kg reference product"
+                basis: "combined electrical-equivalent screen through the facility gate"
+                basis_kind: "storage_duration"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: reference_product
+          role: "Reference fish product"
+          name: "Fish, dried but not smoked, salted but not dried or smoked, or in brine"
+          flow_type: "product"
+          flow_ref:
+            uuid: "39347f84-4a1d-414b-89f0-746f31b01aa6"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "The conforming packed product is the quantitative reference for all normalized foreground amounts."
+          amount:
+            expression: "exactly 1 kg net product mass, excluding packaging"
+            value_mode: "fixed_value"
+            specificity: "not_applicable"
+            basis:
+              text: "1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "identity_reference"
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: packing_waste
+          role: "Packing rejects and packaging waste"
+          name: "Product reject and packaging waste by actual material and destination; UUIDs pending exact identity review"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record off-specification product and packaging waste separately by treatment or recovery destination."
+          amount:
+            expression: "measured mass by waste type and destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packing_storage
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.5"
+                unit: "kg/kg reference product"
+                basis: "packing rejects and packaging waste per kg net product"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocation_avoid_first
+    applies_to: "Shared or multi-output foreground operations"
+    rule: "First avoid allocation through process subdivision or by expanding the system where the substituted function is demonstrable and consistent with the study goal."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: allocation_physical_second
+    applies_to: "Unavoidable joint processes with a causal physical relationship"
+    rule: "Allocate by a measured causal physical relationship such as mass, processing time, occupied capacity-time, or metered energy; explain why the driver represents resource use or emissions."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: allocation_other_relation_last
+    applies_to: "Unavoidable joint processes without a defensible physical relationship"
+    rule: "Use another documented relationship, normally economic value over a representative period, only after the preceding options are infeasible; disclose prices, period, currency, shares, and sensitivity."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: co_product_or_waste_status
+    applies_to: "Offcuts, rejected fish, recovered salt/brine, and other outputs"
+    rule: "Classify an output as a co-product only when it has a documented destination and function or market value; otherwise model it as waste to the actual treatment. Do not credit avoided burden without an explicit system-expansion model."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: internal_flow_no_double_count
+    applies_to: "Intermediate fish transferred between foreground steps"
+    rule: "Internal transfers carry mass for balance checks but do not introduce a second upstream burden."
+    source_ids:
+      - eu-pef-2021-2279
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_fish_receipt
+      process_id: "fish_receipt_and_conditioning"
+      flow_role: "Received fish, rejects, thaw loss, and conditioning energy"
+      record_type: "Weighbridge/scale, receiving inspection, temperature log, meter, supplier lot record"
+      raw_fields: "lot_id; species; product_form; origin; input_state; gross_mass; tare_mass; accepted_mass; reject_mass; thaw_loss; receipt_temperature; holding_time; electricity; fuel; disposition"
+      collection_method: "Calibrated weighing, acceptance inspection, continuous or batch temperature record, and attributable meter/invoice reading"
+      unit: "kg; °C; h; kWh; MJ"
+      frequency: "Every lot; energy at least each production campaign"
+      temporal_coverage: "Representative operating period including normal seasonal variation"
+      site_scope: "Each included facility and receiving/storage area"
+      aggregation_rule: "Sum lot quantities; subtract tare; allocate shared conditioning energy by measured causal driver; normalize to conforming output"
+      quality_evidence: "Calibration, supplier specification, acceptance decision, temperature trace, meter reconciliation, and lot linkage"
+    - protocol_id: cp_preparation
+      process_id: "fish_preparation"
+      flow_role: "Fish input/output, water, offcuts, and wastewater"
+      record_type: "Batch sheet, calibrated scale, water meter, waste ticket"
+      raw_fields: "lot_id; input_mass; prepared_mass; water_input; offcut_mass_by_disposition; reject_mass; wastewater_volume; solids_mass"
+      collection_method: "Batch weighing and metering with disposition-specific waste records"
+      unit: "kg; m3"
+      frequency: "Every batch or continuous meter interval linked to batches"
+      temporal_coverage: "Representative operating period"
+      site_scope: "Each preparation line"
+      aggregation_rule: "Mass balance by batch; aggregate only like product forms and routes; normalize to prepared and final outputs"
+      quality_evidence: "Scale/meter calibration, batch reconciliation, and waste destination evidence"
+    - protocol_id: cp_salting_batch
+      process_id: "salting_or_brining"
+      flow_role: "Fish, salt, brine water, preserved output, spent brine, time, and temperature"
+      record_type: "Recipe/batch sheet, scales, flow meter, salinometer or validated concentration test, temperature logger"
+      raw_fields: "lot_id; method; fish_input_mass; salt_mass; brine_water; brine_concentration; make_up; time; temperature; output_mass; spent_brine; discharge_destination"
+      collection_method: "Weigh each batch addition and output; monitor concentration, time, and temperature under the validated plan"
+      unit: "kg; m3; concentration unit; °C; h"
+      frequency: "Every batch with monitoring frequency defined by HACCP/quality plan"
+      temporal_coverage: "Representative operating period"
+      site_scope: "Each salting/brining line and vessel"
+      aggregation_rule: "Batch mass balance; no averaging across materially different methods; normalize to preserved output and reference product"
+      quality_evidence: "Calibration, recipe authorization, concentration checks, temperature/time record, corrective action, and lot release"
+    - protocol_id: cp_drying_batch
+      process_id: "non_smoking_drying"
+      flow_role: "Dryer input/output, energy, endpoint, and rejects"
+      record_type: "Batch sheet, calibrated scales, energy meters, time/temperature/humidity logs, validated endpoint test"
+      raw_fields: "lot_id; dryer_id; input_mass; output_mass; reject_mass; electricity; fuel; start_time; end_time; temperature_profile; humidity_profile; endpoint_method; endpoint_result"
+      collection_method: "Weigh input/output; meter energy; record operating profile; test the declared endpoint by validated method"
+      unit: "kg; kWh; MJ; °C; h; declared endpoint unit"
+      frequency: "Every batch or continuous run segment"
+      temporal_coverage: "Representative seasons and loading conditions"
+      site_scope: "Each dryer technology and site"
+      aggregation_rule: "Separate technologies and recipes; calculate yield and specific energy; normalize to dried and final product"
+      quality_evidence: "Calibration, meter reconciliation, endpoint test record, deviation/corrective action, and lot release"
+    - protocol_id: cp_packing_storage
+      process_id: "packing_and_storage"
+      flow_role: "Product, packaging, rejects, storage energy, duration, and temperature"
+      record_type: "Packing bill of materials, scales, warehouse system, temperature logger, meter, waste record"
+      raw_fields: "lot_id; packed_net_mass; drained_mass_if_applicable; packaging_mass_by_material; rejects; storage_start; storage_end; temperature_profile; energy; occupied_capacity; waste_destination"
+      collection_method: "Weigh or reconcile packing materials and product; meter storage energy; continuously or periodically log storage condition under validated plan"
+      unit: "kg; h; °C; kWh; MJ"
+      frequency: "Every packing lot; storage energy and conditions over attributable intervals"
+      temporal_coverage: "Representative operating period"
+      site_scope: "Each packing line and storage system"
+      aggregation_rule: "Normalize packaging by net product; allocate storage energy by occupied capacity-time unless a better causal driver is measured"
+      quality_evidence: "Net-content check, material reconciliation, temperature trace, meter calibration, lot code, and release record"
+  calculation_rules:
+    - id: calc_reference_normalization
+      applies_to: "Every foreground inventory row"
+      rule: "normalized amount = attributable row amount / conforming net reference-product mass"
+      inputs:
+        - "attributable row amount"
+        - "conforming net product kg"
+      output: "amount per 1 kg reference product"
+      source_ids: []
+    - id: calc_process_mass_balance
+      applies_to: "Each fish-processing step"
+      rule: "mass-balance residual = total measured mass inputs - total measured product, co-product, waste, wastewater-solids, retained-brine, and measured moisture-loss outputs; investigate material residuals using uncertainty and missing-flow records"
+      inputs:
+        - "batch input/output masses and moisture/brine basis"
+      output: "residual and completeness flag"
+      source_ids: []
+    - id: calc_yield
+      applies_to: "Preparation, preservation, drying, and packing"
+      rule: "process yield = conforming process-output mass / eligible process-input fish mass on the same declared basis"
+      inputs:
+        - "eligible fish input"
+        - "conforming output"
+      output: "kg/kg yield"
+      source_ids: []
+    - id: calc_shared_energy
+      applies_to: "Shared meters"
+      rule: "attributable energy = measured shared energy x documented causal share; use production time, metered load, occupied capacity-time, or another justified physical driver before economic allocation"
+      inputs:
+        - "meter total"
+        - "causal driver totals"
+        - "product share"
+      output: "attributable kWh or MJ"
+      source_ids:
+        - eu-pef-2021-2279
+    - id: calc_allocation_share
+      applies_to: "Multi-output process"
+      rule: "Apply the selected Section 7 hierarchy and calculate shares from the same period and boundary as the allocated inventory; shares must sum to 1 within numerical tolerance"
+      inputs:
+        - "subdivided inventory or physical/economic driver data"
+      output: "allocated inventory and allocation shares"
+      source_ids:
+        - eu-pef-2021-2279
+  data_quality_requirements:
+    - id: dq_identity_traceability
+      applies_to: "Fish and reference product"
+      requirement: "Preserve supplier, species/product identity, origin where known, lot chain, input and output state, and the declared CPC 21231 route through final lot release."
+      evidence: "Receiving record, supplier specification, batch genealogy, product specification, and lot code"
+    - id: dq_measurement_control
+      applies_to: "Mass, water, energy, concentration, temperature, time, and endpoint measurements"
+      requirement: "Use calibrated or verified instruments suitable for the operating range; preserve raw readings, units, conversion factors, calibration status, and data substitutions."
+      evidence: "Calibration/verification records, meter reconciliation, laboratory method, and calculation sheet"
+    - id: dq_temporal_representativeness
+      applies_to: "Foreground activity data"
+      requirement: "Cover a representative operating period including relevant species, route, technology, load, and seasonal variation; disclose shutdowns, atypical batches, and exclusions."
+      evidence: "Production calendar, batch coverage table, and representativeness assessment"
+    - id: dq_completeness
+      applies_to: "Process inventory"
+      requirement: "Reconcile fish mass through each process and collect all material fish, salt, brine, water, energy, packaging, refrigerant loss where relevant, wastewater, rejects, co-products, and treatment destinations."
+      evidence: "Process mass balance, utility reconciliation, waste tickets, and completeness checklist"
+    - id: dq_food_safety_quality
+      applies_to: "Processing and release controls"
+      requirement: "Maintain prerequisite programmes and a product/route-specific HACCP and defect-control plan, including limits, monitoring, corrective actions, verification, and release criteria required by applicable law and specification."
+      evidence: "HACCP plan, monitoring logs, deviations, corrective actions, verification, test results, and release authorization; codex-cxc-52-2003"
+    - id: dq_proxy_disclosure
+      applies_to: "Upstream and missing foreground data"
+      requirement: "Identify every proxy, gap-filled value, estimate, allocation, and unverified UUID; report its effect and replacement priority."
+      evidence: "Data-gap register, sensitivity result, and review record"
+validation_rules:
+  - rule_id: validate_reference_identity
+    applies_to: "Reference flow"
+    rule: "Require reference product UUID 39347f84-4a1d-414b-89f0-746f31b01aa6, Mass UUID 93a60a56-a3c8-11da-a746-0800200b9a66, unit-group UUID 93a60a57-a4c8-11da-a746-0800200c9a66, unit kg, and exactly 1 kg net product."
+    source_ids: []
+  - rule_id: validate_required_qualifiers
+    applies_to: "Dataset metadata and product description"
+    rule: "Fail completeness when any required qualifier in Section 3 is missing or when drained/undrained basis is ambiguous for a brined product."
+    source_ids:
+      - unsd-cpc-3-0-2025
+  - rule_id: validate_route_scope
+    applies_to: "Process map"
+    rule: "Require salting/brining only when used, require non-smoking drying for the dried route, prohibit smoking under this PCR, and disclose all omitted conditional steps."
+    source_ids:
+      - codex-cxc-52-2003
+      - unsd-cpc-3-0-2025
+  - rule_id: validate_mass_balance
+    applies_to: "Each foreground process and whole foreground system"
+    rule: "Require a documented mass balance on consistent wet/drained/dry bases; investigate and disclose material residuals rather than forcing closure."
+    source_ids: []
+  - rule_id: validate_haccp_records
+    applies_to: "Food-safety and quality controls"
+    rule: "Require a route- and product-specific HACCP/prerequisite record set with monitoring, corrective action, verification, and lot-release evidence."
+    source_ids:
+      - codex-cxc-52-2003
+  - rule_id: validate_salting_brining_controls
+    applies_to: "Salted or brined routes"
+    rule: "Require food-grade salt, potable brine water, measured salt or brine input, declared method, time/temperature and concentration controls where applicable, and spent-brine destination."
+    source_ids:
+      - codex-cxc-52-2003
+  - rule_id: validate_drying_endpoint
+    applies_to: "Dried route"
+    rule: "Require a product-specific validated drying endpoint and method, recorded operating conditions, and confirmation that no smoking operation occurred; this PCR does not supply a universal endpoint value."
+    source_ids:
+      - codex-cxc-52-2003
+  - rule_id: validate_chilled_storage
+    applies_to: "Salt-matured fish requiring chilled storage"
+    rule: "Require storage between 1 °C and 4 °C with recorded time and temperature unless a stricter applicable product specification governs."
+    source_ids:
+      - codex-cxc-52-2003
+  - rule_id: validate_allocation
+    applies_to: "Multi-output and shared operations"
+    rule: "Require the Section 7 hierarchy, causal-driver evidence, shares summing to 1, and disclosure/sensitivity for any economic or other-relation allocation."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: validate_provisional_ranges
+    applies_to: "Reasoned-estimate QA ranges"
+    rule: "Treat every reasoned_estimate range as a non-binding review screen; do not substitute it for foreground data or claim source-backed representativeness."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "Foreground production dataset for a declared dried, salted, or brined fish route"
+  downstream_use: "secondary_dataset; background_dataset when reviewed for representativeness and reuse"
+  allowed_use: "Product carbon footprint, LCA, EPD, supply-chain, and process-improvement studies that match the declared species/product form, preservation route, geography, technology, storage, and time"
+  excluded_use: "Smoked or smoke-dried fish, edible fish meal, fish offal categories, cooked/canned or otherwise prepared fish, unqualified generic seafood proxies, or public comparative assertions without applicable review"
+  required_metadata: "PCR id/version; reference UUIDs; species and origin; product form; input state; preservation route and method; dried endpoint claim; brine/net-mass basis; storage regime; packaging; facility geography; technology; reference year; allocation; upstream datasets; exclusions"
+  required_quality_disclosure: "Foreground coverage, calibration, mass balance, HACCP/quality evidence, route-specific limits, proxies, provisional estimates, unverified UUIDs, allocation sensitivity, data gaps, and review status"
+  update_trigger: "Material change in species mix, source fish, route, salting/brining recipe, dryer or storage technology, preservation endpoint, packaging, energy supply, facility, law/specification, allocation driver, or representative data period"
+data_sources:
+  - id: "unsd-cpc-3-0-2025"
+    type: "dataset"
+    reference: "United Nations Statistics Division, Central Product Classification Version 3.0 structure, code 21231, 30 June 2025; https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Structure_30Jun2025.csv (retrieved 2026-06-23)"
+    used_for: "Product-category scope and exclusions"
+  - id: "codex-cxc-52-2003"
+    type: "official_guidance"
+    reference: "Codex Alimentarius, CXC 52-2003, Code of Practice for Fish and Fishery Products; https://www.fao.org/input/download/standards/10273/CXP_052e.pdf (accessed 2026-08-11)"
+    used_for: "Receiving and preparation, salting/brining/drying process decomposition, hygiene and HACCP controls, packaging, quality records, and route-dependent chilled storage"
+  - id: "codex-cxs-190-1995"
+    type: "standard"
+    reference: "Codex Alimentarius, CXS 190-1995, Standard for Quick Frozen Fish Fillets"
+    used_for: "Conditional incoming-material specification only when a quick-frozen fish fillet is used and is within the standard's scope; no category-wide numerical rule is imported"
+  - id: "eu-pef-2021-2279"
+    type: "official_guidance"
+    reference: "European Commission, Commission Recommendation (EU) 2021/2279 on the use of the Environmental Footprint methods, Annex I Product Environmental Footprint method, CELEX 32021H2279; https://eur-lex.europa.eu/eli/reco/2021/2279/oj"
+    used_for: "System boundary linkage, multi-functionality hierarchy, shared-resource allocation, and co-product handling"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:2cf6cc8b55e3e896df1ba4056d40f8f71e38126064ea655eba5b873a812aeb04"
+  generated_content_sha256: "sha256:7259a87947aff64295836987a31462a19b02c9e3ab3f5b44a065c7e148d63878"

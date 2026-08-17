@@ -1,10 +1,1170 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "21111"
-  title: "Meat of cattle, fresh or chilled"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.food-products-beverages-and-tobacco-textiles-apparel-and-leather-products.meat-fish-fruits-vegetables-oils-and-fats.meat-of-cattle-fresh-or-chilled"
+  classification_refs: "CPC 3.0: 21111, Meat of cattle, fresh or chilled, exact"
+  covered_products: "Fresh or chilled cattle carcass meat and saleable bone-in or boneless cattle-meat cuts"
+  excluded_products: "Live cattle; buffalo meat; edible offal as reference product; hides; rendered products; frozen, prepared, or preserved cattle meat; post-gate distribution"
+  representative_product: "Chilled saleable beef cut at the producing facility gate"
+  production_route: "Accepted live cattle; slaughter and dressing; conditional chilling; conditional cutting or deboning; conditional packaging and cold holding"
+  market_state: "Fresh or chilled, with product form, grade, bone status, packaging state, and dispatch temperature declared"
+functional_unit:
+  what: "Saleable cattle meat at the producing facility gate in the declared fresh or chilled state"
+  how_much: "1 kg net product mass, excluding packaging"
+  how_well: "Declared product form, cattle class where known, intended-use grade, bone status, packaging state, thermal state, dispatch temperature, and included route"
+  how_long_or_cycle: "One production batch or campaign normalized to 1 kg; coverage represents the declared reporting period"
+  reference_flow_link: "Final saleable cattle-meat output of the selected foreground route"
+system_boundary:
+  rules:
+    - rule_id: boundary_gate_to_gate
+      applies_to: "foreground route"
+      rule: "Start with accepted live cattle at the slaughter facility gate and end with saleable fresh or chilled cattle meat at the producing facility gate. Link cattle raising and inbound transport as upstream datasets when included downstream."
+      source_ids:
+        - tiangong-beef-slaughter-process
+    - rule_id: boundary_required_and_conditional_stages
+      applies_to: "process inclusion"
+      rule: "Include slaughter and dressing. Include chilling, cutting or deboning, packaging, and cold holding whenever they occur before the declared product leaves the producing facility."
+      source_ids:
+        - tiangong-beef-slaughter-process
+    - rule_id: boundary_utilities_and_releases
+      applies_to: "included operations"
+      rule: "Include attributable water, electricity, heat or fuels, sanitation chemicals, refrigerant make-up, packaging, wastewater, treatment-bound residues, and direct releases."
+      source_ids: []
+    - rule_id: boundary_capital_goods
+      applies_to: "infrastructure"
+      rule: "Exclude capital goods by default; report any included infrastructure as a separate scope extension."
+      source_ids: []
+    - rule_id: boundary_same_category_input
+      applies_to: "fresh or chilled cattle-meat input"
+      rule: "Record a same-category intermediate once and link it to its upstream conforming process or dataset; do not recursively recreate upstream inventory."
+      source_ids: []
+    - rule_id: boundary_transport
+      applies_to: "transport"
+      rule: "Exclude post-gate distribution; include and disclose inter-site transport between included foreground facilities."
+      source_ids: []
+boundary_abstraction:
+  declared_starting_condition: "Live cattle accepted at the slaughter facility gate, with live mass, cattle class where known, supplier or origin, time, and inbound holding declared"
+  starting_condition_role: "Upstream anchor for the slaughter-and-dressing foreground route"
+  product_classification_scope: "CPC 3.0 code 21111, limited to cattle meat leaving the facility fresh or chilled"
+  recursive_input_rule: "Record incoming fresh or chilled cattle meat as a linked same-category product input and do not expand it recursively within the receiving process"
+  upstream_dataset_requirement: "Link live cattle to an applicable cattle-production dataset and disclose production system, live-mass basis, geography, time, and inbound transport treatment"
+  disclosure: "Declare starting gate, product qualifiers, included stages, inter-site movements, and every extension or exclusion"
+reference_flow_definition:
+  reference_amount: "1 kg"
+  product_flow_ref:
+    name: "Beef"
+    uuid: "06f53118-716c-472d-b6f2-c5924840395c"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "fresh or chilled state"
+    - "product form or cut"
+    - "cattle class where known"
+    - "intended-use grade"
+    - "bone status"
+    - "net mass basis"
+    - "packaging state"
+    - "dispatch temperature"
+    - "facility gate"
+    - "included route"
+    - "reporting period"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_net_mass
+    applies_to: "reference output"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Measure saleable net product mass after subtracting packaging and non-saleable material; normalize the selected route output to 1 kg."
+  - id: market_state_temperature
+    applies_to: "reference product and intermediates"
+    required_property_ref:
+      name: "Temperature and time record"
+      uuid: ""
+    required_unit: "°C and time unit"
+    rule: "Declare fresh or chilled state, dispatch temperature, holding duration, and measurement point."
+  - id: live_cattle_mass
+    applies_to: "live-cattle input"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg live mass"
+    rule: "Prefer calibrated live-mass records; convert head count only with a batch-specific measured average and retain the calculation."
+  - id: energy_units
+    applies_to: "electricity, heat, and fuels"
+    required_property_ref:
+      name: "Applicable energy property"
+      uuid: ""
+    required_unit: "kWh or MJ"
+    rule: "Preserve source units and conversion factors; report electricity separately from thermal energy and fuels."
+  - id: water_units
+    applies_to: "process and cleaning water"
+    required_property_ref:
+      name: "Mass or volume"
+      uuid: ""
+    required_unit: "kg or m3"
+    rule: "Preserve the measured unit and record any density-based conversion."
+  - id: packaging_mass
+    applies_to: "packaging"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Record each packaging material separately and outside the 1 kg net product mass."
+  - id: material_balance_units
+    applies_to: "cattle, meat, co-products, wastes, and losses"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Reconcile mass terms on a common wet-mass basis unless another basis is declared and converted."
+process_map:
+  - id: slaughter_dressing
+    name: "Cattle reception, slaughter, and dressing"
+    inclusion: "required"
+    inclusion_condition: "Always included for a live-cattle starting condition"
+    role: "Foreground conversion and multi-output separation"
+    quantitative_reference: "Per 1 kg saleable cattle-meat output"
+  - id: chilling_cold_holding
+    name: "Chilling and cold holding"
+    inclusion: "conditional"
+    inclusion_condition: "Include for chilled product or controlled cooling or holding before dispatch"
+    role: "Temperature conditioning"
+    quantitative_reference: "Per 1 kg chilled cattle-meat output"
+  - id: cutting_packaging
+    name: "Cutting, deboning, packaging, and packaged holding"
+    inclusion: "conditional"
+    inclusion_condition: "Include when any listed operation occurs before dispatch"
+    role: "Product-form conversion and dispatch preparation"
+    quantitative_reference: "Per 1 kg net saleable output"
+process_inventory:
+  - id: slaughter_dressing
+    label: "Cattle reception, slaughter, and dressing"
+    inputs:
+      product:
+        - row_id: accepted_live_cattle
+          role: "Accepted live cattle"
+          name: "Cow"
+          flow_type: "product"
+          flow_ref:
+            uuid: "aba9fdf6-b7e4-45cc-a0dd-034cec2b4fc0"
+          property_unit: "Mass / kg live mass"
+          description: "Accepted live cattle anchor the slaughter-stage mass balance."
+          amount:
+            expression: "Batch-accepted live mass"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg saleable meat output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_slaughter_mass_outputs
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "1"
+                upper: "5"
+                unit: "kg live mass/kg meat"
+                basis: "accepted live mass per 1 kg saleable meat"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: slaughter_water
+          role: "Process and sanitation water"
+          name: "Process Water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "94a04f7e-2d5c-41f0-b182-d54a3b373a02"
+          property_unit: "Mass or volume / kg or m3"
+          description: "Record supplied water net of documented internal recirculation."
+          amount:
+            expression: "Metered or invoiced net supplied water"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg saleable meat output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_slaughter_utilities
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "50"
+                unit: "kg water/kg meat"
+                basis: "net supplied water per 1 kg saleable meat"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: slaughter_electricity
+          role: "Slaughter electricity"
+          name: "Electricity, medium voltage"
+          flow_type: "product"
+          flow_ref:
+            uuid: "460ac059-9bff-49b1-9d19-503be31bd127"
+          property_unit: "Energy / kWh or MJ"
+          description: "Record electricity attributable to reception, slaughter, dressing, pumping, ventilation, and sanitation."
+          amount:
+            expression: "Metered attributable electricity"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg saleable meat output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_slaughter_utilities
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "20"
+                unit: "MJ/kg meat"
+                basis: "electricity per 1 kg saleable meat"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: slaughter_heat
+          role: "Slaughter heat or fuel"
+          name: "Heat"
+          flow_type: "product"
+          flow_ref:
+            uuid: "260672cc-62f0-48c3-b09e-22e71519be74"
+          property_unit: "Energy / MJ"
+          description: "Record purchased heat or each on-site fuel separately."
+          amount:
+            expression: "Metered heat or calculated net fuel energy"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg saleable meat output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_slaughter_utilities
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "30"
+                unit: "MJ/kg meat"
+                basis: "heat or fuel energy per 1 kg saleable meat"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: slaughter_meat_output
+          role: "Saleable cattle meat"
+          name: "Beef"
+          flow_type: "product"
+          flow_ref:
+            uuid: "06f53118-716c-472d-b6f2-c5924840395c"
+          property_unit: "Mass / kg"
+          description: "Record the saleable fresh or chilled output and link any downstream on-site process to it."
+          amount:
+            expression: "1 kg normalized output"
+            value_mode: "fixed_value"
+            specificity: "product_specific"
+            basis:
+              text: "declared reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "method_formula"
+              source_ids:
+                - mass-balance-identity
+            ranges:
+              - role: allowed_range
+                lower: "1"
+                upper: "1"
+                unit: "kg"
+                basis: "declared reference flow"
+                basis_kind: "reference_flow"
+                evidence_kind: "method_formula"
+                source_ids:
+                  - mass-balance-identity
+        - row_id: raw_hides_output
+          role: "Raw bovine hides"
+          name: "Rawhide"
+          flow_type: "product"
+          flow_ref:
+            uuid: "440c2098-2f4e-4632-9dcf-32329bcbe4de"
+          property_unit: "Mass / kg wet hide"
+          description: "Record hides as product only with beneficial-use disposition evidence."
+          amount:
+            expression: "Measured product mass"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg saleable meat output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_slaughter_mass_outputs
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "1"
+                unit: "kg wet hide/kg meat"
+                basis: "raw hide per 1 kg saleable meat"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: edible_offal_output
+          role: "Edible cattle offal"
+          name: "Edible offal of cattle, fresh, chilled or frozen"
+          flow_type: "product"
+          flow_ref:
+            uuid: "a6673976-2ef4-4502-b9f5-bbc57099bb40"
+          property_unit: "Mass / kg"
+          description: "Record edible offal separately when transferred as product."
+          amount:
+            expression: "Measured product mass"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg saleable meat output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_slaughter_mass_outputs
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "1"
+                unit: "kg offal/kg meat"
+                basis: "edible offal per 1 kg saleable meat"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        - row_id: slaughter_wastewater
+          role: "Slaughterhouse wastewater"
+          name: "Slaughterhouse wastewater sent to treatment"
+          flow_type: "waste"
+          property_unit: "Mass or volume / kg or m3"
+          description: "Use a matching waste identity when available; do not substitute an unrelated wastewater UUID."
+          amount:
+            expression: "Metered discharge net of recirculation"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg saleable meat output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_slaughter_wastes
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "50"
+                unit: "kg wastewater/kg meat"
+                basis: "discharge per 1 kg saleable meat"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: inedible_animal_material
+          role: "Inedible animal material"
+          name: "Inedible animal material sent to treatment"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record treatment-bound blood, bone, condemned material, and inedible residues by actual route."
+          amount:
+            expression: "Measured mass by material and route"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg saleable meat output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_slaughter_wastes
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "3"
+                unit: "kg waste/kg meat"
+                basis: "treatment-bound animal material per 1 kg saleable meat"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        - row_id: slaughter_direct_releases
+          role: "Direct releases from on-site fuel use"
+          name: "Select each applicable elementary flow to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg emitted substance"
+          description: "Record each emitted elementary flow separately from fuel consumption."
+          amount:
+            expression: "Collected fuel quantity times an applicable documented factor, or direct measurement"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg saleable meat output"
+              kind: "fuel_inventory"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_slaughter_direct_releases
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "10"
+                unit: "kg emitted substance/kg meat"
+                basis: "each direct release per 1 kg saleable meat"
+                basis_kind: "fuel_inventory"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+  - id: chilling_cold_holding
+    label: "Chilling and cold holding"
+    inputs:
+      product:
+        - row_id: chilling_meat_input
+          role: "Cattle-meat input to chilling"
+          name: "Beef"
+          flow_type: "product"
+          flow_ref:
+            uuid: "06f53118-716c-472d-b6f2-c5924840395c"
+          property_unit: "Mass / kg"
+          description: "Link this input to the upstream slaughter output."
+          amount:
+            expression: "Measured incoming mass"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg chilled output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_chilling_mass_energy
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "1"
+                upper: "1.2"
+                unit: "kg input/kg chilled output"
+                basis: "input mass per 1 kg chilled output"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: chilling_electricity
+          role: "Chilling electricity"
+          name: "Electricity, medium voltage"
+          flow_type: "product"
+          flow_ref:
+            uuid: "460ac059-9bff-49b1-9d19-503be31bd127"
+          property_unit: "Energy / kWh or MJ"
+          description: "Record refrigeration, fan, pump, and cold-room electricity."
+          amount:
+            expression: "Metered attributable electricity"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg chilled output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_chilling_mass_energy
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "20"
+                unit: "MJ/kg chilled output"
+                basis: "electricity per 1 kg chilled output"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: chilling_refrigerant_makeup
+          role: "Refrigerant make-up"
+          name: "Refrigerant, R134a"
+          flow_type: "product"
+          flow_ref:
+            uuid: "210b4222-adda-4097-9e79-f2c9a6c172e4"
+          property_unit: "Mass / kg refrigerant"
+          description: "Record the actual refrigerant type and equipment-specific net make-up."
+          amount:
+            expression: "Opening plus purchases minus closing, transfers, and recovery"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg chilled output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_chilling_refrigerant
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.05"
+                unit: "kg refrigerant/kg chilled output"
+                basis: "net make-up per 1 kg chilled output"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: chilled_meat_output
+          role: "Chilled cattle meat"
+          name: "Beef"
+          flow_type: "product"
+          flow_ref:
+            uuid: "06f53118-716c-472d-b6f2-c5924840395c"
+          property_unit: "Mass / kg"
+          description: "Record product mass and exit temperature."
+          amount:
+            expression: "1 kg normalized chilled output"
+            value_mode: "fixed_value"
+            specificity: "product_specific"
+            basis:
+              text: "chilling-process output"
+              kind: "process_output"
+            evidence:
+              kind: "method_formula"
+              source_ids:
+                - mass-balance-identity
+            ranges:
+              - role: allowed_range
+                lower: "1"
+                upper: "1"
+                unit: "kg"
+                basis: "chilling-process output"
+                basis_kind: "process_output"
+                evidence_kind: "method_formula"
+                source_ids:
+                  - mass-balance-identity
+      waste:
+        []
+      elementary:
+        - row_id: chilling_refrigerant_release
+          role: "Refrigerant released to air"
+          name: "Select applicable refrigerant elementary flow to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg refrigerant"
+          description: "Report unrecovered equipment-specific loss and exclude recovered refrigerant."
+          amount:
+            expression: "Net unrecovered refrigerant loss"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg chilled output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_chilling_refrigerant
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.05"
+                unit: "kg refrigerant/kg chilled output"
+                basis: "release per 1 kg chilled output"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+  - id: cutting_packaging
+    label: "Cutting, deboning, packaging, and packaged holding"
+    inputs:
+      product:
+        - row_id: cutting_meat_input
+          role: "Cattle-meat input to cutting or packaging"
+          name: "Beef"
+          flow_type: "product"
+          flow_ref:
+            uuid: "06f53118-716c-472d-b6f2-c5924840395c"
+          property_unit: "Mass / kg"
+          description: "Link the same-category input to the upstream process."
+          amount:
+            expression: "Measured incoming mass"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net saleable output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cutting_packaging_outputs
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "1"
+                upper: "3"
+                unit: "kg input/kg net output"
+                basis: "meat input per 1 kg net saleable output"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: cutting_packaging_electricity
+          role: "Cutting and packaging electricity"
+          name: "Electricity, medium voltage"
+          flow_type: "product"
+          flow_ref:
+            uuid: "460ac059-9bff-49b1-9d19-503be31bd127"
+          property_unit: "Energy / kWh or MJ"
+          description: "Record electricity for cutting, packaging, room conditioning, and packaged holding."
+          amount:
+            expression: "Metered attributable electricity"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net saleable output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cutting_packaging_utilities
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "15"
+                unit: "MJ/kg net output"
+                basis: "electricity per 1 kg net saleable output"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: cutting_water
+          role: "Cutting-room water"
+          name: "Process Water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "94a04f7e-2d5c-41f0-b182-d54a3b373a02"
+          property_unit: "Mass or volume / kg or m3"
+          description: "Record process and sanitation water."
+          amount:
+            expression: "Metered net supplied water"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net saleable output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cutting_packaging_utilities
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "20"
+                unit: "kg water/kg net output"
+                basis: "supplied water per 1 kg net saleable output"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: primary_packaging
+          role: "Primary plastic packaging"
+          name: "Polyethylene film"
+          flow_type: "product"
+          flow_ref:
+            uuid: "e64eb06c-6dc9-45f1-b003-3dc6c44b27e2"
+          property_unit: "Mass / kg"
+          description: "Record actual primary packaging by material."
+          amount:
+            expression: "Issued mass minus verified unused returns"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net saleable output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cutting_packaging_outputs
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.2"
+                unit: "kg packaging/kg net output"
+                basis: "primary packaging per 1 kg net saleable output"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: secondary_packaging
+          role: "Corrugated secondary packaging"
+          name: "Corrugated cardboard"
+          flow_type: "product"
+          flow_ref:
+            uuid: "8bde297e-98df-463f-bcb4-0db52bf6e0b5"
+          property_unit: "Mass / kg"
+          description: "Record cardboard that leaves the facility with the product."
+          amount:
+            expression: "Issued mass minus verified unused returns"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net saleable output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cutting_packaging_outputs
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.3"
+                unit: "kg packaging/kg net output"
+                basis: "cardboard per 1 kg net saleable output"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: final_meat_output
+          role: "Saleable fresh or chilled cattle meat"
+          name: "Beef"
+          flow_type: "product"
+          flow_ref:
+            uuid: "06f53118-716c-472d-b6f2-c5924840395c"
+          property_unit: "Mass / kg net product"
+          description: "Record net product separately from packaging."
+          amount:
+            expression: "1 kg normalized net output"
+            value_mode: "fixed_value"
+            specificity: "product_specific"
+            basis:
+              text: "declared reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "method_formula"
+              source_ids:
+                - mass-balance-identity
+            ranges:
+              - role: allowed_range
+                lower: "1"
+                upper: "1"
+                unit: "kg net product"
+                basis: "declared reference flow"
+                basis_kind: "reference_flow"
+                evidence_kind: "method_formula"
+                source_ids:
+                  - mass-balance-identity
+        - row_id: cutting_coproducts
+          role: "Saleable trim and recovered fat"
+          name: "Tallow"
+          flow_type: "product"
+          flow_ref:
+            uuid: "74260d26-09ba-4d24-93bd-c7687c2f2511"
+          property_unit: "Mass / kg"
+          description: "Record each beneficially used co-product separately."
+          amount:
+            expression: "Measured mass by actual product identity"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net saleable output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cutting_packaging_outputs
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: cutting_packaging_waste
+          role: "Cutting and packaging residues"
+          name: "Cutting and packaging residues sent to treatment"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record treatment-bound trim, bone, condemned material, and packaging scrap by route."
+          amount:
+            expression: "Measured mass by material and treatment route"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net saleable output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cutting_packaging_outputs
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "2"
+                unit: "kg waste/kg net output"
+                basis: "treatment-bound residue per 1 kg net saleable output"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: cutting_wastewater
+          role: "Cutting-room wastewater"
+          name: "Cutting-room wastewater sent to treatment"
+          flow_type: "waste"
+          property_unit: "Mass or volume / kg or m3"
+          description: "Record discharge net of recirculation."
+          amount:
+            expression: "Metered discharge"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net saleable output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cutting_packaging_utilities
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "20"
+                unit: "kg wastewater/kg net output"
+                basis: "discharge per 1 kg net saleable output"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        - row_id: packaged_refrigerant_release
+          role: "Cold-holding refrigerant released to air"
+          name: "Select applicable refrigerant elementary flow to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg refrigerant"
+          description: "Report equipment-specific loss once and exclude recovered refrigerant."
+          amount:
+            expression: "Net unrecovered refrigerant loss"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net saleable output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaged_refrigerant
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.05"
+                unit: "kg refrigerant/kg net output"
+                basis: "release per 1 kg net saleable output"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+allocation_rules:
+  - rule_id: allocation_preserve_multi_output
+    applies_to: "slaughter, dressing, cutting, and trimming"
+    rule: "Preserve cattle meat, hides, edible offal, recovered fat, and other transferred co-products as measured outputs; do not pre-allocate the core foreground inventory."
+    source_ids:
+      - mass-balance-identity
+  - rule_id: allocation_subdivide_first
+    applies_to: "separable downstream operations"
+    rule: "Subdivide independently measured chilling, cutting, packaging, holding, and treatment operations before considering allocation."
+    source_ids: []
+  - rule_id: allocation_product_waste_status
+    applies_to: "residual materials"
+    rule: "Treat a material as product only when reporting-period records prove beneficial-use transfer; otherwise report it by actual waste treatment route."
+    source_ids: []
+  - rule_id: allocation_single_output_projection
+    applies_to: "downstream study"
+    rule: "Apply any study-specific single-output allocation outside the unallocated core dataset and disclose method, formula, co-products, factor inputs, time and geography, and sensitivity."
+    source_ids: []
+  - rule_id: allocation_no_avoided_burden_default
+    applies_to: "co-products and wastes"
+    rule: "Do not apply avoided-product or avoided-treatment credits by default; declare them only as a separate consequential extension."
+    source_ids: []
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_slaughter_mass_outputs
+      process_id: "slaughter_dressing"
+      flow_role: "live cattle, meat, hides, offal, and co-products"
+      record_type: "scale and production/dispatch log"
+      raw_fields: "batch_id; cattle_class; head_count; live_mass; output_id; output_mass; destination; time"
+      collection_method: "Export calibrated batch scale and disposition records"
+      unit: "kg and count"
+      frequency: "Each batch or dispatch"
+      temporal_coverage: "Full reporting period"
+      site_scope: "Every included receiving and output point"
+      aggregation_rule: "Sum by batch and disposition; normalize to saleable meat"
+      quality_evidence: "Calibration; batch reconciliation; destination evidence"
+    - protocol_id: cp_slaughter_utilities
+      process_id: "slaughter_dressing"
+      flow_role: "water, electricity, heat or fuel"
+      record_type: "meter, invoice, and stock record"
+      raw_fields: "meter_id; opening; closing; quantity; unit; fuel_ncv; allocation_basis"
+      collection_method: "Use dedicated meters or documented physical allocation"
+      unit: "kg; m3; kWh; MJ"
+      frequency: "Meter interval, aggregated monthly"
+      temporal_coverage: "Full reporting period"
+      site_scope: "Included slaughter and sanitation systems"
+      aggregation_rule: "Net consumption normalized to output"
+      quality_evidence: "Calibration; invoice and stock reconciliation"
+    - protocol_id: cp_slaughter_wastes
+      process_id: "slaughter_dressing"
+      flow_role: "wastewater and animal residues"
+      record_type: "effluent meter, waste scale, manifest"
+      raw_fields: "stream_id; mass_or_volume; recirculation; route; manifest_id"
+      collection_method: "Meter discharge and weigh solids by route"
+      unit: "kg or m3"
+      frequency: "Continuous or each dispatch"
+      temporal_coverage: "Full reporting period"
+      site_scope: "All discharge and transfer points"
+      aggregation_rule: "Subtract recirculation; sum by route; normalize"
+      quality_evidence: "Calibration; manifests; treatment receipts"
+    - protocol_id: cp_slaughter_direct_releases
+      process_id: "slaughter_dressing"
+      flow_role: "direct fuel emissions"
+      record_type: "fuel record, factor record, or measurement"
+      raw_fields: "fuel_id; quantity; pollutant_id; factor; factor_unit; factor_source; measured_release"
+      collection_method: "Calculate each pollutant from collected fuel or measure directly"
+      unit: "kg substance"
+      frequency: "Each fuel period or monitoring event"
+      temporal_coverage: "Full reporting period"
+      site_scope: "On-site combustion in scope"
+      aggregation_rule: "Sum each elementary flow separately and normalize"
+      quality_evidence: "Fuel reconciliation; factor citation; monitoring report"
+    - protocol_id: cp_chilling_mass_energy
+      process_id: "chilling_cold_holding"
+      flow_role: "meat, temperature, time, and electricity"
+      record_type: "scale, temperature, time, and meter record"
+      raw_fields: "batch_id; input_mass; output_mass; entry_temp; exit_temp; entry_time; exit_time; electricity"
+      collection_method: "Link batches to calibrated records and meters"
+      unit: "kg; °C; time; kWh"
+      frequency: "Each batch and meter interval"
+      temporal_coverage: "Full reporting period and holding duration"
+      site_scope: "Included chillers and cold rooms"
+      aggregation_rule: "Normalize linked mass and energy to chilled output"
+      quality_evidence: "Calibration; batch linkage; meter reconciliation"
+    - protocol_id: cp_chilling_refrigerant
+      process_id: "chilling_cold_holding"
+      flow_role: "refrigerant make-up and release"
+      record_type: "inventory and service record"
+      raw_fields: "type; opening; purchases; additions; closing; transfers; recovery; equipment_id"
+      collection_method: "Equipment-specific inventory balance"
+      unit: "kg refrigerant"
+      frequency: "Each service and period close"
+      temporal_coverage: "Full reporting period"
+      site_scope: "Chilling equipment only"
+      aggregation_rule: "Calculate net unrecovered loss once per equipment"
+      quality_evidence: "Purchases; service logs; recovery certificates"
+    - protocol_id: cp_cutting_packaging_outputs
+      process_id: "cutting_packaging"
+      flow_role: "meat, packaging, co-products, and residues"
+      record_type: "scale, bill of materials, stock, and disposition record"
+      raw_fields: "batch_id; meat_input; product_output; material_id; opening; receipts; issues; returns; closing; scrap; destination"
+      collection_method: "Reconcile scales and stock movements by batch/material"
+      unit: "kg"
+      frequency: "Each batch and stock period"
+      temporal_coverage: "Full reporting period"
+      site_scope: "Included cutting and packaging lines"
+      aggregation_rule: "Sum by identity and disposition; normalize to net output"
+      quality_evidence: "Calibration; stock and mass reconciliation"
+    - protocol_id: cp_cutting_packaging_utilities
+      process_id: "cutting_packaging"
+      flow_role: "electricity, water, and wastewater"
+      record_type: "meter and invoice record"
+      raw_fields: "meter_id; opening; closing; unit; allocation_basis; discharge; recirculation"
+      collection_method: "Use dedicated meters or documented shared-load allocation"
+      unit: "kg; m3; kWh; MJ"
+      frequency: "Meter interval, aggregated monthly"
+      temporal_coverage: "Full reporting period"
+      site_scope: "Included operations and sanitation"
+      aggregation_rule: "Net supply/discharge normalized to net output"
+      quality_evidence: "Calibration; invoice reconciliation; allocation worksheet"
+    - protocol_id: cp_packaged_refrigerant
+      process_id: "cutting_packaging"
+      flow_role: "packaged-holding refrigerant release"
+      record_type: "inventory and service record"
+      raw_fields: "type; opening; purchases; additions; closing; transfers; recovery; equipment_id"
+      collection_method: "Balance only equipment not assigned to chilling"
+      unit: "kg refrigerant"
+      frequency: "Each service and period close"
+      temporal_coverage: "Full reporting period"
+      site_scope: "Packaged cold holding"
+      aggregation_rule: "Calculate net unrecovered loss once per equipment"
+      quality_evidence: "Service logs; recovery certificates; scope reconciliation"
+  calculation_rules:
+    - id: calc_normalized_amount
+      applies_to: "each row"
+      rule: "Normalized amount = reporting-period flow quantity / quantitative-reference output mass"
+      inputs:
+        - "flow quantity"
+        - "output mass"
+      output: "amount per kg output"
+      source_ids:
+        - mass-balance-identity
+    - id: calc_live_to_meat_ratio
+      applies_to: "slaughter yield"
+      rule: "Accepted live mass / saleable cattle-meat mass"
+      inputs:
+        - "live mass"
+        - "meat mass"
+      output: "kg live mass/kg meat"
+      source_ids:
+        - mass-balance-identity
+    - id: calc_mass_balance
+      applies_to: "each transforming process"
+      rule: "Unexplained difference = mass inputs - product outputs - waste outputs - measured mass releases; disclose moisture or evaporation separately"
+      inputs:
+        - "mass inputs"
+        - products
+        - wastes
+        - releases
+      output: "mass-balance statement"
+      source_ids:
+        - mass-balance-identity
+    - id: calc_energy_conversion
+      applies_to: "energy"
+      rule: "Convert with documented factors while preserving original unit and carrier"
+      inputs:
+        - quantity
+        - unit
+        - factor
+      output: "kWh or MJ by carrier"
+      source_ids: []
+    - id: calc_refrigerant_loss
+      applies_to: "refrigeration"
+      rule: "Opening + purchases + additions - closing - transfers - recovered quantity"
+      inputs:
+        - "stock and service fields"
+      output: "kg unrecovered refrigerant"
+      source_ids:
+        - mass-balance-identity
+    - id: calc_packaging_consumption
+      applies_to: "packaging"
+      rule: "Opening + receipts - closing - unused returns; report scrap and shipped packaging separately"
+      inputs:
+        - "stock and output fields"
+      output: "kg consumed, scrapped, and shipped"
+      source_ids:
+        - mass-balance-identity
+  data_quality_requirements:
+    - id: dq_identity
+      applies_to: "reference product"
+      requirement: "Resolve to CPC 3.0 code 21111 and declare every required qualifier."
+      evidence: "Classification and product records"
+    - id: dq_measurement
+      applies_to: "measured fields"
+      requirement: "Identify calibrated instrument, unit, interval, conversion, and shared-load allocation."
+      evidence: "Calibration and calculation records"
+    - id: dq_temporal
+      applies_to: "reporting period"
+      requirement: "Cover the full period or campaign, including abnormal batches and seasonal holding effects, or justify exclusions."
+      evidence: "Production calendar and coverage check"
+    - id: dq_site_scope
+      applies_to: "facilities"
+      requirement: "Identify included facilities, lines, cold rooms, inter-site transfers, and shared utilities."
+      evidence: "Site and equipment records"
+    - id: dq_completeness
+      applies_to: "inventory"
+      requirement: "Reconcile inputs, products, co-products, wastes, utilities, and releases and disclose omissions."
+      evidence: "Process map and reconciliation"
+    - id: dq_disposition
+      applies_to: "products and wastes"
+      requirement: "Support product-versus-waste status with period-specific destination evidence."
+      evidence: "Transfer record or waste manifest"
+    - id: dq_traceability
+      applies_to: "calculated values"
+      requirement: "Preserve raw fields, formula, factor identity, conversion, reviewer, and protocol link."
+      evidence: "Calculation audit trail"
+validation_rules:
+  - rule_id: validation_identity
+    applies_to: "product category"
+    rule: "Fail when the reference product is not cattle meat in the declared fresh or chilled state or is an excluded product."
+    source_ids:
+      - unsd-cpc-3-21111
+  - rule_id: validation_reference_flow
+    applies_to: "reference flow"
+    rule: "Require 1 kg net product using the declared Beef, Mass, Units of mass, and kg identities; packaging mass is separate."
+    source_ids: []
+  - rule_id: validation_qualifiers
+    applies_to: "metadata"
+    rule: "Require thermal state, product form, cattle class where known, grade, bone status, packaging state, temperature, gate, route, and period."
+    source_ids: []
+  - rule_id: validation_boundary
+    applies_to: "system boundary"
+    rule: "Require live cattle at the slaughter gate unless a downstream process explicitly uses a linked same-category input."
+    source_ids: []
+  - rule_id: validation_processes
+    applies_to: "process map"
+    rule: "Require slaughter and dressing and every conditional process whose condition occurred."
+    source_ids:
+      - tiangong-beef-slaughter-process
+  - rule_id: validation_recursive_input
+    applies_to: "same-category input"
+    rule: "Require one upstream link and prohibit recursive duplication."
+    source_ids: []
+  - rule_id: validation_mass_balance
+    applies_to: "each process"
+    rule: "Require measured inputs, products, co-products, wastes, and releases to reconcile and explain every non-zero difference."
+    source_ids:
+      - mass-balance-identity
+  - rule_id: validation_multi_output
+    applies_to: "allocation"
+    rule: "Require explicit co-product outputs and reject allocation factors embedded in core foreground amounts."
+    source_ids: []
+  - rule_id: validation_inventory_coverage
+    applies_to: "included operations"
+    rule: "Require applicable utilities, sanitation, packaging, wastewater, residues, and direct releases or an evidence-backed not-applicable declaration."
+    source_ids: []
+  - rule_id: validation_refrigeration
+    applies_to: "chilling and holding"
+    rule: "Require temperature/time records and equipment-specific refrigerant accounting."
+    source_ids: []
+  - rule_id: validation_protocol_links
+    applies_to: "collected or calculated rows"
+    rule: "Require a declared collection protocol with raw fields and quality evidence."
+    source_ids: []
+  - rule_id: validation_evidence
+    applies_to: "ranges and factors"
+    rule: "Treat reasoned-estimate ranges as candidate QA screens only; publication-critical factors and ranges require reviewed evidence."
+    source_ids: []
+  - rule_id: validation_dataset_profile
+    applies_to: "downstream use"
+    rule: "Preserve gate, multi-output status, route, qualifiers, upstream link, quality disclosure, and exclusions."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "Foreground multi-output facility-gate dataset for fresh or chilled cattle-meat production"
+  downstream_use: "secondary_dataset; background_dataset"
+  allowed_use: "Gate-to-gate and downstream models that preserve the route, starting gate, qualifiers, multi-output structure, upstream cattle link, and quality disclosure"
+  excluded_use: "Cattle raising, buffalo meat, offal as reference product, frozen or prepared meat, post-gate distribution, or undisclosed pre-allocated single-output data"
+  required_metadata: "canonical PCR id; CPC reference; facility and geography; period; thermal state; dispatch temperature; product form; cattle class where known; grade; bone status; packaging; route; upstream cattle dataset; inter-site transport; dispositions"
+  required_quality_disclosure: "Calibration and coverage; shared-meter allocation; mass balance; disposition evidence; refrigerant balance; source applicability; provisional-range status; exclusions and uncertainty"
+  update_trigger: "Material change in product state or form, grade, starting gate, process route, cooling, packaging, energy or refrigerant system, disposition, upstream link, measurement, or evidence"
+data_sources:
+  - id: "unsd-cpc-3-21111"
+    type: "dataset"
+    reference: "United Nations Statistics Division, Central Product Classification Version 3.0, code 21111, represented in repository CPC source and normalized artifacts"
+    used_for: "Product identity and classification scope"
+  - id: "tiangong-beef-slaughter-process"
+    type: "dataset"
+    reference: "Tiangong process 9fdaf060-a29c-4f22-9146-86439bc8a256, Beef slaughtering and carcass dressing"
+    used_for: "Candidate process decomposition and flow-family coverage, not universal quantities"
+  - id: "tiangong-beef-slaughter-stage"
+    type: "dataset"
+    reference: "Tiangong process f6465ff5-255b-4143-9364-10ca7828577c, slaughtering stage, beef cattle"
+    used_for: "Corroboration of slaughter stage and electricity as candidate input, not universal quantities"
+  - id: "mass-balance-identity"
+    type: "method_factor"
+    reference: "Conservation-of-mass identity applied to measured foreground and stock records"
+    used_for: "Reference normalization, yields, mass balance, refrigerant and packaging balances"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:205169ddef9eb110a19d2f06271eb44000b16944e4269860030117f5f3126204"
+  generated_content_sha256: "sha256:7e82fdaf18a41d8cd389994fb713a0e01bfac50679edfc3be3e717a7ae5f5017"

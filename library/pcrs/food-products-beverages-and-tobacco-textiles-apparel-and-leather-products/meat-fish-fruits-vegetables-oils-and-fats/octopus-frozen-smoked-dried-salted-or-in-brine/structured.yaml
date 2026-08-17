@@ -1,10 +1,1072 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "21267"
-  title: "Octopus, frozen, smoked, dried, salted or in brine"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.food-products-beverages-and-tobacco-textiles-apparel-and-leather-products.meat-fish-fruits-vegetables-oils-and-fats.octopus-frozen-smoked-dried-salted-or-in-brine"
+  classification_refs: "CPC 3.0: 21267"
+  covered_products: "Octopus sold frozen, smoked, dried, salted, or in brine, including whole, cleaned, cut, or otherwise marketable forms whose principal product is octopus."
+  excluded_products: "Live, fresh or chilled octopus; canned or sterilized octopus; prepared meals; mixed seafood products; non-octopus cephalopods."
+  representative_product: "A packaged, qualified, saleable octopus product at the processing-facility gate."
+  production_route: "One mutually exclusive declared route: frozen, smoked, dried, salted, or in_brine; record any integral substeps within that route."
+  market_state: "Route-specific saleable state at the processing-facility gate, with required storage condition and shelf-life declaration."
+functional_unit:
+  what: "Supply of qualified, saleable preserved octopus in the declared product form and preservation route."
+  how_much: "1 kg of net octopus product, excluding packaging and, where applicable, excluding protective ice glaze or free brine."
+  how_well: "Meets the declared commercial specification and applicable food-safety controls, with product form, route, moisture or salt condition, and storage condition disclosed."
+  how_long_or_cycle: "One supply at the processing-facility gate; declare the labelled shelf life and the storage duration and temperature represented by the dataset."
+  reference_flow_link: "The functional unit is realized by exactly 1 kg of the reference product flow under the route-specific measurement rules below."
+system_boundary:
+  rules:
+    - rule_id: sb_foreground_gate
+      applies_to: "foreground processing"
+      rule: "Include receiving and preparation, exactly one declared preservation route, packaging, and route-required storage through the processing-facility gate."
+      source_ids:
+        - codex-cxc-52-2003
+        - eu-pef-2021-2279
+    - rule_id: sb_route_exclusivity
+      applies_to: "preservation route"
+      rule: "Model frozen, smoked, dried, salted, or in_brine as mutually exclusive primary routes; include only integral substeps actually used by the declared route."
+      source_ids:
+        - codex-cxc-52-2003
+    - rule_id: sb_upstream_and_packaging
+      applies_to: "purchased inputs"
+      rule: "Keep capture or aquaculture outside the foreground process but link upstream datasets for all purchased inputs; include packaging production in the lifecycle model and record packaging by material."
+      source_ids:
+        - eu-pef-2021-2279
+boundary_abstraction:
+  declared_starting_condition: "Octopus received at the processing facility, with supplier, species or commercial designation, origin, fresh/chilled/frozen state, temperature, product form, and accepted mass recorded."
+  starting_condition_role: "Purchased octopus input to gate-to-gate foreground preservation and packaging."
+  product_classification_scope: "The finished reference flow is CPC 3.0 21267; incoming live, fresh, or chilled octopus is an upstream input and not the finished category."
+  recursive_input_rule: "If a CPC 21267 preserved octopus product is reprocessed, record it as a purchased intermediate with its own upstream dataset and do not recursively reconstruct its preservation burdens inside this foreground package."
+  upstream_dataset_requirement: "Require upstream datasets for received octopus, purchased preserved octopus intermediates, energy carriers, water, food-grade salt and process aids, smoke-generating material where used, and packaging materials."
+  disclosure: "Disclose facility geography, reporting period, route, species or commercial designation, incoming state, product form, yield, storage conditions, packaging, excluded processes, and any reused preserved intermediate."
+reference_flow_definition:
+  reference_amount: "1 kg"
+  product_flow_ref:
+    name: "Octopus, frozen, smoked, dried, salted or in brine"
+    uuid: "5c8cdbc1-2f53-47ac-aa4a-e44125c18761"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "preservation route"
+    - "species or commercial designation"
+    - "product form and edible/saleable portion definition"
+    - "cooked or raw state"
+    - "moisture content for dried or smoke-dried product"
+    - "salt content or brine concentration for salted or brined product"
+    - "glaze fraction for glazed frozen product"
+    - "drained-mass basis for product in brine"
+    - "packaging format"
+    - "storage temperature"
+    - "represented storage duration"
+    - "shelf life"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Report 1 kg net qualified saleable octopus product; exclude primary, secondary, and transport packaging from product mass."
+  - id: frozen_deglazed_mass
+    applies_to: "glazed frozen route"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Use deglazed product mass for the reference flow and separately record glaze water applied and removed; disclose the deglazing method and measured glaze fraction."
+  - id: brined_drained_mass
+    applies_to: "in-brine route"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Use drained octopus mass for the reference flow; record packing brine separately and disclose drainage procedure, time, temperature, and brine concentration."
+  - id: preservation_condition
+    applies_to: "smoked, dried, salted, or in-brine routes"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Measure product as sold and disclose moisture content for dried or smoke-dried product and salt content or brine concentration for salt-dependent routes; do not compare route results without harmonizing these conditions."
+  - id: saleable_portion
+    applies_to: "all routes"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Declare whether the marketable product is whole, cleaned, cut, cooked, or raw and which parts are included; normalize only the qualified saleable octopus portion to 1 kg."
+process_map:
+  - id: octopus_receiving_preparation
+    name: "Octopus receiving and preparation"
+    inclusion: "required"
+    inclusion_condition: "Always; record only operations actually performed, such as thawing, washing, cleaning, cutting, or cooking."
+    role: "Establish accepted raw mass and prepared intermediate."
+    quantitative_reference: "kg prepared octopus output"
+  - id: route_preservation
+    name: "Route-specific preservation"
+    inclusion: "required"
+    inclusion_condition: "Select exactly one primary route: frozen, smoked, dried, salted, or in brine."
+    role: "Convert prepared octopus into the declared preserved state."
+    quantitative_reference: "kg preserved octopus output"
+  - id: packaging_storage
+    name: "Packaging and route-required storage"
+    inclusion: "required"
+    inclusion_condition: "Always; storage technology and duration follow the declared route and sale condition."
+    role: "Produce qualified saleable product at facility gate."
+    quantitative_reference: "1 kg reference product"
+process_inventory:
+  - id: octopus_receiving_preparation
+    label: "Octopus receiving and preparation"
+    inputs:
+      product:
+        - row_id: received_octopus
+          role: "Received octopus"
+          name: "Received octopus"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record the accepted as-received octopus mass crossing the facility gate and its incoming state."
+          amount:
+            expression: "measured accepted mass by production lot"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg prepared octopus output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_mass_balance
+              source_ids:
+                - codex-cxc-52-2003
+            ranges:
+              - role: default_estimate
+                lower: "1"
+                upper: "8"
+                unit: "kg/kg qualified saleable product"
+                basis: "broad temporary estimate spanning cleaned through strongly dried product; apply only until route-specific annual mass-balance evidence is available and replace when reviewed batch yield data exist"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: preparation_water
+          role: "Preparation water"
+          name: "Process water"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record metered or reconciled water used for thawing, washing, cleaning, or de-salting only when that operation occurs."
+          amount:
+            expression: "measured water supplied minus separately measured recirculated water"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg prepared octopus output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_route_inputs
+              source_ids:
+                - codex-cxc-52-2003
+            ranges:
+              - role: default_estimate
+                lower: "0"
+                upper: "20"
+                unit: "kg/kg prepared octopus output"
+                basis: "temporary broad estimate applicable only to the actual washing, thawing, or cleaning configuration; replace when route- and facility-specific metered records cover the reporting period"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: prepared_octopus
+          role: "Prepared octopus intermediate"
+          name: "Prepared octopus intermediate"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Calculate prepared intermediate mass from measured output or a closed lot mass balance."
+          amount:
+            expression: "measured prepared output mass"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per production lot"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_mass_balance
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: preparation_rejects
+          role: "Removed material and rejects"
+          name: "Octopus preparation residues"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record viscera, skin, damaged material, and other removed octopus fractions leaving the process; internal rework is tracked separately and is not waste."
+          amount:
+            expression: "measured mass leaving the process as waste or by-product"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg received octopus"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_mass_balance
+              source_ids: []
+            ranges:
+              - role: default_estimate
+                lower: "0"
+                upper: "0.9"
+                unit: "kg/kg received octopus"
+                basis: "temporary physical screening interval for the declared product form; replace when reviewed lot-level disposition records are available"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        []
+  - id: route_preservation
+    label: "Route-specific preservation"
+    inputs:
+      product:
+        - row_id: prepared_octopus_input
+          role: "Prepared octopus input"
+          name: "Prepared octopus intermediate"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record the prepared octopus entering the selected preservation route."
+          amount:
+            expression: "measured mass entering the declared route"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per kg preserved octopus output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_mass_balance
+              source_ids: []
+            ranges:
+              - role: default_estimate
+                lower: "1"
+                upper: "6"
+                unit: "kg/kg preserved octopus output"
+                basis: "broad temporary interval reflecting route-dependent moisture and handling loss; replace after reviewed route-specific production yields are available"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: food_grade_salt
+          role: "Food-grade salt"
+          name: "Salt, food-grade, for brine preparation"
+          flow_type: "product"
+          flow_ref:
+            uuid: "3a5fa711-4648-4d58-b94d-67b79e7476c7"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record sodium chloride issued to salting, brining, or a salt-containing smoking or drying recipe. This row is not applicable to a route whose reviewed recipe contains no added salt."
+          amount:
+            expression: "measured salt issue minus measured recoverable unopened return; do not net salt discharged in brine"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per kg preserved octopus output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_route_inputs
+              source_ids:
+                - codex-cxc-52-2003
+            ranges: []
+        - row_id: brine_makeup_water
+          role: "Brine make-up water"
+          name: "Process Water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "94a04f7e-2d5c-41f0-b182-d54a3b373a02"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record water newly supplied to prepare packing or process brine. This row applies only when the declared route uses brine; reused brine remains visible in the brine balance and is not counted as new water."
+          amount:
+            expression: "metered new water entering brine preparation"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per kg preserved octopus output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_route_inputs
+              source_ids:
+                - codex-cxc-52-2003
+            ranges: []
+        - row_id: smoking_wood_chips
+          role: "Wood chips for smoke generation"
+          name: "Untreated food-smoking wood chips, declared species and moisture"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the mass of wood chips entering an on-site smoke generator. Apply only to smoked or smoke-dried routes; disclose species and any prohibited treatment or contamination controls."
+          amount:
+            expression: "measured dry or as-received chip issue, with moisture basis declared"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per kg preserved octopus output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_route_inputs
+              source_ids:
+                - codex-cxc-52-2003
+            ranges: []
+        - row_id: preservation_electricity
+          role: "Preservation electricity"
+          name: "Alternating current, electricity mix, consumption mix, less than 1 kV"
+          flow_type: "product"
+          flow_ref:
+            uuid: "50657322-939c-4829-a87b-47c093bfa6a7"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200c9a66 / kWh"
+          description: "Record alternating-current electricity used by freezers, fans, pumps, controls, dryers, smoke generators, and other preservation equipment. Use the voltage- and geography-matched supply flow; the UUID below is the verified low-voltage consumption-mix identity."
+          amount:
+            expression: "submetered electricity or engineering allocation from equipment power and operating time"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg preserved octopus output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_route_inputs
+              source_ids:
+                - codex-cxc-52-2003
+            ranges: []
+        - row_id: preservation_steam
+          role: "Purchased process steam"
+          name: "Steam, 11.0 MPaG"
+          flow_type: "product"
+          flow_ref:
+            uuid: "293f9fd9-5182-4d35-8aa5-ce73d4f322b7"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record purchased or separately generated steam only when steam crosses this process boundary. Resolve pressure and temperature to the actual supply; the verified UUID below is usable only for 11.0 MPaG steam and must not be silently reused for another grade."
+          amount:
+            expression: "steam meter reading or condensate-corrected engineering balance"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg preserved octopus output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_route_inputs
+              source_ids:
+                - codex-cxc-52-2003
+            ranges: []
+        - row_id: preservation_hot_water
+          role: "Purchased hot water"
+          name: "Hot water, supplied at declared inlet and return temperatures"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record hot water crossing the preservation boundary as a supplied thermal product. Apply only when heat is purchased or transferred as hot water; declare inlet and return temperatures and resolve a temperature-matched Tiangong UUID before publication."
+          amount:
+            expression: "metered supply mass, without double-counting returned closed-loop water"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg preserved octopus output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_route_inputs
+              source_ids:
+                - codex-cxc-52-2003
+            ranges: []
+        - row_id: preservation_natural_gas
+          role: "Natural gas for on-site heat"
+          name: "Natural gas in the gaseous state"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f19ca0e-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record pipeline natural gas combusted on site for smoking, drying, brine heating, or other preservation heat. This row is not used when heat is received entirely as steam or hot water."
+          amount:
+            expression: "fuel-meter mass or volume converted with measured density and declared net calorific value"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg preserved octopus output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_route_inputs
+              source_ids:
+                - codex-cxc-52-2003
+            ranges: []
+        - row_id: preservation_diesel
+          role: "Diesel oil for on-site heat"
+          name: "Diesel oil"
+          flow_type: "product"
+          flow_ref:
+            uuid: "9d258d75-6792-4f1c-9856-81602ed8f816"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record diesel oil combusted on site only where it is the actual dryer, boiler, smoke-generator, or backup fuel."
+          amount:
+            expression: "measured tank issue reconciled to stock change for the applicable equipment"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg preserved octopus output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_route_inputs
+              source_ids:
+                - codex-cxc-52-2003
+            ranges: []
+        - row_id: preservation_lpg
+          role: "Liquefied petroleum gas for on-site heat"
+          name: "Liquefied petroleum gas"
+          flow_type: "product"
+          flow_ref:
+            uuid: "d54ae71a-1245-4e3f-b694-dbf2b22bbf7d"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record LPG combusted on site only where it is the actual thermal fuel."
+          amount:
+            expression: "measured cylinder or bulk-tank issue reconciled to stock change"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg preserved octopus output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_route_inputs
+              source_ids:
+                - codex-cxc-52-2003
+            ranges: []
+        - row_id: preservation_r717_makeup
+          role: "R717 refrigerant make-up"
+          name: "Ammonia, anhydrous, liquid (R717)"
+          flow_type: "product"
+          flow_ref:
+            uuid: "6928be4f-282b-4448-8f2a-f8c746621303"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record anhydrous ammonia added to preservation refrigeration equipment after charging or leakage. Apply only to equipment whose verified refrigerant is R717."
+          amount:
+            expression: "purchased or issued make-up mass assigned from the equipment refrigerant ledger"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg preserved octopus output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_route_inputs
+              source_ids: []
+            ranges: []
+        - row_id: preservation_r404a_makeup
+          role: "R404A refrigerant make-up"
+          name: "Refrigerant R404A"
+          flow_type: "product"
+          flow_ref:
+            uuid: "76513c71-a148-484e-865f-2ab54afb4331"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record R404A added to preservation refrigeration equipment after charging or leakage. Apply only to equipment whose verified refrigerant is R404A; other refrigerants require their own atomic cards."
+          amount:
+            expression: "purchased or issued make-up mass assigned from the equipment refrigerant ledger"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg preserved octopus output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_route_inputs
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: preserved_octopus
+          role: "Preserved octopus intermediate"
+          name: "Preserved octopus intermediate"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record the measured preserved output before final packaging and storage."
+          amount:
+            expression: "measured preserved output mass by lot"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per production lot"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_mass_balance
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: preservation_wastewater
+          role: "Non-saline process wastewater"
+          name: "Untreated municipal wastewater influent"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "41eb8873-6852-40fe-8b5d-b792fe4d4754"
+          property_unit: "Volume 93a60a56-a3c8-22da-a746-0800200c9a66 / m3"
+          description: "Record thawing, washing, condensate, or other non-saline preservation wastewater sent to treatment; keep high-salinity brine discharge in the next row."
+          amount:
+            expression: "metered or mass-balance discharge volume at the treatment inlet"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per kg preserved octopus output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_route_inputs
+              source_ids: []
+            ranges: []
+        - row_id: spent_brine
+          role: "Spent high-salinity brine"
+          name: "High-concentration saline wastewater"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "76ab69b6-6fa7-461c-be07-bc54e581a699"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record spent process or packing brine that leaves for wastewater treatment or disposal. Apply only to salted or in-brine routes and do not combine it with ordinary wastewater."
+          amount:
+            expression: "measured spent-brine mass leaving the closed reuse loop"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per kg preserved octopus output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_route_inputs
+              source_ids: []
+            ranges: []
+        - row_id: preservation_rejects
+          role: "Rejected preserved octopus"
+          name: "Rejected preserved octopus"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record off-specification octopus removed during preservation and sent to the declared waste destination; recovered saleable co-product or rework remains a product flow instead."
+          amount:
+            expression: "measured rejected product mass by lot and disposition"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg preserved octopus output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_mass_balance
+              source_ids: []
+            ranges: []
+        - row_id: smoking_wood_ash
+          role: "Wood ash from smoke generation"
+          name: "Wood ash from food-smoking smoke generation"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record ash removed from an on-site wood-chip smoke generator. Apply only when such a generator is used and keep captured soot in a separate row if measured."
+          amount:
+            expression: "measured ash mass removed from the smoke generator"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per kg preserved octopus output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_route_inputs
+              source_ids: []
+            ranges: []
+      elementary:
+        - row_id: onsite_fossil_co2
+          role: "Fossil carbon dioxide to air"
+          name: "Carbon dioxide (fossil), to air, unspecified"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Calculate direct fossil carbon dioxide from each on-site fossil fuel separately; do not include upstream fuel-production emissions here."
+          amount:
+            expression: "fuel-specific consumed mass multiplied by a documented carbon-content and oxidation factor"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg preserved octopus output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_route_inputs
+              source_ids: []
+            ranges: []
+        - row_id: onsite_nox
+          role: "Nitrogen oxides to air"
+          name: "Nitrogen oxides, to air, unspecified"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record or calculate nitrogen oxides from on-site combustion using equipment- and fuel-specific monitoring or factors."
+          amount:
+            expression: "measured stack release or fuel-specific emission-factor calculation"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg preserved octopus output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_route_inputs
+              source_ids: []
+            ranges: []
+        - row_id: onsite_so2
+          role: "Sulfur dioxide to air"
+          name: "Sulfur dioxide, to air, unspecified"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record or calculate sulfur dioxide from sulfur-bearing on-site fuel; zero is allowed only with fuel specification or monitoring evidence."
+          amount:
+            expression: "measured stack release or fuel sulfur balance with documented retention"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg preserved octopus output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_route_inputs
+              source_ids: []
+            ranges: []
+        - row_id: onsite_pm25
+          role: "Fine particulate matter to air"
+          name: "Particles (PM0.2 - PM2.5), to air, unspecified"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record or calculate primary particulate matter no larger than 2.5 micrometres from on-site combustion or smoke generation."
+          amount:
+            expression: "measured stack release or equipment-specific emission-factor calculation after controls"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg preserved octopus output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_route_inputs
+              source_ids: []
+            ranges: []
+        - row_id: preservation_r717_emission
+          role: "R717 refrigerant to air"
+          name: "Ammonia (R717), to air, unspecified"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record ammonia released from R717 preservation refrigeration equipment; apply only to R717 systems."
+          amount:
+            expression: "equipment refrigerant balance or measured leakage assigned to preservation operation"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg preserved octopus output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_route_inputs
+              source_ids: []
+            ranges: []
+        - row_id: preservation_r404a_emission
+          role: "R404A refrigerant to air"
+          name: "Refrigerant R404A, to air, unspecified"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record R404A released from preservation refrigeration equipment; apply only to R404A systems."
+          amount:
+            expression: "equipment refrigerant balance or measured leakage assigned to preservation operation"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg preserved octopus output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_route_inputs
+              source_ids: []
+            ranges: []
+  - id: packaging_storage
+    label: "Packaging and route-required storage"
+    inputs:
+      product:
+        - row_id: plastic_film_packaging
+          role: "Plastic film packaging"
+          name: "Plastic film"
+          flow_type: "product"
+          flow_ref:
+            uuid: "b01e4bd9-5ada-4676-8a90-be5f167c00fc"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record plastic film used as a pouch, liner, wrap, or seal. Declare polymer, recycled content, thickness, and whether the film is primary or secondary packaging; other polymers or rigid packs require their own atomic rows."
+          amount:
+            expression: "issued film mass reconciled to packed units and stock change"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_storage
+              source_ids:
+                - eu-pef-2021-2279
+            ranges: []
+        - row_id: corrugated_cardboard_packaging
+          role: "Corrugated cardboard packaging"
+          name: "Corrugated cardboard"
+          flow_type: "product"
+          flow_ref:
+            uuid: "8bde297e-98df-463f-bcb4-0db52bf6e0b5"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record corrugated boxes, trays, or dividers used for the declared sale unit or transport pack. Apply only when corrugated cardboard is present and declare recycled content and box specification."
+          amount:
+            expression: "issued cardboard mass reconciled to packed units and stock change"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_storage
+              source_ids:
+                - eu-pef-2021-2279
+            ranges: []
+        - row_id: storage_electricity
+          role: "Storage electricity"
+          name: "Alternating current, electricity mix, consumption mix, less than 1 kV"
+          flow_type: "product"
+          flow_ref:
+            uuid: "50657322-939c-4829-a87b-47c093bfa6a7"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200c9a66 / kWh"
+          description: "Record electricity used by the facility storage room or freezer through the declared gate time. Apply the actual voltage and geography; the UUID below is the verified low-voltage consumption mix."
+          amount:
+            expression: "metered storage electricity allocated by temperature-zone occupied mass-time"
+            value_mode: "calculated_value"
+            specificity: "scenario_specific"
+            basis:
+              text: "per kg reference product for the represented storage duration"
+              kind: "storage_duration"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_storage
+              source_ids: []
+            ranges: []
+        - row_id: storage_r717_makeup
+          role: "Storage R717 refrigerant make-up"
+          name: "Ammonia, anhydrous, liquid (R717)"
+          flow_type: "product"
+          flow_ref:
+            uuid: "6928be4f-282b-4448-8f2a-f8c746621303"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record anhydrous ammonia added to the storage refrigeration system. Apply only where the verified refrigerant is R717."
+          amount:
+            expression: "purchased or issued make-up mass assigned from the equipment refrigerant ledger by operating period"
+            value_mode: "foreground_record"
+            specificity: "scenario_specific"
+            basis:
+              text: "per kg reference product for the represented storage duration"
+              kind: "storage_duration"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_storage
+              source_ids: []
+            ranges: []
+        - row_id: storage_r404a_makeup
+          role: "Storage R404A refrigerant make-up"
+          name: "Refrigerant R404A"
+          flow_type: "product"
+          flow_ref:
+            uuid: "76513c71-a148-484e-865f-2ab54afb4331"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record R404A added to the storage refrigeration system. Apply only where the verified refrigerant is R404A; another refrigerant requires its own atomic product row and emission row."
+          amount:
+            expression: "purchased or issued make-up mass assigned from the equipment refrigerant ledger by operating period"
+            value_mode: "foreground_record"
+            specificity: "scenario_specific"
+            basis:
+              text: "per kg reference product for the represented storage duration"
+              kind: "storage_duration"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_storage
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: reference_product
+          role: "Qualified saleable octopus product"
+          name: "Octopus, frozen, smoked, dried, salted or in brine"
+          flow_type: "product"
+          flow_ref:
+            uuid: "5c8cdbc1-2f53-47ac-aa4a-e44125c18761"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; unit group 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Output exactly the route-qualified reference product on the applicable net, deglazed, or drained mass basis."
+          amount:
+            expression: "exactly 1 kg reference product after normalization"
+            value_mode: "fixed_value"
+            specificity: "product_specific"
+            basis:
+              text: "1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "identity_reference"
+              source_ids:
+                - unstats-cpc-v3-2025
+            ranges: []
+      waste:
+        - row_id: plastic_film_scrap
+          role: "Plastic film packaging scrap"
+          name: "Plastic film packaging scrap"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record clean or contaminated plastic-film offcuts, rejected packs, and damaged film leaving the packaging process; preserve the declared treatment destination."
+          amount:
+            expression: "measured packaging scrap mass by material and destination"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_storage
+              source_ids: []
+            ranges: []
+        - row_id: corrugated_cardboard_scrap
+          role: "Corrugated cardboard packaging scrap"
+          name: "Corrugated cardboard packaging scrap"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record corrugated-cardboard offcuts, rejected boxes, and damaged transport packaging leaving the packaging process."
+          amount:
+            expression: "measured packaging scrap mass by material and destination"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_storage
+              source_ids: []
+            ranges: []
+      elementary:
+        - row_id: storage_r717_emission
+          role: "Storage R717 refrigerant to air"
+          name: "Ammonia (R717), to air, unspecified"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record ammonia released from storage refrigeration equipment. Apply only to R717 systems."
+          amount:
+            expression: "equipment refrigerant balance or measured leakage allocated by storage operating period"
+            value_mode: "calculated_value"
+            specificity: "scenario_specific"
+            basis:
+              text: "per kg reference product for the represented storage duration"
+              kind: "storage_duration"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_storage
+              source_ids: []
+            ranges: []
+        - row_id: storage_r404a_emission
+          role: "Storage R404A refrigerant to air"
+          name: "Refrigerant R404A, to air, unspecified"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record R404A released from storage refrigeration equipment. Apply only to R404A systems."
+          amount:
+            expression: "equipment refrigerant balance or measured leakage allocated by storage operating period"
+            value_mode: "calculated_value"
+            specificity: "scenario_specific"
+            basis:
+              text: "per kg reference product for the represented storage duration"
+              kind: "storage_duration"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_storage
+              source_ids: []
+            ranges: []
+allocation_rules:
+  - rule_id: alloc_avoid
+    applies_to: "multi-output foreground processes"
+    rule: "First avoid allocation through process subdivision and direct measurement of route-specific inputs, utilities, residues, and products."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: alloc_physical
+    applies_to: "unavoidable joint operations"
+    rule: "If subdivision is not possible, use a documented physical causal relation; mass allocation may be used only when it reasonably represents causality for the joint operation."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: alloc_economic_last_resort
+    applies_to: "co-products without defensible physical relation"
+    rule: "Use economic allocation only as a last resort, state the market, price period, and sensitivity, and keep wastes assigned to the process that generates them."
+    source_ids:
+      - eu-pef-2021-2279
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_mass_balance
+      process_id: "octopus_receiving_preparation_route_preservation_packaging_storage"
+      flow_role: "received, prepared, preserved, saleable, reject, rework, glaze, and drained masses"
+      record_type: "scales, batch sheets, yield and disposition records"
+      raw_fields: "lot_id; species_or_commercial_designation; route; incoming_state; gross_mass; tare_mass; accepted_mass; intermediate_mass; final_net_mass; glaze_mass; drained_mass; reject_mass; rework_mass"
+      collection_method: "Calibrated weighing by lot; preserve gross, tare, deglazed, and drained observations where applicable."
+      unit: "kg"
+      frequency: "each production lot"
+      temporal_coverage: "At least 12 consecutive representative months or the full seasonal campaign with justification."
+      site_scope: "All facilities represented by the dataset."
+      aggregation_rule: "Sum accepted masses and normalize flows to qualified saleable mass; do not net rework across the boundary."
+      quality_evidence: "Scale calibration, lot traceability, reconciliation sign-off, and product specification."
+    - protocol_id: cp_route_inputs
+      process_id: "octopus_receiving_preparation_route_preservation"
+      flow_role: "each atomic water, salt, wood-chip, electricity, steam, hot-water, natural-gas, diesel, LPG, R717, R404A, wastewater, spent-brine, reject, ash, combustion-emission, and refrigerant-emission row"
+      record_type: "meters, invoices, issue records, recipes, fuel and refrigerant ledgers, equipment logs, stack records, and discharge records"
+      raw_fields: "lot_id; route; atomic_flow_id; flow_uuid; quantity; unit; meter_start; meter_end; stock_start; stock_end; returned_quantity; operating_time; discharge_quantity; destination; emission_factor; factor_source"
+      collection_method: "Direct metering preferred; otherwise reconcile each named material or carrier separately from purchases, stock, recipes, and equipment logs using a documented allocation."
+      unit: "kg; m3; kWh; carrier-specific SI unit"
+      frequency: "per lot or monthly with traceable lot allocation"
+      temporal_coverage: "Same period as product mass records."
+      site_scope: "Each included line and shared utility system."
+      aggregation_rule: "Never aggregate carriers, materials, wastes, or pollutants into one exchange; subtract only measured closed-loop recovery; normalize each atomic row to preserved output."
+      quality_evidence: "Meter calibration, invoice or stock reconciliation, recipe approval, refrigerant ledger, flow UUID readback, and allocation rationale."
+    - protocol_id: cp_packaging_storage
+      process_id: "packaging_storage"
+      flow_role: "plastic film, corrugated cardboard, each additional packaging material, storage electricity, each refrigerant make-up, each packaging scrap, and each refrigerant emission"
+      record_type: "packaging bill of materials, packed-unit counts, warehouse meters, refrigerant ledgers, temperature and inventory logs"
+      raw_fields: "packaging_material; flow_uuid; packaging_mass; packed_units; stored_mass; storage_start; storage_end; temperature; electricity; refrigerant_identity; refrigerant_makeup; refrigerant_recovery; refrigerant_release"
+      collection_method: "Reconcile each packaging material to packed units; allocate electricity by documented mass-time; close a separate mass balance for each refrigerant identity."
+      unit: "kg; kWh; degree Celsius; day"
+      frequency: "each packaging campaign and monthly storage reconciliation"
+      temporal_coverage: "Same period as product mass records."
+      site_scope: "All packaging lines and storage rooms represented."
+      aggregation_rule: "Normalize every packaging material separately to product mass, electricity to occupied mass-time, and each refrigerant make-up and release separately; retain route and temperature strata."
+      quality_evidence: "BOM revision, stock reconciliation, meter calibration, refrigerant ledger, flow UUID readback, and temperature-log completeness."
+  calculation_rules:
+    - id: calc_reference_normalization
+      applies_to: "all inventory rows"
+      rule: "normalized amount = period or lot amount / qualified saleable reference mass, then express per 1 kg."
+      inputs:
+        - "collected flow amount"
+        - "qualified saleable mass"
+      output: "amount per kg reference product"
+      source_ids:
+        - eu-pef-2021-2279
+    - id: calc_route_reference_mass
+      applies_to: "glazed frozen or in-brine products"
+      rule: "frozen reference mass = measured deglazed product mass; in-brine reference mass = measured drained octopus mass; all other routes use net saleable octopus mass excluding packaging."
+      inputs:
+        - gross
+        - tare
+        - glaze
+        - deglazed
+        - drained
+        - "and net masses"
+      output: "route-consistent reference mass"
+      source_ids:
+        - codex-cxc-52-2003
+    - id: calc_storage_energy
+      applies_to: "shared storage"
+      rule: "allocated energy = metered storage energy × represented product mass-time / total occupied mass-time for the same temperature zone and period."
+      inputs:
+        - "meter energy"
+        - "product mass"
+        - "storage duration"
+        - "total occupied mass-time"
+      output: "kWh per kg reference product for declared duration"
+      source_ids:
+        - eu-pef-2021-2279
+  data_quality_requirements:
+    - id: dq_identity_route
+      applies_to: "product and route"
+      requirement: "Preserve lot-level species or commercial designation, incoming state, product form, exactly one primary route, and required route qualifiers."
+      evidence: "Product specification, label, batch sheet, and route log."
+    - id: dq_measurement
+      applies_to: "mass, utilities, and storage"
+      requirement: "Use calibrated measurements where available, retain raw readings and conversion factors, and reconcile product, waste, rework, water, brine, packaging, and energy records."
+      evidence: "Calibration records, meter logs, mass-balance review, and invoice or stock reconciliation."
+    - id: dq_representativeness
+      applies_to: "reporting period and facilities"
+      requirement: "Cover all represented facilities and at least 12 representative months or a justified complete seasonal campaign; disclose temporal, technological, and geographical limitations."
+      evidence: "Coverage table and data-quality assessment following eu-pef-2021-2279."
+    - id: dq_reasoned_estimates
+      applies_to: "provisional ranges"
+      requirement: "Do not substitute the reasoned_estimate ranges for available foreground records; replace them when reviewed route-specific batch, meter, recipe, packaging, storage, or discharge evidence becomes available."
+      evidence: "Review record identifying each replaced or retained provisional range."
+validation_rules:
+  - rule_id: val_reference_identity
+    applies_to: "reference flow"
+    rule: "Require product flow UUID 5c8cdbc1-2f53-47ac-aa4a-e44125c18761, Mass UUID 93a60a56-a3c8-11da-a746-0800200b9a66, Units of mass UUID 93a60a57-a4c8-11da-a746-0800200c9a66, unit kg, and reference amount 1."
+    source_ids:
+      - unstats-cpc-v3-2025
+  - rule_id: val_route_one_of
+    applies_to: "product route"
+    rule: "Require exactly one of frozen, smoked, dried, salted, or in_brine; reject a package that applies every route or omits the actual integral substeps."
+    source_ids:
+      - codex-cxc-52-2003
+  - rule_id: val_mass_condition
+    applies_to: "reference mass"
+    rule: "Require packaging exclusion and the applicable net, deglazed, or drained mass basis; require moisture, salt or brine, glaze, edible/saleable portion, storage, and shelf-life qualifiers when applicable."
+    source_ids:
+      - codex-cxc-52-2003
+      - eu-pef-2021-2279
+  - rule_id: val_process_completeness
+    applies_to: "foreground inventory"
+    rule: "Require all three processes and one atomic row for every applicable exchange: electricity; steam or hot water; each fuel; each refrigerant make-up and emission; water; salt; smoke material; each waste stream; each pollutant; and each packaging material and scrap. Reject collection labels, combined carrier lists, and selector instructions; zero is accepted only when records demonstrate non-use or non-generation."
+    source_ids:
+      - codex-cxc-52-2003
+      - eu-pef-2021-2279
+  - rule_id: val_mass_balance
+    applies_to: "each production lot or reconciled period"
+    rule: "Reconcile received, intermediate, final, waste, rework, glaze, brine, and moisture-related mass changes; disclose unexplained imbalance and do not force water-loss routes to equal wet-product yields."
+    source_ids:
+      - codex-cxc-52-2003
+  - rule_id: val_estimate_replacement
+    applies_to: "reasoned estimates"
+    rule: "Flag every retained provisional range and require replacement when reviewed foreground or source-backed route-specific evidence becomes available; provisional ranges are not publication-critical allowed ranges."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "Foreground gate-to-gate preserved-octopus production dataset."
+  downstream_use: "secondary_dataset; background_dataset; process and lifecyclemodel projections."
+  allowed_use: "Route-matched modelling where product form, net-mass condition, storage, geography, technology, and reporting period are compatible and upstream datasets are linked."
+  excluded_use: "Direct comparison or substitution across preservation routes without harmonized moisture, salt or brine, glaze, drained-mass, edible/saleable portion, packaging, storage, and shelf-life conditions; modelling live/fresh/chilled or canned products."
+  required_metadata: "PCR id and version; product flow UUID; CPC reference; species or commercial designation; product form; cooked/raw state; primary route; integral substeps; net/deglazed/drained mass basis; moisture, salt or brine, and glaze qualifiers; facility geography; technology; reporting period; packaging; storage temperature and duration; shelf life; allocation; upstream dataset references."
+  required_quality_disclosure: "Data coverage, measurement and calibration, mass-balance closure, route separation, allocation, missing data, retained reasoned_estimate ranges, source versions, and temporal, technological, and geographical representativeness."
+  update_trigger: "Change in route, species mix, product form, cooking state, preservation technology, recipe or brine, moisture or salt specification, glaze, packaging, storage regime, allocation, facility coverage, reference UUID, applicable official guidance, or replacement evidence that materially changes results."
+data_sources:
+  - id: "unstats-cpc-v3-2025"
+    type: "dataset"
+    reference: "United Nations Statistics Division, Central Product Classification Version 3.0, structure dated 30 June 2025, code 21267, https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Structure_30Jun2025.csv (retrieved 2026-08-11)."
+    used_for: "Exact official category title and product-scope anchor."
+  - id: "codex-cxc-52-2003"
+    type: "official_guidance"
+    reference: "Codex Alimentarius, CXC 52-2003, Code of Practice for Fish and Fishery Products, 2nd edition, FAO, https://www.fao.org/4/i2382e/i2382e.pdf (retrieved 2026-08-11)."
+    used_for: "Cephalopod handling; fresh/frozen foundation; definitions and process structure for freezing, glazing, salting, brining, smoking, smoke-drying, packaging, storage, hygiene, and lot control."
+  - id: "eu-pef-2021-2279"
+    type: "official_guidance"
+    reference: "European Commission, Commission Recommendation (EU) 2021/2279 on the use of the Environmental Footprint methods, including Annexes 1 and 2, https://environment.ec.europa.eu/publications/recommendation-use-environmental-footprint-methods_en (retrieved 2026-08-11)."
+    used_for: "Functional unit and reference flow, system boundary, packaging inclusion, multi-functionality hierarchy, foreground collection, completeness, and data-quality representativeness."
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:1d282e243b7e5b1f1c1ed8a1aa9df5045b16793f04aebcd5c38090be4d0c03c2"
+  generated_content_sha256: "sha256:ffdbb93072b71b6bf65006f6a0e63be50b0b4d530076af4312b2b65176a5e699"
