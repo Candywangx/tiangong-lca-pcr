@@ -42,7 +42,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 1 kg |
-| 参考产品流 | Fermented Dairy Products `62cf4ac0-49ff-484a-9d1e-73e6df7f7743` |
+| 参考产品流 | 发酵乳 `62cf4ac0-49ff-484a-9d1e-73e6df7f7743` |
 | 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | kg |
@@ -110,15 +110,6 @@ sync_with: pcr.en-US.md
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_batch_materials`
 - 来源：`codex-fermented-milks-243`; `codex-cream-288`; `dairy-pefcr-2025`
-- 数量范围：发酵乳代表性配方中乳配料总量 QA 范围
-  - 范围角色：QA 校验（`qa_guardrail`）
-  - 下限：0.80
-  - 上限：1.00
-  - 单位：kg/kg 放行净产品
-  - 基准：原味、调味和果料型凝固或搅拌产品示例的乳配料总量
-  - 基准类型：参考流（`reference_flow`）
-  - 证据类型：外部来源（`external_source`）
-  - 来源：`dairy-pefcr-2025`
 
 ###### 非乳配方配料（`non_dairy_ingredients`）
 
@@ -292,15 +283,6 @@ sync_with: pcr.en-US.md
 - 证据类型：基于采集计算（`calculated_from_collection`）
 - 采集协议：`cp_packaging_records`
 - 来源：`dairy-pefcr-2025`
-- 数量范围：散装及常见消费包装的宽泛包装质量 QA 范围
-  - 范围角色：QA 校验（`qa_guardrail`）
-  - 下限：0
-  - 上限：1.10
-  - 单位：kg 包装/kg 净产品
-  - 基准：从散装产品到高质量一次性消费容器示例
-  - 基准类型：过程输出（`process_output`）
-  - 证据类型：外部来源（`external_source`）
-  - 来源：`dairy-pefcr-2025`
 
 ###### 设施电力（`facility_electricity`）
 
@@ -316,15 +298,6 @@ sync_with: pcr.en-US.md
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_facility_utilities`
 - 来源：`dairy-pefcr-2025`; `ifc-dairy-processing-ehs-2007`
-- 数量范围：Dairy PEFCR 发酵乳加工电力可替换默认值
-  - 范围角色：默认估计（`default_estimate`）
-  - 下限：0.137
-  - 上限：0.137
-  - 单位：kWh/kg 产品
-  - 基准：每 kg 发酵乳产品的乳品加工设施电力
-  - 基准类型：参考流（`reference_flow`）
-  - 证据类型：外部来源（`external_source`）
-  - 来源：`dairy-pefcr-2025`
 
 ###### 设施热能（`facility_thermal_energy`）
 
@@ -340,15 +313,6 @@ sync_with: pcr.en-US.md
 - 证据类型：基于采集计算（`calculated_from_collection`）
 - 采集协议：`cp_facility_utilities`
 - 来源：`dairy-pefcr-2025`; `ifc-dairy-processing-ehs-2007`
-- 数量范围：Dairy PEFCR 发酵乳加工热能可替换默认值
-  - 范围角色：默认估计（`default_estimate`）
-  - 下限：0.590
-  - 上限：0.590
-  - 单位：MJ/kg 产品
-  - 基准：每 kg 发酵乳产品的乳品加工设施热能
-  - 基准类型：参考流（`reference_flow`）
-  - 证据类型：外部来源（`external_source`）
-  - 来源：`dairy-pefcr-2025`
 
 ##### 废物流
 
@@ -391,15 +355,6 @@ sync_with: pcr.en-US.md
 - 证据类型：基于采集计算（`calculated_from_collection`）
 - 采集协议：`cp_facility_utilities`
 - 来源：`dairy-pefcr-2025`
-- 数量范围：Dairy PEFCR 制冷剂损失可替换默认值
-  - 范围角色：默认估计（`default_estimate`）
-  - 下限：0.000000005
-  - 上限：0.000000005
-  - 单位：kg/kg 产品
-  - 基准：每 kg 发酵乳产品 5.00E-6 g 制冷剂
-  - 基准类型：参考流（`reference_flow`）
-  - 证据类型：外部来源（`external_source`）
-  - 来源：`dairy-pefcr-2025`
 
 #### 输出
 
@@ -409,7 +364,7 @@ sync_with: pcr.en-US.md
 
 这是在设施冷库或发运门经质量放行的声明参考产品。
 
-- 选定流：Fermented Dairy Products `62cf4ac0-49ff-484a-9d1e-73e6df7f7743`
+- 选定流：发酵乳 `62cf4ac0-49ff-484a-9d1e-73e6df7f7743`
 - 流属性/单位：Mass / kg
 - 数量规则：放行净产品的固定参考数量
 - 数值来源模式：固定值（`fixed_value`）
@@ -418,15 +373,6 @@ sync_with: pcr.en-US.md
 - 基准类型：参考流（`reference_flow`）
 - 证据类型：身份引用（`identity_reference`）
 - 来源：`dairy-pefcr-2025`
-- 数量范围：参考流身份检查
-  - 范围角色：允许范围（`allowed_range`）
-  - 下限：1
-  - 上限：1
-  - 单位：kg
-  - 基准：规范参考数量
-  - 基准类型：参考流（`reference_flow`）
-  - 证据类型：外部来源（`external_source`）
-  - 来源：`dairy-pefcr-2025`
 
 ##### 废物流
 
@@ -475,15 +421,6 @@ sync_with: pcr.en-US.md
 - 证据类型：基于采集计算（`calculated_from_collection`）
 - 采集协议：`cp_sanitation_records`
 - 来源：`dairy-pefcr-2025`; `ifc-dairy-processing-ehs-2007`
-- 数量范围：Dairy PEFCR 用水量可替换默认值
-  - 范围角色：默认估计（`default_estimate`）
-  - 下限：3.2
-  - 上限：3.2
-  - 单位：L/kg 产品
-  - 基准：每 kg 发酵乳产品的乳品加工设施用水
-  - 基准类型：参考流（`reference_flow`）
-  - 证据类型：外部来源（`external_source`）
-  - 来源：`dairy-pefcr-2025`
 
 ###### 酸性清洗剂（`acid_cleaning_agents`）
 
@@ -499,15 +436,6 @@ sync_with: pcr.en-US.md
 - 证据类型：基于采集计算（`calculated_from_collection`）
 - 采集协议：`cp_sanitation_records`
 - 来源：`dairy-pefcr-2025`; `ifc-dairy-processing-ehs-2007`
-- 数量范围：Dairy PEFCR 酸性清洗剂用量可替换默认值
-  - 范围角色：默认估计（`default_estimate`）
-  - 下限：0.030
-  - 上限：0.030
-  - 单位：kg/kg 产品
-  - 基准：每 kg 发酵乳产品的酸性清洗剂
-  - 基准类型：参考流（`reference_flow`）
-  - 证据类型：外部来源（`external_source`）
-  - 来源：`dairy-pefcr-2025`
 
 ###### 碱性清洗剂（`alkaline_cleaning_agents`）
 
@@ -523,15 +451,6 @@ sync_with: pcr.en-US.md
 - 证据类型：基于采集计算（`calculated_from_collection`）
 - 采集协议：`cp_sanitation_records`
 - 来源：`dairy-pefcr-2025`; `ifc-dairy-processing-ehs-2007`
-- 数量范围：Dairy PEFCR 碱性清洗剂用量可替换默认值
-  - 范围角色：默认估计（`default_estimate`）
-  - 下限：0.060
-  - 上限：0.060
-  - 单位：kg/kg 产品
-  - 基准：每 kg 发酵乳产品的碱性清洗剂
-  - 基准类型：参考流（`reference_flow`）
-  - 证据类型：外部来源（`external_source`）
-  - 来源：`dairy-pefcr-2025`
 
 ##### 废物流
 
@@ -557,15 +476,6 @@ sync_with: pcr.en-US.md
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_wastewater_records`
 - 来源：`dairy-pefcr-2025`; `ifc-dairy-processing-ehs-2007`
-- 数量范围：Dairy PEFCR 废水体积可替换默认值
-  - 范围角色：默认估计（`default_estimate`）
-  - 下限：4.6
-  - 上限：4.6
-  - 单位：L/kg 产品
-  - 基准：每 kg 发酵乳产品送处理的废水
-  - 基准类型：参考流（`reference_flow`）
-  - 证据类型：外部来源（`external_source`）
-  - 来源：`dairy-pefcr-2025`
 
 ##### 基本流
 

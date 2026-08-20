@@ -113,7 +113,7 @@ status: candidate
 
 记录纱线准备、织机运行、除尘和直接归属辅助设备消耗的计量电网电力。
 
-- 选定流：Grid electricity
+- 选定流：电网电力
 - 流属性/单位：Energy / kWh
 - 数量规则：分配至机织批次的计量电力
 - 数值来源模式：前景记录（`foreground_record`）
@@ -191,7 +191,7 @@ status: candidate
 
 记录进入预处理、染色、印花、水洗或漂洗作业的计量淡水。
 
-- 选定流：Process water
+- 选定流：过程用水
 - 流属性/单位：Volume / m3
 - 数量规则：供应至湿法加工批次的计量用水量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -221,7 +221,7 @@ status: candidate
 
 记录湿法加工设备、泵、通风和干燥设备使用的计量电网电力；使用的热能应在具体数据集中作为另一交换记录。
 
-- 选定流：Grid electricity
+- 选定流：电网电力
 - 流属性/单位：Energy / kWh
 - 数量规则：分配至湿法加工批次的计量电力
 - 数值来源模式：前景记录（`foreground_record`）
@@ -329,7 +329,7 @@ status: candidate
 
 记录背衬或涂层设备、固化辅助设备、裁切、检验和包装使用的计量电网电力。
 
-- 选定流：Grid electricity
+- 选定流：电网电力
 - 流属性/单位：Energy / kWh
 - 数量规则：分配至后整理批次的计量电力
 - 数值来源模式：前景记录（`foreground_record`）
@@ -367,7 +367,7 @@ status: candidate
 
 这是为 CPC 27220 精确选定的公开 Tiangong 参考产品，归一化为 1 kg。
 
-- 选定流：Carpets and other textile floor coverings, woven, not tufted or flocked `d54c5255-fc7f-4613-86da-08cf2afe8632`
+- 选定流：机织非簇绒的或植绒的地毯及其他铺地织物 `d54c5255-fc7f-4613-86da-08cf2afe8632`
 - 流属性/单位：Mass / kg
 - 数量规则：净验收产品质量除以同一净验收产品质量，得到恰好 1 kg 参考产品
 - 数值来源模式：计算值（`calculated_value`）

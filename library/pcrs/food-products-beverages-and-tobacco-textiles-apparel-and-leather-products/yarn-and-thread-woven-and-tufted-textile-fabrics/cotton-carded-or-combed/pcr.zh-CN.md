@@ -42,7 +42,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 1 kg |
-| 参考产品流 | Cotton, carded or combed `93976740-418a-40e3-8901-dbc34f0acdc6` |
+| 参考产品流 | 精梳或粗梳的皮棉 `93976740-418a-40e3-8901-dbc34f0acdc6` |
 | 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | kg |
@@ -624,7 +624,7 @@ sync_with: pcr.en-US.md
 - 范围或不确定性：要求前景计量；不主张类别通用数值范围
 - 数据源 id：`cp_carding_drawing_records`
 - 来源 id 或状态：`un-cpc-3-2025`; `osha-1910-262-textiles`; confirmed UUID `93976740-418a-40e3-8901-dbc34f0acdc6`
-- 选定流：Cotton, carded or combed `93976740-418a-40e3-8901-dbc34f0acdc6`
+- 选定流：精梳或粗梳的皮棉 `93976740-418a-40e3-8901-dbc34f0acdc6`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：实测合格普梳输出；仅作为交付产品时最终参考量固定为 1 kg
 - 数值来源模式：前景记录（`foreground_record`）
@@ -858,7 +858,7 @@ sync_with: pcr.en-US.md
 - 范围或不确定性：要求前景计量；不主张类别通用数值范围
 - 数据源 id：`cp_combing_records`
 - 来源 id 或状态：`un-cpc-3-2025`; `osha-1910-262-textiles`; confirmed UUID `93976740-418a-40e3-8901-dbc34f0acdc6`
-- 选定流：Cotton, carded or combed `93976740-418a-40e3-8901-dbc34f0acdc6`
+- 选定流：精梳或粗梳的皮棉 `93976740-418a-40e3-8901-dbc34f0acdc6`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：实测可售精梳棉输出并归一化至固定 1 kg 参考量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1062,7 +1062,7 @@ sync_with: pcr.en-US.md
 - 范围或不确定性：下列暂定 `reasoned_estimate`；取得代表性水表记录后替换
 - 数据源 id：`cp_water_auxiliary_packaging`
 - 来源 id 或状态：`eu-jrc-txt-bref-2023`; `cp_water_auxiliary_packaging`；flow-hybrid-search 候选经天工 CLI `flow get` 核验；UUID confirmed；范围为 `reasoned_estimate`
-- 选定流：工艺用水（Process Water）`94a04f7e-2d5c-41f0-b182-d54a3b373a02`
+- 选定流：工艺用水 `94a04f7e-2d5c-41f0-b182-d54a3b373a02`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：计量补充水减去适用时的实测回水
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1096,7 +1096,7 @@ sync_with: pcr.en-US.md
 - 范围或不确定性：下列暂定包装筛选；取得物料清单或发运记录后替换
 - 数据源 id：`cp_water_auxiliary_packaging`
 - 来源 id 或状态：`cp_water_auxiliary_packaging`；flow-hybrid-search 候选经天工 CLI `flow get` 核验；UUID confirmed；范围为 `reasoned_estimate`
-- 选定流：聚乙烯膜（Polyethylene film）`e64eb06c-6dc9-45f1-b003-3dc6c44b27e2`
+- 选定流：聚乙烯膜（聚乙烯薄膜）`e64eb06c-6dc9-45f1-b003-3dc6c44b27e2`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：分配至发运批次的实测或采购盘点 PE 膜/袋质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1130,7 +1130,7 @@ sync_with: pcr.en-US.md
 - 范围或不确定性：不主张类别通用数值范围；必须使用物料清单或发运记录
 - 数据源 id：`cp_water_auxiliary_packaging`
 - 来源 id 或状态：`cp_water_auxiliary_packaging`；flow-hybrid-search 候选经天工 CLI `flow get` 核验；UUID confirmed；要求前景记录
-- 选定流：瓦楞纸板（Corrugated cardboard）`8bde297e-98df-463f-bcb4-0db52bf6e0b5`
+- 选定流：瓦楞纸板 `8bde297e-98df-463f-bcb4-0db52bf6e0b5`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：分配至发运批次的实测或采购盘点瓦楞纸板质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1156,7 +1156,7 @@ sync_with: pcr.en-US.md
 - 范围或不确定性：不主张类别通用数值范围；必须使用发运和复用记录
 - 数据源 id：`cp_water_auxiliary_packaging`
 - 来源 id 或状态：`cp_water_auxiliary_packaging`；flow-hybrid-search 候选经天工 CLI `flow get` 核验；UUID confirmed；要求前景计算
-- 选定流：木托盘（Wooden pallets）`e882bdf4-1cf6-4f51-93e9-c6b91855ba02`
+- 选定流：木托盘（木质托盘）`e882bdf4-1cf6-4f51-93e9-c6b91855ba02`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：按装载产品质量和有文件依据复用次数分配托盘质量
 - 数值来源模式：计算值（`calculated_value`）
@@ -1182,7 +1182,7 @@ sync_with: pcr.en-US.md
 - 范围或不确定性：不主张类别通用数值范围；必须使用物料清单或发运记录
 - 数据源 id：`cp_water_auxiliary_packaging`
 - 来源 id 或状态：`cp_water_auxiliary_packaging`；flow-hybrid-search 候选经天工 CLI `flow get` 核验；UUID confirmed；要求前景记录
-- 选定流：钢制打包带（Steel baling band）`56fe4f71-b594-4b55-8553-c87f2516737d`
+- 选定流：钢制打包带（钢打包带）`56fe4f71-b594-4b55-8553-c87f2516737d`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：分配至发运批次的实测或采购盘点钢带/扎带质量
 - 数值来源模式：前景记录（`foreground_record`）

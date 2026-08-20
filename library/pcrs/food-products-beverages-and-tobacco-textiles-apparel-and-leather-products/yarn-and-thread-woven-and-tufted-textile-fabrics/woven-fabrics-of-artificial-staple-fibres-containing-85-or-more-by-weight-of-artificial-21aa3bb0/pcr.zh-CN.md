@@ -38,7 +38,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 1 kg |
-| 参考产品流 | Woven fabrics of artificial staple fibres, containing 85% or more by weight of artificial staple fibres `7037e578-630a-4ba2-8768-7858df8a46aa` |
+| 参考产品流 | 人造短纤维机织物，按重量计，人造短纤维含量为 85%或以上 `7037e578-630a-4ba2-8768-7858df8a46aa` |
 | 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | kg |
@@ -97,7 +97,7 @@ sync_with: pcr.en-US.md
 
 记录进入前景的非零售人造短纤维纱线。任何少量其他纤维纱线须按实际身份另建原子卡片。
 
-- 选定流：Yarn (other than sewing thread) of artificial staple fibres, containing 85% or more by weight of such fibres, not put up for retail sale `b2fccf4f-e4c4-4723-9e9b-ef0956abd0fc`
+- 选定流：含人造短纤维重量达85%或85%以上的纱（缝纫线除外），不供零售 `b2fccf4f-e4c4-4723-9e9b-ef0956abd0fc`
 - 流属性/单位：Mass / kg
 - 数量规则：申报生产批次消耗的已验收纱线实测调湿质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -247,7 +247,7 @@ sync_with: pcr.en-US.md
 
 仅在聚乙烯醇为实际经纱浆料组分时记录；其他浆料组分或助剂须各自建立原子卡片。
 
-- 选定流：Polyvinyl alcohol `cea707dd-98a3-451d-bc43-2dcc145091e9`
+- 选定流：聚乙烯醇 `cea707dd-98a3-451d-bc43-2dcc145091e9`
 - 流属性/单位：Mass / kg
 - 数量规则：实测配方领用量减回收和退回量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -291,7 +291,7 @@ sync_with: pcr.en-US.md
 
 记录输送到上浆过程的外购或场内转移蒸汽。
 
-- 选定流：Steam `293f9fd9-5182-4d35-8aa5-ce73d4f322b7`
+- 选定流：蒸汽 `293f9fd9-5182-4d35-8aa5-ce73d4f322b7`
 - 流属性/单位：Mass / kg
 - 数量规则：计量蒸汽质量，或根据校准冷凝水和有记录损失计算的蒸汽质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -305,7 +305,7 @@ sync_with: pcr.en-US.md
 
 仅在天然气为上浆或干燥供热而燃烧时记录，不得与蒸汽合并。
 
-- 选定流：Natural gas in the gaseous state `4f19ca0e-7b3b-11dd-ad8b-0800200c9a66`
+- 选定流：气态天然气 `4f19ca0e-7b3b-11dd-ad8b-0800200c9a66`
 - 流属性/单位：Mass / kg
 - 数量规则：按有记录气体状态和密度将实测燃气体积换算为质量，或使用直接燃料质量记录
 - 数值来源模式：计算值（`calculated_value`）
@@ -347,7 +347,7 @@ sync_with: pcr.en-US.md
 
 记录扣除有记录内部回用后送处理的上浆废水；浓缩废浆液另建卡片。
 
-- 选定流：Warp sizing wastewater `33617934-f2c0-4016-bb14-264de8396a2c`
+- 选定流：经纱上浆废水 `33617934-f2c0-4016-bb14-264de8396a2c`
 - 流属性/单位：Mass / kg
 - 数量规则：实测排放体积乘实测或有记录密度
 - 数值来源模式：计算值（`calculated_value`）
@@ -379,7 +379,7 @@ sync_with: pcr.en-US.md
 
 在有实测或可由采集活动数据计算时记录上浆和干燥产生的 NMVOC；其他排放物质须另建原子卡片。
 
-- 选定流：Non-methane volatile organic compounds to air, unspecified `08a91e70-3ddc-11dd-a302-0050c2490048`
+- 选定流：非甲烷挥发性有机化合物 `08a91e70-3ddc-11dd-a302-0050c2490048`
 - 流属性/单位：Mass / kg
 - 数量规则：实测排放，或由燃料用量和有记录的因子计算
 - 数值来源模式：计算值（`calculated_value`）
@@ -400,7 +400,7 @@ sync_with: pcr.en-US.md
 
 记录作为经纱和纬纱投入的同一精确人造短纤维纱线总质量；组成不同的纱线须另建卡片。
 
-- 选定流：Yarn (other than sewing thread) of artificial staple fibres, containing 85% or more by weight of such fibres, not put up for retail sale `b2fccf4f-e4c4-4723-9e9b-ef0956abd0fc`
+- 选定流：含人造短纤维重量达85%或85%以上的纱（缝纫线除外），不供零售 `b2fccf4f-e4c4-4723-9e9b-ef0956abd0fc`
 - 流属性/单位：Mass / kg
 - 数量规则：发往织机的实测纱线质量并调整在制品变化
 - 数值来源模式：前景记录（`foreground_record`）
@@ -456,7 +456,7 @@ sync_with: pcr.en-US.md
 
 记录检验后的调湿可销售坯布质量；仅在无后续整理过程时，本行才作为参考输出。
 
-- 选定流：Woven fabrics of artificial staple fibres, containing 85% or more by weight of artificial staple fibres `7037e578-630a-4ba2-8768-7858df8a46aa`
+- 选定流：人造短纤维机织物，按重量计，人造短纤维含量为 85%或以上 `7037e578-630a-4ba2-8768-7858df8a46aa`
 - 流属性/单位：Mass / kg
 - 数量规则：实测可销售坯布净质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -551,7 +551,7 @@ sync_with: pcr.en-US.md
 
 仅在前处理或整理实际使用工业级氢氧化钠时记录，并披露供应纯度。
 
-- 选定流：Sodium hydroxide `e0abcced-0611-4c24-9290-5a2c5a0c4169`
+- 选定流：氢氧化钠 `e0abcced-0611-4c24-9290-5a2c5a0c4169`
 - 流属性/单位：Mass / kg
 - 数量规则：实测配方领用量减回收和退回量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -596,7 +596,7 @@ sync_with: pcr.en-US.md
 
 氯化钠作为染色电解质使用时单独记录。
 
-- 选定流：Sodium chloride `a413ea86-0887-42c8-be77-3bee86d5863b`
+- 选定流：氯化钠 `a413ea86-0887-42c8-be77-3bee86d5863b`
 - 流属性/单位：Mass / kg
 - 数量规则：实测配方领用量减回收和退回量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -626,7 +626,7 @@ sync_with: pcr.en-US.md
 
 将外购或场内转移蒸汽与电力和燃料分开记录。
 
-- 选定流：Steam `293f9fd9-5182-4d35-8aa5-ce73d4f322b7`
+- 选定流：蒸汽 `293f9fd9-5182-4d35-8aa5-ce73d4f322b7`
 - 流属性/单位：Mass / kg
 - 数量规则：计量蒸汽质量，或根据校准冷凝水和有记录损失计算的蒸汽质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -641,7 +641,7 @@ sync_with: pcr.en-US.md
 
 仅在天然气用于直接加热、干燥、拉幅、固化或减排时记录。
 
-- 选定流：Natural gas in the gaseous state `4f19ca0e-7b3b-11dd-ad8b-0800200c9a66`
+- 选定流：气态天然气 `4f19ca0e-7b3b-11dd-ad8b-0800200c9a66`
 - 流属性/单位：Mass / kg
 - 数量规则：按有记录气体状态和密度将实测燃气体积换算为质量，或使用直接燃料质量记录
 - 数值来源模式：计算值（`calculated_value`）
@@ -668,7 +668,7 @@ sync_with: pcr.en-US.md
 
 记录全部纳入整理和检验后的调湿可销售净质量；纳入任一整理工序时，本行为参考输出。
 
-- 选定流：Woven fabrics of artificial staple fibres, containing 85% or more by weight of artificial staple fibres `7037e578-630a-4ba2-8768-7858df8a46aa`
+- 选定流：人造短纤维机织物，按重量计，人造短纤维含量为 85%或以上 `7037e578-630a-4ba2-8768-7858df8a46aa`
 - 流属性/单位：Mass / kg
 - 数量规则：实测可销售整理织物净质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -731,7 +731,7 @@ sync_with: pcr.en-US.md
 
 在有实测或可由采集活动数据计算时，记录干燥、拉幅、固化或其他整理步骤产生的 NMVOC；其他排放物质须另建原子卡片。
 
-- 选定流：Non-methane volatile organic compounds to air, unspecified `08a91e70-3ddc-11dd-a302-0050c2490048`
+- 选定流：非甲烷挥发性有机化合物 `08a91e70-3ddc-11dd-a302-0050c2490048`
 - 流属性/单位：Mass / kg
 - 数量规则：实测浓度乘实测流量，或由采集的燃料/化学品用量和有记录的因子计算
 - 数值来源模式：计算值（`calculated_value`）

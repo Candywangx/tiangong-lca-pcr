@@ -40,7 +40,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 1 kg |
-| 参考产品流 | Rice milk `9f4c117d-e8ff-488f-89f6-c2ab7ca763e1` |
+| 参考产品流 | 米浆 `9f4c117d-e8ff-488f-89f6-c2ab7ca763e1` |
 | 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | kg |
@@ -185,7 +185,7 @@ sync_with: pcr.en-US.md
 
 记录浆料形成、本过程内清洗、稀释和酶反应所加水；就地清洗水若单独计量，则保留为独立公用工程记录。
 
-- 选定流：Process water
+- 选定流：过程用水
 - 流属性/单位：Mass / kg
 - 数量规则：计量或按批次配方记录的耗水量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -459,7 +459,7 @@ sync_with: pcr.en-US.md
 
 记录放行至灌装的处理后产品质量，以及实际均质和热处理参数。
 
-- 选定流：Rice milk `9f4c117d-e8ff-488f-89f6-c2ab7ca763e1`
+- 选定流：米浆 `9f4c117d-e8ff-488f-89f6-c2ab7ca763e1`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：转入灌装的合格产品实测质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -504,7 +504,7 @@ sync_with: pcr.en-US.md
 
 记录进入灌装线的处理后米浆。
 
-- 选定流：Rice milk `9f4c117d-e8ff-488f-89f6-c2ab7ca763e1`
+- 选定流：米浆 `9f4c117d-e8ff-488f-89f6-c2ab7ca763e1`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：实测转移质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -567,7 +567,7 @@ sync_with: pcr.en-US.md
 
 这是参考产品输出。饮料净质量与包装质量分别记录，并保留已放行灌装计数和质量记录。
 
-- 选定流：Rice milk `9f4c117d-e8ff-488f-89f6-c2ab7ca763e1`
+- 选定流：米浆 `9f4c117d-e8ff-488f-89f6-c2ab7ca763e1`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：1 kg 已放行米浆净质量
 - 数值来源模式：固定值（`fixed_value`）

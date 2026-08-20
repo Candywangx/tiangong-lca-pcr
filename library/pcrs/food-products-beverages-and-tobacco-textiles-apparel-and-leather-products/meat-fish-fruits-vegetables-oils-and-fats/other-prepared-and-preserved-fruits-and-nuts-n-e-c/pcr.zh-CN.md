@@ -40,7 +40,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 1 kg |
-| 参考产品流 | Other prepared and preserved fruits and nuts, n.e.c. `661926c0-3215-431a-934f-ea41ced73059` |
+| 参考产品流 | 其他配制和腌制水果及坚果，未另分类 `661926c0-3215-431a-934f-ea41ced73059` |
 | 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | kg |
@@ -430,7 +430,7 @@ sync_with: pcr.en-US.md
 
 这是唯一的参考产品输出。其身份和参考对象应与第 3 节一致。
 
-- 选定流：Other prepared and preserved fruits and nuts, n.e.c. `661926c0-3215-431a-934f-ea41ced73059`
+- 选定流：其他配制和腌制水果及坚果，未另分类 `661926c0-3215-431a-934f-ea41ced73059`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg；单位组 Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66`
 - 数量规则：实测合格适销产出，归一化为恰好 1 kg 参考流
 - 数值来源模式：固定值（`fixed_value`）
@@ -488,7 +488,7 @@ sync_with: pcr.en-US.md
 
 记录出厂质量、储存时长、储存条件和损失。不得增加第二个参考产品输出。
 
-- 选定流：Other prepared and preserved fruits and nuts, n.e.c. `661926c0-3215-431a-934f-ea41ced73059`
+- 选定流：其他配制和腌制水果及坚果，未另分类 `661926c0-3215-431a-934f-ea41ced73059`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg；单位组 Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66`
 - 数量规则：实测出厂质量，并链接到已经生产的参考输出
 - 数值来源模式：前景记录（`foreground_record`）

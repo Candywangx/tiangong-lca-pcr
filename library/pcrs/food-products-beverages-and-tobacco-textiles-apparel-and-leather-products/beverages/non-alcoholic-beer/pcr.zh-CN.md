@@ -40,7 +40,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 1 kg |
-| 参考产品流 | Non-alcoholic beer `6fe10289-5a7d-4ca7-a73c-e698bca5a320` |
+| 参考产品流 | 无醇啤酒 `6fe10289-5a7d-4ca7-a73c-e698bca5a320` |
 | 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | kg |
@@ -694,7 +694,7 @@ sync_with: pcr.en-US.md
 
 这是所声明参考产品产出。其数量为饮料净质量，包装不计入 1 kg 参考量。
 
-- 选定流：Non-alcoholic beer `6fe10289-5a7d-4ca7-a73c-e698bca5a320`
+- 选定流：无醇啤酒 `6fe10289-5a7d-4ca7-a73c-e698bca5a320`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：1 kg 通过产品和酒精含量检查的已放行饮料净质量
 - 数值来源模式：固定值（`fixed_value`）

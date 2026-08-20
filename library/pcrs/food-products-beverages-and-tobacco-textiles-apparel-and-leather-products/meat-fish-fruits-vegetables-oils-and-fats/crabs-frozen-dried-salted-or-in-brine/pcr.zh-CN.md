@@ -38,7 +38,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 1 kg 净质量 |
-| 参考产品流 | Crabs, frozen, dried, salted or in brine `43cd42a0-2692-4f75-b26d-223ae1ddc8f3` |
+| 参考产品流 | 螃蟹，冷冻的、干的、盐腌的或盐水的 `43cd42a0-2692-4f75-b26d-223ae1ddc8f3` |
 | 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | kg |
@@ -113,7 +113,7 @@ sync_with: pcr.en-US.md
 
 记录为清洗或准备而跨越过程边界的饮用水。
 
-- 选定流：Process water
+- 选定流：过程用水
 - 流属性/单位：Mass / kg
 - 数量规则：实测或分配的水表体积按有文件支持的密度换算
 - 数值来源模式：前景记录（`foreground_record`）
@@ -254,7 +254,7 @@ sync_with: pcr.en-US.md
 
 按用途分别记录盐水、冰衣或路线清洁用水；无相关用水时为零。
 
-- 选定流：Process water
+- 选定流：过程用水
 - 流属性/单位：Mass / kg
 - 数量规则：实测，或根据批次配方和水表计算
 - 数值来源模式：计算值（`calculated_value`）
@@ -269,7 +269,7 @@ sync_with: pcr.en-US.md
 
 记录实际使用的路线设备用电，包括冷冻或干制辅助设备。
 
-- 选定流：Electricity
+- 选定流：电力
 - 流属性/单位：Energy / kWh
 - 数量规则：分表计量或有文件支持的设备分配
 - 数值来源模式：前景记录（`foreground_record`）
@@ -382,7 +382,7 @@ sync_with: pcr.en-US.md
 
 依据占用量、质量-时间或其他已披露因果驱动因素，从计量储存能耗中分配电力。
 
-- 选定流：Electricity
+- 选定流：电力
 - 流属性/单位：Energy / kWh
 - 数量规则：计量储存电力按有文件支持的质量-时间或因果驱动因素分配
 - 数值来源模式：计算值（`calculated_value`）
@@ -486,7 +486,7 @@ sync_with: pcr.en-US.md
 
 这是唯一的定量参考输出；其净质量不包括包装。
 
-- 选定流：Crabs, frozen, dried, salted or in brine `43cd42a0-2692-4f75-b26d-223ae1ddc8f3`
+- 选定流：螃蟹，冷冻的、干的、盐腌的或盐水的 `43cd42a0-2692-4f75-b26d-223ae1ddc8f3`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：固定参考量 1 kg 实测产品净质量
 - 数值来源模式：固定值（`fixed_value`）

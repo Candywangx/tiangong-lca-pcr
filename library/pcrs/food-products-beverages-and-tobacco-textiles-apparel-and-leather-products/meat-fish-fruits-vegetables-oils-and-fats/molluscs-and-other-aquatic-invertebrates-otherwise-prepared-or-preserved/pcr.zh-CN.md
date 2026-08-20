@@ -40,7 +40,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 工厂门口 1 kg 可销售产品，不含包装。固体产品处于非决定性液态装填介质时使用沥干净质量；酱汁、肉酱或液相构成产品整体时使用总净产品质量并声明组成。 |
-| 参考产品流 | Molluscs and other aquatic invertebrates, otherwise prepared or preserved `5102ffa5-d24d-4e8c-b18d-d22f74677182` |
+| 参考产品流 | 软体动物和其他水生无脊椎动物，以其他方式制备或保存 `5102ffa5-d24d-4e8c-b18d-d22f74677182` |
 | 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | kg |
@@ -659,7 +659,7 @@ sync_with: pcr.en-US.md
 
 这是唯一参考输出。应用声明质量基准，并保留放行、编码、储存和保质期元数据。
 
-- 选定流：Molluscs and other aquatic invertebrates, otherwise prepared or preserved `5102ffa5-d24d-4e8c-b18d-d22f74677182`
+- 选定流：软体动物和其他水生无脊椎动物，以其他方式制备或保存 `5102ffa5-d24d-4e8c-b18d-d22f74677182`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：按声明净质量、沥干净质量或整体产品基准计 1 kg 可销售产品，不含包装。
 - 数值来源模式：固定值（`fixed_value`）

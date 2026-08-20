@@ -7,7 +7,7 @@ translation_status: aligned
 sync_with: pcr.en-US.md
 ---
 
-# 鹅肉，冷冻
+# 冷冻鹅肉
 
 ## 1. 范围与适用性
 
@@ -44,7 +44,7 @@ CPC 21123 下的鲜或冷藏鹅肉、肥肝、CPC 21160 下的鹅肝及其他禽
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 1 kg 净合格冷冻鹅肉，不含包装 |
-| 参考产品流 | Meat of geese, frozen `db06aea8-9943-4aac-b938-0c63d670a883` |
+| 参考产品流 | 冷冻鹅肉 `db06aea8-9943-4aac-b938-0c63d670a883` |
 | 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | kg |
@@ -85,7 +85,7 @@ CPC 21123 下的鲜或冷藏鹅肉、肥肝、CPC 21160 下的鹅肝及其他禽
 | --- | --- | --- | --- |
 | `boundary_start` | 前景起始条件 | 当前景活鹅跨越屠宰设施大门进入接收时开始采集；养殖、饲料生产、饲养和入厂运输属于上游。 | `unsd-cpc-21143`, `eu-jrc-sa-bref` |
 | `boundary_end` | 前景终止条件 | 在可归属包装或散装发运操作及冻藏之后，以工厂门口净合格冷冻鹅肉放行为前景采集终点。 | `unsd-cpc-21143`, `eu-jrc-sa-bref` |
-| `boundary_required_operations` | 必需前景操作 | 纳入接收、身份控制、屠宰、放血、浸烫、去羽、去内脏、胴体整理、预冷、冻结、放行、冻藏、清洗、消毒、废水收集和全部可归属公用工程。 | `eu-jrc-sa-bref`, `eu-pef-2021-2279` |
+| `boundary_required_operations` | 必需前景操作 | 纳入接收、身份控制、屠宰、放血、浸烫、去羽、去内脏、胴体整理、预冷、冻结、放行、冻藏、清洗、消毒、废水收集和全部可归属公用工程。 | `fao-who-cxc-58-2005`, `eu-jrc-sa-bref`, `eu-pef-2021-2279` |
 | `boundary_conditional_operations` | 分割、包装和场内废水处理 | 实际实施时纳入修整、去骨、分份或分割；使用包装时逐项纳入包装组件；仅当前景设施运行场内废水处理时纳入该处理，同时始终记录实际废水转移或直接排放。 | `eu-jrc-sa-bref`, `eu-pef-2021-2279` |
 | `boundary_byproduct_separation` | 肥肝、食用内脏、羽毛、鹅绒、血、脂、骨和判废输出 | 将每项非肉类动物输出与 CPC 21143 参考产品分开，并记录其实测质量、质量状态、去向以及产品或废物分类。 | `unsd-cpc-21143`, `eu-jrc-sa-bref`, `eu-pef-2021-2279` |
 | `boundary_upstream_datasets` | 上游产品投入 | 将活鹅生产、入厂运输、外购水、电力、蒸汽、热水、燃料、制冷剂、化学品和包装连接至与其供应商、地域、技术和期间相适应的独立上游数据集。 | `eu-pef-2021-2279` |
@@ -131,7 +131,7 @@ CPC 21123 下的鲜或冷藏鹅肉、肥肝、CPC 21160 下的鹅肝及其他禽
 
 跨越设施边界供应给活鹅接收的 Potable mains water 与直接环境取水分别记录。
 
-- 选定流：Potable mains water
+- 选定流：市政饮用水
 - 流属性/单位：Volume / m3
 - 数量规则：直接归属本过程的管网水实测体积
 - 数值来源模式：前景记录（`foreground_record`）
@@ -146,7 +146,7 @@ CPC 21123 下的鲜或冷藏鹅肉、肥肝、CPC 21160 下的鹅肝及其他禽
 
 活鹅接收消耗的 Electricity, medium voltage, grid mix 作为一项能源交换记录，并与所有其他公用工程分开。
 
-- 选定流：Electricity, medium voltage, grid mix
+- 选定流：中压电力，电网组合
 - 流属性/单位：Energy / kWh
 - 数量规则：直接归属本过程的实测用电量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -161,7 +161,7 @@ CPC 21123 下的鲜或冷藏鹅肉、肥肝、CPC 21160 下的鹅肝及其他禽
 
 活鹅接收消耗的 Purchased steam 作为一项能源交换记录，并与所有其他公用工程分开。
 
-- 选定流：Purchased steam
+- 选定流：外购蒸汽
 - 流属性/单位：Energy / MJ
 - 数量规则：实测交付蒸汽能量，或由实测蒸汽质量和保留的供应条件计算的能量
 - 数值来源模式：计算值（`calculated_value`）
@@ -176,7 +176,7 @@ CPC 21123 下的鲜或冷藏鹅肉、肥肝、CPC 21160 下的鹅肝及其他禽
 
 活鹅接收消耗的 Purchased hot water 作为一项能源交换记录，并与所有其他公用工程分开。
 
-- 选定流：Purchased hot water
+- 选定流：外购热水
 - 流属性/单位：Energy / MJ
 - 数量规则：实测交付热水能量，或由实测流量及保留的供回水温度计算的能量
 - 数值来源模式：计算值（`calculated_value`）
@@ -191,7 +191,7 @@ CPC 21123 下的鲜或冷藏鹅肉、肥肝、CPC 21160 下的鹅肝及其他禽
 
 活鹅接收消耗的 Natural gas 作为一项能源交换记录，并与所有其他公用工程分开。
 
-- 选定流：Natural gas
+- 选定流：天然气
 - 流属性/单位：Energy / MJ
 - 数量规则：实测能量，或使用有记录的供应商热值换算实测气量
 - 数值来源模式：计算值（`calculated_value`）
@@ -206,7 +206,7 @@ CPC 21123 下的鲜或冷藏鹅肉、肥肝、CPC 21160 下的鹅肝及其他禽
 
 活鹅接收消耗的 Diesel fuel 作为一项能源交换记录，并与所有其他公用工程分开。
 
-- 选定流：Diesel fuel
+- 选定流：柴油燃料
 - 流属性/单位：Energy / MJ
 - 数量规则：使用有记录的供应商热值换算实测燃料量
 - 数值来源模式：计算值（`calculated_value`）
@@ -221,7 +221,7 @@ CPC 21123 下的鲜或冷藏鹅肉、肥肝、CPC 21160 下的鹅肝及其他禽
 
 活鹅接收消耗的 Liquefied petroleum gas 作为一项能源交换记录，并与所有其他公用工程分开。
 
-- 选定流：Liquefied petroleum gas
+- 选定流：液化石油气
 - 流属性/单位：Energy / MJ
 - 数量规则：使用有记录的供应商热值换算实测燃料量
 - 数值来源模式：计算值（`calculated_value`）
@@ -240,7 +240,7 @@ CPC 21123 下的鲜或冷藏鹅肉、肥肝、CPC 21160 下的鹅肝及其他禽
 
 为活鹅接收直接取用的 Water, ground 作为一项基本流投入，不与管网水重复。
 
-- 选定流：Water, ground
+- 选定流：地下水
 - 流属性/单位：Volume / m3
 - 数量规则：归属本过程的实测直接取水体积
 - 数值来源模式：前景记录（`foreground_record`）
@@ -255,7 +255,7 @@ CPC 21123 下的鲜或冷藏鹅肉、肥肝、CPC 21160 下的鹅肝及其他禽
 
 为活鹅接收直接取用的 Water, surface 作为一项基本流投入，不与管网水重复。
 
-- 选定流：Water, surface
+- 选定流：地表水
 - 流属性/单位：Volume / m3
 - 数量规则：归属本过程的实测直接取水体积
 - 数值来源模式：前景记录（`foreground_record`）
@@ -353,7 +353,7 @@ CPC 21123 下的鲜或冷藏鹅肉、肥肝、CPC 21160 下的鹅肝及其他禽
 
 服务于活鹅接收的现场燃烧产生的 Carbon dioxide, fossil, to air 作为一项基本流输出报告。
 
-- 选定流：Carbon dioxide, fossil, to air
+- 选定流：化石源二氧化碳，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：直接实测质量，或由分别采集的燃料记录和保留的经核实因子计算的物质质量
 - 数值来源模式：计算值（`calculated_value`）
@@ -368,7 +368,7 @@ CPC 21123 下的鲜或冷藏鹅肉、肥肝、CPC 21160 下的鹅肝及其他禽
 
 服务于活鹅接收的现场燃烧产生的 Methane to air 作为一项基本流输出报告。
 
-- 选定流：Methane to air
+- 选定流：甲烷，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：直接实测质量，或由分别采集的燃料记录和保留的经核实因子计算的物质质量
 - 数值来源模式：计算值（`calculated_value`）
@@ -383,7 +383,7 @@ CPC 21123 下的鲜或冷藏鹅肉、肥肝、CPC 21160 下的鹅肝及其他禽
 
 服务于活鹅接收的现场燃烧产生的 Dinitrogen monoxide to air 作为一项基本流输出报告。
 
-- 选定流：Dinitrogen monoxide to air
+- 选定流：氧化亚氮，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：直接实测质量，或由分别采集的燃料记录和保留的经核实因子计算的物质质量
 - 数值来源模式：计算值（`calculated_value`）
@@ -398,7 +398,7 @@ CPC 21123 下的鲜或冷藏鹅肉、肥肝、CPC 21160 下的鹅肝及其他禽
 
 服务于活鹅接收的现场燃烧产生的 Nitrogen monoxide to air 作为一项基本流输出报告。
 
-- 选定流：Nitrogen monoxide to air
+- 选定流：一氧化氮，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：直接实测质量，或由分别采集的燃料记录和保留的经核实因子计算的物质质量
 - 数值来源模式：计算值（`calculated_value`）
@@ -413,7 +413,7 @@ CPC 21123 下的鲜或冷藏鹅肉、肥肝、CPC 21160 下的鹅肝及其他禽
 
 服务于活鹅接收的现场燃烧产生的 Nitrogen dioxide to air 作为一项基本流输出报告。
 
-- 选定流：Nitrogen dioxide to air
+- 选定流：二氧化氮，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：直接实测质量，或由分别采集的燃料记录和保留的经核实因子计算的物质质量
 - 数值来源模式：计算值（`calculated_value`）
@@ -428,7 +428,7 @@ CPC 21123 下的鲜或冷藏鹅肉、肥肝、CPC 21160 下的鹅肝及其他禽
 
 服务于活鹅接收的现场燃烧产生的 Carbon monoxide to air 作为一项基本流输出报告。
 
-- 选定流：Carbon monoxide to air
+- 选定流：一氧化碳，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：直接实测质量，或由分别采集的燃料记录和保留的经核实因子计算的物质质量
 - 数值来源模式：计算值（`calculated_value`）
@@ -443,7 +443,7 @@ CPC 21123 下的鲜或冷藏鹅肉、肥肝、CPC 21160 下的鹅肝及其他禽
 
 服务于活鹅接收的现场燃烧产生的 Sulfur dioxide to air 作为一项基本流输出报告。
 
-- 选定流：Sulfur dioxide to air
+- 选定流：二氧化硫，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：直接实测质量，或由分别采集的燃料记录和保留的经核实因子计算的物质质量
 - 数值来源模式：计算值（`calculated_value`）
@@ -458,7 +458,7 @@ CPC 21123 下的鲜或冷藏鹅肉、肥肝、CPC 21160 下的鹅肝及其他禽
 
 服务于活鹅接收的现场燃烧产生的 Particulate matter, <2.5 µm, to air 作为一项基本流输出报告。
 
-- 选定流：Particulate matter, <2.5 µm, to air
+- 选定流：颗粒物（<2.5微米），排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：直接实测质量，或由分别采集的燃料记录和保留的经核实因子计算的物质质量
 - 数值来源模式：计算值（`calculated_value`）
@@ -473,7 +473,7 @@ CPC 21123 下的鲜或冷藏鹅肉、肥肝、CPC 21160 下的鹅肝及其他禽
 
 服务于活鹅接收的现场燃烧产生的 Particulate matter, 2.5-10 µm, to air 作为一项基本流输出报告。
 
-- 选定流：Particulate matter, 2.5-10 µm, to air
+- 选定流：颗粒物（2.5–10微米），排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：直接实测质量，或由分别采集的燃料记录和保留的经核实因子计算的物质质量
 - 数值来源模式：计算值（`calculated_value`）
@@ -509,7 +509,7 @@ CPC 21123 下的鲜或冷藏鹅肉、肥肝、CPC 21160 下的鹅肝及其他禽
 
 跨越设施边界供应给屠宰、放血、去羽与去内脏的 Potable mains water 与直接环境取水分别记录。
 
-- 选定流：Potable mains water
+- 选定流：市政饮用水
 - 流属性/单位：Volume / m3
 - 数量规则：直接归属本过程的管网水实测体积
 - 数值来源模式：前景记录（`foreground_record`）
@@ -524,7 +524,7 @@ CPC 21123 下的鲜或冷藏鹅肉、肥肝、CPC 21160 下的鹅肝及其他禽
 
 屠宰、放血、去羽与去内脏消耗的 Electricity, medium voltage, grid mix 作为一项能源交换记录，并与所有其他公用工程分开。
 
-- 选定流：Electricity, medium voltage, grid mix
+- 选定流：中压电力，电网组合
 - 流属性/单位：Energy / kWh
 - 数量规则：直接归属本过程的实测用电量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -539,7 +539,7 @@ CPC 21123 下的鲜或冷藏鹅肉、肥肝、CPC 21160 下的鹅肝及其他禽
 
 屠宰、放血、去羽与去内脏消耗的 Purchased steam 作为一项能源交换记录，并与所有其他公用工程分开。
 
-- 选定流：Purchased steam
+- 选定流：外购蒸汽
 - 流属性/单位：Energy / MJ
 - 数量规则：实测交付蒸汽能量，或由实测蒸汽质量和保留的供应条件计算的能量
 - 数值来源模式：计算值（`calculated_value`）
@@ -554,7 +554,7 @@ CPC 21123 下的鲜或冷藏鹅肉、肥肝、CPC 21160 下的鹅肝及其他禽
 
 屠宰、放血、去羽与去内脏消耗的 Purchased hot water 作为一项能源交换记录，并与所有其他公用工程分开。
 
-- 选定流：Purchased hot water
+- 选定流：外购热水
 - 流属性/单位：Energy / MJ
 - 数量规则：实测交付热水能量，或由实测流量及保留的供回水温度计算的能量
 - 数值来源模式：计算值（`calculated_value`）
@@ -569,7 +569,7 @@ CPC 21123 下的鲜或冷藏鹅肉、肥肝、CPC 21160 下的鹅肝及其他禽
 
 屠宰、放血、去羽与去内脏消耗的 Natural gas 作为一项能源交换记录，并与所有其他公用工程分开。
 
-- 选定流：Natural gas
+- 选定流：天然气
 - 流属性/单位：Energy / MJ
 - 数量规则：实测能量，或使用有记录的供应商热值换算实测气量
 - 数值来源模式：计算值（`calculated_value`）
@@ -584,7 +584,7 @@ CPC 21123 下的鲜或冷藏鹅肉、肥肝、CPC 21160 下的鹅肝及其他禽
 
 屠宰、放血、去羽与去内脏消耗的 Diesel fuel 作为一项能源交换记录，并与所有其他公用工程分开。
 
-- 选定流：Diesel fuel
+- 选定流：柴油燃料
 - 流属性/单位：Energy / MJ
 - 数量规则：使用有记录的供应商热值换算实测燃料量
 - 数值来源模式：计算值（`calculated_value`）
@@ -599,7 +599,7 @@ CPC 21123 下的鲜或冷藏鹅肉、肥肝、CPC 21160 下的鹅肝及其他禽
 
 屠宰、放血、去羽与去内脏消耗的 Liquefied petroleum gas 作为一项能源交换记录，并与所有其他公用工程分开。
 
-- 选定流：Liquefied petroleum gas
+- 选定流：液化石油气
 - 流属性/单位：Energy / MJ
 - 数量规则：使用有记录的供应商热值换算实测燃料量
 - 数值来源模式：计算值（`calculated_value`）
@@ -618,7 +618,7 @@ CPC 21123 下的鲜或冷藏鹅肉、肥肝、CPC 21160 下的鹅肝及其他禽
 
 为屠宰、放血、去羽与去内脏直接取用的 Water, ground 作为一项基本流投入，不与管网水重复。
 
-- 选定流：Water, ground
+- 选定流：地下水
 - 流属性/单位：Volume / m3
 - 数量规则：归属本过程的实测直接取水体积
 - 数值来源模式：前景记录（`foreground_record`）
@@ -633,7 +633,7 @@ CPC 21123 下的鲜或冷藏鹅肉、肥肝、CPC 21160 下的鹅肝及其他禽
 
 为屠宰、放血、去羽与去内脏直接取用的 Water, surface 作为一项基本流投入，不与管网水重复。
 
-- 选定流：Water, surface
+- 选定流：地表水
 - 流属性/单位：Volume / m3
 - 数量规则：归属本过程的实测直接取水体积
 - 数值来源模式：前景记录（`foreground_record`）
@@ -986,7 +986,7 @@ CPC 21123 下的鲜或冷藏鹅肉、肥肝、CPC 21160 下的鹅肝及其他禽
 
 服务于屠宰、放血、去羽与去内脏的现场燃烧产生的 Carbon dioxide, fossil, to air 作为一项基本流输出报告。
 
-- 选定流：Carbon dioxide, fossil, to air
+- 选定流：化石源二氧化碳，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：直接实测质量，或由分别采集的燃料记录和保留的经核实因子计算的物质质量
 - 数值来源模式：计算值（`calculated_value`）
@@ -1001,7 +1001,7 @@ CPC 21123 下的鲜或冷藏鹅肉、肥肝、CPC 21160 下的鹅肝及其他禽
 
 服务于屠宰、放血、去羽与去内脏的现场燃烧产生的 Methane to air 作为一项基本流输出报告。
 
-- 选定流：Methane to air
+- 选定流：甲烷，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：直接实测质量，或由分别采集的燃料记录和保留的经核实因子计算的物质质量
 - 数值来源模式：计算值（`calculated_value`）
@@ -1016,7 +1016,7 @@ CPC 21123 下的鲜或冷藏鹅肉、肥肝、CPC 21160 下的鹅肝及其他禽
 
 服务于屠宰、放血、去羽与去内脏的现场燃烧产生的 Dinitrogen monoxide to air 作为一项基本流输出报告。
 
-- 选定流：Dinitrogen monoxide to air
+- 选定流：氧化亚氮，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：直接实测质量，或由分别采集的燃料记录和保留的经核实因子计算的物质质量
 - 数值来源模式：计算值（`calculated_value`）
@@ -1031,7 +1031,7 @@ CPC 21123 下的鲜或冷藏鹅肉、肥肝、CPC 21160 下的鹅肝及其他禽
 
 服务于屠宰、放血、去羽与去内脏的现场燃烧产生的 Nitrogen monoxide to air 作为一项基本流输出报告。
 
-- 选定流：Nitrogen monoxide to air
+- 选定流：一氧化氮，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：直接实测质量，或由分别采集的燃料记录和保留的经核实因子计算的物质质量
 - 数值来源模式：计算值（`calculated_value`）
@@ -1046,7 +1046,7 @@ CPC 21123 下的鲜或冷藏鹅肉、肥肝、CPC 21160 下的鹅肝及其他禽
 
 服务于屠宰、放血、去羽与去内脏的现场燃烧产生的 Nitrogen dioxide to air 作为一项基本流输出报告。
 
-- 选定流：Nitrogen dioxide to air
+- 选定流：二氧化氮，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：直接实测质量，或由分别采集的燃料记录和保留的经核实因子计算的物质质量
 - 数值来源模式：计算值（`calculated_value`）
@@ -1061,7 +1061,7 @@ CPC 21123 下的鲜或冷藏鹅肉、肥肝、CPC 21160 下的鹅肝及其他禽
 
 服务于屠宰、放血、去羽与去内脏的现场燃烧产生的 Carbon monoxide to air 作为一项基本流输出报告。
 
-- 选定流：Carbon monoxide to air
+- 选定流：一氧化碳，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：直接实测质量，或由分别采集的燃料记录和保留的经核实因子计算的物质质量
 - 数值来源模式：计算值（`calculated_value`）
@@ -1076,7 +1076,7 @@ CPC 21123 下的鲜或冷藏鹅肉、肥肝、CPC 21160 下的鹅肝及其他禽
 
 服务于屠宰、放血、去羽与去内脏的现场燃烧产生的 Sulfur dioxide to air 作为一项基本流输出报告。
 
-- 选定流：Sulfur dioxide to air
+- 选定流：二氧化硫，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：直接实测质量，或由分别采集的燃料记录和保留的经核实因子计算的物质质量
 - 数值来源模式：计算值（`calculated_value`）
@@ -1091,7 +1091,7 @@ CPC 21123 下的鲜或冷藏鹅肉、肥肝、CPC 21160 下的鹅肝及其他禽
 
 服务于屠宰、放血、去羽与去内脏的现场燃烧产生的 Particulate matter, <2.5 µm, to air 作为一项基本流输出报告。
 
-- 选定流：Particulate matter, <2.5 µm, to air
+- 选定流：颗粒物（<2.5微米），排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：直接实测质量，或由分别采集的燃料记录和保留的经核实因子计算的物质质量
 - 数值来源模式：计算值（`calculated_value`）
@@ -1106,7 +1106,7 @@ CPC 21123 下的鲜或冷藏鹅肉、肥肝、CPC 21160 下的鹅肝及其他禽
 
 服务于屠宰、放血、去羽与去内脏的现场燃烧产生的 Particulate matter, 2.5-10 µm, to air 作为一项基本流输出报告。
 
-- 选定流：Particulate matter, 2.5-10 µm, to air
+- 选定流：颗粒物（2.5–10微米），排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：直接实测质量，或由分别采集的燃料记录和保留的经核实因子计算的物质质量
 - 数值来源模式：计算值（`calculated_value`）
@@ -1142,7 +1142,7 @@ CPC 21123 下的鲜或冷藏鹅肉、肥肝、CPC 21160 下的鹅肝及其他禽
 
 跨越设施边界供应给胴体整理与分割的 Potable mains water 与直接环境取水分别记录。
 
-- 选定流：Potable mains water
+- 选定流：市政饮用水
 - 流属性/单位：Volume / m3
 - 数量规则：直接归属本过程的管网水实测体积
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1157,7 +1157,7 @@ CPC 21123 下的鲜或冷藏鹅肉、肥肝、CPC 21160 下的鹅肝及其他禽
 
 胴体整理与分割消耗的 Electricity, medium voltage, grid mix 作为一项能源交换记录，并与所有其他公用工程分开。
 
-- 选定流：Electricity, medium voltage, grid mix
+- 选定流：中压电力，电网组合
 - 流属性/单位：Energy / kWh
 - 数量规则：直接归属本过程的实测用电量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1172,7 +1172,7 @@ CPC 21123 下的鲜或冷藏鹅肉、肥肝、CPC 21160 下的鹅肝及其他禽
 
 胴体整理与分割消耗的 Purchased steam 作为一项能源交换记录，并与所有其他公用工程分开。
 
-- 选定流：Purchased steam
+- 选定流：外购蒸汽
 - 流属性/单位：Energy / MJ
 - 数量规则：实测交付蒸汽能量，或由实测蒸汽质量和保留的供应条件计算的能量
 - 数值来源模式：计算值（`calculated_value`）
@@ -1187,7 +1187,7 @@ CPC 21123 下的鲜或冷藏鹅肉、肥肝、CPC 21160 下的鹅肝及其他禽
 
 胴体整理与分割消耗的 Purchased hot water 作为一项能源交换记录，并与所有其他公用工程分开。
 
-- 选定流：Purchased hot water
+- 选定流：外购热水
 - 流属性/单位：Energy / MJ
 - 数量规则：实测交付热水能量，或由实测流量及保留的供回水温度计算的能量
 - 数值来源模式：计算值（`calculated_value`）
@@ -1202,7 +1202,7 @@ CPC 21123 下的鲜或冷藏鹅肉、肥肝、CPC 21160 下的鹅肝及其他禽
 
 胴体整理与分割消耗的 Natural gas 作为一项能源交换记录，并与所有其他公用工程分开。
 
-- 选定流：Natural gas
+- 选定流：天然气
 - 流属性/单位：Energy / MJ
 - 数量规则：实测能量，或使用有记录的供应商热值换算实测气量
 - 数值来源模式：计算值（`calculated_value`）
@@ -1217,7 +1217,7 @@ CPC 21123 下的鲜或冷藏鹅肉、肥肝、CPC 21160 下的鹅肝及其他禽
 
 胴体整理与分割消耗的 Diesel fuel 作为一项能源交换记录，并与所有其他公用工程分开。
 
-- 选定流：Diesel fuel
+- 选定流：柴油燃料
 - 流属性/单位：Energy / MJ
 - 数量规则：使用有记录的供应商热值换算实测燃料量
 - 数值来源模式：计算值（`calculated_value`）
@@ -1232,7 +1232,7 @@ CPC 21123 下的鲜或冷藏鹅肉、肥肝、CPC 21160 下的鹅肝及其他禽
 
 胴体整理与分割消耗的 Liquefied petroleum gas 作为一项能源交换记录，并与所有其他公用工程分开。
 
-- 选定流：Liquefied petroleum gas
+- 选定流：液化石油气
 - 流属性/单位：Energy / MJ
 - 数量规则：使用有记录的供应商热值换算实测燃料量
 - 数值来源模式：计算值（`calculated_value`）
@@ -1251,7 +1251,7 @@ CPC 21123 下的鲜或冷藏鹅肉、肥肝、CPC 21160 下的鹅肝及其他禽
 
 为胴体整理与分割直接取用的 Water, ground 作为一项基本流投入，不与管网水重复。
 
-- 选定流：Water, ground
+- 选定流：地下水
 - 流属性/单位：Volume / m3
 - 数量规则：归属本过程的实测直接取水体积
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1266,7 +1266,7 @@ CPC 21123 下的鲜或冷藏鹅肉、肥肝、CPC 21160 下的鹅肝及其他禽
 
 为胴体整理与分割直接取用的 Water, surface 作为一项基本流投入，不与管网水重复。
 
-- 选定流：Water, surface
+- 选定流：地表水
 - 流属性/单位：Volume / m3
 - 数量规则：归属本过程的实测直接取水体积
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1379,7 +1379,7 @@ CPC 21123 下的鲜或冷藏鹅肉、肥肝、CPC 21160 下的鹅肝及其他禽
 
 服务于胴体整理与分割的现场燃烧产生的 Carbon dioxide, fossil, to air 作为一项基本流输出报告。
 
-- 选定流：Carbon dioxide, fossil, to air
+- 选定流：化石源二氧化碳，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：直接实测质量，或由分别采集的燃料记录和保留的经核实因子计算的物质质量
 - 数值来源模式：计算值（`calculated_value`）
@@ -1394,7 +1394,7 @@ CPC 21123 下的鲜或冷藏鹅肉、肥肝、CPC 21160 下的鹅肝及其他禽
 
 服务于胴体整理与分割的现场燃烧产生的 Methane to air 作为一项基本流输出报告。
 
-- 选定流：Methane to air
+- 选定流：甲烷，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：直接实测质量，或由分别采集的燃料记录和保留的经核实因子计算的物质质量
 - 数值来源模式：计算值（`calculated_value`）
@@ -1409,7 +1409,7 @@ CPC 21123 下的鲜或冷藏鹅肉、肥肝、CPC 21160 下的鹅肝及其他禽
 
 服务于胴体整理与分割的现场燃烧产生的 Dinitrogen monoxide to air 作为一项基本流输出报告。
 
-- 选定流：Dinitrogen monoxide to air
+- 选定流：氧化亚氮，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：直接实测质量，或由分别采集的燃料记录和保留的经核实因子计算的物质质量
 - 数值来源模式：计算值（`calculated_value`）
@@ -1424,7 +1424,7 @@ CPC 21123 下的鲜或冷藏鹅肉、肥肝、CPC 21160 下的鹅肝及其他禽
 
 服务于胴体整理与分割的现场燃烧产生的 Nitrogen monoxide to air 作为一项基本流输出报告。
 
-- 选定流：Nitrogen monoxide to air
+- 选定流：一氧化氮，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：直接实测质量，或由分别采集的燃料记录和保留的经核实因子计算的物质质量
 - 数值来源模式：计算值（`calculated_value`）
@@ -1439,7 +1439,7 @@ CPC 21123 下的鲜或冷藏鹅肉、肥肝、CPC 21160 下的鹅肝及其他禽
 
 服务于胴体整理与分割的现场燃烧产生的 Nitrogen dioxide to air 作为一项基本流输出报告。
 
-- 选定流：Nitrogen dioxide to air
+- 选定流：二氧化氮，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：直接实测质量，或由分别采集的燃料记录和保留的经核实因子计算的物质质量
 - 数值来源模式：计算值（`calculated_value`）
@@ -1454,7 +1454,7 @@ CPC 21123 下的鲜或冷藏鹅肉、肥肝、CPC 21160 下的鹅肝及其他禽
 
 服务于胴体整理与分割的现场燃烧产生的 Carbon monoxide to air 作为一项基本流输出报告。
 
-- 选定流：Carbon monoxide to air
+- 选定流：一氧化碳，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：直接实测质量，或由分别采集的燃料记录和保留的经核实因子计算的物质质量
 - 数值来源模式：计算值（`calculated_value`）
@@ -1469,7 +1469,7 @@ CPC 21123 下的鲜或冷藏鹅肉、肥肝、CPC 21160 下的鹅肝及其他禽
 
 服务于胴体整理与分割的现场燃烧产生的 Sulfur dioxide to air 作为一项基本流输出报告。
 
-- 选定流：Sulfur dioxide to air
+- 选定流：二氧化硫，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：直接实测质量，或由分别采集的燃料记录和保留的经核实因子计算的物质质量
 - 数值来源模式：计算值（`calculated_value`）
@@ -1484,7 +1484,7 @@ CPC 21123 下的鲜或冷藏鹅肉、肥肝、CPC 21160 下的鹅肝及其他禽
 
 服务于胴体整理与分割的现场燃烧产生的 Particulate matter, <2.5 µm, to air 作为一项基本流输出报告。
 
-- 选定流：Particulate matter, <2.5 µm, to air
+- 选定流：颗粒物（<2.5微米），排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：直接实测质量，或由分别采集的燃料记录和保留的经核实因子计算的物质质量
 - 数值来源模式：计算值（`calculated_value`）
@@ -1499,7 +1499,7 @@ CPC 21123 下的鲜或冷藏鹅肉、肥肝、CPC 21160 下的鹅肝及其他禽
 
 服务于胴体整理与分割的现场燃烧产生的 Particulate matter, 2.5-10 µm, to air 作为一项基本流输出报告。
 
-- 选定流：Particulate matter, 2.5-10 µm, to air
+- 选定流：颗粒物（2.5–10微米），排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：直接实测质量，或由分别采集的燃料记录和保留的经核实因子计算的物质质量
 - 数值来源模式：计算值（`calculated_value`）
@@ -1550,7 +1550,7 @@ CPC 21123 下的鲜或冷藏鹅肉、肥肝、CPC 21160 下的鹅肝及其他禽
 
 跨越设施边界供应给预冷与冻结的 Potable mains water 与直接环境取水分别记录。
 
-- 选定流：Potable mains water
+- 选定流：市政饮用水
 - 流属性/单位：Volume / m3
 - 数量规则：直接归属本过程的管网水实测体积
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1565,7 +1565,7 @@ CPC 21123 下的鲜或冷藏鹅肉、肥肝、CPC 21160 下的鹅肝及其他禽
 
 预冷与冻结消耗的 Electricity, medium voltage, grid mix 作为一项能源交换记录，并与所有其他公用工程分开。
 
-- 选定流：Electricity, medium voltage, grid mix
+- 选定流：中压电力，电网组合
 - 流属性/单位：Energy / kWh
 - 数量规则：直接归属本过程的实测用电量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1580,7 +1580,7 @@ CPC 21123 下的鲜或冷藏鹅肉、肥肝、CPC 21160 下的鹅肝及其他禽
 
 预冷与冻结消耗的 Purchased steam 作为一项能源交换记录，并与所有其他公用工程分开。
 
-- 选定流：Purchased steam
+- 选定流：外购蒸汽
 - 流属性/单位：Energy / MJ
 - 数量规则：实测交付蒸汽能量，或由实测蒸汽质量和保留的供应条件计算的能量
 - 数值来源模式：计算值（`calculated_value`）
@@ -1595,7 +1595,7 @@ CPC 21123 下的鲜或冷藏鹅肉、肥肝、CPC 21160 下的鹅肝及其他禽
 
 预冷与冻结消耗的 Purchased hot water 作为一项能源交换记录，并与所有其他公用工程分开。
 
-- 选定流：Purchased hot water
+- 选定流：外购热水
 - 流属性/单位：Energy / MJ
 - 数量规则：实测交付热水能量，或由实测流量及保留的供回水温度计算的能量
 - 数值来源模式：计算值（`calculated_value`）
@@ -1610,7 +1610,7 @@ CPC 21123 下的鲜或冷藏鹅肉、肥肝、CPC 21160 下的鹅肝及其他禽
 
 预冷与冻结消耗的 Natural gas 作为一项能源交换记录，并与所有其他公用工程分开。
 
-- 选定流：Natural gas
+- 选定流：天然气
 - 流属性/单位：Energy / MJ
 - 数量规则：实测能量，或使用有记录的供应商热值换算实测气量
 - 数值来源模式：计算值（`calculated_value`）
@@ -1625,7 +1625,7 @@ CPC 21123 下的鲜或冷藏鹅肉、肥肝、CPC 21160 下的鹅肝及其他禽
 
 预冷与冻结消耗的 Diesel fuel 作为一项能源交换记录，并与所有其他公用工程分开。
 
-- 选定流：Diesel fuel
+- 选定流：柴油燃料
 - 流属性/单位：Energy / MJ
 - 数量规则：使用有记录的供应商热值换算实测燃料量
 - 数值来源模式：计算值（`calculated_value`）
@@ -1640,7 +1640,7 @@ CPC 21123 下的鲜或冷藏鹅肉、肥肝、CPC 21160 下的鹅肝及其他禽
 
 预冷与冻结消耗的 Liquefied petroleum gas 作为一项能源交换记录，并与所有其他公用工程分开。
 
-- 选定流：Liquefied petroleum gas
+- 选定流：液化石油气
 - 流属性/单位：Energy / MJ
 - 数量规则：使用有记录的供应商热值换算实测燃料量
 - 数值来源模式：计算值（`calculated_value`）
@@ -1655,7 +1655,7 @@ CPC 21123 下的鲜或冷藏鹅肉、肥肝、CPC 21160 下的鹅肝及其他禽
 
 向服务于预冷与冻结的制冷设备补充的 Ammonia refrigerant (R-717) 作为一项产品投入记录。
 
-- 选定流：Ammonia refrigerant (R-717)
+- 选定流：氨制冷剂（R-717）
 - 流属性/单位：Mass / kg
 - 数量规则：由维修和库存记录实测的补充质量；系统总充注量不得作为补充量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1670,7 +1670,7 @@ CPC 21123 下的鲜或冷藏鹅肉、肥肝、CPC 21160 下的鹅肝及其他禽
 
 向服务于预冷与冻结的制冷设备补充的 1,1,1,2-Tetrafluoroethane refrigerant (HFC-134a) 作为一项产品投入记录。
 
-- 选定流：1,1,1,2-Tetrafluoroethane refrigerant (HFC-134a)
+- 选定流：1,1,1,2-四氟乙烷制冷剂（HFC-134a）
 - 流属性/单位：Mass / kg
 - 数量规则：由维修和库存记录实测的补充质量；系统总充注量不得作为补充量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1704,7 +1704,7 @@ CPC 21123 下的鲜或冷藏鹅肉、肥肝、CPC 21160 下的鹅肝及其他禽
 
 为预冷与冻结直接取用的 Water, ground 作为一项基本流投入，不与管网水重复。
 
-- 选定流：Water, ground
+- 选定流：地下水
 - 流属性/单位：Volume / m3
 - 数量规则：归属本过程的实测直接取水体积
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1719,7 +1719,7 @@ CPC 21123 下的鲜或冷藏鹅肉、肥肝、CPC 21160 下的鹅肝及其他禽
 
 为预冷与冻结直接取用的 Water, surface 作为一项基本流投入，不与管网水重复。
 
-- 选定流：Water, surface
+- 选定流：地表水
 - 流属性/单位：Volume / m3
 - 数量规则：归属本过程的实测直接取水体积
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1772,7 +1772,7 @@ CPC 21123 下的鲜或冷藏鹅肉、肥肝、CPC 21160 下的鹅肝及其他禽
 
 服务于预冷与冻结的现场燃烧产生的 Carbon dioxide, fossil, to air 作为一项基本流输出报告。
 
-- 选定流：Carbon dioxide, fossil, to air
+- 选定流：化石源二氧化碳，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：直接实测质量，或由分别采集的燃料记录和保留的经核实因子计算的物质质量
 - 数值来源模式：计算值（`calculated_value`）
@@ -1787,7 +1787,7 @@ CPC 21123 下的鲜或冷藏鹅肉、肥肝、CPC 21160 下的鹅肝及其他禽
 
 服务于预冷与冻结的现场燃烧产生的 Methane to air 作为一项基本流输出报告。
 
-- 选定流：Methane to air
+- 选定流：甲烷，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：直接实测质量，或由分别采集的燃料记录和保留的经核实因子计算的物质质量
 - 数值来源模式：计算值（`calculated_value`）
@@ -1802,7 +1802,7 @@ CPC 21123 下的鲜或冷藏鹅肉、肥肝、CPC 21160 下的鹅肝及其他禽
 
 服务于预冷与冻结的现场燃烧产生的 Dinitrogen monoxide to air 作为一项基本流输出报告。
 
-- 选定流：Dinitrogen monoxide to air
+- 选定流：氧化亚氮，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：直接实测质量，或由分别采集的燃料记录和保留的经核实因子计算的物质质量
 - 数值来源模式：计算值（`calculated_value`）
@@ -1817,7 +1817,7 @@ CPC 21123 下的鲜或冷藏鹅肉、肥肝、CPC 21160 下的鹅肝及其他禽
 
 服务于预冷与冻结的现场燃烧产生的 Nitrogen monoxide to air 作为一项基本流输出报告。
 
-- 选定流：Nitrogen monoxide to air
+- 选定流：一氧化氮，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：直接实测质量，或由分别采集的燃料记录和保留的经核实因子计算的物质质量
 - 数值来源模式：计算值（`calculated_value`）
@@ -1832,7 +1832,7 @@ CPC 21123 下的鲜或冷藏鹅肉、肥肝、CPC 21160 下的鹅肝及其他禽
 
 服务于预冷与冻结的现场燃烧产生的 Nitrogen dioxide to air 作为一项基本流输出报告。
 
-- 选定流：Nitrogen dioxide to air
+- 选定流：二氧化氮，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：直接实测质量，或由分别采集的燃料记录和保留的经核实因子计算的物质质量
 - 数值来源模式：计算值（`calculated_value`）
@@ -1847,7 +1847,7 @@ CPC 21123 下的鲜或冷藏鹅肉、肥肝、CPC 21160 下的鹅肝及其他禽
 
 服务于预冷与冻结的现场燃烧产生的 Carbon monoxide to air 作为一项基本流输出报告。
 
-- 选定流：Carbon monoxide to air
+- 选定流：一氧化碳，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：直接实测质量，或由分别采集的燃料记录和保留的经核实因子计算的物质质量
 - 数值来源模式：计算值（`calculated_value`）
@@ -1862,7 +1862,7 @@ CPC 21123 下的鲜或冷藏鹅肉、肥肝、CPC 21160 下的鹅肝及其他禽
 
 服务于预冷与冻结的现场燃烧产生的 Sulfur dioxide to air 作为一项基本流输出报告。
 
-- 选定流：Sulfur dioxide to air
+- 选定流：二氧化硫，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：直接实测质量，或由分别采集的燃料记录和保留的经核实因子计算的物质质量
 - 数值来源模式：计算值（`calculated_value`）
@@ -1877,7 +1877,7 @@ CPC 21123 下的鲜或冷藏鹅肉、肥肝、CPC 21160 下的鹅肝及其他禽
 
 服务于预冷与冻结的现场燃烧产生的 Particulate matter, <2.5 µm, to air 作为一项基本流输出报告。
 
-- 选定流：Particulate matter, <2.5 µm, to air
+- 选定流：颗粒物（<2.5微米），排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：直接实测质量，或由分别采集的燃料记录和保留的经核实因子计算的物质质量
 - 数值来源模式：计算值（`calculated_value`）
@@ -1892,7 +1892,7 @@ CPC 21123 下的鲜或冷藏鹅肉、肥肝、CPC 21160 下的鹅肝及其他禽
 
 服务于预冷与冻结的现场燃烧产生的 Particulate matter, 2.5-10 µm, to air 作为一项基本流输出报告。
 
-- 选定流：Particulate matter, 2.5-10 µm, to air
+- 选定流：颗粒物（2.5–10微米），排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：直接实测质量，或由分别采集的燃料记录和保留的经核实因子计算的物质质量
 - 数值来源模式：计算值（`calculated_value`）
@@ -1907,7 +1907,7 @@ CPC 21123 下的鲜或冷藏鹅肉、肥肝、CPC 21160 下的鹅肝及其他禽
 
 服务于预冷与冻结的制冷设备释放的 Ammonia to air 作为一项基本流输出报告。
 
-- 选定流：Ammonia to air
+- 选定流：氨，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：由期初充注量、实测补充量、期末充注量、实测回收量、事故记录及适用时经核实的混合物组成计算
 - 数值来源模式：计算值（`calculated_value`）
@@ -1922,7 +1922,7 @@ CPC 21123 下的鲜或冷藏鹅肉、肥肝、CPC 21160 下的鹅肝及其他禽
 
 服务于预冷与冻结的制冷设备释放的 1,1,1,2-Tetrafluoroethane to air 作为一项基本流输出报告。
 
-- 选定流：1,1,1,2-Tetrafluoroethane to air
+- 选定流：1,1,1,2-四氟乙烷，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：由期初充注量、实测补充量、期末充注量、实测回收量、事故记录及适用时经核实的混合物组成计算
 - 数值来源模式：计算值（`calculated_value`）
@@ -1937,7 +1937,7 @@ CPC 21123 下的鲜或冷藏鹅肉、肥肝、CPC 21160 下的鹅肝及其他禽
 
 服务于预冷与冻结的制冷设备释放的 Pentafluoroethane to air 作为一项基本流输出报告。
 
-- 选定流：Pentafluoroethane to air
+- 选定流：五氟乙烷，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：由期初充注量、实测补充量、期末充注量、实测回收量、事故记录及适用时经核实的混合物组成计算
 - 数值来源模式：计算值（`calculated_value`）
@@ -1952,7 +1952,7 @@ CPC 21123 下的鲜或冷藏鹅肉、肥肝、CPC 21160 下的鹅肝及其他禽
 
 服务于预冷与冻结的制冷设备释放的 1,1,1-Trifluoroethane to air 作为一项基本流输出报告。
 
-- 选定流：1,1,1-Trifluoroethane to air
+- 选定流：1,1,1-三氟乙烷，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：由期初充注量、实测补充量、期末充注量、实测回收量、事故记录及适用时经核实的混合物组成计算
 - 数值来源模式：计算值（`calculated_value`）
@@ -1988,7 +1988,7 @@ CPC 21123 下的鲜或冷藏鹅肉、肥肝、CPC 21160 下的鹅肝及其他禽
 
 有记录包装配置中使用的 Low-density polyethylene film 作为一项材料投入记录。
 
-- 选定流：Low-density polyethylene film
+- 选定流：低密度聚乙烯薄膜
 - 流属性/单位：Mass / kg
 - 数量规则：与包装件数、剩余库存和分别记录废料核对后的实测领用质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -2108,7 +2108,7 @@ CPC 21123 下的鲜或冷藏鹅肉、肥肝、CPC 21160 下的鹅肝及其他禽
 
 有记录包装配置中使用的 Wooden pallet 作为一项材料投入记录。
 
-- 选定流：Wooden pallet
+- 选定流：木托盘
 - 流属性/单位：Mass / kg
 - 数量规则：与包装件数、剩余库存和分别记录废料核对后的实测领用质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -2123,7 +2123,7 @@ CPC 21123 下的鲜或冷藏鹅肉、肥肝、CPC 21160 下的鹅肝及其他禽
 
 有记录包装配置中使用的 Low-density polyethylene stretch film 作为一项材料投入记录。
 
-- 选定流：Low-density polyethylene stretch film
+- 选定流：低密度聚乙烯拉伸膜
 - 流属性/单位：Mass / kg
 - 数量规则：与包装件数、剩余库存和分别记录废料核对后的实测领用质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -2138,7 +2138,7 @@ CPC 21123 下的鲜或冷藏鹅肉、肥肝、CPC 21160 下的鹅肝及其他禽
 
 跨越设施边界供应给包装、冻藏与放行的 Potable mains water 与直接环境取水分别记录。
 
-- 选定流：Potable mains water
+- 选定流：市政饮用水
 - 流属性/单位：Volume / m3
 - 数量规则：直接归属本过程的管网水实测体积
 - 数值来源模式：前景记录（`foreground_record`）
@@ -2153,7 +2153,7 @@ CPC 21123 下的鲜或冷藏鹅肉、肥肝、CPC 21160 下的鹅肝及其他禽
 
 包装、冻藏与放行消耗的 Electricity, medium voltage, grid mix 作为一项能源交换记录，并与所有其他公用工程分开。
 
-- 选定流：Electricity, medium voltage, grid mix
+- 选定流：中压电力，电网组合
 - 流属性/单位：Energy / kWh
 - 数量规则：直接归属本过程的实测用电量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -2168,7 +2168,7 @@ CPC 21123 下的鲜或冷藏鹅肉、肥肝、CPC 21160 下的鹅肝及其他禽
 
 包装、冻藏与放行消耗的 Purchased steam 作为一项能源交换记录，并与所有其他公用工程分开。
 
-- 选定流：Purchased steam
+- 选定流：外购蒸汽
 - 流属性/单位：Energy / MJ
 - 数量规则：实测交付蒸汽能量，或由实测蒸汽质量和保留的供应条件计算的能量
 - 数值来源模式：计算值（`calculated_value`）
@@ -2183,7 +2183,7 @@ CPC 21123 下的鲜或冷藏鹅肉、肥肝、CPC 21160 下的鹅肝及其他禽
 
 包装、冻藏与放行消耗的 Purchased hot water 作为一项能源交换记录，并与所有其他公用工程分开。
 
-- 选定流：Purchased hot water
+- 选定流：外购热水
 - 流属性/单位：Energy / MJ
 - 数量规则：实测交付热水能量，或由实测流量及保留的供回水温度计算的能量
 - 数值来源模式：计算值（`calculated_value`）
@@ -2198,7 +2198,7 @@ CPC 21123 下的鲜或冷藏鹅肉、肥肝、CPC 21160 下的鹅肝及其他禽
 
 包装、冻藏与放行消耗的 Natural gas 作为一项能源交换记录，并与所有其他公用工程分开。
 
-- 选定流：Natural gas
+- 选定流：天然气
 - 流属性/单位：Energy / MJ
 - 数量规则：实测能量，或使用有记录的供应商热值换算实测气量
 - 数值来源模式：计算值（`calculated_value`）
@@ -2213,7 +2213,7 @@ CPC 21123 下的鲜或冷藏鹅肉、肥肝、CPC 21160 下的鹅肝及其他禽
 
 包装、冻藏与放行消耗的 Diesel fuel 作为一项能源交换记录，并与所有其他公用工程分开。
 
-- 选定流：Diesel fuel
+- 选定流：柴油燃料
 - 流属性/单位：Energy / MJ
 - 数量规则：使用有记录的供应商热值换算实测燃料量
 - 数值来源模式：计算值（`calculated_value`）
@@ -2228,7 +2228,7 @@ CPC 21123 下的鲜或冷藏鹅肉、肥肝、CPC 21160 下的鹅肝及其他禽
 
 包装、冻藏与放行消耗的 Liquefied petroleum gas 作为一项能源交换记录，并与所有其他公用工程分开。
 
-- 选定流：Liquefied petroleum gas
+- 选定流：液化石油气
 - 流属性/单位：Energy / MJ
 - 数量规则：使用有记录的供应商热值换算实测燃料量
 - 数值来源模式：计算值（`calculated_value`）
@@ -2243,7 +2243,7 @@ CPC 21123 下的鲜或冷藏鹅肉、肥肝、CPC 21160 下的鹅肝及其他禽
 
 向服务于包装、冻藏与放行的制冷设备补充的 Ammonia refrigerant (R-717) 作为一项产品投入记录。
 
-- 选定流：Ammonia refrigerant (R-717)
+- 选定流：氨制冷剂（R-717）
 - 流属性/单位：Mass / kg
 - 数量规则：由维修和库存记录实测的补充质量；系统总充注量不得作为补充量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -2258,7 +2258,7 @@ CPC 21123 下的鲜或冷藏鹅肉、肥肝、CPC 21160 下的鹅肝及其他禽
 
 向服务于包装、冻藏与放行的制冷设备补充的 1,1,1,2-Tetrafluoroethane refrigerant (HFC-134a) 作为一项产品投入记录。
 
-- 选定流：1,1,1,2-Tetrafluoroethane refrigerant (HFC-134a)
+- 选定流：1,1,1,2-四氟乙烷制冷剂（HFC-134a）
 - 流属性/单位：Mass / kg
 - 数量规则：由维修和库存记录实测的补充质量；系统总充注量不得作为补充量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -2292,7 +2292,7 @@ CPC 21123 下的鲜或冷藏鹅肉、肥肝、CPC 21160 下的鹅肝及其他禽
 
 为包装、冻藏与放行直接取用的 Water, ground 作为一项基本流投入，不与管网水重复。
 
-- 选定流：Water, ground
+- 选定流：地下水
 - 流属性/单位：Volume / m3
 - 数量规则：归属本过程的实测直接取水体积
 - 数值来源模式：前景记录（`foreground_record`）
@@ -2307,7 +2307,7 @@ CPC 21123 下的鲜或冷藏鹅肉、肥肝、CPC 21160 下的鹅肝及其他禽
 
 为包装、冻藏与放行直接取用的 Water, surface 作为一项基本流投入，不与管网水重复。
 
-- 选定流：Water, surface
+- 选定流：地表水
 - 流属性/单位：Volume / m3
 - 数量规则：归属本过程的实测直接取水体积
 - 数值来源模式：前景记录（`foreground_record`）
@@ -2326,7 +2326,7 @@ CPC 21123 下的鲜或冷藏鹅肉、肥肝、CPC 21160 下的鹅肝及其他禽
 
 Meat of geese, frozen 是在可归属包装或散装发运操作及冻藏后于工厂门口放行的 CPC 21143 参考产品。
 
-- 选定流：Meat of geese, frozen `db06aea8-9943-4aac-b938-0c63d670a883`
+- 选定流：冷冻鹅肉 `db06aea8-9943-4aac-b938-0c63d670a883`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` / kg
 - 数量规则：恰好 1 kg 净合格冷冻鹅肉，不含包装质量
 - 数值来源模式：固定值（`fixed_value`）
@@ -2358,7 +2358,7 @@ Meat of geese, frozen 是在可归属包装或散装发运操作及冻藏后于�
 
 包装过程中产生的 Waste low-density polyethylene film 作为一项单一材料废物交换记录。
 
-- 选定流：Waste low-density polyethylene film
+- 选定流：废低密度聚乙烯薄膜
 - 流属性/单位：Mass / kg
 - 数量规则：仅一次归属给有记录回收或处理去向的实测废料质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -2478,7 +2478,7 @@ Meat of geese, frozen 是在可归属包装或散装发运操作及冻藏后于�
 
 包装过程中产生的 Waste wooden pallet 作为一项单一材料废物交换记录。
 
-- 选定流：Waste wooden pallet
+- 选定流：废木托盘
 - 流属性/单位：Mass / kg
 - 数量规则：仅一次归属给有记录回收或处理去向的实测废料质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -2510,7 +2510,7 @@ Meat of geese, frozen 是在可归属包装或散装发运操作及冻藏后于�
 
 服务于包装、冻藏与放行的现场燃烧产生的 Carbon dioxide, fossil, to air 作为一项基本流输出报告。
 
-- 选定流：Carbon dioxide, fossil, to air
+- 选定流：化石源二氧化碳，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：直接实测质量，或由分别采集的燃料记录和保留的经核实因子计算的物质质量
 - 数值来源模式：计算值（`calculated_value`）
@@ -2525,7 +2525,7 @@ Meat of geese, frozen 是在可归属包装或散装发运操作及冻藏后于�
 
 服务于包装、冻藏与放行的现场燃烧产生的 Methane to air 作为一项基本流输出报告。
 
-- 选定流：Methane to air
+- 选定流：甲烷，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：直接实测质量，或由分别采集的燃料记录和保留的经核实因子计算的物质质量
 - 数值来源模式：计算值（`calculated_value`）
@@ -2540,7 +2540,7 @@ Meat of geese, frozen 是在可归属包装或散装发运操作及冻藏后于�
 
 服务于包装、冻藏与放行的现场燃烧产生的 Dinitrogen monoxide to air 作为一项基本流输出报告。
 
-- 选定流：Dinitrogen monoxide to air
+- 选定流：氧化亚氮，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：直接实测质量，或由分别采集的燃料记录和保留的经核实因子计算的物质质量
 - 数值来源模式：计算值（`calculated_value`）
@@ -2555,7 +2555,7 @@ Meat of geese, frozen 是在可归属包装或散装发运操作及冻藏后于�
 
 服务于包装、冻藏与放行的现场燃烧产生的 Nitrogen monoxide to air 作为一项基本流输出报告。
 
-- 选定流：Nitrogen monoxide to air
+- 选定流：一氧化氮，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：直接实测质量，或由分别采集的燃料记录和保留的经核实因子计算的物质质量
 - 数值来源模式：计算值（`calculated_value`）
@@ -2570,7 +2570,7 @@ Meat of geese, frozen 是在可归属包装或散装发运操作及冻藏后于�
 
 服务于包装、冻藏与放行的现场燃烧产生的 Nitrogen dioxide to air 作为一项基本流输出报告。
 
-- 选定流：Nitrogen dioxide to air
+- 选定流：二氧化氮，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：直接实测质量，或由分别采集的燃料记录和保留的经核实因子计算的物质质量
 - 数值来源模式：计算值（`calculated_value`）
@@ -2585,7 +2585,7 @@ Meat of geese, frozen 是在可归属包装或散装发运操作及冻藏后于�
 
 服务于包装、冻藏与放行的现场燃烧产生的 Carbon monoxide to air 作为一项基本流输出报告。
 
-- 选定流：Carbon monoxide to air
+- 选定流：一氧化碳，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：直接实测质量，或由分别采集的燃料记录和保留的经核实因子计算的物质质量
 - 数值来源模式：计算值（`calculated_value`）
@@ -2600,7 +2600,7 @@ Meat of geese, frozen 是在可归属包装或散装发运操作及冻藏后于�
 
 服务于包装、冻藏与放行的现场燃烧产生的 Sulfur dioxide to air 作为一项基本流输出报告。
 
-- 选定流：Sulfur dioxide to air
+- 选定流：二氧化硫，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：直接实测质量，或由分别采集的燃料记录和保留的经核实因子计算的物质质量
 - 数值来源模式：计算值（`calculated_value`）
@@ -2615,7 +2615,7 @@ Meat of geese, frozen 是在可归属包装或散装发运操作及冻藏后于�
 
 服务于包装、冻藏与放行的现场燃烧产生的 Particulate matter, <2.5 µm, to air 作为一项基本流输出报告。
 
-- 选定流：Particulate matter, <2.5 µm, to air
+- 选定流：颗粒物（<2.5微米），排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：直接实测质量，或由分别采集的燃料记录和保留的经核实因子计算的物质质量
 - 数值来源模式：计算值（`calculated_value`）
@@ -2630,7 +2630,7 @@ Meat of geese, frozen 是在可归属包装或散装发运操作及冻藏后于�
 
 服务于包装、冻藏与放行的现场燃烧产生的 Particulate matter, 2.5-10 µm, to air 作为一项基本流输出报告。
 
-- 选定流：Particulate matter, 2.5-10 µm, to air
+- 选定流：颗粒物（2.5–10微米），排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：直接实测质量，或由分别采集的燃料记录和保留的经核实因子计算的物质质量
 - 数值来源模式：计算值（`calculated_value`）
@@ -2645,7 +2645,7 @@ Meat of geese, frozen 是在可归属包装或散装发运操作及冻藏后于�
 
 服务于包装、冻藏与放行的制冷设备释放的 Ammonia to air 作为一项基本流输出报告。
 
-- 选定流：Ammonia to air
+- 选定流：氨，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：由期初充注量、实测补充量、期末充注量、实测回收量、事故记录及适用时经核实的混合物组成计算
 - 数值来源模式：计算值（`calculated_value`）
@@ -2660,7 +2660,7 @@ Meat of geese, frozen 是在可归属包装或散装发运操作及冻藏后于�
 
 服务于包装、冻藏与放行的制冷设备释放的 1,1,1,2-Tetrafluoroethane to air 作为一项基本流输出报告。
 
-- 选定流：1,1,1,2-Tetrafluoroethane to air
+- 选定流：1,1,1,2-四氟乙烷，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：由期初充注量、实测补充量、期末充注量、实测回收量、事故记录及适用时经核实的混合物组成计算
 - 数值来源模式：计算值（`calculated_value`）
@@ -2675,7 +2675,7 @@ Meat of geese, frozen 是在可归属包装或散装发运操作及冻藏后于�
 
 服务于包装、冻藏与放行的制冷设备释放的 Pentafluoroethane to air 作为一项基本流输出报告。
 
-- 选定流：Pentafluoroethane to air
+- 选定流：五氟乙烷，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：由期初充注量、实测补充量、期末充注量、实测回收量、事故记录及适用时经核实的混合物组成计算
 - 数值来源模式：计算值（`calculated_value`）
@@ -2690,7 +2690,7 @@ Meat of geese, frozen 是在可归属包装或散装发运操作及冻藏后于�
 
 服务于包装、冻藏与放行的制冷设备释放的 1,1,1-Trifluoroethane to air 作为一项基本流输出报告。
 
-- 选定流：1,1,1-Trifluoroethane to air
+- 选定流：1,1,1-三氟乙烷，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：由期初充注量、实测补充量、期末充注量、实测回收量、事故记录及适用时经核实的混合物组成计算
 - 数值来源模式：计算值（`calculated_value`）
@@ -2711,7 +2711,7 @@ Meat of geese, frozen 是在可归属包装或散装发运操作及冻藏后于�
 
 用于清洗、消毒或条件性场内废水处理的 Sodium hydroxide 作为一项化学品投入记录。
 
-- 选定流：Sodium hydroxide
+- 选定流：氢氧化钠
 - 流属性/单位：Mass / kg
 - 数量规则：实测商品领用质量，并在计算需要时保留有效浓度和用途
 - 数值来源模式：前景记录（`foreground_record`）
@@ -2726,7 +2726,7 @@ Meat of geese, frozen 是在可归属包装或散装发运操作及冻藏后于�
 
 用于清洗、消毒或条件性场内废水处理的 Nitric acid 作为一项化学品投入记录。
 
-- 选定流：Nitric acid
+- 选定流：硝酸
 - 流属性/单位：Mass / kg
 - 数量规则：实测商品领用质量，并在计算需要时保留有效浓度和用途
 - 数值来源模式：前景记录（`foreground_record`）
@@ -2741,7 +2741,7 @@ Meat of geese, frozen 是在可归属包装或散装发运操作及冻藏后于�
 
 用于清洗、消毒或条件性场内废水处理的 Peracetic acid 作为一项化学品投入记录。
 
-- 选定流：Peracetic acid
+- 选定流：过氧乙酸
 - 流属性/单位：Mass / kg
 - 数量规则：实测商品领用质量，并在计算需要时保留有效浓度和用途
 - 数值来源模式：前景记录（`foreground_record`）
@@ -2756,7 +2756,7 @@ Meat of geese, frozen 是在可归属包装或散装发运操作及冻藏后于�
 
 用于清洗、消毒或条件性场内废水处理的 Sodium hypochlorite 作为一项化学品投入记录。
 
-- 选定流：Sodium hypochlorite
+- 选定流：次氯酸钠
 - 流属性/单位：Mass / kg
 - 数量规则：实测商品领用质量，并在计算需要时保留有效浓度和用途
 - 数值来源模式：前景记录（`foreground_record`）
@@ -2771,7 +2771,7 @@ Meat of geese, frozen 是在可归属包装或散装发运操作及冻藏后于�
 
 用于清洗、消毒或条件性场内废水处理的 Hydrogen peroxide 作为一项化学品投入记录。
 
-- 选定流：Hydrogen peroxide
+- 选定流：过氧化氢
 - 流属性/单位：Mass / kg
 - 数量规则：实测商品领用质量，并在计算需要时保留有效浓度和用途
 - 数值来源模式：前景记录（`foreground_record`）
@@ -2786,7 +2786,7 @@ Meat of geese, frozen 是在可归属包装或散装发运操作及冻藏后于�
 
 用于清洗、消毒或条件性场内废水处理的 Ferric chloride 作为一项化学品投入记录。
 
-- 选定流：Ferric chloride
+- 选定流：氯化铁
 - 流属性/单位：Mass / kg
 - 数量规则：实测商品领用质量，并在计算需要时保留有效浓度和用途
 - 数值来源模式：前景记录（`foreground_record`）
@@ -2801,7 +2801,7 @@ Meat of geese, frozen 是在可归属包装或散装发运操作及冻藏后于�
 
 用于清洗、消毒或条件性场内废水处理的 Calcium hydroxide 作为一项化学品投入记录。
 
-- 选定流：Calcium hydroxide
+- 选定流：氢氧化钙
 - 流属性/单位：Mass / kg
 - 数量规则：实测商品领用质量，并在计算需要时保留有效浓度和用途
 - 数值来源模式：前景记录（`foreground_record`）
@@ -2816,7 +2816,7 @@ Meat of geese, frozen 是在可归属包装或散装发运操作及冻藏后于�
 
 用于清洗、消毒或条件性场内废水处理的 Polyacrylamide flocculant 作为一项化学品投入记录。
 
-- 选定流：Polyacrylamide flocculant
+- 选定流：聚丙烯酰胺絮凝剂
 - 流属性/单位：Mass / kg
 - 数量规则：实测商品领用质量，并在计算需要时保留有效浓度和用途
 - 数值来源模式：前景记录（`foreground_record`）
@@ -2831,7 +2831,7 @@ Meat of geese, frozen 是在可归属包装或散装发运操作及冻藏后于�
 
 跨越设施边界供应给清洗、消毒与废水管理的 Potable mains water 与直接环境取水分别记录。
 
-- 选定流：Potable mains water
+- 选定流：市政饮用水
 - 流属性/单位：Volume / m3
 - 数量规则：直接归属本过程的管网水实测体积
 - 数值来源模式：前景记录（`foreground_record`）
@@ -2846,7 +2846,7 @@ Meat of geese, frozen 是在可归属包装或散装发运操作及冻藏后于�
 
 清洗、消毒与废水管理消耗的 Electricity, medium voltage, grid mix 作为一项能源交换记录，并与所有其他公用工程分开。
 
-- 选定流：Electricity, medium voltage, grid mix
+- 选定流：中压电力，电网组合
 - 流属性/单位：Energy / kWh
 - 数量规则：直接归属本过程的实测用电量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -2861,7 +2861,7 @@ Meat of geese, frozen 是在可归属包装或散装发运操作及冻藏后于�
 
 清洗、消毒与废水管理消耗的 Purchased steam 作为一项能源交换记录，并与所有其他公用工程分开。
 
-- 选定流：Purchased steam
+- 选定流：外购蒸汽
 - 流属性/单位：Energy / MJ
 - 数量规则：实测交付蒸汽能量，或由实测蒸汽质量和保留的供应条件计算的能量
 - 数值来源模式：计算值（`calculated_value`）
@@ -2876,7 +2876,7 @@ Meat of geese, frozen 是在可归属包装或散装发运操作及冻藏后于�
 
 清洗、消毒与废水管理消耗的 Purchased hot water 作为一项能源交换记录，并与所有其他公用工程分开。
 
-- 选定流：Purchased hot water
+- 选定流：外购热水
 - 流属性/单位：Energy / MJ
 - 数量规则：实测交付热水能量，或由实测流量及保留的供回水温度计算的能量
 - 数值来源模式：计算值（`calculated_value`）
@@ -2891,7 +2891,7 @@ Meat of geese, frozen 是在可归属包装或散装发运操作及冻藏后于�
 
 清洗、消毒与废水管理消耗的 Natural gas 作为一项能源交换记录，并与所有其他公用工程分开。
 
-- 选定流：Natural gas
+- 选定流：天然气
 - 流属性/单位：Energy / MJ
 - 数量规则：实测能量，或使用有记录的供应商热值换算实测气量
 - 数值来源模式：计算值（`calculated_value`）
@@ -2906,7 +2906,7 @@ Meat of geese, frozen 是在可归属包装或散装发运操作及冻藏后于�
 
 清洗、消毒与废水管理消耗的 Diesel fuel 作为一项能源交换记录，并与所有其他公用工程分开。
 
-- 选定流：Diesel fuel
+- 选定流：柴油燃料
 - 流属性/单位：Energy / MJ
 - 数量规则：使用有记录的供应商热值换算实测燃料量
 - 数值来源模式：计算值（`calculated_value`）
@@ -2921,7 +2921,7 @@ Meat of geese, frozen 是在可归属包装或散装发运操作及冻藏后于�
 
 清洗、消毒与废水管理消耗的 Liquefied petroleum gas 作为一项能源交换记录，并与所有其他公用工程分开。
 
-- 选定流：Liquefied petroleum gas
+- 选定流：液化石油气
 - 流属性/单位：Energy / MJ
 - 数量规则：使用有记录的供应商热值换算实测燃料量
 - 数值来源模式：计算值（`calculated_value`）
@@ -2940,7 +2940,7 @@ Meat of geese, frozen 是在可归属包装或散装发运操作及冻藏后于�
 
 为清洗、消毒与废水管理直接取用的 Water, ground 作为一项基本流投入，不与管网水重复。
 
-- 选定流：Water, ground
+- 选定流：地下水
 - 流属性/单位：Volume / m3
 - 数量规则：归属本过程的实测直接取水体积
 - 数值来源模式：前景记录（`foreground_record`）
@@ -2955,7 +2955,7 @@ Meat of geese, frozen 是在可归属包装或散装发运操作及冻藏后于�
 
 为清洗、消毒与废水管理直接取用的 Water, surface 作为一项基本流投入，不与管网水重复。
 
-- 选定流：Water, surface
+- 选定流：地表水
 - 流属性/单位：Volume / m3
 - 数量规则：归属本过程的实测直接取水体积
 - 数值来源模式：前景记录（`foreground_record`）
@@ -3006,7 +3006,7 @@ Meat of geese, frozen 是在可归属包装或散装发运操作及冻藏后于�
 
 离开废水收集或条件性场内处理的 Wastewater-treatment sludge 作为一项废物交换记录，并保留去向。
 
-- 选定流：Wastewater-treatment sludge
+- 选定流：废水处理污泥
 - 流属性/单位：Mass / kg
 - 数量规则：仅一次归属给有记录回收或处理去向的实测废物质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -3053,7 +3053,7 @@ Meat of geese, frozen 是在可归属包装或散装发运操作及冻藏后于�
 
 服务于清洗、消毒与废水管理的现场燃烧产生的 Carbon dioxide, fossil, to air 作为一项基本流输出报告。
 
-- 选定流：Carbon dioxide, fossil, to air
+- 选定流：化石源二氧化碳，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：直接实测质量，或由分别采集的燃料记录和保留的经核实因子计算的物质质量
 - 数值来源模式：计算值（`calculated_value`）
@@ -3068,7 +3068,7 @@ Meat of geese, frozen 是在可归属包装或散装发运操作及冻藏后于�
 
 服务于清洗、消毒与废水管理的现场燃烧产生的 Methane to air 作为一项基本流输出报告。
 
-- 选定流：Methane to air
+- 选定流：甲烷，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：直接实测质量，或由分别采集的燃料记录和保留的经核实因子计算的物质质量
 - 数值来源模式：计算值（`calculated_value`）
@@ -3083,7 +3083,7 @@ Meat of geese, frozen 是在可归属包装或散装发运操作及冻藏后于�
 
 服务于清洗、消毒与废水管理的现场燃烧产生的 Dinitrogen monoxide to air 作为一项基本流输出报告。
 
-- 选定流：Dinitrogen monoxide to air
+- 选定流：氧化亚氮，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：直接实测质量，或由分别采集的燃料记录和保留的经核实因子计算的物质质量
 - 数值来源模式：计算值（`calculated_value`）
@@ -3098,7 +3098,7 @@ Meat of geese, frozen 是在可归属包装或散装发运操作及冻藏后于�
 
 服务于清洗、消毒与废水管理的现场燃烧产生的 Nitrogen monoxide to air 作为一项基本流输出报告。
 
-- 选定流：Nitrogen monoxide to air
+- 选定流：一氧化氮，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：直接实测质量，或由分别采集的燃料记录和保留的经核实因子计算的物质质量
 - 数值来源模式：计算值（`calculated_value`）
@@ -3113,7 +3113,7 @@ Meat of geese, frozen 是在可归属包装或散装发运操作及冻藏后于�
 
 服务于清洗、消毒与废水管理的现场燃烧产生的 Nitrogen dioxide to air 作为一项基本流输出报告。
 
-- 选定流：Nitrogen dioxide to air
+- 选定流：二氧化氮，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：直接实测质量，或由分别采集的燃料记录和保留的经核实因子计算的物质质量
 - 数值来源模式：计算值（`calculated_value`）
@@ -3128,7 +3128,7 @@ Meat of geese, frozen 是在可归属包装或散装发运操作及冻藏后于�
 
 服务于清洗、消毒与废水管理的现场燃烧产生的 Carbon monoxide to air 作为一项基本流输出报告。
 
-- 选定流：Carbon monoxide to air
+- 选定流：一氧化碳，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：直接实测质量，或由分别采集的燃料记录和保留的经核实因子计算的物质质量
 - 数值来源模式：计算值（`calculated_value`）
@@ -3143,7 +3143,7 @@ Meat of geese, frozen 是在可归属包装或散装发运操作及冻藏后于�
 
 服务于清洗、消毒与废水管理的现场燃烧产生的 Sulfur dioxide to air 作为一项基本流输出报告。
 
-- 选定流：Sulfur dioxide to air
+- 选定流：二氧化硫，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：直接实测质量，或由分别采集的燃料记录和保留的经核实因子计算的物质质量
 - 数值来源模式：计算值（`calculated_value`）
@@ -3158,7 +3158,7 @@ Meat of geese, frozen 是在可归属包装或散装发运操作及冻藏后于�
 
 服务于清洗、消毒与废水管理的现场燃烧产生的 Particulate matter, <2.5 µm, to air 作为一项基本流输出报告。
 
-- 选定流：Particulate matter, <2.5 µm, to air
+- 选定流：颗粒物（<2.5微米），排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：直接实测质量，或由分别采集的燃料记录和保留的经核实因子计算的物质质量
 - 数值来源模式：计算值（`calculated_value`）
@@ -3173,7 +3173,7 @@ Meat of geese, frozen 是在可归属包装或散装发运操作及冻藏后于�
 
 服务于清洗、消毒与废水管理的现场燃烧产生的 Particulate matter, 2.5-10 µm, to air 作为一项基本流输出报告。
 
-- 选定流：Particulate matter, 2.5-10 µm, to air
+- 选定流：颗粒物（2.5–10微米），排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：直接实测质量，或由分别采集的燃料记录和保留的经核实因子计算的物质质量
 - 数值来源模式：计算值（`calculated_value`）
@@ -3188,7 +3188,7 @@ Meat of geese, frozen 是在可归属包装或散装发运操作及冻藏后于�
 
 仅当前景设施直接排放处理后废水时，才把 Chemical oxygen demand to water 作为一项基本流输出报告。
 
-- 选定流：Chemical oxygen demand to water
+- 选定流：化学需氧量，排入水体
 - 流属性/单位：Mass / kg
 - 数量规则：由实测直接排放体积和具有代表性的实测浓度按一致单位计算
 - 数值来源模式：计算值（`calculated_value`）
@@ -3218,7 +3218,7 @@ Meat of geese, frozen 是在可归属包装或散装发运操作及冻藏后于�
 
 仅当前景设施直接排放处理后废水时，才把 Total suspended solids to water 作为一项基本流输出报告。
 
-- 选定流：Total suspended solids to water
+- 选定流：总悬浮固体，排入水体
 - 流属性/单位：Mass / kg
 - 数量规则：由实测直接排放体积和具有代表性的实测浓度按一致单位计算
 - 数值来源模式：计算值（`calculated_value`）
@@ -3233,7 +3233,7 @@ Meat of geese, frozen 是在可归属包装或散装发运操作及冻藏后于�
 
 仅当前景设施直接排放处理后废水时，才把 Total nitrogen to water 作为一项基本流输出报告。
 
-- 选定流：Total nitrogen to water
+- 选定流：总氮，排入水体
 - 流属性/单位：Mass / kg
 - 数量规则：由实测直接排放体积和具有代表性的实测浓度按一致单位计算
 - 数值来源模式：计算值（`calculated_value`）
@@ -3248,7 +3248,7 @@ Meat of geese, frozen 是在可归属包装或散装发运操作及冻藏后于�
 
 仅当前景设施直接排放处理后废水时，才把 Total phosphorus to water 作为一项基本流输出报告。
 
-- 选定流：Total phosphorus to water
+- 选定流：总磷，排入水体
 - 流属性/单位：Mass / kg
 - 数量规则：由实测直接排放体积和具有代表性的实测浓度按一致单位计算
 - 数值来源模式：计算值（`calculated_value`）
@@ -3293,7 +3293,7 @@ Meat of geese, frozen 是在可归属包装或散装发运操作及冻藏后于�
 
 仅当前景设施直接排放处理后废水时，才把 Chloride to water 作为一项基本流输出报告。
 
-- 选定流：Chloride to water
+- 选定流：氯化物，排入水体
 - 流属性/单位：Mass / kg
 - 数量规则：由实测直接排放体积和具有代表性的实测浓度按一致单位计算
 - 数值来源模式：计算值（`calculated_value`）
@@ -3368,15 +3368,15 @@ Meat of geese, frozen 是在可归属包装或散装发运操作及冻藏后于�
 | --- | --- | --- | --- |
 | `validate_identity` | PCR 和参考流身份 | 确认 canonical_pcr_id、CPC 3.0 代码 21143、精确产品标题、Product 流类型、参考 UUID、Mass 属性 UUID、Units of mass UUID 和 kg 单位；拒绝鲜或冷藏鹅肉、肥肝和食用内脏。 | `unsd-cpc-21143` |
 | `validate_reference_amount` | 参考输出 | 要求工厂门口恰好 1 kg 净合格放行冷冻鹅肉，并验证包装、肝、内脏、羽毛、鹅绒、血、脂、骨和其他分流输出已排除。 | `unsd-cpc-21143`, `eu-pef-2021-2279` |
-| `validate_scope` | 数据集范围 | 验证冷冻市场状态、鹅身份、产品形态、带骨与带皮状态、过程覆盖、设施门口、报告期，以及上游养殖和入厂运输与下游阶段排除项。 | `unsd-cpc-21143`, `eu-jrc-sa-bref`, `eu-pef-2021-2279` |
-| `validate_process_map` | 前景过程 | 要求接收、屠宰去羽、胴体整理与实际分割、预冷冻结、放行冻藏以及卫生废水管理具有详细清单；记录条件性包装和场内处理状态。 | `eu-jrc-sa-bref`, `eu-pef-2021-2279` |
+| `validate_scope` | 数据集范围 | 验证冷冻市场状态、鹅身份、产品形态、带骨与带皮状态、过程覆盖、设施门口、报告期，以及上游养殖和入厂运输与下游阶段排除项。 | `unsd-cpc-21143`, `fao-who-cxc-58-2005`, `eu-jrc-sa-bref`, `eu-pef-2021-2279` |
+| `validate_process_map` | 前景过程 | 要求接收、屠宰去羽、胴体整理与实际分割、预冷冻结、放行冻藏以及卫生废水管理具有详细清单；记录条件性包装和场内处理状态。 | `fao-who-cxc-58-2005`, `eu-jrc-sa-bref`, `eu-pef-2021-2279` |
 | `validate_atomic_inventory` | 全部清单卡 | 要求每个 row_id 仅有一项具体交换，并具有非空说明、属性和单位、数量规则、数值来源模式、适用范围、归一化基准、基准类型、证据类型、采集协议和有序来源 id；拒绝集合选择器。 | `eu-pef-2021-2279` |
 | `validate_goose_mass_balance` | 鹅接收、胴体、肉、副产品、拒收、废物和库存记录 | 检查禽只数量和质量在接收、屠宰、整理、分割、冻结、包装及每项分流动物输出中的核对；调查每个未解决质量平衡差。 | `eu-jrc-sa-bref`, `eu-pef-2021-2279` |
 | `validate_utility_separation` | 水和能源 | 逐过程检查管网水、地下水、地表水、电网电力、外购蒸汽、外购热水、天然气、柴油和液化石油气，并验证载体未被合并或重复计算。 | `eu-jrc-sa-bref`, `eu-pef-2021-2279` |
 | `validate_refrigerants` | 预冷、冻结和冻藏 | 核对设备级制冷剂记录，并验证补充产品与化学物种特定排放分别记录、实际混合物组成、回收以及无重复计算。 | `eu-jrc-sa-bref`, `eu-pef-2021-2279` |
 | `validate_wastewater` | 废水和直接水体排放 | 区分普通负荷与高负荷废水、污水管网转移、场内处理和直接排放；验证体积浓度计算、固体记录和受纳隔室。 | `eu-jrc-sa-bref`, `eu-pef-2021-2279` |
 | `validate_allocation` | 副产品、废物和共享服务 | 验证优先采用过程细分和直接归属、肥肝与内脏分别处理、每项输出有记录的状态和去向、不可避免分配的因果基础、方程、核对和敏感性披露。 | `eu-pef-2021-2279` |
-| `validate_evidence` | 来源和前景记录 | PCR 支撑仅接受三个已声明外部来源 id，数量要求企业特定记录，拒绝无依据默认值或范围，并在 manifest 审查元数据保留每个未解决非参考 UUID。 | `unsd-cpc-21143`, `eu-jrc-sa-bref`, `eu-pef-2021-2279` |
+| `validate_evidence` | 来源和前景记录 | PCR 支撑仅接受四个已声明外部来源 id，数量要求企业特定记录，拒绝无依据默认值或范围，并在 manifest 审查元数据保留每个未解决非参考 UUID。 | `unsd-cpc-21143`, `fao-who-cxc-58-2005`, `eu-jrc-sa-bref`, `eu-pef-2021-2279` |
 | `validate_data_quality` | 完成的前景数据包 | 审查时间、地域、技术、精度、完整性、一致性、透明度和验证证据，并在重要发现闭合前阻止生命周期状态提升。 | `eu-pef-2021-2279` |
 
 ## 10. 发布数据集画像
@@ -3395,6 +3395,7 @@ Meat of geese, frozen 是在可归属包装或散装发运操作及冻藏后于�
 
 | 来源 id | 类型 | 引用 | 用途 |
 | --- | --- | --- | --- |
-| `unsd-cpc-21143` | 数据集（`dataset`） | 联合国统计司，CPC 3.0，保留的官方结构 CSV，子类 21143，https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Structure_30Jun2025.csv | 精确类别标题和冷冻禽肉范围；与鲜或冷藏鹅肉及禽类食用内脏的区分 |
-| `eu-jrc-sa-bref` | 官方指南（`official_guidance`） | 欧盟委员会联合研究中心，屠宰场、动物副产品及食用副产品行业最佳可行技术参考文件，JRC135916，DOI 10.2760/18199，https://doi.org/10.2760/18199 | 接收、屠宰、放血、浸烫、去羽、去内脏、整理、分割、冷却、冻结、储存、卫生、公用工程、废水、分流动物输出、废物和直接排放的设施操作与清单覆盖 |
-| `eu-pef-2021-2279` | 官方指南（`official_guidance`） | Commission Recommendation (EU) 2021/2279 环境足迹方法合并文本，https://eur-lex.europa.eu/eli/reco/2021/2279/2021-12-30/eng | 企业特定前景数据、完整生命周期清单、产品和过程特定性、分配、透明度、数据质量、计算文档和验证 |
+| `unsd-cpc-21143` | 官方指南（`official_guidance`） | 联合国统计司，CPC 3.0 解释性说明，子类 21143，https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Exp_Notes_30Jun2025.pdf，访问日期 2026-08-20 | 精确类别标题和范围；包括冷冻鹅肉；排除鲜或冷藏鹅肉、鹅可食内脏和鹅肥肝 |
+| `fao-who-cxc-58-2005` | 标准（`standard`） | Codex Alimentarius，《肉类卫生操作规范》CXC 58-2005，https://www.fao.org/4/i1111e/i1111e00.pdf，访问日期 2026-08-20 | 待宰动物信息、待宰圈、去羽、去内脏、胴体清洗与冷链处理中的过程控制、宰后处置、卫生程序、监测和记录保存 |
+| `eu-jrc-sa-bref` | 官方指南（`official_guidance`） | 欧盟委员会联合研究中心，屠宰场、动物副产品及食用副产品行业最佳可行技术参考文件，JRC135916，DOI 10.2760/18199，https://doi.org/10.2760/18199，访问日期 2026-08-20 | 接收、屠宰、放血、浸烫、去羽、去内脏、整理、分割、冷却、冻结、储存、卫生、公用工程、废水、分流动物输出、废物和直接排放的设施操作与清单覆盖 |
+| `eu-pef-2021-2279` | 官方指南（`official_guidance`） | Commission Recommendation (EU) 2021/2279 环境足迹方法合并文本，https://eur-lex.europa.eu/eli/reco/2021/2279/2021-12-30/eng，访问日期 2026-08-20 | 企业特定前景数据、完整生命周期清单、产品和过程特定性、分配、透明度、数据质量、计算文档和验证 |

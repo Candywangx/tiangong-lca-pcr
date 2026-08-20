@@ -40,7 +40,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 1 kg 成品净质量 |
-| 参考产品流 | Women's or girls' blouses, shirts, petticoats, panties, nightdresses, dressing gowns and similar articles, knitted or crocheted `b7c07ef2-cdde-46c1-88df-c1e4d030520e` |
+| 参考产品流 | 针织或钩编的女罩衣、女童罩衣、衬衫、衬裙、紧身短裤、睡衣、晨衣及类似物品 `b7c07ef2-cdde-46c1-88df-c1e4d030520e` |
 | 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | kg |
@@ -889,7 +889,7 @@ sync_with: pcr.en-US.md
 
 这是唯一写入经核验 CPC 28224 参考产品 UUID 的清单行。数量为成衣净质量，包装仍保留为独立投入和废物行。
 
-- 选定流：Women's or girls' blouses, shirts, petticoats, panties, nightdresses, dressing gowns and similar articles, knitted or crocheted `b7c07ef2-cdde-46c1-88df-c1e4d030520e`
+- 选定流：针织或钩编的女罩衣、女童罩衣、衬衫、衬裙、紧身短裤、睡衣、晨衣及类似物品 `b7c07ef2-cdde-46c1-88df-c1e4d030520e`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：归一化后恰为 1 kg 可销售成品净质量
 - 数值来源模式：固定值（`fixed_value`）

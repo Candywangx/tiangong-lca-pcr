@@ -38,7 +38,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 1 kg |
-| 参考产品流 | Fish fillets and fish meat (whether or not minced), fresh or chilled `a1c31d45-a225-426f-908a-f79eae6c071f` |
+| 参考产品流 | 鱼片和鱼肉（无论是否剁碎），新鲜或冷藏 `a1c31d45-a225-426f-908a-f79eae6c071f` |
 | 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | kg |
@@ -369,7 +369,7 @@ sync_with: pcr.en-US.md
 
 这是离开设施门口的参考产品。
 
-- 选定流：Fish fillets and fish meat (whether or not minced), fresh or chilled `a1c31d45-a225-426f-908a-f79eae6c071f`
+- 选定流：鱼片和鱼肉（无论是否剁碎），新鲜或冷藏 `a1c31d45-a225-426f-908a-f79eae6c071f`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：分配并归一化后准确等于 1 kg 产品净质量
 - 数值来源模式：固定值（`fixed_value`）

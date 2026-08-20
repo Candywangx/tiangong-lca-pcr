@@ -40,7 +40,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 1 kg 净合格织物输出 |
-| 参考产品流 | Other woven fabrics of man-made filament yarn, containing 85% or more by weight of such filaments `6604db91-24a3-43c8-aeec-8384210e643f` |
+| 参考产品流 | 含人造长丝重量达85%或85%以上的其他人造长丝机织织物 `6604db91-24a3-43c8-aeec-8384210e643f` |
 | 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | kg |
@@ -956,7 +956,7 @@ sync_with: pcr.en-US.md
 
 这是最终质量验收后的定量参考输出。
 
-- 选定流：Other woven fabrics of man-made filament yarn, containing 85% or more by weight of such filaments `6604db91-24a3-43c8-aeec-8384210e643f`
+- 选定流：含人造长丝重量达85%或85%以上的其他人造长丝机织织物 `6604db91-24a3-43c8-aeec-8384210e643f`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：1 kg 净合格织物
 - 数值来源模式：固定值（`fixed_value`）

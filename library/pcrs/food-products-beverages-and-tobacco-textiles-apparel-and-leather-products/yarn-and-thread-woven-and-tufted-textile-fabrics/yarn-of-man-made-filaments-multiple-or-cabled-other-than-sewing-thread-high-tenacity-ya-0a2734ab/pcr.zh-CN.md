@@ -38,7 +38,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 1,000 kg 纱线净质量 |
-| 参考产品流 | Yarn of man-made filaments, multiple or cabled (other than sewing thread, high tenacity yarn of polyamides, polyesters or viscose rayon), not put up for retail sale `d3526e15-e0a8-4d96-8688-2738fd9d20ba` |
+| 参考产品流 | 非供零售的人造长丝纱线，多股纱线或编织纱线（缝纫线，聚酰胺、聚酯或粘胶人造丝的高强力纱线除外） `d3526e15-e0a8-4d96-8688-2738fd9d20ba` |
 | 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | 质量单位组 `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | kg |
@@ -91,7 +91,7 @@ sync_with: pcr.en-US.md
 
 当采购涤纶长丝作为组分纱进入报告批次时记录。
 
-- 选定流：Polyester Filament `30173859-61d4-4518-ba9e-6846b8491c1b`
+- 选定流：涤纶长丝 `30173859-61d4-4518-ba9e-6846b8491c1b`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：进入批次的前景净质量，与产品输出和涤纶纱废物核对。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -119,7 +119,7 @@ sync_with: pcr.en-US.md
 
 当采购人工长丝纱作为组分纱进入报告批次时记录。
 
-- 选定流：Artificial filament yarn (except sewing thread and multiple or cabled yarn), not put up for retail sale `af18d089-ed9e-4dd9-b3e3-5f5decb6c61b`
+- 选定流：人造长丝纱（不包括缝纫线及多股线或缆线），不供零售 `af18d089-ed9e-4dd9-b3e3-5f5decb6c61b`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：进入批次的前景净质量，与产品输出和人工长丝纱废物核对。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -133,7 +133,7 @@ sync_with: pcr.en-US.md
 
 记录供应给加捻和卷绕设备以及过程边界内直接辅助设备的计量电力。
 
-- 选定流：Alternating current, 1-35 kV, consumption mix at user `3d76981f-964a-4865-b588-0e067a2a1163`
+- 选定流：交流电 `3d76981f-964a-4865-b588-0e067a2a1163`
 - 流属性/单位：Net calorific value `93a60a56-a3c8-11da-a746-0800200c9a66` / MJ
 - 数量规则：报告批次的前景分表用电量，或经设施总表核对的用电量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -155,7 +155,7 @@ sync_with: pcr.en-US.md
 
 仅记录满足本 PCR 产品身份和全部排除条件的输出。
 
-- 选定流：Yarn of man-made filaments, multiple or cabled (other than sewing thread, high tenacity yarn of polyamides, polyesters or viscose rayon), not put up for retail sale `d3526e15-e0a8-4d96-8688-2738fd9d20ba`
+- 选定流：非供零售的人造长丝纱线，多股纱线或编织纱线（缝纫线，聚酰胺、聚酯或粘胶人造丝的高强力纱线除外） `d3526e15-e0a8-4d96-8688-2738fd9d20ba`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：合格纱线输出的前景净质量；以该测量值作为归一化分母。
 - 数值来源模式：前景记录（`foreground_record`）

@@ -42,7 +42,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 1 kg |
-| 参考产品流 | Meat of cattle, frozen `16e6d353-2acd-4dc3-99b3-fce9d27fbbd7` |
+| 参考产品流 | 冷冻牛肉 `16e6d353-2acd-4dc3-99b3-fce9d27fbbd7` |
 | 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | kg |

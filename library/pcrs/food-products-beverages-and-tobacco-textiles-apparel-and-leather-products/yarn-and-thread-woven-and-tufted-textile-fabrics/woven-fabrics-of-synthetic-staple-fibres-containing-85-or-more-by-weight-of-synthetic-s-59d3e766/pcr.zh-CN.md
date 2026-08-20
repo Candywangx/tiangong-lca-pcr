@@ -38,7 +38,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 1 kg |
-| 参考产品流 | Woven fabrics of synthetic staple fibres, containing 85% or more by weight of synthetic staple fibres `b72e06e9-57a4-4e56-8c34-10fa61220193` |
+| 参考产品流 | 含合成短纤维重量达85%或85%以上的合成短纤维机织织物 `b72e06e9-57a4-4e56-8c34-10fa61220193` |
 | 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | kg |
@@ -124,7 +124,7 @@ sync_with: pcr.en-US.md
 
 使用聚乙烯醇作为经纱浆料时，按商品等级和活性成分记录。所用淀粉、聚丙烯酸酯、润滑剂、抗静电剂或其他准备化学品，均须新增为独立原子产品流行。
 
-- 选定流：Polyvinyl alcohol `cea707dd-98a3-451d-bc43-2dcc145091e9`
+- 选定流：聚乙烯醇 `cea707dd-98a3-451d-bc43-2dcc145091e9`
 - 流属性/单位：Mass / kg
 - 数量规则：批次领用量减去有记录的退回量或回收量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -229,7 +229,7 @@ sync_with: pcr.en-US.md
 
 使用喷气织机时纳入供给织机的压缩空气；仅在不存在压缩空气织机或其他直接织造需求时方可省略本行。
 
-- 选定流：Compressed air `46e2b1e4-5a4e-4579-b6a2-65b03f9ce825`
+- 选定流：压缩的空气 `46e2b1e4-5a4e-4579-b6a2-65b03f9ce825`
 - 流属性/单位：Volume / m3
 - 数量规则：分表计量压缩空气体积，或将有记录的压缩机供气量分配至织造批次
 - 数值来源模式：前景记录（`foreground_record`）
@@ -248,7 +248,7 @@ sync_with: pcr.en-US.md
 
 当经治理后的实测 PM2.5 跨越环境边界时予以记录。其他实测粒径区间须使用独立基本流行；不得与作为废物报告的捕集粉尘重复。
 
-- 选定流：Particulate matter, less than 2.5 µm, to air, unspecified `08a91e70-3ddc-11dd-9293-0050c2490048`
+- 选定流：颗粒物 (PM2.5) `08a91e70-3ddc-11dd-9293-0050c2490048`
 - 流属性/单位：Mass / kg
 - 数量规则：实测质量流量按运行时间积分，或有记录的场址排放计算
 - 数值来源模式：计算值（`calculated_value`）
@@ -320,7 +320,7 @@ sync_with: pcr.en-US.md
 
 记录供给洗涤、退浆、染色、漂洗、整理和设备清洁的水，并扣除按同一过程分母单独计量、返回该过程的再使用水。
 
-- 选定流：Process water `68ac99df-f4b9-43b9-8da3-661c7d51f356`
+- 选定流：工艺用水 `68ac99df-f4b9-43b9-8da3-661c7d51f356`
 - 流属性/单位：Mass / kg
 - 数量规则：计量水体积按实测或声明的水密度换算，并减去单独计量的过程再使用或再循环水
 - 数值来源模式：前景记录（`foreground_record`）
@@ -362,7 +362,7 @@ sync_with: pcr.en-US.md
 
 按产品浓度和活性成分记录用于精练、pH 调节或其他已声明湿法处理步骤的氢氧化钠。
 
-- 选定流：Sodium hydroxide `e0abcced-0611-4c24-9290-5a2c5a0c4169`
+- 选定流：氢氧化钠 `e0abcced-0611-4c24-9290-5a2c5a0c4169`
 - 流属性/单位：Mass / kg
 - 数量规则：领用量减去有记录的退回、回收或未用余量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -377,7 +377,7 @@ sync_with: pcr.en-US.md
 
 使用 50% 过氧化氢溶液进行漂白或氧化处理时予以记录；其他供货浓度属于不同产品流标识。
 
-- 选定流：Hydrogen peroxide solution, 50% in water `afda772f-b130-4c32-9a89-c4e79ba4e0e8`
+- 选定流：过氧化氢溶液，50%（水溶液） `afda772f-b130-4c32-9a89-c4e79ba4e0e8`
 - 流属性/单位：Mass / kg
 - 数量规则：领用产品质量减去有记录的退回量或未用余量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -392,7 +392,7 @@ sync_with: pcr.en-US.md
 
 记录用于染浴 pH 控制、中和或已声明整理配方的乙酸；前景记录须能区分已声明浓度的供货溶液。
 
-- 选定流：Acetic acid `e2450fd4-acdc-4ab3-b8e3-269f8882a44e`
+- 选定流：醋酸 `e2450fd4-acdc-4ab3-b8e3-269f8882a44e`
 - 流属性/单位：Mass / kg
 - 数量规则：领用产品质量减去有记录的退回量或未用余量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -422,7 +422,7 @@ sync_with: pcr.en-US.md
 
 纳入干燥、固化、热固定或热定型使用的外购蒸汽。记录蒸汽质量和状态，并根据有记录的压力、温度、凝结水回流和焓计算有用能量。任何直接燃烧燃料或其他外购热量均须使用独立原子行。
 
-- 选定流：Steam `293f9fd9-5182-4d35-8aa5-ce73d4f322b7`
+- 选定流：蒸汽 `293f9fd9-5182-4d35-8aa5-ce73d4f322b7`
 - 流属性/单位：Mass / kg
 - 数量规则：计量外购蒸汽质量，并根据有记录的蒸汽及凝结水状态另行计算有用能量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -470,7 +470,7 @@ sync_with: pcr.en-US.md
 
 记录离开前景设施、送往处理的废水流量、处理去向和相关污染物负荷。
 
-- 选定流：Wastewater, textile wet processing, to water `a60031a7-ea29-49ef-b578-90de910fcf8e`
+- 选定流：废水，纺织品湿法加工，至水体 `a60031a7-ea29-49ef-b578-90de910fcf8e`
 - 流属性/单位：Mass / kg
 - 数量规则：报告期内计量废水体积按实测或声明密度换算，并开展污染物表征
 - 数值来源模式：前景记录（`foreground_record`）
@@ -487,7 +487,7 @@ sync_with: pcr.en-US.md
 
 废水直接排入环境时，报告场内处理后的化学需氧量；不得与送至外部处理的废水所含负荷重复。其他每种相关污染物均须使用独立基本流行。
 
-- 选定流：Chemical oxygen demand, to water, unspecified `e57fc631-2c77-457a-aa30-be79e357792b`
+- 选定流：化学需氧量 `e57fc631-2c77-457a-aa30-be79e357792b`
 - 流属性/单位：Mass / kg
 - 数量规则：排放体积乘以代表性实测浓度，并对报告期积分
 - 数值来源模式：计算值（`calculated_value`）
@@ -502,7 +502,7 @@ sync_with: pcr.en-US.md
 
 场内燃烧化石燃料时，报告相关热处理或燃烧出口释放的化石二氧化碳。一氧化碳、氮氧化物、颗粒物粒径区间、挥发性有机物和其他监测污染物均须使用独立基本流行。
 
-- 选定流：Carbon dioxide, fossil, to air, unspecified `08a91e70-3ddc-11dd-923d-0050c2490048`
+- 选定流：二氧化碳（化石源） `08a91e70-3ddc-11dd-923d-0050c2490048`
 - 流属性/单位：Mass / kg
 - 数量规则：实测质量流量按运行时间积分，或有记录的场址排放计算
 - 数值来源模式：计算值（`calculated_value`）
@@ -551,7 +551,7 @@ sync_with: pcr.en-US.md
 
 记录随织物产品供应的瓦楞纸板芯管、套筒或箱体。其他每个包装组件均须使用独立产品流行。
 
-- 选定流：Corrugated cardboard `8bde297e-98df-463f-bcb4-0db52bf6e0b5`
+- 选定流：瓦楞纸板 `8bde297e-98df-463f-bcb4-0db52bf6e0b5`
 - 流属性/单位：Mass / kg
 - 数量规则：分配给已发运合格织物的领用包装质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -565,7 +565,7 @@ sync_with: pcr.en-US.md
 
 成品卷随产品供应聚乙烯包裹膜时予以记录。
 
-- 选定流：Polyethylene film `e64eb06c-6dc9-45f1-b003-3dc6c44b27e2`
+- 选定流：聚乙烯薄膜 `e64eb06c-6dc9-45f1-b003-3dc6c44b27e2`
 - 流属性/单位：Mass / kg
 - 数量规则：分配给已发运合格织物的聚乙烯膜领用质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -579,7 +579,7 @@ sync_with: pcr.en-US.md
 
 记录用于固定织物卷或托盘的聚丙烯捆扎带。聚丙烯绳和扎带属于不同产品标识，不得替代。
 
-- 选定流：Polypropylene strapping
+- 选定流：聚丙烯捆扎带
 - 流属性/单位：Mass / kg
 - 数量规则：分配给已发运合格织物的聚丙烯捆扎带领用质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -593,7 +593,7 @@ sync_with: pcr.en-US.md
 
 记录随装运供应的木托盘；须声明可重复使用托盘的所有权和返还安排。
 
-- 选定流：Wooden pallet `4b49871e-95be-4e0c-9223-9902f9eaa763`
+- 选定流：木制托盘、箱式托盘和其他装载板，木制托盘套环 `4b49871e-95be-4e0c-9223-9902f9eaa763`
 - 流属性/单位：Mass / kg
 - 数量规则：按声明的重复使用约定将托盘质量分配至已发运合格织物
 - 数值来源模式：前景记录（`foreground_record`）
@@ -629,7 +629,7 @@ sync_with: pcr.en-US.md
 
 这是参考产品流。净干质量不含包装，并随附所有必需限定信息。
 
-- 选定流：Woven fabrics of synthetic staple fibres, containing 85% or more by weight of synthetic staple fibres `b72e06e9-57a4-4e56-8c34-10fa61220193`
+- 选定流：含合成短纤维重量达85%或85%以上的合成短纤维机织织物 `b72e06e9-57a4-4e56-8c34-10fa61220193`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：1 kg 净干合格织物
 - 数值来源模式：固定值（`fixed_value`）

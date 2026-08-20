@@ -40,7 +40,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 1 kg |
-| 参考产品流 | Tulles and other net fabrics, except woven, knitted or crocheted fabrics, lace in the piece, in strips or in motifs `50009892-d697-4047-8df6-0d07a25cf0bb` |
+| 参考产品流 | 绢网和其他网状织物，不包括机织织物、针织织物和钩编织物，花边、成幅、成条或花纹图案状 `50009892-d697-4047-8df6-0d07a25cf0bb` |
 | 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | kg |
@@ -175,7 +175,7 @@ sync_with: pcr.en-US.md
 
 对络筒、形成、湿处理、干燥、整理、检验、通风和包装所耗电力进行分表计量，或依据经验证的分表记录分配。
 
-- 选定流：Electricity, medium voltage
+- 选定流：中压电力
 - 流属性/单位：Energy / kWh
 - 数量规则：记录报告批次电表差值；共用电表仅按经验证的机器小时和额定负荷证据分配。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -190,7 +190,7 @@ sync_with: pcr.en-US.md
 
 天然气在场内锅炉、干燥器、烘箱或热定型设备使用时记录，不与外购蒸汽或电力合并。
 
-- 选定流：Natural gas
+- 选定流：天然气
 - 流属性/单位：Energy / MJ
 - 数量规则：记录交接计量或校准分表数量，以及报告批次的低位/高位热值基础。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -205,7 +205,7 @@ sync_with: pcr.en-US.md
 
 仅在蒸汽跨越设施边界时记录，并申报压力、温度、凝结水回收和供应商。
 
-- 选定流：Steam
+- 选定流：蒸汽
 - 流属性/单位：Energy / MJ
 - 数量规则：记录供应商计量或发票数量，仅按有记录的蒸汽条件和焓基础换算。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -220,7 +220,7 @@ sync_with: pcr.en-US.md
 
 记录进入精练、漂白、染色、洗涤、漂洗、整理、清洗或场内处理的水；有计量条件时与非接触冷却水分开。
 
-- 选定流：Process water
+- 选定流：过程用水
 - 流属性/单位：Volume / m3
 - 数量规则：记录校准流量计差值或报告批次经验证的浴液配制体积。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -235,7 +235,7 @@ sync_with: pcr.en-US.md
 
 在精练、pH 控制、丝光或清洗中使用时作为独立化学品交换记录，并申报供货浓度。
 
-- 选定流：Sodium hydroxide
+- 选定流：氢氧化钠
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg supplied solution
 - 数量规则：依据批单和化学品库存核对记录领用质量，并保留供货浓度。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -250,7 +250,7 @@ sync_with: pcr.en-US.md
 
 用于漂白或清洗时记录，并单独披露供货浓度和稳定剂体系。
 
-- 选定流：Hydrogen peroxide
+- 选定流：过氧化氢
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg supplied solution
 - 数量规则：依据批单和化学品库存核对记录领用质量，并保留供货浓度。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -265,7 +265,7 @@ sync_with: pcr.en-US.md
 
 在申报的染色或整理配方中使用时记录，不与其他盐合并。
 
-- 选定流：Sodium chloride
+- 选定流：氯化钠
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：依据批单和化学品库存核对记录领用质量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -310,7 +310,7 @@ sync_with: pcr.en-US.md
 
 产品包膜与纸箱、卷芯和托盘分开记录，并申报厚度和再生含量。
 
-- 选定流：Low-density polyethylene packaging film
+- 选定流：低密度聚乙烯包装膜
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：记录包装领用质量，或以计数乘经验证的单件质量计算。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -354,7 +354,7 @@ sync_with: pcr.en-US.md
 
 合格、调湿并包装的工厂门产出是定量参考。该 UUID 仅因精确 CPC 27912 Product flow 及 Mass 参考属性同时通过 hybrid 发现和 state-100 直接读取而使用。
 
-- 选定流：Tulles and other net fabrics, except woven, knitted or crocheted fabrics, lace in the piece, in strips or in motifs `50009892-d697-4047-8df6-0d07a25cf0bb`
+- 选定流：绢网和其他网状织物，不包括机织织物、针织织物和钩编织物，花边、成幅、成条或花纹图案状 `50009892-d697-4047-8df6-0d07a25cf0bb`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：取合格调湿产品净质量，并将数据集归一化为恰好 1 kg。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -493,7 +493,7 @@ sync_with: pcr.en-US.md
 
 仅在燃料燃烧位于前景边界内时记录直接化石二氧化碳，并保留供应商燃料量及申报的实测或辖区认可计算证据。
 
-- 选定流：Carbon dioxide, fossil, to air
+- 选定流：化石源二氧化碳，排入空气
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：记录连续实测排放，或记录由采集燃料记录计算并经设施认可的结果；不得使用无引用的 PCR 默认因子。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -507,7 +507,7 @@ sync_with: pcr.en-US.md
 
 仅当排放离开前景边界进入受纳环境时，COD 才作为直接基本流；转移至处理设施仍为废物流。
 
-- 选定流：Chemical oxygen demand, to water
+- 选定流：化学需氧量，排入水体
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg COD
 - 数量规则：记录实验室负荷，或以取样浓度和同期实测排放体积计算。
 - 数值来源模式：计算值（`calculated_value`）

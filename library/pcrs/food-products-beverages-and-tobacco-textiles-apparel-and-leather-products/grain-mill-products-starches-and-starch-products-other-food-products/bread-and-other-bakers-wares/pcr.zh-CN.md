@@ -42,7 +42,7 @@ International EPD System 的历史 bakery PCR 可确认较宽泛的 CPC 234 烘�
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 1 kg 成品，不含包装 |
-| 参考产品流 | Bread `82f5df4a-9ada-46d2-8686-b3b1265a8188` |
+| 参考产品流 | 面包 `82f5df4a-9ada-46d2-8686-b3b1265a8188` |
 | 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | kg |
@@ -342,7 +342,7 @@ International EPD System 的历史 bakery PCR 可确认较宽泛的 CPC 234 烘�
 
 记录烘烤或热定型及冷却后的产品质量，位于可选切片、包装或受控储存之前。
 
-- 选定流：Bread `82f5df4a-9ada-46d2-8686-b3b1265a8188`
+- 选定流：面包 `82f5df4a-9ada-46d2-8686-b3b1265a8188`
 - 流属性/单位：Mass / kg
 - 数量规则：称量冷却后的合格输出，并保留水分状态和批次关联
 - 数值来源模式：前景记录（`foreground_record`）
@@ -421,7 +421,7 @@ International EPD System 的历史 bakery PCR 可确认较宽泛的 CPC 234 烘�
 
 记录进入可选后处理、包装或储存的冷却产品。
 
-- 选定流：Bread `82f5df4a-9ada-46d2-8686-b3b1265a8188`
+- 选定流：面包 `82f5df4a-9ada-46d2-8686-b3b1265a8188`
 - 流属性/单位：Mass / kg
 - 数量规则：与转入的 `cooled_bakers_ware` 一致，并计入有记录的转移损失
 - 数值来源模式：计算值（`calculated_value`）
@@ -502,7 +502,7 @@ International EPD System 的历史 bakery PCR 可确认较宽泛的 CPC 234 烘�
 
 此项为定量参考输出。记录所有纳入后处理完成后、工厂大门发运前的合格净产品质量。
 
-- 选定流：Bread `82f5df4a-9ada-46d2-8686-b3b1265a8188`
+- 选定流：面包 `82f5df4a-9ada-46d2-8686-b3b1265a8188`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：恰为 1 kg 净成品；不含包装质量
 - 数值来源模式：固定值（`fixed_value`）

@@ -388,7 +388,7 @@ status: candidate
 
 仅当批准的配方将氢氧化钠用于预处理、pH 控制或其他声明的功能时，才会记录氢氧化钠。记录提供的溶液质量和浓度。
 
-- 选定流： Sodium hydroxide
+- 选定流：氢氧化钠
 - 流属性/单位： Mass / kg
 - 数量规则：已称重或开具发票的配方质量发给适用的配方
 - 数值来源模式： 前景记录（`foreground_record`）
@@ -403,7 +403,7 @@ status: candidate
 
 仅当批准的路线使用过氧化物漂白或氧化时才记录过氧化氢。记录提供的溶液质量和浓度。
 
-- 选定流： Hydrogen peroxide
+- 选定流：过氧化氢
 - 流属性/单位： Mass / kg
 - 数量规则：已称重或开具发票的配方质量发给适用的配方
 - 数值来源模式： 前景记录（`foreground_record`）
@@ -418,7 +418,7 @@ status: candidate
 
 仅当用于 pH 调节或中和时才记录乙酸。记录提供的溶液质量和浓度。
 
-- 选定流： Acetic acid
+- 选定流：乙酸
 - 流属性/单位： Mass / kg
 - 数量规则：已称重或开具发票的配方质量发给适用的配方
 - 数值来源模式： 前景记录（`foreground_record`）
@@ -679,7 +679,7 @@ status: candidate
 
 LDPE 薄膜仅在用于保护货物的地方进行记录。声明厚度和回收含量，并将其质量保持在净产品参考量之外。
 
-- 选定流： Low-density polyethylene packaging film
+- 选定流：低密度聚乙烯包装膜
 - 流属性/单位： Mass / kg
 - 数量规则： 已测量的薄膜质量发放到产品批次
 - 数值来源模式： 前景记录（`foreground_record`）
@@ -717,7 +717,7 @@ LDPE 薄膜仅在用于保护货物的地方进行记录。声明厚度和回收
 
 这是单一声明的工厂参考产品。其织物净质量不包括卷芯、薄膜、托盘和其他运输包装。
 
-- 选定流： Tufted textile fabrics, other than carpets `e9861e6a-cfb3-4e5f-8f40-e3990c2eb7fa`
+- 选定流：簇绒纺织织物，毡毯除外 `e9861e6a-cfb3-4e5f-8f40-e3990c2eb7fa`
 - 流属性/单位： Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：实测合格产品净质量等于申报的1公斤参考量
 - 数值来源模式： 前景记录（`foreground_record`）

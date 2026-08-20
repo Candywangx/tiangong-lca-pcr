@@ -40,7 +40,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 1 |
-| 参考产品流 | Animal fats and their fractions, partly or wholly hydrogenated, inter-esterified, re-esterified or elaidinised, whether or not refined, but not further prepared `d4cec444-0873-445d-b0ef-04e9c796eced` |
+| 参考产品流 | 部分或全部氢化、酯间化、再酯化或氨化的动物脂肪及其馏分，不论是否精制，但未经进一步制备 `d4cec444-0873-445d-b0ef-04e9c796eced` |
 | 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | kg |
@@ -104,7 +104,7 @@ sync_with: pcr.en-US.md
 
 按动物种属、炼制路线、精炼状态、等级、供应商或分配差异分别记录批次；有更具体身份时应替换通用候选流。
 
-- 选定流：Other animal fats, rendered `42e4d7de-ef5e-4dd5-96f9-8680da80c5db`
+- 选定流：其他动物脂肪，渲染 `42e4d7de-ef5e-4dd5-96f9-8680da80c5db`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：实测接收净质量加期初库存减期末库存，排除转出产品系统的拒收批次
 - 数值来源模式：前景记录（`foreground_record`）
@@ -145,7 +145,7 @@ sync_with: pcr.en-US.md
 
 ###### 调理工艺水（`conditioning_water`）
 
-- 选定流：Process Water `94a04f7e-2d5c-41f0-b182-d54a3b373a02`
+- 选定流：工艺用水 `94a04f7e-2d5c-41f0-b182-d54a3b373a02`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：计量进水或罐体液位平衡，扣除有记录的循环水
 - 数值来源模式：前景记录（`foreground_record`）
@@ -175,7 +175,7 @@ sync_with: pcr.en-US.md
 
 ###### 调理后动物脂肪中间体（`conditioned_animal_fat`）
 
-- 选定流：Other animal fats, rendered `42e4d7de-ef5e-4dd5-96f9-8680da80c5db`
+- 选定流：其他动物脂肪，渲染 `42e4d7de-ef5e-4dd5-96f9-8680da80c5db`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：至下一前景过程的实测转移量，并与投入、残余物、废水及库存变化核对
 - 数值来源模式：计算值（`calculated_value`）
@@ -217,7 +217,7 @@ sync_with: pcr.en-US.md
 
 ###### 调理废水（`conditioning_wastewater`）
 
-- 选定流：Wastewater `bc2cd1d5-69d5-42d7-818f-38a69ebb18ef`
+- 选定流：废水 `bc2cd1d5-69d5-42d7-818f-38a69ebb18ef`
 - 流属性/单位：Volume `93a60a56-a3c8-22da-a746-0800200c9a66` / m3
 - 数量规则：计量排放或有记录的水量平衡，按场内和场外处理路线区分
 - 数值来源模式：前景记录（`foreground_record`）
@@ -245,7 +245,7 @@ sync_with: pcr.en-US.md
 
 ###### 调理后动物脂肪进料（`hydrogenation_fat_feed`）
 
-- 选定流：Other animal fats, rendered `42e4d7de-ef5e-4dd5-96f9-8680da80c5db`
+- 选定流：其他动物脂肪，渲染 `42e4d7de-ef5e-4dd5-96f9-8680da80c5db`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：经罐体库存变化调整的实测批次投料量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -280,7 +280,7 @@ sync_with: pcr.en-US.md
 
 ###### 氢化催化剂（`hydrogenation_catalyst`）
 
-- 选定流：Nickel hydrogenation catalyst `33ee71d1-f1f9-4a85-857e-d3e009330523`
+- 选定流：镍加氢催化剂 `33ee71d1-f1f9-4a85-857e-d3e009330523`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：新鲜催化剂投料减回收未用催化剂，并单独报告重复使用次数
 - 数值来源模式：前景记录（`foreground_record`）
@@ -322,7 +322,7 @@ sync_with: pcr.en-US.md
 
 ###### 氢化蒸汽（`hydrogenation_steam`）
 
-- 选定流：Steam `293f9fd9-5182-4d35-8aa5-ce73d4f322b7`
+- 选定流：蒸汽 `293f9fd9-5182-4d35-8aa5-ce73d4f322b7`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：计量蒸汽质量并修正冷凝水回流；同时按已声明蒸汽状态计算有用热
 - 数值来源模式：前景记录（`foreground_record`）
@@ -351,7 +351,7 @@ sync_with: pcr.en-US.md
 
 ###### 氢化动物脂肪中间体（`hydrogenated_intermediate`）
 
-- 选定流：Animal fats and their fractions, partly or wholly hydrogenated, inter-esterified, re-esterified or elaidinised, whether or not refined, but not further prepared `d4cec444-0873-445d-b0ef-04e9c796eced`
+- 选定流：部分或全部氢化、酯间化、再酯化或氨化的动物脂肪及其馏分，不论是否精制，但未经进一步制备 `d4cec444-0873-445d-b0ef-04e9c796eced`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：转至后处理的实测中间体，扣除滞留催化剂、过滤残余物、排放物和库存变化
 - 数值来源模式：计算值（`calculated_value`）
@@ -373,7 +373,7 @@ sync_with: pcr.en-US.md
 
 ###### 废氢化催化剂（`spent_hydrogenation_catalyst`）
 
-- 选定流：Spent catalyst `234379c3-585e-479e-8512-d647e4be69a2`
+- 选定流：催化剂废料 `234379c3-585e-479e-8512-d647e4be69a2`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：实测回收或废弃催化剂加过滤介质中滞留催化剂，并与新鲜及复用催化剂核对
 - 数值来源模式：前景记录（`foreground_record`）
@@ -397,7 +397,7 @@ sync_with: pcr.en-US.md
 
 ###### 排入空气的无组织或放空氢（`hydrogen_to_air`）
 
-- 选定流：hydrogen `08a91e70-3ddc-11dd-949c-0050c2490048`
+- 选定流：氢 `08a91e70-3ddc-11dd-949c-0050c2490048`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：实测放空量，或扣除消耗、回收、库存变化和转移后的氢平衡残差
 - 数值来源模式：计算值（`calculated_value`）
@@ -423,7 +423,7 @@ sync_with: pcr.en-US.md
 
 ###### 动物脂肪进料及相容共进料（`non_hydrogenation_fat_feed`）
 
-- 选定流：主动物脂肪进料使用 Other animal fats, rendered `42e4d7de-ef5e-4dd5-96f9-8680da80c5db`；共进料 UUID 未解析
+- 选定流：主动物脂肪进料使用 其他动物脂肪，渲染 `42e4d7de-ef5e-4dd5-96f9-8680da80c5db`；共进料 UUID 未解析
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：经库存和内部循环调整的实测批次投料
 - 数值来源模式：前景记录（`foreground_record`）
@@ -484,7 +484,7 @@ sync_with: pcr.en-US.md
 
 ###### 改性蒸汽（`non_hydrogenation_steam`）
 
-- 选定流：Steam `293f9fd9-5182-4d35-8aa5-ce73d4f322b7`
+- 选定流：蒸汽 `293f9fd9-5182-4d35-8aa5-ce73d4f322b7`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：计量蒸汽质量并修正冷凝水回流，使用已声明方法换算有用热
 - 数值来源模式：前景记录（`foreground_record`）
@@ -505,7 +505,7 @@ sync_with: pcr.en-US.md
 
 ###### 改性工艺水（`non_hydrogenation_water`）
 
-- 选定流：Process Water `94a04f7e-2d5c-41f0-b182-d54a3b373a02`
+- 选定流：工艺用水 `94a04f7e-2d5c-41f0-b182-d54a3b373a02`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：计量进水或批次投水减有记录的循环及回收水
 - 数值来源模式：前景记录（`foreground_record`）
@@ -534,7 +534,7 @@ sync_with: pcr.en-US.md
 
 ###### 路线改性动物脂肪中间体（`non_hydrogenation_intermediate`）
 
-- 选定流：Animal fats and their fractions, partly or wholly hydrogenated, inter-esterified, re-esterified or elaidinised, whether or not refined, but not further prepared `d4cec444-0873-445d-b0ef-04e9c796eced`
+- 选定流：部分或全部氢化、酯间化、再酯化或氨化的动物脂肪及其馏分，不论是否精制，但未经进一步制备 `d4cec444-0873-445d-b0ef-04e9c796eced`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：转至后处理的实测中间体，并与残余物、废水、回收物料及库存变化核对
 - 数值来源模式：计算值（`calculated_value`）
@@ -576,7 +576,7 @@ sync_with: pcr.en-US.md
 
 ###### 改性废水（`non_hydrogenation_wastewater`）
 
-- 选定流：Wastewater `bc2cd1d5-69d5-42d7-818f-38a69ebb18ef`
+- 选定流：废水 `bc2cd1d5-69d5-42d7-818f-38a69ebb18ef`
 - 流属性/单位：Volume `93a60a56-a3c8-22da-a746-0800200c9a66` / m3
 - 数量规则：计量排放或有记录的水量平衡，并记录处理路线和关键污染物
 - 数值来源模式：前景记录（`foreground_record`）
@@ -606,7 +606,7 @@ sync_with: pcr.en-US.md
 
 ###### 改性动物脂肪中间体（`finishing_intermediate`）
 
-- 选定流：Animal fats and their fractions, partly or wholly hydrogenated, inter-esterified, re-esterified or elaidinised, whether or not refined, but not further prepared `d4cec444-0873-445d-b0ef-04e9c796eced`
+- 选定流：部分或全部氢化、酯间化、再酯化或氨化的动物脂肪及其馏分，不论是否精制，但未经进一步制备 `d4cec444-0873-445d-b0ef-04e9c796eced`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：经内部循环和罐体库存变化调整的实测后处理转移量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -626,7 +626,7 @@ sync_with: pcr.en-US.md
 
 ###### 脱色土（`bleaching_earth`）
 
-- 选定流：Bleaching earth `68d5c9c4-5b4b-419d-a1ca-245d8673eda0`
+- 选定流：脱色土 `68d5c9c4-5b4b-419d-a1ca-245d8673eda0`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：发至批次的新鲜物料减未使用退回物料
 - 数值来源模式：前景记录（`foreground_record`）
@@ -667,7 +667,7 @@ sync_with: pcr.en-US.md
 
 ###### 后处理蒸汽（`finishing_steam`）
 
-- 选定流：Steam `293f9fd9-5182-4d35-8aa5-ce73d4f322b7`
+- 选定流：蒸汽 `293f9fd9-5182-4d35-8aa5-ce73d4f322b7`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：计量蒸汽质量并修正冷凝水回流，使用已声明方法换算有用热
 - 数值来源模式：前景记录（`foreground_record`）
@@ -696,7 +696,7 @@ sync_with: pcr.en-US.md
 
 ###### 合格改性动物脂肪（`reference_product`）
 
-- 选定流：Animal fats and their fractions, partly or wholly hydrogenated, inter-esterified, re-esterified or elaidinised, whether or not refined, but not further prepared `d4cec444-0873-445d-b0ef-04e9c796eced`
+- 选定流：部分或全部氢化、酯间化、再酯化或氨化的动物脂肪及其馏分，不论是否精制，但未经进一步制备 `d4cec444-0873-445d-b0ef-04e9c796eced`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：批次归一化后恰为 1,000 kg 合格净产品，再投影至 PCR 的 1 kg 参考流
 - 数值来源模式：计算值（`calculated_value`）
@@ -760,7 +760,7 @@ sync_with: pcr.en-US.md
 
 ###### 后处理废水（`finishing_wastewater`）
 
-- 选定流：Wastewater `bc2cd1d5-69d5-42d7-818f-38a69ebb18ef`
+- 选定流：废水 `bc2cd1d5-69d5-42d7-818f-38a69ebb18ef`
 - 流属性/单位：Volume `93a60a56-a3c8-22da-a746-0800200c9a66` / m3
 - 数量规则：计量排放或有记录的水量平衡，按处理路线区分
 - 数值来源模式：前景记录（`foreground_record`）

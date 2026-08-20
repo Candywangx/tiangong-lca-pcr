@@ -42,7 +42,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 工厂门口 1 kg 可销售鲍鱼产品净质量 |
-| 参考产品流 | Abalone, frozen, smoked, dried, salted or in brine `61e83c4f-6657-4762-9a2b-9423a54b7bd5` |
+| 参考产品流 | 鲍鱼，冷冻、烟熏、干制、盐腌或盐水浸泡 `61e83c4f-6657-4762-9a2b-9423a54b7bd5` |
 | 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | kg |
@@ -102,7 +102,7 @@ sync_with: pcr.en-US.md
 
 原料来自野生捕捞时，记录从卸港或供应商数据集接收的鲍属产品。本行不得用于养殖鲍鱼。
 
-- 选定流：Wild abalone, live, fresh or chilled `477d146c-cb2f-457d-a1a6-5d065dcbdca5`
+- 选定流：野生鲍鱼，活的，新鲜的或冷藏的 `477d146c-cb2f-457d-a1a6-5d065dcbdca5`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：计量验收合格的野生原料质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -146,7 +146,7 @@ sync_with: pcr.en-US.md
 
 记录清洗、适用时解冻、去壳辅助及产品接触预处理用水。
 
-- 选定流：Process Water `94a04f7e-2d5c-41f0-b182-d54a3b373a02`
+- 选定流：工艺用水 `94a04f7e-2d5c-41f0-b182-d54a3b373a02`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：计量或按批次核算的产品接触用水
 - 数值来源模式：前景记录（`foreground_record`）
@@ -169,7 +169,7 @@ sync_with: pcr.en-US.md
 
 记录泵、输送、清洗、去壳、切割、冰处理及其他预处理设备用电。
 
-- 选定流：Alternating current, electricity mix, consumption mix, less than 1 kV `50657322-939c-4829-a87b-47c093bfa6a7`
+- 选定流：交流电 `50657322-939c-4829-a87b-47c093bfa6a7`
 - 流属性/单位：Net calorific value `93a60a56-a3c8-11da-a746-0800200c9a66` / MJ
 - 数量规则：计量并分配到接收与预处理的电力
 - 数值来源模式：计算值（`calculated_value`）
@@ -223,7 +223,7 @@ sync_with: pcr.en-US.md
 
 壳、内脏、破损产品及其他预处理残余物在处理方式或共产品状态不同时应分别记录。
 
-- 选定流：Abalone shells `8caae24b-92f0-4ece-b1de-730bfbe4d9da`
+- 选定流：鲍鱼壳 `8caae24b-92f0-4ece-b1de-730bfbe4d9da`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：按处理去向计量残余物质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -245,7 +245,7 @@ sync_with: pcr.en-US.md
 
 记录离开预处理的产品接触水和清洁水，包括去向和现场处理。
 
-- 选定流：Untreated municipal wastewater influent `41eb8873-6852-40fe-8b5d-b792fe4d4754`
+- 选定流：未处理市政污水进水 `41eb8873-6852-40fe-8b5d-b792fe4d4754`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：计量或质量平衡计算送往处理的废水
 - 数值来源模式：计算值（`calculated_value`）
@@ -297,7 +297,7 @@ sync_with: pcr.en-US.md
 
 仅在干盐腌、湿盐腌、盐水浸泡、渗透预处理或已声明烟熏/干燥配方中记录食盐。
 
-- 选定流：Salt, food-grade, for brine preparation `3a5fa711-4648-4d58-b94d-67b79e7476c7`
+- 选定流：食盐 `3a5fa711-4648-4d58-b94d-67b79e7476c7`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：称量批次投盐量，扣除有记录的回收再用食盐
 - 数值来源模式：前景记录（`foreground_record`）
@@ -320,7 +320,7 @@ sync_with: pcr.en-US.md
 
 记录配制盐水、湿盐腌、解冻、与烟熏相关的烹煮或路线特定清洗用水。
 
-- 选定流：Process Water `94a04f7e-2d5c-41f0-b182-d54a3b373a02`
+- 选定流：工艺用水 `94a04f7e-2d5c-41f0-b182-d54a3b373a02`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：计量加入保藏批次的水
 - 数值来源模式：前景记录（`foreground_record`）
@@ -343,7 +343,7 @@ sync_with: pcr.en-US.md
 
 记录冷冻、制冷、风机、泵、干燥机、烟发生器、控制及路线操作用电。
 
-- 选定流：Alternating current, electricity mix, consumption mix, less than 1 kV `50657322-939c-4829-a87b-47c093bfa6a7`
+- 选定流：交流电 `50657322-939c-4829-a87b-47c093bfa6a7`
 - 流属性/单位：Net calorific value `93a60a56-a3c8-11da-a746-0800200c9a66` / MJ
 - 数量规则：计量并分配到声明保藏操作的电力
 - 数值来源模式：计算值（`calculated_value`）
@@ -396,7 +396,7 @@ sync_with: pcr.en-US.md
 
 记录实际保藏路线后的产品质量、带壳状态、食盐或覆盖液状态、受控时的水分和水活度及温度。
 
-- 选定流：Abalone, frozen, smoked, dried, salted or in brine `61e83c4f-6657-4762-9a2b-9423a54b7bd5`
+- 选定流：鲍鱼，冷冻、烟熏、干制、盐腌或盐水浸泡 `61e83c4f-6657-4762-9a2b-9423a54b7bd5`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：计量转入包装的保藏产品质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -421,7 +421,7 @@ sync_with: pcr.en-US.md
 
 按去向记录废盐水、解冻水、冷凝水和清洁废水，并区分回用和排放。
 
-- 选定流：High-concentration saline wastewater `76ab69b6-6fa7-461c-be07-bc54e581a699`
+- 选定流：浓水 `76ab69b6-6fa7-461c-be07-bc54e581a699`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：计量排放，或根据水、盐、保留盐水和回用记录进行质量平衡计算
 - 数值来源模式：计算值（`calculated_value`）
@@ -497,7 +497,7 @@ sync_with: pcr.en-US.md
 
 记录从声明路线转入最终包装的保藏鲍鱼，并保持批次和路线身份。
 
-- 选定流：Abalone, frozen, smoked, dried, salted or in brine `61e83c4f-6657-4762-9a2b-9423a54b7bd5`
+- 选定流：鲍鱼，冷冻、烟熏、干制、盐腌或盐水浸泡 `61e83c4f-6657-4762-9a2b-9423a54b7bd5`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：计量进入最终包装的产品质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -519,7 +519,7 @@ sync_with: pcr.en-US.md
 
 按实际材料记录食品接触树脂、复合材料、托盘、袋或膜；仅在与采购包装匹配时使用所选通用薄膜。
 
-- 选定流：Plastic film `b01e4bd9-5ada-4676-8a90-be5f167c00fc`
+- 选定流：塑料薄膜 `b01e4bd9-5ada-4676-8a90-be5f167c00fc`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：发放至合格包装的采购包装，扣除有记录的未用退料
 - 数值来源模式：前景记录（`foreground_record`）
@@ -541,7 +541,7 @@ sync_with: pcr.en-US.md
 
 按实际采购规格和经核验流记录瓦楞纸板或其他次级材料。
 
-- 选定流：Corrugated cardboard `8bde297e-98df-463f-bcb4-0db52bf6e0b5`
+- 选定流：瓦楞纸板 `8bde297e-98df-463f-bcb4-0db52bf6e0b5`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：分配给合格产品的采购次级包装
 - 数值来源模式：前景记录（`foreground_record`）
@@ -563,7 +563,7 @@ sync_with: pcr.en-US.md
 
 记录密封、真空或气调设备、输送、最终冷冻/冷却及截至工厂门口的成品冷库用电。
 
-- 选定流：Alternating current, electricity mix, consumption mix, less than 1 kV `50657322-939c-4829-a87b-47c093bfa6a7`
+- 选定流：交流电 `50657322-939c-4829-a87b-47c093bfa6a7`
 - 流属性/单位：Net calorific value `93a60a56-a3c8-11da-a746-0800200c9a66` / MJ
 - 数量规则：按有记录的设备、批次、储存体积和储存时间驱动分配计量电力
 - 数值来源模式：计算值（`calculated_value`）
@@ -594,7 +594,7 @@ sync_with: pcr.en-US.md
 
 本行为定量参考产出。净产品、包装、壳、覆盖液和沥干质量应分别记录，以便复现 1 kg 归一化。
 
-- 选定流：Abalone, frozen, smoked, dried, salted or in brine `61e83c4f-6657-4762-9a2b-9423a54b7bd5`
+- 选定流：鲍鱼，冷冻、烟熏、干制、盐腌或盐水浸泡 `61e83c4f-6657-4762-9a2b-9423a54b7bd5`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：根据实测合格产品质量归一化后恰为 1 kg
 - 数值来源模式：计算值（`calculated_value`）

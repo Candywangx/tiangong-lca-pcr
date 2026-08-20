@@ -40,7 +40,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 1 kg |
-| 参考产品流 | Artificial staple fibres, carded, combed or otherwise processed for spinning `4f65996d-819a-4b51-8c1a-e3c3ecaa96b2` |
+| 参考产品流 | 粗梳、精梳或用别的方法纺前加工的人造纺织纤维 `4f65996d-819a-4b51-8c1a-e3c3ecaa96b2` |
 | 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | kg |
@@ -107,7 +107,7 @@ sync_with: pcr.en-US.md
 - data_source_id: `cp_atomic_inventory_records`
 - source_id_or_status: `cp_atomic_inventory_records`; Tiangong direct-read identity verified 2026-08-12
 - uuid_status: verified by flow-hybrid-search and Tiangong flow get; state_code 100; Product flow; Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg; version 01.01.001
-- 选定流：Viscose staple fibre, at spinning mill gate `a64ce209-6dee-404e-a22c-9bbddb1cf295`
+- 选定流：粘胶短纤维 `a64ce209-6dee-404e-a22c-9bbddb1cf295`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：计量或称量归属于声明纤维家族、路线和生产批次的该单一投入
 - 数值来源模式：前景记录（`foreground_record`）
@@ -371,7 +371,7 @@ sync_with: pcr.en-US.md
 - data_source_id: `cp_atomic_inventory_records`
 - source_id_or_status: `cp_atomic_inventory_records`; Tiangong direct-read identity verified 2026-08-12
 - uuid_status: verified by flow-hybrid-search and Tiangong flow get; state_code 100; Product flow; Net calorific value `93a60a56-a3c8-11da-a746-0800200c9a66` / MJ; version 01.01.003
-- 选定流：Alternating current; <1 kV; consumption mix; electricity mix `50657322-939c-4829-a87b-47c093bfa6a7`
+- 选定流：交流电 `50657322-939c-4829-a87b-47c093bfa6a7`
 - 流属性/单位：Net calorific value `93a60a56-a3c8-11da-a746-0800200c9a66` / MJ
 - 数量规则：Metered electricity in kWh multiplied by 3.6 MJ/kWh and assigned to active preparation equipment
 - 数值来源模式：前景记录（`foreground_record`）
@@ -404,7 +404,7 @@ sync_with: pcr.en-US.md
 - data_source_id: `cp_atomic_inventory_records`
 - source_id_or_status: `cp_atomic_inventory_records`; Tiangong direct-read identity verified 2026-08-12
 - uuid_status: verified by flow-hybrid-search and Tiangong flow get; state_code 100; Product flow; Volume `93a60a56-a3c8-22da-a746-0800200c9a66` / m3; version 01.01.001
-- 选定流：Compressed air `46e2b1e4-5a4e-4579-b6a2-65b03f9ce825`
+- 选定流：压缩的空气 `46e2b1e4-5a4e-4579-b6a2-65b03f9ce825`
 - 流属性/单位：Volume `93a60a56-a3c8-22da-a746-0800200c9a66` / m3
 - 数量规则：计量或称量归属于声明纤维家族、路线和生产批次的该单一投入
 - 数值来源模式：前景记录（`foreground_record`）
@@ -437,7 +437,7 @@ sync_with: pcr.en-US.md
 - data_source_id: `cp_atomic_inventory_records`
 - source_id_or_status: `cp_atomic_inventory_records`; Tiangong direct-read identity verified 2026-08-12
 - uuid_status: verified by flow-hybrid-search and Tiangong flow get; state_code 100; Product flow; Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg; version 01.01.000
-- 选定流：Steam; 0.45 MPaG; production mix at plant `aefdb9e8-b74c-4d25-bbfa-c4a1ff59dcdc`
+- 选定流：蒸汽 `aefdb9e8-b74c-4d25-bbfa-c4a1ff59dcdc`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：计量或称量归属于声明纤维家族、路线和生产批次的该单一投入
 - 数值来源模式：前景记录（`foreground_record`）
@@ -470,7 +470,7 @@ sync_with: pcr.en-US.md
 - data_source_id: `cp_atomic_inventory_records`
 - source_id_or_status: `cp_atomic_inventory_records`; UUID lookup completed; no exact mass-referenced hot-water product flow; steam, process-heat, boiler-equipment, and water candidates were rejected
 - uuid_status: unresolved; flow-hybrid-search completed 2026-08-12; no exact mass-referenced hot-water product flow; steam, process-heat, boiler-equipment, and water candidates were rejected
-- 选定流：Hot water
+- 选定流：热水
 - 流属性/单位：Mass / kg
 - 数量规则：计量或称量归属于声明纤维家族、路线和生产批次的该单一投入
 - 数值来源模式：前景记录（`foreground_record`）
@@ -503,7 +503,7 @@ sync_with: pcr.en-US.md
 - data_source_id: `cp_atomic_inventory_records`
 - source_id_or_status: `cp_atomic_inventory_records`; Tiangong direct-read identity verified 2026-08-12
 - uuid_status: verified by flow-hybrid-search and Tiangong flow get; state_code 100; Product flow; Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg; version 01.01.001
-- 选定流：Natural gas in the gaseous state; consumption mix; pipeline supplied `4f19ca0e-7b3b-11dd-ad8b-0800200c9a66`
+- 选定流：气态天然气 `4f19ca0e-7b3b-11dd-ad8b-0800200c9a66`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：计量或称量归属于声明纤维家族、路线和生产批次的该单一投入
 - 数值来源模式：前景记录（`foreground_record`）
@@ -536,7 +536,7 @@ sync_with: pcr.en-US.md
 - data_source_id: `cp_atomic_inventory_records`
 - source_id_or_status: `cp_atomic_inventory_records`; Tiangong direct-read identity verified 2026-08-12
 - uuid_status: verified by flow-hybrid-search and Tiangong flow get; state_code 100; Product flow; Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg; version 01.01.002
-- 选定流：Diesel oil; generic refinery production mix `9d258d75-6792-4f1c-9856-81602ed8f816`
+- 选定流：柴油 `9d258d75-6792-4f1c-9856-81602ed8f816`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：计量或称量归属于声明纤维家族、路线和生产批次的该单一投入
 - 数值来源模式：前景记录（`foreground_record`）
@@ -569,7 +569,7 @@ sync_with: pcr.en-US.md
 - data_source_id: `cp_atomic_inventory_records`
 - source_id_or_status: `cp_atomic_inventory_records`; Tiangong direct-read identity verified 2026-08-12
 - uuid_status: verified by flow-hybrid-search and Tiangong flow get; state_code 100; Product flow; Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg; version 01.01.000
-- 选定流：Liquefied petroleum gas; industrial fuel and feedstock input at plant `d54ae71a-1245-4e3f-b694-dbf2b22bbf7d`
+- 选定流：液化石油气 `d54ae71a-1245-4e3f-b694-dbf2b22bbf7d`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：计量或称量归属于声明纤维家族、路线和生产批次的该单一投入
 - 数值来源模式：前景记录（`foreground_record`）
@@ -602,7 +602,7 @@ sync_with: pcr.en-US.md
 - data_source_id: `cp_atomic_inventory_records`
 - source_id_or_status: `cp_atomic_inventory_records`; Tiangong direct-read identity verified 2026-08-12
 - uuid_status: verified by flow-hybrid-search and Tiangong flow get; state_code 100; Product flow; Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg; version 01.01.000
-- 选定流：Refrigerant R134a; industrial processing plant; make-up for leakage `a4facd51-1e5c-422e-8461-e9562c045164`
+- 选定流：制冷剂 R134a `a4facd51-1e5c-422e-8461-e9562c045164`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：计量或称量归属于声明纤维家族、路线和生产批次的该单一投入
 - 数值来源模式：前景记录（`foreground_record`）
@@ -668,7 +668,7 @@ sync_with: pcr.en-US.md
 - data_source_id: `cp_atomic_inventory_records`
 - source_id_or_status: `cp_atomic_inventory_records`; Tiangong direct-read identity verified 2026-08-12
 - uuid_status: verified by flow-hybrid-search and Tiangong flow get; state_code 100; Product flow; Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg; version 01.01.001
-- 选定流：Process Water `94a04f7e-2d5c-41f0-b182-d54a3b373a02`
+- 选定流：工艺用水 `94a04f7e-2d5c-41f0-b182-d54a3b373a02`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：计量或称量归属于声明纤维家族、路线和生产批次的该单一投入
 - 数值来源模式：前景记录（`foreground_record`）
@@ -767,7 +767,7 @@ sync_with: pcr.en-US.md
 - data_source_id: `cp_atomic_inventory_records`
 - source_id_or_status: `cp_atomic_inventory_records`; Tiangong direct-read identity verified 2026-08-12
 - uuid_status: verified by flow-hybrid-search and Tiangong flow get; state_code 100; Product flow; Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg; version 03.00.002
-- 选定流：Corrugated board boxes; 16.6% primary fibre; 83.4% recycled fibre; production mix at plant `4f197bec-7b3b-11dd-ad8b-0800200c9a66`
+- 选定流：瓦楞纸箱 `4f197bec-7b3b-11dd-ad8b-0800200c9a66`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：计量或称量归属于声明纤维家族、路线和生产批次的该单一投入
 - 数值来源模式：前景记录（`foreground_record`）
@@ -833,7 +833,7 @@ sync_with: pcr.en-US.md
 - data_source_id: `cp_atomic_inventory_records`
 - source_id_or_status: `cp_atomic_inventory_records`; UUID lookup completed; no exact polypropylene strapping product flow; resin, fibre, twine, cable-tie, and mixed-packaging candidates were rejected
 - uuid_status: unresolved; flow-hybrid-search completed 2026-08-12; no exact polypropylene strapping product flow; resin, fibre, twine, cable-tie, and mixed-packaging candidates were rejected
-- 选定流：Polypropylene strapping
+- 选定流：聚丙烯捆扎带
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：计量或称量归属于声明纤维家族、路线和生产批次的该单一投入
 - 数值来源模式：前景记录（`foreground_record`）
@@ -866,7 +866,7 @@ sync_with: pcr.en-US.md
 - data_source_id: `cp_atomic_inventory_records`
 - source_id_or_status: `cp_atomic_inventory_records`; Tiangong direct-read identity verified 2026-08-12
 - uuid_status: verified by flow-hybrid-search and Tiangong flow get; state_code 100; Product flow; Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg; version 01.01.001
-- 选定流：Wooden pallets; production mix at lumber mill; wooden boards and slats `e882bdf4-1cf6-4f51-93e9-c6b91855ba02`
+- 选定流：木质托盘 `e882bdf4-1cf6-4f51-93e9-c6b91855ba02`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：计量或称量归属于声明纤维家族、路线和生产批次的该单一投入
 - 数值来源模式：前景记录（`foreground_record`）
@@ -903,7 +903,7 @@ sync_with: pcr.en-US.md
 - data_source_id: `cp_atomic_inventory_records`
 - source_id_or_status: `cp_atomic_inventory_records`; Tiangong direct-read identity verified 2026-08-12
 - uuid_status: verified by flow-hybrid-search and Tiangong flow get; state_code 100; Product flow; Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg; version 01.01.000
-- 选定流：Artificial staple fibres, carded, combed or otherwise processed for spinning `4f65996d-819a-4b51-8c1a-e3c3ecaa96b2`
+- 选定流：粗梳、精梳或用别的方法纺前加工的人造纺织纤维 `4f65996d-819a-4b51-8c1a-e3c3ecaa96b2`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：以采集的包装后输出质量归一化，参考流固定为 1 kg
 - 数值来源模式：固定值（`fixed_value`）
@@ -2042,7 +2042,7 @@ sync_with: pcr.en-US.md
 - data_source_id: `cp_atomic_inventory_records`
 - source_id_or_status: `cp_atomic_inventory_records`; Tiangong direct-read identity verified 2026-08-12
 - uuid_status: verified by flow-hybrid-search and Tiangong flow get; state_code 100; Waste flow; Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg; version 01.01.000
-- 选定流：Packaging waste, cardboard; generated during packing; treatment unspecified `72270223-04b1-4986-a546-94e5a0821317`
+- 选定流：包装废弃物，纸板 `72270223-04b1-4986-a546-94e5a0821317`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：称量该单一废物流，并按实际处理去向分别记录
 - 数值来源模式：前景记录（`foreground_record`）
@@ -2339,7 +2339,7 @@ sync_with: pcr.en-US.md
 - data_source_id: `cp_atomic_inventory_records`
 - source_id_or_status: `cp_atomic_inventory_records`; Tiangong direct-read identity verified 2026-08-12
 - uuid_status: verified by flow-hybrid-search and Tiangong flow get; state_code 100; Waste flow; Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg; version 01.01.000
-- 选定流：Wastewater from cleaning; at plant; discharged to water `f0402393-e82c-47e8-9cd8-a486c97f3e89`
+- 选定流：清洗废水 `f0402393-e82c-47e8-9cd8-a486c97f3e89`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：称量该单一废物流，并按实际处理去向分别记录
 - 数值来源模式：前景记录（`foreground_record`）

@@ -40,7 +40,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 1 kg |
-| 参考产品流 | Buffalo-milk butter and fats `554cfc76-a4ac-4cda-9e06-d60256918b58` |
+| 参考产品流 | 从水牛奶中提取的黄油和其他油脂 `554cfc76-a4ac-4cda-9e06-d60256918b58` |
 | 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | kg |
@@ -511,7 +511,7 @@ sync_with: pcr.en-US.md
 
 产出为满足参考流限定信息的所声明水牛乳黄油或脂肪产品。1 kg 净产品不包含包装质量。
 
-- 选定流：Buffalo-milk butter and fats `554cfc76-a4ac-4cda-9e06-d60256918b58`
+- 选定流：从水牛奶中提取的黄油和其他油脂 `554cfc76-a4ac-4cda-9e06-d60256918b58`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：1 kg 净参考产品
 - 数值来源模式：固定值（`fixed_value`）

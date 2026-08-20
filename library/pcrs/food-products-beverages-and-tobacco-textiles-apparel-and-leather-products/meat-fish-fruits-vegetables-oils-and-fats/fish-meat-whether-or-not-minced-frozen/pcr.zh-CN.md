@@ -38,7 +38,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 1 kg 产品净质量，不含运输包装，且鱼肉质量不含外部冰衣 |
-| 参考产品流 | Frozen Fish `bbae8c72-d732-4f53-bdd5-aff8a0f39d48` |
+| 参考产品流 | 冻鱼 `bbae8c72-d732-4f53-bdd5-aff8a0f39d48` |
 | 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | kg |
@@ -340,7 +340,7 @@ sync_with: pcr.en-US.md
 
 本行是定量参考，将鱼肉净质量与冰衣和包装分开记录。
 
-- 选定流：Frozen Fish `bbae8c72-d732-4f53-bdd5-aff8a0f39d48`
+- 选定流：冻鱼 `bbae8c72-d732-4f53-bdd5-aff8a0f39d48`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：固定参考数量 1 kg 冷冻鱼肉净质量
 - 数值来源模式：固定值（`fixed_value`）
@@ -431,7 +431,7 @@ sync_with: pcr.en-US.md
 
 记录交付的参考产品，并与定量参考行核算，不得将包装或冰衣计入鱼肉净质量。
 
-- 选定流：Frozen Fish `bbae8c72-d732-4f53-bdd5-aff8a0f39d48`
+- 选定流：冻鱼 `bbae8c72-d732-4f53-bdd5-aff8a0f39d48`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：实测交付鱼肉净质量，归一化至 1 kg 参考产品
 - 数值来源模式：计算值（`calculated_value`）

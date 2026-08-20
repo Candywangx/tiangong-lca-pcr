@@ -38,7 +38,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 1 |
-| 参考产品流 | Pile fabrics and terry fabrics, knitted or crocheted `19330422-9245-41a2-9f99-a7c599c7c427` |
+| 参考产品流 | 针织或钩编的绒头织物及毛圈织物 `19330422-9245-41a2-9f99-a7c599c7c427` |
 | 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | kg |
@@ -220,7 +220,7 @@ sync_with: pcr.en-US.md
 
 记录跨越过程边界的外供水；内部回用水在运行记录中另列，避免重复计量。
 
-- 选定流：Process water
+- 选定流：过程用水
 - 流属性/单位：Volume / m3
 - 数量规则：分配至已声明批次的计量供水体积
 - 数值来源模式：前景记录（`foreground_record`）
@@ -265,7 +265,7 @@ sync_with: pcr.en-US.md
 
 已声明前处理或整理配方使用氢氧化钠时单独记录，并声明浓度和供应形态。
 
-- 选定流：Sodium hydroxide
+- 选定流：氢氧化钠
 - 流属性/单位：Mass / kg
 - 数量规则：称量或发票溶液质量乘以记录的有效浓度
 - 数值来源模式：前景记录（`foreground_record`）
@@ -280,7 +280,7 @@ sync_with: pcr.en-US.md
 
 仅在已声明漂白路线使用过氧化氢时单独记录，并声明浓度和供应形态。
 
-- 选定流：Hydrogen peroxide
+- 选定流：过氧化氢
 - 流属性/单位：Mass / kg
 - 数量规则：称量或发票溶液质量乘以记录的有效浓度
 - 数值来源模式：前景记录（`foreground_record`）
@@ -396,7 +396,7 @@ sync_with: pcr.en-US.md
 
 记录检验后的 CPC 28110 合格织物净质量；该流为已声明参考产品产出。
 
-- 选定流：Pile fabrics and terry fabrics, knitted or crocheted `19330422-9245-41a2-9f99-a7c599c7c427`
+- 选定流：针织或钩编的绒头织物及毛圈织物 `19330422-9245-41a2-9f99-a7c599c7c427`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：合格织物实测净质量
 - 数值来源模式：前景记录（`foreground_record`）

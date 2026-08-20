@@ -42,7 +42,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 1 kg 鱼肝或鱼籽成品净质量 |
-| 参考产品流 | Fish livers and roes dried, smoked, salted or in brine `ab283f96-8c07-4a11-8904-4d5a6542d1fe` |
+| 参考产品流 | 干制、熏制、腌制或盐渍的鱼肝和鱼籽 `ab283f96-8c07-4a11-8904-4d5a6542d1fe` |
 | 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | kg |
@@ -194,7 +194,7 @@ sync_with: pcr.en-US.md
 
 用于清洗、辅助解冻、冲洗或产品清洁的水在跨越过程边界时记录。
 
-- 选定流：Process Water `94a04f7e-2d5c-41f0-b182-d54a3b373a02`
+- 选定流：工艺用水 `94a04f7e-2d5c-41f0-b182-d54a3b373a02`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：可归属产品准备的计量或批次估算用水，扣除单独测量的回用水
 - 数值来源模式：前景记录（`foreground_record`）
@@ -216,7 +216,7 @@ sync_with: pcr.en-US.md
 
 记录以低于 1 kV 消费组合供给的公共电网电力；其他电压或供给场景不得使用本行。
 
-- 选定流：Alternating current, consumption mix, less than 1 kV `50657322-939c-4829-a87b-47c093bfa6a7`
+- 选定流：交流电 `50657322-939c-4829-a87b-47c093bfa6a7`
 - 流属性/单位：Net calorific value `93a60a56-a3c8-11da-a746-0800200c9a66` / kWh
 - 数量规则：可归属接收和准备阶段的计量电力
 - 数值来源模式：前景记录（`foreground_record`）
@@ -230,7 +230,7 @@ sync_with: pcr.en-US.md
 
 记录以 1–35 kV 消费组合供给的公共电网电力；其他电压或供给场景不得使用本行。
 
-- 选定流：Alternating current, consumption mix, 1–35 kV `3d76981f-964a-4865-b588-0e067a2a1163`
+- 选定流：交流电 `3d76981f-964a-4865-b588-0e067a2a1163`
 - 流属性/单位：Net calorific value `93a60a56-a3c8-11da-a746-0800200c9a66` / kWh
 - 数量规则：可归属接收和准备阶段的计量电力
 - 数值来源模式：前景记录（`foreground_record`）
@@ -410,7 +410,7 @@ sync_with: pcr.en-US.md
 
 记录用于干盐腌、盐水配制、补盐或熏制前盐腌的盐。
 
-- 选定流：Salt, food-grade, for brine preparation `3a5fa711-4648-4d58-b94d-67b79e7476c7`
+- 选定流：食盐 `3a5fa711-4648-4d58-b94d-67b79e7476c7`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：归属批次的购入或领用质量，扣除有记录退回库存的回收盐
 - 数值来源模式：前景记录（`foreground_record`）
@@ -433,7 +433,7 @@ sync_with: pcr.en-US.md
 
 采用湿盐腌或盐水浸渍时，将盐水新补水与回用盐水分开记录。
 
-- 选定流：Process Water `94a04f7e-2d5c-41f0-b182-d54a3b373a02`
+- 选定流：工艺用水 `94a04f7e-2d5c-41f0-b182-d54a3b373a02`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：加入盐水系统并归属批次的新配用水实测量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -455,7 +455,7 @@ sync_with: pcr.en-US.md
 
 记录以低于 1 kV 消费组合供给的公共电网电力；其他电压或供给场景不得使用本行。
 
-- 选定流：Alternating current, consumption mix, less than 1 kV `50657322-939c-4829-a87b-47c093bfa6a7`
+- 选定流：交流电 `50657322-939c-4829-a87b-47c093bfa6a7`
 - 流属性/单位：Net calorific value `93a60a56-a3c8-11da-a746-0800200c9a66` / kWh
 - 数量规则：按已声明保藏批次计量或工程分配的电力
 - 数值来源模式：前景记录（`foreground_record`）
@@ -470,7 +470,7 @@ sync_with: pcr.en-US.md
 
 记录以 1–35 kV 消费组合供给的公共电网电力；其他电压或供给场景不得使用本行。
 
-- 选定流：Alternating current, consumption mix, 1–35 kV `3d76981f-964a-4865-b588-0e067a2a1163`
+- 选定流：交流电 `3d76981f-964a-4865-b588-0e067a2a1163`
 - 流属性/单位：Net calorific value `93a60a56-a3c8-11da-a746-0800200c9a66` / kWh
 - 数量规则：按已声明保藏批次计量或工程分配的电力
 - 数值来源模式：前景记录（`foreground_record`）
@@ -500,7 +500,7 @@ sync_with: pcr.en-US.md
 
 将跨越保藏边界的购入蒸汽与热水和直接燃料分开记录。
 
-- 选定流：Heat, steam, at plant, GLO `2e727825-ba09-4dde-bab5-2d4f04c1daf6`
+- 选定流：热量，蒸汽 `2e727825-ba09-4dde-bab5-2d4f04c1daf6`
 - 流属性/单位：Gross calorific value `93a60a56-a3c8-14da-a746-0800200c9a66` / MJ
 - 数量规则：归属已声明保藏批次的蒸汽计量能量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -515,7 +515,7 @@ sync_with: pcr.en-US.md
 
 将跨越保藏边界的热水作为独立热载体记录，并披露供回水条件。
 
-- 选定流：Hot water
+- 选定流：热水
 - 流属性/单位：Energy / MJ
 - 数量规则：归属已声明保藏批次的热水计量能量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -530,7 +530,7 @@ sync_with: pcr.en-US.md
 
 将场内燃烧的管道天然气作为独立燃料载体记录。
 
-- 选定流：Natural gas in the gaseous state, at consumption `4f19ca0e-7b3b-11dd-ad8b-0800200c9a66`
+- 选定流：气态天然气 `4f19ca0e-7b3b-11dd-ad8b-0800200c9a66`
 - 流属性/单位：Volume `93a60a56-a3c8-22da-a746-0800200c9a66` / m3
 - 数量规则：归属已声明保藏批次的天然气计量体积
 - 数值来源模式：前景记录（`foreground_record`）
@@ -545,7 +545,7 @@ sync_with: pcr.en-US.md
 
 将场内燃烧的液化石油气作为独立燃料载体记录。
 
-- 选定流：Liquefied petroleum gas, industrial fuel supply `d54ae71a-1245-4e3f-b694-dbf2b22bbf7d`
+- 选定流：液化石油气 `d54ae71a-1245-4e3f-b694-dbf2b22bbf7d`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：归属已声明保藏批次的液化石油气实测领用量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -560,7 +560,7 @@ sync_with: pcr.en-US.md
 
 将场内燃烧的柴油作为独立燃料载体记录。
 
-- 选定流：Diesel oil `9d258d75-6792-4f1c-9856-81602ed8f816`
+- 选定流：柴油 `9d258d75-6792-4f1c-9856-81602ed8f816`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：归属已声明保藏批次的柴油实测领用量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -575,7 +575,7 @@ sync_with: pcr.en-US.md
 
 将场内燃烧的重质燃料油作为独立燃料载体记录。
 
-- 选定流：Heavy fuel oil
+- 选定流：重质燃料油
 - 流属性/单位：Mass / kg
 - 数量规则：归属已声明保藏批次的燃料油实测领用量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -613,7 +613,7 @@ sync_with: pcr.en-US.md
 
 将供给保藏设备的压缩空气作为独立公用工程载体记录。
 
-- 选定流：Compressed air `46e2b1e4-5a4e-4579-b6a2-65b03f9ce825`
+- 选定流：压缩的空气 `46e2b1e4-5a4e-4579-b6a2-65b03f9ce825`
 - 流属性/单位：Volume `93a60a56-a3c8-22da-a746-0800200c9a66` / m3
 - 数量规则：归属已声明保藏批次的压缩空气计量体积
 - 数值来源模式：前景记录（`foreground_record`）
@@ -681,7 +681,7 @@ sync_with: pcr.en-US.md
 
 将离开回用回路的废盐水与其他保藏废水分开记录。
 
-- 选定流：High-concentration saline wastewater `76ab69b6-6fa7-461c-be07-bc54e581a699`
+- 选定流：浓水 `76ab69b6-6fa7-461c-be07-bc54e581a699`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：废盐水的计量排放量或水和溶液平衡计算量
 - 数值来源模式：计算值（`calculated_value`）
@@ -739,7 +739,7 @@ sync_with: pcr.en-US.md
 
 发生直接熏制或燃烧时，将化石二氧化碳排入空气作为独立基本流交换记录。
 
-- 选定流：Carbon dioxide (fossil), to air, unspecified `08a91e70-3ddc-11dd-923d-0050c2490048`
+- 选定流：二氧化碳（化石源） `08a91e70-3ddc-11dd-923d-0050c2490048`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：实测排放，或化石燃料用量乘以有文件依据的碳含量和氧化因子
 - 数值来源模式：计算值（`calculated_value`）
@@ -754,7 +754,7 @@ sync_with: pcr.en-US.md
 
 发生直接熏制或燃烧时，将生物源二氧化碳排入空气作为独立基本流交换记录。
 
-- 选定流：Carbon dioxide (biogenic), to air, unspecified `08a91e70-3ddc-11dd-9c15-0050c2490048`
+- 选定流：二氧化碳（生物源） `08a91e70-3ddc-11dd-9c15-0050c2490048`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：实测排放，或生物质用量乘以有文件依据的生物源碳含量和氧化因子
 - 数值来源模式：计算值（`calculated_value`）
@@ -769,7 +769,7 @@ sync_with: pcr.en-US.md
 
 发生直接熏制或燃烧时，将化石源一氧化碳排入空气作为独立基本流交换记录。
 
-- 选定流：Carbon monoxide (fossil), to air, unspecified `08a91e70-3ddc-11dd-924e-0050c2490048`
+- 选定流：一氧化碳（化石源） `08a91e70-3ddc-11dd-924e-0050c2490048`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：实测烟道排放或燃料特定排放因子计算
 - 数值来源模式：计算值（`calculated_value`）
@@ -784,7 +784,7 @@ sync_with: pcr.en-US.md
 
 发生直接熏制或燃烧时，将化石源甲烷排入空气作为独立基本流交换记录。
 
-- 选定流：Methane (fossil), to air, unspecified `08a91e70-3ddc-11dd-9610-0050c2490048`
+- 选定流：甲烷 (化石源) `08a91e70-3ddc-11dd-9610-0050c2490048`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：实测烟道排放或燃料特定排放因子计算
 - 数值来源模式：计算值（`calculated_value`）
@@ -799,7 +799,7 @@ sync_with: pcr.en-US.md
 
 发生直接熏制或燃烧时，将一氧化氮排入空气作为独立基本流交换记录。
 
-- 选定流：Nitrogen monoxide, to air, unspecified `08a91e70-3ddc-11dd-96ee-0050c2490048`
+- 选定流：一氧化氮 `08a91e70-3ddc-11dd-96ee-0050c2490048`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：实测烟道排放或物质特定排放因子计算
 - 数值来源模式：计算值（`calculated_value`）
@@ -829,7 +829,7 @@ sync_with: pcr.en-US.md
 
 发生直接熏制或燃烧时，将氧化亚氮排入空气作为独立基本流交换记录。
 
-- 选定流：Nitrous oxide, to air, unspecified `08a91e70-3ddc-11dd-94c3-0050c2490048`
+- 选定流：一氧化二氮 `08a91e70-3ddc-11dd-94c3-0050c2490048`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：实测烟道排放或物质特定排放因子计算
 - 数值来源模式：计算值（`calculated_value`）
@@ -859,7 +859,7 @@ sync_with: pcr.en-US.md
 
 发生直接熏制或燃烧时，将PM2.5 排入空气作为独立基本流交换记录。
 
-- 选定流：Particles (PM2.5), to air, unspecified `08a91e70-3ddc-11dd-9293-0050c2490048`
+- 选定流：颗粒物 (PM2.5) `08a91e70-3ddc-11dd-9293-0050c2490048`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：控制后实测烟道排放或设备特定排放因子计算
 - 数值来源模式：计算值（`calculated_value`）
@@ -923,7 +923,7 @@ sync_with: pcr.en-US.md
 
 使用时将聚乙烯薄膜或袋作为独立包装组件交换记录。
 
-- 选定流：Polyethylene film `e64eb06c-6dc9-45f1-b003-3dc6c44b27e2`
+- 选定流：聚乙烯薄膜 `e64eb06c-6dc9-45f1-b003-3dc6c44b27e2`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：领用聚乙烯薄膜质量扣除有记录退回库存的未用材料
 - 数值来源模式：前景记录（`foreground_record`）
@@ -951,7 +951,7 @@ sync_with: pcr.en-US.md
 
 使用时将玻璃罐作为独立包装组件交换记录。
 
-- 选定流：Glass Jar `eca48ea8-ab83-444f-98b2-15ab82570c80`
+- 选定流：玻璃瓶罐 `eca48ea8-ab83-444f-98b2-15ab82570c80`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：领用玻璃罐质量扣除有记录退回库存的未用容器
 - 数值来源模式：前景记录（`foreground_record`）
@@ -979,7 +979,7 @@ sync_with: pcr.en-US.md
 
 使用时将纸板折叠盒作为独立包装组件交换记录。
 
-- 选定流：Paper box `12d5d744-7725-4dbc-b102-43c80547f777`
+- 选定流：纸盒 `12d5d744-7725-4dbc-b102-43c80547f777`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：领用纸板折叠盒质量扣除有记录退回库存的未用纸盒
 - 数值来源模式：前景记录（`foreground_record`）
@@ -993,7 +993,7 @@ sync_with: pcr.en-US.md
 
 使用时将瓦楞纸箱作为独立包装组件交换记录。
 
-- 选定流：Corrugated board boxes `4f197bec-7b3b-11dd-ad8b-0800200c9a66`
+- 选定流：瓦楞纸箱 `4f197bec-7b3b-11dd-ad8b-0800200c9a66`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：领用瓦楞纸箱质量扣除有记录退回库存的未用纸箱
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1007,7 +1007,7 @@ sync_with: pcr.en-US.md
 
 使用时将木托盘作为独立包装组件交换记录。
 
-- 选定流：Wooden pallet `4b49871e-95be-4e0c-9223-9902f9eaa763`
+- 选定流：木制托盘、箱式托盘和其他装载板，木制托盘套环 `4b49871e-95be-4e0c-9223-9902f9eaa763`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：领用木托盘质量扣除有记录退回库存的未用托盘
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1021,7 +1021,7 @@ sync_with: pcr.en-US.md
 
 记录以低于 1 kV 消费组合供给的公共电网电力；其他电压或供给场景不得使用本行。
 
-- 选定流：Alternating current, consumption mix, less than 1 kV `50657322-939c-4829-a87b-47c093bfa6a7`
+- 选定流：交流电 `50657322-939c-4829-a87b-47c093bfa6a7`
 - 流属性/单位：Net calorific value `93a60a56-a3c8-11da-a746-0800200c9a66` / kWh
 - 数量规则：按照占用容量、质量-时间或其他已披露因果驱动因素分配的储存计量电力
 - 数值来源模式：计算值（`calculated_value`）
@@ -1036,7 +1036,7 @@ sync_with: pcr.en-US.md
 
 记录以 1–35 kV 消费组合供给的公共电网电力；其他电压或供给场景不得使用本行。
 
-- 选定流：Alternating current, consumption mix, 1–35 kV `3d76981f-964a-4865-b588-0e067a2a1163`
+- 选定流：交流电 `3d76981f-964a-4865-b588-0e067a2a1163`
 - 流属性/单位：Net calorific value `93a60a56-a3c8-11da-a746-0800200c9a66` / kWh
 - 数量规则：按照占用容量、质量-时间或其他已披露因果驱动因素分配的储存计量电力
 - 数值来源模式：计算值（`calculated_value`）
@@ -1074,7 +1074,7 @@ sync_with: pcr.en-US.md
 
 记录以已声明包装和储存状态放行的保藏鱼肝或鱼籽成品。
 
-- 选定流：Fish livers and roes dried, smoked, salted or in brine `ab283f96-8c07-4a11-8904-4d5a6542d1fe`
+- 选定流：干制、熏制、腌制或盐渍的鱼肝和鱼籽 `ab283f96-8c07-4a11-8904-4d5a6542d1fe`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：1 kg 成品净质量
 - 数值来源模式：固定值（`fixed_value`）
@@ -1217,7 +1217,7 @@ sync_with: pcr.en-US.md
 
 仅对使用该制冷剂的设备记录R717 制冷剂排入空气。
 
-- 选定流：Ammonia, to air, unspecified `08a91e70-3ddc-11dd-a2a9-0050c2490048`
+- 选定流：氨 `08a91e70-3ddc-11dd-a2a9-0050c2490048`
 - 流属性/单位：Mass / kg
 - 数量规则：制冷剂充注量减去有记录回收量和库存变化，并分配至纳入的储存服务
 - 数值来源模式：计算值（`calculated_value`）

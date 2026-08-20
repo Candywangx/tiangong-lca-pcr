@@ -42,7 +42,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 1 kg |
-| 参考产品流 | Handkerchiefs, shawls, scarves, veils, ties, cravats, gloves and other made-up clothing accessories, of textile fabric, not knitted or crocheted; parts of garments or of clothing accessories, of textile fabric, not knitted or crocheted n.e.c. `4cbb1b61-4222-4c6b-8eb2-3e6622e784c7` |
+| 参考产品流 | 非针织或钩编而成的纺织品手帕、披巾、薄头巾、面纱、领带、围巾、手套及其他制成的服装的服饰用品，未另列明的非针织或钩编而成的纺织品服装或服装服饰用品 `4cbb1b61-4222-4c6b-8eb2-3e6622e784c7` |
 | 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | kg |
@@ -347,7 +347,7 @@ sync_with: pcr.en-US.md
 
 BOM 中存在时，记录用于卷边、缝合、边缘加工或部件安装的涤纶线发出和消耗量。
 
-- 选定流：Polyester sewing thread
+- 选定流：聚酯缝纫线
 - 流属性/单位：Mass / kg
 - 数量规则：计量的发出量减去有记录的未用退回量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -560,7 +560,7 @@ BOM 中存在时，记录用于卷边、缝合、边缘加工或部件安装的�
 
 用于熨烫、干燥或后整理时单独记录外购蒸汽；现场制汽需要含原子燃料和排放交换的独立支持过程。
 
-- 选定流：Purchased steam
+- 选定流：外购蒸汽
 - 流属性/单位：Mass / kg
 - 数量规则：计量的供应商蒸汽送达适用后整理设备的质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -575,7 +575,7 @@ BOM 中存在时，记录用于卷边、缝合、边缘加工或部件安装的�
 
 仅在现场实施产品水洗或其他湿式后整理路线时记录供给的工艺用水。
 
-- 选定流：Process water
+- 选定流：过程用水
 - 流属性/单位：Mass / kg
 - 数量规则：计量的供给所声明湿式后整理操作的用水
 - 数值来源模式：前景记录（`foreground_record`）
@@ -683,7 +683,7 @@ BOM 中存在时，记录用于卷边、缝合、边缘加工或部件安装的�
 
 使用时记录施加于产品的单件 LDPE 袋或包裹膜质量。
 
-- 选定流：Low-density polyethylene packaging film
+- 选定流：低密度聚乙烯包装膜
 - 流属性/单位：Mass / kg
 - 数量规则：包装件数乘以经核实的单件质量
 - 数值来源模式：计算值（`calculated_value`）
@@ -751,7 +751,7 @@ BOM 中存在时，记录用于卷边、缝合、边缘加工或部件安装的�
 
 这是唯一参考产品输出，其数量不含任何包装部件。
 
-- 选定流：Handkerchiefs, shawls, scarves, veils, ties, cravats, gloves and other made-up clothing accessories, of textile fabric, not knitted or crocheted; parts of garments or of clothing accessories, of textile fabric, not knitted or crocheted n.e.c. `4cbb1b61-4222-4c6b-8eb2-3e6622e784c7`
+- 选定流：非针织或钩编而成的纺织品手帕、披巾、薄头巾、面纱、领带、围巾、手套及其他制成的服装的服饰用品，未另列明的非针织或钩编而成的纺织品服装或服装服饰用品 `4cbb1b61-4222-4c6b-8eb2-3e6622e784c7`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：恰好 1 kg 合格产品净质量
 - 数值来源模式：固定值（`fixed_value`）

@@ -40,7 +40,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 1 kg |
-| 参考产品流 | Yarn of wool, containing 85% or more by weight of wool, not put up for retail sale `10c7de33-bef0-4310-98e7-734d8e2e4c9f` |
+| 参考产品流 | 含羊毛重量达85%或85%以上的羊毛纱，不供零售 `10c7de33-bef0-4310-98e7-734d8e2e4c9f` |
 | 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | kg |
@@ -97,7 +97,7 @@ sync_with: pcr.en-US.md
 
 当已洗、脱脂羊毛作为场内开松、混合或粗梳的备纺起始投入时记录。不得用本行表示含脂原毛。
 
-- 选定流：Scoured Wool `1f286780-8831-47b4-88dd-582d6b7f8947`
+- 选定流：洗净毛 `1f286780-8831-47b4-88dd-582d6b7f8947`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：实测接收质量，并与报告批次库存变动核对
 - 数值来源模式：前景记录（`foreground_record`）
@@ -127,7 +127,7 @@ sync_with: pcr.en-US.md
 
 记录本过程中开松、混合、粗梳、针梳、精梳、牵伸、粗纱、抽风及可直接归属辅助设备的耗电。
 
-- 选定流：Alternating current; less than 1 kV; consumption mix at user; electricity mix `50657322-939c-4829-a87b-47c093bfa6a7`
+- 选定流：交流电 `50657322-939c-4829-a87b-47c093bfa6a7`
 - 流属性/单位：Net calorific value `93a60a56-a3c8-11da-a746-0800200c9a66` / kWh
 - 数量规则：过程分表读数或有文件记录的总表分配
 - 数值来源模式：前景记录（`foreground_record`）
@@ -184,7 +184,7 @@ sync_with: pcr.en-US.md
 
 只有纤维准备的有组织排放进入已核验的城市空气高架源环境舱时才记录 PM10。实际接收环境舱不同时应使用另一条原子基本流。
 
-- 选定流：particles (PM10), emissions to urban air high stack `9fbb5096-ed5b-11e6-bc64-92361f002671`
+- 选定流：颗粒物 (PM10) `9fbb5096-ed5b-11e6-bc64-92361f002671`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：实测排放质量，或根据风量和浓度记录进行有文件依据的计算
 - 数值来源模式：计算值（`calculated_value`）
@@ -220,7 +220,7 @@ sync_with: pcr.en-US.md
 
 记录纺纱、按需并捻、络筒、抽风、可归属本过程的压缩空气产生及辅助设备耗电。
 
-- 选定流：Alternating current; less than 1 kV; consumption mix at user; electricity mix `50657322-939c-4829-a87b-47c093bfa6a7`
+- 选定流：交流电 `50657322-939c-4829-a87b-47c093bfa6a7`
 - 流属性/单位：Net calorific value `93a60a56-a3c8-11da-a746-0800200c9a66` / kWh
 - 数量规则：过程分表读数或有文件记录的总表分配
 - 数值来源模式：前景记录（`foreground_record`）
@@ -275,7 +275,7 @@ sync_with: pcr.en-US.md
 
 只有软回丝和硬回丝采用相同处理路线时，才将纺纱和络筒产生的实测废物记录为这一条羊毛纺纱废物流；处理路线不同的废物应拆成不同原子行。
 
-- 选定流：wool spinning waste `db23708c-5c2f-4b7e-9098-910948275caa`
+- 选定流：羊毛纺纱废料 `db23708c-5c2f-4b7e-9098-910948275caa`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：按批次和去向实测废物质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -292,7 +292,7 @@ sync_with: pcr.en-US.md
 
 只有纺纱或络筒的有组织排放进入已核验的城市空气高架源环境舱时才记录 PM10。实际接收环境舱不同时应使用另一条原子基本流。
 
-- 选定流：particles (PM10), emissions to urban air high stack `9fbb5096-ed5b-11e6-bc64-92361f002671`
+- 选定流：颗粒物 (PM10) `9fbb5096-ed5b-11e6-bc64-92361f002671`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：实测排放质量，或根据风量和浓度记录进行有文件依据的计算
 - 数值来源模式：计算值（`calculated_value`）
@@ -327,7 +327,7 @@ sync_with: pcr.en-US.md
 
 记录调湿设备、最终络筒、检验、抽风及包装设备耗电。
 
-- 选定流：Alternating current; less than 1 kV; consumption mix at user; electricity mix `50657322-939c-4829-a87b-47c093bfa6a7`
+- 选定流：交流电 `50657322-939c-4829-a87b-47c093bfa6a7`
 - 流属性/单位：Net calorific value `93a60a56-a3c8-11da-a746-0800200c9a66` / kWh
 - 数量规则：过程分表读数或有文件记录的总表分配
 - 数值来源模式：前景记录（`foreground_record`）
@@ -342,7 +342,7 @@ sync_with: pcr.en-US.md
 
 只有工艺水跨越过程边界用于直接加湿或调湿纱线时才记录。场外公用工程使用的水保留在该公用工程数据集中。
 
-- 选定流：Process Water `94a04f7e-2d5c-41f0-b182-d54a3b373a02`
+- 选定流：工艺用水 `94a04f7e-2d5c-41f0-b182-d54a3b373a02`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：实测送入调湿作业的水量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -357,7 +357,7 @@ sync_with: pcr.en-US.md
 
 记录纳入工业纱线交付形式的纸板管或纸芯。
 
-- 选定流：Cardboard tube or Paper core `78bf7f6e-519e-4b3d-82f0-eda15b2fee61`
+- 选定流：圆纸筒 `78bf7f6e-519e-4b3d-82f0-eda15b2fee61`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：用于合格产品的纸管实测质量或采购记录质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -371,7 +371,7 @@ sync_with: pcr.en-US.md
 
 记录非零售工业交付使用的瓦楞纸箱。不得用本行表示纸芯、塑料薄膜、托盘或其他包装组件。
 
-- 选定流：corrugated board boxes `4f197bec-7b3b-11dd-ad8b-0800200c9a66`
+- 选定流：瓦楞纸箱 `4f197bec-7b3b-11dd-ad8b-0800200c9a66`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：用于合格产品的纸箱实测质量或采购记录质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -393,7 +393,7 @@ sync_with: pcr.en-US.md
 
 记录通过最终调湿和工业包装检查后的合格成品纱。参考数量不包括包装质量。
 
-- 选定流：Yarn of wool, containing 85% or more by weight of wool, not put up for retail sale `10c7de33-bef0-4310-98e7-734d8e2e4c9f`
+- 选定流：含羊毛重量达85%或85%以上的羊毛纱，不供零售 `10c7de33-bef0-4310-98e7-734d8e2e4c9f`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：已声明调湿状态下合格纱线净质量的实测值
 - 数值来源模式：前景记录（`foreground_record`）

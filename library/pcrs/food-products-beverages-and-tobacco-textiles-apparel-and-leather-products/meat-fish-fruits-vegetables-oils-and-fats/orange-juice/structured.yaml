@@ -22,7 +22,7 @@ system_boundary:
       rule: "Include every on-site or controlled operation from the declared starting condition through the declared manufacturer-gate handoff, including cleaning and grading, extraction and finishing, concentration or reconstitution when used, stabilization, storage, filling or bulk loading, cleaning-in-place, and on-site waste or wastewater handling attributable to the route."
       source_ids:
         - fao-fruit-juice-processing-2001
-        - codex-cxs-247-2005
+        - fao-who-cxs-247-2005
     - rule_id: boundary_upstream_inputs
       applies_to: "Product, material, energy, water, packaging, and treatment inputs"
       rule: "Link all inputs crossing the foreground boundary to upstream datasets. Orchard cultivation is upstream when fresh oranges enter the plant; concentrate production is upstream when purchased concentrate is the declared starting condition."
@@ -278,16 +278,16 @@ process_inventory:
               collection_protocol_id: cp_material_mass_balance
               source_ids: []
             ranges: []
-        - row_id: extraction_aids_water
-          role: "Extraction processing aids and make-up water"
-          name: "Separate dataset-specific Tiangong product flow for each used material; every UUID shall be selected and read back when the foreground package is built"
+        - row_id: extraction_makeup_water
+          role: "Extraction make-up water"
+          name: "Potable or process-water supply matching the facility source"
           flow_type: "product"
-          property_unit: "Property and reference unit of each selected flow"
-          description: "Record potable or process water, permitted enzymes, antifoam, filtration aids, and other processing aids only when used and crossing the foreground boundary."
+          property_unit: "Volume / m3"
+          description: "Record extraction make-up water separately when used by the declared extraction and finishing route."
           amount:
-            expression: "Purchased, metered, or batch-dosed quantity by material"
+            expression: "metered or batch-recorded water addition"
             value_mode: "foreground_record"
-            specificity: "technology_specific"
+            specificity: "product_specific"
             basis:
               text: "per kg intermediate orange juice output"
               kind: "process_output"
@@ -295,7 +295,68 @@ process_inventory:
               kind: "collected_record"
               collection_protocol_id: cp_material_mass_balance
               source_ids:
-                - codex-cxs-247-2005
+                - fao-who-cxs-247-2005
+                - fao-fruit-juice-processing-2001
+            ranges: []
+        - row_id: extraction_pectinase
+          role: "Pectinase enzyme preparation"
+          name: "Pectinase enzyme preparation product flow"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record pectinase enzyme preparation separately when used by the declared extraction and finishing route."
+          amount:
+            expression: "measured batch dose at delivered concentration"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg intermediate orange juice output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_mass_balance
+              source_ids:
+                - fao-who-cxs-247-2005
+                - fao-fruit-juice-processing-2001
+            ranges: []
+        - row_id: extraction_ascorbic_acid
+          role: "Ascorbic acid processing aid"
+          name: "Ascorbic acid product flow"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record ascorbic acid processing aid separately when used by the declared extraction and finishing route."
+          amount:
+            expression: "measured batch dose"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg intermediate orange juice output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_mass_balance
+              source_ids:
+                - fao-who-cxs-247-2005
+                - fao-fruit-juice-processing-2001
+            ranges: []
+        - row_id: extraction_filter_aid
+          role: "Filtration aid"
+          name: "Declared mineral or cellulose filter-aid product flow"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record filtration aid separately when used by the declared extraction and finishing route."
+          amount:
+            expression: "measured issue to extraction or finishing equipment"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg intermediate orange juice output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_mass_balance
+              source_ids:
+                - fao-who-cxs-247-2005
+                - fao-fruit-juice-processing-2001
             ranges: []
       waste:
         []
@@ -320,17 +381,74 @@ process_inventory:
               kind: "collected_record"
               collection_protocol_id: cp_product_quality_mass
               source_ids:
-                - codex-cxs-247-2005
+                - fao-who-cxs-247-2005
                 - fao-fruit-juice-processing-2001
             ranges: []
-        - row_id: extraction_coproducts
-          role: "Saleable peel, pulp, cells, seeds, oil, or other citrus co-products"
-          name: "Separate dataset-specific Tiangong product flow for each saleable co-product; every UUID shall be selected and read back when the foreground package is built"
+        - row_id: coproduct_orange_peel
+          role: "Saleable orange peel"
+          name: "Orange peel co-product flow"
           flow_type: "product"
           property_unit: "Mass / kg"
-          description: "Record each exported material with separate mass, product specification, market status, and destination. Material with no economic product function is recorded as waste instead."
+          description: "Record this exported co-product with separate mass, specification, market status, and destination; material without an economic product function is waste."
           amount:
-            expression: "Measured exported mass by co-product"
+            expression: "measured exported mass"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg intermediate orange juice output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_coproduct_allocation
+              source_ids:
+                - fao-fruit-juice-processing-2001
+            ranges: []
+        - row_id: coproduct_orange_pulp_cells
+          role: "Saleable orange pulp and cells"
+          name: "Orange pulp or juice-cell co-product flow"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record this exported co-product with separate mass, specification, market status, and destination; material without an economic product function is waste."
+          amount:
+            expression: "measured exported mass"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg intermediate orange juice output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_coproduct_allocation
+              source_ids:
+                - fao-fruit-juice-processing-2001
+            ranges: []
+        - row_id: coproduct_orange_seeds
+          role: "Saleable orange seeds"
+          name: "Orange-seed co-product flow"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record this exported co-product with separate mass, specification, market status, and destination; material without an economic product function is waste."
+          amount:
+            expression: "measured exported mass"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg intermediate orange juice output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_coproduct_allocation
+              source_ids:
+                - fao-fruit-juice-processing-2001
+            ranges: []
+        - row_id: coproduct_orange_oil
+          role: "Recovered orange essential oil"
+          name: "Orange essential-oil product flow"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record this exported co-product with separate mass, specification, market status, and destination; material without an economic product function is waste."
+          amount:
+            expression: "measured exported mass"
             value_mode: "foreground_record"
             specificity: "site_specific"
             basis:
@@ -343,24 +461,80 @@ process_inventory:
                 - fao-fruit-juice-processing-2001
             ranges: []
       waste:
-        - row_id: extraction_residues_wastewater
-          role: "Extraction residues and wastewater"
-          name: "Separate dataset-specific Tiangong waste or wastewater flow for each material and destination; every UUID shall be selected and read back when the foreground package is built"
+        - row_id: waste_orange_peel
+          role: "Waste orange peel"
+          name: "Orange-peel food-residue waste flow"
           flow_type: "waste"
-          property_unit: "Mass / kg for solids; Volume / m3 for wastewater"
-          description: "Record non-saleable peel, pulp, seeds, sludge, and wastewater separately by physical state and treatment destination."
+          property_unit: "Mass / kg"
+          description: "Record waste orange peel separately by treatment destination before recovery credit or netting."
           amount:
-            expression: "Measured mass or discharge volume by material class and destination"
-            value_mode: "foreground_record"
+            expression: "measured peel not released as a co-product"
+            value_mode: "calculated_value"
             specificity: "site_specific"
             basis:
               text: "per kg intermediate orange juice output"
               kind: "process_output"
             evidence:
-              kind: "collected_record"
+              kind: "calculated_from_collection"
               collection_protocol_id: cp_water_wastewater
               source_ids:
-                - fao-fruit-juice-processing-2001
+                - world-bank-fruit-vegetable-processing-1998
+            ranges: []
+        - row_id: waste_orange_pulp_cells
+          role: "Waste orange pulp and cells"
+          name: "Orange-pulp or juice-cell residue waste flow"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record waste orange pulp and cells separately by treatment destination before recovery credit or netting."
+          amount:
+            expression: "measured pulp and cells not released as co-products"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per kg intermediate orange juice output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_water_wastewater
+              source_ids:
+                - world-bank-fruit-vegetable-processing-1998
+            ranges: []
+        - row_id: waste_orange_seeds
+          role: "Waste orange seeds"
+          name: "Orange-seed residue waste flow"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record waste orange seeds separately by treatment destination before recovery credit or netting."
+          amount:
+            expression: "measured seeds not released as a co-product"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per kg intermediate orange juice output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_water_wastewater
+              source_ids:
+                - world-bank-fruit-vegetable-processing-1998
+            ranges: []
+        - row_id: extraction_wastewater
+          role: "Extraction wastewater"
+          name: "Wastewater flow matching the receiving treatment route"
+          flow_type: "waste"
+          property_unit: "Volume / m3"
+          description: "Record extraction wastewater separately by treatment destination before recovery credit or netting."
+          amount:
+            expression: "metered discharge or reconciled extraction water balance"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per kg intermediate orange juice output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_water_wastewater
+              source_ids:
                 - world-bank-fruit-vegetable-processing-1998
             ranges: []
       elementary:
@@ -387,23 +561,119 @@ process_inventory:
               collection_protocol_id: cp_product_quality_mass
               source_ids: []
             ranges: []
-        - row_id: concentration_energy_cooling
-          role: "Concentration energy and cooling"
-          name: "Separate dataset-specific Tiangong product flow for each energy carrier or utility; every UUID shall be selected and read back when the foreground package is built"
+        - row_id: concentration_electricity
+          role: "Concentration electricity"
+          name: "Purchased electricity supply matching facility voltage and geography"
           flow_type: "product"
-          property_unit: "Energy, mass, or volume in the selected flow reference unit"
-          description: "Record electricity, fuels, steam, heat, cooling media, and refrigerant make-up separately. Do not combine thermal and electrical quantities."
+          property_unit: "Energy / kWh"
+          description: "Record concentration electricity separately for the included concentration route."
           amount:
-            expression: "Metered use or documented allocation from equipment and utility records"
-            value_mode: "foreground_record"
+            expression: "metered evaporator, pump, vacuum, and cooling-system electricity"
+            value_mode: "calculated_value"
             specificity: "technology_specific"
             basis:
-              text: "per kg orange juice concentrate output"
+              text: "per kg orange juice concentrate"
               kind: "process_output"
             evidence:
-              kind: "collected_record"
+              kind: "calculated_from_collection"
               collection_protocol_id: cp_utility_records
-              source_ids: []
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: concentration_steam
+          role: "Concentration steam"
+          name: "Purchased steam supply matching declared steam conditions"
+          flow_type: "product"
+          property_unit: "Energy or Mass / MJ or kg steam"
+          description: "Record concentration steam separately for the included concentration route."
+          amount:
+            expression: "steam meter reading corrected for conditions and condensate return"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg orange juice concentrate"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_utility_records
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: concentration_natural_gas
+          role: "Concentration natural gas"
+          name: "Natural gas supply matching facility geography and pressure"
+          flow_type: "product"
+          property_unit: "Energy or Volume / MJ lower heating value or Nm3"
+          description: "Record concentration natural gas separately for the included concentration route."
+          amount:
+            expression: "fuel meter reading with lower heating value and standard-condition conversion"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg orange juice concentrate"
+              kind: "fuel_inventory"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_utility_records
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: concentration_cooling_water
+          role: "Concentration cooling-water make-up"
+          name: "Process-water supply matching the facility source"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "Record concentration cooling-water make-up separately for the included concentration route."
+          amount:
+            expression: "make-up meter reading after separating recirculation and blowdown"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg orange juice concentrate"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_utility_records
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: concentration_r717_makeup
+          role: "Concentration R717 make-up"
+          name: "Ammonia (R717) refrigerant product flow"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record concentration r717 make-up separately for the included concentration route."
+          amount:
+            expression: "service-log make-up mass; circulating charge is not consumption"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg orange juice concentrate"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_utility_records
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: concentration_r404a_makeup
+          role: "Concentration R404A make-up"
+          name: "R404A refrigerant product flow"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record concentration r404a make-up separately for the included concentration route."
+          amount:
+            expression: "service-log make-up mass; circulating charge is not consumption"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg orange juice concentrate"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_utility_records
+              source_ids:
+                - eu-jrc-fdm-bref-2019
             ranges: []
       waste:
         []
@@ -428,17 +698,17 @@ process_inventory:
               kind: "collected_record"
               collection_protocol_id: cp_product_quality_mass
               source_ids:
-                - codex-cxs-247-2005
+                - fao-who-cxs-247-2005
                 - fao-fruit-juice-processing-2001
             ranges: []
-        - row_id: concentration_recovered_components
-          role: "Recovered orange aroma, volatile components, or oil"
-          name: "Dataset-specific Tiangong product flow for each exported component; UUID shall be selected and read back when the foreground package is built"
+        - row_id: concentration_recovered_aroma
+          role: "Recovered orange aroma"
+          name: "Orange-aroma product flow"
           flow_type: "product"
           property_unit: "Mass / kg"
-          description: "Record separately exported recovered components as co-products. Components returned to the same juice batch are internal transfers and are not separate product outputs."
+          description: "Record this recovered component separately by disposition before internal reuse, sale, or waste classification."
           amount:
-            expression: "Measured exported mass by component"
+            expression: "measured recovered mass"
             value_mode: "foreground_record"
             specificity: "site_specific"
             basis:
@@ -448,18 +718,16 @@ process_inventory:
               kind: "collected_record"
               collection_protocol_id: cp_coproduct_allocation
               source_ids:
-                - codex-cxs-247-2005
                 - fao-fruit-juice-processing-2001
             ranges: []
-      waste:
-        - row_id: concentration_condensate_wastewater
-          role: "Concentration condensate and cleaning wastewater"
-          name: "Dataset-specific Tiangong wastewater flow matching discharge or treatment destination; UUID shall be selected and read back when the foreground package is built"
-          flow_type: "waste"
-          property_unit: "Volume / m3"
-          description: "Record condensate reuse as an internal transfer; record only net discharge and its treatment destination as wastewater."
+        - row_id: concentration_recovered_volatiles
+          role: "Recovered orange volatile components"
+          name: "Orange volatile-component product flow"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record this recovered component separately by disposition before internal reuse, sale, or waste classification."
           amount:
-            expression: "Metered net discharge after internal reuse"
+            expression: "measured recovered mass"
             value_mode: "foreground_record"
             specificity: "site_specific"
             basis:
@@ -467,18 +735,38 @@ process_inventory:
               kind: "process_output"
             evidence:
               kind: "collected_record"
-              collection_protocol_id: cp_water_wastewater
-              source_ids: []
+              collection_protocol_id: cp_coproduct_allocation
+              source_ids:
+                - fao-fruit-juice-processing-2001
             ranges: []
-      elementary:
-        - row_id: concentration_refrigerant_loss
-          role: "Refrigerant released during concentration and storage"
-          name: "Dataset-specific Tiangong elementary flow for the released refrigerant; UUID shall be selected and read back when the foreground package is built"
-          flow_type: "elementary"
+        - row_id: concentration_recovered_oil
+          role: "Recovered orange oil"
+          name: "Orange essential-oil product flow"
+          flow_type: "product"
           property_unit: "Mass / kg"
-          description: "Record measured or reconciled refrigerant loss to air by refrigerant identity; do not record refrigerant purchases as direct emissions."
+          description: "Record this recovered component separately by disposition before internal reuse, sale, or waste classification."
           amount:
-            expression: "Refrigerant inventory balance allocated to concentration and concentrate storage"
+            expression: "measured recovered mass"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg orange juice concentrate output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_coproduct_allocation
+              source_ids:
+                - fao-fruit-juice-processing-2001
+            ranges: []
+      waste:
+        - row_id: concentration_condensate
+          role: "Concentration condensate"
+          name: "Process-condensate flow"
+          flow_type: "waste"
+          property_unit: "Volume / m3"
+          description: "Record evaporator condensate separately by reuse, discharge, or treatment destination."
+          amount:
+            expression: "metered condensate or concentration water balance"
             value_mode: "calculated_value"
             specificity: "site_specific"
             basis:
@@ -486,8 +774,67 @@ process_inventory:
               kind: "process_output"
             evidence:
               kind: "calculated_from_collection"
+              collection_protocol_id: cp_water_wastewater
+              source_ids:
+                - world-bank-fruit-vegetable-processing-1998
+            ranges: []
+        - row_id: concentration_cleaning_wastewater
+          role: "Concentration cleaning wastewater"
+          name: "Wastewater flow matching the receiving treatment route"
+          flow_type: "waste"
+          property_unit: "Volume / m3"
+          description: "Record wastewater from cleaning concentration equipment separately from process condensate."
+          amount:
+            expression: "metered discharge or documented cleaning-water balance"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per kg orange juice concentrate output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_water_wastewater
+              source_ids:
+                - world-bank-fruit-vegetable-processing-1998
+            ranges: []
+      elementary:
+        - row_id: concentration_r717_emission
+          role: "R717 released during concentration and storage"
+          name: "Ammonia (R717) to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record measured or reconciled refrigerant loss separately by substance; do not combine different refrigerants."
+          amount:
+            expression: "charge added minus documented recovery and inventory change, allocated to the included equipment"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg orange juice concentrate"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
               collection_protocol_id: cp_utility_records
-              source_ids: []
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: concentration_r404a_emission
+          role: "R404A released during concentration and storage"
+          name: "R404A to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record measured or reconciled refrigerant loss separately by substance; do not combine different refrigerants."
+          amount:
+            expression: "charge added minus documented recovery and inventory change, allocated to the included equipment"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg orange juice concentrate"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_utility_records
+              source_ids:
+                - eu-jrc-fdm-bref-2019
             ranges: []
   - id: juice_reconstitution_blending
     label: "Juice reconstitution and blending"
@@ -510,7 +857,7 @@ process_inventory:
               kind: "collected_record"
               collection_protocol_id: cp_product_quality_mass
               source_ids:
-                - codex-cxs-247-2005
+                - fao-who-cxs-247-2005
             ranges: []
         - row_id: reconstitution_water
           role: "Potable reconstitution water"
@@ -529,16 +876,16 @@ process_inventory:
               kind: "collected_record"
               collection_protocol_id: cp_product_quality_mass
               source_ids:
-                - codex-cxs-247-2005
+                - fao-who-cxs-247-2005
             ranges: []
-        - row_id: blending_components_aids
-          role: "Permitted orange components, ingredients, and processing aids"
-          name: "Separate dataset-specific Tiangong product flow for each material; every UUID shall be selected and read back when the foreground package is built"
+        - row_id: blending_orange_aroma
+          role: "Restored orange aroma"
+          name: "Orange-aroma product flow"
           flow_type: "product"
-          property_unit: "Property and reference unit of each selected flow"
-          description: "Record each physically restored orange aroma, volatile component, pulp or cells, permitted ingredient, and processing aid separately. Do not group undeclared materials into a balancing flow."
+          property_unit: "Mass / kg"
+          description: "Record restored orange aroma separately when it is permitted, declared, and physically added; do not use it as a balancing flow."
           amount:
-            expression: "Measured batch addition by material"
+            expression: "measured batch addition"
             value_mode: "foreground_record"
             specificity: "product_specific"
             basis:
@@ -548,7 +895,83 @@ process_inventory:
               kind: "collected_record"
               collection_protocol_id: cp_material_mass_balance
               source_ids:
-                - codex-cxs-247-2005
+                - fao-who-cxs-247-2005
+            ranges: []
+        - row_id: blending_orange_volatiles
+          role: "Restored orange volatile components"
+          name: "Orange volatile-component product flow"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record restored orange volatile components separately when it is permitted, declared, and physically added; do not use it as a balancing flow."
+          amount:
+            expression: "measured batch addition"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg blended orange juice output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_mass_balance
+              source_ids:
+                - fao-who-cxs-247-2005
+            ranges: []
+        - row_id: blending_orange_pulp_cells
+          role: "Restored orange pulp and cells"
+          name: "Orange pulp or juice-cell product flow"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record restored orange pulp and cells separately when it is permitted, declared, and physically added; do not use it as a balancing flow."
+          amount:
+            expression: "measured batch addition"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg blended orange juice output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_mass_balance
+              source_ids:
+                - fao-who-cxs-247-2005
+            ranges: []
+        - row_id: blending_ascorbic_acid
+          role: "Ascorbic acid addition"
+          name: "Ascorbic acid product flow"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record ascorbic acid addition separately when it is permitted, declared, and physically added; do not use it as a balancing flow."
+          amount:
+            expression: "measured batch addition"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg blended orange juice output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_mass_balance
+              source_ids:
+                - fao-who-cxs-247-2005
+            ranges: []
+        - row_id: blending_citric_acid
+          role: "Citric acid addition"
+          name: "Citric acid product flow"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record citric acid addition separately when it is permitted, declared, and physically added; do not use it as a balancing flow."
+          amount:
+            expression: "measured batch addition"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg blended orange juice output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_mass_balance
+              source_ids:
+                - fao-who-cxs-247-2005
             ranges: []
       waste:
         []
@@ -573,7 +996,7 @@ process_inventory:
               kind: "collected_record"
               collection_protocol_id: cp_product_quality_mass
               source_ids:
-                - codex-cxs-247-2005
+                - fao-who-cxs-247-2005
             ranges: []
       waste:
         - row_id: blending_losses
@@ -618,33 +1041,290 @@ process_inventory:
               collection_protocol_id: cp_product_quality_mass
               source_ids: []
             ranges: []
-        - row_id: final_energy_cooling
-          role: "Final-conditioning energy and cooling"
-          name: "Separate dataset-specific Tiangong product flow for each utility; every UUID shall be selected and read back when the foreground package is built"
+        - row_id: final_electricity
+          role: "Final-conditioning electricity"
+          name: "Purchased electricity supply matching facility voltage and geography"
           flow_type: "product"
-          property_unit: "Energy, mass, or volume in each selected flow reference unit"
-          description: "Record electricity, fuels, steam, heat, cooling media, and refrigerant make-up used for pasteurization or other declared preservation, cooling, storage, and filling."
+          property_unit: "Energy / kWh"
+          description: "Record final-conditioning electricity separately for pasteurization or other declared preservation, cooling, storage, and filling."
           amount:
-            expression: "Metered use or documented equipment allocation"
-            value_mode: "foreground_record"
+            expression: "metered pasteurization, cooling, storage, and filling electricity"
+            value_mode: "calculated_value"
             specificity: "technology_specific"
             basis:
               text: "per 1 kg reference orange juice"
               kind: "reference_flow"
             evidence:
-              kind: "collected_record"
+              kind: "calculated_from_collection"
               collection_protocol_id: cp_utility_records
               source_ids:
                 - fao-fruit-juice-processing-2001
             ranges: []
-        - row_id: packaging_materials
-          role: "Packaging materials supplied"
-          name: "Separate dataset-specific Tiangong product flow for each packaging material; every UUID shall be selected and read back when the foreground package is built"
+        - row_id: final_steam
+          role: "Final-conditioning steam"
+          name: "Purchased steam supply matching declared steam conditions"
           flow_type: "product"
-          property_unit: "Mass / kg or item count with a measured count-to-mass conversion"
-          description: "Record primary, secondary, and tertiary packaging included within the declared handoff boundary, including closures and labels, separately by material."
+          property_unit: "Energy or Mass / MJ or kg steam"
+          description: "Record final-conditioning steam separately for pasteurization or other declared preservation, cooling, storage, and filling."
           amount:
-            expression: "Issued packaging minus measured unused returns, normalized by conforming product output"
+            expression: "steam meter reading corrected for conditions and condensate return"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg reference orange juice"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_utility_records
+              source_ids:
+                - fao-fruit-juice-processing-2001
+            ranges: []
+        - row_id: final_natural_gas
+          role: "Final-conditioning natural gas"
+          name: "Natural gas supply matching facility geography and pressure"
+          flow_type: "product"
+          property_unit: "Energy or Volume / MJ lower heating value or Nm3"
+          description: "Record final-conditioning natural gas separately for pasteurization or other declared preservation, cooling, storage, and filling."
+          amount:
+            expression: "fuel meter reading with lower heating value and standard-condition conversion"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg reference orange juice"
+              kind: "fuel_inventory"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_utility_records
+              source_ids:
+                - fao-fruit-juice-processing-2001
+            ranges: []
+        - row_id: final_cooling_water
+          role: "Final-conditioning cooling-water make-up"
+          name: "Process-water supply matching the facility source"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "Record final-conditioning cooling-water make-up separately for pasteurization or other declared preservation, cooling, storage, and filling."
+          amount:
+            expression: "make-up meter reading after separating recirculation and blowdown"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg reference orange juice"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_utility_records
+              source_ids:
+                - fao-fruit-juice-processing-2001
+            ranges: []
+        - row_id: final_r717_makeup
+          role: "Final-conditioning R717 make-up"
+          name: "Ammonia (R717) refrigerant product flow"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record final-conditioning r717 make-up separately for pasteurization or other declared preservation, cooling, storage, and filling."
+          amount:
+            expression: "service-log make-up mass; circulating charge is not consumption"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg reference orange juice"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_utility_records
+              source_ids:
+                - fao-fruit-juice-processing-2001
+            ranges: []
+        - row_id: final_r404a_makeup
+          role: "Final-conditioning R404A make-up"
+          name: "R404A refrigerant product flow"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record final-conditioning r404a make-up separately for pasteurization or other declared preservation, cooling, storage, and filling."
+          amount:
+            expression: "service-log make-up mass; circulating charge is not consumption"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg reference orange juice"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_utility_records
+              source_ids:
+                - fao-fruit-juice-processing-2001
+            ranges: []
+        - row_id: packaging_steel
+          role: "Steel packaging supplied"
+          name: "Tinplate or steel packaging product flow"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record steel packaging separately from every other primary, secondary, or tertiary packaging material."
+          amount:
+            expression: "issued material minus measured unused returns, normalized by conforming product output"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference orange juice"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_records
+              source_ids: []
+            ranges: []
+        - row_id: packaging_aluminium
+          role: "Aluminium packaging supplied"
+          name: "Aluminium packaging product flow"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record aluminium packaging separately from every other primary, secondary, or tertiary packaging material."
+          amount:
+            expression: "issued material minus measured unused returns, normalized by conforming product output"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference orange juice"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_records
+              source_ids: []
+            ranges: []
+        - row_id: packaging_glass
+          role: "Glass packaging supplied"
+          name: "Container-glass packaging product flow"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record glass packaging separately from every other primary, secondary, or tertiary packaging material."
+          amount:
+            expression: "issued material minus measured unused returns, normalized by conforming product output"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference orange juice"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_records
+              source_ids: []
+            ranges: []
+        - row_id: packaging_pet
+          role: "PET packaging supplied"
+          name: "Polyethylene terephthalate packaging product flow"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record pet packaging separately from every other primary, secondary, or tertiary packaging material."
+          amount:
+            expression: "issued material minus measured unused returns, normalized by conforming product output"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference orange juice"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_records
+              source_ids: []
+            ranges: []
+        - row_id: packaging_pp
+          role: "Polypropylene packaging supplied"
+          name: "Polypropylene packaging product flow"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record polypropylene packaging separately from every other primary, secondary, or tertiary packaging material."
+          amount:
+            expression: "issued material minus measured unused returns, normalized by conforming product output"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference orange juice"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_records
+              source_ids: []
+            ranges: []
+        - row_id: packaging_pe
+          role: "Polyethylene packaging supplied"
+          name: "Polyethylene packaging product flow matching declared grade"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record polyethylene packaging separately from every other primary, secondary, or tertiary packaging material."
+          amount:
+            expression: "issued material minus measured unused returns, normalized by conforming product output"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference orange juice"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_records
+              source_ids: []
+            ranges: []
+        - row_id: packaging_paperboard
+          role: "Paperboard packaging supplied"
+          name: "Paperboard packaging product flow"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record paperboard packaging separately from every other primary, secondary, or tertiary packaging material."
+          amount:
+            expression: "issued material minus measured unused returns, normalized by conforming product output"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference orange juice"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_records
+              source_ids: []
+            ranges: []
+        - row_id: packaging_corrugated_board
+          role: "Corrugated-board packaging supplied"
+          name: "Corrugated-board packaging product flow"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record corrugated-board packaging separately from every other primary, secondary, or tertiary packaging material."
+          amount:
+            expression: "issued material minus measured unused returns, normalized by conforming product output"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference orange juice"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_records
+              source_ids: []
+            ranges: []
+        - row_id: packaging_paper_label
+          role: "Paper labels supplied"
+          name: "Paper label product flow"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record paper labels separately from every other primary, secondary, or tertiary packaging material."
+          amount:
+            expression: "issued material minus measured unused returns, normalized by conforming product output"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference orange juice"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_records
+              source_ids: []
+            ranges: []
+        - row_id: packaging_wood_pallet
+          role: "Wooden pallets supplied"
+          name: "Wooden pallet product flow"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record wooden pallets separately from every other primary, secondary, or tertiary packaging material."
+          amount:
+            expression: "issued material minus measured unused returns, normalized by conforming product output"
             value_mode: "calculated_value"
             specificity: "product_specific"
             basis:
@@ -681,34 +1361,14 @@ process_inventory:
               source_ids: []
             ranges: []
       waste:
-        - row_id: filling_wastes_wastewater
-          role: "Filling rejects, packaging waste, and cleaning wastewater"
-          name: "Separate dataset-specific Tiangong waste or wastewater flow for each material and destination; every UUID shall be selected and read back when the foreground package is built"
+        - row_id: filling_rejected_juice
+          role: "Rejected orange juice"
+          name: "Orange-juice product-residue waste flow"
           flow_type: "waste"
-          property_unit: "Mass / kg for solids and discarded product; Volume / m3 for wastewater"
-          description: "Record discarded juice, packaging rejects, cleaning residues, and net wastewater separately by material and destination; subtract documented internal reuse."
-          amount:
-            expression: "Measured waste mass or discharge volume by class and destination"
-            value_mode: "foreground_record"
-            specificity: "site_specific"
-            basis:
-              text: "per 1 kg reference orange juice"
-              kind: "reference_flow"
-            evidence:
-              kind: "collected_record"
-              collection_protocol_id: cp_water_wastewater
-              source_ids:
-                - world-bank-fruit-vegetable-processing-1998
-            ranges: []
-      elementary:
-        - row_id: final_refrigerant_loss
-          role: "Refrigerant released during final cooling and storage"
-          name: "Dataset-specific Tiangong elementary flow for the released refrigerant; UUID shall be selected and read back when the foreground package is built"
-          flow_type: "elementary"
           property_unit: "Mass / kg"
-          description: "Record actual or reconciled refrigerant loss to air by refrigerant identity."
+          description: "Record rejected orange juice separately by material and treatment destination before recovery credit or netting."
           amount:
-            expression: "Refrigerant inventory balance allocated to final conditioning and storage"
+            expression: "measured rejected juice before rework or recovery"
             value_mode: "calculated_value"
             specificity: "site_specific"
             basis:
@@ -716,8 +1376,257 @@ process_inventory:
               kind: "reference_flow"
             evidence:
               kind: "calculated_from_collection"
+              collection_protocol_id: cp_waste_records
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: filling_wastewater
+          role: "Filling and cleaning wastewater"
+          name: "Wastewater flow matching the receiving treatment route"
+          flow_type: "waste"
+          property_unit: "Volume / m3"
+          description: "Record filling and cleaning wastewater separately by material and treatment destination before recovery credit or netting."
+          amount:
+            expression: "metered discharge or line water balance"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference orange juice"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_waste_records
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: packaging_waste_steel
+          role: "Steel packaging waste"
+          name: "Steel packaging waste flow"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record steel packaging waste separately by material and treatment destination before recovery credit or netting."
+          amount:
+            expression: "issued steel packaging minus incorporated material and documented returns"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference orange juice"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_waste_records
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: packaging_waste_aluminium
+          role: "Aluminium packaging waste"
+          name: "Aluminium packaging waste flow"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record aluminium packaging waste separately by material and treatment destination before recovery credit or netting."
+          amount:
+            expression: "issued aluminium packaging minus incorporated material and documented returns"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference orange juice"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_waste_records
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: packaging_waste_glass
+          role: "Glass packaging waste"
+          name: "Waste container-glass flow"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record glass packaging waste separately by material and treatment destination before recovery credit or netting."
+          amount:
+            expression: "issued glass packaging minus incorporated material and documented returns"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference orange juice"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_waste_records
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: packaging_waste_pet
+          role: "PET packaging waste"
+          name: "Waste polyethylene terephthalate packaging flow"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record pet packaging waste separately by material and treatment destination before recovery credit or netting."
+          amount:
+            expression: "issued PET packaging minus incorporated material and documented returns"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference orange juice"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_waste_records
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: packaging_waste_pp
+          role: "Polypropylene packaging waste"
+          name: "Waste polypropylene packaging flow"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record polypropylene packaging waste separately by material and treatment destination before recovery credit or netting."
+          amount:
+            expression: "issued PP packaging minus incorporated material and documented returns"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference orange juice"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_waste_records
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: packaging_waste_pe
+          role: "Polyethylene packaging waste"
+          name: "Waste polyethylene packaging flow matching declared grade"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record polyethylene packaging waste separately by material and treatment destination before recovery credit or netting."
+          amount:
+            expression: "issued PE packaging minus incorporated material and documented returns"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference orange juice"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_waste_records
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: packaging_waste_paperboard
+          role: "Paperboard packaging waste"
+          name: "Waste paperboard packaging flow"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record paperboard packaging waste separately by material and treatment destination before recovery credit or netting."
+          amount:
+            expression: "issued paperboard minus incorporated material and documented returns"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference orange juice"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_waste_records
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: packaging_waste_corrugated_board
+          role: "Corrugated-board packaging waste"
+          name: "Waste corrugated-board packaging flow"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record corrugated-board packaging waste separately by material and treatment destination before recovery credit or netting."
+          amount:
+            expression: "issued corrugated board minus incorporated material and documented returns"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference orange juice"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_waste_records
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: packaging_waste_paper_label
+          role: "Paper-label waste"
+          name: "Waste paper-label flow"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record paper-label waste separately by material and treatment destination before recovery credit or netting."
+          amount:
+            expression: "issued paper labels minus incorporated material and documented returns"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference orange juice"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_waste_records
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: packaging_waste_wood_pallet
+          role: "Wooden-pallet waste"
+          name: "Waste wooden-pallet flow"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record wooden-pallet waste separately by material and treatment destination before recovery credit or netting."
+          amount:
+            expression: "measured pallet loss or allocated non-reusable pallet share"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference orange juice"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_waste_records
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+      elementary:
+        - row_id: final_r717_emission
+          role: "R717 released during final cooling and storage"
+          name: "Ammonia (R717) to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record measured or reconciled refrigerant loss separately by substance; do not combine different refrigerants."
+          amount:
+            expression: "charge added minus documented recovery and inventory change, allocated to the included equipment"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg reference orange juice"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
               collection_protocol_id: cp_utility_records
-              source_ids: []
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: final_r404a_emission
+          role: "R404A released during final cooling and storage"
+          name: "R404A to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record measured or reconciled refrigerant loss separately by substance; do not combine different refrigerants."
+          amount:
+            expression: "charge added minus documented recovery and inventory change, allocated to the included equipment"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg reference orange juice"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_utility_records
+              source_ids:
+                - eu-jrc-fdm-bref-2019
             ranges: []
 allocation_rules:
   - rule_id: allocation_avoid
@@ -815,6 +1724,18 @@ dataset_production:
       site_scope: "Each included packaging configuration and line"
       aggregation_rule: "Net items used times measured item mass plus measured scrap, divided by conforming product mass"
       quality_evidence: "Approved bill of materials, scale calibration, package mass sample, and reconciliation"
+    - protocol_id: cp_waste_records
+      process_id: "stabilization_filling_handoff"
+      flow_role: "Rejected juice, packaging waste by material, and filling or cleaning wastewater"
+      record_type: "Reject logs, packaging reconciliation, waste dispatch records, and wastewater meters"
+      raw_fields: "timestamp; batch_id; waste_id; material; mass; volume; origin; destination; treatment; rework_or_recovery"
+      collection_method: "Measure each waste material and discharge separately before rework, recovery, treatment, or allocation"
+      unit: "kg and m3"
+      frequency: "Each batch, waste dispatch, or discharge interval"
+      temporal_coverage: "Same representative period as the inventory"
+      site_scope: "Every included filling line, package configuration, and discharge point"
+      aggregation_rule: "Sum by flow identity and destination; reconcile packaging waste to issue/return records and wastewater to the water balance"
+      quality_evidence: "Calibrated scales and meters, reject log, waste receipt, discharge record, and reconciliation"
   calculation_rules:
     - id: calc_reference_normalization
       applies_to: "All foreground inventory rows"
@@ -843,7 +1764,7 @@ dataset_production:
         - "final mass and °Brix"
       output: "Reconstituted orange juice mass and soluble-solids reconciliation"
       source_ids:
-        - codex-cxs-247-2005
+        - fao-who-cxs-247-2005
     - id: calc_single_strength_equivalent
       applies_to: "Optional cross-concentration result"
       rule: "Single-strength-equivalent mass equals as-sold mass multiplied by measured as-sold °Brix divided by the declared single-strength target °Brix"
@@ -853,7 +1774,7 @@ dataset_production:
         - "target °Brix"
       output: "Additional kg single-strength-equivalent result"
       source_ids:
-        - codex-cxs-247-2005
+        - fao-who-cxs-247-2005
     - id: calc_pollutant_load
       applies_to: "Wastewater pollutant releases"
       rule: "Pollutant mass equals net discharged wastewater volume multiplied by representative measured concentration with consistent unit conversion"
@@ -905,7 +1826,7 @@ validation_rules:
     rule: "Fail if the actual product is not orange juice, if it is nectar, a drink, a mixed-fruit juice, fermented, or an isolated by-product, or if required product-state qualifiers are missing."
     source_ids:
       - unsd-cpc-3-2025
-      - codex-cxs-247-2005
+      - fao-who-cxs-247-2005
   - rule_id: validate_reference_mass
     applies_to: "Quantitative reference"
     rule: "Require exactly 1 kg net as-sold orange juice output after normalization, Mass property, kg unit, and the declared generic or more specific read-back Tiangong product flow."
@@ -919,7 +1840,7 @@ validation_rules:
     applies_to: "Concentrated and from-concentrate products"
     rule: "Require measured input and output mass and °Brix, water additions or removals, applicable Codex or market specification, and a soluble-solids reconciliation. Do not compare concentration states as if 1 kg provided an equal quantity of orange soluble solids."
     source_ids:
-      - codex-cxs-247-2005
+      - fao-who-cxs-247-2005
   - rule_id: validate_mass_balance
     applies_to: "Each process and the route"
     rule: "Require a documented mass-balance reconciliation covering product, co-products, internal transfers, wastes, wastewater where mass is available, and identified residuals; reject an unexplained balancing flow."
@@ -940,6 +1861,12 @@ validation_rules:
     rule: "Require an appropriate upstream dataset or an explicit unresolved data gap for oranges, purchased juice or concentrate, ingredients, packaging, water, energy, and treatment services; reject recursive duplication of supplier orange-juice operations."
     source_ids:
       - eu-pef-method-2021
+  - rule_id: validate_atomic_inventory
+    applies_to: "Utility, packaging, waste, and refrigerant identity"
+    rule: "Fail if electricity, steam, natural gas, cooling-water make-up, each refrigerant, each packaging material, packaging waste, rejected juice, or filling wastewater covered by this PCR is represented by a combined placeholder instead of a separately identifiable flow row."
+    source_ids:
+      - eu-pef-method-2021
+      - eu-jrc-fdm-bref-2019
 published_dataset_profile:
   dataset_role: "Foreground orange juice production dataset at a declared manufacturer-gate handoff"
   downstream_use: "secondary_dataset; background_dataset when reviewed, representative, and accompanied by the required quality disclosure"
@@ -953,7 +1880,7 @@ data_sources:
     type: "official_guidance"
     reference: "United Nations Statistics Division, Central Product Classification Version 3.0, Explanatory Notes, 30 June 2025, subclass 21431. https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Exp_Notes_30Jun2025.pdf (retrieved 2026-08-11)"
     used_for: "Classification scope and separation from other fruit juices and mixtures"
-  - id: "codex-cxs-247-2005"
+  - id: "fao-who-cxs-247-2005"
     type: "standard"
     reference: "FAO/WHO Codex Alimentarius, General Standard for Fruit Juices and Nectars, CXS 247-2005, amended 2025. https://www.fao.org/fao-who-codexalimentarius/sh-proxy/tr/?lnk=1&url=https%253A%252F%252Fworkspace.fao.org%252Fsites%252Fcodex%252FStandards%252FCXS%2B247-2005%252FCXS_247e.pdf (retrieved 2026-08-11)"
     used_for: "Orange juice, concentrate, reconstitution, composition, °Brix, processing aids, hygiene, and labelling rules"
@@ -969,6 +1896,10 @@ data_sources:
     type: "official_guidance"
     reference: "World Bank Group, Pollution Prevention and Abatement Handbook: Fruit and Vegetable Processing, effective July 1998. https://www.ifc.org/content/dam/ifc/doc/1990/fruitandvg-ppah.pdf (retrieved 2026-08-11)"
     used_for: "Water, wastewater, solid waste, pollution prevention, discharge monitoring, and treatment-flow identification"
+  - id: "eu-jrc-fdm-bref-2019"
+    type: "official_guidance"
+    reference: "European Commission Joint Research Centre, Best Available Techniques Reference Document in the Food, Drink and Milk Industries, JRC118627, 2019. https://bureau-industrial-transformation.jrc.ec.europa.eu/sites/default/files/2020-01/JRC118627_FDM_Bref_2019_published.pdf (retrieved 2026-08-11)"
+    used_for: "Separate energy carriers, cooling water, refrigerants, packaging materials, wastes, wastewater, and direct releases in food and beverage processing inventories"
 projection_metadata:
   contract_version: "1"
   generator: "tiangong-pcr-builder/markdown-projection"
@@ -976,5 +1907,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:02394bd8620297cb56166162621f4f2b9cf78ec519589c59c28a287bccc6a065"
-  generated_content_sha256: "sha256:3f1b050a73a81a07b9658ce2e502a2ee4a944b1ad6633dd7777635f4cdac2a9d"
+    sha256: "sha256:a58239c051999937c2314539ceba52cff42caffa786c47b061d0603694104f98"
+  generated_content_sha256: "sha256:c90842aa234409d253392f95848330acbb050c43033bd9b095bb90ebb0ae1f99"

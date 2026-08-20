@@ -40,7 +40,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 1 kg 合格产品净质量 |
-| 参考产品流 | Products n.e.c. of fish, crustaceans, molluscs or other aquatic invertebrates; dead fish, crustaceans, molluscs or other aquatic invertebrates unfit for human consumption `96594bec-f1eb-4559-b4b2-2be03ec8f1cf` |
+| 参考产品流 | 鱼类、甲壳类、软体动物或其他水生无脊椎动物的未另作规定的产品，不适合人类食用的死鱼、甲壳类、软体动物或其他水生无脊椎动物 `96594bec-f1eb-4559-b4b2-2be03ec8f1cf` |
 | 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | kg |
@@ -353,7 +353,7 @@ sync_with: pcr.en-US.md
 
 这是精确通用 CPC 21299 产品流。必须明确保留不适合人类食用或其他声明的非食品身份；不得建模为食品。
 
-- 选定流：Products n.e.c. of fish, crustaceans, molluscs or other aquatic invertebrates; dead fish, crustaceans, molluscs or other aquatic invertebrates unfit for human consumption `96594bec-f1eb-4559-b4b2-2be03ec8f1cf`
+- 选定流：鱼类、甲壳类、软体动物或其他水生无脊椎动物的未另作规定的产品，不适合人类食用的死鱼、甲壳类、软体动物或其他水生无脊椎动物 `96594bec-f1eb-4559-b4b2-2be03ec8f1cf`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：应用所有适用质量扣除和换算后，按定义恰好为 1 kg 合格净产品
 - 数值来源模式：固定值（`fixed_value`）

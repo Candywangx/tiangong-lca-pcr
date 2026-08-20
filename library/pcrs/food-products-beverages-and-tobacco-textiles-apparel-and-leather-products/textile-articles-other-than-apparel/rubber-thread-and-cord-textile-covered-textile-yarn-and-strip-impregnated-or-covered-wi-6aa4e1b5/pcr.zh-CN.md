@@ -129,7 +129,7 @@ sync_with: pcr.en-US.md
 
 包覆、卷绕、检验和包装设备所用电力与所有热燃料分别记录。
 
-- 选定流：Electricity
+- 选定流：电力
 - 流属性/单位：Energy / kWh
 - 数量规则：优先使用路线特定计量；否则使用设备功率和运行时间记录分配经核对的电表总量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -167,7 +167,7 @@ sync_with: pcr.en-US.md
 
 这是该路线的可销售产品输出和定量参考。精确天工身份已通过 state100 核验为 Product flow、CPC 27992、Mass 和 kg。
 
-- 选定流：Rubber thread and cord, textile covered, textile yarn and strip, impregnated or covered with rubber or plastics `45e76d26-21e8-40f1-af58-1cc181d6832f`
+- 选定流：橡胶线和绳，已涂面的纺织品，已用橡胶或塑料浸渍或涂覆的线和纱条 `45e76d26-21e8-40f1-af58-1cc181d6832f`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：记录已声明水分状态下的合格产品净质量，并归一化为 1 kg。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -282,7 +282,7 @@ sync_with: pcr.en-US.md
 
 加入涂层液或用于路线特定清洗的水作为单一场址输入记录，并纳入水量平衡。
 
-- 选定流：Process water
+- 选定流：过程用水
 - 流属性/单位：Water volume / m3
 - 数量规则：记录归属于涂层路线的计量或批次体积输入，扣除从未跨越过程边界的内部回收水。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -297,7 +297,7 @@ sync_with: pcr.en-US.md
 
 混合、浸渍或涂层、通风、卷绕、检验和包装所用电力与燃料分别计量。
 
-- 选定流：Electricity
+- 选定流：电力
 - 流属性/单位：Energy / kWh
 - 数量规则：优先使用路线特定计量；否则使用设备功率和运行时间记录分配经核对的电表总量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -312,7 +312,7 @@ sync_with: pcr.en-US.md
 
 用于路线特定干燥或固化热设备的天然气在适用时记录，且不得与电力或另一种燃料合并。
 
-- 选定流：Natural gas
+- 选定流：天然气
 - 流属性/单位：Energy / MJ
 - 数量规则：记录涂层路线的交付体积及热值或直接能量计量；未使用时标为不适用。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -350,7 +350,7 @@ sync_with: pcr.en-US.md
 
 这是该路线的可销售产品输出和定量参考。精确天工身份已通过 state100 核验为 Product flow、CPC 27992、Mass 和 kg。
 
-- 选定流：Rubber thread and cord, textile covered, textile yarn and strip, impregnated or covered with rubber or plastics `45e76d26-21e8-40f1-af58-1cc181d6832f`
+- 选定流：橡胶线和绳，已涂面的纺织品，已用橡胶或塑料浸渍或涂覆的线和纱条 `45e76d26-21e8-40f1-af58-1cc181d6832f`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：记录已声明水分状态下的合格产品净质量，并归一化为 1 kg。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -429,7 +429,7 @@ sync_with: pcr.en-US.md
 
 仅当已声明胶乳配方或过程记录证明使用氨，且实测或经批准计算确定向空气排放时记录氨。
 
-- 选定流：Ammonia to air
+- 选定流：氨，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：针对指定空气环境使用场址排放测量或有文件证明的物质平衡；无氨时标为不适用。
 - 数值来源模式：前景记录（`foreground_record`）

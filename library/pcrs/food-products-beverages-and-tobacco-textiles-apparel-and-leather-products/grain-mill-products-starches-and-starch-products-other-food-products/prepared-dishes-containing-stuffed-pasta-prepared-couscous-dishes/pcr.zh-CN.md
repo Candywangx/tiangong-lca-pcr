@@ -40,7 +40,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 1 kg |
-| 参考产品流 | Prepared dishes containing stuffed pasta, prepared couscous dishes `6ff6840a-8860-4e91-be9a-40d993df7105` |
+| 参考产品流 | 含有带馅面食的预制菜肴，预制粗麦粉菜肴 `6ff6840a-8860-4e91-be9a-40d993df7105` |
 | 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | kg |
@@ -383,7 +383,7 @@ sync_with: pcr.en-US.md
 
 本项为定量参考输出。净食品质量与包装质量应分开记录，并保留所声明食用准备状态和储存状态。
 
-- 选定流：Prepared dishes containing stuffed pasta, prepared couscous dishes `6ff6840a-8860-4e91-be9a-40d993df7105`
+- 选定流：含有带馅面食的预制菜肴，预制粗麦粉菜肴 `6ff6840a-8860-4e91-be9a-40d993df7105`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：固定定量参考为 1 kg 净重可销售食品
 - 数值来源模式：固定值（`fixed_value`）

@@ -42,7 +42,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 1 kg 净产品 |
-| 参考产品流 | Extracts and juices of meat, fish, crustaceans, molluscs or other aquatic invertebrates `0238a5c5-5b90-4881-8277-cd862a581eb8` |
+| 参考产品流 | 肉类、鱼类、甲壳类、软体动物或其他水生无脊椎动物的提取物和汁液 `0238a5c5-5b90-4881-8277-cd862a581eb8` |
 | 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | kg |
@@ -231,7 +231,7 @@ Sea cucumber body wall 仅在数据包锁定该精确物种和组织时跨越设
 
 Grid electricity 仅在实际跨越本过程边界时作为一个具体交换独立记录，数量按下述协议取得。
 
-- 选定流：Grid electricity
+- 选定流：电网电力
 - 流属性/单位：Energy / kWh
 - 数量规则：计量并分配给实际使用该电力的批次或期间。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -309,7 +309,7 @@ Raw-material rinse wastewater 作为一个物理上独立的废物流记录，�
 
 Grid electricity 仅在实际跨越本过程边界时作为一个具体交换独立记录，数量按下述协议取得。
 
-- 选定流：Grid electricity
+- 选定流：电网电力
 - 流属性/单位：Energy / kWh
 - 数量规则：计量并分配给实际使用该电力的批次或期间。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -324,7 +324,7 @@ Grid electricity 仅在实际跨越本过程边界时作为一个具体交换独
 
 Purchased steam 仅在实际跨越本过程边界时作为一个具体交换独立记录，数量按下述协议取得。
 
-- 选定流：Purchased steam
+- 选定流：外购蒸汽
 - 流属性/单位：Energy / MJ
 - 数量规则：由实测质量或流量以及实测焓或温度差计算有用能量。
 - 数值来源模式：计算值（`calculated_value`）
@@ -339,7 +339,7 @@ Purchased steam 仅在实际跨越本过程边界时作为一个具体交换独�
 
 Purchased hot water 仅在实际跨越本过程边界时作为一个具体交换独立记录，数量按下述协议取得。
 
-- 选定流：Purchased hot water
+- 选定流：外购热水
 - 流属性/单位：Energy / MJ
 - 数量规则：由实测质量或流量以及实测焓或温度差计算有用能量。
 - 数值来源模式：计算值（`calculated_value`）
@@ -369,7 +369,7 @@ Potable process water 仅在实际跨越本过程边界时作为一个具体交�
 
 Sodium chloride 仅在实际跨越本过程边界时作为一个具体交换独立记录，数量按下述协议取得。
 
-- 选定流：Sodium chloride
+- 选定流：氯化钠
 - 流属性/单位：Mass / kg
 - 数量规则：由经校准称量或库存记录直接取得该具体交换质量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -429,7 +429,7 @@ Hydrochloric acid 仅在实际跨越本过程边界时作为一个具体交换�
 
 Sodium hydroxide 仅在实际跨越本过程边界时作为一个具体交换独立记录，数量按下述协议取得。
 
-- 选定流：Sodium hydroxide
+- 选定流：氢氧化钠
 - 流属性/单位：Mass / kg
 - 数量规则：由经校准称量或库存记录直接取得该具体交换质量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -477,7 +477,7 @@ Polydimethylsiloxane 仅在实际跨越本过程边界时作为一个具体交�
 
 Grid electricity 仅在实际跨越本过程边界时作为一个具体交换独立记录，数量按下述协议取得。
 
-- 选定流：Grid electricity
+- 选定流：电网电力
 - 流属性/单位：Energy / kWh
 - 数量规则：计量并分配给实际使用该电力的批次或期间。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -840,7 +840,7 @@ Separation wastewater 作为一个物理上独立的废物流记录，不得与�
 
 Grid electricity 仅在实际跨越本过程边界时作为一个具体交换独立记录，数量按下述协议取得。
 
-- 选定流：Grid electricity
+- 选定流：电网电力
 - 流属性/单位：Energy / kWh
 - 数量规则：计量并分配给实际使用该电力的批次或期间。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -855,7 +855,7 @@ Grid electricity 仅在实际跨越本过程边界时作为一个具体交换独
 
 Purchased steam 仅在实际跨越本过程边界时作为一个具体交换独立记录，数量按下述协议取得。
 
-- 选定流：Purchased steam
+- 选定流：外购蒸汽
 - 流属性/单位：Energy / MJ
 - 数量规则：由实测质量或流量以及实测焓或温度差计算有用能量。
 - 数值来源模式：计算值（`calculated_value`）
@@ -870,7 +870,7 @@ Purchased steam 仅在实际跨越本过程边界时作为一个具体交换独�
 
 Purchased hot water 仅在实际跨越本过程边界时作为一个具体交换独立记录，数量按下述协议取得。
 
-- 选定流：Purchased hot water
+- 选定流：外购热水
 - 流属性/单位：Energy / MJ
 - 数量规则：由实测质量或流量以及实测焓或温度差计算有用能量。
 - 数值来源模式：计算值（`calculated_value`）
@@ -885,7 +885,7 @@ Purchased hot water 仅在实际跨越本过程边界时作为一个具体交换
 
 Compressed air 仅在实际跨越本过程边界时作为一个具体交换独立记录，数量按下述协议取得。
 
-- 选定流：Compressed air
+- 选定流：压缩空气
 - 流属性/单位：Normal volume / m3
 - 数量规则：由经校准仪表直接计量，或由有记录的经校准罐体积推导。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -948,7 +948,7 @@ Particulate matter, less than or equal to 10 micrometres, to air 作为一个独
 
 Grid electricity 仅在实际跨越本过程边界时作为一个具体交换独立记录，数量按下述协议取得。
 
-- 选定流：Grid electricity
+- 选定流：电网电力
 - 流属性/单位：Energy / kWh
 - 数量规则：计量并分配给实际使用该电力的批次或期间。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1005,7 +1005,7 @@ Ammonia refrigerant, R717 按具体物质单独记录，不得与其他制冷剂
 
 Ammonia to air 作为一个独立基本流记录，并由同一报告区间的匹配前景测量计算。
 
-- 选定流：Ammonia to air
+- 选定流：氨，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：按该具体物质的期初、补充、回收、退回和期末库存平衡计算。
 - 数值来源模式：计算值（`calculated_value`）
@@ -1041,7 +1041,7 @@ Potable process water 仅在实际跨越本过程边界时作为一个具体交�
 
 Grid electricity 仅在实际跨越本过程边界时作为一个具体交换独立记录，数量按下述协议取得。
 
-- 选定流：Grid electricity
+- 选定流：电网电力
 - 流属性/单位：Energy / kWh
 - 数量规则：计量并分配给实际使用该电力的批次或期间。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1056,7 +1056,7 @@ Grid electricity 仅在实际跨越本过程边界时作为一个具体交换独
 
 Purchased steam 仅在实际跨越本过程边界时作为一个具体交换独立记录，数量按下述协议取得。
 
-- 选定流：Purchased steam
+- 选定流：外购蒸汽
 - 流属性/单位：Energy / MJ
 - 数量规则：由实测质量或流量以及实测焓或温度差计算有用能量。
 - 数值来源模式：计算值（`calculated_value`）
@@ -1071,7 +1071,7 @@ Purchased steam 仅在实际跨越本过程边界时作为一个具体交换独�
 
 Purchased hot water 仅在实际跨越本过程边界时作为一个具体交换独立记录，数量按下述协议取得。
 
-- 选定流：Purchased hot water
+- 选定流：外购热水
 - 流属性/单位：Energy / MJ
 - 数量规则：由实测质量或流量以及实测焓或温度差计算有用能量。
 - 数值来源模式：计算值（`calculated_value`）
@@ -1086,7 +1086,7 @@ Purchased hot water 仅在实际跨越本过程边界时作为一个具体交换
 
 Sodium hydroxide 仅在实际跨越本过程边界时作为一个具体交换独立记录，数量按下述协议取得。
 
-- 选定流：Sodium hydroxide
+- 选定流：氢氧化钠
 - 流属性/单位：Mass / kg
 - 数量规则：由经校准称量或库存记录直接取得该具体交换质量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1101,7 +1101,7 @@ Sodium hydroxide 仅在实际跨越本过程边界时作为一个具体交换独
 
 Nitric acid 仅在实际跨越本过程边界时作为一个具体交换独立记录，数量按下述协议取得。
 
-- 选定流：Nitric acid
+- 选定流：硝酸
 - 流属性/单位：Mass / kg
 - 数量规则：由经校准称量或库存记录直接取得该具体交换质量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1116,7 +1116,7 @@ Nitric acid 仅在实际跨越本过程边界时作为一个具体交换独立�
 
 Peracetic acid 仅在实际跨越本过程边界时作为一个具体交换独立记录，数量按下述协议取得。
 
-- 选定流：Peracetic acid
+- 选定流：过氧乙酸
 - 流属性/单位：Mass / kg
 - 数量规则：由经校准称量或库存记录直接取得该具体交换质量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1131,7 +1131,7 @@ Peracetic acid 仅在实际跨越本过程边界时作为一个具体交换独�
 
 Sodium hypochlorite 仅在实际跨越本过程边界时作为一个具体交换独立记录，数量按下述协议取得。
 
-- 选定流：Sodium hypochlorite
+- 选定流：次氯酸钠
 - 流属性/单位：Mass / kg
 - 数量规则：由经校准称量或库存记录直接取得该具体交换质量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1171,7 +1171,7 @@ Cleaning-in-place wastewater 作为一个物理上独立的废物流记录，不
 
 Wastewater-treatment sludge 作为一个物理上独立的废物流记录，不得与其他废物合并。
 
-- 选定流：Wastewater-treatment sludge
+- 选定流：废水处理污泥
 - 流属性/单位：Mass / kg
 - 数量规则：由经校准称量或库存记录直接取得该具体交换质量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1188,7 +1188,7 @@ Wastewater-treatment sludge 作为一个物理上独立的废物流记录，不�
 
 Chemical oxygen demand to water 作为一个独立基本流记录，并由同一报告区间的匹配前景测量计算。
 
-- 选定流：Chemical oxygen demand to water
+- 选定流：化学需氧量，排入水体
 - 流属性/单位：Mass / kg
 - 数量规则：实测该污染物浓度乘以同一时段对应排放体积。
 - 数值来源模式：计算值（`calculated_value`）
@@ -1218,7 +1218,7 @@ Biochemical oxygen demand, 5 days, to water 作为一个独立基本流记录，
 
 Total suspended solids to water 作为一个独立基本流记录，并由同一报告区间的匹配前景测量计算。
 
-- 选定流：Total suspended solids to water
+- 选定流：总悬浮固体，排入水体
 - 流属性/单位：Mass / kg
 - 数量规则：实测该污染物浓度乘以同一时段对应排放体积。
 - 数值来源模式：计算值（`calculated_value`）
@@ -1233,7 +1233,7 @@ Total suspended solids to water 作为一个独立基本流记录，并由同一
 
 Total nitrogen to water 作为一个独立基本流记录，并由同一报告区间的匹配前景测量计算。
 
-- 选定流：Total nitrogen to water
+- 选定流：总氮，排入水体
 - 流属性/单位：Mass / kg
 - 数量规则：实测该污染物浓度乘以同一时段对应排放体积。
 - 数值来源模式：计算值（`calculated_value`）
@@ -1248,7 +1248,7 @@ Total nitrogen to water 作为一个独立基本流记录，并由同一报告�
 
 Total phosphorus to water 作为一个独立基本流记录，并由同一报告区间的匹配前景测量计算。
 
-- 选定流：Total phosphorus to water
+- 选定流：总磷，排入水体
 - 流属性/单位：Mass / kg
 - 数量规则：实测该污染物浓度乘以同一时段对应排放体积。
 - 数值来源模式：计算值（`calculated_value`）
@@ -1263,7 +1263,7 @@ Total phosphorus to water 作为一个独立基本流记录，并由同一报告
 
 Chloride to water 作为一个独立基本流记录，并由同一报告区间的匹配前景测量计算。
 
-- 选定流：Chloride to water
+- 选定流：氯化物，排入水体
 - 流属性/单位：Mass / kg
 - 数量规则：实测该污染物浓度乘以同一时段对应排放体积。
 - 数值来源模式：计算值（`calculated_value`）
@@ -1284,7 +1284,7 @@ Chloride to water 作为一个独立基本流记录，并由同一报告区间�
 
 Natural gas 仅在实际跨越本过程边界时作为一个具体交换独立记录，数量按下述协议取得。
 
-- 选定流：Natural gas
+- 选定流：天然气
 - 流属性/单位：Energy / MJ
 - 数量规则：依据相应采集协议的前景记录直接取得该具体交换量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1299,7 +1299,7 @@ Natural gas 仅在实际跨越本过程边界时作为一个具体交换独立�
 
 Diesel fuel 仅在实际跨越本过程边界时作为一个具体交换独立记录，数量按下述协议取得。
 
-- 选定流：Diesel fuel
+- 选定流：柴油燃料
 - 流属性/单位：Mass / kg
 - 数量规则：由经校准称量或库存记录直接取得该具体交换质量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1314,7 +1314,7 @@ Diesel fuel 仅在实际跨越本过程边界时作为一个具体交换独立�
 
 Liquefied petroleum gas 仅在实际跨越本过程边界时作为一个具体交换独立记录，数量按下述协议取得。
 
-- 选定流：Liquefied petroleum gas
+- 选定流：液化石油气
 - 流属性/单位：Mass / kg
 - 数量规则：由经校准称量或库存记录直接取得该具体交换质量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1384,7 +1384,7 @@ On-site generated hot water 仅在实际跨越本过程边界时作为一个具�
 
 Boiler blowdown wastewater 作为一个物理上独立的废物流记录，不得与其他废物合并。
 
-- 选定流：Boiler blowdown wastewater
+- 选定流：锅炉排污废水
 - 流属性/单位：Volume / m3
 - 数量规则：由经校准仪表直接计量，或由有记录的经校准罐体积推导。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1401,7 +1401,7 @@ Boiler blowdown wastewater 作为一个物理上独立的废物流记录，不�
 
 Carbon dioxide, fossil, to air 作为一个独立基本流记录，并由同一报告区间的匹配前景测量计算。
 
-- 选定流：Carbon dioxide, fossil, to air
+- 选定流：化石源二氧化碳，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：用物质特定实测浓度和对应干气体积计算，或采用有记录的场址特定燃料平衡。
 - 数值来源模式：计算值（`calculated_value`）
@@ -1431,7 +1431,7 @@ Nitrogen oxides, expressed as nitrogen dioxide, to air 作为一个独立基本�
 
 Sulfur dioxide to air 作为一个独立基本流记录，并由同一报告区间的匹配前景测量计算。
 
-- 选定流：Sulfur dioxide to air
+- 选定流：二氧化硫，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：用物质特定实测浓度和对应干气体积计算，或采用有记录的场址特定燃料平衡。
 - 数值来源模式：计算值（`calculated_value`）
@@ -1461,7 +1461,7 @@ Particulate matter, less than or equal to 10 micrometres, to air 作为一个独
 
 Carbon monoxide to air 作为一个独立基本流记录，并由同一报告区间的匹配前景测量计算。
 
-- 选定流：Carbon monoxide to air
+- 选定流：一氧化碳，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：用物质特定实测浓度和对应干气体积计算，或采用有记录的场址特定燃料平衡。
 - 数值来源模式：计算值（`calculated_value`）
@@ -1476,7 +1476,7 @@ Carbon monoxide to air 作为一个独立基本流记录，并由同一报告区
 
 Methane to air 作为一个独立基本流记录，并由同一报告区间的匹配前景测量计算。
 
-- 选定流：Methane to air
+- 选定流：甲烷，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：用物质特定实测浓度和对应干气体积计算，或采用有记录的场址特定燃料平衡。
 - 数值来源模式：计算值（`calculated_value`）
@@ -1617,7 +1617,7 @@ Paperboard carton 作为一个具体包装组件独立记录，不与其他包�
 
 Wooden pallet 作为一个具体包装组件独立记录，不与其他包装组件合并。
 
-- 选定流：Wooden pallet
+- 选定流：木托盘
 - 流属性/单位：Mass / kg
 - 数量规则：由相应采集协议的实测记录计算，并保留分配依据和单位换算。
 - 数值来源模式：计算值（`calculated_value`）
@@ -1632,7 +1632,7 @@ Wooden pallet 作为一个具体包装组件独立记录，不与其他包装组
 
 Low-density polyethylene stretch film 作为一个具体包装组件独立记录，不与其他包装组件合并。
 
-- 选定流：Low-density polyethylene stretch film
+- 选定流：低密度聚乙烯拉伸膜
 - 流属性/单位：Mass / kg
 - 数量规则：由经校准称量或库存记录直接取得该具体交换质量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1655,7 +1655,7 @@ Low-density polyethylene stretch film 作为一个具体包装组件独立记录
 
 该输出是具有已锁定物种、组织、物态、固形物含量和包装配置的一种提取物或汁液。
 
-- 选定流：Extracts and juices of meat, fish, crustaceans, molluscs or other aquatic invertebrates `0238a5c5-5b90-4881-8277-cd862a581eb8`
+- 选定流：肉类、鱼类、甲壳类、软体动物或其他水生无脊椎动物的提取物和汁液 `0238a5c5-5b90-4881-8277-cd862a581eb8`
 - 流属性/单位：Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg
 - 数量规则：恰好 1 kg 不含包装的合格净产品。
 - 数值来源模式：固定值（`fixed_value`）
@@ -1763,7 +1763,7 @@ Waste paperboard carton 作为一个物理上独立的废物流记录，不得�
 
 Carbon dioxide, fossil, to air 作为一个独立基本流记录，并由同一报告区间的匹配前景测量计算。
 
-- 选定流：Carbon dioxide, fossil, to air
+- 选定流：化石源二氧化碳，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：按该具体物质的期初、补充、回收、退回和期末库存平衡计算。
 - 数值来源模式：计算值（`calculated_value`）
@@ -1778,7 +1778,7 @@ Carbon dioxide, fossil, to air 作为一个独立基本流记录，并由同一�
 
 1,1,1,2-Tetrafluoroethane to air 作为一个独立基本流记录，并由同一报告区间的匹配前景测量计算。
 
-- 选定流：1,1,1,2-Tetrafluoroethane to air
+- 选定流：1,1,1,2-四氟乙烷，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：按该具体物质的期初、补充、回收、退回和期末库存平衡计算。
 - 数值来源模式：计算值（`calculated_value`）

@@ -40,7 +40,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 1 kg 净产品 |
-| 参考产品流 | Coconut milk `683e1059-d269-4198-a67d-f306a86bcf8d` |
+| 参考产品流 | 椰奶 `683e1059-d269-4198-a67d-f306a86bcf8d` |
 | 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | kg |
@@ -394,7 +394,7 @@ sync_with: pcr.en-US.md
 
 记录跨越过程边界的蒸汽。下述已核验天工流仅对应 11.0 MPaG 蒸汽；只有供汽等级匹配时才可采用，否则须把实际压力和温度解析为另一条独立流。
 
-- 选定流：Steam, 11.0 MPaG `293f9fd9-5182-4d35-8aa5-ce73d4f322b7`
+- 选定流：蒸汽 `293f9fd9-5182-4d35-8aa5-ce73d4f322b7`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：蒸汽流量计读数或经凝结水修正的质量平衡
 - 数值来源模式：前景记录（`foreground_record`）
@@ -424,7 +424,7 @@ sync_with: pcr.en-US.md
 
 记录现场热处理或热水制备用管道天然气。只有燃料和设备记录证明未使用天然气时才可填零。
 
-- 选定流：Natural gas in the gaseous state `4f19ca0e-7b3b-11dd-ad8b-0800200c9a66`
+- 选定流：气态天然气 `4f19ca0e-7b3b-11dd-ad8b-0800200c9a66`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：计量燃料质量，或按实测密度和已声明低位热值把计量体积换算为质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -439,7 +439,7 @@ sync_with: pcr.en-US.md
 
 仅在实际锅炉、加热器或备用热源燃用柴油时记录，并与其他燃料分开。
 
-- 选定流：Diesel oil `9d258d75-6792-4f1c-9856-81602ed8f816`
+- 选定流：柴油 `9d258d75-6792-4f1c-9856-81602ed8f816`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：计量罐区领用量并与期初、期末库存核对
 - 数值来源模式：前景记录（`foreground_record`）
@@ -454,7 +454,7 @@ sync_with: pcr.en-US.md
 
 仅在液化石油气确为保藏或热水燃料时记录。钢瓶或储罐用量须与天然气和柴油分开。
 
-- 选定流：Liquefied petroleum gas `d54ae71a-1245-4e3f-b694-dbf2b22bbf7d`
+- 选定流：液化石油气 `d54ae71a-1245-4e3f-b694-dbf2b22bbf7d`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：计量钢瓶或储罐领用量并与库存变化核对
 - 数值来源模式：前景记录（`foreground_record`）
@@ -469,7 +469,7 @@ sync_with: pcr.en-US.md
 
 记录场址控制的泵、热处理设备、灌装机、输送机、喷码、冷却和冷藏暂存用电。
 
-- 选定流：Alternating current, electricity mix, consumption mix, less than 1 kV `50657322-939c-4829-a87b-47c093bfa6a7`
+- 选定流：交流电 `50657322-939c-4829-a87b-47c093bfa6a7`
 - 流属性/单位：Net calorific value `93a60a56-a3c8-11da-a746-0800200c9a66` / kWh
 - 数量规则：分表计量电量，或按设备功率和运行时间进行工程分配
 - 数值来源模式：前景记录（`foreground_record`）
@@ -515,7 +515,7 @@ sync_with: pcr.en-US.md
 
 这是在完成已声明保藏、灌装、完整性检查以及放行所需冷却或常温调节后的参考产品。
 
-- 选定流：Coconut milk `683e1059-d269-4198-a67d-f306a86bcf8d`
+- 选定流：椰奶 `683e1059-d269-4198-a67d-f306a86bcf8d`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：1 kg 净已放行产品的固定参考输出
 - 数值来源模式：固定值（`fixed_value`）

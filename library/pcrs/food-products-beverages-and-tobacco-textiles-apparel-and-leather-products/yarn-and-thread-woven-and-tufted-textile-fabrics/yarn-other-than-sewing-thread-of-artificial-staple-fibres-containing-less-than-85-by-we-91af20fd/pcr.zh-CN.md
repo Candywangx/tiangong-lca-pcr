@@ -40,7 +40,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 1 kg |
-| 参考产品流 | Yarn (other than sewing thread) of artificial staple fibres, containing less than 85% by weight of such fibres, not put up for retail sale `2fde586f-9999-4f3e-8022-fe0d8a19e270` |
+| 参考产品流 | 非供零售的人造短纤维纱线（缝纫线除外），按重量计，此类纤维的含量低于 85 `2fde586f-9999-4f3e-8022-fe0d8a19e270` |
 | 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | kg |
@@ -164,7 +164,7 @@ sync_with: pcr.en-US.md
 
 这是纺纱厂大门处的合格净纱输出。载体和包装质量不计入 1 kg 参考数量；随产品交付时另行记录。
 
-- 选定流：Yarn (other than sewing thread) of artificial staple fibres, containing less than 85% by weight of such fibres, not put up for retail sale `2fde586f-9999-4f3e-8022-fe0d8a19e270`
+- 选定流：非供零售的人造短纤维纱线（缝纫线除外），按重量计，此类纤维的含量低于 85 `2fde586f-9999-4f3e-8022-fe0d8a19e270`
 - 流属性/单位：Mass / kg
 - 数量规则：在已声明调湿或含水状态下，按实测合格净纱质量归一化后精确设为 1 kg。
 - 数值来源模式：固定值（`fixed_value`）

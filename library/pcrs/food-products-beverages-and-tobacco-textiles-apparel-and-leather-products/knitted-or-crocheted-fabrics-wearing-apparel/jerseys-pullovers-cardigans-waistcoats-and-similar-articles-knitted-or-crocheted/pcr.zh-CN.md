@@ -40,7 +40,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 1 kg |
-| 参考产品流 | Jerseys, pullovers, cardigans, waistcoats and similar articles, knitted or crocheted `eccda6b6-0639-4a61-8af1-4bea892ac61c` |
+| 参考产品流 | 针织或钩编的运动衫、套衫、开襟绒线衫、马甲及其他类似物品 `eccda6b6-0639-4a61-8af1-4bea892ac61c` |
 | 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | kg |
@@ -205,7 +205,7 @@ sync_with: pcr.en-US.md
 
 记录针织或钩编设备及可直接归属的辅助设备用电。
 
-- 选定流：Grid electricity
+- 选定流：电网电力
 - 流属性/单位：Energy / kWh
 - 数量规则：分表电量；否则采用有文件依据的机器时间和额定负荷计算分配
 - 数值来源模式：前景记录（`foreground_record`）
@@ -298,7 +298,7 @@ sync_with: pcr.en-US.md
 
 记录跨越湿处理边界的过程水。
 
-- 选定流：Process water
+- 选定流：过程用水
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg；Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66`
 - 数量规则：计量的批次用水，包括补充水和漂洗水，扣除单独计量的内部回用水
 - 数值来源模式：前景记录（`foreground_record`）
@@ -313,7 +313,7 @@ sync_with: pcr.en-US.md
 
 记录湿处理和可直接归属的干燥设备用电。
 
-- 选定流：Grid electricity
+- 选定流：电网电力
 - 流属性/单位：Energy / kWh
 - 数量规则：批次分表电量或有文件依据的设备时间分配
 - 数值来源模式：前景记录（`foreground_record`）
@@ -328,7 +328,7 @@ sync_with: pcr.en-US.md
 
 外购蒸汽跨越过程边界时单独记录，不得与热水或燃料合并。
 
-- 选定流：Purchased steam
+- 选定流：外购蒸汽
 - 流属性/单位：Mass / kg 或 Energy / MJ，与仪表或发票一致
 - 数量规则：可归属于湿处理批次的计量或发票蒸汽
 - 数值来源模式：前景记录（`foreground_record`）
@@ -343,7 +343,7 @@ sync_with: pcr.en-US.md
 
 外购热水跨越过程边界时单独记录，并保留供水和回水温度。
 
-- 选定流：Purchased hot water
+- 选定流：外购热水
 - 流属性/单位：Mass / kg，计量时同时保留 Thermal energy / MJ
 - 数量规则：可归属于湿处理批次的计量热水投入
 - 数值来源模式：前景记录（`foreground_record`）
@@ -358,7 +358,7 @@ sync_with: pcr.en-US.md
 
 场内燃烧天然气为湿处理批次供热时单独记录。
 
-- 选定流：Natural gas
+- 选定流：天然气
 - 流属性/单位：Energy / MJ 或 Volume / m3，并保留热值换算
 - 数量规则：可归属于该批次的计量或发票天然气
 - 数值来源模式：前景记录（`foreground_record`）
@@ -373,7 +373,7 @@ sync_with: pcr.en-US.md
 
 湿处理批次消耗柴油用于过程热或备用电力时单独记录。
 
-- 选定流：Diesel fuel
+- 选定流：柴油燃料
 - 流属性/单位：Mass / kg 或 Volume / L，并保留密度和热值换算
 - 数量规则：可归属于该批次的油罐领用或采购记录
 - 数值来源模式：前景记录（`foreground_record`）
@@ -388,7 +388,7 @@ sync_with: pcr.en-US.md
 
 配方使用氯化钠时记录批次消耗量。
 
-- 选定流：Sodium chloride
+- 选定流：氯化钠
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg；Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66`
 - 数量规则：配方领用量与库存领用和退回记录核对
 - 数值来源模式：前景记录（`foreground_record`）
@@ -403,7 +403,7 @@ sync_with: pcr.en-US.md
 
 配方使用碳酸钠时记录批次消耗量。
 
-- 选定流：Sodium carbonate
+- 选定流：碳酸钠
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg；Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66`
 - 数量规则：配方领用量与库存领用和退回记录核对
 - 数值来源模式：前景记录（`foreground_record`）
@@ -418,7 +418,7 @@ sync_with: pcr.en-US.md
 
 进行漂白时记录批次消耗的过氧化氢配方产品。
 
-- 选定流：Hydrogen peroxide
+- 选定流：过氧化氢
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg；Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66`
 - 数量规则：由批次配方和领用记录获得配方产品质量，并保留有效浓度
 - 数值来源模式：前景记录（`foreground_record`）
@@ -433,7 +433,7 @@ sync_with: pcr.en-US.md
 
 用于 pH 控制或中和时记录批次消耗的乙酸配方产品。
 
-- 选定流：Acetic acid
+- 选定流：乙酸
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg；Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66`
 - 数量规则：由批次配方和领用记录获得配方产品质量，并保留有效浓度
 - 数值来源模式：前景记录（`foreground_record`）
@@ -535,7 +535,7 @@ sync_with: pcr.en-US.md
 
 记录服务于该批次的场内天然气或柴油燃烧产生的直接化石二氧化碳。
 
-- 选定流：Carbon dioxide, fossil, to air
+- 选定流：化石源二氧化碳，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：直接测量，或由前景燃料记录和披露的燃料特定因子计算
 - 数值来源模式：前景记录（`foreground_record`）
@@ -550,7 +550,7 @@ sync_with: pcr.en-US.md
 
 记录服务于该批次的场内燃烧直接氮氧化物排放。
 
-- 选定流：Nitrogen oxides to air
+- 选定流：氮氧化物，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：直接测量，或由前景燃料记录和披露的燃料特定因子计算
 - 数值来源模式：前景记录（`foreground_record`）
@@ -565,7 +565,7 @@ sync_with: pcr.en-US.md
 
 记录该批次使用含硫燃料产生的直接二氧化硫排放。
 
-- 选定流：Sulfur dioxide to air
+- 选定流：二氧化硫，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：直接测量，或由前景燃料记录和披露的燃料硫计算
 - 数值来源模式：前景记录（`foreground_record`）
@@ -580,7 +580,7 @@ sync_with: pcr.en-US.md
 
 在测量或计算时，记录场内燃烧或干燥产生的直接 PM2.5 排放。
 
-- 选定流：Particulate matter below 2.5 micrometres to air
+- 选定流：粒径小于2.5微米的颗粒物，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：直接测量，或由前景活动记录和披露的源特定因子计算
 - 数值来源模式：前景记录（`foreground_record`）
@@ -595,7 +595,7 @@ sync_with: pcr.en-US.md
 
 在监测或按产品特定组成计算时，记录干燥或整理配方产生的直接 NMVOC 排放。
 
-- 选定流：Non-methane volatile organic compounds to air
+- 选定流：非甲烷挥发性有机物，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：直接测量，或由前景配方记录和披露的因子进行产品特定质量平衡
 - 数值来源模式：前景记录（`foreground_record`）
@@ -631,7 +631,7 @@ sync_with: pcr.en-US.md
 
 使用聚酯缝纫线进行缝合、缝边或附着组件时记录其消耗。
 
-- 选定流：Polyester sewing thread
+- 选定流：聚酯缝纫线
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg；Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66`
 - 数量规则：批次领用量减去经核实的可再用退回量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -691,7 +691,7 @@ sync_with: pcr.en-US.md
 
 记录缝合、裁剪、缝制、组装压烫以及可直接归属的辅助设备用电。
 
-- 选定流：Grid electricity
+- 选定流：电网电力
 - 流属性/单位：Energy / kWh
 - 数量规则：批次分表电量或有文件依据的设备时间分配
 - 数值来源模式：前景记录（`foreground_record`）
@@ -799,7 +799,7 @@ sync_with: pcr.en-US.md
 
 记录压烫、检验、测试、调湿以及可直接归属的空间调节用电。
 
-- 选定流：Grid electricity
+- 选定流：电网电力
 - 流属性/单位：Energy / kWh
 - 数量规则：批次分表电量，或有文件依据的设备时间和调节面积分配
 - 数值来源模式：前景记录（`foreground_record`）
@@ -814,7 +814,7 @@ sync_with: pcr.en-US.md
 
 用于压烫或调湿的外购蒸汽必须与热水分开记录。
 
-- 选定流：Purchased steam
+- 选定流：外购蒸汽
 - 流属性/单位：Mass / kg 或 Energy / MJ，与仪表或发票一致
 - 数量规则：可归属于整理批次的计量或发票蒸汽
 - 数值来源模式：前景记录（`foreground_record`）
@@ -829,7 +829,7 @@ sync_with: pcr.en-US.md
 
 调湿或点污处理使用的外购热水必须与蒸汽分开记录。
 
-- 选定流：Purchased hot water
+- 选定流：外购热水
 - 流属性/单位：Mass / kg，计量时同时保留 Thermal energy / MJ
 - 数量规则：可归属于整理批次的计量热水投入
 - 数值来源模式：前景记录（`foreground_record`）
@@ -967,7 +967,7 @@ sync_with: pcr.en-US.md
 
 记录包装批次使用的单件或多件 LDPE 袋。
 
-- 选定流：Low-density polyethylene garment bag
+- 选定流：低密度聚乙烯服装袋
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg；Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66`
 - 数量规则：领用件数乘以实测袋质量，并与剩余库存核对
 - 数值来源模式：前景记录（`foreground_record`）
@@ -982,7 +982,7 @@ sync_with: pcr.en-US.md
 
 记录用于发运该批次的瓦楞纸板箱。
 
-- 选定流：Corrugated paperboard shipping carton
+- 选定流：瓦楞纸板运输箱
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg；Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66`
 - 数量规则：使用件数乘以实测纸箱质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1012,7 +1012,7 @@ sync_with: pcr.en-US.md
 
 记录用于纸箱或托盘集装的聚丙烯捆扎带。
 
-- 选定流：Polypropylene strapping
+- 选定流：聚丙烯捆扎带
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg；Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66`
 - 数量规则：实测领用长度乘以实测线质量，或直接称量消耗量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1027,7 +1027,7 @@ sync_with: pcr.en-US.md
 
 木托盘未作为可重复使用资本包装建模时，记录本批次消耗或归属的托盘。
 
-- 选定流：Wooden pallet
+- 选定流：木托盘
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg；Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66`
 - 数量规则：托盘件数乘以实测质量；适用时按有记录的重复使用次数分配
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1042,7 +1042,7 @@ sync_with: pcr.en-US.md
 
 记录折叠、装袋、封口、贴标和集装设备用电。
 
-- 选定流：Grid electricity
+- 选定流：电网电力
 - 流属性/单位：Energy / kWh
 - 数量规则：分表电量或有文件依据的设备时间分配
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1065,7 +1065,7 @@ sync_with: pcr.en-US.md
 
 这是经核实的参考产品流。数量为净成衣质量；可移除包装仅在独立包装投入行中报告。
 
-- 选定流：Jerseys, pullovers, cardigans, waistcoats and similar articles, knitted or crocheted `eccda6b6-0639-4a61-8af1-4bea892ac61c`
+- 选定流：针织或钩编的运动衫、套衫、开襟绒线衫、马甲及其他类似物品 `eccda6b6-0639-4a61-8af1-4bea892ac61c`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg；Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66`
 - 数量规则：工厂门口 1 kg 校准净成衣输出
 - 数值来源模式：前景记录（`foreground_record`）

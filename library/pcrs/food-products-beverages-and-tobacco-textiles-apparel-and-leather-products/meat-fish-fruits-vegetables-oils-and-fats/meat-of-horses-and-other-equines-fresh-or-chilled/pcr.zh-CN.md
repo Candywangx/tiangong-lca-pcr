@@ -41,7 +41,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 1 kg |
-| 参考产品流 | Meat of horses and other equines, fresh or chilled `ac93b427-13d9-411d-9521-36baea644bb5` |
+| 参考产品流 | 马和其他马的肉，新鲜或冷藏 `ac93b427-13d9-411d-9521-36baea644bb5` |
 | 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | kg |
@@ -113,7 +113,7 @@ sync_with: pcr.en-US.md
 
 记录“接收过程用水”作为跨越本过程边界的单一具体交换，并按批次、场址或技术适用性取得数量。
 
-- 选定流：Process water
+- 选定流：过程用水
 - 流属性/单位：Volume / m3
 - 数量规则：依据计量仪表或有文件支持的过程平衡取得
 - 数值来源模式：前景记录（`foreground_record`）
@@ -128,7 +128,7 @@ sync_with: pcr.en-US.md
 
 记录“接收阶段用电”作为跨越本过程边界的单一具体交换，并按批次、场址或技术适用性取得数量。
 
-- 选定流：Grid electricity
+- 选定流：电网电力
 - 流属性/单位：Energy / kWh
 - 数量规则：优先分表计量；否则采用有文件支持的设备时间和负荷计算
 - 数值来源模式：前景记录（`foreground_record`）
@@ -273,7 +273,7 @@ sync_with: pcr.en-US.md
 
 记录“屠宰过程用水”作为跨越本过程边界的单一具体交换，并按批次、场址或技术适用性取得数量。
 
-- 选定流：Process water
+- 选定流：过程用水
 - 流属性/单位：Volume / m3
 - 数量规则：依据计量仪表或有文件支持的过程平衡取得
 - 数值来源模式：前景记录（`foreground_record`）
@@ -288,7 +288,7 @@ sync_with: pcr.en-US.md
 
 记录“屠宰阶段用电”作为跨越本过程边界的单一具体交换，并按批次、场址或技术适用性取得数量。
 
-- 选定流：Grid electricity
+- 选定流：电网电力
 - 流属性/单位：Energy / kWh
 - 数量规则：优先分表计量；否则采用有文件支持的设备时间和负荷计算
 - 数值来源模式：前景记录（`foreground_record`）
@@ -303,7 +303,7 @@ sync_with: pcr.en-US.md
 
 记录“屠宰用蒸汽”作为跨越本过程边界的单一具体交换，并按批次、场址或技术适用性取得数量。
 
-- 选定流：Purchased steam
+- 选定流：外购蒸汽
 - 流属性/单位：Energy / MJ
 - 数量规则：依据计量仪表或有文件支持的过程平衡取得
 - 数值来源模式：前景记录（`foreground_record`）
@@ -318,7 +318,7 @@ sync_with: pcr.en-US.md
 
 记录“屠宰用热水”作为跨越本过程边界的单一具体交换，并按批次、场址或技术适用性取得数量。
 
-- 选定流：Purchased hot water
+- 选定流：外购热水
 - 流属性/单位：Energy / MJ
 - 数量规则：依据计量仪表或有文件支持的过程平衡取得
 - 数值来源模式：前景记录（`foreground_record`）
@@ -333,7 +333,7 @@ sync_with: pcr.en-US.md
 
 记录“屠宰用天然气”作为跨越本过程边界的单一具体交换，并按批次、场址或技术适用性取得数量。
 
-- 选定流：Natural gas
+- 选定流：天然气
 - 流属性/单位：Energy / MJ
 - 数量规则：依据计量仪表或有文件支持的过程平衡取得
 - 数值来源模式：前景记录（`foreground_record`）
@@ -348,7 +348,7 @@ sync_with: pcr.en-US.md
 
 记录“屠宰用液化石油气”作为跨越本过程边界的单一具体交换，并按批次、场址或技术适用性取得数量。
 
-- 选定流：Liquefied petroleum gas
+- 选定流：液化石油气
 - 流属性/单位：Energy / MJ
 - 数量规则：依据对应采集协议的批次、仪表、称量或计算记录取得
 - 数值来源模式：前景记录（`foreground_record`）
@@ -529,7 +529,7 @@ sync_with: pcr.en-US.md
 
 记录“屠宰化石二氧化碳排放”作为跨越本过程边界的单一具体交换，并按批次、场址或技术适用性取得数量。
 
-- 选定流：Carbon dioxide, fossil, to air
+- 选定流：化石源二氧化碳，排入空气
 - 流属性/单位：Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66
 - 数量规则：依据前景记录与有文件支持的单项因子计算
 - 数值来源模式：计算值（`calculated_value`）
@@ -544,7 +544,7 @@ sync_with: pcr.en-US.md
 
 记录“屠宰氮氧化物排放”作为跨越本过程边界的单一具体交换，并按批次、场址或技术适用性取得数量。
 
-- 选定流：Nitrogen oxides to air
+- 选定流：氮氧化物，排入空气
 - 流属性/单位：Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66
 - 数量规则：依据前景记录与有文件支持的单项因子计算
 - 数值来源模式：计算值（`calculated_value`）
@@ -581,7 +581,7 @@ sync_with: pcr.en-US.md
 
 记录“胴体冷却用电”作为跨越本过程边界的单一具体交换，并按批次、场址或技术适用性取得数量。
 
-- 选定流：Grid electricity
+- 选定流：电网电力
 - 流属性/单位：Energy / kWh
 - 数量规则：优先分表计量；否则采用有文件支持的设备时间和负荷计算
 - 数值来源模式：前景记录（`foreground_record`）
@@ -709,7 +709,7 @@ sync_with: pcr.en-US.md
 
 记录“分割过程用水”作为跨越本过程边界的单一具体交换，并按批次、场址或技术适用性取得数量。
 
-- 选定流：Process water
+- 选定流：过程用水
 - 流属性/单位：Volume / m3
 - 数量规则：依据计量仪表或有文件支持的过程平衡取得
 - 数值来源模式：前景记录（`foreground_record`）
@@ -724,7 +724,7 @@ sync_with: pcr.en-US.md
 
 记录“分割阶段用电”作为跨越本过程边界的单一具体交换，并按批次、场址或技术适用性取得数量。
 
-- 选定流：Grid electricity
+- 选定流：电网电力
 - 流属性/单位：Energy / kWh
 - 数量规则：优先分表计量；否则采用有文件支持的设备时间和负荷计算
 - 数值来源模式：前景记录（`foreground_record`）
@@ -839,7 +839,7 @@ sync_with: pcr.en-US.md
 
 记录“清洗消毒用水”作为跨越本过程边界的单一具体交换，并按批次、场址或技术适用性取得数量。
 
-- 选定流：Process water
+- 选定流：过程用水
 - 流属性/单位：Volume / m3
 - 数量规则：依据计量仪表或有文件支持的过程平衡取得
 - 数值来源模式：前景记录（`foreground_record`）
@@ -854,7 +854,7 @@ sync_with: pcr.en-US.md
 
 记录“清洗消毒用电”作为跨越本过程边界的单一具体交换，并按批次、场址或技术适用性取得数量。
 
-- 选定流：Grid electricity
+- 选定流：电网电力
 - 流属性/单位：Energy / kWh
 - 数量规则：优先分表计量；否则采用有文件支持的设备时间和负荷计算
 - 数值来源模式：前景记录（`foreground_record`）
@@ -869,7 +869,7 @@ sync_with: pcr.en-US.md
 
 记录“清洗消毒用蒸汽”作为跨越本过程边界的单一具体交换，并按批次、场址或技术适用性取得数量。
 
-- 选定流：Purchased steam
+- 选定流：外购蒸汽
 - 流属性/单位：Energy / MJ
 - 数量规则：依据计量仪表或有文件支持的过程平衡取得
 - 数值来源模式：前景记录（`foreground_record`）
@@ -884,7 +884,7 @@ sync_with: pcr.en-US.md
 
 记录“清洗消毒用热水”作为跨越本过程边界的单一具体交换，并按批次、场址或技术适用性取得数量。
 
-- 选定流：Purchased hot water
+- 选定流：外购热水
 - 流属性/单位：Energy / MJ
 - 数量规则：依据计量仪表或有文件支持的过程平衡取得
 - 数值来源模式：前景记录（`foreground_record`）
@@ -899,7 +899,7 @@ sync_with: pcr.en-US.md
 
 记录“清洗消毒锅炉天然气”作为跨越本过程边界的单一具体交换，并按批次、场址或技术适用性取得数量。
 
-- 选定流：Natural gas
+- 选定流：天然气
 - 流属性/单位：Energy / MJ
 - 数量规则：依据计量仪表或有文件支持的过程平衡取得
 - 数值来源模式：前景记录（`foreground_record`）
@@ -914,7 +914,7 @@ sync_with: pcr.en-US.md
 
 记录“氢氧化钠清洁剂投入”作为跨越本过程边界的单一具体交换，并按批次、场址或技术适用性取得数量。
 
-- 选定流：Sodium hydroxide
+- 选定流：氢氧化钠
 - 流属性/单位：Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66
 - 数量规则：依据前景记录与有文件支持的单项因子计算
 - 数值来源模式：计算值（`calculated_value`）
@@ -929,7 +929,7 @@ sync_with: pcr.en-US.md
 
 记录“过氧乙酸消毒剂投入”作为跨越本过程边界的单一具体交换，并按批次、场址或技术适用性取得数量。
 
-- 选定流：Peracetic acid
+- 选定流：过氧乙酸
 - 流属性/单位：Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66
 - 数量规则：依据前景记录与有文件支持的单项因子计算
 - 数值来源模式：计算值（`calculated_value`）
@@ -1007,7 +1007,7 @@ sync_with: pcr.en-US.md
 
 记录“清洗消毒化石二氧化碳排放”作为跨越本过程边界的单一具体交换，并按批次、场址或技术适用性取得数量。
 
-- 选定流：Carbon dioxide, fossil, to air
+- 选定流：化石源二氧化碳，排入空气
 - 流属性/单位：Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66
 - 数量规则：依据前景记录与有文件支持的单项因子计算
 - 数值来源模式：计算值（`calculated_value`）
@@ -1022,7 +1022,7 @@ sync_with: pcr.en-US.md
 
 记录“清洗消毒氮氧化物排放”作为跨越本过程边界的单一具体交换，并按批次、场址或技术适用性取得数量。
 
-- 选定流：Nitrogen oxides to air
+- 选定流：氮氧化物，排入空气
 - 流属性/单位：Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66
 - 数量规则：依据前景记录与有文件支持的单项因子计算
 - 数值来源模式：计算值（`calculated_value`）
@@ -1134,7 +1134,7 @@ sync_with: pcr.en-US.md
 
 记录“包装阶段用电”作为跨越本过程边界的单一具体交换，并按批次、场址或技术适用性取得数量。
 
-- 选定流：Grid electricity
+- 选定流：电网电力
 - 流属性/单位：Energy / kWh
 - 数量规则：优先分表计量；否则采用有文件支持的设备时间和负荷计算
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1149,7 +1149,7 @@ sync_with: pcr.en-US.md
 
 记录“冷藏库用电”作为跨越本过程边界的单一具体交换，并按批次、场址或技术适用性取得数量。
 
-- 选定流：Grid electricity
+- 选定流：电网电力
 - 流属性/单位：Energy / kWh
 - 数量规则：优先分表计量；否则采用有文件支持的设备时间和负荷计算
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1179,7 +1179,7 @@ sync_with: pcr.en-US.md
 
 记录“应急发电柴油”作为跨越本过程边界的单一具体交换，并按批次、场址或技术适用性取得数量。
 
-- 选定流：Diesel fuel
+- 选定流：柴油燃料
 - 流属性/单位：Energy / MJ
 - 数量规则：依据计量仪表或有文件支持的过程平衡取得
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1206,7 +1206,7 @@ sync_with: pcr.en-US.md
 
 记录“参考鲜或冷藏马科动物肉输出”作为跨越本过程边界的单一具体交换，并按批次、场址或技术适用性取得数量。
 
-- 选定流：Meat of horses and other equines, fresh or chilled `ac93b427-13d9-411d-9521-36baea644bb5`
+- 选定流：马和其他马的肉，新鲜或冷藏 `ac93b427-13d9-411d-9521-36baea644bb5`
 - 流属性/单位：Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66
 - 数量规则：依据经校准称量、批次转移或处置记录取得
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1238,7 +1238,7 @@ sync_with: pcr.en-US.md
 
 记录“纸板包装废物”作为跨越本过程边界的单一具体交换，并按批次、场址或技术适用性取得数量。
 
-- 选定流：Waste corrugated paperboard
+- 选定流：废瓦楞纸板
 - 流属性/单位：Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66
 - 数量规则：依据经校准称量、批次转移或处置记录取得
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1285,7 +1285,7 @@ sync_with: pcr.en-US.md
 
 记录“备用柴油化石二氧化碳排放”作为跨越本过程边界的单一具体交换，并按批次、场址或技术适用性取得数量。
 
-- 选定流：Carbon dioxide, fossil, to air
+- 选定流：化石源二氧化碳，排入空气
 - 流属性/单位：Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66
 - 数量规则：依据前景记录与有文件支持的单项因子计算
 - 数值来源模式：计算值（`calculated_value`）
@@ -1300,7 +1300,7 @@ sync_with: pcr.en-US.md
 
 记录“备用柴油氮氧化物排放”作为跨越本过程边界的单一具体交换，并按批次、场址或技术适用性取得数量。
 
-- 选定流：Nitrogen oxides to air
+- 选定流：氮氧化物，排入空气
 - 流属性/单位：Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66
 - 数量规则：依据前景记录与有文件支持的单项因子计算
 - 数值来源模式：计算值（`calculated_value`）

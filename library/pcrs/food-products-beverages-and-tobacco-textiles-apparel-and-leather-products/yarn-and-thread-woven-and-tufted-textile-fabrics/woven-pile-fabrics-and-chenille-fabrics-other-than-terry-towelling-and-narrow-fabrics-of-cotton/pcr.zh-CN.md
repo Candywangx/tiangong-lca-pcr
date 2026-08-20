@@ -38,7 +38,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 1 kg 净成品织物 |
-| 参考产品流 | Woven pile fabrics and chenille fabrics (other than terry towelling and narrow fabrics) of cotton `4dba0da8-c16f-4b12-8563-bc1ff5fee1c2` |
+| 参考产品流 | 机织棉绒头织物及棉绳绒织物（毛巾织物和狭幅毛圈织物除外） `4dba0da8-c16f-4b12-8563-bc1ff5fee1c2` |
 | 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | kg |
@@ -154,7 +154,7 @@ sync_with: pcr.en-US.md
 
 在场内配制或稀释浆浴时，记录加入的工艺水。
 
-- 选定流：Process water
+- 选定流：过程用水
 - 流属性/单位：Volume / m3
 - 数量规则：进入上浆工序的计量或批槽体积
 - 数值来源模式：前景记录（`foreground_record`）
@@ -292,7 +292,7 @@ sync_with: pcr.en-US.md
 
 记录批次路线内退浆、煮练、漂白、配制染浴、水洗和漂洗使用的工艺水。
 
-- 选定流：Process water
+- 选定流：过程用水
 - 流属性/单位：Volume / m3
 - 数量规则：进入湿法加工设备的计量补充水
 - 数值来源模式：前景记录（`foreground_record`）
@@ -307,7 +307,7 @@ sync_with: pcr.en-US.md
 
 当氢氧化钠用于煮练、丝光、pH 调节或其他声明棉处理配方步骤时记录。
 
-- 选定流：Sodium hydroxide
+- 选定流：氢氧化钠
 - 流属性/单位：Mass / kg
 - 数量规则：实测加入的采购溶液质量，并保留浓度和活性物质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -322,7 +322,7 @@ sync_with: pcr.en-US.md
 
 声明湿法加工配方包含过氧化物漂白时记录过氧化氢。
 
-- 选定流：Hydrogen peroxide
+- 选定流：过氧化氢
 - 流属性/单位：Mass / kg
 - 数量规则：实测加入的采购溶液质量，并保留浓度和活性物质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -352,7 +352,7 @@ sync_with: pcr.en-US.md
 
 声明棉染色配方将氯化钠作为单独采购化学品使用时记录。
 
-- 选定流：Sodium chloride
+- 选定流：氯化钠
 - 流属性/单位：Mass / kg
 - 数量规则：实测加入的干物质或溶液质量，并声明质量基准
 - 数值来源模式：前景记录（`foreground_record`）
@@ -367,7 +367,7 @@ sync_with: pcr.en-US.md
 
 采购蒸汽跨越场址边界用于湿法加工中的浴液加热、水洗或干燥时，作为一个公用工程交换记录。
 
-- 选定流：Purchased steam
+- 选定流：外购蒸汽
 - 流属性/单位：Energy / MJ
 - 数量规则：分配至湿法加工的实测或发票蒸汽能量，并声明压力和冷凝水处理
 - 数值来源模式：前景记录（`foreground_record`）
@@ -550,7 +550,7 @@ sync_with: pcr.en-US.md
 
 采购蒸汽跨越场址边界用于干燥、调湿或其他声明整理操作时记录。
 
-- 选定流：Purchased steam
+- 选定流：外购蒸汽
 - 流属性/单位：Energy / MJ
 - 数量规则：分配至整理的实测或发票蒸汽能量，并声明压力和冷凝水处理
 - 数值来源模式：前景记录（`foreground_record`）
@@ -603,7 +603,7 @@ sync_with: pcr.en-US.md
 
 合格净成品织物是完成声明机械整理、检验和包装步骤后的参考输出，其数量不包括包装质量。
 
-- 选定流：Woven pile fabrics and chenille fabrics (other than terry towelling and narrow fabrics) of cotton `4dba0da8-c16f-4b12-8563-bc1ff5fee1c2`
+- 选定流：机织棉绒头织物及棉绳绒织物（毛巾织物和狭幅毛圈织物除外） `4dba0da8-c16f-4b12-8563-bc1ff5fee1c2`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：实测合格净织物质量，归一化为恰好 1 kg
 - 数值来源模式：前景记录（`foreground_record`）

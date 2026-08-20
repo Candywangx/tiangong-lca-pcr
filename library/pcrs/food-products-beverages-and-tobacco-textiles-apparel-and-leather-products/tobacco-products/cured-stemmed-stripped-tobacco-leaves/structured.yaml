@@ -1,10 +1,1238 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "25010"
-  title: "Cured stemmed/stripped tobacco leaves"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.food-products-beverages-and-tobacco-textiles-apparel-and-leather-products.tobacco-products.cured-stemmed-stripped-tobacco-leaves"
+  classification_refs: "CPC:3.0:25010 (exact)"
+  covered_products: "Unmanufactured cured tobacco lamina or strips from which the main stems or midribs have been removed, including declared strip scrap when it is intentionally included in the sold product specification."
+  excluded_products: "Green or fresh tobacco; cured unstemmed whole leaves sold as such; separated stems; dust and handling waste; cut filler; flavored, expanded, reconstituted, homogenized, extracted, manufactured, or consumer-ready tobacco products."
+  representative_product: "Redried flue-cured tobacco strips with declared type, origin, crop year, grade, moisture specification, stem-content specification, and package, ready for storage or downstream manufacturing."
+  production_route: "Cured unstemmed leaf receipt → conditioning and foreign-matter removal → threshing/stemming and air separation → screening → redrying and cooling/equilibration → packing and storage release."
+  market_state: "Unmanufactured cured stemmed/stripped leaf tobacco at the stemming/redrying facility gate; not fresh and not ready for smoking or other consumer use."
+functional_unit:
+  what: "Cured stemmed/stripped tobacco leaf material for storage and later tobacco-product manufacturing."
+  how_much: "1,000 kg net cured stemmed/stripped tobacco leaves, excluding packaging."
+  how_well: "Declared tobacco class/type, cultivar when known, origin, crop year, curing method and location, grade, incoming and final moisture basis, stem-content specification, strip-size specification when used, package configuration, and conformance basis."
+  how_long_or_cycle: "One released stemming/redrying production lot at the facility gate; no use duration or aging period is assigned."
+  reference_flow_link: "rf_cured_stemmed_stripped_tobacco_leaves"
+system_boundary:
+  rules:
+    - rule_id: boundary_cured_leaf_start
+      applies_to: "Foreground entry"
+      rule: "Start the normal foreground boundary at accepted cured unstemmed leaf; represent cultivation, harvest, curing, and inbound transport with linked upstream datasets and declare whether curing was flue-, fire-, or air-curing."
+      source_ids:
+        - usda-7cfr-leaf-tobacco
+        - fao-rwedp-32
+    - rule_id: boundary_complete_stemming_redrying
+      applies_to: "Covered route"
+      rule: "Include conditioning, foreign-matter removal, threshing or stemming, lamina/stem separation, screening, redrying, moisture equilibration or cooling, and packing as explicit foreground operations when performed."
+      source_ids:
+        - wise-reaves-1997
+        - usepa-2006-tobacco-processing
+    - rule_id: boundary_product_state
+      applies_to: "Product identity"
+      rule: "The reference output must remain unmanufactured cured leaf tobacco in stemmed/stripped form; exclude unstemmed leaf sold as such and all downstream cutting, flavoring, expansion, reconstitution, extraction, and consumer-product manufacture."
+      source_ids:
+        - unsd-cpc3-25010
+        - usda-7cfr-leaf-tobacco
+    - rule_id: boundary_actual_inputs
+      applies_to: "Utilities and materials"
+      rule: "Record each actually used water input, electricity supply, steam supply, fuel, cleaning chemical, and packaging component as its own atomic exchange; add a specific card when an actual item is not represented below."
+      source_ids:
+        - eu-2021-2279-environmental-footprint
+    - rule_id: boundary_outputs_emissions
+      applies_to: "Outputs"
+      rule: "Record stems, strip scrap, tobacco dust, rejects, wastewater, and each directly emitted substance separately by destination; do not hide direct emissions in a treatment-service input or net co-products from inputs."
+      source_ids:
+        - usepa-2006-tobacco-processing
+        - eu-2021-2279-environmental-footprint
+    - rule_id: boundary_tiangong_route_conflict
+      applies_to: "Tiangong metadata"
+      rule: "Do not use Fresh, unprocessed produce / 鲜品，未加工 as route evidence because it contradicts the cured title and CPC identity; disclose the conflict and require resolution or formal review acceptance before publication."
+      source_ids:
+        - unsd-cpc3-25010
+        - usda-7cfr-leaf-tobacco
+boundary_abstraction:
+  declared_starting_condition: "Traceable cured unstemmed tobacco leaves accepted at the stemming/redrying facility, with tobacco type, origin, crop year, curing method and location, grade, received mass, moisture basis, and upstream cultivation-curing dataset reference declared."
+  starting_condition_role: "Foreground gate input; cultivation, harvesting, initial curing, and inbound transport are linked upstream systems unless separately added to an extended study."
+  product_classification_scope: "Cured stemmed/stripped tobacco leaves represented by CPC 3.0 code 25010 and restricted to unmanufactured leaf tobacco with the main stems or midribs removed."
+  recursive_input_rule: "Purchased or transferred cured stemmed/stripped tobacco already in this category is recorded once as a distinct input with its upstream dataset; do not reconstruct its stemming/redrying inventory recursively."
+  upstream_dataset_requirement: "Link cultivation, harvesting, curing, and inbound transport for received cured unstemmed leaf; link purchased electricity, steam, water, each fuel, packaging component, and off-site treatment actually used."
+  disclosure: "Declare facility and geography, tobacco type, origin and crop year, curing method and location, received-leaf state, process configuration, moisture targets, stem and scrap disposition, fuel and emission calculation, packaging, allocation, exclusions, data gaps, and the unresolved Tiangong route-metadata conflict."
+reference_flow_definition:
+  reference_amount: "1,000 kg net product"
+  product_flow_ref:
+    name: "Cured stemmed/stripped tobacco leaves"
+    uuid: "57a438c1-b4d5-427a-8240-3aacf6c56025"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "tobacco class and type"
+    - "cultivar or trade designation when known"
+    - "country and region of origin"
+    - "crop year"
+    - "curing method and curing location"
+    - "incoming leaf grade and moisture basis"
+    - "final moisture specification and measured result"
+    - "final stem-content specification and measured result"
+    - "strip-size specification when used"
+    - "package configuration"
+    - "net product mass"
+    - "production lot"
+    - "facility geography"
+    - "temporal coverage"
+    - "upstream curing dataset reference"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "Reference product and normalized inventory"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Normalize every foreground exchange to exactly 1,000 kg net conforming product at the facility gate."
+  - id: net_product_mass
+    applies_to: "Packed output"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Exclude the mass of boxes, liners, straps, pallets, and other packaging from the reference amount; retain net and gross mass records separately."
+  - id: moisture_basis
+    applies_to: "Incoming leaf, intermediates, stems, scrap, and final product"
+    required_property_ref:
+      name: "Mass and moisture mass fraction"
+      uuid: ""
+    required_unit: "kg; % wet basis or declared alternative"
+    rule: "Record each mass with its moisture basis and measurement method; do not compare or balance masses on different moisture bases without an explicit conversion."
+  - id: stem_content
+    applies_to: "Final stemmed/stripped product"
+    required_property_ref:
+      name: "Mass fraction"
+      uuid: ""
+    required_unit: "% by mass"
+    rule: "Measure and report residual main-stem or midrib content using the declared sampling and test method; do not infer conformance from thresher settings alone."
+  - id: electricity_conversion
+    applies_to: "Metered electricity"
+    required_property_ref:
+      name: "Energy"
+      uuid: ""
+    required_unit: "kWh"
+    rule: "Preserve metered kWh. If source records use MJ, convert with 1 kWh = 3.6 MJ and retain the original reading and conversion."
+  - id: fuel_energy
+    applies_to: "Combusted fuel"
+    required_property_ref:
+      name: "Energy"
+      uuid: ""
+    required_unit: "MJ"
+    rule: "Record physical fuel quantity and heating-value basis separately; calculate MJ without treating mass or volume as energy."
+process_map:
+  - id: leaf_receiving_conditioning
+    name: "Cured-leaf receiving, conditioning, and inspection"
+    inclusion: "required"
+    inclusion_condition: "Every covered lot; utility cards apply only to utilities actually used."
+    role: "Establish traceable incoming state, loosen/moisten leaf for handling, and remove non-tobacco matter."
+    quantitative_reference: "kg conditioned cured leaf"
+  - id: threshing_separation
+    name: "Threshing, stemming, air separation, and screening"
+    inclusion: "required"
+    inclusion_condition: "Every covered lot."
+    role: "Remove main stems or midribs and separate lamina, stems, strip scrap, dust, and rejects."
+    quantitative_reference: "kg separated tobacco lamina"
+  - id: redrying_cooling
+    name: "Redrying and moisture equilibration"
+    inclusion: "required"
+    inclusion_condition: "Every covered lot; activate only the actual heat-supply cards."
+    role: "Bring separated lamina to the declared final moisture and stable packing condition."
+    quantitative_reference: "kg redried conforming lamina"
+  - id: packing_storage_release
+    name: "Packing and storage release"
+    inclusion: "required"
+    inclusion_condition: "Every covered lot; activate only packaging components actually used."
+    role: "Produce the declared net reference product and release it for storage or dispatch."
+    quantitative_reference: "1,000 kg net reference product"
+process_inventory:
+  - id: leaf_receiving_conditioning
+    label: "Cured-leaf receiving, conditioning, and inspection"
+    inputs:
+      product:
+        - row_id: received_cured_unstemmed_leaf
+          role: "Cured unstemmed tobacco leaf received"
+          name: "Cured unstemmed tobacco leaves"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "The received lot is cured leaf tobacco whose main stems or midribs have not yet been removed."
+          amount:
+            expression: "Weigh every accepted receipt lot and record moisture, grade, origin, crop year, curing route, and upstream dataset."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_leaf_receipts
+              source_ids:
+                - usda-7cfr-leaf-tobacco
+                - wise-reaves-1997
+            ranges: []
+        - row_id: conditioning_water
+          role: "Conditioning water"
+          name: "Process water"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record only water sprayed or otherwise supplied to condition the tobacco before threshing."
+          amount:
+            expression: "Meter or weigh water supplied to each represented lot; do not create a default wastewater output when the water is absorbed by the tobacco."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg conditioned cured leaf output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_conditioning_records
+              source_ids:
+                - usepa-2006-tobacco-processing
+            ranges: []
+        - row_id: conditioning_purchased_steam
+          role: "Purchased steam for conditioning"
+          name: "Steam, purchased"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Record purchased steam only when it crosses the process boundary for conditioning."
+          amount:
+            expression: "Use the steam meter or calculate energy from measured condensate or steam mass and documented thermodynamic state."
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg conditioned cured leaf output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_conditioning_records
+              source_ids:
+                - usepa-2006-tobacco-processing
+            ranges: []
+        - row_id: conditioning_electricity
+          role: "Electricity for receiving and conditioning"
+          name: "Electricity, supplied to facility"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record electricity for unloading, opening, conveying, conditioning, inspection, and associated dust control."
+          amount:
+            expression: "Use submetered electricity or reconcile facility electricity to equipment operating time with a documented allocation driver."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg conditioned cured leaf output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_conditioning_records
+              source_ids:
+                - wise-reaves-1997
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: conditioned_cured_leaf
+          role: "Conditioned cured tobacco leaf"
+          name: "Conditioned cured tobacco leaves"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Conditioned leaf is the measured output transferred to mechanical threshing or stemming."
+          amount:
+            expression: "Weigh or mass-balance the transfer and record moisture immediately before threshing."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg conditioned cured leaf output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_conditioning_records
+              source_ids:
+                - wise-reaves-1997
+            ranges: []
+      waste:
+        - row_id: receiving_rejected_leaf
+          role: "Rejected cured tobacco leaf"
+          name: "Waste rejected cured tobacco leaves"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record off-grade, damaged, mold-affected, wet, or otherwise rejected leaf separately from saleable material."
+          amount:
+            expression: "Weigh each rejected lot or container and record its reason and destination."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg received cured unstemmed leaf"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_leaf_receipts
+              source_ids:
+                - usda-7cfr-leaf-tobacco
+            ranges: []
+        - row_id: receiving_stones
+          role: "Stones removed at receiving"
+          name: "Waste stones from tobacco receiving"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record stones removed from tobacco without combining them with other foreign matter."
+          amount:
+            expression: "Weigh collected stones by lot or reporting period and retain destination records."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg received cured unstemmed leaf"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_leaf_receipts
+              source_ids:
+                - wise-reaves-1997
+                - usda-7cfr-leaf-tobacco
+            ranges: []
+        - row_id: conditioning_cleaning_wastewater
+          role: "Equipment-cleaning wastewater"
+          name: "Wastewater from tobacco-conditioning equipment cleaning"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record this exchange only when wet cleaning generates a discharge; conditioning mist absorbed by tobacco is not wastewater."
+          amount:
+            expression: "Meter the discharge or calculate it from measured cleaning-water input and separately measured retained or evaporated water."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per kg conditioned cured leaf output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_conditioning_records
+              source_ids:
+                - usepa-2006-tobacco-processing
+            ranges: []
+      elementary:
+        []
+  - id: threshing_separation
+    label: "Threshing, stemming, air separation, and screening"
+    inputs:
+      product:
+        - row_id: conditioned_leaf_to_threshing
+          role: "Conditioned leaf entering threshing"
+          name: "Conditioned cured tobacco leaves"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the measured conditioned-leaf transfer into the threshing line."
+          amount:
+            expression: "Use the transfer scale and correct for opening and closing line stock."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg separated tobacco lamina output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_separation_records
+              source_ids:
+                - wise-reaves-1997
+            ranges: []
+        - row_id: threshing_electricity
+          role: "Electricity for threshing and separation"
+          name: "Electricity, supplied to facility"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record electricity for threshers, conveyors, air separators, screens, fans, and dust collection."
+          amount:
+            expression: "Use a line submeter or reconciled equipment load and operating hours for the represented lot."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg separated tobacco lamina output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_separation_records
+              source_ids:
+                - wise-reaves-1997
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: separated_tobacco_lamina
+          role: "Separated tobacco lamina"
+          name: "Cured tobacco leaf strips"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Separated lamina is the main product transferred to redrying."
+          amount:
+            expression: "Weigh the lamina stream and measure moisture at the redryer feed."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg separated tobacco lamina output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_separation_records
+              source_ids:
+                - usda-7cfr-leaf-tobacco
+                - wise-reaves-1997
+            ranges: []
+        - row_id: separated_tobacco_stems
+          role: "Separated tobacco stems"
+          name: "Separated cured tobacco stems"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record removed main stems or midribs as a co-product only when they leave for beneficial use; otherwise reclassify the same physical stream as waste with its destination."
+          amount:
+            expression: "Weigh the separated stem stream and record moisture, purchaser or treatment destination, and revenue when economic allocation is assessed."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg separated tobacco lamina output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_separation_records
+              source_ids:
+                - usda-7cfr-leaf-tobacco
+                - wise-reaves-1997
+            ranges: []
+        - row_id: saleable_strip_scrap
+          role: "Saleable tobacco strip scrap"
+          name: "Cured tobacco strip scrap"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record screened undersize lamina as a co-product only when it meets a declared saleable specification."
+          amount:
+            expression: "Weigh saleable strip scrap separately from dust and waste and record moisture, specification, and destination."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg separated tobacco lamina output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_separation_records
+              source_ids:
+                - usda-7cfr-leaf-tobacco
+                - wise-reaves-1997
+            ranges: []
+      waste:
+        - row_id: collected_tobacco_dust
+          role: "Collected tobacco dust"
+          name: "Waste collected tobacco dust"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record dust removed by baghouses or other dust collectors separately from saleable strip scrap."
+          amount:
+            expression: "Weigh removed dust or reconcile collector-container mass and record its destination."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg separated tobacco lamina output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_separation_records
+              source_ids:
+                - usepa-2006-tobacco-processing
+            ranges: []
+      elementary:
+        - row_id: threshing_pm25_to_air
+          role: "Fugitive fine particulate matter to air"
+          name: "Particulate matter, less than 2.5 micrometres, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record uncaptured fine particulate emissions when monitoring or an applicable factor supports the exchange."
+          amount:
+            expression: "Use measured concentration and exhaust flow or an explicitly cited equipment- and control-specific factor applied to collected activity data."
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg separated tobacco lamina output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_air_emissions
+              source_ids:
+                - usepa-2006-tobacco-processing
+            ranges: []
+  - id: redrying_cooling
+    label: "Redrying and moisture equilibration"
+    inputs:
+      product:
+        - row_id: lamina_to_redrying
+          role: "Separated lamina entering redrying"
+          name: "Cured tobacco leaf strips"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the lamina mass and moisture entering the redryer."
+          amount:
+            expression: "Use the redryer feed scale and representative moisture sampling."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg redried conforming lamina output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_redrying_records
+              source_ids:
+                - wise-reaves-1997
+            ranges: []
+        - row_id: redrying_electricity
+          role: "Electricity for redrying and cooling"
+          name: "Electricity, supplied to facility"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record electricity for the redryer, fans, conveyors, controls, cooling, and moisture equilibration."
+          amount:
+            expression: "Use a line submeter or reconciled equipment load and operating hours."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg redried conforming lamina output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_redrying_records
+              source_ids:
+                - wise-reaves-1997
+            ranges: []
+        - row_id: redrying_purchased_steam
+          role: "Purchased steam for redrying"
+          name: "Steam, purchased"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Activate this card only when purchased steam supplies redrying heat."
+          amount:
+            expression: "Calculate heat from metered steam mass and documented inlet and condensate state."
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg redried conforming lamina output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_redrying_records
+              source_ids:
+                - wise-reaves-1997
+            ranges: []
+        - row_id: redrying_natural_gas
+          role: "Natural gas for redrying"
+          name: "Natural gas"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Activate this card only when natural gas is combusted onsite for redrying heat."
+          amount:
+            expression: "Meter gas volume or mass and calculate energy with the supplier heating value and declared basis."
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg redried conforming lamina output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_redrying_records
+              source_ids:
+                - zhu-2025-curing-emissions
+            ranges: []
+        - row_id: redrying_biomass_pellets
+          role: "Biomass pellets for redrying"
+          name: "Biomass fuel pellets"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Activate this card only when biomass pellets are combusted onsite for redrying heat."
+          amount:
+            expression: "Weigh fuel and calculate energy using lot-specific moisture and lower heating value."
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg redried conforming lamina output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_redrying_records
+              source_ids:
+                - zhu-2025-curing-emissions
+            ranges: []
+        - row_id: redrying_coal
+          role: "Coal for redrying"
+          name: "Coal"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Activate this card only when coal is combusted onsite for redrying heat."
+          amount:
+            expression: "Weigh fuel and calculate energy using the lot-specific lower heating value and moisture or ash basis."
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg redried conforming lamina output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_redrying_records
+              source_ids:
+                - fao-rwedp-32
+                - zhu-2025-curing-emissions
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: redried_conforming_lamina
+          role: "Redried conforming tobacco lamina"
+          name: "Redried cured tobacco leaf strips"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record redried lamina after cooling or equilibration and before packing."
+          amount:
+            expression: "Weigh output and record final moisture, residual stem content, strip-size result, and release status."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg redried conforming lamina output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_redrying_records
+              source_ids:
+                - wise-reaves-1997
+                - usda-7cfr-leaf-tobacco
+            ranges: []
+      waste:
+        []
+      elementary:
+        - row_id: redrying_water_to_air
+          role: "Water vapour released during redrying"
+          name: "Water, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Calculate evaporated water from moisture-corrected material balances; do not report it as wastewater."
+          amount:
+            expression: "Calculate from measured inlet and outlet wet mass and moisture, corrected for stock and other water additions."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per kg redried conforming lamina output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_redrying_records
+              source_ids:
+                - fao-rwedp-32
+            ranges: []
+        - row_id: redrying_fossil_co2_to_air
+          role: "Fossil carbon dioxide from redrying fuel"
+          name: "Carbon dioxide, fossil, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record fossil carbon dioxide separately for each combusted fossil fuel inventory."
+          amount:
+            expression: "Use stack measurement or a fuel-specific factor applied to collected fuel quantity and heating-value basis."
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per MJ onsite fossil fuel input"
+              kind: "fuel_inventory"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_air_emissions
+              source_ids:
+                - zhu-2025-curing-emissions
+            ranges: []
+        - row_id: redrying_biogenic_co2_to_air
+          role: "Biogenic carbon dioxide from biomass fuel"
+          name: "Carbon dioxide, biogenic, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record biogenic carbon dioxide separately when biomass fuel is combusted onsite."
+          amount:
+            expression: "Use stack measurement or a biomass-fuel-specific factor applied to collected fuel quantity."
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per MJ onsite biomass fuel input"
+              kind: "fuel_inventory"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_air_emissions
+              source_ids:
+                - zhu-2025-curing-emissions
+            ranges: []
+        - row_id: redrying_so2_to_air
+          role: "Sulfur dioxide from redrying fuel"
+          name: "Sulfur dioxide, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record sulfur dioxide only for fuels and operating periods for which it is emitted."
+          amount:
+            expression: "Use stack measurement or a fuel-sulfur-specific factor applied to collected fuel records."
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per MJ onsite fuel input"
+              kind: "fuel_inventory"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_air_emissions
+              source_ids:
+                - zhu-2025-curing-emissions
+            ranges: []
+        - row_id: redrying_no_to_air
+          role: "Nitrogen monoxide from redrying fuel"
+          name: "Nitrogen monoxide, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record nitrogen monoxide as its own elementary exchange."
+          amount:
+            expression: "Use measured concentration and exhaust flow or a fuel- and technology-specific factor applied to collected activity data."
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per MJ onsite fuel input"
+              kind: "fuel_inventory"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_air_emissions
+              source_ids:
+                - zhu-2025-curing-emissions
+            ranges: []
+        - row_id: redrying_no2_to_air
+          role: "Nitrogen dioxide from redrying fuel"
+          name: "Nitrogen dioxide, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record nitrogen dioxide separately from nitrogen monoxide."
+          amount:
+            expression: "Use measured concentration and exhaust flow or a fuel- and technology-specific factor applied to collected activity data."
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per MJ onsite fuel input"
+              kind: "fuel_inventory"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_air_emissions
+              source_ids:
+                - zhu-2025-curing-emissions
+            ranges: []
+        - row_id: redrying_pm25_to_air
+          role: "Fine particulate matter from redrying fuel"
+          name: "Particulate matter, less than 2.5 micrometres, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record fine particulate emissions separately from collected baghouse dust."
+          amount:
+            expression: "Use measured concentration and exhaust flow or a fuel- and control-specific factor applied to collected activity data."
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per MJ onsite fuel input"
+              kind: "fuel_inventory"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_air_emissions
+              source_ids:
+                - zhu-2025-curing-emissions
+            ranges: []
+  - id: packing_storage_release
+    label: "Packing and storage release"
+    inputs:
+      product:
+        - row_id: redried_lamina_to_packing
+          role: "Redried lamina entering packing"
+          name: "Redried cured tobacco leaf strips"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the released redried lamina entering the packing line."
+          amount:
+            expression: "Weigh the packing-line input and correct for opening and closing line stock."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packing_records
+              source_ids:
+                - wise-reaves-1997
+            ranges: []
+        - row_id: packing_electricity
+          role: "Electricity for packing"
+          name: "Electricity, supplied to facility"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record electricity for conveying, pressing, weighing, sealing, labelling, and attributable storage handling."
+          amount:
+            expression: "Use a packaging-line submeter or reconciled equipment load and operating hours."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packing_records
+              source_ids:
+                - wise-reaves-1997
+            ranges: []
+        - row_id: packing_fibreboard_box
+          role: "Corrugated fibreboard box"
+          name: "Corrugated fibreboard packaging box"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record corrugated boxes only when they are part of the declared package."
+          amount:
+            expression: "Multiply used box count by verified item mass and reconcile packaging stock."
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packing_records
+              source_ids:
+                - wise-reaves-1997
+            ranges: []
+        - row_id: packing_polyethylene_liner
+          role: "Polyethylene packaging liner"
+          name: "Polyethylene packaging liner"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the polyethylene liner separately when used."
+          amount:
+            expression: "Multiply used liner count by verified item mass and reconcile packaging stock."
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packing_records
+              source_ids:
+                - wise-reaves-1997
+            ranges: []
+        - row_id: packing_steel_strap
+          role: "Steel packaging strap"
+          name: "Steel packaging strap"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record steel strap separately when used to secure the package."
+          amount:
+            expression: "Weigh used strap or calculate from measured length and supplier mass per unit length."
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packing_records
+              source_ids:
+                - wise-reaves-1997
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: reference_product_output
+          role: "Cured stemmed/stripped tobacco leaves"
+          name: "Cured stemmed/stripped tobacco leaves"
+          flow_type: "product"
+          flow_ref:
+            uuid: "57a438c1-b4d5-427a-8240-3aacf6c56025"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This is the only UUID-bearing inventory row and must use the verified Tiangong reference identity."
+          amount:
+            expression: "Fixed normalization output of 1,000 kg net conforming product; measure gross packed mass and packaging mass separately."
+            value_mode: "fixed_value"
+            specificity: "product_specific"
+            basis:
+              text: "1,000 kg net cured stemmed/stripped tobacco leaves"
+              kind: "reference_flow"
+            evidence:
+              kind: "identity_reference"
+              source_ids:
+                - unsd-cpc3-25010
+                - usda-7cfr-leaf-tobacco
+            ranges: []
+      waste:
+        - row_id: packing_waste_fibreboard
+          role: "Waste corrugated fibreboard"
+          name: "Waste corrugated fibreboard packaging"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record rejected boxes and fibreboard offcuts separately."
+          amount:
+            expression: "Weigh fibreboard waste and record recovery or treatment destination."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packing_records
+              source_ids: []
+            ranges: []
+        - row_id: packing_waste_polyethylene
+          role: "Waste polyethylene film"
+          name: "Waste polyethylene packaging film"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record rejected liners and polyethylene offcuts separately."
+          amount:
+            expression: "Weigh polyethylene waste and record recovery or treatment destination."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packing_records
+              source_ids: []
+            ranges: []
+        - row_id: packing_waste_steel_strap
+          role: "Waste steel strap"
+          name: "Waste steel packaging strap"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record rejected or trimmed steel strap separately."
+          amount:
+            expression: "Weigh steel strap waste and record recovery or treatment destination."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packing_records
+              source_ids: []
+            ranges: []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocation_avoid_first
+    applies_to: "Every multi-output operation"
+    rule: "Prefer subdivision, line-specific measurement, or system expansion that preserves separately measured lamina, stems, strip scrap, dust, rejects, and energy recovery before applying allocation."
+    source_ids:
+      - eu-2021-2279-environmental-footprint
+  - rule_id: allocation_output_classification
+    applies_to: "Stems and strip scrap"
+    rule: "Classify each stream by its actual destination: a saleable or internally used material with an upstream-substitution claim is a co-product; a discarded stream is waste. Do not change classification merely to improve results."
+    source_ids:
+      - usda-7cfr-leaf-tobacco
+      - eu-2021-2279-environmental-footprint
+  - rule_id: allocation_residual_physical
+    applies_to: "Unavoidable shared burdens"
+    rule: "When subdivision and system expansion are not applicable, allocate shared conditioning, separation, and redrying burdens by measured dry mass of saleable outputs on a consistent moisture basis."
+    source_ids:
+      - eu-2021-2279-environmental-footprint
+  - rule_id: allocation_economic_sensitivity
+    applies_to: "Material co-products"
+    rule: "When stems or strip scrap have materially different value from lamina, report an economic-allocation sensitivity using period-matched net revenues and disclose the result alongside the primary physical allocation."
+    source_ids:
+      - eu-2021-2279-environmental-footprint
+  - rule_id: allocation_no_invisible_credit
+    applies_to: "Waste and recovered energy"
+    rule: "Do not subtract waste treatment, exported material, recovered heat, or recovered energy directly from an input. Represent the outgoing stream and any substitution or credit as an explicit model choice."
+    source_ids:
+      - eu-2021-2279-environmental-footprint
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_leaf_receipts
+      process_id: "leaf_receiving_conditioning"
+      flow_role: "Received leaf, rejects, and stones"
+      record_type: "Weighbridge, lot, supplier, grade, and inspection records"
+      raw_fields: "lot_id; supplier; origin; crop_year; tobacco_type; cultivar; curing_method; curing_location; upstream_dataset; gross_mass; tare_mass; moisture; grade; reject_mass; reject_reason; stone_mass"
+      collection_method: "Calibrated scale plus documented representative sampling and visual inspection"
+      unit: "kg; mass %"
+      frequency: "Every receipt lot"
+      temporal_coverage: "Full represented production period"
+      site_scope: "Every supplying lot accepted by the represented facility"
+      aggregation_rule: "Sum net mass and rejected mass; mass-weight moisture; retain lot identity and stock change"
+      quality_evidence: "Calibration certificate; weigh ticket; supplier document; grade certificate; sampling plan; inspection record"
+    - protocol_id: cp_conditioning_records
+      process_id: "leaf_receiving_conditioning"
+      flow_role: "Conditioned leaf, water, steam, electricity, and cleaning wastewater"
+      record_type: "Line scales, water/steam/electricity meters, equipment logs, and cleaning records"
+      raw_fields: "lot_id; inlet_mass; inlet_moisture; outlet_mass; outlet_moisture; water_input; steam_mass; steam_state; electricity; cleaning_water; wastewater; opening_stock; closing_stock"
+      collection_method: "Calibrated transfer scales and utility meters; documented balance only where direct measurement is unavailable"
+      unit: "kg; kWh; MJ; mass %"
+      frequency: "Each lot, shift, and utility meter period"
+      temporal_coverage: "Full represented production period"
+      site_scope: "All receiving and conditioning equipment serving the product"
+      aggregation_rule: "Stock-correct material transfer; reconcile utilities to represented operating hours; keep absorbed mist separate from cleaning discharge"
+      quality_evidence: "Calibration record; meter record; batch log; steam calculation; cleaning log; water-balance worksheet"
+    - protocol_id: cp_separation_records
+      process_id: "threshing_separation"
+      flow_role: "Lamina, stems, strip scrap, dust, and electricity"
+      record_type: "Transfer scales, line logs, collector records, sales and waste records"
+      raw_fields: "lot_id; input_mass; input_moisture; lamina_mass; lamina_moisture; stem_mass; stem_moisture; strip_scrap_mass; dust_mass; destination; revenue; electricity; opening_stock; closing_stock"
+      collection_method: "Calibrated scales, line submeter, collector-container weighing, and dispatch reconciliation"
+      unit: "kg; kWh; mass %; currency"
+      frequency: "Each lot or shift"
+      temporal_coverage: "Full represented production period"
+      site_scope: "Every threshing, separation, screening, and dust-control line"
+      aggregation_rule: "Reconcile stock-correct inputs and all physical outputs before allocation; sum outputs by destination"
+      quality_evidence: "Calibration record; line log; laboratory result; collector record; sale ticket; waste manifest; stock reconciliation"
+    - protocol_id: cp_redrying_records
+      process_id: "redrying_cooling"
+      flow_role: "Lamina, utilities, fuel, final moisture, and evaporated water"
+      record_type: "Feed/output scales, moisture tests, meters, fuel invoices, fuel analyses, and redryer logs"
+      raw_fields: "lot_id; inlet_mass; inlet_moisture; outlet_mass; outlet_moisture; electricity; steam_mass; steam_state; fuel_type; fuel_quantity; heating_value; heating_value_basis; operating_hours; opening_stock; closing_stock"
+      collection_method: "Calibrated scales and meters; representative moisture sampling; fuel stock reconciliation"
+      unit: "kg; kWh; MJ; mass %"
+      frequency: "Each lot and utility/fuel reporting period"
+      temporal_coverage: "Full represented production period"
+      site_scope: "Every redryer and cooling/equilibration unit"
+      aggregation_rule: "Calculate energy from each fuel separately; calculate evaporated water from moisture-corrected balance; never average fuel routes"
+      quality_evidence: "Calibration record; moisture method; meter record; invoice; fuel analysis; operating log; stock and mass-balance worksheet"
+    - protocol_id: cp_air_emissions
+      process_id: "threshing_separation_redrying_cooling"
+      flow_role: "Substance-specific direct air emissions"
+      record_type: "Stack or workplace monitoring, exhaust-flow, fuel, permit, and factor records"
+      raw_fields: "emission_point; substance_id; concentration; exhaust_flow; temperature; pressure; duration; fuel_type; fuel_quantity; factor; factor_source; control_device"
+      collection_method: "Direct measurement preferred; otherwise an applicable fuel-, equipment-, and control-specific factor applied to collected activity data"
+      unit: "kg; mg/m3; m3/s; MJ"
+      frequency: "Each monitoring event and reporting period"
+      temporal_coverage: "Full represented operating period"
+      site_scope: "Every included direct emission point"
+      aggregation_rule: "Calculate mass by substance and point; do not combine NO with NO2 or emitted particulate with collected dust"
+      quality_evidence: "Calibration and laboratory report; monitoring plan; permit return; factor source; calculation worksheet; control-device log"
+    - protocol_id: cp_packing_records
+      process_id: "packing_storage_release"
+      flow_role: "Net product, packaging components, packaging waste, and electricity"
+      record_type: "Packing batch, scale, bill-of-material, purchase, stock, and waste records"
+      raw_fields: "batch_id; product_input; net_product_output; gross_packed_mass; box_count; box_mass; liner_count; liner_mass; strap_length; strap_mass; packaging_waste_mass; electricity; opening_stock; closing_stock"
+      collection_method: "Calibrated product scale plus item mass verification and stock reconciliation"
+      unit: "kg; item count; m; kWh"
+      frequency: "Each packing batch"
+      temporal_coverage: "Full represented production period"
+      site_scope: "Every line and package used for the reference product"
+      aggregation_rule: "Reconcile net product separately from packaging; convert item counts or length with verified item factors"
+      quality_evidence: "Scale calibration; package specification; supplier record; invoice; batch log; waste ticket; stock reconciliation"
+  calculation_rules:
+    - id: calc_reference_normalization
+      applies_to: "Every foreground exchange"
+      rule: "normalized amount = stock-corrected exchange amount / net conforming reference-product mass × 1,000 kg"
+      inputs:
+        - "exchange amount"
+        - "opening stock"
+        - "closing stock"
+        - "net reference-product mass"
+      output: "amount per 1,000 kg reference product"
+      source_ids:
+        - eu-2021-2279-environmental-footprint
+    - id: calc_dry_mass
+      applies_to: "Moisture-basis comparison"
+      rule: "dry mass = wet mass × (1 - moisture mass fraction); retain the original wet mass and measured moisture"
+      inputs:
+        - "wet mass"
+        - "moisture mass fraction"
+      output: "dry mass for balancing or physical allocation"
+      source_ids:
+        - fao-rwedp-32
+        - usda-7cfr-leaf-tobacco
+    - id: calc_process_mass_balance
+      applies_to: "Each process and aggregate facility"
+      rule: "balance gap = inputs + opening stock - outputs - closing stock; report evaporated water and each measured discharge explicitly and investigate the residual"
+      inputs:
+        - "moisture-consistent inputs"
+        - outputs
+        - "stock changes"
+        - "absorbed water"
+        - "evaporated water"
+      output: "balance gap and documented gap fraction"
+      source_ids:
+        - eu-2021-2279-environmental-footprint
+    - id: calc_fuel_energy
+      applies_to: "Each onsite fuel"
+      rule: "fuel energy = measured fuel quantity × declared heating value on a consistent basis"
+      inputs:
+        - "fuel quantity"
+        - "heating value"
+        - "moisture or ash basis"
+        - "lower/higher heating-value basis"
+      output: "MJ by fuel"
+      source_ids:
+        - zhu-2025-curing-emissions
+    - id: calc_direct_emission
+      applies_to: "Each emitted substance"
+      rule: "emitted mass = measured concentration × standardized exhaust flow × operating duration, or collected activity × an applicable documented factor"
+      inputs:
+        - concentration
+        - "exhaust flow"
+        - temperature
+        - pressure
+        - time
+        - "or activity and factor"
+      output: "kg of one substance"
+      source_ids:
+        - zhu-2025-curing-emissions
+    - id: calc_allocation_fraction
+      applies_to: "Residual allocation"
+      rule: "allocation fraction for output i = selected driver for output i / sum of the driver across all co-products in the same period"
+      inputs:
+        - "dry mass or net revenue by output"
+        - "shared burden"
+      output: "allocated burden and allocation fraction by output"
+      source_ids:
+        - eu-2021-2279-environmental-footprint
+  data_quality_requirements:
+    - id: dq_reference_identity
+      applies_to: "Reference product"
+      requirement: "Use Tiangong flow 57a438c1-b4d5-427a-8240-3aacf6c56025, Mass 93a60a56-a3c8-11da-a746-0800200b9a66, Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66, and kg without dataset versions."
+      evidence: "Dataset reference-flow record and UUID validation"
+    - id: dq_tiangong_route_conflict
+      applies_to: "Reference identity metadata"
+      requirement: "Disclose that treatmentStandardsRoutes = Fresh, unprocessed produce / 鲜品，未加工 conflicts with the cured title and CPC 25010; do not use it as methodology evidence, and retain the issue as unresolved until Tiangong reread and review close it."
+      evidence: "Tiangong state-100 direct-read record; manifest unresolved-identity entry; review decision"
+    - id: dq_product_qualifiers
+      applies_to: "Every reference lot"
+      requirement: "Preserve traceability for tobacco type, origin, crop year, curing route and location, grade, moisture, residual stem content, strip size when applicable, and package."
+      evidence: "Supplier record; grade certificate; laboratory result; lot genealogy; packing record"
+    - id: dq_temporal_coverage
+      applies_to: "Foreground data"
+      requirement: "Cover a representative operating year or complete declared campaign and disclose shutdowns, crop-season gaps, product changes, and extrapolation."
+      evidence: "Date-bounded production, meter, fuel, stock, laboratory, and dispatch records; eu-2021-2279-environmental-footprint"
+    - id: dq_technology_geography
+      applies_to: "Facility representation"
+      requirement: "Describe facility geography, line capacity, conditioning method, thresher and separator configuration, redryer, heat supply, dust control, moisture control, and package configuration."
+      evidence: "Facility profile; process-flow diagram; equipment list; control-device record"
+    - id: dq_completeness
+      applies_to: "Process inventory"
+      requirement: "Reconcile every process and disclose missing inputs, unmetered shared utilities, omitted emissions, unknown destinations, and unexplained balance gaps instead of silently assigning zero."
+      evidence: "Signed mass, energy, water, and emission reconciliation; eu-2021-2279-environmental-footprint"
+    - id: dq_zero_ranges
+      applies_to: "Quantitative guidance"
+      requirement: "Do not infer a range from one facility, one curing experiment, or unlike process boundaries. This PCR has zero ranges; all values require collected foreground evidence until two independent boundary-compatible originals support a reviewed interval."
+      evidence: "Range audit; source applicability review; foreground records"
+    - id: dq_source_traceability
+      applies_to: "External evidence and factors"
+      requirement: "Retain source title, stable URL or DOI, retrieval date for web sources, factor version, applicability, and the calculation worksheet."
+      evidence: "Source register and calculation archive; eu-2021-2279-environmental-footprint"
+validation_rules:
+  - rule_id: val_reference_identity
+    applies_to: "Reference flow"
+    rule: "Fail conformance if the product UUID, Mass UUID, unit-group UUID, reference unit, reference amount, English display, or Chinese display differs from the verified reference object without an approved PCR revision."
+    source_ids:
+      - unsd-cpc3-25010
+  - rule_id: val_tiangong_route_conflict
+    applies_to: "Publication readiness"
+    rule: "Fail publication readiness while the conflicting Fresh, unprocessed produce / 鲜品，未加工 route metadata remains unresolved or lacks formal review acceptance; never treat that value as support for a fresh-product boundary."
+    source_ids:
+      - unsd-cpc3-25010
+      - usda-7cfr-leaf-tobacco
+  - rule_id: val_required_qualifiers
+    applies_to: "Dataset metadata"
+    rule: "Fail conformance when any required qualifier is absent or product, laboratory, and process records disagree on tobacco type, curing route, moisture, residual stem content, strip specification, or package."
+    source_ids:
+      - usda-7cfr-leaf-tobacco
+  - rule_id: val_process_coverage
+    applies_to: "Process inventory"
+    rule: "Require all four processes and an applicability decision for every conditional utility, fuel, wastewater, packaging, and emission card; an active card must carry amount, basis, protocol, and destination or compartment."
+    source_ids:
+      - wise-reaves-1997
+      - usepa-2006-tobacco-processing
+  - rule_id: val_atomic_flows
+    applies_to: "Inventory exchanges"
+    rule: "Fail conformance when a row combines fuels, utilities, packaging materials, wastes, or emitted substances; each card must represent one exchange and unresolved UUIDs must remain blank."
+    source_ids:
+      - eu-2021-2279-environmental-footprint
+  - rule_id: val_moisture_mass_balance
+    applies_to: "Every process and facility total"
+    rule: "Calculate and report material balance on consistent moisture bases; investigate gaps against a documented site tolerance and do not force-close the balance by changing product mass or merging stems, scrap, dust, or evaporation."
+    source_ids:
+      - eu-2021-2279-environmental-footprint
+  - rule_id: val_allocation
+    applies_to: "Multi-output processes"
+    rule: "Verify destination classification, avoidance rationale, allocation driver and period, fractions summing to 1 within reported rounding precision, and economic sensitivity when co-product value differences are material."
+    source_ids:
+      - eu-2021-2279-environmental-footprint
+  - rule_id: val_energy_emissions
+    applies_to: "Utilities, fuel, and direct emissions"
+    rule: "Reconcile meters, invoices, stocks, heating values, operating periods, controls, and substance-specific calculations; do not combine NO and NO2 or fossil and biogenic carbon dioxide."
+    source_ids:
+      - zhu-2025-curing-emissions
+      - eu-2021-2279-environmental-footprint
+  - rule_id: val_no_inferred_ranges
+    applies_to: "Quantitative metadata"
+    rule: "Verify that the structured projection contains zero quantity ranges; reject any lower-equals-upper case value or range inferred without two independent boundary-compatible original sources."
+    source_ids:
+      - eu-2021-2279-environmental-footprint
+  - rule_id: val_source_resolution
+    applies_to: "Evidence register"
+    rule: "Verify that every cited source id resolves in Data Sources and that each external factor or rule retains an applicability statement and calculation record."
+    source_ids:
+      - eu-2021-2279-environmental-footprint
+published_dataset_profile:
+  dataset_role: "Foreground production dataset for cured stemmed/stripped tobacco leaves at a declared stemming/redrying facility."
+  downstream_use: "secondary_dataset; background_dataset"
+  allowed_use: "Product and process LCA for unmanufactured cured stemmed/stripped leaf tobacco when origin, curing route, technology, product specification, boundary, allocation, and data quality are compatible."
+  excluded_use: "Fresh or green tobacco; unstemmed leaf sold as such; tobacco stems alone; tobacco cultivation or curing without linked upstream data; manufactured, reconstituted, extracted, flavored, cut, consumer-ready, or smoking products; public comparative claims without method-compatible review."
+  required_metadata: "PCR id; Tiangong reference-flow UUIDs; facility geography; production period; tobacco type; origin; crop year; curing method and location; incoming grade and moisture; process configuration; heat supply; final moisture; residual stem content; strip-size specification when used; package; boundary; allocation; dataset version; Tiangong route-conflict status."
+  required_quality_disclosure: "Temporal, geographic, and technological representativeness; weighing and moisture-test methods; calibration; mass, energy, water, and emission reconciliation; upstream curing coverage; missing flow UUIDs; shared-utility allocation; co-product treatment; absent ranges; source and factor versions; uncertainty; Tiangong route-metadata conflict and review status."
+  update_trigger: "Material change in product scope, CPC or Tiangong identity, treatment route metadata, tobacco or curing route, facility geography, conditioning, threshing/separation, redrying heat supply, dust control, package, allocation, measurement system, or source evidence."
+data_sources:
+  - id: "unsd-cpc3-25010"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, CPC Version 3.0 Explanatory Notes, subclass 25010, last updated 30 June 2025, https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Exp_Notes_30Jun2025.pdf, retrieved 2026-08-20"
+    used_for: "Exact CPC identity and separation from manufactured tobacco categories."
+  - id: "usda-7cfr-leaf-tobacco"
+    type: "standard"
+    reference: "U.S. Department of Agriculture, 7 CFR Part 30, Tobacco Stocks and Standards, sections 30.2-30.13, https://www.govinfo.gov/content/pkg/CFR-2022-title7-vol2/pdf/CFR-2022-title7-vol2-subtitleB-chapI-subchapA.pdf, retrieved 2026-08-20"
+    used_for: "Definitions of leaf tobacco, stemmed form, scrap, curing, and flue-, fire-, and air-curing; product-state and qualifier rules."
+  - id: "wise-reaves-1997"
+    type: "literature"
+    reference: "William B. Wise and Dixie Watts Reaves, Tobacco's Important Role in the Economy of Southside Virginia, Virginia Tech Rural Economic Analysis Program Report R030, 1997, DOI 10.22004/ag.econ.14847, https://ageconsearch.umn.edu/record/14847, retrieved 2026-08-20"
+    used_for: "Original process description for conditioning, inspection, threshing, air separation, screening, redrying, quality sampling, and packing."
+  - id: "usepa-2006-tobacco-processing"
+    type: "official_guidance"
+    reference: "U.S. Environmental Protection Agency, Final Engineering Report: Tobacco Products Processing Detailed Study, 2006, EPA-HQ-OW-2004-0032, https://nepis.epa.gov/Exe/ZyPURL.cgi?Dockey=P100N4Y7.TXT, retrieved 2026-08-20"
+    used_for: "Stemming/redrying sector boundary, conditioning water absorption, limited process wastewater, baghouse material and air-control disclosure, and utility/process completeness."
+  - id: "fao-rwedp-32"
+    type: "official_guidance"
+    reference: "Food and Agriculture Organization of the United Nations, Proceedings of the Regional Expert Consultation on Selection Criteria and Priority Rating for Assistance to Traditional Biomass Energy Using Industries, RWEDP Report No. 32, July 1997, tobacco leaf curing section, https://www.fao.org/4/ad594e/ad594e00.pdf, retrieved 2026-08-20"
+    used_for: "Upstream curing-route distinction, moisture removal context, curing-stage declaration, and fuel-data need; no case value is used as a PCR range."
+  - id: "zhu-2025-curing-emissions"
+    type: "literature"
+    reference: "Yinlong Zhu et al., Evaluating main gas emission and energy consumption economy during tobacco leaf curing life cycle based on clean energy, Scientific Reports 15, 13835 (2025), https://doi.org/10.1038/s41598-025-98956-3, retrieved 2026-08-20"
+    used_for: "Full-text measurement design for fuel, flue-gas concentration, flow, duration, and substance-specific CO2, SO2, NO, and NO2 calculations; experimental values are not generalized into PCR ranges."
+  - id: "eu-2021-2279-environmental-footprint"
+    type: "official_guidance"
+    reference: "European Commission Recommendation (EU) 2021/2279 on the Environmental Footprint methods, CELEX 32021H2279, https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX%3A32021H2279, retrieved 2026-08-20"
+    used_for: "Company-specific data, completeness, allocation hierarchy and disclosure, data quality, robustness, and downstream dataset use."
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:f6c8cc6102102e6144bf041e84727a4e221f5ed0e58f6dee8e5dcadff4bc2ca4"
+  generated_content_sha256: "sha256:12c3673db20afedf09e7b64543fa18d59938e88fcd9c3ec5c9eab32977037a41"

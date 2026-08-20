@@ -40,7 +40,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 1 kg |
-| 参考产品流 | Rice, semi- or wholly milled `4125cc1c-d304-48b4-a701-f40a581df3c3` |
+| 参考产品流 | 半碾或全碾的稻米 `4125cc1c-d304-48b4-a701-f40a581df3c3` |
 | 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | kg |
@@ -391,7 +391,7 @@ sync_with: pcr.en-US.md
 
 这是可选包装之前的定量参考产出。记录净质量、水分、碾白度和碎米率。
 
-- 选定流：Rice, semi- or wholly milled `4125cc1c-d304-48b4-a701-f40a581df3c3`
+- 选定流：半碾或全碾的稻米 `4125cc1c-d304-48b4-a701-f40a581df3c3`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：将实测合格产出归一化后恰好为 1 kg
 - 数值来源模式：固定值（`fixed_value`）
@@ -424,15 +424,6 @@ sync_with: pcr.en-US.md
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_milling_outputs`
 - 来源：`fao-grain-postharvest-rice-milling`
-- 数量范围：FAO 碎米示例点值校验
-  - 范围角色：QA 校验（`qa_guardrail`）
-  - 下限：0.10
-  - 上限：0.10
-  - 单位：kg/kg 进入碾米的稻谷
-  - 基准：FAO 工业碾米示例平衡报告的近似点值
-  - 基准类型：过程输出（`process_output`）
-  - 证据类型：外部来源（`external_source`）
-  - 来源：`fao-grain-postharvest-rice-milling`
 
 ###### 米糠与米粉组分（`rice_bran_flour_coproduct`）
 
@@ -448,15 +439,6 @@ sync_with: pcr.en-US.md
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_milling_outputs`
 - 来源：`fao-grain-postharvest-rice-milling`; `fao-rice-human-nutrition-postharvest`
-- 数量范围：FAO 米糠与米粉示例点值校验
-  - 范围角色：QA 校验（`qa_guardrail`）
-  - 下限：0.10
-  - 上限：0.10
-  - 单位：kg/kg 进入碾米的稻谷
-  - 基准：FAO 工业碾米示例平衡报告的合并近似点值
-  - 基准类型：过程输出（`process_output`）
-  - 证据类型：外部来源（`external_source`）
-  - 来源：`fao-grain-postharvest-rice-milling`
 
 ###### 稻壳（`rice_husk_coproduct`）
 
@@ -472,15 +454,6 @@ sync_with: pcr.en-US.md
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_milling_outputs`
 - 来源：`fao-grain-postharvest-rice-milling`; `fao-prevention-postharvest-losses-rice-milling`
-- 数量范围：FAO 稻壳示例点值校验
-  - 范围角色：QA 校验（`qa_guardrail`）
-  - 下限：0.20
-  - 上限：0.20
-  - 单位：kg/kg 进入碾米的稻谷
-  - 基准：FAO 工业碾米示例平衡报告的近似点值
-  - 基准类型：过程输出（`process_output`）
-  - 证据类型：外部来源（`external_source`）
-  - 来源：`fao-grain-postharvest-rice-milling`
 
 ##### 废物流
 
@@ -540,7 +513,7 @@ sync_with: pcr.en-US.md
 
 记录进入包装的稻米净质量与质量，并与包装产出、样品、洒落和库存变化核对。
 
-- 选定流：Rice, semi- or wholly milled `4125cc1c-d304-48b4-a701-f40a581df3c3`
+- 选定流：半碾或全碾的稻米 `4125cc1c-d304-48b4-a701-f40a581df3c3`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：进入包装批次的实测散装稻米投入
 - 数值来源模式：前景记录（`foreground_record`）
@@ -590,7 +563,7 @@ sync_with: pcr.en-US.md
 
 不含包装质量的稻米净含量实现与散装稻米相同的参考流。
 
-- 选定流：Rice, semi- or wholly milled `4125cc1c-d304-48b4-a701-f40a581df3c3`
+- 选定流：半碾或全碾的稻米 `4125cc1c-d304-48b4-a701-f40a581df3c3`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：归一化后净稻米含量恰好为 1 kg
 - 数值来源模式：固定值（`fixed_value`）

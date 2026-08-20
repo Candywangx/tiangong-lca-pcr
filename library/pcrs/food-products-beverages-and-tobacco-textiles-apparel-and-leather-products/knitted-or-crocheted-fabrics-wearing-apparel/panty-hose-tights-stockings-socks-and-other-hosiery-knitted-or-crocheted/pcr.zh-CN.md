@@ -43,7 +43,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 1 kg 验收合格袜类成品净质量 |
-| 参考产品流 | Panty hose, tights, stockings, socks and other hosiery, knitted or crocheted `c00d32b4-7e02-479b-8cae-d94b50ed1a7a` |
+| 参考产品流 | 针织或钩编的连裤袜、紧身衣裤、长袜、短袜及其他针织袜类 `c00d32b4-7e02-479b-8cae-d94b50ed1a7a` |
 | 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | kg |
@@ -274,7 +274,7 @@ sync_with: pcr.en-US.md
 
 记录缝头或缝合所用聚酯缝纫线，并声明线支、结构、颜色和供应商规范。
 
-- 选定流：Polyester sewing thread
+- 选定流：聚酯缝纫线
 - 流属性/单位：Mass / kg
 - 数量规则：实测领用减退回，并与工单和库存变化核对
 - 数值来源模式：前景记录（`foreground_record`）
@@ -550,7 +550,7 @@ sync_with: pcr.en-US.md
 
 将运输箱用瓦楞纸板与薄膜、标签、衣架和托盘分开记录，并声明纸板等级和再生含量。
 
-- 选定流：Corrugated fibreboard box
+- 选定流：瓦楞纸箱
 - 流属性/单位：Mass / kg
 - 数量规则：实测领用减未用退回，并与包装输出和库存变化核对
 - 数值来源模式：前景记录（`foreground_record`）
@@ -603,7 +603,7 @@ sync_with: pcr.en-US.md
 
 使用经核验的公开 TianGong 产品流身份，记录检验和配对后、包装前的可销售袜类成品。
 
-- 选定流：Panty hose, tights, stockings, socks and other hosiery, knitted or crocheted `c00d32b4-7e02-479b-8cae-d94b50ed1a7a`
+- 选定流：针织或钩编的连裤袜、紧身衣裤、长袜、短袜及其他针织袜类 `c00d32b4-7e02-479b-8cae-d94b50ed1a7a`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：验收调湿产品净质量归一化至恰好 1 kg
 - 数值来源模式：计算值（`calculated_value`）

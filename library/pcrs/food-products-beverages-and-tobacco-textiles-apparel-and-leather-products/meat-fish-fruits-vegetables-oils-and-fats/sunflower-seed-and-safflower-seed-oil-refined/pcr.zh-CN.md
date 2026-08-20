@@ -38,7 +38,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 1 kg |
-| 参考产品流 | Sunflower-seed and safflower-seed oil, refined `1b88e515-861e-4552-b494-67bb3d645aa7` |
+| 参考产品流 | 精制葵花籽油和红花籽油 `1b88e515-861e-4552-b494-67bb3d645aa7` |
 | 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | kg |
@@ -93,7 +93,7 @@ sync_with: pcr.en-US.md
 
 计量进入精炼路线的各类植物来源粗油。原始记录须能区分葵花籽、红花籽和混合物组分。
 
-- 选定流：Sunflower-seed and safflower-seed oil, crude `e48ecaca-7bfe-427a-a117-7eeeb8253565`
+- 选定流：葵花籽和红花籽油，原油 `e48ecaca-7bfe-427a-a117-7eeeb8253565`
 - 流属性/单位：Mass / kg
 - 数量规则：投入精炼路线的粗油实测净质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -115,7 +115,7 @@ sync_with: pcr.en-US.md
 
 记录用于脱胶、水洗、清洁、真空系统和其他精炼用途并跨越前景边界的供水；非接触冷却水须可单独识别。
 
-- 选定流：Process water
+- 选定流：过程用水
 - 流属性/单位：Mass / kg
 - 数量规则：分配至精炼生产周期的计量或核算用水量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -241,7 +241,7 @@ sync_with: pcr.en-US.md
 
 定量参考为由前景炼油厂放行的合格散装精制油净质量。
 
-- 选定流：Sunflower-seed and safflower-seed oil, refined `1b88e515-861e-4552-b494-67bb3d645aa7`
+- 选定流：精制葵花籽油和红花籽油 `1b88e515-861e-4552-b494-67bb3d645aa7`
 - 流属性/单位：Mass / kg
 - 数量规则：固定定量参考 1 kg 精制油净质量
 - 数值来源模式：固定值（`fixed_value`）

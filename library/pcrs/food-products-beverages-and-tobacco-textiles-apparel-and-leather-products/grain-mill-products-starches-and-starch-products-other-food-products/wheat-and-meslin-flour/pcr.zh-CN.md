@@ -43,7 +43,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 1 kg 湿基成品面粉 |
-| 参考产品流 | Wheat and meslin flour `2e07a69d-fe87-4f0f-9d12-b50ecdb9d8b4` |
+| 参考产品流 | 小麦和中筋面粉 `2e07a69d-fe87-4f0f-9d12-b50ecdb9d8b4` |
 | 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | kg |
@@ -475,7 +475,7 @@ sync_with: pcr.en-US.md
 
 该输出承载定量参考和全部必需产品限定信息。
 
-- 选定流：Wheat and meslin flour `2e07a69d-fe87-4f0f-9d12-b50ecdb9d8b4`
+- 选定流：小麦和中筋面粉 `2e07a69d-fe87-4f0f-9d12-b50ecdb9d8b4`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：磨厂门恰好 1 kg 湿基放行成品面粉
 - 数值来源模式：固定值（`fixed_value`）

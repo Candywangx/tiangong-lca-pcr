@@ -36,7 +36,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 1 kg |
-| 参考产品流 | Waterproof footwear, with outer soles and uppers of rubber or plastics, other than footwear incorporating a protective metal toe-cap `c419cb3e-b7f4-44b5-9f7c-ed1ebfc6260b` |
+| 参考产品流 | 外底与鞋帮以橡胶或塑料制成的防水鞋类，带有金属保护鞋头的鞋类除外 `c419cb3e-b7f4-44b5-9f7c-ed1ebfc6260b` |
 | 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | kg |
@@ -210,7 +210,7 @@ sync_with: pcr.en-US.md
 
 适用时，将该单一命名交换作为进入本过程的原子流记录；缺失时须声明不适用。
 
-- 选定流：Electricity, medium voltage
+- 选定流：中压电力
 - 流属性/单位：Energy / kWh
 - 数量规则：采用分表用量，或用设备时间和已核负荷记录分配完整仪表总量。
 - 数值来源模式：计算值（`calculated_value`）
@@ -224,7 +224,7 @@ sync_with: pcr.en-US.md
 
 适用时，将该单一命名交换作为进入本过程的原子流记录；缺失时须声明不适用。
 
-- 选定流：Natural gas
+- 选定流：天然气
 - 流属性/单位：Energy / MJ
 - 数量规则：将计量或发票燃料用量用有记录的低位热值换算并分配至过程。
 - 数值来源模式：计算值（`calculated_value`）
@@ -319,7 +319,7 @@ sync_with: pcr.en-US.md
 
 适用时，将该单一命名交换作为离开本过程的原子流记录；缺失时须声明不适用。
 
-- 选定流：Non-methane volatile organic compounds to air
+- 选定流：非甲烷挥发性有机物，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：采用实测排放，或由监测活动数据和有记录的排放因子计算。
 - 数值来源模式：计算值（`calculated_value`）
@@ -396,7 +396,7 @@ sync_with: pcr.en-US.md
 
 适用时，将该单一命名交换作为进入本过程的原子流记录；缺失时须声明不适用。
 
-- 选定流：Electricity, medium voltage
+- 选定流：中压电力
 - 流属性/单位：Energy / kWh
 - 数量规则：采用分表用量，或用设备时间和已核负荷记录分配完整仪表总量。
 - 数值来源模式：计算值（`calculated_value`）
@@ -410,7 +410,7 @@ sync_with: pcr.en-US.md
 
 适用时，将该单一命名交换作为进入本过程的原子流记录；缺失时须声明不适用。
 
-- 选定流：Steam
+- 选定流：蒸汽
 - 流属性/单位：Energy / MJ
 - 数量规则：计量交付蒸汽或分配供应商记录；声明压力和凝结水处理。
 - 数值来源模式：计算值（`calculated_value`）
@@ -424,7 +424,7 @@ sync_with: pcr.en-US.md
 
 适用时，将该单一命名交换作为进入本过程的原子流记录；缺失时须声明不适用。
 
-- 选定流：Natural gas
+- 选定流：天然气
 - 流属性/单位：Energy / MJ
 - 数量规则：将计量或发票燃料用量用有记录的低位热值换算并分配至过程。
 - 数值来源模式：计算值（`calculated_value`）
@@ -438,7 +438,7 @@ sync_with: pcr.en-US.md
 
 适用时，将该单一命名交换作为进入本过程的原子流记录；缺失时须声明不适用。
 
-- 选定流：Process water
+- 选定流：过程用水
 - 流属性/单位：Volume / m3
 - 数量规则：计量工艺水体积，或用完整水平衡分配至作业。
 - 数值来源模式：计算值（`calculated_value`）
@@ -561,7 +561,7 @@ sync_with: pcr.en-US.md
 
 适用时，将该单一命名交换作为离开本过程的原子流记录；缺失时须声明不适用。
 
-- 选定流：Non-methane volatile organic compounds to air
+- 选定流：非甲烷挥发性有机物，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：采用实测排放，或由监测活动数据和有记录的排放因子计算。
 - 数值来源模式：计算值（`calculated_value`）
@@ -589,7 +589,7 @@ sync_with: pcr.en-US.md
 
 适用时，将该单一命名交换作为离开本过程的原子流记录；缺失时须声明不适用。
 
-- 选定流：Carbon dioxide, fossil, to air
+- 选定流：化石源二氧化碳，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：采用实测排放，或由监测活动数据和有记录的排放因子计算。
 - 数值来源模式：计算值（`calculated_value`）
@@ -603,7 +603,7 @@ sync_with: pcr.en-US.md
 
 适用时，将该单一命名交换作为离开本过程的原子流记录；缺失时须声明不适用。
 
-- 选定流：Nitrogen oxides to air
+- 选定流：氮氧化物，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：采用实测排放，或由监测活动数据和有记录的排放因子计算。
 - 数值来源模式：计算值（`calculated_value`）
@@ -695,7 +695,7 @@ sync_with: pcr.en-US.md
 
 适用时，将该单一命名交换作为进入本过程的原子流记录；缺失时须声明不适用。
 
-- 选定流：Polyester sewing thread
+- 选定流：聚酯缝纫线
 - 流属性/单位：Mass / kg
 - 数量规则：按批次仓库、BOM 和过程记录计量净领用或转移质量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -751,7 +751,7 @@ sync_with: pcr.en-US.md
 
 适用时，将该单一命名交换作为进入本过程的原子流记录；缺失时须声明不适用。
 
-- 选定流：Electricity, medium voltage
+- 选定流：中压电力
 - 流属性/单位：Energy / kWh
 - 数量规则：采用分表用量，或用设备时间和已核负荷记录分配完整仪表总量。
 - 数值来源模式：计算值（`calculated_value`）
@@ -779,7 +779,7 @@ sync_with: pcr.en-US.md
 
 适用时，将该单一命名交换作为进入本过程的原子流记录；缺失时须声明不适用。
 
-- 选定流：Natural gas
+- 选定流：天然气
 - 流属性/单位：Energy / MJ
 - 数量规则：将计量或发票燃料用量用有记录的低位热值换算并分配至过程。
 - 数值来源模式：计算值（`calculated_value`）
@@ -874,7 +874,7 @@ sync_with: pcr.en-US.md
 
 适用时，将该单一命名交换作为离开本过程的原子流记录；缺失时须声明不适用。
 
-- 选定流：Non-methane volatile organic compounds to air
+- 选定流：非甲烷挥发性有机物，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：采用实测排放，或由监测活动数据和有记录的排放因子计算。
 - 数值来源模式：计算值（`calculated_value`）
@@ -888,7 +888,7 @@ sync_with: pcr.en-US.md
 
 适用时，将该单一命名交换作为离开本过程的原子流记录；缺失时须声明不适用。
 
-- 选定流：Nitrogen oxides to air
+- 选定流：氮氧化物，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：采用实测排放，或由监测活动数据和有记录的排放因子计算。
 - 数值来源模式：计算值（`calculated_value`）
@@ -923,7 +923,7 @@ sync_with: pcr.en-US.md
 
 适用时，将该单一命名交换作为进入本过程的原子流记录；缺失时须声明不适用。
 
-- 选定流：Process water
+- 选定流：过程用水
 - 流属性/单位：Volume / m3
 - 数量规则：计量工艺水体积，或用完整水平衡分配至作业。
 - 数值来源模式：计算值（`calculated_value`）
@@ -937,7 +937,7 @@ sync_with: pcr.en-US.md
 
 适用时，将该单一命名交换作为进入本过程的原子流记录；缺失时须声明不适用。
 
-- 选定流：Electricity, medium voltage
+- 选定流：中压电力
 - 流属性/单位：Energy / kWh
 - 数量规则：采用分表用量，或用设备时间和已核负荷记录分配完整仪表总量。
 - 数值来源模式：计算值（`calculated_value`）
@@ -951,7 +951,7 @@ sync_with: pcr.en-US.md
 
 适用时，将该单一命名交换作为进入本过程的原子流记录；缺失时须声明不适用。
 
-- 选定流：Steam
+- 选定流：蒸汽
 - 流属性/单位：Energy / MJ
 - 数量规则：计量交付蒸汽或分配供应商记录；声明压力和凝结水处理。
 - 数值来源模式：计算值（`calculated_value`）
@@ -1074,7 +1074,7 @@ sync_with: pcr.en-US.md
 
 适用时，将该单一命名交换作为离开本过程的原子流记录；缺失时须声明不适用。
 
-- 选定流：Non-methane volatile organic compounds to air
+- 选定流：非甲烷挥发性有机物，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：采用实测排放，或由监测活动数据和有记录的排放因子计算。
 - 数值来源模式：计算值（`calculated_value`）
@@ -1109,7 +1109,7 @@ sync_with: pcr.en-US.md
 
 适用时，将该单一命名交换作为进入本过程的原子流记录；缺失时须声明不适用。
 
-- 选定流：Electricity, medium voltage
+- 选定流：中压电力
 - 流属性/单位：Energy / kWh
 - 数量规则：采用分表用量，或用设备时间和已核负荷记录分配完整仪表总量。
 - 数值来源模式：计算值（`calculated_value`）
@@ -1216,7 +1216,7 @@ sync_with: pcr.en-US.md
 
 这是质量验收合格的工厂门口输出；包装质量单独列入清单，产品不带金属防护包头。
 
-- 选定流：Waterproof footwear, with outer soles and uppers of rubber or plastics, other than footwear incorporating a protective metal toe-cap `c419cb3e-b7f4-44b5-9f7c-ed1ebfc6260b`
+- 选定流：外底与鞋帮以橡胶或塑料制成的防水鞋类，带有金属保护鞋头的鞋类除外 `c419cb3e-b7f4-44b5-9f7c-ed1ebfc6260b`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg in Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66`
 - 数量规则：质量验收合格成品鞋靴净质量正好 1 kg。
 - 数值来源模式：固定值（`fixed_value`）
@@ -1231,7 +1231,7 @@ sync_with: pcr.en-US.md
 
 适用时，将该单一命名交换作为离开本过程的原子流记录；缺失时须声明不适用。
 
-- 选定流：Waste low-density polyethylene film
+- 选定流：废低密度聚乙烯薄膜
 - 流属性/单位：Mass / kg
 - 数量规则：按材料和去向计量废物转移质量，扣除有记录的过程内再利用。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1245,7 +1245,7 @@ sync_with: pcr.en-US.md
 
 适用时，将该单一命名交换作为离开本过程的原子流记录；缺失时须声明不适用。
 
-- 选定流：Waste corrugated paperboard
+- 选定流：废瓦楞纸板
 - 流属性/单位：Mass / kg
 - 数量规则：按材料和去向计量废物转移质量，扣除有记录的过程内再利用。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1274,7 +1274,7 @@ sync_with: pcr.en-US.md
 
 适用时，将该单一命名交换作为离开本过程的原子流记录；缺失时须声明不适用。
 
-- 选定流：Carbon dioxide, fossil, to air
+- 选定流：化石源二氧化碳，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：采用实测排放，或由监测活动数据和有记录的排放因子计算。
 - 数值来源模式：计算值（`calculated_value`）
@@ -1288,7 +1288,7 @@ sync_with: pcr.en-US.md
 
 适用时，将该单一命名交换作为离开本过程的原子流记录；缺失时须声明不适用。
 
-- 选定流：Nitrogen oxides to air
+- 选定流：氮氧化物，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：采用实测排放，或由监测活动数据和有记录的排放因子计算。
 - 数值来源模式：计算值（`calculated_value`）

@@ -40,7 +40,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 1 kg 可销售制备产品净质量，不含包装 |
-| 参考产品流 | Nuts, groundnuts and other seeds, roasted, salted or otherwise prepared, n.e.c. `eb6332a4-c0e9-4213-a00d-77f9fd3bdacc` |
+| 参考产品流 | 坚果、落花生和其他种子，烘烤、腌制或以其他方式制备（未另列明）。 `eb6332a4-c0e9-4213-a00d-77f9fd3bdacc` |
 | 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | kg |
@@ -625,7 +625,7 @@ sync_with: pcr.en-US.md
 
 本行为定量参考输出。记录放行检查后的产品净质量并排除包装质量。
 
-- 选定流：Nuts, groundnuts and other seeds, roasted, salted or otherwise prepared, n.e.c. `eb6332a4-c0e9-4213-a00d-77f9fd3bdacc`
+- 选定流：坚果、落花生和其他种子，烘烤、腌制或以其他方式制备（未另列明）。 `eb6332a4-c0e9-4213-a00d-77f9fd3bdacc`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` 中的 kg
 - 数量规则：归一化参考输出恰为 1 kg 净可销售产品
 - 数值来源模式：固定值（`fixed_value`）

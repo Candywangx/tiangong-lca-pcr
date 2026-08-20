@@ -40,7 +40,7 @@ CPC 28261 未加工帽坯、帽体和帽兜不作为本成品参考流。安全�
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 1 kg 不含包装的合格成品头饰 |
-| 参考产品流 | Hats and other headgear, of felt, or plaited or made by assembling strips of any material, or knitted or crocheted or made up from lace or other textile fabric in the piece, hair-nets `b00baec8-ce3f-4e11-99c7-8a40167d2f4f` |
+| 参考产品流 | 以各种材料的组合带编织或制成的或针织的、钩编的或以花边或整幅其他纺织品制成的毡呢帽子与其他头饰，发网 `b00baec8-ce3f-4e11-99c7-8a40167d2f4f` |
 | 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | kg |
@@ -178,7 +178,7 @@ CPC 28261 未加工帽坯、帽体和帽兜不作为本成品参考流。安全�
 
 连接编条或裁片的缝纫线为一个并入产品的材料投入，以线轴领退称重或经记录的耗线计算确定质量。
 
-- 选定流：Sewing thread
+- 选定流：缝纫线
 - 流属性/单位：Mass / kg
 - 数量规则：实测或计算的消耗缝纫线质量
 - 数值来源模式：计算值（`calculated_value`）
@@ -193,7 +193,7 @@ CPC 28261 未加工帽坯、帽体和帽兜不作为本成品参考流。安全�
 
 针织/钩编机、裁剪机、抽排及连接设备用电由专表或场址总表的文件化分配取得。
 
-- 选定流：Electricity, low voltage, at factory
+- 选定流：低压电力，工厂供电
 - 流属性/单位：Energy / kWh
 - 数量规则：实测帽体形成过程耗电
 - 数值来源模式：前景记录（`foreground_record`）
@@ -301,7 +301,7 @@ CPC 28261 未加工帽坯、帽体和帽兜不作为本成品参考流。安全�
 
 喷洒、浇注或调湿帽体的水由过程水表或批次加水记录取得。
 
-- 选定流：Process water
+- 选定流：过程用水
 - 流属性/单位：Mass / kg
 - 数量规则：实测阻帽过程用水
 - 数值来源模式：前景记录（`foreground_record`）
@@ -346,7 +346,7 @@ CPC 28261 未加工帽坯、帽体和帽兜不作为本成品参考流。安全�
 
 压机、阻帽机、泵、抽排和直接辅助设备用电由计量或物理分配取得。
 
-- 选定流：Electricity, low voltage, at factory
+- 选定流：低压电力，工厂供电
 - 流属性/单位：Energy / kWh
 - 数量规则：实测阻帽过程耗电
 - 数值来源模式：前景记录（`foreground_record`）
@@ -433,7 +433,7 @@ CPC 28261 未加工帽坯、帽体和帽兜不作为本成品参考流。安全�
 
 由分别记录的天然气或 LPG 消耗及披露的适用因子计算直接化石二氧化碳。
 
-- 选定流：Carbon dioxide, fossil, to air
+- 选定流：化石源二氧化碳，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：计算前景阻帽燃料燃烧的直接化石 CO2
 - 数值来源模式：计算值（`calculated_value`）
@@ -448,7 +448,7 @@ CPC 28261 未加工帽坯、帽体和帽兜不作为本成品参考流。安全�
 
 直接氮氧化物由烟气实测，或按各燃料记录和披露的技术特定因子计算。
 
-- 选定流：Nitrogen oxides to air
+- 选定流：氮氧化物，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：实测或计算前景阻帽燃料燃烧氮氧化物
 - 数值来源模式：计算值（`calculated_value`）
@@ -484,7 +484,7 @@ CPC 28261 未加工帽坯、帽体和帽兜不作为本成品参考流。安全�
 
 洗涤、染色、漂洗、挺括或防水加水由水表或批次配方取得。
 
-- 选定流：Process water
+- 选定流：过程用水
 - 流属性/单位：Mass / kg
 - 数量规则：实测湿法整理用水
 - 数值来源模式：前景记录（`foreground_record`）
@@ -529,7 +529,7 @@ CPC 28261 未加工帽坯、帽体和帽兜不作为本成品参考流。安全�
 
 槽体、泵、干燥机、抽排和直接辅助设备用电由计量或物理分配取得。
 
-- 选定流：Electricity, low voltage, at factory
+- 选定流：低压电力，工厂供电
 - 流属性/单位：Energy / kWh
 - 数量规则：实测湿法整理耗电
 - 数值来源模式：前景记录（`foreground_record`）
@@ -646,7 +646,7 @@ CPC 28261 未加工帽坯、帽体和帽兜不作为本成品参考流。安全�
 
 仅当整理配方或干燥操作产生经证实的释放时，以实测或配方质量平衡记录直接 NMVOC。
 
-- 选定流：Non-methane volatile organic compounds to air
+- 选定流：非甲烷挥发性有机物，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：实测或计算湿法整理直接 NMVOC 排放
 - 数值来源模式：计算值（`calculated_value`）
@@ -757,7 +757,7 @@ CPC 28261 未加工帽坯、帽体和帽兜不作为本成品参考流。安全�
 
 连接里料、帽带、装饰或裁片的缝纫线由线轴领退或文件化耗线法计算。
 
-- 选定流：Sewing thread
+- 选定流：缝纫线
 - 流属性/单位：Mass / kg
 - 数量规则：实测或计算装配缝纫线消耗质量
 - 数值来源模式：计算值（`calculated_value`）
@@ -787,7 +787,7 @@ CPC 28261 未加工帽坯、帽体和帽兜不作为本成品参考流。安全�
 
 缝制、修边、压整、抽排和检验设备用电由计量或物理分配取得。
 
-- 选定流：Electricity, low voltage, at factory
+- 选定流：低压电力，工厂供电
 - 流属性/单位：Energy / kWh
 - 数量规则：实测最终装配耗电
 - 数值来源模式：前景记录（`foreground_record`）
@@ -955,7 +955,7 @@ CPC 28261 未加工帽坯、帽体和帽兜不作为本成品参考流。安全�
 
 按实测空箱质量和箱内产品净质量计算分配给参考产品的瓦楞纸箱份额。
 
-- 选定流：Corrugated paperboard shipping carton
+- 选定流：瓦楞纸板运输箱
 - 流属性/单位：Mass / kg
 - 数量规则：计算分配给参考产品的瓦楞纸箱质量
 - 数值来源模式：计算值（`calculated_value`）
@@ -970,7 +970,7 @@ CPC 28261 未加工帽坯、帽体和帽兜不作为本成品参考流。安全�
 
 包装、封口、贴标和直接辅助设备用电由计量或物理分配取得。
 
-- 选定流：Electricity, low voltage, at factory
+- 选定流：低压电力，工厂供电
 - 流属性/单位：Energy / kWh
 - 数量规则：实测包装过程耗电
 - 数值来源模式：前景记录（`foreground_record`）
@@ -993,7 +993,7 @@ CPC 28261 未加工帽坯、帽体和帽兜不作为本成品参考流。安全�
 
 经核验 CPC 28262 产品流以恰好 1 kg 合格头饰净质量离开包装，包装保持独立。
 
-- 选定流：Hats and other headgear, of felt, or plaited or made by assembling strips of any material, or knitted or crocheted or made up from lace or other textile fabric in the piece, hair-nets `b00baec8-ce3f-4e11-99c7-8a40167d2f4f`
+- 选定流：以各种材料的组合带编织或制成的或针织的、钩编的或以花边或整幅其他纺织品制成的毡呢帽子与其他头饰，发网 `b00baec8-ce3f-4e11-99c7-8a40167d2f4f`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg (`93a60a57-a4c8-11da-a746-0800200c9a66`)
 - 数量规则：合格成品头饰净质量归一化为恰好 1 kg
 - 数值来源模式：计算值（`calculated_value`）
@@ -1010,7 +1010,7 @@ CPC 28261 未加工帽坯、帽体和帽兜不作为本成品参考流。安全�
 
 将损坏或未用瓦楞运输纸箱材料记录为一个瓦楞纸板废物交换；产生的帽盒、薄页纸和吊牌废物须在实施数据集中分别单列。
 
-- 选定流：Waste corrugated paperboard
+- 选定流：废瓦楞纸板
 - 流属性/单位：Mass / kg
 - 数量规则：实测瓦楞运输纸箱废物质量
 - 数值来源模式：前景记录（`foreground_record`）

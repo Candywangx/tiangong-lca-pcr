@@ -40,7 +40,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 1 kg 干制产品净质量 |
-| 参考产品流 | Dried Vegetables `dc43358a-8159-496d-b2e9-a30c8fb3e38a` |
+| 参考产品流 | 脱水蔬菜 `dc43358a-8159-496d-b2e9-a30c8fb3e38a` |
 | 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | kg |
@@ -361,7 +361,7 @@ sync_with: pcr.en-US.md
 
 报告成品水分已声明且具备全部必需限定信息的恰好 1 kg 干制蔬菜净质量。参考数量不含包装质量。
 
-- 选定流：Dried Vegetables `dc43358a-8159-496d-b2e9-a30c8fb3e38a`
+- 选定流：脱水蔬菜 `dc43358a-8159-496d-b2e9-a30c8fb3e38a`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：固定参考产出 1 kg 干制产品净质量
 - 数值来源模式：固定值（`fixed_value`）

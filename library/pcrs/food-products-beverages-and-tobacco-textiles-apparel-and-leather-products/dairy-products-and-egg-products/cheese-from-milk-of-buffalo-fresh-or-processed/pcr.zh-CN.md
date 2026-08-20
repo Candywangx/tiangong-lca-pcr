@@ -44,7 +44,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 1 kg |
-| 参考产品流 | Cheese from milk of buffalo, fresh or processed `4b760369-5f64-47c7-b922-9dbe4b8abf98` |
+| 参考产品流 | 新鲜或加工的水牛奶奶酪 `4b760369-5f64-47c7-b922-9dbe4b8abf98` |
 | 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | kg |
@@ -269,7 +269,7 @@ sync_with: pcr.en-US.md
 
 测量离开主要奶酪制造步骤的奶酪，并说明其是作为鲜奶酪放行，还是转入成熟、盐水浸渍、加工奶酪制造或包装。
 
-- 选定流：Cheese from milk of buffalo, fresh or processed `4b760369-5f64-47c7-b922-9dbe4b8abf98`
+- 选定流：新鲜或加工的水牛奶奶酪 `4b760369-5f64-47c7-b922-9dbe4b8abf98`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：按声明转移状态实测批次输出；无默认收率
 - 数值来源模式：前景记录（`foreground_record`）
@@ -360,7 +360,7 @@ sync_with: pcr.en-US.md
 
 记录奶酪质量、成熟时长、盐水状态和放行条件。随市场产品提供的游离盐水仍为单独列入清单的物料，不计入奶酪净质量。
 
-- 选定流：Cheese from milk of buffalo, fresh or processed `4b760369-5f64-47c7-b922-9dbe4b8abf98`
+- 选定流：新鲜或加工的水牛奶奶酪 `4b760369-5f64-47c7-b922-9dbe4b8abf98`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：按批次实测放行奶酪质量；无标准成熟损耗因子
 - 数值来源模式：前景记录（`foreground_record`）
@@ -436,7 +436,7 @@ sync_with: pcr.en-US.md
 
 测量成品加工奶酪，并保留完整配方和动物种类证据。
 
-- 选定流：Cheese from milk of buffalo, fresh or processed `4b760369-5f64-47c7-b922-9dbe4b8abf98`
+- 选定流：新鲜或加工的水牛奶奶酪 `4b760369-5f64-47c7-b922-9dbe4b8abf98`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：实测批次输出；无默认转换收率
 - 数值来源模式：前景记录（`foreground_record`）
@@ -544,7 +544,7 @@ sync_with: pcr.en-US.md
 
 此为按奶酪净质量基准在工厂门放行的声明鲜/未成熟、成熟或加工水牛乳奶酪。
 
-- 选定流：Cheese from milk of buffalo, fresh or processed `4b760369-5f64-47c7-b922-9dbe4b8abf98`
+- 选定流：新鲜或加工的水牛奶奶酪 `4b760369-5f64-47c7-b922-9dbe4b8abf98`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：实测净放行产品质量；全部清单归一化至 1 kg
 - 数值来源模式：前景记录（`foreground_record`）

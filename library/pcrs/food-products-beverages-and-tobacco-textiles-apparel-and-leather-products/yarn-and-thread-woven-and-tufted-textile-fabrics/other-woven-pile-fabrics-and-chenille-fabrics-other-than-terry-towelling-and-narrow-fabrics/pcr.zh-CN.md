@@ -232,7 +232,7 @@ sync_with: pcr.en-US.md
 
 本交换记录跨越湿加工边界、用于配制、浴液、水洗、漂洗和设备清洁的水。
 
-- 选定流：Process Water `94a04f7e-2d5c-41f0-b182-d54a3b373a02`
+- 选定流：工艺用水 `94a04f7e-2d5c-41f0-b182-d54a3b373a02`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：计量或由槽体体积推导的供水量，减去实测返回同一过程的内部回用水
 - 数值来源模式：前景记录（`foreground_record`）
@@ -247,7 +247,7 @@ sync_with: pcr.en-US.md
 
 仅当路线发出工业级固体氢氧化钠时适用；其他浓度的溶液是不同交换。
 
-- 选定流：Sodium hydroxide `e0abcced-0611-4c24-9290-5a2c5a0c4169`
+- 选定流：氢氧化钠 `e0abcced-0611-4c24-9290-5a2c5a0c4169`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：称量或发票记录的批次供货态发出质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -262,7 +262,7 @@ sync_with: pcr.en-US.md
 
 仅当记录的漂白配方使用质量分数 50% 的过氧化氢溶液时适用。
 
-- 选定流：Hydrogen peroxide solution, 50% in water `f151f740-6c3a-42b9-abed-e44220792750`
+- 选定流：过氧化氢溶液，水溶液50% `f151f740-6c3a-42b9-abed-e44220792750`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：称量、计量或发票记录的批次供货态溶液发出质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -277,7 +277,7 @@ sync_with: pcr.en-US.md
 
 本交换记录由外购或独立计量蒸汽向湿加工设备交付的热量。
 
-- 选定流：Process heat from steam `fcf9e128-688f-42f0-9dca-85d2319cfac5`
+- 选定流：蒸汽工艺热 `fcf9e128-688f-42f0-9dca-85d2319cfac5`
 - 流属性/单位：Gross calorific value `93a60a56-a3c8-14da-a746-0800200c9a66` / MJ
 - 数量规则：热表记录，或使用已记录的供汽状态与焓基准由蒸汽质量换算
 - 数值来源模式：前景记录（`foreground_record`）
@@ -398,7 +398,7 @@ sync_with: pcr.en-US.md
 
 本交换表示在已声明工厂门放行的合格机织绒头织物或绳绒织物。
 
-- 选定流：Other woven pile fabrics and chenille fabrics (other than terry towelling and narrow fabrics) `91e48617-c5a4-423e-870d-696c311f7b05`
+- 选定流：其他机织绒头织物及绳绒织物（毛巾织物和狭幅毛圈织物除外） `91e48617-c5a4-423e-870d-696c311f7b05`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：实测合格产品净质量
 - 数值来源模式：前景记录（`foreground_record`）

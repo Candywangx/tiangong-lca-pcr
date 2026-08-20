@@ -42,7 +42,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 工厂门口 1 kg 合格可销售产品净质量，不含包装 |
-| 参考产品流 | Dried cephalopod products `ae437668-712c-407b-b8d5-7f3daf53040e` |
+| 参考产品流 | 头足类干制品 `ae437668-712c-407b-b8d5-7f3daf53040e` |
 | 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | kg |
@@ -124,7 +124,7 @@ sync_with: pcr.en-US.md
 
 记录因清洗、仅在进料暂时冷冻时的解冻、清洁或设备接触而跨越前景边界并归属于本批次的用水。临时解冻不使冷冻成品进入本 PCR 范围。
 
-- 选定流：Process water
+- 选定流：过程用水
 - 流属性/单位：Mass / kg
 - 数量规则：实测或按批分配的用水，记录循环使用且同一水量不得重复计算
 - 数值来源模式：前景记录（`foreground_record`）
@@ -476,7 +476,7 @@ sync_with: pcr.en-US.md
 
 这是定量参考输出。记录最终质量放行后的产品净质量，并排除全部包装。
 
-- 选定流：Dried cephalopod products `ae437668-712c-407b-b8d5-7f3daf53040e`
+- 选定流：头足类干制品 `ae437668-712c-407b-b8d5-7f3daf53040e`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：每参考流固定为 1 kg 合格可销售产品净质量
 - 数值来源模式：固定值（`fixed_value`）
@@ -485,15 +485,6 @@ sync_with: pcr.en-US.md
 - 基准类型：参考流（`reference_flow`）
 - 证据类型：来源规则（`source_rule`）
 - 来源：`eu-pef-2021-2279`
-- 数量范围：参考流恒等值
-  - 范围角色：允许范围（`allowed_range`）
-  - 下限：1
-  - 上限：1
-  - 单位：kg
-  - 基准：排除包装后的精确净参考数量
-  - 基准类型：参考流（`reference_flow`）
-  - 证据类型：外部来源（`external_source`）
-  - 来源：`eu-pef-2021-2279`
 
 ##### 废物流
 

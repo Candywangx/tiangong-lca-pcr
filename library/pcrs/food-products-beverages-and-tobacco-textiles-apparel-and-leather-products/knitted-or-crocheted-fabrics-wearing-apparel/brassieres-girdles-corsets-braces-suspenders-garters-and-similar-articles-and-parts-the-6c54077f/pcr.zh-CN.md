@@ -38,7 +38,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 1 |
-| 参考产品流 | Brassieres, girdles, corsets, braces, suspenders, garters and similar articles and parts thereof, whether or not knitted or crocheted `b1e1a830-20ee-40f3-a59d-87d1dc561706` |
+| 参考产品流 | 乳罩、腰带、紧身胸衣、背带、吊裤带、吊袜带和类似物品及其部分，不论是否是针织的或钩编的 `b1e1a830-20ee-40f3-a59d-87d1dc561706` |
 | 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | kg |
@@ -287,7 +287,7 @@ BOM 中存在该材料时，分拣的棉-氨纶边角料和不可用裁片应单
 
 聚酯缝纫线用于接缝、包边、部件连接或加固时跨越本过程边界。
 
-- 选定流：Polyester sewing thread
+- 选定流：聚酯缝纫线
 - 流属性/单位：Mass / kg
 - 数量规则：发放量减经核实退库量，或根据接缝记录和经核实线密度计算
 - 数值来源模式：计算值（`calculated_value`）
@@ -477,7 +477,7 @@ BOM 所列下围、肩带、包边、袜带、吊带或支撑部位所用弹性�
 
 只有已记录的现场湿整理配方消耗碳酸钠时，才作为单一化学品记录。
 
-- 选定流：Sodium carbonate
+- 选定流：碳酸钠
 - 流属性/单位：Mass / kg
 - 数量规则：根据批次和库存记录实测投加产品质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -492,7 +492,7 @@ BOM 所列下围、肩带、包边、袜带、吊带或支撑部位所用弹性�
 
 漂白或等效已记录现场配方使用过氧化氢时，将其作为单一化学品记录，并披露产品浓度。
 
-- 选定流：Hydrogen peroxide
+- 选定流：过氧化氢
 - 流属性/单位：Mass / kg
 - 数量规则：实测投加的收到状态溶液质量，并在原始记录中保留浓度
 - 数值来源模式：前景记录（`foreground_record`）
@@ -562,7 +562,7 @@ BOM 所列下围、肩带、包边、袜带、吊带或支撑部位所用弹性�
 
 用于从工厂门发运成品的瓦楞纸板箱，应与一次袋和纸吊牌分开记录。
 
-- 选定流：Corrugated paperboard shipping carton
+- 选定流：瓦楞纸板运输箱
 - 流属性/单位：Mass / kg
 - 数量规则：已声明包装产出的纸箱实测消耗质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -577,7 +577,7 @@ BOM 所列下围、肩带、包边、袜带、吊带或支撑部位所用弹性�
 
 直接容纳用品的低密度聚乙烯袋在使用时作为一个塑料包装交换记录。
 
-- 选定流：Low-density polyethylene garment bag
+- 选定流：低密度聚乙烯服装袋
 - 流属性/单位：Mass / kg
 - 数量规则：以指定服装袋的实测单件质量换算件数
 - 数值来源模式：计算值（`calculated_value`）
@@ -611,7 +611,7 @@ BOM 所列下围、肩带、包边、袜带、吊带或支撑部位所用弹性�
 
 合格工厂门产出使用参考流定义中的精确 CPC 28237 产品流，且不包括包装质量。
 
-- 选定流：Brassieres, girdles, corsets, braces, suspenders, garters and similar articles and parts thereof, whether or not knitted or crocheted `b1e1a830-20ee-40f3-a59d-87d1dc561706`
+- 选定流：乳罩、腰带、紧身胸衣、背带、吊裤带、吊袜带和类似物品及其部分，不论是否是针织的或钩编的 `b1e1a830-20ee-40f3-a59d-87d1dc561706`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：1 kg 合格成品
 - 数值来源模式：固定值（`fixed_value`）

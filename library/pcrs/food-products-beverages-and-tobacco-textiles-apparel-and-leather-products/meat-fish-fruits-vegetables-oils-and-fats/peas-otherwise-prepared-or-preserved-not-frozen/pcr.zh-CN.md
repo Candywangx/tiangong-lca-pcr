@@ -40,7 +40,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 厂门处 1,000 kg 净含量 |
-| 参考产品流 | Peas, otherwise prepared or preserved, not frozen `a5415af7-3575-4017-bd27-3b87650d94bd` |
+| 参考产品流 | 豌豆，其他制作或腌制，非冷冻 `a5415af7-3575-4017-bd27-3b87650d94bd` |
 | 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | kg |
@@ -125,7 +125,7 @@ sync_with: pcr.en-US.md
 
 记录本过程输送、清洗、分级和设备清洁的供水。通过总用量和净补水字段保留循环水信息。
 
-- 选定流：Process water
+- 选定流：过程用水
 - 流属性/单位：Mass / kg
 - 数量规则：计量补水量，并单独报告循环用量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -240,7 +240,7 @@ sync_with: pcr.en-US.md
 
 记录浸泡和漂洗加水量，包括补水量和单独识别的回用量。
 
-- 选定流：Process water
+- 选定流：过程用水
 - 流属性/单位：Mass / kg
 - 数量规则：计量加入浸泡批次的水量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -706,7 +706,7 @@ sync_with: pcr.en-US.md
 
 记录厂门处放行的合格成品。本行是定量参考，归一化后必须等于 1,000 kg 净含量。
 
-- 选定流：Peas, otherwise prepared or preserved, not frozen `a5415af7-3575-4017-bd27-3b87650d94bd`
+- 选定流：豌豆，其他制作或腌制，非冷冻 `a5415af7-3575-4017-bd27-3b87650d94bd`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：基于实测生产活动放行质量的固定归一化参考数量
 - 数值来源模式：固定值（`fixed_value`）

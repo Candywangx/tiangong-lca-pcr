@@ -76,9 +76,9 @@ When constructing a foreground data package, every item in `Required qualifiers`
 
 | rule_id | Applies to | Rule | source_ids |
 | --- | --- | --- | --- |
-| `boundary_sheep_only` | All dairy material entering the foreground system | Include only lots documented as sheep milk or sheep-milk-derived material. A mixed-species lot or non-sheep dairy ingredient makes the product outside this PCR and requires reclassification. | `unsd-cpc-3-0-2025`; `codex-cxs-206-1999` |
+| `boundary_sheep_only` | All dairy material entering the foreground system | Include only lots documented as sheep milk or sheep-milk-derived material. A mixed-species lot or non-sheep dairy ingredient makes the product outside this PCR and requires reclassification. | `unsd-cpc-3-0-2025`; `fao-who-cxs-206-1999` |
 | `boundary_factory_gate` | Foreground process chain | Include receipt and conditioning, applicable cheesemaking or processing operations, facility utilities and cleaning, product losses, wastewater and waste streams, final conditioning, packaging, and on-site storage through facility-gate release. | `eu-pef-2021`; `eu-fdm-bat-2019` |
-| `boundary_route_declaration` | Product state and route | Include only the operations actually performed and declare every omitted conditional process. Fresh/unripened, ripened, whey-cheese, brined, grated/powdered, and processed routes shall not be represented by one assumed recipe or process intensity. | `codex-cxs-283-1978`; `codex-cxs-221-2001`; `codex-cxs-208-1999` |
+| `boundary_route_declaration` | Product state and route | Include only the operations actually performed and declare every omitted conditional process. Fresh/unripened, ripened, whey-cheese, brined, grated/powdered, and processed routes shall not be represented by one assumed recipe or process intensity. | `fao-who-cxs-283-1978`; `fao-who-cxs-221-2001`; `fao-who-cxs-208-1999` |
 | `boundary_upstream_link` | Sheep milk and sheep-milk dairy intermediates | Link upstream datasets rather than recursively reproducing their inventories; preserve supplier, geography, production system, and period compatibility. | `eu-pef-2021` |
 | `boundary_exclusions` | Downstream stages | Exclude distribution, retail, consumer use, and end-of-life unless the study explicitly expands the boundary and reports those stages separately. | `eu-pef-2021` |
 
@@ -115,7 +115,7 @@ Record only milk lots with evidence of sheep origin. Supplier, lot, received mas
 - Basis kind: Reference flow (`reference_flow`)
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_material_lot_records`
-- Sources: `codex-cxs-206-1999`; `codex-cxs-283-1978`
+- Sources: `fao-who-cxs-206-1999`; `fao-who-cxs-283-1978`
 
 #### Outputs
 
@@ -184,7 +184,7 @@ Record each ingredient separately with supplier, lot, species origin where dairy
 - Basis kind: Reference flow (`reference_flow`)
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_ingredient_formula_records`
-- Sources: `codex-cxs-283-1978`; `codex-cxs-221-2001`
+- Sources: `fao-who-cxs-283-1978`; `fao-who-cxs-221-2001`
 
 #### Outputs
 
@@ -335,7 +335,7 @@ Record dry salt, water, reused brine, and make-up or replacement separately; do 
 - Basis kind: Reference flow (`reference_flow`)
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_brine_records`
-- Sources: `codex-cxs-208-1999`
+- Sources: `fao-who-cxs-208-1999`
 
 #### Outputs
 
@@ -404,7 +404,7 @@ Record each ingredient, water addition, processing aid, and dairy origin from th
 - Basis kind: Reference flow (`reference_flow`)
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_ingredient_formula_records`
-- Sources: `codex-cxs-283-1978`
+- Sources: `fao-who-cxs-283-1978`
 
 #### Outputs
 
@@ -446,13 +446,13 @@ Record start-up, trimming, filter, off-specification, and cleaning-recovery loss
 
 ##### Product flows
 
-###### Electricity and thermal energy (`facility_energy`)
+###### Purchased electricity (`facility_electricity`)
 
-Record electricity and each fuel or purchased thermal-energy carrier separately at the narrowest available meter boundary. EU FDM BAT performance levels may be used only as contextual comparison for installations and averaging bases within their stated scope, never as a sheep-cheese default or substitute for site records.
+Record grid or supplier electricity at the narrowest available meter boundary; do not combine it with fuels, steam, or recovered energy.
 
-- Selected flow: Electricity and route-specific thermal energy carriers
-- Flow property / unit: Energy / kWh or MJ; fuel mass or volume in recorded unit
-- Amount rule: metered or purchased quantities attributed to included processes using documented site allocation
+- Selected flow: Alternating-current electricity, declared consumption mix and voltage level
+- Flow property / unit: Energy / kWh
+- Amount rule: metered electricity attributed to included processes using documented direct measurement or site allocation
 - Value mode: Foreground record (`foreground_record`)
 - Specificity: Site-specific (`site_specific`)
 - Normalization basis: per 1 kg released reference product
@@ -461,13 +461,88 @@ Record electricity and each fuel or purchased thermal-energy carrier separately 
 - Collection protocol: `cp_utility_records`
 - Sources: `eu-fdm-bat-2019`
 
-###### Process and cleaning water (`facility_water`)
+###### Purchased steam (`facility_purchased_steam`)
 
-Record process, cleaning, cooling, and other water uses separately where metering permits and identify recycled or reused streams without double counting.
+Instantiate only when steam crosses the facility boundary; retain supplier pressure or temperature and condensate-return conditions.
 
-- Selected flow: Process and cleaning water
+- Selected flow: Purchased steam, declared pressure and condensate-return condition
+- Flow property / unit: Energy / MJ or Mass / kg
+- Amount rule: supplier meter or invoice quantity, kept separate from on-site fuel use
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per 1 kg released reference product
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_utility_records`
+- Sources: `eu-fdm-bat-2019`
+
+###### Purchased hot water (`facility_purchased_hot_water`)
+
+Instantiate only when hot water is purchased as an energy service; declare supply and return temperatures.
+
+- Selected flow: Purchased hot water, declared supply and return temperatures
+- Flow property / unit: Energy / MJ
+- Amount rule: metered heat or calculated from metered mass, temperature difference, and documented heat capacity
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per 1 kg released reference product
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_utility_records`
+- Sources: `eu-fdm-bat-2019`
+
+###### Natural gas (`facility_natural_gas`)
+
+Instantiate when natural gas is burned on site for boilers, pasteurisation, hot water, or space/process heating.
+
+- Selected flow: Natural gas, gaseous, delivered to the facility
+- Flow property / unit: Volume / m3 or Energy / MJ
+- Amount rule: metered or invoiced carrier quantity; retain the declared higher/lower heating-value convention
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per 1 kg released reference product
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_utility_records`
+- Sources: `eu-fdm-bat-2019`
+
+###### Liquefied petroleum gas (`facility_lpg`)
+
+Instantiate when LPG is burned on site; do not merge it with natural gas or diesel.
+
+- Selected flow: Liquefied petroleum gas, delivered to the facility
+- Flow property / unit: Mass / kg or Energy / MJ
+- Amount rule: tank issue, delivery, or stock-reconciliation quantity with documented heating-value conversion when used
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per 1 kg released reference product
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_utility_records`
+- Sources: `eu-fdm-bat-2019`
+
+###### Diesel fuel (`facility_diesel`)
+
+Instantiate only for stationary thermal equipment or directly attributable internal equipment; exclude inbound or outbound transport unless separately in scope.
+
+- Selected flow: Diesel fuel, delivered to the facility
+- Flow property / unit: Mass / kg or Volume / L
+- Amount rule: issue or purchase quantity reconciled to equipment operating records
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per 1 kg released reference product
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_utility_records`
+- Sources: `eu-fdm-bat-2019`
+
+###### Process water (`facility_process_water`)
+
+Record water incorporated into cheese, brine, whey handling, or direct product-contact processing separately from cleaning water.
+
+- Selected flow: Process water, declared source and treatment state
 - Flow property / unit: Volume / m3 or Mass / kg
-- Amount rule: metered quantity or documented allocation from a facility meter balance
+- Amount rule: metered quantity or batch dosing record
 - Value mode: Foreground record (`foreground_record`)
 - Specificity: Site-specific (`site_specific`)
 - Normalization basis: per 1 kg released reference product
@@ -476,19 +551,80 @@ Record process, cleaning, cooling, and other water uses separately where meterin
 - Collection protocol: `cp_utility_records`
 - Sources: `eu-fdm-bat-2019`
 
-###### Cleaning and sanitation materials (`cleaning_materials`)
+###### Cleaning water (`facility_cleaning_water`)
 
-Record each chemical or prepared solution by purchased product mass and active concentration when needed for the selected upstream dataset.
+Record CIP, manual wash-down, crate cleaning, and sanitation water separately from product/process water; identify reused water without double counting.
 
-- Selected flow: Cleaning and sanitation materials
-- Flow property / unit: Mass / kg
-- Amount rule: issue, dosing, or purchase reconciliation for the data period
+- Selected flow: Cleaning water, declared source and treatment state
+- Flow property / unit: Volume / m3 or Mass / kg
+- Amount rule: metered quantity or documented allocation from a complete facility water balance
 - Value mode: Foreground record (`foreground_record`)
 - Specificity: Site-specific (`site_specific`)
 - Normalization basis: per 1 kg released reference product
 - Basis kind: Reference flow (`reference_flow`)
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_utility_records`
+- Sources: `eu-fdm-bat-2019`
+
+###### Sodium hydroxide cleaning agent (`cip_sodium_hydroxide`)
+
+Instantiate when caustic soda is used for CIP or equipment cleaning; retain supplied concentration and active mass.
+
+- Selected flow: Sodium hydroxide cleaning agent
+- Flow property / unit: Mass / kg
+- Amount rule: issued solution mass multiplied by measured or supplier-declared active fraction, retaining both gross and active mass
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per 1 kg released reference product
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_utility_records`
+- Sources: `eu-fdm-bat-2019`
+
+###### Nitric acid cleaning agent (`cip_nitric_acid`)
+
+Instantiate when nitric acid is used in acid-CIP cycles; do not combine it with caustic or sanitiser use.
+
+- Selected flow: Nitric acid cleaning agent
+- Flow property / unit: Mass / kg
+- Amount rule: issued solution mass multiplied by measured or supplier-declared active fraction, retaining both gross and active mass
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per 1 kg released reference product
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_utility_records`
+- Sources: `eu-fdm-bat-2019`
+
+###### Peracetic acid sanitiser (`sanitizer_peracetic_acid`)
+
+Instantiate when peracetic acid is used; preserve formulation concentration instead of reporting generic sanitiser.
+
+- Selected flow: Peracetic acid sanitiser
+- Flow property / unit: Mass / kg
+- Amount rule: dosed formulation mass with supplier active concentration retained
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per 1 kg released reference product
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_utility_records`
+- Sources: `eu-fdm-bat-2019`
+
+###### Sodium hypochlorite sanitiser (`sanitizer_sodium_hypochlorite`)
+
+Instantiate when sodium hypochlorite is used; retain available-chlorine concentration and keep it separate from other sanitisers.
+
+- Selected flow: Sodium hypochlorite sanitiser
+- Flow property / unit: Mass / kg
+- Amount rule: dosed formulation mass with available-chlorine fraction retained
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per 1 kg released reference product
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_utility_records`
+- Sources: `eu-fdm-bat-2019`
 
 #### Outputs
 
@@ -511,13 +647,117 @@ Record discharge volume and destination; retain sampling data for relevant load 
 
 ##### Elementary flows
 
-###### Refrigerant losses to air (`refrigerant_losses`)
+###### Chemical oxygen demand to water (`wastewater_cod_to_water`)
 
-Record refrigerant type and loss from service logs and mass reconciliation; do not apply an assumed leakage rate when records exist.
+Report COD load for the discharged dairy wastewater from matched flow and concentration records.
 
-- Selected flow: Refrigerant emission to air by substance
+- Selected flow: Chemical oxygen demand, to water
 - Flow property / unit: Mass / kg
-- Amount rule: calculated from refrigerant charge, recovery, and top-up records
+- Amount rule: matched discharge volume multiplied by representative COD concentration, with sampling coverage retained
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per 1 kg released reference product
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_wastewater_records`
+- Sources: `eu-fdm-bat-2019`
+
+###### Biochemical oxygen demand to water (`wastewater_bod5_to_water`)
+
+Report five-day biochemical oxygen-demand load separately from COD.
+
+- Selected flow: Biochemical oxygen demand, 5-day, to water
+- Flow property / unit: Mass / kg
+- Amount rule: matched discharge volume multiplied by representative BOD5 concentration, with sampling coverage retained
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per 1 kg released reference product
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_wastewater_records`
+- Sources: `eu-fdm-bat-2019`
+
+###### Total nitrogen to water (`wastewater_total_nitrogen_to_water`)
+
+Report total-nitrogen load when monitored or required for the discharge route.
+
+- Selected flow: Total nitrogen, to water
+- Flow property / unit: Mass / kg
+- Amount rule: matched discharge volume multiplied by representative total-nitrogen concentration
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per 1 kg released reference product
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_wastewater_records`
+- Sources: `eu-fdm-bat-2019`
+
+###### Total phosphorus to water (`wastewater_total_phosphorus_to_water`)
+
+Report total-phosphorus load separately from nitrogen and suspended solids.
+
+- Selected flow: Total phosphorus, to water
+- Flow property / unit: Mass / kg
+- Amount rule: matched discharge volume multiplied by representative total-phosphorus concentration
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per 1 kg released reference product
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_wastewater_records`
+- Sources: `eu-fdm-bat-2019`
+
+###### Total suspended solids to water (`wastewater_tss_to_water`)
+
+Report suspended-solids load from matched discharge and analytical records.
+
+- Selected flow: Total suspended solids, to water
+- Flow property / unit: Mass / kg
+- Amount rule: matched discharge volume multiplied by representative TSS concentration
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per 1 kg released reference product
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_wastewater_records`
+- Sources: `eu-fdm-bat-2019`
+
+###### Oil and grease to water (`wastewater_oil_grease_to_water`)
+
+Report oil-and-grease load when monitored or material for the selected discharge or treatment route.
+
+- Selected flow: Oil and grease, to water
+- Flow property / unit: Mass / kg
+- Amount rule: matched discharge volume multiplied by representative oil-and-grease concentration
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per 1 kg released reference product
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_wastewater_records`
+- Sources: `eu-fdm-bat-2019`
+
+###### Ammonia refrigerant loss to air (`refrigerant_r717_to_air`)
+
+Instantiate for R717 systems and calculate loss from substance-specific service and inventory records.
+
+- Selected flow: Ammonia (R717), to air
+- Flow property / unit: Mass / kg
+- Amount rule: opening charge plus additions minus recovered quantity and closing charge, with leak-event reconciliation
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Technology-specific (`technology_specific`)
+- Normalization basis: per 1 kg released reference product
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_refrigerant_records`
+
+###### R404A refrigerant loss to air (`refrigerant_r404a_to_air`)
+
+Instantiate for R404A systems; never combine the blend mass with ammonia or another refrigerant.
+
+- Selected flow: Refrigerant R404A, to air
+- Flow property / unit: Mass / kg
+- Amount rule: opening charge plus additions minus recovered quantity and closing charge, with leak-event reconciliation
 - Value mode: Calculated value (`calculated_value`)
 - Specificity: Technology-specific (`technology_specific`)
 - Normalization basis: per 1 kg released reference product
@@ -545,15 +785,85 @@ Record the cheese lot entering final conditioning with the product-state qualifi
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_batch_output_records`
 
-###### Packaging materials (`packaging_materials`)
+###### Plastic film packaging (`packaging_plastic_film`)
 
-Record primary, secondary, and tertiary materials separately and state which packaging level is included in the facility-gate dataset.
+Instantiate for flexible polymer film and declare polymer, layer structure, recycled content, and packaging level.
 
-- Selected flow: Packaging materials by material and component
+- Selected flow: Plastic packaging film, declared polymer and laminate structure
 - Flow property / unit: Mass / kg
-- Amount rule: packaging issue records or count-to-mass conversion using verified component mass
+- Amount rule: issued mass or item count multiplied by verified film mass, net of returns
 - Value mode: Calculated value (`calculated_value`)
 - Specificity: Product-specific (`product_specific`)
+- Normalization basis: per 1 kg released reference product
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_packaging_records`
+
+###### Rigid plastic packaging (`packaging_rigid_plastic`)
+
+Instantiate for tubs, cups, trays, lids, or closures; retain polymer and component identity.
+
+- Selected flow: Rigid plastic packaging component, declared polymer
+- Flow property / unit: Mass / kg
+- Amount rule: component count multiplied by verified component mass, net of returns
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Product-specific (`product_specific`)
+- Normalization basis: per 1 kg released reference product
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_packaging_records`
+
+###### Corrugated cardboard packaging (`packaging_corrugated_cardboard`)
+
+Instantiate for cartons, cases, dividers, or sleeves made from corrugated board.
+
+- Selected flow: Corrugated cardboard packaging
+- Flow property / unit: Mass / kg
+- Amount rule: component count multiplied by verified board-component mass, net of returns
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Product-specific (`product_specific`)
+- Normalization basis: per 1 kg released reference product
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_packaging_records`
+
+###### Aluminium foil packaging (`packaging_aluminium_foil`)
+
+Instantiate for aluminium foil or foil-dominant lids; multilayer laminates remain identified by their full structure.
+
+- Selected flow: Aluminium foil packaging
+- Flow property / unit: Mass / kg
+- Amount rule: issued mass or component count multiplied by verified component mass
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Product-specific (`product_specific`)
+- Normalization basis: per 1 kg released reference product
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_packaging_records`
+
+###### Glass packaging (`packaging_glass`)
+
+Instantiate for glass jars or containers and record closure materials separately.
+
+- Selected flow: Glass packaging container
+- Flow property / unit: Mass / kg
+- Amount rule: accepted container count multiplied by verified container mass
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Product-specific (`product_specific`)
+- Normalization basis: per 1 kg released reference product
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Calculated from collection (`calculated_from_collection`)
+- Collection protocol: `cp_packaging_records`
+
+###### Wooden pallet packaging (`packaging_wooden_pallet`)
+
+Instantiate when pallets are included; allocate reusable pallets using verified trip count and loss/repair records.
+
+- Selected flow: Wooden transport pallet
+- Flow property / unit: Mass / kg
+- Amount rule: pallet mass divided by verified reuse cycles and allocated to dispatched product mass
+- Value mode: Calculated value (`calculated_value`)
+- Specificity: Site-specific (`site_specific`)
 - Normalization basis: per 1 kg released reference product
 - Basis kind: Reference flow (`reference_flow`)
 - Evidence kind: Calculated from collection (`calculated_from_collection`)
@@ -578,13 +888,83 @@ This output is the declared sheep-milk cheese in its stated fresh/ripened/proces
 
 ##### Waste flows
 
-###### Packaging and final product losses (`final_packaging_losses`)
+###### Plastic-film packaging scrap (`waste_plastic_film_packaging`)
 
-Record damaged packaging, trim, start-up or changeover product, returns before gate release, and their destinations separately.
+Record rejected and trimmed flexible film separately from other polymers and by destination.
 
-- Selected flow: Packaging waste and final cheese residues
+- Selected flow: Plastic-film packaging scrap
 - Flow property / unit: Mass / kg
-- Amount rule: measured or reconciled loss mass by material and destination
+- Amount rule: measured or issue-reconciled scrap mass by destination
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per 1 kg released reference product
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_loss_waste_records`
+
+###### Rigid-plastic packaging scrap (`waste_rigid_plastic_packaging`)
+
+Record rejected tubs, cups, trays, lids, and closures by polymer and destination.
+
+- Selected flow: Rigid-plastic packaging scrap
+- Flow property / unit: Mass / kg
+- Amount rule: measured or count-to-mass reconciled scrap by polymer and destination
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per 1 kg released reference product
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_loss_waste_records`
+
+###### Corrugated-cardboard packaging scrap (`waste_corrugated_cardboard_packaging`)
+
+Record damaged cartons, cases, dividers, and sleeves separately from plastic packaging.
+
+- Selected flow: Corrugated-cardboard packaging scrap
+- Flow property / unit: Mass / kg
+- Amount rule: measured or issue-reconciled scrap mass by destination
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per 1 kg released reference product
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_loss_waste_records`
+
+###### Aluminium-foil packaging scrap (`waste_aluminium_foil_packaging`)
+
+Record foil and foil-dominant laminate scrap separately and retain laminate composition.
+
+- Selected flow: Aluminium-foil packaging scrap
+- Flow property / unit: Mass / kg
+- Amount rule: measured or issue-reconciled scrap mass by composition and destination
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per 1 kg released reference product
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_loss_waste_records`
+
+###### Broken glass packaging (`waste_glass_packaging`)
+
+Record broken or rejected glass containers separately from closure and label waste.
+
+- Selected flow: Broken glass packaging
+- Flow property / unit: Mass / kg
+- Amount rule: measured broken-container mass or rejected count multiplied by verified container mass
+- Value mode: Foreground record (`foreground_record`)
+- Specificity: Site-specific (`site_specific`)
+- Normalization basis: per 1 kg released reference product
+- Basis kind: Reference flow (`reference_flow`)
+- Evidence kind: Collected record (`collected_record`)
+- Collection protocol: `cp_loss_waste_records`
+
+###### Final cheese product loss (`waste_final_cheese_product`)
+
+Record start-up, changeover, damaged-pack, and pre-release returned cheese separately from packaging waste.
+
+- Selected flow: Off-specification sheep-milk cheese
+- Flow property / unit: Mass / kg
+- Amount rule: measured or batch-mass-balance-reconciled product loss by destination
 - Value mode: Foreground record (`foreground_record`)
 - Specificity: Site-specific (`site_specific`)
 - Normalization basis: per 1 kg released reference product
@@ -623,7 +1003,7 @@ Record damaged packaging, trim, start-up or changeover product, returns before g
 | rule_id | Applies to | Formula or rule | Inputs | Output | source_ids |
 | --- | --- | --- | --- | --- | --- |
 | `calc_reference_normalization` | Every inventory row | Divide the qualifying period or batch quantity by released reference-product mass on the same declared net, drained, or as-packed basis. | Row quantity; qualified released mass; packaging/brine basis | Quantity per 1 kg reference product | `eu-pef-2021` |
-| `calc_product_mass_basis` | Brined and packaged products | Reference mass equals measured cheese mass when declared drained/net; when declared as-packed, separately report cheese, free brine, and packaging and include only components explicitly stated by the functional unit. | Gross, tare, drained cheese, free brine, and packaging masses | Declared reference-product mass and component disclosure | `codex-cxs-208-1999`; `eu-pef-2021` |
+| `calc_product_mass_basis` | Brined and packaged products | Reference mass equals measured cheese mass when declared drained/net; when declared as-packed, separately report cheese, free brine, and packaging and include only components explicitly stated by the functional unit. | Gross, tare, drained cheese, free brine, and packaging masses | Declared reference-product mass and component disclosure | `fao-who-cxs-208-1999`; `eu-pef-2021` |
 | `calc_batch_mass_balance` | Each included batch and process step | Reconcile measured inputs, outputs, transfers, retained inventory, and identified losses. Report the unexplained difference; do not force it into whey, wastewater, or product yield. | Opening and closing inventory; all measured inputs and outputs | Mass-balance residual and completeness flag | `mass-balance-identity`; `eu-fdm-bat-2019` |
 | `calc_volume_to_mass` | Milk, whey, brine, and liquid ingredients | Multiply measured volume by a batch-, temperature-, or supplier-applicable density; retain original volume and density provenance. | Volume; density; material and temperature context | Mass in kg | `mass-balance-identity` |
 | `calc_shared_services` | Shared utilities and cleaning | Allocate only after direct metering and subdivision are exhausted, using the documented causal driver and reconciling allocated totals to facility totals. | Shared total; driver values; qualifying output mass | Allocated service quantity per reference product | `eu-pef-2021`; `eu-fdm-bat-2019` |
@@ -645,11 +1025,12 @@ Record damaged packaging, trim, start-up or changeover product, returns before g
 | rule_id | Applies to | Rule | source_ids |
 | --- | --- | --- | --- |
 | `validate_reference_identity` | Reference flow | The product-flow UUID shall equal `d2800438-b79a-4065-98ab-b7b0fe10ce97`, the flow-property UUID shall equal `93a60a56-a3c8-11da-a746-0800200b9a66`, the unit-group UUID shall equal `93a60a57-a4c8-11da-a746-0800200c9a66`, and the reference amount shall be 1 kg. |  |
-| `validate_sheep_only` | Product and input identity | Fail when any dairy input is goat, cattle, buffalo, other-animal, mixed-species, or unresolved species origin. Mixed-milk products require reclassification. | `unsd-cpc-3-0-2025`; `codex-cxs-206-1999` |
-| `validate_required_qualifiers` | Dataset metadata | Fail when product state, raw-milk/heat-treatment status where relevant, ripening/holding duration where applicable, brine mass basis, ingredient/formulation state, packaging basis, facility-gate geography, or period is missing. | `codex-cxs-283-1978`; `codex-cxs-221-2001`; `codex-cxs-208-1999` |
+| `validate_sheep_only` | Product and input identity | Fail when any dairy input is goat, cattle, buffalo, other-animal, mixed-species, or unresolved species origin. Mixed-milk products require reclassification. | `unsd-cpc-3-0-2025`; `fao-who-cxs-206-1999` |
+| `validate_required_qualifiers` | Dataset metadata | Fail when product state, raw-milk/heat-treatment status where relevant, ripening/holding duration where applicable, brine mass basis, ingredient/formulation state, packaging basis, facility-gate geography, or period is missing. | `fao-who-cxs-283-1978`; `fao-who-cxs-221-2001`; `fao-who-cxs-208-1999` |
 | `validate_route_processes` | Process map and inventory | Every included operation shall have a matching process section and records; every omitted conditional operation shall be justified against the declared route. | `eu-pef-2021`; `eu-fdm-bat-2019` |
+| `validate_atomic_inventory` | Inventory flow cards | Fail any card that combines multiple energy carriers, fuels, water uses, cleaning chemicals, refrigerants, wastewater pollutants, packaging materials, wastes, or emissions. Require one row per named substance, carrier, component, or waste stream; instantiate only rows used by the declared route. | `eu-fdm-bat-2019` |
 | `validate_mass_reconciliation` | Batch and period balances | Report input, output, transfer, inventory-change, and loss terms plus the unexplained residual. Fail completeness when a material stream is silently forced into product, whey, wastewater, or waste. | `mass-balance-identity`; `eu-fdm-bat-2019` |
-| `validate_no_universal_intensity` | Yield, recipe, salt, water, energy, and waste quantities | Fail when a Codex limit, BAT contextual level, or generic category value is inserted as site foreground data without an applicability-matched source and declared modelling role. | `codex-cxs-283-1978`; `eu-fdm-bat-2019` |
+| `validate_no_universal_intensity` | Yield, recipe, salt, water, energy, and waste quantities | Fail when a Codex limit, BAT contextual level, or generic category value is inserted as site foreground data without an applicability-matched source and declared modelling role. | `fao-who-cxs-283-1978`; `eu-fdm-bat-2019` |
 | `validate_allocation` | Multi-output and shared-service processes | Require subdivision assessment, the selected causal or allocation relationship, site-period inputs, reconciliation, and sensitivity disclosure; fail if allocation is used to conceal non-sheep dairy material. | `eu-pef-2021` |
 | `validate_sources_and_period` | Foreground and upstream data | Require source provenance, temporal coverage, facility and supplier scope, measurement or calculation method, and disclosure of proxies and missing-data treatment. | `eu-pef-2021` |
 
@@ -670,10 +1051,10 @@ Record damaged packaging, trim, start-up or changeover product, returns before g
 | Source id | Type | Reference | Used for |
 | --- | --- | --- | --- |
 | `unsd-cpc-3-0-2025` | `official_guidance` | United Nations Statistics Division, *Central Product Classification Version 3.0 Explanatory Notes*, subclass 22253, 2025. https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Exp_Notes_30Jun2025.pdf (retrieved 2026-08-12) | Sheep-milk-only CPC scope; included fresh, whey/curd, grated/powdered, processed, blue-veined and other cheese states; exclusions of goat, cattle, buffalo, and other-animal cheese |
-| `codex-cxs-206-1999` | `standard` | Codex Alimentarius, *General Standard for the Use of Dairy Terms*, CXS 206-1999, amended 2022. https://www.fao.org/fao-who-codexalimentarius/sh-proxy/en/?lnk=1&url=https%3A%2F%2Fworkspace.fao.org%2Fsites%2Fcodex%2FStandards%2FCXS+206-1999%2FCXS_206e.pdf (retrieved 2026-08-12) | Dairy terminology and animal-origin declaration context; not an LCI quantity source |
-| `codex-cxs-283-1978` | `standard` | Codex Alimentarius, *General Standard for Cheese*, CXS 283-1978, amended 2024. https://www.fao.org/fao-who-codexalimentarius/sh-proxy/en/?lnk=1&url=https%3A%2F%2Fworkspace.fao.org%2Fsites%2Fcodex%2FStandards%2FCXS+283-1978%2FCXS_283e.pdf (retrieved 2026-08-12) | General cheese definition, product-state and ingredient applicability, and route declarations; no inferred recipe, yield, or LCI amount |
-| `codex-cxs-221-2001` | `standard` | Codex Alimentarius, *Group Standard for Unripened Cheese Including Fresh Cheese*, CXS 221-2001, amended 2022. https://www.fao.org/fao-who-codexalimentarius/sh-proxy/en/?lnk=1&url=https%3A%2F%2Fworkspace.fao.org%2Fsites%2Fcodex%2FStandards%2FCXS+221-2001%2FCXS_221e.pdf (retrieved 2026-08-12) | Applicability to unripened/fresh cheese and associated ingredient and product-state declarations; no inferred formulation or LCI amount |
-| `codex-cxs-208-1999` | `standard` | Codex Alimentarius, *Group Standard for Cheeses in Brine*, CXS 208-1999, amended 2022. https://www.fao.org/fao-who-codexalimentarius/sh-proxy/en/?lnk=1&url=https%3A%2F%2Fworkspace.fao.org%2Fsites%2Fcodex%2FStandards%2FCXS+208-1999%2FCXS_208e.pdf (retrieved 2026-08-12) | Brined-cheese applicability and the need to declare drained versus in-brine state; no inferred salt or brine amount |
+| `fao-who-cxs-206-1999` | `standard` | Codex Alimentarius, *General Standard for the Use of Dairy Terms*, CXS 206-1999, amended 2022. https://www.fao.org/fao-who-codexalimentarius/sh-proxy/en/?lnk=1&url=https%3A%2F%2Fworkspace.fao.org%2Fsites%2Fcodex%2FStandards%2FCXS+206-1999%2FCXS_206e.pdf (retrieved 2026-08-12) | Dairy terminology and animal-origin declaration context; not an LCI quantity source |
+| `fao-who-cxs-283-1978` | `standard` | Codex Alimentarius, *General Standard for Cheese*, CXS 283-1978, amended 2024. https://www.fao.org/fao-who-codexalimentarius/sh-proxy/en/?lnk=1&url=https%3A%2F%2Fworkspace.fao.org%2Fsites%2Fcodex%2FStandards%2FCXS+283-1978%2FCXS_283e.pdf (retrieved 2026-08-12) | General cheese definition, product-state and ingredient applicability, and route declarations; no inferred recipe, yield, or LCI amount |
+| `fao-who-cxs-221-2001` | `standard` | Codex Alimentarius, *Group Standard for Unripened Cheese Including Fresh Cheese*, CXS 221-2001, amended 2022. https://www.fao.org/fao-who-codexalimentarius/sh-proxy/en/?lnk=1&url=https%3A%2F%2Fworkspace.fao.org%2Fsites%2Fcodex%2FStandards%2FCXS+221-2001%2FCXS_221e.pdf (retrieved 2026-08-12) | Applicability to unripened/fresh cheese and associated ingredient and product-state declarations; no inferred formulation or LCI amount |
+| `fao-who-cxs-208-1999` | `standard` | Codex Alimentarius, *Group Standard for Cheeses in Brine*, CXS 208-1999, amended 2022. https://www.fao.org/fao-who-codexalimentarius/sh-proxy/en/?lnk=1&url=https%3A%2F%2Fworkspace.fao.org%2Fsites%2Fcodex%2FStandards%2FCXS+208-1999%2FCXS_208e.pdf (retrieved 2026-08-12) | Brined-cheese applicability and the need to declare drained versus in-brine state; no inferred salt or brine amount |
 | `eu-pef-2021` | `official_guidance` | European Commission, Commission Recommendation (EU) 2021/2279 on the use of Environmental Footprint methods, Annex I Product Environmental Footprint Method. http://data.europa.eu/eli/reco/2021/2279/oj (retrieved 2026-08-12) | Functional unit and reference flow, system boundary, company-specific data, data quality, multifunctionality, allocation hierarchy, and reporting |
 | `eu-fdm-bat-2019` | `official_guidance` | European Commission, Commission Implementing Decision (EU) 2019/2031 establishing BAT conclusions for the food, drink and milk industries. http://data.europa.eu/eli/dec_impl/2019/2031/oj (retrieved 2026-08-12) | Process, water, energy, raw-material, wastewater, waste-gas, and waste inventory design; metering and reconciliation; applicability-limited contextual checks only |
 | `mass-balance-identity` | `method_factor` | Conservation-of-mass identity implemented through `calc_batch_mass_balance`; all terms are obtained from foreground records. | Batch completeness, volume-to-mass support, and unexplained-residual reporting; no category-wide yield factor |

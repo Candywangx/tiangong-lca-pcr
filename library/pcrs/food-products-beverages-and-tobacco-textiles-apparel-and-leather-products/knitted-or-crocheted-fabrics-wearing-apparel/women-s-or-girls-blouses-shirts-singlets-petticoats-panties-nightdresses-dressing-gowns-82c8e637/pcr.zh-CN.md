@@ -38,7 +38,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 1 kg 合格服装净质量 |
-| 参考产品流 | Women's or girls' blouses, shirts, singlets, petticoats, panties, nightdresses, dressing gowns and similar articles, of textile fabric, not knitted or crocheted `141dafee-dafa-4fef-9d44-e6e23a9fcff2` |
+| 参考产品流 | 非针织或钩编而成的纺织品女罩衣、女童罩衣、衬衫、汗衫、衬裙、紧身短裤、睡衣、晨衣及其类似物品 `141dafee-dafa-4fef-9d44-e6e23a9fcff2` |
 | 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | kg |
@@ -99,7 +99,7 @@ sync_with: pcr.en-US.md
 
 已整理机织物按款式材料领用和排料记录从仓库进入裁剪边界。
 
-- 选定流：Finished woven textile fabric
+- 选定流：成品机织纺织面料
 - 流属性/单位：Mass / kg
 - 数量规则：记录实际领用质量，扣除有凭证的退库质量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -114,7 +114,7 @@ sync_with: pcr.en-US.md
 
 纸样部件需要加固时单独记录粘合衬；不使用须由款式材料清单证明。
 
-- 选定流：Fusible textile interlining
+- 选定流：热熔粘合衬布
 - 流属性/单位：Mass / kg
 - 数量规则：记录实际领用质量并扣除退料；仅当材料清单无衬料时记零。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -129,7 +129,7 @@ sync_with: pcr.en-US.md
 
 铺布、裁剪、标记和扎包设备的计量或分配电力作为一个能源交换进入本过程。
 
-- 选定流：Electricity supplied to the garment factory
+- 选定流：服装工厂供电
 - 流属性/单位：Energy / kWh
 - 数量规则：记录分表用电，或按设备运行时间分配经核对的场址总表电量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -156,7 +156,7 @@ sync_with: pcr.en-US.md
 
 按款式识别的裁片以称量或质量平衡后的中间产品离开裁剪并进入缝制。
 
-- 选定流：Cut woven-fabric garment components
+- 选定流：机织面料服装裁片
 - 流属性/单位：Mass / kg
 - 数量规则：记录裁片包质量，或由领用面料减去已核对退料和裁剪边角料计算。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -173,7 +173,7 @@ sync_with: pcr.en-US.md
 
 不可用机织物边角料作为单独称量废物流离开裁剪，并与退回或出售的可用余料分开。
 
-- 选定流：Woven textile cutting offcuts
+- 选定流：机织纺织品裁剪边角料
 - 流属性/单位：Mass / kg
 - 数量规则：按材料类别称量边角料容器并扣除皮重。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -198,7 +198,7 @@ sync_with: pcr.en-US.md
 
 已识别裁片包从裁剪进入缝制，并按批次和款式核对。
 
-- 选定流：Cut woven-fabric garment components
+- 选定流：机织面料服装裁片
 - 流属性/单位：Mass / kg
 - 数量规则：记录接收裁片包质量或与 `cut_components_output` 核对后的转移量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -213,7 +213,7 @@ sync_with: pcr.en-US.md
 
 缝纫线按所代表款式的领用与退回线轴质量进入装配。
 
-- 选定流：Sewing thread
+- 选定流：缝纫线
 - 流属性/单位：Mass / kg
 - 数量规则：记录领用线轴质量，减去退回可用线和线轴皮重。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -228,7 +228,7 @@ sync_with: pcr.en-US.md
 
 款式材料清单包含纽扣时应单独记录，并说明材质及计数到质量换算。
 
-- 选定流：Garment buttons
+- 选定流：服装纽扣
 - 流属性/单位：Mass / kg
 - 数量规则：记录领用数量乘以实测代表性单件质量，并扣除退料。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -243,7 +243,7 @@ sync_with: pcr.en-US.md
 
 每种适用拉链作为单独称量辅料输入；仅当款式未规定拉链时记零。
 
-- 选定流：Garment zipper
+- 选定流：服装拉链
 - 流属性/单位：Mass / kg
 - 数量规则：记录领用数量乘以经核实单件质量，并扣除退料。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -258,7 +258,7 @@ sync_with: pcr.en-US.md
 
 仅款式规定时弹性带进入装配，并与面料和缝纫线分开记录。
 
-- 选定流：Textile elastic tape
+- 选定流：纺织弹性带
 - 流属性/单位：Mass / kg
 - 数量规则：记录领用卷质量，减去退回可用弹性带和卷芯皮重。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -273,7 +273,7 @@ sync_with: pcr.en-US.md
 
 纺织材料制洗护、尺码及品牌标签按经核实质量作为一个标签材料交换记录。
 
-- 选定流：Textile garment label
+- 选定流：纺织服装标签
 - 流属性/单位：Mass / kg
 - 数量规则：记录领用数量乘以经核实单件质量，并扣除退料。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -288,7 +288,7 @@ sync_with: pcr.en-US.md
 
 缝纫、包缝、钉扣、粘合及局部物料搬运用电作为一个计量电力交换进入。
 
-- 选定流：Electricity supplied to the garment factory
+- 选定流：服装工厂供电
 - 流属性/单位：Energy / kWh
 - 数量规则：记录分表用电，或按机器运行时间分配经核对的场址总表电量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -315,7 +315,7 @@ sync_with: pcr.en-US.md
 
 完整但未最终整理的服装经部件和辅料核对后离开缝制，进入可选湿加工或最终整理。
 
-- 选定流：Assembled unfinished woven-fabric garment
+- 选定流：已组装未整理的机织面料服装
 - 流属性/单位：Mass / kg
 - 数量规则：按批次和款式记录实际转移质量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -332,7 +332,7 @@ sync_with: pcr.en-US.md
 
 缝制产生的线头和不可用纺织小片作为一个称量纺织缝制废物流离开。
 
-- 选定流：Textile sewing scrap
+- 选定流：纺织缝制废料
 - 流属性/单位：Mass / kg
 - 数量规则：按批次称量收集废料，或按已加工服装质量分配经核对容器质量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -357,7 +357,7 @@ sync_with: pcr.en-US.md
 
 仅当已声明路线包含成衣洗涤、漂白、染色或其他湿整理时，已装配服装进入湿加工。
 
-- 选定流：Assembled unfinished woven-fabric garment
+- 选定流：已组装未整理的机织面料服装
 - 流属性/单位：Mass / kg
 - 数量规则：记录装入湿加工设备的实际批次质量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -372,7 +372,7 @@ sync_with: pcr.en-US.md
 
 洗衣机、泵、脱水机和烘干机用电在湿加工适用时作为独立计量能源交换进入。
 
-- 选定流：Electricity supplied to the garment factory
+- 选定流：服装工厂供电
 - 流属性/单位：Energy / kWh
 - 数量规则：记录分表用电，或按设备运行时间分配经核对电表量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -387,7 +387,7 @@ sync_with: pcr.en-US.md
 
 新鲜或外供工艺水进入湿加工设备，并与内部循环水分开记录。
 
-- 选定流：Process water
+- 选定流：过程用水
 - 流属性/单位：Volume / m3
 - 数量规则：记录所代表批次的计量进水，并另行识别实测内部回用。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -402,7 +402,7 @@ sync_with: pcr.en-US.md
 
 外部供热时，外购蒸汽作为一个公用工程交换跨越湿加工边界。
 
-- 选定流：Purchased steam
+- 选定流：外购蒸汽
 - 流属性/单位：Energy / MJ
 - 数量规则：记录可归属于所代表批次的供应商仪表或发票能量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -417,7 +417,7 @@ sync_with: pcr.en-US.md
 
 成衣洗涤投加的配方洗涤剂作为一个产品交换进入，不与其他化学品合并。
 
-- 选定流：Laundry detergent
+- 选定流：洗涤剂
 - 流属性/单位：Mass / kg
 - 数量规则：从校准投加或库存领用记录取得批次投加质量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -432,7 +432,7 @@ sync_with: pcr.en-US.md
 
 场址配方使用碳酸钠时独立记录；记零须有显示未使用的配方。
 
-- 选定流：Sodium carbonate
+- 选定流：碳酸钠
 - 流属性/单位：Mass / kg
 - 数量规则：从校准投加或库存领用记录取得实际批次投加质量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -459,7 +459,7 @@ sync_with: pcr.en-US.md
 
 处理并脱水后的服装作为称量中间产品离开湿加工，进入干燥、熨烫和检验。
 
-- 选定流：Wet-finished woven-fabric garment
+- 选定流：湿整理后的机织面料服装
 - 流属性/单位：Mass / kg
 - 数量规则：按已声明含湿基准记录实际放行批次质量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -476,7 +476,7 @@ sync_with: pcr.en-US.md
 
 所代表批次排出的废水作为一个计量废物流进入已声明处理路线。
 
-- 选定流：Garment wet-processing wastewater
+- 选定流：服装湿加工废水
 - 流属性/单位：Volume / m3
 - 数量规则：记录计量排水；无排水表时使用有文件支持的水平衡计算。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -491,7 +491,7 @@ sync_with: pcr.en-US.md
 
 仅当场内处理所代表湿加工批次废水时，脱水污泥作为独立废物流离开。
 
-- 选定流：Sludge from garment wastewater treatment
+- 选定流：服装废水处理污泥
 - 流属性/单位：Mass / kg
 - 数量规则：记录湿污泥质量和干固体含量，并按处理的批次废水体积分配。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -516,7 +516,7 @@ sync_with: pcr.en-US.md
 
 仅已声明路线不含成衣湿加工时，已装配服装直接进入最终整理。
 
-- 选定流：Assembled unfinished woven-fabric garment
+- 选定流：已组装未整理的机织面料服装
 - 流属性/单位：Mass / kg
 - 数量规则：记录绕过 `p03_wet_processing` 批次的实际转移质量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -531,7 +531,7 @@ sync_with: pcr.en-US.md
 
 仅完成 `p03_wet_processing` 的批次将湿整理服装转入最终整理。
 
-- 选定流：Wet-finished woven-fabric garment
+- 选定流：湿整理后的机织面料服装
 - 流属性/单位：Mass / kg
 - 数量规则：记录湿加工批次的实际转移质量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -546,7 +546,7 @@ sync_with: pcr.en-US.md
 
 熨烫控制、照明、检验、返修和折叠设备用电作为一个计量交换进入。
 
-- 选定流：Electricity supplied to the garment factory
+- 选定流：服装工厂供电
 - 流属性/单位：Energy / kWh
 - 数量规则：记录分表用电，或按设备运行时间分配经核对的场址总表电量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -561,7 +561,7 @@ sync_with: pcr.en-US.md
 
 蒸汽跨越过程边界供应时，外购蒸汽作为独立公用工程交换进入熨烫。
 
-- 选定流：Purchased steam
+- 选定流：外购蒸汽
 - 流属性/单位：Energy / MJ
 - 数量规则：记录可归属于所代表批次熨烫的供应商仪表或发票能量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -588,7 +588,7 @@ sync_with: pcr.en-US.md
 
 服装经记录的验收后离开最终整理，并按净质量转移至包装。
 
-- 选定流：Pressed and inspected woven-fabric garment
+- 选定流：已熨烫并检验的机织面料服装
 - 流属性/单位：Mass / kg
 - 数量规则：记录最终检验接受服装的净质量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -605,7 +605,7 @@ sync_with: pcr.en-US.md
 
 最终检验中不可修复的拒收服装作为单独称量服装废物流离开，不得隐藏在产率中。
 
-- 选定流：Rejected woven-fabric garment waste
+- 选定流：不合格机织面料服装废物
 - 流属性/单位：Mass / kg
 - 数量规则：排除已返修和已回收件后，按处置路线记录拒收净质量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -622,7 +622,7 @@ sync_with: pcr.en-US.md
 
 仅当监测到未受控排放跨越场址至空气边界时报告纺织纤维尘颗粒物；捕集纤维尘属于固体废物。
 
-- 选定流：Particulate matter from textile lint, to air
+- 选定流：纺织飞花颗粒物，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：记录适用监测期间的实测排放质量；否则记录检查并将数量判为不适用。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -643,7 +643,7 @@ sync_with: pcr.en-US.md
 
 经熨烫和检验的服装连同验收及净质量记录进入包装。
 
-- 选定流：Pressed and inspected woven-fabric garment
+- 选定流：已熨烫并检验的机织面料服装
 - 流属性/单位：Mass / kg
 - 数量规则：记录转移的已验收服装质量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -658,7 +658,7 @@ sync_with: pcr.en-US.md
 
 折叠、封装、贴标及包装设备用电作为一个计量交换进入。
 
-- 选定流：Electricity supplied to the garment factory
+- 选定流：服装工厂供电
 - 流属性/单位：Energy / kWh
 - 数量规则：记录分表用电，或按设备运行时间分配经核对的场址总表电量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -673,7 +673,7 @@ sync_with: pcr.en-US.md
 
 直接包覆服装的低密度聚乙烯袋作为独立初级包装材料进入。
 
-- 选定流：Low-density polyethylene garment bag
+- 选定流：低密度聚乙烯服装袋
 - 流属性/单位：Mass / kg
 - 数量规则：记录领用袋数乘以经核实单袋质量，并扣除未用退回。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -688,7 +688,7 @@ sync_with: pcr.en-US.md
 
 销售用纸质吊牌与纺织标签及其他包装分开进入。
 
-- 选定流：Paper garment hangtag
+- 选定流：纸质服装吊牌
 - 流属性/单位：Mass / kg
 - 数量规则：记录领用吊牌数乘以经核实单件质量，并扣除未用退回。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -703,7 +703,7 @@ sync_with: pcr.en-US.md
 
 瓦楞纸箱作为独立次级包装输入进入，并按箱内服装分配。
 
-- 选定流：Corrugated cardboard shipping box
+- 选定流：瓦楞纸板运输箱
 - 流属性/单位：Mass / kg
 - 数量规则：记录所用纸箱质量，除以箱内服装净质量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -718,7 +718,7 @@ sync_with: pcr.en-US.md
 
 发运配置使用托盘时，木运输托盘作为独立三级包装输入进入。
 
-- 选定流：Wooden transport pallet
+- 选定流：木制运输托盘
 - 流属性/单位：Mass / kg
 - 数量规则：按承载服装分配托盘质量；可重复使用时除以经核实重复使用次数。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -733,7 +733,7 @@ sync_with: pcr.en-US.md
 
 用于稳固三级包装时，聚乙烯收缩膜作为独立输入进入。
 
-- 选定流：Polyethylene shrink film
+- 选定流：聚乙烯收缩膜
 - 流属性/单位：Mass / kg
 - 数量规则：记录卷材消耗质量，扣除未用退回及卷芯皮重。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -760,7 +760,7 @@ sync_with: pcr.en-US.md
 
 合格已包装服装在工厂大门离开前景系统；交换数量采用服装净质量并排除可拆卸包装。
 
-- 选定流：Women's or girls' blouses, shirts, singlets, petticoats, panties, nightdresses, dressing gowns and similar articles, of textile fabric, not knitted or crocheted `141dafee-dafa-4fef-9d44-e6e23a9fcff2`
+- 选定流：非针织或钩编而成的纺织品女罩衣、女童罩衣、衬衫、汗衫、衬裙、紧身短裤、睡衣、晨衣及其类似物品 `141dafee-dafa-4fef-9d44-e6e23a9fcff2`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：将经核实合格服装净质量归一化至恰好 1 kg；可拆卸包装在各自输入行报告。
 - 数值来源模式：计算值（`calculated_value`）
@@ -777,7 +777,7 @@ sync_with: pcr.en-US.md
 
 破损袋和收缩膜边料作为一个聚乙烯包装废物流离开，并与纸板废物分开。
 
-- 选定流：Polyethylene packaging scrap
+- 选定流：聚乙烯包装废料
 - 流属性/单位：Mass / kg
 - 数量规则：称量收集的聚乙烯废料并扣除容器皮重。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -792,7 +792,7 @@ sync_with: pcr.en-US.md
 
 破损或裁切瓦楞纸板作为一个单独称量包装废物流离开。
 
-- 选定流：Corrugated cardboard packaging scrap
+- 选定流：瓦楞纸板包装废料
 - 流属性/单位：Mass / kg
 - 数量规则：称量收集的瓦楞纸板废料并扣除容器皮重。
 - 数值来源模式：前景记录（`foreground_record`）

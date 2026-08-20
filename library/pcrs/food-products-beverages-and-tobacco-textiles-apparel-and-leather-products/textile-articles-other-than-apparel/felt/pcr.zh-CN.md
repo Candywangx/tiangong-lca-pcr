@@ -141,7 +141,7 @@ sync_with: pcr.en-US.md
 
 记录纤维开松、混合、梳理、铺网、除尘和直接相关辅助设备消耗的计量电力。
 
-- 选定流：Electricity
+- 选定流：电力
 - 流属性/单位：Energy / kWh
 - 数量规则：分配至生产批次或期间的分表读数
 - 数值来源模式：前景记录（`foreground_record`）
@@ -234,7 +234,7 @@ sync_with: pcr.en-US.md
 
 记录预针刺、针刺机、输送、除尘和直接相关控制设备的用电。
 
-- 选定流：Electricity
+- 选定流：电力
 - 流属性/单位：Energy / kWh
 - 数量规则：分配至针刺生产批次或期间的分表读数
 - 数值来源模式：前景记录（`foreground_record`）
@@ -312,7 +312,7 @@ sync_with: pcr.en-US.md
 
 记录进入润湿、缩绒、洗涤和漂洗的供水；不得用废水量抵扣进水量。
 
-- 选定流：Process water
+- 选定流：过程用水
 - 流属性/单位：Volume / m3
 - 数量规则：生产批次工艺分表读数或槽体积记录
 - 数值来源模式：前景记录（`foreground_record`）
@@ -327,7 +327,7 @@ sync_with: pcr.en-US.md
 
 仅在批准产品配方使用碳酸钠时记录，并保留化学品等级、浓度和领用记录。
 
-- 选定流：Sodium carbonate
+- 选定流：碳酸钠
 - 流属性/单位：Mass / kg
 - 数量规则：湿法毡化批次领用化学品净质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -342,7 +342,7 @@ sync_with: pcr.en-US.md
 
 仅在外购蒸汽跨越场址边界用于浴液加热时记录，并说明压力和冷凝水处理。
 
-- 选定流：Steam
+- 选定流：蒸汽
 - 流属性/单位：Energy / MJ
 - 数量规则：供应至湿法毡化和缩绒的计量蒸汽
 - 数值来源模式：前景记录（`foreground_record`）
@@ -450,7 +450,7 @@ sync_with: pcr.en-US.md
 
 记录干燥机、压光机、压机、裁切机、抽风、检验和包装设备的计量用电。
 
-- 选定流：Electricity
+- 选定流：电力
 - 流属性/单位：Energy / kWh
 - 数量规则：分配至整理生产批次或期间的分表读数
 - 数值来源模式：前景记录（`foreground_record`）
@@ -465,7 +465,7 @@ sync_with: pcr.en-US.md
 
 仅在前景边界内为干燥或热定型燃烧天然气时记录。
 
-- 选定流：Natural gas
+- 选定流：天然气
 - 流属性/单位：Energy / MJ
 - 数量规则：按已记录低位或高位热值基准计量的燃气消耗
 - 数值来源模式：前景记录（`foreground_record`）
@@ -510,7 +510,7 @@ sync_with: pcr.en-US.md
 
 仅在已声明工厂门口包装状态含 LDPE 膜时记录。
 
-- 选定流：Low-density polyethylene packaging film
+- 选定流：低密度聚乙烯包装膜
 - 流属性/单位：Mass / kg
 - 数量规则：用于验收成品毛毡的薄膜实测质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -533,7 +533,7 @@ sync_with: pcr.en-US.md
 
 仅记录通过最终检验的可销售毛毡；不合格材料进入独立废物或返工记录。
 
-- 选定流：Felt `144717eb-3301-402a-89c8-3ba5a969425a`
+- 选定流：毛毡 `144717eb-3301-402a-89c8-3ba5a969425a`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：按已声明调湿基准计的验收净质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -582,7 +582,7 @@ sync_with: pcr.en-US.md
 
 当前景边界内燃烧天然气时记录烟道实测化石二氧化碳。
 
-- 选定流：Carbon dioxide, fossil, to air
+- 选定流：化石源二氧化碳，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：生产期间烟道实测排放；不得替换为无来源通用因子
 - 数值来源模式：前景记录（`foreground_record`）
@@ -597,7 +597,7 @@ sync_with: pcr.en-US.md
 
 发生现场燃烧时，按报告的物种约定和空气区室记录氮氧化物监测值。
 
-- 选定流：Nitrogen oxides to air
+- 选定流：氮氧化物，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：生产期间烟道监测排放
 - 数值来源模式：前景记录（`foreground_record`）

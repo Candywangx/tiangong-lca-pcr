@@ -40,7 +40,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 1 kg |
-| 参考产品流 | Babies' garments and clothing accessories, of textile fabric, not knitted or crocheted `be638ef7-ac8c-4fde-a338-0535d81d5242` |
+| 参考产品流 | 非针织或钩编而成的纺织品婴儿外衣和服装服饰用品 `be638ef7-ac8c-4fde-a338-0535d81d5242` |
 | 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | kg |
@@ -344,7 +344,7 @@ sync_with: pcr.en-US.md
 
 BOM 中存在时，记录发出并消耗的涤纶缝纫线。
 
-- 选定流：Polyester sewing thread
+- 选定流：聚酯缝纫线
 - 流属性/单位：Mass / kg
 - 数量规则：计量的发出量减去未用退回量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -542,7 +542,7 @@ BOM 中存在时，单独记录棉缝纫线。
 
 用于熨烫、干燥或后整理时单独记录外购蒸汽；现场制汽应另建支持过程。
 
-- 选定流：Purchased steam
+- 选定流：外购蒸汽
 - 流属性/单位：Mass / kg
 - 数量规则：计量的供应商蒸汽送达适用后整理设备的质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -557,7 +557,7 @@ BOM 中存在时，单独记录棉缝纫线。
 
 仅在现场实施成衣水洗或其他湿式后整理时记录供水。
 
-- 选定流：Process water
+- 选定流：过程用水
 - 流属性/单位：Mass / kg
 - 数量规则：计量的供给所声明湿式后整理操作的用水
 - 数值来源模式：前景记录（`foreground_record`）
@@ -665,7 +665,7 @@ BOM 中存在时，单独记录棉缝纫线。
 
 使用时记录单件塑料袋或包裹膜的质量。
 
-- 选定流：Low-density polyethylene packaging film
+- 选定流：低密度聚乙烯包装膜
 - 流属性/单位：Mass / kg
 - 数量规则：包装件数乘以经核实的单件质量
 - 数值来源模式：计算值（`calculated_value`）
@@ -733,7 +733,7 @@ BOM 中存在时，单独记录棉缝纫线。
 
 这是唯一参考产品输出，不含包装质量。
 
-- 选定流：Babies' garments and clothing accessories, of textile fabric, not knitted or crocheted `be638ef7-ac8c-4fde-a338-0535d81d5242`
+- 选定流：非针织或钩编而成的纺织品婴儿外衣和服装服饰用品 `be638ef7-ac8c-4fde-a338-0535d81d5242`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：恰好 1 kg 合格产品净质量
 - 数值来源模式：固定值（`fixed_value`）

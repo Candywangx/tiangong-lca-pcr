@@ -40,7 +40,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 1 kg |
-| 参考产品流 | Cotton yarn (other than sewing thread), containing less than 85% by weight of cotton `c18d2185-7f88-431e-8bfe-8180bb29e192` |
+| 参考产品流 | 含棉重量少于85%的棉纱（缝纫线除外） `c18d2185-7f88-431e-8bfe-8180bb29e192` |
 | 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | kg |
@@ -489,7 +489,7 @@ sync_with: pcr.en-US.md
 
 该输出为剔除不合格纱并排除包装质量后的净参考产品。
 
-- 选定流：Cotton yarn (other than sewing thread), containing less than 85% by weight of cotton `c18d2185-7f88-431e-8bfe-8180bb29e192`
+- 选定流：含棉重量少于85%的棉纱（缝纫线除外） `c18d2185-7f88-431e-8bfe-8180bb29e192`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：1 kg 净合格纱线的固定参考数量
 - 数值来源模式：固定值（`fixed_value`）

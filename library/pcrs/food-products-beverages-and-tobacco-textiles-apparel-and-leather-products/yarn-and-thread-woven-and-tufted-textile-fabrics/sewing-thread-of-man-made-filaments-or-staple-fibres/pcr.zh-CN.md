@@ -94,7 +94,7 @@ sync_with: pcr.en-US.md
 
 仅在长丝路线中记录这一原子产品。供应商和批次记录应证明其为进厂纱线，而非已经可销售的缝纫线。
 
-- 选定流：Yarn of man-made filaments, multiple or cabled (other than sewing thread, high tenacity yarn of polyamides, polyesters or viscose rayon), not put up for retail sale `d3526e15-e0a8-4d96-8688-2738fd9d20ba`
+- 选定流：非供零售的人造长丝纱线，多股纱线或编织纱线（缝纫线，聚酰胺、聚酯或粘胶人造丝的高强力纱线除外） `d3526e15-e0a8-4d96-8688-2738fd9d20ba`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：生产批次实际接收并消耗的净质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -124,7 +124,7 @@ sync_with: pcr.en-US.md
 
 仅在人工短纤维路线中记录这一原子产品，并保留所声明的人工纤维组成。
 
-- 选定流：Yarn (other than sewing thread) of artificial staple fibres, containing 85% or more by weight of such fibres, not put up for retail sale `b2fccf4f-e4c4-4723-9e9b-ef0956abd0fc`
+- 选定流：含人造短纤维重量达85%或85%以上的纱（缝纫线除外），不供零售 `b2fccf4f-e4c4-4723-9e9b-ef0956abd0fc`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：生产批次实际接收并消耗的净质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -154,7 +154,7 @@ sync_with: pcr.en-US.md
 
 记录声明的 1-35 kV 供电边界下，加捻、卷绕、检验、抽风及包装设备的电表交流电消耗。
 
-- 选定流：alternating current `3d76981f-964a-4865-b588-0e067a2a1163`
+- 选定流：交流电 `3d76981f-964a-4865-b588-0e067a2a1163`
 - 流属性/单位：Net calorific value `93a60a56-a3c8-11da-a746-0800200c9a66` / kWh
 - 数量规则：生产批次期间生产线电表用量或从工厂总表按物理依据分配的用量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -184,7 +184,7 @@ sync_with: pcr.en-US.md
 
 记录声明工厂门产品所使用的原子瓦楞纸板运输箱质量。
 
-- 选定流：corrugated board boxes `4f197bec-7b3b-11dd-ad8b-0800200c9a66`
+- 选定流：瓦楞纸箱 `4f197bec-7b3b-11dd-ad8b-0800200c9a66`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：生产批次消耗的纸箱实测质量或供应商声明质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -207,7 +207,7 @@ sync_with: pcr.en-US.md
 
 记录符合要求的工厂门缝纫线净质量。锥筒/线轴和运输包装质量不得计入参考产品数量。
 
-- 选定流：Yarn `c98c206f-fee3-45d6-9549-b22eeb6b058b`
+- 选定流：纱 `c98c206f-fee3-45d6-9549-b22eeb6b058b`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：经放行的合格缝纫线实测净质量
 - 数值来源模式：前景记录（`foreground_record`）

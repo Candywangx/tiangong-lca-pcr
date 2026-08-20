@@ -40,7 +40,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 1 kg |
-| 参考产品流 | Saddlery and harness, for any animal, of any material `850d448a-711c-4151-8745-7aece3fc2acb` |
+| 参考产品流 | 任何材料制成的牲畜用鞍具和挽具 `850d448a-711c-4151-8745-7aece3fc2acb` |
 | 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | kg |
@@ -177,7 +177,7 @@ Marker paper 作为一项单独记录的投入跨越材料准备与裁切边界�
 
 Electricity, facility supply 作为一项单独记录的投入跨越材料准备与裁切边界。仅在实际使用这一具体材料或公用工程时采用本卡，不得把替代品或备选项聚合到本卡。
 
-- 选定流：Electricity, facility supply
+- 选定流：厂区供电
 - 流属性/单位：Energy / kWh
 - 数量规则：记录专用电表/能源表读数，或记录经核对的设施总表按有文件支持的因果驱动分配所得份额。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -327,7 +327,7 @@ Cut saddlery component kit 作为一项单独记录的投入跨越缝制与五�
 
 Polyester sewing thread 作为一项单独记录的投入跨越缝制与五金装配边界。仅在实际使用这一具体材料或公用工程时采用本卡，不得把替代品或备选项聚合到本卡。
 
-- 选定流：Polyester sewing thread
+- 选定流：聚酯缝纫线
 - 流属性/单位：Mass / kg
 - 数量规则：记录跨越本过程边界的称量量、发票量或库存核对量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -417,7 +417,7 @@ Waterborne polyurethane adhesive 作为一项单独记录的投入跨越缝制�
 
 Electricity, facility supply 作为一项单独记录的投入跨越缝制与五金装配边界。仅在实际使用这一具体材料或公用工程时采用本卡，不得把替代品或备选项聚合到本卡。
 
-- 选定流：Electricity, facility supply
+- 选定流：厂区供电
 - 流属性/单位：Energy / kWh
 - 数量规则：记录专用电表/能源表读数，或记录经核对的设施总表按有文件支持的因果驱动分配所得份额。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -597,7 +597,7 @@ Isopropanol 作为一项单独记录的投入跨越边缘处理、表面整理�
 
 Process water 作为一项单独记录的投入跨越边缘处理、表面整理与干燥边界。仅在实际使用这一具体材料或公用工程时采用本卡，不得把替代品或备选项聚合到本卡。
 
-- 选定流：Process water
+- 选定流：过程用水
 - 流属性/单位：Mass / kg
 - 数量规则：记录跨越本过程边界的称量量、发票量或库存核对量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -612,7 +612,7 @@ Process water 作为一项单独记录的投入跨越边缘处理、表面整理
 
 Electricity, facility supply 作为一项单独记录的投入跨越边缘处理、表面整理与干燥边界。仅在实际使用这一具体材料或公用工程时采用本卡，不得把替代品或备选项聚合到本卡。
 
-- 选定流：Electricity, facility supply
+- 选定流：厂区供电
 - 流属性/单位：Energy / kWh
 - 数量规则：记录专用电表/能源表读数，或记录经核对的设施总表按有文件支持的因果驱动分配所得份额。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -627,7 +627,7 @@ Electricity, facility supply 作为一项单独记录的投入跨越边缘处理
 
 Natural gas 作为一项单独记录的投入跨越边缘处理、表面整理与干燥边界。仅在实际使用这一具体材料或公用工程时采用本卡，不得把替代品或备选项聚合到本卡。
 
-- 选定流：Natural gas
+- 选定流：天然气
 - 流属性/单位：Energy / MJ
 - 数量规则：记录专用电表/能源表读数，或记录经核对的设施总表按有文件支持的因果驱动分配所得份额。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -753,7 +753,7 @@ Isopropanol, to air 作为一种单独定量的基本排放离开边缘处理、
 
 Carbon dioxide, fossil, to air 作为一种单独定量的基本排放离开边缘处理、表面整理与干燥过程；不得与其他挥发性化合物或燃烧物种合并。
 
-- 选定流：Carbon dioxide, fossil, to air
+- 选定流：化石源二氧化碳，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：根据实测天然气能量和适用且已引用的排放因子计算，或采用烟道直接测量；保留计算记录。
 - 数值来源模式：计算值（`calculated_value`）
@@ -805,7 +805,7 @@ Finished unpacked saddlery or harness 作为一项单独记录的投入跨越最
 
 Electricity, facility supply 作为一项单独记录的投入跨越最终检验与包装边界。仅在实际使用这一具体材料或公用工程时采用本卡，不得把替代品或备选项聚合到本卡。
 
-- 选定流：Electricity, facility supply
+- 选定流：厂区供电
 - 流属性/单位：Energy / kWh
 - 数量规则：记录专用电表/能源表读数，或记录经核对的设施总表按有文件支持的因果驱动分配所得份额。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -850,7 +850,7 @@ Low-density polyethylene protective bag 作为一项单独记录的投入跨越�
 
 Corrugated paperboard shipping carton 作为一项单独记录的投入跨越最终检验与包装边界。仅在实际使用这一具体材料或公用工程时采用本卡，不得把替代品或备选项聚合到本卡。
 
-- 选定流：Corrugated paperboard shipping carton
+- 选定流：瓦楞纸板运输箱
 - 流属性/单位：Mass / kg
 - 数量规则：记录跨越本过程边界的称量量、发票量或库存核对量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -895,7 +895,7 @@ Polypropylene packing tape 作为一项单独记录的投入跨越最终检验�
 
 经检验合格的成品作为参考产品离开报告设施。净产品质量不含吊牌、保护袋、纸箱和胶带的质量。
 
-- 选定流：Saddlery and harness, for any animal, of any material `850d448a-711c-4151-8745-7aece3fc2acb`
+- 选定流：任何材料制成的牲畜用鞍具和挽具 `850d448a-711c-4151-8745-7aece3fc2acb`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg `93a60a57-a4c8-11da-a746-0800200c9a66`
 - 数量规则：固定为 1 kg 合格成品净质量；不计任何包装质量。
 - 数值来源模式：固定值（`fixed_value`）
@@ -913,7 +913,7 @@ Polypropylene packing tape 作为一项单独记录的投入跨越最终检验�
 
 Waste corrugated paperboard 作为一股单独识别的废物流离开最终检验与包装过程。前景记录应保留其组成、污染状态和实际处理去向。
 
-- 选定流：Waste corrugated paperboard
+- 选定流：废瓦楞纸板
 - 流属性/单位：Mass / kg
 - 数量规则：记录离开过程的称量量或容器核对量，并记录实际处理去向。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -928,7 +928,7 @@ Waste corrugated paperboard 作为一股单独识别的废物流离开最终检�
 
 Waste low-density polyethylene film 作为一股单独识别的废物流离开最终检验与包装过程。前景记录应保留其组成、污染状态和实际处理去向。
 
-- 选定流：Waste low-density polyethylene film
+- 选定流：废低密度聚乙烯薄膜
 - 流属性/单位：Mass / kg
 - 数量规则：记录离开过程的称量量或容器核对量，并记录实际处理去向。
 - 数值来源模式：前景记录（`foreground_record`）

@@ -38,7 +38,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 1 kg |
-| 参考产品流 | Octopus, frozen, smoked, dried, salted or in brine `5c8cdbc1-2f53-47ac-aa4a-e44125c18761` |
+| 参考产品流 | 章鱼，冷冻、烟熏、干制、盐腌或盐水浸泡 `5c8cdbc1-2f53-47ac-aa4a-e44125c18761` |
 | 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | kg |
@@ -118,7 +118,7 @@ sync_with: pcr.en-US.md
 
 仅在发生解冻、清洗、清理或脱盐操作时，记录计量或核算得到的用水。
 
-- 选定流：Process water
+- 选定流：过程用水
 - 流属性/单位：Mass / kg
 - 数量规则：供水量减去单独计量的循环水量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -217,7 +217,7 @@ sync_with: pcr.en-US.md
 
 记录盐渍、盐水浸制或含盐熏制/干制配方领用的氯化钠；经审查配方不添加盐时本行不适用。
 
-- 选定流：Salt, food-grade, for brine preparation `3a5fa711-4648-4d58-b94d-67b79e7476c7`
+- 选定流：食盐 `3a5fa711-4648-4d58-b94d-67b79e7476c7`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：实测领盐量减去实测未开封退库量；不得扣除随废盐水排出的盐
 - 数值来源模式：前景记录（`foreground_record`）
@@ -232,7 +232,7 @@ sync_with: pcr.en-US.md
 
 记录新投入配制包装盐水或工艺盐水的用水；仅适用于使用盐水的路线，回用盐水不得计为新水。
 
-- 选定流：Process Water `94a04f7e-2d5c-41f0-b182-d54a3b373a02`
+- 选定流：工艺用水 `94a04f7e-2d5c-41f0-b182-d54a3b373a02`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：进入盐水配制的计量新水量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -262,7 +262,7 @@ sync_with: pcr.en-US.md
 
 记录冷冻机、风机、泵、控制系统、干燥机、发烟器等保藏设备的交流电；应采用电压和地域匹配的供电流，以下 UUID 为已核验低压消费组合。
 
-- 选定流：Alternating current, electricity mix, consumption mix, less than 1 kV `50657322-939c-4829-a87b-47c093bfa6a7`
+- 选定流：交流电 `50657322-939c-4829-a87b-47c093bfa6a7`
 - 流属性/单位：Net calorific value `93a60a56-a3c8-11da-a746-0800200c9a66` / kWh
 - 数量规则：分表计量，或按设备功率和运行时间作工程分配
 - 数值来源模式：前景记录（`foreground_record`）
@@ -277,7 +277,7 @@ sync_with: pcr.en-US.md
 
 仅在蒸汽跨越本过程边界时记录外购或单独发生的蒸汽；按实际压力和温度解析，以下 UUID 仅适用于 11.0 MPaG，不得代替其他等级。
 
-- 选定流：Steam, 11.0 MPaG `293f9fd9-5182-4d35-8aa5-ce73d4f322b7`
+- 选定流：蒸汽 `293f9fd9-5182-4d35-8aa5-ce73d4f322b7`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：蒸汽表读数或经凝结水校正的工程平衡
 - 数值来源模式：前景记录（`foreground_record`）
@@ -307,7 +307,7 @@ sync_with: pcr.en-US.md
 
 记录现场为熏制、干制、盐水加热等燃烧的管道天然气；全部以蒸汽或热水供热时不使用本行。
 
-- 选定流：Natural gas in the gaseous state `4f19ca0e-7b3b-11dd-ad8b-0800200c9a66`
+- 选定流：气态天然气 `4f19ca0e-7b3b-11dd-ad8b-0800200c9a66`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：燃气表质量，或按实测密度和声明低位热值由体积换算
 - 数值来源模式：前景记录（`foreground_record`）
@@ -322,7 +322,7 @@ sync_with: pcr.en-US.md
 
 仅在柴油确为干燥机、锅炉、发烟器或备用燃料时记录。
 
-- 选定流：Diesel oil `9d258d75-6792-4f1c-9856-81602ed8f816`
+- 选定流：柴油 `9d258d75-6792-4f1c-9856-81602ed8f816`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：适用设备的实测油罐领用量并与库存变化核对
 - 数值来源模式：前景记录（`foreground_record`）
@@ -337,7 +337,7 @@ sync_with: pcr.en-US.md
 
 仅在 LPG 为实际热能燃料时记录。
 
-- 选定流：Liquefied petroleum gas `d54ae71a-1245-4e3f-b694-dbf2b22bbf7d`
+- 选定流：液化石油气 `d54ae71a-1245-4e3f-b694-dbf2b22bbf7d`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：实测钢瓶或储罐领用量并与库存变化核对
 - 数值来源模式：前景记录（`foreground_record`）
@@ -352,7 +352,7 @@ sync_with: pcr.en-US.md
 
 记录保藏制冷设备充注或泄漏后补充的无水氨；仅适用于已核实使用 R717 的设备。
 
-- 选定流：Ammonia, anhydrous, liquid (R717) `6928be4f-282b-4448-8f2a-f8c746621303`
+- 选定流：氨，无水，液体 `6928be4f-282b-4448-8f2a-f8c746621303`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：按设备制冷剂台账分配的采购或领用补充质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -366,7 +366,7 @@ sync_with: pcr.en-US.md
 
 记录保藏制冷设备充注或泄漏后补充的 R404A；仅适用于已核实使用 R404A 的设备，其他制冷剂须另建原子行。
 
-- 选定流：Refrigerant R404A `76513c71-a148-484e-865f-2ab54afb4331`
+- 选定流：制冷剂R404A `76513c71-a148-484e-865f-2ab54afb4331`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：按设备制冷剂台账分配的采购或领用补充质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -384,7 +384,7 @@ sync_with: pcr.en-US.md
 
 记录送往处理的解冻、清洗、冷凝等非盐性废水；高盐盐水排放必须使用下一行。
 
-- 选定流：Untreated municipal wastewater influent `41eb8873-6852-40fe-8b5d-b792fe4d4754`
+- 选定流：未处理市政污水进水 `41eb8873-6852-40fe-8b5d-b792fe4d4754`
 - 流属性/单位：Volume `93a60a56-a3c8-22da-a746-0800200c9a66` / m3
 - 数量规则：在处理入口计量或质量平衡得到的排放体积
 - 数值来源模式：前景记录（`foreground_record`）
@@ -398,7 +398,7 @@ sync_with: pcr.en-US.md
 
 记录离开回用闭环并送往处理或处置的废工艺/包装盐水；仅适用于盐渍或盐水浸制路线，不得与普通废水合并。
 
-- 选定流：High-concentration saline wastewater `76ab69b6-6fa7-461c-be07-bc54e581a699`
+- 选定流：浓水 `76ab69b6-6fa7-461c-be07-bc54e581a699`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：离开封闭回用系统的实测废盐水质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -552,7 +552,7 @@ sync_with: pcr.en-US.md
 
 记录袋、内衬、裹膜或封口用塑料薄膜；声明聚合物、再生含量、厚度及包装层级，其他聚合物或刚性包装须另建原子行。
 
-- 选定流：Plastic film `b01e4bd9-5ada-4676-8a90-be5f167c00fc`
+- 选定流：塑料薄膜 `b01e4bd9-5ada-4676-8a90-be5f167c00fc`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：薄膜领用质量与包装单元及库存变化核对
 - 数值来源模式：前景记录（`foreground_record`）
@@ -567,7 +567,7 @@ sync_with: pcr.en-US.md
 
 记录销售或运输包装中的瓦楞箱、托盘或隔板；仅在存在瓦楞纸板时适用，并声明再生含量和箱体规格。
 
-- 选定流：Corrugated cardboard `8bde297e-98df-463f-bcb4-0db52bf6e0b5`
+- 选定流：瓦楞纸板 `8bde297e-98df-463f-bcb4-0db52bf6e0b5`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：纸板领用质量与包装单元及库存变化核对
 - 数值来源模式：前景记录（`foreground_record`）
@@ -582,7 +582,7 @@ sync_with: pcr.en-US.md
 
 记录到声明设施出厂时点前储存间或冷库的用电；采用实际电压和地域，以下 UUID 为已核验低压消费组合。
 
-- 选定流：Alternating current, electricity mix, consumption mix, less than 1 kV `50657322-939c-4829-a87b-47c093bfa6a7`
+- 选定流：交流电 `50657322-939c-4829-a87b-47c093bfa6a7`
 - 流属性/单位：Net calorific value `93a60a56-a3c8-11da-a746-0800200c9a66` / kWh
 - 数量规则：按温区占用质量-时间分配的计量储存用电
 - 数值来源模式：计算值（`calculated_value`）
@@ -596,7 +596,7 @@ sync_with: pcr.en-US.md
 
 记录储存制冷系统补充的无水氨，仅适用于已核实使用 R717 的系统。
 
-- 选定流：Ammonia, anhydrous, liquid (R717) `6928be4f-282b-4448-8f2a-f8c746621303`
+- 选定流：氨，无水，液体 `6928be4f-282b-4448-8f2a-f8c746621303`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：按运行期从设备制冷剂台账分配的采购或领用补充质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -610,7 +610,7 @@ sync_with: pcr.en-US.md
 
 记录储存制冷系统补充的 R404A，仅适用于已核实使用 R404A 的系统；其他制冷剂须另建产品行和排放行。
 
-- 选定流：Refrigerant R404A `76513c71-a148-484e-865f-2ab54afb4331`
+- 选定流：制冷剂R404A `76513c71-a148-484e-865f-2ab54afb4331`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：按运行期从设备制冷剂台账分配的采购或领用补充质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -688,7 +688,7 @@ sync_with: pcr.en-US.md
 
 按适用的净重、去冰衣或沥干质量基准，输出恰好一个路线合格参考产品。
 
-- 选定流：Octopus, frozen, smoked, dried, salted or in brine `5c8cdbc1-2f53-47ac-aa4a-e44125c18761`
+- 选定流：章鱼，冷冻、烟熏、干制、盐腌或盐水浸泡 `5c8cdbc1-2f53-47ac-aa4a-e44125c18761`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg；单位组 `93a60a57-a4c8-11da-a746-0800200c9a66`
 - 数量规则：归一化后恰好为 1 kg 参考产品
 - 数值来源模式：固定值（`fixed_value`）

@@ -40,7 +40,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 1 kg |
-| 参考产品流 | Cocoa powder, sweetened `75c1ef5f-a7df-489a-8c49-07a90f6c4d66` |
+| 参考产品流 | 加糖的可可粉 `75c1ef5f-a7df-489a-8c49-07a90f6c4d66` |
 | 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | kg |
@@ -446,7 +446,7 @@ sync_with: pcr.en-US.md
 
 这是最终质量放行后的定量参考输出，不包含包装质量。
 
-- 选定流：Cocoa powder, sweetened `75c1ef5f-a7df-489a-8c49-07a90f6c4d66`
+- 选定流：加糖的可可粉 `75c1ef5f-a7df-489a-8c49-07a90f6c4d66`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：1 kg 合格成品净质量的固定参考数量
 - 数值来源模式：固定值（`fixed_value`）

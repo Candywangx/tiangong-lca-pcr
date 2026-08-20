@@ -40,7 +40,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 1 kg 净冷冻产品 |
-| 参考产品流 | Quick-frozen vegetables `f73b84ab-647d-43a3-b10a-86911fa6db57` |
+| 参考产品流 | 速冻蔬菜 `f73b84ab-647d-43a3-b10a-86911fa6db57` |
 | 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | kg |
@@ -366,7 +366,7 @@ sync_with: pcr.en-US.md
 
 这是定量参考。记录不含包装的净产品质量，并确认申报产品和路线限定信息。
 
-- 选定流：Quick-frozen vegetables `f73b84ab-647d-43a3-b10a-86911fa6db57`
+- 选定流：速冻蔬菜 `f73b84ab-647d-43a3-b10a-86911fa6db57`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：固定归一化输出 1,000 kg 净合格产品
 - 数值来源模式：固定值（`fixed_value`）

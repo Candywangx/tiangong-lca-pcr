@@ -43,7 +43,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 1 kg 净产品 |
-| 参考产品流 | Chillies and peppers, dry (Capsicum spp., Pimenta), processed `fa9bf702-43d4-414e-a2da-0dad135e5df7` |
+| 参考产品流 | 辣椒和胡椒，干（辣椒属，皮门塔），加工品 `fa9bf702-43d4-414e-a2da-0dad135e5df7` |
 | 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | kg |
@@ -254,7 +254,7 @@ sync_with: pcr.en-US.md
 
 “Electricity, facility supply”是一项独立工艺投入。仅对声明生产路线中实际消耗该交换的设备或作业记录。
 
-- 选定流：Electricity, facility supply
+- 选定流：厂区供电
 - 流属性/单位：Energy / kWh
 - 数量规则：记录归属于本工序的“Electricity, facility supply”计量、发票、称量或库存平衡数量；不得填入默认数量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -362,7 +362,7 @@ sync_with: pcr.en-US.md
 
 “Electricity, facility supply”是一项独立工艺投入。仅对声明生产路线中实际消耗该交换的设备或作业记录。
 
-- 选定流：Electricity, facility supply
+- 选定流：厂区供电
 - 流属性/单位：Energy / kWh
 - 数量规则：记录归属于本工序的“Electricity, facility supply”计量、发票、称量或库存平衡数量；不得填入默认数量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -376,7 +376,7 @@ sync_with: pcr.en-US.md
 
 “Steam, purchased”是一项独立工艺投入。仅对声明生产路线中实际消耗该交换的设备或作业记录。
 
-- 选定流：Steam, purchased
+- 选定流：外购蒸汽
 - 流属性/单位：Energy / MJ
 - 数量规则：记录归属于本工序的“Steam, purchased”计量、发票、称量或库存平衡数量；不得填入默认数量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -390,7 +390,7 @@ sync_with: pcr.en-US.md
 
 “Hot water, purchased”是一项独立工艺投入。仅对声明生产路线中实际消耗该交换的设备或作业记录。
 
-- 选定流：Hot water, purchased
+- 选定流：外购热水
 - 流属性/单位：Energy / MJ
 - 数量规则：记录归属于本工序的“Hot water, purchased”计量、发票、称量或库存平衡数量；不得填入默认数量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -404,7 +404,7 @@ sync_with: pcr.en-US.md
 
 “Sodium hypochlorite”是一项独立工艺投入。仅对声明生产路线中实际消耗该交换的设备或作业记录。
 
-- 选定流：Sodium hypochlorite
+- 选定流：次氯酸钠
 - 流属性/单位：Mass / kg
 - 数量规则：记录归属于本工序的“Sodium hypochlorite”计量、发票、称量或库存平衡数量；不得填入默认数量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -418,7 +418,7 @@ sync_with: pcr.en-US.md
 
 “Peracetic acid”是一项独立工艺投入。仅对声明生产路线中实际消耗该交换的设备或作业记录。
 
-- 选定流：Peracetic acid
+- 选定流：过氧乙酸
 - 流属性/单位：Mass / kg
 - 数量规则：记录归属于本工序的“Peracetic acid”计量、发票、称量或库存平衡数量；不得填入默认数量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -528,7 +528,7 @@ sync_with: pcr.en-US.md
 
 “Electricity, facility supply”是一项独立工艺投入。仅对声明生产路线中实际消耗该交换的设备或作业记录。
 
-- 选定流：Electricity, facility supply
+- 选定流：厂区供电
 - 流属性/单位：Energy / kWh
 - 数量规则：记录归属于本工序的“Electricity, facility supply”计量、发票、称量或库存平衡数量；不得填入默认数量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -542,7 +542,7 @@ sync_with: pcr.en-US.md
 
 “Steam, purchased”是一项独立工艺投入。仅对声明生产路线中实际消耗该交换的设备或作业记录。
 
-- 选定流：Steam, purchased
+- 选定流：外购蒸汽
 - 流属性/单位：Energy / MJ
 - 数量规则：记录归属于本工序的“Steam, purchased”计量、发票、称量或库存平衡数量；不得填入默认数量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -556,7 +556,7 @@ sync_with: pcr.en-US.md
 
 “Hot water, purchased”是一项独立工艺投入。仅对声明生产路线中实际消耗该交换的设备或作业记录。
 
-- 选定流：Hot water, purchased
+- 选定流：外购热水
 - 流属性/单位：Energy / MJ
 - 数量规则：记录归属于本工序的“Hot water, purchased”计量、发票、称量或库存平衡数量；不得填入默认数量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -624,7 +624,7 @@ sync_with: pcr.en-US.md
 
 “Electricity, facility supply”是一项独立工艺投入。仅对声明生产路线中实际消耗该交换的设备或作业记录。
 
-- 选定流：Electricity, facility supply
+- 选定流：厂区供电
 - 流属性/单位：Energy / kWh
 - 数量规则：记录归属于本工序的“Electricity, facility supply”计量、发票、称量或库存平衡数量；不得填入默认数量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -638,7 +638,7 @@ sync_with: pcr.en-US.md
 
 “Steam, purchased”是一项独立工艺投入。仅对声明生产路线中实际消耗该交换的设备或作业记录。
 
-- 选定流：Steam, purchased
+- 选定流：外购蒸汽
 - 流属性/单位：Energy / MJ
 - 数量规则：记录归属于本工序的“Steam, purchased”计量、发票、称量或库存平衡数量；不得填入默认数量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -746,7 +746,7 @@ sync_with: pcr.en-US.md
 
 “Electricity, facility supply”是一项独立工艺投入。仅对声明生产路线中实际消耗该交换的设备或作业记录。
 
-- 选定流：Electricity, facility supply
+- 选定流：厂区供电
 - 流属性/单位：Energy / kWh
 - 数量规则：记录归属于本工序的“Electricity, facility supply”计量、发票、称量或库存平衡数量；不得填入默认数量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -760,7 +760,7 @@ sync_with: pcr.en-US.md
 
 “Compressed air”是一项独立工艺投入。仅对声明生产路线中实际消耗该交换的设备或作业记录。
 
-- 选定流：Compressed air
+- 选定流：压缩空气
 - 流属性/单位：Volume / m3
 - 数量规则：记录归属于本工序的“Compressed air”计量、发票、称量或库存平衡数量；不得填入默认数量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -914,7 +914,7 @@ sync_with: pcr.en-US.md
 
 “Electricity, facility supply”是一项独立工艺投入。仅对声明生产路线中实际消耗该交换的设备或作业记录。
 
-- 选定流：Electricity, facility supply
+- 选定流：厂区供电
 - 流属性/单位：Energy / kWh
 - 数量规则：记录归属于本工序的“Electricity, facility supply”计量、发票、称量或库存平衡数量；不得填入默认数量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -942,7 +942,7 @@ sync_with: pcr.en-US.md
 
 “Low-density polyethylene film”是一项独立工艺投入。仅对声明生产路线中实际消耗该交换的设备或作业记录。
 
-- 选定流：Low-density polyethylene film
+- 选定流：低密度聚乙烯薄膜
 - 流属性/单位：Mass / kg
 - 数量规则：记录归属于本工序的“Low-density polyethylene film”计量、发票、称量或库存平衡数量；不得填入默认数量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1012,7 +1012,7 @@ sync_with: pcr.en-US.md
 
 “Corrugated fibreboard box”是一项独立工艺投入。仅对声明生产路线中实际消耗该交换的设备或作业记录。
 
-- 选定流：Corrugated fibreboard box
+- 选定流：瓦楞纸箱
 - 流属性/单位：Mass / kg
 - 数量规则：记录归属于本工序的“Corrugated fibreboard box”计量、发票、称量或库存平衡数量；不得填入默认数量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1026,7 +1026,7 @@ sync_with: pcr.en-US.md
 
 “Paper label”是一项独立工艺投入。仅对声明生产路线中实际消耗该交换的设备或作业记录。
 
-- 选定流：Paper label
+- 选定流：纸质标签
 - 流属性/单位：Mass / kg
 - 数量规则：记录归属于本工序的“Paper label”计量、发票、称量或库存平衡数量；不得填入默认数量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1040,7 +1040,7 @@ sync_with: pcr.en-US.md
 
 “Wood pallet”是一项独立工艺投入。仅对声明生产路线中实际消耗该交换的设备或作业记录。
 
-- 选定流：Wood pallet
+- 选定流：木托盘
 - 流属性/单位：Mass / kg
 - 数量规则：记录归属于本工序的“Wood pallet”计量、发票、称量或库存平衡数量；不得填入默认数量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1054,7 +1054,7 @@ sync_with: pcr.en-US.md
 
 “Low-density polyethylene stretch film”是一项独立工艺投入。仅对声明生产路线中实际消耗该交换的设备或作业记录。
 
-- 选定流：Low-density polyethylene stretch film
+- 选定流：低密度聚乙烯拉伸膜
 - 流属性/单位：Mass / kg
 - 数量规则：记录归属于本工序的“Low-density polyethylene stretch film”计量、发票、称量或库存平衡数量；不得填入默认数量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1068,7 +1068,7 @@ sync_with: pcr.en-US.md
 
 “Ammonia refrigerant (R717)”是一项独立工艺投入。仅对声明生产路线中实际消耗该交换的设备或作业记录。
 
-- 选定流：Ammonia refrigerant (R717)
+- 选定流：氨制冷剂（R717）
 - 流属性/单位：Mass / kg
 - 数量规则：记录归属于本工序的“Ammonia refrigerant (R717)”计量、发票、称量或库存平衡数量；不得填入默认数量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1082,7 +1082,7 @@ sync_with: pcr.en-US.md
 
 “Carbon dioxide refrigerant (R744)”是一项独立工艺投入。仅对声明生产路线中实际消耗该交换的设备或作业记录。
 
-- 选定流：Carbon dioxide refrigerant (R744)
+- 选定流：二氧化碳制冷剂（R744）
 - 流属性/单位：Mass / kg
 - 数量规则：记录归属于本工序的“Carbon dioxide refrigerant (R744)”计量、发票、称量或库存平衡数量；不得填入默认数量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1114,7 +1114,7 @@ sync_with: pcr.en-US.md
 
 这是经核验的 CPC 23922 参考产品流。一个数据集仅代表一种已声明的植物学身份、入厂状态、加工路线、粒度形态和包装状态，不得在 Capsicum、Pimenta 或产品形态之间取平均。
 
-- 选定流：Chillies and peppers, dry (Capsicum spp., Pimenta), processed `fa9bf702-43d4-414e-a2da-0dad135e5df7`
+- 选定流：辣椒和胡椒，干（辣椒属，皮门塔），加工品 `fa9bf702-43d4-414e-a2da-0dad135e5df7`
 - 流属性/单位：Mass / kg
 - 数量规则：工厂门口恰好 1 kg 净产品，不含包装质量。
 - 数值来源模式：固定值（`fixed_value`）
@@ -1244,7 +1244,7 @@ sync_with: pcr.en-US.md
 
 “Ammonia to air”是一项直接基本流排放。仅当声明设备或排放路径实际排放该物质或监测污染物时记录。
 
-- 选定流：Ammonia to air
+- 选定流：氨，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：利用期初库存、采购、补充、回收、退回和期末库存，按物质特定制冷剂质量平衡计算 R717 损失。
 - 数值来源模式：计算值（`calculated_value`）
@@ -1258,7 +1258,7 @@ sync_with: pcr.en-US.md
 
 “Carbon dioxide, fossil, to air”是一项直接基本流排放。仅当声明设备或排放路径实际排放该物质或监测污染物时记录。
 
-- 选定流：Carbon dioxide, fossil, to air
+- 选定流：化石源二氧化碳，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：按物质特定制冷剂质量平衡计算 R744 损失；与燃烧二氧化碳分开。
 - 数值来源模式：计算值（`calculated_value`）
@@ -1272,7 +1272,7 @@ sync_with: pcr.en-US.md
 
 “1,1,1,2-Tetrafluoroethane to air”是一项直接基本流排放。仅当声明设备或排放路径实际排放该物质或监测污染物时记录。
 
-- 选定流：1,1,1,2-Tetrafluoroethane to air
+- 选定流：1,1,1,2-四氟乙烷，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：利用期初库存、采购、补充、回收、退回和期末库存，按物质特定制冷剂质量平衡计算 R134a 损失。
 - 数值来源模式：计算值（`calculated_value`）
@@ -1306,7 +1306,7 @@ sync_with: pcr.en-US.md
 
 “Electricity, facility supply”是一项独立工艺投入。仅对声明生产路线中实际消耗该交换的设备或作业记录。
 
-- 选定流：Electricity, facility supply
+- 选定流：厂区供电
 - 流属性/单位：Energy / kWh
 - 数量规则：记录归属于本工序的“Electricity, facility supply”计量、发票、称量或库存平衡数量；不得填入默认数量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1320,7 +1320,7 @@ sync_with: pcr.en-US.md
 
 “Sodium hydroxide”是一项独立工艺投入。仅对声明生产路线中实际消耗该交换的设备或作业记录。
 
-- 选定流：Sodium hydroxide
+- 选定流：氢氧化钠
 - 流属性/单位：Mass / kg
 - 数量规则：记录归属于本工序的“Sodium hydroxide”计量、发票、称量或库存平衡数量；不得填入默认数量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1334,7 +1334,7 @@ sync_with: pcr.en-US.md
 
 “Sodium hypochlorite”是一项独立工艺投入。仅对声明生产路线中实际消耗该交换的设备或作业记录。
 
-- 选定流：Sodium hypochlorite
+- 选定流：次氯酸钠
 - 流属性/单位：Mass / kg
 - 数量规则：记录归属于本工序的“Sodium hypochlorite”计量、发票、称量或库存平衡数量；不得填入默认数量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1348,7 +1348,7 @@ sync_with: pcr.en-US.md
 
 “Peracetic acid”是一项独立工艺投入。仅对声明生产路线中实际消耗该交换的设备或作业记录。
 
-- 选定流：Peracetic acid
+- 选定流：过氧乙酸
 - 流属性/单位：Mass / kg
 - 数量规则：记录归属于本工序的“Peracetic acid”计量、发票、称量或库存平衡数量；不得填入默认数量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1452,7 +1452,7 @@ sync_with: pcr.en-US.md
 
 “Chemical oxygen demand to water”是一项直接基本流排放。仅当声明设备或排放路径实际排放该物质或监测污染物时记录。
 
-- 选定流：Chemical oxygen demand to water
+- 选定流：化学需氧量，排入水体
 - 流属性/单位：Mass / kg
 - 数量规则：采用实测质量，或根据实测活动数据和已披露的物质特定方法计算质量；不得以合并排放总量代替。
 - 数值来源模式：计算值（`calculated_value`）
@@ -1480,7 +1480,7 @@ sync_with: pcr.en-US.md
 
 “Total suspended solids to water”是一项直接基本流排放。仅当声明设备或排放路径实际排放该物质或监测污染物时记录。
 
-- 选定流：Total suspended solids to water
+- 选定流：总悬浮固体，排入水体
 - 流属性/单位：Mass / kg
 - 数量规则：采用实测质量，或根据实测活动数据和已披露的物质特定方法计算质量；不得以合并排放总量代替。
 - 数值来源模式：计算值（`calculated_value`）
@@ -1494,7 +1494,7 @@ sync_with: pcr.en-US.md
 
 “Total nitrogen to water”是一项直接基本流排放。仅当声明设备或排放路径实际排放该物质或监测污染物时记录。
 
-- 选定流：Total nitrogen to water
+- 选定流：总氮，排入水体
 - 流属性/单位：Mass / kg
 - 数量规则：采用实测质量，或根据实测活动数据和已披露的物质特定方法计算质量；不得以合并排放总量代替。
 - 数值来源模式：计算值（`calculated_value`）
@@ -1508,7 +1508,7 @@ sync_with: pcr.en-US.md
 
 “Total phosphorus to water”是一项直接基本流排放。仅当声明设备或排放路径实际排放该物质或监测污染物时记录。
 
-- 选定流：Total phosphorus to water
+- 选定流：总磷，排入水体
 - 流属性/单位：Mass / kg
 - 数量规则：采用实测质量，或根据实测活动数据和已披露的物质特定方法计算质量；不得以合并排放总量代替。
 - 数值来源模式：计算值（`calculated_value`）
@@ -1522,7 +1522,7 @@ sync_with: pcr.en-US.md
 
 “Chloride to water”是一项直接基本流排放。仅当声明设备或排放路径实际排放该物质或监测污染物时记录。
 
-- 选定流：Chloride to water
+- 选定流：氯化物，排入水体
 - 流属性/单位：Mass / kg
 - 数量规则：采用实测质量，或根据实测活动数据和已披露的物质特定方法计算质量；不得以合并排放总量代替。
 - 数值来源模式：计算值（`calculated_value`）
@@ -1542,7 +1542,7 @@ sync_with: pcr.en-US.md
 
 “Natural gas”是一项独立工艺投入。仅对声明生产路线中实际消耗该交换的设备或作业记录。
 
-- 选定流：Natural gas
+- 选定流：天然气
 - 流属性/单位：Energy / MJ
 - 数量规则：记录归属于本工序的“Natural gas”计量、发票、称量或库存平衡数量；不得填入默认数量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1556,7 +1556,7 @@ sync_with: pcr.en-US.md
 
 “Liquefied petroleum gas”是一项独立工艺投入。仅对声明生产路线中实际消耗该交换的设备或作业记录。
 
-- 选定流：Liquefied petroleum gas
+- 选定流：液化石油气
 - 流属性/单位：Mass / kg
 - 数量规则：记录归属于本工序的“Liquefied petroleum gas”计量、发票、称量或库存平衡数量；不得填入默认数量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1570,7 +1570,7 @@ sync_with: pcr.en-US.md
 
 “Diesel fuel”是一项独立工艺投入。仅对声明生产路线中实际消耗该交换的设备或作业记录。
 
-- 选定流：Diesel fuel
+- 选定流：柴油燃料
 - 流属性/单位：Mass / kg
 - 数量规则：记录归属于本工序的“Diesel fuel”计量、发票、称量或库存平衡数量；不得填入默认数量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1618,7 +1618,7 @@ sync_with: pcr.en-US.md
 
 “Carbon dioxide, fossil, to air”是一项直接基本流排放。仅当声明设备或排放路径实际排放该物质或监测污染物时记录。
 
-- 选定流：Carbon dioxide, fossil, to air
+- 选定流：化石源二氧化碳，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：采用实测质量，或根据实测活动数据和已披露的物质特定方法计算质量；不得以合并排放总量代替。
 - 数值来源模式：计算值（`calculated_value`）
@@ -1632,7 +1632,7 @@ sync_with: pcr.en-US.md
 
 “Carbon dioxide, biogenic, to air”是一项直接基本流排放。仅当声明设备或排放路径实际排放该物质或监测污染物时记录。
 
-- 选定流：Carbon dioxide, biogenic, to air
+- 选定流：生物源二氧化碳，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：采用实测质量，或根据实测活动数据和已披露的物质特定方法计算质量；不得以合并排放总量代替。
 - 数值来源模式：计算值（`calculated_value`）
@@ -1646,7 +1646,7 @@ sync_with: pcr.en-US.md
 
 “Methane to air”是一项直接基本流排放。仅当声明设备或排放路径实际排放该物质或监测污染物时记录。
 
-- 选定流：Methane to air
+- 选定流：甲烷，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：采用实测质量，或根据实测活动数据和已披露的物质特定方法计算质量；不得以合并排放总量代替。
 - 数值来源模式：计算值（`calculated_value`）
@@ -1660,7 +1660,7 @@ sync_with: pcr.en-US.md
 
 “Nitrous oxide to air”是一项直接基本流排放。仅当声明设备或排放路径实际排放该物质或监测污染物时记录。
 
-- 选定流：Nitrous oxide to air
+- 选定流：氧化亚氮，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：采用实测质量，或根据实测活动数据和已披露的物质特定方法计算质量；不得以合并排放总量代替。
 - 数值来源模式：计算值（`calculated_value`）
@@ -1674,7 +1674,7 @@ sync_with: pcr.en-US.md
 
 “Nitrogen oxides to air”是一项直接基本流排放。仅当声明设备或排放路径实际排放该物质或监测污染物时记录。
 
-- 选定流：Nitrogen oxides to air
+- 选定流：氮氧化物，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：采用实测质量，或根据实测活动数据和已披露的物质特定方法计算质量；不得以合并排放总量代替。
 - 数值来源模式：计算值（`calculated_value`）
@@ -1688,7 +1688,7 @@ sync_with: pcr.en-US.md
 
 “Sulfur dioxide to air”是一项直接基本流排放。仅当声明设备或排放路径实际排放该物质或监测污染物时记录。
 
-- 选定流：Sulfur dioxide to air
+- 选定流：二氧化硫，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：采用实测质量，或根据实测活动数据和已披露的物质特定方法计算质量；不得以合并排放总量代替。
 - 数值来源模式：计算值（`calculated_value`）
@@ -1702,7 +1702,7 @@ sync_with: pcr.en-US.md
 
 “Carbon monoxide to air”是一项直接基本流排放。仅当声明设备或排放路径实际排放该物质或监测污染物时记录。
 
-- 选定流：Carbon monoxide to air
+- 选定流：一氧化碳，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：采用实测质量，或根据实测活动数据和已披露的物质特定方法计算质量；不得以合并排放总量代替。
 - 数值来源模式：计算值（`calculated_value`）

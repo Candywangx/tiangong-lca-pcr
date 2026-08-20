@@ -42,7 +42,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 1 kg 成品净质量 |
-| 参考产品流 | Fish fillets, dried, salted or in brine, but not smoked `b41d734d-e255-404c-b6bb-b2c408f653c6` |
+| 参考产品流 | 鱼片，干制、盐腌或盐水浸泡，但非熏制 `b41d734d-e255-404c-b6bb-b2c408f653c6` |
 | 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | kg |
@@ -151,7 +151,7 @@ sync_with: pcr.en-US.md
 
 在所述适用条件成立时单独记录该原子交换。
 
-- 选定流：Fish fillets and fish meat (whether or not minced), fresh or chilled `a1c31d45-a225-426f-908a-f79eae6c071f`
+- 选定流：鱼片和鱼肉（无论是否剁碎），新鲜或冷藏 `a1c31d45-a225-426f-908a-f79eae6c071f`
 - 适用条件：仅用于新鲜或冷藏鱼片进厂。
 - 流属性/单位：Mass / kg
 - 数量规则：归属于本过程的实测质量
@@ -175,7 +175,7 @@ sync_with: pcr.en-US.md
 
 在所述适用条件成立时单独记录该原子交换。
 
-- 选定流：Frozen fish fillets `130aa38f-8c63-4d0b-ad05-0b2c4426cdd8`
+- 选定流：冻鱼片 `130aa38f-8c63-4d0b-ad05-0b2c4426cdd8`
 - 适用条件：仅用于冷冻鱼片进厂。
 - 流属性/单位：Mass / kg
 - 数量规则：归属于本过程的实测质量
@@ -199,7 +199,7 @@ sync_with: pcr.en-US.md
 
 在所述适用条件成立时单独记录该原子交换。
 
-- 选定流：Alternating-current electricity, below 1 kV, consumption mix `50657322-939c-4829-a87b-47c093bfa6a7`
+- 选定流：交流电 `50657322-939c-4829-a87b-47c093bfa6a7`
 - 适用条件：仅用于低于 1 kV 的消费混合供电；不得与中压供电重复。
 - 流属性/单位：Energy / kWh
 - 数量规则：归属于接收、解冻控制和冷藏且以低于 1 kV 供给的计量电量
@@ -223,7 +223,7 @@ sync_with: pcr.en-US.md
 
 在所述适用条件成立时单独记录该原子交换。
 
-- 选定流：Alternating-current electricity, 1–35 kV, consumption mix `3d76981f-964a-4865-b588-0e067a2a1163`
+- 选定流：交流电 `3d76981f-964a-4865-b588-0e067a2a1163`
 - 适用条件：仅用于 1–35 kV 的消费混合供电；不得与低压供电重复。
 - 流属性/单位：Energy / kWh
 - 数量规则：归属于接收、解冻控制和冷藏且以 1–35 kV 供给的计量电量
@@ -448,7 +448,7 @@ sync_with: pcr.en-US.md
 
 在所述适用条件成立时单独记录该原子交换。
 
-- 选定流：Process Water `94a04f7e-2d5c-41f0-b182-d54a3b373a02`
+- 选定流：工艺用水 `94a04f7e-2d5c-41f0-b182-d54a3b373a02`
 - 流属性/单位：Mass / kg
 - 数量规则：归属于准备过程清洗、漂洗和卫生作业的计量或计算工艺用水量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -602,7 +602,7 @@ sync_with: pcr.en-US.md
 
 在所述适用条件成立时单独记录该原子交换。
 
-- 选定流：Salt, food-grade, for brine preparation `3a5fa711-4648-4d58-b94d-67b79e7476c7`
+- 选定流：食盐 `3a5fa711-4648-4d58-b94d-67b79e7476c7`
 - 流属性/单位：Mass / kg
 - 数量规则：批次领用新鲜盐减实测退库可回收未用盐
 - 数值来源模式：前景记录（`foreground_record`）
@@ -625,7 +625,7 @@ sync_with: pcr.en-US.md
 
 在所述适用条件成立时单独记录该原子交换。
 
-- 选定流：Process Water `94a04f7e-2d5c-41f0-b182-d54a3b373a02`
+- 选定流：工艺用水 `94a04f7e-2d5c-41f0-b182-d54a3b373a02`
 - 适用条件：仅用于湿盐腌、盐水浸泡、注射或补充盐水。
 - 流属性/单位：Mass / kg
 - 数量规则：配制或补充盐水所用的实测工艺水量
@@ -649,7 +649,7 @@ sync_with: pcr.en-US.md
 
 在所述适用条件成立时单独记录该原子交换。
 
-- 选定流：Alternating-current electricity, below 1 kV, consumption mix `50657322-939c-4829-a87b-47c093bfa6a7`
+- 选定流：交流电 `50657322-939c-4829-a87b-47c093bfa6a7`
 - 适用条件：仅用于低于 1 kV 的供电；不得与中压供电重复。
 - 流属性/单位：Energy / kWh
 - 数量规则：归属于泵送、盐水配制、注射、搬运和控温熟成的计量低压电量
@@ -673,7 +673,7 @@ sync_with: pcr.en-US.md
 
 在所述适用条件成立时单独记录该原子交换。
 
-- 选定流：Alternating-current electricity, 1–35 kV, consumption mix `3d76981f-964a-4865-b588-0e067a2a1163`
+- 选定流：交流电 `3d76981f-964a-4865-b588-0e067a2a1163`
 - 适用条件：仅用于 1–35 kV 的供电；不得与低压供电重复。
 - 流属性/单位：Energy / kWh
 - 数量规则：归属于泵送、盐水配制、注射、搬运和控温熟成的计量中压电量
@@ -805,7 +805,7 @@ sync_with: pcr.en-US.md
 
 在所述适用条件成立时单独记录该原子交换。
 
-- 选定流：Alternating-current electricity, below 1 kV, consumption mix `50657322-939c-4829-a87b-47c093bfa6a7`
+- 选定流：交流电 `50657322-939c-4829-a87b-47c093bfa6a7`
 - 适用条件：仅用于低于 1 kV 的供电。
 - 流属性/单位：Energy / kWh
 - 数量规则：归属于干燥机风机、电加热器、除湿和控制装置的计量低压电量
@@ -821,7 +821,7 @@ sync_with: pcr.en-US.md
 
 在所述适用条件成立时单独记录该原子交换。
 
-- 选定流：Alternating-current electricity, 1–35 kV, consumption mix `3d76981f-964a-4865-b588-0e067a2a1163`
+- 选定流：交流电 `3d76981f-964a-4865-b588-0e067a2a1163`
 - 适用条件：仅用于 1–35 kV 的供电。
 - 流属性/单位：Energy / kWh
 - 数量规则：归属于干燥机风机、电加热器、除湿和控制装置的计量中压电量
@@ -837,7 +837,7 @@ sync_with: pcr.en-US.md
 
 在所述适用条件成立时单独记录该原子交换。
 
-- 选定流：Steam `293f9fd9-5182-4d35-8aa5-ce73d4f322b7`
+- 选定流：蒸汽 `293f9fd9-5182-4d35-8aa5-ce73d4f322b7`
 - 适用条件：仅用于外购蒸汽干燥；避免与锅炉燃料重复。
 - 流属性/单位：Mass / kg
 - 数量规则：供应干燥机的实测外购蒸汽质量
@@ -869,7 +869,7 @@ sync_with: pcr.en-US.md
 
 在所述适用条件成立时单独记录该原子交换。
 
-- 选定流：Natural gas `4bfd1abb-9106-495a-a291-ce410f205691`
+- 选定流：天然气 `4bfd1abb-9106-495a-a291-ce410f205691`
 - 适用条件：仅在燃烧天然气提供干燥热时使用。
 - 流属性/单位：Energy / MJ
 - 数量规则：归属于干燥过程的计量天然气高位热值能量
@@ -885,7 +885,7 @@ sync_with: pcr.en-US.md
 
 在所述适用条件成立时单独记录该原子交换。
 
-- 选定流：Liquefied petroleum gas `d54ae71a-1245-4e3f-b694-dbf2b22bbf7d`
+- 选定流：液化石油气 `d54ae71a-1245-4e3f-b694-dbf2b22bbf7d`
 - 适用条件：仅在燃烧 LPG 提供干燥热时使用。
 - 流属性/单位：Mass / kg
 - 数量规则：归属于干燥过程的实测液化石油气质量
@@ -901,7 +901,7 @@ sync_with: pcr.en-US.md
 
 在所述适用条件成立时单独记录该原子交换。
 
-- 选定流：Diesel oil `9d258d75-6792-4f1c-9856-81602ed8f816`
+- 选定流：柴油 `9d258d75-6792-4f1c-9856-81602ed8f816`
 - 适用条件：仅在燃烧柴油提供干燥热时使用。
 - 流属性/单位：Mass / kg
 - 数量规则：归属于干燥过程的实测柴油质量
@@ -933,7 +933,7 @@ sync_with: pcr.en-US.md
 
 在所述适用条件成立时单独记录该原子交换。
 
-- 选定流：Wood pellets `4905586c-0722-4c91-923f-112215546a41`
+- 选定流：木质颗粒 `4905586c-0722-4c91-923f-112215546a41`
 - 适用条件：仅在未处理木颗粒提供干燥热时使用；熏制燃料仍被排除。
 - 流属性/单位：Mass / kg
 - 数量规则：归属于干燥过程的实测木颗粒质量
@@ -976,7 +976,7 @@ sync_with: pcr.en-US.md
 
 在所述适用条件成立时单独记录该原子交换。
 
-- 选定流：Water vapour, to air, unspecified `fe0acd60-3ddc-11dd-ac04-0050c2490048`
+- 选定流：水蒸气 `fe0acd60-3ddc-11dd-ac04-0050c2490048`
 - 流属性/单位：Mass / kg
 - 数量规则：按 `calc_drying_water_removed` 计算
 - 数值来源模式：计算值（`calculated_value`）
@@ -1069,7 +1069,7 @@ sync_with: pcr.en-US.md
 
 在所述适用条件成立时单独记录该原子交换。
 
-- 选定流：Corrugated cardboard `8bde297e-98df-463f-bcb4-0db52bf6e0b5`
+- 选定流：瓦楞纸板 `8bde297e-98df-463f-bcb4-0db52bf6e0b5`
 - 流属性/单位：Mass / kg
 - 数量规则：瓦楞纸板包装领用量减未用退库量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1084,7 +1084,7 @@ sync_with: pcr.en-US.md
 
 在所述适用条件成立时单独记录该原子交换。
 
-- 选定流：Glass Jar `eca48ea8-ab83-444f-98b2-15ab82570c80`
+- 选定流：玻璃瓶罐 `eca48ea8-ab83-444f-98b2-15ab82570c80`
 - 适用条件：仅用于玻璃罐包装。
 - 流属性/单位：Mass / kg
 - 数量规则：玻璃罐领用质量减未用退库质量
@@ -1100,7 +1100,7 @@ sync_with: pcr.en-US.md
 
 在所述适用条件成立时单独记录该原子交换。
 
-- 选定流：Steel food can `f09b782f-b3db-4b1e-8473-597edcc5b6d7`
+- 选定流：钢制食品罐 `f09b782f-b3db-4b1e-8473-597edcc5b6d7`
 - 适用条件：仅用于钢罐包装。
 - 流属性/单位：Mass / kg
 - 数量规则：钢制食品罐领用质量减未用退库质量
@@ -1116,7 +1116,7 @@ sync_with: pcr.en-US.md
 
 在所述适用条件成立时单独记录该原子交换。
 
-- 选定流：Wood pallet `4b49871e-95be-4e0c-9223-9902f9eaa763`
+- 选定流：木制托盘、箱式托盘和其他装载板，木制托盘套环 `4b49871e-95be-4e0c-9223-9902f9eaa763`
 - 适用条件：仅用于非周转托盘消耗；周转托盘服务应另行建模。
 - 流属性/单位：Mass / kg
 - 数量规则：归属于批次的实测非周转木托盘质量
@@ -1132,7 +1132,7 @@ sync_with: pcr.en-US.md
 
 在所述适用条件成立时单独记录该原子交换。
 
-- 选定流：Alternating-current electricity, below 1 kV, consumption mix `50657322-939c-4829-a87b-47c093bfa6a7`
+- 选定流：交流电 `50657322-939c-4829-a87b-47c093bfa6a7`
 - 适用条件：仅用于低于 1 kV 的供电。
 - 流属性/单位：Energy / kWh
 - 数量规则：分配至包装和受控储存的计量低压电量
@@ -1156,7 +1156,7 @@ sync_with: pcr.en-US.md
 
 在所述适用条件成立时单独记录该原子交换。
 
-- 选定流：Alternating-current electricity, 1–35 kV, consumption mix `3d76981f-964a-4865-b588-0e067a2a1163`
+- 选定流：交流电 `3d76981f-964a-4865-b588-0e067a2a1163`
 - 适用条件：仅用于 1–35 kV 的供电。
 - 流属性/单位：Energy / kWh
 - 数量规则：分配至包装和受控储存的计量中压电量
@@ -1188,7 +1188,7 @@ sync_with: pcr.en-US.md
 
 这是唯一参考产品输出，不含包装质量和非产品运输用冰。
 
-- 选定流：Fish fillets, dried, salted or in brine, but not smoked `b41d734d-e255-404c-b6bb-b2c408f653c6`
+- 选定流：鱼片，干制、盐腌或盐水浸泡，但非熏制 `b41d734d-e255-404c-b6bb-b2c408f653c6`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：归一化后恰为 1 kg 净成品
 - 数值来源模式：固定值（`fixed_value`）
@@ -1258,7 +1258,7 @@ sync_with: pcr.en-US.md
 
 在所述适用条件成立时单独记录该原子交换。
 
-- 选定流：Packaging waste, cardboard `72270223-04b1-4986-a546-94e5a0821317`
+- 选定流：包装废弃物，纸板 `72270223-04b1-4986-a546-94e5a0821317`
 - 流属性/单位：Mass / kg
 - 数量规则：按去向实测瓦楞纸板边角料和拒收包装质量
 - 数值来源模式：前景记录（`foreground_record`）

@@ -40,7 +40,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 1 kg 净重产品 |
-| 参考产品流 | Pineapples, otherwise prepared or preserved `5787a516-5769-4072-a5fc-2ef53e8ba7e4` |
+| 参考产品流 | 菠萝，以其他方式制备或腌制 `5787a516-5769-4072-a5fc-2ef53e8ba7e4` |
 | 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | kg |
@@ -123,7 +123,7 @@ sync_with: pcr.en-US.md
 
 记录用于清洗、槽送、去皮、切分和设备接触预处理操作的计量或核算用水。
 
-- 选定流：Process water
+- 选定流：过程用水
 - 流属性/单位：Mass / kg
 - 数量规则：测得的预处理供水量，排除可证明归属于其他过程的用水。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -533,7 +533,7 @@ sync_with: pcr.en-US.md
 
 在核对净含量和包装记录后，本输出实现唯一参考流对象。
 
-- 选定流：Pineapples, otherwise prepared or preserved `5787a516-5769-4072-a5fc-2ef53e8ba7e4`
+- 选定流：菠萝，以其他方式制备或腌制 `5787a516-5769-4072-a5fc-2ef53e8ba7e4`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：固定为 1 kg 净重产品；不含包装，但包含随产品销售的任何装填介质。
 - 数值来源模式：固定值（`fixed_value`）

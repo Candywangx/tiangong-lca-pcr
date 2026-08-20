@@ -38,7 +38,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 1 kg |
-| 参考产品流 | Footwear incorporating a protective metal toe-cap, except those covered in subclass 29320 `7c000468-f61e-4e05-8509-52da9fd77874` |
+| 参考产品流 | 装有保护性金属趾盖的鞋类，但第 29320 小类所列者除外 `7c000468-f61e-4e05-8509-52da9fd77874` |
 | 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | kg |
@@ -157,7 +157,7 @@ sync_with: pcr.en-US.md
 
 裁切、削薄、片皮、抽排和准备设备用电仅记录在本阶段。
 
-- 选定流：Electricity, low voltage
+- 选定流：低压电力
 - 流属性/单位：Energy / kWh
 - 数量规则：分表计量，或设备功率乘运行时间计算
 - 数值来源模式：前景记录（`foreground_record`）
@@ -340,7 +340,7 @@ sync_with: pcr.en-US.md
 
 装入鞋帮的聚酯线依据领退记录或线轴消耗实测。
 
-- 选定流：Polyester sewing thread
+- 选定流：聚酯缝纫线
 - 流属性/单位：Mass / kg
 - 数量规则：缝线实测领用量减退回量和单独计量的废料
 - 数值来源模式：前景记录（`foreground_record`）
@@ -385,7 +385,7 @@ sync_with: pcr.en-US.md
 
 缝制、粘接、抽排和包头集成用电与其他阶段分开记录。
 
-- 选定流：Electricity, low voltage
+- 选定流：低压电力
 - 流属性/单位：Energy / kWh
 - 数量规则：分表计量，或设备功率乘运行时间计算
 - 数值来源模式：前景记录（`foreground_record`）
@@ -568,7 +568,7 @@ sync_with: pcr.en-US.md
 
 绷楦、压合、模塑、硫化控制、抽排和输送用电仅归入本阶段。
 
-- 选定流：Electricity, low voltage
+- 选定流：低压电力
 - 流属性/单位：Energy / kWh
 - 数量规则：分表计量，或设备功率乘运行时间计算
 - 数值来源模式：前景记录（`foreground_record`）
@@ -583,7 +583,7 @@ sync_with: pcr.en-US.md
 
 仅在路线特定加热或硫化使用跨场址边界供应的蒸汽时记录。
 
-- 选定流：Purchased steam
+- 选定流：外购蒸汽
 - 流属性/单位：Energy / MJ
 - 数量规则：使用蒸汽质量、压力和焓基准计算的计量蒸汽能量
 - 数值来源模式：计算值（`calculated_value`）
@@ -613,7 +613,7 @@ sync_with: pcr.en-US.md
 
 场内热力设备燃烧的天然气与外购热力分开记录。
 
-- 选定流：Natural gas
+- 选定流：天然气
 - 流属性/单位：Energy / MJ
 - 数量规则：计量燃料量按账单记录的热值换算
 - 数值来源模式：计算值（`calculated_value`）
@@ -685,7 +685,7 @@ sync_with: pcr.en-US.md
 
 场内天然气燃烧产生的直接化石二氧化碳依据燃料计量和适用的有记录因子计算。
 
-- 选定流：Carbon dioxide, fossil, to air
+- 选定流：化石源二氧化碳，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：天然气能量乘场址或法域有记录的因子
 - 数值来源模式：计算值（`calculated_value`）
@@ -736,7 +736,7 @@ R-134a 直接损失依据制冷剂库存和维修记录计算，不与其他制�
 
 清洁、抛光、检验、测试和包装用电仅记录在本阶段。
 
-- 选定流：Electricity, low voltage
+- 选定流：低压电力
 - 流属性/单位：Energy / kWh
 - 数量规则：分表计量，或设备功率乘运行时间计算
 - 数值来源模式：前景记录（`foreground_record`）
@@ -751,7 +751,7 @@ R-134a 直接损失依据制冷剂库存和维修记录计算，不与其他制�
 
 仅对水基清洁或整理记录工艺水，并与生活用水分开。
 
-- 选定流：Process water
+- 选定流：过程用水
 - 流属性/单位：Volume / m3
 - 数量规则：跨越前景过程边界的计量或批次投加工艺水
 - 数值来源模式：前景记录（`foreground_record`）
@@ -819,7 +819,7 @@ R-134a 直接损失依据制冷剂库存和维修记录计算，不与其他制�
 
 这是工厂门检验合格的鞋类，按运输包装前的产品净质量计量。
 
-- 选定流：Footwear incorporating a protective metal toe-cap, except those covered in subclass 29320 `7c000468-f61e-4e05-8509-52da9fd77874`
+- 选定流：装有保护性金属趾盖的鞋类，但第 29320 小类所列者除外 `7c000468-f61e-4e05-8509-52da9fd77874`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：1 kg 参考输出
 - 数值来源模式：固定值（`fixed_value`）

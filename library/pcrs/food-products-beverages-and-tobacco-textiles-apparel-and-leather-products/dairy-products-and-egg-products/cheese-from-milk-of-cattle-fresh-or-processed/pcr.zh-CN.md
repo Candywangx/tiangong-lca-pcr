@@ -38,7 +38,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 1 kg |
-| 参考产品流 | Cheese from milk of cattle, fresh or processed `221efbce-690d-492b-9d15-79d0ac862e35` |
+| 参考产品流 | 新鲜或加工的牛乳奶酪 `221efbce-690d-492b-9d15-79d0ac862e35` |
 | 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | kg |
@@ -95,7 +95,7 @@ sync_with: pcr.en-US.md
 
 记录跨越工厂边界的牛乳，包括接收和拒收批次、组成、温度及上游数据集身份。
 
-- 选定流：Raw milk of cattle `aa8aebbb-724a-417b-8372-2dccd499ce71`
+- 选定流：鲜牛奶 `aa8aebbb-724a-417b-8372-2dccd499ce71`
 - 流属性/单位：Mass / kg
 - 数量规则：计量的已接收牛乳质量，归一化到奶酪成品输出
 - 数值来源模式：前景记录（`foreground_record`）
@@ -118,7 +118,7 @@ sync_with: pcr.en-US.md
 
 即使本 PCR 将其采集规则归为一组，数据包仍应逐项记录配料。产品规范决定适用的菌种、酶、盐、水和允许配料。
 
-- 选定流：Rennet (chymosin) `d71ffeab-e448-497c-9246-30967da0da78`；菌种、盐、水和其他配料使用各自独立选定流
+- 选定流：凝乳酶（凝乳蛋白酶，chymosin） `d71ffeab-e448-497c-9246-30967da0da78`；菌种、盐、水和其他配料使用各自独立选定流
 - 流属性/单位：Mass / kg
 - 数量规则：计量每批发料数量；相关时披露浓度和活性成分基准
 - 数值来源模式：前景记录（`foreground_record`）
@@ -141,7 +141,7 @@ sync_with: pcr.en-US.md
 
 记录完整声明路线后的合格产品净质量；若熟成、干燥或磨碎发生在工厂门口之前，应包含相应损失。
 
-- 选定流：Cheese from milk of cattle, fresh or processed `221efbce-690d-492b-9d15-79d0ac862e35`
+- 选定流：新鲜或加工的牛乳奶酪 `221efbce-690d-492b-9d15-79d0ac862e35`
 - 流属性/单位：Mass / kg
 - 数量规则：由实测批次收率支持的固定参考输出
 - 数值来源模式：计算值（`calculated_value`）
@@ -156,7 +156,7 @@ sync_with: pcr.en-US.md
 
 记录湿乳清质量、固形物含量和去向，并声明其为销售、厂内加工、饲用、厌氧消化或废水处理。
 
-- 选定流：Whey `7ee9083e-5a51-476e-b96f-1501752e169a`
+- 选定流：乳清 `7ee9083e-5a51-476e-b96f-1501752e169a`
 - 流属性/单位：Mass / kg
 - 数量规则：从凝乳分离环节实测或通过质量平衡计算的乳清量
 - 数值来源模式：计算值（`calculated_value`）
@@ -212,7 +212,7 @@ sync_with: pcr.en-US.md
 
 记录每种天然奶酪投入并链接其上游数据集，不得在加工奶酪前景过程内递归嵌入本 PCR。
 
-- 选定流：Cheese from milk of cattle, fresh or processed `221efbce-690d-492b-9d15-79d0ac862e35`
+- 选定流：新鲜或加工的牛乳奶酪 `221efbce-690d-492b-9d15-79d0ac862e35`
 - 流属性/单位：Mass / kg
 - 数量规则：计量加入加工奶酪批次的天然奶酪质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -258,7 +258,7 @@ sync_with: pcr.en-US.md
 
 记录混合、熔融/乳化、成型、冷却以及路线内在线包装之后的合格加工奶酪净质量。
 
-- 选定流：Cheese from milk of cattle, fresh or processed `221efbce-690d-492b-9d15-79d0ac862e35`
+- 选定流：新鲜或加工的牛乳奶酪 `221efbce-690d-492b-9d15-79d0ac862e35`
 - 流属性/单位：Mass / kg
 - 数量规则：由实测批次收率支持的固定参考输出
 - 数值来源模式：计算值（`calculated_value`）

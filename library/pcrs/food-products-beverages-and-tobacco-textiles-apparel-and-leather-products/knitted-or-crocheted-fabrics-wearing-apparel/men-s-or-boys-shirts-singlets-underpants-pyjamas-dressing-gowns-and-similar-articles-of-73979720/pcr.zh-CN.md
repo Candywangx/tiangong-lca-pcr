@@ -38,7 +38,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 1 kg |
-| 参考产品流 | Men's or boys' shirts, singlets, underpants, pyjamas, dressing gowns and similar articles, of textile fabric, not knitted or crocheted `66e77e01-9118-4c94-a727-c8bbcf2d4eee` |
+| 参考产品流 | 非针织或钩编而成的纺织品男衬衫、男童衬衫、汗衫、衬裤、睡衣裤、晨衣及其类似物品 `66e77e01-9118-4c94-a727-c8bbcf2d4eee` |
 | 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | kg |
@@ -113,7 +113,7 @@ sync_with: pcr.en-US.md
 
 铺布、裁剪、抽风和可直接归属裁剪区域设备所用电力，使用专用电表或对场址总表进行有记录的分配来记录。
 
-- 选定流：Electricity, low voltage, at factory
+- 选定流：低压电力，工厂供电
 - 流属性/单位：Energy / kWh
 - 数量规则：实测裁剪过程电力消耗
 - 数值来源模式：前景记录（`foreground_record`）
@@ -191,7 +191,7 @@ sync_with: pcr.en-US.md
 
 构成缝线的缝纫线跨越组装边界；记录其纤维组成和扣除退回线筒后的净领用质量。
 
-- 选定流：Sewing thread
+- 选定流：缝纫线
 - 流属性/单位：Mass / kg
 - 数量规则：实测缝纫线领用质量减去实测退回库存的未使用缝纫线质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -251,7 +251,7 @@ sync_with: pcr.en-US.md
 
 缝纫机、粘合设备、锁眼、修剪和可直接归属组装设备所用电力与热能分开记录。
 
-- 选定流：Electricity, low voltage, at factory
+- 选定流：低压电力，工厂供电
 - 流属性/单位：Energy / kWh
 - 数量规则：实测缝制与组装电力消耗
 - 数值来源模式：前景记录（`foreground_record`）
@@ -344,7 +344,7 @@ sync_with: pcr.en-US.md
 
 用于成衣洗涤、漂洗或染色的工艺水跨越湿处理边界，使用专用水表或批次槽记录采集。
 
-- 选定流：Process water
+- 选定流：过程用水
 - 流属性/单位：Mass / kg
 - 数量规则：实测工艺水输入
 - 数值来源模式：前景记录（`foreground_record`）
@@ -389,7 +389,7 @@ sync_with: pcr.en-US.md
 
 洗衣机、泵、脱水机、烘干机和可直接归属湿处理设备所用电力与蒸汽分开计量。
 
-- 选定流：Electricity, low voltage, at factory
+- 选定流：低压电力，工厂供电
 - 流属性/单位：Energy / kWh
 - 数量规则：实测湿处理电力消耗
 - 数值来源模式：前景记录（`foreground_record`）
@@ -497,7 +497,7 @@ sync_with: pcr.en-US.md
 
 熨烫控制、检验照明、修剪和可直接归属后整理设备所用电力与蒸汽分开记录。
 
-- 选定流：Electricity, low voltage, at factory
+- 选定流：低压电力，工厂供电
 - 流属性/单位：Energy / kWh
 - 数量规则：实测后整理与检验电力消耗
 - 数值来源模式：前景记录（`foreground_record`）
@@ -590,7 +590,7 @@ sync_with: pcr.en-US.md
 
 使用时，将直接包覆服装的低密度聚乙烯袋作为一个包装材料流记录。
 
-- 选定流：Low-density polyethylene garment bag
+- 选定流：低密度聚乙烯服装袋
 - 流属性/单位：Mass / kg
 - 数量规则：安装袋数量乘以实测平均单袋质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -635,7 +635,7 @@ sync_with: pcr.en-US.md
 
 折叠、封袋、贴标、封箱和可直接归属包装设备所用电力与其他工厂电力独立记录。
 
-- 选定流：Electricity, low voltage, at factory
+- 选定流：低压电力，工厂供电
 - 流属性/单位：Energy / kWh
 - 数量规则：实测包装过程电力消耗
 - 数值来源模式：前景记录（`foreground_record`）
@@ -658,7 +658,7 @@ sync_with: pcr.en-US.md
 
 合格服装是声明参考产品；交换数量归一化至 1 kg 服装质量，所有包装保留在独立输入行中。
 
-- 选定流：Men's or boys' shirts, singlets, underpants, pyjamas, dressing gowns and similar articles, of textile fabric, not knitted or crocheted `66e77e01-9118-4c94-a727-c8bbcf2d4eee`
+- 选定流：非针织或钩编而成的纺织品男衬衫、男童衬衫、汗衫、衬裤、睡衣裤、晨衣及其类似物品 `66e77e01-9118-4c94-a727-c8bbcf2d4eee`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：基于实测合格服装质量归一化后精确为 1 kg
 - 数值来源模式：前景记录（`foreground_record`）
@@ -675,7 +675,7 @@ sync_with: pcr.en-US.md
 
 包装过程中损坏或未使用的低密度聚乙烯服装袋与纸质包装废物分开记录。
 
-- 选定流：Waste low-density polyethylene film
+- 选定流：废低密度聚乙烯薄膜
 - 流属性/单位：Mass / kg
 - 数量规则：实测废聚乙烯薄膜质量
 - 数值来源模式：前景记录（`foreground_record`）

@@ -1,10 +1,1632 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "21132"
-  title: "Meat of buffalo, frozen"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.food-products-beverages-and-tobacco-textiles-apparel-and-leather-products.meat-fish-fruits-vegetables-oils-and-fats.meat-of-buffalo-frozen"
+  classification_refs: "CPC 3.0 21132, “Meat of buffalo, frozen” (unsd-cpc-3-0-2025)"
+  covered_products: "Uncooked, packed, deboned skeletal buffalo meat that is quick-frozen and dispatched from frozen storage"
+  excluded_products: "Fresh or chilled buffalo meat; carcasses; bone-in cuts; edible offal; minced, mechanically separated, cured, cooked or otherwise prepared meat; mixed-species products"
+  representative_product: "Commercial deboned buffalo cuts and trimmings packed as one frozen product grade; saleable bones, fat, hide, blood and edible offal remain separate co-products"
+  production_route: "Integrated plant: live-animal receiving and lairage → slaughter and dressing → carcass chilling → cutting and deboning → packaging → blast freezing and frozen storage → factory gate"
+  market_state: "Frozen, packed, uncooked, deboned product at the producing plant gate"
+functional_unit:
+  what: "Packed, deboned, quick-frozen buffalo meat from the declared integrated route"
+  how_much: "1,000 kg net product mass, excluding pallet and transport packaging"
+  how_well: "Buffalo species declared; deboned; uncooked; primary and outer packaging declared; thermal centre ≤ -18 °C; no carcass, bone-in meat, edible offal or other co-product included"
+  how_long_or_cycle: "One production lot through blast freezing plus the declared number of frozen-storage tonne-days before the factory-gate transfer"
+  reference_flow_link: "Tiangong Product flow be81d099-544d-4fdf-be56-81f76427d52f"
+system_boundary:
+  rules:
+    - rule_id: system_boundary_rule_1
+      applies_to: "foreground_system_boundary"
+      rule: "Included foreground operations are animal holding, potable-water use, stunning/bleeding/dressing, segregation of edible and inedible material, chilling, temperature-controlled deboning, packaging, quick freezing, frozen storage, refrigeration loss, cleaning and sanitation, wastewater generation, solid residues, and on-site combustion emissions. Codex requires hygienic separation, controlled deboning and packaging, rapid cooling and cold-chain records (fao-who-cxc-58-2005; fao-who-cxc-8-1976). Resource, wastewater, waste and refrigerant inventories are mandatory because they are explicit environmental-performance inventory elements for slaughterhouses (eu-sa-bat-2023-2749)."
+      source_ids: []
+boundary_abstraction:
+  declared_starting_condition: "Live buffalo accepted at the integrated plant receiving point after inbound transport"
+  starting_condition_role: "External product input to animal_receiving_lairage"
+  product_classification_scope: "Only CPC 3.0 21132 frozen buffalo meat with the additional deboned, packed and uncooked route qualifiers"
+  recursive_input_rule: "Upstream datasets are required for live buffalo, electricity, natural gas, potable water supply, cleaning chemicals, refrigerant and packaging when constructing broader models"
+  upstream_dataset_requirement: "Geography-, technology- and period-representative datasets; live-buffalo dataset must not be substituted by cattle without an explicit proxy disclosure and sensitivity test"
+  disclosure: "Declare whether slaughter, deboning, freezing and storage are co-located; disclose any external cold store, omitted support process, frozen-storage duration and cut-off"
+reference_flow_definition:
+  reference_amount: "1,000 kg"
+  product_flow_ref:
+    name: "Meat of buffalo, frozen / 冷冻水牛肉; Tiangong UUID"
+    uuid: "be81d099-544d-4fdf-be56-81f76427d52f"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - species_or_commercial_buffalo_designation
+    - "deboned=true"
+    - "uncooked=true"
+    - freezing_method
+    - thermal_centre_temperature_c
+    - frozen_storage_temperature_c
+    - frozen_storage_duration_days
+    - net_product_mass_kg
+    - primary_packaging
+    - outer_packaging
+    - plant_geography
+    - reference_period
+    - co_product_allocation_method
+reference_flows:
+  []
+measurement_rules:
+  - id: mu_mass
+    applies_to: "Animals, meat, carcass, co-products, wastes, packaging and chemicals"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Use calibrated scale records; report wet/as-received mass and do not mix carcass, bone-in and deboned product masses."
+  - id: mu_water
+    applies_to: "Potable and process water; wastewater"
+    required_property_ref:
+      name: "Volume"
+      uuid: ""
+    required_unit: "m3"
+    rule: "Use line or area meters corrected for opening and closing inventories; wastewater may use a calibrated discharge meter or a documented water balance."
+  - id: mu_electricity
+    applies_to: "Electricity"
+    required_property_ref:
+      name: "Energy"
+      uuid: ""
+    required_unit: "kWh"
+    rule: "Use submetered import by process; where one meter serves loads, allocate by measured runtime and rated or logged load and disclose the calculation."
+  - id: mu_fuel
+    applies_to: "Natural gas"
+    required_property_ref:
+      name: "Net calorific energy"
+      uuid: ""
+    required_unit: "MJ"
+    rule: "Convert metered fuel volume or mass using a supplier or jurisdiction-specific net calorific value for the same period."
+  - id: mu_temperature
+    applies_to: "Product thermal centre and cold-room air"
+    required_property_ref:
+      name: "Temperature"
+      uuid: ""
+    required_unit: "°C"
+    rule: "Use calibrated sensors and retained time-stamped records; confirm the product thermal centre reaches ≤ -18 °C after stabilization."
+  - id: mu_storage
+    applies_to: "Frozen storage"
+    required_property_ref:
+      name: "Mass-time"
+      uuid: ""
+    required_unit: "tonne-day"
+    rule: "Multiply daily mean net frozen-product inventory in tonnes by elapsed storage days."
+  - id: mu_refrigerant
+    applies_to: "Ammonia make-up and release"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Reconcile opening/closing charge, additions and recovery; do not infer zero release from a missing log."
+  - id: mu_air_emission
+    applies_to: "Fossil carbon dioxide and nitrogen oxides"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Use source-specific measurement where available; otherwise use fuel use and an identified jurisdictional factor, keeping pollutant identities separate."
+process_map:
+  - id: animal_receiving_lairage
+    name: "Animal receiving and lairage"
+    inclusion: "required"
+    inclusion_condition: "Always"
+    role: "Foreground transformation"
+    quantitative_reference: "Accepted live-buffalo mass"
+  - id: slaughter_dressing
+    name: "Slaughter and dressing"
+    inclusion: "required"
+    inclusion_condition: "Always"
+    role: "Foreground transformation"
+    quantitative_reference: "Hot dressed-carcass mass"
+  - id: carcass_chilling
+    name: "Carcass chilling"
+    inclusion: "required"
+    inclusion_condition: "Always"
+    role: "Foreground transformation"
+    quantitative_reference: "Chilled-carcass mass"
+  - id: cutting_deboning
+    name: "Cutting and deboning"
+    inclusion: "required"
+    inclusion_condition: "Always"
+    role: "Foreground transformation"
+    quantitative_reference: "Unpacked deboned-meat mass"
+  - id: packaging
+    name: "Primary and outer packaging"
+    inclusion: "required"
+    inclusion_condition: "Always"
+    role: "Foreground transformation"
+    quantitative_reference: "Packed chilled-meat mass"
+  - id: blast_freezing_storage
+    name: "Blast freezing and frozen storage"
+    inclusion: "required"
+    inclusion_condition: "Always"
+    role: "Foreground transformation"
+    quantitative_reference: "1,000 kg net reference product plus declared tonne-days"
+  - id: hygiene_sanitation
+    name: "Plant hygiene and sanitation"
+    inclusion: "required"
+    inclusion_condition: "Always; allocate by served area or verified activity driver"
+    role: "Foreground support"
+    quantitative_reference: "Normalized to 1,000 kg reference product"
+process_inventory:
+  - id: animal_receiving_lairage
+    label: "Animal receiving and lairage"
+    inputs:
+      product:
+        - row_id: live_buffalo_input
+          role: "Accepted live buffalo"
+          name: "Accepted live buffalo"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Live buffalo crossing the plant gate are the sole animal feedstock for the declared species-specific route."
+          amount:
+            expression: "weighbridge or individual live-weight records normalized to 1,000 kg reference product; normalize to the declared reference flow"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_mass_balance
+              source_ids:
+                - eu-pef-2021-2279
+            ranges:
+              - role: qa_guardrail
+                lower: "2000"
+                upper: "4000"
+                unit: "kg/1,000 kg reference product"
+                basis: "replace or confirm with measured buffalo-route records"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: lairage_water_input
+          role: "Lairage potable water"
+          name: "Lairage potable water"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "Potable water supplied for animal drinking and lairage washing is recorded separately from later process water."
+          amount:
+            expression: "receiving-area meter or documented allocation; normalize to the declared reference flow"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water_meter
+              source_ids:
+                - fao-who-cxc-58-2005
+                - eu-sa-bat-2023-2749
+            ranges: []
+        - row_id: lairage_electricity_input
+          role: "Lairage electricity"
+          name: "Lairage electricity"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Grid electricity for lighting, ventilation, pumps and animal-handling equipment is a distinct energy carrier."
+          amount:
+            expression: "receiving-area submeter or documented load-time allocation; normalize to the declared reference flow"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_electricity_meter
+              source_ids:
+                - eu-sa-bat-2023-2749
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: slaughter_ready_buffalo_output
+          role: "Slaughter-ready buffalo"
+          name: "Slaughter-ready buffalo"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Animals released from lairage transfer as an internal product flow to slaughter without changing species identity."
+          amount:
+            expression: "transferred live weight or reconciled accepted weight and lairage losses; normalize to the declared reference flow"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_mass_balance
+              source_ids:
+                - fao-who-cxc-58-2005
+            ranges: []
+      waste:
+        - row_id: lairage_manure_output
+          role: "Lairage manure and bedding"
+          name: "Lairage manure and bedding"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Collected faeces, urine-bound solids and used bedding leave the process as a separately weighed wet solid waste."
+          amount:
+            expression: "container weights net of tare, with dry matter recommended; normalize to the declared reference flow"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_weighing
+              source_ids:
+                - eu-sa-bat-2023-2749
+            ranges: []
+        - row_id: lairage_wastewater_output
+          role: "Lairage wastewater"
+          name: "Lairage wastewater"
+          flow_type: "waste"
+          property_unit: "Volume / m3"
+          description: "Wash water and animal-contaminated drainage are recorded before on-site or external treatment."
+          amount:
+            expression: "area discharge meter or water balance; normalize to the declared reference flow"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wastewater_meter
+              source_ids:
+                - eu-sa-bat-2023-2749
+            ranges: []
+      elementary:
+        []
+  - id: slaughter_dressing
+    label: "Slaughter and dressing"
+    inputs:
+      product:
+        - row_id: slaughter_ready_buffalo_input
+          role: "Slaughter-ready buffalo"
+          name: "Slaughter-ready buffalo"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "The internal live-animal flow enters stunning, bleeding, hide removal, evisceration and dressing."
+          amount:
+            expression: "identical transfer quantity from slaughter_ready_buffalo_output; normalize to the declared reference flow"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_mass_balance
+              source_ids:
+                - fao-who-cxc-58-2005
+            ranges: []
+        - row_id: slaughter_water_input
+          role: "Slaughter potable water"
+          name: "Slaughter potable water"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "Potable water for carcass contact, equipment washing and slaughter-floor operations is separately metered."
+          amount:
+            expression: "slaughter-floor meter; normalize to the declared reference flow"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water_meter
+              source_ids:
+                - fao-who-cxc-58-2005
+                - eu-sa-bat-2023-2749
+            ranges:
+              - role: qa_guardrail
+                lower: "1"
+                upper: "8"
+                unit: "m3/1,000 kg reference product"
+                basis: "replace or confirm with measured buffalo-route records"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: slaughter_electricity_input
+          role: "Slaughter electricity"
+          name: "Slaughter electricity"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Electricity for conveyors, hoists, saws, ventilation and pumps is isolated from refrigeration electricity."
+          amount:
+            expression: "slaughter-line submeter; normalize to the declared reference flow"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_electricity_meter
+              source_ids:
+                - eu-sa-bat-2023-2749
+            ranges:
+              - role: qa_guardrail
+                lower: "20"
+                upper: "300"
+                unit: "kWh/1,000 kg reference product"
+                basis: "replace or confirm with measured buffalo-route records"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: hot_carcass_output
+          role: "Hot dressed buffalo carcass"
+          name: "Hot dressed buffalo carcass"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "The eviscerated dressed carcass is weighed hot and transferred to chilling; it is an intermediate, not the reference product."
+          amount:
+            expression: "calibrated hot-carcass scale; normalize to the declared reference flow"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_mass_balance
+              source_ids:
+                - fao-who-cxc-58-2005
+            ranges: []
+        - row_id: edible_offal_output
+          role: "Edible buffalo offal"
+          name: "Edible buffalo offal"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Inspected edible organs are a separate co-product and must not be averaged into deboned frozen meat."
+          amount:
+            expression: "edible-offal scale and sales ledger; normalize to the declared reference flow"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_coproduct_record
+              source_ids:
+                - fao-who-cxc-58-2005
+                - eu-pef-2021-2279
+            ranges: []
+        - row_id: hide_output
+          role: "Buffalo hide"
+          name: "Buffalo hide"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Removed hides sold for further processing are recorded as a distinct co-product at wet dispatch mass."
+          amount:
+            expression: "dispatch scale and sales ledger; normalize to the declared reference flow"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_coproduct_record
+              source_ids:
+                - eu-pef-2021-2279
+            ranges: []
+        - row_id: blood_output
+          role: "Collected buffalo blood"
+          name: "Collected buffalo blood"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Blood intentionally collected and sold or transferred for recovery is a separate product output; uncollected blood belongs in wastewater, not here."
+          amount:
+            expression: "tank mass or volume-density conversion and disposition record; normalize to the declared reference flow"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_coproduct_record
+              source_ids:
+                - fao-who-cxc-58-2005
+                - eu-pef-2021-2279
+            ranges: []
+      waste:
+        - row_id: gut_contents_output
+          role: "Gut contents"
+          name: "Gut contents"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Digestive-tract contents removed during evisceration are recorded as wet solid waste, distinct from edible offal."
+          amount:
+            expression: "dedicated container mass net of tare; normalize to the declared reference flow"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_weighing
+              source_ids:
+                - fao-who-cxc-58-2005
+                - eu-sa-bat-2023-2749
+            ranges: []
+        - row_id: inedible_slaughter_material_output
+          role: "Inedible slaughter material"
+          name: "Inedible slaughter material"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Condemned tissue and other inedible animal material are separately weighed and assigned their actual treatment route."
+          amount:
+            expression: "container mass by destination; normalize to the declared reference flow"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_weighing
+              source_ids:
+                - fao-who-cxc-58-2005
+                - eu-sa-bat-2023-2749
+            ranges: []
+        - row_id: slaughter_wastewater_output
+          role: "Slaughter wastewater"
+          name: "Slaughter wastewater"
+          flow_type: "waste"
+          property_unit: "Volume / m3"
+          description: "Blood-bearing and wash wastewater leaves the slaughter process before treatment and is not combined with solid residues."
+          amount:
+            expression: "slaughter drainage meter or documented water balance; normalize to the declared reference flow"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wastewater_meter
+              source_ids:
+                - eu-sa-bat-2023-2749
+            ranges: []
+      elementary:
+        []
+  - id: carcass_chilling
+    label: "Carcass chilling"
+    inputs:
+      product:
+        - row_id: hot_carcass_input
+          role: "Hot dressed buffalo carcass"
+          name: "Hot dressed buffalo carcass"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "The weighed hot carcass enters controlled chilling without being treated as saleable frozen meat."
+          amount:
+            expression: "identical transfer quantity from hot_carcass_output; normalize to the declared reference flow"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_mass_balance
+              source_ids:
+                - fao-who-cxc-58-2005
+            ranges: []
+        - row_id: chilling_electricity_input
+          role: "Chilling electricity"
+          name: "Chilling electricity"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Electricity for refrigeration compressors, fans and pumps serving carcass chillers is submetered separately."
+          amount:
+            expression: "chiller-system submeter; normalize to the declared reference flow"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_electricity_meter
+              source_ids:
+                - fao-who-cxc-58-2005
+                - eu-sa-bat-2023-2749
+            ranges:
+              - role: qa_guardrail
+                lower: "20"
+                upper: "250"
+                unit: "kWh/1,000 kg reference product"
+                basis: "replace or confirm with measured buffalo-route records"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: chilling_ammonia_input
+          role: "Chilling ammonia make-up"
+          name: "Chilling ammonia make-up"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Anhydrous ammonia added to the refrigeration circuit serving carcass chilling is a separately reconciled material input."
+          amount:
+            expression: "make-up, recovery and charge records allocated to the chilling circuit; normalize to the declared reference flow"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_refrigerant_log
+              source_ids:
+                - eu-sa-bat-2023-2749
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: chilled_carcass_output
+          role: "Chilled buffalo carcass"
+          name: "Chilled buffalo carcass"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Chilled carcass mass is measured before cutting so chilling loss is visible in the mass balance."
+          amount:
+            expression: "calibrated rail or batch scale after chilling; normalize to the declared reference flow"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_mass_balance
+              source_ids:
+                - fao-who-cxc-58-2005
+            ranges: []
+      waste:
+        []
+      elementary:
+        - row_id: chilling_ammonia_air_output
+          role: "Ammonia to air from chilling"
+          name: "Ammonia to air from chilling"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Unrecovered ammonia loss from the chilling circuit is reported as a specific elementary emission, never as generic “refrigerant.”"
+          amount:
+            expression: "reconciled make-up less documented recovery and stock change; normalize to the declared reference flow"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_refrigerant_log
+              source_ids:
+                - eu-sa-bat-2023-2749
+            ranges: []
+  - id: cutting_deboning
+    label: "Cutting and deboning"
+    inputs:
+      product:
+        - row_id: chilled_carcass_input
+          role: "Chilled buffalo carcass"
+          name: "Chilled buffalo carcass"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only chilled buffalo carcass assigned to the declared deboning line enters this process."
+          amount:
+            expression: "identical transfer quantity from chilled_carcass_output; normalize to the declared reference flow"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_mass_balance
+              source_ids:
+                - fao-who-cxc-58-2005
+            ranges: []
+        - row_id: cutting_water_input
+          role: "Cutting potable water"
+          name: "Cutting potable water"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "Potable water used in temperature-controlled cutting and equipment rinsing is metered separately from sanitation water."
+          amount:
+            expression: "cutting-room meter; normalize to the declared reference flow"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water_meter
+              source_ids:
+                - fao-who-cxc-58-2005
+                - eu-sa-bat-2023-2749
+            ranges: []
+        - row_id: cutting_electricity_input
+          role: "Cutting electricity"
+          name: "Cutting electricity"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Electricity for saws, conveyors, trim tables and room conditioning is distinct from blast-freezer electricity."
+          amount:
+            expression: "cutting-room submeter or documented load-time allocation; normalize to the declared reference flow"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_electricity_meter
+              source_ids:
+                - eu-sa-bat-2023-2749
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: deboned_meat_output
+          role: "Unpacked deboned buffalo meat"
+          name: "Unpacked deboned buffalo meat"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Meat released from bones and approved for the declared frozen grade transfers to packaging as a measured intermediate."
+          amount:
+            expression: "calibrated line or batch scale; normalize to the declared reference flow"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_mass_balance
+              source_ids:
+                - fao-who-cxc-58-2005
+            ranges: []
+        - row_id: food_grade_trim_output
+          role: "Food-grade buffalo fat and trimmings"
+          name: "Food-grade buffalo fat and trimmings"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Saleable fat or meat trimmings diverted to another food product are recorded as a co-product, not blended into the reference flow."
+          amount:
+            expression: "dedicated scale and sales/disposition record; normalize to the declared reference flow"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_coproduct_record
+              source_ids:
+                - eu-pef-2021-2279
+            ranges: []
+        - row_id: food_grade_bones_output
+          role: "Food-grade buffalo bones"
+          name: "Food-grade buffalo bones"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Clean bones sold for food or ingredient processing are weighed as a distinct co-product."
+          amount:
+            expression: "dedicated scale and sales/disposition record; normalize to the declared reference flow"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_coproduct_record
+              source_ids:
+                - eu-pef-2021-2279
+            ranges: []
+      waste:
+        - row_id: inedible_cutting_trim_output
+          role: "Inedible cutting trim"
+          name: "Inedible cutting trim"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Condemned or otherwise inedible cutting residues are weighed separately from saleable fat, trimmings and bones."
+          amount:
+            expression: "container mass by treatment destination; normalize to the declared reference flow"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_weighing
+              source_ids:
+                - fao-who-cxc-58-2005
+                - eu-sa-bat-2023-2749
+            ranges: []
+        - row_id: cutting_wastewater_output
+          role: "Cutting wastewater"
+          name: "Cutting wastewater"
+          flow_type: "waste"
+          property_unit: "Volume / m3"
+          description: "Drainage from cutting and equipment rinsing is recorded before treatment."
+          amount:
+            expression: "cutting-room discharge meter or water balance; normalize to the declared reference flow"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wastewater_meter
+              source_ids:
+                - eu-sa-bat-2023-2749
+            ranges: []
+      elementary:
+        []
+  - id: packaging
+    label: "Primary and outer packaging"
+    inputs:
+      product:
+        - row_id: deboned_meat_input
+          role: "Unpacked deboned buffalo meat"
+          name: "Unpacked deboned buffalo meat"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "The complete measured deboned-meat intermediate enters packaging without inclusion of bones or offal."
+          amount:
+            expression: "identical transfer quantity from deboned_meat_output; normalize to the declared reference flow"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_mass_balance
+              source_ids:
+                - fao-who-cxc-58-2005
+            ranges: []
+        - row_id: pe_packaging_input
+          role: "Polyethylene primary packaging"
+          name: "Polyethylene primary packaging"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Food-contact polyethylene film or bags retained with the product are recorded by polymer and mass."
+          amount:
+            expression: "issued packages plus opening inventory minus closing inventory and scrap; normalize to the declared reference flow"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_ledger
+              source_ids:
+                - fao-who-cxc-8-1976
+            ranges:
+              - role: qa_guardrail
+                lower: "5"
+                upper: "40"
+                unit: "kg/1,000 kg reference product"
+                basis: "replace or confirm with measured buffalo-route records"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: carton_packaging_input
+          role: "Corrugated outer cartons"
+          name: "Corrugated outer cartons"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Corrugated cartons dispatched with the reference product are recorded separately from polyethylene."
+          amount:
+            expression: "carton issue and inventory records net of scrap; normalize to the declared reference flow"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_ledger
+              source_ids:
+                - fao-who-cxc-8-1976
+            ranges:
+              - role: qa_guardrail
+                lower: "20"
+                upper: "120"
+                unit: "kg/1,000 kg reference product"
+                basis: "replace or confirm with measured buffalo-route records"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: packaging_electricity_input
+          role: "Packaging electricity"
+          name: "Packaging electricity"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Electricity for vacuum sealing, conveyors and carton forming is separately measured or allocated."
+          amount:
+            expression: "packaging-line submeter or load-time allocation; normalize to the declared reference flow"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_electricity_meter
+              source_ids:
+                - eu-sa-bat-2023-2749
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: packed_chilled_meat_output
+          role: "Packed chilled deboned buffalo meat"
+          name: "Packed chilled deboned buffalo meat"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Sealed and cartoned chilled meat transfers as one internal product flow to blast freezing."
+          amount:
+            expression: "net meat mass, excluding packaging, reconciled to packed units; normalize to the declared reference flow"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_mass_balance
+              source_ids:
+                - fao-who-cxc-58-2005
+                - fao-who-cxc-8-1976
+            ranges: []
+      waste:
+        - row_id: pe_packaging_scrap_output
+          role: "Polyethylene packaging scrap"
+          name: "Polyethylene packaging scrap"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Off-cuts and rejected polyethylene generated before product dispatch are weighed as a distinct waste material."
+          amount:
+            expression: "polymer-specific scrap containers net of tare; normalize to the declared reference flow"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_weighing
+              source_ids:
+                - eu-sa-bat-2023-2749
+            ranges: []
+        - row_id: carton_scrap_output
+          role: "Corrugated-cardboard scrap"
+          name: "Corrugated-cardboard scrap"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Rejected and trimmed corrugated board is weighed separately from plastic scrap."
+          amount:
+            expression: "cardboard scrap containers net of tare; normalize to the declared reference flow"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_weighing
+              source_ids:
+                - eu-sa-bat-2023-2749
+            ranges: []
+      elementary:
+        []
+  - id: blast_freezing_storage
+    label: "Blast freezing and frozen storage"
+    inputs:
+      product:
+        - row_id: packed_chilled_meat_input
+          role: "Packed chilled deboned buffalo meat"
+          name: "Packed chilled deboned buffalo meat"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Packed chilled product enters the blast freezer promptly and remains segregated from bone-in and other-species products."
+          amount:
+            expression: "identical net meat quantity from packed_chilled_meat_output; normalize to the declared reference flow"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_mass_balance
+              source_ids:
+                - fao-who-cxc-8-1976
+            ranges: []
+        - row_id: freezing_storage_electricity_input
+          role: "Freezing and frozen-storage electricity"
+          name: "Freezing and frozen-storage electricity"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Electricity for blast-freezer compressors, fans, pumps and frozen-store refrigeration is recorded as one identified load with blast and storage subloads recommended."
+          amount:
+            expression: "refrigeration submeter, with storage component normalized by tonne-day; normalize to the declared reference flow"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_electricity_meter
+              source_ids:
+                - fao-who-cxc-8-1976
+                - eu-sa-bat-2023-2749
+            ranges:
+              - role: qa_guardrail
+                lower: "50"
+                upper: "500"
+                unit: "kWh/1,000 kg reference product"
+                basis: "replace or confirm with measured buffalo-route records"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+              - role: qa_guardrail
+                lower: "1"
+                upper: "30"
+                unit: "kWh/tonne-day"
+                basis: "replace or confirm with measured buffalo-route records"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: freezing_ammonia_input
+          role: "Freezing-system ammonia make-up"
+          name: "Freezing-system ammonia make-up"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Anhydrous ammonia added to the blast-freezer and frozen-store circuit is reconciled separately from chilling-circuit make-up."
+          amount:
+            expression: "make-up, recovery and charge records for the freezing/storage circuit; normalize to the declared reference flow"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_refrigerant_log
+              source_ids:
+                - eu-sa-bat-2023-2749
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: frozen_buffalo_meat_output
+          role: "Deboned frozen buffalo meat at factory gate"
+          name: "Deboned frozen buffalo meat at factory gate"
+          flow_type: "product"
+          flow_ref:
+            uuid: "be81d099-544d-4fdf-be56-81f76427d52f"
+          property_unit: "Mass / kg"
+          description: "This is the sole quantitative reference: net packed, deboned, uncooked buffalo meat whose thermal centre has reached ≤ -18 °C and whose frozen storage is declared."
+          amount:
+            expression: "calibrated dispatch scale and lot-level temperature release record; normalize to the declared reference flow"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_reference_product
+              source_ids:
+                - unsd-cpc-3-0-2025
+                - fao-who-cxc-8-1976
+            ranges: []
+      waste:
+        []
+      elementary:
+        - row_id: freezing_ammonia_air_output
+          role: "Ammonia to air from freezing and storage"
+          name: "Ammonia to air from freezing and storage"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Unrecovered ammonia loss from the freezing and storage circuit is reported as a specific elementary emission."
+          amount:
+            expression: "reconciled make-up less documented recovery and stock change; normalize to the declared reference flow"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_refrigerant_log
+              source_ids:
+                - eu-sa-bat-2023-2749
+            ranges: []
+  - id: hygiene_sanitation
+    label: "Plant hygiene and sanitation"
+    inputs:
+      product:
+        - row_id: sanitation_water_input
+          role: "Sanitation potable water"
+          name: "Sanitation potable water"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "Potable water for cleaning and disinfection outside production-time process-water records is separately metered."
+          amount:
+            expression: "sanitation header meter allocated by cleaned area or cleaning duration; normalize to the declared reference flow"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water_meter
+              source_ids:
+                - fao-who-cxc-58-2005
+                - eu-sa-bat-2023-2749
+            ranges:
+              - role: qa_guardrail
+                lower: "0.5"
+                upper: "6"
+                unit: "m3/1,000 kg reference product"
+                basis: "replace or confirm with measured buffalo-route records"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: sanitation_electricity_input
+          role: "Sanitation electricity"
+          name: "Sanitation electricity"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Electricity for pressure washing, foam systems, pumps and cleaning support is not hidden within generic utilities."
+          amount:
+            expression: "sanitation equipment meter or load-time allocation; normalize to the declared reference flow"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_electricity_meter
+              source_ids:
+                - eu-sa-bat-2023-2749
+            ranges: []
+        - row_id: sanitation_natural_gas_input
+          role: "Natural gas for sanitation hot water"
+          name: "Natural gas for sanitation hot water"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Natural gas burned on site to produce sanitation hot water is a distinct fuel input; purchased steam must instead be an explicitly named steam flow."
+          amount:
+            expression: "boiler meter and period-specific net calorific value; normalize to the declared reference flow"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_natural_gas_meter
+              source_ids:
+                - eu-sa-bat-2023-2749
+            ranges:
+              - role: qa_guardrail
+                lower: "100"
+                upper: "1500"
+                unit: "MJ/1,000 kg reference product"
+                basis: "replace or confirm with measured buffalo-route records"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: sodium_hydroxide_input
+          role: "Sodium hydroxide cleaning agent"
+          name: "Sodium hydroxide cleaning agent"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Sodium hydroxide used in alkaline cleaning is recorded as delivered active substance, not as an aggregate “cleaning chemical.”"
+          amount:
+            expression: "solution mass multiplied by documented active concentration; normalize to the declared reference flow"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_chemical_ledger
+              source_ids:
+                - eu-sa-bat-2023-2749
+            ranges: []
+        - row_id: peracetic_acid_input
+          role: "Peracetic acid sanitizer"
+          name: "Peracetic acid sanitizer"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Peracetic acid sanitizer is recorded separately from alkaline cleaner as delivered active substance."
+          amount:
+            expression: "solution mass multiplied by documented active concentration; normalize to the declared reference flow"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_chemical_ledger
+              source_ids:
+                - eu-sa-bat-2023-2749
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: sanitation_wastewater_output
+          role: "Sanitation wastewater"
+          name: "Sanitation wastewater"
+          flow_type: "waste"
+          property_unit: "Volume / m3"
+          description: "Cleaning and disinfection drainage is recorded before treatment and kept distinct from water inputs."
+          amount:
+            expression: "sanitation discharge meter or documented water balance; normalize to the declared reference flow"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wastewater_meter
+              source_ids:
+                - eu-sa-bat-2023-2749
+            ranges: []
+      elementary:
+        - row_id: sanitation_fossil_co2_air_output
+          role: "Fossil carbon dioxide to air"
+          name: "Fossil carbon dioxide to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Fossil carbon dioxide from on-site natural-gas combustion is reported separately from other air emissions."
+          amount:
+            expression: "stack measurement or metered fuel multiplied by an identified jurisdictional factor; normalize to the declared reference flow"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_combustion_emissions
+              source_ids:
+                - eu-sa-bat-2023-2749
+            ranges: []
+        - row_id: sanitation_nox_air_output
+          role: "Nitrogen oxides to air"
+          name: "Nitrogen oxides to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Nitrogen oxides from the sanitation hot-water boiler are quantified as the explicitly declared reporting species, such as NOx as NO2."
+          amount:
+            expression: "stack measurement or metered fuel multiplied by an identified jurisdictional factor; normalize to the declared reference flow"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_combustion_emissions
+              source_ids:
+                - eu-sa-bat-2023-2749
+            ranges: []
+allocation_rules:
+  - rule_id: al_subdivide_first
+    applies_to: "All processes"
+    rule: "Subdivide metered inputs, wastes and emissions by physical line or process before any allocation."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: al_direct_causality
+    applies_to: "Chilling, deboning, packaging, freezing and storage"
+    rule: "Assign flows directly to the product or co-product that causes them using mass throughput, runtime, refrigerated volume or tonne-day only where that driver is demonstrably causal."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: al_slaughter_coproducts
+    applies_to: "Slaughter and dressing"
+    rule: "Keep carcass, edible offal, hide and collected blood as separate outputs. Where subdivision is impossible, use a site-specific economic allocation based on contemporaneous plant-gate revenue and disclose masses, prices, period and sensitivity."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: al_deboning_coproducts
+    applies_to: "Cutting and deboning"
+    rule: "Keep deboned meat, saleable fat/trimmings and food-grade bones separate. Apply the same subdivision-first and site-specific economic fallback hierarchy."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: al_no_bovine_default
+    applies_to: "All co-products"
+    rule: "Do not apply cattle default allocation factors to buffalo; the cited PEF slaughterhouse defaults do not provide a buffalo factor."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: al_waste_no_credit
+    applies_to: "Wastes"
+    rule: "A zero-revenue waste receives no co-product allocation, but the generating process retains collection and pre-treatment burdens. Any avoided-burden scenario must be reported separately."
+    source_ids:
+      - eu-pef-2021-2279
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_mass_balance
+      process_id: "all_route_processes"
+      flow_role: "animal, intermediate, meat, co-product, solid waste"
+      record_type: "scale record"
+      raw_fields: "timestamp, lot, flow id, gross, tare, net"
+      collection_method: "calibrated scale export"
+      unit: "kg"
+      frequency: "each lot"
+      temporal_coverage: "representative 12 months preferred"
+      site_scope: "declared plant and line"
+      aggregation_rule: "sum by flow and lot; reconcile transfers"
+      quality_evidence: "calibration and reconciliation"
+    - protocol_id: cp_reference_product
+      process_id: "blast_freezing_storage"
+      flow_role: "reference output"
+      record_type: "release record"
+      raw_fields: "lot, net mass, thermal-centre trace, store trace, release time"
+      collection_method: "scale plus temperature logger"
+      unit: "kg"
+      frequency: "each lot"
+      temporal_coverage: "study period"
+      site_scope: "declared plant"
+      aggregation_rule: "sum released conforming lots"
+      quality_evidence: "scale calibration and signed release"
+    - protocol_id: cp_water_meter
+      process_id: "applicable_process"
+      flow_role: "potable water"
+      record_type: "meter record"
+      raw_fields: "opening, closing, reset, downtime"
+      collection_method: "calibrated meter"
+      unit: "m3"
+      frequency: "daily or batch"
+      temporal_coverage: "study period"
+      site_scope: "process area"
+      aggregation_rule: "difference minus documented non-route use"
+      quality_evidence: "meter calibration and water balance"
+    - protocol_id: cp_wastewater_meter
+      process_id: "applicable_process"
+      flow_role: "wastewater"
+      record_type: "meter or balance"
+      raw_fields: "discharge volume, diversion, inventory"
+      collection_method: "calibrated meter; balance only if meter absent"
+      unit: "m3"
+      frequency: "daily"
+      temporal_coverage: "study period"
+      site_scope: "drainage area"
+      aggregation_rule: "sum by process; no double count"
+      quality_evidence: "meter QA or closure evidence"
+    - protocol_id: cp_electricity_meter
+      process_id: "applicable_process"
+      flow_role: "electricity"
+      record_type: "meter record"
+      raw_fields: "import, export, runtime, load"
+      collection_method: "submeter; engineering allocation if absent"
+      unit: "kWh"
+      frequency: "hourly/daily"
+      temporal_coverage: "study period"
+      site_scope: "process/load"
+      aggregation_rule: "sum imports net of export"
+      quality_evidence: "meter check and allocation file"
+    - protocol_id: cp_natural_gas_meter
+      process_id: "hygiene_sanitation"
+      flow_role: "natural gas"
+      record_type: "invoice/meter"
+      raw_fields: "volume, pressure, temperature, NCV"
+      collection_method: "boiler meter and supplier NCV"
+      unit: "MJ"
+      frequency: "daily/monthly"
+      temporal_coverage: "study period"
+      site_scope: "sanitation boiler"
+      aggregation_rule: "convert to net calorific energy"
+      quality_evidence: "invoice and conversion record"
+    - protocol_id: cp_packaging_ledger
+      process_id: "packaging"
+      flow_role: "packaging material"
+      record_type: "inventory record"
+      raw_fields: "opening, receipts, closing, scrap, polymer/grade"
+      collection_method: "stock reconciliation"
+      unit: "kg"
+      frequency: "batch/month"
+      temporal_coverage: "study period"
+      site_scope: "packaging line"
+      aggregation_rule: "opening + receipts - closing - scrap"
+      quality_evidence: "purchase and stock ledger"
+    - protocol_id: cp_coproduct_record
+      process_id: "slaughter_deboning"
+      flow_role: "saleable co-product"
+      record_type: "scale and sales record"
+      raw_fields: "mass, price, currency, date, destination"
+      collection_method: "scale joined to sales ledger"
+      unit: "kg"
+      frequency: "each dispatch"
+      temporal_coverage: "same period as reference product"
+      site_scope: "declared plant"
+      aggregation_rule: "mass and revenue by co-product"
+      quality_evidence: "scale, invoice, price-period evidence"
+    - protocol_id: cp_waste_weighing
+      process_id: "applicable_process"
+      flow_role: "solid waste"
+      record_type: "waste ticket"
+      raw_fields: "flow id, gross, tare, destination"
+      collection_method: "container scale or haulier ticket"
+      unit: "kg"
+      frequency: "each movement"
+      temporal_coverage: "study period"
+      site_scope: "generating area"
+      aggregation_rule: "sum net wet mass by flow and destination"
+      quality_evidence: "ticket and tare record"
+    - protocol_id: cp_refrigerant_log
+      process_id: "chilling_freezing"
+      flow_role: "ammonia"
+      record_type: "maintenance log"
+      raw_fields: "charge, additions, recovered mass, date, circuit"
+      collection_method: "refrigerant reconciliation"
+      unit: "kg"
+      frequency: "each event and annual closure"
+      temporal_coverage: "study period plus opening/closing state"
+      site_scope: "named circuit"
+      aggregation_rule: "additions + opening - closing - recovered"
+      quality_evidence: "service record and charge inventory"
+    - protocol_id: cp_chemical_ledger
+      process_id: "hygiene_sanitation"
+      flow_role: "NaOH or peracetic acid"
+      record_type: "issue record"
+      raw_fields: "solution mass, concentration, product"
+      collection_method: "stock reconciliation and SDS concentration"
+      unit: "kg active"
+      frequency: "batch/month"
+      temporal_coverage: "study period"
+      site_scope: "sanitation system"
+      aggregation_rule: "solution mass × active fraction"
+      quality_evidence: "SDS and inventory ledger"
+    - protocol_id: cp_combustion_emissions
+      process_id: "hygiene_sanitation"
+      flow_role: "CO2 fossil or NOx"
+      record_type: "stack/factor calculation"
+      raw_fields: "fuel, NCV, factor, pollutant basis"
+      collection_method: "measurement preferred; named factor fallback"
+      unit: "kg"
+      frequency: "campaign/month"
+      temporal_coverage: "study period"
+      site_scope: "sanitation boiler"
+      aggregation_rule: "measured emission or fuel × factor"
+      quality_evidence: "test report or factor citation"
+  calculation_rules:
+    - id: cr_normalize
+      applies_to: "Every inventory flow"
+      rule: "normalized amount = period flow × 1,000 / conforming net reference-product kg"
+      inputs:
+        - "period flow"
+        - "conforming product mass"
+      output: "amount per 1,000 kg"
+      source_ids:
+        - eu-pef-2021-2279
+    - id: cr_transfer_match
+      applies_to: "Internal product flows"
+      rule: "Upstream output and downstream input must match by lot before losses in the next process are calculated."
+      inputs:
+        - "paired transfer records"
+      output: "reconciled internal flow"
+      source_ids:
+        - eu-pef-2021-2279
+    - id: cr_mass_closure
+      applies_to: "Each transformation"
+      rule: "Report mass inputs - product outputs - waste outputs - measured mass loss; investigate absolute unexplained imbalance above 2% of total mass input."
+      inputs:
+        - "mass records"
+      output: "closure and unexplained balance"
+      source_ids:
+        - reasoned_estimate
+    - id: cr_storage_energy
+      applies_to: "Frozen storage"
+      rule: "storage intensity = frozen-store electricity / tonne-days; add lot-attributed blast-freezing electricity separately."
+      inputs:
+        - kWh
+        - "daily inventory"
+        - days
+      output: "kWh per reference product"
+      source_ids:
+        - fao-who-cxc-8-1976
+    - id: cr_refrigerant_release
+      applies_to: "Chilling/freezing"
+      rule: "release = opening charge + additions - closing charge - recovered amount; negative results require investigation."
+      inputs:
+        - "circuit refrigerant log"
+      output: "kg ammonia to air"
+      source_ids:
+        - eu-sa-bat-2023-2749
+    - id: cr_economic_allocation
+      applies_to: "Unsubdividable co-product burden"
+      rule: "allocated share_i = revenue_i / sum positive co-product revenue; report price basis and sensitivity."
+      inputs:
+        - mass
+        - "plant-gate price"
+        - period
+      output: "allocated burden share"
+      source_ids:
+        - eu-pef-2021-2279
+  data_quality_requirements:
+    - id: dq_route_identity
+      applies_to: "Dataset"
+      requirement: "Demonstrate buffalo species, deboned route, product grade, pack format and frozen release condition; do not merge carcass or bone-in products."
+      evidence: "lot specification, labels, process map"
+    - id: dq_temporal
+      applies_to: "Foreground"
+      requirement: "Prefer one complete recent 12-month period covering seasonal throughput; shorter campaigns must disclose dates and storage conditions."
+      evidence: "meter and production coverage report"
+    - id: dq_technology
+      applies_to: "Foreground"
+      requirement: "Identify stunning/dressing technology, deboning configuration, packaging equipment, refrigerant, freezer type and cold-store arrangement."
+      evidence: "equipment list and process description"
+    - id: dq_geography
+      applies_to: "Foreground/upstream"
+      requirement: "Declare plant geography, electricity market, water source, fuel specification and waste/wastewater destinations."
+      evidence: "site and supplier records"
+    - id: dq_metering
+      applies_to: "Utilities"
+      requirement: "State metered share and every engineering allocation; generic unquantified “utilities” are prohibited."
+      evidence: "meter register and allocation workbook"
+    - id: dq_estimate_replacement
+      applies_to: "Provisional ranges"
+      requirement: "All reasoned_estimate ranges in this candidate PCR are QA flags only and must be replaced or confirmed by measured buffalo-route records before review."
+      evidence: "comparison table and reviewer disposition"
+    - id: dq_source_gap
+      applies_to: "Quantitative claims"
+      requirement: "Do not use cattle/pig/sheep/goat BAT or PEF numeric defaults as buffalo values; any proxy needs justification and sensitivity."
+      evidence: "source/species check"
+validation_rules:
+  - rule_id: vr_reference_uuid
+    applies_to: "Reference flow identity"
+    rule: "Reference output UUID equals be81d099-544d-4fdf-be56-81f76427d52f, flow type is Product flow, CPC is 21132, and flow property is Mass UUID 93a60a56-a3c8-11da-a746-0800200b9a66."
+    source_ids:
+      - unsd-cpc-3-0-2025
+  - rule_id: vr_reference_amount
+    applies_to: "Reference amount"
+    rule: "Quantitative reference equals 1,000 kg net deboned frozen buffalo meat."
+    source_ids:
+      - unsd-cpc-3-0-2025
+  - rule_id: vr_temperature
+    applies_to: "Freezing and frozen storage"
+    rule: "A calibrated record shows product thermal centre ≤ -18 °C after stabilization and frozen storage ≤ -18 °C."
+    source_ids:
+      - fao-who-cxc-8-1976
+  - rule_id: vr_route_complete
+    applies_to: "Required process route"
+    rule: "All seven required processes are present or a disclosed equivalent preserves every inventory boundary."
+    source_ids:
+      - ec-jrc-sa-bref-2024
+  - rule_id: vr_atomic_flows
+    applies_to: "All foreground exchanges"
+    rule: "Electricity, natural gas, water, wastewater, ammonia, packaging, chemicals, solid residues, fossil CO2 and NOx remain separate atomic flows."
+    source_ids:
+      - eu-sa-bat-2023-2749
+      - eu-pef-2021-2279
+  - rule_id: vr_transfer_balance
+    applies_to: "Internal transfers"
+    rule: "Each internal product-flow output matches the next process input by lot."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: vr_species_product_separation
+    applies_to: "Reference product and co-products"
+    rule: "Carcass, bone-in meat, edible offal, hide, blood, bones and saleable trim are not included in the reference product mass."
+    source_ids:
+      - unsd-cpc-3-0-2025
+  - rule_id: vr_allocation
+    applies_to: "Shared burdens and co-products"
+    rule: "Subdivision is attempted first; any economic fallback discloses buffalo-specific masses, prices, period and sensitivity and uses no cattle default factor."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: vr_storage_duration
+    applies_to: "Frozen storage"
+    rule: "Frozen-storage duration and tonne-days are declared; storage electricity is not represented as an unqualified monthly total."
+    source_ids:
+      - fao-who-cxc-8-1976
+  - rule_id: vr_estimates
+    applies_to: "Reasoned estimates"
+    rule: "Every reasoned_estimate is flagged as provisional and accompanied by a replacement or confirmation record."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: vr_uuid_resolution
+    applies_to: "Non-reference UUID fields"
+    rule: "Non-reference Tiangong UUIDs remain unresolved and must not be invented; resolve them before a UUID-bearing exchange is published."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "Foreground unit-process package and factory-gate aggregation for one deboned frozen buffalo-meat route"
+  downstream_use: "Cradle-to-gate or life-cycle models after linking upstream supply and downstream treatment/market datasets"
+  allowed_use: "Site-specific LCA, EPD/PCR development support, process improvement and audited inventory compilation where route qualifiers match"
+  excluded_use: "Generic cattle or mixed-meat proxy; carcass, bone-in, offal, minced or prepared buffalo products; unqualified national average"
+  required_metadata: "Reference qualifiers, geography, period, technology, process map, meter coverage, mass balance, allocation, co-product masses/prices, frozen-storage duration, temperature evidence, treatment destinations"
+  required_quality_disclosure: "All proxies, exclusions, engineering allocations, reasoned estimates, unresolved UUIDs and deviations from the seven-process map"
+  update_trigger: "Material change in species/product specification, yield, allocation, refrigerant, freezer, energy source, packaging, storage duration, plant geography or evidence base"
+data_sources:
+  - id: "unsd-cpc-3-0-2025"
+    type: "official_guidance"
+    reference: "UN Statistics Division, *CPC Version 3.0 Explanatory Notes*, class 21132, 2025. https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Exp_Notes_30Jun2025.pdf"
+    used_for: "Official class title and explicit exclusion; internal wording inconsistency disclosed."
+  - id: "fao-who-cxc-58-2005"
+    type: "standard"
+    reference: "Codex Alimentarius, *Code of Hygienic Practice for Meat*, CXC 58-2005. https://www.fao.org/fao-who-codexalimentarius/sh-proxy/en/?lnk=1&url=https%253A%252F%252Fworkspace.fao.org%252Fsites%252Fcodex%252FStandards%252FCXC%2B58-2005%252FCXC_058e.pdf"
+    used_for: "Verified process sequence, separation, potable water, controlled deboning/packaging, chilling/freezing and storage records."
+  - id: "fao-who-cxc-8-1976"
+    type: "standard"
+    reference: "Codex Alimentarius, *Code of Practice for the Processing and Handling of Quick Frozen Foods*, CXC 8-1976. https://www.fao.org/fao-who-codexalimentarius/sh-proxy/en/?lnk=1&url=https%253A%252F%252Fworkspace.fao.org%252Fsites%252Fcodex%252FStandards%252FCXC%2B8-1976%252FCXC_008e.pdf"
+    used_for: "Verified quick-freezing qualifier, thermal-centre and storage temperature, packaging, rapid transfer and temperature-record requirements."
+  - id: "eu-sa-bat-2023-2749"
+    type: "official_guidance"
+    reference: "European Commission Implementing Decision (EU) 2023/2749, BAT conclusions for slaughterhouses and animal by-products. https://eur-lex.europa.eu/legal-content/EN/TXT/PDF/?uri=OJ:L_202302749"
+    used_for: "Verified mandatory inventory attention to energy, water, wastewater, waste, chemicals and refrigerant loss; species-specific cattle numeric levels were not adopted for buffalo."
+  - id: "eu-pef-2021-2279"
+    type: "official_guidance"
+    reference: "European Commission Recommendation (EU) 2021/2279 on Environmental Footprint methods. https://eur-lex.europa.eu/legal-content/EN/TXT/PDF/?uri=CELEX:32021H2279"
+    used_for: "Verified company-specific collection, subdivision-first allocation hierarchy and slaughterhouse economic fallback; non-buffalo default factors were not adopted."
+  - id: "ec-jrc-sa-bref-2024"
+    type: "official_guidance"
+    reference: "European Commission JRC, *Slaughterhouses, Animal By-products and Edible Co-products BREF*, 2024, DOI 10.2760/18199. https://publications.jrc.ec.europa.eu/repository/handle/JRC135916"
+    used_for: "Official scope corroboration only; no BREF numeric value is used in this PCR."
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:297995b5484666cd091e8236e1e9aea4289ebed295a1d97619218fbca2b33a86"
+  generated_content_sha256: "sha256:bffc2016d87fd0b8a70530c78afb09c87854f30fab74365818f70171eaf4ef51"

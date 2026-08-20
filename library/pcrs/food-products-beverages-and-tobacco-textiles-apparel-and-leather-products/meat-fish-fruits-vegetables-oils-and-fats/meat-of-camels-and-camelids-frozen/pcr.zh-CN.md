@@ -40,7 +40,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 1 kg 净合格冷冻产品，包装质量不计入 |
-| 参考产品流 | Meat of camels and camelids, frozen `75e4eb25-986c-4684-ad73-33ba3528f571` |
+| 参考产品流 | 冷冻骆驼和驼科动物肉 `75e4eb25-986c-4684-ad73-33ba3528f571` |
 | 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | kg |
@@ -169,7 +169,7 @@ Live alpaca 是作为接收的活羊驼进入“骆驼科动物接收与暂养�
 
 Process water 是作为暂养饮用水进入“骆驼科动物接收与暂养”前景边界的单一交换，数量仅按本卡所述规则取得。
 
-- 选定流：Process water
+- 选定流：过程用水
 - 流属性/单位：Volume / m3
 - 数量规则：根据专用水表、储罐记录或共享校准水表的书面分配采集工艺水体积。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -184,7 +184,7 @@ Process water 是作为暂养饮用水进入“骆驼科动物接收与暂养”
 
 Electricity, medium voltage 是作为暂养区电网电力进入“骆驼科动物接收与暂养”前景边界的单一交换，数量仅按本卡所述规则取得。
 
-- 选定流：Electricity, medium voltage
+- 选定流：中压电力
 - 流属性/单位：Energy / kWh
 - 数量规则：根据阶段专用分表采集电力；使用共享电表时，按书面记录的时间、负荷或吞吐量分配，且不得合并其他能源载体。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -427,7 +427,7 @@ Accepted alpaca 是作为验收羊驼投入进入“屠宰、放血、剥皮与�
 
 Process water 是作为屠宰工艺水进入“屠宰、放血、剥皮与去内脏”前景边界的单一交换，数量仅按本卡所述规则取得。
 
-- 选定流：Process water
+- 选定流：过程用水
 - 流属性/单位：Volume / m3
 - 数量规则：根据专用水表、储罐记录或共享校准水表的书面分配采集工艺水体积。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -442,7 +442,7 @@ Process water 是作为屠宰工艺水进入“屠宰、放血、剥皮与去内
 
 Electricity, medium voltage 是作为屠宰阶段电网电力进入“屠宰、放血、剥皮与去内脏”前景边界的单一交换，数量仅按本卡所述规则取得。
 
-- 选定流：Electricity, medium voltage
+- 选定流：中压电力
 - 流属性/单位：Energy / kWh
 - 数量规则：根据阶段专用分表采集电力；使用共享电表时，按书面记录的时间、负荷或吞吐量分配，且不得合并其他能源载体。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -457,7 +457,7 @@ Electricity, medium voltage 是作为屠宰阶段电网电力进入“屠宰、�
 
 Steam, purchased 是作为屠宰阶段外购蒸汽进入“屠宰、放血、剥皮与去内脏”前景边界的单一交换，数量仅按本卡所述规则取得。
 
-- 选定流：Steam, purchased
+- 选定流：外购蒸汽
 - 流属性/单位：Energy / MJ
 - 数量规则：根据蒸汽表或供应商记录采集送至本阶段的外购蒸汽；相关时按有据可查的凝结水回收处理。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -472,7 +472,7 @@ Steam, purchased 是作为屠宰阶段外购蒸汽进入“屠宰、放血、剥
 
 Hot water, purchased 是作为屠宰阶段外购热水进入“屠宰、放血、剥皮与去内脏”前景边界的单一交换，数量仅按本卡所述规则取得。
 
-- 选定流：Hot water, purchased
+- 选定流：外购热水
 - 流属性/单位：Energy / MJ
 - 数量规则：根据校准流量与温度记录或供应商热量表采集送至本阶段的外购热水热量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -487,7 +487,7 @@ Hot water, purchased 是作为屠宰阶段外购热水进入“屠宰、放血�
 
 Natural gas 是作为屠宰阶段天然气进入“屠宰、放血、剥皮与去内脏”前景边界的单一交换，数量仅按本卡所述规则取得。
 
-- 选定流：Natural gas
+- 选定流：天然气
 - 流属性/单位：Volume / m3
 - 数量规则：根据校准燃气表或经核对的供应商发票采集分配给本阶段的天然气体积。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -502,7 +502,7 @@ Natural gas 是作为屠宰阶段天然气进入“屠宰、放血、剥皮与�
 
 Diesel fuel 是作为屠宰阶段柴油进入“屠宰、放血、剥皮与去内脏”前景边界的单一交换，数量仅按本卡所述规则取得。
 
-- 选定流：Diesel fuel
+- 选定流：柴油燃料
 - 流属性/单位：Mass / kg
 - 数量规则：根据油罐领用、采购和期末库存记录采集本阶段柴油消耗量，使用实测质量或有据可查的密度换算。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -517,7 +517,7 @@ Diesel fuel 是作为屠宰阶段柴油进入“屠宰、放血、剥皮与去�
 
 Liquefied petroleum gas 是作为屠宰阶段液化石油气进入“屠宰、放血、剥皮与去内脏”前景边界的单一交换，数量仅按本卡所述规则取得。
 
-- 选定流：Liquefied petroleum gas
+- 选定流：液化石油气
 - 流属性/单位：Mass / kg
 - 数量规则：根据钢瓶、储罐、采购和库存记录采集分配给本阶段的液化石油气消耗量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -934,7 +934,7 @@ High-organic-load slaughter wastewater 是作为高有机负荷屠宰废水离�
 
 Carbon dioxide, fossil, to air 是作为屠宰化石二氧化碳排放离开“屠宰、放血、剥皮与去内脏”前景边界的单一交换，数量仅按本卡所述规则取得。
 
-- 选定流：Carbon dioxide, fossil, to air
+- 选定流：化石源二氧化碳，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：根据单独采集的燃料用量与有据可查的场址特定因子、烟道实测或法规报告结果计算这一单项空气排放；本规则不规定默认因子。
 - 数值来源模式：计算值（`calculated_value`）
@@ -949,7 +949,7 @@ Carbon dioxide, fossil, to air 是作为屠宰化石二氧化碳排放离开“�
 
 Nitrogen oxides, to air 是作为屠宰氮氧化物排放离开“屠宰、放血、剥皮与去内脏”前景边界的单一交换，数量仅按本卡所述规则取得。
 
-- 选定流：Nitrogen oxides, to air
+- 选定流：氮氧化物，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：根据单独采集的燃料用量与有据可查的场址特定因子、烟道实测或法规报告结果计算这一单项空气排放；本规则不规定默认因子。
 - 数值来源模式：计算值（`calculated_value`）
@@ -994,7 +994,7 @@ Particulate matter, < 2.5 µm, to air 是作为屠宰细颗粒物排放离开“
 
 Particulate matter, 2.5-10 µm, to air 是作为屠宰粗颗粒物排放离开“屠宰、放血、剥皮与去内脏”前景边界的单一交换，数量仅按本卡所述规则取得。
 
-- 选定流：Particulate matter, 2.5-10 µm, to air
+- 选定流：颗粒物（2.5–10微米），排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：根据单独采集的燃料用量与有据可查的场址特定因子、烟道实测或法规报告结果计算这一单项空气排放；本规则不规定默认因子。
 - 数值来源模式：计算值（`calculated_value`）
@@ -1075,7 +1075,7 @@ Skinned eviscerated alpaca carcass 是作为羊驼胴体投入进入“胴体整
 
 Process water 是作为胴体整理工艺水进入“胴体整理与分割”前景边界的单一交换，数量仅按本卡所述规则取得。
 
-- 选定流：Process water
+- 选定流：过程用水
 - 流属性/单位：Volume / m3
 - 数量规则：根据专用水表、储罐记录或共享校准水表的书面分配采集工艺水体积。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1090,7 +1090,7 @@ Process water 是作为胴体整理工艺水进入“胴体整理与分割”前
 
 Electricity, medium voltage 是作为胴体整理阶段电网电力进入“胴体整理与分割”前景边界的单一交换，数量仅按本卡所述规则取得。
 
-- 选定流：Electricity, medium voltage
+- 选定流：中压电力
 - 流属性/单位：Energy / kWh
 - 数量规则：根据阶段专用分表采集电力；使用共享电表时，按书面记录的时间、负荷或吞吐量分配，且不得合并其他能源载体。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1483,7 +1483,7 @@ Camelid meat trimmings 是作为骆驼科动物肉修整料投入进入“预冷
 
 Process water 是作为预冷工艺水进入“预冷与冻结”前景边界的单一交换，数量仅按本卡所述规则取得。
 
-- 选定流：Process water
+- 选定流：过程用水
 - 流属性/单位：Volume / m3
 - 数量规则：根据专用水表、储罐记录或共享校准水表的书面分配采集工艺水体积。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1513,7 +1513,7 @@ Ice 是作为预冷用冰进入“预冷与冻结”前景边界的单一交换�
 
 Electricity, medium voltage 是作为预冷电网电力进入“预冷与冻结”前景边界的单一交换，数量仅按本卡所述规则取得。
 
-- 选定流：Electricity, medium voltage
+- 选定流：中压电力
 - 流属性/单位：Energy / kWh
 - 数量规则：根据阶段专用分表采集电力；使用共享电表时，按书面记录的时间、负荷或吞吐量分配，且不得合并其他能源载体。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1528,7 +1528,7 @@ Electricity, medium voltage 是作为预冷电网电力进入“预冷与冻结�
 
 Electricity, medium voltage 是作为冻结阶段电网电力进入“预冷与冻结”前景边界的单一交换，数量仅按本卡所述规则取得。
 
-- 选定流：Electricity, medium voltage
+- 选定流：中压电力
 - 流属性/单位：Energy / kWh
 - 数量规则：根据阶段专用分表采集电力；使用共享电表时，按书面记录的时间、负荷或吞吐量分配，且不得合并其他能源载体。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1780,7 +1780,7 @@ Waste refrigeration compressor oil 是作为废制冷压缩机油离开“预冷
 
 Ammonia, to air 是作为氨制冷剂排放离开“预冷与冻结”前景边界的单一交换，数量仅按本卡所述规则取得。
 
-- 选定流：Ammonia, to air
+- 选定流：氨，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：按物质特定库存质量平衡或直接维修损失记录计算这一单项制冷剂排放；不得合并其他制冷剂。
 - 数值来源模式：计算值（`calculated_value`）
@@ -1795,7 +1795,7 @@ Ammonia, to air 是作为氨制冷剂排放离开“预冷与冻结”前景边�
 
 1,1,1,2-Tetrafluoroethane, to air 是作为R-134a 制冷剂排放离开“预冷与冻结”前景边界的单一交换，数量仅按本卡所述规则取得。
 
-- 选定流：1,1,1,2-Tetrafluoroethane, to air
+- 选定流：1,1,1,2-四氟乙烷，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：按物质特定库存质量平衡或直接维修损失记录计算这一单项制冷剂排放；不得合并其他制冷剂。
 - 数值来源模式：计算值（`calculated_value`）
@@ -1810,7 +1810,7 @@ Ammonia, to air 是作为氨制冷剂排放离开“预冷与冻结”前景边�
 
 Carbon dioxide, fossil, to air 是作为化石来源 R-744 二氧化碳排放离开“预冷与冻结”前景边界的单一交换，数量仅按本卡所述规则取得。
 
-- 选定流：Carbon dioxide, fossil, to air
+- 选定流：化石源二氧化碳，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：按物质特定库存质量平衡或直接维修损失记录计算这一单项制冷剂排放；不得合并其他制冷剂。
 - 数值来源模式：计算值（`calculated_value`）
@@ -1825,7 +1825,7 @@ Carbon dioxide, fossil, to air 是作为化石来源 R-744 二氧化碳排放离
 
 Carbon dioxide, biogenic, to air 是作为生物源 R-744 二氧化碳排放离开“预冷与冻结”前景边界的单一交换，数量仅按本卡所述规则取得。
 
-- 选定流：Carbon dioxide, biogenic, to air
+- 选定流：生物源二氧化碳，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：按物质特定库存质量平衡或直接维修损失记录计算这一单项制冷剂排放；不得合并其他制冷剂。
 - 数值来源模式：计算值（`calculated_value`）
@@ -1981,7 +1981,7 @@ Frozen camelid meat trimmings 是作为冷冻骆驼科动物肉修整料投入�
 
 Electricity, medium voltage 是作为包装阶段电网电力进入“包装与冻藏”前景边界的单一交换，数量仅按本卡所述规则取得。
 
-- 选定流：Electricity, medium voltage
+- 选定流：中压电力
 - 流属性/单位：Energy / kWh
 - 数量规则：根据阶段专用分表采集电力；使用共享电表时，按书面记录的时间、负荷或吞吐量分配，且不得合并其他能源载体。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1996,7 +1996,7 @@ Electricity, medium voltage 是作为包装阶段电网电力进入“包装与�
 
 Electricity, medium voltage 是作为冻藏电网电力进入“包装与冻藏”前景边界的单一交换，数量仅按本卡所述规则取得。
 
-- 选定流：Electricity, medium voltage
+- 选定流：中压电力
 - 流属性/单位：Energy / kWh
 - 数量规则：根据阶段专用分表采集电力；使用共享电表时，按书面记录的时间、负荷或吞吐量分配，且不得合并其他能源载体。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -2056,7 +2056,7 @@ Polyamide film 是作为聚酰胺薄膜进入“包装与冻藏”前景边界�
 
 Paper label 是作为纸标签进入“包装与冻藏”前景边界的单一交换，数量仅按本卡所述规则取得。
 
-- 选定流：Paper label
+- 选定流：纸质标签
 - 流属性/单位：Mass / kg
 - 数量规则：采集发放给合格产品的这一单一包装组件净质量；可重复使用物品须计入有据可查的补充消耗。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -2071,7 +2071,7 @@ Paper label 是作为纸标签进入“包装与冻藏”前景边界的单一�
 
 Corrugated fibreboard box 是作为瓦楞纸箱进入“包装与冻藏”前景边界的单一交换，数量仅按本卡所述规则取得。
 
-- 选定流：Corrugated fibreboard box
+- 选定流：瓦楞纸箱
 - 流属性/单位：Mass / kg
 - 数量规则：采集发放给合格产品的这一单一包装组件净质量；可重复使用物品须计入有据可查的补充消耗。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -2116,7 +2116,7 @@ High-density polyethylene reusable crate 是作为可重复使用高密度聚乙
 
 Wooden pallet 是作为可重复使用木托盘进入“包装与冻藏”前景边界的单一交换，数量仅按本卡所述规则取得。
 
-- 选定流：Wooden pallet
+- 选定流：木托盘
 - 流属性/单位：Mass / kg
 - 数量规则：采集发放给合格产品的这一单一包装组件净质量；可重复使用物品须计入有据可查的补充消耗。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -2169,7 +2169,7 @@ Nitrogen gas 是作为氮气保护气投入进入“包装与冻藏”前景边�
 
 Meat of camels and camelids, frozen 是离开前景系统的唯一参考产品，数量固定为 1 kg 净合格冷冻肉，且不计包装质量。
 
-- 选定流：Meat of camels and camelids, frozen `75e4eb25-986c-4684-ad73-33ba3528f571`
+- 选定流：冷冻骆驼和驼科动物肉 `75e4eb25-986c-4684-ad73-33ba3528f571`
 - 流属性/单位：Mass / kg
 - 数量规则：将参考产出固定为 1 kg 净合格冷冻产品；包装质量不计入。
 - 数值来源模式：固定值（`fixed_value`）
@@ -2245,7 +2245,7 @@ Waste polyamide film 是作为废聚酰胺薄膜离开“包装与冻藏”前�
 
 Waste paper label 是作为废纸标签离开“包装与冻藏”前景边界的单一交换，数量仅按本卡所述规则取得。
 
-- 选定流：Waste paper label
+- 选定流：废纸质标签
 - 流属性/单位：Mass / kg
 - 数量规则：根据校准容器称量、废物台账和去向记录采集废物净质量；同一质量不得同时作为副产品报告。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -2305,7 +2305,7 @@ Waste high-density polyethylene crate 是作为废高密度聚乙烯周转箱离
 
 Waste wooden pallet 是作为废木托盘离开“包装与冻藏”前景边界的单一交换，数量仅按本卡所述规则取得。
 
-- 选定流：Waste wooden pallet
+- 选定流：废木托盘
 - 流属性/单位：Mass / kg
 - 数量规则：根据校准容器称量、废物台账和去向记录采集废物净质量；同一质量不得同时作为副产品报告。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -2337,7 +2337,7 @@ Packaging-area wash wastewater 是作为包装区冲洗废水离开“包装与�
 
 Carbon dioxide, fossil, to air 是作为化石来源干冰二氧化碳排放离开“包装与冻藏”前景边界的单一交换，数量仅按本卡所述规则取得。
 
-- 选定流：Carbon dioxide, fossil, to air
+- 选定流：化石源二氧化碳，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：根据对应物料平衡或直接校准测量计算这一单项气体排放，并保留其声明来源和环境介质。
 - 数值来源模式：计算值（`calculated_value`）
@@ -2352,7 +2352,7 @@ Carbon dioxide, fossil, to air 是作为化石来源干冰二氧化碳排放离�
 
 Carbon dioxide, biogenic, to air 是作为生物源干冰二氧化碳排放离开“包装与冻藏”前景边界的单一交换，数量仅按本卡所述规则取得。
 
-- 选定流：Carbon dioxide, biogenic, to air
+- 选定流：生物源二氧化碳，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：根据对应物料平衡或直接校准测量计算这一单项气体排放，并保留其声明来源和环境介质。
 - 数值来源模式：计算值（`calculated_value`）
@@ -2388,7 +2388,7 @@ Nitrogen, to air 是作为保护用氮气排放离开“包装与冻藏”前景
 
 Process water 是作为卫生工艺水进入“清洗与消毒”前景边界的单一交换，数量仅按本卡所述规则取得。
 
-- 选定流：Process water
+- 选定流：过程用水
 - 流属性/单位：Volume / m3
 - 数量规则：根据专用水表、储罐记录或共享校准水表的书面分配采集工艺水体积。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -2403,7 +2403,7 @@ Process water 是作为卫生工艺水进入“清洗与消毒”前景边界的
 
 Electricity, medium voltage 是作为卫生作业电网电力进入“清洗与消毒”前景边界的单一交换，数量仅按本卡所述规则取得。
 
-- 选定流：Electricity, medium voltage
+- 选定流：中压电力
 - 流属性/单位：Energy / kWh
 - 数量规则：根据阶段专用分表采集电力；使用共享电表时，按书面记录的时间、负荷或吞吐量分配，且不得合并其他能源载体。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -2418,7 +2418,7 @@ Electricity, medium voltage 是作为卫生作业电网电力进入“清洗与�
 
 Steam, purchased 是作为卫生作业外购蒸汽进入“清洗与消毒”前景边界的单一交换，数量仅按本卡所述规则取得。
 
-- 选定流：Steam, purchased
+- 选定流：外购蒸汽
 - 流属性/单位：Energy / MJ
 - 数量规则：根据蒸汽表或供应商记录采集送至本阶段的外购蒸汽；相关时按有据可查的凝结水回收处理。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -2433,7 +2433,7 @@ Steam, purchased 是作为卫生作业外购蒸汽进入“清洗与消毒”前
 
 Hot water, purchased 是作为卫生作业外购热水进入“清洗与消毒”前景边界的单一交换，数量仅按本卡所述规则取得。
 
-- 选定流：Hot water, purchased
+- 选定流：外购热水
 - 流属性/单位：Energy / MJ
 - 数量规则：根据校准流量与温度记录或供应商热量表采集送至本阶段的外购热水热量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -2448,7 +2448,7 @@ Hot water, purchased 是作为卫生作业外购热水进入“清洗与消毒�
 
 Natural gas 是作为卫生作业天然气进入“清洗与消毒”前景边界的单一交换，数量仅按本卡所述规则取得。
 
-- 选定流：Natural gas
+- 选定流：天然气
 - 流属性/单位：Volume / m3
 - 数量规则：根据校准燃气表或经核对的供应商发票采集分配给本阶段的天然气体积。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -2463,7 +2463,7 @@ Natural gas 是作为卫生作业天然气进入“清洗与消毒”前景边�
 
 Diesel fuel 是作为卫生作业柴油进入“清洗与消毒”前景边界的单一交换，数量仅按本卡所述规则取得。
 
-- 选定流：Diesel fuel
+- 选定流：柴油燃料
 - 流属性/单位：Mass / kg
 - 数量规则：根据油罐领用、采购和期末库存记录采集本阶段柴油消耗量，使用实测质量或有据可查的密度换算。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -2478,7 +2478,7 @@ Diesel fuel 是作为卫生作业柴油进入“清洗与消毒”前景边界�
 
 Liquefied petroleum gas 是作为卫生作业液化石油气进入“清洗与消毒”前景边界的单一交换，数量仅按本卡所述规则取得。
 
-- 选定流：Liquefied petroleum gas
+- 选定流：液化石油气
 - 流属性/单位：Mass / kg
 - 数量规则：根据钢瓶、储罐、采购和库存记录采集分配给本阶段的液化石油气消耗量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -2493,7 +2493,7 @@ Liquefied petroleum gas 是作为卫生作业液化石油气进入“清洗与�
 
 Sodium hydroxide 是作为氢氧化钠清洗剂进入“清洗与消毒”前景边界的单一交换，数量仅按本卡所述规则取得。
 
-- 选定流：Sodium hydroxide
+- 选定流：氢氧化钠
 - 流属性/单位：Mass / kg
 - 数量规则：根据化学品库存、投加、采购和退库记录采集本阶段净领用质量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -2508,7 +2508,7 @@ Sodium hydroxide 是作为氢氧化钠清洗剂进入“清洗与消毒”前景
 
 Nitric acid 是作为硝酸清洗剂进入“清洗与消毒”前景边界的单一交换，数量仅按本卡所述规则取得。
 
-- 选定流：Nitric acid
+- 选定流：硝酸
 - 流属性/单位：Mass / kg
 - 数量规则：根据化学品库存、投加、采购和退库记录采集本阶段净领用质量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -2523,7 +2523,7 @@ Nitric acid 是作为硝酸清洗剂进入“清洗与消毒”前景边界的�
 
 Phosphoric acid 是作为磷酸清洗剂进入“清洗与消毒”前景边界的单一交换，数量仅按本卡所述规则取得。
 
-- 选定流：Phosphoric acid
+- 选定流：磷酸
 - 流属性/单位：Mass / kg
 - 数量规则：根据化学品库存、投加、采购和退库记录采集本阶段净领用质量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -2538,7 +2538,7 @@ Phosphoric acid 是作为磷酸清洗剂进入“清洗与消毒”前景边界�
 
 Peracetic acid 是作为过氧乙酸消毒剂进入“清洗与消毒”前景边界的单一交换，数量仅按本卡所述规则取得。
 
-- 选定流：Peracetic acid
+- 选定流：过氧乙酸
 - 流属性/单位：Mass / kg
 - 数量规则：根据化学品库存、投加、采购和退库记录采集本阶段净领用质量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -2553,7 +2553,7 @@ Peracetic acid 是作为过氧乙酸消毒剂进入“清洗与消毒”前景�
 
 Sodium hypochlorite 是作为次氯酸钠消毒剂进入“清洗与消毒”前景边界的单一交换，数量仅按本卡所述规则取得。
 
-- 选定流：Sodium hypochlorite
+- 选定流：次氯酸钠
 - 流属性/单位：Mass / kg
 - 数量规则：根据化学品库存、投加、采购和退库记录采集本阶段净领用质量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -2568,7 +2568,7 @@ Sodium hypochlorite 是作为次氯酸钠消毒剂进入“清洗与消毒”前
 
 Benzalkonium chloride 是作为苯扎氯铵消毒剂进入“清洗与消毒”前景边界的单一交换，数量仅按本卡所述规则取得。
 
-- 选定流：Benzalkonium chloride
+- 选定流：苯扎氯铵
 - 流属性/单位：Mass / kg
 - 数量规则：根据化学品库存、投加、采购和退库记录采集本阶段净领用质量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -2683,7 +2683,7 @@ Benzalkonium-chloride sanitation wastewater 是作为苯扎氯铵卫生废水离
 
 Final-rinse sanitation wastewater 是作为末次漂洗卫生废水离开“清洗与消毒”前景边界的单一交换，数量仅按本卡所述规则取得。
 
-- 选定流：Final-rinse sanitation wastewater
+- 选定流：末次冲洗消毒废水
 - 流属性/单位：Volume / m3
 - 数量规则：在混合前，根据专用流量计、储罐记录或书面水力分配单独采集这一废水流体积。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -2715,7 +2715,7 @@ Facility floor sweepings 是作为场址地面清扫废物离开“清洗与消�
 
 Carbon dioxide, fossil, to air 是作为卫生作业化石二氧化碳排放离开“清洗与消毒”前景边界的单一交换，数量仅按本卡所述规则取得。
 
-- 选定流：Carbon dioxide, fossil, to air
+- 选定流：化石源二氧化碳，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：根据单独采集的燃料用量与有据可查的场址特定因子、烟道实测或法规报告结果计算这一单项空气排放；本规则不规定默认因子。
 - 数值来源模式：计算值（`calculated_value`）
@@ -2730,7 +2730,7 @@ Carbon dioxide, fossil, to air 是作为卫生作业化石二氧化碳排放离�
 
 Nitrogen oxides, to air 是作为卫生作业氮氧化物排放离开“清洗与消毒”前景边界的单一交换，数量仅按本卡所述规则取得。
 
-- 选定流：Nitrogen oxides, to air
+- 选定流：氮氧化物，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：根据单独采集的燃料用量与有据可查的场址特定因子、烟道实测或法规报告结果计算这一单项空气排放；本规则不规定默认因子。
 - 数值来源模式：计算值（`calculated_value`）
@@ -2775,7 +2775,7 @@ Particulate matter, < 2.5 µm, to air 是作为卫生作业细颗粒物排放离
 
 Particulate matter, 2.5-10 µm, to air 是作为卫生作业粗颗粒物排放离开“清洗与消毒”前景边界的单一交换，数量仅按本卡所述规则取得。
 
-- 选定流：Particulate matter, 2.5-10 µm, to air
+- 选定流：颗粒物（2.5–10微米），排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：根据单独采集的燃料用量与有据可查的场址特定因子、烟道实测或法规报告结果计算这一单项空气排放；本规则不规定默认因子。
 - 数值来源模式：计算值（`calculated_value`）
@@ -2796,7 +2796,7 @@ Particulate matter, 2.5-10 µm, to air 是作为卫生作业粗颗粒物排放�
 
 Electricity, medium voltage 是作为废水处理电网电力进入“场内废水处理”前景边界的单一交换，数量仅按本卡所述规则取得。
 
-- 选定流：Electricity, medium voltage
+- 选定流：中压电力
 - 流属性/单位：Energy / kWh
 - 数量规则：根据阶段专用分表采集电力；使用共享电表时，按书面记录的时间、负荷或吞吐量分配，且不得合并其他能源载体。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -2811,7 +2811,7 @@ Electricity, medium voltage 是作为废水处理电网电力进入“场内废�
 
 Ferric chloride 是作为氯化铁混凝剂进入“场内废水处理”前景边界的单一交换，数量仅按本卡所述规则取得。
 
-- 选定流：Ferric chloride
+- 选定流：氯化铁
 - 流属性/单位：Mass / kg
 - 数量规则：根据化学品库存、投加、采购和退库记录采集本阶段净领用质量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -2826,7 +2826,7 @@ Ferric chloride 是作为氯化铁混凝剂进入“场内废水处理”前景�
 
 Anionic polyacrylamide 是作为阴离子聚丙烯酰胺絮凝剂进入“场内废水处理”前景边界的单一交换，数量仅按本卡所述规则取得。
 
-- 选定流：Anionic polyacrylamide
+- 选定流：阴离子聚丙烯酰胺
 - 流属性/单位：Mass / kg
 - 数量规则：根据化学品库存、投加、采购和退库记录采集本阶段净领用质量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -2841,7 +2841,7 @@ Anionic polyacrylamide 是作为阴离子聚丙烯酰胺絮凝剂进入“场内
 
 Sodium hydroxide 是作为废水处理氢氧化钠进入“场内废水处理”前景边界的单一交换，数量仅按本卡所述规则取得。
 
-- 选定流：Sodium hydroxide
+- 选定流：氢氧化钠
 - 流属性/单位：Mass / kg
 - 数量规则：根据化学品库存、投加、采购和退库记录采集本阶段净领用质量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -2856,7 +2856,7 @@ Sodium hydroxide 是作为废水处理氢氧化钠进入“场内废水处理”
 
 Sulfuric acid 是作为废水处理硫酸进入“场内废水处理”前景边界的单一交换，数量仅按本卡所述规则取得。
 
-- 选定流：Sulfuric acid
+- 选定流：硫酸
 - 流属性/单位：Mass / kg
 - 数量规则：根据化学品库存、投加、采购和退库记录采集本阶段净领用质量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -2871,7 +2871,7 @@ Sulfuric acid 是作为废水处理硫酸进入“场内废水处理”前景边
 
 Process water 是作为聚合物配制用水进入“场内废水处理”前景边界的单一交换，数量仅按本卡所述规则取得。
 
-- 选定流：Process water
+- 选定流：过程用水
 - 流属性/单位：Volume / m3
 - 数量规则：根据专用水表、储罐记录或共享校准水表的书面分配采集工艺水体积。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -3068,7 +3068,7 @@ Benzalkonium-chloride sanitation wastewater 是作为苯扎氯铵卫生废水进
 
 Final-rinse sanitation wastewater 是作为末次漂洗卫生废水进水进入“场内废水处理”前景边界的单一交换，数量仅按本卡所述规则取得。
 
-- 选定流：Final-rinse sanitation wastewater
+- 选定流：末次冲洗消毒废水
 - 流属性/单位：Volume / m3
 - 数量规则：在混合前，根据专用流量计、储罐记录或书面水力分配单独采集这一废水流体积。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -3198,7 +3198,7 @@ Biochemical oxygen demand, 5-day, to water 是作为五日生化需氧量排放�
 
 Chemical oxygen demand, to water 是作为化学需氧量排放离开“场内废水处理”前景边界的单一交换，数量仅按本卡所述规则取得。
 
-- 选定流：Chemical oxygen demand, to water
+- 选定流：化学需氧量，排入水体
 - 流属性/单位：Mass / kg
 - 数量规则：根据同一排放期的实测出水体积和代表性实测浓度计算这一单项水排放。
 - 数值来源模式：计算值（`calculated_value`）
@@ -3288,7 +3288,7 @@ Ammonium, to water 是作为铵排放离开“场内废水处理”前景边界�
 
 Methane, biogenic, to air 是作为生物源甲烷排放离开“场内废水处理”前景边界的单一交换，数量仅按本卡所述规则取得。
 
-- 选定流：Methane, biogenic, to air
+- 选定流：生物源甲烷，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：根据对应物料平衡或直接校准测量计算这一单项气体排放，并保留其声明来源和环境介质。
 - 数值来源模式：计算值（`calculated_value`）
@@ -3303,7 +3303,7 @@ Methane, biogenic, to air 是作为生物源甲烷排放离开“场内废水处
 
 Carbon dioxide, biogenic, to air 是作为生物源二氧化碳排放离开“场内废水处理”前景边界的单一交换，数量仅按本卡所述规则取得。
 
-- 选定流：Carbon dioxide, biogenic, to air
+- 选定流：生物源二氧化碳，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：根据对应物料平衡或直接校准测量计算这一单项气体排放，并保留其声明来源和环境介质。
 - 数值来源模式：计算值（`calculated_value`）

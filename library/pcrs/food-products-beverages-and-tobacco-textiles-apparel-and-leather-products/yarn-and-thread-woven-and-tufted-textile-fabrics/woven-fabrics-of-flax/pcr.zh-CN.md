@@ -40,7 +40,7 @@ status: candidate
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 1 kg |
-| 参考产品流 | Woven fabrics of flax `be3ea0c2-7e29-449a-97fc-8bf2ac32b999` |
+| 参考产品流 | 亚麻机织织物 `be3ea0c2-7e29-449a-97fc-8bf2ac32b999` |
 | 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | kg |
@@ -381,7 +381,7 @@ status: candidate
 
 仅在批次配方用于退浆、精练、pH 调节或其他已声明操作时记录氢氧化钠。
 
-- 选定流：Sodium hydroxide
+- 选定流：氢氧化钠
 - 流属性/单位：Mass / kg
 - 数量规则：发往批次的原供应状态实测产品质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -396,7 +396,7 @@ status: candidate
 
 仅对使用过氧化物漂白或其他已记录过氧化物处理的批次记录过氧化氢。
 
-- 选定流：Hydrogen peroxide
+- 选定流：过氧化氢
 - 流属性/单位：Mass / kg
 - 数量规则：发往批次的原供应状态实测产品质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -411,7 +411,7 @@ status: candidate
 
 仅在生产配方明确列出时记录碳酸钠。
 
-- 选定流：Sodium carbonate
+- 选定流：碳酸钠
 - 流属性/单位：Mass / kg
 - 数量规则：发往批次的原供应状态实测产品质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -426,7 +426,7 @@ status: candidate
 
 仅在生产配方明确列出时记录氯化钠。
 
-- 选定流：Sodium chloride
+- 选定流：氯化钠
 - 流属性/单位：Mass / kg
 - 数量规则：发往批次的原供应状态实测产品质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -441,7 +441,7 @@ status: candidate
 
 仅在生产配方明确列为 pH 控制剂或用于其他已声明操作时记录乙酸。
 
-- 选定流：Acetic acid
+- 选定流：乙酸
 - 流属性/单位：Mass / kg
 - 数量规则：发往批次的原供应状态实测产品质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -509,7 +509,7 @@ status: candidate
 
 天然气在前景内燃烧时，记录场内锅炉或直燃设备排放的化石二氧化碳。
 
-- 选定流：Carbon dioxide, fossil, to air
+- 选定流：化石源二氧化碳，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：实测烟道排放，或与计量燃料期间核对的设施报告排放
 - 数值来源模式：前景记录（`foreground_record`）
@@ -524,7 +524,7 @@ status: candidate
 
 设施监测或报告时，记录场内锅炉或直燃设备排放的氮氧化物。
 
-- 选定流：Nitrogen oxides, to air
+- 选定流：氮氧化物，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：实测烟道排放，或与计量燃料期间核对的设施报告排放
 - 数值来源模式：前景记录（`foreground_record`）
@@ -590,7 +590,7 @@ status: candidate
 
 存在时，包裹织物批次所用低密度聚乙烯薄膜作为一个材料投入记录。
 
-- 选定流：Low-density polyethylene packaging film
+- 选定流：低密度聚乙烯包装膜
 - 流属性/单位：Mass / kg
 - 数量规则：发往生产批次的实测薄膜质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -609,7 +609,7 @@ status: candidate
 
 合格已包装织物批次为定量参考输出，其净质量不含可移除包装。
 
-- 选定流：Woven fabrics of flax `be3ea0c2-7e29-449a-97fc-8bf2ac32b999`
+- 选定流：亚麻机织织物 `be3ea0c2-7e29-449a-97fc-8bf2ac32b999`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：按已声明调湿或水分基准计的恰好 1 kg 合格织物净质量
 - 数值来源模式：固定值（`fixed_value`）

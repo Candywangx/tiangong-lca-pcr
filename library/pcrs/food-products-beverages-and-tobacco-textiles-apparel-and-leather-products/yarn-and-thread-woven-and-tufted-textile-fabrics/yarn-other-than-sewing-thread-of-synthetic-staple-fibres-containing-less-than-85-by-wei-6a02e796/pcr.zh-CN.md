@@ -38,7 +38,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 1 kg |
-| 参考产品流 | Yarn (other than sewing thread) of synthetic staple fibres, containing less than 85% by weight of such fibres `914fcc34-ead6-4938-af63-b4ffa94e0a99` |
+| 参考产品流 | 含人造短纤维重量少85%的纱（缝纫线除外） `914fcc34-ead6-4938-af63-b4ffa94e0a99` |
 | 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | kg |
@@ -91,7 +91,7 @@ sync_with: pcr.en-US.md
 
 这是代表性棉/合成纤维路线的单一进料纤维中间产品。其批次组成和领用质量在纺纱厂跨越前景边界。
 
-- 选定流：Blended staple fibre sliver; cotton and man-made fibres blend, at plant, CN `0d57947b-b2f9-4a30-8a2c-7f648fd0ee55`
+- 选定流：棉与化学纤维混合短纤条 `0d57947b-b2f9-4a30-8a2c-7f648fd0ee55`
 - 流属性/单位：Mass / kg
 - 数量规则：按生产批次记录领用纤维条质量，并按验收合格纱线输出归一化；不得采用默认得率。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -106,7 +106,7 @@ sync_with: pcr.en-US.md
 
 本卡仅覆盖电机、吸风和络筒设备使用的一个已声明中国用户侧低压电力场景。任何单独建模热处理的电力不得合并到此卡。
 
-- 选定流：Alternating current; less than 1 kV; consumption mix, at user, CN `50657322-939c-4829-a87b-47c093bfa6a7`
+- 选定流：交流电 `50657322-939c-4829-a87b-47c093bfa6a7`
 - 流属性/单位：Net calorific value / kWh
 - 数量规则：记录纳入阶段的过程电表电量或有记录的分表分配电量，并按验收合格纱线输出归一化。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -144,7 +144,7 @@ sync_with: pcr.en-US.md
 
 这是络筒并经质量放行后位于纺纱厂门的验收合格参考产品。
 
-- 选定流：Yarn (other than sewing thread) of synthetic staple fibres, containing less than 85% by weight of such fibres `914fcc34-ead6-4938-af63-b4ffa94e0a99`
+- 选定流：含人造短纤维重量少85%的纱（缝纫线除外） `914fcc34-ead6-4938-af63-b4ffa94e0a99`
 - 流属性/单位：Mass / kg
 - 数量规则：按已声明回潮基准，在扣除包装皮重和废品后记录净合格纱线质量。
 - 数值来源模式：前景记录（`foreground_record`）

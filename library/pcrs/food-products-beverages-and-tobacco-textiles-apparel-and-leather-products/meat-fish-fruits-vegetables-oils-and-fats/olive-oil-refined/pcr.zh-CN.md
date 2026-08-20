@@ -43,7 +43,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 1 kg |
-| 参考产品流 | Olive oil, refined `4637b050-f60f-4ebb-af43-5128ebf416bf` |
+| 参考产品流 | 精炼橄榄油 `4637b050-f60f-4ebb-af43-5128ebf416bf` |
 | 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | kg |
@@ -181,7 +181,7 @@ sync_with: pcr.en-US.md
 
 记录化学中和与洗涤用水、单独按水计量的蒸汽或真空系统补水以及可归属清洗用水。没有文件化分配基础时不得分配共用水。
 
-- 选定流：Process water
+- 选定流：过程用水
 - 流属性/单位：Mass 或 volume / kg 或 m3
 - 数量规则：可归属于精炼线的计量净用水量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -475,7 +475,7 @@ sync_with: pcr.en-US.md
 
 本行为定量参考输出。只记录按已声明规格放行的净产品；隔离或返工油不属于合格输出。
 
-- 选定流：Olive oil, refined `4637b050-f60f-4ebb-af43-5128ebf416bf`
+- 选定流：精炼橄榄油 `4637b050-f60f-4ebb-af43-5128ebf416bf`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：将实测发运合格产品净质量精确归一化为 1 kg
 - 数值来源模式：计算值（`calculated_value`）

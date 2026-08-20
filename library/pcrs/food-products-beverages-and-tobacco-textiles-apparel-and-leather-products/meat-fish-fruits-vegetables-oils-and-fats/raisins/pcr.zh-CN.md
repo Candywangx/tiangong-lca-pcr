@@ -42,7 +42,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 1 kg 净质量 |
-| 参考产品流 | Raisins `e2741aa4-2dfe-487f-a0fe-fd5d6dd3302d` |
+| 参考产品流 | 葡萄干 `e2741aa4-2dfe-487f-a0fe-fd5d6dd3302d` |
 | 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | kg |
@@ -126,7 +126,7 @@ sync_with: pcr.en-US.md
 
 记录清洗、浸渍、冲洗或配液过程中与葡萄接触的计量或对账水量。仅在无此类水跨越前景边界时报告为零。
 
-- 选定流：Process water
+- 选定流：过程用水
 - 流属性/单位：Mass / kg
 - 数量规则：供给该批次的实测或对账水量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -399,7 +399,7 @@ sync_with: pcr.en-US.md
 
 记录分选后、包装前的放行质量、含水率、形态、处理、涂层和食品级处置状态。
 
-- 选定流：Raisins `e2741aa4-2dfe-487f-a0fe-fd5d6dd3302d`
+- 选定流：葡萄干 `e2741aa4-2dfe-487f-a0fe-fd5d6dd3302d`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：放行至包装的实测合格质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -452,7 +452,7 @@ sync_with: pcr.en-US.md
 
 使用 `raisin_finishing` 的实测合格输出，并保留批次和全部必需产品限定信息。
 
-- 选定流：Raisins `e2741aa4-2dfe-487f-a0fe-fd5d6dd3302d`
+- 选定流：葡萄干 `e2741aa4-2dfe-487f-a0fe-fd5d6dd3302d`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：`raisin_finishing` 的链接实测输出
 - 数值来源模式：计算值（`calculated_value`）
@@ -523,7 +523,7 @@ sync_with: pcr.en-US.md
 
 参考输出为经核实的放行葡萄干可食净质量。包装质量和皮重保持为独立投入。
 
-- 选定流：Raisins `e2741aa4-2dfe-487f-a0fe-fd5d6dd3302d`
+- 选定流：葡萄干 `e2741aa4-2dfe-487f-a0fe-fd5d6dd3302d`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：固定归一化输出 1 kg 经核实葡萄干净质量
 - 数值来源模式：固定值（`fixed_value`）

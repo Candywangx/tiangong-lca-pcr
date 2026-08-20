@@ -42,7 +42,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 1 kg 调湿净生丝（未加捻） |
-| 参考产品流 | Raw Silk `343df125-d682-4ffa-8829-5fbc785bdbc9` |
+| 参考产品流 | 生丝 `343df125-d682-4ffa-8829-5fbc785bdbc9` |
 | 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | kg |
@@ -675,7 +675,7 @@ sync_with: pcr.en-US.md
 - 流名称：化石二氧化碳排放至空气
 - 方向：输出（`outputs`）
 - 流类型：基本流（`elementary`）
-- 选定流：二氧化碳，化石 `08a91e70-3ddc-11dd-923d-0050c2490048`
+- 选定流：二氧化碳（化石源） `08a91e70-3ddc-11dd-923d-0050c2490048`
 - UUID 状态：confirmed — 2026-08-12 经 flow-hybrid-search 命中并由天工 flow get 直读核验：state_code=100、Elementary flow、Mass / kg；air unspecified、版本 03.00.004
 - 流属性/单位：Mass / kg
 - 数量规则：实测值，或原子活动量乘以单独识别的现行因子
@@ -704,7 +704,7 @@ sync_with: pcr.en-US.md
 - 流名称：甲烷排放至空气
 - 方向：输出（`outputs`）
 - 流类型：基本流（`elementary`）
-- 选定流：甲烷，化石 `08a91e70-3ddc-11dd-9610-0050c2490048`
+- 选定流：甲烷 (化石源) `08a91e70-3ddc-11dd-9610-0050c2490048`
 - UUID 状态：confirmed — 2026-08-12 经 flow-hybrid-search 命中并由天工 flow get 直读核验：state_code=100、Elementary flow、Mass / kg；air unspecified、版本 03.00.004
 - 流属性/单位：Mass / kg
 - 数量规则：实测值，或原子活动量乘以单独识别的现行因子
@@ -733,7 +733,7 @@ sync_with: pcr.en-US.md
 - 流名称：一氧化二氮排放至空气
 - 方向：输出（`outputs`）
 - 流类型：基本流（`elementary`）
-- 选定流：氧化亚氮 `08a91e70-3ddc-11dd-94c3-0050c2490048`
+- 选定流：一氧化二氮 `08a91e70-3ddc-11dd-94c3-0050c2490048`
 - UUID 状态：confirmed — 2026-08-12 经 flow-hybrid-search 命中并由天工 flow get 直读核验：state_code=100、Elementary flow、Mass / kg；air unspecified、版本 03.00.004
 - 流属性/单位：Mass / kg
 - 数量规则：实测值，或原子活动量乘以单独识别的现行因子
@@ -1530,7 +1530,7 @@ sync_with: pcr.en-US.md
 - 流名称：化石二氧化碳排放至空气
 - 方向：输出（`outputs`）
 - 流类型：基本流（`elementary`）
-- 选定流：二氧化碳，化石 `08a91e70-3ddc-11dd-923d-0050c2490048`
+- 选定流：二氧化碳（化石源） `08a91e70-3ddc-11dd-923d-0050c2490048`
 - UUID 状态：confirmed — 2026-08-12 经 flow-hybrid-search 命中并由天工 flow get 直读核验：state_code=100、Elementary flow、Mass / kg；air unspecified、版本 03.00.004
 - 流属性/单位：Mass / kg
 - 数量规则：实测值，或原子活动量乘以单独识别的现行因子
@@ -1559,7 +1559,7 @@ sync_with: pcr.en-US.md
 - 流名称：甲烷排放至空气
 - 方向：输出（`outputs`）
 - 流类型：基本流（`elementary`）
-- 选定流：甲烷，化石 `08a91e70-3ddc-11dd-9610-0050c2490048`
+- 选定流：甲烷 (化石源) `08a91e70-3ddc-11dd-9610-0050c2490048`
 - UUID 状态：confirmed — 2026-08-12 经 flow-hybrid-search 命中并由天工 flow get 直读核验：state_code=100、Elementary flow、Mass / kg；air unspecified、版本 03.00.004
 - 流属性/单位：Mass / kg
 - 数量规则：实测值，或原子活动量乘以单独识别的现行因子
@@ -1588,7 +1588,7 @@ sync_with: pcr.en-US.md
 - 流名称：一氧化二氮排放至空气
 - 方向：输出（`outputs`）
 - 流类型：基本流（`elementary`）
-- 选定流：氧化亚氮 `08a91e70-3ddc-11dd-94c3-0050c2490048`
+- 选定流：一氧化二氮 `08a91e70-3ddc-11dd-94c3-0050c2490048`
 - UUID 状态：confirmed — 2026-08-12 经 flow-hybrid-search 命中并由天工 flow get 直读核验：state_code=100、Elementary flow、Mass / kg；air unspecified、版本 03.00.004
 - 流属性/单位：Mass / kg
 - 数量规则：实测值，或原子活动量乘以单独识别的现行因子
@@ -1996,7 +1996,7 @@ sync_with: pcr.en-US.md
 - 流名称：瓦楞纸箱
 - 方向：输入（`inputs`）
 - 流类型：产品流（`product`）
-- 选定流：瓦楞纸板箱 `4f197bec-7b3b-11dd-ad8b-0800200c9a66`
+- 选定流：瓦楞纸箱 `4f197bec-7b3b-11dd-ad8b-0800200c9a66`
 - UUID 状态：confirmed — 2026-08-12 经 flow-hybrid-search 命中并由天工 flow get 直读核验：state_code=100、Product flow、Mass / kg、版本 03.00.002
 - 流属性/单位：Mass / kg
 - 数量规则：按同质路线和批次计量；不得与其他行合并
@@ -2148,7 +2148,7 @@ sync_with: pcr.en-US.md
 - 流名称：废瓦楞纸板
 - 方向：输出（`outputs`）
 - 流类型：废物流（`waste`）
-- 选定流：包装废纸板 `72270223-04b1-4986-a546-94e5a0821317`
+- 选定流：包装废弃物，纸板 `72270223-04b1-4986-a546-94e5a0821317`
 - UUID 状态：confirmed — 2026-08-12 经 flow-hybrid-search 命中并由天工 flow get 直读核验：state_code=100、Waste flow、Mass / kg、版本 01.01.000
 - 流属性/单位：Mass / kg
 - 数量规则：按同质路线和批次计量；不得与其他行合并
@@ -2522,7 +2522,7 @@ sync_with: pcr.en-US.md
 - 流名称：排入水体的总氮
 - 方向：输出（`outputs`）
 - 流类型：基本流（`elementary`）
-- 选定流：总氮（不含 N2） `e1716164-e906-48e4-ad77-8f2ec4a9a4c5`
+- 选定流：总氮（不含N₂） `e1716164-e906-48e4-ad77-8f2ec4a9a4c5`
 - UUID 状态：confirmed — 2026-08-12 经 flow-hybrid-search 命中并由天工 flow get 直读核验：state_code=100、Elementary flow、Mass / kg；fresh water、版本 03.00.004
 - 流属性/单位：Mass / kg
 - 数量规则：实测值，或原子活动量乘以单独识别的现行因子
@@ -2582,7 +2582,7 @@ sync_with: pcr.en-US.md
 - 流名称：排入水体的悬浮物
 - 方向：输出（`outputs`）
 - 流类型：基本流（`elementary`）
-- 选定流：悬浮固体，未指明 `618d3d9a-9f85-417d-b0c4-e87942a9e345`
+- 选定流：悬浮物（未指定） `618d3d9a-9f85-417d-b0c4-e87942a9e345`
 - UUID 状态：confirmed — 2026-08-12 经 flow-hybrid-search 命中并由天工 flow get 直读核验：state_code=100、Elementary flow、Mass / kg；water unspecified、版本 01.00.004
 - 流属性/单位：Mass / kg
 - 数量规则：实测值，或原子活动量乘以单独识别的现行因子

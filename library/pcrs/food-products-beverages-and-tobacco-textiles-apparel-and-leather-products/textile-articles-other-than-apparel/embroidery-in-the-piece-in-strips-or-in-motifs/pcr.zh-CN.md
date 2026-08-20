@@ -40,7 +40,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 1 kg |
-| 参考产品流 | Embroidery in the piece, in strips or in motifs `0fed9734-6186-489c-a6a0-cca6894e944d` |
+| 参考产品流 | 成幅、成条或成花纹图案的刺绣品 `0fed9734-6186-489c-a6a0-cca6894e944d` |
 | 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | kg |
@@ -411,7 +411,7 @@ sync_with: pcr.en-US.md
 
 记录添加运输包装前经检验的净产品质量，并链接至声明的成幅、成条或花纹图案形态及全部必需限定信息。
 
-- 选定流：Embroidery in the piece, in strips or in motifs `0fed9734-6186-489c-a6a0-cca6894e944d`
+- 选定流：成幅、成条或成花纹图案的刺绣品 `0fed9734-6186-489c-a6a0-cca6894e944d`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：声明调湿状态下 1 kg 净合格刺绣品
 - 数值来源模式：前景记录（`foreground_record`）

@@ -40,7 +40,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 1 kg 鱼净质量 |
-| 参考产品流 | Frozen Fish `130aa38f-8c63-4d0b-ad05-0b2c4426cdd8` |
+| 参考产品流 | 冻鱼片 `130aa38f-8c63-4d0b-ad05-0b2c4426cdd8` |
 | 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | kg |
@@ -526,7 +526,7 @@ sync_with: pcr.en-US.md
 
 此行为定量参考输出；鱼净质量不含冰衣和包装。
 
-- 选定流：Frozen Fish `130aa38f-8c63-4d0b-ad05-0b2c4426cdd8`
+- 选定流：冻鱼片 `130aa38f-8c63-4d0b-ad05-0b2c4426cdd8`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：厂门处恰好 1 kg 鱼片净质量
 - 数值来源模式：固定值（`fixed_value`）
@@ -535,15 +535,6 @@ sync_with: pcr.en-US.md
 - 基准类型：参考流（`reference_flow`）
 - 证据类型：身份引用（`identity_reference`）
 - 来源：`codex-cxs-190-1995`
-- 数量范围：参考流恒等范围
-  - 范围角色：允许范围（`allowed_range`）
-  - 下限：1
-  - 上限：1
-  - 单位：kg
-  - 基准：不含冰衣和包装的鱼净质量
-  - 基准类型：参考流（`reference_flow`）
-  - 证据类型：外部来源（`external_source`）
-  - 来源：`codex-cxs-190-1995`
 
 ##### 废物流
 

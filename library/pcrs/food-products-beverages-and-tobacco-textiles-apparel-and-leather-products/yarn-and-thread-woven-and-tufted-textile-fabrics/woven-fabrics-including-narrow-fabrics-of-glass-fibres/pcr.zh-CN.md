@@ -40,7 +40,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 1 kg 合格产品净质量 |
-| 参考产品流 | Woven fabrics (including narrow fabrics) of glass fibres `59caf1b9-5a05-4eef-8ba2-bc94aa28f43f` |
+| 参考产品流 | 玻璃纤维织物（包括狭幅织物） `59caf1b9-5a05-4eef-8ba2-bc94aa28f43f` |
 | 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | kg |
@@ -101,7 +101,7 @@ sync_with: pcr.en-US.md
 
 外购连续玻璃纤维纱或粗纱跨越工厂边界并组成经纱。接收质量、退料和期初库存必须可追溯至供应商及仓库记录。
 
-- 选定流：Glass fiber yarn `52480783-8003-4f68-9f65-0c61335127d8`
+- 选定流：玻璃纤维纱 `52480783-8003-4f68-9f65-0c61335127d8`
 - 流属性/单位：Mass / kg
 - 数量规则：库存核对后，记录整经批次消耗的合格投入质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -194,7 +194,7 @@ sync_with: pcr.en-US.md
 
 配制或稀释浆液的水作为一个原子投入跨越过程边界。可归属于上浆批次的清洗水在使用时另增独立原子卡。
 
-- 选定流：Process Water `94a04f7e-2d5c-41f0-b182-d54a3b373a02`
+- 选定流：工艺用水 `94a04f7e-2d5c-41f0-b182-d54a3b373a02`
 - 流属性/单位：Mass / kg
 - 数量规则：记录加入配浆过程的计量水量或批次配方水量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -209,7 +209,7 @@ sync_with: pcr.en-US.md
 
 仅当现场配方含聚乙烯醇时记录该流。实际使用的其他淀粉、聚合物、润滑剂、抗静电剂或添加剂必须分别新增原子交换。
 
-- 选定流：Polyvinyl alcohol `cea707dd-98a3-451d-bc43-2dcc145091e9`
+- 选定流：聚乙烯醇 `cea707dd-98a3-451d-bc43-2dcc145091e9`
 - 流属性/单位：Mass / kg
 - 数量规则：依据批次单和供应商规格记录供应产品质量及干固含量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -302,7 +302,7 @@ sync_with: pcr.en-US.md
 
 作为纬纱引入的连续玻璃纤维纱或粗纱与经纱分别跨越织机边界。仓库领料和退回包装支持其消耗质量。
 
-- 选定流：Glass fiber yarn `52480783-8003-4f68-9f65-0c61335127d8`
+- 选定流：玻璃纤维纱 `52480783-8003-4f68-9f65-0c61335127d8`
 - 流属性/单位：Mass / kg
 - 数量规则：库存核对后记录织造批次领用并消耗的合格纬纱质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -440,7 +440,7 @@ sync_with: pcr.en-US.md
 
 与成品卷一同交付的纸管应与塑料薄膜和托盘分别记录，纸管质量不计入参考产品净质量。
 
-- 选定流：Cardboard tube or Paper core `78bf7f6e-519e-4b3d-82f0-eda15b2fee61`
+- 选定流：圆纸筒 `78bf7f6e-519e-4b3d-82f0-eda15b2fee61`
 - 流属性/单位：Mass / kg
 - 数量规则：记录随合格布卷交付的外购或实称纸管质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -478,7 +478,7 @@ sync_with: pcr.en-US.md
 
 合格织物净输出实现参考流。可移除纸管、薄膜、托盘和其他运输包装应分别记录，不计入该质量。
 
-- 选定流：Woven fabrics (including narrow fabrics) of glass fibres `59caf1b9-5a05-4eef-8ba2-bc94aa28f43f`
+- 选定流：玻璃纤维织物（包括狭幅织物） `59caf1b9-5a05-4eef-8ba2-bc94aa28f43f`
 - 流属性/单位：Mass / kg
 - 数量规则：记录经校准的合格织物净质量，并将数据包归一化至 1 kg
 - 数值来源模式：前景记录（`foreground_record`）
@@ -510,7 +510,7 @@ sync_with: pcr.en-US.md
 
 工厂丢弃的损坏纸管和其他纸板包装应与随产品交付的纸管及塑料包装废物分别记录。
 
-- 选定流：Paper and cardboard packaging waste `a318022d-c960-4eb5-a81c-04a9c4dda7e4`
+- 选定流：纸和纸板包装废弃物 `a318022d-c960-4eb5-a81c-04a9c4dda7e4`
 - 流属性/单位：Mass / kg
 - 数量规则：按管理去向称量或核算该批次丢弃的纸板包装
 - 数值来源模式：前景记录（`foreground_record`）

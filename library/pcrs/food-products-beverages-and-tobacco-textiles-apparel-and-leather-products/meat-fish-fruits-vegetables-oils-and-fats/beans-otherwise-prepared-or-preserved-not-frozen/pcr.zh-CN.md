@@ -38,7 +38,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 1 kg 净成品 |
-| 参考产品流 | Beans, otherwise prepared or preserved, not frozen `e1ec238e-9181-4fd3-912e-a88b4a45ad56` |
+| 参考产品流 | 豆类，其他制作或保存，非冷冻 `e1ec238e-9181-4fd3-912e-a88b4a45ad56` |
 | 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | Mass units `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | kg |
@@ -573,7 +573,7 @@ sync_with: pcr.en-US.md
 
 这是最终验收后离开前景系统的单一参考产品；包装质量仍不计入 1 kg 净产品数量。
 
-- 选定流：Beans, otherwise prepared or preserved, not frozen `e1ec238e-9181-4fd3-912e-a88b4a45ad56`
+- 选定流：豆类，其他制作或保存，非冷冻 `e1ec238e-9181-4fd3-912e-a88b4a45ad56`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：1 kg 净成品
 - 数值来源模式：固定值（`fixed_value`）

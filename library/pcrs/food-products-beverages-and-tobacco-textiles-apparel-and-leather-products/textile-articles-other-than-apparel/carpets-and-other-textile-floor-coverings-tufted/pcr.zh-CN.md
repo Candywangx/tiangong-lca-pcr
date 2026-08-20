@@ -40,7 +40,7 @@ status: candidate
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 1 kg |
-| 参考产品流 | Carpets and other textile floor coverings, tufted `a01ef31e-fdc6-48be-a681-0a418c22c0cc` |
+| 参考产品流 | 簇绒地毯及其他铺地织物 `a01ef31e-fdc6-48be-a681-0a418c22c0cc` |
 | 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | kg |
@@ -188,7 +188,7 @@ status: candidate
 
 计量电力驱动簇绒机及直接相关的送纱和抽风设备。
 
-- 选定流：Electricity, low voltage
+- 选定流：低压电力
 - 流属性/单位：Energy / kWh
 - 数量规则：簇绒线分表电量，或按实测机器运行时间及额定负荷分配并与场址总表核对的电量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -296,7 +296,7 @@ status: candidate
 
 有意加入背衬胶料或用作工艺投入的水须与清洗废水分开记录。
 
-- 选定流：Process water
+- 选定流：过程用水
 - 流属性/单位：Volume / m3
 - 数量规则：有意加入背衬配方的计量体积或批次表体积
 - 数值来源模式：前景记录（`foreground_record`）
@@ -341,7 +341,7 @@ status: candidate
 
 计量电力驱动胶料混合、涂覆、层压传动、风机和相关控制设备。
 
-- 选定流：Electricity, low voltage
+- 选定流：低压电力
 - 流属性/单位：Energy / kWh
 - 数量规则：背衬线分表总电量，或按实测运行时间及额定负荷分配并与场址总表核对的电量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -356,7 +356,7 @@ status: candidate
 
 仅在申报干燥或固化路线燃烧天然气时记录该流，并与电力分开。
 
-- 选定流：Natural gas
+- 选定流：天然气
 - 流属性/单位：Net calorific value / MJ
 - 数量规则：计量气体体积乘以供应商或计量期间特定低位发热值
 - 数值来源模式：前景记录（`foreground_record`）
@@ -443,7 +443,7 @@ status: candidate
 
 仅在配方或固化化学体系及投入产出清单识别氨为相关物质时记录。
 
-- 选定流：Ammonia to air
+- 选定流：氨，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：生产期间申报大气排放点的实测质量排放量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -473,7 +473,7 @@ status: candidate
 
 当天然气在前景边界内燃烧时，将其产生的化石二氧化碳记录为直接排放。
 
-- 选定流：Carbon dioxide, fossil, to air
+- 选定流：化石源二氧化碳，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：与计量天然气记录核对的烟囱实测质量或经场址核验的直接排放清单量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -524,7 +524,7 @@ status: candidate
 
 计量电力驱动剪毛、修边、裁切、检验、卷绕或方块处理及包装设备。
 
-- 选定流：Electricity, low voltage
+- 选定流：低压电力
 - 流属性/单位：Energy / kWh
 - 数量规则：后整理线分表总电量，或按实测运行时间及额定负荷分配并与场址总表核对的电量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -539,7 +539,7 @@ status: candidate
 
 仅在 LDPE 膜用于包裹或保护放行产品时记录，并将其排除在产品净质量之外。
 
-- 选定流：Low-density polyethylene packaging film
+- 选定流：低密度聚乙烯包装膜
 - 流属性/单位：Mass / kg
 - 数量规则：合格发货批次实测包装膜领用质量减去退回未用膜质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -589,7 +589,7 @@ status: candidate
 
 这是最终检验和验收后的唯一计量参考产出，可拆卸运输包装不计入其净质量。
 
-- 选定流：Carpets and other textile floor coverings, tufted `a01ef31e-fdc6-48be-a681-0a418c22c0cc`
+- 选定流：簇绒地毯及其他铺地织物 `a01ef31e-fdc6-48be-a681-0a418c22c0cc`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg (Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66`)
 - 数量规则：实测合格成品净质量，并归一化为恰好 1 kg 参考产出
 - 数值来源模式：前景记录（`foreground_record`）

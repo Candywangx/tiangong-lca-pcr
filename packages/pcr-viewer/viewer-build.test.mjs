@@ -51,7 +51,7 @@ test("buildViewer writes viewer data and static assets", () => {
     assert.equal(data.schema_version, 3);
     assert.equal(data.viewer_kind, "tiangong-pcr-static-viewer-data");
     assert.equal(data.catalog_scope, "material");
-    assert.equal(data.pcr_count, 303);
+    assert.equal(data.pcr_count, 326);
     assert.ok(existsSync(dataPath));
     assert.ok(existsSync(path.join(outDir, "index.html")));
     assert.ok(existsSync(path.join(outDir, "styles.css")));
@@ -77,8 +77,8 @@ test("buildViewer writes viewer data and static assets", () => {
     );
     assert.equal(cpcCoverage.entries_inlined, false);
     assert.equal(cpcCoverage.summary.total, 2877);
-    assert.equal(cpcCoverage.summary.mapped, 303);
-    assert.equal(cpcCoverage.summary.unmapped, 2574);
+    assert.equal(cpcCoverage.summary.mapped, 326);
+    assert.equal(cpcCoverage.summary.unmapped, 2551);
     assert.equal(Object.hasOwn(cpcCoverage, "entries"), false);
     assert.equal(Object.hasOwn(parsed, "classification_coverage"), false);
     assert.ok(

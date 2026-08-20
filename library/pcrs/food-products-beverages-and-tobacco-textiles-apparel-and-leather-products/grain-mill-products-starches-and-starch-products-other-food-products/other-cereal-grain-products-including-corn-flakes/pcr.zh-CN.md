@@ -40,7 +40,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 1 kg 成品净质量 |
-| 参考产品流 | Other cereal grain products (including corn flakes) `53e35f86-383d-45f6-87ef-13a25f1f10e6` |
+| 参考产品流 | 其他谷物产品（包括玉米片） `53e35f86-383d-45f6-87ef-13a25f1f10e6` |
 | 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | kg |
@@ -583,7 +583,7 @@ sync_with: pcr.en-US.md
 
 该流是工厂门口放行的合格净参考产品。纳入包装时，包装后毛质量应另行记录。
 
-- 选定流：Other cereal grain products (including corn flakes) `53e35f86-383d-45f6-87ef-13a25f1f10e6`
+- 选定流：其他谷物产品（包括玉米片） `53e35f86-383d-45f6-87ef-13a25f1f10e6`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：质量放行后恰好 1 kg 合格成品净质量，不含包装质量
 - 数值来源模式：固定值（`fixed_value`）

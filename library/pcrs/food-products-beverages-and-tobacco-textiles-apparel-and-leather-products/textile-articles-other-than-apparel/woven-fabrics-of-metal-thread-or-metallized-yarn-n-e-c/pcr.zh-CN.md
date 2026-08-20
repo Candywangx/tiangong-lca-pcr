@@ -40,7 +40,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 1 kg |
-| 参考产品流 | Woven fabrics of metal thread or metallized yarn n.e.c. `fc1c034a-6087-48d4-93ec-a57b94919068` |
+| 参考产品流 | 金属线或金属化纱线编织物（未另列） `fc1c034a-6087-48d4-93ec-a57b94919068` |
 | 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | kg |
@@ -142,7 +142,7 @@ sync_with: pcr.en-US.md
 
 记录分配给批次的准备、上浆、织造及局部抽风实测用电。
 
-- 选定流：Electricity, low voltage
+- 选定流：低压电力
 - 流属性/单位：Energy / kWh
 - 数量规则：计量或分表用量；否则依据场址总表采用有记录的分配
 - 数值来源模式：前景记录（`foreground_record`）
@@ -157,7 +157,7 @@ sync_with: pcr.en-US.md
 
 所选织机或准备设备使用压缩空气时记录；不得与电力合并。
 
-- 选定流：Compressed air
+- 选定流：压缩空气
 - 流属性/单位：Volume / m3
 - 数量规则：按声明压力实测输送体积，或依据压缩机记录作有据可查的工程分配
 - 数值来源模式：前景记录（`foreground_record`）
@@ -250,7 +250,7 @@ sync_with: pcr.en-US.md
 
 记录进入洗涤、退浆、精练、漂白、染色、印花或整理的工艺水。
 
-- 选定流：Process water
+- 选定流：过程用水
 - 流属性/单位：Volume / m3
 - 数量规则：计量或批次记录的用水量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -265,7 +265,7 @@ sync_with: pcr.en-US.md
 
 仅在声明的整理配方使用氢氧化钠时记录；其他化学品须采用独立原子流卡片。
 
-- 选定流：Sodium hydroxide
+- 选定流：氢氧化钠
 - 流属性/单位：Mass / kg
 - 数量规则：投加至批次的实测活性物质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -280,7 +280,7 @@ sync_with: pcr.en-US.md
 
 仅在声明的整理配方使用过氧化氢时记录。
 
-- 选定流：Hydrogen peroxide
+- 选定流：过氧化氢
 - 流属性/单位：Mass / kg
 - 数量规则：投加至批次的实测活性物质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -295,7 +295,7 @@ sync_with: pcr.en-US.md
 
 记录分配给湿整理批次的实测电力。
 
-- 选定流：Electricity, low voltage
+- 选定流：低压电力
 - 流属性/单位：Energy / kWh
 - 数量规则：计量或分表用量；否则依据场址总表采用有记录的分配
 - 数值来源模式：前景记录（`foreground_record`）
@@ -310,7 +310,7 @@ sync_with: pcr.en-US.md
 
 仅在声明整理路线直接消耗天然气时记录；外购蒸汽或其他燃料须采用独立卡片。
 
-- 选定流：Natural gas
+- 选定流：天然气
 - 流属性/单位：Energy / MJ
 - 数量规则：按声明热值基准计量燃料能量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -388,7 +388,7 @@ sync_with: pcr.en-US.md
 
 记录分配给放行产品的检验、卷装和包装电力。
 
-- 选定流：Electricity, low voltage
+- 选定流：低压电力
 - 流属性/单位：Energy / kWh
 - 数量规则：实测用量或依据场址总表采用有记录的分配
 - 数值来源模式：前景记录（`foreground_record`）
@@ -441,7 +441,7 @@ sync_with: pcr.en-US.md
 
 记录不含包装的可销售净产品；这是参考交换。
 
-- 选定流：Woven fabrics of metal thread or metallized yarn n.e.c. `fc1c034a-6087-48d4-93ec-a57b94919068`
+- 选定流：金属线或金属化纱线编织物（未另列） `fc1c034a-6087-48d4-93ec-a57b94919068`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：实测可销售净质量，归一化至 1 kg 参考产品
 - 数值来源模式：前景记录（`foreground_record`）

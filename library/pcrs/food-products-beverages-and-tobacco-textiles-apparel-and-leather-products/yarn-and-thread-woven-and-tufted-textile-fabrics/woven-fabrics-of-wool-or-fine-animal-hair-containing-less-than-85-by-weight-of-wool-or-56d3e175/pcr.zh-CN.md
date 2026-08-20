@@ -38,7 +38,7 @@ status: candidate
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 1 kg |
-| 参考产品流 | Woven fabrics of wool or fine animal hair, containing less than 85% by weight of wool or fine animal hair `89be6289-db50-45f3-9a41-389357845e7f` |
+| 参考产品流 | 含羊毛或动物细毛重量少于85%的羊毛或动物细毛机织织物 `89be6289-db50-45f3-9a41-389357845e7f` |
 | 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | 质量单位组 `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | kg |
@@ -122,7 +122,7 @@ status: candidate
 
 当工艺水供应给现场浆纱、洗涤、染色、后整理、清洗或其他可归属于批次的制造工序时予以记录。
 
-- 选定流：Process Water `94a04f7e-2d5c-41f0-b182-d54a3b373a02`
+- 选定流：工艺用水 `94a04f7e-2d5c-41f0-b182-d54a3b373a02`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：归属于报告生产批次的前景记录工艺水质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -137,7 +137,7 @@ status: candidate
 
 记录供应给纱线准备、织造、现场后整理、检验和发运工序且归属于报告批次的中压电力。
 
-- 选定流：Electricity, medium voltage
+- 选定流：中压电力
 - 流属性/单位：Energy / kWh
 - 数量规则：归属于报告生产批次的前景计量或分配电力用量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -152,7 +152,7 @@ status: candidate
 
 当外购蒸汽跨越场址边界用于可归属于批次的湿加工、干燥、热定型或后整理时予以记录。
 
-- 选定流：Steam `293f9fd9-5182-4d35-8aa5-ce73d4f322b7`
+- 选定流：蒸汽 `293f9fd9-5182-4d35-8aa5-ce73d4f322b7`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：归属于报告生产批次的前景记录外购蒸汽质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -182,7 +182,7 @@ status: candidate
 
 当低密度聚乙烯薄膜用于包裹或保护发运织物时予以记录。
 
-- 选定流：Low-density polyethylene packaging film
+- 选定流：低密度聚乙烯包装膜
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：随报告批次供应的低密度聚乙烯包装膜前景记录质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -205,7 +205,7 @@ status: candidate
 
 合格工厂门机织织物是所有按批次归一化交换的定量参考。
 
-- 选定流：Woven fabrics of wool or fine animal hair, containing less than 85% by weight of wool or fine animal hair `89be6289-db50-45f3-9a41-389357845e7f`
+- 选定流：含羊毛或动物细毛重量少于85%的羊毛或动物细毛机织织物 `89be6289-db50-45f3-9a41-389357845e7f`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：在已声明调湿或含湿状态下的前景记录合格织物净质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -237,7 +237,7 @@ status: candidate
 
 当纺织湿加工废水离开现场湿加工工序，进入处理、排入下水道、在过程外回收或前往其他已声明去向时予以记录。
 
-- 选定流：Wastewater, textile wet processing, to water `a60031a7-ea29-49ef-b578-90de910fcf8e`
+- 选定流：废水，纺织品湿法加工，至水体 `a60031a7-ea29-49ef-b578-90de910fcf8e`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：归属于报告生产批次的前景记录废水质量
 - 数值来源模式：前景记录（`foreground_record`）

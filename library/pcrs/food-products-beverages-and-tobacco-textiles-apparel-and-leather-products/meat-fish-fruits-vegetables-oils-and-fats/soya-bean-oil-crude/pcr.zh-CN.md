@@ -43,7 +43,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 1 kg |
-| 参考产品流 | Soya bean oil, crude `6464d0d3-fb5d-4e46-bfb3-01327a3ddbd3` |
+| 参考产品流 | 粗豆油 `6464d0d3-fb5d-4e46-bfb3-01327a3ddbd3` |
 | 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | kg |
@@ -456,7 +456,7 @@ sync_with: pcr.en-US.md
 
 这是脱溶、冷却、已声明粗油整理、储存和装运准备后的定量参考输出。
 
-- 选定流：Soya bean oil, crude `6464d0d3-fb5d-4e46-bfb3-01327a3ddbd3`
+- 选定流：粗豆油 `6464d0d3-fb5d-4e46-bfb3-01327a3ddbd3`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：将实测净装运质量归一化为恰好 1 kg
 - 数值来源模式：计算值（`calculated_value`）

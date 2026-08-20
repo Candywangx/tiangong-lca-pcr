@@ -38,7 +38,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 1 kg |
-| 参考产品流 | Meat of sheep, fresh or chilled `f77c69e0-fe2f-421a-9f33-23b4a09bd9ba` |
+| 参考产品流 | 新鲜或冷藏的绵羊肉 `f77c69e0-fe2f-421a-9f33-23b4a09bd9ba` |
 | 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | kg |
@@ -117,7 +117,7 @@ sync_with: pcr.en-US.md
 
 动物饮水和待宰区清洗供水仅在本阶段计量。
 
-- 选定流：Process water
+- 选定流：过程用水
 - 流属性/单位：Volume / m3
 - 数量规则：计量或分配的待宰用水量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -132,7 +132,7 @@ sync_with: pcr.en-US.md
 
 卸载设备、通风、照明和阶段泵用电单独记录。
 
-- 选定流：Electricity, low voltage
+- 选定流：低压电力
 - 流属性/单位：Energy / kWh
 - 数量规则：分表计量或从总表有记录地分配
 - 数值来源模式：前景记录（`foreground_record`）
@@ -147,7 +147,7 @@ sync_with: pcr.en-US.md
 
 柴油仅在直接运营柴油设备或现场发电机时适用；只有文件证明不存在时才记为不适用。
 
-- 选定流：Diesel fuel
+- 选定流：柴油燃料
 - 流属性/单位：Mass or volume / kg or L
 - 数量规则：适用时本阶段计量或库存核对的柴油消耗
 - 数值来源模式：前景记录（`foreground_record`）
@@ -234,7 +234,7 @@ sync_with: pcr.en-US.md
 
 仅对前景设备燃烧的柴油计算直接化石二氧化碳。
 
-- 选定流：Carbon dioxide, fossil, to air
+- 选定流：化石源二氧化碳，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：根据核对柴油用量及有记录的碳含量或排放因子计算
 - 数值来源模式：计算值（`calculated_value`）
@@ -270,7 +270,7 @@ sync_with: pcr.en-US.md
 
 屠宰和胴体整理用水与待宰及清洗消毒用水分开计量。
 
-- 选定流：Process water
+- 选定流：过程用水
 - 流属性/单位：Volume / m3
 - 数量规则：计量或分配的屠宰工艺用水
 - 数值来源模式：前景记录（`foreground_record`）
@@ -285,7 +285,7 @@ sync_with: pcr.en-US.md
 
 致昏、提升、整理设备、抽风和泵用电仅在屠宰阶段记录。
 
-- 选定流：Electricity, low voltage
+- 选定流：低压电力
 - 流属性/单位：Energy / kWh
 - 数量规则：分表计量或从总表有记录地分配
 - 数值来源模式：前景记录（`foreground_record`）
@@ -300,7 +300,7 @@ sync_with: pcr.en-US.md
 
 外购蒸汽仅在实际供热系统适用时记录，并与热水和燃料分离。
 
-- 选定流：Purchased steam
+- 选定流：外购蒸汽
 - 流属性/单位：Mass or energy / kg or MJ
 - 数量规则：适用时屠宰使用的计量外购蒸汽
 - 数值来源模式：前景记录（`foreground_record`）
@@ -315,7 +315,7 @@ sync_with: pcr.en-US.md
 
 天然气仅在现场直接燃烧供热时适用，并与 LPG 分开核对。
 
-- 选定流：Natural gas
+- 选定流：天然气
 - 流属性/单位：Energy or volume / MJ or m3
 - 数量规则：适用时计量的屠宰天然气及声明热值
 - 数值来源模式：前景记录（`foreground_record`）
@@ -330,7 +330,7 @@ sync_with: pcr.en-US.md
 
 LPG 仅在直接燃烧供热时适用，并与天然气和蒸汽分开记录。
 
-- 选定流：Liquefied petroleum gas
+- 选定流：液化石油气
 - 流属性/单位：Mass / kg
 - 数量规则：适用时经库存核对的屠宰供热 LPG 消耗
 - 数值来源模式：前景记录（`foreground_record`）
@@ -507,7 +507,7 @@ LPG 仅在直接燃烧供热时适用，并与天然气和蒸汽分开记录。
 
 屠宰天然气燃烧的直接化石二氧化碳单独计算。
 
-- 选定流：Carbon dioxide, fossil, to air
+- 选定流：化石源二氧化碳，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：根据核对天然气用量及有记录的碳含量或排放因子计算
 - 数值来源模式：计算值（`calculated_value`）
@@ -522,7 +522,7 @@ LPG 仅在直接燃烧供热时适用，并与天然气和蒸汽分开记录。
 
 屠宰 LPG 燃烧的直接化石二氧化碳与天然气分开计算。
 
-- 选定流：Carbon dioxide, fossil, to air
+- 选定流：化石源二氧化碳，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：根据核对 LPG 用量及有记录的碳含量或排放因子计算
 - 数值来源模式：计算值（`calculated_value`）
@@ -558,7 +558,7 @@ LPG 仅在直接燃烧供热时适用，并与天然气和蒸汽分开记录。
 
 制冷、风机、控制和冷却室运行用电仅在本阶段记录。
 
-- 选定流：Electricity, low voltage
+- 选定流：低压电力
 - 流属性/单位：Energy / kWh
 - 数量规则：分表计量或有记录的制冷负荷分配
 - 数值来源模式：前景记录（`foreground_record`）
@@ -573,7 +573,7 @@ LPG 仅在直接燃烧供热时适用，并与天然气和蒸汽分开记录。
 
 氨制冷剂仅适用于 R-717 系统，并依据充注、采购、回收和维修记录核对。
 
-- 选定流：Ammonia refrigerant (R-717)
+- 选定流：氨制冷剂（R-717）
 - 流属性/单位：Mass / kg
 - 数量规则：适用时胴体冷却系统的 R-717 净补充量
 - 数值来源模式：计算值（`calculated_value`）
@@ -630,7 +630,7 @@ LPG 仅在直接燃烧供热时适用，并与天然气和蒸汽分开记录。
 
 氨制冷剂直接损失依据胴体冷却制冷剂平衡计算。
 
-- 选定流：Ammonia to air
+- 选定流：氨，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：分配给胴体冷却的未回收 R-717 损失计算值
 - 数值来源模式：计算值（`calculated_value`）
@@ -666,7 +666,7 @@ LPG 仅在直接燃烧供热时适用，并与天然气和蒸汽分开记录。
 
 分割区直接用水与清洗消毒用水分开计量。
 
-- 选定流：Process water
+- 选定流：过程用水
 - 流属性/单位：Volume / m3
 - 数量规则：计量或分配的分割阶段用水
 - 数值来源模式：前景记录（`foreground_record`）
@@ -681,7 +681,7 @@ LPG 仅在直接燃烧供热时适用，并与天然气和蒸汽分开记录。
 
 分割、去骨、输送、真空设备和包装用电在本阶段记录。
 
-- 选定流：Electricity, low voltage
+- 选定流：低压电力
 - 流属性/单位：Energy / kWh
 - 数量规则：分表计量或有记录的设备分配
 - 数值来源模式：前景记录（`foreground_record`）
@@ -841,7 +841,7 @@ LPG 仅在直接燃烧供热时适用，并与天然气和蒸汽分开记录。
 
 废低密度聚乙烯膜与纸板废物分开称重。
 
-- 选定流：Waste low-density polyethylene packaging film
+- 选定流：废低密度聚乙烯包装膜
 - 流属性/单位：Mass / kg
 - 数量规则：送往声明路线的废 LDPE 膜实测质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -879,7 +879,7 @@ LPG 仅在直接燃烧供热时适用，并与天然气和蒸汽分开记录。
 
 冷库、风机、控制和产品搬运用电与胴体冷却分开记录。
 
-- 选定流：Electricity, low voltage
+- 选定流：低压电力
 - 流属性/单位：Energy / kWh
 - 数量规则：工厂门冷藏分表计量或按时间和负荷分配的用电
 - 数值来源模式：前景记录（`foreground_record`）
@@ -894,7 +894,7 @@ LPG 仅在直接燃烧供热时适用，并与天然气和蒸汽分开记录。
 
 氨制冷剂仅适用于 R-717 冷藏系统，并与胴体冷却独立核对。
 
-- 选定流：Ammonia refrigerant (R-717)
+- 选定流：氨制冷剂（R-717）
 - 流属性/单位：Mass / kg
 - 数量规则：适用时分配给冷藏的 R-717 净补充量
 - 数值来源模式：计算值（`calculated_value`）
@@ -917,7 +917,7 @@ LPG 仅在直接燃烧供热时适用，并与天然气和蒸汽分开记录。
 
 这是在声明鲜或冷藏状态下从工厂门放行的净重合格绵羊肉。
 
-- 选定流：Meat of sheep, fresh or chilled `f77c69e0-fe2f-421a-9f33-23b4a09bd9ba`
+- 选定流：新鲜或冷藏的绵羊肉 `f77c69e0-fe2f-421a-9f33-23b4a09bd9ba`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：1 kg 净重参考输出
 - 数值来源模式：固定值（`fixed_value`）
@@ -950,7 +950,7 @@ LPG 仅在直接燃烧供热时适用，并与天然气和蒸汽分开记录。
 
 氨制冷剂直接损失依据冷藏系统的充注和维修记录计算。
 
-- 选定流：Ammonia to air
+- 选定流：氨，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：分配给冷藏的未回收 R-717 损失计算值
 - 数值来源模式：计算值（`calculated_value`）
@@ -971,7 +971,7 @@ LPG 仅在直接燃烧供热时适用，并与天然气和蒸汽分开记录。
 
 清洗消毒用水与各生产阶段工艺水分开计量。
 
-- 选定流：Process water
+- 选定流：过程用水
 - 流属性/单位：Volume / m3
 - 数量规则：声明生产期的清洗消毒计量用水
 - 数值来源模式：前景记录（`foreground_record`）
@@ -986,7 +986,7 @@ LPG 仅在直接燃烧供热时适用，并与天然气和蒸汽分开记录。
 
 清洗系统、筛分、泵送、曝气和污泥处理用电在本辅助过程记录。
 
-- 选定流：Electricity, low voltage
+- 选定流：低压电力
 - 流属性/单位：Energy / kWh
 - 数量规则：分表计量或有记录的设备分配
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1001,7 +1001,7 @@ LPG 仅在直接燃烧供热时适用，并与天然气和蒸汽分开记录。
 
 外购热水仅在外部供应时适用，并与蒸汽和直接燃烧燃料分离。
 
-- 选定流：Purchased hot water
+- 选定流：外购热水
 - 流属性/单位：Mass or energy / kg or MJ
 - 数量规则：适用时计量的外购热水及供回水温度
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1016,7 +1016,7 @@ LPG 仅在直接燃烧供热时适用，并与天然气和蒸汽分开记录。
 
 配方氢氧化钠清洗剂按产品质量和有效浓度记录，并与消毒剂分离。
 
-- 选定流：Sodium hydroxide cleaning solution
+- 选定流：氢氧化钠清洗液
 - 流属性/单位：Mass / kg formulated product
 - 数量规则：清洗剂实测领用质量减有记录的退回量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1031,7 +1031,7 @@ LPG 仅在直接燃烧供热时适用，并与天然气和蒸汽分开记录。
 
 配方过氧乙酸消毒剂与碱性清洗剂和其他化学品分开记录。
 
-- 选定流：Peracetic acid disinfectant
+- 选定流：过氧乙酸消毒剂
 - 流属性/单位：Mass / kg formulated product
 - 数量规则：消毒剂实测领用质量减有记录的退回量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1163,7 +1163,7 @@ LPG 仅在直接燃烧供热时适用，并与天然气和蒸汽分开记录。
 
 COD 仅对可归属于前景系统的监测最终排口作为独立水体排放报告。
 
-- 选定流：Chemical oxygen demand to water
+- 选定流：化学需氧量，排入水体
 - 流属性/单位：Mass / kg COD
 - 数量规则：根据最终出水实测体积和代表性 COD 浓度计算
 - 数值来源模式：计算值（`calculated_value`）

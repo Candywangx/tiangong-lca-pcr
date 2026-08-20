@@ -40,7 +40,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 1 |
-| 参考产品流 | Babies' garments and clothing accessories, knitted or crocheted `7a9f33f2-9426-425d-abcf-bc483460969b` |
+| 参考产品流 | 针织或钩编的婴儿外衣和服装服饰物品 `7a9f33f2-9426-425d-abcf-bc483460969b` |
 | 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | kg |
@@ -123,7 +123,7 @@ sync_with: pcr.en-US.md
 
 ###### 裁剪电力（`cutting_electricity_input`）
 
-- 选定流：Electricity, facility supply
+- 选定流：厂区供电
 - 流属性/单位：Energy / kWh
 - 数量规则：分表值，或按机器运行时间核对分配
 - 数值来源模式：前景记录（`foreground_record`）
@@ -208,7 +208,7 @@ sync_with: pcr.en-US.md
 
 ###### 缝纫线（`sewing_thread_input`）
 
-- 选定流：Sewing thread
+- 选定流：缝纫线
 - 流属性/单位：Mass / kg
 - 数量规则：领用线质量减有记录退库量；不同纤维或聚合物分开
 - 数值来源模式：前景记录（`foreground_record`）
@@ -280,7 +280,7 @@ sync_with: pcr.en-US.md
 
 ###### 组装电力（`assembly_electricity_input`）
 
-- 选定流：Electricity, facility supply
+- 选定流：厂区供电
 - 流属性/单位：Energy / kWh
 - 数量规则：分表值，或按设备运行时间核对分配
 - 数值来源模式：前景记录（`foreground_record`）
@@ -377,7 +377,7 @@ sync_with: pcr.en-US.md
 
 ###### 装饰电力（`decoration_electricity_input`）
 
-- 选定流：Electricity, facility supply
+- 选定流：厂区供电
 - 流属性/单位：Energy / kWh
 - 数量规则：分表值，或按刺绣、印花、闪蒸烘干和焙烘设备时间分配
 - 数值来源模式：前景记录（`foreground_record`）
@@ -461,7 +461,7 @@ sync_with: pcr.en-US.md
 
 ###### 工艺水（`process_water_input`）
 
-- 选定流：Process water
+- 选定流：过程用水
 - 流属性/单位：Volume / m3
 - 数量规则：分配至声明批次的计量进水；冷/常温补充水与热水分开
 - 数值来源模式：前景记录（`foreground_record`）
@@ -486,7 +486,7 @@ sync_with: pcr.en-US.md
 
 ###### 氯化钠（`sodium_chloride_input`）
 
-- 选定流：Sodium chloride
+- 选定流：氯化钠
 - 流属性/单位：Mass / kg
 - 数量规则：配方领用质量与批次单和库存变化核对；仅配方使用时适用
 - 数值来源模式：前景记录（`foreground_record`）
@@ -498,7 +498,7 @@ sync_with: pcr.en-US.md
 
 ###### 碳酸钠（`sodium_carbonate_input`）
 
-- 选定流：Sodium carbonate
+- 选定流：碳酸钠
 - 流属性/单位：Mass / kg
 - 数量规则：配方领用质量与批次单和库存变化核对；仅配方使用时适用
 - 数值来源模式：前景记录（`foreground_record`）
@@ -510,7 +510,7 @@ sync_with: pcr.en-US.md
 
 ###### 乙酸（`acetic_acid_input`）
 
-- 选定流：Acetic acid
+- 选定流：乙酸
 - 流属性/单位：Mass / kg
 - 数量规则：称量配方质量乘核实浓度得到活性乙酸质量；仅使用时适用
 - 数值来源模式：前景记录（`foreground_record`）
@@ -534,7 +534,7 @@ sync_with: pcr.en-US.md
 
 ###### 湿处理电力（`wet_finishing_electricity_input`）
 
-- 选定流：Electricity, facility supply
+- 选定流：厂区供电
 - 流属性/单位：Energy / kWh
 - 数量规则：分表值，或按洗涤、加药、脱水、烘干、焙烘、泵和处理设备时间核对分配
 - 数值来源模式：前景记录（`foreground_record`）
@@ -547,7 +547,7 @@ sync_with: pcr.en-US.md
 
 ###### 外购蒸汽（`purchased_steam_input`）
 
-- 选定流：Purchased steam
+- 选定流：外购蒸汽
 - 流属性/单位：Mass / kg
 - 数量规则：计量蒸汽并记录压力、温度和凝结水回收状态；与燃料和热水分开
 - 数值来源模式：前景记录（`foreground_record`）
@@ -559,7 +559,7 @@ sync_with: pcr.en-US.md
 
 ###### 天然气（`natural_gas_input`）
 
-- 选定流：Natural gas
+- 选定流：天然气
 - 流属性/单位：Volume / m3
 - 数量规则：计量消耗并声明热值依据；仅场内锅炉、烘干或焙烘设备使用时适用
 - 数值来源模式：前景记录（`foreground_record`）
@@ -571,7 +571,7 @@ sync_with: pcr.en-US.md
 
 ###### 柴油（`diesel_fuel_input`）
 
-- 选定流：Diesel fuel
+- 选定流：柴油燃料
 - 流属性/单位：Volume / L
 - 数量规则：计量或储罐差值，保留密度和热值；仅直接相关供热或备用发电适用
 - 数值来源模式：前景记录（`foreground_record`）
@@ -648,7 +648,7 @@ sync_with: pcr.en-US.md
 
 ###### 化石二氧化碳入空气（`fossil_co2_air_output`）
 
-- 选定流：Carbon dioxide, fossil, to air
+- 选定流：化石源二氧化碳，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：直接测量，或由天然气/柴油实测记录及有引用的适用因子计算；仅场内燃烧适用
 - 数值来源模式：前景记录（`foreground_record`）
@@ -703,7 +703,7 @@ sync_with: pcr.en-US.md
 
 ###### 最终整饰电力（`final_finishing_electricity_input`）
 
-- 选定流：Electricity, facility supply
+- 选定流：厂区供电
 - 流属性/单位：Energy / kWh
 - 数量规则：检验照明、熨烫、折叠和包装设备分表值或按运行时间核对分配
 - 数值来源模式：前景记录（`foreground_record`）
@@ -715,7 +715,7 @@ sync_with: pcr.en-US.md
 
 ###### 熨烫蒸汽（`pressing_steam_input`）
 
-- 选定流：Purchased steam
+- 选定流：外购蒸汽
 - 流属性/单位：Mass / kg
 - 数量规则：计量并记录压力、温度和凝结水回收状态；与电力和场内燃料分开
 - 数值来源模式：前景记录（`foreground_record`）
@@ -739,7 +739,7 @@ sync_with: pcr.en-US.md
 
 ###### 低密度聚乙烯成衣袋（`ldpe_bag_input`）
 
-- 选定流：Low-density polyethylene garment bag
+- 选定流：低密度聚乙烯服装袋
 - 流属性/单位：Mass / kg
 - 数量规则：件数乘经核实单件质量，含记录废品，并声明再生含量和膜厚
 - 数值来源模式：前景记录（`foreground_record`）
@@ -751,7 +751,7 @@ sync_with: pcr.en-US.md
 
 ###### 瓦楞纸板运输箱（`corrugated_carton_input`）
 
-- 选定流：Corrugated paperboard shipping carton
+- 选定流：瓦楞纸板运输箱
 - 流属性/单位：Mass / kg
 - 数量规则：箱数乘经核实单箱质量并按装箱件数分配；与单件包装分开
 - 数值来源模式：前景记录（`foreground_record`）
@@ -787,7 +787,7 @@ sync_with: pcr.en-US.md
 
 ###### 参考产品输出（`reference_product_output`）
 
-- 选定流：Babies' garments and clothing accessories, knitted or crocheted `7a9f33f2-9426-425d-abcf-bc483460969b`
+- 选定流：针织或钩编的婴儿外衣和服装服饰物品 `7a9f33f2-9426-425d-abcf-bc483460969b`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：调湿后正好 1 kg 合格产品净质量，不含运输包装
 - 数值来源模式：固定值（`fixed_value`）
@@ -801,7 +801,7 @@ sync_with: pcr.en-US.md
 
 ###### 废瓦楞纸板（`waste_paperboard_output`）
 
-- 选定流：Waste corrugated paperboard
+- 选定流：废瓦楞纸板
 - 流属性/单位：Mass / kg
 - 数量规则：按去向称量损坏纸箱和包装边角料，与排料纸分开
 - 数值来源模式：前景记录（`foreground_record`）
@@ -813,7 +813,7 @@ sync_with: pcr.en-US.md
 
 ###### 废低密度聚乙烯薄膜（`waste_ldpe_film_output`）
 
-- 选定流：Waste low-density polyethylene film
+- 选定流：废低密度聚乙烯薄膜
 - 流属性/单位：Mass / kg
 - 数量规则：按去向称量废袋和膜边角料，与纸板废物分开
 - 数值来源模式：前景记录（`foreground_record`）

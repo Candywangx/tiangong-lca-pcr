@@ -40,7 +40,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 1 kg |
-| 参考产品流 | Crustaceans, otherwise prepared or preserved `d844fbf5-2247-4c2d-8071-7dab57ad8c77` |
+| 参考产品流 | 甲壳类动物，以其他方式制备或保存 `d844fbf5-2247-4c2d-8071-7dab57ad8c77` |
 | 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | kg |
@@ -631,7 +631,7 @@ sync_with: pcr.en-US.md
 
 该流为定量参考。已放行批次必须具备全部必需限定信息，并通过已声明的放行规格。
 
-- 选定流：Crustaceans, otherwise prepared or preserved `d844fbf5-2247-4c2d-8071-7dab57ad8c77`
+- 选定流：甲壳类动物，以其他方式制备或保存 `d844fbf5-2247-4c2d-8071-7dab57ad8c77`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：1 kg 已放行净产品
 - 数值来源模式：固定值（`fixed_value`）

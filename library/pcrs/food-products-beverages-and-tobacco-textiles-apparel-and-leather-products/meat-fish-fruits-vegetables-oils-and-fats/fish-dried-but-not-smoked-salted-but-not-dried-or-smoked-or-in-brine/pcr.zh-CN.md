@@ -38,7 +38,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 1 kg 产品净质量 |
-| 参考产品流 | Fish, dried but not smoked, salted but not dried or smoked, or in brine `39347f84-4a1d-414b-89f0-746f31b01aa6` |
+| 参考产品流 | 鱼，干制，但未熏制，腌制，但未干制或熏制，或盐水鱼 `39347f84-4a1d-414b-89f0-746f31b01aa6` |
 | 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | kg |
@@ -564,7 +564,7 @@ sync_with: pcr.en-US.md
 
 合格包装产品是所有归一化前景数量的定量参考。
 
-- 选定流：Fish, dried but not smoked, salted but not dried or smoked, or in brine `39347f84-4a1d-414b-89f0-746f31b01aa6`
+- 选定流：鱼，干制，但未熏制，腌制，但未干制或熏制，或盐水鱼 `39347f84-4a1d-414b-89f0-746f31b01aa6`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：恰好 1 kg 产品净质量，不含包装
 - 数值来源模式：固定值（`fixed_value`）

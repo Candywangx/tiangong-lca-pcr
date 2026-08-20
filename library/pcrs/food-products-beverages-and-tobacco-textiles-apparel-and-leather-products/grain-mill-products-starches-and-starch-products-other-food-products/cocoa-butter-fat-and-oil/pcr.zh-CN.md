@@ -42,7 +42,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 1 kg |
-| 参考产品流 | Cocoa butter, fat and oil `402dbf23-610a-4be9-a34f-333ec03580a9` |
+| 参考产品流 | 脂状或油状的可可脂 `402dbf23-610a-4be9-a34f-333ec03580a9` |
 | 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | kg |
@@ -308,7 +308,7 @@ sync_with: pcr.en-US.md
 
 记录转入后处理、尚未计入后处理损失的已回收可可脂。
 
-- 选定流：Cocoa butter, fat and oil `402dbf23-610a-4be9-a34f-333ec03580a9`
+- 选定流：脂状或油状的可可脂 `402dbf23-610a-4be9-a34f-333ec03580a9`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：转入后处理的粗制或压榨可可脂实测质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -376,7 +376,7 @@ sync_with: pcr.en-US.md
 
 记录进入过滤、调质、可选脱臭或精炼、储存和放行的粗制或压榨可可脂。
 
-- 选定流：Cocoa butter, fat and oil `402dbf23-610a-4be9-a34f-333ec03580a9`
+- 选定流：脂状或油状的可可脂 `402dbf23-610a-4be9-a34f-333ec03580a9`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：进入后处理的可可脂实测质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -477,7 +477,7 @@ sync_with: pcr.en-US.md
 
 这是本 PCR 在已声明发运状态下的参考产品，应带有全部必需限定信息。
 
-- 选定流：Cocoa butter, fat and oil `402dbf23-610a-4be9-a34f-333ec03580a9`
+- 选定流：脂状或油状的可可脂 `402dbf23-610a-4be9-a34f-333ec03580a9`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：后处理损失之后且容器皮重之前的产品净质量固定为 1 kg
 - 数值来源模式：固定值（`fixed_value`）

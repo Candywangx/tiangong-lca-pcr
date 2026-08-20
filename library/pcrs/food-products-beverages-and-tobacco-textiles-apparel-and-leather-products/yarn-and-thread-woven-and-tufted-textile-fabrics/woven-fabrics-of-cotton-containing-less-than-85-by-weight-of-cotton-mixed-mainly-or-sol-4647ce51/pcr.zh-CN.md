@@ -42,7 +42,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 1 |
-| 参考产品流 | Woven fabrics of cotton, containing less than 85% by weight of cotton, mixed mainly or solely with man-made fibres `a8f7d2d4-e619-4ae6-8f76-0557229851b7` |
+| 参考产品流 | 含棉重量低于85%的、主要或仅仅与人造纤维混纺的棉机织织物 `a8f7d2d4-e619-4ae6-8f76-0557229851b7` |
 | 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | kg |
@@ -149,7 +149,7 @@ sync_with: pcr.en-US.md
 
 记录络筒、整经、上浆、泵、控制和可归属车间调湿的计量或分配电力。
 
-- 选定流：Electricity, supplied
+- 选定流：外购电力
 - 流属性/单位：Energy / kWh
 - 数量规则：计量电力或按物理关系分配的分表总量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -224,7 +224,7 @@ sync_with: pcr.en-US.md
 
 记录织机、压缩空气、控制、物料搬运和可归属调湿用电。
 
-- 选定流：Electricity, supplied
+- 选定流：外购电力
 - 流属性/单位：Energy / kWh
 - 数量规则：计量电力或按物理关系分配的分表总量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -322,7 +322,7 @@ sync_with: pcr.en-US.md
 
 记录通过所声明结构和外观验收要求的织物。
 
-- 选定流：Woven fabrics of cotton, containing less than 85% by weight of cotton, mixed mainly or solely with man-made fibres `a8f7d2d4-e619-4ae6-8f76-0557229851b7`
+- 选定流：含棉重量低于85%的、主要或仅仅与人造纤维混纺的棉机织织物 `a8f7d2d4-e619-4ae6-8f76-0557229851b7`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：实测验收织物产出
 - 数值来源模式：前景记录（`foreground_record`）
@@ -374,7 +374,7 @@ sync_with: pcr.en-US.md
 
 分别记录洗涤、退浆、煮练、漂白、丝光、漂洗和设备清洗的供水、回用水和循环水。
 
-- 选定流：Process water
+- 选定流：过程用水
 - 流属性/单位：Volume / m3
 - 数量规则：实测供水减去返回同一过程的实测内部回用水
 - 数值来源模式：前景记录（`foreground_record`）
@@ -404,7 +404,7 @@ sync_with: pcr.en-US.md
 
 将前处理路线使用的外购蒸汽与电力、外购热量和现场燃料分开记录。
 
-- 选定流：Purchased steam
+- 选定流：外购蒸汽
 - 流属性/单位：Energy / MJ
 - 数量规则：计量蒸汽能量，或按有记录的供应状态将蒸汽质量换算为能量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -419,7 +419,7 @@ sync_with: pcr.en-US.md
 
 将前处理路线使用的外购电力作为一个独立交换记录。
 
-- 选定流：Electricity, supplied
+- 选定流：外购电力
 - 流属性/单位：Energy / kWh
 - 数量规则：计量电力或按物理关系分配的电力
 - 数值来源模式：前景记录（`foreground_record`）
@@ -442,7 +442,7 @@ sync_with: pcr.en-US.md
 
 记录转入着色、整理或销售的织物，并声明已完成的前处理工序。
 
-- 选定流：Woven fabrics of cotton, containing less than 85% by weight of cotton, mixed mainly or solely with man-made fibres `a8f7d2d4-e619-4ae6-8f76-0557229851b7`
+- 选定流：含棉重量低于85%的、主要或仅仅与人造纤维混纺的棉机织织物 `a8f7d2d4-e619-4ae6-8f76-0557229851b7`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：实测验收产出质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -510,7 +510,7 @@ sync_with: pcr.en-US.md
 
 分别记录配液、洗涤、漂洗、浆料制备和设备清洗的供水、回用水和循环水。
 
-- 选定流：Process water
+- 选定流：过程用水
 - 流属性/单位：Volume / m3
 - 数量规则：实测供水减去返回同一过程的实测内部回用水
 - 数值来源模式：前景记录（`foreground_record`）
@@ -525,7 +525,7 @@ sync_with: pcr.en-US.md
 
 将着色路线使用的外购蒸汽与电力、外购热量和现场燃料分开记录。
 
-- 选定流：Purchased steam
+- 选定流：外购蒸汽
 - 流属性/单位：Energy / MJ
 - 数量规则：计量蒸汽能量，或按有记录的供应状态将蒸汽质量换算为能量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -540,7 +540,7 @@ sync_with: pcr.en-US.md
 
 将着色路线使用的外购电力作为一个独立交换记录。
 
-- 选定流：Electricity, supplied
+- 选定流：外购电力
 - 流属性/单位：Energy / kWh
 - 数量规则：计量电力或按物理关系分配的电力
 - 数值来源模式：前景记录（`foreground_record`）
@@ -563,7 +563,7 @@ sync_with: pcr.en-US.md
 
 记录满足所声明颜色或印花验收规格的织物。
 
-- 选定流：Woven fabrics of cotton, containing less than 85% by weight of cotton, mixed mainly or solely with man-made fibres `a8f7d2d4-e619-4ae6-8f76-0557229851b7`
+- 选定流：含棉重量低于85%的、主要或仅仅与人造纤维混纺的棉机织织物 `a8f7d2d4-e619-4ae6-8f76-0557229851b7`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：实测验收着色织物产出
 - 数值来源模式：前景记录（`foreground_record`）
@@ -631,7 +631,7 @@ sync_with: pcr.en-US.md
 
 将整理、干燥、焙烘或热定形使用的外购蒸汽与电力、外购热量和现场燃料分开记录。
 
-- 选定流：Purchased steam
+- 选定流：外购蒸汽
 - 流属性/单位：Energy / MJ
 - 数量规则：计量蒸汽能量，或按有记录的供应状态将蒸汽质量换算为能量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -646,7 +646,7 @@ sync_with: pcr.en-US.md
 
 将整理、干燥、焙烘或热定形使用的外购电力作为一个独立交换记录。
 
-- 选定流：Electricity, supplied
+- 选定流：外购电力
 - 流属性/单位：Energy / kWh
 - 数量规则：计量电力或按物理关系分配的电力
 - 数值来源模式：前景记录（`foreground_record`）
@@ -669,7 +669,7 @@ sync_with: pcr.en-US.md
 
 记录满足所声明组成、结构、颜色和整理验收规格的可售织物。
 
-- 选定流：Woven fabrics of cotton, containing less than 85% by weight of cotton, mixed mainly or solely with man-made fibres `a8f7d2d4-e619-4ae6-8f76-0557229851b7`
+- 选定流：含棉重量低于85%的、主要或仅仅与人造纤维混纺的棉机织织物 `a8f7d2d4-e619-4ae6-8f76-0557229851b7`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：1 kg 归一化参考产品产出
 - 数值来源模式：固定值（`fixed_value`）
@@ -723,7 +723,7 @@ sync_with: pcr.en-US.md
 
 将厂内废水处理使用的电力作为一个独立交换记录，共享处理仅按可归属的纺织废水负荷分配。
 
-- 选定流：Electricity, supplied
+- 选定流：外购电力
 - 流属性/单位：Energy / kWh
 - 数量规则：计量电力按物理关系分配至处理废水
 - 数值来源模式：前景记录（`foreground_record`）

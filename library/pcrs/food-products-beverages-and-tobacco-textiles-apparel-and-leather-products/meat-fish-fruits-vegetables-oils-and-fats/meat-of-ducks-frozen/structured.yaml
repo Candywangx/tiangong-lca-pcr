@@ -1,10 +1,1097 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "21142"
-  title: "Meat of ducks, frozen"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.food-products-beverages-and-tobacco-textiles-apparel-and-leather-products.meat-fish-fruits-vegetables-oils-and-fats.meat-of-ducks-frozen"
+  classification_refs: "CPC 3.0 21142, Meat of ducks, frozen"
+  covered_products: "Packaged, frozen, skin-on and bone-in cut-up meat from domesticated Pekin ducks, produced by the declared route"
+  excluded_products: "Fresh or chilled duck meat; frozen whole ducks; boneless-only or skinless-only cuts; mechanically separated meat; edible offal and fatty liver; cooked, seasoned, smoked, or otherwise prepared duck; products whose principal freezing technology is not air-blast freezing"
+  representative_product: "One commingled saleable production batch of skin-on, bone-in frozen duck cuts; the batch composition by named cut is reported and is not averaged with whole ducks or offal"
+  production_route: "Live-duck receiving → stunning and bleeding → scalding and defeathering → evisceration and washing → immersion-water chilling and draining → mechanical cut-up → packaging → R717 ammonia air-blast freezing → frozen storage → factory-gate dispatch; screened dissolved-air-flotation wastewater pretreatment is included"
+  market_state: "Packaged frozen food at the producer's frozen-store dispatch point"
+functional_unit:
+  what: "Packaged, frozen, skin-on and bone-in cut-up meat from Pekin ducks, with the mass share of each named cut disclosed"
+  how_much: "1,000 kg net product mass, excluding packaging"
+  how_well: "Wholesome saleable cuts from the locked route; product thermal centre at or below -18 °C after thermal stabilisation; package and cut composition conform to the declared specification"
+  how_long_or_cycle: "One reporting-period production batch through frozen-store dispatch; frozen-storage residence time is separately reported in tonne-days"
+  reference_flow_link: "Factory-gate output of air_blast_freeze_store"
+system_boundary:
+  rules:
+    - rule_id: sb_route_lock
+      applies_to: "Declared route"
+      rule: "Model only the declared Pekin-duck, immersion-chilled, skin-on bone-in cut-up, air-blast-frozen route; do not average whole ducks, individual cuts, offal, or other freezing technologies into the reference product."
+      source_ids:
+        - unsd-cpc-3-2025
+        - fao-slaughterhouses-poultry
+    - rule_id: sb_foreground_extent
+      applies_to: "Foreground system"
+      rule: "Include receiving through frozen-store dispatch plus on-site screening and dissolved-air-flotation pretreatment; treat farming, supplied materials and energy, off-site treatment, distribution, retail, and use as linked processes."
+      source_ids:
+        - fao-slaughterhouses-poultry
+        - ec-pef-2021
+    - rule_id: sb_upstream_link
+      applies_to: "Purchased inputs"
+      rule: "Every purchased product input shall link to a non-recursive upstream dataset with geography, technology, and time representativeness disclosed."
+      source_ids:
+        - ec-pef-2021
+    - rule_id: sb_atomic_utilities
+      applies_to: "All foreground exchanges"
+      rule: "Record electricity, steam, process water, packaging materials, treatment chemical, wastewater, individual solid residues, and refrigerant emission as separate atomic flows; aggregated utility, waste, or emission placeholders are forbidden."
+      source_ids:
+        - fao-slaughterhouses-poultry
+        - ec-pef-2021
+    - rule_id: sb_temperature
+      applies_to: "Chilling, freezing and storage"
+      rule: "Separate immersion chilling, air-blast freezing, and frozen storage and retain their respective water, energy, temperature, and time evidence."
+      source_ids:
+        - fao-who-cxc-8-1976
+boundary_abstraction:
+  declared_starting_condition: "Live, farm-raised Pekin ducks delivered at the slaughterhouse receiving point"
+  starting_condition_role: "Purchased product input to the foreground system"
+  product_classification_scope: "CPC 3.0 21142 only for the reference output; live ducks and other purchased products retain their own classifications"
+  recursive_input_rule: "A frozen-duck-meat input of the same category is prohibited in this route. If rework from the same batch occurs, record it as an internal loop without duplicating upstream burden; externally purchased frozen duck is outside applicability."
+  upstream_dataset_requirement: "Link live ducks, packaging, electricity, steam, water, ferric chloride, refrigerant replacement, and off-site treatment to independently documented upstream datasets; do not replace them with another CPC 21142 process."
+  disclosure: "Report strain, live-weight basis, cut specification and mass shares, freezing equipment, refrigerant, storage temperature and tonne-days, wastewater destination, geography, year, allocation results, and all departures from this route."
+reference_flow_definition:
+  reference_amount: "1,000 kg"
+  product_flow_ref:
+    name: "Meat of ducks, frozen"
+    uuid: "658e0f63-44f8-4e3e-aeef-ccf1ab20a13f"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "species/strain: Pekin duck"
+    - "form: cut-up parts"
+    - "skin: on"
+    - "bone: in"
+    - "freezing technology: air-blast"
+    - "refrigerant: R717 ammonia"
+    - "net product mass"
+    - "named-cut mass composition"
+    - "package format"
+    - "product thermal-centre temperature"
+    - "frozen-storage duration"
+    - "plant geography"
+    - "reporting year"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "Reference product and all material product outputs"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Use calibrated scales; report net frozen product mass without packaging and normalize to 1,000 kg."
+  - id: live_and_output_mass
+    applies_to: "Live ducks, carcasses, cuts, offal, blood, feathers, trimmings, rejects, and treatment solids"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Record wet mass at the point each flow crosses its process boundary; do not infer duck-specific yields from generic poultry percentages."
+  - id: water_and_wastewater
+    applies_to: "Process water and wastewater"
+    required_property_ref:
+      name: "Volume and, where available, mass"
+      uuid: ""
+    required_unit: "m3 and kg"
+    rule: "Meter volume; use measured density for mass conversion, or disclose the water-density assumption and keep concentration records on the same volume basis."
+  - id: energy
+    applies_to: "Purchased electricity and steam"
+    required_property_ref:
+      name: "Energy; steam mass and state"
+      uuid: ""
+    required_unit: "kWh; MJ; kg"
+    rule: "Use submetered consumption where possible. For steam, record delivered mass, pressure/temperature or enthalpy, condensate return, and calculate net energy consistently."
+  - id: temperature
+    applies_to: "Chilling, air-blast freezing, and frozen storage"
+    required_property_ref:
+      name: "Temperature and time"
+      uuid: ""
+    required_unit: "°C; h"
+    rule: "Use calibrated product-core and room sensors. Demonstrate that quick freezing is completed only after the thermal centre reaches no warmer than -18 °C after stabilisation."
+  - id: storage_service
+    applies_to: "Frozen storage"
+    required_property_ref:
+      name: "Mass × time"
+      uuid: ""
+    required_unit: "tonne-day"
+    rule: "Calculate daily average stored net product mass multiplied by residence days; report storage electricity separately from freezing electricity."
+  - id: packaging_mass
+    applies_to: "Polymer bags and corrugated cartons"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Record packaging issued less verified unused returns; report product-contact film and corrugated board separately."
+process_map:
+  - id: slaughter_dress_chill
+    name: "Slaughter, dressing, washing, and immersion chilling"
+    inclusion: "required"
+    inclusion_condition: "Always"
+    role: "Converts received live ducks to drained chilled dressed carcasses and segregated residuals"
+    quantitative_reference: "kg drained chilled dressed carcass"
+  - id: cut_pack
+    name: "Mechanical cut-up and packaging"
+    inclusion: "required"
+    inclusion_condition: "Always"
+    role: "Produces the declared saleable cut mix and package"
+    quantitative_reference: "kg packed unfrozen cut-up parts"
+  - id: air_blast_freeze_store
+    name: "Air-blast freezing and frozen storage"
+    inclusion: "required"
+    inclusion_condition: "Always"
+    role: "Freezes the packaged cut mix, stores it, and supplies the reference flow"
+    quantitative_reference: "1,000 kg net frozen duck cuts"
+  - id: wastewater_pretreatment
+    name: "Screening and dissolved-air-flotation pretreatment"
+    inclusion: "required"
+    inclusion_condition: "Always for this route"
+    role: "Pretreats combined route wastewater before off-site treatment or permitted discharge"
+    quantitative_reference: "m3 raw wastewater treated"
+process_inventory:
+  - id: slaughter_dress_chill
+    label: "Slaughter, dressing, washing, and immersion chilling"
+    inputs:
+      product:
+        - row_id: live_ducks
+          role: "Live Pekin ducks"
+          name: "Live Pekin ducks ``"
+          flow_type: "product"
+          property_unit: "Mass / kg live weight"
+          description: "Received live Pekin ducks are the sole animal input to the locked route."
+          amount:
+            expression: "Weigh accepted birds at plant receiving, net of transport crates and dead-on-arrival birds"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per 1,000 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_live_mass
+              source_ids:
+                - fao-slaughterhouses-poultry
+            ranges:
+              - role: default_estimate
+                lower: "1500"
+                upper: "2200"
+                unit: "kg live weight"
+                basis: "per 1,000 kg reference product"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: slaughter_electricity
+          role: "Purchased electricity for slaughter and chilling"
+          name: "Purchased grid electricity ``"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Electricity used by receiving, slaughter, defeathering, evisceration, pumps, washing, and chilling is recorded separately."
+          amount:
+            expression: "Submetered use for this process, with justified allocation of shared loads"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg drained chilled dressed carcass output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_utility_meters
+              source_ids: []
+            ranges: []
+        - row_id: slaughter_steam
+          role: "Purchased steam for scalding and sanitation"
+          name: "Purchased steam ``"
+          flow_type: "product"
+          property_unit: "Mass and energy / kg and MJ"
+          description: "Purchased steam crossing the plant boundary for scalding and process sanitation is recorded as its own energy carrier."
+          amount:
+            expression: "Meter delivered steam and calculate net energy from measured state and condensate return"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per kg drained chilled dressed carcass output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_water_steam
+              source_ids: []
+            ranges: []
+        - row_id: slaughter_process_water
+          role: "Potable process water for scalding, washing, and chilling"
+          name: "Potable process water ``"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "Potable process water supplied to scalding, carcass washing, equipment cleaning, and immersion chilling is measured as a product input."
+          amount:
+            expression: "Meter net process-water withdrawal assigned to this process; exclude sanitary and office water"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg drained chilled dressed carcass output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water_steam
+              source_ids:
+                - fao-slaughterhouses-poultry
+            ranges:
+              - role: default_estimate
+                lower: "1"
+                upper: "10"
+                unit: "m3"
+                basis: "per 1,000 kg reference product"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: chilled_dressed_carcasses
+          role: "Drained chilled dressed duck carcasses"
+          name: "Chilled dressed Pekin duck carcasses ``"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Drained chilled dressed carcasses transferred to cut-up are weighed before cutting and are not the reference product."
+          amount:
+            expression: "Weigh after immersion chilling and standardized drain time, before cut-up"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per kg drained chilled dressed carcass output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_output_mass
+              source_ids:
+                - fao-slaughterhouses-poultry
+            ranges: []
+        - row_id: edible_offal
+          role: "Segregated edible duck offal"
+          name: "Edible duck offal ``"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Edible hearts, livers, gizzards, or other declared edible organs recovered for sale are recorded as a separate co-product and never included in frozen-cut mass."
+          amount:
+            expression: "Weigh each marketed edible-offal stream; record zero only with production evidence"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg drained chilled dressed carcass output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_output_mass
+              source_ids:
+                - fao-slaughterhouses-poultry
+            ranges: []
+        - row_id: recovered_blood
+          role: "Segregated duck blood for recovery"
+          name: "Recovered duck blood ``"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Blood deliberately collected for rendering or another beneficial use is an individual co-product; blood sent to treatment is not relabelled as this flow."
+          amount:
+            expression: "Weigh or calculate from tank level and measured density at collection"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per kg drained chilled dressed carcass output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_output_mass
+              source_ids:
+                - mozhiarasi-natarajan-2022
+            ranges: []
+        - row_id: recovered_feathers
+          role: "Segregated duck feathers for recovery"
+          name: "Recovered duck feathers ``"
+          flow_type: "product"
+          property_unit: "Mass / kg wet feathers"
+          description: "Feathers segregated for rendering or material recovery are recorded apart from other slaughter solids."
+          amount:
+            expression: "Weigh wet feathers at dispatch and record moisture basis if available"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg drained chilled dressed carcass output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_output_mass
+              source_ids:
+                - mozhiarasi-natarajan-2022
+            ranges: []
+      waste:
+        - row_id: inedible_slaughter_solids
+          role: "Inedible slaughter solids"
+          name: "Inedible duck slaughter solids ``"
+          flow_type: "waste"
+          property_unit: "Mass / kg wet waste"
+          description: "Heads, feet, inedible viscera, condemned material, and other non-recovered slaughter solids are measured as one specifically defined waste stream, excluding blood and feathers already segregated."
+          amount:
+            expression: "Weigh waste dispatched by destination, net of container tare"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg drained chilled dressed carcass output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_mass
+              source_ids:
+                - fao-slaughterhouses-poultry
+                - mozhiarasi-natarajan-2022
+            ranges: []
+        - row_id: slaughter_wastewater
+          role: "Raw slaughter and chilling wastewater"
+          name: "Raw slaughter and chilling wastewater ``"
+          flow_type: "waste"
+          property_unit: "Volume / m3"
+          description: "Combined effluent from scalding, carcass washing, equipment cleaning, and immersion chilling is measured before mixing with cut-up or freezing wastewater."
+          amount:
+            expression: "Meter transfer volume to wastewater pretreatment and retain flow-proportional samples"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg drained chilled dressed carcass output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wastewater
+              source_ids:
+                - fao-slaughterhouses-poultry
+                - mozhiarasi-natarajan-2022
+            ranges: []
+      elementary:
+        []
+  - id: cut_pack
+    label: "Mechanical cut-up and packaging"
+    inputs:
+      product:
+        - row_id: cutting_carcasses
+          role: "Chilled dressed duck carcasses for cut-up"
+          name: "Chilled dressed Pekin duck carcasses ``"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "The measured carcass output from slaughter is the only animal-material input to cut-up."
+          amount:
+            expression: "Equal the transferred chilled_dressed_carcasses mass after documented transfer loss or gain"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per kg packed unfrozen cut-up parts output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_output_mass
+              source_ids: []
+            ranges: []
+        - row_id: polymer_bags
+          role: "Polymer product-contact bags"
+          name: "Polymer packaging film ``"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Primary polymer bags or liners touching the duck cuts are measured separately from corrugated cartons."
+          amount:
+            expression: "Packaging issued less verified unused returns, reconciled to packed units"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per kg packed unfrozen cut-up parts output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging
+              source_ids: []
+            ranges: []
+        - row_id: corrugated_cartons
+          role: "Corrugated transport cartons"
+          name: "Corrugated board cartons ``"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Corrugated cartons used to dispatch the frozen product are recorded as a distinct packaging input."
+          amount:
+            expression: "Cartons issued less verified unused returns multiplied by measured or supplier-declared unit mass"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per kg packed unfrozen cut-up parts output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging
+              source_ids: []
+            ranges: []
+        - row_id: cut_pack_electricity
+          role: "Purchased electricity for cutting and packaging"
+          name: "Purchased grid electricity ``"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Electricity for conveyors, saws, cutters, scales, sealers, and local refrigeration is measured for cut-up and packaging."
+          amount:
+            expression: "Submetered use for this process, with justified allocation of shared loads"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg packed unfrozen cut-up parts output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_utility_meters
+              source_ids: []
+            ranges: []
+        - row_id: cut_pack_process_water
+          role: "Potable water for cut-up and freezer-area sanitation"
+          name: "Potable process water ``"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "Potable water used to wash cut-up equipment, food-contact surfaces, and the adjacent freezer loading area is measured separately from slaughter and chilling water."
+          amount:
+            expression: "Meter net sanitation-water withdrawal assigned to cut-up, packaging, and freezer loading; exclude sanitary and office water"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg packed unfrozen cut-up parts output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water_steam
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: packed_unfrozen_cuts
+          role: "Packed unfrozen skin-on bone-in duck cuts"
+          name: "Packed unfrozen skin-on bone-in duck cuts ``"
+          flow_type: "product"
+          property_unit: "Mass / kg net product"
+          description: "The full declared saleable cut mix is weighed after packaging and before freezing; each named cut's mass share remains in batch records."
+          amount:
+            expression: "Sum net packed-unit product masses and reconcile to named-cut batch totals"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per kg packed unfrozen cut-up parts output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_output_mass
+              source_ids: []
+            ranges: []
+        - row_id: recovered_cut_trimmings
+          role: "Recovered duck cut trimmings and bones"
+          name: "Recovered duck cut trimmings and bones ``"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Trimmings and bones intentionally recovered for food, feed, or rendering are a separate co-product and are not counted in saleable cut mass."
+          amount:
+            expression: "Weigh each recovered stream at transfer or dispatch and record intended destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg packed unfrozen cut-up parts output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_output_mass
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: packaging_scrap
+          role: "Cut-up packaging scrap"
+          name: "Duck-meat packaging scrap ``"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Rejected film, bags, liners, and cartons generated during packaging are weighed by material and destination."
+          amount:
+            expression: "Weigh separately as polymer and corrugated fractions; aggregate only after retaining material fields"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg packed unfrozen cut-up parts output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_mass
+              source_ids: []
+            ranges: []
+        - row_id: cut_pack_wastewater
+          role: "Raw cut-up and sanitation wastewater"
+          name: "Raw cut-up and sanitation wastewater ``"
+          flow_type: "waste"
+          property_unit: "Volume / m3"
+          description: "Effluent from cut-up equipment, food-contact surfaces, packaging-area cleaning, and freezer loading-area washdown is measured before joining slaughter wastewater."
+          amount:
+            expression: "Meter transfer volume to combined wastewater pretreatment and retain flow-proportional samples"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg packed unfrozen cut-up parts output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wastewater
+              source_ids: []
+            ranges: []
+      elementary:
+        []
+  - id: air_blast_freeze_store
+    label: "Air-blast freezing and frozen storage"
+    inputs:
+      product:
+        - row_id: freezing_feed
+          role: "Packed unfrozen duck cuts for freezing"
+          name: "Packed unfrozen skin-on bone-in duck cuts ``"
+          flow_type: "product"
+          property_unit: "Mass / kg net product"
+          description: "Packed unfrozen cuts from the declared cut-up batch are the sole product feed to the air-blast freezer."
+          amount:
+            expression: "Equal transferred packed_unfrozen_cuts net mass after documented transfer discrepancy"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per 1,000 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_output_mass
+              source_ids: []
+            ranges: []
+        - row_id: freezing_electricity
+          role: "Purchased electricity for air-blast freezing"
+          name: "Purchased grid electricity ``"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Electricity for the air-blast freezer, evaporator fans, pumps, and attributable compressors is isolated from storage electricity."
+          amount:
+            expression: "Submeter the freezing campaign from loaded start through product thermal stabilisation"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_utility_meters
+              source_ids:
+                - fao-who-cxc-8-1976
+            ranges: []
+        - row_id: storage_electricity
+          role: "Purchased electricity for frozen storage"
+          name: "Purchased grid electricity ``"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Frozen-store electricity is recorded separately and related to the actual mass-time storage service."
+          amount:
+            expression: "Submeter frozen storage and allocate by daily tonne-days when multiple products share the room"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per tonne-day of reference product storage"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_utility_meters
+              source_ids:
+                - fao-who-cxc-8-1976
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: frozen_duck_cuts
+          role: "Frozen duck cuts at factory gate"
+          name: "Meat of ducks, frozen"
+          flow_type: "product"
+          flow_ref:
+            uuid: "658e0f63-44f8-4e3e-aeef-ccf1ab20a13f"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This is the reference product: the declared packaged cut mix after air-blast freezing and frozen storage."
+          amount:
+            expression: "Fixed reference amount of 1,000 kg net frozen product, excluding packaging"
+            value_mode: "fixed_value"
+            specificity: "product_specific"
+            basis:
+              text: "1,000 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "identity_reference"
+              collection_protocol_id: cp_output_mass
+              source_ids:
+                - unsd-cpc-3-2025
+                - fao-who-cxc-8-1976
+            ranges: []
+      waste:
+        - row_id: rejected_frozen_product
+          role: "Rejected frozen duck product"
+          name: "Rejected frozen duck product ``"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Frozen packages rejected after freezing or storage are measured separately from saleable output and assigned their actual destination."
+          amount:
+            expression: "Weigh rejected net product by reason and destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_mass
+              source_ids: []
+            ranges: []
+      elementary:
+        - row_id: refrigerant_to_air
+          role: "R717 ammonia refrigerant emitted to air"
+          name: "Ammonia, anhydrous, to air ``"
+          flow_type: "elementary"
+          property_unit: "Mass / kg NH3"
+          description: "Fugitive loss of R717 anhydrous ammonia from the freezer and cold store is reported as an emission to air; a zero value requires a reconciled charge record."
+          amount:
+            expression: "Opening charge plus additions minus closing charge and documented recovery, allocated between freezing and storage by equipment charge or leak evidence"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_refrigerant
+              source_ids: []
+            ranges: []
+  - id: wastewater_pretreatment
+    label: "Screening and dissolved-air-flotation pretreatment"
+    inputs:
+      product:
+        - row_id: pretreatment_electricity
+          role: "Purchased electricity for wastewater pretreatment"
+          name: "Purchased grid electricity ``"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Electricity for screens, pumps, air saturation, flotation, and sludge handling is recorded independently from production electricity."
+          amount:
+            expression: "Submeter pretreatment equipment or allocate from panel data using operating hours and verified loads"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per m3 pretreated wastewater output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_utility_meters
+              source_ids: []
+            ranges: []
+        - row_id: ferric_chloride
+          role: "Ferric chloride coagulant"
+          name: "Ferric chloride ``"
+          flow_type: "product"
+          property_unit: "Mass / kg as supplied and kg active substance"
+          description: "Ferric chloride dosed to the declared dissolved-air-flotation system is recorded as a named chemical input; substitute coagulants require a route revision."
+          amount:
+            expression: "Tank or purchase reconciliation, with solution concentration and active mass reported"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per m3 pretreated wastewater output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_treatment_chemical
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: combined_raw_wastewater
+          role: "Combined raw route wastewater"
+          name: "Combined raw duck-processing wastewater ``"
+          flow_type: "waste"
+          property_unit: "Volume / m3"
+          description: "Metered slaughter, chilling, cut-up, cleaning, and freezing-area wastewater entering on-site pretreatment is the treatment feed."
+          amount:
+            expression: "Meter total influent and reconcile it to source-process wastewater volumes"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per m3 pretreated wastewater output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wastewater
+              source_ids:
+                - mozhiarasi-natarajan-2022
+            ranges: []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: pretreated_wastewater
+          role: "Pretreated wastewater to off-site treatment"
+          name: "Pretreated duck-processing wastewater ``"
+          flow_type: "waste"
+          property_unit: "Volume / m3"
+          description: "The liquid effluent leaving dissolved-air flotation is measured at the transfer to off-site treatment or the declared permitted discharge point."
+          amount:
+            expression: "Meter effluent volume and report flow-weighted COD, BOD5, total suspended solids, total nitrogen, and total phosphorus concentrations and loads"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per m3 pretreated wastewater output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wastewater
+              source_ids:
+                - mozhiarasi-natarajan-2022
+            ranges: []
+        - row_id: screened_solids
+          role: "Screened wastewater solids"
+          name: "Screened duck-processing solids ``"
+          flow_type: "waste"
+          property_unit: "Mass / kg wet waste"
+          description: "Coarse feathers, tissue, fat, and other solids removed by screening are weighed as a distinct wet waste stream."
+          amount:
+            expression: "Weigh containerized screened solids net of tare by destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per m3 pretreated wastewater output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_mass
+              source_ids:
+                - mozhiarasi-natarajan-2022
+            ranges: []
+        - row_id: daf_sludge
+          role: "Dissolved-air-flotation sludge"
+          name: "Duck-processing dissolved-air-flotation sludge ``"
+          flow_type: "waste"
+          property_unit: "Mass / kg wet sludge and kg dry matter"
+          description: "Float sludge removed from dissolved-air flotation is recorded separately from screened solids and liquid effluent."
+          amount:
+            expression: "Weigh wet sludge, measure representative solids content, and calculate dry matter by reporting period"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per m3 pretreated wastewater output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_waste_mass
+              source_ids:
+                - mozhiarasi-natarajan-2022
+            ranges: []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: al_avoid
+    applies_to: "All foreground processes"
+    rule: "Avoid allocation first by separating metered process stages, destination-specific residue handling, freezing from storage, and product-specific cut-up batches."
+    source_ids:
+      - ec-pef-2021
+  - rule_id: al_subdivide
+    applies_to: "Separable outputs and operations"
+    rule: "Attribute operations that exclusively produce or handle edible offal, recovered blood, feathers, trimmings, packaging scrap, rejects, or wastewater directly to those flows before allocating shared burdens."
+    source_ids:
+      - ec-pef-2021
+  - rule_id: al_residual_economic
+    applies_to: "Indivisible shared slaughter and cut-up burdens"
+    rule: "Allocate remaining indivisible slaughter and cut-up burdens among the reference cut batch and co-products with positive revenue and intended beneficial use by contemporaneous plant-gate economic value; price source, currency, averaging period, and factors are mandatory. Do not transfer the PEF mammal default factors to ducks."
+    source_ids:
+      - ec-pef-2021
+  - rule_id: al_mass_sensitivity
+    applies_to: "Co-products receiving shared burden"
+    rule: "For every co-product receiving residual shared burden, also report a wet-mass allocation sensitivity using measured split-point mass and disclosed moisture basis."
+    source_ids:
+      - ec-pef-2021
+  - rule_id: al_waste
+    applies_to: "Waste outputs"
+    rule: "A residual with no intended beneficial use or positive revenue is waste, receives no co-product allocation, and carries its collection, on-site treatment, transport, and off-site treatment burdens from the point of generation."
+    source_ids:
+      - ec-pef-2021
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_live_mass
+      process_id: "slaughter_dress_chill"
+      flow_role: "live ducks"
+      record_type: "weighbridge/slaughter log"
+      raw_fields: "gross mass, crate tare, accepted birds, dead-on-arrival mass, time"
+      collection_method: "calibrated receiving scale"
+      unit: "kg"
+      frequency: "each lot"
+      temporal_coverage: "representative 12 consecutive months"
+      site_scope: "route plant"
+      aggregation_rule: "accepted net live mass summed"
+      quality_evidence: "calibration and lot reconciliation"
+    - protocol_id: cp_utility_meters
+      process_id: "all_processes"
+      flow_role: "electricity"
+      record_type: "meter/energy log"
+      raw_fields: "meter id, opening/closing reading, interval, downtime, shared load"
+      collection_method: "dedicated meter or verified engineering allocation"
+      unit: "kWh"
+      frequency: "shift or batch"
+      temporal_coverage: "representative 12 consecutive months"
+      site_scope: "route equipment"
+      aggregation_rule: "sum by process; storage by tonne-day"
+      quality_evidence: "meter calibration and panel map"
+    - protocol_id: cp_water_steam
+      process_id: "slaughter_dress_chill"
+      flow_role: "water and steam"
+      record_type: "meter log"
+      raw_fields: "water volume, steam mass, state, condensate return, interval"
+      collection_method: "calibrated flow meter"
+      unit: "m3; kg; MJ"
+      frequency: "shift or batch"
+      temporal_coverage: "representative 12 consecutive months"
+      site_scope: "route process"
+      aggregation_rule: "net use by batch"
+      quality_evidence: "calibration and mass/energy reconciliation"
+    - protocol_id: cp_output_mass
+      process_id: "production_processes"
+      flow_role: "products and co-products"
+      record_type: "scale/production log"
+      raw_fields: "flow identity, gross, tare, net, cut name, moisture basis, destination"
+      collection_method: "calibrated scales and batch reconciliation"
+      unit: "kg"
+      frequency: "each batch/dispatch"
+      temporal_coverage: "representative 12 consecutive months"
+      site_scope: "route plant"
+      aggregation_rule: "sum net mass by atomic flow"
+      quality_evidence: "scale calibration and signed batch record"
+    - protocol_id: cp_packaging
+      process_id: "cut_pack"
+      flow_role: "packaging inputs"
+      record_type: "issue/return and specification record"
+      raw_fields: "material, units issued, returns, unit mass, supplier spec"
+      collection_method: "inventory reconciliation plus sample weighing"
+      unit: "kg"
+      frequency: "batch"
+      temporal_coverage: "representative 12 consecutive months"
+      site_scope: "packed route"
+      aggregation_rule: "issued minus returned mass"
+      quality_evidence: "purchase and sample-weight records"
+    - protocol_id: cp_waste_mass
+      process_id: "all_processes"
+      flow_role: "solid wastes and rejects"
+      record_type: "waste manifest/scale log"
+      raw_fields: "waste identity, gross, tare, wet mass, dry matter if relevant, destination"
+      collection_method: "calibrated scale"
+      unit: "kg"
+      frequency: "each dispatch"
+      temporal_coverage: "representative 12 consecutive months"
+      site_scope: "route plant"
+      aggregation_rule: "sum by atomic waste and destination"
+      quality_evidence: "manifests, tickets, sampling record"
+    - protocol_id: cp_wastewater
+      process_id: "slaughter_dress_chill_wastewater_pretreatment"
+      flow_role: "wastewater"
+      record_type: "flow meter and laboratory record"
+      raw_fields: "volume, sample time, COD, BOD5, TSS, TN, TP, sampling basis"
+      collection_method: "continuous flow meter and flow-proportional composite sample"
+      unit: "m3; mg/L; kg"
+      frequency: "continuous flow; at least monthly composite"
+      temporal_coverage: "representative 12 consecutive months"
+      site_scope: "route drains and pretreatment"
+      aggregation_rule: "volume sum; concentration × matched volume"
+      quality_evidence: "meter calibration, laboratory method and chain of custody"
+    - protocol_id: cp_temperature
+      process_id: "slaughter_dress_chill_air_blast_freeze_store"
+      flow_role: "product and room temperature"
+      record_type: "logger record"
+      raw_fields: "sensor id, location, time, product-core temperature, room temperature, batch"
+      collection_method: "calibrated continuous logger plus representative core probes"
+      unit: "°C; h"
+      frequency: "continuous per batch/store"
+      temporal_coverage: "all reported batches"
+      site_scope: "chill tank, freezer and store"
+      aggregation_rule: "retain extrema and time-temperature profile"
+      quality_evidence: "calibration and alarm/deviation log"
+    - protocol_id: cp_refrigerant
+      process_id: "air_blast_freeze_store"
+      flow_role: "refrigerant emission"
+      record_type: "service/charge log"
+      raw_fields: "refrigerant identity, opening charge, additions, closing charge, recovered mass, equipment"
+      collection_method: "annual charge reconciliation"
+      unit: "kg"
+      frequency: "each service and annual close"
+      temporal_coverage: "same 12-month period"
+      site_scope: "freezer and frozen store"
+      aggregation_rule: "mass balance by named refrigerant"
+      quality_evidence: "invoices, service sheets and recovery records"
+    - protocol_id: cp_treatment_chemical
+      process_id: "wastewater_pretreatment"
+      flow_role: "ferric chloride"
+      record_type: "tank/purchase log"
+      raw_fields: "delivered solution mass, inventory change, concentration, active mass, treated volume"
+      collection_method: "inventory reconciliation"
+      unit: "kg solution; kg active"
+      frequency: "batch/month"
+      temporal_coverage: "representative 12 consecutive months"
+      site_scope: "DAF unit"
+      aggregation_rule: "consumption divided by matched influent"
+      quality_evidence: "invoices, tank readings and concentration certificate"
+  calculation_rules:
+    - id: cr_normalize
+      applies_to: "all inventory rows"
+      rule: "reporting-period flow ÷ saleable reference-product mass × 1,000 kg"
+      inputs:
+        - "matched-period flow and frozen_duck_cuts net mass"
+      output: "flow per reference amount"
+      source_ids: []
+    - id: cr_mass_balance
+      applies_to: "slaughter and cut-up"
+      rule: "inputs − outputs − inventory change; report absolute and percentage closure without forcing balance"
+      inputs:
+        - "all atomic wet-mass flows and inventory change"
+      output: "unexplained mass and closure percentage"
+      source_ids: []
+    - id: cr_storage_energy
+      applies_to: "frozen storage"
+      rule: "matched storage kWh × product tonne-days ÷ total room tonne-days"
+      inputs:
+        - "daily inventory"
+        - "residence time"
+        - "room electricity"
+      output: "kWh per reference-product tonne-day"
+      source_ids:
+        - fao-who-cxc-8-1976
+    - id: cr_refrigerant
+      applies_to: "refrigerant emission"
+      rule: "opening charge + additions − closing charge − recovered mass"
+      inputs:
+        - "charge and service records"
+      output: "kg named refrigerant to air, floored at zero only after investigation"
+      source_ids: []
+    - id: cr_allocation
+      applies_to: "shared slaughter/cut burdens"
+      rule: "shared burden × recipient plant-gate revenue ÷ total eligible revenue; repeat by split-point wet mass for sensitivity"
+      inputs:
+        - "eligible product masses"
+        - prices
+        - revenues
+        - "shared burden"
+      output: "economic allocation result and wet-mass sensitivity"
+      source_ids:
+        - ec-pef-2021
+  data_quality_requirements:
+    - id: dq_identity
+      applies_to: "reference product"
+      requirement: "Prove species/strain, skin-on bone-in form, named-cut shares, air-blast technology, and package specification for every represented product family"
+      evidence: "product specification, labels, batch and equipment records"
+    - id: dq_time
+      applies_to: "foreground data"
+      requirement: "Use one representative continuous 12-month period; disclose shutdowns, seasonal gaps, and any shorter period"
+      evidence: "dated raw records and coverage calculation"
+    - id: dq_measurement
+      applies_to: "measured flows"
+      requirement: "Use calibrated meters/scales and retain meter-to-process maps; engineering allocation is allowed only when a dedicated meter is unavailable and uncertainty is disclosed"
+      evidence: "calibration certificates, meter maps, allocation workbook"
+    - id: dq_completeness
+      applies_to: "all atomic flows"
+      requirement: "Account for at least 95% of measured input mass and 95% of metered energy by included rows; list and justify exclusions individually"
+      evidence: "mass/energy completeness reconciliation"
+    - id: dq_sources
+      applies_to: "external datasets"
+      requirement: "Document geography, year, technology, provider, version, and transformation for each linked dataset"
+      evidence: "dataset provenance register"
+    - id: dq_estimates
+      applies_to: "provisional ranges"
+      requirement: "Do not publish a foreground amount taken from a reasoned_estimate range; replace it with collected/calculated evidence or disclose the dataset as incomplete"
+      evidence: "estimate replacement log and review record"
+validation_rules:
+  - rule_id: val_identity
+    applies_to: "Reference flow and product identity"
+    rule: "Reference flow UUID, Mass property UUID, 1,000 kg amount, CPC identity, Pekin-duck qualifier, skin-on bone-in cut form, air-blast technology, and R717 ammonia refrigerant must match this PCR."
+    source_ids:
+      - unsd-cpc-3-2025
+  - rule_id: val_route
+    applies_to: "Required process route"
+    rule: "All four required processes must be present in order; whole-duck, other cut-form, offal-reference, and non-air-blast routes may not be averaged into the dataset."
+    source_ids:
+      - unsd-cpc-3-2025
+      - fao-slaughterhouses-poultry
+  - rule_id: val_mass_balance
+    applies_to: "Slaughter and cut-up mass balances"
+    rule: "Slaughter and cut-up wet-mass balances must be reported; unexplained difference above 5% of input requires correction or a reviewed, flow-specific explanation."
+    source_ids:
+      - fao-slaughterhouses-poultry
+  - rule_id: val_atomic
+    applies_to: "All foreground exchanges"
+    rule: "Electricity, steam, water, polymer film, cartons, ferric chloride, each product/co-product, each waste, wastewater, and named refrigerant emission must remain separate atomic rows."
+    source_ids:
+      - fao-slaughterhouses-poultry
+      - ec-pef-2021
+  - rule_id: val_temperature
+    applies_to: "Freezing and frozen storage"
+    rule: "Batch evidence must show product thermal centre no warmer than -18 °C after freezing stabilisation and frozen storage maintained at -18 °C or colder, with deviations disclosed."
+    source_ids:
+      - fao-who-cxc-8-1976
+  - rule_id: val_allocation
+    applies_to: "Shared burdens and co-products"
+    rule: "Subdivision, eligible co-product status, plant-gate economic factors, and wet-mass sensitivity must all be present; waste may not receive co-product allocation."
+    source_ids:
+      - ec-pef-2021
+  - rule_id: val_completeness
+    applies_to: "Completed foreground package"
+    rule: "Foreground records must cover the declared period and meet the 95% mass and energy completeness tests; provisional reasoned ranges cannot substitute for measured amounts."
+    source_ids:
+      - ec-pef-2021
+  - rule_id: val_uuid
+    applies_to: "All UUID-bearing fields"
+    rule: "Blank non-reference flow UUIDs and the blank Mass unit-group UUID must remain explicitly unresolved and must never be populated by semantic guesswork."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "Product-specific foreground unit-process package and aggregated factory-gate result for the locked frozen cut-up duck route"
+  downstream_use: "secondary_dataset; may be used as a background_dataset only where the receiving study matches the declared route and qualifiers"
+  allowed_use: "Comparative or attributional LCA of packaged frozen skin-on bone-in Pekin duck cuts when geography, time, technology, cut mix, and allocation are compatible"
+  excluded_use: "Representation of frozen whole ducks, a single cut without composition adjustment, fresh/chilled meat, boneless/skinless products, offal, prepared duck, other freezing technologies, duck farming, distribution, retail, cooking, or consumption"
+  required_metadata: "Plant geography and year; species/strain; cut names and mass shares; skin/bone state; slaughter and chilling configuration; freezer technology and refrigerant; package bill; storage temperature and tonne-days; wastewater route; upstream dataset versions; allocation factors"
+  required_quality_disclosure: "Coverage period; missing or allocated meters; calibration status; mass and energy completeness; mass-balance closure; wastewater sampling; temperature deviations; refrigerant reconciliation; data-source representativeness; reasoned estimates; unresolved UUIDs"
+  update_trigger: "Change in species/strain, cut composition, skin/bone form, slaughter/chilling line, principal freezing technology, refrigerant, packaging, wastewater treatment, storage regime, allocation status, plant geography, or data older than three years"
+data_sources:
+  - id: "unsd-cpc-3-2025"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, *CPC Version 3.0 Explanatory Notes* (2025), [official PDF](https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Exp_Notes_30Jun2025.pdf)"
+    used_for: "CPC 21142 inclusion and exclusions for frozen duck meat versus fresh/chilled meat and edible offal"
+  - id: "fao-slaughterhouses-poultry"
+    type: "official_guidance"
+    reference: "FAO, *Slaughterhouses—Poultry slaughter* (accessed 2026-08-20), [official page](https://www.fao.org/4/X6114E/x6114e04.htm)"
+    used_for: "Verified poultry process sequence, immersion chilling, process-water use points, and separate blood, feathers, offal, wastewater, and solid-residue categories; generic poultry percentages are not used as duck-specific amounts"
+  - id: "fao-who-cxc-8-1976"
+    type: "standard"
+    reference: "Codex Alimentarius, *Code of Practice for the Processing and Handling of Quick Frozen Foods, CXC 8-1976* (accessed 2026-08-20), [official PDF](https://www.fao.org/fao-who-codexalimentarius/sh-proxy/zh/?lnk=1&url=https%253A%252F%252Fworkspace.fao.org%252Fsites%252Fcodex%252FStandards%252FCXC%2B8-1976%252FCXC_008e.pdf)"
+    used_for: "Quick-freezing completion, -18 °C thermal-centre and storage conditions, and temperature records"
+  - id: "ec-pef-2021"
+    type: "official_guidance"
+    reference: "European Commission, *Recommendation (EU) 2021/2279 on the use of the Environmental Footprint methods* (accessed 2026-08-20), [EUR-Lex official PDF](https://eur-lex.europa.eu/legal-content/EN/TXT/PDF/?uri=CELEX%3A32021H2279)"
+    used_for: "Full-text-verified slaughterhouse rule to subdivide directly attributable flows and economically allocate remaining flows, plus company-specific data requirements; mammal default factors are not transferred to ducks"
+  - id: "mozhiarasi-natarajan-2022"
+    type: "literature"
+    reference: "Mozhiarasi V., Natarajan T.S., “Slaughterhouse and poultry wastes: management practices, feedstocks for renewable energy production, and recovery of value added products,” *Biomass Conversion and Biorefinery* (2022), [doi:10.1007/s13399-022-02352-0](https://doi.org/10.1007/s13399-022-02352-0), [PMC full text](https://pmc.ncbi.nlm.nih.gov/articles/PMC8830992/)"
+    used_for: "Full-text-verified categorisation and source segregation of blood, feathers, offal, wastewater, screened solids, and treatment sludge; no chicken-specific percentage is transferred to duck"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:2fe501bd106ee75646eb679f025f8b8394904c7433e311df2accd6c2f9237a9a"
+  generated_content_sha256: "sha256:54a277b02cb9ac69c23c62123911a07efd1f16273b34774aa84da6e5a262da11"

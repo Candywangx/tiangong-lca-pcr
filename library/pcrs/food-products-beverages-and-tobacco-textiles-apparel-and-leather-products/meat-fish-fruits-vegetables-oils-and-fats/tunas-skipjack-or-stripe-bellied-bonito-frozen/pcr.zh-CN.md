@@ -40,7 +40,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 1 kg 目标产品净质量 |
-| 参考产品流 | Tunas, skipjack or stripe-bellied bonito, frozen `e51735cd-08ba-4052-bb11-0e5d936b87f2` |
+| 参考产品流 | 金枪鱼，鲣鱼或条纹鲣，冷冻 `e51735cd-08ba-4052-bb11-0e5d936b87f2` |
 | 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | kg |
@@ -551,7 +551,7 @@ sync_with: pcr.en-US.md
 
 按恰好 1 kg 鱼体净质量报告目标产品，不含冰衣、游离冰和包装。
 
-- 选定流：Tunas, skipjack or stripe-bellied bonito, frozen `e51735cd-08ba-4052-bb11-0e5d936b87f2`
+- 选定流：金枪鱼，鲣鱼或条纹鲣，冷冻 `e51735cd-08ba-4052-bb11-0e5d936b87f2`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：在所声明大门恰好 1 kg 目标冷冻鱼净质量
 - 数值来源模式：固定值（`fixed_value`）

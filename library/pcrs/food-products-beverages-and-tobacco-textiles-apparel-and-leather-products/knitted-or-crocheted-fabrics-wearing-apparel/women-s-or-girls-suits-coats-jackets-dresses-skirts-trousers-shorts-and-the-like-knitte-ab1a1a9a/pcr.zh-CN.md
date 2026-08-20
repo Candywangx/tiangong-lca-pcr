@@ -38,7 +38,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 1 kg 成衣净质量 |
-| 参考产品流 | Women's or girls' suits, coats, jackets, dresses, skirts, trousers, shorts and the like, knitted or crocheted `06ca6094-ac7b-482e-a629-0def31609f23` |
+| 参考产品流 | 针织或钩编的女装、女童装、外衣、夹克衫、礼服、裙子、长裤、短裤及类似物品 `06ca6094-ac7b-482e-a629-0def31609f23` |
 | 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | kg |
@@ -636,7 +636,7 @@ sync_with: pcr.en-US.md
 
 按聚合物、膜厚、再生含量和实测单件质量记录实际成衣袋。
 
-- 选定流：Low-density polyethylene garment bag
+- 选定流：低密度聚乙烯服装袋
 - 流属性/单位：Mass / kg
 - 数量规则：领用袋数量乘以实测单件质量，并与库存变化核对
 - 数值来源模式：计算值（`calculated_value`）
@@ -689,7 +689,7 @@ sync_with: pcr.en-US.md
 
 这是参考产品输出。其数量按 1 kg 成衣净质量归一化，而包装材料仍作为单独定量输入。
 
-- 选定流：Women's or girls' suits, coats, jackets, dresses, skirts, trousers, shorts and the like, knitted or crocheted `06ca6094-ac7b-482e-a629-0def31609f23`
+- 选定流：针织或钩编的女装、女童装、外衣、夹克衫、礼服、裙子、长裤、短裤及类似物品 `06ca6094-ac7b-482e-a629-0def31609f23`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：验收合格成衣净质量归一化为恰好 1 kg；销售包装质量不计入该数量
 - 数值来源模式：计算值（`calculated_value`）

@@ -38,7 +38,7 @@ status: candidate
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 1 kg 净纱线 |
-| 参考产品流 | Yarn (other than sewing thread) of artificial staple fibres, containing 85% or more by weight of such fibres, not put up for retail sale `b2fccf4f-e4c4-4723-9e9b-ef0956abd0fc` |
+| 参考产品流 | 含人造短纤维重量达85%或85%以上的纱（缝纫线除外），不供零售 `b2fccf4f-e4c4-4723-9e9b-ef0956abd0fc` |
 | 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | kg |
@@ -93,7 +93,7 @@ status: candidate
 
 外购粘胶短纤维作为代表性路线的纤维喂料跨越工厂边界。
 
-- 选定流：Viscose staple fibre, at spinning mill gate `a64ce209-6dee-404e-a22c-9bbddb1cf295`
+- 选定流：粘胶短纤维 `a64ce209-6dee-404e-a22c-9bbddb1cf295`
 - 流属性/单位：Mass / kg
 - 数量规则：测量发往纳入纺纱过程的批次级净纤维质量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -172,7 +172,7 @@ status: candidate
 
 卷绕工业纱线是纳入过程的实测参考输出。
 
-- 选定流：Yarn (other than sewing thread) of artificial staple fibres, containing 85% or more by weight of such fibres, not put up for retail sale `b2fccf4f-e4c4-4723-9e9b-ef0956abd0fc`
+- 选定流：含人造短纤维重量达85%或85%以上的纱（缝纫线除外），不供零售 `b2fccf4f-e4c4-4723-9e9b-ef0956abd0fc`
 - 流属性/单位：Mass / kg
 - 数量规则：测量不含可移除包装的净合格纱线质量，再将数据集归一化至 1 kg。
 - 数值来源模式：前景记录（`foreground_record`）

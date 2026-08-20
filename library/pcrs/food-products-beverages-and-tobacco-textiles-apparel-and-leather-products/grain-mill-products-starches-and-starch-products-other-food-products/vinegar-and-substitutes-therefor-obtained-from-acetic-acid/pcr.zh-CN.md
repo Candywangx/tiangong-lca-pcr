@@ -42,7 +42,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 1 kg |
-| 参考产品流 | Vinegar and substitutes therefor obtained from acetic acid `20393649-bcc3-43f0-a2df-1a99c0005e29` |
+| 参考产品流 | 自醋酸中提炼出来的醋及醋的代用品 `20393649-bcc3-43f0-a2df-1a99c0005e29` |
 | 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | kg |
@@ -120,7 +120,7 @@ sync_with: pcr.en-US.md
 
 将 Wine 作为一个独立计量的交换记录。
 
-- 选定流：Wine `bb271645-d31c-4d60-9c88-d8b416a0d947`
+- 选定流：配制酒 `bb271645-d31c-4d60-9c88-d8b416a0d947`
 - UUID 状态：已在 state_code 100 核验：产品流；参考属性与 Volume 匹配
 - 适用条件：仅当购入葡萄酒在场内制备用于醋化时纳入；其余原料路线省略。
 - 流属性/单位：Volume / m3
@@ -137,7 +137,7 @@ sync_with: pcr.en-US.md
 
 将 Cider 作为一个独立计量的交换记录。
 
-- 选定流：Cider `2a9af3da-d57b-4669-bd9c-c228be771967`
+- 选定流：苹果酒 `2a9af3da-d57b-4669-bd9c-c228be771967`
 - UUID 状态：已在 state_code 100 核验：产品流；参考属性与 Volume 匹配
 - 适用条件：仅当购入苹果酒在场内制备用于醋化时纳入；其余原料路线省略。
 - 流属性/单位：Volume / m3
@@ -171,7 +171,7 @@ sync_with: pcr.en-US.md
 
 将 Soft white sugar 作为一个独立计量的交换记录。
 
-- 选定流：Soft white sugar `d3dfedfb-7d93-4553-aba3-02940edaf6aa`
+- 选定流：绵白糖 `d3dfedfb-7d93-4553-aba3-02940edaf6aa`
 - UUID 状态：已在 state_code 100 核验：产品流；参考属性与 Mass 匹配
 - 适用条件：仅当蔗糖为声明的可发酵原料时纳入；非糖路线省略。
 - 流属性/单位：Mass / kg
@@ -188,7 +188,7 @@ sync_with: pcr.en-US.md
 
 将 Rice 作为一个独立计量的交换记录。
 
-- 选定流：Rice `bc375e24-c87f-4fa2-b557-123f3aa312ef`
+- 选定流：稻谷 `bc375e24-c87f-4fa2-b557-123f3aa312ef`
 - UUID 状态：已在 state_code 100 核验：产品流；参考属性与 Mass 匹配
 - 适用条件：仅当稻米为声明的含淀粉原料时纳入；非稻米路线省略。
 - 流属性/单位：Mass / kg
@@ -222,7 +222,7 @@ sync_with: pcr.en-US.md
 
 将 Tap water 作为一个独立计量的交换记录。
 
-- 选定流：Tap water `d1e0e36c-07f0-4a75-bdcb-efb5d9e2ac36`
+- 选定流：自来水 `d1e0e36c-07f0-4a75-bdcb-efb5d9e2ac36`
 - UUID 状态：已在 state_code 100 核验：产品流；参考属性与 Mass 匹配
 - 适用条件：仅当原料制备消耗自来水时纳入。
 - 流属性/单位：Mass / kg
@@ -239,7 +239,7 @@ sync_with: pcr.en-US.md
 
 将 Amylase, medium-temperature 作为一个独立计量的交换记录。
 
-- 选定流：Amylase, medium-temperature `ec31f8f1-1870-4f41-846a-3632072a5d9f`
+- 选定流：淀粉酶 `ec31f8f1-1870-4f41-846a-3632072a5d9f`
 - UUID 状态：已在 state_code 100 核验：产品流；参考属性与 Mass 匹配
 - 适用条件：仅当该酶用于淀粉液化投加时纳入，否则省略。
 - 流属性/单位：Mass / kg
@@ -256,7 +256,7 @@ sync_with: pcr.en-US.md
 
 将 Glucoamylase, 1500 U/g 作为一个独立计量的交换记录。
 
-- 选定流：Glucoamylase, 1500 U/g `019f5b53-6ae4-41aa-8e75-0f5fefaf4469`
+- 选定流：葡萄糖淀粉酶 `019f5b53-6ae4-41aa-8e75-0f5fefaf4469`
 - UUID 状态：已在 state_code 100 核验：产品流；参考属性与 Mass 匹配
 - 适用条件：仅当该酶用于糖化投加时纳入，否则省略。
 - 流属性/单位：Mass / kg
@@ -290,7 +290,7 @@ sync_with: pcr.en-US.md
 
 将 Diammonium phosphate, purity above 99.5% 作为一个独立计量的交换记录。
 
-- 选定流：Diammonium phosphate, purity above 99.5% `743bd461-1a63-4ed6-934c-86b29fe21080`
+- 选定流：磷酸二铵 `743bd461-1a63-4ed6-934c-86b29fe21080`
 - UUID 状态：已在 state_code 100 核验：产品流；参考属性与 Mass 匹配
 - 适用条件：仅当制备阶段投加磷酸二铵时纳入，否则省略。
 - 流属性/单位：Mass / kg
@@ -444,7 +444,7 @@ sync_with: pcr.en-US.md
 
 将 Diammonium phosphate, purity above 99.5% 作为一个独立计量的交换记录。
 
-- 选定流：Diammonium phosphate, purity above 99.5% `743bd461-1a63-4ed6-934c-86b29fe21080`
+- 选定流：磷酸二铵 `743bd461-1a63-4ed6-934c-86b29fe21080`
 - UUID 状态：已在 state_code 100 核验：产品流；参考属性与 Mass 匹配
 - 适用条件：仅当酒精发酵投加该营养剂时纳入，否则省略。
 - 流属性/单位：Mass / kg
@@ -529,7 +529,7 @@ sync_with: pcr.en-US.md
 
 将 Steam, 11.0 MPaG 作为一个独立计量的交换记录。
 
-- 选定流：Steam, 11.0 MPaG `293f9fd9-5182-4d35-8aa5-ce73d4f322b7`
+- 选定流：蒸汽 `293f9fd9-5182-4d35-8aa5-ce73d4f322b7`
 - UUID 状态：已在 state_code 100 核验：产品流；参考属性与 Mass 匹配
 - 适用条件：仅当该购入热载体跨越过程边界时纳入；若厂内燃料行已完整表示同一热量，则省略。
 - 流属性/单位：Mass / kg
@@ -563,7 +563,7 @@ sync_with: pcr.en-US.md
 
 将 Natural gas in the gaseous state 作为一个独立计量的交换记录。
 
-- 选定流：Natural gas in the gaseous state `4f19ca0e-7b3b-11dd-ad8b-0800200c9a66`
+- 选定流：气态天然气 `4f19ca0e-7b3b-11dd-ad8b-0800200c9a66`
 - UUID 状态：已在 state_code 100 核验：产品流；参考属性与 Volume 匹配
 - 适用条件：仅当该燃料为本过程燃烧时纳入；不得重复购入蒸汽或热水已表示的热量。
 - 流属性/单位：Volume / m3
@@ -580,7 +580,7 @@ sync_with: pcr.en-US.md
 
 将 Liquefied petroleum gas 作为一个独立计量的交换记录。
 
-- 选定流：Liquefied petroleum gas `d54ae71a-1245-4e3f-b694-dbf2b22bbf7d`
+- 选定流：液化石油气 `d54ae71a-1245-4e3f-b694-dbf2b22bbf7d`
 - UUID 状态：已在 state_code 100 核验：产品流；参考属性与 Mass 匹配
 - 适用条件：仅当该燃料为本过程燃烧时纳入；不得重复购入蒸汽或热水已表示的热量。
 - 流属性/单位：Mass / kg
@@ -597,7 +597,7 @@ sync_with: pcr.en-US.md
 
 将 Diesel oil 作为一个独立计量的交换记录。
 
-- 选定流：Diesel oil `9d258d75-6792-4f1c-9856-81602ed8f816`
+- 选定流：柴油 `9d258d75-6792-4f1c-9856-81602ed8f816`
 - UUID 状态：已在 state_code 100 核验：产品流；参考属性与 Mass 匹配
 - 适用条件：仅当该燃料为本过程燃烧时纳入；不得重复购入蒸汽或热水已表示的热量。
 - 流属性/单位：Mass / kg
@@ -614,7 +614,7 @@ sync_with: pcr.en-US.md
 
 将 Heavy oil 作为一个独立计量的交换记录。
 
-- 选定流：Heavy oil `7fd5ee11-bcf8-47eb-83b4-778ed51eac29`
+- 选定流：重油 `7fd5ee11-bcf8-47eb-83b4-778ed51eac29`
 - UUID 状态：已在 state_code 100 核验：产品流；参考属性与 Mass 匹配
 - 适用条件：仅当该燃料为本过程燃烧时纳入；不得重复购入蒸汽或热水已表示的热量。
 - 流属性/单位：Mass / kg
@@ -631,7 +631,7 @@ sync_with: pcr.en-US.md
 
 将 Biogas, 50-80% methane 作为一个独立计量的交换记录。
 
-- 选定流：Biogas, 50-80% methane `246d7fec-59ef-4032-8539-e47632b60a23`
+- 选定流：生物天然气，沼气 `246d7fec-59ef-4032-8539-e47632b60a23`
 - UUID 状态：已在 state_code 100 核验：产品流；参考属性与 Volume 匹配
 - 适用条件：仅当该燃料为本过程燃烧时纳入；不得重复购入蒸汽或热水已表示的热量。
 - 流属性/单位：Volume / m3
@@ -648,7 +648,7 @@ sync_with: pcr.en-US.md
 
 将 Compressed air 作为一个独立计量的交换记录。
 
-- 选定流：Compressed air `46e2b1e4-5a4e-4579-b6a2-65b03f9ce825`
+- 选定流：压缩的空气 `46e2b1e4-5a4e-4579-b6a2-65b03f9ce825`
 - UUID 状态：已在 state_code 100 核验：产品流；参考属性与 Volume 匹配
 - 适用条件：仅当 Compressed air 跨越酒精发酵边界时纳入，否则省略。
 - 流属性/单位：Volume / m3
@@ -665,7 +665,7 @@ sync_with: pcr.en-US.md
 
 将 Refrigerant, R134a 作为一个独立计量的交换记录。
 
-- 选定流：Refrigerant, R134a `86e15f5d-a7dd-40be-8dc4-ac9fa826a309`
+- 选定流：制冷剂，R134a `86e15f5d-a7dd-40be-8dc4-ac9fa826a309`
 - UUID 状态：已在 state_code 100 核验：产品流；参考属性与 Mass 匹配
 - 适用条件：仅当该制冷剂补充量归属于范围内冷却设备时纳入；泄漏量另列为基本流输出。
 - 流属性/单位：Mass / kg
@@ -716,7 +716,7 @@ sync_with: pcr.en-US.md
 
 将 Tap water 作为一个独立计量的交换记录。
 
-- 选定流：Tap water `d1e0e36c-07f0-4a75-bdcb-efb5d9e2ac36`
+- 选定流：自来水 `d1e0e36c-07f0-4a75-bdcb-efb5d9e2ac36`
 - UUID 状态：已在 state_code 100 核验：产品流；参考属性与 Mass 匹配
 - 适用条件：仅针对该声明水源和用途纳入；同一水量不得在另一个水行重复。
 - 流属性/单位：Mass / kg
@@ -750,7 +750,7 @@ sync_with: pcr.en-US.md
 
 将 Cooling water 作为一个独立计量的交换记录。
 
-- 选定流：Cooling water `df413bba-3c03-412b-a80a-c6082b6b9b33`
+- 选定流：冷却水 `df413bba-3c03-412b-a80a-c6082b6b9b33`
 - UUID 状态：已在 state_code 100 核验：产品流；参考属性与 Mass 匹配
 - 适用条件：仅针对该声明水源和用途纳入；同一水量不得在另一个水行重复。
 - 流属性/单位：Mass / kg
@@ -767,7 +767,7 @@ sync_with: pcr.en-US.md
 
 将 Deionised water 作为一个独立计量的交换记录。
 
-- 选定流：Deionised water `5b3acbab-2518-4406-8736-d21f222d757a`
+- 选定流：去离子水 `5b3acbab-2518-4406-8736-d21f222d757a`
 - UUID 状态：已在 state_code 100 核验：产品流；参考属性与 Mass 匹配
 - 适用条件：仅针对该声明水源和用途纳入；同一水量不得在另一个水行重复。
 - 流属性/单位：Mass / kg
@@ -784,7 +784,7 @@ sync_with: pcr.en-US.md
 
 将 Process Water 作为一个独立计量的交换记录。
 
-- 选定流：Process Water `94a04f7e-2d5c-41f0-b182-d54a3b373a02`
+- 选定流：工艺用水 `94a04f7e-2d5c-41f0-b182-d54a3b373a02`
 - UUID 状态：已在 state_code 100 核验：产品流；参考属性与 Mass 匹配
 - 适用条件：仅针对该声明水源和用途纳入；同一水量不得在另一个水行重复。
 - 流属性/单位：Mass / kg
@@ -898,7 +898,7 @@ sync_with: pcr.en-US.md
 
 仅按该命名基本交换及其声明环境介质记录 Carbon dioxide, biogenic, to air unspecified。
 
-- 选定流：Carbon dioxide, biogenic, to air unspecified `08a91e70-3ddc-11dd-9c15-0050c2490048`
+- 选定流：二氧化碳（生物源） `08a91e70-3ddc-11dd-9c15-0050c2490048`
 - UUID 状态：已在 state_code 100 核验：基本流；参考属性与 Mass 匹配
 - 适用条件：仅当原料证据确立生物源碳且排放跨越环境边界时纳入。
 - 流属性/单位：Mass / kg
@@ -915,7 +915,7 @@ sync_with: pcr.en-US.md
 
 仅按该命名基本交换及其声明环境介质记录 Ethanol, to air unspecified。
 
-- 选定流：Ethanol, to air unspecified `08a91e70-3ddc-11dd-9349-0050c2490048`
+- 选定流：乙醇 `08a91e70-3ddc-11dd-9349-0050c2490048`
 - UUID 状态：已在 state_code 100 核验：基本流；参考属性与 Mass 匹配
 - 适用条件：仅适用于实测或计算的排入未指定空气介质的乙醇。
 - 流属性/单位：Mass / kg
@@ -989,7 +989,7 @@ sync_with: pcr.en-US.md
 
 将 Diammonium phosphate, purity above 99.5% 作为一个独立计量的交换记录。
 
-- 选定流：Diammonium phosphate, purity above 99.5% `743bd461-1a63-4ed6-934c-86b29fe21080`
+- 选定流：磷酸二铵 `743bd461-1a63-4ed6-934c-86b29fe21080`
 - UUID 状态：已在 state_code 100 核验：产品流；参考属性与 Mass 匹配
 - 适用条件：仅当醋化阶段投加该营养剂时纳入，否则省略。
 - 流属性/单位：Mass / kg
@@ -1006,7 +1006,7 @@ sync_with: pcr.en-US.md
 
 将 Industrial oxygen 作为一个独立计量的交换记录。
 
-- 选定流：Industrial oxygen `bd4b0f96-2090-4806-a648-335ab20ff401`
+- 选定流：工业氧气 `bd4b0f96-2090-4806-a648-335ab20ff401`
 - UUID 状态：已在 state_code 100 核验：产品流；参考属性与 Volume 匹配
 - 适用条件：仅当购入工业氧跨越过程边界时纳入；由大气氧或压缩空气表示供给时省略。
 - 流属性/单位：Volume / m3
@@ -1091,7 +1091,7 @@ sync_with: pcr.en-US.md
 
 将 Steam, 11.0 MPaG 作为一个独立计量的交换记录。
 
-- 选定流：Steam, 11.0 MPaG `293f9fd9-5182-4d35-8aa5-ce73d4f322b7`
+- 选定流：蒸汽 `293f9fd9-5182-4d35-8aa5-ce73d4f322b7`
 - UUID 状态：已在 state_code 100 核验：产品流；参考属性与 Mass 匹配
 - 适用条件：仅当该购入热载体跨越过程边界时纳入；若厂内燃料行已完整表示同一热量，则省略。
 - 流属性/单位：Mass / kg
@@ -1125,7 +1125,7 @@ sync_with: pcr.en-US.md
 
 将 Natural gas in the gaseous state 作为一个独立计量的交换记录。
 
-- 选定流：Natural gas in the gaseous state `4f19ca0e-7b3b-11dd-ad8b-0800200c9a66`
+- 选定流：气态天然气 `4f19ca0e-7b3b-11dd-ad8b-0800200c9a66`
 - UUID 状态：已在 state_code 100 核验：产品流；参考属性与 Volume 匹配
 - 适用条件：仅当该燃料为本过程燃烧时纳入；不得重复购入蒸汽或热水已表示的热量。
 - 流属性/单位：Volume / m3
@@ -1142,7 +1142,7 @@ sync_with: pcr.en-US.md
 
 将 Liquefied petroleum gas 作为一个独立计量的交换记录。
 
-- 选定流：Liquefied petroleum gas `d54ae71a-1245-4e3f-b694-dbf2b22bbf7d`
+- 选定流：液化石油气 `d54ae71a-1245-4e3f-b694-dbf2b22bbf7d`
 - UUID 状态：已在 state_code 100 核验：产品流；参考属性与 Mass 匹配
 - 适用条件：仅当该燃料为本过程燃烧时纳入；不得重复购入蒸汽或热水已表示的热量。
 - 流属性/单位：Mass / kg
@@ -1159,7 +1159,7 @@ sync_with: pcr.en-US.md
 
 将 Diesel oil 作为一个独立计量的交换记录。
 
-- 选定流：Diesel oil `9d258d75-6792-4f1c-9856-81602ed8f816`
+- 选定流：柴油 `9d258d75-6792-4f1c-9856-81602ed8f816`
 - UUID 状态：已在 state_code 100 核验：产品流；参考属性与 Mass 匹配
 - 适用条件：仅当该燃料为本过程燃烧时纳入；不得重复购入蒸汽或热水已表示的热量。
 - 流属性/单位：Mass / kg
@@ -1176,7 +1176,7 @@ sync_with: pcr.en-US.md
 
 将 Heavy oil 作为一个独立计量的交换记录。
 
-- 选定流：Heavy oil `7fd5ee11-bcf8-47eb-83b4-778ed51eac29`
+- 选定流：重油 `7fd5ee11-bcf8-47eb-83b4-778ed51eac29`
 - UUID 状态：已在 state_code 100 核验：产品流；参考属性与 Mass 匹配
 - 适用条件：仅当该燃料为本过程燃烧时纳入；不得重复购入蒸汽或热水已表示的热量。
 - 流属性/单位：Mass / kg
@@ -1193,7 +1193,7 @@ sync_with: pcr.en-US.md
 
 将 Biogas, 50-80% methane 作为一个独立计量的交换记录。
 
-- 选定流：Biogas, 50-80% methane `246d7fec-59ef-4032-8539-e47632b60a23`
+- 选定流：生物天然气，沼气 `246d7fec-59ef-4032-8539-e47632b60a23`
 - UUID 状态：已在 state_code 100 核验：产品流；参考属性与 Volume 匹配
 - 适用条件：仅当该燃料为本过程燃烧时纳入；不得重复购入蒸汽或热水已表示的热量。
 - 流属性/单位：Volume / m3
@@ -1210,7 +1210,7 @@ sync_with: pcr.en-US.md
 
 将 Compressed air 作为一个独立计量的交换记录。
 
-- 选定流：Compressed air `46e2b1e4-5a4e-4579-b6a2-65b03f9ce825`
+- 选定流：压缩的空气 `46e2b1e4-5a4e-4579-b6a2-65b03f9ce825`
 - UUID 状态：已在 state_code 100 核验：产品流；参考属性与 Volume 匹配
 - 适用条件：仅当 Compressed air 跨越好氧醋化边界时纳入，否则省略。
 - 流属性/单位：Volume / m3
@@ -1227,7 +1227,7 @@ sync_with: pcr.en-US.md
 
 将 Refrigerant, R134a 作为一个独立计量的交换记录。
 
-- 选定流：Refrigerant, R134a `86e15f5d-a7dd-40be-8dc4-ac9fa826a309`
+- 选定流：制冷剂，R134a `86e15f5d-a7dd-40be-8dc4-ac9fa826a309`
 - UUID 状态：已在 state_code 100 核验：产品流；参考属性与 Mass 匹配
 - 适用条件：仅当该制冷剂补充量归属于范围内冷却设备时纳入；泄漏量另列为基本流输出。
 - 流属性/单位：Mass / kg
@@ -1278,7 +1278,7 @@ sync_with: pcr.en-US.md
 
 将 Tap water 作为一个独立计量的交换记录。
 
-- 选定流：Tap water `d1e0e36c-07f0-4a75-bdcb-efb5d9e2ac36`
+- 选定流：自来水 `d1e0e36c-07f0-4a75-bdcb-efb5d9e2ac36`
 - UUID 状态：已在 state_code 100 核验：产品流；参考属性与 Mass 匹配
 - 适用条件：仅针对该声明水源和用途纳入；同一水量不得在另一个水行重复。
 - 流属性/单位：Mass / kg
@@ -1312,7 +1312,7 @@ sync_with: pcr.en-US.md
 
 将 Cooling water 作为一个独立计量的交换记录。
 
-- 选定流：Cooling water `df413bba-3c03-412b-a80a-c6082b6b9b33`
+- 选定流：冷却水 `df413bba-3c03-412b-a80a-c6082b6b9b33`
 - UUID 状态：已在 state_code 100 核验：产品流；参考属性与 Mass 匹配
 - 适用条件：仅针对该声明水源和用途纳入；同一水量不得在另一个水行重复。
 - 流属性/单位：Mass / kg
@@ -1329,7 +1329,7 @@ sync_with: pcr.en-US.md
 
 将 Deionised water 作为一个独立计量的交换记录。
 
-- 选定流：Deionised water `5b3acbab-2518-4406-8736-d21f222d757a`
+- 选定流：去离子水 `5b3acbab-2518-4406-8736-d21f222d757a`
 - UUID 状态：已在 state_code 100 核验：产品流；参考属性与 Mass 匹配
 - 适用条件：仅针对该声明水源和用途纳入；同一水量不得在另一个水行重复。
 - 流属性/单位：Mass / kg
@@ -1346,7 +1346,7 @@ sync_with: pcr.en-US.md
 
 将 Process Water 作为一个独立计量的交换记录。
 
-- 选定流：Process Water `94a04f7e-2d5c-41f0-b182-d54a3b373a02`
+- 选定流：工艺用水 `94a04f7e-2d5c-41f0-b182-d54a3b373a02`
 - UUID 状态：已在 state_code 100 核验：产品流；参考属性与 Mass 匹配
 - 适用条件：仅针对该声明水源和用途纳入；同一水量不得在另一个水行重复。
 - 流属性/单位：Mass / kg
@@ -1367,7 +1367,7 @@ sync_with: pcr.en-US.md
 
 将 Oxygen, resource from air 作为一个独立计量的交换记录。
 
-- 选定流：Oxygen, resource from air `e2fb04b0-6555-11dd-ad8b-0800200c9a66`
+- 选定流：氧气 `e2fb04b0-6555-11dd-ad8b-0800200c9a66`
 - UUID 状态：已在 state_code 100 核验：基本流；参考属性与 Mass 匹配
 - 适用条件：仅当建模约定记录直接从大气取氧时纳入；由购入压缩空气或工业氧表示供给时省略。
 - 流属性/单位：Mass / kg
@@ -1477,7 +1477,7 @@ sync_with: pcr.en-US.md
 
 仅按该命名基本交换及其声明环境介质记录 Ethanol, to air unspecified。
 
-- 选定流：Ethanol, to air unspecified `08a91e70-3ddc-11dd-9349-0050c2490048`
+- 选定流：乙醇 `08a91e70-3ddc-11dd-9349-0050c2490048`
 - UUID 状态：已在 state_code 100 核验：基本流；参考属性与 Mass 匹配
 - 适用条件：仅适用于实测或计算的排入未指定空气介质的乙醇。
 - 流属性/单位：Mass / kg
@@ -1494,7 +1494,7 @@ sync_with: pcr.en-US.md
 
 仅按该命名基本交换及其声明环境介质记录 Acetic acid, to air unspecified。
 
-- 选定流：Acetic acid, to air unspecified `08a91e70-3ddc-11dd-92c3-0050c2490048`
+- 选定流：乙酸 `08a91e70-3ddc-11dd-92c3-0050c2490048`
 - UUID 状态：已在 state_code 100 核验：基本流；参考属性与 Mass 匹配
 - 适用条件：仅适用于实测或计算的排入未指定空气介质的醋酸。
 - 流属性/单位：Mass / kg
@@ -1534,7 +1534,7 @@ sync_with: pcr.en-US.md
 
 将 Tap water 作为一个独立计量的交换记录。
 
-- 选定流：Tap water `d1e0e36c-07f0-4a75-bdcb-efb5d9e2ac36`
+- 选定流：自来水 `d1e0e36c-07f0-4a75-bdcb-efb5d9e2ac36`
 - UUID 状态：已在 state_code 100 核验：产品流；参考属性与 Mass 匹配
 - 适用条件：自来水用于稀释食品级醋酸时必须纳入；仅在使用另一声明水源时省略。
 - 流属性/单位：Mass / kg
@@ -1551,7 +1551,7 @@ sync_with: pcr.en-US.md
 
 将 Salt, food-grade 作为一个独立计量的交换记录。
 
-- 选定流：Salt, food-grade `3a5fa711-4648-4d58-b94d-67b79e7476c7`
+- 选定流：食盐 `3a5fa711-4648-4d58-b94d-67b79e7476c7`
 - UUID 状态：已在 state_code 100 核验：产品流；参考属性与 Mass 匹配
 - 适用条件：仅当声明配方含盐时纳入，否则省略。
 - 流属性/单位：Mass / kg
@@ -1585,7 +1585,7 @@ sync_with: pcr.en-US.md
 
 将 Citric Acid 作为一个独立计量的交换记录。
 
-- 选定流：Citric Acid `80e2772b-119c-4565-a919-a70939d89dff`
+- 选定流：柠檬酸 `80e2772b-119c-4565-a919-a70939d89dff`
 - UUID 状态：已在 state_code 100 核验：产品流；参考属性与 Mass 匹配
 - 适用条件：仅当声明配方含柠檬酸时纳入，否则省略。
 - 流属性/单位：Mass / kg
@@ -1670,7 +1670,7 @@ sync_with: pcr.en-US.md
 
 将 Steam, 11.0 MPaG 作为一个独立计量的交换记录。
 
-- 选定流：Steam, 11.0 MPaG `293f9fd9-5182-4d35-8aa5-ce73d4f322b7`
+- 选定流：蒸汽 `293f9fd9-5182-4d35-8aa5-ce73d4f322b7`
 - UUID 状态：已在 state_code 100 核验：产品流；参考属性与 Mass 匹配
 - 适用条件：仅当该购入热载体跨越过程边界时纳入；若厂内燃料行已完整表示同一热量，则省略。
 - 流属性/单位：Mass / kg
@@ -1704,7 +1704,7 @@ sync_with: pcr.en-US.md
 
 将 Natural gas in the gaseous state 作为一个独立计量的交换记录。
 
-- 选定流：Natural gas in the gaseous state `4f19ca0e-7b3b-11dd-ad8b-0800200c9a66`
+- 选定流：气态天然气 `4f19ca0e-7b3b-11dd-ad8b-0800200c9a66`
 - UUID 状态：已在 state_code 100 核验：产品流；参考属性与 Volume 匹配
 - 适用条件：仅当该燃料为本过程燃烧时纳入；不得重复购入蒸汽或热水已表示的热量。
 - 流属性/单位：Volume / m3
@@ -1721,7 +1721,7 @@ sync_with: pcr.en-US.md
 
 将 Liquefied petroleum gas 作为一个独立计量的交换记录。
 
-- 选定流：Liquefied petroleum gas `d54ae71a-1245-4e3f-b694-dbf2b22bbf7d`
+- 选定流：液化石油气 `d54ae71a-1245-4e3f-b694-dbf2b22bbf7d`
 - UUID 状态：已在 state_code 100 核验：产品流；参考属性与 Mass 匹配
 - 适用条件：仅当该燃料为本过程燃烧时纳入；不得重复购入蒸汽或热水已表示的热量。
 - 流属性/单位：Mass / kg
@@ -1738,7 +1738,7 @@ sync_with: pcr.en-US.md
 
 将 Diesel oil 作为一个独立计量的交换记录。
 
-- 选定流：Diesel oil `9d258d75-6792-4f1c-9856-81602ed8f816`
+- 选定流：柴油 `9d258d75-6792-4f1c-9856-81602ed8f816`
 - UUID 状态：已在 state_code 100 核验：产品流；参考属性与 Mass 匹配
 - 适用条件：仅当该燃料为本过程燃烧时纳入；不得重复购入蒸汽或热水已表示的热量。
 - 流属性/单位：Mass / kg
@@ -1755,7 +1755,7 @@ sync_with: pcr.en-US.md
 
 将 Heavy oil 作为一个独立计量的交换记录。
 
-- 选定流：Heavy oil `7fd5ee11-bcf8-47eb-83b4-778ed51eac29`
+- 选定流：重油 `7fd5ee11-bcf8-47eb-83b4-778ed51eac29`
 - UUID 状态：已在 state_code 100 核验：产品流；参考属性与 Mass 匹配
 - 适用条件：仅当该燃料为本过程燃烧时纳入；不得重复购入蒸汽或热水已表示的热量。
 - 流属性/单位：Mass / kg
@@ -1772,7 +1772,7 @@ sync_with: pcr.en-US.md
 
 将 Biogas, 50-80% methane 作为一个独立计量的交换记录。
 
-- 选定流：Biogas, 50-80% methane `246d7fec-59ef-4032-8539-e47632b60a23`
+- 选定流：生物天然气，沼气 `246d7fec-59ef-4032-8539-e47632b60a23`
 - UUID 状态：已在 state_code 100 核验：产品流；参考属性与 Volume 匹配
 - 适用条件：仅当该燃料为本过程燃烧时纳入；不得重复购入蒸汽或热水已表示的热量。
 - 流属性/单位：Volume / m3
@@ -1789,7 +1789,7 @@ sync_with: pcr.en-US.md
 
 将 Compressed air 作为一个独立计量的交换记录。
 
-- 选定流：Compressed air `46e2b1e4-5a4e-4579-b6a2-65b03f9ce825`
+- 选定流：压缩的空气 `46e2b1e4-5a4e-4579-b6a2-65b03f9ce825`
 - UUID 状态：已在 state_code 100 核验：产品流；参考属性与 Volume 匹配
 - 适用条件：仅当 Compressed air 跨越食品级醋酸配制边界时纳入，否则省略。
 - 流属性/单位：Volume / m3
@@ -1806,7 +1806,7 @@ sync_with: pcr.en-US.md
 
 将 Refrigerant, R134a 作为一个独立计量的交换记录。
 
-- 选定流：Refrigerant, R134a `86e15f5d-a7dd-40be-8dc4-ac9fa826a309`
+- 选定流：制冷剂，R134a `86e15f5d-a7dd-40be-8dc4-ac9fa826a309`
 - UUID 状态：已在 state_code 100 核验：产品流；参考属性与 Mass 匹配
 - 适用条件：仅当该制冷剂补充量归属于范围内冷却设备时纳入；泄漏量另列为基本流输出。
 - 流属性/单位：Mass / kg
@@ -1857,7 +1857,7 @@ sync_with: pcr.en-US.md
 
 将 Tap water 作为一个独立计量的交换记录。
 
-- 选定流：Tap water `d1e0e36c-07f0-4a75-bdcb-efb5d9e2ac36`
+- 选定流：自来水 `d1e0e36c-07f0-4a75-bdcb-efb5d9e2ac36`
 - UUID 状态：已在 state_code 100 核验：产品流；参考属性与 Mass 匹配
 - 适用条件：仅针对该声明水源和用途纳入；同一水量不得在另一个水行重复。
 - 流属性/单位：Mass / kg
@@ -1891,7 +1891,7 @@ sync_with: pcr.en-US.md
 
 将 Cooling water 作为一个独立计量的交换记录。
 
-- 选定流：Cooling water `df413bba-3c03-412b-a80a-c6082b6b9b33`
+- 选定流：冷却水 `df413bba-3c03-412b-a80a-c6082b6b9b33`
 - UUID 状态：已在 state_code 100 核验：产品流；参考属性与 Mass 匹配
 - 适用条件：仅针对该声明水源和用途纳入；同一水量不得在另一个水行重复。
 - 流属性/单位：Mass / kg
@@ -1908,7 +1908,7 @@ sync_with: pcr.en-US.md
 
 将 Deionised water 作为一个独立计量的交换记录。
 
-- 选定流：Deionised water `5b3acbab-2518-4406-8736-d21f222d757a`
+- 选定流：去离子水 `5b3acbab-2518-4406-8736-d21f222d757a`
 - UUID 状态：已在 state_code 100 核验：产品流；参考属性与 Mass 匹配
 - 适用条件：仅针对该声明水源和用途纳入；同一水量不得在另一个水行重复。
 - 流属性/单位：Mass / kg
@@ -1925,7 +1925,7 @@ sync_with: pcr.en-US.md
 
 将 Process Water 作为一个独立计量的交换记录。
 
-- 选定流：Process Water `94a04f7e-2d5c-41f0-b182-d54a3b373a02`
+- 选定流：工艺用水 `94a04f7e-2d5c-41f0-b182-d54a3b373a02`
 - UUID 状态：已在 state_code 100 核验：产品流；参考属性与 Mass 匹配
 - 适用条件：仅针对该声明水源和用途纳入；同一水量不得在另一个水行重复。
 - 流属性/单位：Mass / kg
@@ -2062,7 +2062,7 @@ sync_with: pcr.en-US.md
 
 将 Tap water 作为一个独立计量的交换记录。
 
-- 选定流：Tap water `d1e0e36c-07f0-4a75-bdcb-efb5d9e2ac36`
+- 选定流：自来水 `d1e0e36c-07f0-4a75-bdcb-efb5d9e2ac36`
 - UUID 状态：已在 state_code 100 核验：产品流；参考属性与 Mass 匹配
 - 适用条件：仅当最终稀释或调配加入自来水时纳入。
 - 流属性/单位：Mass / kg
@@ -2079,7 +2079,7 @@ sync_with: pcr.en-US.md
 
 将 Citric Acid 作为一个独立计量的交换记录。
 
-- 选定流：Citric Acid `80e2772b-119c-4565-a919-a70939d89dff`
+- 选定流：柠檬酸 `80e2772b-119c-4565-a919-a70939d89dff`
 - UUID 状态：已在 state_code 100 核验：产品流；参考属性与 Mass 匹配
 - 适用条件：仅当后处理投加柠檬酸时纳入，否则省略。
 - 流属性/单位：Mass / kg
@@ -2096,7 +2096,7 @@ sync_with: pcr.en-US.md
 
 将 Salt, food-grade 作为一个独立计量的交换记录。
 
-- 选定流：Salt, food-grade `3a5fa711-4648-4d58-b94d-67b79e7476c7`
+- 选定流：食盐 `3a5fa711-4648-4d58-b94d-67b79e7476c7`
 - UUID 状态：已在 state_code 100 核验：产品流；参考属性与 Mass 匹配
 - 适用条件：仅当后处理投加盐时纳入，否则省略。
 - 流属性/单位：Mass / kg
@@ -2113,7 +2113,7 @@ sync_with: pcr.en-US.md
 
 将 Bentonite, wine clarification grade 作为一个独立计量的交换记录。
 
-- 选定流：Bentonite, wine clarification grade `e01d9941-db32-46cb-b577-ebc584597a2d`
+- 选定流：膨润土 `e01d9941-db32-46cb-b577-ebc584597a2d`
 - UUID 状态：已在 state_code 100 核验：产品流；参考属性与 Mass 匹配
 - 适用条件：仅当使用膨润土澄清时纳入，否则省略。
 - 流属性/单位：Mass / kg
@@ -2130,7 +2130,7 @@ sync_with: pcr.en-US.md
 
 将 Diatomaceous earth filter aid 作为一个独立计量的交换记录。
 
-- 选定流：Diatomaceous earth filter aid `af13e1e4-290c-412d-b3fe-dcba0b4c5b81`
+- 选定流：硅藻土助滤剂 `af13e1e4-290c-412d-b3fe-dcba0b4c5b81`
 - UUID 状态：已在 state_code 100 核验：产品流；参考属性与 Mass 匹配
 - 适用条件：仅当使用该助滤剂时纳入，否则省略。
 - 流属性/单位：Mass / kg
@@ -2147,7 +2147,7 @@ sync_with: pcr.en-US.md
 
 将 Gelatin, purity above 99.5% 作为一个独立计量的交换记录。
 
-- 选定流：Gelatin, purity above 99.5% `aa9b81c7-64ab-40a2-9419-50fedc25a2c7`
+- 选定流：明胶 `aa9b81c7-64ab-40a2-9419-50fedc25a2c7`
 - UUID 状态：已在 state_code 100 核验：产品流；参考属性与 Mass 匹配
 - 适用条件：仅当使用明胶澄清时纳入，否则省略。
 - 流属性/单位：Mass / kg
@@ -2181,7 +2181,7 @@ sync_with: pcr.en-US.md
 
 将 Sodium hydroxide, 95-98% 作为一个独立计量的交换记录。
 
-- 选定流：Sodium hydroxide, 95-98% `e0abcced-0611-4c24-9290-5a2c5a0c4169`
+- 选定流：氢氧化钠 `e0abcced-0611-4c24-9290-5a2c5a0c4169`
 - UUID 状态：已在 state_code 100 核验：产品流；参考属性与 Mass 匹配
 - 适用条件：仅当后处理清洗消耗该浓度时纳入；不同浓度应另建原子行。
 - 流属性/单位：Mass / kg
@@ -2198,7 +2198,7 @@ sync_with: pcr.en-US.md
 
 将 Nitric acid, 50% aqueous solution 作为一个独立计量的交换记录。
 
-- 选定流：Nitric acid, 50% aqueous solution `db613797-10b0-4252-b818-659b99ce85dd`
+- 选定流：硝酸，50%水溶液 `db613797-10b0-4252-b818-659b99ce85dd`
 - UUID 状态：已在 state_code 100 核验：产品流；参考属性与 Mass 匹配
 - 适用条件：仅当后处理清洗消耗该浓度时纳入；不同浓度应另行表示。
 - 流属性/单位：Mass / kg
@@ -2215,7 +2215,7 @@ sync_with: pcr.en-US.md
 
 将 Peracetic acid disinfectant 作为一个独立计量的交换记录。
 
-- 选定流：Peracetic acid disinfectant
+- 选定流：过氧乙酸消毒剂
 - UUID 状态：未解析——检索返回酸性气体和聚丙烯酸类化学品，而非过氧乙酸消毒剂。
 - 适用条件：仅当后处理卫生消毒消耗过氧乙酸时纳入，否则省略。
 - 流属性/单位：Mass / kg
@@ -2300,7 +2300,7 @@ sync_with: pcr.en-US.md
 
 将 Steam, 11.0 MPaG 作为一个独立计量的交换记录。
 
-- 选定流：Steam, 11.0 MPaG `293f9fd9-5182-4d35-8aa5-ce73d4f322b7`
+- 选定流：蒸汽 `293f9fd9-5182-4d35-8aa5-ce73d4f322b7`
 - UUID 状态：已在 state_code 100 核验：产品流；参考属性与 Mass 匹配
 - 适用条件：仅当该购入热载体跨越过程边界时纳入；若厂内燃料行已完整表示同一热量，则省略。
 - 流属性/单位：Mass / kg
@@ -2334,7 +2334,7 @@ sync_with: pcr.en-US.md
 
 将 Natural gas in the gaseous state 作为一个独立计量的交换记录。
 
-- 选定流：Natural gas in the gaseous state `4f19ca0e-7b3b-11dd-ad8b-0800200c9a66`
+- 选定流：气态天然气 `4f19ca0e-7b3b-11dd-ad8b-0800200c9a66`
 - UUID 状态：已在 state_code 100 核验：产品流；参考属性与 Volume 匹配
 - 适用条件：仅当该燃料为本过程燃烧时纳入；不得重复购入蒸汽或热水已表示的热量。
 - 流属性/单位：Volume / m3
@@ -2351,7 +2351,7 @@ sync_with: pcr.en-US.md
 
 将 Liquefied petroleum gas 作为一个独立计量的交换记录。
 
-- 选定流：Liquefied petroleum gas `d54ae71a-1245-4e3f-b694-dbf2b22bbf7d`
+- 选定流：液化石油气 `d54ae71a-1245-4e3f-b694-dbf2b22bbf7d`
 - UUID 状态：已在 state_code 100 核验：产品流；参考属性与 Mass 匹配
 - 适用条件：仅当该燃料为本过程燃烧时纳入；不得重复购入蒸汽或热水已表示的热量。
 - 流属性/单位：Mass / kg
@@ -2368,7 +2368,7 @@ sync_with: pcr.en-US.md
 
 将 Diesel oil 作为一个独立计量的交换记录。
 
-- 选定流：Diesel oil `9d258d75-6792-4f1c-9856-81602ed8f816`
+- 选定流：柴油 `9d258d75-6792-4f1c-9856-81602ed8f816`
 - UUID 状态：已在 state_code 100 核验：产品流；参考属性与 Mass 匹配
 - 适用条件：仅当该燃料为本过程燃烧时纳入；不得重复购入蒸汽或热水已表示的热量。
 - 流属性/单位：Mass / kg
@@ -2385,7 +2385,7 @@ sync_with: pcr.en-US.md
 
 将 Heavy oil 作为一个独立计量的交换记录。
 
-- 选定流：Heavy oil `7fd5ee11-bcf8-47eb-83b4-778ed51eac29`
+- 选定流：重油 `7fd5ee11-bcf8-47eb-83b4-778ed51eac29`
 - UUID 状态：已在 state_code 100 核验：产品流；参考属性与 Mass 匹配
 - 适用条件：仅当该燃料为本过程燃烧时纳入；不得重复购入蒸汽或热水已表示的热量。
 - 流属性/单位：Mass / kg
@@ -2402,7 +2402,7 @@ sync_with: pcr.en-US.md
 
 将 Biogas, 50-80% methane 作为一个独立计量的交换记录。
 
-- 选定流：Biogas, 50-80% methane `246d7fec-59ef-4032-8539-e47632b60a23`
+- 选定流：生物天然气，沼气 `246d7fec-59ef-4032-8539-e47632b60a23`
 - UUID 状态：已在 state_code 100 核验：产品流；参考属性与 Volume 匹配
 - 适用条件：仅当该燃料为本过程燃烧时纳入；不得重复购入蒸汽或热水已表示的热量。
 - 流属性/单位：Volume / m3
@@ -2419,7 +2419,7 @@ sync_with: pcr.en-US.md
 
 将 Compressed air 作为一个独立计量的交换记录。
 
-- 选定流：Compressed air `46e2b1e4-5a4e-4579-b6a2-65b03f9ce825`
+- 选定流：压缩的空气 `46e2b1e4-5a4e-4579-b6a2-65b03f9ce825`
 - UUID 状态：已在 state_code 100 核验：产品流；参考属性与 Volume 匹配
 - 适用条件：仅当 Compressed air 跨越调配、澄清、稳定与放行边界时纳入，否则省略。
 - 流属性/单位：Volume / m3
@@ -2436,7 +2436,7 @@ sync_with: pcr.en-US.md
 
 将 Refrigerant, R134a 作为一个独立计量的交换记录。
 
-- 选定流：Refrigerant, R134a `86e15f5d-a7dd-40be-8dc4-ac9fa826a309`
+- 选定流：制冷剂，R134a `86e15f5d-a7dd-40be-8dc4-ac9fa826a309`
 - UUID 状态：已在 state_code 100 核验：产品流；参考属性与 Mass 匹配
 - 适用条件：仅当该制冷剂补充量归属于范围内冷却设备时纳入；泄漏量另列为基本流输出。
 - 流属性/单位：Mass / kg
@@ -2487,7 +2487,7 @@ sync_with: pcr.en-US.md
 
 将 Tap water 作为一个独立计量的交换记录。
 
-- 选定流：Tap water `d1e0e36c-07f0-4a75-bdcb-efb5d9e2ac36`
+- 选定流：自来水 `d1e0e36c-07f0-4a75-bdcb-efb5d9e2ac36`
 - UUID 状态：已在 state_code 100 核验：产品流；参考属性与 Mass 匹配
 - 适用条件：仅针对该声明水源和用途纳入；同一水量不得在另一个水行重复。
 - 流属性/单位：Mass / kg
@@ -2521,7 +2521,7 @@ sync_with: pcr.en-US.md
 
 将 Cooling water 作为一个独立计量的交换记录。
 
-- 选定流：Cooling water `df413bba-3c03-412b-a80a-c6082b6b9b33`
+- 选定流：冷却水 `df413bba-3c03-412b-a80a-c6082b6b9b33`
 - UUID 状态：已在 state_code 100 核验：产品流；参考属性与 Mass 匹配
 - 适用条件：仅针对该声明水源和用途纳入；同一水量不得在另一个水行重复。
 - 流属性/单位：Mass / kg
@@ -2538,7 +2538,7 @@ sync_with: pcr.en-US.md
 
 将 Deionised water 作为一个独立计量的交换记录。
 
-- 选定流：Deionised water `5b3acbab-2518-4406-8736-d21f222d757a`
+- 选定流：去离子水 `5b3acbab-2518-4406-8736-d21f222d757a`
 - UUID 状态：已在 state_code 100 核验：产品流；参考属性与 Mass 匹配
 - 适用条件：仅针对该声明水源和用途纳入；同一水量不得在另一个水行重复。
 - 流属性/单位：Mass / kg
@@ -2555,7 +2555,7 @@ sync_with: pcr.en-US.md
 
 将 Process Water 作为一个独立计量的交换记录。
 
-- 选定流：Process Water `94a04f7e-2d5c-41f0-b182-d54a3b373a02`
+- 选定流：工艺用水 `94a04f7e-2d5c-41f0-b182-d54a3b373a02`
 - UUID 状态：已在 state_code 100 核验：产品流；参考属性与 Mass 匹配
 - 适用条件：仅针对该声明水源和用途纳入；同一水量不得在另一个水行重复。
 - 流属性/单位：Mass / kg
@@ -2580,7 +2580,7 @@ sync_with: pcr.en-US.md
 
 将 Vinegar and substitutes therefor obtained from acetic acid 作为一个独立计量的交换记录。
 
-- 选定流：Vinegar and substitutes therefor obtained from acetic acid `20393649-bcc3-43f0-a2df-1a99c0005e29`
+- 选定流：自醋酸中提炼出来的醋及醋的代用品 `20393649-bcc3-43f0-a2df-1a99c0005e29`
 - UUID 状态：已在 state_code 100 核验：产品流；参考属性与 Mass 匹配
 - 适用条件：仅适用于代表性成品液态食醋路线；对同一批次与成品代用品输出互斥。
 - 流属性/单位：Mass / kg
@@ -2720,7 +2720,7 @@ sync_with: pcr.en-US.md
 
 仅按该命名基本交换及其声明环境介质记录 Acetic acid, to air unspecified。
 
-- 选定流：Acetic acid, to air unspecified `08a91e70-3ddc-11dd-92c3-0050c2490048`
+- 选定流：乙酸 `08a91e70-3ddc-11dd-92c3-0050c2490048`
 - UUID 状态：已在 state_code 100 核验：基本流；参考属性与 Mass 匹配
 - 适用条件：仅适用于后处理或储存阶段实测或计算的排入未指定空气介质的醋酸。
 - 流属性/单位：Mass / kg
@@ -2737,7 +2737,7 @@ sync_with: pcr.en-US.md
 
 仅按该命名基本交换及其声明环境介质记录 Carbon dioxide, fossil, to air unspecified。
 
-- 选定流：Carbon dioxide, fossil, to air unspecified `08a91e70-3ddc-11dd-923d-0050c2490048`
+- 选定流：二氧化碳（化石源） `08a91e70-3ddc-11dd-923d-0050c2490048`
 - UUID 状态：已在 state_code 100 核验：基本流；参考属性与 Mass 匹配
 - 适用条件：仅适用于范围内化石燃料燃烧；生物源二氧化碳单列。
 - 流属性/单位：Mass / kg
@@ -2754,7 +2754,7 @@ sync_with: pcr.en-US.md
 
 仅按该命名基本交换及其声明环境介质记录 Carbon monoxide, fossil, to air unspecified。
 
-- 选定流：Carbon monoxide, fossil, to air unspecified `08a91e70-3ddc-11dd-924e-0050c2490048`
+- 选定流：一氧化碳（化石源） `08a91e70-3ddc-11dd-924e-0050c2490048`
 - UUID 状态：已在 state_code 100 核验：基本流；参考属性与 Mass 匹配
 - 适用条件：仅当范围内燃烧产生实测或计算的化石一氧化碳时纳入。
 - 流属性/单位：Mass / kg
@@ -2771,7 +2771,7 @@ sync_with: pcr.en-US.md
 
 仅按该命名基本交换及其声明环境介质记录 Nitrogen monoxide, to non-urban air or high stacks。
 
-- 选定流：Nitrogen monoxide, to non-urban air or high stacks `fe0acd60-3ddc-11dd-aa19-0050c2490048`
+- 选定流：一氧化氮 `fe0acd60-3ddc-11dd-aa19-0050c2490048`
 - UUID 状态：已在 state_code 100 核验：基本流；参考属性与 Mass 匹配
 - 适用条件：仅当实测物种和声明介质与该流相符时纳入；不得作为总氮氧化物占位。
 - 流属性/单位：Mass / kg
@@ -2788,7 +2788,7 @@ sync_with: pcr.en-US.md
 
 仅按该命名基本交换及其声明环境介质记录 Sulfur oxides, to air unspecified。
 
-- 选定流：Sulfur oxides, to air unspecified `fe0acd60-3ddc-11dd-a207-0050c2490048`
+- 选定流：硫氧化物 `fe0acd60-3ddc-11dd-a207-0050c2490048`
 - UUID 状态：已在 state_code 100 核验：基本流；参考属性与 Mass 匹配
 - 适用条件：仅适用于实测或计算的排入未指定空气介质的硫氧化物。
 - 流属性/单位：Mass / kg
@@ -2805,7 +2805,7 @@ sync_with: pcr.en-US.md
 
 仅按该命名基本交换及其声明环境介质记录 Particles, PM2.5, to air unspecified。
 
-- 选定流：Particles, PM2.5, to air unspecified `08a91e70-3ddc-11dd-9293-0050c2490048`
+- 选定流：颗粒物 (PM2.5) `08a91e70-3ddc-11dd-9293-0050c2490048`
 - UUID 状态：已在 state_code 100 核验：基本流；参考属性与 Mass 匹配
 - 适用条件：仅适用于实测或计算的排入未指定空气介质的 PM2.5。
 - 流属性/单位：Mass / kg
@@ -2839,7 +2839,7 @@ sync_with: pcr.en-US.md
 
 仅按该命名基本交换及其声明环境介质记录 Ammonia, to air unspecified。
 
-- 选定流：Ammonia, to air unspecified `08a91e70-3ddc-11dd-a2a9-0050c2490048`
+- 选定流：氨 `08a91e70-3ddc-11dd-a2a9-0050c2490048`
 - UUID 状态：已在 state_code 100 核验：基本流；参考属性与 Mass 匹配
 - 适用条件：仅当泄漏归属于范围内氨设备或存在实测氨排放时纳入。
 - 流属性/单位：Mass / kg
@@ -2856,7 +2856,7 @@ sync_with: pcr.en-US.md
 
 仅按该命名基本交换及其声明环境介质记录 Methane, fossil, to air unspecified。
 
-- 选定流：Methane, fossil, to air unspecified `08a91e70-3ddc-11dd-9610-0050c2490048`
+- 选定流：甲烷 (化石源) `08a91e70-3ddc-11dd-9610-0050c2490048`
 - UUID 状态：已在 state_code 100 核验：基本流；参考属性与 Mass 匹配
 - 适用条件：仅适用于实测或计算的化石甲烷排放；生物源甲烷单列。
 - 流属性/单位：Mass / kg
@@ -2873,7 +2873,7 @@ sync_with: pcr.en-US.md
 
 仅按该命名基本交换及其声明环境介质记录 Chemical Oxygen Demand, to water unspecified。
 
-- 选定流：Chemical Oxygen Demand, to water unspecified `e57fc631-2c77-457a-aa30-be79e357792b`
+- 选定流：化学需氧量 `e57fc631-2c77-457a-aa30-be79e357792b`
 - UUID 状态：已在 state_code 100 核验：基本流；参考属性与 Mass 匹配
 - 适用条件：仅适用于排入未指定水体介质且实测 COD 的直接排放。
 - 流属性/单位：Mass / kg
@@ -2890,7 +2890,7 @@ sync_with: pcr.en-US.md
 
 仅按该命名基本交换及其声明环境介质记录 Biological oxygen demand, to fresh water。
 
-- 选定流：Biological oxygen demand, to fresh water `08a91e70-3ddc-11dd-97de-0050c2490048`
+- 选定流：生物需氧量 `08a91e70-3ddc-11dd-97de-0050c2490048`
 - UUID 状态：已在 state_code 100 核验：基本流；参考属性与 Mass 匹配
 - 适用条件：仅适用于实测 BOD 的直接淡水排放。
 - 流属性/单位：Mass / kg
@@ -2907,7 +2907,7 @@ sync_with: pcr.en-US.md
 
 仅按该命名基本交换及其声明环境介质记录 Nitrogen, total excluding N2, to fresh water。
 
-- 选定流：Nitrogen, total excluding N2, to fresh water `e1716164-e906-48e4-ad77-8f2ec4a9a4c5`
+- 选定流：总氮（不含N₂） `e1716164-e906-48e4-ad77-8f2ec4a9a4c5`
 - UUID 状态：已在 state_code 100 核验：基本流；参考属性与 Mass 匹配
 - 适用条件：仅适用于实测不含 N2 总氮的直接淡水排放。
 - 流属性/单位：Mass / kg
@@ -2924,7 +2924,7 @@ sync_with: pcr.en-US.md
 
 仅按该命名基本交换及其声明环境介质记录 Phosphorus, total, to fresh water。
 
-- 选定流：Phosphorus, total, to fresh water `f9df3107-6b59-4067-b920-3c61cf3630c7`
+- 选定流：总磷 `f9df3107-6b59-4067-b920-3c61cf3630c7`
 - UUID 状态：已在 state_code 100 核验：基本流；参考属性与 Mass 匹配
 - 适用条件：仅适用于实测总磷的直接淡水排放。
 - 流属性/单位：Mass / kg
@@ -2947,7 +2947,7 @@ sync_with: pcr.en-US.md
 
 将 Vinegar and substitutes therefor obtained from acetic acid 作为一个独立计量的交换记录。
 
-- 选定流：Vinegar and substitutes therefor obtained from acetic acid `20393649-bcc3-43f0-a2df-1a99c0005e29`
+- 选定流：自醋酸中提炼出来的醋及醋的代用品 `20393649-bcc3-43f0-a2df-1a99c0005e29`
 - UUID 状态：已在 state_code 100 核验：产品流；参考属性与 Mass 匹配
 - 适用条件：仅适用于包装代表性成品液态食醋；对同一包装批次与代用品投入互斥。
 - 流属性/单位：Mass / kg
@@ -3032,7 +3032,7 @@ sync_with: pcr.en-US.md
 
 将 Plastic packaging closure cap 作为一个独立计量的交换记录。
 
-- 选定流：Plastic packaging closure cap `bab04179-3799-4eff-b12b-edaec382520c`
+- 选定流：塑料包装封口盖 `bab04179-3799-4eff-b12b-edaec382520c`
 - UUID 状态：已在 state_code 100 核验：产品流；参考属性与 Mass 匹配
 - 适用条件：仅当塑料封盖随产品离厂时纳入；铝盖包装批次省略。
 - 流属性/单位：Mass / kg
@@ -3049,7 +3049,7 @@ sync_with: pcr.en-US.md
 
 将 Aluminium screw cap closure 作为一个独立计量的交换记录。
 
-- 选定流：Aluminium screw cap closure `c37f87ea-0b43-43d6-a300-b142ea358cb7`
+- 选定流：铝制螺旋盖封口 `c37f87ea-0b43-43d6-a300-b142ea358cb7`
 - UUID 状态：已在 state_code 100 核验：产品流；参考属性与 Mass 匹配
 - 适用条件：仅当铝螺旋盖随产品离厂时纳入；塑料封盖包装批次省略。
 - 流属性/单位：Mass / kg
@@ -3066,7 +3066,7 @@ sync_with: pcr.en-US.md
 
 将 Label, paper 作为一个独立计量的交换记录。
 
-- 选定流：Label, paper `7b25a54f-baa6-4593-9670-4240a3315eed`
+- 选定流：纸质标签 `7b25a54f-baa6-4593-9670-4240a3315eed`
 - UUID 状态：已在 state_code 100 核验：产品流；参考属性与 Mass 匹配
 - 适用条件：仅当纸标签随产品离厂时纳入。
 - 流属性/单位：Mass / kg
@@ -3083,7 +3083,7 @@ sync_with: pcr.en-US.md
 
 将 Corrugated cardboard, type C, E, or F 作为一个独立计量的交换记录。
 
-- 选定流：Corrugated cardboard, type C, E, or F `8bde297e-98df-463f-bcb4-0db52bf6e0b5`
+- 选定流：瓦楞纸板 `8bde297e-98df-463f-bcb4-0db52bf6e0b5`
 - UUID 状态：已在 state_code 100 核验：产品流；参考属性与 Mass 匹配
 - 适用条件：仅当该瓦楞纸板等级随产品离厂时纳入；不同等级另行表示。
 - 流属性/单位：Mass / kg
@@ -3117,7 +3117,7 @@ sync_with: pcr.en-US.md
 
 将 Pallets and load boards of wood 作为一个独立计量的交换记录。
 
-- 选定流：Pallets and load boards of wood `4b49871e-95be-4e0c-9223-9902f9eaa763`
+- 选定流：木制托盘、箱式托盘和其他装载板，木制托盘套环 `4b49871e-95be-4e0c-9223-9902f9eaa763`
 - UUID 状态：已在 state_code 100 核验：产品流；参考属性与 Mass 匹配
 - 适用条件：仅当木托盘可归属于发运产品时纳入。
 - 流属性/单位：Mass / kg
@@ -3134,7 +3134,7 @@ sync_with: pcr.en-US.md
 
 将 Sodium hydroxide, 95-98% 作为一个独立计量的交换记录。
 
-- 选定流：Sodium hydroxide, 95-98% `e0abcced-0611-4c24-9290-5a2c5a0c4169`
+- 选定流：氢氧化钠 `e0abcced-0611-4c24-9290-5a2c5a0c4169`
 - UUID 状态：已在 state_code 100 核验：产品流；参考属性与 Mass 匹配
 - 适用条件：仅当包装线消耗该浓度时纳入；不同浓度另行表示。
 - 流属性/单位：Mass / kg
@@ -3151,7 +3151,7 @@ sync_with: pcr.en-US.md
 
 将 Nitric acid, 50% aqueous solution 作为一个独立计量的交换记录。
 
-- 选定流：Nitric acid, 50% aqueous solution `db613797-10b0-4252-b818-659b99ce85dd`
+- 选定流：硝酸，50%水溶液 `db613797-10b0-4252-b818-659b99ce85dd`
 - UUID 状态：已在 state_code 100 核验：产品流；参考属性与 Mass 匹配
 - 适用条件：仅当包装线消耗该浓度时纳入；不同浓度另行表示。
 - 流属性/单位：Mass / kg
@@ -3168,7 +3168,7 @@ sync_with: pcr.en-US.md
 
 将 Peracetic acid disinfectant 作为一个独立计量的交换记录。
 
-- 选定流：Peracetic acid disinfectant
+- 选定流：过氧乙酸消毒剂
 - UUID 状态：未解析——未找到过氧乙酸消毒剂产品流。
 - 适用条件：仅当包装线消耗过氧乙酸时纳入。
 - 流属性/单位：Mass / kg
@@ -3253,7 +3253,7 @@ sync_with: pcr.en-US.md
 
 将 Steam, 11.0 MPaG 作为一个独立计量的交换记录。
 
-- 选定流：Steam, 11.0 MPaG `293f9fd9-5182-4d35-8aa5-ce73d4f322b7`
+- 选定流：蒸汽 `293f9fd9-5182-4d35-8aa5-ce73d4f322b7`
 - UUID 状态：已在 state_code 100 核验：产品流；参考属性与 Mass 匹配
 - 适用条件：仅当该购入热载体跨越过程边界时纳入；若厂内燃料行已完整表示同一热量，则省略。
 - 流属性/单位：Mass / kg
@@ -3287,7 +3287,7 @@ sync_with: pcr.en-US.md
 
 将 Natural gas in the gaseous state 作为一个独立计量的交换记录。
 
-- 选定流：Natural gas in the gaseous state `4f19ca0e-7b3b-11dd-ad8b-0800200c9a66`
+- 选定流：气态天然气 `4f19ca0e-7b3b-11dd-ad8b-0800200c9a66`
 - UUID 状态：已在 state_code 100 核验：产品流；参考属性与 Volume 匹配
 - 适用条件：仅当该燃料为本过程燃烧时纳入；不得重复购入蒸汽或热水已表示的热量。
 - 流属性/单位：Volume / m3
@@ -3304,7 +3304,7 @@ sync_with: pcr.en-US.md
 
 将 Liquefied petroleum gas 作为一个独立计量的交换记录。
 
-- 选定流：Liquefied petroleum gas `d54ae71a-1245-4e3f-b694-dbf2b22bbf7d`
+- 选定流：液化石油气 `d54ae71a-1245-4e3f-b694-dbf2b22bbf7d`
 - UUID 状态：已在 state_code 100 核验：产品流；参考属性与 Mass 匹配
 - 适用条件：仅当该燃料为本过程燃烧时纳入；不得重复购入蒸汽或热水已表示的热量。
 - 流属性/单位：Mass / kg
@@ -3321,7 +3321,7 @@ sync_with: pcr.en-US.md
 
 将 Diesel oil 作为一个独立计量的交换记录。
 
-- 选定流：Diesel oil `9d258d75-6792-4f1c-9856-81602ed8f816`
+- 选定流：柴油 `9d258d75-6792-4f1c-9856-81602ed8f816`
 - UUID 状态：已在 state_code 100 核验：产品流；参考属性与 Mass 匹配
 - 适用条件：仅当该燃料为本过程燃烧时纳入；不得重复购入蒸汽或热水已表示的热量。
 - 流属性/单位：Mass / kg
@@ -3338,7 +3338,7 @@ sync_with: pcr.en-US.md
 
 将 Heavy oil 作为一个独立计量的交换记录。
 
-- 选定流：Heavy oil `7fd5ee11-bcf8-47eb-83b4-778ed51eac29`
+- 选定流：重油 `7fd5ee11-bcf8-47eb-83b4-778ed51eac29`
 - UUID 状态：已在 state_code 100 核验：产品流；参考属性与 Mass 匹配
 - 适用条件：仅当该燃料为本过程燃烧时纳入；不得重复购入蒸汽或热水已表示的热量。
 - 流属性/单位：Mass / kg
@@ -3355,7 +3355,7 @@ sync_with: pcr.en-US.md
 
 将 Biogas, 50-80% methane 作为一个独立计量的交换记录。
 
-- 选定流：Biogas, 50-80% methane `246d7fec-59ef-4032-8539-e47632b60a23`
+- 选定流：生物天然气，沼气 `246d7fec-59ef-4032-8539-e47632b60a23`
 - UUID 状态：已在 state_code 100 核验：产品流；参考属性与 Volume 匹配
 - 适用条件：仅当该燃料为本过程燃烧时纳入；不得重复购入蒸汽或热水已表示的热量。
 - 流属性/单位：Volume / m3
@@ -3372,7 +3372,7 @@ sync_with: pcr.en-US.md
 
 将 Compressed air 作为一个独立计量的交换记录。
 
-- 选定流：Compressed air `46e2b1e4-5a4e-4579-b6a2-65b03f9ce825`
+- 选定流：压缩的空气 `46e2b1e4-5a4e-4579-b6a2-65b03f9ce825`
 - UUID 状态：已在 state_code 100 核验：产品流；参考属性与 Volume 匹配
 - 适用条件：仅当 Compressed air 跨越初级与次级包装边界时纳入，否则省略。
 - 流属性/单位：Volume / m3
@@ -3389,7 +3389,7 @@ sync_with: pcr.en-US.md
 
 将 Refrigerant, R134a 作为一个独立计量的交换记录。
 
-- 选定流：Refrigerant, R134a `86e15f5d-a7dd-40be-8dc4-ac9fa826a309`
+- 选定流：制冷剂，R134a `86e15f5d-a7dd-40be-8dc4-ac9fa826a309`
 - UUID 状态：已在 state_code 100 核验：产品流；参考属性与 Mass 匹配
 - 适用条件：仅当该制冷剂补充量归属于范围内冷却设备时纳入；泄漏量另列为基本流输出。
 - 流属性/单位：Mass / kg
@@ -3440,7 +3440,7 @@ sync_with: pcr.en-US.md
 
 将 Tap water 作为一个独立计量的交换记录。
 
-- 选定流：Tap water `d1e0e36c-07f0-4a75-bdcb-efb5d9e2ac36`
+- 选定流：自来水 `d1e0e36c-07f0-4a75-bdcb-efb5d9e2ac36`
 - UUID 状态：已在 state_code 100 核验：产品流；参考属性与 Mass 匹配
 - 适用条件：仅针对该声明水源和用途纳入；同一水量不得在另一个水行重复。
 - 流属性/单位：Mass / kg
@@ -3474,7 +3474,7 @@ sync_with: pcr.en-US.md
 
 将 Cooling water 作为一个独立计量的交换记录。
 
-- 选定流：Cooling water `df413bba-3c03-412b-a80a-c6082b6b9b33`
+- 选定流：冷却水 `df413bba-3c03-412b-a80a-c6082b6b9b33`
 - UUID 状态：已在 state_code 100 核验：产品流；参考属性与 Mass 匹配
 - 适用条件：仅针对该声明水源和用途纳入；同一水量不得在另一个水行重复。
 - 流属性/单位：Mass / kg
@@ -3491,7 +3491,7 @@ sync_with: pcr.en-US.md
 
 将 Deionised water 作为一个独立计量的交换记录。
 
-- 选定流：Deionised water `5b3acbab-2518-4406-8736-d21f222d757a`
+- 选定流：去离子水 `5b3acbab-2518-4406-8736-d21f222d757a`
 - UUID 状态：已在 state_code 100 核验：产品流；参考属性与 Mass 匹配
 - 适用条件：仅针对该声明水源和用途纳入；同一水量不得在另一个水行重复。
 - 流属性/单位：Mass / kg
@@ -3508,7 +3508,7 @@ sync_with: pcr.en-US.md
 
 将 Process Water 作为一个独立计量的交换记录。
 
-- 选定流：Process Water `94a04f7e-2d5c-41f0-b182-d54a3b373a02`
+- 选定流：工艺用水 `94a04f7e-2d5c-41f0-b182-d54a3b373a02`
 - UUID 状态：已在 state_code 100 核验：产品流；参考属性与 Mass 匹配
 - 适用条件：仅针对该声明水源和用途纳入；同一水量不得在另一个水行重复。
 - 流属性/单位：Mass / kg
@@ -3586,7 +3586,7 @@ sync_with: pcr.en-US.md
 
 按实测数量和去向单独记录 Waste PET bottles。
 
-- 选定流：Waste PET bottles `8874aca6-2ff9-4aef-be62-5cd02f20dc97`
+- 选定流：废PET瓶 `8874aca6-2ff9-4aef-be62-5cd02f20dc97`
 - UUID 状态：已在 state_code 100 核验：废物流；参考属性与 Mass 匹配
 - 适用条件：仅当 PET 瓶在前景边界内成为废物时纳入。
 - 流属性/单位：Mass / kg
@@ -3637,7 +3637,7 @@ sync_with: pcr.en-US.md
 
 按实测数量和去向单独记录 Packaging waste, paper。
 
-- 选定流：Packaging waste, paper `6b6f1025-cb6a-4c9d-9947-7726c4307a76`
+- 选定流：包装废弃物，纸类 `6b6f1025-cb6a-4c9d-9947-7726c4307a76`
 - UUID 状态：已在 state_code 100 核验：废物流；参考属性与 Mass 匹配
 - 适用条件：仅当纸标签在前景边界内成为废物时纳入。
 - 流属性/单位：Mass / kg
@@ -3654,7 +3654,7 @@ sync_with: pcr.en-US.md
 
 按实测数量和去向单独记录 Packaging waste, cardboard。
 
-- 选定流：Packaging waste, cardboard `72270223-04b1-4986-a546-94e5a0821317`
+- 选定流：包装废弃物，纸板 `72270223-04b1-4986-a546-94e5a0821317`
 - UUID 状态：已在 state_code 100 核验：废物流；参考属性与 Mass 匹配
 - 适用条件：仅当瓦楞纸板在前景边界内成为废物时纳入。
 - 流属性/单位：Mass / kg

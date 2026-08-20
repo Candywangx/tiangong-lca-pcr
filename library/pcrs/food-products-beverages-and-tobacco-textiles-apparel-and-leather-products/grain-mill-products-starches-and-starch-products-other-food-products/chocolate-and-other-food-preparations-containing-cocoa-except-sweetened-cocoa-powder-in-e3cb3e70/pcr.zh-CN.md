@@ -40,7 +40,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 1 kg |
-| 参考产品流 | Chocolate and other food preparations containing cocoa (except sweetened cocoa powder), in bulk forms `7d08586f-18bc-42f3-b262-54f8d559de12` |
+| 参考产品流 | 散装的巧克力和其他含有可可的食品（加糖的可可粉除外） `7d08586f-18bc-42f3-b262-54f8d559de12` |
 | 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | kg |
@@ -287,7 +287,7 @@ sync_with: pcr.en-US.md
 
 将工艺冷却补充新鲜水与循环流量及清洗用水分开记录。
 
-- 选定流：Process water
+- 选定流：过程用水
 - 流属性/单位：Mass / kg
 - 数量规则：归属于制造冷却的实测新鲜水补充量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -458,7 +458,7 @@ sync_with: pcr.en-US.md
 
 该流是扣除包装和可重复使用运输设备质量后的归一化参考输出。
 
-- 选定流：Chocolate and other food preparations containing cocoa (except sweetened cocoa powder), in bulk forms `7d08586f-18bc-42f3-b262-54f8d559de12`
+- 选定流：散装的巧克力和其他含有可可的食品（加糖的可可粉除外） `7d08586f-18bc-42f3-b262-54f8d559de12`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：根据实测灌装或发运质量归一化后的 1 kg 净散装产品
 - 数值来源模式：计算值（`calculated_value`）
@@ -506,7 +506,7 @@ sync_with: pcr.en-US.md
 
 扣除内部回用水后记录湿法清洗和原位清洗使用的新鲜水；采用干法清洗或管道清管并不意味着其余湿洗步骤为零用水。
 
-- 选定流：Process water
+- 选定流：过程用水
 - 流属性/单位：Mass / kg
 - 数量规则：归属于产品接触设备和生产区域清洗的实测新鲜水取用量
 - 数值来源模式：前景记录（`foreground_record`）

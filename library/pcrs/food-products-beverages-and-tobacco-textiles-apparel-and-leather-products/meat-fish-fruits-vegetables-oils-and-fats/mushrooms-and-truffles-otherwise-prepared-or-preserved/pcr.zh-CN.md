@@ -114,7 +114,7 @@ sync_with: pcr.en-US.md
 
 记录共用前处理阶段清洗、洗涤、漂烫或冷却所供应的水。
 
-- 选定流：Process water
+- 选定流：过程用水
 - 流属性/单位：Mass / kg
 - 数量规则：计量或按批次分摊的供水量，扣除有记录的闭路循环量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -269,7 +269,7 @@ sync_with: pcr.en-US.md
 
 路线产出使用精确通用 CPC 分类流，并且仅计入合格销售单元。
 
-- 选定流：Mushrooms and truffles, otherwise prepared or preserved `a73856a4-8862-40be-b505-65863a6cfb66`
+- 选定流：蘑菇和松露，以其他方式制作或保存 `a73856a4-8862-40be-b505-65863a6cfb66`
 - 流属性/单位：Mass / kg
 - 数量规则：不含包装的实测净产品质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -388,7 +388,7 @@ sync_with: pcr.en-US.md
 
 路线产出使用精确通用 CPC 分类流，并且仅计入合格销售单元。
 
-- 选定流：Mushrooms and truffles, otherwise prepared or preserved `a73856a4-8862-40be-b505-65863a6cfb66`
+- 选定流：蘑菇和松露，以其他方式制作或保存 `a73856a4-8862-40be-b505-65863a6cfb66`
 - 流属性/单位：Mass / kg
 - 数量规则：不含包装的实测净产品质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -506,7 +506,7 @@ sync_with: pcr.en-US.md
 
 路线产出使用精确通用 CPC 分类流，并且仅计入合格销售单元。
 
-- 选定流：Mushrooms and truffles, otherwise prepared or preserved `a73856a4-8862-40be-b505-65863a6cfb66`
+- 选定流：蘑菇和松露，以其他方式制作或保存 `a73856a4-8862-40be-b505-65863a6cfb66`
 - 流属性/单位：Mass / kg
 - 数量规则：不含包装的实测净产品质量
 - 数值来源模式：前景记录（`foreground_record`）

@@ -1,10 +1,1229 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "21190"
-  title: "Flours, meals and pellets of meat or meat offal, inedible; greaves"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.food-products-beverages-and-tobacco-textiles-apparel-and-leather-products.meat-fish-fruits-vegetables-oils-and-fats.flours-meals-and-pellets-of-meat-or-meat-offal-inedible-greaves"
+  classification_refs: "CPC 3.0: 21190 — Flours, meals and pellets of meat or meat offal, inedible; greaves"
+  covered_products: "Bulk mammalian meat and bone meal produced as the solid protein-and-mineral co-product of the declared continuous dry-rendering route"
+  excluded_products: "Meat meal without a declared bone fraction; poultry, feather, blood, fish or edible meals; greaves as final product; pellets; wet- or batch-rendered meal; products from undeclared mixed routes"
+  representative_product: "Meat and bone meal (MBM), production mix at rendering plant, GLO"
+  production_route: "Mammalian animal by-products; ≤50 mm size reduction; Method 1 pressure sterilisation; continuous indirect-steam dry rendering; draining and screw pressing; grinding and screening; bulk storage; purchased steam and grid electricity"
+  market_state: "Dry, screened, bulk inedible meal at rendering-plant gate"
+functional_unit:
+  what: "Released bulk mammalian meat and bone meal from the declared route"
+  how_much: "1 kg as-produced MBM at the plant gate"
+  how_well: "A released lot with declared animal species mix, animal-by-product category, processing method, moisture, crude protein, crude fat, ash, particle-size specification, and legal use restriction"
+  how_long_or_cycle: "One representative production campaign within the declared reporting period, normalised to 1 kg released MBM"
+  reference_flow_link: "Output row meat_and_bone_meal from process meal_finishing_storage"
+system_boundary:
+  rules:
+    - rule_id: boundary_route_lock
+      applies_to: "foreground dataset"
+      rule: "Include only the declared mammalian MBM route; do not average greaves, meat meal, poultry meal, wet rendering, batch rendering, pelletising, or on-site steam generation into this dataset."
+      source_ids:
+        - unsd-cpc30-21190
+        - epa-ap42-953
+        - woodgate-2023-rendering
+    - rule_id: boundary_gate_to_gate
+      applies_to: "foreground and linked background"
+      rule: "Collect every exchange from accepted raw material at receiving through released bulk MBM and rendered fat at plant storage; represent excluded upstream and downstream stages only through explicit linked datasets."
+      source_ids:
+        - ec-pef-2021
+    - rule_id: boundary_method1_controls
+      applies_to: "size reduction and pressure sterilisation"
+      rule: "When Method 1 is declared, retain daily size-reduction checks and uninterrupted time, core-temperature and absolute-pressure records; the route target is ≤50 mm, >133 °C, ≥20 minutes and ≥3 bar absolute, subject to the currently applicable jurisdictional rule."
+      source_ids:
+        - eu-reg-142-2011-method1
+    - rule_id: boundary_pollution_control
+      applies_to: "rendering air and water controls"
+      rule: "Include captured cooking and pressing vapours, condensate, scrubber inputs, wastewater, sludge, and residual releases; do not hide them in a combined utilities, waste or emissions placeholder."
+      source_ids:
+        - epa-ap42-953
+boundary_abstraction:
+  declared_starting_condition: "Accepted mammalian slaughter and meat-processing animal by-products weighed at the rendering-plant receiving point, with species mix, regulatory category, source facility, receipt time, moisture sampling plan, and rejection records declared"
+  starting_condition_role: "Foreground raw material entering the route; upstream livestock production and slaughter burdens remain in linked supplier datasets"
+  product_classification_scope: "Route-specific subset of CPC 3.0 21190 represented by mammalian MBM only"
+  recursive_input_rule: "Externally purchased MBM or same-category meal used in blending shall be recorded as an upstream product input and shall not be recursively regenerated inside this foreground; internal documented rework is netted once and disclosed"
+  upstream_dataset_requirement: "Link supplier datasets for animal by-products, purchased steam, electricity, process water, sodium hypochlorite, and all other purchased inputs; datasets shall match geography, technology and reporting period as closely as practicable"
+  disclosure: "Declare cut-offs, rejected loads, storage time before processing, Method 1 control records, internal recycle, purchased-steam source, water treatment, emission-control technology, co-product quantities and prices, allocation method, and any missing measurements"
+reference_flow_definition:
+  reference_amount: "1 kg"
+  product_flow_ref:
+    name: "Meat and bone meal (MBM)"
+    uuid: "c9d74b2c-9179-4330-a54e-f63cc2c86f95"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "mammalian species mix"
+    - "animal-by-product regulatory category"
+    - "Method 1 critical-control-point status"
+    - "continuous dry-rendering technology"
+    - geography
+    - "reporting period"
+    - "purchased-steam source"
+    - "electricity mix"
+    - moisture
+    - "crude protein"
+    - "crude fat"
+    - ash
+    - "particle-size specification"
+    - "bulk state"
+    - "rendered-fat co-product status"
+    - "allocation method"
+    - "legal use restriction"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "released MBM"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Record the reference flow as 1 kg as-produced released MBM; do not silently convert to dry matter."
+  - id: dry_matter_disclosure
+    applies_to: "MBM, raw animal by-products, press cake, rendered fat and wastes"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg and kg dry matter"
+    rule: "Record wet mass and measured moisture when dry-matter balances or allocation factors are calculated."
+  - id: energy_carrier_separation
+    applies_to: "purchased electricity and steam"
+    required_property_ref:
+      name: "Energy"
+      uuid: ""
+    required_unit: "kWh for electricity; MJ or kg for steam"
+    rule: "Meter electricity and purchased steam separately. Do not report a combined energy or utilities flow; preserve the supplier unit and document every conversion."
+  - id: water_stream_separation
+    applies_to: "process water, condensate and discharged wastewater"
+    required_property_ref:
+      name: "Mass or volume"
+      uuid: ""
+    required_unit: "kg or m3"
+    rule: "Keep supplied process water, recovered condensate, and wastewater discharge as distinct streams; state density assumptions for volume-to-mass conversion."
+  - id: reporting_period_normalisation
+    applies_to: "all foreground exchanges"
+    required_property_ref:
+      name: "exchange-specific property"
+      uuid: ""
+    required_unit: "exchange-specific unit per kg MBM"
+    rule: "Aggregate accepted records over the same campaign and reporting period, subtract documented internal recycle, then divide by released MBM mass."
+process_map:
+  - id: receiving_size_reduction
+    name: "Raw-material receiving and size reduction"
+    inclusion: "required"
+    inclusion_condition: "Always"
+    role: "Foreground acceptance, weighing and ≤50 mm preparation"
+    quantitative_reference: "kg accepted raw animal by-products"
+  - id: sterilisation_dry_rendering
+    name: "Method 1 sterilisation and continuous dry rendering"
+    inclusion: "required"
+    inclusion_condition: "Always"
+    role: "Foreground hygienisation, dehydration and cell disruption using purchased steam"
+    quantitative_reference: "kg sterilised rendered material"
+  - id: fat_separation_pressing
+    name: "Fat draining and screw pressing"
+    inclusion: "required"
+    inclusion_condition: "Always"
+    role: "Foreground separation of rendered fat and protein-mineral solids"
+    quantitative_reference: "kg press cake and kg rendered fat"
+  - id: meal_finishing_storage
+    name: "Grinding, screening and bulk storage"
+    inclusion: "required"
+    inclusion_condition: "Always"
+    role: "Foreground production and release of screened MBM"
+    quantitative_reference: "1 kg released MBM"
+  - id: odor_wastewater_control
+    name: "Odour and wastewater control"
+    inclusion: "required"
+    inclusion_condition: "Always"
+    role: "Foreground treatment of captured vapours, condensate and cleaning water"
+    quantitative_reference: "kg treated streams per kg released MBM"
+process_inventory:
+  - id: receiving_size_reduction
+    label: "Raw-material receiving and size reduction"
+    inputs:
+      product:
+        - row_id: raw_mammalian_animal_byproducts
+          role: "Accepted mammalian animal by-products"
+          name: "Mammalian slaughter and meat-processing animal by-products"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Accepted offal, bone, tissue and other declared mammalian animal by-products cross the plant boundary here and supply all material entering the MBM route."
+          amount:
+            expression: "weigh every accepted load and subtract separately weighed receiving rejects"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg released MBM"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_mass
+              source_ids:
+                - epa-ap42-953
+                - woodgate-2023-rendering
+            ranges:
+              - role: default_estimate
+                lower: "1.2"
+                upper: "10"
+                unit: "kg/kg released MBM"
+                basis: "accepted raw animal by-products per kg released MBM"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: receiving_electricity
+          role: "Grid electricity for receiving and size reduction"
+          name: "Grid electricity, medium voltage"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Electricity powers receiving conveyors, pumps, metal removal, the crusher and local ventilation; it is recorded separately from steam."
+          amount:
+            expression: "allocate a dedicated submeter or time-and-load calculation to accepted raw material"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg released MBM"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy
+              source_ids:
+                - epa-ap42-953
+            ranges:
+              - role: default_estimate
+                lower: "0.001"
+                upper: "1"
+                unit: "kWh/kg released MBM"
+                basis: "receiving and size-reduction electricity per kg released MBM"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: size_reduced_animal_byproducts
+          role: "Size-reduced animal by-products"
+          name: "Size-reduced mammalian animal by-products"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Accepted material reduced to the declared particle size transfers to sterilisation without becoming a market product."
+          amount:
+            expression: "calculate accepted input minus measured rejects and documented receiving losses"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg released MBM"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_material_mass
+              source_ids:
+                - eu-reg-142-2011-method1
+            ranges: []
+      waste:
+        - row_id: receiving_rejects
+          role: "Receiving rejects"
+          name: "Receiving rejects from animal-by-product preparation"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Foreign material and rejected animal material removed before rendering leave as a separately weighed waste stream with destination and treatment recorded."
+          amount:
+            expression: "weigh by reject class before dispatch or treatment"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg released MBM"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids:
+                - epa-ap42-953
+            ranges: []
+      elementary:
+        - row_id: receiving_voc_air
+          role: "Uncaptured receiving VOC release to air"
+          name: "Volatile organic compounds, unspecified, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Fugitive volatile organic compounds from raw-material receiving and short-term holding are quantified when stack, boundary, permit or engineering records identify a release."
+          amount:
+            expression: "measured or calculated mass release for the reporting period; zero is permitted only with documented enclosure and capture evidence"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg released MBM"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_air_emissions
+              source_ids:
+                - epa-ap42-953
+            ranges: []
+  - id: sterilisation_dry_rendering
+    label: "Method 1 sterilisation and continuous dry rendering"
+    inputs:
+      product:
+        - row_id: size_reduced_feed
+          role: "Size-reduced animal by-products to sterilisation"
+          name: "Size-reduced mammalian animal by-products"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "The prepared material from receiving enters pressure sterilisation and the continuous dry-rendering line."
+          amount:
+            expression: "equal the transferred output from size_reduced_animal_byproducts after documented hold-up adjustment"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg released MBM"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_material_mass
+              source_ids:
+                - epa-ap42-953
+                - eu-reg-142-2011-method1
+            ranges: []
+        - row_id: purchased_steam
+          role: "Purchased saturated steam"
+          name: "Saturated steam, purchased"
+          flow_type: "product"
+          property_unit: "Energy / MJ; supplier mass / kg may also be retained"
+          description: "Purchased steam supplies Method 1 pressure sterilisation and indirect heat for continuous dehydration; upstream steam generation is outside this foreground and shall be linked explicitly."
+          amount:
+            expression: "meter delivered steam or calculate it from calibrated condensate return and documented losses without combining it with electricity"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg released MBM"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy
+              source_ids:
+                - epa-ap42-953
+                - woodgate-2023-rendering
+                - eu-reg-142-2011-method1
+            ranges:
+              - role: default_estimate
+                lower: "0.2"
+                upper: "15"
+                unit: "MJ/kg released MBM"
+                basis: "purchased steam energy per kg released MBM"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: rendering_electricity
+          role: "Grid electricity for sterilisation and rendering"
+          name: "Grid electricity, medium voltage"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Electricity powers steriliser controls, continuous cooker drives, pumps, vapour handling and instrumentation."
+          amount:
+            expression: "use a dedicated meter or equipment-level runtime calculation for this process"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg released MBM"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy
+              source_ids:
+                - epa-ap42-953
+            ranges:
+              - role: default_estimate
+                lower: "0.001"
+                upper: "2"
+                unit: "kWh/kg released MBM"
+                basis: "sterilisation and rendering electricity per kg released MBM"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: sterilised_rendered_material
+          role: "Sterilised rendered material"
+          name: "Sterilised rendered animal material"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Dehydrated cooked material containing released fat and protein-mineral solids transfers to draining and pressing."
+          amount:
+            expression: "measure transfer mass or close the cooker mass balance using feed, condensate, captured vapour and measured losses"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg released MBM"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_material_mass
+              source_ids:
+                - epa-ap42-953
+                - woodgate-2023-rendering
+            ranges: []
+      waste:
+        - row_id: cooker_condensate
+          role: "Cooker condensate"
+          name: "Rendering cooker condensate"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Condensed water removed during dehydration is retained as a distinct wastewater input to the control process and is not merged with supplied water."
+          amount:
+            expression: "meter condensate volume and convert with measured or documented density"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg released MBM"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water_wastewater
+              source_ids:
+                - epa-ap42-953
+                - woodgate-2023-rendering
+            ranges:
+              - role: default_estimate
+                lower: "0.1"
+                upper: "10"
+                unit: "kg/kg released MBM"
+                basis: "condensate transferred to treatment per kg released MBM"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: captured_cooker_offgas
+          role: "Captured cooker off-gas"
+          name: "Captured rendering cooker off-gas"
+          flow_type: "waste"
+          property_unit: "Gas volume / Nm3 and pollutant mass / kg"
+          description: "Enclosed cooker vapours and non-condensables transfer to the declared odour-control system as a separately tracked waste-gas stream."
+          amount:
+            expression: "record standardised gas volume and pollutant loading from flow and concentration measurements or permit calculations"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg released MBM"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_air_emissions
+              source_ids:
+                - epa-ap42-953
+            ranges: []
+      elementary:
+        - row_id: cooker_voc_air
+          role: "Uncaptured cooker VOC release to air"
+          name: "Volatile organic compounds, unspecified, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "VOC that bypasses capture at the cooker is reported as a direct elementary release rather than netted against captured off-gas."
+          amount:
+            expression: "calculate released pollutant mass from measured flow, concentration, capture efficiency and operating time"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg released MBM"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_air_emissions
+              source_ids:
+                - epa-ap42-953
+            ranges: []
+  - id: fat_separation_pressing
+    label: "Fat draining and screw pressing"
+    inputs:
+      product:
+        - row_id: rendered_material_to_press
+          role: "Sterilised rendered material to pressing"
+          name: "Sterilised rendered animal material"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Sterilised rendered material enters draining and screw pressing for physical separation of liquid fat from solids."
+          amount:
+            expression: "equal the transferred cooker output after documented hold-up adjustment"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg released MBM"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_material_mass
+              source_ids:
+                - epa-ap42-953
+            ranges: []
+        - row_id: pressing_electricity
+          role: "Grid electricity for draining and pressing"
+          name: "Grid electricity, medium voltage"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Electricity powers the drainer, screw press, fat pumps and separation controls."
+          amount:
+            expression: "use a dedicated meter or runtime-and-load calculation"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg released MBM"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy
+              source_ids:
+                - epa-ap42-953
+            ranges:
+              - role: default_estimate
+                lower: "0.001"
+                upper: "1"
+                unit: "kWh/kg released MBM"
+                basis: "draining and pressing electricity per kg released MBM"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: pressed_solids
+          role: "Pressed protein-mineral solids"
+          name: "Rendered solid fraction, greaves, press cake"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Pressed solids containing protein, bone mineral and residual fat transfer to grinding and screening."
+          amount:
+            expression: "weigh press cake or calculate it from press input, rendered fat, fines and measured losses"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg released MBM"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_material_mass
+              source_ids:
+                - epa-ap42-953
+            ranges: []
+        - row_id: rendered_fat
+          role: "Rendered mammalian fat co-product"
+          name: "Rendered mammalian fat"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Separately marketed rendered fat leaves the press train as a co-product whose quantity and plant-gate value are required for allocation."
+          amount:
+            expression: "meter or weigh saleable fat after separation and before storage losses"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg released MBM"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_mass
+              source_ids:
+                - epa-ap42-953
+                - woodgate-2023-rendering
+            ranges:
+              - role: default_estimate
+                lower: "0.05"
+                upper: "5"
+                unit: "kg/kg released MBM"
+                basis: "saleable rendered fat per kg released MBM"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        - row_id: press_fines_sludge
+          role: "Press fines and separation sludge"
+          name: "Rendering press fines and separation sludge"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Protein fines and non-saleable separation sludge that are not internally recycled leave as a separately weighed waste stream."
+          amount:
+            expression: "weigh dispatched material; document and subtract internal recycle once"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg released MBM"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids:
+                - epa-ap42-953
+            ranges: []
+        - row_id: captured_press_offgas
+          role: "Captured press off-gas"
+          name: "Captured rendering press off-gas"
+          flow_type: "waste"
+          property_unit: "Gas volume / Nm3 and pollutant mass / kg"
+          description: "Enclosed press vapours transfer to the odour-control process as a separate waste-gas stream."
+          amount:
+            expression: "record standardised flow and pollutant loading using source testing or permit calculations"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg released MBM"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_air_emissions
+              source_ids:
+                - epa-ap42-953
+            ranges: []
+      elementary:
+        - row_id: press_voc_air
+          role: "Uncaptured press VOC release to air"
+          name: "Volatile organic compounds, unspecified, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "VOC that bypasses press capture is quantified separately as a direct release to air."
+          amount:
+            expression: "calculate released pollutant mass from measured flow, concentration, capture efficiency and operating time"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg released MBM"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_air_emissions
+              source_ids:
+                - epa-ap42-953
+            ranges: []
+  - id: meal_finishing_storage
+    label: "Grinding, screening and bulk storage"
+    inputs:
+      product:
+        - row_id: pressed_solids_to_finishing
+          role: "Pressed solids to finishing"
+          name: "Rendered solid fraction, greaves, press cake"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Pressed protein-mineral solids enter grinding and screening without blending with other meal routes."
+          amount:
+            expression: "equal transferred pressed_solids after documented hold-up adjustment"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg released MBM"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_material_mass
+              source_ids:
+                - epa-ap42-953
+            ranges: []
+        - row_id: finishing_electricity
+          role: "Grid electricity for grinding and screening"
+          name: "Grid electricity, medium voltage"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Electricity powers grinding, screening, dust collection, conveying and bulk-storage handling."
+          amount:
+            expression: "use a dedicated meter or equipment-level runtime calculation"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg released MBM"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy
+              source_ids:
+                - epa-ap42-953
+            ranges:
+              - role: default_estimate
+                lower: "0.001"
+                upper: "1"
+                unit: "kWh/kg released MBM"
+                basis: "finishing and storage electricity per kg released MBM"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: meat_and_bone_meal
+          role: "Released meat and bone meal"
+          name: "Meat and bone meal (MBM)"
+          flow_type: "product"
+          flow_ref:
+            uuid: "c9d74b2c-9179-4330-a54e-f63cc2c86f95"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Screened, released bulk MBM is the reference product and shall remain separate from off-specification meal and other meal routes."
+          amount:
+            expression: "exactly 1 kg released as-produced MBM after all rejected and internally recycled material is excluded"
+            value_mode: "fixed_value"
+            specificity: "not_applicable"
+            basis:
+              text: "1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "identity_reference"
+              collection_protocol_id: cp_product_release
+              source_ids:
+                - unsd-cpc30-21190
+                - woodgate-2023-rendering
+            ranges: []
+      waste:
+        - row_id: offspec_meal
+          role: "Off-specification meal"
+          name: "Off-specification meat and bone meal"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Meal that fails the declared release specification and is not internally reworked leaves as a distinct waste stream with treatment recorded."
+          amount:
+            expression: "weigh rejected lots; document rework separately and net it once"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg released MBM"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids:
+                - eu-reg-142-2011-method1
+            ranges: []
+      elementary:
+        - row_id: grinding_pm_air
+          role: "Particulate matter from grinding and screening to air"
+          name: "Particulate matter, unspecified, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Residual particulate matter after the declared dust-control device is reported as a direct elementary release."
+          amount:
+            expression: "calculate emitted mass from measured exhaust flow, particulate concentration, control efficiency and operating time"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg released MBM"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_air_emissions
+              source_ids:
+                - epa-ap42-953
+            ranges: []
+  - id: odor_wastewater_control
+    label: "Odour and wastewater control"
+    inputs:
+      product:
+        - row_id: control_process_water
+          role: "Process water for wet scrubbing and cleaning"
+          name: "Process water"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg or volume / m3"
+          description: "Supplied water used in the selected multistage wet-scrubber and process-area cleaning route is metered separately from condensate and wastewater."
+          amount:
+            expression: "meter supplied water to scrubber make-up and cleaning separately, then sum only for this process total"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg released MBM"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water_wastewater
+              source_ids:
+                - epa-ap42-953
+            ranges:
+              - role: default_estimate
+                lower: "0.01"
+                upper: "10"
+                unit: "kg/kg released MBM"
+                basis: "supplied control and cleaning water per kg released MBM"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: sodium_hypochlorite
+          role: "Sodium hypochlorite for odour scrubbing"
+          name: "Sodium hypochlorite solution"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg solution and kg active substance"
+          description: "Sodium hypochlorite used by the selected wet-scrubber route is recorded as its delivered solution mass and active concentration."
+          amount:
+            expression: "sum purchase and dosing-meter records, adjusted for opening and closing stock; declare active concentration"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg released MBM"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_control_chemicals
+              source_ids:
+                - epa-ap42-953
+            ranges: []
+        - row_id: control_electricity
+          role: "Grid electricity for pollution control"
+          name: "Grid electricity, medium voltage"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Electricity powers capture fans, pumps, wet scrubbing, wastewater transfer and treatment controls."
+          amount:
+            expression: "use a dedicated meter or runtime-and-load calculation for control equipment"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg released MBM"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy
+              source_ids:
+                - epa-ap42-953
+            ranges: []
+      waste:
+        - row_id: cooker_condensate_to_control
+          role: "Cooker condensate to wastewater control"
+          name: "Rendering cooker condensate"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "The complete condensate output from rendering enters wastewater control without being combined with supplied process water in the raw records."
+          amount:
+            expression: "equal transferred cooker_condensate after documented storage change"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg released MBM"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_water_wastewater
+              source_ids:
+                - epa-ap42-953
+            ranges: []
+        - row_id: cooker_offgas_to_control
+          role: "Captured cooker off-gas to odour control"
+          name: "Captured rendering cooker off-gas"
+          flow_type: "waste"
+          property_unit: "Gas volume / Nm3 and pollutant mass / kg"
+          description: "Captured cooker off-gas enters the selected multistage wet-scrubber train as a separate inlet stream."
+          amount:
+            expression: "equal transferred captured_cooker_offgas after documented duct losses"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg released MBM"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_air_emissions
+              source_ids:
+                - epa-ap42-953
+            ranges: []
+        - row_id: press_offgas_to_control
+          role: "Captured press off-gas to odour control"
+          name: "Captured rendering press off-gas"
+          flow_type: "waste"
+          property_unit: "Gas volume / Nm3 and pollutant mass / kg"
+          description: "Captured screw-press off-gas enters the wet-scrubber train as its own inlet stream and is not merged with cooker off-gas in source records."
+          amount:
+            expression: "equal transferred captured_press_offgas after documented duct losses"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg released MBM"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_air_emissions
+              source_ids:
+                - epa-ap42-953
+            ranges: []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: treated_wastewater
+          role: "Treated wastewater discharge"
+          name: "Treated rendering wastewater"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg or volume / m3"
+          description: "Final wastewater leaving foreground treatment is recorded separately from condensate and supplied water, with destination and measured quality declared."
+          amount:
+            expression: "meter discharged volume and retain concentration and load records for regulated parameters"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg released MBM"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water_wastewater
+              source_ids:
+                - epa-ap42-953
+            ranges:
+              - role: default_estimate
+                lower: "0.05"
+                upper: "15"
+                unit: "kg/kg released MBM"
+                basis: "treated wastewater discharged per kg released MBM"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: control_sludge
+          role: "Wastewater-treatment and scrubber sludge"
+          name: "Rendering wastewater and scrubber sludge"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg as received and kg dry matter"
+          description: "Separated sludge from wastewater and wet-scrubber control leaves as a distinct solid or slurry waste with water content and destination recorded."
+          amount:
+            expression: "weigh dispatched sludge and measure or document moisture"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg released MBM"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste
+              source_ids:
+                - epa-ap42-953
+            ranges: []
+      elementary:
+        - row_id: controlled_voc_air
+          role: "Residual controlled VOC release to air"
+          name: "Volatile organic compounds, unspecified, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "VOC remaining after the wet-scrubber train is reported as a direct release and is not combined with uncaptured cooker or press VOC."
+          amount:
+            expression: "calculate outlet pollutant mass from measured standardised flow, concentration and operating time"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg released MBM"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_air_emissions
+              source_ids:
+                - epa-ap42-953
+            ranges: []
+allocation_rules:
+  - rule_id: allocation_subdivision_first
+    applies_to: "all multi-output foreground processes"
+    rule: "First subdivide meters and records so receiving, sterilisation/rendering, pressing, finishing and control exchanges are directly assigned wherever technically possible. Do not allocate exchanges that can be measured for one process or output."
+    source_ids:
+      - ec-pef-2021
+  - rule_id: allocation_shared_rendering
+    applies_to: "MBM and rendered fat"
+    rule: "For genuinely shared rendering exchanges that cannot be subdivided or expanded, test and document a relevant physical relationship. If none represents the distinct functions of meal and fat, allocate by each co-product's positive annual plant-gate net revenue using the same reporting period; disclose price, mass and factor for both outputs."
+    source_ids:
+      - ec-pef-2021
+  - rule_id: allocation_waste_and_rework
+    applies_to: "rejects, fines, sludge, off-spec meal and internal rework"
+    rule: "Assign treatment burdens to the process generating each waste; give no avoided-burden credit without an explicit expanded-system study. Net internal rework once and retain both gross and net records."
+    source_ids:
+      - ec-pef-2021
+  - rule_id: allocation_sensitivity
+    applies_to: "published secondary or background dataset"
+    rule: "Report an unallocated joint-process inventory and a mass-allocation sensitivity result alongside the selected revenue allocation when shared burdens materially affect the MBM result."
+    source_ids:
+      - ec-pef-2021
+      - woodgate-2023-rendering
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_material_mass
+      process_id: "receiving_size_reduction_sterilisation_dry_rendering_fat_separation_pressing_meal_finishing_storage"
+      flow_role: "raw material, intermediates, MBM and rendered fat"
+      record_type: "scale, flowmeter, tank and stock records"
+      raw_fields: "timestamp; lot; stream; gross; tare; net mass; moisture; opening stock; closing stock; recycle"
+      collection_method: "calibrated scales/meters plus reconciled stock change"
+      unit: "kg; kg dry matter"
+      frequency: "each load/lot; daily reconciliation"
+      temporal_coverage: "complete representative reporting period declared and justified by the dataset producer"
+      site_scope: "all equipment and storage serving the declared route"
+      aggregation_rule: "sum accepted mass by stream, adjust stock change and internal recycle once, then normalise to released MBM"
+      quality_evidence: "calibration, lot traceability, stock reconciliation and signed mass-balance review"
+    - protocol_id: cp_energy
+      process_id: "all_processes"
+      flow_role: "electricity and purchased steam"
+      record_type: "meter, invoice, condensate and runtime records"
+      raw_fields: "meter id; opening; closing; unit; steam pressure; steam temperature; condensate return; equipment power; runtime"
+      collection_method: "dedicated meters preferred; documented allocation only for shared meters"
+      unit: "kWh; MJ; kg steam"
+      frequency: "continuous/daily meter; monthly invoice"
+      temporal_coverage: "same period as mass records"
+      site_scope: "all route equipment; shared services disclosed"
+      aggregation_rule: "convert with documented factors, preserve carrier separation, subtract exports, normalise to released MBM"
+      quality_evidence: "meter calibration, invoice reconciliation and conversion worksheet"
+    - protocol_id: cp_water_wastewater
+      process_id: "sterilisation_dry_rendering_odor_wastewater_control"
+      flow_role: "supplied water, condensate and wastewater"
+      record_type: "flowmeter, tank and laboratory records"
+      raw_fields: "stream; volume; mass; density; COD; BOD; total suspended solids; nitrogen; phosphorus; discharge destination"
+      collection_method: "separate meters and representative laboratory sampling"
+      unit: "kg; m3; kg pollutant"
+      frequency: "continuous/daily volume; sampling at permit or campaign frequency"
+      temporal_coverage: "same period as production"
+      site_scope: "all route water inlets, internal transfers and discharge points"
+      aggregation_rule: "keep streams separate, calculate pollutant load as concentration × volume, normalise to released MBM"
+      quality_evidence: "meter calibration, chain of custody, method and detection-limit record"
+    - protocol_id: cp_air_emissions
+      process_id: "all_processes"
+      flow_role: "VOC, particulate and controlled off-gas"
+      record_type: "source test, continuous/periodic monitor, duct flow, permit and runtime records"
+      raw_fields: "source id; pollutant; concentration; standardised flow; temperature; moisture; capture efficiency; control efficiency; operating hours"
+      collection_method: "direct source test preferred; otherwise documented regulatory calculation"
+      unit: "kg pollutant; Nm3 gas"
+      frequency: "each test and operating-period calculation"
+      temporal_coverage: "representative operating states across reporting period"
+      site_scope: "every declared source and control-device inlet/outlet"
+      aggregation_rule: "concentration × standardised flow × time, adjusted only by measured capture/control efficiency, normalised to released MBM"
+      quality_evidence: "test report, calibration, operating log and uncertainty statement"
+    - protocol_id: cp_waste
+      process_id: "all_processes"
+      flow_role: "rejects, fines, off-spec meal and sludge"
+      record_type: "waste ticket, scale, tank and treatment records"
+      raw_fields: "date; waste class; gross; tare; net mass; moisture; destination; treatment; internal recycle"
+      collection_method: "weigh each shipment or calibrated tank drawdown"
+      unit: "kg as received; kg dry matter"
+      frequency: "each shipment; monthly reconciliation"
+      temporal_coverage: "same period as production"
+      site_scope: "all route waste points"
+      aggregation_rule: "sum by atomic waste stream and destination, subtract documented internal recycle once, normalise to released MBM"
+      quality_evidence: "signed ticket, receiver, treatment code and moisture evidence"
+    - protocol_id: cp_control_chemicals
+      process_id: "odor_wastewater_control"
+      flow_role: "sodium hypochlorite"
+      record_type: "invoice, tank inventory and dosing records"
+      raw_fields: "product; active concentration; opening stock; purchases; closing stock; dosing meter"
+      collection_method: "stock balance reconciled to dosing meter"
+      unit: "kg solution; kg active substance"
+      frequency: "batch/monthly"
+      temporal_coverage: "same period as production"
+      site_scope: "all route scrubbers"
+      aggregation_rule: "opening + purchases − closing, report solution and active mass, normalise to released MBM"
+      quality_evidence: "supplier specification, invoice and dosing calibration"
+    - protocol_id: cp_method1_ccp
+      process_id: "receiving_size_reduction_sterilisation_dry_rendering"
+      flow_role: "particle size, time, core temperature and absolute pressure"
+      record_type: "daily size check and sterilisation batch/continuous control records"
+      raw_fields: "timestamp; line; maximum particle size; core temperature; residence time; absolute pressure; alarm; deviation; disposition"
+      collection_method: "validated instruments with uninterrupted electronic record and daily crusher check"
+      unit: "mm; °C; min; bar absolute"
+      frequency: "continuous for sterilisation; daily for size reduction"
+      temporal_coverage: "every production campaign represented"
+      site_scope: "complete declared route"
+      aggregation_rule: "flag any interval below the declared minimum; segregate affected output until disposition is documented"
+      quality_evidence: "calibration, validation, alarm history, deviation investigation and release approval"
+    - protocol_id: cp_product_release
+      process_id: "meal_finishing_storage"
+      flow_role: "released MBM quality and reference mass"
+      record_type: "lot scale and laboratory certificate"
+      raw_fields: "lot; species mix; category; moisture; crude protein; crude fat; ash; particle size; release decision; legal use restriction"
+      collection_method: "representative sampling and laboratory method declared by dataset producer"
+      unit: "kg; mass %; mm"
+      frequency: "each released lot"
+      temporal_coverage: "all released lots in reporting period"
+      site_scope: "all MBM silos serving route"
+      aggregation_rule: "mass-weight lot results and report distribution; reference quantity remains as-produced mass"
+      quality_evidence: "sampling plan, method, laboratory QA/QC and authorised release"
+    - protocol_id: cp_allocation
+      process_id: "fat_separation_pressing_shared_services"
+      flow_role: "MBM/fat allocation"
+      record_type: "dispatch, invoice, cost and production records"
+      raw_fields: "product; saleable mass; net revenue; price period; currency; shared exchange; allocation factor"
+      collection_method: "reconcile annual mass and positive net revenue to audited records"
+      unit: "kg; currency; fraction"
+      frequency: "monthly, aggregated annually"
+      temporal_coverage: "same period as inventory"
+      site_scope: "declared plant and route"
+      aggregation_rule: "apply subdivision first; otherwise calculate selected and sensitivity factors from co-period output data"
+      quality_evidence: "audited reconciliation, price source, formula and factor sum check"
+  calculation_rules:
+    - id: calc_normalise_reference
+      applies_to: "every foreground exchange"
+      rule: "exchange per kg MBM = reporting-period exchange ÷ reporting-period released as-produced MBM mass"
+      inputs:
+        - "atomic exchange record"
+        - "released MBM mass"
+      output: "exchange/kg MBM"
+      source_ids:
+        - ec-pef-2021
+    - id: calc_mass_balance
+      applies_to: "each process and complete foreground"
+      rule: "closure = (total mass input − total mass output − documented stock increase) ÷ total mass input; investigate stream-specific causes rather than forcing closure"
+      inputs:
+        - "wet mass"
+        - moisture
+        - "stock change"
+        - recycle
+      output: "wet- and dry-matter closure"
+      source_ids:
+        - epa-ap42-953
+        - woodgate-2023-rendering
+    - id: calc_pollutant_load
+      applies_to: "air and water pollutants"
+      rule: "load = concentration × standardised gas flow or wastewater volume × operating time; apply capture/control efficiency only when measured for the same state"
+      inputs:
+        - concentration
+        - flow
+        - time
+        - efficiency
+      output: "kg pollutant"
+      source_ids:
+        - epa-ap42-953
+    - id: calc_revenue_allocation
+      applies_to: "inseparable shared burdens"
+      rule: "factor_i = positive net revenue_i ÷ sum positive net revenue of MBM and rendered fat in the same period; factors shall sum to 1"
+      inputs:
+        - "saleable mass"
+        - "net price/revenue for both co-products"
+      output: "shared-burden allocation factor"
+      source_ids:
+        - ec-pef-2021
+    - id: calc_dry_matter
+      applies_to: "moisture-bearing material streams"
+      rule: "dry mass = wet mass × (1 − moisture mass fraction) using co-period representative moisture"
+      inputs:
+        - "wet mass"
+        - moisture
+      output: "kg dry matter"
+      source_ids:
+        - woodgate-2023-rendering
+  data_quality_requirements:
+    - id: dq_route_identity
+      applies_to: "dataset and reference flow"
+      requirement: "Demonstrate mammalian MBM, declared species/category and exact route; exclude other CPC 21190 forms."
+      evidence: "supplier declarations, process diagram, release specification and Tiangong reference identity"
+    - id: dq_temporal
+      applies_to: "all foreground data"
+      requirement: "Use one common representative reporting period, justify its duration and disclose shutdowns, abnormal events and substitutions."
+      evidence: "meter coverage report and production calendar"
+    - id: dq_completeness
+      applies_to: "atomic flow inventory"
+      requirement: "Reconcile every listed card or document a card-specific zero with evidence; combined utilities, energy, water, waste or emissions entries are nonconforming."
+      evidence: "completeness matrix and source ledger"
+    - id: dq_ccp
+      applies_to: "Method 1 route"
+      requirement: "Retain complete size, time, temperature and pressure evidence and disposition every deviation."
+      evidence: "validated electronic record, daily check and deviation log"
+    - id: dq_mass_energy
+      applies_to: "material, electricity and steam"
+      requirement: "Reconcile meters to invoices, stock changes and production; disclose shared-meter allocation and conversion factors."
+      evidence: "calibration, invoices, reconciliation and uncertainty statement"
+    - id: dq_air_water
+      applies_to: "emissions and wastewater"
+      requirement: "Retain source-test and laboratory methods, detection limits, standard conditions, sampling representativeness and load calculations."
+      evidence: "test reports, chain of custody, calculations and permits"
+    - id: dq_allocation
+      applies_to: "shared rendering burdens"
+      requirement: "Preserve unallocated inventory, selected factors, prices/revenues and mass sensitivity for the same period."
+      evidence: "cp_allocation worksheet and audited records"
+    - id: dq_estimates
+      applies_to: "every reasoned_estimate range"
+      requirement: "Treat provisional ranges as screening aids only; foreground records replace them and publication-critical allowed ranges require reviewed evidence."
+      evidence: "range register and reviewer disposition"
+    - id: dq_uuid
+      applies_to: "Tiangong-linked rows"
+      requirement: "Use only directly verified UUIDs without dataset versions; unresolved inventory UUIDs remain explicitly unresolved."
+      evidence: "UUID verification record outside PCR content and manifest review metadata"
+validation_rules:
+  - rule_id: validate_route
+    applies_to: "identity and process map"
+    rule: "Fail if the dataset mixes non-mammalian meals, greaves as final product, meat meal, wet/batch rendering, pelletising or on-site steam generation into the declared route."
+    source_ids:
+      - unsd-cpc30-21190
+      - epa-ap42-953
+  - rule_id: validate_reference
+    applies_to: "reference product"
+    rule: "Require exactly 1 kg as-produced released MBM linked to c9d74b2c-9179-4330-a54e-f63cc2c86f95, Mass 93a60a56-a3c8-11da-a746-0800200b9a66, with every required qualifier declared."
+    source_ids:
+      - woodgate-2023-rendering
+  - rule_id: validate_method1
+    applies_to: "size reduction and sterilisation"
+    rule: "Require complete route evidence for ≤50 mm, >133 °C, ≥20 minutes uninterrupted and ≥3 bar absolute, plus documented disposition of deviations; also verify the currently applicable jurisdictional rule."
+    source_ids:
+      - eu-reg-142-2011-method1
+  - rule_id: validate_atomic_flows
+    applies_to: "process inventory"
+    rule: "Require each atomic flow card to retain non-empty description, direction, flow type, requirement, quantity rule, unit, source/estimate basis and verified-or-unresolved Tiangong UUID state."
+    source_ids:
+      - epa-ap42-953
+      - ec-pef-2021
+  - rule_id: validate_mass_balance
+    applies_to: "each process and complete foreground"
+    rule: "Report wet- and dry-matter closure and investigate any imbalance outside a dataset-specific reviewed acceptance criterion; do not force closure by changing the reference output."
+    source_ids:
+      - epa-ap42-953
+      - woodgate-2023-rendering
+  - rule_id: validate_energy_water
+    applies_to: "electricity, steam and water streams"
+    rule: "Fail when electricity and steam are combined or when supplied water, condensate and wastewater are merged in raw records."
+    source_ids:
+      - ec-pef-2021
+  - rule_id: validate_emissions_waste
+    applies_to: "air, wastewater and solid waste"
+    rule: "Require atomic source/destination records for VOC, particulate matter, condensate, wastewater, rejects, fines, off-spec meal and sludge, including documented zeros where applicable."
+    source_ids:
+      - epa-ap42-953
+  - rule_id: validate_allocation
+    applies_to: "MBM and rendered fat"
+    rule: "Require subdivision evidence, same-period co-product mass and positive net revenue, factors summing to 1, unallocated inventory, and mass sensitivity; fail unexplained zero-burden or avoided-burden treatment."
+    source_ids:
+      - ec-pef-2021
+  - rule_id: validate_provisional_ranges
+    applies_to: "reasoned estimates"
+    rule: "Flag every provisional range as replaceable and prohibit its use as a publication-critical allowed range without reviewed evidence."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "Route-specific foreground data package that may be published as a secondary_dataset or background_dataset after review"
+  downstream_use: "Gate-to-gate MBM supply for product systems whose product, legal use and route match the declared qualifiers"
+  allowed_use: "Attributional LCA, supply-chain screening and foreground model construction with explicit upstream animal-by-product, steam, electricity and treatment links"
+  excluded_use: "Full CPC 21190 average; meat meal, greaves, poultry/fish/blood/feather meal; other regulatory categories or technologies; comparative public claims without critical review; legal compliance determination"
+  required_metadata: "canonical PCR id; reference UUID/property; location; technology; reporting period; species mix; animal-by-product category; Method 1 records; product composition; energy suppliers; water and emission controls; co-product outputs; allocation factors; cut-offs; uncertainty; data owner and review status"
+  required_quality_disclosure: "measurement coverage; calibration; mass/dry-matter closure; energy and water reconciliation; emission and wastewater methods; missing data; reasoned estimates; allocation sensitivity; unresolved UUIDs; deviations and corrective action"
+  update_trigger: "material change in raw-material mix, regulatory category, hygienisation method, cooker/press technology, energy supply, control system, product specification, allocation relationship, geography, or data older than the programme review interval"
+data_sources:
+  - id: "unsd-cpc30-21190"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, *Central Product Classification Version 3.0, Explanatory Notes*, code 21190, 30 June 2025. https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Exp_Notes_30Jun2025.pdf (retrieved 2026-08-20)."
+    used_for: "Official classification title and confirmation that the canonical CPC class is broader than this MBM route"
+  - id: "epa-ap42-953"
+    type: "official_guidance"
+    reference: "U.S. Environmental Protection Agency, *AP-42 Section 9.5.3: Meat Rendering Plants*, September 1995. https://www.epa.gov/sites/default/files/2020-10/documents/c9s05-3_0.pdf (retrieved 2026-08-20)."
+    used_for: "Continuous dry-rendering decomposition; raw material handling; draining, pressing, grinding and screening; VOC/PM sources; wet-scrubber control"
+  - id: "eu-reg-142-2011-method1"
+    type: "standard"
+    reference: "European Commission, Commission Regulation (EU) No 142/2011, consolidated text of 23 June 2020, Annex IV, Chapter III, Method 1. https://eur-lex.europa.eu/eli/reg/2011/142/2020-06-23/eng (retrieved 2026-08-20)."
+    used_for: "Route-specific particle-size, time, temperature, pressure and record controls; users must verify the currently applicable law"
+  - id: "ec-pef-2021"
+    type: "official_guidance"
+    reference: "European Commission, Commission Recommendation (EU) 2021/2279 on the use of the Environmental Footprint methods, Annex I. https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32021H2279 (retrieved 2026-08-20)."
+    used_for: "Functional-unit framing, foreground/background boundary, data quality, inventory completeness and multi-functionality hierarchy"
+  - id: "woodgate-2023-rendering"
+    type: "literature"
+    reference: "Woodgate, S. L. (2023), “Meat industry by-products: a bio-refinery approach to the production of safe, value added products for sustainable agriculture applications,” *Frontiers in Animal Science* 4:1259200. https://doi.org/10.3389/fanim.2023.1259200 (open full text verified 2026-08-20)."
+    used_for: "Peer-reviewed full-text corroboration of size reduction, indirect high-pressure steam heating, water evaporation, fat separation, sterilisation, MBM and rendered-fat co-production; no quantitative inventory factor taken from the paper"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:a8b0ca87b39c3e4de5fe8503611293c6bf5de4829dacf657e5b206555e9bc17a"
+  generated_content_sha256: "sha256:722a21cd1358a6f6753abde95e748b5ad6d5e19585c2319f4f50a83d49c508a8"

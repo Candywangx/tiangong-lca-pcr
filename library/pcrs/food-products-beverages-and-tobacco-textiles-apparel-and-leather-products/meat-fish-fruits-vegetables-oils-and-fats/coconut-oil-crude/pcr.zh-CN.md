@@ -38,7 +38,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 1 kg |
-| 参考产品流 | Coconut oil, crude `8b18e824-f237-4a70-9127-ddabde706d15` |
+| 参考产品流 | 粗椰子油 `8b18e824-f237-4a70-9127-ddabde706d15` |
 | 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | kg |
@@ -286,7 +286,7 @@ sync_with: pcr.en-US.md
 
 压榨油作为内部中间流转往澄清，或与溶剂萃取油合并。
 
-- 选定流：Crude coconut oil, internal intermediate `8b18e824-f237-4a70-9127-ddabde706d15`
+- 选定流：粗椰子油 `8b18e824-f237-4a70-9127-ddabde706d15`
 - 流属性/单位：Mass / kg
 - 数量规则：从压榨过程转出的实测净质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -424,7 +424,7 @@ sync_with: pcr.en-US.md
 
 回收的粗油作为内部中间流转往最终澄清或调和。
 
-- 选定流：Crude coconut oil, internal intermediate `8b18e824-f237-4a70-9127-ddabde706d15`
+- 选定流：粗椰子油 `8b18e824-f237-4a70-9127-ddabde706d15`
 - 流属性/单位：Mass / kg
 - 数量规则：转出的实测净回收油量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -517,7 +517,7 @@ sync_with: pcr.en-US.md
 
 压榨粗油和适用时的溶剂萃取粗油在澄清前进行核对。
 
-- 选定流：Crude coconut oil, internal intermediate `8b18e824-f237-4a70-9127-ddabde706d15`
+- 选定流：粗椰子油 `8b18e824-f237-4a70-9127-ddabde706d15`
 - 流属性/单位：Mass / kg
 - 数量规则：进入澄清过程的实测合并质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -583,7 +583,7 @@ sync_with: pcr.en-US.md
 
 这是定量参考流，即澄清或过滤并储存后发运的未精炼粗椰子油净质量。
 
-- 选定流：Coconut oil, crude `8b18e824-f237-4a70-9127-ddabde706d15`
+- 选定流：粗椰子油 `8b18e824-f237-4a70-9127-ddabde706d15`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：实测批次归一化后的固定参考产出
 - 数值来源模式：固定值（`fixed_value`）

@@ -38,7 +38,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 1 kg 饮料净质量 |
-| 参考产品流 | Non-alcoholic wine `014d2659-f8e8-4a23-adfa-97cbda224bab` |
+| 参考产品流 | 无酒精葡萄酒 `014d2659-f8e8-4a23-adfa-97cbda224bab` |
 | 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | kg |
@@ -460,7 +460,7 @@ sync_with: pcr.en-US.md
 
 只记录通过产品识别、酒精度、感官和放行检查的可销售饮料净量。包装质量不计入本产品流数量。
 
-- 选定流：Non-alcoholic wine `014d2659-f8e8-4a23-adfa-97cbda224bab`
+- 选定流：无酒精葡萄酒 `014d2659-f8e8-4a23-adfa-97cbda224bab`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：由实测放行质量归一化后固定为 1 kg 参考产品
 - 数值来源模式：计算值（`calculated_value`）

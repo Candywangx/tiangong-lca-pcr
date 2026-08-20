@@ -40,7 +40,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 1 kg |
-| 参考产品流 | Men's or boys' suits, coats, jackets, trousers, shorts and the like, of textile fabric, not knitted or crocheted `039191b4-8865-4c2e-83b4-afd3f17435c3` |
+| 参考产品流 | 非针织或钩编而成的纺织品男套装、男童套装、外衣、夹克衫、长裤、短裤及其类似物品 `039191b4-8865-4c2e-83b4-afd3f17435c3` |
 | 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | kg |
@@ -277,7 +277,7 @@ sync_with: pcr.en-US.md
 
 按已声明纤维组成和线密度记录缝纫线。
 
-- 选定流：Sewing thread
+- 选定流：缝纫线
 - 流属性/单位：Mass / kg
 - 数量规则：报告批次线轴领用量减退回量和期末库存
 - 数值来源模式：前景记录（`foreground_record`）
@@ -451,7 +451,7 @@ sync_with: pcr.en-US.md
 
 记录进入湿处理的新鲜水或处理水总量。
 
-- 选定流：Process water
+- 选定流：过程用水
 - 流属性/单位：Mass / kg
 - 数量规则：进水表或配方批次记录，并核对循环水
 - 数值来源模式：前景记录（`foreground_record`）
@@ -466,7 +466,7 @@ sync_with: pcr.en-US.md
 
 外购或独立供应热水时，将其与冷工艺水和蒸汽分开记录。
 
-- 选定流：Hot water
+- 选定流：热水
 - 流属性/单位：Energy / MJ
 - 数量规则：热量表读数，或水质量乘有记录的进水与参考状态焓差
 - 数值来源模式：前景记录（`foreground_record`）
@@ -496,7 +496,7 @@ sync_with: pcr.en-US.md
 
 湿处理现场供热使用天然气时，与电力、蒸汽和其他燃料分开记录。
 
-- 选定流：Natural gas
+- 选定流：天然气
 - 流属性/单位：Energy / MJ
 - 数量规则：过程表计，或报告期发票与锅炉负荷分配的核对值
 - 数值来源模式：前景记录（`foreground_record`）
@@ -526,7 +526,7 @@ sync_with: pcr.en-US.md
 
 配方使用碳酸钠时单独记录。
 
-- 选定流：Sodium carbonate
+- 选定流：碳酸钠
 - 流属性/单位：Mass / kg
 - 数量规则：批次记录中的实际化学品投加质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -541,7 +541,7 @@ sync_with: pcr.en-US.md
 
 配方使用乙酸时单独记录并保留溶液浓度。
 
-- 选定流：Acetic acid
+- 选定流：乙酸
 - 流属性/单位：Mass / kg
 - 数量规则：批次记录中的实际溶液投加质量和声明浓度
 - 数值来源模式：前景记录（`foreground_record`）
@@ -556,7 +556,7 @@ sync_with: pcr.en-US.md
 
 蒸汽跨越过程边界供应时单独记录。
 
-- 选定流：Purchased steam
+- 选定流：外购蒸汽
 - 流属性/单位：Energy / MJ
 - 数量规则：蒸汽表读数按有记录的压力和焓值换算
 - 数值来源模式：前景记录（`foreground_record`）
@@ -632,7 +632,7 @@ sync_with: pcr.en-US.md
 
 记录现场天然气燃烧的化石二氧化碳；全部使用外购热时不适用。
 
-- 选定流：Carbon dioxide, fossil, to air
+- 选定流：化石源二氧化碳，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：烟气实测值，或燃料数量乘已披露的适用辖区因子
 - 数值来源模式：计算值（`calculated_value`）
@@ -647,7 +647,7 @@ sync_with: pcr.en-US.md
 
 现场天然气燃烧的化石甲烷作为独立基本交换记录。
 
-- 选定流：Methane, fossil, to air
+- 选定流：化石源甲烷，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：烟气实测值，或燃料数量乘已披露的适用辖区因子
 - 数值来源模式：计算值（`calculated_value`）
@@ -662,7 +662,7 @@ sync_with: pcr.en-US.md
 
 现场燃烧的一氧化二氮作为独立基本交换记录。
 
-- 选定流：Dinitrogen monoxide to air
+- 选定流：氧化亚氮，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：烟气实测值，或燃料数量乘已披露的适用辖区因子
 - 数值来源模式：计算值（`calculated_value`）
@@ -677,7 +677,7 @@ sync_with: pcr.en-US.md
 
 现场燃烧实测或许可排放的氮氧化物与温室气体分开记录。
 
-- 选定流：Nitrogen oxides to air
+- 选定流：氮氧化物，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：烟气实测值，或燃料数量乘已披露的适用辖区因子
 - 数值来源模式：计算值（`calculated_value`）
@@ -728,7 +728,7 @@ sync_with: pcr.en-US.md
 
 整烫外购蒸汽与电力和热水分开记录。
 
-- 选定流：Purchased steam
+- 选定流：外购蒸汽
 - 流属性/单位：Energy / MJ
 - 数量规则：蒸汽表读数按有记录的压力和焓值换算
 - 数值来源模式：前景记录（`foreground_record`）
@@ -743,7 +743,7 @@ sync_with: pcr.en-US.md
 
 只有报告期内备用发电或专用设备实际消耗柴油时才记录。
 
-- 选定流：Diesel fuel
+- 选定流：柴油燃料
 - 流属性/单位：Mass / kg
 - 数量规则：储罐期初库存加采购减期末库存，并按发电机运行记录分配
 - 数值来源模式：前景记录（`foreground_record`）
@@ -845,7 +845,7 @@ sync_with: pcr.en-US.md
 
 本行为最终质量控制和净质量确定后放行的参考产品。
 
-- 选定流：Men's or boys' suits, coats, jackets, trousers, shorts and the like, of textile fabric, not knitted or crocheted `039191b4-8865-4c2e-83b4-afd3f17435c3`
+- 选定流：非针织或钩编而成的纺织品男套装、男童套装、外衣、夹克衫、长裤、短裤及其类似物品 `039191b4-8865-4c2e-83b4-afd3f17435c3`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：合格服装成品实测净质量，并归一化为 1 kg
 - 数值来源模式：前景记录（`foreground_record`）
@@ -892,7 +892,7 @@ sync_with: pcr.en-US.md
 
 破损或未使用的 LDPE 薄膜与纸质包装废物分开记录。
 
-- 选定流：Waste low-density polyethylene film
+- 选定流：废低密度聚乙烯薄膜
 - 流属性/单位：Mass / kg
 - 数量规则：包装区 LDPE 薄膜废物称量值
 - 数值来源模式：前景记录（`foreground_record`）
@@ -909,7 +909,7 @@ sync_with: pcr.en-US.md
 
 记录前景边界内柴油燃烧的直接化石二氧化碳。
 
-- 选定流：Carbon dioxide, fossil, to air
+- 选定流：化石源二氧化碳，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：烟气实测值，或采集柴油量乘已披露的适用辖区因子
 - 数值来源模式：计算值（`calculated_value`）
@@ -924,7 +924,7 @@ sync_with: pcr.en-US.md
 
 柴油燃烧氮氧化物与二氧化碳分开记录。
 
-- 选定流：Nitrogen oxides to air
+- 选定流：氮氧化物，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：烟气实测值，或采集柴油量乘已披露的适用辖区因子
 - 数值来源模式：计算值（`calculated_value`）
@@ -939,7 +939,7 @@ sync_with: pcr.en-US.md
 
 柴油燃烧细颗粒物作为独立基本交换记录。
 
-- 选定流：Particulate matter below 2.5 micrometres to air
+- 选定流：粒径小于2.5微米的颗粒物，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：烟气实测值，或采集柴油量乘已披露的适用辖区因子
 - 数值来源模式：计算值（`calculated_value`）
@@ -954,7 +954,7 @@ sync_with: pcr.en-US.md
 
 记录本过程粘合、去渍、印花或整理产品产生的实测 NMVOC。
 
-- 选定流：Non-methane volatile organic compounds to air
+- 选定流：非甲烷挥发性有机物，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：烟道或工作场所排风实测值，或按已披露挥发分和捕集效率进行化学品质量平衡
 - 数值来源模式：计算值（`calculated_value`）

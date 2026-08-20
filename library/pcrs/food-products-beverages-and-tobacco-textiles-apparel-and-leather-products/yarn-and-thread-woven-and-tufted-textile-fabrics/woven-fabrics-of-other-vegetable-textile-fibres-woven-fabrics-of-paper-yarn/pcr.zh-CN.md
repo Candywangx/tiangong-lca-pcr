@@ -40,7 +40,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 1 kg |
-| 参考产品流 | Woven fabrics of other vegetable textile fibres, woven fabrics of paper yarn `60d1ccca-cd64-48de-83c4-4ceec6af40a6` |
+| 参考产品流 | 其他植物纺织纤维机织织物，纸纱机织织物 `60d1ccca-cd64-48de-83c4-4ceec6af40a6` |
 | 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | Units of mass (kg) `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | kg |
@@ -128,7 +128,7 @@ sync_with: pcr.en-US.md
 
 将改性淀粉作为单一上浆化学品交换记录；其他上浆化学品必须使用各自独立原子行。
 
-- 选定流：modified starch `09797370-6632-42aa-9d77-e9d41ff82c75`
+- 选定流：变性淀粉 `09797370-6632-42aa-9d77-e9d41ff82c75`
 - 流属性/单位：Mass / kg
 - 数量规则：加入浆槽的实测改性淀粉质量，扣除有记录并回用于同一批次的回收材料
 - 数值来源模式：前景记录（`foreground_record`）
@@ -143,7 +143,7 @@ sync_with: pcr.en-US.md
 
 当前景设施执行上浆时记录供应的工艺水。
 
-- 选定流：Process Water `94a04f7e-2d5c-41f0-b182-d54a3b373a02`
+- 选定流：工艺用水 `94a04f7e-2d5c-41f0-b182-d54a3b373a02`
 - 流属性/单位：Mass / kg
 - 数量规则：供应至上浆的实测工艺水，不含未跨越前景边界的单独计量回用水
 - 数值来源模式：前景记录（`foreground_record`）
@@ -158,7 +158,7 @@ sync_with: pcr.en-US.md
 
 记录整经、上浆、织机、局部调湿及可直接归属辅助设备消耗的计量中压电力。
 
-- 选定流：Electricity, medium voltage
+- 选定流：中压电力
 - 流属性/单位：Energy / kWh
 - 数量规则：纳入设备和生产期间的计量电力
 - 数值来源模式：前景记录（`foreground_record`）
@@ -173,7 +173,7 @@ sync_with: pcr.en-US.md
 
 仅当喷气织机或其他纳入工序消耗压缩空气时记录交付的压缩空气。
 
-- 选定流：Compressed air `46e2b1e4-5a4e-4579-b6a2-65b03f9ce825`
+- 选定流：压缩的空气 `46e2b1e4-5a4e-4579-b6a2-65b03f9ce825`
 - 流属性/单位：Volume / m3
 - 数量规则：按已披露压力基准计量并分配至适用织机的压缩空气体积
 - 数值来源模式：前景记录（`foreground_record`）
@@ -196,7 +196,7 @@ sync_with: pcr.en-US.md
 
 记录任何纳入湿处理或最终包装之前、经检验的机织织物。
 
-- 选定流：Woven fabrics of other vegetable textile fibres, woven fabrics of paper yarn `60d1ccca-cd64-48de-83c4-4ceec6af40a6`
+- 选定流：其他植物纺织纤维机织织物，纸纱机织织物 `60d1ccca-cd64-48de-83c4-4ceec6af40a6`
 - 流属性/单位：Mass / kg
 - 数量规则：合格并转移的机织织物实测净质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -213,7 +213,7 @@ sync_with: pcr.en-US.md
 
 记录从经纱上浆转移至厂内或厂外废水处理的未处理废水。
 
-- 选定流：Warp sizing wastewater `33617934-f2c0-4016-bb14-264de8396a2c`
+- 选定流：经纱上浆废水 `33617934-f2c0-4016-bb14-264de8396a2c`
 - 流属性/单位：Mass / kg
 - 数量规则：实测废水质量，或以记录的密度将实测体积转换为质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -251,7 +251,7 @@ sync_with: pcr.en-US.md
 
 在与上游过程输出相同的含水基准上记录机织织物内部转移。
 
-- 选定流：Woven fabrics of other vegetable textile fibres, woven fabrics of paper yarn `60d1ccca-cd64-48de-83c4-4ceec6af40a6`
+- 选定流：其他植物纺织纤维机织织物，纸纱机织织物 `60d1ccca-cd64-48de-83c4-4ceec6af40a6`
 - 流属性/单位：Mass / kg
 - 数量规则：转入已声明湿处理工序的实测质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -266,7 +266,7 @@ sync_with: pcr.en-US.md
 
 记录为纳入湿处理工序跨越前景边界的供应工艺水。
 
-- 选定流：Process Water `94a04f7e-2d5c-41f0-b182-d54a3b373a02`
+- 选定流：工艺用水 `94a04f7e-2d5c-41f0-b182-d54a3b373a02`
 - 流属性/单位：Mass / kg
 - 数量规则：实测供应水量，内部回用水在水平衡中单独报告
 - 数值来源模式：前景记录（`foreground_record`）
@@ -281,7 +281,7 @@ sync_with: pcr.en-US.md
 
 仅在工业级氢氧化钠加入纳入的精练、pH 控制或类似工序时记录。
 
-- 选定流：Sodium hydroxide `e0abcced-0611-4c24-9290-5a2c5a0c4169`
+- 选定流：氢氧化钠 `e0abcced-0611-4c24-9290-5a2c5a0c4169`
 - 流属性/单位：Mass / kg
 - 数量规则：实测加入的到货状态氢氧化钠，并披露浓度
 - 数值来源模式：前景记录（`foreground_record`）
@@ -311,7 +311,7 @@ sync_with: pcr.en-US.md
 
 当工业蒸汽跨越前景边界用于加热、洗涤、干燥或固化时记录外购蒸汽。
 
-- 选定流：Steam `293f9fd9-5182-4d35-8aa5-ce73d4f322b7`
+- 选定流：蒸汽 `293f9fd9-5182-4d35-8aa5-ce73d4f322b7`
 - 流属性/单位：Mass / kg
 - 数量规则：纳入湿处理工序的计量交付蒸汽质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -326,7 +326,7 @@ sync_with: pcr.en-US.md
 
 记录纳入湿处理设备及可直接归属辅助设备消耗的计量中压电力。
 
-- 选定流：Electricity, medium voltage
+- 选定流：中压电力
 - 流属性/单位：Energy / kWh
 - 数量规则：纳入湿处理设备和生产期间的计量电力
 - 数值来源模式：前景记录（`foreground_record`）
@@ -349,7 +349,7 @@ sync_with: pcr.en-US.md
 
 记录完成纳入湿处理工序后、最终检验与包装之前的已声明处理状态机织织物。
 
-- 选定流：Woven fabrics of other vegetable textile fibres, woven fabrics of paper yarn `60d1ccca-cd64-48de-83c4-4ceec6af40a6`
+- 选定流：其他植物纺织纤维机织织物，纸纱机织织物 `60d1ccca-cd64-48de-83c4-4ceec6af40a6`
 - 流属性/单位：Mass / kg
 - 数量规则：合格已处理机织织物的实测净质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -366,7 +366,7 @@ sync_with: pcr.en-US.md
 
 当纳入湿处理产生的废水转移至水体或废水处理时记录该废水。
 
-- 选定流：Wastewater, textile process (to water) `48438fa9-4988-405c-ba44-646f134e2ecc`
+- 选定流：废水，纺织工艺（排放至水体） `48438fa9-4988-405c-ba44-646f134e2ecc`
 - 流属性/单位：Mass / kg
 - 数量规则：实测废水质量，或以记录的密度将实测体积转换为质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -389,7 +389,7 @@ sync_with: pcr.en-US.md
 
 记录来自织造或纳入湿处理过程的最终机织织物内部转移。
 
-- 选定流：Woven fabrics of other vegetable textile fibres, woven fabrics of paper yarn `60d1ccca-cd64-48de-83c4-4ceec6af40a6`
+- 选定流：其他植物纺织纤维机织织物，纸纱机织织物 `60d1ccca-cd64-48de-83c4-4ceec6af40a6`
 - 流属性/单位：Mass / kg
 - 数量规则：进入最终检验的实测织物质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -434,7 +434,7 @@ sync_with: pcr.en-US.md
 
 记录检验、卷绕及包装设备消耗的计量中压电力。
 
-- 选定流：Electricity, medium voltage
+- 选定流：中压电力
 - 流属性/单位：Energy / kWh
 - 数量规则：生产期间检验与包装的计量电力
 - 数值来源模式：前景记录（`foreground_record`）
@@ -457,7 +457,7 @@ sync_with: pcr.en-US.md
 
 按已声明含水、处理和包装基准记录合格的工厂大门产品。
 
-- 选定流：Woven fabrics of other vegetable textile fibres, woven fabrics of paper yarn `60d1ccca-cd64-48de-83c4-4ceec6af40a6`
+- 选定流：其他植物纺织纤维机织织物，纸纱机织织物 `60d1ccca-cd64-48de-83c4-4ceec6af40a6`
 - 流属性/单位：Mass / kg
 - 数量规则：用作参考分母的合格产品实测净质量
 - 数值来源模式：前景记录（`foreground_record`）

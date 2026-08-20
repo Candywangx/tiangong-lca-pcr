@@ -42,7 +42,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 1,000 kg 净非织造材料 |
-| 参考产品流 | Nonwovens `dd37c0b0-8d07-452a-a62a-aaffa8c42b61` |
+| 参考产品流 | 非织造物 `dd37c0b0-8d07-452a-a62a-aaffa8c42b61` |
 | 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | kg |
@@ -198,7 +198,7 @@ sync_with: pcr.en-US.md
 
 压缩空气用于纤维输送、牵伸或清洁时跨越成网过程边界。按声明压力记录交付体积，不与电力合并。
 
-- 选定流：Compressed air
+- 选定流：压缩空气
 - 流属性/单位：Volume / Nm3
 - 数量规则：匹配期间在声明压力下计量或生产记录的压缩空气交付量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -213,7 +213,7 @@ sync_with: pcr.en-US.md
 
 仅当声明的湿法路线形成纤维悬浮液时，工艺水才是产品投入。新鲜供应水与内部循环水分开记录。
 
-- 选定流：Process water
+- 选定流：过程用水
 - 流属性/单位：Volume / m3
 - 数量规则：湿法配浆和成网的实测新鲜工艺水取用量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -366,7 +366,7 @@ sync_with: pcr.en-US.md
 
 工艺水在水刺工艺中跨越粘合边界。新鲜取水与过滤回用及后续排放分开记录。
 
-- 选定流：Process water
+- 选定流：过程用水
 - 流属性/单位：Volume / m3
 - 数量规则：水刺循环系统实测新鲜补水量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -381,7 +381,7 @@ sync_with: pcr.en-US.md
 
 仅当加固线从前景边界之外接收蒸汽时，外购蒸汽才是一种交付热能载体。与燃料和电力分开记录。
 
-- 选定流：Purchased steam
+- 选定流：外购蒸汽
 - 流属性/单位：Energy / MJ
 - 数量规则：按声明压力、冷凝水和焓值口径计量或开票的蒸汽能量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -519,7 +519,7 @@ sync_with: pcr.en-US.md
 
 当产品接受洗涤或水性整理时，新鲜工艺水跨越边界。新鲜取水与回用水和废水分开记录。
 
-- 选定流：Process water
+- 选定流：过程用水
 - 流属性/单位：Volume / m3
 - 数量规则：整理线实测新鲜供水量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -534,7 +534,7 @@ sync_with: pcr.en-US.md
 
 从前景边界外接收时，外购蒸汽向整理或干燥线供应热能。按压力和冷凝水口径与其他载能体分开记录。
 
-- 选定流：Purchased steam
+- 选定流：外购蒸汽
 - 流属性/单位：Energy / MJ
 - 数量规则：可归属于整理和干燥的计量或开票蒸汽能量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -717,7 +717,7 @@ sync_with: pcr.en-US.md
 
 木托盘是随产品发运时的一种运输包装组件。其质量、处理方式和重复使用核算与其他包装分开记录。
 
-- 选定流：Wooden pallet
+- 选定流：木托盘
 - 流属性/单位：Mass / kg
 - 数量规则：实测或核实的单位质量乘以随产品发出的托盘数，仅扣除有记录的同系统返还
 - 数值来源模式：前景记录（`foreground_record`）
@@ -740,7 +740,7 @@ sync_with: pcr.en-US.md
 
 放行的可销售非织造布是唯一参考产品。已接受 Tiangong UUID 对公开 Product flow、CPC 27922 和 Mass 精确匹配；净质量不包括任何包装。
 
-- 选定流：Nonwovens `dd37c0b0-8d07-452a-a62a-aaffa8c42b61`
+- 选定流：非织造物 `dd37c0b0-8d07-452a-a62a-aaffa8c42b61`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：实测放行毛质量减去实测卷芯和外部包装皮重
 - 数值来源模式：前景记录（`foreground_record`）
@@ -802,7 +802,7 @@ sync_with: pcr.en-US.md
 
 本行记录托盘被废弃而非回用或发运时的一股木托盘废物。记录处理方式，未执行分配规则时不得给出回用抵扣。
 
-- 选定流：Waste wooden pallet
+- 选定流：废木托盘
 - 流属性/单位：Mass / kg
 - 数量规则：送往声明废物处理路线的实测托盘质量
 - 数值来源模式：前景记录（`foreground_record`）

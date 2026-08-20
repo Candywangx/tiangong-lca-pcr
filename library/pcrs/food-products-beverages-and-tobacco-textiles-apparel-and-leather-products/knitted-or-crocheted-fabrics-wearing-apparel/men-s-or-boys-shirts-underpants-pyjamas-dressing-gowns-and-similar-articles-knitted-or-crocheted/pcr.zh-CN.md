@@ -43,7 +43,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 1 kg 成衣净质量 |
-| 参考产品流 | Men's or boys' shirts, underpants, pyjamas, dressing gowns and similar articles, knitted or crocheted `833dd94b-bf2a-4273-99a9-e6bb3c59dedc` |
+| 参考产品流 | 针织或钩编的男衬衫、男童衬衫、衬裤、睡衣裤、晨衣及类似物品 `833dd94b-bf2a-4273-99a9-e6bb3c59dedc` |
 | 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | kg |
@@ -409,7 +409,7 @@ sync_with: pcr.en-US.md
 
 仅当已批准湿整理配方包含氢氧化钠时，此化学品才单独跨越边界。
 
-- 选定流：Sodium hydroxide
+- 选定流：氢氧化钠
 - 流属性/单位：Mass / kg active substance
 - 数量规则：已记录供应溶液质量和浓度
 - 数值来源模式：前景记录（`foreground_record`）
@@ -424,7 +424,7 @@ sync_with: pcr.en-US.md
 
 仅当已批准漂白配方包含过氧化氢时，此化学品才单独跨越边界。
 
-- 选定流：Hydrogen peroxide
+- 选定流：过氧化氢
 - 流属性/单位：Mass / kg active substance
 - 数量规则：已记录供应溶液质量和浓度
 - 数值来源模式：前景记录（`foreground_record`）
@@ -517,7 +517,7 @@ sync_with: pcr.en-US.md
 
 瓦楞纸板纸箱作为一个独立包装交换记录。
 
-- 选定流：Corrugated paperboard shipping carton
+- 选定流：瓦楞纸板运输箱
 - 流属性/单位：Mass / kg
 - 数量规则：合格产量消耗的实测纸箱质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -555,7 +555,7 @@ sync_with: pcr.en-US.md
 
 最终调湿后的成衣合格净质量是已声明参考产品交换。
 
-- 选定流：Men's or boys' shirts, underpants, pyjamas, dressing gowns and similar articles, knitted or crocheted `833dd94b-bf2a-4273-99a9-e6bb3c59dedc`
+- 选定流：针织或钩编的男衬衫、男童衬衫、衬裤、睡衣裤、晨衣及类似物品 `833dd94b-bf2a-4273-99a9-e6bb3c59dedc`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：实测成衣合格净质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -587,7 +587,7 @@ sync_with: pcr.en-US.md
 
 破损纸箱和纸板边角料作为一个单独称量的废物交换离开包装。
 
-- 选定流：Waste corrugated paperboard
+- 选定流：废瓦楞纸板
 - 流属性/单位：Mass / kg
 - 数量规则：实测废纸板质量
 - 数值来源模式：前景记录（`foreground_record`）

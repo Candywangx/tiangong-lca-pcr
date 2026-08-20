@@ -40,7 +40,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 1 kg 净质量 |
-| 参考产品流 | Hazelnuts, shelled `310457e0-388d-4c3a-9090-b4bbc5288d05` |
+| 参考产品流 | 去壳榛子 `310457e0-388d-4c3a-9090-b4bbc5288d05` |
 | 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | kg |
@@ -496,7 +496,7 @@ sync_with: pcr.en-US.md
 
 只有记录必需限定信息和所选路线后，参考输出才可放行。
 
-- 选定流：Hazelnuts, shelled `310457e0-388d-4c3a-9090-b4bbc5288d05`
+- 选定流：去壳榛子 `310457e0-388d-4c3a-9090-b4bbc5288d05`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：按 `calc_reference_normalization` 归一化后的 1 kg 净产品
 - 数值来源模式：固定值（`fixed_value`）

@@ -38,7 +38,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 1 kg |
-| 参考产品流 | Groundnut oil, refined `f3a626d9-6e6e-42c2-9542-4824ab538765` |
+| 参考产品流 | 花生油，精炼 `f3a626d9-6e6e-42c2-9542-4824ab538765` |
 | 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | kg |
@@ -95,7 +95,7 @@ sync_with: pcr.en-US.md
 
 毛花生油进入炼油厂边界并携带全部上游生产负荷。记录经库存变化、取样和装卸损失修正的储罐接收量。
 
-- 选定流：Groundnut oil, crude `4becfdba-2a4c-4c6f-a503-75db987fdc16`
+- 选定流：粗花生油 `4becfdba-2a4c-4c6f-a503-75db987fdc16`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：实测毛油接收量减去属于报告期的库存增加
 - 数值来源模式：前景记录（`foreground_record`）
@@ -118,7 +118,7 @@ sync_with: pcr.en-US.md
 
 记录水化、洗涤、化学品稀释和离心机清洗中可归属于该过程的用水。
 
-- 选定流：Process Water `94a04f7e-2d5c-41f0-b182-d54a3b373a02`
+- 选定流：工艺用水 `94a04f7e-2d5c-41f0-b182-d54a3b373a02`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：脱胶与中和的计量或批次表供水量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -141,7 +141,7 @@ sync_with: pcr.en-US.md
 
 记录酸法脱胶所用磷酸。如实际使用柠檬酸或其他经批准的试剂，应以准确的采购物质替换选定流，并保留活性物质计算。
 
-- 选定流：Phosphoric acid, production mix, at plant `9396269a-cf0d-4b38-ae6d-ab6b91e1dc87`
+- 选定流：磷酸 `9396269a-cf0d-4b38-ae6d-ab6b91e1dc87`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg 活性酸
 - 数量规则：采购溶液质量乘以记录的活性酸浓度
 - 数值来源模式：前景记录（`foreground_record`）
@@ -165,7 +165,7 @@ sync_with: pcr.en-US.md
 
 记录化学精炼路线使用的氢氧化钠。对于有记录的物理精炼路线，将本行标记为不适用；不得在未记录路线的情况下直接填零。
 
-- 选定流：Sodium hydroxide, production mix, at plant, industrial grade 95 to 98 percent `e0abcced-0611-4c24-9290-5a2c5a0c4169`
+- 选定流：氢氧化钠 `e0abcced-0611-4c24-9290-5a2c5a0c4169`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg 活性 NaOH
 - 数量规则：采购溶液质量乘以记录的 NaOH 浓度
 - 数值来源模式：前景记录（`foreground_record`）
@@ -189,7 +189,7 @@ sync_with: pcr.en-US.md
 
 记录泵送、混合、辅助加热、离心和过程控制的计量电力。应选择与场址地理和供电电压相符的天工电力流。
 
-- 选定流：Electricity, alternating current, 1 to 35 kV, consumption mix `3d76981f-964a-4865-b588-0e067a2a1163`
+- 选定流：交流电 `3d76981f-964a-4865-b588-0e067a2a1163`
 - 流属性/单位：Net calorific value `93a60a56-a3c8-11da-a746-0800200c9a66` / kWh
 - 数量规则：分表读数，或依据炼油厂总电表的工程分摊
 - 数值来源模式：前景记录（`foreground_record`）
@@ -306,7 +306,7 @@ sync_with: pcr.en-US.md
 
 记录实际投加的新鲜脱色白土或其他吸附剂。除非珍珠岩或助滤剂单独消耗并记录，不得以其代替脱色白土。
 
-- 选定流：Bleaching earth, production mix, at plant `a49e60f4-17c1-45c4-95db-4c0c6e593a85`
+- 选定流：脱色白土 `a49e60f4-17c1-45c4-95db-4c0c6e593a85`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：过磅单、采购库存平衡或批次投料记录
 - 数值来源模式：前景记录（`foreground_record`）
@@ -330,7 +330,7 @@ sync_with: pcr.en-US.md
 
 使用与场址相符的电力流记录真空、搅拌、泵送和过滤用电。
 
-- 选定流：Electricity, alternating current, 1 to 35 kV, consumption mix `3d76981f-964a-4865-b588-0e067a2a1163`
+- 选定流：交流电 `3d76981f-964a-4865-b588-0e067a2a1163`
 - 流属性/单位：Net calorific value `93a60a56-a3c8-11da-a746-0800200c9a66` / kWh
 - 数量规则：分表读数或有记录的工程分摊
 - 数值来源模式：前景记录（`foreground_record`）
@@ -424,7 +424,7 @@ sync_with: pcr.en-US.md
 
 记录水蒸气汽提、油品加热和真空系统运行的交付过程热。仅计量蒸汽质量时，应根据实测压力、冷凝物状态和有记录的焓值方法计算交付热量。
 
-- 选定流：Process heat from steam, GLO `fcf9e128-688f-42f0-9dca-85d2319cfac5`
+- 选定流：蒸汽工艺热 `fcf9e128-688f-42f0-9dca-85d2319cfac5`
 - 流属性/单位：Gross calorific value `93a60a56-a3c8-14da-a746-0800200c9a66` / MJ
 - 数量规则：实测交付热量，或蒸汽质量乘以有记录的可用焓差
 - 数值来源模式：前景记录（`foreground_record`）
@@ -447,7 +447,7 @@ sync_with: pcr.en-US.md
 
 使用与场址供电相符的流记录真空泵、循环、冷却辅助设备、精滤和散装储存用电。
 
-- 选定流：Electricity, alternating current, 1 to 35 kV, consumption mix `3d76981f-964a-4865-b588-0e067a2a1163`
+- 选定流：交流电 `3d76981f-964a-4865-b588-0e067a2a1163`
 - 流属性/单位：Net calorific value `93a60a56-a3c8-11da-a746-0800200c9a66` / kWh
 - 数量规则：分表读数或有记录的工程分摊
 - 数值来源模式：前景记录（`foreground_record`）
@@ -478,7 +478,7 @@ sync_with: pcr.en-US.md
 
 本流为定量参考输出。仅计入满足所声明规范的可销售散装油；返回过程的不合格油为内部返工。
 
-- 选定流：Groundnut oil, refined `f3a626d9-6e6e-42c2-9542-4824ab538765`
+- 选定流：花生油，精炼 `f3a626d9-6e6e-42c2-9542-4824ab538765`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：根据实测可销售输出归一化后的固定参考数量 1 kg
 - 数值来源模式：固定值（`fixed_value`）

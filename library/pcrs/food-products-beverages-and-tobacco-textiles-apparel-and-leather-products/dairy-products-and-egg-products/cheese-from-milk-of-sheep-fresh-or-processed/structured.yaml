@@ -22,7 +22,7 @@ system_boundary:
       rule: "Include only lots documented as sheep milk or sheep-milk-derived material. A mixed-species lot or non-sheep dairy ingredient makes the product outside this PCR and requires reclassification."
       source_ids:
         - unsd-cpc-3-0-2025
-        - codex-cxs-206-1999
+        - fao-who-cxs-206-1999
     - rule_id: boundary_factory_gate
       applies_to: "Foreground process chain"
       rule: "Include receipt and conditioning, applicable cheesemaking or processing operations, facility utilities and cleaning, product losses, wastewater and waste streams, final conditioning, packaging, and on-site storage through facility-gate release."
@@ -33,9 +33,9 @@ system_boundary:
       applies_to: "Product state and route"
       rule: "Include only the operations actually performed and declare every omitted conditional process. Fresh/unripened, ripened, whey-cheese, brined, grated/powdered, and processed routes shall not be represented by one assumed recipe or process intensity."
       source_ids:
-        - codex-cxs-283-1978
-        - codex-cxs-221-2001
-        - codex-cxs-208-1999
+        - fao-who-cxs-283-1978
+        - fao-who-cxs-221-2001
+        - fao-who-cxs-208-1999
     - rule_id: boundary_upstream_link
       applies_to: "Sheep milk and sheep-milk dairy intermediates"
       rule: "Link upstream datasets rather than recursively reproducing their inventories; preserve supplier, geography, production system, and period compatibility."
@@ -186,8 +186,8 @@ process_inventory:
               kind: "collected_record"
               collection_protocol_id: cp_material_lot_records
               source_ids:
-                - codex-cxs-206-1999
-                - codex-cxs-283-1978
+                - fao-who-cxs-206-1999
+                - fao-who-cxs-283-1978
             ranges: []
       waste:
         []
@@ -273,8 +273,8 @@ process_inventory:
               kind: "collected_record"
               collection_protocol_id: cp_ingredient_formula_records
               source_ids:
-                - codex-cxs-283-1978
-                - codex-cxs-221-2001
+                - fao-who-cxs-283-1978
+                - fao-who-cxs-221-2001
             ranges: []
       waste:
         []
@@ -463,7 +463,7 @@ process_inventory:
               kind: "collected_record"
               collection_protocol_id: cp_brine_records
               source_ids:
-                - codex-cxs-208-1999
+                - fao-who-cxs-208-1999
             ranges: []
       waste:
         []
@@ -549,7 +549,7 @@ process_inventory:
               kind: "collected_record"
               collection_protocol_id: cp_ingredient_formula_records
               source_ids:
-                - codex-cxs-283-1978
+                - fao-who-cxs-283-1978
             ranges: []
       waste:
         []
@@ -600,14 +600,14 @@ process_inventory:
     label: "Facility utilities, refrigeration, and cleaning"
     inputs:
       product:
-        - row_id: facility_energy
-          role: "Electricity and thermal energy"
-          name: "Electricity and route-specific thermal energy carriers"
+        - row_id: facility_electricity
+          role: "Purchased electricity"
+          name: "Alternating-current electricity, declared consumption mix and voltage level"
           flow_type: "product"
-          property_unit: "Energy / kWh or MJ; fuel mass or volume in recorded unit"
-          description: "Record electricity and each fuel or purchased thermal-energy carrier separately at the narrowest available meter boundary. EU FDM BAT performance levels may be used only as contextual comparison for installations and averaging bases within their stated scope, never as a sheep-cheese default or substitute for site records."
+          property_unit: "Energy / kWh"
+          description: "Record grid or supplier electricity at the narrowest available meter boundary; do not combine it with fuels, steam, or recovered energy."
           amount:
-            expression: "metered or purchased quantities attributed to included processes using documented site allocation"
+            expression: "metered electricity attributed to included processes using documented direct measurement or site allocation"
             value_mode: "foreground_record"
             specificity: "site_specific"
             basis:
@@ -619,14 +619,109 @@ process_inventory:
               source_ids:
                 - eu-fdm-bat-2019
             ranges: []
-        - row_id: facility_water
-          role: "Process and cleaning water"
-          name: "Process and cleaning water"
+        - row_id: facility_purchased_steam
+          role: "Purchased steam"
+          name: "Purchased steam, declared pressure and condensate-return condition"
+          flow_type: "product"
+          property_unit: "Energy / MJ or Mass / kg"
+          description: "Instantiate only when steam crosses the facility boundary; retain supplier pressure or temperature and condensate-return conditions."
+          amount:
+            expression: "supplier meter or invoice quantity, kept separate from on-site fuel use"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg released reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_utility_records
+              source_ids:
+                - eu-fdm-bat-2019
+            ranges: []
+        - row_id: facility_purchased_hot_water
+          role: "Purchased hot water"
+          name: "Purchased hot water, declared supply and return temperatures"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Instantiate only when hot water is purchased as an energy service; declare supply and return temperatures."
+          amount:
+            expression: "metered heat or calculated from metered mass, temperature difference, and documented heat capacity"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg released reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_utility_records
+              source_ids:
+                - eu-fdm-bat-2019
+            ranges: []
+        - row_id: facility_natural_gas
+          role: "Natural gas"
+          name: "Natural gas, gaseous, delivered to the facility"
+          flow_type: "product"
+          property_unit: "Volume / m3 or Energy / MJ"
+          description: "Instantiate when natural gas is burned on site for boilers, pasteurisation, hot water, or space/process heating."
+          amount:
+            expression: "metered or invoiced carrier quantity; retain the declared higher/lower heating-value convention"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg released reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_utility_records
+              source_ids:
+                - eu-fdm-bat-2019
+            ranges: []
+        - row_id: facility_lpg
+          role: "Liquefied petroleum gas"
+          name: "Liquefied petroleum gas, delivered to the facility"
+          flow_type: "product"
+          property_unit: "Mass / kg or Energy / MJ"
+          description: "Instantiate when LPG is burned on site; do not merge it with natural gas or diesel."
+          amount:
+            expression: "tank issue, delivery, or stock-reconciliation quantity with documented heating-value conversion when used"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg released reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_utility_records
+              source_ids:
+                - eu-fdm-bat-2019
+            ranges: []
+        - row_id: facility_diesel
+          role: "Diesel fuel"
+          name: "Diesel fuel, delivered to the facility"
+          flow_type: "product"
+          property_unit: "Mass / kg or Volume / L"
+          description: "Instantiate only for stationary thermal equipment or directly attributable internal equipment; exclude inbound or outbound transport unless separately in scope."
+          amount:
+            expression: "issue or purchase quantity reconciled to equipment operating records"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg released reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_utility_records
+              source_ids:
+                - eu-fdm-bat-2019
+            ranges: []
+        - row_id: facility_process_water
+          role: "Process water"
+          name: "Process water, declared source and treatment state"
           flow_type: "product"
           property_unit: "Volume / m3 or Mass / kg"
-          description: "Record process, cleaning, cooling, and other water uses separately where metering permits and identify recycled or reused streams without double counting."
+          description: "Record water incorporated into cheese, brine, whey handling, or direct product-contact processing separately from cleaning water."
           amount:
-            expression: "metered quantity or documented allocation from a facility meter balance"
+            expression: "metered quantity or batch dosing record"
             value_mode: "foreground_record"
             specificity: "site_specific"
             basis:
@@ -638,14 +733,14 @@ process_inventory:
               source_ids:
                 - eu-fdm-bat-2019
             ranges: []
-        - row_id: cleaning_materials
-          role: "Cleaning and sanitation materials"
-          name: "Cleaning and sanitation materials"
+        - row_id: facility_cleaning_water
+          role: "Cleaning water"
+          name: "Cleaning water, declared source and treatment state"
           flow_type: "product"
-          property_unit: "Mass / kg"
-          description: "Record each chemical or prepared solution by purchased product mass and active concentration when needed for the selected upstream dataset."
+          property_unit: "Volume / m3 or Mass / kg"
+          description: "Record CIP, manual wash-down, crate cleaning, and sanitation water separately from product/process water; identify reused water without double counting."
           amount:
-            expression: "issue, dosing, or purchase reconciliation for the data period"
+            expression: "metered quantity or documented allocation from a complete facility water balance"
             value_mode: "foreground_record"
             specificity: "site_specific"
             basis:
@@ -654,7 +749,84 @@ process_inventory:
             evidence:
               kind: "collected_record"
               collection_protocol_id: cp_utility_records
-              source_ids: []
+              source_ids:
+                - eu-fdm-bat-2019
+            ranges: []
+        - row_id: cip_sodium_hydroxide
+          role: "Sodium hydroxide cleaning agent"
+          name: "Sodium hydroxide cleaning agent"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Instantiate when caustic soda is used for CIP or equipment cleaning; retain supplied concentration and active mass."
+          amount:
+            expression: "issued solution mass multiplied by measured or supplier-declared active fraction, retaining both gross and active mass"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg released reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_utility_records
+              source_ids:
+                - eu-fdm-bat-2019
+            ranges: []
+        - row_id: cip_nitric_acid
+          role: "Nitric acid cleaning agent"
+          name: "Nitric acid cleaning agent"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Instantiate when nitric acid is used in acid-CIP cycles; do not combine it with caustic or sanitiser use."
+          amount:
+            expression: "issued solution mass multiplied by measured or supplier-declared active fraction, retaining both gross and active mass"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg released reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_utility_records
+              source_ids:
+                - eu-fdm-bat-2019
+            ranges: []
+        - row_id: sanitizer_peracetic_acid
+          role: "Peracetic acid sanitiser"
+          name: "Peracetic acid sanitiser"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Instantiate when peracetic acid is used; preserve formulation concentration instead of reporting generic sanitiser."
+          amount:
+            expression: "dosed formulation mass with supplier active concentration retained"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg released reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_utility_records
+              source_ids:
+                - eu-fdm-bat-2019
+            ranges: []
+        - row_id: sanitizer_sodium_hypochlorite
+          role: "Sodium hypochlorite sanitiser"
+          name: "Sodium hypochlorite sanitiser"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Instantiate when sodium hypochlorite is used; retain available-chlorine concentration and keep it separate from other sanitisers."
+          amount:
+            expression: "dosed formulation mass with available-chlorine fraction retained"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg released reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_utility_records
+              source_ids:
+                - eu-fdm-bat-2019
             ranges: []
       waste:
         []
@@ -684,14 +856,146 @@ process_inventory:
                 - eu-fdm-bat-2019
             ranges: []
       elementary:
-        - row_id: refrigerant_losses
-          role: "Refrigerant losses to air"
-          name: "Refrigerant emission to air by substance"
+        - row_id: wastewater_cod_to_water
+          role: "Chemical oxygen demand to water"
+          name: "Chemical oxygen demand, to water"
           flow_type: "elementary"
           property_unit: "Mass / kg"
-          description: "Record refrigerant type and loss from service logs and mass reconciliation; do not apply an assumed leakage rate when records exist."
+          description: "Report COD load for the discharged dairy wastewater from matched flow and concentration records."
           amount:
-            expression: "calculated from refrigerant charge, recovery, and top-up records"
+            expression: "matched discharge volume multiplied by representative COD concentration, with sampling coverage retained"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg released reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_wastewater_records
+              source_ids:
+                - eu-fdm-bat-2019
+            ranges: []
+        - row_id: wastewater_bod5_to_water
+          role: "Biochemical oxygen demand to water"
+          name: "Biochemical oxygen demand, 5-day, to water"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Report five-day biochemical oxygen-demand load separately from COD."
+          amount:
+            expression: "matched discharge volume multiplied by representative BOD5 concentration, with sampling coverage retained"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg released reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_wastewater_records
+              source_ids:
+                - eu-fdm-bat-2019
+            ranges: []
+        - row_id: wastewater_total_nitrogen_to_water
+          role: "Total nitrogen to water"
+          name: "Total nitrogen, to water"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Report total-nitrogen load when monitored or required for the discharge route."
+          amount:
+            expression: "matched discharge volume multiplied by representative total-nitrogen concentration"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg released reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_wastewater_records
+              source_ids:
+                - eu-fdm-bat-2019
+            ranges: []
+        - row_id: wastewater_total_phosphorus_to_water
+          role: "Total phosphorus to water"
+          name: "Total phosphorus, to water"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Report total-phosphorus load separately from nitrogen and suspended solids."
+          amount:
+            expression: "matched discharge volume multiplied by representative total-phosphorus concentration"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg released reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_wastewater_records
+              source_ids:
+                - eu-fdm-bat-2019
+            ranges: []
+        - row_id: wastewater_tss_to_water
+          role: "Total suspended solids to water"
+          name: "Total suspended solids, to water"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Report suspended-solids load from matched discharge and analytical records."
+          amount:
+            expression: "matched discharge volume multiplied by representative TSS concentration"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg released reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_wastewater_records
+              source_ids:
+                - eu-fdm-bat-2019
+            ranges: []
+        - row_id: wastewater_oil_grease_to_water
+          role: "Oil and grease to water"
+          name: "Oil and grease, to water"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Report oil-and-grease load when monitored or material for the selected discharge or treatment route."
+          amount:
+            expression: "matched discharge volume multiplied by representative oil-and-grease concentration"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg released reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_wastewater_records
+              source_ids:
+                - eu-fdm-bat-2019
+            ranges: []
+        - row_id: refrigerant_r717_to_air
+          role: "Ammonia refrigerant loss to air"
+          name: "Ammonia (R717), to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Instantiate for R717 systems and calculate loss from substance-specific service and inventory records."
+          amount:
+            expression: "opening charge plus additions minus recovered quantity and closing charge, with leak-event reconciliation"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg released reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_refrigerant_records
+              source_ids: []
+            ranges: []
+        - row_id: refrigerant_r404a_to_air
+          role: "R404A refrigerant loss to air"
+          name: "Refrigerant R404A, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Instantiate for R404A systems; never combine the blend mass with ammonia or another refrigerant."
+          amount:
+            expression: "opening charge plus additions minus recovered quantity and closing charge, with leak-event reconciliation"
             value_mode: "calculated_value"
             specificity: "technology_specific"
             basis:
@@ -724,16 +1028,106 @@ process_inventory:
               collection_protocol_id: cp_batch_output_records
               source_ids: []
             ranges: []
-        - row_id: packaging_materials
-          role: "Packaging materials"
-          name: "Packaging materials by material and component"
+        - row_id: packaging_plastic_film
+          role: "Plastic film packaging"
+          name: "Plastic packaging film, declared polymer and laminate structure"
           flow_type: "product"
           property_unit: "Mass / kg"
-          description: "Record primary, secondary, and tertiary materials separately and state which packaging level is included in the facility-gate dataset."
+          description: "Instantiate for flexible polymer film and declare polymer, layer structure, recycled content, and packaging level."
           amount:
-            expression: "packaging issue records or count-to-mass conversion using verified component mass"
+            expression: "issued mass or item count multiplied by verified film mass, net of returns"
             value_mode: "calculated_value"
             specificity: "product_specific"
+            basis:
+              text: "per 1 kg released reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_records
+              source_ids: []
+            ranges: []
+        - row_id: packaging_rigid_plastic
+          role: "Rigid plastic packaging"
+          name: "Rigid plastic packaging component, declared polymer"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Instantiate for tubs, cups, trays, lids, or closures; retain polymer and component identity."
+          amount:
+            expression: "component count multiplied by verified component mass, net of returns"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg released reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_records
+              source_ids: []
+            ranges: []
+        - row_id: packaging_corrugated_cardboard
+          role: "Corrugated cardboard packaging"
+          name: "Corrugated cardboard packaging"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Instantiate for cartons, cases, dividers, or sleeves made from corrugated board."
+          amount:
+            expression: "component count multiplied by verified board-component mass, net of returns"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg released reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_records
+              source_ids: []
+            ranges: []
+        - row_id: packaging_aluminium_foil
+          role: "Aluminium foil packaging"
+          name: "Aluminium foil packaging"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Instantiate for aluminium foil or foil-dominant lids; multilayer laminates remain identified by their full structure."
+          amount:
+            expression: "issued mass or component count multiplied by verified component mass"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg released reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_records
+              source_ids: []
+            ranges: []
+        - row_id: packaging_glass
+          role: "Glass packaging"
+          name: "Glass packaging container"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Instantiate for glass jars or containers and record closure materials separately."
+          amount:
+            expression: "accepted container count multiplied by verified container mass"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg released reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_records
+              source_ids: []
+            ranges: []
+        - row_id: packaging_wooden_pallet
+          role: "Wooden pallet packaging"
+          name: "Wooden transport pallet"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Instantiate when pallets are included; allocate reusable pallets using verified trip count and loss/repair records."
+          amount:
+            expression: "pallet mass divided by verified reuse cycles and allocated to dispatched product mass"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
             basis:
               text: "per 1 kg released reference product"
               kind: "reference_flow"
@@ -768,14 +1162,104 @@ process_inventory:
               source_ids: []
             ranges: []
       waste:
-        - row_id: final_packaging_losses
-          role: "Packaging and final product losses"
-          name: "Packaging waste and final cheese residues"
+        - row_id: waste_plastic_film_packaging
+          role: "Plastic-film packaging scrap"
+          name: "Plastic-film packaging scrap"
           flow_type: "waste"
           property_unit: "Mass / kg"
-          description: "Record damaged packaging, trim, start-up or changeover product, returns before gate release, and their destinations separately."
+          description: "Record rejected and trimmed flexible film separately from other polymers and by destination."
           amount:
-            expression: "measured or reconciled loss mass by material and destination"
+            expression: "measured or issue-reconciled scrap mass by destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg released reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_loss_waste_records
+              source_ids: []
+            ranges: []
+        - row_id: waste_rigid_plastic_packaging
+          role: "Rigid-plastic packaging scrap"
+          name: "Rigid-plastic packaging scrap"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record rejected tubs, cups, trays, lids, and closures by polymer and destination."
+          amount:
+            expression: "measured or count-to-mass reconciled scrap by polymer and destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg released reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_loss_waste_records
+              source_ids: []
+            ranges: []
+        - row_id: waste_corrugated_cardboard_packaging
+          role: "Corrugated-cardboard packaging scrap"
+          name: "Corrugated-cardboard packaging scrap"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record damaged cartons, cases, dividers, and sleeves separately from plastic packaging."
+          amount:
+            expression: "measured or issue-reconciled scrap mass by destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg released reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_loss_waste_records
+              source_ids: []
+            ranges: []
+        - row_id: waste_aluminium_foil_packaging
+          role: "Aluminium-foil packaging scrap"
+          name: "Aluminium-foil packaging scrap"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record foil and foil-dominant laminate scrap separately and retain laminate composition."
+          amount:
+            expression: "measured or issue-reconciled scrap mass by composition and destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg released reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_loss_waste_records
+              source_ids: []
+            ranges: []
+        - row_id: waste_glass_packaging
+          role: "Broken glass packaging"
+          name: "Broken glass packaging"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record broken or rejected glass containers separately from closure and label waste."
+          amount:
+            expression: "measured broken-container mass or rejected count multiplied by verified container mass"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg released reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_loss_waste_records
+              source_ids: []
+            ranges: []
+        - row_id: waste_final_cheese_product
+          role: "Final cheese product loss"
+          name: "Off-specification sheep-milk cheese"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record start-up, changeover, damaged-pack, and pre-release returned cheese separately from packaging waste."
+          amount:
+            expression: "measured or batch-mass-balance-reconciled product loss by destination"
             value_mode: "foreground_record"
             specificity: "site_specific"
             basis:
@@ -947,7 +1431,7 @@ dataset_production:
         - "and packaging masses"
       output: "Declared reference-product mass and component disclosure"
       source_ids:
-        - codex-cxs-208-1999
+        - fao-who-cxs-208-1999
         - eu-pef-2021
     - id: calc_batch_mass_balance
       applies_to: "Each included batch and process step"
@@ -1026,19 +1510,24 @@ validation_rules:
     rule: "Fail when any dairy input is goat, cattle, buffalo, other-animal, mixed-species, or unresolved species origin. Mixed-milk products require reclassification."
     source_ids:
       - unsd-cpc-3-0-2025
-      - codex-cxs-206-1999
+      - fao-who-cxs-206-1999
   - rule_id: validate_required_qualifiers
     applies_to: "Dataset metadata"
     rule: "Fail when product state, raw-milk/heat-treatment status where relevant, ripening/holding duration where applicable, brine mass basis, ingredient/formulation state, packaging basis, facility-gate geography, or period is missing."
     source_ids:
-      - codex-cxs-283-1978
-      - codex-cxs-221-2001
-      - codex-cxs-208-1999
+      - fao-who-cxs-283-1978
+      - fao-who-cxs-221-2001
+      - fao-who-cxs-208-1999
   - rule_id: validate_route_processes
     applies_to: "Process map and inventory"
     rule: "Every included operation shall have a matching process section and records; every omitted conditional operation shall be justified against the declared route."
     source_ids:
       - eu-pef-2021
+      - eu-fdm-bat-2019
+  - rule_id: validate_atomic_inventory
+    applies_to: "Inventory flow cards"
+    rule: "Fail any card that combines multiple energy carriers, fuels, water uses, cleaning chemicals, refrigerants, wastewater pollutants, packaging materials, wastes, or emissions. Require one row per named substance, carrier, component, or waste stream; instantiate only rows used by the declared route."
+    source_ids:
       - eu-fdm-bat-2019
   - rule_id: validate_mass_reconciliation
     applies_to: "Batch and period balances"
@@ -1050,7 +1539,7 @@ validation_rules:
     applies_to: "Yield, recipe, salt, water, energy, and waste quantities"
     rule: "Fail when a Codex limit, BAT contextual level, or generic category value is inserted as site foreground data without an applicability-matched source and declared modelling role."
     source_ids:
-      - codex-cxs-283-1978
+      - fao-who-cxs-283-1978
       - eu-fdm-bat-2019
   - rule_id: validate_allocation
     applies_to: "Multi-output and shared-service processes"
@@ -1075,19 +1564,19 @@ data_sources:
     type: "official_guidance"
     reference: "United Nations Statistics Division, *Central Product Classification Version 3.0 Explanatory Notes*, subclass 22253, 2025. https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Exp_Notes_30Jun2025.pdf (retrieved 2026-08-12)"
     used_for: "Sheep-milk-only CPC scope; included fresh, whey/curd, grated/powdered, processed, blue-veined and other cheese states; exclusions of goat, cattle, buffalo, and other-animal cheese"
-  - id: "codex-cxs-206-1999"
+  - id: "fao-who-cxs-206-1999"
     type: "standard"
     reference: "Codex Alimentarius, *General Standard for the Use of Dairy Terms*, CXS 206-1999, amended 2022. https://www.fao.org/fao-who-codexalimentarius/sh-proxy/en/?lnk=1&url=https%3A%2F%2Fworkspace.fao.org%2Fsites%2Fcodex%2FStandards%2FCXS+206-1999%2FCXS_206e.pdf (retrieved 2026-08-12)"
     used_for: "Dairy terminology and animal-origin declaration context; not an LCI quantity source"
-  - id: "codex-cxs-283-1978"
+  - id: "fao-who-cxs-283-1978"
     type: "standard"
     reference: "Codex Alimentarius, *General Standard for Cheese*, CXS 283-1978, amended 2024. https://www.fao.org/fao-who-codexalimentarius/sh-proxy/en/?lnk=1&url=https%3A%2F%2Fworkspace.fao.org%2Fsites%2Fcodex%2FStandards%2FCXS+283-1978%2FCXS_283e.pdf (retrieved 2026-08-12)"
     used_for: "General cheese definition, product-state and ingredient applicability, and route declarations; no inferred recipe, yield, or LCI amount"
-  - id: "codex-cxs-221-2001"
+  - id: "fao-who-cxs-221-2001"
     type: "standard"
     reference: "Codex Alimentarius, *Group Standard for Unripened Cheese Including Fresh Cheese*, CXS 221-2001, amended 2022. https://www.fao.org/fao-who-codexalimentarius/sh-proxy/en/?lnk=1&url=https%3A%2F%2Fworkspace.fao.org%2Fsites%2Fcodex%2FStandards%2FCXS+221-2001%2FCXS_221e.pdf (retrieved 2026-08-12)"
     used_for: "Applicability to unripened/fresh cheese and associated ingredient and product-state declarations; no inferred formulation or LCI amount"
-  - id: "codex-cxs-208-1999"
+  - id: "fao-who-cxs-208-1999"
     type: "standard"
     reference: "Codex Alimentarius, *Group Standard for Cheeses in Brine*, CXS 208-1999, amended 2022. https://www.fao.org/fao-who-codexalimentarius/sh-proxy/en/?lnk=1&url=https%3A%2F%2Fworkspace.fao.org%2Fsites%2Fcodex%2FStandards%2FCXS+208-1999%2FCXS_208e.pdf (retrieved 2026-08-12)"
     used_for: "Brined-cheese applicability and the need to declare drained versus in-brine state; no inferred salt or brine amount"
@@ -1110,5 +1599,5 @@ projection_metadata:
     path: "pcr.en-US.md"
     normalization: "utf8-lf-v1"
     hash_algorithm: "sha256"
-    sha256: "sha256:7f878ddd5656ed7f605e6ad4b08514930d6505df5d0451670582e3ed57b580e9"
-  generated_content_sha256: "sha256:adc2e5e6ac05e8c43b1f11b69fc651dcdb2f9272c94f9d2b5346bc9582768df6"
+    sha256: "sha256:d7929e23d68611bad925911009b873dd892ffec9c924eefd3402a2f1b808c9a2"
+  generated_content_sha256: "sha256:a7d5cdd1fd4b99a07ad2b3f4b37a5cbc2ab6f712e2963fb60ff19f0b650fd973"

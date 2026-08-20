@@ -40,7 +40,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 1 kg 合格产品，不含包装 |
-| 参考产品流 | Other aquatic invertebrates, frozen, smoked, dried, salted or in brine `026ea2a8-cdc9-469d-9eb5-10a7d33efab6` |
+| 参考产品流 | 其他水生无脊椎动物，冷冻、熏制、干燥、腌制或盐渍 `026ea2a8-cdc9-469d-9eb5-10a7d33efab6` |
 | 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | kg |
@@ -249,7 +249,7 @@ sync_with: pcr.en-US.md
 
 此输出仅在已申明 `frozen` 路线和去冰衣质量约定下实现参考流。
 
-- 选定流：Other aquatic invertebrates, frozen, smoked, dried, salted or in brine `026ea2a8-cdc9-469d-9eb5-10a7d33efab6`
+- 选定流：其他水生无脊椎动物，冷冻、熏制、干燥、腌制或盐渍 `026ea2a8-cdc9-469d-9eb5-10a7d33efab6`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：由实测毛质量和冰衣质量换算得到 1 kg 去冰衣合格冷冻产品
 - 数值来源模式：计算值（`calculated_value`）
@@ -375,7 +375,7 @@ sync_with: pcr.en-US.md
 
 此输出仅在已申明 `smoked` 或 `dried` 模式及水分基准下实现参考流。
 
-- 选定流：Other aquatic invertebrates, frozen, smoked, dried, salted or in brine `026ea2a8-cdc9-469d-9eb5-10a7d33efab6`
+- 选定流：其他水生无脊椎动物，冷冻、熏制、干燥、腌制或盐渍 `026ea2a8-cdc9-469d-9eb5-10a7d33efab6`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：1 kg 合格销售状态产品，申明路线模式和实测水分
 - 数值来源模式：计算值（`calculated_value`）
@@ -516,7 +516,7 @@ sync_with: pcr.en-US.md
 
 此输出仅在已申明 `salted` 或 `in_brine` 模式及适用质量约定下实现参考流。
 
-- 选定流：Other aquatic invertebrates, frozen, smoked, dried, salted or in brine `026ea2a8-cdc9-469d-9eb5-10a7d33efab6`
+- 选定流：其他水生无脊椎动物，冷冻、熏制、干燥、腌制或盐渍 `026ea2a8-cdc9-469d-9eb5-10a7d33efab6`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：1 kg 合格盐渍净产品或沥干盐水渍产品，申明水分、盐分条件和留存盐水处理
 - 数值来源模式：计算值（`calculated_value`）

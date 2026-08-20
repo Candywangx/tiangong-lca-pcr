@@ -38,7 +38,7 @@ status: candidate
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 1 kg 净干产品 |
-| 参考产品流 | Spun Silk `6c639604-29e8-44b6-be18-4e0ad97fdef8` |
+| 参考产品流 | 绢纺丝 `6c639604-29e8-44b6-be18-4e0ad97fdef8` |
 | 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | 质量单位组 `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | kg |
@@ -101,7 +101,7 @@ status: candidate
 
 生丝跨入前景边界，经并合、加捻、捻制和络筒形成长丝纱。
 
-- 选定流：Raw Silk `343df125-d682-4ffa-8829-5fbc785bdbc9`
+- 选定流：生丝 `343df125-d682-4ffa-8829-5fbc785bdbc9`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：发往路线的实测净干或调湿质量，扣除退回的未用材料
 - 数值来源模式：前景记录（`foreground_record`）
@@ -153,7 +153,7 @@ status: candidate
 
 作为可用投入转移到另一生产系统的蚕丝边角料和断丝，按本产品输出记录。
 
-- 选定流：Silk waste `e8fb97e6-a2ec-40d6-8dee-2cafe1a25106`
+- 选定流：丝绸废料 `e8fb97e6-a2ec-40d6-8dee-2cafe1a25106`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：已接受回收并转出过程的实测质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -170,7 +170,7 @@ status: candidate
 
 未被接受回收并送往废物管理的蚕丝残余物，与回收丝绸废料分开记录。
 
-- 选定流：Silk waste `690d2d6b-d573-4ab5-9e50-742a2ee12275`
+- 选定流：丝绸废料 `690d2d6b-d573-4ab5-9e50-742a2ee12275`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：跨越废物管理边界的实测质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -192,7 +192,7 @@ status: candidate
 
 丝绸废料是路线特定原料，在外购或转入回收时作为产品投入记录。
 
-- 选定流：Silk waste `e8fb97e6-a2ec-40d6-8dee-2cafe1a25106`
+- 选定流：丝绸废料 `e8fb97e6-a2ec-40d6-8dee-2cafe1a25106`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：发往批次的实测接收质量，并换算至声明含水率基准
 - 数值来源模式：前景记录（`foreground_record`）
@@ -207,7 +207,7 @@ status: candidate
 
 进入脱胶、水洗和漂洗的水作为一个水产品投入记录。
 
-- 选定流：Process Water `94a04f7e-2d5c-41f0-b182-d54a3b373a02`
+- 选定流：工艺用水 `94a04f7e-2d5c-41f0-b182-d54a3b373a02`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：实测工艺水质量，或用记录的水密度将实测体积换算为质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -222,7 +222,7 @@ status: candidate
 
 仅当有记录的脱胶配方实际使用该具体碱剂时记录碳酸钠。
 
-- 选定流：Sodium carbonate `5462c2da-d3dd-41f0-a78f-51024d2d1a69`
+- 选定流：碳酸钠 `5462c2da-d3dd-41f0-a78f-51024d2d1a69`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：由称重领料记录或供应商账单核对得到的批次净化学品质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -366,7 +366,7 @@ status: candidate
 
 合格产出是丝绸废料纺纱路线的代表性参考产品。
 
-- 选定流：Spun Silk `6c639604-29e8-44b6-be18-4e0ad97fdef8`
+- 选定流：绢纺丝 `6c639604-29e8-44b6-be18-4e0ad97fdef8`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：实测净干或调湿合格产出
 - 数值来源模式：前景记录（`foreground_record`）
@@ -383,7 +383,7 @@ status: candidate
 
 送往废物管理的短纤维、棉结和不合格蚕丝作为一个丝绸废物流记录。
 
-- 选定流：Silk waste `690d2d6b-d573-4ab5-9e50-742a2ee12275`
+- 选定流：丝绸废料 `690d2d6b-d573-4ab5-9e50-742a2ee12275`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：跨越废物管理边界的实测质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -406,7 +406,7 @@ status: candidate
 
 仅当使用燃气火焰去除突出纤维和棉结时，绢纺丝才进入该可选过程。
 
-- 选定流：Spun Silk `6c639604-29e8-44b6-be18-4e0ad97fdef8`
+- 选定流：绢纺丝 `6c639604-29e8-44b6-be18-4e0ad97fdef8`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：进入烧毛线的实测净干或调湿质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -421,7 +421,7 @@ status: candidate
 
 烧毛火焰消耗的天然气作为一个燃料投入记录。
 
-- 选定流：natural gas in the gaseous state `4f19ca0e-7b3b-11dd-ad8b-0800200c9a66`
+- 选定流：气态天然气 `4f19ca0e-7b3b-11dd-ad8b-0800200c9a66`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：分配至烧毛线和生产批次的实测或开票燃料质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -458,7 +458,7 @@ status: candidate
 
 产出为完成已声明烧毛操作后的合格绢纺丝。
 
-- 选定流：Spun Silk `6c639604-29e8-44b6-be18-4e0ad97fdef8`
+- 选定流：绢纺丝 `6c639604-29e8-44b6-be18-4e0ad97fdef8`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：实测净干或调湿合格产出
 - 数值来源模式：前景记录（`foreground_record`）
@@ -475,7 +475,7 @@ status: candidate
 
 送往废物管理的捕集烧焦纤维、棉结和不合格蚕丝作为丝绸废料记录。
 
-- 选定流：Silk waste `690d2d6b-d573-4ab5-9e50-742a2ee12275`
+- 选定流：丝绸废料 `690d2d6b-d573-4ab5-9e50-742a2ee12275`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：跨越废物管理边界的实测捕集物质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -492,7 +492,7 @@ status: candidate
 
 由路线特定监测或经验证的场址排放清单记录烧毛过程排至未指定空气的化石源一氧化碳。
 
-- 选定流：carbon monoxide (fossil) `08a91e70-3ddc-11dd-924e-0050c2490048`
+- 选定流：一氧化碳（化石源） `08a91e70-3ddc-11dd-924e-0050c2490048`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：减排后实测或场址清单排放质量；本 PCR 不提供默认因子
 - 数值来源模式：前景记录（`foreground_record`）
@@ -507,7 +507,7 @@ status: candidate
 
 未被抽风或减排系统捕集的直接细颗粒物应与捕集丝绸废料分开记录。
 
-- 选定流：Particulate matter, <2.5 µm, to air
+- 选定流：颗粒物（<2.5微米），排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：减排后实测排放质量；本 PCR 不提供默认因子
 - 数值来源模式：前景记录（`foreground_record`）
@@ -543,7 +543,7 @@ status: candidate
 
 制备酸浴和漂洗成形钓线所用的水应与乙酸分开记录。
 
-- 选定流：Process Water `94a04f7e-2d5c-41f0-b182-d54a3b373a02`
+- 选定流：工艺用水 `94a04f7e-2d5c-41f0-b182-d54a3b373a02`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：实测水质量，或用记录的水密度换算的实测体积
 - 数值来源模式：前景记录（`foreground_record`）
@@ -558,7 +558,7 @@ status: candidate
 
 处理浴中的乙酸按纯酸当量质量记录，并与浴水分开。
 
-- 选定流：Acetic acid (acetic acid) `c7564d76-47c4-440c-9eb8-3242c38eeb1b`
+- 选定流：乙酸（醋酸） `c7564d76-47c4-440c-9eb8-3242c38eeb1b`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：使用 `calc_acetic_acid_active_mass`，将溶液质量乘以供应商认证的乙酸质量分数
 - 数值来源模式：计算值（`calculated_value`）

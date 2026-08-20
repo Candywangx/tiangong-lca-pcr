@@ -40,7 +40,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 1,000 kg 净产品 |
-| 参考产品流 | Vanilla, processed `34e7961c-4ef0-42f4-a62c-6231e257cd65` |
+| 参考产品流 | 加工香草 `34e7961c-4ef0-42f4-a62c-6231e257cd65` |
 | 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | kg |
@@ -155,13 +155,15 @@ sync_with: pcr.en-US.md
 - 采集协议：`cp_receiving_records`
 - 来源：
 
+##### 废物流
+
 ###### 废弃鲜香草荚（`rejected_fresh_vanilla_pods`）
 
 因未成熟、腐烂、严重开裂、虫害或其他有记录的不符合项而废弃的香草荚须分别称量。
 
 - 选定流：Rejected fresh vanilla pods
 - 方向：输出（`output`）
-- 流类型：产品流（`product`）
+- 流类型：废物流（`waste`）
 - 流属性/单位：Mass / kg
 - 数量规则：按批称量废弃物并记录去向。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -186,7 +188,7 @@ sync_with: pcr.en-US.md
 
 - 选定流：Vanilla plant debris
 - 方向：输出（`output`）
-- 流类型：产品流（`product`）
+- 流类型：废物流（`waste`）
 - 流属性/单位：Mass / kg
 - 数量规则：按批称量收集的植物残余。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -249,7 +251,7 @@ sync_with: pcr.en-US.md
 
 泵、控制装置和直接计量电加热的电力作为一项电力交换记录；此处不得重复计入外购热水的能量。
 
-- 选定流：Electricity, low voltage
+- 选定流：低压电力
 - 方向：输入（`input`）
 - 流类型：产品流（`product`）
 - 流属性/单位：Energy / kWh
@@ -316,7 +318,7 @@ sync_with: pcr.en-US.md
 
 开放热水浴向室内或室外空气损失的水与废水分别计算。
 
-- 选定流：Water, to air
+- 选定流：水，排入空气
 - 方向：输出（`output`）
 - 流类型：基本流（`elementary`）
 - 流属性/单位：Mass / kg
@@ -356,7 +358,7 @@ sync_with: pcr.en-US.md
 
 受控室、风机、传感器或增湿仅在实际使用时记录电力；有记录的被动发汗路线记录零值。
 
-- 选定流：Electricity, low voltage
+- 选定流：低压电力
 - 方向：输入（`input`）
 - 流类型：产品流（`product`）
 - 流属性/单位：Energy / kWh
@@ -431,7 +433,7 @@ sync_with: pcr.en-US.md
 
 香草荚在发汗期间向空气排出的水分按阶段质量平衡计算。
 
-- 选定流：Water, to air
+- 选定流：水，排入空气
 - 方向：输出（`output`）
 - 流类型：基本流（`elementary`）
 - 流属性/单位：Mass / kg
@@ -471,7 +473,7 @@ sync_with: pcr.en-US.md
 
 风机、托盘干燥器、控制和除湿仅在实际使用时记录电力；被动太阳能和环境空气时段记录零值，不得与受控干燥平均。
 
-- 选定流：Electricity, low voltage
+- 选定流：低压电力
 - 方向：输入（`input`）
 - 流类型：产品流（`product`）
 - 流属性/单位：Energy / kWh
@@ -546,7 +548,7 @@ sync_with: pcr.en-US.md
 
 干燥期间从香草荚移除并排放的水作为独立基本流产出计算。
 
-- 选定流：Water, to air
+- 选定流：水，排入空气
 - 方向：输出（`output`）
 - 流类型：基本流（`elementary`）
 - 流属性/单位：Mass / kg
@@ -586,7 +588,7 @@ sync_with: pcr.en-US.md
 
 通风、温湿度控制和监测仅在实际使用时记录电力；环境条件调湿记录零值。
 
-- 选定流：Electricity, low voltage
+- 选定流：低压电力
 - 方向：输入（`input`）
 - 流类型：产品流（`product`）
 - 流属性/单位：Energy / kWh
@@ -661,7 +663,7 @@ sync_with: pcr.en-US.md
 
 调湿期间的净水分损失与废弃香草荚质量分别计算。
 
-- 选定流：Water, to air
+- 选定流：水，排入空气
 - 方向：输出（`output`）
 - 流类型：基本流（`elementary`）
 - 流属性/单位：Mass / kg
@@ -701,7 +703,7 @@ sync_with: pcr.en-US.md
 
 照明、输送机、秤或光学分选的电力在可归属该批次时记录。
 
-- 选定流：Electricity, low voltage
+- 选定流：低压电力
 - 方向：输入（`input`）
 - 流类型：产品流（`product`）
 - 流属性/单位：Energy / kWh
@@ -800,7 +802,7 @@ sync_with: pcr.en-US.md
 
 可归属于切段设备的电力须单独记录。
 
-- 选定流：Electricity, low voltage
+- 选定流：低压电力
 - 方向：输入（`input`）
 - 流类型：产品流（`product`）
 - 流属性/单位：Energy / kWh
@@ -897,7 +899,7 @@ sync_with: pcr.en-US.md
 
 研磨机、筛分和粉尘控制的电力作为一项计量电力交换记录。
 
-- 选定流：Electricity, low voltage
+- 选定流：低压电力
 - 方向：输入（`input`）
 - 流类型：产品流（`product`）
 - 流属性/单位：Energy / kWh
@@ -1013,7 +1015,7 @@ sync_with: pcr.en-US.md
 
 使用设备时记录机械开荚与分离的电力。
 
-- 选定流：Electricity, low voltage
+- 选定流：低压电力
 - 方向：输入（`input`）
 - 流类型：产品流（`product`）
 - 流属性/单位：Energy / kWh
@@ -1178,7 +1180,7 @@ sync_with: pcr.en-US.md
 
 灌装、封口、称量和贴标用电须单独记录。
 
-- 选定流：Electricity, low voltage
+- 选定流：低压电力
 - 方向：输入（`input`）
 - 流类型：产品流（`product`）
 - 流属性/单位：Energy / kWh
@@ -1451,7 +1453,7 @@ sync_with: pcr.en-US.md
 
 高压冲洗、就地清洗泵或干燥用电仅在实际使用时记录。
 
-- 选定流：Electricity, low voltage
+- 选定流：低压电力
 - 方向：输入（`input`）
 - 流类型：产品流（`product`）
 - 流属性/单位：Energy / kWh

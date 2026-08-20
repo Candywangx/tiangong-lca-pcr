@@ -47,7 +47,7 @@ CXS 296-2009 将水果泥定义为果酱的一种可能原料，但这并不构�
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 工厂门处 1 kg 可销售净产品 |
-| 参考产品流 | Jams, fruit jellies, marmalades, fruit or nut purée and fruit or nut pastes `7d119b90-a5ca-4bbc-8ab7-b1b3e3f878f9` |
+| 参考产品流 | 果酱、果冻、橘子酱、水果或坚果泥以及水果或坚果糊 `7d119b90-a5ca-4bbc-8ab7-b1b3e3f878f9` |
 | 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | kg |
@@ -436,7 +436,7 @@ CXS 296-2009 将水果泥定义为果酱的一种可能原料，但这并不构�
 
 这是唯一参考产品输出，其数量不含包装质量。
 
-- 选定流：Jams, fruit jellies, marmalades, fruit or nut purée and fruit or nut pastes `7d119b90-a5ca-4bbc-8ab7-b1b3e3f878f9`
+- 选定流：果酱、果冻、橘子酱、水果或坚果泥以及水果或坚果糊 `7d119b90-a5ca-4bbc-8ab7-b1b3e3f878f9`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：以实测已放行净产品质量归一化后为 1 kg
 - 数值来源模式：计算值（`calculated_value`）

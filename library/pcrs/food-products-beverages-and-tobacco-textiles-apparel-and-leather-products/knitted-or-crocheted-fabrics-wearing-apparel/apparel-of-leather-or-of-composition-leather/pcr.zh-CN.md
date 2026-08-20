@@ -40,7 +40,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 1 kg |
-| 参考产品流 | Apparel of leather or of composition leather `971103ee-8ef5-4165-853c-6a3e98a692d8` |
+| 参考产品流 | 毛皮或合成毛皮制服装 `971103ee-8ef5-4165-853c-6a3e98a692d8` |
 | 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | kg |
@@ -458,7 +458,7 @@ sync_with: pcr.en-US.md
 
 已识别胶粘剂释放的 NMVOC 作为一种直接空气排放，基于领用量、VOC 分数、产品留存、回收废物和已验证治理计算。
 
-- 选定流：Non-methane volatile organic compounds to air
+- 选定流：非甲烷挥发性有机物，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：按 `cr_nmvoc_balance` 计算
 - 数值来源模式：计算值（`calculated_value`）
@@ -509,7 +509,7 @@ sync_with: pcr.en-US.md
 
 聚酯缝纫线作为声明的接缝材料跨越边界，由线轴领退质量或产品特定长度质量实测确定用量。
 
-- 选定流：Polyester sewing thread
+- 选定流：聚酯缝纫线
 - 流属性/单位：Mass / kg
 - 数量规则：扣除退料的前景领用质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -683,7 +683,7 @@ sync_with: pcr.en-US.md
 
 向熨压或整理设备交付购入饱和蒸汽时单独记录，按计量蒸汽质量及供应方压力和焓值计算。
 
-- 选定流：Purchased saturated steam
+- 选定流：外购饱和蒸汽
 - 流属性/单位：Energy / MJ
 - 数量规则：由计量和供应方字段计算交付蒸汽能量
 - 数值来源模式：计算值（`calculated_value`）
@@ -698,7 +698,7 @@ sync_with: pcr.en-US.md
 
 天然气在场内燃烧用于蒸汽或整理热时作为独立产品投入，记录供应方计量体积及场址特定能量换算。
 
-- 选定流：Natural gas
+- 选定流：天然气
 - 流属性/单位：Net calorific energy / MJ
 - 数量规则：由计量体积和有记录低位热值计算能量
 - 数值来源模式：计算值（`calculated_value`）
@@ -713,7 +713,7 @@ sync_with: pcr.en-US.md
 
 熨压或整理设备燃烧液化石油气时单独记录，按实际 LPG 品级的交付和罐存记录取得数量。
 
-- 选定流：Liquefied petroleum gas
+- 选定流：液化石油气
 - 流属性/单位：Mass / kg
 - 数量规则：前景交付与库存核算消耗量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -728,7 +728,7 @@ sync_with: pcr.en-US.md
 
 柴油用于服务本过程的场内锅炉时作为单独产品投入，由校准储罐、交付和期初期末库存记录确定消耗。
 
-- 选定流：Diesel fuel
+- 选定流：柴油燃料
 - 流属性/单位：Mass / kg
 - 数量规则：前景交付与库存核算消耗量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -849,7 +849,7 @@ sync_with: pcr.en-US.md
 
 声明的天然气、LPG 或柴油燃烧产生的化石二氧化碳作为一种直接空气排放，各燃料分别计算后才汇总同一物质流。
 
-- 选定流：Carbon dioxide, fossil, to air
+- 选定流：化石源二氧化碳，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：按 `cr_fossil_co2` 计算
 - 数值来源模式：计算值（`calculated_value`）
@@ -864,7 +864,7 @@ sync_with: pcr.en-US.md
 
 场址锅炉或熨压燃烧器的氮氧化物作为一种直接空气排放，使用烟道监测、现行许可测试或设备特定因子证据。
 
-- 选定流：Nitrogen oxides to air
+- 选定流：氮氧化物，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：实测或设备特定计算的排放质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -879,7 +879,7 @@ sync_with: pcr.en-US.md
 
 声明面涂和异丙醇释放的 NMVOC 作为单一物质流，各化学品分别执行物料平衡，仅汇总所得 NMVOC 质量。
 
-- 选定流：Non-methane volatile organic compounds to air
+- 选定流：非甲烷挥发性有机物，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：按 `cr_nmvoc_balance` 计算
 - 数值来源模式：计算值（`calculated_value`）
@@ -960,7 +960,7 @@ sync_with: pcr.en-US.md
 
 供应服装袋时，将 LDPE 袋作为独立包装部件，采用采购规格和实测袋质量。
 
-- 选定流：Low-density polyethylene garment bag
+- 选定流：低密度聚乙烯服装袋
 - 流属性/单位：Mass / kg
 - 数量规则：袋数乘以实测袋质量
 - 数值来源模式：计算值（`calculated_value`）
@@ -1017,7 +1017,7 @@ sync_with: pcr.en-US.md
 
 质量放行成品服装是跨越制造场址门口的参考产品，其净服装质量固定为 PCR 参考数量并排除单独供应包装。
 
-- 选定流：Apparel of leather or of composition leather `971103ee-8ef5-4165-853c-6a3e98a692d8`
+- 选定流：毛皮或合成毛皮制服装 `971103ee-8ef5-4165-853c-6a3e98a692d8`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：1 kg 合格服装净质量
 - 数值来源模式：固定值（`fixed_value`）

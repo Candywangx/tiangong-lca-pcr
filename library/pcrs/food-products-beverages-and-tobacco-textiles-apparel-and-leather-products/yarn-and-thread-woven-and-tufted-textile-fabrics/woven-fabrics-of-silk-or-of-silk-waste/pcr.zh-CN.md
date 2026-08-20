@@ -38,7 +38,7 @@ status: candidate
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 1 kg |
-| 参考产品流 | Woven fabrics of silk or of silk waste `f7cf0661-025b-47cc-b5e2-d44b43e07e6b` |
+| 参考产品流 | 丝或废丝机织织物 `f7cf0661-025b-47cc-b5e2-d44b43e07e6b` |
 | 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | kg |
@@ -94,7 +94,7 @@ status: candidate
 
 将本批次接收的天然蚕丝纱记录为独立产品投入。不得与废丝纱合并。
 
-- 选定流：Natural Silk `eea5e113-2fbc-4fde-ac38-b938654f382c`
+- 选定流：蚕丝、印染丝织物 `eea5e113-2fbc-4fde-ac38-b938654f382c`
 - 流属性/单位：Mass / kg
 - 数量规则：发放至前景批次的实测调湿质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -109,7 +109,7 @@ status: candidate
 
 批次使用废丝纱时，应单独记录。不得与天然蚕丝长丝纱合并。
 
-- 选定流：Spun Silk `6c639604-29e8-44b6-be18-4e0ad97fdef8`
+- 选定流：绢纺丝 `6c639604-29e8-44b6-be18-4e0ad97fdef8`
 - 流属性/单位：Mass / kg
 - 数量规则：发放至前景批次的实测调湿质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -124,7 +124,7 @@ status: candidate
 
 记录整经、存在时的上浆设备、织机、检验和本过程直接相关物料搬运所消耗的电力。
 
-- 选定流：Electricity `890a70b7-b677-4e2a-8a1b-7d017e0a10ae`
+- 选定流：电力 `890a70b7-b677-4e2a-8a1b-7d017e0a10ae`
 - 流属性/单位：Net calorific value / MJ
 - 数量规则：分表计量电力，或使用已记录机器运行小时和额定或实测功率从已核对场址电表分配
 - 数值来源模式：前景记录（`foreground_record`）
@@ -139,7 +139,7 @@ status: candidate
 
 只有报告工厂实际将聚乙烯醇施加到经纱时才记录。其他浆料物质应在前景数据包中作为额外、单独识别的原子产品流行记录。
 
-- 选定流：Polyvinyl alcohol `cea707dd-98a3-451d-bc43-2dcc145091e9`
+- 选定流：聚乙烯醇 `cea707dd-98a3-451d-bc43-2dcc145091e9`
 - 流属性/单位：Mass / kg
 - 数量规则：本批次称量发放量，或供应交付量减去已核对期末库存
 - 数值来源模式：前景记录（`foreground_record`）
@@ -154,7 +154,7 @@ status: candidate
 
 只有本过程配制浆液或清洗上浆设备时才记录工艺水。
 
-- 选定流：Process water `68ac99df-f4b9-43b9-8da3-661c7d51f356`
+- 选定流：工艺用水 `68ac99df-f4b9-43b9-8da3-661c7d51f356`
 - 流属性/单位：Mass / kg
 - 数量规则：可归因于上浆及相关清洗的计量水质量或批槽水质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -169,7 +169,7 @@ status: candidate
 
 记录添加至织机及直接相关设备的新润滑油。回收油和废油跨越边界时应作为单独产出记录。
 
-- 选定流：lubricating oil `aec6f1a5-7b09-4704-870d-434d3ada0edd`
+- 选定流：润滑油 `aec6f1a5-7b09-4704-870d-434d3ada0edd`
 - 流属性/单位：Mass / kg
 - 数量规则：报告期内实测添加量并按期初和期末库存调整
 - 数值来源模式：前景记录（`foreground_record`）
@@ -192,7 +192,7 @@ status: candidate
 
 当 `warp_weave` 是最后一个前景过程时，记录实测可销售织物产出。一体化湿法处理随后进行时，将本流作为内部转移，并以 `finished_woven_silk_fabric_output` 链接参考流。
 
-- 选定流：Woven fabrics of silk or of silk waste `f7cf0661-025b-47cc-b5e2-d44b43e07e6b`
+- 选定流：丝或废丝机织织物 `f7cf0661-025b-47cc-b5e2-d44b43e07e6b`
 - 流属性/单位：Mass / kg
 - 数量规则：检验后接收为可销售产出的实测调湿质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -209,7 +209,7 @@ status: candidate
 
 只有织机废料、损坏纱线和废次丝织物共用同一物理流及去向记录时，才将其记录为一个丝废料流。
 
-- 选定流：Silk waste `690d2d6b-d573-4ab5-9e50-742a2ee12275`
+- 选定流：丝绸废料 `690d2d6b-d573-4ab5-9e50-742a2ee12275`
 - 流属性/单位：Mass / kg
 - 数量规则：转移至有记录的回收、处理或处置去向的实测质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -232,7 +232,7 @@ status: candidate
 
 外购丝绸机织物应记录为投入；一体化场址应将同一数量标识为来自 `warp_weave` 的内部转移，不得再次计作外购上游负荷。
 
-- 选定流：Woven fabrics of silk or of silk waste `f7cf0661-025b-47cc-b5e2-d44b43e07e6b`
+- 选定流：丝或废丝机织织物 `f7cf0661-025b-47cc-b5e2-d44b43e07e6b`
 - 流属性/单位：Mass / kg
 - 数量规则：投入湿法处理的实测调湿织物质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -247,7 +247,7 @@ status: candidate
 
 场内进行丝绸前处理、染色、印花、整理、水洗、漂洗和设备清洗时，记录进入这些操作的工艺水。
 
-- 选定流：Process water `68ac99df-f4b9-43b9-8da3-661c7d51f356`
+- 选定流：工艺用水 `68ac99df-f4b9-43b9-8da3-661c7d51f356`
 - 流属性/单位：Mass / kg
 - 数量规则：计量的水质量；测量允许时分配至湿法处理过程
 - 数值来源模式：前景记录（`foreground_record`）
@@ -262,7 +262,7 @@ status: candidate
 
 记录湿法处理设备、泵、控制、机械脱水、干燥和直接相关处理设备所用电力。
 
-- 选定流：Electricity `890a70b7-b677-4e2a-8a1b-7d017e0a10ae`
+- 选定流：电力 `890a70b7-b677-4e2a-8a1b-7d017e0a10ae`
 - 流属性/单位：Net calorific value / MJ
 - 数量规则：分表计量电力，或使用有记录的设备活动从已核对场址电表分配
 - 数值来源模式：前景记录（`foreground_record`）
@@ -277,7 +277,7 @@ status: candidate
 
 记录供应至丝绸湿法处理的外购或单独计量蒸汽。不得把蒸汽与电力、直接燃料或外购热合并。
 
-- 选定流：Steam `293f9fd9-5182-4d35-8aa5-ce73d4f322b7`
+- 选定流：蒸汽 `293f9fd9-5182-4d35-8aa5-ce73d4f322b7`
 - 流属性/单位：Mass / kg
 - 数量规则：计量蒸汽质量，或与湿法处理报告期核对的供应商发票
 - 数值来源模式：前景记录（`foreground_record`）
@@ -300,7 +300,7 @@ status: candidate
 
 记录已声明湿法处理路线和最终检验后的实测可销售产出。
 
-- 选定流：Woven fabrics of silk or of silk waste `f7cf0661-025b-47cc-b5e2-d44b43e07e6b`
+- 选定流：丝或废丝机织织物 `f7cf0661-025b-47cc-b5e2-d44b43e07e6b`
 - 流属性/单位：Mass / kg
 - 数量规则：接收为可销售成品的实测调湿质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -317,7 +317,7 @@ status: candidate
 
 记录离开湿法处理边界并进入场内处理、场外处理或直接排放的废水。去向和处理状态是必需限定信息。
 
-- 选定流：Wastewater, textile wet processing, to water `a60031a7-ea29-49ef-b578-90de910fcf8e`
+- 选定流：废水，纺织品湿法加工，至水体 `a60031a7-ea29-49ef-b578-90de910fcf8e`
 - 流属性/单位：Mass / kg
 - 数量规则：在转移或排放点计量的废水质量
 - 数值来源模式：前景记录（`foreground_record`）

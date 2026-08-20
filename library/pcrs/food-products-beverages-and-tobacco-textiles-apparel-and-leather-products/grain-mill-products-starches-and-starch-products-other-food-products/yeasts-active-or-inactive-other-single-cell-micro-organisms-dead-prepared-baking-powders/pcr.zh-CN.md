@@ -121,7 +121,7 @@ Tiangong flow `dried yeast` 是本 PCR 的代表产品和物理形态，而不�
 
 记录跨越前景边界、进入稀释、清洗、澄清、卫生处理或其他路线特定准备作业的用水。
 
-- 选定流：Process water
+- 选定流：过程用水
 - 流属性/单位：Mass or volume / kg or m3，必要时以实测密度换算
 - 数量规则：可归属于本过程的计量或批次记录水量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -214,7 +214,7 @@ Tiangong flow `dried yeast` 是本 PCR 的代表产品和物理形态，而不�
 
 记录培养过程和清洗用水；在有计量时区分留在产品中的水与废水。
 
-- 选定流：Process water
+- 选定流：过程用水
 - 流属性/单位：Mass or volume / kg or m3
 - 数量规则：计量或批次记录的培养及清洗水量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -606,7 +606,7 @@ Tiangong flow `dried yeast` 是本 PCR 的代表产品和物理形态，而不�
 
 这是参考输出。所选 Tiangong UUID 只代表干酵母、饲料级。任何不匹配的产品或形态都必须替换，并在数据包中保留产品流身份决定。
 
-- 选定流：dried yeast, feed-grade `3ea5b163-5e50-4f40-bf13-8a6c3f10d1b6`
+- 选定流：干酵母 `3ea5b163-5e50-4f40-bf13-8a6c3f10d1b6`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：工厂门 1 kg 合格声明产品净质量；不含包装质量
 - 数值来源模式：计算值（`calculated_value`）

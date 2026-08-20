@@ -40,7 +40,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 1 kg |
-| 参考产品流 | Fruits and nuts, provisionally preserved, not for immediate consumption `70b546f4-bfbc-4e64-a70d-4ff57cedcc6d` |
+| 参考产品流 | 水果和坚果，临时腌制，不可立即食用 `70b546f4-bfbc-4e64-a70d-4ff57cedcc6d` |
 | 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | kg |
@@ -123,7 +123,7 @@ sync_with: pcr.en-US.md
 
 记录清洗、水力输送或其他准备作业中跨越前景边界的用水。
 
-- 选定流：Process water
+- 选定流：过程用水
 - 流属性/单位：Mass / kg
 - 数量规则：分配至该批次的计量补水；循环水与补水分别记录
 - 数值来源模式：前景记录（`foreground_record`）
@@ -214,7 +214,7 @@ sync_with: pcr.en-US.md
 
 仅在实际路线使用水配制盐水、含硫水、其他溶液、补液或保持介质时填报。
 
-- 选定流：Process water
+- 选定流：过程用水
 - 流属性/单位：Mass / kg
 - 数量规则：计量补水；回收、循环、保留和排放量分别记录
 - 数值来源模式：前景记录（`foreground_record`）
@@ -463,7 +463,7 @@ sync_with: pcr.en-US.md
 
 仅在生产者发运前实际执行漂洗或调整时记录用水。
 
-- 选定流：Process water
+- 选定流：过程用水
 - 流属性/单位：Mass / kg
 - 数量规则：分配至调理产品的计量补水
 - 数值来源模式：前景记录（`foreground_record`）
@@ -609,7 +609,7 @@ sync_with: pcr.en-US.md
 
 这是生产者工厂门口唯一的参考产品产出。
 
-- 选定流：Fruits and nuts, provisionally preserved, not for immediate consumption `70b546f4-bfbc-4e64-a70d-4ff57cedcc6d`
+- 选定流：水果和坚果，临时腌制，不可立即食用 `70b546f4-bfbc-4e64-a70d-4ff57cedcc6d`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg; unit group `93a60a57-a4c8-11da-a746-0800200c9a66`
 - 数量规则：按声明参考质量基准固定归一化输出 1 kg
 - 数值来源模式：固定值（`fixed_value`）

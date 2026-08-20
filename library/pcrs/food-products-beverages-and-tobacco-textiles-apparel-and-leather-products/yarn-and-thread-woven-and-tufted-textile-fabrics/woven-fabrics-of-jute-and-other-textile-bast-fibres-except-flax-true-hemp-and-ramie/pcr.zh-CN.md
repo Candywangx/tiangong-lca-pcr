@@ -38,7 +38,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 1 kg |
-| 参考产品流 | Woven fabrics of jute and other textile bast fibres (except flax, true hemp and ramie) `97e92077-1caf-4f27-9d87-9b49e9d6a4e2` |
+| 参考产品流 | 黄麻和其他纺织用韧皮纤维（亚麻、大麻和苎麻除外）机织织物 `97e92077-1caf-4f27-9d87-9b49e9d6a4e2` |
 | 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | kg |
@@ -124,7 +124,7 @@ sync_with: pcr.en-US.md
 
 当变性淀粉用于在织造期间保护和润滑经纱时，应记录该投入。
 
-- 选定流：modified starch `09797370-6632-42aa-9d77-e9d41ff82c75`
+- 选定流：变性淀粉 `09797370-6632-42aa-9d77-e9d41ff82c75`
 - 流属性/单位：Mass / kg
 - 数量规则：供应商和批次记录的加入上浆工序的变性淀粉质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -232,7 +232,7 @@ sync_with: pcr.en-US.md
 
 当氢氧化钠用于适用的煮练、退浆、pH 控制或其他已声明整理工序时，应予记录。交付浓度必须随前景记录保留。
 
-- 选定流：Sodium hydroxide `e0abcced-0611-4c24-9290-5a2c5a0c4169`
+- 选定流：氢氧化钠 `e0abcced-0611-4c24-9290-5a2c5a0c4169`
 - 流属性/单位：Mass / kg
 - 数量规则：供应商和批次记录的交付质量，并声明浓度
 - 数值来源模式：前景记录（`foreground_record`）
@@ -330,7 +330,7 @@ sync_with: pcr.en-US.md
 
 合格范围内机织织物以已声明的坯布或整理状态离开前景边界；参考数量不含包装质量。
 
-- 选定流：Woven fabrics of jute and other textile bast fibres (except flax, true hemp and ramie) `97e92077-1caf-4f27-9d87-9b49e9d6a4e2`
+- 选定流：黄麻和其他纺织用韧皮纤维（亚麻、大麻和苎麻除外）机织织物 `97e92077-1caf-4f27-9d87-9b49e9d6a4e2`
 - 流属性/单位：Mass / kg
 - 数量规则：称量并放行发运的合格织物净质量
 - 数值来源模式：前景记录（`foreground_record`）

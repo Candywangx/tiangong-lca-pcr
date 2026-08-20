@@ -38,7 +38,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 1 kg 产品净质量，不包括包装、冻结镀冰和游离盐水或沥液 |
-| 参考产品流 | Cold-water shrimps and prawns, frozen, dried, salted or in brine `49df5af0-c626-4914-acf6-3ed9640172e9` |
+| 参考产品流 | 冷水虾和对虾，冷冻的、干的、盐腌的或盐水的 `49df5af0-c626-4914-acf6-3ed9640172e9` |
 | 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | kg |
@@ -398,7 +398,7 @@ sync_with: pcr.en-US.md
 
 该工厂门输出在排除包装和游离液后实现 1 kg 净质量参考流。
 
-- 选定流：Cold-water shrimps and prawns, frozen, dried, salted or in brine `49df5af0-c626-4914-acf6-3ed9640172e9`
+- 选定流：冷水虾和对虾，冷冻的、干的、盐腌的或盐水的 `49df5af0-c626-4914-acf6-3ed9640172e9`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：固定为 1 kg 产品净质量，不包括包装、镀冰和游离盐水/沥液
 - 数值来源模式：固定值（`fixed_value`）

@@ -40,7 +40,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 工厂大门处 1 kg 净合格产品，不含包装。 |
-| 参考产品流 | Pasta, cooked, stuffed or otherwise prepared (but not as a complete dish), couscous, except as a complete dish `1312d181-2dd0-4af3-b938-c38ed2342c7d` |
+| 参考产品流 | 通心粉，煮熟、填塞或以其他方式烹制（但不作为整盘菜肴），粗麦粉，整盘菜肴除外 `1312d181-2dd0-4af3-b938-c38ed2342c7d` |
 | 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | kg |
@@ -575,7 +575,7 @@ sync_with: pcr.en-US.md
 
 本行是定量参考输出。在最终调理之后、添加包装质量之前记录已放行净可食用质量。
 
-- 选定流：Pasta, cooked, stuffed or otherwise prepared (but not as a complete dish), couscous, except as a complete dish `1312d181-2dd0-4af3-b938-c38ed2342c7d`
+- 选定流：通心粉，煮熟、填塞或以其他方式烹制（但不作为整盘菜肴），粗麦粉，整盘菜肴除外 `1312d181-2dd0-4af3-b938-c38ed2342c7d`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：归一化后恰为 1 kg 净合格产品
 - 数值来源模式：固定值（`fixed_value`）

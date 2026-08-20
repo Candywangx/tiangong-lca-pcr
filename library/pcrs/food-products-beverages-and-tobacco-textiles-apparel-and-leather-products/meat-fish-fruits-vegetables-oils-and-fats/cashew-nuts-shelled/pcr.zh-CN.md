@@ -42,7 +42,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 1 kg |
-| 参考产品流 | Cashew nuts, shelled `8e888f2c-671c-44bf-8607-1bde41ac66b8` |
+| 参考产品流 | 去壳腰果 `8e888f2c-671c-44bf-8607-1bde41ac66b8` |
 | 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | kg |
@@ -145,7 +145,7 @@ sync_with: pcr.en-US.md
 
 只有所选分支向浸泡、蒸制、清洗或其他有记录的调质操作供水时才纳入用水。无用水投入的路线将本行记为不适用。
 
-- 选定流：Process water
+- 选定流：过程用水
 - 流属性/单位：Mass / kg
 - 数量规则：分配至批次和所选路线的实测或计量用水量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -325,7 +325,7 @@ sync_with: pcr.en-US.md
 
 记录达到所声明形态和等级并转移至包装的果仁。
 
-- 选定流：Cashew nuts, shelled `8e888f2c-671c-44bf-8607-1bde41ac66b8`
+- 选定流：去壳腰果 `8e888f2c-671c-44bf-8607-1bde41ac66b8`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：分级后的实测合格质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -401,7 +401,7 @@ sync_with: pcr.en-US.md
 
 记录进入所声明包装配置的实称果仁转移量。
 
-- 选定流：Cashew nuts, shelled `8e888f2c-671c-44bf-8607-1bde41ac66b8`
+- 选定流：去壳腰果 `8e888f2c-671c-44bf-8607-1bde41ac66b8`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：进入包装的实测质量，并与包装产出和包装阶段损失核对
 - 数值来源模式：前景记录（`foreground_record`）
@@ -475,7 +475,7 @@ sync_with: pcr.en-US.md
 
 这是经净重核验并依据所声明批次和等级规格放行的参考产品。
 
-- 选定流：Cashew nuts, shelled `8e888f2c-671c-44bf-8607-1bde41ac66b8`
+- 选定流：去壳腰果 `8e888f2c-671c-44bf-8607-1bde41ac66b8`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：归一化数据集恰好为 1 kg 合格包装产品净重
 - 数值来源模式：固定值（`fixed_value`）

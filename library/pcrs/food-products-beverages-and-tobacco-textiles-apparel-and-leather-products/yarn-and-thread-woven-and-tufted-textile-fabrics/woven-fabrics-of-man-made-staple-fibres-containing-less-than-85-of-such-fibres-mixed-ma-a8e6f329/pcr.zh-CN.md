@@ -38,7 +38,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 1 kg 净机织织物 |
-| 参考产品流 | Woven fabrics of man-made staple fibres, containing less than 85% of such fibres, mixed mainly or solely with wool or fine animal hair `dad59cf0-4b5e-4f0a-ae44-00f1b0587dfb` |
+| 参考产品流 | 含人造短纤维重量少于85%、主要或仅仅与羊毛或动物细毛混纺的人造短纤维机织织物 `dad59cf0-4b5e-4f0a-ae44-00f1b0587dfb` |
 | 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | kg |
@@ -100,7 +100,7 @@ sync_with: pcr.en-US.md
 
 本卡记录声明路线适用时跨越该过程边界的具名原子交换；其数量仅由所链接的前景采集协议提供。
 
-- 选定流：Yarn (other than sewing thread) of synthetic staple fibres, containing less than 85% by weight of such fibres `914fcc34-ead6-4938-af63-b4ffa94e0a99`
+- 选定流：含人造短纤维重量少85%的纱（缝纫线除外） `914fcc34-ead6-4938-af63-b4ffa94e0a99`
 - UUID 状态：confirmed — Product flow、CPC 26440、Mass / kg
 - 流属性/单位：Mass / kg
 - 数量规则：计量发给同质织物批次的净纱线质量
@@ -116,7 +116,7 @@ sync_with: pcr.en-US.md
 
 本卡记录声明路线适用时跨越该过程边界的具名原子交换；其数量仅由所链接的前景采集协议提供。
 
-- 选定流：Yarn (other than sewing thread) of artificial staple fibres, containing less than 85% by weight of such fibres, not put up for retail sale `2fde586f-9999-4f3e-8022-fe0d8a19e270`
+- 选定流：非供零售的人造短纤维纱线（缝纫线除外），按重量计，此类纤维的含量低于 85 `2fde586f-9999-4f3e-8022-fe0d8a19e270`
 - UUID 状态：confirmed — Product flow、CPC 26461、Mass / kg
 - 流属性/单位：Mass / kg
 - 数量规则：计量发给同质人造纤维路线的净纱线质量
@@ -132,7 +132,7 @@ sync_with: pcr.en-US.md
 
 本卡记录声明路线适用时跨越该过程边界的具名原子交换；其数量仅由所链接的前景采集协议提供。
 
-- 选定流：Yarn of wool, containing 85% or more by weight of wool, not put up for retail sale `10c7de33-bef0-4310-98e7-734d8e2e4c9f`
+- 选定流：含羊毛重量达85%或85%以上的羊毛纱，不供零售 `10c7de33-bef0-4310-98e7-734d8e2e4c9f`
 - UUID 状态：confirmed — Product flow、CPC 26320、Mass / kg
 - 流属性/单位：Mass / kg
 - 数量规则：计量发给同质织物批次的净羊毛纱质量
@@ -164,7 +164,7 @@ sync_with: pcr.en-US.md
 
 本卡记录声明路线适用时跨越该过程边界的具名原子交换；其数量仅由所链接的前景采集协议提供。
 
-- 选定流：Electricity `890a70b7-b677-4e2a-8a1b-7d017e0a10ae`
+- 选定流：电力 `890a70b7-b677-4e2a-8a1b-7d017e0a10ae`
 - UUID 状态：confirmed — Product flow、Net calorific value / kWh
 - 流属性/单位：Net calorific value / kWh
 - 数量规则：计量或分表计量整经、上浆、织机、压缩空气供应、调湿和本地辅助用电
@@ -180,7 +180,7 @@ sync_with: pcr.en-US.md
 
 本卡记录声明路线适用时跨越该过程边界的具名原子交换；其数量仅由所链接的前景采集协议提供。
 
-- 选定流：corn starch `982918a4-54b1-4792-9ee5-2f3155d4e929`
+- 选定流：玉米淀粉 `982918a4-54b1-4792-9ee5-2f3155d4e929`
 - UUID 状态：confirmed — Product flow、CPC 23220、Mass / kg
 - 流属性/单位：Mass / kg
 - 数量规则：计量加入浆料配制的玉米淀粉质量；不得与其他浆料物质合并
@@ -196,7 +196,7 @@ sync_with: pcr.en-US.md
 
 本卡记录声明路线适用时跨越该过程边界的具名原子交换；其数量仅由所链接的前景采集协议提供。
 
-- 选定流：Polyvinyl alcohol `cea707dd-98a3-451d-bc43-2dcc145091e9`
+- 选定流：聚乙烯醇 `cea707dd-98a3-451d-bc43-2dcc145091e9`
 - UUID 状态：confirmed — Product flow、CPC 34790、Mass / kg
 - 流属性/单位：Mass / kg
 - 数量规则：计量加入浆料配制的聚乙烯醇质量；不得与淀粉合并
@@ -212,7 +212,7 @@ sync_with: pcr.en-US.md
 
 本卡记录声明路线适用时跨越该过程边界的具名原子交换；其数量仅由所链接的前景采集协议提供。
 
-- 选定流：Process water `8d71b67c-8513-4310-a01d-34e813e89ec3`
+- 选定流：工艺用水 `8d71b67c-8513-4310-a01d-34e813e89ec3`
 - UUID 状态：confirmed — Product flow、CPC 18000、Water content (mass) / kg
 - 流属性/单位：Water content (mass) / kg
 - 数量规则：计量跨越场址边界的新鲜补充水；内部循环水另行报告
@@ -272,7 +272,7 @@ sync_with: pcr.en-US.md
 
 本卡记录声明路线适用时跨越该过程边界的具名原子交换；其数量仅由所链接的前景采集协议提供。
 
-- 选定流：particles (PM10) `9fbb5096-ed5b-11e6-bc64-92361f002671`
+- 选定流：颗粒物 (PM10) `9fbb5096-ed5b-11e6-bc64-92361f002671`
 - UUID 状态：confirmed — Elementary flow、Mass / kg、排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：计量织造区域未捕集 PM10 负荷；仅在有非适用性记录时省略
@@ -310,7 +310,7 @@ sync_with: pcr.en-US.md
 
 本卡记录声明路线适用时跨越该过程边界的具名原子交换；其数量仅由所链接的前景采集协议提供。
 
-- 选定流：Process water `8d71b67c-8513-4310-a01d-34e813e89ec3`
+- 选定流：工艺用水 `8d71b67c-8513-4310-a01d-34e813e89ec3`
 - UUID 状态：confirmed — Product flow、CPC 18000、Water content (mass) / kg
 - 流属性/单位：Water content (mass) / kg
 - 数量规则：按前处理、染色、水洗和整理步骤计量新鲜补充水；内部回用另行报告
@@ -326,7 +326,7 @@ sync_with: pcr.en-US.md
 
 本卡记录声明路线适用时跨越该过程边界的具名原子交换；其数量仅由所链接的前景采集协议提供。
 
-- 选定流：Electricity `890a70b7-b677-4e2a-8a1b-7d017e0a10ae`
+- 选定流：电力 `890a70b7-b677-4e2a-8a1b-7d017e0a10ae`
 - UUID 状态：confirmed — Product flow、Net calorific value / kWh
 - 流属性/单位：Net calorific value / kWh
 - 数量规则：计量或分表计量整理线用电
@@ -342,7 +342,7 @@ sync_with: pcr.en-US.md
 
 本卡记录声明路线适用时跨越该过程边界的具名原子交换；其数量仅由所链接的前景采集协议提供。
 
-- 选定流：Process heat from steam `fcf9e128-688f-42f0-9dca-85d2319cfac5`
+- 选定流：蒸汽工艺热 `fcf9e128-688f-42f0-9dca-85d2319cfac5`
 - UUID 状态：confirmed — Product flow、Gross calorific value / MJ
 - 流属性/单位：Gross calorific value / MJ
 - 数量规则：计量归属于声明整理路线的外购蒸汽热
@@ -358,7 +358,7 @@ sync_with: pcr.en-US.md
 
 本卡记录声明路线适用时跨越该过程边界的具名原子交换；其数量仅由所链接的前景采集协议提供。
 
-- 选定流：natural gas in the gaseous state `4f19ca0e-7b3b-11dd-ad8b-0800200c9a66`
+- 选定流：气态天然气 `4f19ca0e-7b3b-11dd-ad8b-0800200c9a66`
 - UUID 状态：confirmed — Product flow、CPC 12020、Volume / m3
 - 流属性/单位：Volume / m3
 - 数量规则：计量用于路线可归属干燥、固化或热定形的天然气
@@ -374,7 +374,7 @@ sync_with: pcr.en-US.md
 
 本卡记录声明路线适用时跨越该过程边界的具名原子交换；其数量仅由所链接的前景采集协议提供。
 
-- 选定流：Acetic acid solution, 98% in water `4fb2ab8d-9291-46ee-a9fd-11ec4c8784e3`
+- 选定流：乙酸溶液，水中98% `4fb2ab8d-9291-46ee-a9fd-11ec4c8784e3`
 - UUID 状态：confirmed — Product flow、CPC 34140、Mass / kg
 - 流属性/单位：Mass / kg
 - 数量规则：计量溶液质量；保留供应商浓度和有效酸计算
@@ -390,7 +390,7 @@ sync_with: pcr.en-US.md
 
 本卡记录声明路线适用时跨越该过程边界的具名原子交换；其数量仅由所链接的前景采集协议提供。
 
-- 选定流：Sodium hydroxide `e0abcced-0611-4c24-9290-5a2c5a0c4169`
+- 选定流：氢氧化钠 `e0abcced-0611-4c24-9290-5a2c5a0c4169`
 - UUID 状态：confirmed — Product flow、Mass / kg
 - 流属性/单位：Mass / kg
 - 数量规则：计量溶液或固体质量并保留浓度；仅在实际前处理、清洁或处理配方使用时纳入
@@ -482,7 +482,7 @@ sync_with: pcr.en-US.md
 
 本卡记录声明路线适用时跨越该过程边界的具名原子交换；其数量仅由所链接的前景采集协议提供。
 
-- 选定流：carbon dioxide (fossil) `08a91e70-3ddc-11dd-923d-0050c2490048`
+- 选定流：二氧化碳（化石源） `08a91e70-3ddc-11dd-923d-0050c2490048`
 - UUID 状态：confirmed — Elementary flow、Mass / kg、排入未指定空气
 - 流属性/单位：Mass / kg
 - 数量规则：计量负荷，或使用单独引用的现行因子根据采集燃料用量计算
@@ -498,7 +498,7 @@ sync_with: pcr.en-US.md
 
 本卡记录声明路线适用时跨越该过程边界的具名原子交换；其数量仅由所链接的前景采集协议提供。
 
-- 选定流：methane (fossil) `08a91e70-3ddc-11dd-9610-0050c2490048`
+- 选定流：甲烷 (化石源) `08a91e70-3ddc-11dd-9610-0050c2490048`
 - UUID 状态：confirmed — Elementary flow、Mass / kg、排入未指定空气
 - 流属性/单位：Mass / kg
 - 数量规则：计量负荷，或使用单独引用的现行因子根据采集燃料用量计算
@@ -514,7 +514,7 @@ sync_with: pcr.en-US.md
 
 本卡记录声明路线适用时跨越该过程边界的具名原子交换；其数量仅由所链接的前景采集协议提供。
 
-- 选定流：dinitrogen monoxide `08a91e70-3ddc-11dd-94c3-0050c2490048`
+- 选定流：一氧化二氮 `08a91e70-3ddc-11dd-94c3-0050c2490048`
 - UUID 状态：confirmed — Elementary flow、Mass / kg、排入未指定空气
 - 流属性/单位：Mass / kg
 - 数量规则：计量负荷，或使用单独引用的现行因子根据采集燃料用量计算
@@ -530,7 +530,7 @@ sync_with: pcr.en-US.md
 
 本卡记录声明路线适用时跨越该过程边界的具名原子交换；其数量仅由所链接的前景采集协议提供。
 
-- 选定流：nitrogen dioxide `08a91e70-3ddc-11dd-96e5-0050c2490048`
+- 选定流：二氧化氮 `08a91e70-3ddc-11dd-96e5-0050c2490048`
 - UUID 状态：confirmed — Elementary flow、Mass / kg、排入未指定空气
 - 流属性/单位：Mass / kg
 - 数量规则：计量负荷，或使用单独引用的现行因子根据采集燃料用量计算
@@ -546,7 +546,7 @@ sync_with: pcr.en-US.md
 
 本卡记录声明路线适用时跨越该过程边界的具名原子交换；其数量仅由所链接的前景采集协议提供。
 
-- 选定流：non-methane volatile organic compounds `d86bec9a-6555-11dd-ad8b-0800200c9a66`
+- 选定流：非甲烷挥发性有机化合物 `d86bec9a-6555-11dd-ad8b-0800200c9a66`
 - UUID 状态：confirmed — Elementary flow、Mass / kg、排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：计量干燥、固化或整理产生的路线特定 NMVOC 负荷；仅在有非适用性记录时省略
@@ -584,7 +584,7 @@ sync_with: pcr.en-US.md
 
 本卡记录声明路线适用时跨越该过程边界的具名原子交换；其数量仅由所链接的前景采集协议提供。
 
-- 选定流：Electricity `890a70b7-b677-4e2a-8a1b-7d017e0a10ae`
+- 选定流：电力 `890a70b7-b677-4e2a-8a1b-7d017e0a10ae`
 - UUID 状态：confirmed — Product flow、Net calorific value / kWh
 - 流属性/单位：Net calorific value / kWh
 - 数量规则：计量或可辩护分表分配检验、卷布、裁切和包装用电
@@ -600,7 +600,7 @@ sync_with: pcr.en-US.md
 
 本卡记录声明路线适用时跨越该过程边界的具名原子交换；其数量仅由所链接的前景采集协议提供。
 
-- 选定流：Cardboard tube or Paper core `78bf7f6e-519e-4b3d-82f0-eda15b2fee61`
+- 选定流：圆纸筒 `78bf7f6e-519e-4b3d-82f0-eda15b2fee61`
 - UUID 状态：confirmed — Product flow、CPC 32199、Mass / kg
 - 流属性/单位：Mass / kg
 - 数量规则：计量纸芯质量，并在同一纸芯承载的实际织物质量间分配
@@ -616,7 +616,7 @@ sync_with: pcr.en-US.md
 
 本卡记录声明路线适用时跨越该过程边界的具名原子交换；其数量仅由所链接的前景采集协议提供。
 
-- 选定流：Low-density polyethylene packaging film
+- 选定流：低密度聚乙烯包装膜
 - UUID 状态：unresolved — 需要前景映射；被拒候选详情保留在 manifest 审查元数据中
 - 流属性/单位：Mass / kg
 - 数量规则：计量薄膜质量；保留聚合物牌号和再生含量声明
@@ -632,7 +632,7 @@ sync_with: pcr.en-US.md
 
 本卡记录声明路线适用时跨越该过程边界的具名原子交换；其数量仅由所链接的前景采集协议提供。
 
-- 选定流：Pallets, box pallets and other load boards, of wood, pallet collars of wood `4b49871e-95be-4e0c-9223-9902f9eaa763`
+- 选定流：木制托盘、箱式托盘和其他装载板，木制托盘套环 `4b49871e-95be-4e0c-9223-9902f9eaa763`
 - UUID 状态：confirmed — Product flow、CPC 31702、Mass / kg
 - 流属性/单位：Mass / kg
 - 数量规则：计量托盘质量，按实际织物载荷和有记录的重复使用次数分配
@@ -656,7 +656,7 @@ sync_with: pcr.en-US.md
 
 本卡记录声明路线适用时跨越该过程边界的具名原子交换；其数量仅由所链接的前景采集协议提供。
 
-- 选定流：Woven fabrics of man-made staple fibres, containing less than 85% of such fibres, mixed mainly or solely with wool or fine animal hair `dad59cf0-4b5e-4f0a-ae44-00f1b0587dfb`
+- 选定流：含人造短纤维重量少于85%、主要或仅仅与羊毛或动物细毛混纺的人造短纤维机织织物 `dad59cf0-4b5e-4f0a-ae44-00f1b0587dfb`
 - UUID 状态：confirmed — Product flow、CPC 26770、Mass / kg
 - 流属性/单位：Mass / kg
 - 数量规则：恰好 1 kg 不含包装的合格净参考织物
@@ -690,7 +690,7 @@ sync_with: pcr.en-US.md
 
 本卡记录声明路线适用时跨越该过程边界的具名原子交换；其数量仅由所链接的前景采集协议提供。
 
-- 选定流：Packaging waste, cardboard `72270223-04b1-4986-a546-94e5a0821317`
+- 选定流：包装废弃物，纸板 `72270223-04b1-4986-a546-94e5a0821317`
 - UUID 状态：confirmed — Waste flow、Mass / kg
 - 流属性/单位：Mass / kg
 - 数量规则：计量送往声明去向的废纸芯或纸板包装质量
@@ -706,7 +706,7 @@ sync_with: pcr.en-US.md
 
 本卡记录声明路线适用时跨越该过程边界的具名原子交换；其数量仅由所链接的前景采集协议提供。
 
-- 选定流：Waste polyethylene `7e78f0a8-c042-47ca-a742-3bac92be1477`
+- 选定流：废聚乙烯 `7e78f0a8-c042-47ca-a742-3bac92be1477`
 - UUID 状态：confirmed — Waste flow、Mass / kg
 - 流属性/单位：Mass / kg
 - 数量规则：计量送往声明去向的废聚乙烯薄膜质量

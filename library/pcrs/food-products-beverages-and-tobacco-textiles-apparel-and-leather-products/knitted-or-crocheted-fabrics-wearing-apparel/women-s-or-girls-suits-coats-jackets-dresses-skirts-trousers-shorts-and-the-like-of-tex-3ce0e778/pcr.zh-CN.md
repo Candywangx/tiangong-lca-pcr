@@ -42,7 +42,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 1 kg |
-| 参考产品流 | Women's or girls' suits, coats, jackets, dresses, skirts, trousers, shorts and the like, of textile fabric, not knitted or crocheted `27320bfc-4629-4ed1-8139-2abf1f1ea14e` |
+| 参考产品流 | 非针织或钩编而成的纺织品女装、女童装、外衣、夹克衫、礼服、裙子、长裤、短裤及其类似物品 `27320bfc-4629-4ed1-8139-2abf1f1ea14e` |
 | 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | kg |
@@ -147,7 +147,7 @@ sync_with: pcr.en-US.md
 
 电力通过裁床、刀具、真空系统和直接辅助设备跨越裁剪边界。采用专用计量或可审计的分表分配。
 
-- 选定流：Electricity, medium voltage
+- 选定流：中压电力
 - 流属性/单位：Energy / kWh
 - 数量规则：生产批次裁剪实测电耗
 - 数值来源模式：前景记录（`foreground_record`）
@@ -315,7 +315,7 @@ sync_with: pcr.en-US.md
 
 缝纫线作为独立辅料跨越组装边界。申报纤维或聚合物组成，按领用质量扣除退回线轴计量。
 
-- 选定流：Sewing thread
+- 选定流：缝纫线
 - 流属性/单位：Mass / kg
 - 数量规则：批次领用线质量减去退回受控库存的未用线质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -375,7 +375,7 @@ sync_with: pcr.en-US.md
 
 电力通过缝纫、粘合和直接辅助设备跨越组装边界。使用专用计量或可审计分表分配。
 
-- 选定流：Electricity, medium voltage
+- 选定流：中压电力
 - 流属性/单位：Energy / kWh
 - 数量规则：生产批次缝制与组装实测电耗
 - 数值来源模式：前景记录（`foreground_record`）
@@ -453,7 +453,7 @@ sync_with: pcr.en-US.md
 
 工艺用水通过洗涤、漂洗或配方制备进入成衣湿整理。记录专用水表或批次体积总量。
 
-- 选定流：Process water
+- 选定流：过程用水
 - 流属性/单位：Volume / m3
 - 数量规则：成衣湿整理批次实测供水量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -468,7 +468,7 @@ sync_with: pcr.en-US.md
 
 电力通过洗衣机、泵、加料系统和直接辅助设备跨越湿整理边界。记录专用计量或可审计分配。
 
-- 选定流：Electricity, medium voltage
+- 选定流：中压电力
 - 流属性/单位：Energy / kWh
 - 数量规则：成衣湿整理批次实测电耗
 - 数值来源模式：前景记录（`foreground_record`）
@@ -483,7 +483,7 @@ sync_with: pcr.en-US.md
 
 仅实际配方使用间接或直接蒸汽加热时，蒸汽进入湿整理。申报蒸汽条件和供应方或锅炉来源。
 
-- 选定流：Steam
+- 选定流：蒸汽
 - 流属性/单位：Energy / MJ
 - 数量规则：供给成衣湿整理批次的实测蒸汽；仅未使用蒸汽时为零
 - 数值来源模式：前景记录（`foreground_record`）
@@ -606,7 +606,7 @@ sync_with: pcr.en-US.md
 
 电力通过熨烫机、熨斗、检验照明和直接辅助设备跨越过程边界。记录专用计量或可审计分配。
 
-- 选定流：Electricity, medium voltage
+- 选定流：中压电力
 - 流属性/单位：Energy / kWh
 - 数量规则：生产批次熨烫与最终质检实测电耗
 - 数值来源模式：前景记录（`foreground_record`）
@@ -621,7 +621,7 @@ sync_with: pcr.en-US.md
 
 蒸汽供给熨斗、工作台或隧道整理机时进入熨烫过程。蒸汽条件和来源与电力分别申报。
 
-- 选定流：Steam
+- 选定流：蒸汽
 - 流属性/单位：Energy / MJ
 - 数量规则：供给生产批次熨烫的实测蒸汽；仅未使用蒸汽时为零
 - 数值来源模式：前景记录（`foreground_record`）
@@ -774,7 +774,7 @@ sync_with: pcr.en-US.md
 
 电力通过封袋、贴标、输送和直接辅助设备跨越包装边界。记录专用计量或可审计分配。
 
-- 选定流：Electricity, medium voltage
+- 选定流：中压电力
 - 流属性/单位：Energy / kWh
 - 数量规则：运输批次包装实测电耗
 - 数值来源模式：前景记录（`foreground_record`）
@@ -797,7 +797,7 @@ sync_with: pcr.en-US.md
 
 验收合格的已包装成衣作为参考产品在工厂门离开前景系统。其身份为经双核确认、以质量为定量参考的 Tiangong CPC 28233 产品流。
 
-- 选定流：Women's or girls' suits, coats, jackets, dresses, skirts, trousers, shorts and the like, of textile fabric, not knitted or crocheted `27320bfc-4629-4ed1-8139-2abf1f1ea14e`
+- 选定流：非针织或钩编而成的纺织品女装、女童装、外衣、夹克衫、礼服、裙子、长裤、短裤及其类似物品 `27320bfc-4629-4ed1-8139-2abf1f1ea14e`
 - 流属性/单位：Mass / kg
 - 数量规则：验收包装输出实测质量；归一化后恰为 1 kg
 - 数值来源模式：前景记录（`foreground_record`）

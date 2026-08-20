@@ -42,7 +42,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 1 kg 加工液态奶净质量 |
-| 参考产品流 | Processed liquid milk `02cfe33a-6f85-4477-bfde-c8057d01cfa1` |
+| 参考产品流 | 经加工的液体牛奶 `02cfe33a-6f85-4477-bfde-c8057d01cfa1` |
 | 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | kg |
@@ -278,7 +278,7 @@ sync_with: pcr.en-US.md
 
 乳品厂门口放行的合格产品是定量参考输出。
 
-- 选定流：Processed liquid milk `02cfe33a-6f85-4477-bfde-c8057d01cfa1`
+- 选定流：经加工的液体牛奶 `02cfe33a-6f85-4477-bfde-c8057d01cfa1`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：放行检查后固定为 1 kg 液态奶净质量；不包括包装质量
 - 数值来源模式：固定值（`fixed_value`）

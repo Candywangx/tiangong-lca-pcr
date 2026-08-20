@@ -40,7 +40,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 1 kg |
-| 参考产品流 | Woven fabrics of man-made staple fibres, containing less than 85% of such fibres, mixed mainly or solely with cotton `139eadcb-ee5a-4a0c-8194-64a890e77433` |
+| 参考产品流 | 含人造短纤维重量少于85%的、主要或仅仅与棉绒混纺的人造短纤维机织织物 `139eadcb-ee5a-4a0c-8194-64a890e77433` |
 | 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | kg |
@@ -157,7 +157,7 @@ sync_with: pcr.en-US.md
 
 按去向分别记录纸板、塑料、筒管、污染纱线和可回收纱线废料；不得从接收纱线中冲减回收材料。
 
-- 选定流：Paper and cardboard packaging waste `a318022d-c960-4eb5-a81c-04a9c4dda7e4`
+- 选定流：纸和纸板包装废弃物 `a318022d-c960-4eb5-a81c-04a9c4dda7e4`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：按废物类型和处理去向测量质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -282,7 +282,7 @@ sync_with: pcr.en-US.md
 
 本卡仅记录交付织造的压缩空气。织机电力应作为单独原子交换记录；压缩空气计量共享时采用有依据的分配。
 
-- 选定流：Compressed air `46e2b1e4-5a4e-4579-b6a2-65b03f9ce825`
+- 选定流：压缩的空气 `46e2b1e4-5a4e-4579-b6a2-65b03f9ce825`
 - 流属性/单位：Volume `93a60a56-a3c8-22da-a746-0800200c9a66` / m3
 - 数量规则：交付织机的计量压缩空气体积
 - 数值来源模式：前景记录（`foreground_record`）
@@ -395,7 +395,7 @@ sync_with: pcr.en-US.md
 
 按配方产品分别记录染料、颜料、盐、碱、酸、氧化剂、还原剂、表面活性剂、载体、黏合剂和整理助剂。保留排水和空气排放评估所需的组成及危害信息。
 
-- 选定流：Sodium hydroxide `e0abcced-0611-4c24-9290-5a2c5a0c4169`
+- 选定流：氢氧化钠 `e0abcced-0611-4c24-9290-5a2c5a0c4169`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：按配方和批次记录领用质量，或用实测密度换算体积，并减去有凭证的退回量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -410,7 +410,7 @@ sync_with: pcr.en-US.md
 
 仅当声明的漂白或氧化配方使用 50% 过氧化氢水溶液时记录该投入。
 
-- 选定流：Hydrogen peroxide solution, 50% in water `afda772f-b130-4c32-9a89-c4e79ba4e0e8`
+- 选定流：过氧化氢溶液，50%（水溶液） `afda772f-b130-4c32-9a89-c4e79ba4e0e8`
 - 流属性/单位：质量 `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：计量适用配方发放的原液质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -440,7 +440,7 @@ sync_with: pcr.en-US.md
 
 本卡仅记录交付蒸汽质量。电力、各直接燃料和回收热量应按单元工序作为单独原子交换记录；避免重复计算现场蒸汽生产与交付蒸汽。
 
-- 选定流：Steam `293f9fd9-5182-4d35-8aa5-ce73d4f322b7`
+- 选定流：蒸汽 `293f9fd9-5182-4d35-8aa5-ce73d4f322b7`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：计量消耗量，或由燃料、蒸汽、设备和运行记录形成的有依据计算量
 - 数值来源模式：计算值（`calculated_value`）
@@ -510,7 +510,7 @@ sync_with: pcr.en-US.md
 
 仅记录从前景过程直接跨越到空气、水或土壤的排放。送处理的污染物保留在相应废水或废物流中。
 
-- 选定流：Formaldehyde to air, unspecified `08a91e70-3ddc-11dd-941b-0050c2490048`
+- 选定流：甲醛 `08a91e70-3ddc-11dd-941b-0050c2490048`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：实测质量负荷，或由浓度 × 标准化气/水流量 × 运行时间计算
 - 数值来源模式：计算值（`calculated_value`）
@@ -605,7 +605,7 @@ sync_with: pcr.en-US.md
 
 该输出实现功能单位。其应包含全部必需限定信息，并排除包装质量。
 
-- 选定流：Woven fabrics of man-made staple fibres, containing less than 85% of such fibres, mixed mainly or solely with cotton `139eadcb-ee5a-4a0c-8194-64a890e77433`
+- 选定流：含人造短纤维重量少于85%的、主要或仅仅与棉绒混纺的人造短纤维机织织物 `139eadcb-ee5a-4a0c-8194-64a890e77433`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：由实测合格输出质量归一化后的固定参考量 1 kg
 - 数值来源模式：固定值（`fixed_value`）
@@ -637,7 +637,7 @@ sync_with: pcr.en-US.md
 
 对于热定形、涂层、干燥、烧毛或其他相关热处理，记录减排后的物质特定直接排放，并报告相应气布比或运行基准。
 
-- 选定流：Formaldehyde to air, unspecified `08a91e70-3ddc-11dd-941b-0050c2490048`
+- 选定流：甲醛 `08a91e70-3ddc-11dd-941b-0050c2490048`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：实测浓度 × 标准化废气体积，并在代表性运行期间积分；仅在没有测量且证明适用性时使用有依据的排放因子
 - 数值来源模式：计算值（`calculated_value`）
@@ -658,7 +658,7 @@ sync_with: pcr.en-US.md
 
 将用于 pH 控制的氢氧化钠作为独立处理化学品交换记录，并声明溶液浓度。
 
-- 选定流：Sodium hydroxide `e0abcced-0611-4c24-9290-5a2c5a0c4169`
+- 选定流：氢氧化钠 `e0abcced-0611-4c24-9290-5a2c5a0c4169`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：计量投加的活性物质量或原液质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -727,7 +727,7 @@ sync_with: pcr.en-US.md
 
 记录现场处理后最终排放体积，并将各相关物质作为排向接收环境区室的基本流；送场外处理的水仍为废物流。
 
-- 选定流：Chemical Oxygen Demand to water, unspecified `e57fc631-2c77-457a-aa30-be79e357792b`
+- 选定流：化学需氧量 `e57fc631-2c77-457a-aa30-be79e357792b`
 - 流属性/单位：质量 `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：最终废水流量，加上每种相关污染物的实测浓度 × 排放体积
 - 数值来源模式：计算值（`calculated_value`）

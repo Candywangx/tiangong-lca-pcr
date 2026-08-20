@@ -424,15 +424,6 @@ Record broken kernels as a separate co-product only when they are not included i
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_milling_outputs`
 - Sources: `fao-grain-postharvest-rice-milling`
-- Range: FAO illustrative broken-rice point check
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0.10
-  - Upper: 0.10
-  - Unit: kg/kg paddy entering milling
-  - Basis: approximate point value reported in the FAO illustrative industrial milling balance
-  - Basis kind: Process output (`process_output`)
-  - Evidence kind: External source (`external_source`)
-  - Sources: `fao-grain-postharvest-rice-milling`
 
 ###### Rice bran and flour fraction (`rice_bran_flour_coproduct`)
 
@@ -448,15 +439,6 @@ Record bran, germ, polish, and flour fractions separately when measured separate
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_milling_outputs`
 - Sources: `fao-grain-postharvest-rice-milling`; `fao-rice-human-nutrition-postharvest`
-- Range: FAO illustrative bran-and-flour point check
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0.10
-  - Upper: 0.10
-  - Unit: kg/kg paddy entering milling
-  - Basis: approximate combined point value reported in the FAO illustrative industrial milling balance
-  - Basis kind: Process output (`process_output`)
-  - Evidence kind: External source (`external_source`)
-  - Sources: `fao-grain-postharvest-rice-milling`
 
 ###### Rice husk or hull (`rice_husk_coproduct`)
 
@@ -472,15 +454,6 @@ Record husk mass and whether it is sold, used as fuel onsite, transferred for an
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_milling_outputs`
 - Sources: `fao-grain-postharvest-rice-milling`; `fao-prevention-postharvest-losses-rice-milling`
-- Range: FAO illustrative husk point check
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0.20
-  - Upper: 0.20
-  - Unit: kg/kg paddy entering milling
-  - Basis: approximate point value reported in the FAO illustrative industrial milling balance
-  - Basis kind: Process output (`process_output`)
-  - Evidence kind: External source (`external_source`)
-  - Sources: `fao-grain-postharvest-rice-milling`
 
 ##### Waste flows
 

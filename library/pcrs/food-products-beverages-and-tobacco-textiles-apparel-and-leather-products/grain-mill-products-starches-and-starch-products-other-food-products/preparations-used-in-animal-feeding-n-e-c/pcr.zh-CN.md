@@ -40,7 +40,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 1,000 kg |
-| 参考产品流 | Assorted Feed `cb2b142b-0ed1-4d6f-9283-cfef94451a75` |
+| 参考产品流 | 什锦饲料 `cb2b142b-0ed1-4d6f-9283-cfef94451a75` |
 | 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | kg |
@@ -103,7 +103,7 @@ sync_with: pcr.en-US.md
 
 谷物是多数配方的能量基础，在接收地磅处越过边界。本行记录代表性谷物类别流；具体数据集替换为声明配方的实际谷物。
 
-- 选定流：Corn `f6cb6f61-5681-4f57-a44a-785ff0336a9b`
+- 选定流：玉米 `f6cb6f61-5681-4f57-a44a-785ff0336a9b`
 - 流属性/单位：Mass / kg
 - 数量规则：按配方的地磅或接收秤质量（接收状态）
 - 数值来源模式：前景记录（`foreground_record`）
@@ -127,7 +127,7 @@ sync_with: pcr.en-US.md
 
 蛋白粕提供配方的蛋白组分，按接收批次记录。代表性类别流在具体数据集中替换为配方的实际蛋白粕。
 
-- 选定流：Soybean Meal `69147c54-6d24-41d0-a1bd-fd0f6ae5e7e5`
+- 选定流：豆粕 `69147c54-6d24-41d0-a1bd-fd0f6ae5e7e5`
 - 流属性/单位：Mass / kg
 - 数量规则：按配方的地磅或接收秤质量（接收状态）
 - 数值来源模式：前景记录（`foreground_record`）
@@ -151,7 +151,7 @@ sync_with: pcr.en-US.md
 
 谷物加工的纤维性副产物是常见配方组分。代表性类别流替换为配方的实际纤维原料。
 
-- 选定流：Wheat bran `671bf2d3-9ac9-4cc3-b48a-8676cd42b2cc`
+- 选定流：麦麸 `671bf2d3-9ac9-4cc3-b48a-8676cd42b2cc`
 - 流属性/单位：Mass / kg
 - 数量规则：按配方的地磅或接收秤质量（接收状态）
 - 数值来源模式：前景记录（`foreground_record`）
@@ -174,7 +174,7 @@ sync_with: pcr.en-US.md
 
 油脂用于提高能量密度并作为制粒助剂。代表性流为粗制植物油；具体数据集替换为实际油脂来源。
 
-- 选定流：Soya bean oil, crude `6464d0d3-fb5d-4e46-bfb3-01327a3ddbd3`
+- 选定流：粗豆油 `6464d0d3-fb5d-4e46-bfb3-01327a3ddbd3`
 - 流属性/单位：Mass / kg
 - 数量规则：按配方计量或称重添加量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -197,7 +197,7 @@ sync_with: pcr.en-US.md
 
 矿物质原料提供钙及其他常量矿物元素。代表性流替换为配方的实际矿物来源。
 
-- 选定流：limestone powder `a3317ee0-aae8-4d22-b720-fe24bc73d3c4`
+- 选定流：石灰石粉 `a3317ee0-aae8-4d22-b720-fe24bc73d3c4`
 - 流属性/单位：Mass / kg
 - 数量规则：按配方称重添加量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -220,7 +220,7 @@ sync_with: pcr.en-US.md
 
 食盐作为矿物载体和适口性组分加入配方。
 
-- 选定流：Mineral salt, animal feed supplement `158e4fa8-8175-4436-8cb4-c2e2fc45c33d`
+- 选定流：矿物盐, 动物饲料补充剂 `158e4fa8-8175-4436-8cb4-c2e2fc45c33d`
 - 流属性/单位：Mass / kg
 - 数量规则：按配方称重添加量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -243,7 +243,7 @@ sync_with: pcr.en-US.md
 
 预混料将维生素、微量元素及其他微量组分带入配方，按批次计量添加。
 
-- 选定流：Vitamin and mineral premix, for feed `d5514f47-d1d0-470f-a04e-89e521c62841`
+- 选定流：饲料用维生素矿物质预混料 `d5514f47-d1d0-470f-a04e-89e521c62841`
 - 流属性/单位：Mass / kg
 - 数量规则：依据配料记录的每批称重添加量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -267,7 +267,7 @@ sync_with: pcr.en-US.md
 
 合成氨基酸用于平衡蛋白组分，按批次计量添加。代表性流替换为配方的实际氨基酸。
 
-- 选定流：L-Lysine `c919f32a-3feb-4129-88d0-244862f8efca`
+- 选定流：赖氨酸（98%纯度含量70%） `c919f32a-3feb-4129-88d0-244862f8efca`
 - 流属性/单位：Mass / kg
 - 数量规则：依据配料记录的每批称重添加量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -313,7 +313,7 @@ sync_with: pcr.en-US.md
 
 柴油驱动厂界内转运原料和包装的装载机与叉车。
 
-- 选定流：Diesel `9fc9d30c-0229-459c-a7f5-8f55d6533225`
+- 选定流：柴油 `9fc9d30c-0229-459c-a7f5-8f55d6533225`
 - 流属性/单位：Mass / kg
 - 数量规则：分摊至厂内物流的领油或油罐记录
 - 数值来源模式：前景记录（`foreground_record`）
@@ -346,7 +346,7 @@ sync_with: pcr.en-US.md
 
 接收原料的袋、内衬和缠绕膜作为包装废弃物离开边界，进入声明的下游处理。
 
-- 选定流：Plastic Waste `3fd9ff2b-455a-4ed6-a52d-e2cb5a1484f3`
+- 选定流：塑料垃圾 `3fd9ff2b-455a-4ed6-a52d-e2cb5a1484f3`
 - 流属性/单位：Mass / kg
 - 数量规则：生产周期内称重或计数的包装废弃物
 - 数值来源模式：前景记录（`foreground_record`）
@@ -369,7 +369,7 @@ sync_with: pcr.en-US.md
 
 接收环节去除的筛下物、杂质和不可回用剔除料作为有机废弃物离开边界。
 
-- 选定流：Food Debris `55feef47-26fa-48d1-bcf5-1eb581143bd7`
+- 选定流：食物残渣 `55feef47-26fa-48d1-bcf5-1eb581143bd7`
 - 流属性/单位：Mass / kg
 - 数量规则：生产周期内称重的废弃物
 - 数值来源模式：前景记录（`foreground_record`）
@@ -552,7 +552,7 @@ sync_with: pcr.en-US.md
 
 锅炉燃料产生调质蒸汽；燃烧负担归属关联的上游天然气数据集，不计入前景。
 
-- 选定流：natural gas in the gaseous state `4f19ca0e-7b3b-11dd-ad8b-0800200c9a66`
+- 选定流：气态天然气 `4f19ca0e-7b3b-11dd-ad8b-0800200c9a66`
 - 流属性/单位：Volume / m3
 - 数量规则：每吨调质饲料的计量锅炉燃料量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -599,7 +599,7 @@ sync_with: pcr.en-US.md
 
 补给水供蒸汽锅炉使用；设有冷凝水回收时须声明。
 
-- 选定流：Tap water `3a8411b6-e476-4f98-9d77-0d492661a07f`
+- 选定流：自来水 `3a8411b6-e476-4f98-9d77-0d492661a07f`
 - 流属性/单位：Mass / kg
 - 数量规则：计量的锅炉补给水量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -704,7 +704,7 @@ sync_with: pcr.en-US.md
 
 袋装饲料用聚丙烯编织袋包装，按袋计数并记录每袋标称灌装质量；散装出厂记为零袋。
 
-- 选定流：Woven polypropylene bag `9bfaad07-355e-467a-9bab-f95094e7c869`
+- 选定流：聚丙烯编织袋 `9bfaad07-355e-467a-9bab-f95094e7c869`
 - 流属性/单位：Number of items / items
 - 数量规则：袋计数及声明的每袋标称灌装质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -758,7 +758,7 @@ sync_with: pcr.en-US.md
 
 合格配合饲料在此离开前景边界；本行即本 PCR 的参考流。
 
-- 选定流：Assorted Feed `cb2b142b-0ed1-4d6f-9283-cfef94451a75`
+- 选定流：什锦饲料 `cb2b142b-0ed1-4d6f-9283-cfef94451a75`
 - 流属性/单位：Mass / kg
 - 数量规则：参考数量 1,000 kg 饲喂基，来自出厂地磅或包装记录
 - 数值来源模式：前景记录（`foreground_record`）
@@ -783,7 +783,7 @@ sync_with: pcr.en-US.md
 
 包装线剔除的破损袋与包装材料作为包装废弃物离开边界。
 
-- 选定流：Plastic Waste `3fd9ff2b-455a-4ed6-a52d-e2cb5a1484f3`
+- 选定流：塑料垃圾 `3fd9ff2b-455a-4ed6-a52d-e2cb5a1484f3`
 - 流属性/单位：Mass / kg
 - 数量规则：生产周期内称重或计数的剔除物
 - 数值来源模式：前景记录（`foreground_record`）

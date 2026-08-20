@@ -485,15 +485,6 @@ This is the quantitative reference output. Record net product mass after final q
 - Basis kind: Reference flow (`reference_flow`)
 - Evidence kind: Source rule (`source_rule`)
 - Sources: `eu-pef-2021-2279`
-- Range: Reference-flow identity
-  - Range role: Allowed range (`allowed_range`)
-  - Lower: 1
-  - Upper: 1
-  - Unit: kg
-  - Basis: exact net reference amount after packaging exclusion
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: External source (`external_source`)
-  - Sources: `eu-pef-2021-2279`
 
 ##### Waste flows
 

@@ -40,7 +40,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 1,000 kg |
-| 参考产品流 | Meat of pigs, frozen `e7b009bd-ea26-4617-9ccf-f14d12e2c0b6` |
+| 参考产品流 | 猪肉，冷冻 `e7b009bd-ea26-4617-9ccf-f14d12e2c0b6` |
 | 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | kg |
@@ -344,7 +344,7 @@ sync_with: pcr.en-US.md
 
 这是唯一使用已核验 Tiangong 参考产品流 UUID 的清单行。在冻结作业出口按声明的质量基准记录冷冻猪肉净质量。
 
-- 选定流：Meat of pigs, frozen `e7b009bd-ea26-4617-9ccf-f14d12e2c0b6`
+- 选定流：猪肉，冷冻 `e7b009bd-ea26-4617-9ccf-f14d12e2c0b6`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：1,000 kg 冷冻猪肉净质量的固定参考数量
 - 数值来源模式：固定值（`fixed_value`）

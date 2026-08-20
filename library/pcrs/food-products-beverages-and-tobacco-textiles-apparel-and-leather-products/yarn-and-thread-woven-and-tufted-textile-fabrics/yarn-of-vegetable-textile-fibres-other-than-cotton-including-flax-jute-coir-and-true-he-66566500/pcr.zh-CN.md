@@ -42,7 +42,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 1 kg |
-| 参考产品流 | Yarn of vegetable textile fibres other than cotton (including flax, jute, coir and true hemp), paper yarn `bf8e0cc2-c99b-43a9-b306-d31a7fb8c11f` |
+| 参考产品流 | 植物纺织用纤维纱（包括亚麻、黄麻、椰皮纤维和大麻），皮棉除外，纸纱 `bf8e0cc2-c99b-43a9-b306-d31a7fb8c11f` |
 | 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | kg |
@@ -97,7 +97,7 @@ sync_with: pcr.en-US.md
 
 仅对接收适纺亚麻熟条的亚麻纱生产批次记录此投入。
 
-- 选定流：Prepared flax sliver (for spinning) `728fa78a-f638-4d63-86c6-f752fe31b5a2`
+- 选定流：亚麻熟条 `728fa78a-f638-4d63-86c6-f752fe31b5a2`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：投入生产批次的亚麻熟条净称量质量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -172,7 +172,7 @@ sync_with: pcr.en-US.md
 
 记录已声明消费混合下供应的 1-35 kV 交流电。本行不得与热、蒸汽或燃料合并。
 
-- 选定流：alternating current; 1-35 kV; consumption mix; electricity mix `3d76981f-964a-4865-b588-0e067a2a1163`
+- 选定流：交流电 `3d76981f-964a-4865-b588-0e067a2a1163`
 - 流属性/单位：Net calorific value `93a60a56-a3c8-11da-a746-0800200c9a66` / MJ
 - 数量规则：归属于该生产批次的准备、纺纱或加捻、并捻、络筒、调湿和本地辅助设备的计量电量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -187,7 +187,7 @@ sync_with: pcr.en-US.md
 
 仅在纸条润湿、湿法纺纱、调湿或可归属于生产批次的清洗用水跨越过程边界时记录。
 
-- 选定流：Process Water `94a04f7e-2d5c-41f0-b182-d54a3b373a02`
+- 选定流：工艺用水 `94a04f7e-2d5c-41f0-b182-d54a3b373a02`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：归属于生产批次的水表计量或罐体称量工艺水。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -225,7 +225,7 @@ sync_with: pcr.en-US.md
 
 只记录符合已声明批次规范和参考流限定信息的纱线。
 
-- 选定流：Yarn of vegetable textile fibres other than cotton (including flax, jute, coir and true hemp), paper yarn `bf8e0cc2-c99b-43a9-b306-d31a7fb8c11f`
+- 选定流：植物纺织用纤维纱（包括亚麻、黄麻、椰皮纤维和大麻），皮棉除外，纸纱 `bf8e0cc2-c99b-43a9-b306-d31a7fb8c11f`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：在已声明水分基准下称量的合格净纱线输出，不含运输包装和可重复使用载体。
 - 数值来源模式：前景记录（`foreground_record`）

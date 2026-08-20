@@ -42,7 +42,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 1 kg |
-| 参考产品流 | Sunflower-seed and safflower-seed oil, crude `e48ecaca-7bfe-427a-a117-7eeeb8253565` |
+| 参考产品流 | 葵花籽和红花籽油，原油 `e48ecaca-7bfe-427a-a117-7eeeb8253565` |
 | 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | kg |
@@ -336,7 +336,7 @@ sync_with: pcr.en-US.md
 
 参考产出在完成路线特定脱溶与澄清后、下游精炼前，于声明油厂大门实测；不同物种的生产应分别报告。
 
-- 选定流：Sunflower-seed and safflower-seed oil, crude `e48ecaca-7bfe-427a-a117-7eeeb8253565`
+- 选定流：葵花籽和红花籽油，原油 `e48ecaca-7bfe-427a-a117-7eeeb8253565`
 - 流属性/单位：Mass / kg
 - 数量规则：实测合格粗油净质量；所有交换均归一化为恰好 1 kg 参考产出
 - 数值来源模式：计算值（`calculated_value`）

@@ -40,7 +40,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 1 kg |
-| 参考产品流 | Quilts, eiderdowns, cushions, pouffes, pillows, sleeping bags and the like, fitted with springs or stuffed or internally fitted with any material or of cellular rubber or plastics `f646f2c3-aead-4a65-8904-8894b67221f8` |
+| 参考产品流 | 装有弹簧或内填各种材料或由泡沫橡胶或塑料制成的被、鸭绒被、垫子、大靠垫、枕头、睡袋及类似用品 `f646f2c3-aead-4a65-8904-8894b67221f8` |
 | 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | kg |
@@ -221,7 +221,7 @@ sync_with: pcr.en-US.md
 
 记录用于面层构造、绗缝和封口的聚酯缝纫线。
 
-- 选定流：Polyester sewing thread
+- 选定流：聚酯缝纫线
 - 流属性/单位：Mass / kg
 - 数量规则：由线轴领用和退料记录得到的批次净用线量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -266,7 +266,7 @@ sync_with: pcr.en-US.md
 
 记录裁剪、缝制、填充、绗缝、封口和局部抽风设备使用的低压电力。
 
-- 选定流：Electricity, low voltage
+- 选定流：低压电力
 - 流属性/单位：Energy / kWh
 - 数量规则：批次专用电表读数，或按合格产出归一化的报告期分表值
 - 数值来源模式：前景记录（`foreground_record`）
@@ -464,7 +464,7 @@ sync_with: pcr.en-US.md
 
 记录洗涤、漂洗或湿整理使用的供给工艺水。
 
-- 选定流：Process water
+- 选定流：过程用水
 - 流属性/单位：Volume / m3
 - 数量规则：计量进水减去已在水量平衡内单独计量并抵扣的回用水
 - 数值来源模式：前景记录（`foreground_record`）
@@ -479,7 +479,7 @@ sync_with: pcr.en-US.md
 
 记录洗涤、加料、脱水、干燥和空气处理设备使用的低压电力。
 
-- 选定流：Electricity, low voltage
+- 选定流：低压电力
 - 流属性/单位：Energy / kWh
 - 数量规则：湿处理批次专用电表读数，或按合格产出归一化的报告期分表值
 - 数值来源模式：前景记录（`foreground_record`）
@@ -494,7 +494,7 @@ sync_with: pcr.en-US.md
 
 记录场内燃烧并为湿处理路线直接或间接供热的天然气。
 
-- 选定流：Natural gas
+- 选定流：天然气
 - 流属性/单位：Net calorific value / MJ
 - 数量规则：计量或发票天然气量按所记录供应商或场址低位热值换算
 - 数值来源模式：前景记录（`foreground_record`）
@@ -509,7 +509,7 @@ sync_with: pcr.en-US.md
 
 仅在声明湿处理路线使用过氧化氢时记录本行。
 
-- 选定流：Hydrogen peroxide
+- 选定流：过氧化氢
 - 流属性/单位：Mass / kg
 - 数量规则：由批次加料记录和记录浓度得到的活性化学品质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -524,7 +524,7 @@ sync_with: pcr.en-US.md
 
 仅在声明湿处理路线使用碳酸钠时记录本行。
 
-- 选定流：Sodium carbonate
+- 选定流：碳酸钠
 - 流属性/单位：Mass / kg
 - 数量规则：由批次加料记录和记录浓度得到的活性化学品质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -596,7 +596,7 @@ sync_with: pcr.en-US.md
 
 当场内天然气燃烧位于前景边界内时，记录该燃烧产生的化石二氧化碳。
 
-- 选定流：Carbon dioxide, fossil, to air
+- 选定流：化石源二氧化碳，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：由采集的燃料消耗量和有文件依据的供应商或场址碳因子计算
 - 数值来源模式：计算值（`calculated_value`）
@@ -632,7 +632,7 @@ sync_with: pcr.en-US.md
 
 记录检验、压缩、封装、贴标和装箱所用低压电力。
 
-- 选定流：Electricity, low voltage
+- 选定流：低压电力
 - 流属性/单位：Energy / kWh
 - 数量规则：专用电表读数，或按合格产出归一化的报告期分表值
 - 数值来源模式：前景记录（`foreground_record`）
@@ -647,7 +647,7 @@ sync_with: pcr.en-US.md
 
 记录随成品离开场址的 LDPE 薄膜。
 
-- 选定流：Low-density polyethylene packaging film
+- 选定流：低密度聚乙烯包装膜
 - 流属性/单位：Mass / kg
 - 数量规则：合格批次耗用 LDPE 薄膜的称量或采购核销质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -662,7 +662,7 @@ sync_with: pcr.en-US.md
 
 记录随成品离开场址的瓦楞纸箱。
 
-- 选定流：Corrugated fibreboard box
+- 选定流：瓦楞纸箱
 - 流属性/单位：Mass / kg
 - 数量规则：合格批次耗用纸箱的称量或采购核销质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -700,7 +700,7 @@ sync_with: pcr.en-US.md
 
 本行是参考产品输出，产品质量不含包装。
 
-- 选定流：Quilts, eiderdowns, cushions, pouffes, pillows, sleeping bags and the like, fitted with springs or stuffed or internally fitted with any material or of cellular rubber or plastics `f646f2c3-aead-4a65-8904-8894b67221f8`
+- 选定流：装有弹簧或内填各种材料或由泡沫橡胶或塑料制成的被、鸭绒被、垫子、大靠垫、枕头、睡袋及类似用品 `f646f2c3-aead-4a65-8904-8894b67221f8`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：归一化后恰好 1 kg 合格成品净质量
 - 数值来源模式：固定值（`fixed_value`）

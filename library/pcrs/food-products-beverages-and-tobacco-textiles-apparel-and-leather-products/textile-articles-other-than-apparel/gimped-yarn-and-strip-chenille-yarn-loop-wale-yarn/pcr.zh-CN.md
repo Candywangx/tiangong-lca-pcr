@@ -38,7 +38,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | `1` |
-| 参考产品流 | Gimped yarn and strip, chenille yarn, loop wale-yarn `b4b228c8-c8f8-4225-8e81-bebc83d9b8c8` |
+| 参考产品流 | 粗松螺旋花线及沙条，绳绒纱线，起圈纵行纱线 `b4b228c8-c8f8-4225-8e81-bebc83d9b8c8` |
 | 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | `kg` |
@@ -175,7 +175,7 @@ sync_with: pcr.en-US.md
 
 记录喂入器、旋转头、切割系统、锭子、驱动装置、局部抽风、控制装置及本过程辅助设备的电力。
 
-- 选定流：Electricity
+- 选定流：电力
 - 流属性/单位：Energy / kWh
 - 数量规则：归属于代表性成形订单的分表电量，或经设备和场址电表核对的用电量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -273,7 +273,7 @@ sync_with: pcr.en-US.md
 
 实际使用的瓦楞纸板运输纸箱作为单独包装投入记录。
 
-- 选定流：Corrugated paperboard carton
+- 选定流：瓦楞纸板箱
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：发运产品所用纸箱的采购或领用质量，并按库存变化及重复使用调整
 - 数值来源模式：前景记录（`foreground_record`）
@@ -307,7 +307,7 @@ sync_with: pcr.en-US.md
 
 合格纱线净质量是卷绕和检验后的公开参考产品输出；其质量不包括包装组分。
 
-- 选定流：Gimped yarn and strip, chenille yarn, loop wale-yarn `b4b228c8-c8f8-4225-8e81-bebc83d9b8c8`
+- 选定流：粗松螺旋花线及沙条，绳绒纱线，起圈纵行纱线 `b4b228c8-c8f8-4225-8e81-bebc83d9b8c8`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：合格产品净质量实测值，归一化为恰好 1 kg
 - 数值来源模式：前景记录（`foreground_record`）

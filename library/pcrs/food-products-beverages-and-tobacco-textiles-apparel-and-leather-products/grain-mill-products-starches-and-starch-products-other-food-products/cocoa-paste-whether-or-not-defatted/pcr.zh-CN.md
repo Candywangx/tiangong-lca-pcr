@@ -40,7 +40,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 1,000 kg |
-| 参考产品流 | Cocoa paste, whether or not defatted `5b331659-2216-4cc7-9e6d-11bb0b50226f` |
+| 参考产品流 | 脱脂或未脱脂的可可酱 `5b331659-2216-4cc7-9e6d-11bb0b50226f` |
 | 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | kg |
@@ -115,7 +115,7 @@ sync_with: pcr.en-US.md
 
 “电网电力”作为一个独立产品流进入“可可豆预处理至碎粒”过程边界；数量须按 `cp_bean_preparation_records` 取得，未发生时以过程证据记录不适用。
 
-- 选定流：Electricity, grid supply
+- 选定流：电网供电
 - 流属性/单位：Energy / kWh; flow property and unit-group UUIDs unresolved
 - 数量规则：实测电网电力数量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -130,7 +130,7 @@ sync_with: pcr.en-US.md
 
 “外购蒸汽”作为一个独立产品流进入“可可豆预处理至碎粒”过程边界；数量须按 `cp_bean_preparation_records` 取得，未发生时以过程证据记录不适用。
 
-- 选定流：Steam, purchased
+- 选定流：外购蒸汽
 - 流属性/单位：Energy / MJ; flow property and unit-group UUIDs unresolved
 - 数量规则：实测外购蒸汽数量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -145,7 +145,7 @@ sync_with: pcr.en-US.md
 
 “外购热水”作为一个独立产品流进入“可可豆预处理至碎粒”过程边界；数量须按 `cp_bean_preparation_records` 取得，未发生时以过程证据记录不适用。
 
-- 选定流：Hot water, purchased
+- 选定流：外购热水
 - 流属性/单位：Energy / MJ; flow property and unit-group UUIDs unresolved
 - 数量规则：实测外购热水数量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -160,7 +160,7 @@ sync_with: pcr.en-US.md
 
 “天然气”作为一个独立产品流进入“可可豆预处理至碎粒”过程边界；数量须按 `cp_bean_preparation_records` 取得，未发生时以过程证据记录不适用。
 
-- 选定流：Natural gas
+- 选定流：天然气
 - 流属性/单位：Energy / MJ; flow property and unit-group UUIDs unresolved
 - 数量规则：实测天然气数量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -175,7 +175,7 @@ sync_with: pcr.en-US.md
 
 “柴油”作为一个独立产品流进入“可可豆预处理至碎粒”过程边界；数量须按 `cp_bean_preparation_records` 取得，未发生时以过程证据记录不适用。
 
-- 选定流：Diesel fuel
+- 选定流：柴油燃料
 - 流属性/单位：Energy / MJ; flow property and unit-group UUIDs unresolved
 - 数量规则：实测柴油数量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -190,7 +190,7 @@ sync_with: pcr.en-US.md
 
 “液化石油气”作为一个独立产品流进入“可可豆预处理至碎粒”过程边界；数量须按 `cp_bean_preparation_records` 取得，未发生时以过程证据记录不适用。
 
-- 选定流：Liquefied petroleum gas
+- 选定流：液化石油气
 - 流属性/单位：Energy / MJ; flow property and unit-group UUIDs unresolved
 - 数量规则：实测液化石油气数量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -205,7 +205,7 @@ sync_with: pcr.en-US.md
 
 “工艺水”作为一个独立产品流进入“可可豆预处理至碎粒”过程边界；数量须按 `cp_bean_preparation_records` 取得，未发生时以过程证据记录不适用。
 
-- 选定流：Process water
+- 选定流：过程用水
 - 流属性/单位：Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg
 - 数量规则：实测工艺水数量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -337,7 +337,7 @@ sync_with: pcr.en-US.md
 
 “排放至空气的化石二氧化碳”作为一个独立基本流离开“可可豆预处理至碎粒”过程边界；数量须按 `cp_bean_preparation_records` 取得，未发生时以过程证据记录不适用。
 
-- 选定流：Carbon dioxide, fossil, to air
+- 选定流：化石源二氧化碳，排入空气
 - 流属性/单位：Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg
 - 数量规则：依据采集记录计算排放至空气的化石二氧化碳数量
 - 数值来源模式：计算值（`calculated_value`）
@@ -352,7 +352,7 @@ sync_with: pcr.en-US.md
 
 “排放至空气的氮氧化物”作为一个独立基本流离开“可可豆预处理至碎粒”过程边界；数量须按 `cp_bean_preparation_records` 取得，未发生时以过程证据记录不适用。
 
-- 选定流：Nitrogen oxides to air
+- 选定流：氮氧化物，排入空气
 - 流属性/单位：Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg
 - 数量规则：依据采集记录计算排放至空气的氮氧化物数量
 - 数值来源模式：计算值（`calculated_value`）
@@ -367,7 +367,7 @@ sync_with: pcr.en-US.md
 
 “排放至空气的硫氧化物”作为一个独立基本流离开“可可豆预处理至碎粒”过程边界；数量须按 `cp_bean_preparation_records` 取得，未发生时以过程证据记录不适用。
 
-- 选定流：Sulfur oxides to air
+- 选定流：硫氧化物，排入空气
 - 流属性/单位：Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg
 - 数量规则：依据采集记录计算排放至空气的硫氧化物数量
 - 数值来源模式：计算值（`calculated_value`）
@@ -382,7 +382,7 @@ sync_with: pcr.en-US.md
 
 “排放至空气的 PM2.5”作为一个独立基本流离开“可可豆预处理至碎粒”过程边界；数量须按 `cp_bean_preparation_records` 取得，未发生时以过程证据记录不适用。
 
-- 选定流：Particulate matter, less than 2.5 micrometres, to air
+- 选定流：粒径小于2.5微米的颗粒物，排入空气
 - 流属性/单位：Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg
 - 数量规则：依据采集记录计算排放至空气的 PM2.5数量
 - 数值来源模式：计算值（`calculated_value`）
@@ -433,7 +433,7 @@ sync_with: pcr.en-US.md
 
 “电网电力”作为一个独立产品流进入“碎粒研磨与可可浆制造”过程边界；数量须按 `cp_grinding_records` 取得，未发生时以过程证据记录不适用。
 
-- 选定流：Electricity, grid supply
+- 选定流：电网供电
 - 流属性/单位：Energy / kWh; flow property and unit-group UUIDs unresolved
 - 数量规则：实测电网电力数量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -448,7 +448,7 @@ sync_with: pcr.en-US.md
 
 “外购蒸汽”作为一个独立产品流进入“碎粒研磨与可可浆制造”过程边界；数量须按 `cp_grinding_records` 取得，未发生时以过程证据记录不适用。
 
-- 选定流：Steam, purchased
+- 选定流：外购蒸汽
 - 流属性/单位：Energy / MJ; flow property and unit-group UUIDs unresolved
 - 数量规则：实测外购蒸汽数量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -463,7 +463,7 @@ sync_with: pcr.en-US.md
 
 “外购热水”作为一个独立产品流进入“碎粒研磨与可可浆制造”过程边界；数量须按 `cp_grinding_records` 取得，未发生时以过程证据记录不适用。
 
-- 选定流：Hot water, purchased
+- 选定流：外购热水
 - 流属性/单位：Energy / MJ; flow property and unit-group UUIDs unresolved
 - 数量规则：实测外购热水数量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -478,7 +478,7 @@ sync_with: pcr.en-US.md
 
 “工艺水”作为一个独立产品流进入“碎粒研磨与可可浆制造”过程边界；数量须按 `cp_grinding_records` 取得，未发生时以过程证据记录不适用。
 
-- 选定流：Process water
+- 选定流：过程用水
 - 流属性/单位：Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg
 - 数量规则：实测工艺水数量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -508,7 +508,7 @@ sync_with: pcr.en-US.md
 
 “碳酸钠”作为一个独立产品流进入“碎粒研磨与可可浆制造”过程边界；数量须按 `cp_grinding_records` 取得，未发生时以过程证据记录不适用。
 
-- 选定流：Sodium carbonate
+- 选定流：碳酸钠
 - 流属性/单位：Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg
 - 数量规则：实测碳酸钠数量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -538,7 +538,7 @@ sync_with: pcr.en-US.md
 
 “氢氧化钠”作为一个独立产品流进入“碎粒研磨与可可浆制造”过程边界；数量须按 `cp_grinding_records` 取得，未发生时以过程证据记录不适用。
 
-- 选定流：Sodium hydroxide
+- 选定流：氢氧化钠
 - 流属性/单位：Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg
 - 数量规则：实测氢氧化钠数量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -661,7 +661,7 @@ sync_with: pcr.en-US.md
 
 “电网电力”作为一个独立产品流进入“可可浆脱脂与可可脂分离”过程边界；数量须按 `cp_defatting_records` 取得，未发生时以过程证据记录不适用。
 
-- 选定流：Electricity, grid supply
+- 选定流：电网供电
 - 流属性/单位：Energy / kWh; flow property and unit-group UUIDs unresolved
 - 数量规则：实测电网电力数量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -676,7 +676,7 @@ sync_with: pcr.en-US.md
 
 “外购蒸汽”作为一个独立产品流进入“可可浆脱脂与可可脂分离”过程边界；数量须按 `cp_defatting_records` 取得，未发生时以过程证据记录不适用。
 
-- 选定流：Steam, purchased
+- 选定流：外购蒸汽
 - 流属性/单位：Energy / MJ; flow property and unit-group UUIDs unresolved
 - 数量规则：实测外购蒸汽数量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -691,7 +691,7 @@ sync_with: pcr.en-US.md
 
 “外购热水”作为一个独立产品流进入“可可浆脱脂与可可脂分离”过程边界；数量须按 `cp_defatting_records` 取得，未发生时以过程证据记录不适用。
 
-- 选定流：Hot water, purchased
+- 选定流：外购热水
 - 流属性/单位：Energy / MJ; flow property and unit-group UUIDs unresolved
 - 数量规则：实测外购热水数量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -814,7 +814,7 @@ sync_with: pcr.en-US.md
 
 “电网电力”作为一个独立产品流进入“可可浆整理、储存与包装”过程边界；数量须按 `cp_finishing_records` 取得，未发生时以过程证据记录不适用。
 
-- 选定流：Electricity, grid supply
+- 选定流：电网供电
 - 流属性/单位：Energy / kWh; flow property and unit-group UUIDs unresolved
 - 数量规则：实测电网电力数量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -829,7 +829,7 @@ sync_with: pcr.en-US.md
 
 “外购蒸汽”作为一个独立产品流进入“可可浆整理、储存与包装”过程边界；数量须按 `cp_finishing_records` 取得，未发生时以过程证据记录不适用。
 
-- 选定流：Steam, purchased
+- 选定流：外购蒸汽
 - 流属性/单位：Energy / MJ; flow property and unit-group UUIDs unresolved
 - 数量规则：实测外购蒸汽数量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -844,7 +844,7 @@ sync_with: pcr.en-US.md
 
 “外购热水”作为一个独立产品流进入“可可浆整理、储存与包装”过程边界；数量须按 `cp_finishing_records` 取得，未发生时以过程证据记录不适用。
 
-- 选定流：Hot water, purchased
+- 选定流：外购热水
 - 流属性/单位：Energy / MJ; flow property and unit-group UUIDs unresolved
 - 数量规则：实测外购热水数量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -889,7 +889,7 @@ sync_with: pcr.en-US.md
 
 “瓦楞纸板箱”作为一个独立产品流进入“可可浆整理、储存与包装”过程边界；数量须按 `cp_finishing_records` 取得，未发生时以过程证据记录不适用。
 
-- 选定流：Corrugated paperboard carton
+- 选定流：瓦楞纸板箱
 - 流属性/单位：Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg
 - 数量规则：实测瓦楞纸板箱数量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -957,7 +957,7 @@ sync_with: pcr.en-US.md
 
 “可可浆（脱脂或未脱脂）”作为一个独立产品流离开“可可浆整理、储存与包装”过程边界；数量须按 `cp_finishing_records` 取得，未发生时以过程证据记录不适用。
 
-- 选定流：Cocoa paste, whether or not defatted `5b331659-2216-4cc7-9e6d-11bb0b50226f`
+- 选定流：脱脂或未脱脂的可可酱 `5b331659-2216-4cc7-9e6d-11bb0b50226f`
 - 流属性/单位：Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg
 - 数量规则：将合格净可可浆质量归一化为恰好 1,000 kg
 - 数值来源模式：计算值（`calculated_value`）
@@ -1019,7 +1019,7 @@ sync_with: pcr.en-US.md
 
 “废瓦楞纸板”作为一个独立废物流离开“可可浆整理、储存与包装”过程边界；数量须按 `cp_finishing_records` 取得，未发生时以过程证据记录不适用。
 
-- 选定流：Waste corrugated paperboard
+- 选定流：废瓦楞纸板
 - 流属性/单位：Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg
 - 数量规则：实测废瓦楞纸板数量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1034,7 +1034,7 @@ sync_with: pcr.en-US.md
 
 “废木托盘”作为一个独立废物流离开“可可浆整理、储存与包装”过程边界；数量须按 `cp_finishing_records` 取得，未发生时以过程证据记录不适用。
 
-- 选定流：Waste wooden pallet
+- 选定流：废木托盘
 - 流属性/单位：Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg
 - 数量规则：实测废木托盘数量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1087,7 +1087,7 @@ sync_with: pcr.en-US.md
 
 “工艺水”作为一个独立产品流进入“工厂清洗与消毒”过程边界；数量须按 `cp_cleaning_sanitation_records` 取得，未发生时以过程证据记录不适用。
 
-- 选定流：Process water
+- 选定流：过程用水
 - 流属性/单位：Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg
 - 数量规则：实测工艺水数量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1102,7 +1102,7 @@ sync_with: pcr.en-US.md
 
 “电网电力”作为一个独立产品流进入“工厂清洗与消毒”过程边界；数量须按 `cp_cleaning_sanitation_records` 取得，未发生时以过程证据记录不适用。
 
-- 选定流：Electricity, grid supply
+- 选定流：电网供电
 - 流属性/单位：Energy / kWh; flow property and unit-group UUIDs unresolved
 - 数量规则：实测电网电力数量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1117,7 +1117,7 @@ sync_with: pcr.en-US.md
 
 “外购蒸汽”作为一个独立产品流进入“工厂清洗与消毒”过程边界；数量须按 `cp_cleaning_sanitation_records` 取得，未发生时以过程证据记录不适用。
 
-- 选定流：Steam, purchased
+- 选定流：外购蒸汽
 - 流属性/单位：Energy / MJ; flow property and unit-group UUIDs unresolved
 - 数量规则：实测外购蒸汽数量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1132,7 +1132,7 @@ sync_with: pcr.en-US.md
 
 “外购热水”作为一个独立产品流进入“工厂清洗与消毒”过程边界；数量须按 `cp_cleaning_sanitation_records` 取得，未发生时以过程证据记录不适用。
 
-- 选定流：Hot water, purchased
+- 选定流：外购热水
 - 流属性/单位：Energy / MJ; flow property and unit-group UUIDs unresolved
 - 数量规则：实测外购热水数量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1147,7 +1147,7 @@ sync_with: pcr.en-US.md
 
 “天然气”作为一个独立产品流进入“工厂清洗与消毒”过程边界；数量须按 `cp_cleaning_sanitation_records` 取得，未发生时以过程证据记录不适用。
 
-- 选定流：Natural gas
+- 选定流：天然气
 - 流属性/单位：Energy / MJ; flow property and unit-group UUIDs unresolved
 - 数量规则：实测天然气数量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1162,7 +1162,7 @@ sync_with: pcr.en-US.md
 
 “柴油”作为一个独立产品流进入“工厂清洗与消毒”过程边界；数量须按 `cp_cleaning_sanitation_records` 取得，未发生时以过程证据记录不适用。
 
-- 选定流：Diesel fuel
+- 选定流：柴油燃料
 - 流属性/单位：Energy / MJ; flow property and unit-group UUIDs unresolved
 - 数量规则：实测柴油数量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1177,7 +1177,7 @@ sync_with: pcr.en-US.md
 
 “液化石油气”作为一个独立产品流进入“工厂清洗与消毒”过程边界；数量须按 `cp_cleaning_sanitation_records` 取得，未发生时以过程证据记录不适用。
 
-- 选定流：Liquefied petroleum gas
+- 选定流：液化石油气
 - 流属性/单位：Energy / MJ; flow property and unit-group UUIDs unresolved
 - 数量规则：实测液化石油气数量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1339,7 +1339,7 @@ sync_with: pcr.en-US.md
 
 “排放至空气的化石二氧化碳”作为一个独立基本流离开“工厂清洗与消毒”过程边界；数量须按 `cp_cleaning_sanitation_records` 取得，未发生时以过程证据记录不适用。
 
-- 选定流：Carbon dioxide, fossil, to air
+- 选定流：化石源二氧化碳，排入空气
 - 流属性/单位：Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg
 - 数量规则：依据采集记录计算排放至空气的化石二氧化碳数量
 - 数值来源模式：计算值（`calculated_value`）
@@ -1354,7 +1354,7 @@ sync_with: pcr.en-US.md
 
 “排放至空气的氮氧化物”作为一个独立基本流离开“工厂清洗与消毒”过程边界；数量须按 `cp_cleaning_sanitation_records` 取得，未发生时以过程证据记录不适用。
 
-- 选定流：Nitrogen oxides to air
+- 选定流：氮氧化物，排入空气
 - 流属性/单位：Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg
 - 数量规则：依据采集记录计算排放至空气的氮氧化物数量
 - 数值来源模式：计算值（`calculated_value`）
@@ -1369,7 +1369,7 @@ sync_with: pcr.en-US.md
 
 “排放至空气的硫氧化物”作为一个独立基本流离开“工厂清洗与消毒”过程边界；数量须按 `cp_cleaning_sanitation_records` 取得，未发生时以过程证据记录不适用。
 
-- 选定流：Sulfur oxides to air
+- 选定流：硫氧化物，排入空气
 - 流属性/单位：Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg
 - 数量规则：依据采集记录计算排放至空气的硫氧化物数量
 - 数值来源模式：计算值（`calculated_value`）
@@ -1384,7 +1384,7 @@ sync_with: pcr.en-US.md
 
 “排放至空气的 PM2.5”作为一个独立基本流离开“工厂清洗与消毒”过程边界；数量须按 `cp_cleaning_sanitation_records` 取得，未发生时以过程证据记录不适用。
 
-- 选定流：Particulate matter, less than 2.5 micrometres, to air
+- 选定流：粒径小于2.5微米的颗粒物，排入空气
 - 流属性/单位：Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg
 - 数量规则：依据采集记录计算排放至空气的 PM2.5数量
 - 数值来源模式：计算值（`calculated_value`）
@@ -1405,7 +1405,7 @@ sync_with: pcr.en-US.md
 
 “电网电力”作为一个独立产品流进入“场内废水处理”过程边界；数量须按 `cp_wastewater_treatment_records` 取得，未发生时以过程证据记录不适用。
 
-- 选定流：Electricity, grid supply
+- 选定流：电网供电
 - 流属性/单位：Energy / kWh; flow property and unit-group UUIDs unresolved
 - 数量规则：实测电网电力数量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1492,7 +1492,7 @@ sync_with: pcr.en-US.md
 
 “排放至水体的化学需氧量”作为一个独立基本流离开“场内废水处理”过程边界；数量须按 `cp_wastewater_treatment_records` 取得，未发生时以过程证据记录不适用。
 
-- 选定流：Chemical oxygen demand to water
+- 选定流：化学需氧量，排入水体
 - 流属性/单位：Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg
 - 数量规则：依据采集记录计算排放至水体的化学需氧量数量
 - 数值来源模式：计算值（`calculated_value`）
@@ -1552,7 +1552,7 @@ sync_with: pcr.en-US.md
 
 “排放至水体的悬浮物”作为一个独立基本流离开“场内废水处理”过程边界；数量须按 `cp_wastewater_treatment_records` 取得，未发生时以过程证据记录不适用。
 
-- 选定流：Suspended solids to water
+- 选定流：悬浮固体，排入水体
 - 流属性/单位：Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg
 - 数量规则：依据采集记录计算排放至水体的悬浮物数量
 - 数值来源模式：计算值（`calculated_value`）
@@ -1567,7 +1567,7 @@ sync_with: pcr.en-US.md
 
 “排放至空气的生物源甲烷”作为一个独立基本流离开“场内废水处理”过程边界；数量须按 `cp_wastewater_treatment_records` 取得，未发生时以过程证据记录不适用。
 
-- 选定流：Methane, biogenic, to air
+- 选定流：生物源甲烷，排入空气
 - 流属性/单位：Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg
 - 数量规则：依据采集记录计算排放至空气的生物源甲烷数量
 - 数值来源模式：计算值（`calculated_value`）

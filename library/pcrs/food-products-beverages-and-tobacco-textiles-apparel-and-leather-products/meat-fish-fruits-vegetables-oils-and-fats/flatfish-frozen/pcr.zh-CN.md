@@ -38,7 +38,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 1 kg 产品净质量，不计运输包装，且外部冰衣不计入鱼体质量 |
-| 参考产品流 | Flatfish, frozen `d99b0e6e-06c2-4c08-8ae2-15a6dc1f0116` |
+| 参考产品流 | 鲽鱼，冷冻 `d99b0e6e-06c2-4c08-8ae2-15a6dc1f0116` |
 | 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | kg |
@@ -279,7 +279,7 @@ sync_with: pcr.en-US.md
 
 记录包装前的冷冻产品，并将保留冰衣排除在鱼体净质量之外。
 
-- 选定流：Flatfish, frozen `d99b0e6e-06c2-4c08-8ae2-15a6dc1f0116`
+- 选定流：鲽鱼，冷冻 `d99b0e6e-06c2-4c08-8ae2-15a6dc1f0116`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：固定参考数量 1 kg 冷冻鲽形目鱼类净质量
 - 数值来源模式：固定值（`fixed_value`）
@@ -346,7 +346,7 @@ sync_with: pcr.en-US.md
 
 记录转入包装的冷冻产品净质量。
 
-- 选定流：Flatfish, frozen `d99b0e6e-06c2-4c08-8ae2-15a6dc1f0116`
+- 选定流：鲽鱼，冷冻 `d99b0e6e-06c2-4c08-8ae2-15a6dc1f0116`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：不计冰衣和包装的实测净转移质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -408,7 +408,7 @@ sync_with: pcr.en-US.md
 
 记录出厂产品，并核对为恰好 1 kg 鲽形目鱼类净质量，不将冰衣或包装加入参考质量。
 
-- 选定流：Flatfish, frozen `d99b0e6e-06c2-4c08-8ae2-15a6dc1f0116`
+- 选定流：鲽鱼，冷冻 `d99b0e6e-06c2-4c08-8ae2-15a6dc1f0116`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：实测出厂净质量并归一化为 1 kg 参考产品
 - 数值来源模式：计算值（`calculated_value`）

@@ -242,7 +242,7 @@ sync_with: pcr.en-US.md
 
 这是在工厂门口完成检验、冷却、申报的可选加工和沥水后的合格参考产出。
 
-- 选定流：Meat of chickens, fresh or chilled `562d85c5-f2c0-4a72-b866-5b3587bf4f29`
+- 选定流：鸡肉，新鲜或冷藏 `562d85c5-f2c0-4a72-b866-5b3587bf4f29`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：合格产品净质量归一化为恰好 1,000 kg
 - 数值来源模式：计算值（`calculated_value`）

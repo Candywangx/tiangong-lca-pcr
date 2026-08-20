@@ -44,7 +44,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 1 kg 净干质量 |
-| 参考产品流 | Scoured Wool `1f286780-8831-47b4-88dd-582d6b7f8947` |
+| 参考产品流 | 洗净毛 `1f286780-8831-47b4-88dd-582d6b7f8947` |
 | 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | kg |
@@ -289,7 +289,7 @@ sync_with: pcr.en-US.md
 
 ###### 可销售洗净羊毛（`scoured_wool_output`）
 
-- 选定流：Scoured Wool `1f286780-8831-47b4-88dd-582d6b7f8947`
+- 选定流：洗净毛 `1f286780-8831-47b4-88dd-582d6b7f8947`
 - Direction: outputs
 - Flow type: product
 - UUID status: 已核验天工产品流；按合同不写版本
@@ -664,7 +664,7 @@ sync_with: pcr.en-US.md
 
 ###### 进入碳化的洗净羊毛（`scoured_wool_input`）
 
-- 选定流：Scoured Wool `1f286780-8831-47b4-88dd-582d6b7f8947`
+- 选定流：洗净毛 `1f286780-8831-47b4-88dd-582d6b7f8947`
 - Direction: inputs
 - Flow type: product
 - UUID status: 已核验天工产品流；不写版本
@@ -794,7 +794,7 @@ sync_with: pcr.en-US.md
 
 ###### 碳化羊毛中和用乙酸钠（`carbonising_sodium_acetate`）
 
-- 选定流：乙酸钠 `a4f6e8d2-1c9b-4d5e-8f7a-2b3c4d5e6f7a`
+- 选定流：醋酸钠 `a4f6e8d2-1c9b-4d5e-8f7a-2b3c4d5e6f7a`
 - Direction: inputs
 - Flow type: product
 - UUID status: 已由天工 flow get 在 state_code=100 核验；仅存 UUID，不写数据集版本
@@ -958,7 +958,7 @@ sync_with: pcr.en-US.md
 
 ###### 使用较窄已核验身份的可销售碳化散毛（`carbonized_wool_output`）
 
-- 选定流：Scoured Wool `1f286780-8831-47b4-88dd-582d6b7f8947`
+- 选定流：洗净毛 `1f286780-8831-47b4-88dd-582d6b7f8947`
 - Direction: outputs
 - Flow type: product
 - UUID status: 已核验但较窄的天工产品流代表；未核验到碳化专用 UUID

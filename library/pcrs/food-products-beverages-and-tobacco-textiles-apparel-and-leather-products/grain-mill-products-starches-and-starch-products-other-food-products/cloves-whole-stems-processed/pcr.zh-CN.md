@@ -42,7 +42,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 1 kg 净放行产品 |
-| 参考产品流 | Cloves (whole stems), processed `c848928e-35e4-4713-aba4-2f2d01ac641d` |
+| 参考产品流 | 丁香（全茎），加工 `c848928e-35e4-4713-aba4-2f2d01ac641d` |
 | 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | kg |
@@ -125,7 +125,7 @@ Unprocessed whole cloves (CPC 01656) 作为一个独立产品流进入生丁香�
 
 Grid electricity 作为一个单独产品流进入生丁香接收与批次验收。仅在声明过程实际发生这一具体交换时记录，并与所有其他交换分开计量。
 
-- 选定流：Grid electricity
+- 选定流：电网电力
 - 流属性/单位：Energy / kWh
 - 数量规则：记录本过程计量的电力消耗
 - 数值来源模式：前景记录（`foreground_record`）
@@ -315,7 +315,7 @@ Accepted unprocessed whole cloves 作为一个独立产品流进入丁香清理�
 
 Grid electricity 作为一个单独产品流进入丁香清理与分选。仅在声明过程实际发生这一具体交换时记录，并与所有其他交换分开计量。
 
-- 选定流：Grid electricity
+- 选定流：电网电力
 - 流属性/单位：Energy / kWh
 - 数量规则：记录本过程计量的电力消耗
 - 数值来源模式：前景记录（`foreground_record`）
@@ -390,7 +390,7 @@ Peracetic acid aqueous solution 作为一个单独产品流进入丁香清理与
 
 Purchased hot water 作为一个单独产品流进入丁香清理与分选。仅在声明过程实际发生这一具体交换时记录，并与所有其他交换分开计量。
 
-- 选定流：Purchased hot water
+- 选定流：外购热水
 - 流属性/单位：Energy / MJ
 - 数量规则：记录本过程消耗的外购或内部转移热能
 - 数值来源模式：前景记录（`foreground_record`）
@@ -586,7 +586,7 @@ Clove particulate matter to air 作为一个单项空气排放离开丁香清理
 
 Chemical oxygen demand to water 作为一个单项水环境排放离开丁香清理与分选。仅记录最终直接排放边界的实际负荷；同一水流若作为废水送往下游处理，则不得重复记作直接排放。
 
-- 选定流：Chemical oxygen demand to water
+- 选定流：化学需氧量，排入水体
 - 流属性/单位：Mass / kg
 - 数量规则：依据直接监测或已采集活动数据，按指定计算规则计算该单项排放质量
 - 数值来源模式：计算值（`calculated_value`）
@@ -616,7 +616,7 @@ Biochemical oxygen demand, 5 days, to water 作为一个单项水环境排放离
 
 Total suspended solids to water 作为一个单项水环境排放离开丁香清理与分选。仅记录最终直接排放边界的实际负荷；同一水流若作为废水送往下游处理，则不得重复记作直接排放。
 
-- 选定流：Total suspended solids to water
+- 选定流：总悬浮固体，排入水体
 - 流属性/单位：Mass / kg
 - 数量规则：依据直接监测或已采集活动数据，按指定计算规则计算该单项排放质量
 - 数值来源模式：计算值（`calculated_value`）
@@ -631,7 +631,7 @@ Total suspended solids to water 作为一个单项水环境排放离开丁香清
 
 Chloride to water 作为一个单项水环境排放离开丁香清理与分选。仅记录最终直接排放边界的实际负荷；同一水流若作为废水送往下游处理，则不得重复记作直接排放。
 
-- 选定流：Chloride to water
+- 选定流：氯化物，排入水体
 - 流属性/单位：Mass / kg
 - 数量规则：依据直接监测或已采集活动数据，按指定计算规则计算该单项排放质量
 - 数值来源模式：计算值（`calculated_value`）
@@ -683,7 +683,7 @@ Processed whole cloves 作为一个独立产品流进入丁香干燥与水分调
 
 Grid electricity 作为一个单独产品流进入丁香干燥与水分调理。仅在声明过程实际发生这一具体交换时记录，并与所有其他交换分开计量。
 
-- 选定流：Grid electricity
+- 选定流：电网电力
 - 流属性/单位：Energy / kWh
 - 数量规则：记录本过程计量的电力消耗
 - 数值来源模式：前景记录（`foreground_record`）
@@ -698,7 +698,7 @@ Grid electricity 作为一个单独产品流进入丁香干燥与水分调理。
 
 Purchased saturated steam 作为一个单独产品流进入丁香干燥与水分调理。仅在声明过程实际发生这一具体交换时记录，并与所有其他交换分开计量。
 
-- 选定流：Purchased saturated steam
+- 选定流：外购饱和蒸汽
 - 流属性/单位：Energy / MJ
 - 数量规则：记录本过程消耗的外购或内部转移热能
 - 数值来源模式：前景记录（`foreground_record`）
@@ -713,7 +713,7 @@ Purchased saturated steam 作为一个单独产品流进入丁香干燥与水分
 
 Purchased hot water 作为一个单独产品流进入丁香干燥与水分调理。仅在声明过程实际发生这一具体交换时记录，并与所有其他交换分开计量。
 
-- 选定流：Purchased hot water
+- 选定流：外购热水
 - 流属性/单位：Energy / MJ
 - 数量规则：记录本过程消耗的外购或内部转移热能
 - 数值来源模式：前景记录（`foreground_record`）
@@ -856,7 +856,7 @@ Processed whole cloves 作为一个独立产品流进入丁香破碎、研磨与
 
 Grid electricity 作为一个单独产品流进入丁香破碎、研磨与粒度分级。仅在声明过程实际发生这一具体交换时记录，并与所有其他交换分开计量。
 
-- 选定流：Grid electricity
+- 选定流：电网电力
 - 流属性/单位：Energy / kWh
 - 数量规则：记录本过程计量的电力消耗
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1134,7 +1134,7 @@ Clove powder 作为一个独立产品流进入蒸汽微生物减除。仅记录�
 
 Purchased saturated steam 作为一个单独产品流进入蒸汽微生物减除。仅在声明过程实际发生这一具体交换时记录，并与所有其他交换分开计量。
 
-- 选定流：Purchased saturated steam
+- 选定流：外购饱和蒸汽
 - 流属性/单位：Energy / MJ
 - 数量规则：记录本过程消耗的外购或内部转移热能
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1149,7 +1149,7 @@ Purchased saturated steam 作为一个单独产品流进入蒸汽微生物减除
 
 Grid electricity 作为一个单独产品流进入蒸汽微生物减除。仅在声明过程实际发生这一具体交换时记录，并与所有其他交换分开计量。
 
-- 选定流：Grid electricity
+- 选定流：电网电力
 - 流属性/单位：Energy / kWh
 - 数量规则：记录本过程计量的电力消耗
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1397,7 +1397,7 @@ Amorphous silicon dioxide (INS 551) 作为一个单独产品流进入无定形�
 
 Grid electricity 作为一个单独产品流进入无定形二氧化硅投料。仅在声明过程实际发生这一具体交换时记录，并与所有其他交换分开计量。
 
-- 选定流：Grid electricity
+- 选定流：电网电力
 - 流属性/单位：Energy / kWh
 - 数量规则：记录本过程计量的电力消耗
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1555,7 +1555,7 @@ Potable boiler makeup water 作为一个单独产品流进入场内蒸汽、热�
 
 Grid electricity 作为一个单独产品流进入场内蒸汽、热水与干燥热风生产。仅在声明过程实际发生这一具体交换时记录，并与所有其他交换分开计量。
 
-- 选定流：Grid electricity
+- 选定流：电网电力
 - 流属性/单位：Energy / kWh
 - 数量规则：记录本过程计量的电力消耗
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1570,7 +1570,7 @@ Grid electricity 作为一个单独产品流进入场内蒸汽、热水与干燥
 
 Natural gas 作为一个单独产品流进入场内蒸汽、热水与干燥热风生产。仅在声明过程实际发生这一具体交换时记录，并与所有其他交换分开计量。
 
-- 选定流：Natural gas
+- 选定流：天然气
 - 流属性/单位：Mass / kg
 - 数量规则：记录进入本过程的净数量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1585,7 +1585,7 @@ Natural gas 作为一个单独产品流进入场内蒸汽、热水与干燥热�
 
 Diesel fuel 作为一个单独产品流进入场内蒸汽、热水与干燥热风生产。仅在声明过程实际发生这一具体交换时记录，并与所有其他交换分开计量。
 
-- 选定流：Diesel fuel
+- 选定流：柴油燃料
 - 流属性/单位：Mass / kg
 - 数量规则：记录进入本过程的净数量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1600,7 +1600,7 @@ Diesel fuel 作为一个单独产品流进入场内蒸汽、热水与干燥热�
 
 Liquefied petroleum gas 作为一个单独产品流进入场内蒸汽、热水与干燥热风生产。仅在声明过程实际发生这一具体交换时记录，并与所有其他交换分开计量。
 
-- 选定流：Liquefied petroleum gas
+- 选定流：液化石油气
 - 流属性/单位：Mass / kg
 - 数量规则：记录进入本过程的净数量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1642,7 +1642,7 @@ Saturated steam 作为一个单独产品流离开场内蒸汽、热水与干燥�
 
 Hot water 作为一个单独产品流离开场内蒸汽、热水与干燥热风生产。仅在声明过程实际发生这一具体交换时记录，并与所有其他交换分开计量。
 
-- 选定流：Hot water
+- 选定流：热水
 - 流属性/单位：Energy / MJ
 - 数量规则：记录离开本过程的净数量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1674,7 +1674,7 @@ Heated drying air 作为一个单独产品流离开场内蒸汽、热水与干�
 
 Boiler blowdown wastewater 作为一个单独废物流离开场内蒸汽、热水与干燥热风生产。应独立称量或测量，并与不同材料、缺陷类别或去向的废物流分开。
 
-- 选定流：Boiler blowdown wastewater
+- 选定流：锅炉排污废水
 - 流属性/单位：Mass / kg
 - 数量规则：记录单独称量或以其他方式测量的离开本过程数量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1691,7 +1691,7 @@ Boiler blowdown wastewater 作为一个单独废物流离开场内蒸汽、热�
 
 Carbon dioxide, fossil, to air 作为一个单项空气排放离开场内蒸汽、热水与干燥热风生产。记录末端控制后的实际释放质量，并与所有其他物质或粒径分数分开。
 
-- 选定流：Carbon dioxide, fossil, to air
+- 选定流：化石源二氧化碳，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：依据直接监测或已采集活动数据，按指定计算规则计算该单项排放质量
 - 数值来源模式：计算值（`calculated_value`）
@@ -1706,7 +1706,7 @@ Carbon dioxide, fossil, to air 作为一个单项空气排放离开场内蒸汽�
 
 Nitrogen monoxide to air 作为一个单项空气排放离开场内蒸汽、热水与干燥热风生产。记录末端控制后的实际释放质量，并与所有其他物质或粒径分数分开。
 
-- 选定流：Nitrogen monoxide to air
+- 选定流：一氧化氮，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：依据直接监测或已采集活动数据，按指定计算规则计算该单项排放质量
 - 数值来源模式：计算值（`calculated_value`）
@@ -1721,7 +1721,7 @@ Nitrogen monoxide to air 作为一个单项空气排放离开场内蒸汽、热�
 
 Nitrogen dioxide to air 作为一个单项空气排放离开场内蒸汽、热水与干燥热风生产。记录末端控制后的实际释放质量，并与所有其他物质或粒径分数分开。
 
-- 选定流：Nitrogen dioxide to air
+- 选定流：二氧化氮，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：依据直接监测或已采集活动数据，按指定计算规则计算该单项排放质量
 - 数值来源模式：计算值（`calculated_value`）
@@ -1736,7 +1736,7 @@ Nitrogen dioxide to air 作为一个单项空气排放离开场内蒸汽、热�
 
 Sulfur dioxide to air 作为一个单项空气排放离开场内蒸汽、热水与干燥热风生产。记录末端控制后的实际释放质量，并与所有其他物质或粒径分数分开。
 
-- 选定流：Sulfur dioxide to air
+- 选定流：二氧化硫，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：依据直接监测或已采集活动数据，按指定计算规则计算该单项排放质量
 - 数值来源模式：计算值（`calculated_value`）
@@ -1766,7 +1766,7 @@ Sulfur trioxide to air 作为一个单项空气排放离开场内蒸汽、热水
 
 Particulate matter, less than 2.5 micrometres, to air 作为一个单项空气排放离开场内蒸汽、热水与干燥热风生产。记录末端控制后的实际释放质量，并与所有其他物质或粒径分数分开。
 
-- 选定流：Particulate matter, less than 2.5 micrometres, to air
+- 选定流：粒径小于2.5微米的颗粒物，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：依据直接监测或已采集活动数据，按指定计算规则计算该单项排放质量
 - 数值来源模式：计算值（`calculated_value`）
@@ -1893,7 +1893,7 @@ Clove powder with amorphous silicon dioxide 作为一个独立产品流进入包
 
 Grid electricity 作为一个单独产品流进入包装、受控贮存与产品放行。仅在声明过程实际发生这一具体交换时记录，并与所有其他交换分开计量。
 
-- 选定流：Grid electricity
+- 选定流：电网电力
 - 流属性/单位：Energy / kWh
 - 数量规则：记录本过程计量的电力消耗
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1968,7 +1968,7 @@ Biaxially oriented polypropylene pouch 作为一个单独包装组件进入包�
 
 Corrugated fibreboard box 作为一个单独包装组件进入包装、受控贮存与产品放行。仅当该准确组件列入声明产品的包装材料清单时记录。
 
-- 选定流：Corrugated fibreboard box
+- 选定流：瓦楞纸箱
 - 流属性/单位：Mass / kg
 - 数量规则：记录进入本过程的净数量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1983,7 +1983,7 @@ Corrugated fibreboard box 作为一个单独包装组件进入包装、受控贮
 
 Wooden pallet 作为一个单独包装组件进入包装、受控贮存与产品放行。仅当该准确组件列入声明产品的包装材料清单时记录。
 
-- 选定流：Wooden pallet
+- 选定流：木托盘
 - 流属性/单位：Mass / kg
 - 数量规则：记录进入本过程的净数量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -2115,7 +2115,7 @@ _本过程在此方向未定义基本流原子交换。_
 
 Cloves (whole stems), processed 作为唯一参考产品流从包装、受控贮存与产品放行放行。数据包只选择一个声明产品形态和一条加工路线，参考数量为不含包装的 1 kg 净产品。
 
-- 选定流：Cloves (whole stems), processed `c848928e-35e4-4713-aba4-2f2d01ac641d`
+- 选定流：丁香（全茎），加工 `c848928e-35e4-4713-aba4-2f2d01ac641d`
 - 流属性/单位：Mass / kg
 - 数量规则：1 kg 净放行产品
 - 数值来源模式：固定值（`fixed_value`）
@@ -2411,7 +2411,7 @@ Clove particulate matter to air 作为一个单项空气排放离开包装、受
 
 Grid electricity 作为一个单独产品流进入卫生清洁、粉尘收集与废水控制。仅在声明过程实际发生这一具体交换时记录，并与所有其他交换分开计量。
 
-- 选定流：Grid electricity
+- 选定流：电网电力
 - 流属性/单位：Energy / kWh
 - 数量规则：记录本过程计量的电力消耗
 - 数值来源模式：前景记录（`foreground_record`）
@@ -2699,7 +2699,7 @@ Clove particulate matter to air 作为一个单项空气排放离开卫生清洁
 
 Chemical oxygen demand to water 作为一个单项水环境排放离开卫生清洁、粉尘收集与废水控制。仅记录最终直接排放边界的实际负荷；同一水流若作为废水送往下游处理，则不得重复记作直接排放。
 
-- 选定流：Chemical oxygen demand to water
+- 选定流：化学需氧量，排入水体
 - 流属性/单位：Mass / kg
 - 数量规则：依据直接监测或已采集活动数据，按指定计算规则计算该单项排放质量
 - 数值来源模式：计算值（`calculated_value`）
@@ -2729,7 +2729,7 @@ Biochemical oxygen demand, 5 days, to water 作为一个单项水环境排放离
 
 Total suspended solids to water 作为一个单项水环境排放离开卫生清洁、粉尘收集与废水控制。仅记录最终直接排放边界的实际负荷；同一水流若作为废水送往下游处理，则不得重复记作直接排放。
 
-- 选定流：Total suspended solids to water
+- 选定流：总悬浮固体，排入水体
 - 流属性/单位：Mass / kg
 - 数量规则：依据直接监测或已采集活动数据，按指定计算规则计算该单项排放质量
 - 数值来源模式：计算值（`calculated_value`）
@@ -2744,7 +2744,7 @@ Total suspended solids to water 作为一个单项水环境排放离开卫生清
 
 Total nitrogen to water 作为一个单项水环境排放离开卫生清洁、粉尘收集与废水控制。仅记录最终直接排放边界的实际负荷；同一水流若作为废水送往下游处理，则不得重复记作直接排放。
 
-- 选定流：Total nitrogen to water
+- 选定流：总氮，排入水体
 - 流属性/单位：Mass / kg
 - 数量规则：依据直接监测或已采集活动数据，按指定计算规则计算该单项排放质量
 - 数值来源模式：计算值（`calculated_value`）
@@ -2759,7 +2759,7 @@ Total nitrogen to water 作为一个单项水环境排放离开卫生清洁、�
 
 Total phosphorus to water 作为一个单项水环境排放离开卫生清洁、粉尘收集与废水控制。仅记录最终直接排放边界的实际负荷；同一水流若作为废水送往下游处理，则不得重复记作直接排放。
 
-- 选定流：Total phosphorus to water
+- 选定流：总磷，排入水体
 - 流属性/单位：Mass / kg
 - 数量规则：依据直接监测或已采集活动数据，按指定计算规则计算该单项排放质量
 - 数值来源模式：计算值（`calculated_value`）
@@ -2774,7 +2774,7 @@ Total phosphorus to water 作为一个单项水环境排放离开卫生清洁、
 
 Chloride to water 作为一个单项水环境排放离开卫生清洁、粉尘收集与废水控制。仅记录最终直接排放边界的实际负荷；同一水流若作为废水送往下游处理，则不得重复记作直接排放。
 
-- 选定流：Chloride to water
+- 选定流：氯化物，排入水体
 - 流属性/单位：Mass / kg
 - 数量规则：依据直接监测或已采集活动数据，按指定计算规则计算该单项排放质量
 - 数值来源模式：计算值（`calculated_value`）
@@ -2789,7 +2789,7 @@ Chloride to water 作为一个单项水环境排放离开卫生清洁、粉尘�
 
 Methane to air 作为一个单项空气排放离开卫生清洁、粉尘收集与废水控制。记录末端控制后的实际释放质量，并与所有其他物质或粒径分数分开。
 
-- 选定流：Methane to air
+- 选定流：甲烷，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：依据直接监测或已采集活动数据，按指定计算规则计算该单项排放质量
 - 数值来源模式：计算值（`calculated_value`）
@@ -2804,7 +2804,7 @@ Methane to air 作为一个单项空气排放离开卫生清洁、粉尘收集�
 
 Nitrous oxide to air 作为一个单项空气排放离开卫生清洁、粉尘收集与废水控制。记录末端控制后的实际释放质量，并与所有其他物质或粒径分数分开。
 
-- 选定流：Nitrous oxide to air
+- 选定流：氧化亚氮，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：依据直接监测或已采集活动数据，按指定计算规则计算该单项排放质量
 - 数值来源模式：计算值（`calculated_value`）

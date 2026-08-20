@@ -40,7 +40,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 1 kg 净合格产品，不含包装质量 |
-| 参考产品流 | Meat of turkeys, fresh or chilled `653bdb6e-5456-4a7d-88d3-8493b1f27bc7` |
+| 参考产品流 | 火鸡肉，新鲜或冷藏 `653bdb6e-5456-4a7d-88d3-8493b1f27bc7` |
 | 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | kg |
@@ -1600,7 +1600,7 @@ sync_with: pcr.en-US.md
 
 该已核验产品产出是定量参考：设施门口鲜或冷藏状态的净合格火鸡肉 1 kg。冷冻火鸡肉、可食火鸡杂碎和包装质量均不计入。
 
-- 选定流：Meat of turkeys, fresh or chilled `653bdb6e-5456-4a7d-88d3-8493b1f27bc7`
+- 选定流：火鸡肉，新鲜或冷藏 `653bdb6e-5456-4a7d-88d3-8493b1f27bc7`
 - 流属性/单位：Mass / kg
 - 数量规则：设施门口净合格产品恰为 1 kg；不计包装质量
 - 数值来源模式：固定值（`fixed_value`）

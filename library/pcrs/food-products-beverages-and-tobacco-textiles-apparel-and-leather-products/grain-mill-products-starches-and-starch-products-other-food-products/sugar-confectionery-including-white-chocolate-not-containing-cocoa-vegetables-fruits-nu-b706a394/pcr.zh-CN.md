@@ -42,7 +42,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 1 kg |
-| 参考产品流 | Sugar confectionery (including white chocolate), not containing cocoa, vegetables, fruits, nuts, fruit-peel and other parts of plants, preserved by sugar `db6192c0-b83b-4376-95e2-df5c7ad09297` |
+| 参考产品流 | 糖制糖果（包括白巧克力），不含可可，用糖保存的蔬菜、水果、坚果、果皮和植物的其他部分 `db6192c0-b83b-4376-95e2-df5c7ad09297` |
 | 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | kg |
@@ -201,7 +201,7 @@ sync_with: pcr.en-US.md
 
 记录加入配方的水，以及接触冷却或其他路线操作中跨越过程边界的水；计量时将非接触冷却水分开。
 
-- 选定流：Process water
+- 选定流：过程用水
 - 流属性/单位：Volume / m3
 - 数量规则：归属于纳入糖果批次的计量或批次记录水量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -554,7 +554,7 @@ sync_with: pcr.en-US.md
 
 将已放行食品产品净质量与包装质量分开记录，并按此输出归一化完整前景数据包。
 
-- 选定流：Sugar confectionery (including white chocolate), not containing cocoa, vegetables, fruits, nuts, fruit-peel and other parts of plants, preserved by sugar `db6192c0-b83b-4376-95e2-df5c7ad09297`
+- 选定流：糖制糖果（包括白巧克力），不含可可，用糖保存的蔬菜、水果、坚果、果皮和植物的其他部分 `db6192c0-b83b-4376-95e2-df5c7ad09297`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：归一化后恰好 1 kg 可销售产品净质量。
 - 数值来源模式：固定值（`fixed_value`）

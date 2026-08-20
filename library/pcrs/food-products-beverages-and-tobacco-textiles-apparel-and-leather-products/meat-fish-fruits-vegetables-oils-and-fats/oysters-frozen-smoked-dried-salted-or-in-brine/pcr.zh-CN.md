@@ -40,7 +40,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 1 kg 合格可销售产品，不含包装和游离包装介质 |
-| 参考产品流 | Oysters, frozen, smoked, dried, salted or in brine `73760e72-9a22-4226-a17f-a591a61d5170` |
+| 参考产品流 | 牡蛎，冷冻、烟熏、干制、盐渍或盐水浸泡 `73760e72-9a22-4226-a17f-a591a61d5170` |
 | 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | kg |
@@ -119,7 +119,7 @@ sync_with: pcr.en-US.md
 
 记录用于清洗、洁净处理或辅助去壳且跨越过程边界的饮用水或其他适用水。
 
-- 选定流：Process water
+- 选定流：过程用水
 - 流属性/单位：Mass / kg
 - 数量规则：计量用量，或批次体积换算为质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -221,7 +221,7 @@ sync_with: pcr.en-US.md
 
 记录分配给该批次的冷冻及场内冻藏计量电力。
 
-- 选定流：Electricity
+- 选定流：电力
 - 流属性/单位：Energy / kWh
 - 数量规则：电表差值，或设备功率乘以运行时间和分配份额
 - 数值来源模式：计算值（`calculated_value`）
@@ -275,7 +275,7 @@ sync_with: pcr.en-US.md
 
 仅在选择冷冻路线时，该输出才是参考产品。
 
-- 选定流：Oysters, frozen, smoked, dried, salted or in brine `73760e72-9a22-4226-a17f-a591a61d5170`
+- 选定流：牡蛎，冷冻、烟熏、干制、盐渍或盐水浸泡 `73760e72-9a22-4226-a17f-a591a61d5170`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：1 kg 合格产品，不含包装并采用申报的冰衣基准
 - 数值来源模式：固定值（`fixed_value`）
@@ -376,7 +376,7 @@ sync_with: pcr.en-US.md
 
 仅对所选烟熏或干制子路线，该输出才是参考产品；必须申报含水率基准。
 
-- 选定流：Oysters, frozen, smoked, dried, salted or in brine `73760e72-9a22-4226-a17f-a591a61d5170`
+- 选定流：牡蛎，冷冻、烟熏、干制、盐渍或盐水浸泡 `73760e72-9a22-4226-a17f-a591a61d5170`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：按申报含水率计的 1 kg 合格产品，不含包装
 - 数值来源模式：固定值（`fixed_value`）
@@ -477,7 +477,7 @@ sync_with: pcr.en-US.md
 
 仅对所选盐渍或盐水浸泡子路线，该输出才是参考产品；盐水产品采用沥干质量。
 
-- 选定流：Oysters, frozen, smoked, dried, salted or in brine `73760e72-9a22-4226-a17f-a591a61d5170`
+- 选定流：牡蛎，冷冻、烟熏、干制、盐渍或盐水浸泡 `73760e72-9a22-4226-a17f-a591a61d5170`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：1 kg 合格产品，不含包装和游离盐水，并申报含盐量及沥干质量方法
 - 数值来源模式：固定值（`fixed_value`）

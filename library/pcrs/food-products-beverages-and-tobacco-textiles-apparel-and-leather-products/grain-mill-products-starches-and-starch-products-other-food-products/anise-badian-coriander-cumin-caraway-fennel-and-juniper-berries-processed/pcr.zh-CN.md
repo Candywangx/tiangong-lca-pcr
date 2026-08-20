@@ -40,7 +40,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 1 kg |
-| 参考产品流 | Anise, badian, coriander, cumin, caraway, fennel and juniper berries, processed `1ae74dcb-8fbf-4b6d-a2d4-d2effa668cce` |
+| 参考产品流 | 八角、八角茴香、芫荽、小茴香、胡荽、茴香和杜松子，加工而成 `1ae74dcb-8fbf-4b6d-a2d4-d2effa668cce` |
 | 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | kg |
@@ -211,7 +211,7 @@ sync_with: pcr.en-US.md
 
 本卡仅记录具体流“Grid electricity, medium voltage”跨越“接收、身份核验与初步分选”过程边界的数量；其适用性、归一化和证据要求由下列机器字段确定。
 
-- 选定流：Grid electricity, medium voltage
+- 选定流：中压电网电力
 - 流属性/单位：Energy / kWh
 - 数量规则：从所列采集协议对应的批次、计量、称量、台账或处置记录采集该具体流数量；仅在该原子交换实际适用时记录。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -424,7 +424,7 @@ sync_with: pcr.en-US.md
 
 本卡仅记录具体流“Grid electricity, medium voltage”跨越“干式清理、分级与异物去除”过程边界的数量；其适用性、归一化和证据要求由下列机器字段确定。
 
-- 选定流：Grid electricity, medium voltage
+- 选定流：中压电网电力
 - 流属性/单位：Energy / kWh
 - 数量规则：从所列采集协议对应的批次、计量、称量、台账或处置记录采集该具体流数量；仅在该原子交换实际适用时记录。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -787,7 +787,7 @@ sync_with: pcr.en-US.md
 
 本卡仅记录具体流“Potable water”跨越“湿法清洗与沥水”过程边界的数量；其适用性、归一化和证据要求由下列机器字段确定。
 
-- 选定流：Potable water
+- 选定流：饮用水
 - 流属性/单位：Volume / m3
 - 数量规则：从所列采集协议对应的批次、计量、称量、台账或处置记录采集该具体流数量；仅在该原子交换实际适用时记录。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -802,7 +802,7 @@ sync_with: pcr.en-US.md
 
 本卡仅记录具体流“Grid electricity, medium voltage”跨越“湿法清洗与沥水”过程边界的数量；其适用性、归一化和证据要求由下列机器字段确定。
 
-- 选定流：Grid electricity, medium voltage
+- 选定流：中压电网电力
 - 流属性/单位：Energy / kWh
 - 数量规则：从所列采集协议对应的批次、计量、称量、台账或处置记录采集该具体流数量；仅在该原子交换实际适用时记录。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -940,7 +940,7 @@ sync_with: pcr.en-US.md
 
 本卡仅记录具体流“Grid electricity, medium voltage”跨越“受控干燥与冷却”过程边界的数量；其适用性、归一化和证据要求由下列机器字段确定。
 
-- 选定流：Grid electricity, medium voltage
+- 选定流：中压电网电力
 - 流属性/单位：Energy / kWh
 - 数量规则：从所列采集协议对应的批次、计量、称量、台账或处置记录采集该具体流数量；仅在该原子交换实际适用时记录。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -955,7 +955,7 @@ sync_with: pcr.en-US.md
 
 本卡仅记录具体流“Purchased steam”跨越“受控干燥与冷却”过程边界的数量；其适用性、归一化和证据要求由下列机器字段确定。
 
-- 选定流：Purchased steam
+- 选定流：外购蒸汽
 - 流属性/单位：Energy / MJ
 - 数量规则：使用与该批次或报告期对应的实测活动数据，按第 8 节适用计算规则计算，并保留因子与单位换算。
 - 数值来源模式：计算值（`calculated_value`）
@@ -985,7 +985,7 @@ sync_with: pcr.en-US.md
 
 本卡仅记录具体流“Natural gas”跨越“受控干燥与冷却”过程边界的数量；其适用性、归一化和证据要求由下列机器字段确定。
 
-- 选定流：Natural gas
+- 选定流：天然气
 - 流属性/单位：Energy / MJ
 - 数量规则：使用与该批次或报告期对应的实测活动数据，按第 8 节适用计算规则计算，并保留因子与单位换算。
 - 数值来源模式：计算值（`calculated_value`）
@@ -1000,7 +1000,7 @@ sync_with: pcr.en-US.md
 
 本卡仅记录具体流“Diesel fuel”跨越“受控干燥与冷却”过程边界的数量；其适用性、归一化和证据要求由下列机器字段确定。
 
-- 选定流：Diesel fuel
+- 选定流：柴油燃料
 - 流属性/单位：Mass / kg
 - 数量规则：从所列采集协议对应的批次、计量、称量、台账或处置记录采集该具体流数量；仅在该原子交换实际适用时记录。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1015,7 +1015,7 @@ sync_with: pcr.en-US.md
 
 本卡仅记录具体流“Liquefied petroleum gas”跨越“受控干燥与冷却”过程边界的数量；其适用性、归一化和证据要求由下列机器字段确定。
 
-- 选定流：Liquefied petroleum gas
+- 选定流：液化石油气
 - 流属性/单位：Mass / kg
 - 数量规则：从所列采集协议对应的批次、计量、称量、台账或处置记录采集该具体流数量；仅在该原子交换实际适用时记录。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1060,7 +1060,7 @@ sync_with: pcr.en-US.md
 
 本卡仅记录具体流“Ammonia refrigerant R717”跨越“受控干燥与冷却”过程边界的数量；其适用性、归一化和证据要求由下列机器字段确定。
 
-- 选定流：Ammonia refrigerant R717
+- 选定流：氨制冷剂R717
 - 流属性/单位：Mass / kg
 - 数量规则：从制冷剂充注、维护和库存记录采集本制冷剂的具体数量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1117,7 +1117,7 @@ sync_with: pcr.en-US.md
 
 本卡仅记录具体流“Carbon dioxide, fossil, to air”跨越“受控干燥与冷却”过程边界的数量；其适用性、归一化和证据要求由下列机器字段确定。
 
-- 选定流：Carbon dioxide, fossil, to air
+- 选定流：化石源二氧化碳，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：使用直接测量，或以实测活动数据和有文件依据的单项因子计算该具体空气排放。
 - 数值来源模式：计算值（`calculated_value`）
@@ -1132,7 +1132,7 @@ sync_with: pcr.en-US.md
 
 本卡仅记录具体流“Carbon dioxide, biogenic, to air”跨越“受控干燥与冷却”过程边界的数量；其适用性、归一化和证据要求由下列机器字段确定。
 
-- 选定流：Carbon dioxide, biogenic, to air
+- 选定流：生物源二氧化碳，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：以实测干薪柴质量、实测水分及有文件依据的生物源碳含量或排放因子计算。
 - 数值来源模式：计算值（`calculated_value`）
@@ -1147,7 +1147,7 @@ sync_with: pcr.en-US.md
 
 本卡仅记录具体流“Carbon monoxide to air”跨越“受控干燥与冷却”过程边界的数量；其适用性、归一化和证据要求由下列机器字段确定。
 
-- 选定流：Carbon monoxide to air
+- 选定流：一氧化碳，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：使用直接测量，或以实测活动数据和有文件依据的单项因子计算该具体空气排放。
 - 数值来源模式：计算值（`calculated_value`）
@@ -1162,7 +1162,7 @@ sync_with: pcr.en-US.md
 
 本卡仅记录具体流“Nitrogen oxides to air”跨越“受控干燥与冷却”过程边界的数量；其适用性、归一化和证据要求由下列机器字段确定。
 
-- 选定流：Nitrogen oxides to air
+- 选定流：氮氧化物，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：使用直接测量，或以实测活动数据和有文件依据的单项因子计算该具体空气排放。
 - 数值来源模式：计算值（`calculated_value`）
@@ -1177,7 +1177,7 @@ sync_with: pcr.en-US.md
 
 本卡仅记录具体流“Sulfur oxides to air”跨越“受控干燥与冷却”过程边界的数量；其适用性、归一化和证据要求由下列机器字段确定。
 
-- 选定流：Sulfur oxides to air
+- 选定流：硫氧化物，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：使用直接测量，或以实测活动数据和有文件依据的单项因子计算该具体空气排放。
 - 数值来源模式：计算值（`calculated_value`）
@@ -1207,7 +1207,7 @@ sync_with: pcr.en-US.md
 
 本卡仅记录具体流“Particulate matter, less than 2.5 micrometres, to air”跨越“受控干燥与冷却”过程边界的数量；其适用性、归一化和证据要求由下列机器字段确定。
 
-- 选定流：Particulate matter, less than 2.5 micrometres, to air
+- 选定流：粒径小于2.5微米的颗粒物，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：使用直接测量，或以实测活动数据和有文件依据的单项因子计算该具体空气排放。
 - 数值来源模式：计算值（`calculated_value`）
@@ -1378,7 +1378,7 @@ sync_with: pcr.en-US.md
 
 本卡仅记录具体流“Grid electricity, medium voltage”跨越“微生物减除处理”过程边界的数量；其适用性、归一化和证据要求由下列机器字段确定。
 
-- 选定流：Grid electricity, medium voltage
+- 选定流：中压电网电力
 - 流属性/单位：Energy / kWh
 - 数量规则：从所列采集协议对应的批次、计量、称量、台账或处置记录采集该具体流数量；仅在该原子交换实际适用时记录。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1408,7 +1408,7 @@ sync_with: pcr.en-US.md
 
 本卡仅记录具体流“Potable water”跨越“微生物减除处理”过程边界的数量；其适用性、归一化和证据要求由下列机器字段确定。
 
-- 选定流：Potable water
+- 选定流：饮用水
 - 流属性/单位：Volume / m3
 - 数量规则：从所列采集协议对应的批次、计量、称量、台账或处置记录采集该具体流数量；仅在该原子交换实际适用时记录。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1486,7 +1486,7 @@ sync_with: pcr.en-US.md
 
 本卡仅记录具体流“Grid electricity, medium voltage”跨越“破碎、研磨与筛分”过程边界的数量；其适用性、归一化和证据要求由下列机器字段确定。
 
-- 选定流：Grid electricity, medium voltage
+- 选定流：中压电网电力
 - 流属性/单位：Energy / kWh
 - 数量规则：从所列采集协议对应的批次、计量、称量、台账或处置记录采集该具体流数量；仅在该原子交换实际适用时记录。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1879,7 +1879,7 @@ sync_with: pcr.en-US.md
 
 本卡仅记录具体流“Grid electricity, medium voltage”跨越“包装、受控储存与放行”过程边界的数量；其适用性、归一化和证据要求由下列机器字段确定。
 
-- 选定流：Grid electricity, medium voltage
+- 选定流：中压电网电力
 - 流属性/单位：Energy / kWh
 - 数量规则：从所列采集协议对应的批次、计量、称量、台账或处置记录采集该具体流数量；仅在该原子交换实际适用时记录。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1984,7 +1984,7 @@ sync_with: pcr.en-US.md
 
 本卡仅记录具体流“Corrugated fibreboard box”跨越“包装、受控储存与放行”过程边界的数量；其适用性、归一化和证据要求由下列机器字段确定。
 
-- 选定流：Corrugated fibreboard box
+- 选定流：瓦楞纸箱
 - 流属性/单位：Mass / kg
 - 数量规则：从所列采集协议对应的批次、计量、称量、台账或处置记录采集该具体流数量；仅在该原子交换实际适用时记录。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -2014,7 +2014,7 @@ sync_with: pcr.en-US.md
 
 本卡仅记录具体流“Wood pallet”跨越“包装、受控储存与放行”过程边界的数量；其适用性、归一化和证据要求由下列机器字段确定。
 
-- 选定流：Wood pallet
+- 选定流：木托盘
 - 流属性/单位：Mass / kg
 - 数量规则：使用与该批次或报告期对应的实测活动数据，按第 8 节适用计算规则计算，并保留因子与单位换算。
 - 数值来源模式：计算值（`calculated_value`）
@@ -2029,7 +2029,7 @@ sync_with: pcr.en-US.md
 
 本卡仅记录具体流“Low-density polyethylene stretch film”跨越“包装、受控储存与放行”过程边界的数量；其适用性、归一化和证据要求由下列机器字段确定。
 
-- 选定流：Low-density polyethylene stretch film
+- 选定流：低密度聚乙烯拉伸膜
 - 流属性/单位：Mass / kg
 - 数量规则：从所列采集协议对应的批次、计量、称量、台账或处置记录采集该具体流数量；仅在该原子交换实际适用时记录。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -2044,7 +2044,7 @@ sync_with: pcr.en-US.md
 
 本卡仅记录具体流“Ammonia refrigerant R717”跨越“包装、受控储存与放行”过程边界的数量；其适用性、归一化和证据要求由下列机器字段确定。
 
-- 选定流：Ammonia refrigerant R717
+- 选定流：氨制冷剂R717
 - 流属性/单位：Mass / kg
 - 数量规则：从制冷剂充注、维护和库存记录采集本制冷剂的具体数量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -2097,7 +2097,7 @@ sync_with: pcr.en-US.md
 
 本卡仅记录具体流“Anise, badian, coriander, cumin, caraway, fennel and juniper berries, processed `1ae74dcb-8fbf-4b6d-a2d4-d2effa668cce`”跨越“包装、受控储存与放行”过程边界的数量；其适用性、归一化和证据要求由下列机器字段确定。
 
-- 选定流：Anise, badian, coriander, cumin, caraway, fennel and juniper berries, processed `1ae74dcb-8fbf-4b6d-a2d4-d2effa668cce`
+- 选定流：八角、八角茴香、芫荽、小茴香、胡荽、茴香和杜松子，加工而成 `1ae74dcb-8fbf-4b6d-a2d4-d2effa668cce`
 - 流属性/单位：Mass / kg
 - 数量规则：固定为 1 kg 净合格产品，并排除所有包装组件与不合格品。
 - 数值来源模式：固定值（`fixed_value`）
@@ -2422,7 +2422,7 @@ sync_with: pcr.en-US.md
 
 本卡仅记录具体流“Potable water”跨越“设备与区域清洁消毒”过程边界的数量；其适用性、归一化和证据要求由下列机器字段确定。
 
-- 选定流：Potable water
+- 选定流：饮用水
 - 流属性/单位：Volume / m3
 - 数量规则：从所列采集协议对应的批次、计量、称量、台账或处置记录采集该具体流数量；仅在该原子交换实际适用时记录。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -2437,7 +2437,7 @@ sync_with: pcr.en-US.md
 
 本卡仅记录具体流“Grid electricity, medium voltage”跨越“设备与区域清洁消毒”过程边界的数量；其适用性、归一化和证据要求由下列机器字段确定。
 
-- 选定流：Grid electricity, medium voltage
+- 选定流：中压电网电力
 - 流属性/单位：Energy / kWh
 - 数量规则：从所列采集协议对应的批次、计量、称量、台账或处置记录采集该具体流数量；仅在该原子交换实际适用时记录。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -2467,7 +2467,7 @@ sync_with: pcr.en-US.md
 
 本卡仅记录具体流“Sodium hydroxide”跨越“设备与区域清洁消毒”过程边界的数量；其适用性、归一化和证据要求由下列机器字段确定。
 
-- 选定流：Sodium hydroxide
+- 选定流：氢氧化钠
 - 流属性/单位：Mass / kg
 - 数量规则：使用与该批次或报告期对应的实测活动数据，按第 8 节适用计算规则计算，并保留因子与单位换算。
 - 数值来源模式：计算值（`calculated_value`）
@@ -2482,7 +2482,7 @@ sync_with: pcr.en-US.md
 
 本卡仅记录具体流“Nitric acid”跨越“设备与区域清洁消毒”过程边界的数量；其适用性、归一化和证据要求由下列机器字段确定。
 
-- 选定流：Nitric acid
+- 选定流：硝酸
 - 流属性/单位：Mass / kg
 - 数量规则：使用与该批次或报告期对应的实测活动数据，按第 8 节适用计算规则计算，并保留因子与单位换算。
 - 数值来源模式：计算值（`calculated_value`）
@@ -2497,7 +2497,7 @@ sync_with: pcr.en-US.md
 
 本卡仅记录具体流“Peracetic acid”跨越“设备与区域清洁消毒”过程边界的数量；其适用性、归一化和证据要求由下列机器字段确定。
 
-- 选定流：Peracetic acid
+- 选定流：过氧乙酸
 - 流属性/单位：Mass / kg
 - 数量规则：使用与该批次或报告期对应的实测活动数据，按第 8 节适用计算规则计算，并保留因子与单位换算。
 - 数值来源模式：计算值（`calculated_value`）
@@ -2512,7 +2512,7 @@ sync_with: pcr.en-US.md
 
 本卡仅记录具体流“Sodium hypochlorite”跨越“设备与区域清洁消毒”过程边界的数量；其适用性、归一化和证据要求由下列机器字段确定。
 
-- 选定流：Sodium hypochlorite
+- 选定流：次氯酸钠
 - 流属性/单位：Mass / kg
 - 数量规则：使用与该批次或报告期对应的实测活动数据，按第 8 节适用计算规则计算，并保留因子与单位换算。
 - 数值来源模式：计算值（`calculated_value`）
@@ -2605,7 +2605,7 @@ sync_with: pcr.en-US.md
 
 本卡仅记录具体流“Grid electricity, medium voltage”跨越“场内废水处理”过程边界的数量；其适用性、归一化和证据要求由下列机器字段确定。
 
-- 选定流：Grid electricity, medium voltage
+- 选定流：中压电网电力
 - 流属性/单位：Energy / kWh
 - 数量规则：从所列采集协议对应的批次、计量、称量、台账或处置记录采集该具体流数量；仅在该原子交换实际适用时记录。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -2620,7 +2620,7 @@ sync_with: pcr.en-US.md
 
 本卡仅记录具体流“Ferric chloride”跨越“场内废水处理”过程边界的数量；其适用性、归一化和证据要求由下列机器字段确定。
 
-- 选定流：Ferric chloride
+- 选定流：氯化铁
 - 流属性/单位：Mass / kg
 - 数量规则：使用与该批次或报告期对应的实测活动数据，按第 8 节适用计算规则计算，并保留因子与单位换算。
 - 数值来源模式：计算值（`calculated_value`）
@@ -2635,7 +2635,7 @@ sync_with: pcr.en-US.md
 
 本卡仅记录具体流“Sodium hydroxide”跨越“场内废水处理”过程边界的数量；其适用性、归一化和证据要求由下列机器字段确定。
 
-- 选定流：Sodium hydroxide
+- 选定流：氢氧化钠
 - 流属性/单位：Mass / kg
 - 数量规则：使用与该批次或报告期对应的实测活动数据，按第 8 节适用计算规则计算，并保留因子与单位换算。
 - 数值来源模式：计算值（`calculated_value`）
@@ -2650,7 +2650,7 @@ sync_with: pcr.en-US.md
 
 本卡仅记录具体流“Polyacrylamide flocculant”跨越“场内废水处理”过程边界的数量；其适用性、归一化和证据要求由下列机器字段确定。
 
-- 选定流：Polyacrylamide flocculant
+- 选定流：聚丙烯酰胺絮凝剂
 - 流属性/单位：Mass / kg
 - 数量规则：使用与该批次或报告期对应的实测活动数据，按第 8 节适用计算规则计算，并保留因子与单位换算。
 - 数值来源模式：计算值（`calculated_value`）
@@ -2887,7 +2887,7 @@ sync_with: pcr.en-US.md
 
 本卡仅记录具体流“Chemical oxygen demand to water”跨越“场内废水处理”过程边界的数量；其适用性、归一化和证据要求由下列机器字段确定。
 
-- 选定流：Chemical oxygen demand to water
+- 选定流：化学需氧量，排入水体
 - 流属性/单位：Mass / kg
 - 数量规则：以同期间实测排水量与该单一污染物浓度计算，保留采样方法、单位换算和计算记录。
 - 数值来源模式：计算值（`calculated_value`）
@@ -2932,7 +2932,7 @@ sync_with: pcr.en-US.md
 
 本卡仅记录具体流“Total nitrogen to water”跨越“场内废水处理”过程边界的数量；其适用性、归一化和证据要求由下列机器字段确定。
 
-- 选定流：Total nitrogen to water
+- 选定流：总氮，排入水体
 - 流属性/单位：Mass / kg
 - 数量规则：以同期间实测排水量与该单一污染物浓度计算，保留采样方法、单位换算和计算记录。
 - 数值来源模式：计算值（`calculated_value`）
@@ -2947,7 +2947,7 @@ sync_with: pcr.en-US.md
 
 本卡仅记录具体流“Total phosphorus to water”跨越“场内废水处理”过程边界的数量；其适用性、归一化和证据要求由下列机器字段确定。
 
-- 选定流：Total phosphorus to water
+- 选定流：总磷，排入水体
 - 流属性/单位：Mass / kg
 - 数量规则：以同期间实测排水量与该单一污染物浓度计算，保留采样方法、单位换算和计算记录。
 - 数值来源模式：计算值（`calculated_value`）
@@ -2962,7 +2962,7 @@ sync_with: pcr.en-US.md
 
 本卡仅记录具体流“Total suspended solids to water”跨越“场内废水处理”过程边界的数量；其适用性、归一化和证据要求由下列机器字段确定。
 
-- 选定流：Total suspended solids to water
+- 选定流：总悬浮固体，排入水体
 - 流属性/单位：Mass / kg
 - 数量规则：以同期间实测排水量与该单一污染物浓度计算，保留采样方法、单位换算和计算记录。
 - 数值来源模式：计算值（`calculated_value`）
@@ -2977,7 +2977,7 @@ sync_with: pcr.en-US.md
 
 本卡仅记录具体流“Chloride to water”跨越“场内废水处理”过程边界的数量；其适用性、归一化和证据要求由下列机器字段确定。
 
-- 选定流：Chloride to water
+- 选定流：氯化物，排入水体
 - 流属性/单位：Mass / kg
 - 数量规则：以同期间实测排水量与该单一污染物浓度计算，保留采样方法、单位换算和计算记录。
 - 数值来源模式：计算值（`calculated_value`）

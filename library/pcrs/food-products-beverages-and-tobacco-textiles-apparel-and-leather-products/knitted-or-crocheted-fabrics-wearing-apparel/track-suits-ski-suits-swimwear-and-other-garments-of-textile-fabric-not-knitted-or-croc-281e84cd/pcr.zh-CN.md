@@ -38,7 +38,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 1 kg |
-| 参考产品流 | Track suits, ski suits, swimwear and other garments, of textile fabric, not knitted or crocheted n.e.c. `686dfd81-1397-4b0b-b051-eedb1164e25d` |
+| 参考产品流 | 未另列明的非针织或钩编而成的纺织品田径服、滑雪衫、游泳衣及其他外衣 `686dfd81-1397-4b0b-b051-eedb1164e25d` |
 | 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | kg |
@@ -124,7 +124,7 @@ sync_with: pcr.en-US.md
 
 记录铺布、数字排料、裁剪、真空和可直接归属验布设备的电力。
 
-- 选定流：Electricity, medium voltage
+- 选定流：中压电力
 - 流属性/单位：Energy / kWh
 - 数量规则：分表消耗，或按第 7 节分配报告期消耗。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -220,7 +220,7 @@ sync_with: pcr.en-US.md
 
 缝纫线与服装织物和其他辅料分开记录。
 
-- 选定流：Polyester sewing thread
+- 选定流：聚酯缝纫线
 - 流属性/单位：Mass / kg
 - 数量规则：由线筒领用、退回和库存记录计算净领用质量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -318,7 +318,7 @@ sync_with: pcr.en-US.md
 
 记录缝制、套口、粘合、压胶、局部抽风和可直接归属辅助设备的电力。
 
-- 选定流：Electricity, medium voltage
+- 选定流：中压电力
 - 流属性/单位：Energy / kWh
 - 数量规则：分表消耗，或按第 7 节分配报告期消耗。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -438,7 +438,7 @@ sync_with: pcr.en-US.md
 
 胶黏、清洁或压胶作业排放时，记录直接非甲烷挥发性有机物释放。
 
-- 选定流：Non-methane volatile organic compounds to air
+- 选定流：非甲烷挥发性有机物，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：实测排放，或使用产品特定挥发分和已核捕集效率进行质量平衡。
 - 数值来源模式：计算值（`calculated_value`）
@@ -472,7 +472,7 @@ sync_with: pcr.en-US.md
 
 记录进入成衣洗涤、漂洗、化学品配制或印花的冷工艺水。
 
-- 选定流：Process water
+- 选定流：过程用水
 - 流属性/单位：Volume / m3
 - 数量规则：计量供应给适用整理批次的水量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -486,7 +486,7 @@ sync_with: pcr.en-US.md
 
 购入或单独产生的热水用于整理，且其上游热量未计入蒸汽或燃料输入时记录。
 
-- 选定流：Hot water
+- 选定流：热水
 - 流属性/单位：Mass / kg
 - 数量规则：计量交付质量，并保留供回水温度。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -500,7 +500,7 @@ sync_with: pcr.en-US.md
 
 购入或产生并交付整理的蒸汽与热水、天然气分开记录。
 
-- 选定流：Steam
+- 选定流：蒸汽
 - 流属性/单位：Energy / MJ
 - 数量规则：计量蒸汽质量，按有记录的压力、温度、冷凝水回收和焓基准换算。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -514,7 +514,7 @@ sync_with: pcr.en-US.md
 
 记录为可直接归属整理热量而在场址内燃烧的天然气。
 
-- 选定流：Natural gas
+- 选定流：天然气
 - 流属性/单位：Energy / MJ
 - 数量规则：计量燃气体积并按供应商低位热值换算。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -528,7 +528,7 @@ sync_with: pcr.en-US.md
 
 记录洗衣机、烘干、固化、印花、涂层、抽风、泵和可直接归属辅助设备的电力。
 
-- 选定流：Electricity, medium voltage
+- 选定流：中压电力
 - 流属性/单位：Energy / kWh
 - 数量规则：分表消耗，或按第 7 节分配报告期消耗。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -690,7 +690,7 @@ sync_with: pcr.en-US.md
 
 记录分配给整理的场址内天然气燃烧直接化石二氧化碳。
 
-- 选定流：Carbon dioxide, fossil, to air
+- 选定流：化石源二氧化碳，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：由实测天然气消耗、供应商组成或热值和有记录燃烧因子计算。
 - 数值来源模式：计算值（`calculated_value`）
@@ -704,7 +704,7 @@ sync_with: pcr.en-US.md
 
 记录分配给整理的场址内天然气燃烧直接氮氧化物。
 
-- 选定流：Nitrogen oxides to air
+- 选定流：氮氧化物，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：使用实测烟气排放，或实测燃料乘有记录的设备特定因子。
 - 数值来源模式：计算值（`calculated_value`）
@@ -718,7 +718,7 @@ sync_with: pcr.en-US.md
 
 记录分配给整理的场址内天然气燃烧直接一氧化碳。
 
-- 选定流：Carbon monoxide to air
+- 选定流：一氧化碳，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：使用实测烟气排放，或实测燃料乘有记录的设备特定因子。
 - 数值来源模式：计算值（`calculated_value`）
@@ -732,7 +732,7 @@ sync_with: pcr.en-US.md
 
 记录在已声明场内处理边界之后排放的化学需氧量。
 
-- 选定流：Chemical oxygen demand to water
+- 选定流：化学需氧量，排入水体
 - 流属性/单位：Mass / kg
 - 数量规则：排水体积乘流量加权实测浓度。
 - 数值来源模式：计算值（`calculated_value`）
@@ -746,7 +746,7 @@ sync_with: pcr.en-US.md
 
 记录在已声明场内处理边界之后排放的悬浮固体。
 
-- 选定流：Suspended solids to water
+- 选定流：悬浮固体，排入水体
 - 流属性/单位：Mass / kg
 - 数量规则：排水体积乘流量加权实测浓度。
 - 数值来源模式：计算值（`calculated_value`）
@@ -794,7 +794,7 @@ sync_with: pcr.en-US.md
 
 记录检验照明、熨烫、返修、吊牌、封装和包装设备的电力。
 
-- 选定流：Electricity, medium voltage
+- 选定流：中压电力
 - 流属性/单位：Energy / kWh
 - 数量规则：分表消耗，或按第 7 节分配报告期消耗。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -808,7 +808,7 @@ sync_with: pcr.en-US.md
 
 最终熨烫蒸汽与电力和整理蒸汽分开记录。
 
-- 选定流：Steam
+- 选定流：蒸汽
 - 流属性/单位：Energy / MJ
 - 数量规则：计量蒸汽质量，按有记录的压力、温度、冷凝水回收和焓基准换算。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -836,7 +836,7 @@ sync_with: pcr.en-US.md
 
 使用初级聚乙烯服装袋时单独记录。
 
-- 选定流：Low-density polyethylene garment bag
+- 选定流：低密度聚乙烯服装袋
 - 流属性/单位：Mass / kg
 - 数量规则：袋数乘实测单袋质量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -850,7 +850,7 @@ sync_with: pcr.en-US.md
 
 瓦楞纸板箱与初级包装袋和纸吊牌分开记录。
 
-- 选定流：Corrugated paperboard carton
+- 选定流：瓦楞纸板箱
 - 流属性/单位：Mass / kg
 - 数量规则：纸箱数乘实测纸箱质量，并按装箱产品质量分配。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -878,7 +878,7 @@ sync_with: pcr.en-US.md
 
 使用聚丙烯纸箱捆扎带时单独记录。
 
-- 选定流：Polypropylene strapping
+- 选定流：聚丙烯捆扎带
 - 流属性/单位：Mass / kg
 - 数量规则：施用长度乘实测单位长度质量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -896,7 +896,7 @@ sync_with: pcr.en-US.md
 
 本行为质量验收合格的工厂门口参考输出；运输包装在各自输入行单独盘查。
 
-- 选定流：Track suits, ski suits, swimwear and other garments, of textile fabric, not knitted or crocheted n.e.c. `686dfd81-1397-4b0b-b051-eedb1164e25d`
+- 选定流：未另列明的非针织或钩编而成的纺织品田径服、滑雪衫、游泳衣及其他外衣 `686dfd81-1397-4b0b-b051-eedb1164e25d`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg in Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66`
 - 数量规则：质量验收合格成衣净质量恰为 1 kg。
 - 数值来源模式：固定值（`fixed_value`）
@@ -939,7 +939,7 @@ sync_with: pcr.en-US.md
 
 废弃来料纸箱和破损纸箱与聚乙烯废物分开记录。
 
-- 选定流：Waste corrugated paperboard
+- 选定流：废瓦楞纸板
 - 流属性/单位：Mass / kg
 - 数量规则：实测废物转移质量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -955,7 +955,7 @@ sync_with: pcr.en-US.md
 
 记录场内搬运设备消耗柴油产生的直接化石二氧化碳。
 
-- 选定流：Carbon dioxide, fossil, to air
+- 选定流：化石源二氧化碳，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：由实测柴油消耗、供应商燃料性质和有记录燃烧因子计算。
 - 数值来源模式：计算值（`calculated_value`）
@@ -969,7 +969,7 @@ sync_with: pcr.en-US.md
 
 记录场内搬运设备消耗柴油产生的直接氮氧化物。
 
-- 选定流：Nitrogen oxides to air
+- 选定流：氮氧化物，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：使用实测尾气排放，或实测柴油乘有记录的设备特定因子。
 - 数值来源模式：计算值（`calculated_value`）

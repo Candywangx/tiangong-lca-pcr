@@ -42,7 +42,7 @@ Codex 产品标准仅用于识别适用产品状态、配料和声明要求；�
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 1 kg |
-| 参考产品流 | Cheese from milk of sheep, fresh or processed `d2800438-b79a-4065-98ab-b7b0fe10ce97` |
+| 参考产品流 | 新鲜或加工的羊奶奶酪 `d2800438-b79a-4065-98ab-b7b0fe10ce97` |
 | 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | kg |
@@ -76,9 +76,9 @@ Codex 产品标准仅用于识别适用产品状态、配料和声明要求；�
 
 | rule_id | 适用对象 | 规则 | source_ids |
 | --- | --- | --- | --- |
-| `boundary_sheep_only` | 进入前景系统的所有乳制材料 | 仅纳入有文件证明为绵羊乳或绵羊乳来源的批次。混合种属批次或非绵羊乳制配料会使产品不适用本 PCR，必须重新分类。 | `unsd-cpc-3-0-2025`; `codex-cxs-206-1999` |
+| `boundary_sheep_only` | 进入前景系统的所有乳制材料 | 仅纳入有文件证明为绵羊乳或绵羊乳来源的批次。混合种属批次或非绵羊乳制配料会使产品不适用本 PCR，必须重新分类。 | `unsd-cpc-3-0-2025`; `fao-who-cxs-206-1999` |
 | `boundary_factory_gate` | 前景过程链 | 纳入接收和调理、适用的奶酪制造或加工操作、设施公用工程和清洗、产品损失、废水和废物流、最终调理、包装及截至设施大门放行的场内储存。 | `eu-pef-2021`; `eu-fdm-bat-2019` |
-| `boundary_route_declaration` | 产品状态和路线 | 仅纳入实际执行的操作，并声明每个被省略的条件过程。新鲜/未成熟、成熟、乳清奶酪、盐水、磨碎/粉状和加工路线不得由一个假定配方或过程强度表示。 | `codex-cxs-283-1978`; `codex-cxs-221-2001`; `codex-cxs-208-1999` |
+| `boundary_route_declaration` | 产品状态和路线 | 仅纳入实际执行的操作，并声明每个被省略的条件过程。新鲜/未成熟、成熟、乳清奶酪、盐水、磨碎/粉状和加工路线不得由一个假定配方或过程强度表示。 | `fao-who-cxs-283-1978`; `fao-who-cxs-221-2001`; `fao-who-cxs-208-1999` |
 | `boundary_upstream_link` | 绵羊乳和绵羊乳制中间产品 | 关联上游数据集，而不递归重建其清单；保留供应商、地理、生产体系和期间兼容性。 | `eu-pef-2021` |
 | `boundary_exclusions` | 下游阶段 | 除非研究明确扩大边界并单独报告，否则排除配送、零售、消费者使用和生命末期。 | `eu-pef-2021` |
 
@@ -115,7 +115,7 @@ Codex 产品标准仅用于识别适用产品状态、配料和声明要求；�
 - 基准类型：参考流（`reference_flow`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_material_lot_records`
-- 来源：`codex-cxs-206-1999`; `codex-cxs-283-1978`
+- 来源：`fao-who-cxs-206-1999`; `fao-who-cxs-283-1978`
 
 #### 输出
 
@@ -184,7 +184,7 @@ Codex 产品标准仅用于识别适用产品状态、配料和声明要求；�
 - 基准类型：参考流（`reference_flow`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_ingredient_formula_records`
-- 来源：`codex-cxs-283-1978`; `codex-cxs-221-2001`
+- 来源：`fao-who-cxs-283-1978`; `fao-who-cxs-221-2001`
 
 #### 输出
 
@@ -335,7 +335,7 @@ Codex 产品标准仅用于识别适用产品状态、配料和声明要求；�
 - 基准类型：参考流（`reference_flow`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_brine_records`
-- 来源：`codex-cxs-208-1999`
+- 来源：`fao-who-cxs-208-1999`
 
 #### 输出
 
@@ -404,7 +404,7 @@ Codex 产品标准仅用于识别适用产品状态、配料和声明要求；�
 - 基准类型：参考流（`reference_flow`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_ingredient_formula_records`
-- 来源：`codex-cxs-283-1978`
+- 来源：`fao-who-cxs-283-1978`
 
 #### 输出
 
@@ -446,13 +446,13 @@ Codex 产品标准仅用于识别适用产品状态、配料和声明要求；�
 
 ##### 产品流
 
-###### 电力与热能（`facility_energy`）
+###### 外购电力（`facility_electricity`）
 
-在可获得的最窄仪表边界分别记录电力和每种燃料或外购热能载体。欧盟 FDM BAT 性能水平仅可用于其规定范围和平均基准相符的设施背景比较，绝不得作为绵羊乳制奶酪默认值或场址记录替代值。
+在可获得的最窄仪表边界记录电网或供应商电力；不得与燃料、蒸汽或回收能合并。
 
-- 选定流：电力和路线特定热能载体
-- 流属性/单位：Energy / kWh 或 MJ；燃料质量或体积采用记录单位
-- 数量规则：使用有文件说明的场址分配，把仪表或采购数量归因于所纳入过程
+- 选定流：交流电力，声明消费组合与电压等级
+- 流属性/单位：Energy / kWh
+- 数量规则：使用直接计量或有文件说明的场址分配，把实测电量归因于所纳入过程
 - 数值来源模式：前景记录（`foreground_record`）
 - 适用范围：场址特定（`site_specific`）
 - 归一化基准：每 1 kg 放行参考产品
@@ -461,13 +461,88 @@ Codex 产品标准仅用于识别适用产品状态、配料和声明要求；�
 - 采集协议：`cp_utility_records`
 - 来源：`eu-fdm-bat-2019`
 
-###### 工艺与清洗用水（`facility_water`）
+###### 外购蒸汽（`facility_purchased_steam`）
 
-在仪表允许时分别记录工艺、清洗、冷却及其他用水，并识别循环或再用水流，避免重复计算。
+仅在蒸汽跨越设施边界时实例化，并保留供应压力或温度及凝结水回流条件。
 
-- 选定流：工艺与清洗用水
+- 选定流：外购蒸汽，声明压力与凝结水回流条件
+- 流属性/单位：Energy / MJ 或 Mass / kg
+- 数量规则：供应商仪表或发票数量，与场内燃料使用分开
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+- 归一化基准：每 1 kg 放行参考产品
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_utility_records`
+- 来源：`eu-fdm-bat-2019`
+
+###### 外购热水（`facility_purchased_hot_water`）
+
+仅在热水作为外购能源服务时实例化，并声明供回水温度。
+
+- 选定流：外购热水，声明供回水温度
+- 流属性/单位：Energy / MJ
+- 数量规则：实测热量，或根据实测质量、温差和有文件依据的比热计算
+- 数值来源模式：计算值（`calculated_value`）
+- 适用范围：场址特定（`site_specific`）
+- 归一化基准：每 1 kg 放行参考产品
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：由采集计算（`calculated_from_collection`）
+- 采集协议：`cp_utility_records`
+- 来源：`eu-fdm-bat-2019`
+
+###### 天然气（`facility_natural_gas`）
+
+当场内锅炉、巴氏杀菌、热水或工艺供热燃烧天然气时实例化。
+
+- 选定流：输送至设施的气态天然气
+- 流属性/单位：Volume / m3 或 Energy / MJ
+- 数量规则：实测或发票载体数量，并保留声明的高位/低位热值惯例
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+- 归一化基准：每 1 kg 放行参考产品
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_utility_records`
+- 来源：`eu-fdm-bat-2019`
+
+###### 液化石油气（`facility_lpg`）
+
+场内燃烧 LPG 时实例化，不得与天然气或柴油合并。
+
+- 选定流：输送至设施的液化石油气
+- 流属性/单位：Mass / kg 或 Energy / MJ
+- 数量规则：罐体领用、交付或库存对账数量；换算时记录热值
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+- 归一化基准：每 1 kg 放行参考产品
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_utility_records`
+- 来源：`eu-fdm-bat-2019`
+
+###### 柴油（`facility_diesel`）
+
+仅对固定热力设备或可直接归属的场内设备实例化；除非另行纳入，不包括进出场运输。
+
+- 选定流：输送至设施的柴油
+- 流属性/单位：Mass / kg 或 Volume / L
+- 数量规则：领用或采购数量，并与设备运行记录对账
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+- 归一化基准：每 1 kg 放行参考产品
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_utility_records`
+- 来源：`eu-fdm-bat-2019`
+
+###### 工艺用水（`facility_process_water`）
+
+将进入奶酪、盐水、乳清处理或直接接触产品的用水与清洗用水分开记录。
+
+- 选定流：工艺用水，声明水源和处理状态
 - 流属性/单位：Volume / m3 或 Mass / kg
-- 数量规则：实测数量或基于设施仪表水平衡的文件化分配
+- 数量规则：实测数量或批次投加记录
 - 数值来源模式：前景记录（`foreground_record`）
 - 适用范围：场址特定（`site_specific`）
 - 归一化基准：每 1 kg 放行参考产品
@@ -476,19 +551,80 @@ Codex 产品标准仅用于识别适用产品状态、配料和声明要求；�
 - 采集协议：`cp_utility_records`
 - 来源：`eu-fdm-bat-2019`
 
-###### 清洗与卫生材料（`cleaning_materials`）
+###### 清洗用水（`facility_cleaning_water`）
 
-按采购产品质量分别记录每种化学品或配制溶液；当选定上游数据集需要时记录有效浓度。
+将 CIP、人工冲洗、周转箱清洗和卫生用水与产品/工艺用水分开记录；识别再用水并避免重复计算。
 
-- 选定流：清洗与卫生材料
-- 流属性/单位：Mass / kg
-- 数量规则：数据期间的领料、投加或采购对账
+- 选定流：清洗用水，声明水源和处理状态
+- 流属性/单位：Volume / m3 或 Mass / kg
+- 数量规则：实测数量或从完整设施水平衡进行有文件说明的分配
 - 数值来源模式：前景记录（`foreground_record`）
 - 适用范围：场址特定（`site_specific`）
 - 归一化基准：每 1 kg 放行参考产品
 - 基准类型：参考流（`reference_flow`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_utility_records`
+- 来源：`eu-fdm-bat-2019`
+
+###### 氢氧化钠清洗剂（`cip_sodium_hydroxide`）
+
+使用烧碱进行 CIP 或设备清洗时实例化，并保留供应浓度和有效成分质量。
+
+- 选定流：氢氧化钠清洗剂
+- 流属性/单位：Mass / kg
+- 数量规则：领用溶液质量乘以实测或供应商声明的有效比例，同时保留总质量和有效质量
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+- 归一化基准：每 1 kg 放行参考产品
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_utility_records`
+- 来源：`eu-fdm-bat-2019`
+
+###### 硝酸清洗剂（`cip_nitric_acid`）
+
+酸性 CIP 使用硝酸时实例化，不得与碱液或消毒剂合并。
+
+- 选定流：硝酸清洗剂
+- 流属性/单位：Mass / kg
+- 数量规则：领用溶液质量乘以实测或供应商声明的有效比例，同时保留总质量和有效质量
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+- 归一化基准：每 1 kg 放行参考产品
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_utility_records`
+- 来源：`eu-fdm-bat-2019`
+
+###### 过氧乙酸消毒剂（`sanitizer_peracetic_acid`）
+
+使用过氧乙酸时实例化；保留配方浓度，不得记录为通用消毒剂。
+
+- 选定流：过氧乙酸消毒剂
+- 流属性/单位：Mass / kg
+- 数量规则：投加配方质量，并保留供应商有效浓度
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+- 归一化基准：每 1 kg 放行参考产品
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_utility_records`
+- 来源：`eu-fdm-bat-2019`
+
+###### 次氯酸钠消毒剂（`sanitizer_sodium_hypochlorite`）
+
+使用次氯酸钠时实例化；保留有效氯浓度，并与其他消毒剂分开。
+
+- 选定流：次氯酸钠消毒剂
+- 流属性/单位：Mass / kg
+- 数量规则：投加配方质量，并保留有效氯比例
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+- 归一化基准：每 1 kg 放行参考产品
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_utility_records`
+- 来源：`eu-fdm-bat-2019`
 
 #### 输出
 
@@ -511,13 +647,117 @@ Codex 产品标准仅用于识别适用产品状态、配料和声明要求；�
 
 ##### 基本流
 
-###### 制冷剂向空气损失（`refrigerant_losses`）
+###### 化学需氧量排水（`wastewater_cod_to_water`）
 
-根据维护日志和质量对账记录制冷剂类型及损失；有记录时不得采用假定泄漏率。
+根据匹配的流量与浓度记录报告乳品废水 COD 负荷。
 
-- 选定流：按物质区分的制冷剂向空气排放
+- 选定流：化学需氧量，排入水体
 - 流属性/单位：Mass / kg
-- 数量规则：根据制冷剂充注、回收和补加记录计算
+- 数量规则：匹配排水体积乘以代表性 COD 浓度，并保留采样覆盖信息
+- 数值来源模式：计算值（`calculated_value`）
+- 适用范围：场址特定（`site_specific`）
+- 归一化基准：每 1 kg 放行参考产品
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：由采集计算（`calculated_from_collection`）
+- 采集协议：`cp_wastewater_records`
+- 来源：`eu-fdm-bat-2019`
+
+###### 五日生化需氧量排水（`wastewater_bod5_to_water`）
+
+将五日生化需氧量负荷与 COD 分开报告。
+
+- 选定流：五日生化需氧量，排入水体
+- 流属性/单位：Mass / kg
+- 数量规则：匹配排水体积乘以代表性 BOD5 浓度，并保留采样覆盖信息
+- 数值来源模式：计算值（`calculated_value`）
+- 适用范围：场址特定（`site_specific`）
+- 归一化基准：每 1 kg 放行参考产品
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：由采集计算（`calculated_from_collection`）
+- 采集协议：`cp_wastewater_records`
+- 来源：`eu-fdm-bat-2019`
+
+###### 总氮排水（`wastewater_total_nitrogen_to_water`）
+
+当排放路线监测或要求总氮时报告总氮负荷。
+
+- 选定流：总氮，排入水体
+- 流属性/单位：Mass / kg
+- 数量规则：匹配排水体积乘以代表性总氮浓度
+- 数值来源模式：计算值（`calculated_value`）
+- 适用范围：场址特定（`site_specific`）
+- 归一化基准：每 1 kg 放行参考产品
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：由采集计算（`calculated_from_collection`）
+- 采集协议：`cp_wastewater_records`
+- 来源：`eu-fdm-bat-2019`
+
+###### 总磷排水（`wastewater_total_phosphorus_to_water`）
+
+将总磷负荷与总氮和悬浮物分开报告。
+
+- 选定流：总磷，排入水体
+- 流属性/单位：Mass / kg
+- 数量规则：匹配排水体积乘以代表性总磷浓度
+- 数值来源模式：计算值（`calculated_value`）
+- 适用范围：场址特定（`site_specific`）
+- 归一化基准：每 1 kg 放行参考产品
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：由采集计算（`calculated_from_collection`）
+- 采集协议：`cp_wastewater_records`
+- 来源：`eu-fdm-bat-2019`
+
+###### 总悬浮物排水（`wastewater_tss_to_water`）
+
+根据匹配的排水与分析记录报告悬浮物负荷。
+
+- 选定流：总悬浮物，排入水体
+- 流属性/单位：Mass / kg
+- 数量规则：匹配排水体积乘以代表性 TSS 浓度
+- 数值来源模式：计算值（`calculated_value`）
+- 适用范围：场址特定（`site_specific`）
+- 归一化基准：每 1 kg 放行参考产品
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：由采集计算（`calculated_from_collection`）
+- 采集协议：`cp_wastewater_records`
+- 来源：`eu-fdm-bat-2019`
+
+###### 油脂排水（`wastewater_oil_grease_to_water`）
+
+当所选排放或处理路线监测油脂或油脂具有重要性时报告其负荷。
+
+- 选定流：油脂，排入水体
+- 流属性/单位：Mass / kg
+- 数量规则：匹配排水体积乘以代表性油脂浓度
+- 数值来源模式：计算值（`calculated_value`）
+- 适用范围：场址特定（`site_specific`）
+- 归一化基准：每 1 kg 放行参考产品
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：由采集计算（`calculated_from_collection`）
+- 采集协议：`cp_wastewater_records`
+- 来源：`eu-fdm-bat-2019`
+
+###### 氨制冷剂向空气损失（`refrigerant_r717_to_air`）
+
+R717 系统应实例化，并根据物质特定维护和库存记录计算损失。
+
+- 选定流：氨（R717），排入空气
+- 流属性/单位：Mass / kg
+- 数量规则：期初充注量加补加量减回收量和期末充注量，并与泄漏事件对账
+- 数值来源模式：计算值（`calculated_value`）
+- 适用范围：技术特定（`technology_specific`）
+- 归一化基准：每 1 kg 放行参考产品
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：由采集计算（`calculated_from_collection`）
+- 采集协议：`cp_refrigerant_records`
+
+###### R404A 制冷剂向空气损失（`refrigerant_r404a_to_air`）
+
+R404A 系统应实例化；不得把该混合制冷剂质量与氨或其他制冷剂合并。
+
+- 选定流：制冷剂 R404A，排入空气
+- 流属性/单位：Mass / kg
+- 数量规则：期初充注量加补加量减回收量和期末充注量，并与泄漏事件对账
 - 数值来源模式：计算值（`calculated_value`）
 - 适用范围：技术特定（`technology_specific`）
 - 归一化基准：每 1 kg 放行参考产品
@@ -545,15 +785,85 @@ Codex 产品标准仅用于识别适用产品状态、配料和声明要求；�
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_batch_output_records`
 
-###### 包装材料（`packaging_materials`）
+###### 塑料薄膜包装（`packaging_plastic_film`）
 
-分别记录初级、次级和三级包装材料，并说明设施大门数据集纳入哪个包装层级。
+柔性聚合物薄膜应实例化，并声明聚合物、层结构、再生含量和包装层级。
 
-- 选定流：按材料和部件区分的包装材料
+- 选定流：塑料包装薄膜，声明聚合物和复合层结构
 - 流属性/单位：Mass / kg
-- 数量规则：使用经核实的部件质量，根据包装领料记录或件数转质量换算
+- 数量规则：领用质量或件数乘以经核实的薄膜质量，并扣除退回
 - 数值来源模式：计算值（`calculated_value`）
 - 适用范围：产品特定（`product_specific`）
+- 归一化基准：每 1 kg 放行参考产品
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：由采集计算（`calculated_from_collection`）
+- 采集协议：`cp_packaging_records`
+
+###### 硬质塑料包装（`packaging_rigid_plastic`）
+
+塑料盒、杯、托盘、盖或封口件应实例化，并保留聚合物与部件身份。
+
+- 选定流：硬质塑料包装部件，声明聚合物
+- 流属性/单位：Mass / kg
+- 数量规则：部件件数乘以经核实的部件质量，并扣除退回
+- 数值来源模式：计算值（`calculated_value`）
+- 适用范围：产品特定（`product_specific`）
+- 归一化基准：每 1 kg 放行参考产品
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：由采集计算（`calculated_from_collection`）
+- 采集协议：`cp_packaging_records`
+
+###### 瓦楞纸板包装（`packaging_corrugated_cardboard`）
+
+瓦楞纸箱、外箱、隔板或套筒应实例化。
+
+- 选定流：瓦楞纸板包装
+- 流属性/单位：Mass / kg
+- 数量规则：部件件数乘以经核实的纸板部件质量，并扣除退回
+- 数值来源模式：计算值（`calculated_value`）
+- 适用范围：产品特定（`product_specific`）
+- 归一化基准：每 1 kg 放行参考产品
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：由采集计算（`calculated_from_collection`）
+- 采集协议：`cp_packaging_records`
+
+###### 铝箔包装（`packaging_aluminium_foil`）
+
+铝箔或铝箔为主的盖材应实例化；多层复合材料仍须保留完整层结构。
+
+- 选定流：铝箔包装
+- 流属性/单位：Mass / kg
+- 数量规则：领用质量或部件件数乘以经核实的部件质量
+- 数值来源模式：计算值（`calculated_value`）
+- 适用范围：产品特定（`product_specific`）
+- 归一化基准：每 1 kg 放行参考产品
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：由采集计算（`calculated_from_collection`）
+- 采集协议：`cp_packaging_records`
+
+###### 玻璃包装（`packaging_glass`）
+
+玻璃罐或容器应实例化，并将封口材料分开记录。
+
+- 选定流：玻璃包装容器
+- 流属性/单位：Mass / kg
+- 数量规则：合格容器件数乘以经核实的容器质量
+- 数值来源模式：计算值（`calculated_value`）
+- 适用范围：产品特定（`product_specific`）
+- 归一化基准：每 1 kg 放行参考产品
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：由采集计算（`calculated_from_collection`）
+- 采集协议：`cp_packaging_records`
+
+###### 木托盘包装（`packaging_wooden_pallet`）
+
+纳入托盘时应实例化；可重复使用托盘按核实周转次数及损失/维修记录分配。
+
+- 选定流：木质运输托盘
+- 流属性/单位：Mass / kg
+- 数量规则：托盘质量除以核实的重复使用次数，再分配至发运产品质量
+- 数值来源模式：计算值（`calculated_value`）
+- 适用范围：场址特定（`site_specific`）
 - 归一化基准：每 1 kg 放行参考产品
 - 基准类型：参考流（`reference_flow`）
 - 证据类型：由采集计算（`calculated_from_collection`）
@@ -567,7 +877,7 @@ Codex 产品标准仅用于识别适用产品状态、配料和声明要求；�
 
 本输出是在所声明新鲜/成熟/加工、盐水、配料和包装状态下的绵羊乳制奶酪。
 
-- 选定流：Cheese from milk of sheep, fresh or processed `d2800438-b79a-4065-98ab-b7b0fe10ce97`
+- 选定流：新鲜或加工的羊奶奶酪 `d2800438-b79a-4065-98ab-b7b0fe10ce97`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：按所声明参考质量基准恰为 1 kg
 - 数值来源模式：固定值（`fixed_value`）
@@ -578,13 +888,83 @@ Codex 产品标准仅用于识别适用产品状态、配料和声明要求；�
 
 ##### 废物流
 
-###### 包装和最终产品损失（`final_packaging_losses`）
+###### 塑料薄膜包装废料（`waste_plastic_film_packaging`）
 
-分别记录损坏包装、修整、启动或换产产品、设施大门放行前退回产品及其去向。
+将报废和裁切的柔性薄膜与其他聚合物分开，并按去向记录。
 
-- 选定流：包装废物和最终奶酪残余物
+- 选定流：塑料薄膜包装废料
 - 流属性/单位：Mass / kg
-- 数量规则：按材料和去向实测或对账的损失质量
+- 数量规则：按去向实测或领用对账的废料质量
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+- 归一化基准：每 1 kg 放行参考产品
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_loss_waste_records`
+
+###### 硬质塑料包装废料（`waste_rigid_plastic_packaging`）
+
+按聚合物和去向记录报废的盒、杯、托盘、盖和封口件。
+
+- 选定流：硬质塑料包装废料
+- 流属性/单位：Mass / kg
+- 数量规则：按聚合物和去向实测或件数转质量对账的废料
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+- 归一化基准：每 1 kg 放行参考产品
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_loss_waste_records`
+
+###### 瓦楞纸板包装废料（`waste_corrugated_cardboard_packaging`）
+
+将损坏纸箱、外箱、隔板和套筒与塑料包装分开记录。
+
+- 选定流：瓦楞纸板包装废料
+- 流属性/单位：Mass / kg
+- 数量规则：按去向实测或领用对账的废料质量
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+- 归一化基准：每 1 kg 放行参考产品
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_loss_waste_records`
+
+###### 铝箔包装废料（`waste_aluminium_foil_packaging`）
+
+将铝箔及铝箔为主的复合废料分开记录，并保留复合材料组成。
+
+- 选定流：铝箔包装废料
+- 流属性/单位：Mass / kg
+- 数量规则：按组成和去向实测或领用对账的废料质量
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+- 归一化基准：每 1 kg 放行参考产品
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_loss_waste_records`
+
+###### 破损玻璃包装（`waste_glass_packaging`）
+
+将破损或报废玻璃容器与封口和标签废物分开记录。
+
+- 选定流：破损玻璃包装
+- 流属性/单位：Mass / kg
+- 数量规则：实测破损容器质量，或报废件数乘以经核实的容器质量
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+- 归一化基准：每 1 kg 放行参考产品
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_loss_waste_records`
+
+###### 最终奶酪产品损失（`waste_final_cheese_product`）
+
+将启动、换产、包装损坏及放行前退回的奶酪与包装废物分开记录。
+
+- 选定流：不合格绵羊乳制奶酪
+- 流属性/单位：Mass / kg
+- 数量规则：按去向实测或通过批次质量平衡对账的产品损失
 - 数值来源模式：前景记录（`foreground_record`）
 - 适用范围：场址特定（`site_specific`）
 - 归一化基准：每 1 kg 放行参考产品
@@ -623,7 +1003,7 @@ Codex 产品标准仅用于识别适用产品状态、配料和声明要求；�
 | rule_id | 适用对象 | 公式或规则 | 输入 | 输出 | source_ids |
 | --- | --- | --- | --- | --- | --- |
 | `calc_reference_normalization` | 每个清单行 | 用同一声明净质量、沥干质量或含包装质量基准的放行参考产品质量，除声明期间或批次数量。 | 行数量；合格放行质量；包装/盐水基准 | 每 1 kg 参考产品数量 | `eu-pef-2021` |
-| `calc_product_mass_basis` | 盐水和包装产品 | 声明为沥干/净质量时，参考质量等于实测奶酪质量；声明为含包装时，分别报告奶酪、游离盐水和包装，仅纳入功能单位明确说明的组成。 | 毛重、皮重、沥干奶酪、游离盐水和包装质量 | 所声明参考产品质量和组成披露 | `codex-cxs-208-1999`; `eu-pef-2021` |
+| `calc_product_mass_basis` | 盐水和包装产品 | 声明为沥干/净质量时，参考质量等于实测奶酪质量；声明为含包装时，分别报告奶酪、游离盐水和包装，仅纳入功能单位明确说明的组成。 | 毛重、皮重、沥干奶酪、游离盐水和包装质量 | 所声明参考产品质量和组成披露 | `fao-who-cxs-208-1999`; `eu-pef-2021` |
 | `calc_batch_mass_balance` | 每个纳入批次和过程步骤 | 对账实测投入、输出、转移、存货和已识别损失。报告无法解释的差额；不得强行计入乳清、废水或产品收率。 | 期初与期末库存；全部实测投入和输出 | 质量平衡残差和完整性标志 | `mass-balance-identity`; `eu-fdm-bat-2019` |
 | `calc_volume_to_mass` | 乳、乳清、盐水和液体配料 | 实测体积乘以批次、温度或供应商适用密度；保留原始体积和密度来源。 | 体积；密度；材料和温度情境 | kg 质量 | `mass-balance-identity` |
 | `calc_shared_services` | 共享公用工程和清洗 | 只有在直接计量和细分均不可行后，才使用有文件说明的因果驱动量分配，并将分配总量与设施总量对账。 | 共享总量；驱动量；合格输出质量 | 每参考产品分配服务量 | `eu-pef-2021`; `eu-fdm-bat-2019` |
@@ -645,11 +1025,12 @@ Codex 产品标准仅用于识别适用产品状态、配料和声明要求；�
 | rule_id | 适用对象 | 规则 | source_ids |
 | --- | --- | --- | --- |
 | `validate_reference_identity` | 参考流 | 产品流 UUID 必须为 `d2800438-b79a-4065-98ab-b7b0fe10ce97`，流属性 UUID 必须为 `93a60a56-a3c8-11da-a746-0800200b9a66`，单位组 UUID 必须为 `93a60a57-a4c8-11da-a746-0800200c9a66`，参考数量必须为 1 kg。 |  |
-| `validate_sheep_only` | 产品和投入身份 | 当任何乳制投入来自山羊、牛、水牛、其他动物、混合种属或种属来源未确定时失败。混乳产品必须重新分类。 | `unsd-cpc-3-0-2025`; `codex-cxs-206-1999` |
-| `validate_required_qualifiers` | 数据集元数据 | 缺少产品状态、相关时的生乳/热处理状态、适用时的成熟/持有时长、盐水质量基准、配料/配方状态、包装基准、设施大门地理或期间时失败。 | `codex-cxs-283-1978`; `codex-cxs-221-2001`; `codex-cxs-208-1999` |
+| `validate_sheep_only` | 产品和投入身份 | 当任何乳制投入来自山羊、牛、水牛、其他动物、混合种属或种属来源未确定时失败。混乳产品必须重新分类。 | `unsd-cpc-3-0-2025`; `fao-who-cxs-206-1999` |
+| `validate_required_qualifiers` | 数据集元数据 | 缺少产品状态、相关时的生乳/热处理状态、适用时的成熟/持有时长、盐水质量基准、配料/配方状态、包装基准、设施大门地理或期间时失败。 | `fao-who-cxs-283-1978`; `fao-who-cxs-221-2001`; `fao-who-cxs-208-1999` |
 | `validate_route_processes` | 过程图和清单 | 每个纳入操作必须有匹配过程章节和记录；每个被省略的条件操作必须依据所声明路线说明理由。 | `eu-pef-2021`; `eu-fdm-bat-2019` |
+| `validate_atomic_inventory` | 清单流卡片 | 任一卡片合并多种能源载体、燃料、用水用途、清洗化学品、制冷剂、废水污染物、包装材料、废物或排放时判定失败。每种具名物质、载体、部件或废物流必须单独成行；仅实例化声明路线实际使用的行。 | `eu-fdm-bat-2019` |
 | `validate_mass_reconciliation` | 批次和期间平衡 | 报告投入、输出、转移、库存变化和损失项以及无法解释的残差。当物料流被无说明地强行计入产品、乳清、废水或废物时，完整性校验失败。 | `mass-balance-identity`; `eu-fdm-bat-2019` |
-| `validate_no_universal_intensity` | 收率、配方、盐、水、能量和废物数量 | 当 Codex 限值、BAT 背景水平或通用类别值在缺少适用性匹配来源和声明建模角色时被填入场址前景数据，校验失败。 | `codex-cxs-283-1978`; `eu-fdm-bat-2019` |
+| `validate_no_universal_intensity` | 收率、配方、盐、水、能量和废物数量 | 当 Codex 限值、BAT 背景水平或通用类别值在缺少适用性匹配来源和声明建模角色时被填入场址前景数据，校验失败。 | `fao-who-cxs-283-1978`; `eu-fdm-bat-2019` |
 | `validate_allocation` | 多输出和共享服务过程 | 要求提供细分评估、所选因果或分配关系、场址期间输入、对账和敏感性披露；若用分配掩盖非绵羊乳制材料，则校验失败。 | `eu-pef-2021` |
 | `validate_sources_and_period` | 前景和上游数据 | 要求来源溯源、时间覆盖、设施与供应商范围、测量或计算方法，以及代理和缺失数据处理披露。 | `eu-pef-2021` |
 
@@ -670,10 +1051,10 @@ Codex 产品标准仅用于识别适用产品状态、配料和声明要求；�
 | Source id | Type | Reference | Used for |
 | --- | --- | --- | --- |
 | `unsd-cpc-3-0-2025` | `official_guidance` | 联合国统计司，《Central Product Classification Version 3.0 Explanatory Notes》，子类 22253，2025。https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Exp_Notes_30Jun2025.pdf（检索于 2026-08-12） | 仅限绵羊乳的 CPC 范围；纳入新鲜、乳清/凝乳、磨碎/粉状、加工、蓝纹及其他奶酪状态；排除山羊乳、牛乳、水牛乳和其他动物乳制奶酪 |
-| `codex-cxs-206-1999` | `standard` | Codex Alimentarius，《General Standard for the Use of Dairy Terms》，CXS 206-1999，2022 年修订。https://www.fao.org/fao-who-codexalimentarius/sh-proxy/en/?lnk=1&url=https%3A%2F%2Fworkspace.fao.org%2Fsites%2Fcodex%2FStandards%2FCXS+206-1999%2FCXS_206e.pdf（检索于 2026-08-12） | 乳品术语和动物来源声明情境；不是 LCI 数量来源 |
-| `codex-cxs-283-1978` | `standard` | Codex Alimentarius，《General Standard for Cheese》，CXS 283-1978，2024 年修订。https://www.fao.org/fao-who-codexalimentarius/sh-proxy/en/?lnk=1&url=https%3A%2F%2Fworkspace.fao.org%2Fsites%2Fcodex%2FStandards%2FCXS+283-1978%2FCXS_283e.pdf（检索于 2026-08-12） | 一般奶酪定义、产品状态和配料适用性以及路线声明；不推断配方、收率或 LCI 数量 |
-| `codex-cxs-221-2001` | `standard` | Codex Alimentarius，《Group Standard for Unripened Cheese Including Fresh Cheese》，CXS 221-2001，2022 年修订。https://www.fao.org/fao-who-codexalimentarius/sh-proxy/en/?lnk=1&url=https%3A%2F%2Fworkspace.fao.org%2Fsites%2Fcodex%2FStandards%2FCXS+221-2001%2FCXS_221e.pdf（检索于 2026-08-12） | 对未成熟/新鲜奶酪及相关配料和产品状态声明的适用性；不推断配方或 LCI 数量 |
-| `codex-cxs-208-1999` | `standard` | Codex Alimentarius，《Group Standard for Cheeses in Brine》，CXS 208-1999，2022 年修订。https://www.fao.org/fao-who-codexalimentarius/sh-proxy/en/?lnk=1&url=https%3A%2F%2Fworkspace.fao.org%2Fsites%2Fcodex%2FStandards%2FCXS+208-1999%2FCXS_208e.pdf（检索于 2026-08-12） | 盐水奶酪适用性以及声明沥干与含盐水状态的要求；不推断盐或盐水用量 |
+| `fao-who-cxs-206-1999` | `standard` | Codex Alimentarius，《General Standard for the Use of Dairy Terms》，CXS 206-1999，2022 年修订。https://www.fao.org/fao-who-codexalimentarius/sh-proxy/en/?lnk=1&url=https%3A%2F%2Fworkspace.fao.org%2Fsites%2Fcodex%2FStandards%2FCXS+206-1999%2FCXS_206e.pdf（检索于 2026-08-12） | 乳品术语和动物来源声明情境；不是 LCI 数量来源 |
+| `fao-who-cxs-283-1978` | `standard` | Codex Alimentarius，《General Standard for Cheese》，CXS 283-1978，2024 年修订。https://www.fao.org/fao-who-codexalimentarius/sh-proxy/en/?lnk=1&url=https%3A%2F%2Fworkspace.fao.org%2Fsites%2Fcodex%2FStandards%2FCXS+283-1978%2FCXS_283e.pdf（检索于 2026-08-12） | 一般奶酪定义、产品状态和配料适用性以及路线声明；不推断配方、收率或 LCI 数量 |
+| `fao-who-cxs-221-2001` | `standard` | Codex Alimentarius，《Group Standard for Unripened Cheese Including Fresh Cheese》，CXS 221-2001，2022 年修订。https://www.fao.org/fao-who-codexalimentarius/sh-proxy/en/?lnk=1&url=https%3A%2F%2Fworkspace.fao.org%2Fsites%2Fcodex%2FStandards%2FCXS+221-2001%2FCXS_221e.pdf（检索于 2026-08-12） | 对未成熟/新鲜奶酪及相关配料和产品状态声明的适用性；不推断配方或 LCI 数量 |
+| `fao-who-cxs-208-1999` | `standard` | Codex Alimentarius，《Group Standard for Cheeses in Brine》，CXS 208-1999，2022 年修订。https://www.fao.org/fao-who-codexalimentarius/sh-proxy/en/?lnk=1&url=https%3A%2F%2Fworkspace.fao.org%2Fsites%2Fcodex%2FStandards%2FCXS+208-1999%2FCXS_208e.pdf（检索于 2026-08-12） | 盐水奶酪适用性以及声明沥干与含盐水状态的要求；不推断盐或盐水用量 |
 | `eu-pef-2021` | `official_guidance` | 欧盟委员会，《Commission Recommendation (EU) 2021/2279 on the use of Environmental Footprint methods》，附件 I Product Environmental Footprint Method。http://data.europa.eu/eli/reco/2021/2279/oj（检索于 2026-08-12） | 功能单位和参考流、系统边界、企业特定数据、数据质量、多功能性、分配层级及报告 |
 | `eu-fdm-bat-2019` | `official_guidance` | 欧盟委员会，《Commission Implementing Decision (EU) 2019/2031 establishing BAT conclusions for the food, drink and milk industries》。http://data.europa.eu/eli/dec_impl/2019/2031/oj（检索于 2026-08-12） | 过程、水、能源、原材料、废水、废气和废物清单设计；计量和对账；仅作适用性受限的背景检查 |
 | `mass-balance-identity` | `method_factor` | 通过 `calc_batch_mass_balance` 实施的质量守恒恒等式；所有项均由前景记录取得。 | 批次完整性、体积转质量支持和无法解释残差报告；不提供类别统一收率因子 |

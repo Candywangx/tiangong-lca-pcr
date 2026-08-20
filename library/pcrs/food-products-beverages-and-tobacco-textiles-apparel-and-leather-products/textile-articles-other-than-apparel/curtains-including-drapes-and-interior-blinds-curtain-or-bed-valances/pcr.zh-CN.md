@@ -38,7 +38,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 1 kg |
-| 参考产品流 | Curtains (including drapes) and interior blinds, curtain or bed valances `e25f1284-93c9-4898-960e-3a91f026451b` |
+| 参考产品流 | 窗帘（包括悬垂窗帘）及室内窗帘，窗帘挂布及床沿挂布 `e25f1284-93c9-4898-960e-3a91f026451b` |
 | 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | kg |
@@ -114,7 +114,7 @@ sync_with: pcr.en-US.md
 
 低压交流电为铺布、裁剪、局部抽风及直接相关裁剪设备供电。过程用量由分表或有文件记录的过程电表读取。
 
-- 选定流：Alternating current, <1 kV, consumption mix, to user `50657322-939c-4829-a87b-47c093bfa6a7`
+- 选定流：交流电 `50657322-939c-4829-a87b-47c093bfa6a7`
 - 流属性/单位：Energy / kWh
 - 数量规则：记录报告批次归属于材料裁剪的计量电力。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -154,7 +154,7 @@ sync_with: pcr.en-US.md
 
 纺织固体废物由版型裁剪期间产生的边角料和修边废料组成。其出厂质量与作为库存保留的可复用余料分开记录。
 
-- 选定流：Textile solid waste, cutting and trimming waste `0d502310-2451-4b49-a5a6-bbb097226878`
+- 选定流：纺织固体废弃物 `0d502310-2451-4b49-a5a6-bbb097226878`
 - 流属性/单位：Mass / kg
 - 数量规则：按声明去向记录离开裁剪过程的边角料和修边废料实测质量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -192,7 +192,7 @@ sync_with: pcr.en-US.md
 
 聚酯缝纫线作为形成接缝和折边的特定纱线跨越组装边界。其发料质量来自批次特定的库存或线轴记录。
 
-- 选定流：Polyester sewing thread
+- 选定流：聚酯缝纫线
 - 流属性/单位：Mass / kg
 - 数量规则：记录报告批次领用和消耗的聚酯缝纫线质量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -237,7 +237,7 @@ sync_with: pcr.en-US.md
 
 低压交流电为缝纫机、熨烫设备及直接相关组装设备供电。该过程用量与裁剪和包装电力分开记录。
 
-- 选定流：Alternating current, <1 kV, consumption mix, to user `50657322-939c-4829-a87b-47c093bfa6a7`
+- 选定流：交流电 `50657322-939c-4829-a87b-47c093bfa6a7`
 - 流属性/单位：Energy / kWh
 - 数量规则：记录报告批次归属于缝制与组装的计量电力。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -285,7 +285,7 @@ sync_with: pcr.en-US.md
 
 仅当报告场址对已组装织物产品实施水洗、漂白、漂洗或化学整理时，工艺用水才进入系统。应与生活用水和冷却水分开计量。
 
-- 选定流：Process Water `94a04f7e-2d5c-41f0-b182-d54a3b373a02`
+- 选定流：工艺用水 `94a04f7e-2d5c-41f0-b182-d54a3b373a02`
 - 流属性/单位：Mass / kg
 - 数量规则：记录适用整理批次的计量工艺用水投入。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -345,7 +345,7 @@ sync_with: pcr.en-US.md
 
 低压交流电为泵、水洗机、干燥机、拉幅机、控制装置及直接相关整理设备供电。该项应与蒸汽及其他热投入分开记录。
 
-- 选定流：Alternating current, <1 kV, consumption mix, to user `50657322-939c-4829-a87b-47c093bfa6a7`
+- 选定流：交流电 `50657322-939c-4829-a87b-47c093bfa6a7`
 - 流属性/单位：Energy / kWh
 - 数量规则：记录归属于适用湿法或热法整理批次的计量电力。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -423,7 +423,7 @@ sync_with: pcr.en-US.md
 
 低压交流电为检验台、折叠、封口、贴标及直接相关包装设备供电。该项与先前过程的电力独立记录。
 
-- 选定流：Alternating current, <1 kV, consumption mix, to user `50657322-939c-4829-a87b-47c093bfa6a7`
+- 选定流：交流电 `50657322-939c-4829-a87b-47c093bfa6a7`
 - 流属性/单位：Energy / kWh
 - 数量规则：记录报告批次归属于最终检验与包装的计量电力。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -438,7 +438,7 @@ sync_with: pcr.en-US.md
 
 当低密度聚乙烯薄膜用于包裹或装袋合格窗帘时，其跨越包装边界。该实测质量与纸板包装分开记录。
 
-- 选定流：Low-density polyethylene foil (PE-LD) `2cecd3a7-d90e-44b4-aec5-1d9dfb907477`
+- 选定流：低密度聚乙烯薄膜（PE-LD） `2cecd3a7-d90e-44b4-aec5-1d9dfb907477`
 - 流属性/单位：Mass / kg
 - 数量规则：记录报告批次消耗的 PE-LD 薄膜实测质量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -453,7 +453,7 @@ sync_with: pcr.en-US.md
 
 当瓦楞纸板箱用作合格窗帘的运输容器时，其跨越包装边界。该实测质量与 PE-LD 薄膜及其他包装组件分开记录。
 
-- 选定流：corrugated board boxes `4f197bec-7b3b-11dd-ad8b-0800200c9a66`
+- 选定流：瓦楞纸箱 `4f197bec-7b3b-11dd-ad8b-0800200c9a66`
 - 流属性/单位：Mass / kg
 - 数量规则：记录报告批次消耗的瓦楞纸箱实测质量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -476,7 +476,7 @@ sync_with: pcr.en-US.md
 
 合格窗帘成品在检验后放行，是完整前景清单的归一化产品流。其净质量不含 PE-LD 薄膜和瓦楞纸箱。
 
-- 选定流：Curtains (including drapes) and interior blinds, curtain or bed valances `e25f1284-93c9-4898-960e-3a91f026451b`
+- 选定流：窗帘（包括悬垂窗帘）及室内窗帘，窗帘挂布及床沿挂布 `e25f1284-93c9-4898-960e-3a91f026451b`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：记录在工厂门放行的合格成品净实测质量。
 - 数值来源模式：前景记录（`foreground_record`）

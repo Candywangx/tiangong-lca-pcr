@@ -38,7 +38,7 @@ status: candidate
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 1,000 kg 合格纱线净质量 |
-| 参考产品流 | Yarn (other than sewing thread) of artificial staple fibres, put up for retail sale `9cb2deeb-5eb3-4128-a175-ccbf63b8a2cc` |
+| 参考产品流 | 供零售的人造短纤维纱线（缝纫线除外） `9cb2deeb-5eb3-4128-a175-ccbf63b8a2cc` |
 | 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | 质量单位组 `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | kg |
@@ -139,7 +139,7 @@ status: candidate
 
 当已声明包装形式使用纸芯时，记录纳入所售纱线包装的纸板管或纸芯。
 
-- 选定流：Cardboard tube or Paper core `78bf7f6e-519e-4b3d-82f0-eda15b2fee61`
+- 选定流：圆纸筒 `78bf7f6e-519e-4b3d-82f0-eda15b2fee61`
 - 流属性/单位：Mass / kg
 - 数量规则：批次合格零售包装中所纳入纸芯的实测质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -154,7 +154,7 @@ status: candidate
 
 记录实际纳入零售包装的纸质标签。
 
-- 选定流：Label, paper `7b25a54f-baa6-4593-9670-4240a3315eed`
+- 选定流：纸质标签 `7b25a54f-baa6-4593-9670-4240a3315eed`
 - 流属性/单位：Mass / kg
 - 数量规则：批次合格零售包装中所纳入纸质标签的实测质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -184,7 +184,7 @@ status: candidate
 
 记录随合格零售纱线批次离开工厂的瓦楞纸板箱。
 
-- 选定流：corrugated board boxes `4f197bec-7b3b-11dd-ad8b-0800200c9a66`
+- 选定流：瓦楞纸箱 `4f197bec-7b3b-11dd-ad8b-0800200c9a66`
 - 流属性/单位：Mass / kg
 - 数量规则：合格批次使用的瓦楞纸板箱实测质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -207,7 +207,7 @@ status: candidate
 
 这是在纺纱厂大门验收的参考产品；其纱线净质量不含任何包装组件。
 
-- 选定流：Yarn (other than sewing thread) of artificial staple fibres, put up for retail sale `9cb2deeb-5eb3-4128-a175-ccbf63b8a2cc`
+- 选定流：供零售的人造短纤维纱线（缝纫线除外） `9cb2deeb-5eb3-4128-a175-ccbf63b8a2cc`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：检验后且加入包装皮重之前的 1,000 kg 合格纱线净质量
 - 数值来源模式：前景记录（`foreground_record`）

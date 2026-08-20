@@ -98,7 +98,7 @@ sync_with: pcr.en-US.md
 
 ###### 验收活牛（`accepted_live_cattle`）
 
-- 选定流：Cow `aba9fdf6-b7e4-45cc-a0dd-034cec2b4fc0`
+- 选定流：奶牛 `aba9fdf6-b7e4-45cc-a0dd-034cec2b4fc0`
 - 流属性/单位：Mass / kg 活重
 - 数量规则：批次验收活重
 - 数值来源模式：前景记录（`foreground_record`）
@@ -119,7 +119,7 @@ sync_with: pcr.en-US.md
 
 ###### 工艺和清洗水（`slaughter_water`）
 
-- 选定流：Process Water `94a04f7e-2d5c-41f0-b182-d54a3b373a02`
+- 选定流：工艺用水 `94a04f7e-2d5c-41f0-b182-d54a3b373a02`
 - 流属性/单位：质量或体积 / kg 或 m3
 - 数量规则：扣除有据内部循环后的计量或发票供水量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -161,7 +161,7 @@ sync_with: pcr.en-US.md
 
 ###### 屠宰热量或燃料（`slaughter_heat`）
 
-- 选定流：Heat `260672cc-62f0-48c3-b09e-22e71519be74`
+- 选定流：热能 `260672cc-62f0-48c3-b09e-22e71519be74`
 - 流属性/单位：能源 / MJ
 - 数量规则：计量热量或按净热值计算的燃料能量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -190,7 +190,7 @@ sync_with: pcr.en-US.md
 
 ###### 合格牛肉（`slaughter_meat_output`）
 
-- 选定流：Beef `06f53118-716c-472d-b6f2-c5924840395c`
+- 选定流：牛肉 `06f53118-716c-472d-b6f2-c5924840395c`
 - 流属性/单位：Mass / kg
 - 数量规则：归一化输出 1 kg
 - 数值来源模式：固定值（`fixed_value`）
@@ -212,7 +212,7 @@ sync_with: pcr.en-US.md
 
 ###### 牛原皮（`raw_hides_output`）
 
-- 选定流：Rawhide `440c2098-2f4e-4632-9dcf-32329bcbe4de`
+- 选定流：牛生皮 `440c2098-2f4e-4632-9dcf-32329bcbe4de`
 - 流属性/单位：Mass / kg 湿皮
 - 数量规则：有有益利用去向证据的实测产品质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -233,7 +233,7 @@ sync_with: pcr.en-US.md
 
 ###### 牛食用内脏（`edible_offal_output`）
 
-- 选定流：Edible offal of cattle, fresh, chilled or frozen `a6673976-2ef4-4502-b9f5-bbc57099bb40`
+- 选定流：新鲜、冷藏或冷冻的牛食用内脏 `a6673976-2ef4-4502-b9f5-bbc57099bb40`
 - 流属性/单位：Mass / kg
 - 数量规则：作为产品转移的实测质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -327,7 +327,7 @@ sync_with: pcr.en-US.md
 
 ###### 冷却牛肉输入（`chilling_meat_input`）
 
-- 选定流：Beef `06f53118-716c-472d-b6f2-c5924840395c`
+- 选定流：牛肉 `06f53118-716c-472d-b6f2-c5924840395c`
 - 流属性/单位：Mass / kg
 - 数量规则：链接上游屠宰输出的实测进料质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -369,7 +369,7 @@ sync_with: pcr.en-US.md
 
 ###### 制冷剂补充（`chilling_refrigerant_makeup`）
 
-- 选定流：Refrigerant, R134a `210b4222-adda-4097-9e79-f2c9a6c172e4`
+- 选定流：制冷剂，R134a（四氟乙烷） `210b4222-adda-4097-9e79-f2c9a6c172e4`
 - 流属性/单位：Mass / kg 制冷剂
 - 数量规则：期初加购入减期末、转移和回收
 - 数值来源模式：计算值（`calculated_value`）
@@ -398,7 +398,7 @@ sync_with: pcr.en-US.md
 
 ###### 冷藏牛肉（`chilled_meat_output`）
 
-- 选定流：Beef `06f53118-716c-472d-b6f2-c5924840395c`
+- 选定流：牛肉 `06f53118-716c-472d-b6f2-c5924840395c`
 - 流属性/单位：Mass / kg
 - 数量规则：归一化冷藏输出 1 kg
 - 数值来源模式：固定值（`fixed_value`）
@@ -451,7 +451,7 @@ sync_with: pcr.en-US.md
 
 ###### 分割或包装牛肉输入（`cutting_meat_input`）
 
-- 选定流：Beef `06f53118-716c-472d-b6f2-c5924840395c`
+- 选定流：牛肉 `06f53118-716c-472d-b6f2-c5924840395c`
 - 流属性/单位：Mass / kg
 - 数量规则：链接上游过程的实测进料质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -493,7 +493,7 @@ sync_with: pcr.en-US.md
 
 ###### 分割用水（`cutting_water`）
 
-- 选定流：Process Water `94a04f7e-2d5c-41f0-b182-d54a3b373a02`
+- 选定流：工艺用水 `94a04f7e-2d5c-41f0-b182-d54a3b373a02`
 - 流属性/单位：质量或体积 / kg 或 m3
 - 数量规则：计量净供水
 - 数值来源模式：前景记录（`foreground_record`）
@@ -514,7 +514,7 @@ sync_with: pcr.en-US.md
 
 ###### 塑料初级包装（`primary_packaging`）
 
-- 选定流：Polyethylene film `e64eb06c-6dc9-45f1-b003-3dc6c44b27e2`
+- 选定流：聚乙烯薄膜 `e64eb06c-6dc9-45f1-b003-3dc6c44b27e2`
 - 流属性/单位：Mass / kg
 - 数量规则：领用量减有据退回未用量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -535,7 +535,7 @@ sync_with: pcr.en-US.md
 
 ###### 瓦楞纸次级包装（`secondary_packaging`）
 
-- 选定流：Corrugated cardboard `8bde297e-98df-463f-bcb4-0db52bf6e0b5`
+- 选定流：瓦楞纸板 `8bde297e-98df-463f-bcb4-0db52bf6e0b5`
 - 流属性/单位：Mass / kg
 - 数量规则：领用量减有据退回未用量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -564,7 +564,7 @@ sync_with: pcr.en-US.md
 
 ###### 合格鲜或冷藏牛肉（`final_meat_output`）
 
-- 选定流：Beef `06f53118-716c-472d-b6f2-c5924840395c`
+- 选定流：牛肉 `06f53118-716c-472d-b6f2-c5924840395c`
 - 流属性/单位：Mass / kg 净产品
 - 数量规则：归一化净输出 1 kg
 - 数值来源模式：固定值（`fixed_value`）
@@ -586,7 +586,7 @@ sync_with: pcr.en-US.md
 
 ###### 合格修整肉和回收脂肪（`cutting_coproducts`）
 
-- 选定流：Tallow `74260d26-09ba-4d24-93bd-c7687c2f2511`
+- 选定流：牛脂 `74260d26-09ba-4d24-93bd-c7687c2f2511`
 - 流属性/单位：Mass / kg
 - 数量规则：按实际产品身份计量
 - 数值来源模式：前景记录（`foreground_record`）

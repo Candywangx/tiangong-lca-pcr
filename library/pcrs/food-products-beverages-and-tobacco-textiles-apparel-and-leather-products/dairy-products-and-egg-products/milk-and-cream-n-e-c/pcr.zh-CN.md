@@ -336,7 +336,7 @@ Polydimethylsiloxane antifoam 在投配至所代表生产批次时作为一项�
 
 跨越设施边界供应给接收与制备的 Potable mains water 与直接环境取水及回收水分别记录。
 
-- 选定流：Potable mains water
+- 选定流：市政饮用水
 - 流属性/单位：Volume / m3
 - 数量规则：直接归属给接收与制备的管网水实测体积
 - 数值来源模式：前景记录（`foreground_record`）
@@ -351,7 +351,7 @@ Polydimethylsiloxane antifoam 在投配至所代表生产批次时作为一项�
 
 接收与制备消耗的 Electricity, medium voltage, grid mix 作为一项载能交换记录，并与所有其他能源投入分开。
 
-- 选定流：Electricity, medium voltage, grid mix
+- 选定流：中压电力，电网组合
 - 流属性/单位：Energy / kWh
 - 数量规则：实测用电量并直接归属给接收与制备；共享总量仅分配一次并进行核对
 - 数值来源模式：前景记录（`foreground_record`）
@@ -366,7 +366,7 @@ Polydimethylsiloxane antifoam 在投配至所代表生产批次时作为一项�
 
 接收与制备消耗的 Purchased steam 作为一项载能交换记录，并与所有其他能源投入分开。
 
-- 选定流：Purchased steam
+- 选定流：外购蒸汽
 - 流属性/单位：Energy / MJ
 - 数量规则：实测交付蒸汽能量，或由实测蒸汽质量和保留的供应条件计算的能量并直接归属给接收与制备；共享总量仅分配一次并进行核对
 - 数值来源模式：计算值（`calculated_value`）
@@ -381,7 +381,7 @@ Polydimethylsiloxane antifoam 在投配至所代表生产批次时作为一项�
 
 接收与制备消耗的 Purchased hot water 作为一项载能交换记录，并与所有其他能源投入分开。
 
-- 选定流：Purchased hot water
+- 选定流：外购热水
 - 流属性/单位：Energy / MJ
 - 数量规则：实测交付热水能量，或由实测流量及保留的供回水温度计算的能量并直接归属给接收与制备；共享总量仅分配一次并进行核对
 - 数值来源模式：计算值（`calculated_value`）
@@ -396,7 +396,7 @@ Polydimethylsiloxane antifoam 在投配至所代表生产批次时作为一项�
 
 接收与制备消耗的 Natural gas 作为一项载能交换记录，并与所有其他能源投入分开。
 
-- 选定流：Natural gas
+- 选定流：天然气
 - 流属性/单位：Energy / MJ
 - 数量规则：实测能量，或使用有记录的供应商热值换算实测气量并直接归属给接收与制备；共享总量仅分配一次并进行核对
 - 数值来源模式：计算值（`calculated_value`）
@@ -411,7 +411,7 @@ Polydimethylsiloxane antifoam 在投配至所代表生产批次时作为一项�
 
 接收与制备消耗的 Diesel fuel 作为一项载能交换记录，并与所有其他能源投入分开。
 
-- 选定流：Diesel fuel
+- 选定流：柴油燃料
 - 流属性/单位：Energy / MJ
 - 数量规则：使用有记录的供应商热值换算实测燃料量并直接归属给接收与制备；共享总量仅分配一次并进行核对
 - 数值来源模式：计算值（`calculated_value`）
@@ -426,7 +426,7 @@ Polydimethylsiloxane antifoam 在投配至所代表生产批次时作为一项�
 
 接收与制备消耗的 Liquefied petroleum gas 作为一项载能交换记录，并与所有其他能源投入分开。
 
-- 选定流：Liquefied petroleum gas
+- 选定流：液化石油气
 - 流属性/单位：Energy / MJ
 - 数量规则：使用有记录的供应商热值换算实测燃料量并直接归属给接收与制备；共享总量仅分配一次并进行核对
 - 数值来源模式：计算值（`calculated_value`）
@@ -441,7 +441,7 @@ Polydimethylsiloxane antifoam 在投配至所代表生产批次时作为一项�
 
 向服务于接收与制备的制冷设备补充的 Ammonia refrigerant (R-717) 作为一项产品投入记录。
 
-- 选定流：Ammonia refrigerant (R-717)
+- 选定流：氨制冷剂（R-717）
 - 流属性/单位：Mass / kg
 - 数量规则：由制冷剂维修与库存记录实测的补充质量；不得把系统总充注量当作补充量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -456,7 +456,7 @@ Polydimethylsiloxane antifoam 在投配至所代表生产批次时作为一项�
 
 向服务于接收与制备的制冷设备补充的 1,1,1,2-Tetrafluoroethane refrigerant (HFC-134a) 作为一项产品投入记录。
 
-- 选定流：1,1,1,2-Tetrafluoroethane refrigerant (HFC-134a)
+- 选定流：1,1,1,2-四氟乙烷制冷剂（HFC-134a）
 - 流属性/单位：Mass / kg
 - 数量规则：由制冷剂维修与库存记录实测的补充质量；不得把系统总充注量当作补充量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -490,7 +490,7 @@ Polydimethylsiloxane antifoam 在投配至所代表生产批次时作为一项�
 
 为接收与制备从环境直接取用的 Water, ground 作为一项基本流投入记录，不与管网供水重复。
 
-- 选定流：Water, ground
+- 选定流：地下水
 - 流属性/单位：Volume / m3
 - 数量规则：归属给接收与制备的实测直接取水体积
 - 数值来源模式：前景记录（`foreground_record`）
@@ -505,7 +505,7 @@ Polydimethylsiloxane antifoam 在投配至所代表生产批次时作为一项�
 
 为接收与制备从环境直接取用的 Water, surface 作为一项基本流投入记录，不与管网供水重复。
 
-- 选定流：Water, surface
+- 选定流：地表水
 - 流属性/单位：Volume / m3
 - 数量规则：归属给接收与制备的实测直接取水体积
 - 数值来源模式：前景记录（`foreground_record`）
@@ -618,7 +618,7 @@ Prepared dairy mix 是从接收与制备转入符合条件处理的一项内部�
 
 服务于接收与制备的现场燃烧产生的 Carbon dioxide, fossil, to air 作为一项基本流输出报告。
 
-- 选定流：Carbon dioxide, fossil, to air
+- 选定流：化石源二氧化碳，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：实测烟气质量，或由分别记录的燃料投入和保留的经核实因子计算的物质质量
 - 数值来源模式：计算值（`calculated_value`）
@@ -633,7 +633,7 @@ Prepared dairy mix 是从接收与制备转入符合条件处理的一项内部�
 
 服务于接收与制备的现场燃烧产生的 Methane to air 作为一项基本流输出报告。
 
-- 选定流：Methane to air
+- 选定流：甲烷，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：实测烟气质量，或由分别记录的燃料投入和保留的经核实因子计算的物质质量
 - 数值来源模式：计算值（`calculated_value`）
@@ -648,7 +648,7 @@ Prepared dairy mix 是从接收与制备转入符合条件处理的一项内部�
 
 服务于接收与制备的现场燃烧产生的 Dinitrogen monoxide to air 作为一项基本流输出报告。
 
-- 选定流：Dinitrogen monoxide to air
+- 选定流：氧化亚氮，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：实测烟气质量，或由分别记录的燃料投入和保留的经核实因子计算的物质质量
 - 数值来源模式：计算值（`calculated_value`）
@@ -663,7 +663,7 @@ Prepared dairy mix 是从接收与制备转入符合条件处理的一项内部�
 
 服务于接收与制备的现场燃烧产生的 Nitrogen monoxide to air 作为一项基本流输出报告。
 
-- 选定流：Nitrogen monoxide to air
+- 选定流：一氧化氮，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：实测烟气质量，或由分别记录的燃料投入和保留的经核实因子计算的物质质量
 - 数值来源模式：计算值（`calculated_value`）
@@ -678,7 +678,7 @@ Prepared dairy mix 是从接收与制备转入符合条件处理的一项内部�
 
 服务于接收与制备的现场燃烧产生的 Nitrogen dioxide to air 作为一项基本流输出报告。
 
-- 选定流：Nitrogen dioxide to air
+- 选定流：二氧化氮，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：实测烟气质量，或由分别记录的燃料投入和保留的经核实因子计算的物质质量
 - 数值来源模式：计算值（`calculated_value`）
@@ -693,7 +693,7 @@ Prepared dairy mix 是从接收与制备转入符合条件处理的一项内部�
 
 服务于接收与制备的现场燃烧产生的 Carbon monoxide to air 作为一项基本流输出报告。
 
-- 选定流：Carbon monoxide to air
+- 选定流：一氧化碳，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：实测烟气质量，或由分别记录的燃料投入和保留的经核实因子计算的物质质量
 - 数值来源模式：计算值（`calculated_value`）
@@ -708,7 +708,7 @@ Prepared dairy mix 是从接收与制备转入符合条件处理的一项内部�
 
 服务于接收与制备的现场燃烧产生的 Sulfur dioxide to air 作为一项基本流输出报告。
 
-- 选定流：Sulfur dioxide to air
+- 选定流：二氧化硫，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：实测烟气质量，或由分别记录的燃料投入和保留的经核实因子计算的物质质量
 - 数值来源模式：计算值（`calculated_value`）
@@ -723,7 +723,7 @@ Prepared dairy mix 是从接收与制备转入符合条件处理的一项内部�
 
 服务于接收与制备的制冷设备释放的 Ammonia to air 作为一项基本流输出报告。
 
-- 选定流：Ammonia to air
+- 选定流：氨，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：由期初充注量、实测补充量、期末充注量、实测回收量、事故记录及适用时经核实的混合物组成计算
 - 数值来源模式：计算值（`calculated_value`）
@@ -738,7 +738,7 @@ Prepared dairy mix 是从接收与制备转入符合条件处理的一项内部�
 
 服务于接收与制备的制冷设备释放的 1,1,1,2-Tetrafluoroethane to air 作为一项基本流输出报告。
 
-- 选定流：1,1,1,2-Tetrafluoroethane to air
+- 选定流：1,1,1,2-四氟乙烷，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：由期初充注量、实测补充量、期末充注量、实测回收量、事故记录及适用时经核实的混合物组成计算
 - 数值来源模式：计算值（`calculated_value`）
@@ -753,7 +753,7 @@ Prepared dairy mix 是从接收与制备转入符合条件处理的一项内部�
 
 服务于接收与制备的制冷设备释放的 Pentafluoroethane to air 作为一项基本流输出报告。
 
-- 选定流：Pentafluoroethane to air
+- 选定流：五氟乙烷，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：由期初充注量、实测补充量、期末充注量、实测回收量、事故记录及适用时经核实的混合物组成计算
 - 数值来源模式：计算值（`calculated_value`）
@@ -768,7 +768,7 @@ Prepared dairy mix 是从接收与制备转入符合条件处理的一项内部�
 
 服务于接收与制备的制冷设备释放的 1,1,1-Trifluoroethane to air 作为一项基本流输出报告。
 
-- 选定流：1,1,1-Trifluoroethane to air
+- 选定流：1,1,1-三氟乙烷，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：由期初充注量、实测补充量、期末充注量、实测回收量、事故记录及适用时经核实的混合物组成计算
 - 数值来源模式：计算值（`calculated_value`）
@@ -804,7 +804,7 @@ Prepared dairy mix 是从接收与制备转入符合条件处理的一项内部�
 
 跨越设施边界供应给符合条件处理的 Potable mains water 与直接环境取水及回收水分别记录。
 
-- 选定流：Potable mains water
+- 选定流：市政饮用水
 - 流属性/单位：Volume / m3
 - 数量规则：直接归属给符合条件处理的管网水实测体积
 - 数值来源模式：前景记录（`foreground_record`）
@@ -819,7 +819,7 @@ Prepared dairy mix 是从接收与制备转入符合条件处理的一项内部�
 
 符合条件处理消耗的 Electricity, medium voltage, grid mix 作为一项载能交换记录，并与所有其他能源投入分开。
 
-- 选定流：Electricity, medium voltage, grid mix
+- 选定流：中压电力，电网组合
 - 流属性/单位：Energy / kWh
 - 数量规则：实测用电量并直接归属给符合条件处理；共享总量仅分配一次并进行核对
 - 数值来源模式：前景记录（`foreground_record`）
@@ -834,7 +834,7 @@ Prepared dairy mix 是从接收与制备转入符合条件处理的一项内部�
 
 符合条件处理消耗的 Purchased steam 作为一项载能交换记录，并与所有其他能源投入分开。
 
-- 选定流：Purchased steam
+- 选定流：外购蒸汽
 - 流属性/单位：Energy / MJ
 - 数量规则：实测交付蒸汽能量，或由实测蒸汽质量和保留的供应条件计算的能量并直接归属给符合条件处理；共享总量仅分配一次并进行核对
 - 数值来源模式：计算值（`calculated_value`）
@@ -849,7 +849,7 @@ Prepared dairy mix 是从接收与制备转入符合条件处理的一项内部�
 
 符合条件处理消耗的 Purchased hot water 作为一项载能交换记录，并与所有其他能源投入分开。
 
-- 选定流：Purchased hot water
+- 选定流：外购热水
 - 流属性/单位：Energy / MJ
 - 数量规则：实测交付热水能量，或由实测流量及保留的供回水温度计算的能量并直接归属给符合条件处理；共享总量仅分配一次并进行核对
 - 数值来源模式：计算值（`calculated_value`）
@@ -864,7 +864,7 @@ Prepared dairy mix 是从接收与制备转入符合条件处理的一项内部�
 
 符合条件处理消耗的 Natural gas 作为一项载能交换记录，并与所有其他能源投入分开。
 
-- 选定流：Natural gas
+- 选定流：天然气
 - 流属性/单位：Energy / MJ
 - 数量规则：实测能量，或使用有记录的供应商热值换算实测气量并直接归属给符合条件处理；共享总量仅分配一次并进行核对
 - 数值来源模式：计算值（`calculated_value`）
@@ -879,7 +879,7 @@ Prepared dairy mix 是从接收与制备转入符合条件处理的一项内部�
 
 符合条件处理消耗的 Diesel fuel 作为一项载能交换记录，并与所有其他能源投入分开。
 
-- 选定流：Diesel fuel
+- 选定流：柴油燃料
 - 流属性/单位：Energy / MJ
 - 数量规则：使用有记录的供应商热值换算实测燃料量并直接归属给符合条件处理；共享总量仅分配一次并进行核对
 - 数值来源模式：计算值（`calculated_value`）
@@ -894,7 +894,7 @@ Prepared dairy mix 是从接收与制备转入符合条件处理的一项内部�
 
 符合条件处理消耗的 Liquefied petroleum gas 作为一项载能交换记录，并与所有其他能源投入分开。
 
-- 选定流：Liquefied petroleum gas
+- 选定流：液化石油气
 - 流属性/单位：Energy / MJ
 - 数量规则：使用有记录的供应商热值换算实测燃料量并直接归属给符合条件处理；共享总量仅分配一次并进行核对
 - 数值来源模式：计算值（`calculated_value`）
@@ -909,7 +909,7 @@ Prepared dairy mix 是从接收与制备转入符合条件处理的一项内部�
 
 向服务于符合条件处理的制冷设备补充的 Ammonia refrigerant (R-717) 作为一项产品投入记录。
 
-- 选定流：Ammonia refrigerant (R-717)
+- 选定流：氨制冷剂（R-717）
 - 流属性/单位：Mass / kg
 - 数量规则：由制冷剂维修与库存记录实测的补充质量；不得把系统总充注量当作补充量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -924,7 +924,7 @@ Prepared dairy mix 是从接收与制备转入符合条件处理的一项内部�
 
 向服务于符合条件处理的制冷设备补充的 1,1,1,2-Tetrafluoroethane refrigerant (HFC-134a) 作为一项产品投入记录。
 
-- 选定流：1,1,1,2-Tetrafluoroethane refrigerant (HFC-134a)
+- 选定流：1,1,1,2-四氟乙烷制冷剂（HFC-134a）
 - 流属性/单位：Mass / kg
 - 数量规则：由制冷剂维修与库存记录实测的补充质量；不得把系统总充注量当作补充量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -958,7 +958,7 @@ Prepared dairy mix 是从接收与制备转入符合条件处理的一项内部�
 
 为符合条件处理从环境直接取用的 Water, ground 作为一项基本流投入记录，不与管网供水重复。
 
-- 选定流：Water, ground
+- 选定流：地下水
 - 流属性/单位：Volume / m3
 - 数量规则：归属给符合条件处理的实测直接取水体积
 - 数值来源模式：前景记录（`foreground_record`）
@@ -973,7 +973,7 @@ Prepared dairy mix 是从接收与制备转入符合条件处理的一项内部�
 
 为符合条件处理从环境直接取用的 Water, surface 作为一项基本流投入记录，不与管网供水重复。
 
-- 选定流：Water, surface
+- 选定流：地表水
 - 流属性/单位：Volume / m3
 - 数量规则：归属给符合条件处理的实测直接取水体积
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1056,7 +1056,7 @@ Treated non-solid dairy product 是在灌装前离开所声明浓缩或加甜及
 
 服务于符合条件处理的现场燃烧产生的 Carbon dioxide, fossil, to air 作为一项基本流输出报告。
 
-- 选定流：Carbon dioxide, fossil, to air
+- 选定流：化石源二氧化碳，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：实测烟气质量，或由分别记录的燃料投入和保留的经核实因子计算的物质质量
 - 数值来源模式：计算值（`calculated_value`）
@@ -1071,7 +1071,7 @@ Treated non-solid dairy product 是在灌装前离开所声明浓缩或加甜及
 
 服务于符合条件处理的现场燃烧产生的 Methane to air 作为一项基本流输出报告。
 
-- 选定流：Methane to air
+- 选定流：甲烷，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：实测烟气质量，或由分别记录的燃料投入和保留的经核实因子计算的物质质量
 - 数值来源模式：计算值（`calculated_value`）
@@ -1086,7 +1086,7 @@ Treated non-solid dairy product 是在灌装前离开所声明浓缩或加甜及
 
 服务于符合条件处理的现场燃烧产生的 Dinitrogen monoxide to air 作为一项基本流输出报告。
 
-- 选定流：Dinitrogen monoxide to air
+- 选定流：氧化亚氮，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：实测烟气质量，或由分别记录的燃料投入和保留的经核实因子计算的物质质量
 - 数值来源模式：计算值（`calculated_value`）
@@ -1101,7 +1101,7 @@ Treated non-solid dairy product 是在灌装前离开所声明浓缩或加甜及
 
 服务于符合条件处理的现场燃烧产生的 Nitrogen monoxide to air 作为一项基本流输出报告。
 
-- 选定流：Nitrogen monoxide to air
+- 选定流：一氧化氮，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：实测烟气质量，或由分别记录的燃料投入和保留的经核实因子计算的物质质量
 - 数值来源模式：计算值（`calculated_value`）
@@ -1116,7 +1116,7 @@ Treated non-solid dairy product 是在灌装前离开所声明浓缩或加甜及
 
 服务于符合条件处理的现场燃烧产生的 Nitrogen dioxide to air 作为一项基本流输出报告。
 
-- 选定流：Nitrogen dioxide to air
+- 选定流：二氧化氮，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：实测烟气质量，或由分别记录的燃料投入和保留的经核实因子计算的物质质量
 - 数值来源模式：计算值（`calculated_value`）
@@ -1131,7 +1131,7 @@ Treated non-solid dairy product 是在灌装前离开所声明浓缩或加甜及
 
 服务于符合条件处理的现场燃烧产生的 Carbon monoxide to air 作为一项基本流输出报告。
 
-- 选定流：Carbon monoxide to air
+- 选定流：一氧化碳，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：实测烟气质量，或由分别记录的燃料投入和保留的经核实因子计算的物质质量
 - 数值来源模式：计算值（`calculated_value`）
@@ -1146,7 +1146,7 @@ Treated non-solid dairy product 是在灌装前离开所声明浓缩或加甜及
 
 服务于符合条件处理的现场燃烧产生的 Sulfur dioxide to air 作为一项基本流输出报告。
 
-- 选定流：Sulfur dioxide to air
+- 选定流：二氧化硫，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：实测烟气质量，或由分别记录的燃料投入和保留的经核实因子计算的物质质量
 - 数值来源模式：计算值（`calculated_value`）
@@ -1161,7 +1161,7 @@ Treated non-solid dairy product 是在灌装前离开所声明浓缩或加甜及
 
 服务于符合条件处理的制冷设备释放的 Ammonia to air 作为一项基本流输出报告。
 
-- 选定流：Ammonia to air
+- 选定流：氨，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：由期初充注量、实测补充量、期末充注量、实测回收量、事故记录及适用时经核实的混合物组成计算
 - 数值来源模式：计算值（`calculated_value`）
@@ -1176,7 +1176,7 @@ Treated non-solid dairy product 是在灌装前离开所声明浓缩或加甜及
 
 服务于符合条件处理的制冷设备释放的 1,1,1,2-Tetrafluoroethane to air 作为一项基本流输出报告。
 
-- 选定流：1,1,1,2-Tetrafluoroethane to air
+- 选定流：1,1,1,2-四氟乙烷，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：由期初充注量、实测补充量、期末充注量、实测回收量、事故记录及适用时经核实的混合物组成计算
 - 数值来源模式：计算值（`calculated_value`）
@@ -1191,7 +1191,7 @@ Treated non-solid dairy product 是在灌装前离开所声明浓缩或加甜及
 
 服务于符合条件处理的制冷设备释放的 Pentafluoroethane to air 作为一项基本流输出报告。
 
-- 选定流：Pentafluoroethane to air
+- 选定流：五氟乙烷，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：由期初充注量、实测补充量、期末充注量、实测回收量、事故记录及适用时经核实的混合物组成计算
 - 数值来源模式：计算值（`calculated_value`）
@@ -1206,7 +1206,7 @@ Treated non-solid dairy product 是在灌装前离开所声明浓缩或加甜及
 
 服务于符合条件处理的制冷设备释放的 1,1,1-Trifluoroethane to air 作为一项基本流输出报告。
 
-- 选定流：1,1,1-Trifluoroethane to air
+- 选定流：1,1,1-三氟乙烷，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：由期初充注量、实测补充量、期末充注量、实测回收量、事故记录及适用时经核实的混合物组成计算
 - 数值来源模式：计算值（`calculated_value`）
@@ -1377,7 +1377,7 @@ Treated non-solid dairy product 是在灌装前离开所声明浓缩或加甜及
 
 为放行包装配置跨越设施边界的 Wooden pallet 作为一项包装组件投入记录。
 
-- 选定流：Wooden pallet
+- 选定流：木托盘
 - 流属性/单位：Mass / kg
 - 数量规则：扣除有记录退料后的实测组件领用质量，并与灌装单元和对应废料流核对
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1392,7 +1392,7 @@ Treated non-solid dairy product 是在灌装前离开所声明浓缩或加甜及
 
 为放行包装配置跨越设施边界的 Low-density polyethylene stretch film 作为一项包装组件投入记录。
 
-- 选定流：Low-density polyethylene stretch film
+- 选定流：低密度聚乙烯拉伸膜
 - 流属性/单位：Mass / kg
 - 数量规则：扣除有记录退料后的实测组件领用质量，并与灌装单元和对应废料流核对
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1407,7 +1407,7 @@ Treated non-solid dairy product 是在灌装前离开所声明浓缩或加甜及
 
 灌装与工厂门口储存消耗的 Electricity, medium voltage, grid mix 作为一项载能交换记录，并与所有其他能源投入分开。
 
-- 选定流：Electricity, medium voltage, grid mix
+- 选定流：中压电力，电网组合
 - 流属性/单位：Energy / kWh
 - 数量规则：实测用电量并直接归属给灌装与工厂门口储存；共享总量仅分配一次并进行核对
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1422,7 +1422,7 @@ Treated non-solid dairy product 是在灌装前离开所声明浓缩或加甜及
 
 灌装与工厂门口储存消耗的 Purchased steam 作为一项载能交换记录，并与所有其他能源投入分开。
 
-- 选定流：Purchased steam
+- 选定流：外购蒸汽
 - 流属性/单位：Energy / MJ
 - 数量规则：实测交付蒸汽能量，或由实测蒸汽质量和保留的供应条件计算的能量并直接归属给灌装与工厂门口储存；共享总量仅分配一次并进行核对
 - 数值来源模式：计算值（`calculated_value`）
@@ -1437,7 +1437,7 @@ Treated non-solid dairy product 是在灌装前离开所声明浓缩或加甜及
 
 灌装与工厂门口储存消耗的 Purchased hot water 作为一项载能交换记录，并与所有其他能源投入分开。
 
-- 选定流：Purchased hot water
+- 选定流：外购热水
 - 流属性/单位：Energy / MJ
 - 数量规则：实测交付热水能量，或由实测流量及保留的供回水温度计算的能量并直接归属给灌装与工厂门口储存；共享总量仅分配一次并进行核对
 - 数值来源模式：计算值（`calculated_value`）
@@ -1452,7 +1452,7 @@ Treated non-solid dairy product 是在灌装前离开所声明浓缩或加甜及
 
 灌装与工厂门口储存消耗的 Natural gas 作为一项载能交换记录，并与所有其他能源投入分开。
 
-- 选定流：Natural gas
+- 选定流：天然气
 - 流属性/单位：Energy / MJ
 - 数量规则：实测能量，或使用有记录的供应商热值换算实测气量并直接归属给灌装与工厂门口储存；共享总量仅分配一次并进行核对
 - 数值来源模式：计算值（`calculated_value`）
@@ -1467,7 +1467,7 @@ Treated non-solid dairy product 是在灌装前离开所声明浓缩或加甜及
 
 灌装与工厂门口储存消耗的 Diesel fuel 作为一项载能交换记录，并与所有其他能源投入分开。
 
-- 选定流：Diesel fuel
+- 选定流：柴油燃料
 - 流属性/单位：Energy / MJ
 - 数量规则：使用有记录的供应商热值换算实测燃料量并直接归属给灌装与工厂门口储存；共享总量仅分配一次并进行核对
 - 数值来源模式：计算值（`calculated_value`）
@@ -1482,7 +1482,7 @@ Treated non-solid dairy product 是在灌装前离开所声明浓缩或加甜及
 
 灌装与工厂门口储存消耗的 Liquefied petroleum gas 作为一项载能交换记录，并与所有其他能源投入分开。
 
-- 选定流：Liquefied petroleum gas
+- 选定流：液化石油气
 - 流属性/单位：Energy / MJ
 - 数量规则：使用有记录的供应商热值换算实测燃料量并直接归属给灌装与工厂门口储存；共享总量仅分配一次并进行核对
 - 数值来源模式：计算值（`calculated_value`）
@@ -1497,7 +1497,7 @@ Treated non-solid dairy product 是在灌装前离开所声明浓缩或加甜及
 
 向服务于灌装与工厂门口储存的制冷设备补充的 Ammonia refrigerant (R-717) 作为一项产品投入记录。
 
-- 选定流：Ammonia refrigerant (R-717)
+- 选定流：氨制冷剂（R-717）
 - 流属性/单位：Mass / kg
 - 数量规则：由制冷剂维修与库存记录实测的补充质量；不得把系统总充注量当作补充量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1512,7 +1512,7 @@ Treated non-solid dairy product 是在灌装前离开所声明浓缩或加甜及
 
 向服务于灌装与工厂门口储存的制冷设备补充的 1,1,1,2-Tetrafluoroethane refrigerant (HFC-134a) 作为一项产品投入记录。
 
-- 选定流：1,1,1,2-Tetrafluoroethane refrigerant (HFC-134a)
+- 选定流：1,1,1,2-四氟乙烷制冷剂（HFC-134a）
 - 流属性/单位：Mass / kg
 - 数量规则：由制冷剂维修与库存记录实测的补充质量；不得把系统总充注量当作补充量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1550,7 +1550,7 @@ Treated non-solid dairy product 是在灌装前离开所声明浓缩或加甜及
 
 仅当放行的符合条件产品为乳时，才保留带 UUID 的 Milk 参考流。稀奶油或语义不同的产品在建模或发布前必须采用另行复核的替代流。
 
-- 选定流：Milk `84a8c346-2832-400b-a2a6-421ef7701958`
+- 选定流：牛奶 `84a8c346-2832-400b-a2a6-421ef7701958`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` / kg
 - 数量规则：作为定量参考的恰好 1 kg 净放行产品
 - 数值来源模式：固定值（`fixed_value`）
@@ -1749,7 +1749,7 @@ Treated non-solid dairy product 是在灌装前离开所声明浓缩或加甜及
 
 服务于灌装与工厂门口储存的现场燃烧产生的 Carbon dioxide, fossil, to air 作为一项基本流输出报告。
 
-- 选定流：Carbon dioxide, fossil, to air
+- 选定流：化石源二氧化碳，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：实测烟气质量，或由分别记录的燃料投入和保留的经核实因子计算的物质质量
 - 数值来源模式：计算值（`calculated_value`）
@@ -1764,7 +1764,7 @@ Treated non-solid dairy product 是在灌装前离开所声明浓缩或加甜及
 
 服务于灌装与工厂门口储存的现场燃烧产生的 Methane to air 作为一项基本流输出报告。
 
-- 选定流：Methane to air
+- 选定流：甲烷，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：实测烟气质量，或由分别记录的燃料投入和保留的经核实因子计算的物质质量
 - 数值来源模式：计算值（`calculated_value`）
@@ -1779,7 +1779,7 @@ Treated non-solid dairy product 是在灌装前离开所声明浓缩或加甜及
 
 服务于灌装与工厂门口储存的现场燃烧产生的 Dinitrogen monoxide to air 作为一项基本流输出报告。
 
-- 选定流：Dinitrogen monoxide to air
+- 选定流：氧化亚氮，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：实测烟气质量，或由分别记录的燃料投入和保留的经核实因子计算的物质质量
 - 数值来源模式：计算值（`calculated_value`）
@@ -1794,7 +1794,7 @@ Treated non-solid dairy product 是在灌装前离开所声明浓缩或加甜及
 
 服务于灌装与工厂门口储存的现场燃烧产生的 Nitrogen monoxide to air 作为一项基本流输出报告。
 
-- 选定流：Nitrogen monoxide to air
+- 选定流：一氧化氮，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：实测烟气质量，或由分别记录的燃料投入和保留的经核实因子计算的物质质量
 - 数值来源模式：计算值（`calculated_value`）
@@ -1809,7 +1809,7 @@ Treated non-solid dairy product 是在灌装前离开所声明浓缩或加甜及
 
 服务于灌装与工厂门口储存的现场燃烧产生的 Nitrogen dioxide to air 作为一项基本流输出报告。
 
-- 选定流：Nitrogen dioxide to air
+- 选定流：二氧化氮，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：实测烟气质量，或由分别记录的燃料投入和保留的经核实因子计算的物质质量
 - 数值来源模式：计算值（`calculated_value`）
@@ -1824,7 +1824,7 @@ Treated non-solid dairy product 是在灌装前离开所声明浓缩或加甜及
 
 服务于灌装与工厂门口储存的现场燃烧产生的 Carbon monoxide to air 作为一项基本流输出报告。
 
-- 选定流：Carbon monoxide to air
+- 选定流：一氧化碳，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：实测烟气质量，或由分别记录的燃料投入和保留的经核实因子计算的物质质量
 - 数值来源模式：计算值（`calculated_value`）
@@ -1839,7 +1839,7 @@ Treated non-solid dairy product 是在灌装前离开所声明浓缩或加甜及
 
 服务于灌装与工厂门口储存的现场燃烧产生的 Sulfur dioxide to air 作为一项基本流输出报告。
 
-- 选定流：Sulfur dioxide to air
+- 选定流：二氧化硫，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：实测烟气质量，或由分别记录的燃料投入和保留的经核实因子计算的物质质量
 - 数值来源模式：计算值（`calculated_value`）
@@ -1854,7 +1854,7 @@ Treated non-solid dairy product 是在灌装前离开所声明浓缩或加甜及
 
 服务于灌装与工厂门口储存的制冷设备释放的 Ammonia to air 作为一项基本流输出报告。
 
-- 选定流：Ammonia to air
+- 选定流：氨，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：由期初充注量、实测补充量、期末充注量、实测回收量、事故记录及适用时经核实的混合物组成计算
 - 数值来源模式：计算值（`calculated_value`）
@@ -1869,7 +1869,7 @@ Treated non-solid dairy product 是在灌装前离开所声明浓缩或加甜及
 
 服务于灌装与工厂门口储存的制冷设备释放的 1,1,1,2-Tetrafluoroethane to air 作为一项基本流输出报告。
 
-- 选定流：1,1,1,2-Tetrafluoroethane to air
+- 选定流：1,1,1,2-四氟乙烷，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：由期初充注量、实测补充量、期末充注量、实测回收量、事故记录及适用时经核实的混合物组成计算
 - 数值来源模式：计算值（`calculated_value`）
@@ -1884,7 +1884,7 @@ Treated non-solid dairy product 是在灌装前离开所声明浓缩或加甜及
 
 服务于灌装与工厂门口储存的制冷设备释放的 Pentafluoroethane to air 作为一项基本流输出报告。
 
-- 选定流：Pentafluoroethane to air
+- 选定流：五氟乙烷，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：由期初充注量、实测补充量、期末充注量、实测回收量、事故记录及适用时经核实的混合物组成计算
 - 数值来源模式：计算值（`calculated_value`）
@@ -1899,7 +1899,7 @@ Treated non-solid dairy product 是在灌装前离开所声明浓缩或加甜及
 
 服务于灌装与工厂门口储存的制冷设备释放的 1,1,1-Trifluoroethane to air 作为一项基本流输出报告。
 
-- 选定流：1,1,1-Trifluoroethane to air
+- 选定流：1,1,1-三氟乙烷，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：由期初充注量、实测补充量、期末充注量、实测回收量、事故记录及适用时经核实的混合物组成计算
 - 数值来源模式：计算值（`calculated_value`）
@@ -1920,7 +1920,7 @@ Treated non-solid dairy product 是在灌装前离开所声明浓缩或加甜及
 
 跨越设施边界供应给清洗与卫生的 Potable mains water 与直接环境取水及回收水分别记录。
 
-- 选定流：Potable mains water
+- 选定流：市政饮用水
 - 流属性/单位：Volume / m3
 - 数量规则：直接归属给清洗与卫生的管网水实测体积
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1935,7 +1935,7 @@ Treated non-solid dairy product 是在灌装前离开所声明浓缩或加甜及
 
 用于清洗或卫生的 Sodium hydroxide 按有效物质基础作为一项化学品投入记录。
 
-- 选定流：Sodium hydroxide
+- 选定流：氢氧化钠
 - 流属性/单位：Mass / kg
 - 数量规则：用保留的经核实浓度把实测商品领用量换算为有效物质质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1950,7 +1950,7 @@ Treated non-solid dairy product 是在灌装前离开所声明浓缩或加甜及
 
 用于清洗或卫生的 Nitric acid 按有效物质基础作为一项化学品投入记录。
 
-- 选定流：Nitric acid
+- 选定流：硝酸
 - 流属性/单位：Mass / kg
 - 数量规则：用保留的经核实浓度把实测商品领用量换算为有效物质质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1965,7 +1965,7 @@ Treated non-solid dairy product 是在灌装前离开所声明浓缩或加甜及
 
 用于清洗或卫生的 Peracetic acid 按有效物质基础作为一项化学品投入记录。
 
-- 选定流：Peracetic acid
+- 选定流：过氧乙酸
 - 流属性/单位：Mass / kg
 - 数量规则：用保留的经核实浓度把实测商品领用量换算为有效物质质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1980,7 +1980,7 @@ Treated non-solid dairy product 是在灌装前离开所声明浓缩或加甜及
 
 用于清洗或卫生的 Sodium hypochlorite 按有效物质基础作为一项化学品投入记录。
 
-- 选定流：Sodium hypochlorite
+- 选定流：次氯酸钠
 - 流属性/单位：Mass / kg
 - 数量规则：用保留的经核实浓度把实测商品领用量换算为有效物质质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1995,7 +1995,7 @@ Treated non-solid dairy product 是在灌装前离开所声明浓缩或加甜及
 
 清洗、卫生和废水管理消耗的 Electricity, medium voltage, grid mix 作为一项载能交换记录，并与所有其他能源投入分开。
 
-- 选定流：Electricity, medium voltage, grid mix
+- 选定流：中压电力，电网组合
 - 流属性/单位：Energy / kWh
 - 数量规则：实测用电量并直接归属给清洗、卫生和废水管理；共享总量仅分配一次并进行核对
 - 数值来源模式：前景记录（`foreground_record`）
@@ -2010,7 +2010,7 @@ Treated non-solid dairy product 是在灌装前离开所声明浓缩或加甜及
 
 清洗、卫生和废水管理消耗的 Purchased steam 作为一项载能交换记录，并与所有其他能源投入分开。
 
-- 选定流：Purchased steam
+- 选定流：外购蒸汽
 - 流属性/单位：Energy / MJ
 - 数量规则：实测交付蒸汽能量，或由实测蒸汽质量和保留的供应条件计算的能量并直接归属给清洗、卫生和废水管理；共享总量仅分配一次并进行核对
 - 数值来源模式：计算值（`calculated_value`）
@@ -2025,7 +2025,7 @@ Treated non-solid dairy product 是在灌装前离开所声明浓缩或加甜及
 
 清洗、卫生和废水管理消耗的 Purchased hot water 作为一项载能交换记录，并与所有其他能源投入分开。
 
-- 选定流：Purchased hot water
+- 选定流：外购热水
 - 流属性/单位：Energy / MJ
 - 数量规则：实测交付热水能量，或由实测流量及保留的供回水温度计算的能量并直接归属给清洗、卫生和废水管理；共享总量仅分配一次并进行核对
 - 数值来源模式：计算值（`calculated_value`）
@@ -2040,7 +2040,7 @@ Treated non-solid dairy product 是在灌装前离开所声明浓缩或加甜及
 
 清洗、卫生和废水管理消耗的 Natural gas 作为一项载能交换记录，并与所有其他能源投入分开。
 
-- 选定流：Natural gas
+- 选定流：天然气
 - 流属性/单位：Energy / MJ
 - 数量规则：实测能量，或使用有记录的供应商热值换算实测气量并直接归属给清洗、卫生和废水管理；共享总量仅分配一次并进行核对
 - 数值来源模式：计算值（`calculated_value`）
@@ -2055,7 +2055,7 @@ Treated non-solid dairy product 是在灌装前离开所声明浓缩或加甜及
 
 清洗、卫生和废水管理消耗的 Diesel fuel 作为一项载能交换记录，并与所有其他能源投入分开。
 
-- 选定流：Diesel fuel
+- 选定流：柴油燃料
 - 流属性/单位：Energy / MJ
 - 数量规则：使用有记录的供应商热值换算实测燃料量并直接归属给清洗、卫生和废水管理；共享总量仅分配一次并进行核对
 - 数值来源模式：计算值（`calculated_value`）
@@ -2070,7 +2070,7 @@ Treated non-solid dairy product 是在灌装前离开所声明浓缩或加甜及
 
 清洗、卫生和废水管理消耗的 Liquefied petroleum gas 作为一项载能交换记录，并与所有其他能源投入分开。
 
-- 选定流：Liquefied petroleum gas
+- 选定流：液化石油气
 - 流属性/单位：Energy / MJ
 - 数量规则：使用有记录的供应商热值换算实测燃料量并直接归属给清洗、卫生和废水管理；共享总量仅分配一次并进行核对
 - 数值来源模式：计算值（`calculated_value`）
@@ -2089,7 +2089,7 @@ Treated non-solid dairy product 是在灌装前离开所声明浓缩或加甜及
 
 为清洗与卫生从环境直接取用的 Water, ground 作为一项基本流投入记录，不与管网供水重复。
 
-- 选定流：Water, ground
+- 选定流：地下水
 - 流属性/单位：Volume / m3
 - 数量规则：归属给清洗与卫生的实测直接取水体积
 - 数值来源模式：前景记录（`foreground_record`）
@@ -2104,7 +2104,7 @@ Treated non-solid dairy product 是在灌装前离开所声明浓缩或加甜及
 
 为清洗与卫生从环境直接取用的 Water, surface 作为一项基本流投入记录，不与管网供水重复。
 
-- 选定流：Water, surface
+- 选定流：地表水
 - 流属性/单位：Volume / m3
 - 数量规则：归属给清洗与卫生的实测直接取水体积
 - 数值来源模式：前景记录（`foreground_record`）
@@ -2200,7 +2200,7 @@ Treated non-solid dairy product 是在灌装前离开所声明浓缩或加甜及
 
 离开卫生或废水管理的 Wastewater-treatment sludge 作为一项废物交换记录，不与直接环境排放重复。
 
-- 选定流：Wastewater-treatment sludge
+- 选定流：废水处理污泥
 - 流属性/单位：Mass / kg
 - 数量规则：实测湿质量，以及用于处理链接或分配时的实测干物质
 - 数值来源模式：前景记录（`foreground_record`）
@@ -2232,7 +2232,7 @@ Treated non-solid dairy product 是在灌装前离开所声明浓缩或加甜及
 
 服务于清洗、卫生和废水管理的现场燃烧产生的 Carbon dioxide, fossil, to air 作为一项基本流输出报告。
 
-- 选定流：Carbon dioxide, fossil, to air
+- 选定流：化石源二氧化碳，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：实测烟气质量，或由分别记录的燃料投入和保留的经核实因子计算的物质质量
 - 数值来源模式：计算值（`calculated_value`）
@@ -2247,7 +2247,7 @@ Treated non-solid dairy product 是在灌装前离开所声明浓缩或加甜及
 
 服务于清洗、卫生和废水管理的现场燃烧产生的 Methane to air 作为一项基本流输出报告。
 
-- 选定流：Methane to air
+- 选定流：甲烷，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：实测烟气质量，或由分别记录的燃料投入和保留的经核实因子计算的物质质量
 - 数值来源模式：计算值（`calculated_value`）
@@ -2262,7 +2262,7 @@ Treated non-solid dairy product 是在灌装前离开所声明浓缩或加甜及
 
 服务于清洗、卫生和废水管理的现场燃烧产生的 Dinitrogen monoxide to air 作为一项基本流输出报告。
 
-- 选定流：Dinitrogen monoxide to air
+- 选定流：氧化亚氮，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：实测烟气质量，或由分别记录的燃料投入和保留的经核实因子计算的物质质量
 - 数值来源模式：计算值（`calculated_value`）
@@ -2277,7 +2277,7 @@ Treated non-solid dairy product 是在灌装前离开所声明浓缩或加甜及
 
 服务于清洗、卫生和废水管理的现场燃烧产生的 Nitrogen monoxide to air 作为一项基本流输出报告。
 
-- 选定流：Nitrogen monoxide to air
+- 选定流：一氧化氮，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：实测烟气质量，或由分别记录的燃料投入和保留的经核实因子计算的物质质量
 - 数值来源模式：计算值（`calculated_value`）
@@ -2292,7 +2292,7 @@ Treated non-solid dairy product 是在灌装前离开所声明浓缩或加甜及
 
 服务于清洗、卫生和废水管理的现场燃烧产生的 Nitrogen dioxide to air 作为一项基本流输出报告。
 
-- 选定流：Nitrogen dioxide to air
+- 选定流：二氧化氮，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：实测烟气质量，或由分别记录的燃料投入和保留的经核实因子计算的物质质量
 - 数值来源模式：计算值（`calculated_value`）
@@ -2307,7 +2307,7 @@ Treated non-solid dairy product 是在灌装前离开所声明浓缩或加甜及
 
 服务于清洗、卫生和废水管理的现场燃烧产生的 Carbon monoxide to air 作为一项基本流输出报告。
 
-- 选定流：Carbon monoxide to air
+- 选定流：一氧化碳，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：实测烟气质量，或由分别记录的燃料投入和保留的经核实因子计算的物质质量
 - 数值来源模式：计算值（`calculated_value`）
@@ -2322,7 +2322,7 @@ Treated non-solid dairy product 是在灌装前离开所声明浓缩或加甜及
 
 服务于清洗、卫生和废水管理的现场燃烧产生的 Sulfur dioxide to air 作为一项基本流输出报告。
 
-- 选定流：Sulfur dioxide to air
+- 选定流：二氧化硫，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：实测烟气质量，或由分别记录的燃料投入和保留的经核实因子计算的物质质量
 - 数值来源模式：计算值（`calculated_value`）
@@ -2337,7 +2337,7 @@ Treated non-solid dairy product 是在灌装前离开所声明浓缩或加甜及
 
 仅当前景设施直接排放处理后废水时，才把 Chemical oxygen demand to water 作为一项基本流输出报告。
 
-- 选定流：Chemical oxygen demand to water
+- 选定流：化学需氧量，排入水体
 - 流属性/单位：Mass / kg
 - 数量规则：由实测直接排放体积和具有代表性的实测浓度按一致单位计算
 - 数值来源模式：计算值（`calculated_value`）
@@ -2367,7 +2367,7 @@ Treated non-solid dairy product 是在灌装前离开所声明浓缩或加甜及
 
 仅当前景设施直接排放处理后废水时，才把 Total nitrogen to water 作为一项基本流输出报告。
 
-- 选定流：Total nitrogen to water
+- 选定流：总氮，排入水体
 - 流属性/单位：Mass / kg
 - 数量规则：由实测直接排放体积和具有代表性的实测浓度按一致单位计算
 - 数值来源模式：计算值（`calculated_value`）
@@ -2382,7 +2382,7 @@ Treated non-solid dairy product 是在灌装前离开所声明浓缩或加甜及
 
 仅当前景设施直接排放处理后废水时，才把 Total phosphorus to water 作为一项基本流输出报告。
 
-- 选定流：Total phosphorus to water
+- 选定流：总磷，排入水体
 - 流属性/单位：Mass / kg
 - 数量规则：由实测直接排放体积和具有代表性的实测浓度按一致单位计算
 - 数值来源模式：计算值（`calculated_value`）
@@ -2397,7 +2397,7 @@ Treated non-solid dairy product 是在灌装前离开所声明浓缩或加甜及
 
 仅当前景设施直接排放处理后废水时，才把 Total suspended solids to water 作为一项基本流输出报告。
 
-- 选定流：Total suspended solids to water
+- 选定流：总悬浮固体，排入水体
 - 流属性/单位：Mass / kg
 - 数量规则：由实测直接排放体积和具有代表性的实测浓度按一致单位计算
 - 数值来源模式：计算值（`calculated_value`）
@@ -2412,7 +2412,7 @@ Treated non-solid dairy product 是在灌装前离开所声明浓缩或加甜及
 
 仅当前景设施直接排放处理后废水时，才把 Chloride to water 作为一项基本流输出报告。
 
-- 选定流：Chloride to water
+- 选定流：氯化物，排入水体
 - 流属性/单位：Mass / kg
 - 数量规则：由实测直接排放体积和具有代表性的实测浓度按一致单位计算
 - 数值来源模式：计算值（`calculated_value`）

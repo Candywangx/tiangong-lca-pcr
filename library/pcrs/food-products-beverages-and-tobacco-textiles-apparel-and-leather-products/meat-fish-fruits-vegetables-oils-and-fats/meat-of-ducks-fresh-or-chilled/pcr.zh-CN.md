@@ -38,7 +38,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 1 kg |
-| 参考产品流 | Meat of ducks, fresh or chilled `787f4c92-60eb-4533-8ee0-a0fbeda9d5c8` |
+| 参考产品流 | 鸭肉，新鲜或冷藏 `787f4c92-60eb-4533-8ee0-a0fbeda9d5c8` |
 | 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | kg |
@@ -400,7 +400,7 @@ sync_with: pcr.en-US.md
 
 记录设施门口放行的实测净质量，并与全部已声明参考流限定信息一致。
 
-- 选定流：Meat of ducks, fresh or chilled `787f4c92-60eb-4533-8ee0-a0fbeda9d5c8`
+- 选定流：鸭肉，新鲜或冷藏 `787f4c92-60eb-4533-8ee0-a0fbeda9d5c8`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：实测净质量归一化后的 1 kg 参考输出
 - 数值来源模式：固定值（`fixed_value`）

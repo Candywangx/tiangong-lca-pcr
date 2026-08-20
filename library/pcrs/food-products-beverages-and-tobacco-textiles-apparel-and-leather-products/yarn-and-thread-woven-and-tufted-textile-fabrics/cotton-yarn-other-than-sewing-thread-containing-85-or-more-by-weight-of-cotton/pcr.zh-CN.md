@@ -40,7 +40,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 1 |
-| 参考产品流 | Cotton yarn (other than sewing thread), containing 85% or more by weight of cotton `526fe0a1-be6d-4384-b609-4ca604628ec4` |
+| 参考产品流 | 含棉重量达85%或85%以上的棉纱（缝纫线除外） `526fe0a1-be6d-4384-b609-4ca604628ec4` |
 | 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | kg |
@@ -510,7 +510,7 @@ sync_with: pcr.en-US.md
 
 本行为满足功能单位和全部必需限定信息、已通过质量放行的棉纱净产出。
 
-- 选定流：Cotton yarn (other than sewing thread), containing 85% or more by weight of cotton `526fe0a1-be6d-4384-b609-4ca604628ec4`
+- 选定流：含棉重量达85%或85%以上的棉纱（缝纫线除外） `526fe0a1-be6d-4384-b609-4ca604628ec4`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：按所声明含湿基准恰好 1 kg 合格棉纱净重，不含包装
 - 数值来源模式：固定值（`fixed_value`）

@@ -42,7 +42,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 1,000 kg 净成品 |
-| 参考产品流 | Knotted netting of twine, cordage or rope, made up nets of textile materials, articles of yarn, strip, twine, cordage, rope or cables n.e.c. `e3759580-0bc6-4410-a0fe-f8b239ba715d` |
+| 参考产品流 | 捻线、绳或索制成的打结鱼网，纺织材料的鱼网制品，未另列明的纱、纱条、捻线、绳、索和缆的制品 `e3759580-0bc6-4410-a0fe-f8b239ba715d` |
 | 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | kg |
@@ -319,7 +319,7 @@ sync_with: pcr.en-US.md
 
 最终调湿和检验后称量产出；排除可移除包装。
 
-- 选定流：Knotted netting of twine, cordage or rope, made up nets of textile materials, articles of yarn, strip, twine, cordage, rope or cables n.e.c. `e3759580-0bc6-4410-a0fe-f8b239ba715d`
+- 选定流：捻线、绳或索制成的打结鱼网，纺织材料的鱼网制品，未另列明的纱、纱条、捻线、绳、索和缆的制品 `e3759580-0bc6-4410-a0fe-f8b239ba715d`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：合格净产出归一为恰好 1,000 kg
 - 数值来源模式：前景记录（`foreground_record`）

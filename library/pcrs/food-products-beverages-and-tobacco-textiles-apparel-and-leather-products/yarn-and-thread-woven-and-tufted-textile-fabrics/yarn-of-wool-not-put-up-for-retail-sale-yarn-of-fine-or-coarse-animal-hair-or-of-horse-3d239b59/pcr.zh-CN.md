@@ -38,7 +38,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 1 kg |
-| 参考产品流 | Yarn of wool, not put up for retail sale, yarn of fine or coarse animal hair or of horse hair (including gimped horsehair yarn), whether or not put up for retail sale `e4318719-55db-447b-8b6d-08a745a3dfb5` |
+| 参考产品流 | 非供零售的羊毛纱线，细或粗动物毛或马毛纱线（包括轧花马毛纱），不论是否供零售 `e4318719-55db-447b-8b6d-08a745a3dfb5` |
 | 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | kg |
@@ -98,7 +98,7 @@ sync_with: pcr.en-US.md
 
 只有当报告设施实施原毛洗毛时才记录含脂剪羊毛。
 
-- 选定流：Shorn wool, greasy, including fleece-washed shorn wool `bc0047e4-c6e8-4758-b86e-887af8a1f176`
+- 选定流：含脂的绵羊毛，包括剪前水洗的绵羊毛 `bc0047e4-c6e8-4758-b86e-887af8a1f176`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：进入洗毛批次的实测含脂羊毛净质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -113,7 +113,7 @@ sync_with: pcr.en-US.md
 
 向洗毛槽和漂洗步骤供应的水作为一个产品输入记录。
 
-- 选定流：Process Water `94a04f7e-2d5c-41f0-b182-d54a3b373a02`
+- 选定流：工艺用水 `94a04f7e-2d5c-41f0-b182-d54a3b373a02`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：供应至洗毛批次的计量水量或水箱衡算水量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -185,7 +185,7 @@ sync_with: pcr.en-US.md
 
 洗净毛是转移至梳理、精梳或上游/下游数据集边界的清洁纤维输出。
 
-- 选定流：Scoured Wool `1f286780-8831-47b4-88dd-582d6b7f8947`
+- 选定流：洗净毛 `1f286780-8831-47b4-88dd-582d6b7f8947`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：按申报含水率基准计量的洗净毛净质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -242,7 +242,7 @@ sync_with: pcr.en-US.md
 
 当洗净毛是申报粗梳路线的具体已准备纤维输入时记录该流。
 
-- 选定流：Scoured Wool `1f286780-8831-47b4-88dd-582d6b7f8947`
+- 选定流：洗净毛 `1f286780-8831-47b4-88dd-582d6b7f8947`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：领用至生产批次的实测净质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -257,7 +257,7 @@ sync_with: pcr.en-US.md
 
 当羊毛条是申报精梳路线的具体已准备纤维输入时，以其代替松散洗净毛记录。
 
-- 选定流：Wool Top `a19fde0b-23f4-4ab7-9832-317affa7ab44`
+- 选定流：毛条毛线类 `a19fde0b-23f4-4ab7-9832-317affa7ab44`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：领用至生产批次的实测羊毛条净质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -302,7 +302,7 @@ sync_with: pcr.en-US.md
 
 当纤维调湿或加湿用水跨越过程边界时记录该直接供水。
 
-- 选定流：Process Water `94a04f7e-2d5c-41f0-b182-d54a3b373a02`
+- 选定流：工艺用水 `94a04f7e-2d5c-41f0-b182-d54a3b373a02`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：供应至生产批次的计量水量或水箱衡算水量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -332,7 +332,7 @@ sync_with: pcr.en-US.md
 
 与纱线一同离开的纸板筒或纸芯应与净纱线质量分开记录。
 
-- 选定流：Cardboard tube or Paper core `78bf7f6e-519e-4b3d-82f0-eda15b2fee61`
+- 选定流：圆纸筒 `78bf7f6e-519e-4b3d-82f0-eda15b2fee61`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：随可销售纱线保留的卷绕芯实测领用质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -359,7 +359,7 @@ sync_with: pcr.en-US.md
 
 本输出是在申报厂门口满足参考流限定信息的净纱线质量。
 
-- 选定流：Yarn of wool, not put up for retail sale, yarn of fine or coarse animal hair or of horse hair (including gimped horsehair yarn), whether or not put up for retail sale `e4318719-55db-447b-8b6d-08a745a3dfb5`
+- 选定流：非供零售的羊毛纱线，细或粗动物毛或马毛纱线（包括轧花马毛纱），不论是否供零售 `e4318719-55db-447b-8b6d-08a745a3dfb5`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：扣除卷绕芯和外包装后的实测净纱线质量，归一化至 1 kg 参考输出
 - 数值来源模式：计算值（`calculated_value`）
@@ -376,7 +376,7 @@ sync_with: pcr.en-US.md
 
 羊毛纺纱废料作为梳理、并条、纺纱或卷绕离开系统的质量记录一次；其回收或处置去向另行申报。
 
-- 选定流：wool spinning waste `db23708c-5c2f-4b7e-9098-910948275caa`
+- 选定流：羊毛纺纱废料 `db23708c-5c2f-4b7e-9098-910948275caa`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：按批次和去向称量的废物质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -401,7 +401,7 @@ sync_with: pcr.en-US.md
 
 当湿法整理是独立受控前景阶段时，将未整理纱线记录为同类别产品输入。
 
-- 选定流：Yarn of wool, not put up for retail sale, yarn of fine or coarse animal hair or of horse hair (including gimped horsehair yarn), whether or not put up for retail sale `e4318719-55db-447b-8b6d-08a745a3dfb5`
+- 选定流：非供零售的羊毛纱线，细或粗动物毛或马毛纱线（包括轧花马毛纱），不论是否供零售 `e4318719-55db-447b-8b6d-08a745a3dfb5`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：进入湿法整理批次的实测未整理纱线净质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -416,7 +416,7 @@ sync_with: pcr.en-US.md
 
 向洗涤、染色、漂洗或整理浴供应的水作为一个产品输入记录。
 
-- 选定流：Process Water `94a04f7e-2d5c-41f0-b182-d54a3b373a02`
+- 选定流：工艺用水 `94a04f7e-2d5c-41f0-b182-d54a3b373a02`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：供应至湿法整理批次的计量水量或水箱衡算水量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -461,7 +461,7 @@ sync_with: pcr.en-US.md
 
 只有当实际湿法整理配方使用乙酸时才记录该化学品；本流不得作为其他酸或助剂的代理。
 
-- 选定流：Acetic acid `e2450fd4-acdc-4ab3-b8e3-269f8882a44e`
+- 选定流：醋酸 `e2450fd4-acdc-4ab3-b8e3-269f8882a44e`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：批次配方和库存记录中的领用质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -490,7 +490,7 @@ sync_with: pcr.en-US.md
 
 本输出是满足参考流限定信息的湿法整理后净纱线质量。
 
-- 选定流：Yarn of wool, not put up for retail sale, yarn of fine or coarse animal hair or of horse hair (including gimped horsehair yarn), whether or not put up for retail sale `e4318719-55db-447b-8b6d-08a745a3dfb5`
+- 选定流：非供零售的羊毛纱线，细或粗动物毛或马毛纱线（包括轧花马毛纱），不论是否供零售 `e4318719-55db-447b-8b6d-08a745a3dfb5`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：实测净成品纱线质量，归一化至 1 kg 参考输出
 - 数值来源模式：计算值（`calculated_value`）

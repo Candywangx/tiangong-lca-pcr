@@ -42,7 +42,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 工厂门处 1 kg 净可食用产品 |
-| 参考产品流 | Meatless meat and meat substitutes `f072db26-a3e4-4979-b9ad-d883d280bfe6` |
+| 参考产品流 | 无肉肉类和肉类替代品 `f072db26-a3e4-4979-b9ad-d883d280bfe6` |
 | 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | kg |

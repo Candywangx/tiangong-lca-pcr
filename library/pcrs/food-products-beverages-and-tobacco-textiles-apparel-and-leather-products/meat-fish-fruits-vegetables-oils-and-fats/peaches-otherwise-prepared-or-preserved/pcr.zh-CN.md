@@ -40,7 +40,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 1 kg |
-| 参考产品流 | Peaches, otherwise prepared or preserved `91d82100-aaec-459c-b815-abd64025b71e` |
+| 参考产品流 | 桃子，以其他方式制作或腌制 `91d82100-aaec-459c-b815-abd64025b71e` |
 | 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | kg |
@@ -425,7 +425,7 @@ sync_with: pcr.en-US.md
 
 这是最终检验和放行前的路线特定产品输出。
 
-- 选定流：Peaches, otherwise prepared or preserved `91d82100-aaec-459c-b815-abd64025b71e`
+- 选定流：桃子，以其他方式制作或腌制 `91d82100-aaec-459c-b815-abd64025b71e`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：实测不含包装的产品净质量，并按已声明总净含量或沥干固形物基准表述
 - 数值来源模式：计算值（`calculated_value`）
@@ -515,7 +515,7 @@ sync_with: pcr.en-US.md
 
 记录从保藏和包装过程转入的已包装产品，不重复其生产负荷。
 
-- 选定流：Peaches, otherwise prepared or preserved `91d82100-aaec-459c-b815-abd64025b71e`
+- 选定流：桃子，以其他方式制作或腌制 `91d82100-aaec-459c-b815-abd64025b71e`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：转入受控暂存和放行的实测产品净质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -563,7 +563,7 @@ sync_with: pcr.en-US.md
 
 本流在最终检验后、于生产设施门口放行时实现功能单位。
 
-- 选定流：Peaches, otherwise prepared or preserved `91d82100-aaec-459c-b815-abd64025b71e`
+- 选定流：桃子，以其他方式制作或腌制 `91d82100-aaec-459c-b815-abd64025b71e`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：将定量参考设为 1 kg，并按已声明基准上的放行产品净质量缩放核对后的批次清单
 - 数值来源模式：固定值（`fixed_value`）

@@ -40,7 +40,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 1 kg 冷冻鱼净质量 |
-| 参考产品流 | Fish of Gadiformes, frozen `d2a5f478-6f93-455d-83df-ddfd9e622c9d` |
+| 参考产品流 | 鳕形目鱼类，冷冻 `d2a5f478-6f93-455d-83df-ddfd9e622c9d` |
 | 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | kg |
@@ -387,7 +387,7 @@ sync_with: pcr.en-US.md
 
 按已声明去冰衣或其他扣除冰衣后的鱼净质量记录合格冷冻鱼。
 
-- 选定流：Fish of Gadiformes, frozen `d2a5f478-6f93-455d-83df-ddfd9e622c9d`
+- 选定流：鳕形目鱼类，冷冻 `d2a5f478-6f93-455d-83df-ddfd9e622c9d`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：实测合格冷冻鱼质量，不含添加冰衣和包装
 - 数值来源模式：前景记录（`foreground_record`）
@@ -489,7 +489,7 @@ sync_with: pcr.en-US.md
 
 这是经放行后、下游配送前离开工厂系统的定量参考。
 
-- 选定流：Fish of Gadiformes, frozen `d2a5f478-6f93-455d-83df-ddfd9e622c9d`
+- 选定流：鳕形目鱼类，冷冻 `d2a5f478-6f93-455d-83df-ddfd9e622c9d`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：归一化后恰好 1 kg 合格冷冻鱼净质量，不含包装和添加冰衣
 - 数值来源模式：固定值（`fixed_value`）

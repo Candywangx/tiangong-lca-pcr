@@ -40,7 +40,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 工厂大门处按接收状态计量的 1 kg 葡萄汁净质量 |
-| 参考产品流 | Grape juice `d030caf4-ad0f-4371-8e04-b15ce67cc4fb` |
+| 参考产品流 | 葡萄汁 `d030caf4-ad0f-4371-8e04-b15ce67cc4fb` |
 | 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | kg |
@@ -731,7 +731,7 @@ sync_with: pcr.en-US.md
 
 这是参考产品。记录所有范围内损失后的合格产品净质量，并将包装质量分开。
 
-- 选定流：Grape juice `d030caf4-ad0f-4371-8e04-b15ce67cc4fb`
+- 选定流：葡萄汁 `d030caf4-ad0f-4371-8e04-b15ce67cc4fb`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：归一化后恰好 1 kg 放行葡萄汁净质量
 - 数值来源模式：计算值（`calculated_value`）
@@ -781,7 +781,7 @@ sync_with: pcr.en-US.md
 
 记录工厂大门发运前的产品质量、包装配置、储存温度类别和储存时长。
 
-- 选定流：Grape juice `d030caf4-ad0f-4371-8e04-b15ce67cc4fb`
+- 选定流：葡萄汁 `d030caf4-ad0f-4371-8e04-b15ce67cc4fb`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：进入储存的实测产品净质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -831,7 +831,7 @@ sync_with: pcr.en-US.md
 
 记录离开储存的合格净质量和声明工厂大门前的任何储存损失。
 
-- 选定流：Grape juice `d030caf4-ad0f-4371-8e04-b15ce67cc4fb`
+- 选定流：葡萄汁 `d030caf4-ad0f-4371-8e04-b15ce67cc4fb`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：实测发运质量归一化到 1 kg 参考流
 - 数值来源模式：计算值（`calculated_value`）

@@ -127,15 +127,6 @@ Record this named flow as a separate atomic exchange for the unit process; prese
 - Collection protocol: `cp_material_and_product_mass_records`
 - Quality evidence: `calibrated_scale_certificate; supplier_delivery_record; receiving_batch_reconciliation`
 - Sources: `codex-cxc-15-1976`, `beitia-et-al-2024`
-- Range: Published pilot shell-egg input benchmark
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 1.13
-  - Upper: 1.13
-  - Unit: kg/kg reference product
-  - Basis: shell eggs entering processing per kg pasteurized packed liquid whole egg
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: External source (`external_source`)
-  - Sources: `beitia-et-al-2024`
 
 ###### Electricity for receipt and breaking (`receipt_breaking_electricity`)
 
@@ -184,15 +175,6 @@ Record this named flow as a separate atomic exchange for the unit process; prese
 - Collection protocol: `cp_water_and_wastewater_records`
 - Quality evidence: `water_meter_calibration; potable_water_certificate; batch_wash_log`
 - Sources: `codex-cxc-15-1976`, `beitia-et-al-2024`
-- Range: Published pilot shell-washing water benchmark
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0.03
-  - Upper: 0.03
-  - Unit: m3/kg reference product
-  - Basis: water used for egg loading, washing, and drying per kg product
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: External source (`external_source`)
-  - Sources: `beitia-et-al-2024`
 
 ###### Hot water for shell washing (`shell_wash_hot_water`)
 
@@ -505,15 +487,6 @@ Record this named flow as a separate atomic exchange for the unit process; prese
 - Collection protocol: `cp_electricity_records`
 - Quality evidence: `utility_invoice; submeter_calibration; compressor_and_pasteurizer_runtime_log`
 - Sources: `beitia-et-al-2024`
-- Range: Conventional thermal-route total processing energy benchmark
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 2.36
-  - Unit: kWh/kg reference product
-  - Basis: upper comparison screen against a published 100 kg/h gate-to-gate thermal scenario; do not use as a default
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: External source (`external_source`)
-  - Sources: `beitia-et-al-2024`
 
 ###### Purchased steam for pasteurization (`pasteurization_purchased_steam`)
 
@@ -574,15 +547,6 @@ Record this named flow as a separate atomic exchange for the unit process; prese
 - Collection protocol: `cp_water_and_wastewater_records`
 - Quality evidence: `makeup_water_meter_calibration; cooling_loop_log; blowdown_record`
 - Sources: `beitia-et-al-2024`
-- Range: Published pilot cooling-water benchmark
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0.01
-  - Upper: 0.01
-  - Unit: m3/kg reference product
-  - Basis: cooling water per kg product in the published thermal scenario
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: External source (`external_source`)
-  - Sources: `beitia-et-al-2024`
 
 ###### R717 ammonia refrigerant make-up (`r717_ammonia_makeup`)
 
@@ -809,15 +773,6 @@ Record this named flow as a separate atomic exchange for the unit process; prese
 - Collection protocol: `cp_packaging_records`
 - Quality evidence: `supplier_specification; packaging_issue_log; sampled_tare_mass_record`
 - Sources: `beitia-et-al-2024`
-- Range: Published pilot LDPE packaging benchmark
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0.02
-  - Upper: 0.02
-  - Unit: kg/kg reference product
-  - Basis: LDPE packaging mass per kg packed pasteurized liquid whole egg
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: External source (`external_source`)
-  - Sources: `beitia-et-al-2024`
 
 ###### Reusable stainless-steel bulk tote service (`reusable_stainless_steel_bulk_tote`)
 
@@ -944,15 +899,6 @@ Record this named flow as a separate atomic exchange for the unit process; prese
 - Collection protocol: `cp_cip_cycle_records`
 - Quality evidence: `water_meter_calibration; potable_water_certificate; cip_recipe_log`
 - Sources: `cfia-egg-preventive-controls`, `beitia-et-al-2024`
-- Range: Published pilot CIP water benchmark
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0.01
-  - Upper: 0.01
-  - Unit: m3/kg reference product
-  - Basis: CIP water per kg product in the published pilot model
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: External source (`external_source`)
-  - Sources: `beitia-et-al-2024`
 
 ###### Electricity for CIP (`cip_electricity`)
 
@@ -1021,15 +967,6 @@ Record this named flow as a separate atomic exchange for the unit process; prese
 - Collection protocol: `cp_cleaning_chemical_records`
 - Quality evidence: `supplier_certificate_of_analysis; dosing_pump_calibration; concentration_test; cip_recipe_log`
 - Sources: `beitia-et-al-2024`
-- Range: Published pilot-model sodium hydroxide benchmark
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0.03
-  - Upper: 0.03
-  - Unit: kg/kg reference product
-  - Basis: sodium hydroxide input in the published pilot CIP model
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: External source (`external_source`)
-  - Sources: `beitia-et-al-2024`
 
 ###### Nitric acid CIP detergent (`cip_nitric_acid`)
 
@@ -1050,15 +987,6 @@ Record this named flow as a separate atomic exchange for the unit process; prese
 - Collection protocol: `cp_cleaning_chemical_records`
 - Quality evidence: `supplier_certificate_of_analysis; dosing_pump_calibration; concentration_test; cip_recipe_log`
 - Sources: `beitia-et-al-2024`
-- Range: Published pilot-model nitric acid benchmark
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0.01
-  - Upper: 0.01
-  - Unit: kg/kg reference product
-  - Basis: nitric acid input in the published pilot CIP model
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: External source (`external_source`)
-  - Sources: `beitia-et-al-2024`
 
 ###### Peracetic acid final sanitizer (`cip_peracetic_acid`)
 

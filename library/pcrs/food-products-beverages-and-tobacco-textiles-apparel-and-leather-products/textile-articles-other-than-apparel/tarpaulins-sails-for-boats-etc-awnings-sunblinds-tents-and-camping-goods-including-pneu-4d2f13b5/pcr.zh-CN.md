@@ -40,7 +40,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 1 |
-| 参考产品流 | Tarpaulins, sails for boats etc., awnings, sunblinds, tents and camping goods (including pneumatic mattresses) `176ee965-23e5-444c-8b6c-9457334cae4c` |
+| 参考产品流 | 防水帆布、船帆布、帐篷布、遮日帘、帐幕及宿营用品（包括充气床垫） `176ee965-23e5-444c-8b6c-9457334cae4c` |
 | 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | kg |
@@ -159,7 +159,7 @@ sync_with: pcr.en-US.md
 
 厂内洗涤、退浆或其他湿法准备使用的供水，与采购化学品内含水分开记录。
 
-- 选定流：Process water
+- 选定流：过程用水
 - 流属性/单位：Mass / kg
 - 数量规则：计量或批次记录的供水量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -303,7 +303,7 @@ sync_with: pcr.en-US.md
 
 涂层配制、洗涤、漂洗或整理用水按路线特定仪表或批次记录采集。
 
-- 选定流：Process water
+- 选定流：过程用水
 - 流属性/单位：Mass / kg
 - 数量规则：计量或批次记录的供水量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -333,7 +333,7 @@ sync_with: pcr.en-US.md
 
 仅当声明路线使用天然气直接或间接干燥和固化时记录。
 
-- 选定流：Natural gas
+- 选定流：天然气
 - 流属性/单位：Net calorific energy / MJ
 - 数量规则：使用供应商低位热值换算的计量或发票燃料量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -439,7 +439,7 @@ sync_with: pcr.en-US.md
 
 适用的涂层、印花、整理或热处理产生的氨，与 TVOC 和甲醛分别记录。
 
-- 选定流：Ammonia to air
+- 选定流：氨，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：实测排放质量，或由监测浓度与排气流量计算的质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -475,7 +475,7 @@ sync_with: pcr.en-US.md
 
 涤纶缝纫线仅对缝制接缝记录，不得与拉链、织带或其他辅料合并。
 
-- 选定流：Polyester sewing thread
+- 选定流：聚酯缝纫线
 - 流属性/单位：Mass / kg
 - 数量规则：实测领用质量，或与生产核对的线轴库存变化
 - 数值来源模式：前景记录（`foreground_record`）
@@ -664,7 +664,7 @@ sync_with: pcr.en-US.md
 
 用于包裹或装袋的 LDPE 薄膜与瓦楞纸箱分别记录。
 
-- 选定流：Low-density polyethylene packaging film
+- 选定流：低密度聚乙烯包装膜
 - 流属性/单位：Mass / kg
 - 数量规则：发往合格生产的实测包装膜质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -706,7 +706,7 @@ sync_with: pcr.en-US.md
 
 定量参考为工厂大门处合格净成品，不含可拆卸包装，但包括作为制品一部分交付的全部组件。
 
-- 选定流：Tarpaulins, sails for boats etc., awnings, sunblinds, tents and camping goods (including pneumatic mattresses) `176ee965-23e5-444c-8b6c-9457334cae4c`
+- 选定流：防水帆布、船帆布、帐篷布、遮日帘、帐幕及宿营用品（包括充气床垫） `176ee965-23e5-444c-8b6c-9457334cae4c`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg，单位组为 Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66`
 - 数量规则：归一化后恰好 1 kg 合格净成品
 - 数值来源模式：固定值（`fixed_value`）

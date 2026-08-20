@@ -40,7 +40,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 1 kg 合格可销售可食产品 |
-| 参考产品流 | Scallops, frozen, smoked, dried, salted or in brine `bc4bc819-06b0-4452-bc14-5b08c6e3abf0` |
+| 参考产品流 | 扇贝，冷冻、烟熏、干制、盐渍或盐水浸泡 `bc4bc819-06b0-4452-bc14-5b08c6e3abf0` |
 | 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | kg |
@@ -399,7 +399,7 @@ sync_with: pcr.en-US.md
 
 记录从包装到工厂门放行期间冷冻、冷藏、湿度控制或其他场内储存用电。
 
-- 选定流：Electricity
+- 选定流：电力
 - 流属性/单位：Energy / kWh
 - 数量规则：按占用容量和时间或其他已披露物理驱动因素分配的计量储存用电
 - 数值来源模式：计算值（`calculated_value`）
@@ -430,7 +430,7 @@ sync_with: pcr.en-US.md
 
 按适用路线特定质量条件放行恰好 1 kg 合格可食扇贝产品。
 
-- 选定流：Scallops, frozen, smoked, dried, salted or in brine `bc4bc819-06b0-4452-bc14-5b08c6e3abf0`
+- 选定流：扇贝，冷冻、烟熏、干制、盐渍或盐水浸泡 `bc4bc819-06b0-4452-bc14-5b08c6e3abf0`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：1 kg
 - 数值来源模式：固定值（`fixed_value`）

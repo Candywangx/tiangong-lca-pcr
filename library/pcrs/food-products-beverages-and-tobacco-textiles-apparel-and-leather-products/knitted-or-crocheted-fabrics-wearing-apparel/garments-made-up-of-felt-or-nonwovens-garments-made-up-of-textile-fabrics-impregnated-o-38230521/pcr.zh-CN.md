@@ -235,7 +235,7 @@ sync_with: pcr.en-US.md
 
 本卡单独记录“中压电力”这一具体输入，依所列采集协议按批次计量并保留材料、工序与去向证据，不得与其他交换合并。
 
-- 选定流：Electricity, medium voltage
+- 选定流：中压电力
 - 流属性 / 单位：Energy / kWh
 - 数量规则：计量或按物理因子分配裁剪批次消耗的电力
 - 数值模式：前景记录（`foreground_record`）
@@ -433,7 +433,7 @@ sync_with: pcr.en-US.md
 
 本卡单独记录“聚酯缝纫线”这一具体输入，依所列采集协议按批次计量并保留材料、工序与去向证据，不得与其他交换合并。
 
-- 选定流：Polyester sewing thread
+- 选定流：聚酯缝纫线
 - 流属性 / 单位：Mass / kg
 - 数量规则：实测装配批次领用缝纫线质量，减去退回受控库存的未用缝纫线质量
 - 数值模式：前景记录（`foreground_record`）
@@ -538,7 +538,7 @@ sync_with: pcr.en-US.md
 
 本卡单独记录“中压电力”这一具体输入，依所列采集协议按批次计量并保留材料、工序与去向证据，不得与其他交换合并。
 
-- 选定流：Electricity, medium voltage
+- 选定流：中压电力
 - 流属性 / 单位：Energy / kWh
 - 数量规则：计量或按物理因子分配服装装配消耗的电力
 - 数值模式：前景记录（`foreground_record`）
@@ -631,7 +631,7 @@ sync_with: pcr.en-US.md
 
 本卡单独记录“中压电力”这一具体输入，依所列采集协议按批次计量并保留材料、工序与去向证据，不得与其他交换合并。
 
-- 选定流：Electricity, medium voltage
+- 选定流：中压电力
 - 流属性 / 单位：Energy / kWh
 - 数量规则：计量或按物理因子分配接缝屏障处理消耗的电力
 - 数值模式：前景记录（`foreground_record`）
@@ -724,7 +724,7 @@ sync_with: pcr.en-US.md
 
 本卡单独记录“中压电力”这一具体输入，依所列采集协议按批次计量并保留材料、工序与去向证据，不得与其他交换合并。
 
-- 选定流：Electricity, medium voltage
+- 选定流：中压电力
 - 流属性 / 单位：Energy / kWh
 - 数量规则：计量或按物理因子分配最终检验和接收测试消耗的电力
 - 数值模式：前景记录（`foreground_record`）
@@ -877,7 +877,7 @@ sync_with: pcr.en-US.md
 
 本卡单独记录“中压电力”这一具体输入，依所列采集协议按批次计量并保留材料、工序与去向证据，不得与其他交换合并。
 
-- 选定流：Electricity, medium voltage
+- 选定流：中压电力
 - 流属性 / 单位：Energy / kWh
 - 数量规则：计量或按物理因子分配包装合格服装所消耗的电力
 - 数值模式：前景记录（`foreground_record`）
@@ -900,7 +900,7 @@ sync_with: pcr.en-US.md
 
 本卡单独记录“毡或非织造布制服装；塑料、橡胶或其他材料浸渍或涂覆的纺织物制服装”这一具体输出，依所列采集协议按批次计量并保留材料、工序与去向证据，不得与其他交换合并。
 
-- 选定流：Garments made up of felt or nonwovens; garments made up of textile fabrics impregnated or coated with plastics, rubber or other materials `3c972aa8-6aa5-4724-8a61-694aef1b09fe`
+- 选定流：用毛毡或非织造物制成的服装，用浸渍或涂覆塑料、橡胶或其他材料的纺织品制成的服装 `3c972aa8-6aa5-4724-8a61-694aef1b09fe`
 - 流属性 / 单位：Mass / kg
 - 数量规则：实测合格包装产出质量；归一化后恰为 1 kg
 - 数值模式：前景记录（`foreground_record`）

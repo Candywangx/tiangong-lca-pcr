@@ -254,12 +254,12 @@ The viewer is a consumption surface only. It does not edit PCR Markdown, manifes
 
 The consumption surfaces are now material-first: default catalog, tree, list, and viewer output represent methodology
 records, while complete classification coverage remains queryable separately. Phase 2 steps 1-5 are complete:
-ordinary CPC imports create zero PCR records; CPC 3.0 mapping v2 retains exactly 3 accepted material edges, CPC 2.1
-is empty v2, and the deterministic registry preserves all 2,874 retired leaf-derived ids as coverage locators.
-CPC 3.0 coverage remains 2,877 total, 3 mapped, 2,874 unmapped, and 0 unknown.
+ordinary CPC imports create zero PCR records; CPC 3.0 mapping v2 retains 326 accepted material edges, CPC 2.1
+is empty v2, and the deterministic registry preserves all 2,551 retired leaf-derived ids as coverage locators.
+CPC 3.0 coverage remains 2,877 total, 326 mapped, 2,551 unmapped, and 0 unknown.
 
 The first Phase 3 physical pilot removed only CPC `99000`. The repository therefore has 2,876 PCR directories:
-3 material records and 2,873 surviving legacy scaffolds. Code `99000` now resolves as known-unmapped and its old PCR
+326 material records and 2,550 surviving legacy scaffolds. Code `99000` now resolves as known-unmapped and its old PCR
 id redirects through the alias registry. CPC `98000` and the broader physical migration remain pending; do not treat
 the pilot as completion of bulk migration. Only authored or reviewed material records can enter guidance and
 validation.

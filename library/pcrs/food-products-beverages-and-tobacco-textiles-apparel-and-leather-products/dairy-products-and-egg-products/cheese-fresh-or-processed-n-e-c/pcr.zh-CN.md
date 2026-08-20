@@ -49,7 +49,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 声明工厂门状态下 1 kg 奶酪产品净重 |
-| 参考产品流 | Cheese `8b7b59ae-0b3c-4424-9d8f-a7fc304c7e77` |
+| 参考产品流 | 干酪 `8b7b59ae-0b3c-4424-9d8f-a7fc304c7e77` |
 | 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | kg |
@@ -182,7 +182,7 @@ sync_with: pcr.en-US.md
 
 把成为配料或接触产品的饮用水或工艺用水与冷却水、清洗水分别记录。
 
-- 选定流：Process water
+- 选定流：过程用水
 - 流属性/单位：Volume 或 Mass / m3 或 kg
 - 数量规则：按用途计量、称量或批次投加的水量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -492,7 +492,7 @@ sync_with: pcr.en-US.md
 
 本行为定量参考。所选 Tiangong 流是通用流；必需限定信息和 CPC gate 赋予产品特定含义。
 
-- 选定流：Cheese `8b7b59ae-0b3c-4424-9d8f-a7fc304c7e77`
+- 选定流：干酪 `8b7b59ae-0b3c-4424-9d8f-a7fc304c7e77`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：在声明沥干、配料、产品形态、储存及包装状态下实测 1 kg 合格奶酪净重
 - 数值来源模式：固定值（`fixed_value`）

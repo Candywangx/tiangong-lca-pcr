@@ -42,7 +42,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 1 kg |
-| 参考产品流 | Cheese from milk of goats, fresh or processed `e321b953-83b8-4428-9cce-3ac3aee6aae3` |
+| 参考产品流 | 新鲜或加工的山羊奶奶酪 `e321b953-83b8-4428-9cce-3ac3aee6aae3` |
 | 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | kg |
@@ -106,7 +106,7 @@ sync_with: pcr.en-US.md
 
 在声明过程与路线下，将 Raw milk of goats 作为一个原子交换记录。
 
-- 选定流：Raw milk of goats `2c001731-6bd5-4e32-b3cf-15f4c67d4038`
+- 选定流：生羊奶 `2c001731-6bd5-4e32-b3cf-15f4c67d4038`
 - 流属性/单位：Mass / kg
 - 数量规则：按批次计量接受质量，并记录设施使用的成分或固形物数据及库存变化
 - 数值来源模式：前景记录（`foreground_record`）
@@ -129,7 +129,7 @@ sync_with: pcr.en-US.md
 
 仅当 Alternating current, low-voltage grid supply 为本过程跨越前景边界的供电时适用。同一电表和供电量的低压、中压与高压电网卡片互斥。
 
-- 选定流：Alternating current, low-voltage grid supply
+- 选定流：交流电，低压电网供电
 - 流属性/单位：Net calorific value / kWh
 - 数量规则：计量或与发票核对后，分配至实际实施的接收、贮存、冷却、分离、标准化和热处理
 - 数值来源模式：前景记录（`foreground_record`）
@@ -152,7 +152,7 @@ sync_with: pcr.en-US.md
 
 仅当 Alternating current, medium-voltage grid supply 为本过程跨越前景边界的供电时适用。同一电表和供电量的低压、中压与高压电网卡片互斥。
 
-- 选定流：Alternating current, medium-voltage grid supply
+- 选定流：交流电，中压电网供电
 - 流属性/单位：Net calorific value / kWh
 - 数量规则：计量或与发票核对后，分配至实际实施的接收、贮存、冷却、分离、标准化和热处理
 - 数值来源模式：前景记录（`foreground_record`）
@@ -175,7 +175,7 @@ sync_with: pcr.en-US.md
 
 仅当 Alternating current, high-voltage grid supply 为本过程跨越前景边界的供电时适用。同一电表和供电量的低压、中压与高压电网卡片互斥。
 
-- 选定流：Alternating current, high-voltage grid supply
+- 选定流：交流电，高压电网供电
 - 流属性/单位：Net calorific value / kWh
 - 数量规则：计量或与发票核对后，分配至实际实施的接收、贮存、冷却、分离、标准化和热处理
 - 数值来源模式：前景记录（`foreground_record`）
@@ -198,7 +198,7 @@ sync_with: pcr.en-US.md
 
 仅适用于本过程计量自用的现场光伏电力；排除外送电量，且不得与电网电力重复。
 
-- 选定流：Alternating Current, photovoltaic electricity generation, monocrystalline silicon `a43f59bc-4263-40de-af1e-d067f0b792d2`
+- 选定流：交流电 `a43f59bc-4263-40de-af1e-d067f0b792d2`
 - 流属性/单位：Net calorific value / kWh
 - 数量规则：计量或与发票核对后，分配至实际实施的接收、贮存、冷却、分离、标准化和热处理
 - 数值来源模式：前景记录（`foreground_record`）
@@ -221,7 +221,7 @@ sync_with: pcr.en-US.md
 
 仅当 Heat, steam 为本过程供能时适用。同一交付热量的外购热力与现场燃料卡片互斥；并行供给应分别记录。
 
-- 选定流：Heat, steam `fb513738-b5b1-46d6-8820-ae4009a097be`
+- 选定流：蒸汽热 `fb513738-b5b1-46d6-8820-ae4009a097be`
 - 流属性/单位：Gross calorific value / MJ
 - 数量规则：计量或与发票核对后，分配至实际实施的接收、贮存、冷却、分离、标准化和热处理
 - 数值来源模式：前景记录（`foreground_record`）
@@ -267,7 +267,7 @@ sync_with: pcr.en-US.md
 
 仅当 natural gas in the gaseous state 为本过程供能时适用。同一交付热量的外购热力与现场燃料卡片互斥；并行供给应分别记录。
 
-- 选定流：natural gas in the gaseous state `4f19ca0e-7b3b-11dd-ad8b-0800200c9a66`
+- 选定流：气态天然气 `4f19ca0e-7b3b-11dd-ad8b-0800200c9a66`
 - 流属性/单位：Volume / m3
 - 数量规则：计量或与发票核对后，分配至实际实施的接收、贮存、冷却、分离、标准化和热处理
 - 数值来源模式：前景记录（`foreground_record`）
@@ -290,7 +290,7 @@ sync_with: pcr.en-US.md
 
 仅当 Diesel oil 为本过程供能时适用。同一交付热量的外购热力与现场燃料卡片互斥；并行供给应分别记录。
 
-- 选定流：Diesel oil `9d258d75-6792-4f1c-9856-81602ed8f816`
+- 选定流：柴油 `9d258d75-6792-4f1c-9856-81602ed8f816`
 - 流属性/单位：Net calorific value / MJ
 - 数量规则：计量或与发票核对后，分配至实际实施的接收、贮存、冷却、分离、标准化和热处理
 - 数值来源模式：前景记录（`foreground_record`）
@@ -313,7 +313,7 @@ sync_with: pcr.en-US.md
 
 仅当 Liquefied petroleum gas 为本过程供能时适用。同一交付热量的外购热力与现场燃料卡片互斥；并行供给应分别记录。
 
-- 选定流：Liquefied petroleum gas `d54ae71a-1245-4e3f-b694-dbf2b22bbf7d`
+- 选定流：液化石油气 `d54ae71a-1245-4e3f-b694-dbf2b22bbf7d`
 - 流属性/单位：Mass / kg
 - 数量规则：计量或与发票核对后，分配至实际实施的接收、贮存、冷却、分离、标准化和热处理
 - 数值来源模式：前景记录（`foreground_record`）
@@ -336,7 +336,7 @@ sync_with: pcr.en-US.md
 
 仅当 Heavy fuel oil 为本过程供能时适用。同一交付热量的外购热力与现场燃料卡片互斥；并行供给应分别记录。
 
-- 选定流：Heavy fuel oil
+- 选定流：重质燃料油
 - 流属性/单位：Mass / kg
 - 数量规则：计量或与发票核对后，分配至实际实施的接收、贮存、冷却、分离、标准化和热处理
 - 数值来源模式：前景记录（`foreground_record`）
@@ -359,7 +359,7 @@ sync_with: pcr.en-US.md
 
 仅当 Biogas 为本过程供能时适用。同一交付热量的外购热力与现场燃料卡片互斥；并行供给应分别记录。
 
-- 选定流：Biogas `246d7fec-59ef-4032-8539-e47632b60a23`
+- 选定流：生物天然气，沼气 `246d7fec-59ef-4032-8539-e47632b60a23`
 - 流属性/单位：Volume / m3
 - 数量规则：计量或与发票核对后，分配至实际实施的接收、贮存、冷却、分离、标准化和热处理
 - 数值来源模式：前景记录（`foreground_record`）
@@ -382,7 +382,7 @@ sync_with: pcr.en-US.md
 
 仅当 Biomass briquette fuel 为本过程供能时适用。同一交付热量的外购热力与现场燃料卡片互斥；并行供给应分别记录。
 
-- 选定流：Biomass briquette fuel `e464a548-5c9d-41d5-afb7-a88eba3849cc`
+- 选定流：生物质致密成型燃料 `e464a548-5c9d-41d5-afb7-a88eba3849cc`
 - 流属性/单位：Mass / kg
 - 数量规则：计量或与发票核对后，分配至实际实施的接收、贮存、冷却、分离、标准化和热处理
 - 数值来源模式：前景记录（`foreground_record`）
@@ -405,7 +405,7 @@ sync_with: pcr.en-US.md
 
 仅当声明路线、配方、包装配置、废物去向或实测排放中存在 Compressed air 时适用；其数量须与相邻卡片逐项分开。
 
-- 选定流：Compressed air `46e2b1e4-5a4e-4579-b6a2-65b03f9ce825`
+- 选定流：压缩的空气 `46e2b1e4-5a4e-4579-b6a2-65b03f9ce825`
 - 流属性/单位：Volume / m3
 - 数量规则：计量或与发票核对后，分配至实际实施的接收、贮存、冷却、分离、标准化和热处理
 - 数值来源模式：前景记录（`foreground_record`）
@@ -428,7 +428,7 @@ sync_with: pcr.en-US.md
 
 仅当声明路线、配方、包装配置、废物去向或实测排放中存在 Tap water 时适用；其数量须与相邻卡片逐项分开。
 
-- 选定流：Tap water `d1e0e36c-07f0-4a75-bdcb-efb5d9e2ac36`
+- 选定流：自来水 `d1e0e36c-07f0-4a75-bdcb-efb5d9e2ac36`
 - 流属性/单位：Volume / m3
 - 数量规则：计量或与发票核对后，分配至实际实施的接收、贮存、冷却、分离、标准化和热处理
 - 数值来源模式：前景记录（`foreground_record`）
@@ -451,7 +451,7 @@ sync_with: pcr.en-US.md
 
 仅当声明路线、配方、包装配置、废物去向或实测排放中存在 Water (desalinated; deionized) 时适用；其数量须与相邻卡片逐项分开。
 
-- 选定流：Water (desalinated; deionized) `c707e768-2a44-4b33-8218-e8dcdb345132`
+- 选定流：水（脱盐；去离子） `c707e768-2a44-4b33-8218-e8dcdb345132`
 - 流属性/单位：Volume / m3
 - 数量规则：计量或与发票核对后，分配至实际实施的接收、贮存、冷却、分离、标准化和热处理
 - 数值来源模式：前景记录（`foreground_record`）
@@ -474,7 +474,7 @@ sync_with: pcr.en-US.md
 
 仅当服务本过程的设备使用 Refrigerant, R134a 时适用；依据库存与维保记录计量补充量，不得把采购量直接视为排放。
 
-- 选定流：Refrigerant, R134a `86e15f5d-a7dd-40be-8dc4-ac9fa826a309`
+- 选定流：制冷剂，R134a `86e15f5d-a7dd-40be-8dc4-ac9fa826a309`
 - 流属性/单位：Mass / kg
 - 数量规则：计量或与发票核对后，分配至实际实施的接收、贮存、冷却、分离、标准化和热处理
 - 数值来源模式：前景记录（`foreground_record`）
@@ -497,7 +497,7 @@ sync_with: pcr.en-US.md
 
 仅当服务本过程的设备使用 Refrigerant, R404A 时适用；依据库存与维保记录计量补充量，不得把采购量直接视为排放。
 
-- 选定流：Refrigerant, R404A `33db0143-ba65-4036-a57b-e32dcdecb779`
+- 选定流：制冷剂，R404A `33db0143-ba65-4036-a57b-e32dcdecb779`
 - 流属性/单位：Mass / kg
 - 数量规则：计量或与发票核对后，分配至实际实施的接收、贮存、冷却、分离、标准化和热处理
 - 数值来源模式：前景记录（`foreground_record`）
@@ -664,7 +664,7 @@ sync_with: pcr.en-US.md
 
 仅当声明路线、配方、包装配置、废物去向或实测排放中存在 Starter culture 时适用；其数量须与相邻卡片逐项分开。
 
-- 选定流：Starter culture `e9ab7eca-5240-43cb-84d1-069af92d1b03`
+- 选定流：发酵剂 `e9ab7eca-5240-43cb-84d1-069af92d1b03`
 - 流属性/单位：Mass / kg
 - 数量规则：记录每种添加物的批次领用或投加量，并适用时区分溶液质量、干固体和活性成分
 - 数值来源模式：前景记录（`foreground_record`）
@@ -687,7 +687,7 @@ sync_with: pcr.en-US.md
 
 仅当声明路线、配方、包装配置、废物去向或实测排放中存在 Rennet 时适用；其数量须与相邻卡片逐项分开。
 
-- 选定流：Rennet `0cc2c20e-9c7d-4d03-b8b8-f347cd39bed4`
+- 选定流：凝乳酶 `0cc2c20e-9c7d-4d03-b8b8-f347cd39bed4`
 - 流属性/单位：Mass / kg
 - 数量规则：记录每种添加物的批次领用或投加量，并适用时区分溶液质量、干固体和活性成分
 - 数值来源模式：前景记录（`foreground_record`）
@@ -710,7 +710,7 @@ sync_with: pcr.en-US.md
 
 仅当声明路线、配方、包装配置、废物去向或实测排放中存在 Salt 时适用；其数量须与相邻卡片逐项分开。
 
-- 选定流：Salt `3a5fa711-4648-4d58-b94d-67b79e7476c7`
+- 选定流：食盐 `3a5fa711-4648-4d58-b94d-67b79e7476c7`
 - 流属性/单位：Mass / kg
 - 数量规则：记录每种添加物的批次领用或投加量，并适用时区分溶液质量、干固体和活性成分
 - 数值来源模式：前景记录（`foreground_record`）
@@ -733,7 +733,7 @@ sync_with: pcr.en-US.md
 
 仅当 Alternating current, low-voltage grid supply 为本过程跨越前景边界的供电时适用。同一电表和供电量的低压、中压与高压电网卡片互斥。
 
-- 选定流：Alternating current, low-voltage grid supply
+- 选定流：交流电，低压电网供电
 - 流属性/单位：Net calorific value / kWh
 - 数量规则：对建模批次计量使用量或从设施仪表进行有文件依据的分配
 - 数值来源模式：前景记录（`foreground_record`）
@@ -756,7 +756,7 @@ sync_with: pcr.en-US.md
 
 仅当 Alternating current, medium-voltage grid supply 为本过程跨越前景边界的供电时适用。同一电表和供电量的低压、中压与高压电网卡片互斥。
 
-- 选定流：Alternating current, medium-voltage grid supply
+- 选定流：交流电，中压电网供电
 - 流属性/单位：Net calorific value / kWh
 - 数量规则：对建模批次计量使用量或从设施仪表进行有文件依据的分配
 - 数值来源模式：前景记录（`foreground_record`）
@@ -779,7 +779,7 @@ sync_with: pcr.en-US.md
 
 仅当 Alternating current, high-voltage grid supply 为本过程跨越前景边界的供电时适用。同一电表和供电量的低压、中压与高压电网卡片互斥。
 
-- 选定流：Alternating current, high-voltage grid supply
+- 选定流：交流电，高压电网供电
 - 流属性/单位：Net calorific value / kWh
 - 数量规则：对建模批次计量使用量或从设施仪表进行有文件依据的分配
 - 数值来源模式：前景记录（`foreground_record`）
@@ -802,7 +802,7 @@ sync_with: pcr.en-US.md
 
 仅适用于本过程计量自用的现场光伏电力；排除外送电量，且不得与电网电力重复。
 
-- 选定流：Alternating Current, photovoltaic electricity generation, monocrystalline silicon `a43f59bc-4263-40de-af1e-d067f0b792d2`
+- 选定流：交流电 `a43f59bc-4263-40de-af1e-d067f0b792d2`
 - 流属性/单位：Net calorific value / kWh
 - 数量规则：对建模批次计量使用量或从设施仪表进行有文件依据的分配
 - 数值来源模式：前景记录（`foreground_record`）
@@ -825,7 +825,7 @@ sync_with: pcr.en-US.md
 
 仅当 Heat, steam 为本过程供能时适用。同一交付热量的外购热力与现场燃料卡片互斥；并行供给应分别记录。
 
-- 选定流：Heat, steam `fb513738-b5b1-46d6-8820-ae4009a097be`
+- 选定流：蒸汽热 `fb513738-b5b1-46d6-8820-ae4009a097be`
 - 流属性/单位：Gross calorific value / MJ
 - 数量规则：对建模批次计量使用量或从设施仪表进行有文件依据的分配
 - 数值来源模式：前景记录（`foreground_record`）
@@ -871,7 +871,7 @@ sync_with: pcr.en-US.md
 
 仅当 natural gas in the gaseous state 为本过程供能时适用。同一交付热量的外购热力与现场燃料卡片互斥；并行供给应分别记录。
 
-- 选定流：natural gas in the gaseous state `4f19ca0e-7b3b-11dd-ad8b-0800200c9a66`
+- 选定流：气态天然气 `4f19ca0e-7b3b-11dd-ad8b-0800200c9a66`
 - 流属性/单位：Volume / m3
 - 数量规则：对建模批次计量使用量或从设施仪表进行有文件依据的分配
 - 数值来源模式：前景记录（`foreground_record`）
@@ -894,7 +894,7 @@ sync_with: pcr.en-US.md
 
 仅当 Diesel oil 为本过程供能时适用。同一交付热量的外购热力与现场燃料卡片互斥；并行供给应分别记录。
 
-- 选定流：Diesel oil `9d258d75-6792-4f1c-9856-81602ed8f816`
+- 选定流：柴油 `9d258d75-6792-4f1c-9856-81602ed8f816`
 - 流属性/单位：Net calorific value / MJ
 - 数量规则：对建模批次计量使用量或从设施仪表进行有文件依据的分配
 - 数值来源模式：前景记录（`foreground_record`）
@@ -917,7 +917,7 @@ sync_with: pcr.en-US.md
 
 仅当 Liquefied petroleum gas 为本过程供能时适用。同一交付热量的外购热力与现场燃料卡片互斥；并行供给应分别记录。
 
-- 选定流：Liquefied petroleum gas `d54ae71a-1245-4e3f-b694-dbf2b22bbf7d`
+- 选定流：液化石油气 `d54ae71a-1245-4e3f-b694-dbf2b22bbf7d`
 - 流属性/单位：Mass / kg
 - 数量规则：对建模批次计量使用量或从设施仪表进行有文件依据的分配
 - 数值来源模式：前景记录（`foreground_record`）
@@ -940,7 +940,7 @@ sync_with: pcr.en-US.md
 
 仅当 Heavy fuel oil 为本过程供能时适用。同一交付热量的外购热力与现场燃料卡片互斥；并行供给应分别记录。
 
-- 选定流：Heavy fuel oil
+- 选定流：重质燃料油
 - 流属性/单位：Mass / kg
 - 数量规则：对建模批次计量使用量或从设施仪表进行有文件依据的分配
 - 数值来源模式：前景记录（`foreground_record`）
@@ -963,7 +963,7 @@ sync_with: pcr.en-US.md
 
 仅当 Biogas 为本过程供能时适用。同一交付热量的外购热力与现场燃料卡片互斥；并行供给应分别记录。
 
-- 选定流：Biogas `246d7fec-59ef-4032-8539-e47632b60a23`
+- 选定流：生物天然气，沼气 `246d7fec-59ef-4032-8539-e47632b60a23`
 - 流属性/单位：Volume / m3
 - 数量规则：对建模批次计量使用量或从设施仪表进行有文件依据的分配
 - 数值来源模式：前景记录（`foreground_record`）
@@ -986,7 +986,7 @@ sync_with: pcr.en-US.md
 
 仅当 Biomass briquette fuel 为本过程供能时适用。同一交付热量的外购热力与现场燃料卡片互斥；并行供给应分别记录。
 
-- 选定流：Biomass briquette fuel `e464a548-5c9d-41d5-afb7-a88eba3849cc`
+- 选定流：生物质致密成型燃料 `e464a548-5c9d-41d5-afb7-a88eba3849cc`
 - 流属性/单位：Mass / kg
 - 数量规则：对建模批次计量使用量或从设施仪表进行有文件依据的分配
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1009,7 +1009,7 @@ sync_with: pcr.en-US.md
 
 仅当声明路线、配方、包装配置、废物去向或实测排放中存在 Compressed air 时适用；其数量须与相邻卡片逐项分开。
 
-- 选定流：Compressed air `46e2b1e4-5a4e-4579-b6a2-65b03f9ce825`
+- 选定流：压缩的空气 `46e2b1e4-5a4e-4579-b6a2-65b03f9ce825`
 - 流属性/单位：Volume / m3
 - 数量规则：对建模批次计量使用量或从设施仪表进行有文件依据的分配
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1032,7 +1032,7 @@ sync_with: pcr.en-US.md
 
 仅当声明路线、配方、包装配置、废物去向或实测排放中存在 Tap water 时适用；其数量须与相邻卡片逐项分开。
 
-- 选定流：Tap water `d1e0e36c-07f0-4a75-bdcb-efb5d9e2ac36`
+- 选定流：自来水 `d1e0e36c-07f0-4a75-bdcb-efb5d9e2ac36`
 - 流属性/单位：Volume / m3
 - 数量规则：对建模批次计量使用量或从设施仪表进行有文件依据的分配
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1055,7 +1055,7 @@ sync_with: pcr.en-US.md
 
 仅当声明路线、配方、包装配置、废物去向或实测排放中存在 Water (desalinated; deionized) 时适用；其数量须与相邻卡片逐项分开。
 
-- 选定流：Water (desalinated; deionized) `c707e768-2a44-4b33-8218-e8dcdb345132`
+- 选定流：水（脱盐；去离子） `c707e768-2a44-4b33-8218-e8dcdb345132`
 - 流属性/单位：Volume / m3
 - 数量规则：对建模批次计量使用量或从设施仪表进行有文件依据的分配
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1234,7 +1234,7 @@ sync_with: pcr.en-US.md
 
 仅当声明路线、配方、包装配置、废物去向或实测排放中存在 Cheese from milk of goats, fresh or processed 时适用；其数量须与相邻卡片逐项分开。
 
-- 选定流：Cheese from milk of goats, fresh or processed `e321b953-83b8-4428-9cce-3ac3aee6aae3`
+- 选定流：新鲜或加工的山羊奶奶酪 `e321b953-83b8-4428-9cce-3ac3aee6aae3`
 - 流属性/单位：Mass / kg
 - 数量规则：按产品身份和来源计量批次投入质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1248,7 +1248,7 @@ sync_with: pcr.en-US.md
 
 仅当声明路线、配方、包装配置、废物去向或实测排放中存在 Salt 时适用；其数量须与相邻卡片逐项分开。
 
-- 选定流：Salt `3a5fa711-4648-4d58-b94d-67b79e7476c7`
+- 选定流：食盐 `3a5fa711-4648-4d58-b94d-67b79e7476c7`
 - 流属性/单位：Mass / kg
 - 数量规则：使用声明质量基准的批次领用、投加、盐水配制和浓度记录
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1340,7 +1340,7 @@ sync_with: pcr.en-US.md
 
 仅当 Alternating current, low-voltage grid supply 为本过程跨越前景边界的供电时适用。同一电表和供电量的低压、中压与高压电网卡片互斥。
 
-- 选定流：Alternating current, low-voltage grid supply
+- 选定流：交流电，低压电网供电
 - 流属性/单位：Net calorific value / kWh
 - 数量规则：计量或与发票核对后分配至声明的鲜制、成熟或加工路线
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1363,7 +1363,7 @@ sync_with: pcr.en-US.md
 
 仅当 Alternating current, medium-voltage grid supply 为本过程跨越前景边界的供电时适用。同一电表和供电量的低压、中压与高压电网卡片互斥。
 
-- 选定流：Alternating current, medium-voltage grid supply
+- 选定流：交流电，中压电网供电
 - 流属性/单位：Net calorific value / kWh
 - 数量规则：计量或与发票核对后分配至声明的鲜制、成熟或加工路线
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1386,7 +1386,7 @@ sync_with: pcr.en-US.md
 
 仅当 Alternating current, high-voltage grid supply 为本过程跨越前景边界的供电时适用。同一电表和供电量的低压、中压与高压电网卡片互斥。
 
-- 选定流：Alternating current, high-voltage grid supply
+- 选定流：交流电，高压电网供电
 - 流属性/单位：Net calorific value / kWh
 - 数量规则：计量或与发票核对后分配至声明的鲜制、成熟或加工路线
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1409,7 +1409,7 @@ sync_with: pcr.en-US.md
 
 仅适用于本过程计量自用的现场光伏电力；排除外送电量，且不得与电网电力重复。
 
-- 选定流：Alternating Current, photovoltaic electricity generation, monocrystalline silicon `a43f59bc-4263-40de-af1e-d067f0b792d2`
+- 选定流：交流电 `a43f59bc-4263-40de-af1e-d067f0b792d2`
 - 流属性/单位：Net calorific value / kWh
 - 数量规则：计量或与发票核对后分配至声明的鲜制、成熟或加工路线
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1432,7 +1432,7 @@ sync_with: pcr.en-US.md
 
 仅当 Heat, steam 为本过程供能时适用。同一交付热量的外购热力与现场燃料卡片互斥；并行供给应分别记录。
 
-- 选定流：Heat, steam `fb513738-b5b1-46d6-8820-ae4009a097be`
+- 选定流：蒸汽热 `fb513738-b5b1-46d6-8820-ae4009a097be`
 - 流属性/单位：Gross calorific value / MJ
 - 数量规则：计量或与发票核对后分配至声明的鲜制、成熟或加工路线
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1478,7 +1478,7 @@ sync_with: pcr.en-US.md
 
 仅当 natural gas in the gaseous state 为本过程供能时适用。同一交付热量的外购热力与现场燃料卡片互斥；并行供给应分别记录。
 
-- 选定流：natural gas in the gaseous state `4f19ca0e-7b3b-11dd-ad8b-0800200c9a66`
+- 选定流：气态天然气 `4f19ca0e-7b3b-11dd-ad8b-0800200c9a66`
 - 流属性/单位：Volume / m3
 - 数量规则：计量或与发票核对后分配至声明的鲜制、成熟或加工路线
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1501,7 +1501,7 @@ sync_with: pcr.en-US.md
 
 仅当 Diesel oil 为本过程供能时适用。同一交付热量的外购热力与现场燃料卡片互斥；并行供给应分别记录。
 
-- 选定流：Diesel oil `9d258d75-6792-4f1c-9856-81602ed8f816`
+- 选定流：柴油 `9d258d75-6792-4f1c-9856-81602ed8f816`
 - 流属性/单位：Net calorific value / MJ
 - 数量规则：计量或与发票核对后分配至声明的鲜制、成熟或加工路线
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1524,7 +1524,7 @@ sync_with: pcr.en-US.md
 
 仅当 Liquefied petroleum gas 为本过程供能时适用。同一交付热量的外购热力与现场燃料卡片互斥；并行供给应分别记录。
 
-- 选定流：Liquefied petroleum gas `d54ae71a-1245-4e3f-b694-dbf2b22bbf7d`
+- 选定流：液化石油气 `d54ae71a-1245-4e3f-b694-dbf2b22bbf7d`
 - 流属性/单位：Mass / kg
 - 数量规则：计量或与发票核对后分配至声明的鲜制、成熟或加工路线
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1547,7 +1547,7 @@ sync_with: pcr.en-US.md
 
 仅当 Heavy fuel oil 为本过程供能时适用。同一交付热量的外购热力与现场燃料卡片互斥；并行供给应分别记录。
 
-- 选定流：Heavy fuel oil
+- 选定流：重质燃料油
 - 流属性/单位：Mass / kg
 - 数量规则：计量或与发票核对后分配至声明的鲜制、成熟或加工路线
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1570,7 +1570,7 @@ sync_with: pcr.en-US.md
 
 仅当 Biogas 为本过程供能时适用。同一交付热量的外购热力与现场燃料卡片互斥；并行供给应分别记录。
 
-- 选定流：Biogas `246d7fec-59ef-4032-8539-e47632b60a23`
+- 选定流：生物天然气，沼气 `246d7fec-59ef-4032-8539-e47632b60a23`
 - 流属性/单位：Volume / m3
 - 数量规则：计量或与发票核对后分配至声明的鲜制、成熟或加工路线
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1593,7 +1593,7 @@ sync_with: pcr.en-US.md
 
 仅当 Biomass briquette fuel 为本过程供能时适用。同一交付热量的外购热力与现场燃料卡片互斥；并行供给应分别记录。
 
-- 选定流：Biomass briquette fuel `e464a548-5c9d-41d5-afb7-a88eba3849cc`
+- 选定流：生物质致密成型燃料 `e464a548-5c9d-41d5-afb7-a88eba3849cc`
 - 流属性/单位：Mass / kg
 - 数量规则：计量或与发票核对后分配至声明的鲜制、成熟或加工路线
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1616,7 +1616,7 @@ sync_with: pcr.en-US.md
 
 仅当声明路线、配方、包装配置、废物去向或实测排放中存在 Compressed air 时适用；其数量须与相邻卡片逐项分开。
 
-- 选定流：Compressed air `46e2b1e4-5a4e-4579-b6a2-65b03f9ce825`
+- 选定流：压缩的空气 `46e2b1e4-5a4e-4579-b6a2-65b03f9ce825`
 - 流属性/单位：Volume / m3
 - 数量规则：计量或与发票核对后分配至声明的鲜制、成熟或加工路线
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1639,7 +1639,7 @@ sync_with: pcr.en-US.md
 
 仅当声明路线、配方、包装配置、废物去向或实测排放中存在 Tap water 时适用；其数量须与相邻卡片逐项分开。
 
-- 选定流：Tap water `d1e0e36c-07f0-4a75-bdcb-efb5d9e2ac36`
+- 选定流：自来水 `d1e0e36c-07f0-4a75-bdcb-efb5d9e2ac36`
 - 流属性/单位：Volume / m3
 - 数量规则：计量或与发票核对后分配至声明的鲜制、成熟或加工路线
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1662,7 +1662,7 @@ sync_with: pcr.en-US.md
 
 仅当声明路线、配方、包装配置、废物去向或实测排放中存在 Water (desalinated; deionized) 时适用；其数量须与相邻卡片逐项分开。
 
-- 选定流：Water (desalinated; deionized) `c707e768-2a44-4b33-8218-e8dcdb345132`
+- 选定流：水（脱盐；去离子） `c707e768-2a44-4b33-8218-e8dcdb345132`
 - 流属性/单位：Volume / m3
 - 数量规则：计量或与发票核对后分配至声明的鲜制、成熟或加工路线
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1685,7 +1685,7 @@ sync_with: pcr.en-US.md
 
 仅当服务本过程的设备使用 Refrigerant, R134a 时适用；依据库存与维保记录计量补充量，不得把采购量直接视为排放。
 
-- 选定流：Refrigerant, R134a `86e15f5d-a7dd-40be-8dc4-ac9fa826a309`
+- 选定流：制冷剂，R134a `86e15f5d-a7dd-40be-8dc4-ac9fa826a309`
 - 流属性/单位：Mass / kg
 - 数量规则：计量或与发票核对后分配至声明的鲜制、成熟或加工路线
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1708,7 +1708,7 @@ sync_with: pcr.en-US.md
 
 仅当服务本过程的设备使用 Refrigerant, R404A 时适用；依据库存与维保记录计量补充量，不得把采购量直接视为排放。
 
-- 选定流：Refrigerant, R404A `33db0143-ba65-4036-a57b-e32dcdecb779`
+- 选定流：制冷剂，R404A `33db0143-ba65-4036-a57b-e32dcdecb779`
 - 流属性/单位：Mass / kg
 - 数量规则：计量或与发票核对后分配至声明的鲜制、成熟或加工路线
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1785,7 +1785,7 @@ sync_with: pcr.en-US.md
 
 在声明过程与路线下，将 Cheese from milk of goats, fresh or processed 作为一个原子交换记录。
 
-- 选定流：Cheese from milk of goats, fresh or processed `e321b953-83b8-4428-9cce-3ac3aee6aae3`
+- 选定流：新鲜或加工的山羊奶奶酪 `e321b953-83b8-4428-9cce-3ac3aee6aae3`
 - 流属性/单位：Mass / kg
 - 数量规则：按成品批次计量包装前净转移质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1919,7 +1919,7 @@ sync_with: pcr.en-US.md
 
 在声明过程与路线下，将 Cheese from milk of goats, fresh or processed 作为一个原子交换记录。
 
-- 选定流：Cheese from milk of goats, fresh or processed `e321b953-83b8-4428-9cce-3ac3aee6aae3`
+- 选定流：新鲜或加工的山羊奶奶酪 `e321b953-83b8-4428-9cce-3ac3aee6aae3`
 - 流属性/单位：Mass / kg
 - 数量规则：按包装批次计量投入质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1933,7 +1933,7 @@ sync_with: pcr.en-US.md
 
 仅当声明路线、配方、包装配置、废物去向或实测排放中存在 Polyethylene film 时适用；其数量须与相邻卡片逐项分开。
 
-- 选定流：Polyethylene film `e64eb06c-6dc9-45f1-b003-3dc6c44b27e2`
+- 选定流：聚乙烯薄膜 `e64eb06c-6dc9-45f1-b003-3dc6c44b27e2`
 - 流属性/单位：Mass / kg
 - 数量规则：包装物料清单与领用、退回部件和可销售单元核对
 - 数值来源模式：计算值（`calculated_value`）
@@ -1977,7 +1977,7 @@ sync_with: pcr.en-US.md
 
 仅当声明路线、配方、包装配置、废物去向或实测排放中存在 Aluminum foil 时适用；其数量须与相邻卡片逐项分开。
 
-- 选定流：Aluminum foil `d3e373a5-987f-4e3a-9f5b-8feaa9aa01e2`
+- 选定流：铝箔材 `d3e373a5-987f-4e3a-9f5b-8feaa9aa01e2`
 - 流属性/单位：Mass / kg
 - 数量规则：包装物料清单与领用、退回部件和可销售单元核对
 - 数值来源模式：计算值（`calculated_value`）
@@ -1999,7 +1999,7 @@ sync_with: pcr.en-US.md
 
 仅当声明路线、配方、包装配置、废物去向或实测排放中存在 corrugated board boxes 时适用；其数量须与相邻卡片逐项分开。
 
-- 选定流：corrugated board boxes `4f197bec-7b3b-11dd-ad8b-0800200c9a66`
+- 选定流：瓦楞纸箱 `4f197bec-7b3b-11dd-ad8b-0800200c9a66`
 - 流属性/单位：Mass / kg
 - 数量规则：包装物料清单与领用、退回部件和可销售单元核对
 - 数值来源模式：计算值（`calculated_value`）
@@ -2021,7 +2021,7 @@ sync_with: pcr.en-US.md
 
 仅当声明路线、配方、包装配置、废物去向或实测排放中存在 Pallets, box pallets and other load boards, of wood, pallet collars of wood 时适用；其数量须与相邻卡片逐项分开。
 
-- 选定流：Wood pallet
+- 选定流：木托盘
 - 流属性/单位：Mass / kg
 - 数量规则：包装物料清单与领用、退回部件和可销售单元核对
 - 数值来源模式：计算值（`calculated_value`）
@@ -2043,7 +2043,7 @@ sync_with: pcr.en-US.md
 
 仅当声明路线、配方、包装配置、废物去向或实测排放中存在 Packaging label, paper 时适用；其数量须与相邻卡片逐项分开。
 
-- 选定流：Packaging label, paper `d5890643-6859-42b5-9e05-556b072c6a8c`
+- 选定流：包装标签，纸质 `d5890643-6859-42b5-9e05-556b072c6a8c`
 - 流属性/单位：Mass / kg
 - 数量规则：包装物料清单与领用、退回部件和可销售单元核对
 - 数值来源模式：计算值（`calculated_value`）
@@ -2065,7 +2065,7 @@ sync_with: pcr.en-US.md
 
 仅当 Alternating current, low-voltage grid supply 为本过程跨越前景边界的供电时适用。同一电表和供电量的低压、中压与高压电网卡片互斥。
 
-- 选定流：Alternating current, low-voltage grid supply
+- 选定流：交流电，低压电网供电
 - 流属性/单位：Net calorific value / kWh
 - 数量规则：计量或与发票核对后分配至纳入包装线和冷藏期间
 - 数值来源模式：前景记录（`foreground_record`）
@@ -2088,7 +2088,7 @@ sync_with: pcr.en-US.md
 
 仅当 Alternating current, medium-voltage grid supply 为本过程跨越前景边界的供电时适用。同一电表和供电量的低压、中压与高压电网卡片互斥。
 
-- 选定流：Alternating current, medium-voltage grid supply
+- 选定流：交流电，中压电网供电
 - 流属性/单位：Net calorific value / kWh
 - 数量规则：计量或与发票核对后分配至纳入包装线和冷藏期间
 - 数值来源模式：前景记录（`foreground_record`）
@@ -2111,7 +2111,7 @@ sync_with: pcr.en-US.md
 
 仅当 Alternating current, high-voltage grid supply 为本过程跨越前景边界的供电时适用。同一电表和供电量的低压、中压与高压电网卡片互斥。
 
-- 选定流：Alternating current, high-voltage grid supply
+- 选定流：交流电，高压电网供电
 - 流属性/单位：Net calorific value / kWh
 - 数量规则：计量或与发票核对后分配至纳入包装线和冷藏期间
 - 数值来源模式：前景记录（`foreground_record`）
@@ -2134,7 +2134,7 @@ sync_with: pcr.en-US.md
 
 仅适用于本过程计量自用的现场光伏电力；排除外送电量，且不得与电网电力重复。
 
-- 选定流：Alternating Current, photovoltaic electricity generation, monocrystalline silicon `a43f59bc-4263-40de-af1e-d067f0b792d2`
+- 选定流：交流电 `a43f59bc-4263-40de-af1e-d067f0b792d2`
 - 流属性/单位：Net calorific value / kWh
 - 数量规则：计量或与发票核对后分配至纳入包装线和冷藏期间
 - 数值来源模式：前景记录（`foreground_record`）
@@ -2157,7 +2157,7 @@ sync_with: pcr.en-US.md
 
 仅当声明路线、配方、包装配置、废物去向或实测排放中存在 Compressed air 时适用；其数量须与相邻卡片逐项分开。
 
-- 选定流：Compressed air `46e2b1e4-5a4e-4579-b6a2-65b03f9ce825`
+- 选定流：压缩的空气 `46e2b1e4-5a4e-4579-b6a2-65b03f9ce825`
 - 流属性/单位：Volume / m3
 - 数量规则：计量或与发票核对后分配至纳入包装线和冷藏期间
 - 数值来源模式：前景记录（`foreground_record`）
@@ -2180,7 +2180,7 @@ sync_with: pcr.en-US.md
 
 仅当服务本过程的设备使用 Refrigerant, R134a 时适用；依据库存与维保记录计量补充量，不得把采购量直接视为排放。
 
-- 选定流：Refrigerant, R134a `86e15f5d-a7dd-40be-8dc4-ac9fa826a309`
+- 选定流：制冷剂，R134a `86e15f5d-a7dd-40be-8dc4-ac9fa826a309`
 - 流属性/单位：Mass / kg
 - 数量规则：计量或与发票核对后分配至纳入包装线和冷藏期间
 - 数值来源模式：前景记录（`foreground_record`）
@@ -2203,7 +2203,7 @@ sync_with: pcr.en-US.md
 
 仅当服务本过程的设备使用 Refrigerant, R404A 时适用；依据库存与维保记录计量补充量，不得把采购量直接视为排放。
 
-- 选定流：Refrigerant, R404A `33db0143-ba65-4036-a57b-e32dcdecb779`
+- 选定流：制冷剂，R404A `33db0143-ba65-4036-a57b-e32dcdecb779`
 - 流属性/单位：Mass / kg
 - 数量规则：计量或与发票核对后分配至纳入包装线和冷藏期间
 - 数值来源模式：前景记录（`foreground_record`）
@@ -2280,7 +2280,7 @@ sync_with: pcr.en-US.md
 
 在声明过程与路线下，将 Cheese from milk of goats, fresh or processed 作为一个原子交换记录。
 
-- 选定流：Cheese from milk of goats, fresh or processed `e321b953-83b8-4428-9cce-3ac3aee6aae3`
+- 选定流：新鲜或加工的山羊奶奶酪 `e321b953-83b8-4428-9cce-3ac3aee6aae3`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：按声明盐水约定的 1 kg 净可销售奶酪，不含包装
 - 数值来源模式：固定值（`fixed_value`）
@@ -2317,7 +2317,7 @@ sync_with: pcr.en-US.md
 
 仅当声明路线、配方、包装配置、废物去向或实测排放中存在 Polypropylene Wastes 时适用；其数量须与相邻卡片逐项分开。
 
-- 选定流：Polypropylene Wastes `88215d1b-e6b6-4ec7-af7f-83375e80637b`
+- 选定流：聚丙烯废料 `88215d1b-e6b6-4ec7-af7f-83375e80637b`
 - 流属性/单位：Mass / kg
 - 数量规则：按材料和去向计量废品
 - 数值来源模式：前景记录（`foreground_record`）
@@ -2339,7 +2339,7 @@ sync_with: pcr.en-US.md
 
 仅当声明路线、配方、包装配置、废物去向或实测排放中存在 Aluminium scrap, new, loose 时适用；其数量须与相邻卡片逐项分开。
 
-- 选定流：Aluminium scrap, new, loose `0f5a6a98-22cc-4549-af43-6ed44014e5de`
+- 选定流：新铝废料 松散态 `0f5a6a98-22cc-4549-af43-6ed44014e5de`
 - 流属性/单位：Mass / kg
 - 数量规则：按材料和去向计量废品
 - 数值来源模式：前景记录（`foreground_record`）
@@ -2361,7 +2361,7 @@ sync_with: pcr.en-US.md
 
 仅当声明路线、配方、包装配置、废物去向或实测排放中存在 Packaging waste, cardboard 时适用；其数量须与相邻卡片逐项分开。
 
-- 选定流：Packaging waste, cardboard `72270223-04b1-4986-a546-94e5a0821317`
+- 选定流：包装废弃物，纸板 `72270223-04b1-4986-a546-94e5a0821317`
 - 流属性/单位：Mass / kg
 - 数量规则：按材料和去向计量废品
 - 数值来源模式：前景记录（`foreground_record`）
@@ -2383,7 +2383,7 @@ sync_with: pcr.en-US.md
 
 仅当声明路线、配方、包装配置、废物去向或实测排放中存在 Packaging waste, paper 时适用；其数量须与相邻卡片逐项分开。
 
-- 选定流：Packaging waste, paper `6b6f1025-cb6a-4c9d-9947-7726c4307a76`
+- 选定流：包装废弃物，纸类 `6b6f1025-cb6a-4c9d-9947-7726c4307a76`
 - 流属性/单位：Mass / kg
 - 数量规则：按材料和去向计量废品
 - 数值来源模式：前景记录（`foreground_record`）
@@ -2452,7 +2452,7 @@ sync_with: pcr.en-US.md
 
 仅当声明路线、配方、包装配置、废物去向或实测排放中存在 Refrigerant R404A to air 时适用；其数量须与相邻卡片逐项分开。
 
-- 选定流：Refrigerant R404A to air
+- 选定流：制冷剂R404A，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：对服务于纳入操作和期间的设备进行制冷剂质量平衡
 - 数值来源模式：计算值（`calculated_value`）
@@ -2475,7 +2475,7 @@ sync_with: pcr.en-US.md
 
 仅当声明路线、配方、包装配置、废物去向或实测排放中存在 ammonia 时适用；其数量须与相邻卡片逐项分开。
 
-- 选定流：ammonia `08a91e70-3ddc-11dd-a2a9-0050c2490048`
+- 选定流：氨 `08a91e70-3ddc-11dd-a2a9-0050c2490048`
 - 流属性/单位：Mass / kg
 - 数量规则：对服务于纳入操作和期间的设备进行制冷剂质量平衡
 - 数值来源模式：计算值（`calculated_value`）
@@ -2498,7 +2498,7 @@ sync_with: pcr.en-US.md
 
 仅当声明路线、配方、包装配置、废物去向或实测排放中存在 carbon dioxide 时适用；其数量须与相邻卡片逐项分开。
 
-- 选定流：carbon dioxide (fossil) `08a91e70-3ddc-11dd-9c12-0050c2490048`
+- 选定流：二氧化碳（化石源） `08a91e70-3ddc-11dd-9c12-0050c2490048`
 - 流属性/单位：Mass / kg
 - 数量规则：对服务于纳入操作和期间的设备进行制冷剂质量平衡
 - 数值来源模式：计算值（`calculated_value`）
@@ -2527,7 +2527,7 @@ sync_with: pcr.en-US.md
 
 仅当声明路线、配方、包装配置、废物去向或实测排放中存在 Tap water 时适用；其数量须与相邻卡片逐项分开。
 
-- 选定流：Tap water `d1e0e36c-07f0-4a75-bdcb-efb5d9e2ac36`
+- 选定流：自来水 `d1e0e36c-07f0-4a75-bdcb-efb5d9e2ac36`
 - 流属性/单位：Volume / m3
 - 数量规则：根据清洗回路的计量、投加、采购和库存变化记录分配至纳入生产
 - 数值来源模式：前景记录（`foreground_record`）
@@ -2550,7 +2550,7 @@ sync_with: pcr.en-US.md
 
 仅当声明路线、配方、包装配置、废物去向或实测排放中存在 Water (desalinated; deionized) 时适用；其数量须与相邻卡片逐项分开。
 
-- 选定流：Water (desalinated; deionized) `c707e768-2a44-4b33-8218-e8dcdb345132`
+- 选定流：水（脱盐；去离子） `c707e768-2a44-4b33-8218-e8dcdb345132`
 - 流属性/单位：Volume / m3
 - 数量规则：根据清洗回路的计量、投加、采购和库存变化记录分配至纳入生产
 - 数值来源模式：前景记录（`foreground_record`）
@@ -2573,7 +2573,7 @@ sync_with: pcr.en-US.md
 
 仅当声明路线、配方、包装配置、废物去向或实测排放中存在 Sodium hydroxide（30%） 时适用；其数量须与相邻卡片逐项分开。
 
-- 选定流：Sodium hydroxide（30%） `47926319-2558-4b19-bbab-0ff264fca360`
+- 选定流：氢氧化钠（30%） `47926319-2558-4b19-bbab-0ff264fca360`
 - 流属性/单位：Mass / kg
 - 数量规则：根据清洗回路的计量、投加、采购和库存变化记录分配至纳入生产
 - 数值来源模式：前景记录（`foreground_record`）
@@ -2596,7 +2596,7 @@ sync_with: pcr.en-US.md
 
 仅当声明路线、配方、包装配置、废物去向或实测排放中存在 Nitric acid, 50% aqueous solution 时适用；其数量须与相邻卡片逐项分开。
 
-- 选定流：Nitric acid, 50% aqueous solution `db613797-10b0-4252-b818-659b99ce85dd`
+- 选定流：硝酸，50%水溶液 `db613797-10b0-4252-b818-659b99ce85dd`
 - 流属性/单位：Mass / kg
 - 数量规则：根据清洗回路的计量、投加、采购和库存变化记录分配至纳入生产
 - 数值来源模式：前景记录（`foreground_record`）
@@ -2619,7 +2619,7 @@ sync_with: pcr.en-US.md
 
 仅当声明路线、配方、包装配置、废物去向或实测排放中存在 Peracetic acid 时适用；其数量须与相邻卡片逐项分开。
 
-- 选定流：Peracetic acid
+- 选定流：过氧乙酸
 - 流属性/单位：Mass / kg
 - 数量规则：根据清洗回路的计量、投加、采购和库存变化记录分配至纳入生产
 - 数值来源模式：前景记录（`foreground_record`）
@@ -2642,7 +2642,7 @@ sync_with: pcr.en-US.md
 
 仅当声明路线、配方、包装配置、废物去向或实测排放中存在 Sodium hypochlorite 时适用；其数量须与相邻卡片逐项分开。
 
-- 选定流：Sodium hypochlorite `28c4ca0f-c924-4d2a-93dd-b9ac93009d25`
+- 选定流：次氯酸钠 `28c4ca0f-c924-4d2a-93dd-b9ac93009d25`
 - 流属性/单位：Mass / kg
 - 数量规则：根据清洗回路的计量、投加、采购和库存变化记录分配至纳入生产
 - 数值来源模式：前景记录（`foreground_record`）
@@ -2665,7 +2665,7 @@ sync_with: pcr.en-US.md
 
 仅当 Alternating current, low-voltage grid supply 为本过程跨越前景边界的供电时适用。同一电表和供电量的低压、中压与高压电网卡片互斥。
 
-- 选定流：Alternating current, low-voltage grid supply
+- 选定流：交流电，低压电网供电
 - 流属性/单位：Net calorific value / kWh
 - 数量规则：根据清洗回路的计量、投加、采购和库存变化记录分配至纳入生产
 - 数值来源模式：前景记录（`foreground_record`）
@@ -2688,7 +2688,7 @@ sync_with: pcr.en-US.md
 
 仅当 Alternating current, medium-voltage grid supply 为本过程跨越前景边界的供电时适用。同一电表和供电量的低压、中压与高压电网卡片互斥。
 
-- 选定流：Alternating current, medium-voltage grid supply
+- 选定流：交流电，中压电网供电
 - 流属性/单位：Net calorific value / kWh
 - 数量规则：根据清洗回路的计量、投加、采购和库存变化记录分配至纳入生产
 - 数值来源模式：前景记录（`foreground_record`）
@@ -2711,7 +2711,7 @@ sync_with: pcr.en-US.md
 
 仅当 Alternating current, high-voltage grid supply 为本过程跨越前景边界的供电时适用。同一电表和供电量的低压、中压与高压电网卡片互斥。
 
-- 选定流：Alternating current, high-voltage grid supply
+- 选定流：交流电，高压电网供电
 - 流属性/单位：Net calorific value / kWh
 - 数量规则：根据清洗回路的计量、投加、采购和库存变化记录分配至纳入生产
 - 数值来源模式：前景记录（`foreground_record`）
@@ -2734,7 +2734,7 @@ sync_with: pcr.en-US.md
 
 仅适用于本过程计量自用的现场光伏电力；排除外送电量，且不得与电网电力重复。
 
-- 选定流：Alternating Current, photovoltaic electricity generation, monocrystalline silicon `a43f59bc-4263-40de-af1e-d067f0b792d2`
+- 选定流：交流电 `a43f59bc-4263-40de-af1e-d067f0b792d2`
 - 流属性/单位：Net calorific value / kWh
 - 数量规则：根据清洗回路的计量、投加、采购和库存变化记录分配至纳入生产
 - 数值来源模式：前景记录（`foreground_record`）
@@ -2757,7 +2757,7 @@ sync_with: pcr.en-US.md
 
 仅当 Heat, steam 为本过程供能时适用。同一交付热量的外购热力与现场燃料卡片互斥；并行供给应分别记录。
 
-- 选定流：Heat, steam `fb513738-b5b1-46d6-8820-ae4009a097be`
+- 选定流：蒸汽热 `fb513738-b5b1-46d6-8820-ae4009a097be`
 - 流属性/单位：Gross calorific value / MJ
 - 数量规则：根据清洗回路的计量、投加、采购和库存变化记录分配至纳入生产
 - 数值来源模式：前景记录（`foreground_record`）
@@ -2803,7 +2803,7 @@ sync_with: pcr.en-US.md
 
 仅当 natural gas in the gaseous state 为本过程供能时适用。同一交付热量的外购热力与现场燃料卡片互斥；并行供给应分别记录。
 
-- 选定流：natural gas in the gaseous state `4f19ca0e-7b3b-11dd-ad8b-0800200c9a66`
+- 选定流：气态天然气 `4f19ca0e-7b3b-11dd-ad8b-0800200c9a66`
 - 流属性/单位：Volume / m3
 - 数量规则：根据清洗回路的计量、投加、采购和库存变化记录分配至纳入生产
 - 数值来源模式：前景记录（`foreground_record`）
@@ -2826,7 +2826,7 @@ sync_with: pcr.en-US.md
 
 仅当 Diesel oil 为本过程供能时适用。同一交付热量的外购热力与现场燃料卡片互斥；并行供给应分别记录。
 
-- 选定流：Diesel oil `9d258d75-6792-4f1c-9856-81602ed8f816`
+- 选定流：柴油 `9d258d75-6792-4f1c-9856-81602ed8f816`
 - 流属性/单位：Net calorific value / MJ
 - 数量规则：根据清洗回路的计量、投加、采购和库存变化记录分配至纳入生产
 - 数值来源模式：前景记录（`foreground_record`）
@@ -2849,7 +2849,7 @@ sync_with: pcr.en-US.md
 
 仅当 Liquefied petroleum gas 为本过程供能时适用。同一交付热量的外购热力与现场燃料卡片互斥；并行供给应分别记录。
 
-- 选定流：Liquefied petroleum gas `d54ae71a-1245-4e3f-b694-dbf2b22bbf7d`
+- 选定流：液化石油气 `d54ae71a-1245-4e3f-b694-dbf2b22bbf7d`
 - 流属性/单位：Mass / kg
 - 数量规则：根据清洗回路的计量、投加、采购和库存变化记录分配至纳入生产
 - 数值来源模式：前景记录（`foreground_record`）
@@ -2872,7 +2872,7 @@ sync_with: pcr.en-US.md
 
 仅当 Heavy fuel oil 为本过程供能时适用。同一交付热量的外购热力与现场燃料卡片互斥；并行供给应分别记录。
 
-- 选定流：Heavy fuel oil
+- 选定流：重质燃料油
 - 流属性/单位：Mass / kg
 - 数量规则：根据清洗回路的计量、投加、采购和库存变化记录分配至纳入生产
 - 数值来源模式：前景记录（`foreground_record`）
@@ -2895,7 +2895,7 @@ sync_with: pcr.en-US.md
 
 仅当 Biogas 为本过程供能时适用。同一交付热量的外购热力与现场燃料卡片互斥；并行供给应分别记录。
 
-- 选定流：Biogas `246d7fec-59ef-4032-8539-e47632b60a23`
+- 选定流：生物天然气，沼气 `246d7fec-59ef-4032-8539-e47632b60a23`
 - 流属性/单位：Volume / m3
 - 数量规则：根据清洗回路的计量、投加、采购和库存变化记录分配至纳入生产
 - 数值来源模式：前景记录（`foreground_record`）
@@ -2918,7 +2918,7 @@ sync_with: pcr.en-US.md
 
 仅当 Biomass briquette fuel 为本过程供能时适用。同一交付热量的外购热力与现场燃料卡片互斥；并行供给应分别记录。
 
-- 选定流：Biomass briquette fuel `e464a548-5c9d-41d5-afb7-a88eba3849cc`
+- 选定流：生物质致密成型燃料 `e464a548-5c9d-41d5-afb7-a88eba3849cc`
 - 流属性/单位：Mass / kg
 - 数量规则：根据清洗回路的计量、投加、采购和库存变化记录分配至纳入生产
 - 数值来源模式：前景记录（`foreground_record`）
@@ -2941,7 +2941,7 @@ sync_with: pcr.en-US.md
 
 仅当声明路线、配方、包装配置、废物去向或实测排放中存在 Compressed air 时适用；其数量须与相邻卡片逐项分开。
 
-- 选定流：Compressed air `46e2b1e4-5a4e-4579-b6a2-65b03f9ce825`
+- 选定流：压缩的空气 `46e2b1e4-5a4e-4579-b6a2-65b03f9ce825`
 - 流属性/单位：Volume / m3
 - 数量规则：根据清洗回路的计量、投加、采购和库存变化记录分配至纳入生产
 - 数值来源模式：前景记录（`foreground_record`）
@@ -3045,7 +3045,7 @@ sync_with: pcr.en-US.md
 
 仅当声明路线、配方、包装配置、废物去向或实测排放中存在 Chemical Oxygen Demand 时适用；其数量须与相邻卡片逐项分开。
 
-- 选定流：Chemical Oxygen Demand `e57fc631-2c77-457a-aa30-be79e357792b`
+- 选定流：化学需氧量 `e57fc631-2c77-457a-aa30-be79e357792b`
 - 流属性/单位：Mass / kg
 - 数量规则：排水体积乘以有代表性的实测污染物浓度，并记录采样和未检出值处理
 - 数值来源模式：计算值（`calculated_value`）
@@ -3068,7 +3068,7 @@ sync_with: pcr.en-US.md
 
 仅当声明路线、配方、包装配置、废物去向或实测排放中存在 biological oxygen demand 时适用；其数量须与相邻卡片逐项分开。
 
-- 选定流：biological oxygen demand `08a91e70-3ddc-11dd-97de-0050c2490048`
+- 选定流：生物需氧量 `08a91e70-3ddc-11dd-97de-0050c2490048`
 - 流属性/单位：Mass / kg
 - 数量规则：排水体积乘以有代表性的实测污染物浓度，并记录采样和未检出值处理
 - 数值来源模式：计算值（`calculated_value`）
@@ -3091,7 +3091,7 @@ sync_with: pcr.en-US.md
 
 仅当声明路线、配方、包装配置、废物去向或实测排放中存在 nitrogen, total (excluding N2) 时适用；其数量须与相邻卡片逐项分开。
 
-- 选定流：nitrogen, total (excluding N2) `e1716164-e906-48e4-ad77-8f2ec4a9a4c5`
+- 选定流：总氮（不含N₂） `e1716164-e906-48e4-ad77-8f2ec4a9a4c5`
 - 流属性/单位：Mass / kg
 - 数量规则：排水体积乘以有代表性的实测污染物浓度，并记录采样和未检出值处理
 - 数值来源模式：计算值（`calculated_value`）
@@ -3114,7 +3114,7 @@ sync_with: pcr.en-US.md
 
 仅当声明路线、配方、包装配置、废物去向或实测排放中存在 phosphorus, total 时适用；其数量须与相邻卡片逐项分开。
 
-- 选定流：phosphorus, total `f9df3107-6b59-4067-b920-3c61cf3630c7`
+- 选定流：总磷 `f9df3107-6b59-4067-b920-3c61cf3630c7`
 - 流属性/单位：Mass / kg
 - 数量规则：排水体积乘以有代表性的实测污染物浓度，并记录采样和未检出值处理
 - 数值来源模式：计算值（`calculated_value`）
@@ -3137,7 +3137,7 @@ sync_with: pcr.en-US.md
 
 仅当声明路线、配方、包装配置、废物去向或实测排放中存在 ammonium 时适用；其数量须与相邻卡片逐项分开。
 
-- 选定流：ammonium `fe0acd60-3ddc-11dd-aaa5-0050c2490048`
+- 选定流：铵 `fe0acd60-3ddc-11dd-aaa5-0050c2490048`
 - 流属性/单位：Mass / kg
 - 数量规则：排水体积乘以有代表性的实测污染物浓度，并记录采样和未检出值处理
 - 数值来源模式：计算值（`calculated_value`）

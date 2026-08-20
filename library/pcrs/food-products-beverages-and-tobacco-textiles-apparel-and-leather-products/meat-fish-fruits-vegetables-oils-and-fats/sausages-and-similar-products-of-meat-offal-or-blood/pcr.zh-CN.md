@@ -38,7 +38,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 1 kg |
-| 参考产品流 | Sausages and similar products of meat, offal or blood `d4e41d5c-a905-4fb7-ad9d-8f442be1f833` |
+| 参考产品流 | 香肠及类似肉制品、内脏或血制品 `d4e41d5c-a905-4fb7-ad9d-8f442be1f833` |
 | 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | kg |
@@ -428,7 +428,7 @@ Cattle adipose fat 在本过程中作为一项原子输入交换记录；其不�
 
 Grid electricity, medium voltage 在本过程中作为一项原子输入交换记录；其不得代替任何其他物料、载体、废物或排放。
 
-- 选定流：Grid electricity, medium voltage
+- 选定流：中压电网电力
 - 流属性/单位：Energy / kWh
 - 数量规则：记录该交换针对锁定批次跨越本过程边界的前景实测数量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -746,7 +746,7 @@ Wooden inbound pallet waste 在本过程中作为一项原子输出交换记录�
 
 Ammonia (R717) to air 在本过程中作为一项原子输出交换记录；其不得代替任何其他物料、载体、废物或排放。
 
-- 选定流：Ammonia (R717) to air
+- 选定流：氨（R717），排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：仅依据所链接协议定义的前景记录计算可归属于该批次的数量。
 - 数值来源模式：计算值（`calculated_value`）
@@ -764,7 +764,7 @@ Ammonia (R717) to air 在本过程中作为一项原子输出交换记录；其�
 
 Carbon dioxide (R744) to air 在本过程中作为一项原子输出交换记录；其不得代替任何其他物料、载体、废物或排放。
 
-- 选定流：Carbon dioxide (R744) to air
+- 选定流：二氧化碳（R744），排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：仅依据所链接协议定义的前景记录计算可归属于该批次的数量。
 - 数值来源模式：计算值（`calculated_value`）
@@ -844,7 +844,7 @@ Potable ice 在本过程中作为一项原子输入交换记录；其不得代�
 
 Sodium chloride 在本过程中作为一项原子输入交换记录；其不得代替任何其他物料、载体、废物或排放。
 
-- 选定流：Sodium chloride
+- 选定流：氯化钠
 - 流属性/单位：Mass / kg
 - 数量规则：记录该交换针对锁定批次跨越本过程边界的前景实测数量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1168,7 +1168,7 @@ Sodium lactate 在本过程中作为一项原子输入交换记录；其不得�
 
 Grid electricity, medium voltage 在本过程中作为一项原子输入交换记录；其不得代替任何其他物料、载体、废物或排放。
 
-- 选定流：Grid electricity, medium voltage
+- 选定流：中压电网电力
 - 流属性/单位：Energy / kWh
 - 数量规则：记录该交换针对锁定批次跨越本过程边界的前景实测数量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1186,7 +1186,7 @@ Grid electricity, medium voltage 在本过程中作为一项原子输入交换�
 
 Compressed air 在本过程中作为一项原子输入交换记录；其不得代替任何其他物料、载体、废物或排放。
 
-- 选定流：Compressed air
+- 选定流：压缩空气
 - 流属性/单位：Volume / m3
 - 数量规则：记录该交换针对锁定批次跨越本过程边界的前景实测数量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -2232,7 +2232,7 @@ Polyamide synthetic casing 在本过程中作为一项原子输入交换记录�
 
 Grid electricity, medium voltage 在本过程中作为一项原子输入交换记录；其不得代替任何其他物料、载体、废物或排放。
 
-- 选定流：Grid electricity, medium voltage
+- 选定流：中压电网电力
 - 流属性/单位：Energy / kWh
 - 数量规则：记录该交换针对锁定批次跨越本过程边界的前景实测数量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -2954,7 +2954,7 @@ Potable curing water 在本过程中作为一项原子输入交换记录；其�
 
 Sodium chloride 在本过程中作为一项原子输入交换记录；其不得代替任何其他物料、载体、废物或排放。
 
-- 选定流：Sodium chloride
+- 选定流：氯化钠
 - 流属性/单位：Mass / kg
 - 数量规则：记录该交换针对锁定批次跨越本过程边界的前景实测数量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -3008,7 +3008,7 @@ Potassium nitrate 在本过程中作为一项原子输入交换记录；其不�
 
 Grid electricity, medium voltage 在本过程中作为一项原子输入交换记录；其不得代替任何其他物料、载体、废物或排放。
 
-- 选定流：Grid electricity, medium voltage
+- 选定流：中压电网电力
 - 流属性/单位：Energy / kWh
 - 数量规则：记录该交换针对锁定批次跨越本过程边界的前景实测数量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -3290,7 +3290,7 @@ Spent sodium-chloride curing brine 在本过程中作为一项原子输出交换
 
 Ammonia (R717) to air 在本过程中作为一项原子输出交换记录；其不得代替任何其他物料、载体、废物或排放。
 
-- 选定流：Ammonia (R717) to air
+- 选定流：氨（R717），排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：仅依据所链接协议定义的前景记录计算可归属于该批次的数量。
 - 数值来源模式：计算值（`calculated_value`）
@@ -3308,7 +3308,7 @@ Ammonia (R717) to air 在本过程中作为一项原子输出交换记录；其�
 
 Carbon dioxide (R744) to air 在本过程中作为一项原子输出交换记录；其不得代替任何其他物料、载体、废物或排放。
 
-- 选定流：Carbon dioxide (R744) to air
+- 选定流：二氧化碳（R744），排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：仅依据所链接协议定义的前景记录计算可归属于该批次的数量。
 - 数值来源模式：计算值（`calculated_value`）
@@ -3442,7 +3442,7 @@ Dextrose 在本过程中作为一项原子输入交换记录；其不得代替�
 
 Grid electricity, medium voltage 在本过程中作为一项原子输入交换记录；其不得代替任何其他物料、载体、废物或排放。
 
-- 选定流：Grid electricity, medium voltage
+- 选定流：中压电网电力
 - 流属性/单位：Energy / kWh
 - 数量规则：记录该交换针对锁定批次跨越本过程边界的前景实测数量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -3562,7 +3562,7 @@ Fermentation-rejected pork sausage 在本过程中作为一项原子输出交换
 
 Ammonia (R717) to air 在本过程中作为一项原子输出交换记录；其不得代替任何其他物料、载体、废物或排放。
 
-- 选定流：Ammonia (R717) to air
+- 选定流：氨（R717），排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：仅依据所链接协议定义的前景记录计算可归属于该批次的数量。
 - 数值来源模式：计算值（`calculated_value`）
@@ -3580,7 +3580,7 @@ Ammonia (R717) to air 在本过程中作为一项原子输出交换记录；其�
 
 Carbon dioxide (R744) to air 在本过程中作为一项原子输出交换记录；其不得代替任何其他物料、载体、废物或排放。
 
-- 选定流：Carbon dioxide (R744) to air
+- 选定流：二氧化碳（R744），排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：仅依据所链接协议定义的前景记录计算可归属于该批次的数量。
 - 数值来源模式：计算值（`calculated_value`）
@@ -3642,7 +3642,7 @@ Fermented pork sausage links 在本过程中作为一项原子输入交换记录
 
 Grid electricity, medium voltage 在本过程中作为一项原子输入交换记录；其不得代替任何其他物料、载体、废物或排放。
 
-- 选定流：Grid electricity, medium voltage
+- 选定流：中压电网电力
 - 流属性/单位：Energy / kWh
 - 数量规则：记录该交换针对锁定批次跨越本过程边界的前景实测数量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -3660,7 +3660,7 @@ Grid electricity, medium voltage 在本过程中作为一项原子输入交换�
 
 Purchased steam 在本过程中作为一项原子输入交换记录；其不得代替任何其他物料、载体、废物或排放。
 
-- 选定流：Purchased steam
+- 选定流：外购蒸汽
 - 流属性/单位：Energy / MJ
 - 数量规则：记录该交换针对锁定批次跨越本过程边界的前景实测数量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -3678,7 +3678,7 @@ Purchased steam 在本过程中作为一项原子输入交换记录；其不得�
 
 Purchased hot water 在本过程中作为一项原子输入交换记录；其不得代替任何其他物料、载体、废物或排放。
 
-- 选定流：Purchased hot water
+- 选定流：外购热水
 - 流属性/单位：Energy / MJ
 - 数量规则：记录该交换针对锁定批次跨越本过程边界的前景实测数量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -3732,7 +3732,7 @@ Onsite-generated hot water 在本过程中作为一项原子输入交换记录�
 
 Natural gas 在本过程中作为一项原子输入交换记录；其不得代替任何其他物料、载体、废物或排放。
 
-- 选定流：Natural gas
+- 选定流：天然气
 - 流属性/单位：Mass / kg
 - 数量规则：记录该交换针对锁定批次跨越本过程边界的前景实测数量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -3750,7 +3750,7 @@ Natural gas 在本过程中作为一项原子输入交换记录；其不得代�
 
 Diesel fuel 在本过程中作为一项原子输入交换记录；其不得代替任何其他物料、载体、废物或排放。
 
-- 选定流：Diesel fuel
+- 选定流：柴油燃料
 - 流属性/单位：Mass / kg
 - 数量规则：记录该交换针对锁定批次跨越本过程边界的前景实测数量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -3768,7 +3768,7 @@ Diesel fuel 在本过程中作为一项原子输入交换记录；其不得代�
 
 Liquefied petroleum gas 在本过程中作为一项原子输入交换记录；其不得代替任何其他物料、载体、废物或排放。
 
-- 选定流：Liquefied petroleum gas
+- 选定流：液化石油气
 - 流属性/单位：Mass / kg
 - 数量规则：记录该交换针对锁定批次跨越本过程边界的前景实测数量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -3906,7 +3906,7 @@ Water vapour to air 在本过程中作为一项原子输出交换记录；其不
 
 Ammonia (R717) to air 在本过程中作为一项原子输出交换记录；其不得代替任何其他物料、载体、废物或排放。
 
-- 选定流：Ammonia (R717) to air
+- 选定流：氨（R717），排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：仅依据所链接协议定义的前景记录计算可归属于该批次的数量。
 - 数值来源模式：计算值（`calculated_value`）
@@ -3924,7 +3924,7 @@ Ammonia (R717) to air 在本过程中作为一项原子输出交换记录；其�
 
 Carbon dioxide (R744) to air 在本过程中作为一项原子输出交换记录；其不得代替任何其他物料、载体、废物或排放。
 
-- 选定流：Carbon dioxide (R744) to air
+- 选定流：二氧化碳（R744），排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：仅依据所链接协议定义的前景记录计算可归属于该批次的数量。
 - 数值来源模式：计算值（`calculated_value`）
@@ -4032,7 +4032,7 @@ Particulate matter, ≤2.5 µm, to air 在本过程中作为一项原子输出�
 
 Carbon monoxide to air 在本过程中作为一项原子输出交换记录；其不得代替任何其他物料、载体、废物或排放。
 
-- 选定流：Carbon monoxide to air
+- 选定流：一氧化碳，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：记录该交换针对锁定批次跨越本过程边界的前景实测数量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -4166,7 +4166,7 @@ Beech wood smoke condensate 在本过程中作为一项原子输入交换记录�
 
 Grid electricity, medium voltage 在本过程中作为一项原子输入交换记录；其不得代替任何其他物料、载体、废物或排放。
 
-- 选定流：Grid electricity, medium voltage
+- 选定流：中压电网电力
 - 流属性/单位：Energy / kWh
 - 数量规则：记录该交换针对锁定批次跨越本过程边界的前景实测数量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -4184,7 +4184,7 @@ Grid electricity, medium voltage 在本过程中作为一项原子输入交换�
 
 Purchased steam 在本过程中作为一项原子输入交换记录；其不得代替任何其他物料、载体、废物或排放。
 
-- 选定流：Purchased steam
+- 选定流：外购蒸汽
 - 流属性/单位：Energy / MJ
 - 数量规则：记录该交换针对锁定批次跨越本过程边界的前景实测数量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -4358,7 +4358,7 @@ Non-methane volatile organic carbon to air 在本过程中作为一项原子输�
 
 Carbon monoxide to air 在本过程中作为一项原子输出交换记录；其不得代替任何其他物料、载体、废物或排放。
 
-- 选定流：Carbon monoxide to air
+- 选定流：一氧化碳，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：记录该交换针对锁定批次跨越本过程边界的前景实测数量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -4600,7 +4600,7 @@ Pork rillettes in casing 在本过程中作为一项原子输入交换记录；�
 
 Grid electricity, medium voltage 在本过程中作为一项原子输入交换记录；其不得代替任何其他物料、载体、废物或排放。
 
-- 选定流：Grid electricity, medium voltage
+- 选定流：中压电网电力
 - 流属性/单位：Energy / kWh
 - 数量规则：记录该交换针对锁定批次跨越本过程边界的前景实测数量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -4618,7 +4618,7 @@ Grid electricity, medium voltage 在本过程中作为一项原子输入交换�
 
 Purchased steam 在本过程中作为一项原子输入交换记录；其不得代替任何其他物料、载体、废物或排放。
 
-- 选定流：Purchased steam
+- 选定流：外购蒸汽
 - 流属性/单位：Energy / MJ
 - 数量规则：记录该交换针对锁定批次跨越本过程边界的前景实测数量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -4636,7 +4636,7 @@ Purchased steam 在本过程中作为一项原子输入交换记录；其不得�
 
 Purchased hot water 在本过程中作为一项原子输入交换记录；其不得代替任何其他物料、载体、废物或排放。
 
-- 选定流：Purchased hot water
+- 选定流：外购热水
 - 流属性/单位：Energy / MJ
 - 数量规则：记录该交换针对锁定批次跨越本过程边界的前景实测数量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -4690,7 +4690,7 @@ Onsite-generated hot water 在本过程中作为一项原子输入交换记录�
 
 Natural gas 在本过程中作为一项原子输入交换记录；其不得代替任何其他物料、载体、废物或排放。
 
-- 选定流：Natural gas
+- 选定流：天然气
 - 流属性/单位：Mass / kg
 - 数量规则：记录该交换针对锁定批次跨越本过程边界的前景实测数量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -4708,7 +4708,7 @@ Natural gas 在本过程中作为一项原子输入交换记录；其不得代�
 
 Diesel fuel 在本过程中作为一项原子输入交换记录；其不得代替任何其他物料、载体、废物或排放。
 
-- 选定流：Diesel fuel
+- 选定流：柴油燃料
 - 流属性/单位：Mass / kg
 - 数量规则：记录该交换针对锁定批次跨越本过程边界的前景实测数量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -4726,7 +4726,7 @@ Diesel fuel 在本过程中作为一项原子输入交换记录；其不得代�
 
 Liquefied petroleum gas 在本过程中作为一项原子输入交换记录；其不得代替任何其他物料、载体、废物或排放。
 
-- 选定流：Liquefied petroleum gas
+- 选定流：液化石油气
 - 流属性/单位：Mass / kg
 - 数量规则：记录该交换针对锁定批次跨越本过程边界的前景实测数量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -5242,7 +5242,7 @@ Meat-cooking condensate wastewater 在本过程中作为一项原子输出交换
 
 Ammonia (R717) to air 在本过程中作为一项原子输出交换记录；其不得代替任何其他物料、载体、废物或排放。
 
-- 选定流：Ammonia (R717) to air
+- 选定流：氨（R717），排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：仅依据所链接协议定义的前景记录计算可归属于该批次的数量。
 - 数值来源模式：计算值（`calculated_value`）
@@ -5260,7 +5260,7 @@ Ammonia (R717) to air 在本过程中作为一项原子输出交换记录；其�
 
 Carbon dioxide (R744) to air 在本过程中作为一项原子输出交换记录；其不得代替任何其他物料、载体、废物或排放。
 
-- 选定流：Carbon dioxide (R744) to air
+- 选定流：二氧化碳（R744），排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：仅依据所链接协议定义的前景记录计算可归属于该批次的数量。
 - 数值来源模式：计算值（`calculated_value`）
@@ -5368,7 +5368,7 @@ Particulate matter, ≤2.5 µm, to air 在本过程中作为一项原子输出�
 
 Carbon monoxide to air 在本过程中作为一项原子输出交换记录；其不得代替任何其他物料、载体、废物或排放。
 
-- 选定流：Carbon monoxide to air
+- 选定流：一氧化碳，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：记录该交换针对锁定批次跨越本过程边界的前景实测数量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -5664,7 +5664,7 @@ Cooked pork rillettes in casing 在本过程中作为一项原子输入交换记
 
 Low-density polyethylene film 在本过程中作为一项原子输入交换记录；其不得代替任何其他物料、载体、废物或排放。
 
-- 选定流：Low-density polyethylene film
+- 选定流：低密度聚乙烯薄膜
 - 流属性/单位：Mass / kg
 - 数量规则：记录该交换针对锁定批次跨越本过程边界的前景实测数量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -5790,7 +5790,7 @@ Aluminium foil pouch 在本过程中作为一项原子输入交换记录；其�
 
 Paper label 在本过程中作为一项原子输入交换记录；其不得代替任何其他物料、载体、废物或排放。
 
-- 选定流：Paper label
+- 选定流：纸质标签
 - 流属性/单位：Mass / kg
 - 数量规则：记录该交换针对锁定批次跨越本过程边界的前景实测数量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -5808,7 +5808,7 @@ Paper label 在本过程中作为一项原子输入交换记录；其不得代�
 
 Wooden pallet 在本过程中作为一项原子输入交换记录；其不得代替任何其他物料、载体、废物或排放。
 
-- 选定流：Wooden pallet
+- 选定流：木托盘
 - 流属性/单位：Mass / kg
 - 数量规则：记录该交换针对锁定批次跨越本过程边界的前景实测数量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -5826,7 +5826,7 @@ Wooden pallet 在本过程中作为一项原子输入交换记录；其不得代
 
 Grid electricity, medium voltage 在本过程中作为一项原子输入交换记录；其不得代替任何其他物料、载体、废物或排放。
 
-- 选定流：Grid electricity, medium voltage
+- 选定流：中压电网电力
 - 流属性/单位：Energy / kWh
 - 数量规则：记录该交换针对锁定批次跨越本过程边界的前景实测数量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -5844,7 +5844,7 @@ Grid electricity, medium voltage 在本过程中作为一项原子输入交换�
 
 Grid electricity, medium voltage 在本过程中作为一项原子输入交换记录；其不得代替任何其他物料、载体、废物或排放。
 
-- 选定流：Grid electricity, medium voltage
+- 选定流：中压电网电力
 - 流属性/单位：Energy / kWh
 - 数量规则：记录该交换针对锁定批次跨越本过程边界的前景实测数量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -6810,7 +6810,7 @@ Wooden pallet packaging scrap 在本过程中作为一项原子输出交换记�
 
 Ammonia (R717) to air 在本过程中作为一项原子输出交换记录；其不得代替任何其他物料、载体、废物或排放。
 
-- 选定流：Ammonia (R717) to air
+- 选定流：氨（R717），排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：仅依据所链接协议定义的前景记录计算可归属于该批次的数量。
 - 数值来源模式：计算值（`calculated_value`）
@@ -6828,7 +6828,7 @@ Ammonia (R717) to air 在本过程中作为一项原子输出交换记录；其�
 
 Carbon dioxide (R744) to air 在本过程中作为一项原子输出交换记录；其不得代替任何其他物料、载体、废物或排放。
 
-- 选定流：Carbon dioxide (R744) to air
+- 选定流：二氧化碳（R744），排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：仅依据所链接协议定义的前景记录计算可归属于该批次的数量。
 - 数值来源模式：计算值（`calculated_value`）
@@ -6890,7 +6890,7 @@ Potable cleaning water 在本过程中作为一项原子输入交换记录；其
 
 Grid electricity, medium voltage 在本过程中作为一项原子输入交换记录；其不得代替任何其他物料、载体、废物或排放。
 
-- 选定流：Grid electricity, medium voltage
+- 选定流：中压电网电力
 - 流属性/单位：Energy / kWh
 - 数量规则：记录该交换针对锁定批次跨越本过程边界的前景实测数量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -6908,7 +6908,7 @@ Grid electricity, medium voltage 在本过程中作为一项原子输入交换�
 
 Purchased steam 在本过程中作为一项原子输入交换记录；其不得代替任何其他物料、载体、废物或排放。
 
-- 选定流：Purchased steam
+- 选定流：外购蒸汽
 - 流属性/单位：Energy / MJ
 - 数量规则：记录该交换针对锁定批次跨越本过程边界的前景实测数量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -6926,7 +6926,7 @@ Purchased steam 在本过程中作为一项原子输入交换记录；其不得�
 
 Purchased hot water 在本过程中作为一项原子输入交换记录；其不得代替任何其他物料、载体、废物或排放。
 
-- 选定流：Purchased hot water
+- 选定流：外购热水
 - 流属性/单位：Energy / MJ
 - 数量规则：记录该交换针对锁定批次跨越本过程边界的前景实测数量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -6980,7 +6980,7 @@ Onsite-generated hot water 在本过程中作为一项原子输入交换记录�
 
 Natural gas 在本过程中作为一项原子输入交换记录；其不得代替任何其他物料、载体、废物或排放。
 
-- 选定流：Natural gas
+- 选定流：天然气
 - 流属性/单位：Mass / kg
 - 数量规则：记录该交换针对锁定批次跨越本过程边界的前景实测数量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -6998,7 +6998,7 @@ Natural gas 在本过程中作为一项原子输入交换记录；其不得代�
 
 Diesel fuel 在本过程中作为一项原子输入交换记录；其不得代替任何其他物料、载体、废物或排放。
 
-- 选定流：Diesel fuel
+- 选定流：柴油燃料
 - 流属性/单位：Mass / kg
 - 数量规则：记录该交换针对锁定批次跨越本过程边界的前景实测数量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -7016,7 +7016,7 @@ Diesel fuel 在本过程中作为一项原子输入交换记录；其不得代�
 
 Liquefied petroleum gas 在本过程中作为一项原子输入交换记录；其不得代替任何其他物料、载体、废物或排放。
 
-- 选定流：Liquefied petroleum gas
+- 选定流：液化石油气
 - 流属性/单位：Mass / kg
 - 数量规则：记录该交换针对锁定批次跨越本过程边界的前景实测数量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -7034,7 +7034,7 @@ Liquefied petroleum gas 在本过程中作为一项原子输入交换记录；�
 
 Sodium hydroxide 在本过程中作为一项原子输入交换记录；其不得代替任何其他物料、载体、废物或排放。
 
-- 选定流：Sodium hydroxide
+- 选定流：氢氧化钠
 - 流属性/单位：Mass / kg
 - 数量规则：记录该交换针对锁定批次跨越本过程边界的前景实测数量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -7052,7 +7052,7 @@ Sodium hydroxide 在本过程中作为一项原子输入交换记录；其不得
 
 Nitric acid 在本过程中作为一项原子输入交换记录；其不得代替任何其他物料、载体、废物或排放。
 
-- 选定流：Nitric acid
+- 选定流：硝酸
 - 流属性/单位：Mass / kg
 - 数量规则：记录该交换针对锁定批次跨越本过程边界的前景实测数量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -7070,7 +7070,7 @@ Nitric acid 在本过程中作为一项原子输入交换记录；其不得代�
 
 Phosphoric acid 在本过程中作为一项原子输入交换记录；其不得代替任何其他物料、载体、废物或排放。
 
-- 选定流：Phosphoric acid
+- 选定流：磷酸
 - 流属性/单位：Mass / kg
 - 数量规则：记录该交换针对锁定批次跨越本过程边界的前景实测数量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -7088,7 +7088,7 @@ Phosphoric acid 在本过程中作为一项原子输入交换记录；其不得�
 
 Peracetic acid 在本过程中作为一项原子输入交换记录；其不得代替任何其他物料、载体、废物或排放。
 
-- 选定流：Peracetic acid
+- 选定流：过氧乙酸
 - 流属性/单位：Mass / kg
 - 数量规则：记录该交换针对锁定批次跨越本过程边界的前景实测数量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -7106,7 +7106,7 @@ Peracetic acid 在本过程中作为一项原子输入交换记录；其不得�
 
 Sodium hypochlorite 在本过程中作为一项原子输入交换记录；其不得代替任何其他物料、载体、废物或排放。
 
-- 选定流：Sodium hypochlorite
+- 选定流：次氯酸钠
 - 流属性/单位：Mass / kg
 - 数量规则：记录该交换针对锁定批次跨越本过程边界的前景实测数量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -7360,7 +7360,7 @@ Spent sodium hypochlorite sanitising solution 在本过程中作为一项原子�
 
 Natural gas 在本过程中作为一项原子输入交换记录；其不得代替任何其他物料、载体、废物或排放。
 
-- 选定流：Natural gas
+- 选定流：天然气
 - 流属性/单位：Mass / kg
 - 数量规则：记录该交换针对锁定批次跨越本过程边界的前景实测数量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -7378,7 +7378,7 @@ Natural gas 在本过程中作为一项原子输入交换记录；其不得代�
 
 Diesel fuel 在本过程中作为一项原子输入交换记录；其不得代替任何其他物料、载体、废物或排放。
 
-- 选定流：Diesel fuel
+- 选定流：柴油燃料
 - 流属性/单位：Mass / kg
 - 数量规则：记录该交换针对锁定批次跨越本过程边界的前景实测数量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -7396,7 +7396,7 @@ Diesel fuel 在本过程中作为一项原子输入交换记录；其不得代�
 
 Liquefied petroleum gas 在本过程中作为一项原子输入交换记录；其不得代替任何其他物料、载体、废物或排放。
 
-- 选定流：Liquefied petroleum gas
+- 选定流：液化石油气
 - 流属性/单位：Mass / kg
 - 数量规则：记录该交换针对锁定批次跨越本过程边界的前景实测数量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -7414,7 +7414,7 @@ Liquefied petroleum gas 在本过程中作为一项原子输入交换记录；�
 
 Grid electricity, medium voltage 在本过程中作为一项原子输入交换记录；其不得代替任何其他物料、载体、废物或排放。
 
-- 选定流：Grid electricity, medium voltage
+- 选定流：中压电网电力
 - 流属性/单位：Energy / kWh
 - 数量规则：记录该交换针对锁定批次跨越本过程边界的前景实测数量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -7496,7 +7496,7 @@ Onsite-generated hot water 在本过程中作为一项原子输出交换记录�
 
 Boiler blowdown wastewater 在本过程中作为一项原子输出交换记录；其不得代替任何其他物料、载体、废物或排放。
 
-- 选定流：Boiler blowdown wastewater
+- 选定流：锅炉排污废水
 - 流属性/单位：Volume / m3
 - 数量规则：记录该交换针对锁定批次跨越本过程边界的前景实测数量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -7606,7 +7606,7 @@ Particulate matter, ≤2.5 µm, to air 在本过程中作为一项原子输出�
 
 Carbon monoxide to air 在本过程中作为一项原子输出交换记录；其不得代替任何其他物料、载体、废物或排放。
 
-- 选定流：Carbon monoxide to air
+- 选定流：一氧化碳，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：记录该交换针对锁定批次跨越本过程边界的前景实测数量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -7632,7 +7632,7 @@ Carbon monoxide to air 在本过程中作为一项原子输出交换记录；其
 
 Grid electricity, medium voltage 在本过程中作为一项原子输入交换记录；其不得代替任何其他物料、载体、废物或排放。
 
-- 选定流：Grid electricity, medium voltage
+- 选定流：中压电网电力
 - 流属性/单位：Energy / kWh
 - 数量规则：记录该交换针对锁定批次跨越本过程边界的前景实测数量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -7650,7 +7650,7 @@ Grid electricity, medium voltage 在本过程中作为一项原子输入交换�
 
 Ferric chloride 在本过程中作为一项原子输入交换记录；其不得代替任何其他物料、载体、废物或排放。
 
-- 选定流：Ferric chloride
+- 选定流：氯化铁
 - 流属性/单位：Mass / kg
 - 数量规则：记录该交换针对锁定批次跨越本过程边界的前景实测数量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -7686,7 +7686,7 @@ Aluminium sulfate 在本过程中作为一项原子输入交换记录；其不�
 
 Polyacrylamide flocculant 在本过程中作为一项原子输入交换记录；其不得代替任何其他物料、载体、废物或排放。
 
-- 选定流：Polyacrylamide flocculant
+- 选定流：聚丙烯酰胺絮凝剂
 - 流属性/单位：Mass / kg
 - 数量规则：记录该交换针对锁定批次跨越本过程边界的前景实测数量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -7704,7 +7704,7 @@ Polyacrylamide flocculant 在本过程中作为一项原子输入交换记录；
 
 Sodium hydroxide 在本过程中作为一项原子输入交换记录；其不得代替任何其他物料、载体、废物或排放。
 
-- 选定流：Sodium hydroxide
+- 选定流：氢氧化钠
 - 流属性/单位：Mass / kg
 - 数量规则：记录该交换针对锁定批次跨越本过程边界的前景实测数量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -7722,7 +7722,7 @@ Sodium hydroxide 在本过程中作为一项原子输入交换记录；其不得
 
 Calcium hydroxide 在本过程中作为一项原子输入交换记录；其不得代替任何其他物料、载体、废物或排放。
 
-- 选定流：Calcium hydroxide
+- 选定流：氢氧化钙
 - 流属性/单位：Mass / kg
 - 数量规则：记录该交换针对锁定批次跨越本过程边界的前景实测数量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -7914,7 +7914,7 @@ Spent activated carbon 在本过程中作为一项原子输出交换记录；其
 
 Chemical oxygen demand to water 在本过程中作为一项原子输出交换记录；其不得代替任何其他物料、载体、废物或排放。
 
-- 选定流：Chemical oxygen demand to water
+- 选定流：化学需氧量，排入水体
 - 流属性/单位：Mass / kg
 - 数量规则：仅依据所链接协议定义的前景记录计算可归属于该批次的数量。
 - 数值来源模式：计算值（`calculated_value`）
@@ -7950,7 +7950,7 @@ Biochemical oxygen demand, 5-day, to water 在本过程中作为一项原子输�
 
 Total suspended solids to water 在本过程中作为一项原子输出交换记录；其不得代替任何其他物料、载体、废物或排放。
 
-- 选定流：Total suspended solids to water
+- 选定流：总悬浮固体，排入水体
 - 流属性/单位：Mass / kg
 - 数量规则：仅依据所链接协议定义的前景记录计算可归属于该批次的数量。
 - 数值来源模式：计算值（`calculated_value`）
@@ -8022,7 +8022,7 @@ Phosphate phosphorus to water 在本过程中作为一项原子输出交换记�
 
 Chloride to water 在本过程中作为一项原子输出交换记录；其不得代替任何其他物料、载体、废物或排放。
 
-- 选定流：Chloride to water
+- 选定流：氯化物，排入水体
 - 流属性/单位：Mass / kg
 - 数量规则：仅依据所链接协议定义的前景记录计算可归属于该批次的数量。
 - 数值来源模式：计算值（`calculated_value`）
@@ -8076,7 +8076,7 @@ Beef fat to water 在本过程中作为一项原子输出交换记录；其不�
 
 Methane to air 在本过程中作为一项原子输出交换记录；其不得代替任何其他物料、载体、废物或排放。
 
-- 选定流：Methane to air
+- 选定流：甲烷，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：仅依据所链接协议定义的前景记录计算可归属于该批次的数量。
 - 数值来源模式：计算值（`calculated_value`）
@@ -8094,7 +8094,7 @@ Methane to air 在本过程中作为一项原子输出交换记录；其不得�
 
 Nitrous oxide to air 在本过程中作为一项原子输出交换记录；其不得代替任何其他物料、载体、废物或排放。
 
-- 选定流：Nitrous oxide to air
+- 选定流：氧化亚氮，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：仅依据所链接协议定义的前景记录计算可归属于该批次的数量。
 - 数值来源模式：计算值（`calculated_value`）
@@ -8130,7 +8130,7 @@ Biogenic carbon dioxide to air 在本过程中作为一项原子输出交换记�
 
 Ammonia to air 在本过程中作为一项原子输出交换记录；其不得代替任何其他物料、载体、废物或排放。
 
-- 选定流：Ammonia to air
+- 选定流：氨，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：仅依据所链接协议定义的前景记录计算可归属于该批次的数量。
 - 数值来源模式：计算值（`calculated_value`）

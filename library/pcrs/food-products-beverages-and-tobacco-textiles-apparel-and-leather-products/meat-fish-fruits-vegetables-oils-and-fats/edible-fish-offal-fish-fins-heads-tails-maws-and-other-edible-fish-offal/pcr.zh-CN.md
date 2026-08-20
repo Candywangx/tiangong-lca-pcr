@@ -40,7 +40,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 1 kg 产品净质量 |
-| 参考产品流 | Edible fish offal, fish fins, heads, tails, maws and other edible fish offal `be045cb1-719b-41b1-9bec-bf27cf50c401` |
+| 参考产品流 | 食用鱼内脏，鱼鳍、鱼头、鱼尾、鱼肚和其他食用鱼内脏 `be045cb1-719b-41b1-9bec-bf27cf50c401` |
 | 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | kg |
@@ -393,7 +393,7 @@ sync_with: pcr.en-US.md
 
 本项是实现功能单位的加工厂门口净产出；其数量不含包装质量。
 
-- 选定流：Edible fish offal, fish fins, heads, tails, maws and other edible fish offal `be045cb1-719b-41b1-9bec-bf27cf50c401`
+- 选定流：食用鱼内脏，鱼鳍、鱼头、鱼尾、鱼肚和其他食用鱼内脏 `be045cb1-719b-41b1-9bec-bf27cf50c401`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：恰好 1 kg 食用产品净质量
 - 数值来源模式：固定值（`fixed_value`）

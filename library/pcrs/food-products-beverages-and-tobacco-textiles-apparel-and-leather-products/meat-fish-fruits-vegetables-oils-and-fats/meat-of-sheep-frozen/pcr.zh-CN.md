@@ -40,7 +40,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 1 kg 净合格冷冻绵羊肉，不含包装 |
-| 参考产品流 | Meat of sheep, frozen `7a898ac1-b845-4943-bae3-94e7c24ae06d` |
+| 参考产品流 | 冻藏的绵羊肉 `7a898ac1-b845-4943-bae3-94e7c24ae06d` |
 | 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | kg |
@@ -119,7 +119,7 @@ sync_with: pcr.en-US.md
 
 接收与待宰使用的电网电力与所有热能载体分别记录。
 
-- 选定流：Electricity, grid
+- 选定流：电网电力
 - 流属性/单位：Energy / kWh
 - 数量规则：计量或按分表分配至接收与待宰的电网电力
 - 数值来源模式：前景记录（`foreground_record`）
@@ -134,7 +134,7 @@ sync_with: pcr.en-US.md
 
 接收与待宰使用的外购蒸汽与热水和燃料分别记录。
 
-- 选定流：Purchased steam
+- 选定流：外购蒸汽
 - 流属性/单位：Mass / kg
 - 数量规则：使用时分配至接收与待宰的外购蒸汽实测质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -149,7 +149,7 @@ sync_with: pcr.en-US.md
 
 接收与待宰使用的外购热水与蒸汽分别记录。
 
-- 选定流：Purchased hot water
+- 选定流：外购热水
 - 流属性/单位：Mass / kg
 - 数量规则：使用时分配至接收与待宰的外购热水实测质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -164,7 +164,7 @@ sync_with: pcr.en-US.md
 
 接收与待宰设备使用的天然气与柴油和 LPG 分别记录。
 
-- 选定流：Natural gas
+- 选定流：天然气
 - 流属性/单位：Energy / MJ
 - 数量规则：采用已记录热值约定，计量分配至接收与待宰的天然气能量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -179,7 +179,7 @@ sync_with: pcr.en-US.md
 
 接收与待宰直接运行设备使用的柴油单独记录。
 
-- 选定流：Diesel fuel
+- 选定流：柴油燃料
 - 流属性/单位：Mass / kg
 - 数量规则：使用时计量或库存核对并分配至接收与待宰的柴油质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -194,7 +194,7 @@ sync_with: pcr.en-US.md
 
 接收与待宰设备使用的 LPG 与天然气和柴油分别记录。
 
-- 选定流：Liquefied petroleum gas
+- 选定流：液化石油气
 - 流属性/单位：Mass / kg
 - 数量规则：使用时库存核对并分配至接收与待宰的 LPG 质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -209,7 +209,7 @@ sync_with: pcr.en-US.md
 
 接收与待宰使用的新鲜工艺水与内部回用水分别计量。
 
-- 选定流：Process water
+- 选定流：过程用水
 - 流属性/单位：Volume / m3
 - 数量规则：分配至接收与待宰的新鲜工艺水实测取水量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -296,7 +296,7 @@ sync_with: pcr.en-US.md
 
 接收与待宰所用燃料产生的化石二氧化碳作为单独空气交换报告。
 
-- 选定流：Carbon dioxide, fossil, to air
+- 选定流：化石源二氧化碳，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：根据接收与待宰各燃料实测量及其有记录的碳含量或排放因子计算
 - 数值来源模式：计算值（`calculated_value`）
@@ -311,7 +311,7 @@ sync_with: pcr.en-US.md
 
 接收与待宰燃料燃烧产生的氮氧化物与二氧化硫分别报告。
 
-- 选定流：Nitrogen oxides to air
+- 选定流：氮氧化物，排入空气
 - 流属性/单位：Mass / kg NO2-equivalent
 - 数量规则：根据阶段燃料用量、设备记录和有记录 NOx 因子测量或计算
 - 数值来源模式：计算值（`calculated_value`）
@@ -326,7 +326,7 @@ sync_with: pcr.en-US.md
 
 接收与待宰燃料燃烧产生的二氧化硫与氮氧化物分别报告。
 
-- 选定流：Sulfur dioxide to air
+- 选定流：二氧化硫，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：根据阶段燃料用量、硫含量和设备记录测量或计算
 - 数值来源模式：计算值（`calculated_value`）
@@ -341,7 +341,7 @@ sync_with: pcr.en-US.md
 
 接收与待宰燃料燃烧产生的细颗粒物作为粒径特定空气交换报告。
 
-- 选定流：Particulate matter, <2.5 um, to air
+- 选定流：颗粒物（<2.5微米），排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：根据阶段燃料用量和设备特定记录测量或计算
 - 数值来源模式：计算值（`calculated_value`）
@@ -377,7 +377,7 @@ sync_with: pcr.en-US.md
 
 屠宰使用的电网电力与所有热能载体分别记录。
 
-- 选定流：Electricity, grid
+- 选定流：电网电力
 - 流属性/单位：Energy / kWh
 - 数量规则：计量或按分表分配至屠宰的电网电力
 - 数值来源模式：前景记录（`foreground_record`）
@@ -392,7 +392,7 @@ sync_with: pcr.en-US.md
 
 屠宰使用的外购蒸汽与热水和燃料分别记录。
 
-- 选定流：Purchased steam
+- 选定流：外购蒸汽
 - 流属性/单位：Mass / kg
 - 数量规则：使用时分配至屠宰的外购蒸汽实测质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -407,7 +407,7 @@ sync_with: pcr.en-US.md
 
 屠宰使用的外购热水与蒸汽分别记录。
 
-- 选定流：Purchased hot water
+- 选定流：外购热水
 - 流属性/单位：Mass / kg
 - 数量规则：使用时分配至屠宰的外购热水实测质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -422,7 +422,7 @@ sync_with: pcr.en-US.md
 
 屠宰设备使用的天然气与柴油和 LPG 分别记录。
 
-- 选定流：Natural gas
+- 选定流：天然气
 - 流属性/单位：Energy / MJ
 - 数量规则：采用已记录热值约定，计量分配至屠宰的天然气能量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -437,7 +437,7 @@ sync_with: pcr.en-US.md
 
 屠宰直接运行设备使用的柴油单独记录。
 
-- 选定流：Diesel fuel
+- 选定流：柴油燃料
 - 流属性/单位：Mass / kg
 - 数量规则：使用时计量或库存核对并分配至屠宰的柴油质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -452,7 +452,7 @@ sync_with: pcr.en-US.md
 
 屠宰设备使用的 LPG 与天然气和柴油分别记录。
 
-- 选定流：Liquefied petroleum gas
+- 选定流：液化石油气
 - 流属性/单位：Mass / kg
 - 数量规则：使用时库存核对并分配至屠宰的 LPG 质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -467,7 +467,7 @@ sync_with: pcr.en-US.md
 
 屠宰使用的新鲜工艺水与内部回用水分别计量。
 
-- 选定流：Process water
+- 选定流：过程用水
 - 流属性/单位：Volume / m3
 - 数量规则：分配至屠宰的新鲜工艺水实测取水量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -659,7 +659,7 @@ sync_with: pcr.en-US.md
 
 屠宰所用燃料产生的化石二氧化碳作为单独空气交换报告。
 
-- 选定流：Carbon dioxide, fossil, to air
+- 选定流：化石源二氧化碳，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：根据屠宰各燃料实测量及其有记录的碳含量或排放因子计算
 - 数值来源模式：计算值（`calculated_value`）
@@ -674,7 +674,7 @@ sync_with: pcr.en-US.md
 
 屠宰燃料燃烧产生的氮氧化物与二氧化硫分别报告。
 
-- 选定流：Nitrogen oxides to air
+- 选定流：氮氧化物，排入空气
 - 流属性/单位：Mass / kg NO2-equivalent
 - 数量规则：根据阶段燃料用量、设备记录和有记录 NOx 因子测量或计算
 - 数值来源模式：计算值（`calculated_value`）
@@ -689,7 +689,7 @@ sync_with: pcr.en-US.md
 
 屠宰燃料燃烧产生的二氧化硫与氮氧化物分别报告。
 
-- 选定流：Sulfur dioxide to air
+- 选定流：二氧化硫，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：根据阶段燃料用量、硫含量和设备记录测量或计算
 - 数值来源模式：计算值（`calculated_value`）
@@ -704,7 +704,7 @@ sync_with: pcr.en-US.md
 
 屠宰燃料燃烧产生的细颗粒物作为粒径特定空气交换报告。
 
-- 选定流：Particulate matter, <2.5 um, to air
+- 选定流：颗粒物（<2.5微米），排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：根据阶段燃料用量和设备特定记录测量或计算
 - 数值来源模式：计算值（`calculated_value`）
@@ -740,7 +740,7 @@ sync_with: pcr.en-US.md
 
 胴体整理与分割使用的电网电力与所有热能载体分别记录。
 
-- 选定流：Electricity, grid
+- 选定流：电网电力
 - 流属性/单位：Energy / kWh
 - 数量规则：计量或按分表分配至胴体整理与分割的电网电力
 - 数值来源模式：前景记录（`foreground_record`）
@@ -755,7 +755,7 @@ sync_with: pcr.en-US.md
 
 胴体整理与分割使用的外购蒸汽与热水和燃料分别记录。
 
-- 选定流：Purchased steam
+- 选定流：外购蒸汽
 - 流属性/单位：Mass / kg
 - 数量规则：使用时分配至胴体整理与分割的外购蒸汽实测质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -770,7 +770,7 @@ sync_with: pcr.en-US.md
 
 胴体整理与分割使用的外购热水与蒸汽分别记录。
 
-- 选定流：Purchased hot water
+- 选定流：外购热水
 - 流属性/单位：Mass / kg
 - 数量规则：使用时分配至胴体整理与分割的外购热水实测质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -785,7 +785,7 @@ sync_with: pcr.en-US.md
 
 胴体整理与分割设备使用的天然气与柴油和 LPG 分别记录。
 
-- 选定流：Natural gas
+- 选定流：天然气
 - 流属性/单位：Energy / MJ
 - 数量规则：采用已记录热值约定，计量分配至胴体整理与分割的天然气能量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -800,7 +800,7 @@ sync_with: pcr.en-US.md
 
 胴体整理与分割直接运行设备使用的柴油单独记录。
 
-- 选定流：Diesel fuel
+- 选定流：柴油燃料
 - 流属性/单位：Mass / kg
 - 数量规则：使用时计量或库存核对并分配至胴体整理与分割的柴油质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -815,7 +815,7 @@ sync_with: pcr.en-US.md
 
 胴体整理与分割设备使用的 LPG 与天然气和柴油分别记录。
 
-- 选定流：Liquefied petroleum gas
+- 选定流：液化石油气
 - 流属性/单位：Mass / kg
 - 数量规则：使用时库存核对并分配至胴体整理与分割的 LPG 质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -830,7 +830,7 @@ sync_with: pcr.en-US.md
 
 胴体整理与分割使用的新鲜工艺水与内部回用水分别计量。
 
-- 选定流：Process water
+- 选定流：过程用水
 - 流属性/单位：Volume / m3
 - 数量规则：分配至胴体整理与分割的新鲜工艺水实测取水量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -977,7 +977,7 @@ sync_with: pcr.en-US.md
 
 胴体整理与分割所用燃料产生的化石二氧化碳作为单独空气交换报告。
 
-- 选定流：Carbon dioxide, fossil, to air
+- 选定流：化石源二氧化碳，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：根据胴体整理与分割各燃料实测量及其有记录的碳含量或排放因子计算
 - 数值来源模式：计算值（`calculated_value`）
@@ -992,7 +992,7 @@ sync_with: pcr.en-US.md
 
 胴体整理与分割燃料燃烧产生的氮氧化物与二氧化硫分别报告。
 
-- 选定流：Nitrogen oxides to air
+- 选定流：氮氧化物，排入空气
 - 流属性/单位：Mass / kg NO2-equivalent
 - 数量规则：根据阶段燃料用量、设备记录和有记录 NOx 因子测量或计算
 - 数值来源模式：计算值（`calculated_value`）
@@ -1007,7 +1007,7 @@ sync_with: pcr.en-US.md
 
 胴体整理与分割燃料燃烧产生的二氧化硫与氮氧化物分别报告。
 
-- 选定流：Sulfur dioxide to air
+- 选定流：二氧化硫，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：根据阶段燃料用量、硫含量和设备记录测量或计算
 - 数值来源模式：计算值（`calculated_value`）
@@ -1022,7 +1022,7 @@ sync_with: pcr.en-US.md
 
 胴体整理与分割燃料燃烧产生的细颗粒物作为粒径特定空气交换报告。
 
-- 选定流：Particulate matter, <2.5 um, to air
+- 选定流：颗粒物（<2.5微米），排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：根据阶段燃料用量和设备特定记录测量或计算
 - 数值来源模式：计算值（`calculated_value`）
@@ -1058,7 +1058,7 @@ sync_with: pcr.en-US.md
 
 预冷与冻结使用的电网电力与所有热能载体分别记录。
 
-- 选定流：Electricity, grid
+- 选定流：电网电力
 - 流属性/单位：Energy / kWh
 - 数量规则：计量或按分表分配至预冷与冻结的电网电力
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1073,7 +1073,7 @@ sync_with: pcr.en-US.md
 
 预冷与冻结使用的外购蒸汽与热水和燃料分别记录。
 
-- 选定流：Purchased steam
+- 选定流：外购蒸汽
 - 流属性/单位：Mass / kg
 - 数量规则：使用时分配至预冷与冻结的外购蒸汽实测质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1088,7 +1088,7 @@ sync_with: pcr.en-US.md
 
 预冷与冻结使用的外购热水与蒸汽分别记录。
 
-- 选定流：Purchased hot water
+- 选定流：外购热水
 - 流属性/单位：Mass / kg
 - 数量规则：使用时分配至预冷与冻结的外购热水实测质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1103,7 +1103,7 @@ sync_with: pcr.en-US.md
 
 预冷与冻结设备使用的天然气与柴油和 LPG 分别记录。
 
-- 选定流：Natural gas
+- 选定流：天然气
 - 流属性/单位：Energy / MJ
 - 数量规则：采用已记录热值约定，计量分配至预冷与冻结的天然气能量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1118,7 +1118,7 @@ sync_with: pcr.en-US.md
 
 预冷与冻结直接运行设备使用的柴油单独记录。
 
-- 选定流：Diesel fuel
+- 选定流：柴油燃料
 - 流属性/单位：Mass / kg
 - 数量规则：使用时计量或库存核对并分配至预冷与冻结的柴油质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1133,7 +1133,7 @@ sync_with: pcr.en-US.md
 
 预冷与冻结设备使用的 LPG 与天然气和柴油分别记录。
 
-- 选定流：Liquefied petroleum gas
+- 选定流：液化石油气
 - 流属性/单位：Mass / kg
 - 数量规则：使用时库存核对并分配至预冷与冻结的 LPG 质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1148,7 +1148,7 @@ sync_with: pcr.en-US.md
 
 预冷与冻结使用的新鲜工艺水与内部回用水分别计量。
 
-- 选定流：Process water
+- 选定流：过程用水
 - 流属性/单位：Volume / m3
 - 数量规则：分配至预冷与冻结的新鲜工艺水实测取水量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1163,7 +1163,7 @@ sync_with: pcr.en-US.md
 
 预冷与冻结的氨制冷剂补充与 R-134a 分别平衡。
 
-- 选定流：Ammonia refrigerant (R-717)
+- 选定流：氨制冷剂（R-717）
 - 流属性/单位：Mass / kg
 - 数量规则：根据库存和维修记录计算并分配至预冷与冻结的 R-717 净补充量
 - 数值来源模式：计算值（`calculated_value`）
@@ -1178,7 +1178,7 @@ sync_with: pcr.en-US.md
 
 预冷与冻结的 R-134a 制冷剂补充与 R-717 分别平衡。
 
-- 选定流：1,1,1,2-Tetrafluoroethane refrigerant (R-134a)
+- 选定流：1,1,1,2-四氟乙烷制冷剂（R-134a）
 - 流属性/单位：Mass / kg
 - 数量规则：根据库存和维修记录计算并分配至预冷与冻结的 R-134a 净补充量
 - 数值来源模式：计算值（`calculated_value`）
@@ -1250,7 +1250,7 @@ sync_with: pcr.en-US.md
 
 预冷与冻结制冷系统未回收的 R-717 损失作为氨向空气排放报告。
 
-- 选定流：Ammonia to air
+- 选定流：氨，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：根据制冷剂质量平衡计算并分配至预冷与冻结的未回收 R-717 损失
 - 数值来源模式：计算值（`calculated_value`）
@@ -1265,7 +1265,7 @@ sync_with: pcr.en-US.md
 
 预冷与冻结制冷系统未回收的 R-134a 损失作为单独空气交换报告。
 
-- 选定流：1,1,1,2-Tetrafluoroethane to air
+- 选定流：1,1,1,2-四氟乙烷，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：根据制冷剂质量平衡计算并分配至预冷与冻结的未回收 R-134a 损失
 - 数值来源模式：计算值（`calculated_value`）
@@ -1280,7 +1280,7 @@ sync_with: pcr.en-US.md
 
 预冷与冻结所用燃料产生的化石二氧化碳作为单独空气交换报告。
 
-- 选定流：Carbon dioxide, fossil, to air
+- 选定流：化石源二氧化碳，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：根据预冷与冻结各燃料实测量及其有记录的碳含量或排放因子计算
 - 数值来源模式：计算值（`calculated_value`）
@@ -1295,7 +1295,7 @@ sync_with: pcr.en-US.md
 
 预冷与冻结燃料燃烧产生的氮氧化物与二氧化硫分别报告。
 
-- 选定流：Nitrogen oxides to air
+- 选定流：氮氧化物，排入空气
 - 流属性/单位：Mass / kg NO2-equivalent
 - 数量规则：根据阶段燃料用量、设备记录和有记录 NOx 因子测量或计算
 - 数值来源模式：计算值（`calculated_value`）
@@ -1310,7 +1310,7 @@ sync_with: pcr.en-US.md
 
 预冷与冻结燃料燃烧产生的二氧化硫与氮氧化物分别报告。
 
-- 选定流：Sulfur dioxide to air
+- 选定流：二氧化硫，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：根据阶段燃料用量、硫含量和设备记录测量或计算
 - 数值来源模式：计算值（`calculated_value`）
@@ -1325,7 +1325,7 @@ sync_with: pcr.en-US.md
 
 预冷与冻结燃料燃烧产生的细颗粒物作为粒径特定空气交换报告。
 
-- 选定流：Particulate matter, <2.5 um, to air
+- 选定流：颗粒物（<2.5微米），排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：根据阶段燃料用量和设备特定记录测量或计算
 - 数值来源模式：计算值（`calculated_value`）
@@ -1361,7 +1361,7 @@ sync_with: pcr.en-US.md
 
 包装与冻藏使用的电网电力与所有热能载体分别记录。
 
-- 选定流：Electricity, grid
+- 选定流：电网电力
 - 流属性/单位：Energy / kWh
 - 数量规则：计量或按分表分配至包装与冻藏的电网电力
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1376,7 +1376,7 @@ sync_with: pcr.en-US.md
 
 包装与冻藏使用的外购蒸汽与热水和燃料分别记录。
 
-- 选定流：Purchased steam
+- 选定流：外购蒸汽
 - 流属性/单位：Mass / kg
 - 数量规则：使用时分配至包装与冻藏的外购蒸汽实测质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1391,7 +1391,7 @@ sync_with: pcr.en-US.md
 
 包装与冻藏使用的外购热水与蒸汽分别记录。
 
-- 选定流：Purchased hot water
+- 选定流：外购热水
 - 流属性/单位：Mass / kg
 - 数量规则：使用时分配至包装与冻藏的外购热水实测质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1406,7 +1406,7 @@ sync_with: pcr.en-US.md
 
 包装与冻藏设备使用的天然气与柴油和 LPG 分别记录。
 
-- 选定流：Natural gas
+- 选定流：天然气
 - 流属性/单位：Energy / MJ
 - 数量规则：采用已记录热值约定，计量分配至包装与冻藏的天然气能量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1421,7 +1421,7 @@ sync_with: pcr.en-US.md
 
 包装与冻藏直接运行设备使用的柴油单独记录。
 
-- 选定流：Diesel fuel
+- 选定流：柴油燃料
 - 流属性/单位：Mass / kg
 - 数量规则：使用时计量或库存核对并分配至包装与冻藏的柴油质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1436,7 +1436,7 @@ sync_with: pcr.en-US.md
 
 包装与冻藏设备使用的 LPG 与天然气和柴油分别记录。
 
-- 选定流：Liquefied petroleum gas
+- 选定流：液化石油气
 - 流属性/单位：Mass / kg
 - 数量规则：使用时库存核对并分配至包装与冻藏的 LPG 质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1451,7 +1451,7 @@ sync_with: pcr.en-US.md
 
 包装与冻藏使用的新鲜工艺水与内部回用水分别计量。
 
-- 选定流：Process water
+- 选定流：过程用水
 - 流属性/单位：Volume / m3
 - 数量规则：分配至包装与冻藏的新鲜工艺水实测取水量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1466,7 +1466,7 @@ sync_with: pcr.en-US.md
 
 包装与冻藏的氨制冷剂补充与 R-134a 分别平衡。
 
-- 选定流：Ammonia refrigerant (R-717)
+- 选定流：氨制冷剂（R-717）
 - 流属性/单位：Mass / kg
 - 数量规则：根据库存和维修记录计算并分配至包装与冻藏的 R-717 净补充量
 - 数值来源模式：计算值（`calculated_value`）
@@ -1481,7 +1481,7 @@ sync_with: pcr.en-US.md
 
 包装与冻藏的 R-134a 制冷剂补充与 R-717 分别平衡。
 
-- 选定流：1,1,1,2-Tetrafluoroethane refrigerant (R-134a)
+- 选定流：1,1,1,2-四氟乙烷制冷剂（R-134a）
 - 流属性/单位：Mass / kg
 - 数量规则：根据库存和维修记录计算并分配至包装与冻藏的 R-134a 净补充量
 - 数值来源模式：计算值（`calculated_value`）
@@ -1496,7 +1496,7 @@ sync_with: pcr.en-US.md
 
 所声明包装使用的低密度聚乙烯膜单独记录。
 
-- 选定流：Low-density polyethylene packaging film
+- 选定流：低密度聚乙烯包装膜
 - 流属性/单位：Mass / kg
 - 数量规则：分配至放行产品的 low-density polyethylene packaging film 实测净消耗量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1526,7 +1526,7 @@ sync_with: pcr.en-US.md
 
 冷冻肉运输使用的瓦楞纸板箱与聚合物包装分别记录。
 
-- 选定流：Corrugated paperboard carton
+- 选定流：瓦楞纸板箱
 - 流属性/单位：Mass / kg
 - 数量规则：分配至放行产品的 corrugated paperboard carton 实测净消耗量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1556,7 +1556,7 @@ sync_with: pcr.en-US.md
 
 木托盘净消耗量与纸箱和聚合物包装分别记录。
 
-- 选定流：Wooden pallet
+- 选定流：木托盘
 - 流属性/单位：Mass / kg
 - 数量规则：分配至放行产品的 wooden pallet 实测净消耗量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1579,7 +1579,7 @@ sync_with: pcr.en-US.md
 
 本卡是定量参考：设施门口放行的净合格冷冻绵羊肉，不含包装质量。
 
-- 选定流：Meat of sheep, frozen `7a898ac1-b845-4943-bae3-94e7c24ae06d`
+- 选定流：冻藏的绵羊肉 `7a898ac1-b845-4943-bae3-94e7c24ae06d`
 - 流属性/单位：Mass / kg
 - 数量规则：恰好 1 kg 放行的净合格冷冻绵羊肉；不含包装质量
 - 数值来源模式：固定值（`fixed_value`）
@@ -1611,7 +1611,7 @@ sync_with: pcr.en-US.md
 
 废弃 low-density polyethylene packaging film 作为独立包装废物流记录。
 
-- 选定流：Waste low-density polyethylene packaging film
+- 选定流：废低密度聚乙烯包装膜
 - 流属性/单位：Mass / kg
 - 数量规则：送往有记录去向的废弃 low-density polyethylene packaging film 实测质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1671,7 +1671,7 @@ sync_with: pcr.en-US.md
 
 废弃 wooden pallet 作为独立包装废物流记录。
 
-- 选定流：Waste wooden pallet
+- 选定流：废木托盘
 - 流属性/单位：Mass / kg
 - 数量规则：送往有记录去向的废弃 wooden pallet 实测质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1718,7 +1718,7 @@ sync_with: pcr.en-US.md
 
 包装与冻藏制冷系统未回收的 R-717 损失作为氨向空气排放报告。
 
-- 选定流：Ammonia to air
+- 选定流：氨，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：根据制冷剂质量平衡计算并分配至包装与冻藏的未回收 R-717 损失
 - 数值来源模式：计算值（`calculated_value`）
@@ -1733,7 +1733,7 @@ sync_with: pcr.en-US.md
 
 包装与冻藏制冷系统未回收的 R-134a 损失作为单独空气交换报告。
 
-- 选定流：1,1,1,2-Tetrafluoroethane to air
+- 选定流：1,1,1,2-四氟乙烷，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：根据制冷剂质量平衡计算并分配至包装与冻藏的未回收 R-134a 损失
 - 数值来源模式：计算值（`calculated_value`）
@@ -1748,7 +1748,7 @@ sync_with: pcr.en-US.md
 
 包装与冻藏所用燃料产生的化石二氧化碳作为单独空气交换报告。
 
-- 选定流：Carbon dioxide, fossil, to air
+- 选定流：化石源二氧化碳，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：根据包装与冻藏各燃料实测量及其有记录的碳含量或排放因子计算
 - 数值来源模式：计算值（`calculated_value`）
@@ -1763,7 +1763,7 @@ sync_with: pcr.en-US.md
 
 包装与冻藏燃料燃烧产生的氮氧化物与二氧化硫分别报告。
 
-- 选定流：Nitrogen oxides to air
+- 选定流：氮氧化物，排入空气
 - 流属性/单位：Mass / kg NO2-equivalent
 - 数量规则：根据阶段燃料用量、设备记录和有记录 NOx 因子测量或计算
 - 数值来源模式：计算值（`calculated_value`）
@@ -1778,7 +1778,7 @@ sync_with: pcr.en-US.md
 
 包装与冻藏燃料燃烧产生的二氧化硫与氮氧化物分别报告。
 
-- 选定流：Sulfur dioxide to air
+- 选定流：二氧化硫，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：根据阶段燃料用量、硫含量和设备记录测量或计算
 - 数值来源模式：计算值（`calculated_value`）
@@ -1793,7 +1793,7 @@ sync_with: pcr.en-US.md
 
 包装与冻藏燃料燃烧产生的细颗粒物作为粒径特定空气交换报告。
 
-- 选定流：Particulate matter, <2.5 um, to air
+- 选定流：颗粒物（<2.5微米），排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：根据阶段燃料用量和设备特定记录测量或计算
 - 数值来源模式：计算值（`calculated_value`）
@@ -1814,7 +1814,7 @@ sync_with: pcr.en-US.md
 
 清洗与消毒使用的电网电力与所有热能载体分别记录。
 
-- 选定流：Electricity, grid
+- 选定流：电网电力
 - 流属性/单位：Energy / kWh
 - 数量规则：计量或按分表分配至清洗与消毒的电网电力
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1829,7 +1829,7 @@ sync_with: pcr.en-US.md
 
 清洗与消毒使用的外购蒸汽与热水和燃料分别记录。
 
-- 选定流：Purchased steam
+- 选定流：外购蒸汽
 - 流属性/单位：Mass / kg
 - 数量规则：使用时分配至清洗与消毒的外购蒸汽实测质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1844,7 +1844,7 @@ sync_with: pcr.en-US.md
 
 清洗与消毒使用的外购热水与蒸汽分别记录。
 
-- 选定流：Purchased hot water
+- 选定流：外购热水
 - 流属性/单位：Mass / kg
 - 数量规则：使用时分配至清洗与消毒的外购热水实测质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1859,7 +1859,7 @@ sync_with: pcr.en-US.md
 
 清洗与消毒设备使用的天然气与柴油和 LPG 分别记录。
 
-- 选定流：Natural gas
+- 选定流：天然气
 - 流属性/单位：Energy / MJ
 - 数量规则：采用已记录热值约定，计量分配至清洗与消毒的天然气能量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1874,7 +1874,7 @@ sync_with: pcr.en-US.md
 
 清洗与消毒直接运行设备使用的柴油单独记录。
 
-- 选定流：Diesel fuel
+- 选定流：柴油燃料
 - 流属性/单位：Mass / kg
 - 数量规则：使用时计量或库存核对并分配至清洗与消毒的柴油质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1889,7 +1889,7 @@ sync_with: pcr.en-US.md
 
 清洗与消毒设备使用的 LPG 与天然气和柴油分别记录。
 
-- 选定流：Liquefied petroleum gas
+- 选定流：液化石油气
 - 流属性/单位：Mass / kg
 - 数量规则：使用时库存核对并分配至清洗与消毒的 LPG 质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1904,7 +1904,7 @@ sync_with: pcr.en-US.md
 
 清洗与消毒使用的新鲜工艺水与内部回用水分别计量。
 
-- 选定流：Process water
+- 选定流：过程用水
 - 流属性/单位：Volume / m3
 - 数量规则：分配至清洗与消毒的新鲜工艺水实测取水量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1919,7 +1919,7 @@ sync_with: pcr.en-US.md
 
 氢氧化钠清洗液与其他每种清洗剂和消毒剂分别记录。
 
-- 选定流：Sodium hydroxide cleaning solution
+- 选定流：氢氧化钠清洗液
 - 流属性/单位：Mass / kg formulated product
 - 数量规则：领用的 sodium hydroxide cleaning solution 实测质量减去有记录的未用退回量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1964,7 +1964,7 @@ sync_with: pcr.en-US.md
 
 过氧乙酸消毒剂与其他每种清洗剂和消毒剂分别记录。
 
-- 选定流：Peracetic acid disinfectant
+- 选定流：过氧乙酸消毒剂
 - 流属性/单位：Mass / kg formulated product
 - 数量规则：领用的 peracetic acid disinfectant 实测质量减去有记录的未用退回量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -2021,7 +2021,7 @@ sync_with: pcr.en-US.md
 
 清洗与消毒所用燃料产生的化石二氧化碳作为单独空气交换报告。
 
-- 选定流：Carbon dioxide, fossil, to air
+- 选定流：化石源二氧化碳，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：根据清洗与消毒各燃料实测量及其有记录的碳含量或排放因子计算
 - 数值来源模式：计算值（`calculated_value`）
@@ -2036,7 +2036,7 @@ sync_with: pcr.en-US.md
 
 清洗与消毒燃料燃烧产生的氮氧化物与二氧化硫分别报告。
 
-- 选定流：Nitrogen oxides to air
+- 选定流：氮氧化物，排入空气
 - 流属性/单位：Mass / kg NO2-equivalent
 - 数量规则：根据阶段燃料用量、设备记录和有记录 NOx 因子测量或计算
 - 数值来源模式：计算值（`calculated_value`）
@@ -2051,7 +2051,7 @@ sync_with: pcr.en-US.md
 
 清洗与消毒燃料燃烧产生的二氧化硫与氮氧化物分别报告。
 
-- 选定流：Sulfur dioxide to air
+- 选定流：二氧化硫，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：根据阶段燃料用量、硫含量和设备记录测量或计算
 - 数值来源模式：计算值（`calculated_value`）
@@ -2066,7 +2066,7 @@ sync_with: pcr.en-US.md
 
 清洗与消毒燃料燃烧产生的细颗粒物作为粒径特定空气交换报告。
 
-- 选定流：Particulate matter, <2.5 um, to air
+- 选定流：颗粒物（<2.5微米），排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：根据阶段燃料用量和设备特定记录测量或计算
 - 数值来源模式：计算值（`calculated_value`）
@@ -2087,7 +2087,7 @@ sync_with: pcr.en-US.md
 
 场内废水处理使用的电网电力与所有热能载体分别记录。
 
-- 选定流：Electricity, grid
+- 选定流：电网电力
 - 流属性/单位：Energy / kWh
 - 数量规则：计量或按分表分配至场内废水处理的电网电力
 - 数值来源模式：前景记录（`foreground_record`）
@@ -2102,7 +2102,7 @@ sync_with: pcr.en-US.md
 
 场内废水处理使用的外购蒸汽与热水和燃料分别记录。
 
-- 选定流：Purchased steam
+- 选定流：外购蒸汽
 - 流属性/单位：Mass / kg
 - 数量规则：使用时分配至场内废水处理的外购蒸汽实测质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -2117,7 +2117,7 @@ sync_with: pcr.en-US.md
 
 场内废水处理使用的外购热水与蒸汽分别记录。
 
-- 选定流：Purchased hot water
+- 选定流：外购热水
 - 流属性/单位：Mass / kg
 - 数量规则：使用时分配至场内废水处理的外购热水实测质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -2132,7 +2132,7 @@ sync_with: pcr.en-US.md
 
 场内废水处理设备使用的天然气与柴油和 LPG 分别记录。
 
-- 选定流：Natural gas
+- 选定流：天然气
 - 流属性/单位：Energy / MJ
 - 数量规则：采用已记录热值约定，计量分配至场内废水处理的天然气能量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -2147,7 +2147,7 @@ sync_with: pcr.en-US.md
 
 场内废水处理直接运行设备使用的柴油单独记录。
 
-- 选定流：Diesel fuel
+- 选定流：柴油燃料
 - 流属性/单位：Mass / kg
 - 数量规则：使用时计量或库存核对并分配至场内废水处理的柴油质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -2162,7 +2162,7 @@ sync_with: pcr.en-US.md
 
 场内废水处理设备使用的 LPG 与天然气和柴油分别记录。
 
-- 选定流：Liquefied petroleum gas
+- 选定流：液化石油气
 - 流属性/单位：Mass / kg
 - 数量规则：使用时库存核对并分配至场内废水处理的 LPG 质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -2177,7 +2177,7 @@ sync_with: pcr.en-US.md
 
 场内废水处理使用的新鲜工艺水与内部回用水分别计量。
 
-- 选定流：Process water
+- 选定流：过程用水
 - 流属性/单位：Volume / m3
 - 数量规则：分配至场内废水处理的新鲜工艺水实测取水量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -2207,7 +2207,7 @@ sync_with: pcr.en-US.md
 
 场内处理使用的聚丙烯酰胺絮凝剂作为一个特定化学品投入记录。
 
-- 选定流：Polyacrylamide flocculant
+- 选定流：聚丙烯酰胺絮凝剂
 - 流属性/单位：Mass / kg formulated product
 - 数量规则：场内处理领用的聚丙烯酰胺絮凝剂实测质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -2309,7 +2309,7 @@ sync_with: pcr.en-US.md
 
 场内处理排放的 Chemical oxygen demand to water 作为独立水体交换报告。
 
-- 选定流：Chemical oxygen demand to water
+- 选定流：化学需氧量，排入水体
 - 流属性/单位：Mass / kg
 - 数量规则：实测排放体积乘以匹配的 COD 浓度
 - 数值来源模式：计算值（`calculated_value`）
@@ -2324,7 +2324,7 @@ sync_with: pcr.en-US.md
 
 场内处理排放的 Total nitrogen to water 作为独立水体交换报告。
 
-- 选定流：Total nitrogen to water
+- 选定流：总氮，排入水体
 - 流属性/单位：Mass / kg
 - 数量规则：实测排放体积乘以匹配的总氮浓度
 - 数值来源模式：计算值（`calculated_value`）
@@ -2339,7 +2339,7 @@ sync_with: pcr.en-US.md
 
 场内处理排放的 Total phosphorus to water 作为独立水体交换报告。
 
-- 选定流：Total phosphorus to water
+- 选定流：总磷，排入水体
 - 流属性/单位：Mass / kg
 - 数量规则：实测排放体积乘以匹配的总磷浓度
 - 数值来源模式：计算值（`calculated_value`）
@@ -2354,7 +2354,7 @@ sync_with: pcr.en-US.md
 
 场内处理排放的 Total suspended solids to water 作为独立水体交换报告。
 
-- 选定流：Total suspended solids to water
+- 选定流：总悬浮固体，排入水体
 - 流属性/单位：Mass / kg
 - 数量规则：实测排放体积乘以匹配的总悬浮固体浓度
 - 数值来源模式：计算值（`calculated_value`）
@@ -2369,7 +2369,7 @@ sync_with: pcr.en-US.md
 
 场内废水处理所用燃料产生的化石二氧化碳作为单独空气交换报告。
 
-- 选定流：Carbon dioxide, fossil, to air
+- 选定流：化石源二氧化碳，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：根据场内废水处理各燃料实测量及其有记录的碳含量或排放因子计算
 - 数值来源模式：计算值（`calculated_value`）
@@ -2384,7 +2384,7 @@ sync_with: pcr.en-US.md
 
 场内废水处理燃料燃烧产生的氮氧化物与二氧化硫分别报告。
 
-- 选定流：Nitrogen oxides to air
+- 选定流：氮氧化物，排入空气
 - 流属性/单位：Mass / kg NO2-equivalent
 - 数量规则：根据阶段燃料用量、设备记录和有记录 NOx 因子测量或计算
 - 数值来源模式：计算值（`calculated_value`）
@@ -2399,7 +2399,7 @@ sync_with: pcr.en-US.md
 
 场内废水处理燃料燃烧产生的二氧化硫与氮氧化物分别报告。
 
-- 选定流：Sulfur dioxide to air
+- 选定流：二氧化硫，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：根据阶段燃料用量、硫含量和设备记录测量或计算
 - 数值来源模式：计算值（`calculated_value`）
@@ -2414,7 +2414,7 @@ sync_with: pcr.en-US.md
 
 场内废水处理燃料燃烧产生的细颗粒物作为粒径特定空气交换报告。
 
-- 选定流：Particulate matter, <2.5 um, to air
+- 选定流：颗粒物（<2.5微米），排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：根据阶段燃料用量和设备特定记录测量或计算
 - 数值来源模式：计算值（`calculated_value`）

@@ -38,7 +38,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 1 kg 产品净质量 |
-| 参考产品流 | Norway lobsters, frozen, dried, salted or in brine `0906636d-b63a-40c2-b99a-d3df121fcac6` |
+| 参考产品流 | 挪威龙虾，冷冻、干制、盐腌或盐水浸泡 `0906636d-b63a-40c2-b99a-d3df121fcac6` |
 | 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | kg |
@@ -256,7 +256,7 @@ sync_with: pcr.en-US.md
 
 记录产品质量和路线终点。冷冻产品应达到并维持适用产品规范要求的路线温度；干制、盐腌和盐水浸泡产品应保留路线特定终点和食品安全记录。
 
-- 选定流：Norway lobsters, frozen, dried, salted or in brine `0906636d-b63a-40c2-b99a-d3df121fcac6`
+- 选定流：挪威龙虾，冷冻、干制、盐腌或盐水浸泡 `0906636d-b63a-40c2-b99a-d3df121fcac6`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：包装前称量保藏产品，并声明路线和测量状态
 - 数值来源模式：前景记录（`foreground_record`）
@@ -326,7 +326,7 @@ sync_with: pcr.en-US.md
 
 记录进入包装且不改变已声明路线的路线特定保藏产品。
 
-- 选定流：Norway lobsters, frozen, dried, salted or in brine `0906636d-b63a-40c2-b99a-d3df121fcac6`
+- 选定流：挪威龙虾，冷冻、干制、盐腌或盐水浸泡 `0906636d-b63a-40c2-b99a-d3df121fcac6`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：按批次称量包装线投入
 - 数值来源模式：前景记录（`foreground_record`）
@@ -364,7 +364,7 @@ sync_with: pcr.en-US.md
 
 这是参考流。产品净质量不包括包装、游离保藏盐水以及外部冰或冰衣，并保留已声明的带壳/呈现状态。
 
-- 选定流：Norway lobsters, frozen, dried, salted or in brine `0906636d-b63a-40c2-b99a-d3df121fcac6`
+- 选定流：挪威龙虾，冷冻、干制、盐腌或盐水浸泡 `0906636d-b63a-40c2-b99a-d3df121fcac6`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：应用 `calc_net_product_mass` 后的 1 kg 产品净质量
 - 数值来源模式：固定值（`fixed_value`）
@@ -404,7 +404,7 @@ sync_with: pcr.en-US.md
 
 记录进入场内储存的已包装产品。本过程对冷冻产品为强制，对其他路线为有条件纳入。
 
-- 选定流：Norway lobsters, frozen, dried, salted or in brine `0906636d-b63a-40c2-b99a-d3df121fcac6`
+- 选定流：挪威龙虾，冷冻、干制、盐腌或盐水浸泡 `0906636d-b63a-40c2-b99a-d3df121fcac6`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：称量或核对进入储存的已包装产品
 - 数值来源模式：前景记录（`foreground_record`）
@@ -442,7 +442,7 @@ sync_with: pcr.en-US.md
 
 记录发运质量、储存时长和条件。冷冻产品在本过程中应维持 -18 °C 或更低。
 
-- 选定流：Norway lobsters, frozen, dried, salted or in brine `0906636d-b63a-40c2-b99a-d3df121fcac6`
+- 选定流：挪威龙虾，冷冻、干制、盐腌或盐水浸泡 `0906636d-b63a-40c2-b99a-d3df121fcac6`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：按批次称量或核对发运质量
 - 数值来源模式：前景记录（`foreground_record`）

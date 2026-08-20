@@ -38,7 +38,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 1 kg 金属化纱线净干质量 |
-| 参考产品流 | Metallized yarn `fae82400-7c2c-4779-a516-2c6dcdbee472` |
+| 参考产品流 | 金属化纱线 `fae82400-7c2c-4779-a516-2c6dcdbee472` |
 | 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | kg |
@@ -127,7 +127,7 @@ sync_with: pcr.en-US.md
 
 电力跨越前景边界，用于该路线的沉积或镀覆设备、适用时的真空设备、检验和卷绕。
 
-- 选定流：Electricity, medium voltage
+- 选定流：中压电力
 - 流属性/单位：Energy / kWh
 - 数量规则：路线特定分表读数或对共享电表进行有记录的物理分配
 - 数值来源模式：前景记录（`foreground_record`）
@@ -150,7 +150,7 @@ sync_with: pcr.en-US.md
 
 验收覆层纱线是在完成在线检验、返工核算和卷绕后的路线特定参考产品。其净干质量不包括筒管、线轴、载体和运输包装。
 
-- 选定流：Metallized yarn `fae82400-7c2c-4779-a516-2c6dcdbee472`
+- 选定流：金属化纱线 `fae82400-7c2c-4779-a516-2c6dcdbee472`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：根据参考流定义，恰好 1 kg 验收纱线净干质量
 - 数值来源模式：固定值（`fixed_value`）
@@ -219,7 +219,7 @@ sync_with: pcr.en-US.md
 
 电力跨越前景边界，用于该路线的加捻或包缠、在线检验和卷绕设备。
 
-- 选定流：Electricity, medium voltage
+- 选定流：中压电力
 - 流属性/单位：Energy / kWh
 - 数量规则：路线特定分表读数或对共享电表进行有记录的物理分配
 - 数值来源模式：前景记录（`foreground_record`）
@@ -242,7 +242,7 @@ sync_with: pcr.en-US.md
 
 验收复合纱线是在完成在线检验、返工核算和卷绕后的路线特定参考产品。其净干质量不包括筒管、线轴、载体和运输包装。
 
-- 选定流：Metallized yarn `fae82400-7c2c-4779-a516-2c6dcdbee472`
+- 选定流：金属化纱线 `fae82400-7c2c-4779-a516-2c6dcdbee472`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：根据参考流定义，恰好 1 kg 验收纱线净干质量
 - 数值来源模式：固定值（`fixed_value`）

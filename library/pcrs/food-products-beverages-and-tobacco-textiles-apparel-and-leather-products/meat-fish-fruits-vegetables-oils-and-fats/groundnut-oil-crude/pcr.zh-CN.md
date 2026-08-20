@@ -38,7 +38,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 1 kg |
-| 参考产品流 | Groundnut oil, crude `4becfdba-2a4c-4c6f-a503-75db987fdc16` |
+| 参考产品流 | 粗花生油 `4becfdba-2a4c-4c6f-a503-75db987fdc16` |
 | 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | kg |
@@ -97,7 +97,7 @@ sync_with: pcr.en-US.md
 
 记录跨越工厂门口的接收花生。仅在接收带壳花生时使用所选流；若接收脱壳原料，应选择身份与市场状态匹配的 Tiangong 脱壳花生流。
 
-- 选定流：Peanut, in shell, dried to safe moisture `19b26342-ff22-426f-bac3-74cd48cae179`
+- 选定流：花生 `19b26342-ff22-426f-bac3-74cd48cae179`
 - 流属性/单位：Mass / kg
 - 数量规则：计量接收净质量，并分别记录拒收批次、杂质和期初/期末库存变化
 - 数值来源模式：前景记录（`foreground_record`）
@@ -228,7 +228,7 @@ sync_with: pcr.en-US.md
 
 记录在任何精炼操作之前送往澄清的粗油。
 
-- 选定流：Groundnut oil, crude `4becfdba-2a4c-4c6f-a503-75db987fdc16`
+- 选定流：粗花生油 `4becfdba-2a4c-4c6f-a503-75db987fdc16`
 - 流属性/单位：Mass / kg
 - 数量规则：计量转移质量，并调整内部回油和库存变化
 - 数值来源模式：前景记录（`foreground_record`）
@@ -243,7 +243,7 @@ sync_with: pcr.en-US.md
 
 记录机械压榨固体共产品及其含水率、残油状态、去向和对所声明用途的适用性。
 
-- 选定流：Groundnut press cake `51d899e2-0ace-4f0b-8db9-b1ebf0533eac`
+- 选定流：花生压榨饼粕 `51d899e2-0ace-4f0b-8db9-b1ebf0533eac`
 - 流属性/单位：Mass / kg
 - 数量规则：计量发出或内部转移质量，并计入库存变化
 - 数值来源模式：前景记录（`foreground_record`）
@@ -298,7 +298,7 @@ sync_with: pcr.en-US.md
 
 记录进入场址平衡的外购或外部供应己烷净量；内部回收己烷不得再次作为外部输入。
 
-- 选定流：Hexane `7e175110-5d8a-419e-8dee-2649554084e7`
+- 选定流：己烷 `7e175110-5d8a-419e-8dee-2649554084e7`
 - 流属性/单位：Mass / kg
 - 数量规则：采购量加期初库存减期末库存，并调整转移量以及产品或废物中有记录的溶剂含量
 - 数值来源模式：计算值（`calculated_value`）
@@ -336,7 +336,7 @@ sync_with: pcr.en-US.md
 
 记录完成脱溶并送往澄清的粗油。
 
-- 选定流：Groundnut oil, crude `4becfdba-2a4c-4c6f-a503-75db987fdc16`
+- 选定流：粗花生油 `4becfdba-2a4c-4c6f-a503-75db987fdc16`
 - 流属性/单位：Mass / kg
 - 数量规则：汽提后计量转移质量，并调整回流和库存变化
 - 数值来源模式：前景记录（`foreground_record`）
@@ -385,7 +385,7 @@ sync_with: pcr.en-US.md
 
 采用经核对的场址溶剂平衡并按实际接收环境区室记录己烷净排放。下列 UUID 仅适用于非城市空气或高架源；场址条件不同时应选择其他 Tiangong 区室。
 
-- 选定流：Hexane, emissions to non-urban air or from high stacks `fe0acd60-3ddc-11dd-a692-0050c2490048`
+- 选定流：己烷 `fe0acd60-3ddc-11dd-a692-0050c2490048`
 - 流属性/单位：Mass / kg
 - 数量规则：分别核算产品、废水与废物中的溶剂后计算空气净损失；有经核验直接监测时以其替代
 - 数值来源模式：计算值（`calculated_value`）
@@ -406,7 +406,7 @@ sync_with: pcr.en-US.md
 
 记录所有启用萃取路线送来的内部粗油转移，不把它计为额外外部输入。
 
-- 选定流：Groundnut oil, crude `4becfdba-2a4c-4c6f-a503-75db987fdc16`
+- 选定流：粗花生油 `4becfdba-2a4c-4c6f-a503-75db987fdc16`
 - 流属性/单位：Mass / kg
 - 数量规则：从萃取到澄清的计量转移质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -444,7 +444,7 @@ sync_with: pcr.en-US.md
 
 记录物理澄清后、任何精炼步骤之前的可销售粗花生油。
 
-- 选定流：Groundnut oil, crude `4becfdba-2a4c-4c6f-a503-75db987fdc16`
+- 选定流：粗花生油 `4becfdba-2a4c-4c6f-a503-75db987fdc16`
 - 流属性/单位：Mass / kg
 - 数量规则：根据采集的合格净产出归一化后恰为 1 kg
 - 数值来源模式：计算值（`calculated_value`）

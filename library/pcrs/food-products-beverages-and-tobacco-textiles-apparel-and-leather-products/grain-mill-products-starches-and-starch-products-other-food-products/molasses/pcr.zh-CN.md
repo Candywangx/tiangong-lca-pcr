@@ -40,7 +40,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 1 kg |
-| 参考产品流 | Molasses `dcc60867-03df-4ea1-be73-6d88987911bd` |
+| 参考产品流 | 糖蜜 `dcc60867-03df-4ea1-be73-6d88987911bd` |
 | 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | kg |
@@ -266,7 +266,7 @@ sync_with: pcr.en-US.md
 
 记录所声明最后结晶或精炼回收步骤后剩余并转入糖蜜调理的母液。
 
-- 选定流：Molasses `dcc60867-03df-4ea1-be73-6d88987911bd`，作为内部中间流
+- 选定流：糖蜜 `dcc60867-03df-4ea1-be73-6d88987911bd`，作为内部中间流
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：实测转移质量，并与罐存变化核对
 - 数值来源模式：前景记录（`foreground_record`）
@@ -336,7 +336,7 @@ sync_with: pcr.en-US.md
 
 记录从离心分离内部转入的糖蜜，并与调理罐库存核对。
 
-- 选定流：Molasses `dcc60867-03df-4ea1-be73-6d88987911bd`，作为内部中间流
+- 选定流：糖蜜 `dcc60867-03df-4ea1-be73-6d88987911bd`，作为内部中间流
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：等于 `crystallization_separation` 核对后的输出
 - 数值来源模式：计算值（`calculated_value`）
@@ -378,7 +378,7 @@ sync_with: pcr.en-US.md
 
 这是储存和发运状态准备后质量放行的合格参考产品。
 
-- 选定流：Molasses `dcc60867-03df-4ea1-be73-6d88987911bd`
+- 选定流：糖蜜 `dcc60867-03df-4ea1-be73-6d88987911bd`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：按接收状态计量的 1 kg 糖蜜固定参考量
 - 数值来源模式：固定值（`fixed_value`）

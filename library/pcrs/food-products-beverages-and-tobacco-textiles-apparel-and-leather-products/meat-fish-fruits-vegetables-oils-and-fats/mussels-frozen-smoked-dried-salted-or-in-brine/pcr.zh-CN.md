@@ -40,7 +40,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 1 kg |
-| 参考产品流 | Mussels, frozen, smoked, dried, salted or in brine `b40a9b04-158a-4482-8c52-022d30f1a99a` |
+| 参考产品流 | 贻贝，冷冻、烟熏、干制、盐渍或盐水浸泡 `b40a9b04-158a-4482-8c52-022d30f1a99a` |
 | 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | kg |
@@ -352,7 +352,7 @@ sync_with: pcr.en-US.md
 
 这是通过放行检查并进行路线特定质量调整后的定量参考输出。
 
-- 选定流：Mussels, frozen, smoked, dried, salted or in brine `b40a9b04-158a-4482-8c52-022d30f1a99a`
+- 选定流：贻贝，冷冻、烟熏、干制、盐渍或盐水浸泡 `b40a9b04-158a-4482-8c52-022d30f1a99a`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：按声明计量基准计量的恰好 1 kg 合格可销售产品净重
 - 数值来源模式：固定值（`fixed_value`）
@@ -437,7 +437,7 @@ sync_with: pcr.en-US.md
 
 记录离开受控储存的可销售产品；归一化至参考流前，必须核对损失以及冰衣、含水率或沥干质量变化。
 
-- 选定流：Mussels, frozen, smoked, dried, salted or in brine `b40a9b04-158a-4482-8c52-022d30f1a99a`
+- 选定流：贻贝，冷冻、烟熏、干制、盐渍或盐水浸泡 `b40a9b04-158a-4482-8c52-022d30f1a99a`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：离开储存的实测可销售净质量
 - 数值来源模式：前景记录（`foreground_record`）

@@ -42,7 +42,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 1,000 kg 加工后纤维净质量 |
-| 参考产品流 | Synthetic Fiber Cloth `95a493a4-1e51-4eb5-9b7c-e06bf912e993` |
+| 参考产品流 | 化纤布类 `95a493a4-1e51-4eb5-9b7c-e06bf912e993` |
 | 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | kg |
@@ -793,7 +793,7 @@ Record water recovered inside or outside the line as a separate product input an
 
 Record sodium carbonate separately when it is used in the declared wet-preparation recipe.
 
-- 选定流：Sodium carbonate
+- 选定流：碳酸钠
 - UUID 状态：unresolved - requires foreground mapping
 - 适用条件：Include only when sodium carbonate is dosed; omit otherwise
 - 流属性/单位：Mass / kg commercial product
@@ -819,7 +819,7 @@ Record sodium carbonate separately when it is used in the declared wet-preparati
 
 Record sodium hydroxide separately when it is used; do not combine it with sodium carbonate or peroxide.
 
-- 选定流：Sodium hydroxide, purity 95-98% `e0abcced-0611-4c24-9290-5a2c5a0c4169`
+- 选定流：氢氧化钠 `e0abcced-0611-4c24-9290-5a2c5a0c4169`
 - UUID 状态：confirmed Tiangong Product flow; state code 100; supplied product has 95-98% purity
 - 适用条件：Include only for sodium hydroxide supplied at 95-98% purity; represent another concentration as a separate atomic flow
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg commercial product
@@ -845,7 +845,7 @@ Record sodium hydroxide separately when it is used; do not combine it with sodiu
 
 Record hydrogen peroxide separately when it is used; retain supplied concentration.
 
-- 选定流：Hydrogen peroxide solution, 50% in water `d834d970-3c7c-428d-baf6-d2516bebd0c7`
+- 选定流：过氧化氢溶液，50%水溶液 `d834d970-3c7c-428d-baf6-d2516bebd0c7`
 - UUID 状态：confirmed Tiangong Product flow; state code 100; textile wet-processing product supplied at 50% in water
 - 适用条件：Include only for hydrogen peroxide supplied at 50% in water; represent another concentration as a separate atomic flow
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg commercial solution
@@ -897,7 +897,7 @@ Record conditioning electricity as a separate energy-carrier input.
 
 Record purchased steam separately from fuel and hot water.
 
-- 选定流：Heat from steam, industrial boiler `cbc1f372-5c64-4ad5-a938-89b9396758c9`
+- 选定流：蒸汽供热 `cbc1f372-5c64-4ad5-a938-89b9396758c9`
 - UUID 状态：confirmed Tiangong Product flow; state code 100; industrial-boiler steam heat
 - 适用条件：Include only when steam heat crosses the facility or process boundary; omit when on-site fuel rows fully represent the supplied heat
 - 流属性/单位：Gross calorific value `93a60a56-a3c8-14da-a746-0800200c9a66` / MJ
@@ -923,7 +923,7 @@ Record purchased steam separately from fuel and hot water.
 
 Record purchased hot water separately from steam and freshwater volume.
 
-- 选定流：Purchased hot water
+- 选定流：外购热水
 - UUID 状态：unresolved - requires foreground mapping
 - 适用条件：Include only when hot water crosses the process boundary; omit otherwise
 - 流属性/单位：Energy / MJ
@@ -949,7 +949,7 @@ Record purchased hot water separately from steam and freshwater volume.
 
 Record natural gas separately from LPG, diesel and purchased heat.
 
-- 选定流：Natural gas
+- 选定流：天然气
 - UUID 状态：unresolved - requires foreground mapping
 - 适用条件：Include only when natural gas is combusted for the conditional process; omit otherwise
 - 流属性/单位：Energy / MJ lower heating value
@@ -975,7 +975,7 @@ Record natural gas separately from LPG, diesel and purchased heat.
 
 Record diesel separately from natural gas and LPG.
 
-- 选定流：Diesel fuel
+- 选定流：柴油燃料
 - UUID 状态：unresolved - requires foreground mapping
 - 适用条件：Include only when diesel is combusted for the conditional process; omit otherwise
 - 流属性/单位：Energy / MJ lower heating value
@@ -1001,7 +1001,7 @@ Record diesel separately from natural gas and LPG.
 
 Record LPG separately from natural gas and diesel.
 
-- 选定流：Liquefied petroleum gas
+- 选定流：液化石油气
 - UUID 状态：unresolved - requires foreground mapping
 - 适用条件：Include only when LPG is combusted for the conditional process; omit otherwise
 - 流属性/单位：Energy / MJ lower heating value
@@ -1027,7 +1027,7 @@ Record LPG separately from natural gas and diesel.
 
 Record compressed air separately from electricity; upstream compressor electricity must not be duplicated if included in the electricity row.
 
-- 选定流：Compressed air `46e2b1e4-5a4e-4579-b6a2-65b03f9ce825`
+- 选定流：压缩的空气 `46e2b1e4-5a4e-4579-b6a2-65b03f9ce825`
 - UUID 状态：confirmed Tiangong Product flow; state code 100; volume reference property
 - 适用条件：Include only when compressed air crosses the selected process boundary; declare pressure and reference conditions
 - 流属性/单位：Volume `93a60a56-a3c8-22da-a746-0800200c9a66` / Nm3 at declared reference conditions
@@ -1053,7 +1053,7 @@ Record compressed air separately from electricity; upstream compressor electrici
 
 Record R-134a make-up as a specific substance input; another refrigerant requires its own additional atomic row.
 
-- 选定流：Refrigerant, R134a `86e15f5d-a7dd-40be-8dc4-ac9fa826a309`
+- 选定流：制冷剂，R134a `86e15f5d-a7dd-40be-8dc4-ac9fa826a309`
 - UUID 状态：confirmed Tiangong Product flow; state code 100; processing-plant refrigerant make-up
 - 适用条件：Include only when R-134a is added to in-scope cooling equipment; represent another refrigerant as a separate atomic flow
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
@@ -1195,7 +1195,7 @@ Record removed fabric-filter media separately from captured fibre dust and waste
 
 Record fossil carbon dioxide from in-scope natural-gas, diesel or LPG combustion as its own elementary flow.
 
-- 选定流：carbon dioxide (fossil), emissions to air, unspecified `08a91e70-3ddc-11dd-923d-0050c2490048`
+- 选定流：二氧化碳（化石源） `08a91e70-3ddc-11dd-923d-0050c2490048`
 - UUID 状态：confirmed Tiangong Elementary flow; state code 100; compartment is emissions to air, unspecified
 - 适用条件：Include only for in-scope fossil-fuel combustion; keep biogenic carbon dioxide separate
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg CO2
@@ -1247,7 +1247,7 @@ Record nitrogen oxides from in-scope combustion separately from carbon monoxide 
 
 Record carbon monoxide from in-scope combustion as its own elementary flow.
 
-- 选定流：carbon monoxide (fossil), emissions to air, unspecified `08a91e70-3ddc-11dd-924e-0050c2490048`
+- 选定流：一氧化碳（化石源） `08a91e70-3ddc-11dd-924e-0050c2490048`
 - UUID 状态：confirmed Tiangong Elementary flow; state code 100; fossil carbon monoxide in the emissions-to-air-unspecified compartment
 - 适用条件：Include only for in-scope combustion with measured or applicable factor data; omit otherwise
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg CO
@@ -1351,7 +1351,7 @@ Record synthetic fibre particles discharged after on-site treatment separately f
 
 Record discharged mineral oil separately when the wet route uses a mineral-oil lubricant and monitoring identifies it.
 
-- 选定流：white mineral oil (petroleum), emissions to fresh water `3c5e539b-bfd4-44dd-b000-3f990d2f3f3c`
+- 选定流：白矿物油（石油） `3c5e539b-bfd4-44dd-b000-3f990d2f3f3c`
 - UUID 状态：confirmed Tiangong Elementary flow; state code 100; compartment is emissions to fresh water
 - 适用条件：Include only for a direct fresh-water discharge with measured white mineral oil; represent another oil or receiving compartment separately
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
@@ -1565,7 +1565,7 @@ Record polypropylene strapping separately from film, board and pallets.
 
 Record corrugated board separately from polymer packaging and pallets.
 
-- 选定流：Corrugated cardboard, type C, E or F, fibre content at least 80% `8bde297e-98df-463f-bcb4-0db52bf6e0b5`
+- 选定流：瓦楞纸板 `8bde297e-98df-463f-bcb4-0db52bf6e0b5`
 - UUID 状态：confirmed Tiangong Product flow; state code 100; CPC 32151
 - 适用条件：Include only for the stated corrugated-board grade leaving with the product; represent another grade as a separate atomic flow
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
@@ -1591,7 +1591,7 @@ Record corrugated board separately from polymer packaging and pallets.
 
 Record wooden pallets separately and disclose reuse cycles when a pallet pool is used.
 
-- 选定流：Pallets, box pallets and other load boards, of wood, pallet collars of wood `4b49871e-95be-4e0c-9223-9902f9eaa763`
+- 选定流：木制托盘、箱式托盘和其他装载板，木制托盘套环 `4b49871e-95be-4e0c-9223-9902f9eaa763`
 - UUID 状态：confirmed Tiangong Product flow; state code 100; CPC 31702
 - 适用条件：Include only when a pallet is attributable to the shipped product; omit otherwise
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
@@ -1651,7 +1651,7 @@ Record electricity for baling, compression, wrapping, conveying and dispatch equ
 
 This is the reference output. It represents synthetic staple fibre processed for spinning and explicitly does not represent cloth, yarn or fabric despite the selected Tiangong flow name.
 
-- 选定流：Synthetic Fiber Cloth `95a493a4-1e51-4eb5-9b7c-e06bf912e993`
+- 选定流：化纤布类 `95a493a4-1e51-4eb5-9b7c-e06bf912e993`
 - UUID 状态：confirmed Tiangong Product flow; CPC 26210 semantic identity only; misleading name does not denote cloth
 - 适用条件：Required reference output for every conforming data package
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
@@ -1679,7 +1679,7 @@ This is the reference output. It represents synthetic staple fibre processed for
 
 Record waste polyethylene film separately from other packaging waste.
 
-- 选定流：Waste polyethylene `7e78f0a8-c042-47ca-a742-3bac92be1477`
+- 选定流：废聚乙烯 `7e78f0a8-c042-47ca-a742-3bac92be1477`
 - UUID 状态：confirmed Tiangong Waste flow; state code 100; plastic waste CPC 39270
 - 适用条件：Include only when polyethylene bale film becomes waste inside the foreground boundary; retain the film origin in the exchange documentation
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
@@ -1705,7 +1705,7 @@ Record waste polyethylene film separately from other packaging waste.
 
 Record waste polypropylene strapping separately from film, board and wood.
 
-- 选定流：Polypropylene wastes `88215d1b-e6b6-4ec7-af7f-83375e80637b`
+- 选定流：聚丙烯废料 `88215d1b-e6b6-4ec7-af7f-83375e80637b`
 - UUID 状态：confirmed Tiangong Waste flow; state code 100; plastic waste CPC 39270
 - 适用条件：Include only when polypropylene strapping becomes waste inside the foreground boundary; retain the strapping origin in the exchange documentation
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
@@ -1731,7 +1731,7 @@ Record waste polypropylene strapping separately from film, board and wood.
 
 Record waste corrugated board separately from polymer packaging and wood.
 
-- 选定流：Packaging waste, cardboard `72270223-04b1-4986-a546-94e5a0821317`
+- 选定流：包装废弃物，纸板 `72270223-04b1-4986-a546-94e5a0821317`
 - UUID 状态：confirmed Tiangong Waste flow; state code 100; cardboard packaging waste
 - 适用条件：Include only when corrugated board becomes waste inside the foreground boundary; omit otherwise
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
@@ -1757,7 +1757,7 @@ Record waste corrugated board separately from polymer packaging and wood.
 
 Record discarded wooden pallets separately from reused pallets and other packaging waste.
 
-- 选定流：Waste wooden pallet
+- 选定流：废木托盘
 - UUID 状态：unresolved - requires foreground mapping
 - 适用条件：Include only when a pallet is discarded inside the foreground boundary; omit otherwise
 - 流属性/单位：Mass / kg

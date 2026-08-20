@@ -40,7 +40,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 1 kg 净产品 |
-| 参考产品流 | Whole milk powder `f268b0b6-9cf3-4bba-aaf7-7b57e4f3fac0` |
+| 参考产品流 | 全脂奶粉 `f268b0b6-9cf3-4bba-aaf7-7b57e4f3fac0` |
 | 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | kg |
@@ -383,7 +383,7 @@ sync_with: pcr.en-US.md
 
 粉体输出在最终包装前测量，并携带水分、脂肪、蛋白质、堆积密度和路线特定质量结果。
 
-- 选定流：Whole milk powder `f268b0b6-9cf3-4bba-aaf7-7b57e4f3fac0`
+- 选定流：全脂奶粉 `f268b0b6-9cf3-4bba-aaf7-7b57e4f3fac0`
 - 流属性/单位：Mass / kg
 - 数量规则：离开干燥器和流化床系统的实测粉体质量；回收细粉只计一次
 - 数值来源模式：前景记录（`foreground_record`）
@@ -425,7 +425,7 @@ sync_with: pcr.en-US.md
 
 干燥器粉体进入最终混合、筛分、使用时的附聚或卵磷脂化、质量放行和包装。
 
-- 选定流：Whole milk powder `f268b0b6-9cf3-4bba-aaf7-7b57e4f3fac0`
+- 选定流：全脂奶粉 `f268b0b6-9cf3-4bba-aaf7-7b57e4f3fac0`
 - 流属性/单位：Mass / kg
 - 数量规则：进入后处理的实测转移质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -510,7 +510,7 @@ sync_with: pcr.en-US.md
 
 该流为定量参考。净质量和组成仅基于已放行批次；1 kg 产品质量不含包装皮重。
 
-- 选定流：Whole milk powder `f268b0b6-9cf3-4bba-aaf7-7b57e4f3fac0`
+- 选定流：全脂奶粉 `f268b0b6-9cf3-4bba-aaf7-7b57e4f3fac0`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：质量验收后恰好 1 kg 净重已放行产品
 - 数值来源模式：固定值（`fixed_value`）

@@ -40,7 +40,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 声明大门处 1,000 kg 净精制糖 |
-| 参考产品流 | Soft white sugar `d3dfedfb-7d93-4553-aba3-02940edaf6aa` |
+| 参考产品流 | 绵白糖 `d3dfedfb-7d93-4553-aba3-02940edaf6aa` |
 | 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | kg |
@@ -379,7 +379,7 @@ sync_with: pcr.en-US.md
 
 记录声明大门处的合格精制糖。即使使用代表性 Tiangong 流，也必须声明实际产品子型。
 
-- 选定流：Soft white sugar `d3dfedfb-7d93-4553-aba3-02940edaf6aa`
+- 选定流：绵白糖 `d3dfedfb-7d93-4553-aba3-02940edaf6aa`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：固定参考数量 1,000 kg 净精制糖
 - 数值来源模式：固定值（`fixed_value`）

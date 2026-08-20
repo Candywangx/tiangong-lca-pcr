@@ -44,7 +44,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 1 kg 冷冻鱼净质量 |
-| 参考产品流 | Other pelagic fish (excluding tunas, skipjack, or stripe-bellied bonito), frozen `c8aa403f-97b6-44b2-afa8-862d825fec2f` |
+| 参考产品流 | 其他冷冻远洋鱼类（金枪鱼、鲣鱼或条纹腹鲣鱼除外） `c8aa403f-97b6-44b2-afa8-862d825fec2f` |
 | 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | kg |
@@ -103,7 +103,7 @@ sync_with: pcr.en-US.md
 
 记录本 PCR 范围内野生捕捞远洋鱼类跨越设施门的湿质量，并连接到捕捞区域、物种、产品形态和温度状态匹配的上游数据集。
 
-- 选定流：Other wild pelagic fish (excluding tunas, skipjack, or stripe-bellied bonito), live, fresh or chilled `5e2db07e-9bba-476e-8c58-ff347637a51d`
+- 选定流：其他野生中上层鱼类，活的，新鲜的或冷藏的 `5e2db07e-9bba-476e-8c58-ff347637a51d`
 - 流属性/单位：Mass / kg
 - 数量规则：实测野生捕捞批次投入质量，归一化为每 1 kg 发运冷冻鱼净质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -118,7 +118,7 @@ sync_with: pcr.en-US.md
 
 记录本 PCR 范围内养殖远洋鱼类跨越设施门的湿质量，并连接到生产系统、物种、产品形态和温度状态匹配的上游数据集。
 
-- 选定流：Other farmed pelagic fish (excluding tunas, skipjack, or stripe-bellied bonito), live, fresh or chilled `f752adf8-9415-415a-98f8-df1dd78d7a11`
+- 选定流：其他养殖的中上层鱼类，活的，新鲜的或冷藏的 `f752adf8-9415-415a-98f8-df1dd78d7a11`
 - 流属性/单位：Mass / kg
 - 数量规则：实测养殖鱼批次投入质量，归一化为每 1 kg 发运冷冻鱼净质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -133,7 +133,7 @@ sync_with: pcr.en-US.md
 
 记录用于清洗、产品清洁或预处理的自来水；与产品接触的水必须满足适用的饮用水要求。
 
-- 选定流：Tap water `d1e0e36c-07f0-4a75-bdcb-efb5d9e2ac36`
+- 选定流：自来水 `d1e0e36c-07f0-4a75-bdcb-efb5d9e2ac36`
 - 流属性/单位：Mass / kg
 - 数量规则：分配到批次的实测用水量，扣除单独计量的再循环水
 - 数值来源模式：前景记录（`foreground_record`）
@@ -156,7 +156,7 @@ sync_with: pcr.en-US.md
 
 记录批次操作和温度控制所消耗的冰；只有回收融水经过计量并在同一系统复用时才予以扣除。
 
-- 选定流：Ice `24f9f87d-3f3e-49cb-9413-c7471f5d290b`
+- 选定流：冰 `24f9f87d-3f3e-49cb-9413-c7471f5d290b`
 - 流属性/单位：Mass / kg
 - 数量规则：实测领用冰量减去返回同一系统的实测回收冰量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -179,7 +179,7 @@ sync_with: pcr.en-US.md
 
 仅记录输送至本过程设备的交流低压电网供电；其他电压等级和供电场景必须使用各自独立行。
 
-- 选定流：Alternating current, low-voltage grid supply
+- 选定流：交流电，低压电网供电
 - 流属性/单位：Energy / kWh
 - 数量规则：过程电表或设施电表读数的书面分配
 - 数值来源模式：前景记录（`foreground_record`）
@@ -193,7 +193,7 @@ sync_with: pcr.en-US.md
 
 仅记录输送至本过程设备的交流中压电网供电；其他电压等级和供电场景必须使用各自独立行。
 
-- 选定流：Alternating current, medium-voltage grid supply
+- 选定流：交流电，中压电网供电
 - 流属性/单位：Energy / kWh
 - 数量规则：过程电表或设施电表读数的书面分配
 - 数值来源模式：前景记录（`foreground_record`）
@@ -207,7 +207,7 @@ sync_with: pcr.en-US.md
 
 仅记录输送至本过程设备的交流高压电网供电；其他电压等级和供电场景必须使用各自独立行。
 
-- 选定流：Alternating current, high-voltage grid supply
+- 选定流：交流电，高压电网供电
 - 流属性/单位：Energy / kWh
 - 数量规则：过程电表或设施电表读数的书面分配
 - 数值来源模式：前景记录（`foreground_record`）
@@ -352,7 +352,7 @@ sync_with: pcr.en-US.md
 
 仅记录输送至本过程设备的交流低压电网供电；其他电压等级和供电场景必须使用各自独立行。
 
-- 选定流：Alternating current, low-voltage grid supply
+- 选定流：交流电，低压电网供电
 - 流属性/单位：Energy / kWh
 - 数量规则：冷冻系统电表或共享制冷电力的书面物理分配
 - 数值来源模式：前景记录（`foreground_record`）
@@ -366,7 +366,7 @@ sync_with: pcr.en-US.md
 
 仅记录输送至本过程设备的交流中压电网供电；其他电压等级和供电场景必须使用各自独立行。
 
-- 选定流：Alternating current, medium-voltage grid supply
+- 选定流：交流电，中压电网供电
 - 流属性/单位：Energy / kWh
 - 数量规则：冷冻系统电表或共享制冷电力的书面物理分配
 - 数值来源模式：前景记录（`foreground_record`）
@@ -380,7 +380,7 @@ sync_with: pcr.en-US.md
 
 仅记录输送至本过程设备的交流高压电网供电；其他电压等级和供电场景必须使用各自独立行。
 
-- 选定流：Alternating current, high-voltage grid supply
+- 选定流：交流电，高压电网供电
 - 流属性/单位：Energy / kWh
 - 数量规则：冷冻系统电表或共享制冷电力的书面物理分配
 - 数值来源模式：前景记录（`foreground_record`）
@@ -394,7 +394,7 @@ sync_with: pcr.en-US.md
 
 仅当服务于本过程的制冷设备使用 R134a 时适用本行；其补充量必须与其他制冷剂分别记录。
 
-- 选定流：Refrigerant, R134a `047bf9fb-8b5a-4070-8927-8df04e7241b3`
+- 选定流：制冷剂，R134a `047bf9fb-8b5a-4070-8927-8df04e7241b3`
 - 流属性/单位：Mass / kg
 - 数量规则：分配的实测制冷剂补充量，并与期初充注、期末充注、回收和转移记录核对
 - 数值来源模式：计算值（`calculated_value`）
@@ -408,7 +408,7 @@ sync_with: pcr.en-US.md
 
 仅当服务于本过程的制冷设备使用 R404A 时适用本行；其补充量必须与其他制冷剂分别记录。
 
-- 选定流：Refrigerant R404A `76513c71-a148-484e-865f-2ab54afb4331`
+- 选定流：制冷剂R404A `76513c71-a148-484e-865f-2ab54afb4331`
 - 流属性/单位：Mass / kg
 - 数量规则：分配的实测制冷剂补充量，并与期初充注、期末充注、回收和转移记录核对
 - 数值来源模式：计算值（`calculated_value`）
@@ -511,7 +511,7 @@ sync_with: pcr.en-US.md
 
 仅当使用 R717 (ammonia) 且其计算损失排放到空气时适用本基本流行；该物质必须与其他制冷剂分别记录。
 
-- 选定流：Ammonia, to air, unspecified `08a91e70-3ddc-11dd-a2a9-0050c2490048`
+- 选定流：氨 `08a91e70-3ddc-11dd-a2a9-0050c2490048`
 - 流属性/单位：Mass / kg
 - 数量规则：分配到冷冻的制冷剂质量平衡损失，扣除有文件证明的回收和转移
 - 数值来源模式：计算值（`calculated_value`）
@@ -559,7 +559,7 @@ sync_with: pcr.en-US.md
 
 实施上冰衣时，记录所施用的自来水并单独确定冰衣质量，使参考数量保持为鱼净质量；与产品接触的水必须满足适用的饮用水要求。
 
-- 选定流：Tap water `d1e0e36c-07f0-4a75-bdcb-efb5d9e2ac36`
+- 选定流：自来水 `d1e0e36c-07f0-4a75-bdcb-efb5d9e2ac36`
 - 流属性/单位：Mass / kg
 - 数量规则：分配到批次的实测上冰衣水投入
 - 数值来源模式：前景记录（`foreground_record`）
@@ -582,7 +582,7 @@ sync_with: pcr.en-US.md
 
 声明的包装配置中存在该包装组件时单独记录；可复用返回量必须另行计量。
 
-- 选定流：Plastic Film `8c3dd40c-a22b-48b5-bdec-7da4d3282bfa`
+- 选定流：塑料薄膜 `8c3dd40c-a22b-48b5-bdec-7da4d3282bfa`
 - 流属性/单位：Mass / kg
 - 数量规则：物料清单或实测组件消耗量，扣除有文件证明的可复用返回量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -597,7 +597,7 @@ sync_with: pcr.en-US.md
 
 声明的包装配置中存在该包装组件时单独记录；可复用返回量必须另行计量。
 
-- 选定流：corrugated board boxes `4f197bec-7b3b-11dd-ad8b-0800200c9a66`
+- 选定流：瓦楞纸箱 `4f197bec-7b3b-11dd-ad8b-0800200c9a66`
 - 流属性/单位：Mass / kg
 - 数量规则：物料清单或实测组件消耗量，扣除有文件证明的可复用返回量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -627,7 +627,7 @@ sync_with: pcr.en-US.md
 
 声明的包装配置中存在该包装组件时单独记录；可复用返回量必须另行计量。
 
-- 选定流：Wood pallet
+- 选定流：木托盘
 - 流属性/单位：Mass / kg
 - 数量规则：物料清单或实测组件消耗量，扣除有文件证明的可复用返回量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -642,7 +642,7 @@ sync_with: pcr.en-US.md
 
 声明的包装配置中存在该包装组件时单独记录；可复用返回量必须另行计量。
 
-- 选定流：Packaging label, paper `d5890643-6859-42b5-9e05-556b072c6a8c`
+- 选定流：包装标签，纸质 `d5890643-6859-42b5-9e05-556b072c6a8c`
 - 流属性/单位：Mass / kg
 - 数量规则：物料清单或实测组件消耗量，扣除有文件证明的可复用返回量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -657,7 +657,7 @@ sync_with: pcr.en-US.md
 
 仅记录输送至本过程设备的交流低压电网供电；其他电压等级和供电场景必须使用各自独立行。
 
-- 选定流：Alternating current, low-voltage grid supply
+- 选定流：交流电，低压电网供电
 - 流属性/单位：Energy / kWh
 - 数量规则：过程电表或设施电表读数的书面分配
 - 数值来源模式：前景记录（`foreground_record`）
@@ -671,7 +671,7 @@ sync_with: pcr.en-US.md
 
 仅记录输送至本过程设备的交流中压电网供电；其他电压等级和供电场景必须使用各自独立行。
 
-- 选定流：Alternating current, medium-voltage grid supply
+- 选定流：交流电，中压电网供电
 - 流属性/单位：Energy / kWh
 - 数量规则：过程电表或设施电表读数的书面分配
 - 数值来源模式：前景记录（`foreground_record`）
@@ -685,7 +685,7 @@ sync_with: pcr.en-US.md
 
 仅记录输送至本过程设备的交流高压电网供电；其他电压等级和供电场景必须使用各自独立行。
 
-- 选定流：Alternating current, high-voltage grid supply
+- 选定流：交流电，高压电网供电
 - 流属性/单位：Energy / kWh
 - 数量规则：过程电表或设施电表读数的书面分配
 - 数值来源模式：前景记录（`foreground_record`）
@@ -742,7 +742,7 @@ sync_with: pcr.en-US.md
 
 将该被剔除的包装组件作为独立废物交换记录，并保留其实测去向记录。
 
-- 选定流：Packaging waste, cardboard `72270223-04b1-4986-a546-94e5a0821317`
+- 选定流：包装废弃物，纸板 `72270223-04b1-4986-a546-94e5a0821317`
 - 流属性/单位：Mass / kg
 - 数量规则：按去向实测并分配到批次的组件边角料质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -844,7 +844,7 @@ sync_with: pcr.en-US.md
 
 仅记录输送至本过程设备的交流低压电网供电；其他电压等级和供电场景必须使用各自独立行。
 
-- 选定流：Alternating current, low-voltage grid supply
+- 选定流：交流电，低压电网供电
 - 流属性/单位：Energy / kWh
 - 数量规则：按实测产品质量—天或更具因果性的书面驱动因子分配计量贮藏电力
 - 数值来源模式：前景记录（`foreground_record`）
@@ -858,7 +858,7 @@ sync_with: pcr.en-US.md
 
 仅记录输送至本过程设备的交流中压电网供电；其他电压等级和供电场景必须使用各自独立行。
 
-- 选定流：Alternating current, medium-voltage grid supply
+- 选定流：交流电，中压电网供电
 - 流属性/单位：Energy / kWh
 - 数量规则：按实测产品质量—天或更具因果性的书面驱动因子分配计量贮藏电力
 - 数值来源模式：前景记录（`foreground_record`）
@@ -872,7 +872,7 @@ sync_with: pcr.en-US.md
 
 仅记录输送至本过程设备的交流高压电网供电；其他电压等级和供电场景必须使用各自独立行。
 
-- 选定流：Alternating current, high-voltage grid supply
+- 选定流：交流电，高压电网供电
 - 流属性/单位：Energy / kWh
 - 数量规则：按实测产品质量—天或更具因果性的书面驱动因子分配计量贮藏电力
 - 数值来源模式：前景记录（`foreground_record`）
@@ -886,7 +886,7 @@ sync_with: pcr.en-US.md
 
 仅当服务于本过程的制冷设备使用 R134a 时适用本行；其补充量必须与其他制冷剂分别记录。
 
-- 选定流：Refrigerant, R134a `047bf9fb-8b5a-4070-8927-8df04e7241b3`
+- 选定流：制冷剂，R134a `047bf9fb-8b5a-4070-8927-8df04e7241b3`
 - 流属性/单位：Mass / kg
 - 数量规则：按设备充注量和运行记录计算分配到贮藏的制冷剂补充量
 - 数值来源模式：计算值（`calculated_value`）
@@ -900,7 +900,7 @@ sync_with: pcr.en-US.md
 
 仅当服务于本过程的制冷设备使用 R404A 时适用本行；其补充量必须与其他制冷剂分别记录。
 
-- 选定流：Refrigerant R404A `33db0143-ba65-4036-a57b-e32dcdecb779`
+- 选定流：制冷剂，R404A `33db0143-ba65-4036-a57b-e32dcdecb779`
 - 流属性/单位：Mass / kg
 - 数量规则：按设备充注量和运行记录计算分配到贮藏的制冷剂补充量
 - 数值来源模式：计算值（`calculated_value`）
@@ -954,7 +954,7 @@ sync_with: pcr.en-US.md
 
 这是经过声明贮藏期后的参考产品产出。鱼净质量必须与冰衣和包装分开报告。
 
-- 选定流：Other pelagic fish (excluding tunas, skipjack, or stripe-bellied bonito), frozen `c8aa403f-97b6-44b2-afa8-862d825fec2f`
+- 选定流：其他冷冻远洋鱼类（金枪鱼、鲣鱼或条纹腹鲣鱼除外） `c8aa403f-97b6-44b2-afa8-862d825fec2f`
 - 流属性/单位：Mass / kg
 - 数量规则：固定参考产出 1 kg 鱼净质量
 - 数值来源模式：固定值（`fixed_value`）
@@ -1002,7 +1002,7 @@ sync_with: pcr.en-US.md
 
 仅当使用 R717 (ammonia) 且其计算损失排放到空气时适用本基本流行；该物质必须与其他制冷剂分别记录。
 
-- 选定流：Ammonia, to air, unspecified `08a91e70-3ddc-11dd-a2a9-0050c2490048`
+- 选定流：氨 `08a91e70-3ddc-11dd-a2a9-0050c2490048`
 - 流属性/单位：Mass / kg
 - 数量规则：分配到贮藏的制冷剂质量平衡损失，扣除有文件证明的回收和转移
 - 数值来源模式：计算值（`calculated_value`）

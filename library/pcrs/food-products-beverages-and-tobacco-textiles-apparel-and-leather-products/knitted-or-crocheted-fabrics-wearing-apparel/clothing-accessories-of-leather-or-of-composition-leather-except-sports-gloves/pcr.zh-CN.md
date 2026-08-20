@@ -38,7 +38,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 1 |
-| 参考产品流 | Clothing accessories of leather or of composition leather, except sports gloves `7b7924ae-e421-4da5-851e-51ab4012cfc8` |
+| 参考产品流 | 毛皮或合成毛皮的服饰用品，运动手套除外 `7b7924ae-e421-4da5-851e-51ab4012cfc8` |
 | 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | kg |
@@ -258,7 +258,7 @@ sync_with: pcr.en-US.md
 
 聚酯缝纫线用于接缝、折边、增强或五金安装时进入本过程。
 
-- 选定流：Polyester sewing thread
+- 选定流：聚酯缝纫线
 - 流属性/单位：Mass / kg
 - 数量规则：净领用质量，或长度乘经核实线密度
 - 数值来源模式：计算值（`calculated_value`）
@@ -518,7 +518,7 @@ sync_with: pcr.en-US.md
 
 工厂门发运使用的瓦楞纸箱应与一次袋和纸吊牌分开记录。
 
-- 选定流：Corrugated paperboard shipping carton
+- 选定流：瓦楞纸板运输箱
 - 流属性/单位：Mass / kg
 - 数量规则：已声明包装产出的纸箱实测消耗质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -533,7 +533,7 @@ sync_with: pcr.en-US.md
 
 直接容纳用品的 LDPE 袋在使用时作为一个塑料包装交换记录。
 
-- 选定流：Low-density polyethylene garment bag
+- 选定流：低密度聚乙烯服装袋
 - 流属性/单位：Mass / kg
 - 数量规则：件数乘精确袋子的实测平均质量
 - 数值来源模式：计算值（`calculated_value`）
@@ -567,7 +567,7 @@ sync_with: pcr.en-US.md
 
 合格工厂门产出使用精确 CPC 28242 Product flow，且不包括销售包装质量。
 
-- 选定流：Clothing accessories of leather or of composition leather, except sports gloves `7b7924ae-e421-4da5-851e-51ab4012cfc8`
+- 选定流：毛皮或合成毛皮的服饰用品，运动手套除外 `7b7924ae-e421-4da5-851e-51ab4012cfc8`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：1 kg 合格成品
 - 数值来源模式：固定值（`fixed_value`）

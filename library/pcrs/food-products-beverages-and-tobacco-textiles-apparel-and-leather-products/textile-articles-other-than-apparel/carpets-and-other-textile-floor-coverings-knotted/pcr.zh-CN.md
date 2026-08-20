@@ -38,7 +38,7 @@ status: candidate
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 1 kg |
-| 参考产品流 | Carpets and other textile floor coverings, knotted `a718c51e-66e1-40e5-bd73-00cb16f1b722` |
+| 参考产品流 | 打结地毯及其他铺地织物 `a718c51e-66e1-40e5-bd73-00cb16f1b722` |
 | 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | kg |
@@ -94,7 +94,7 @@ status: candidate
 
 发放至织机并用于打结绒头的羊毛纱以一个产品投入跨越过程边界。数据集必须声明纤维含量、染色状态、纱支/股数、供应商、批次和质量。
 
-- 选定流：Yarn of wool, containing 85% or more by weight of wool, not put up for retail sale `10c7de33-bef0-4310-98e7-734d8e2e4c9f`
+- 选定流：含羊毛重量达85%或85%以上的羊毛纱，不供零售 `10c7de33-bef0-4310-98e7-734d8e2e4c9f`
 - 流属性/单位：Mass / kg
 - 数量规则：领用质量减去已识别并退回库存的未使用纱线
 - 数值来源模式：前景记录（`foreground_record`）
@@ -109,7 +109,7 @@ status: candidate
 
 纵向张紧在织机上的棉纱形成结构经纱，因此单独记录。数据集必须声明棉含量、纱支/股数、上浆状态、供应商、批次和质量。
 
-- 选定流：Cotton yarn (other than sewing thread), containing 85% or more by weight of cotton `526fe0a1-be6d-4384-b609-4ca604628ec4`
+- 选定流：含棉重量达85%或85%以上的棉纱（缝纫线除外） `526fe0a1-be6d-4384-b609-4ca604628ec4`
 - 流属性/单位：Mass / kg
 - 数量规则：经纱领用质量减去已识别并退回库存的未使用经纱
 - 数值来源模式：前景记录（`foreground_record`）
@@ -124,7 +124,7 @@ status: candidate
 
 插入结行之间的棉纱作为结构纬纱单独记录，即使其与经纱共用同一 Tiangong 流身份。数量取自批次领退料记录。
 
-- 选定流：Cotton yarn (other than sewing thread), containing 85% or more by weight of cotton `526fe0a1-be6d-4384-b609-4ca604628ec4`
+- 选定流：含棉重量达85%或85%以上的棉纱（缝纫线除外） `526fe0a1-be6d-4384-b609-4ca604628ec4`
 - 流属性/单位：Mass / kg
 - 数量规则：纬纱领用质量减去已识别并退回库存的未使用纬纱
 - 数值来源模式：前景记录（`foreground_record`）
@@ -139,7 +139,7 @@ status: candidate
 
 用于包缚和加强地毯侧边的棉纱是区别于经纱、纬纱的独立实物领用。只记录批次锁边实际消耗量。
 
-- 选定流：Cotton yarn (other than sewing thread), containing 85% or more by weight of cotton `526fe0a1-be6d-4384-b609-4ca604628ec4`
+- 选定流：含棉重量达85%或85%以上的棉纱（缝纫线除外） `526fe0a1-be6d-4384-b609-4ca604628ec4`
 - 流属性/单位：Mass / kg
 - 数量规则：锁边纱领用质量减去已识别并退回库存的未使用纱线
 - 数值来源模式：前景记录（`foreground_record`）
@@ -154,7 +154,7 @@ status: candidate
 
 用于地毯初洗和终洗的供应水在制造边界处记录。共用场址供水只允许依据校准分表数据或有记录的因果分配进行分摊。
 
-- 选定流：Process Water `94a04f7e-2d5c-41f0-b182-d54a3b373a02`
+- 选定流：工艺用水 `94a04f7e-2d5c-41f0-b182-d54a3b373a02`
 - 流属性/单位：Mass / kg
 - 数量规则：归属于地毯洗涤的实测供应工艺水质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -222,7 +222,7 @@ status: candidate
 
 验收合格成品是经过洗涤、干燥、拉伸、精剪、检验和包装后的定量参考输出。记录总质量和排除的包装质量，使净干地毯基准可审计。
 
-- 选定流：Carpets and other textile floor coverings, knotted `a718c51e-66e1-40e5-bd73-00cb16f1b722`
+- 选定流：打结地毯及其他铺地织物 `a718c51e-66e1-40e5-bd73-00cb16f1b722`
 - 流属性/单位：Mass / kg
 - 数量规则：实测验收合格地毯净干质量；将数据包归一化到 1 kg
 - 数值来源模式：前景记录（`foreground_record`）

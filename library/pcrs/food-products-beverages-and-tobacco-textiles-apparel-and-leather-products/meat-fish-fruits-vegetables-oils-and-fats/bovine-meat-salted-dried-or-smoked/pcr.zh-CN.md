@@ -204,7 +204,7 @@ Purchased smoked bovine meat 作为一个原子交换记录在牛肉接收与整
 
 Process water 作为一个原子交换记录在牛肉接收与整理边界。仅在锁定路线与成品规格实际发生该具体流时记录。
 
-- 选定流：Process water
+- 选定流：过程用水
 - 流属性/单位：Volume / m3
 - 数量规则：记录可归属于锁定批次的 Process water 计量体积。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -219,7 +219,7 @@ Process water 作为一个原子交换记录在牛肉接收与整理边界。仅
 
 Grid electricity, medium voltage 作为一个原子交换记录在牛肉接收与整理边界。仅在锁定路线与成品规格实际发生该具体流时记录。
 
-- 选定流：Grid electricity, medium voltage
+- 选定流：中压电网电力
 - 流属性/单位：Energy / kWh
 - 数量规则：记录可归属于锁定批次本过程的 Grid electricity, medium voltage 分表能量或供应商账单能量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -234,7 +234,7 @@ Grid electricity, medium voltage 作为一个原子交换记录在牛肉接收�
 
 Ammonia refrigerant (R717) 作为一个原子交换记录在牛肉接收与整理边界。仅在锁定路线与成品规格实际发生该具体流时记录。
 
-- 选定流：Ammonia refrigerant (R717)
+- 选定流：氨制冷剂（R717）
 - 流属性/单位：Mass / kg
 - 数量规则：记录可归属于锁定批次的 Ammonia refrigerant (R717) 实测质量或库存核对质量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -249,7 +249,7 @@ Ammonia refrigerant (R717) 作为一个原子交换记录在牛肉接收与整�
 
 Carbon dioxide refrigerant (R744) 作为一个原子交换记录在牛肉接收与整理边界。仅在锁定路线与成品规格实际发生该具体流时记录。
 
-- 选定流：Carbon dioxide refrigerant (R744)
+- 选定流：二氧化碳制冷剂（R744）
 - 流属性/单位：Mass / kg
 - 数量规则：记录可归属于锁定批次的 Carbon dioxide refrigerant (R744) 实测质量或库存核对质量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -411,7 +411,7 @@ Waste corrugated fibreboard shipping box 作为一个原子交换记录在牛肉
 
 Ammonia (R717) to air 作为一个原子交换记录在牛肉接收与整理边界。仅在锁定路线与成品规格实际发生该具体流时记录。
 
-- 选定流：Ammonia (R717) to air
+- 选定流：氨（R717），排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：按 `calc_refrigerant_stock_balance` 由期初充注、补充、期末充注与回收质量计算。
 - 数值来源模式：计算值（`calculated_value`）
@@ -426,7 +426,7 @@ Ammonia (R717) to air 作为一个原子交换记录在牛肉接收与整理边�
 
 Carbon dioxide (R744) to air 作为一个原子交换记录在牛肉接收与整理边界。仅在锁定路线与成品规格实际发生该具体流时记录。
 
-- 选定流：Carbon dioxide (R744) to air
+- 选定流：二氧化碳（R744），排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：按 `calc_refrigerant_stock_balance` 由期初充注、补充、期末充注与回收质量计算。
 - 数值来源模式：计算值（`calculated_value`）
@@ -478,7 +478,7 @@ Prepared bovine meat cuts 作为一个原子交换记录在盐渍与腌制边界
 
 Sodium chloride 作为一个原子交换记录在盐渍与腌制边界。仅在锁定路线与成品规格实际发生该具体流时记录。
 
-- 选定流：Sodium chloride
+- 选定流：氯化钠
 - 流属性/单位：Mass / kg
 - 数量规则：记录可归属于锁定批次的 Sodium chloride 实测质量或库存核对质量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -583,7 +583,7 @@ Lactic acid 作为一个原子交换记录在盐渍与腌制边界。仅在锁�
 
 Acetic acid 作为一个原子交换记录在盐渍与腌制边界。仅在锁定路线与成品规格实际发生该具体流时记录。
 
-- 选定流：Acetic acid
+- 选定流：乙酸
 - 流属性/单位：Mass / kg
 - 数量规则：记录可归属于锁定批次的 Acetic acid 实测质量或库存核对质量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -643,7 +643,7 @@ Paprika powder 作为一个原子交换记录在盐渍与腌制边界。仅在�
 
 Process water 作为一个原子交换记录在盐渍与腌制边界。仅在锁定路线与成品规格实际发生该具体流时记录。
 
-- 选定流：Process water
+- 选定流：过程用水
 - 流属性/单位：Volume / m3
 - 数量规则：记录可归属于锁定批次的 Process water 计量体积。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -658,7 +658,7 @@ Process water 作为一个原子交换记录在盐渍与腌制边界。仅在锁
 
 Grid electricity, medium voltage 作为一个原子交换记录在盐渍与腌制边界。仅在锁定路线与成品规格实际发生该具体流时记录。
 
-- 选定流：Grid electricity, medium voltage
+- 选定流：中压电网电力
 - 流属性/单位：Energy / kWh
 - 数量规则：记录可归属于锁定批次本过程的 Grid electricity, medium voltage 分表能量或供应商账单能量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -673,7 +673,7 @@ Grid electricity, medium voltage 作为一个原子交换记录在盐渍与腌�
 
 Ammonia refrigerant (R717) 作为一个原子交换记录在盐渍与腌制边界。仅在锁定路线与成品规格实际发生该具体流时记录。
 
-- 选定流：Ammonia refrigerant (R717)
+- 选定流：氨制冷剂（R717）
 - 流属性/单位：Mass / kg
 - 数量规则：记录可归属于锁定批次的 Ammonia refrigerant (R717) 实测质量或库存核对质量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -688,7 +688,7 @@ Ammonia refrigerant (R717) 作为一个原子交换记录在盐渍与腌制边�
 
 Carbon dioxide refrigerant (R744) 作为一个原子交换记录在盐渍与腌制边界。仅在锁定路线与成品规格实际发生该具体流时记录。
 
-- 选定流：Carbon dioxide refrigerant (R744)
+- 选定流：二氧化碳制冷剂（R744）
 - 流属性/单位：Mass / kg
 - 数量规则：记录可归属于锁定批次的 Carbon dioxide refrigerant (R744) 实测质量或库存核对质量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -805,7 +805,7 @@ Rejected salted bovine meat 作为一个原子交换记录在盐渍与腌制边�
 
 Ammonia (R717) to air 作为一个原子交换记录在盐渍与腌制边界。仅在锁定路线与成品规格实际发生该具体流时记录。
 
-- 选定流：Ammonia (R717) to air
+- 选定流：氨（R717），排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：按 `calc_refrigerant_stock_balance` 由期初充注、补充、期末充注与回收质量计算。
 - 数值来源模式：计算值（`calculated_value`）
@@ -820,7 +820,7 @@ Ammonia (R717) to air 作为一个原子交换记录在盐渍与腌制边界。�
 
 Carbon dioxide (R744) to air 作为一个原子交换记录在盐渍与腌制边界。仅在锁定路线与成品规格实际发生该具体流时记录。
 
-- 选定流：Carbon dioxide (R744) to air
+- 选定流：二氧化碳（R744），排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：按 `calc_refrigerant_stock_balance` 由期初充注、补充、期末充注与回收质量计算。
 - 数值来源模式：计算值（`calculated_value`）
@@ -902,7 +902,7 @@ Soybean oil 作为一个原子交换记录在受控干制边界。仅在锁定�
 
 Grid electricity, medium voltage 作为一个原子交换记录在受控干制边界。仅在锁定路线与成品规格实际发生该具体流时记录。
 
-- 选定流：Grid electricity, medium voltage
+- 选定流：中压电网电力
 - 流属性/单位：Energy / kWh
 - 数量规则：记录可归属于锁定批次本过程的 Grid electricity, medium voltage 分表能量或供应商账单能量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -917,7 +917,7 @@ Grid electricity, medium voltage 作为一个原子交换记录在受控干制�
 
 Purchased saturated steam 作为一个原子交换记录在受控干制边界。仅在锁定路线与成品规格实际发生该具体流时记录。
 
-- 选定流：Purchased saturated steam
+- 选定流：外购饱和蒸汽
 - 流属性/单位：Energy / MJ
 - 数量规则：记录可归属于锁定批次本过程的 Purchased saturated steam 分表能量或供应商账单能量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -932,7 +932,7 @@ Purchased saturated steam 作为一个原子交换记录在受控干制边界。
 
 Purchased hot water 作为一个原子交换记录在受控干制边界。仅在锁定路线与成品规格实际发生该具体流时记录。
 
-- 选定流：Purchased hot water
+- 选定流：外购热水
 - 流属性/单位：Energy / MJ
 - 数量规则：记录可归属于锁定批次本过程的 Purchased hot water 分表能量或供应商账单能量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -947,7 +947,7 @@ Purchased hot water 作为一个原子交换记录在受控干制边界。仅在
 
 Natural gas 作为一个原子交换记录在受控干制边界。仅在锁定路线与成品规格实际发生该具体流时记录。
 
-- 选定流：Natural gas
+- 选定流：天然气
 - 流属性/单位：Energy / MJ
 - 数量规则：记录可归属于锁定批次本过程的 Natural gas 分表能量或供应商账单能量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -977,7 +977,7 @@ Low-sulfur diesel fuel 作为一个原子交换记录在受控干制边界。仅
 
 Liquefied petroleum gas 作为一个原子交换记录在受控干制边界。仅在锁定路线与成品规格实际发生该具体流时记录。
 
-- 选定流：Liquefied petroleum gas
+- 选定流：液化石油气
 - 流属性/单位：Mass / kg
 - 数量规则：记录可归属于锁定批次的 Liquefied petroleum gas 实测质量或库存核对质量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -992,7 +992,7 @@ Liquefied petroleum gas 作为一个原子交换记录在受控干制边界。�
 
 Ammonia refrigerant (R717) 作为一个原子交换记录在受控干制边界。仅在锁定路线与成品规格实际发生该具体流时记录。
 
-- 选定流：Ammonia refrigerant (R717)
+- 选定流：氨制冷剂（R717）
 - 流属性/单位：Mass / kg
 - 数量规则：记录可归属于锁定批次的 Ammonia refrigerant (R717) 实测质量或库存核对质量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1007,7 +1007,7 @@ Ammonia refrigerant (R717) 作为一个原子交换记录在受控干制边界�
 
 Carbon dioxide refrigerant (R744) 作为一个原子交换记录在受控干制边界。仅在锁定路线与成品规格实际发生该具体流时记录。
 
-- 选定流：Carbon dioxide refrigerant (R744)
+- 选定流：二氧化碳制冷剂（R744）
 - 流属性/单位：Mass / kg
 - 数量规则：记录可归属于锁定批次的 Carbon dioxide refrigerant (R744) 实测质量或库存核对质量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1124,7 +1124,7 @@ Water to air 作为一个原子交换记录在受控干制边界。仅在锁定�
 
 Ammonia (R717) to air 作为一个原子交换记录在受控干制边界。仅在锁定路线与成品规格实际发生该具体流时记录。
 
-- 选定流：Ammonia (R717) to air
+- 选定流：氨（R717），排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：按 `calc_refrigerant_stock_balance` 由期初充注、补充、期末充注与回收质量计算。
 - 数值来源模式：计算值（`calculated_value`）
@@ -1139,7 +1139,7 @@ Ammonia (R717) to air 作为一个原子交换记录在受控干制边界。仅�
 
 Carbon dioxide (R744) to air 作为一个原子交换记录在受控干制边界。仅在锁定路线与成品规格实际发生该具体流时记录。
 
-- 选定流：Carbon dioxide (R744) to air
+- 选定流：二氧化碳（R744），排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：按 `calc_refrigerant_stock_balance` 由期初充注、补充、期末充注与回收质量计算。
 - 数值来源模式：计算值（`calculated_value`）
@@ -1169,7 +1169,7 @@ R404A refrigerant to air 作为一个原子交换记录在受控干制边界。�
 
 Carbon dioxide, fossil to air 作为一个原子交换记录在受控干制边界。仅在锁定路线与成品规格实际发生该具体流时记录。
 
-- 选定流：Carbon dioxide, fossil to air
+- 选定流：化石源二氧化碳，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：按 `calc_stationary_combustion_emission` 由每种实测燃料与有据可查的适用因子计算，或采用直接监测。
 - 数值来源模式：计算值（`calculated_value`）
@@ -1184,7 +1184,7 @@ Carbon dioxide, fossil to air 作为一个原子交换记录在受控干制边�
 
 Nitrogen oxides to air 作为一个原子交换记录在受控干制边界。仅在锁定路线与成品规格实际发生该具体流时记录。
 
-- 选定流：Nitrogen oxides to air
+- 选定流：氮氧化物，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：按 `calc_stationary_combustion_emission` 由每种实测燃料与有据可查的适用因子计算，或采用直接监测。
 - 数值来源模式：计算值（`calculated_value`）
@@ -1199,7 +1199,7 @@ Nitrogen oxides to air 作为一个原子交换记录在受控干制边界。仅
 
 Sulfur dioxide to air 作为一个原子交换记录在受控干制边界。仅在锁定路线与成品规格实际发生该具体流时记录。
 
-- 选定流：Sulfur dioxide to air
+- 选定流：二氧化硫，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：按 `calc_stationary_combustion_emission` 由每种实测燃料与有据可查的适用因子计算，或采用直接监测。
 - 数值来源模式：计算值（`calculated_value`）
@@ -1326,7 +1326,7 @@ Hickory wood chips 作为一个原子交换记录在直接木烟熏制边界。�
 
 Process water 作为一个原子交换记录在直接木烟熏制边界。仅在锁定路线与成品规格实际发生该具体流时记录。
 
-- 选定流：Process water
+- 选定流：过程用水
 - 流属性/单位：Volume / m3
 - 数量规则：记录可归属于锁定批次的 Process water 计量体积。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1341,7 +1341,7 @@ Process water 作为一个原子交换记录在直接木烟熏制边界。仅在
 
 Grid electricity, medium voltage 作为一个原子交换记录在直接木烟熏制边界。仅在锁定路线与成品规格实际发生该具体流时记录。
 
-- 选定流：Grid electricity, medium voltage
+- 选定流：中压电网电力
 - 流属性/单位：Energy / kWh
 - 数量规则：记录可归属于锁定批次本过程的 Grid electricity, medium voltage 分表能量或供应商账单能量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1356,7 +1356,7 @@ Grid electricity, medium voltage 作为一个原子交换记录在直接木烟�
 
 Purchased saturated steam 作为一个原子交换记录在直接木烟熏制边界。仅在锁定路线与成品规格实际发生该具体流时记录。
 
-- 选定流：Purchased saturated steam
+- 选定流：外购饱和蒸汽
 - 流属性/单位：Energy / MJ
 - 数量规则：记录可归属于锁定批次本过程的 Purchased saturated steam 分表能量或供应商账单能量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1371,7 +1371,7 @@ Purchased saturated steam 作为一个原子交换记录在直接木烟熏制边
 
 Purchased hot water 作为一个原子交换记录在直接木烟熏制边界。仅在锁定路线与成品规格实际发生该具体流时记录。
 
-- 选定流：Purchased hot water
+- 选定流：外购热水
 - 流属性/单位：Energy / MJ
 - 数量规则：记录可归属于锁定批次本过程的 Purchased hot water 分表能量或供应商账单能量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1386,7 +1386,7 @@ Purchased hot water 作为一个原子交换记录在直接木烟熏制边界。
 
 Natural gas 作为一个原子交换记录在直接木烟熏制边界。仅在锁定路线与成品规格实际发生该具体流时记录。
 
-- 选定流：Natural gas
+- 选定流：天然气
 - 流属性/单位：Energy / MJ
 - 数量规则：记录可归属于锁定批次本过程的 Natural gas 分表能量或供应商账单能量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1416,7 +1416,7 @@ Low-sulfur diesel fuel 作为一个原子交换记录在直接木烟熏制边界
 
 Liquefied petroleum gas 作为一个原子交换记录在直接木烟熏制边界。仅在锁定路线与成品规格实际发生该具体流时记录。
 
-- 选定流：Liquefied petroleum gas
+- 选定流：液化石油气
 - 流属性/单位：Mass / kg
 - 数量规则：记录可归属于锁定批次的 Liquefied petroleum gas 实测质量或库存核对质量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1431,7 +1431,7 @@ Liquefied petroleum gas 作为一个原子交换记录在直接木烟熏制边�
 
 Ammonia refrigerant (R717) 作为一个原子交换记录在直接木烟熏制边界。仅在锁定路线与成品规格实际发生该具体流时记录。
 
-- 选定流：Ammonia refrigerant (R717)
+- 选定流：氨制冷剂（R717）
 - 流属性/单位：Mass / kg
 - 数量规则：记录可归属于锁定批次的 Ammonia refrigerant (R717) 实测质量或库存核对质量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1446,7 +1446,7 @@ Ammonia refrigerant (R717) 作为一个原子交换记录在直接木烟熏制�
 
 Carbon dioxide refrigerant (R744) 作为一个原子交换记录在直接木烟熏制边界。仅在锁定路线与成品规格实际发生该具体流时记录。
 
-- 选定流：Carbon dioxide refrigerant (R744)
+- 选定流：二氧化碳制冷剂（R744）
 - 流属性/单位：Mass / kg
 - 数量规则：记录可归属于锁定批次的 Carbon dioxide refrigerant (R744) 实测质量或库存核对质量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1593,7 +1593,7 @@ Rejected direct wood-smoked bovine meat 作为一个原子交换记录在直接�
 
 Ammonia (R717) to air 作为一个原子交换记录在直接木烟熏制边界。仅在锁定路线与成品规格实际发生该具体流时记录。
 
-- 选定流：Ammonia (R717) to air
+- 选定流：氨（R717），排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：按 `calc_refrigerant_stock_balance` 由期初充注、补充、期末充注与回收质量计算。
 - 数值来源模式：计算值（`calculated_value`）
@@ -1608,7 +1608,7 @@ Ammonia (R717) to air 作为一个原子交换记录在直接木烟熏制边界�
 
 Carbon dioxide (R744) to air 作为一个原子交换记录在直接木烟熏制边界。仅在锁定路线与成品规格实际发生该具体流时记录。
 
-- 选定流：Carbon dioxide (R744) to air
+- 选定流：二氧化碳（R744），排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：按 `calc_refrigerant_stock_balance` 由期初充注、补充、期末充注与回收质量计算。
 - 数值来源模式：计算值（`calculated_value`）
@@ -1653,7 +1653,7 @@ Carbon dioxide, biogenic to air 作为一个原子交换记录在直接木烟熏
 
 Carbon monoxide to air 作为一个原子交换记录在直接木烟熏制边界。仅在锁定路线与成品规格实际发生该具体流时记录。
 
-- 选定流：Carbon monoxide to air
+- 选定流：一氧化碳，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：按 `calc_stationary_combustion_emission` 由每种具名木材实测投入量与有据可查的适用因子计算，或采用直接监测。
 - 数值来源模式：计算值（`calculated_value`）
@@ -1668,7 +1668,7 @@ Carbon monoxide to air 作为一个原子交换记录在直接木烟熏制边界
 
 Non-methane volatile organic compounds to air 作为一个原子交换记录在直接木烟熏制边界。仅在锁定路线与成品规格实际发生该具体流时记录。
 
-- 选定流：Non-methane volatile organic compounds to air
+- 选定流：非甲烷挥发性有机物，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：按 `calc_stationary_combustion_emission` 由每种具名木材实测投入量与有据可查的适用因子计算，或采用直接监测。
 - 数值来源模式：计算值（`calculated_value`）
@@ -1683,7 +1683,7 @@ Non-methane volatile organic compounds to air 作为一个原子交换记录在�
 
 Carbon dioxide, fossil to air 作为一个原子交换记录在直接木烟熏制边界。仅在锁定路线与成品规格实际发生该具体流时记录。
 
-- 选定流：Carbon dioxide, fossil to air
+- 选定流：化石源二氧化碳，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：按 `calc_stationary_combustion_emission` 由每种实测燃料或具名熏烟木材与有据可查的适用因子计算，或采用直接监测。
 - 数值来源模式：计算值（`calculated_value`）
@@ -1698,7 +1698,7 @@ Carbon dioxide, fossil to air 作为一个原子交换记录在直接木烟熏�
 
 Nitrogen oxides to air 作为一个原子交换记录在直接木烟熏制边界。仅在锁定路线与成品规格实际发生该具体流时记录。
 
-- 选定流：Nitrogen oxides to air
+- 选定流：氮氧化物，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：按 `calc_stationary_combustion_emission` 由每种实测燃料或具名熏烟木材与有据可查的适用因子计算，或采用直接监测。
 - 数值来源模式：计算值（`calculated_value`）
@@ -1713,7 +1713,7 @@ Nitrogen oxides to air 作为一个原子交换记录在直接木烟熏制边界
 
 Sulfur dioxide to air 作为一个原子交换记录在直接木烟熏制边界。仅在锁定路线与成品规格实际发生该具体流时记录。
 
-- 选定流：Sulfur dioxide to air
+- 选定流：二氧化硫，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：按 `calc_stationary_combustion_emission` 由每种实测燃料或具名熏烟木材与有据可查的适用因子计算，或采用直接监测。
 - 数值来源模式：计算值（`calculated_value`）
@@ -1810,7 +1810,7 @@ Food-grade liquid smoke condensate 作为一个原子交换记录在液体烟熏
 
 Process water 作为一个原子交换记录在液体烟熏液施用边界。仅在锁定路线与成品规格实际发生该具体流时记录。
 
-- 选定流：Process water
+- 选定流：过程用水
 - 流属性/单位：Volume / m3
 - 数量规则：记录可归属于锁定批次的 Process water 计量体积。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1825,7 +1825,7 @@ Process water 作为一个原子交换记录在液体烟熏液施用边界。仅
 
 Grid electricity, medium voltage 作为一个原子交换记录在液体烟熏液施用边界。仅在锁定路线与成品规格实际发生该具体流时记录。
 
-- 选定流：Grid electricity, medium voltage
+- 选定流：中压电网电力
 - 流属性/单位：Energy / kWh
 - 数量规则：记录可归属于锁定批次本过程的 Grid electricity, medium voltage 分表能量或供应商账单能量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1964,7 +1964,7 @@ Liquid-smoke-treated bovine meat intermediate 作为一个原子交换记录在�
 
 Process water 作为一个原子交换记录在热处理与冷却边界。仅在锁定路线与成品规格实际发生该具体流时记录。
 
-- 选定流：Process water
+- 选定流：过程用水
 - 流属性/单位：Volume / m3
 - 数量规则：记录可归属于锁定批次的 Process water 计量体积。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1979,7 +1979,7 @@ Process water 作为一个原子交换记录在热处理与冷却边界。仅在
 
 Grid electricity, medium voltage 作为一个原子交换记录在热处理与冷却边界。仅在锁定路线与成品规格实际发生该具体流时记录。
 
-- 选定流：Grid electricity, medium voltage
+- 选定流：中压电网电力
 - 流属性/单位：Energy / kWh
 - 数量规则：记录可归属于锁定批次本过程的 Grid electricity, medium voltage 分表能量或供应商账单能量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1994,7 +1994,7 @@ Grid electricity, medium voltage 作为一个原子交换记录在热处理与�
 
 Purchased saturated steam 作为一个原子交换记录在热处理与冷却边界。仅在锁定路线与成品规格实际发生该具体流时记录。
 
-- 选定流：Purchased saturated steam
+- 选定流：外购饱和蒸汽
 - 流属性/单位：Energy / MJ
 - 数量规则：记录可归属于锁定批次本过程的 Purchased saturated steam 分表能量或供应商账单能量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -2009,7 +2009,7 @@ Purchased saturated steam 作为一个原子交换记录在热处理与冷却边
 
 Purchased hot water 作为一个原子交换记录在热处理与冷却边界。仅在锁定路线与成品规格实际发生该具体流时记录。
 
-- 选定流：Purchased hot water
+- 选定流：外购热水
 - 流属性/单位：Energy / MJ
 - 数量规则：记录可归属于锁定批次本过程的 Purchased hot water 分表能量或供应商账单能量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -2024,7 +2024,7 @@ Purchased hot water 作为一个原子交换记录在热处理与冷却边界。
 
 Natural gas 作为一个原子交换记录在热处理与冷却边界。仅在锁定路线与成品规格实际发生该具体流时记录。
 
-- 选定流：Natural gas
+- 选定流：天然气
 - 流属性/单位：Energy / MJ
 - 数量规则：记录可归属于锁定批次本过程的 Natural gas 分表能量或供应商账单能量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -2054,7 +2054,7 @@ Low-sulfur diesel fuel 作为一个原子交换记录在热处理与冷却边界
 
 Liquefied petroleum gas 作为一个原子交换记录在热处理与冷却边界。仅在锁定路线与成品规格实际发生该具体流时记录。
 
-- 选定流：Liquefied petroleum gas
+- 选定流：液化石油气
 - 流属性/单位：Mass / kg
 - 数量规则：记录可归属于锁定批次的 Liquefied petroleum gas 实测质量或库存核对质量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -2069,7 +2069,7 @@ Liquefied petroleum gas 作为一个原子交换记录在热处理与冷却边�
 
 Ammonia refrigerant (R717) 作为一个原子交换记录在热处理与冷却边界。仅在锁定路线与成品规格实际发生该具体流时记录。
 
-- 选定流：Ammonia refrigerant (R717)
+- 选定流：氨制冷剂（R717）
 - 流属性/单位：Mass / kg
 - 数量规则：记录可归属于锁定批次的 Ammonia refrigerant (R717) 实测质量或库存核对质量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -2084,7 +2084,7 @@ Ammonia refrigerant (R717) 作为一个原子交换记录在热处理与冷却�
 
 Carbon dioxide refrigerant (R744) 作为一个原子交换记录在热处理与冷却边界。仅在锁定路线与成品规格实际发生该具体流时记录。
 
-- 选定流：Carbon dioxide refrigerant (R744)
+- 选定流：二氧化碳制冷剂（R744）
 - 流属性/单位：Mass / kg
 - 数量规则：记录可归属于锁定批次的 Carbon dioxide refrigerant (R744) 实测质量或库存核对质量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -2171,7 +2171,7 @@ Rejected thermally finished bovine meat 作为一个原子交换记录在热处�
 
 Ammonia (R717) to air 作为一个原子交换记录在热处理与冷却边界。仅在锁定路线与成品规格实际发生该具体流时记录。
 
-- 选定流：Ammonia (R717) to air
+- 选定流：氨（R717），排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：按 `calc_refrigerant_stock_balance` 由期初充注、补充、期末充注与回收质量计算。
 - 数值来源模式：计算值（`calculated_value`）
@@ -2186,7 +2186,7 @@ Ammonia (R717) to air 作为一个原子交换记录在热处理与冷却边界�
 
 Carbon dioxide (R744) to air 作为一个原子交换记录在热处理与冷却边界。仅在锁定路线与成品规格实际发生该具体流时记录。
 
-- 选定流：Carbon dioxide (R744) to air
+- 选定流：二氧化碳（R744），排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：按 `calc_refrigerant_stock_balance` 由期初充注、补充、期末充注与回收质量计算。
 - 数值来源模式：计算值（`calculated_value`）
@@ -2231,7 +2231,7 @@ Water to air 作为一个原子交换记录在热处理与冷却边界。仅在�
 
 Carbon dioxide, fossil to air 作为一个原子交换记录在热处理与冷却边界。仅在锁定路线与成品规格实际发生该具体流时记录。
 
-- 选定流：Carbon dioxide, fossil to air
+- 选定流：化石源二氧化碳，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：按 `calc_stationary_combustion_emission` 由每种实测燃料或具名熏烟木材与有据可查的适用因子计算，或采用直接监测。
 - 数值来源模式：计算值（`calculated_value`）
@@ -2246,7 +2246,7 @@ Carbon dioxide, fossil to air 作为一个原子交换记录在热处理与冷�
 
 Nitrogen oxides to air 作为一个原子交换记录在热处理与冷却边界。仅在锁定路线与成品规格实际发生该具体流时记录。
 
-- 选定流：Nitrogen oxides to air
+- 选定流：氮氧化物，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：按 `calc_stationary_combustion_emission` 由每种实测燃料或具名熏烟木材与有据可查的适用因子计算，或采用直接监测。
 - 数值来源模式：计算值（`calculated_value`）
@@ -2261,7 +2261,7 @@ Nitrogen oxides to air 作为一个原子交换记录在热处理与冷却边界
 
 Sulfur dioxide to air 作为一个原子交换记录在热处理与冷却边界。仅在锁定路线与成品规格实际发生该具体流时记录。
 
-- 选定流：Sulfur dioxide to air
+- 选定流：二氧化硫，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：按 `calc_stationary_combustion_emission` 由每种实测燃料或具名熏烟木材与有据可查的适用因子计算，或采用直接监测。
 - 数值来源模式：计算值（`calculated_value`）
@@ -2373,7 +2373,7 @@ Thermally finished preserved bovine meat 作为一个原子交换记录在包装
 
 Grid electricity, medium voltage 作为一个原子交换记录在包装与条件化贮存边界。仅在锁定路线与成品规格实际发生该具体流时记录。
 
-- 选定流：Grid electricity, medium voltage
+- 选定流：中压电网电力
 - 流属性/单位：Energy / kWh
 - 数量规则：记录可归属于锁定批次本过程的 Grid electricity, medium voltage 分表能量或供应商账单能量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -2388,7 +2388,7 @@ Grid electricity, medium voltage 作为一个原子交换记录在包装与条�
 
 Ammonia refrigerant (R717) 作为一个原子交换记录在包装与条件化贮存边界。仅在锁定路线与成品规格实际发生该具体流时记录。
 
-- 选定流：Ammonia refrigerant (R717)
+- 选定流：氨制冷剂（R717）
 - 流属性/单位：Mass / kg
 - 数量规则：记录可归属于锁定批次的 Ammonia refrigerant (R717) 实测质量或库存核对质量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -2403,7 +2403,7 @@ Ammonia refrigerant (R717) 作为一个原子交换记录在包装与条件化�
 
 Carbon dioxide refrigerant (R744) 作为一个原子交换记录在包装与条件化贮存边界。仅在锁定路线与成品规格实际发生该具体流时记录。
 
-- 选定流：Carbon dioxide refrigerant (R744)
+- 选定流：二氧化碳制冷剂（R744）
 - 流属性/单位：Mass / kg
 - 数量规则：记录可归属于锁定批次的 Carbon dioxide refrigerant (R744) 实测质量或库存核对质量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -2448,7 +2448,7 @@ Polyamide/polyethylene multilayer vacuum pouch 作为一个原子交换记录在
 
 Low-density polyethylene film 作为一个原子交换记录在包装与条件化贮存边界。仅在锁定路线与成品规格实际发生该具体流时记录。
 
-- 选定流：Low-density polyethylene film
+- 选定流：低密度聚乙烯薄膜
 - 流属性/单位：Mass / kg
 - 数量规则：记录可归属于锁定批次的 Low-density polyethylene film 实测质量或库存核对质量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -2508,7 +2508,7 @@ Jute sack 作为一个原子交换记录在包装与条件化贮存边界。仅�
 
 Corrugated fibreboard box 作为一个原子交换记录在包装与条件化贮存边界。仅在锁定路线与成品规格实际发生该具体流时记录。
 
-- 选定流：Corrugated fibreboard box
+- 选定流：瓦楞纸箱
 - 流属性/单位：Mass / kg
 - 数量规则：记录可归属于锁定批次的 Corrugated fibreboard box 实测质量或库存核对质量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -2523,7 +2523,7 @@ Corrugated fibreboard box 作为一个原子交换记录在包装与条件化贮
 
 Polypropylene strapping 作为一个原子交换记录在包装与条件化贮存边界。仅在锁定路线与成品规格实际发生该具体流时记录。
 
-- 选定流：Polypropylene strapping
+- 选定流：聚丙烯捆扎带
 - 流属性/单位：Mass / kg
 - 数量规则：记录可归属于锁定批次的 Polypropylene strapping 实测质量或库存核对质量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -2538,7 +2538,7 @@ Polypropylene strapping 作为一个原子交换记录在包装与条件化贮�
 
 Paper label 作为一个原子交换记录在包装与条件化贮存边界。仅在锁定路线与成品规格实际发生该具体流时记录。
 
-- 选定流：Paper label
+- 选定流：纸质标签
 - 流属性/单位：Mass / kg
 - 数量规则：记录可归属于锁定批次的 Paper label 实测质量或库存核对质量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -2553,7 +2553,7 @@ Paper label 作为一个原子交换记录在包装与条件化贮存边界。�
 
 Wooden pallet 作为一个原子交换记录在包装与条件化贮存边界。仅在锁定路线与成品规格实际发生该具体流时记录。
 
-- 选定流：Wooden pallet
+- 选定流：木托盘
 - 流属性/单位：Mass / kg
 - 数量规则：记录可归属于锁定批次的 Wooden pallet 实测质量或库存核对质量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -2576,7 +2576,7 @@ Wooden pallet 作为一个原子交换记录在包装与条件化贮存边界。
 
 Bovine meat, salted, dried or smoked 作为一个原子交换记录在包装与条件化贮存边界。仅在锁定路线与成品规格实际发生该具体流时记录。
 
-- 选定流：Bovine meat, salted, dried or smoked `b022bdb0-0f92-4323-b5eb-2c5fb085bd19`
+- 选定流：腌制、风干或熏制的牛肉 `b022bdb0-0f92-4323-b5eb-2c5fb085bd19`
 - 流属性/单位：Mass / kg
 - 数量规则：恰为 1 kg 净合格产品；包装质量不计入。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -2608,7 +2608,7 @@ Waste polyamide/polyethylene multilayer vacuum pouch 作为一个原子交换记
 
 Waste low-density polyethylene film 作为一个原子交换记录在包装与条件化贮存边界。仅在锁定路线与成品规格实际发生该具体流时记录。
 
-- 选定流：Waste low-density polyethylene film
+- 选定流：废低密度聚乙烯薄膜
 - 流属性/单位：Mass / kg
 - 数量规则：记录可归属于锁定批次的 Waste low-density polyethylene film 实测质量或库存核对质量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -2698,7 +2698,7 @@ Waste polypropylene strapping 作为一个原子交换记录在包装与条件�
 
 Waste paper label 作为一个原子交换记录在包装与条件化贮存边界。仅在锁定路线与成品规格实际发生该具体流时记录。
 
-- 选定流：Waste paper label
+- 选定流：废纸质标签
 - 流属性/单位：Mass / kg
 - 数量规则：记录可归属于锁定批次的 Waste paper label 实测质量或库存核对质量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -2713,7 +2713,7 @@ Waste paper label 作为一个原子交换记录在包装与条件化贮存边�
 
 Waste wooden pallet 作为一个原子交换记录在包装与条件化贮存边界。仅在锁定路线与成品规格实际发生该具体流时记录。
 
-- 选定流：Waste wooden pallet
+- 选定流：废木托盘
 - 流属性/单位：Mass / kg
 - 数量规则：记录可归属于锁定批次的 Waste wooden pallet 实测质量或库存核对质量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -2745,7 +2745,7 @@ Rejected packaged preserved bovine meat 作为一个原子交换记录在包装�
 
 Ammonia (R717) to air 作为一个原子交换记录在包装与条件化贮存边界。仅在锁定路线与成品规格实际发生该具体流时记录。
 
-- 选定流：Ammonia (R717) to air
+- 选定流：氨（R717），排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：按 `calc_refrigerant_stock_balance` 由期初充注、补充、期末充注与回收质量计算。
 - 数值来源模式：计算值（`calculated_value`）
@@ -2760,7 +2760,7 @@ Ammonia (R717) to air 作为一个原子交换记录在包装与条件化贮存�
 
 Carbon dioxide (R744) to air 作为一个原子交换记录在包装与条件化贮存边界。仅在锁定路线与成品规格实际发生该具体流时记录。
 
-- 选定流：Carbon dioxide (R744) to air
+- 选定流：二氧化碳（R744），排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：按 `calc_refrigerant_stock_balance` 由期初充注、补充、期末充注与回收质量计算。
 - 数值来源模式：计算值（`calculated_value`）
@@ -2797,7 +2797,7 @@ R404A refrigerant to air 作为一个原子交换记录在包装与条件化贮�
 
 Process water 作为一个原子交换记录在清洗与消毒边界。仅在锁定路线与成品规格实际发生该具体流时记录。
 
-- 选定流：Process water
+- 选定流：过程用水
 - 流属性/单位：Volume / m3
 - 数量规则：记录可归属于锁定批次的 Process water 计量体积。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -2812,7 +2812,7 @@ Process water 作为一个原子交换记录在清洗与消毒边界。仅在锁
 
 Grid electricity, medium voltage 作为一个原子交换记录在清洗与消毒边界。仅在锁定路线与成品规格实际发生该具体流时记录。
 
-- 选定流：Grid electricity, medium voltage
+- 选定流：中压电网电力
 - 流属性/单位：Energy / kWh
 - 数量规则：记录可归属于锁定批次本过程的 Grid electricity, medium voltage 分表能量或供应商账单能量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -2827,7 +2827,7 @@ Grid electricity, medium voltage 作为一个原子交换记录在清洗与消�
 
 Purchased saturated steam 作为一个原子交换记录在清洗与消毒边界。仅在锁定路线与成品规格实际发生该具体流时记录。
 
-- 选定流：Purchased saturated steam
+- 选定流：外购饱和蒸汽
 - 流属性/单位：Energy / MJ
 - 数量规则：记录可归属于锁定批次本过程的 Purchased saturated steam 分表能量或供应商账单能量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -2842,7 +2842,7 @@ Purchased saturated steam 作为一个原子交换记录在清洗与消毒边界
 
 Purchased hot water 作为一个原子交换记录在清洗与消毒边界。仅在锁定路线与成品规格实际发生该具体流时记录。
 
-- 选定流：Purchased hot water
+- 选定流：外购热水
 - 流属性/单位：Energy / MJ
 - 数量规则：记录可归属于锁定批次本过程的 Purchased hot water 分表能量或供应商账单能量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -2857,7 +2857,7 @@ Purchased hot water 作为一个原子交换记录在清洗与消毒边界。仅
 
 Natural gas 作为一个原子交换记录在清洗与消毒边界。仅在锁定路线与成品规格实际发生该具体流时记录。
 
-- 选定流：Natural gas
+- 选定流：天然气
 - 流属性/单位：Energy / MJ
 - 数量规则：记录可归属于锁定批次本过程的 Natural gas 分表能量或供应商账单能量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -2887,7 +2887,7 @@ Low-sulfur diesel fuel 作为一个原子交换记录在清洗与消毒边界。
 
 Liquefied petroleum gas 作为一个原子交换记录在清洗与消毒边界。仅在锁定路线与成品规格实际发生该具体流时记录。
 
-- 选定流：Liquefied petroleum gas
+- 选定流：液化石油气
 - 流属性/单位：Mass / kg
 - 数量规则：记录可归属于锁定批次的 Liquefied petroleum gas 实测质量或库存核对质量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -2902,7 +2902,7 @@ Liquefied petroleum gas 作为一个原子交换记录在清洗与消毒边界�
 
 Sodium hydroxide 作为一个原子交换记录在清洗与消毒边界。仅在锁定路线与成品规格实际发生该具体流时记录。
 
-- 选定流：Sodium hydroxide
+- 选定流：氢氧化钠
 - 流属性/单位：Mass / kg
 - 数量规则：记录可归属于锁定批次的 Sodium hydroxide 实测质量或库存核对质量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -2917,7 +2917,7 @@ Sodium hydroxide 作为一个原子交换记录在清洗与消毒边界。仅在
 
 Nitric acid 作为一个原子交换记录在清洗与消毒边界。仅在锁定路线与成品规格实际发生该具体流时记录。
 
-- 选定流：Nitric acid
+- 选定流：硝酸
 - 流属性/单位：Mass / kg
 - 数量规则：记录可归属于锁定批次的 Nitric acid 实测质量或库存核对质量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -2932,7 +2932,7 @@ Nitric acid 作为一个原子交换记录在清洗与消毒边界。仅在锁�
 
 Phosphoric acid 作为一个原子交换记录在清洗与消毒边界。仅在锁定路线与成品规格实际发生该具体流时记录。
 
-- 选定流：Phosphoric acid
+- 选定流：磷酸
 - 流属性/单位：Mass / kg
 - 数量规则：记录可归属于锁定批次的 Phosphoric acid 实测质量或库存核对质量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -2947,7 +2947,7 @@ Phosphoric acid 作为一个原子交换记录在清洗与消毒边界。仅在�
 
 Sodium hypochlorite 作为一个原子交换记录在清洗与消毒边界。仅在锁定路线与成品规格实际发生该具体流时记录。
 
-- 选定流：Sodium hypochlorite
+- 选定流：次氯酸钠
 - 流属性/单位：Mass / kg
 - 数量规则：记录可归属于锁定批次的 Sodium hypochlorite 实测质量或库存核对质量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -2962,7 +2962,7 @@ Sodium hypochlorite 作为一个原子交换记录在清洗与消毒边界。仅
 
 Peracetic acid 作为一个原子交换记录在清洗与消毒边界。仅在锁定路线与成品规格实际发生该具体流时记录。
 
-- 选定流：Peracetic acid
+- 选定流：过氧乙酸
 - 流属性/单位：Mass / kg
 - 数量规则：记录可归属于锁定批次的 Peracetic acid 实测质量或库存核对质量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -2977,7 +2977,7 @@ Peracetic acid 作为一个原子交换记录在清洗与消毒边界。仅在�
 
 Hydrogen peroxide 作为一个原子交换记录在清洗与消毒边界。仅在锁定路线与成品规格实际发生该具体流时记录。
 
-- 选定流：Hydrogen peroxide
+- 选定流：过氧化氢
 - 流属性/单位：Mass / kg
 - 数量规则：记录可归属于锁定批次的 Hydrogen peroxide 实测质量或库存核对质量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -2992,7 +2992,7 @@ Hydrogen peroxide 作为一个原子交换记录在清洗与消毒边界。仅�
 
 Benzalkonium chloride 作为一个原子交换记录在清洗与消毒边界。仅在锁定路线与成品规格实际发生该具体流时记录。
 
-- 选定流：Benzalkonium chloride
+- 选定流：苯扎氯铵
 - 流属性/单位：Mass / kg
 - 数量规则：记录可归属于锁定批次的 Benzalkonium chloride 实测质量或库存核对质量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -3079,7 +3079,7 @@ Used polyester cleaning cloth 作为一个原子交换记录在清洗与消毒�
 
 Carbon dioxide, fossil to air 作为一个原子交换记录在清洗与消毒边界。仅在锁定路线与成品规格实际发生该具体流时记录。
 
-- 选定流：Carbon dioxide, fossil to air
+- 选定流：化石源二氧化碳，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：按 `calc_stationary_combustion_emission` 由每种实测燃料与有据可查的适用因子计算，或采用直接监测。
 - 数值来源模式：计算值（`calculated_value`）
@@ -3094,7 +3094,7 @@ Carbon dioxide, fossil to air 作为一个原子交换记录在清洗与消毒�
 
 Nitrogen oxides to air 作为一个原子交换记录在清洗与消毒边界。仅在锁定路线与成品规格实际发生该具体流时记录。
 
-- 选定流：Nitrogen oxides to air
+- 选定流：氮氧化物，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：按 `calc_stationary_combustion_emission` 由每种实测燃料与有据可查的适用因子计算，或采用直接监测。
 - 数值来源模式：计算值（`calculated_value`）
@@ -3109,7 +3109,7 @@ Nitrogen oxides to air 作为一个原子交换记录在清洗与消毒边界。
 
 Sulfur dioxide to air 作为一个原子交换记录在清洗与消毒边界。仅在锁定路线与成品规格实际发生该具体流时记录。
 
-- 选定流：Sulfur dioxide to air
+- 选定流：二氧化硫，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：按 `calc_stationary_combustion_emission` 由每种实测燃料与有据可查的适用因子计算，或采用直接监测。
 - 数值来源模式：计算值（`calculated_value`）
@@ -3146,7 +3146,7 @@ Particulate matter, <2.5 µm to air 作为一个原子交换记录在清洗与�
 
 Grid electricity, medium voltage 作为一个原子交换记录在场内废水处理边界。仅在锁定路线与成品规格实际发生该具体流时记录。
 
-- 选定流：Grid electricity, medium voltage
+- 选定流：中压电网电力
 - 流属性/单位：Energy / kWh
 - 数量规则：记录可归属于锁定批次本过程的 Grid electricity, medium voltage 分表能量或供应商账单能量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -3161,7 +3161,7 @@ Grid electricity, medium voltage 作为一个原子交换记录在场内废水�
 
 Ferric chloride 作为一个原子交换记录在场内废水处理边界。仅在锁定路线与成品规格实际发生该具体流时记录。
 
-- 选定流：Ferric chloride
+- 选定流：氯化铁
 - 流属性/单位：Mass / kg
 - 数量规则：记录可归属于锁定批次的 Ferric chloride 实测质量或库存核对质量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -3176,7 +3176,7 @@ Ferric chloride 作为一个原子交换记录在场内废水处理边界。仅�
 
 Sodium hydroxide 作为一个原子交换记录在场内废水处理边界。仅在锁定路线与成品规格实际发生该具体流时记录。
 
-- 选定流：Sodium hydroxide
+- 选定流：氢氧化钠
 - 流属性/单位：Mass / kg
 - 数量规则：记录可归属于锁定批次的 Sodium hydroxide 实测质量或库存核对质量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -3191,7 +3191,7 @@ Sodium hydroxide 作为一个原子交换记录在场内废水处理边界。仅
 
 Calcium hydroxide 作为一个原子交换记录在场内废水处理边界。仅在锁定路线与成品规格实际发生该具体流时记录。
 
-- 选定流：Calcium hydroxide
+- 选定流：氢氧化钙
 - 流属性/单位：Mass / kg
 - 数量规则：记录可归属于锁定批次的 Calcium hydroxide 实测质量或库存核对质量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -3206,7 +3206,7 @@ Calcium hydroxide 作为一个原子交换记录在场内废水处理边界。�
 
 Anionic polyacrylamide 作为一个原子交换记录在场内废水处理边界。仅在锁定路线与成品规格实际发生该具体流时记录。
 
-- 选定流：Anionic polyacrylamide
+- 选定流：阴离子聚丙烯酰胺
 - 流属性/单位：Mass / kg
 - 数量规则：记录可归属于锁定批次的 Anionic polyacrylamide 实测质量或库存核对质量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -3443,7 +3443,7 @@ Water to surface water 作为一个原子交换记录在场内废水处理边界
 
 Chemical oxygen demand to water 作为一个原子交换记录在场内废水处理边界。仅在锁定路线与成品规格实际发生该具体流时记录。
 
-- 选定流：Chemical oxygen demand to water
+- 选定流：化学需氧量，排入水体
 - 流属性/单位：Mass / kg
 - 数量规则：按 `calc_wastewater_pollutant_load` 由匹配的排水体积与实测浓度计算。
 - 数值来源模式：计算值（`calculated_value`）
@@ -3473,7 +3473,7 @@ Biochemical oxygen demand, 5 days to water 作为一个原子交换记录在场�
 
 Suspended solids to water 作为一个原子交换记录在场内废水处理边界。仅在锁定路线与成品规格实际发生该具体流时记录。
 
-- 选定流：Suspended solids to water
+- 选定流：悬浮固体，排入水体
 - 流属性/单位：Mass / kg
 - 数量规则：按 `calc_wastewater_pollutant_load` 由匹配的排水体积与实测浓度计算。
 - 数值来源模式：计算值（`calculated_value`）
@@ -3488,7 +3488,7 @@ Suspended solids to water 作为一个原子交换记录在场内废水处理边
 
 Chloride to water 作为一个原子交换记录在场内废水处理边界。仅在锁定路线与成品规格实际发生该具体流时记录。
 
-- 选定流：Chloride to water
+- 选定流：氯化物，排入水体
 - 流属性/单位：Mass / kg
 - 数量规则：按 `calc_wastewater_pollutant_load` 由匹配的排水体积与实测浓度计算。
 - 数值来源模式：计算值（`calculated_value`）
@@ -3503,7 +3503,7 @@ Chloride to water 作为一个原子交换记录在场内废水处理边界。�
 
 Total nitrogen to water 作为一个原子交换记录在场内废水处理边界。仅在锁定路线与成品规格实际发生该具体流时记录。
 
-- 选定流：Total nitrogen to water
+- 选定流：总氮，排入水体
 - 流属性/单位：Mass / kg
 - 数量规则：按 `calc_wastewater_pollutant_load` 由匹配的排水体积与实测浓度计算。
 - 数值来源模式：计算值（`calculated_value`）
@@ -3518,7 +3518,7 @@ Total nitrogen to water 作为一个原子交换记录在场内废水处理边�
 
 Total phosphorus to water 作为一个原子交换记录在场内废水处理边界。仅在锁定路线与成品规格实际发生该具体流时记录。
 
-- 选定流：Total phosphorus to water
+- 选定流：总磷，排入水体
 - 流属性/单位：Mass / kg
 - 数量规则：按 `calc_wastewater_pollutant_load` 由匹配的排水体积与实测浓度计算。
 - 数值来源模式：计算值（`calculated_value`）
@@ -3578,7 +3578,7 @@ Methane, biogenic to air 作为一个原子交换记录在场内废水处理边�
 
 Dinitrogen monoxide to air 作为一个原子交换记录在场内废水处理边界。仅在锁定路线与成品规格实际发生该具体流时记录。
 
-- 选定流：Dinitrogen monoxide to air
+- 选定流：氧化亚氮，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：采用直接监测，或用实测处理活动量与有据可查的适用因子计算；PCR 不提供默认因子。
 - 数值来源模式：计算值（`calculated_value`）

@@ -40,7 +40,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 1 kg |
-| 参考产品流 | Woven fabrics of cotton, containing 85% or more by weight of cotton, weighing more than 200 g/m2 `75725731-1147-4cf5-9d98-b66c539076dc` |
+| 参考产品流 | 含棉重量达85%或85%以上的、重量大于每平方米200克的棉机织织物 `75725731-1147-4cf5-9d98-b66c539076dc` |
 | 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | kg |
@@ -669,7 +669,7 @@ sync_with: pcr.en-US.md
 
 这是最终质量检查后的定量参考产出。记录不含托盘和运输包装的净织物质量。
 
-- 选定流：Woven fabrics of cotton, containing 85% or more by weight of cotton, weighing more than 200 g/m2 `75725731-1147-4cf5-9d98-b66c539076dc`
+- 选定流：含棉重量达85%或85%以上的、重量大于每平方米200克的棉机织织物 `75725731-1147-4cf5-9d98-b66c539076dc`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：按声明调湿状态计的 1 kg 净可销售织物
 - 数值来源模式：固定值（`fixed_value`）

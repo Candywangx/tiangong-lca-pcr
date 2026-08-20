@@ -41,7 +41,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 1 kg 宠物食品净含量 |
-| 参考产品流 | Dog or cat food, put up for retail sale `a044700b-9c04-49d8-8842-c967c80099d4` |
+| 参考产品流 | 用于零售的狗粮或猫粮 `a044700b-9c04-49d8-8842-c967c80099d4` |
 | 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | kg |
@@ -309,7 +309,7 @@ sync_with: pcr.en-US.md
 
 - Direction: 输入（`inputs`）
 - Flow type: 产品（`product`）
-- 选定流：Sodium chloride
+- 选定流：氯化钠
 - 流属性/单位：Mass / kg
 - 数量规则：批次或报告期按接收状态实测领用质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -353,7 +353,7 @@ sync_with: pcr.en-US.md
 
 - Direction: 输入（`inputs`）
 - Flow type: 产品（`product`）
-- 选定流：Process water
+- 选定流：过程用水
 - 流属性/单位：Volume / m3
 - 数量规则：研磨、混合、浆料制备或预调质的计量或批次记录供水量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -514,7 +514,7 @@ sync_with: pcr.en-US.md
 
 - Direction: 输入（`inputs`）
 - Flow type: 产品（`product`）
-- 选定流：Grid electricity
+- 选定流：电网电力
 - 流属性/单位：Energy / kWh
 - 数量规则：该电力交换的生产线计量量或场址总表分配量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -536,7 +536,7 @@ sync_with: pcr.en-US.md
 
 - Direction: 输入（`inputs`）
 - Flow type: 产品（`product`）
-- 选定流：Purchased steam
+- 选定流：外购蒸汽
 - 流属性/单位：Energy / MJ
 - 数量规则：该单一载体的计量、采购或库存领用量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -558,7 +558,7 @@ sync_with: pcr.en-US.md
 
 - Direction: 输入（`inputs`）
 - Flow type: 产品（`product`）
-- 选定流：Purchased hot water
+- 选定流：外购热水
 - 流属性/单位：Energy / MJ
 - 数量规则：该单一载体的计量、采购或库存领用量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -580,7 +580,7 @@ sync_with: pcr.en-US.md
 
 - Direction: 输入（`inputs`）
 - Flow type: 产品（`product`）
-- 选定流：Natural gas
+- 选定流：天然气
 - 流属性/单位：Volume / m3
 - 数量规则：该单一载体的计量、采购或库存领用量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -602,7 +602,7 @@ sync_with: pcr.en-US.md
 
 - Direction: 输入（`inputs`）
 - Flow type: 产品（`product`）
-- 选定流：Diesel fuel
+- 选定流：柴油燃料
 - 流属性/单位：Mass / kg
 - 数量规则：该单一载体的计量、采购或库存领用量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -624,7 +624,7 @@ sync_with: pcr.en-US.md
 
 - Direction: 输入（`inputs`）
 - Flow type: 产品（`product`）
-- 选定流：Liquefied petroleum gas
+- 选定流：液化石油气
 - 流属性/单位：Mass / kg
 - 数量规则：该单一载体的计量、采购或库存领用量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -756,7 +756,7 @@ sync_with: pcr.en-US.md
 
 - Direction: 输出（`outputs`）
 - Flow type: 基本（`elementary`）
-- 选定流：Carbon dioxide, fossil, to air
+- 选定流：化石源二氧化碳，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：污染物特定监测质量，或根据已记录源活动量及有文件依据的因子计算
 - 数值来源模式：计算值（`calculated_value`）
@@ -778,7 +778,7 @@ sync_with: pcr.en-US.md
 
 - Direction: 输出（`outputs`）
 - Flow type: 基本（`elementary`）
-- 选定流：Nitrogen oxides to air
+- 选定流：氮氧化物，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：污染物特定监测质量，或根据已记录源活动量及有文件依据的因子计算
 - 数值来源模式：计算值（`calculated_value`）
@@ -800,7 +800,7 @@ sync_with: pcr.en-US.md
 
 - Direction: 输出（`outputs`）
 - Flow type: 基本（`elementary`）
-- 选定流：Sulfur dioxide to air
+- 选定流：二氧化硫，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：污染物特定监测质量，或根据已记录源活动量及有文件依据的因子计算
 - 数值来源模式：计算值（`calculated_value`）
@@ -822,7 +822,7 @@ sync_with: pcr.en-US.md
 
 - Direction: 输出（`outputs`）
 - Flow type: 基本（`elementary`）
-- 选定流：Particulate matter below 2.5 micrometres to air
+- 选定流：粒径小于2.5微米的颗粒物，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：污染物特定监测质量，或根据已记录源活动量及有文件依据的因子计算
 - 数值来源模式：计算值（`calculated_value`）
@@ -873,7 +873,7 @@ sync_with: pcr.en-US.md
 
 - Direction: 输入（`inputs`）
 - Flow type: 产品（`product`）
-- 选定流：Process water
+- 选定流：过程用水
 - 流属性/单位：Volume / m3
 - 数量规则：湿制备料、灌装、灭菌或冷却的计量或批次记录供水量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1005,7 +1005,7 @@ sync_with: pcr.en-US.md
 
 - Direction: 输入（`inputs`）
 - Flow type: 产品（`product`）
-- 选定流：Grid electricity
+- 选定流：电网电力
 - 流属性/单位：Energy / kWh
 - 数量规则：该电力交换的生产线计量量或场址总表分配量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1027,7 +1027,7 @@ sync_with: pcr.en-US.md
 
 - Direction: 输入（`inputs`）
 - Flow type: 产品（`product`）
-- 选定流：Purchased steam
+- 选定流：外购蒸汽
 - 流属性/单位：Energy / MJ
 - 数量规则：该单一载体的计量、采购或库存领用量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1049,7 +1049,7 @@ sync_with: pcr.en-US.md
 
 - Direction: 输入（`inputs`）
 - Flow type: 产品（`product`）
-- 选定流：Natural gas
+- 选定流：天然气
 - 流属性/单位：Volume / m3
 - 数量规则：该单一载体的计量、采购或库存领用量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1071,7 +1071,7 @@ sync_with: pcr.en-US.md
 
 - Direction: 输入（`inputs`）
 - Flow type: 产品（`product`）
-- 选定流：Diesel fuel
+- 选定流：柴油燃料
 - 流属性/单位：Mass / kg
 - 数量规则：该单一载体的计量、采购或库存领用量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1093,7 +1093,7 @@ sync_with: pcr.en-US.md
 
 - Direction: 输入（`inputs`）
 - Flow type: 产品（`product`）
-- 选定流：Liquefied petroleum gas
+- 选定流：液化石油气
 - 流属性/单位：Mass / kg
 - 数量规则：该单一载体的计量、采购或库存领用量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1291,7 +1291,7 @@ sync_with: pcr.en-US.md
 
 - Direction: 输出（`outputs`）
 - Flow type: 基本（`elementary`）
-- 选定流：Carbon dioxide, fossil, to air
+- 选定流：化石源二氧化碳，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：污染物特定监测质量，或根据已记录源活动量及有文件依据的因子计算
 - 数值来源模式：计算值（`calculated_value`）
@@ -1313,7 +1313,7 @@ sync_with: pcr.en-US.md
 
 - Direction: 输出（`outputs`）
 - Flow type: 基本（`elementary`）
-- 选定流：Nitrogen oxides to air
+- 选定流：氮氧化物，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：污染物特定监测质量，或根据已记录源活动量及有文件依据的因子计算
 - 数值来源模式：计算值（`calculated_value`）
@@ -1335,7 +1335,7 @@ sync_with: pcr.en-US.md
 
 - Direction: 输出（`outputs`）
 - Flow type: 基本（`elementary`）
-- 选定流：Sulfur dioxide to air
+- 选定流：二氧化硫，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：污染物特定监测质量，或根据已记录源活动量及有文件依据的因子计算
 - 数值来源模式：计算值（`calculated_value`）
@@ -1357,7 +1357,7 @@ sync_with: pcr.en-US.md
 
 - Direction: 输出（`outputs`）
 - Flow type: 基本（`elementary`）
-- 选定流：Particulate matter below 2.5 micrometres to air
+- 选定流：粒径小于2.5微米的颗粒物，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：污染物特定监测质量，或根据已记录源活动量及有文件依据的因子计算
 - 数值来源模式：计算值（`calculated_value`）
@@ -1496,7 +1496,7 @@ sync_with: pcr.en-US.md
 
 - Direction: 输入（`inputs`）
 - Flow type: 产品（`product`）
-- 选定流：Corrugated paperboard shipping carton
+- 选定流：瓦楞纸板运输箱
 - 流属性/单位：Mass / kg
 - 数量规则：该单一组件的领用质量，或件数乘以核实的单件质量
 - 数值来源模式：计算值（`calculated_value`）
@@ -1540,7 +1540,7 @@ sync_with: pcr.en-US.md
 
 - Direction: 输入（`inputs`）
 - Flow type: 产品（`product`）
-- 选定流：Wooden pallet
+- 选定流：木托盘
 - 流属性/单位：Mass / kg
 - 数量规则：该单一组件的领用质量，或件数乘以核实的单件质量
 - 数值来源模式：计算值（`calculated_value`）
@@ -1562,7 +1562,7 @@ sync_with: pcr.en-US.md
 
 - Direction: 输入（`inputs`）
 - Flow type: 产品（`product`）
-- 选定流：Grid electricity
+- 选定流：电网电力
 - 流属性/单位：Energy / kWh
 - 数量规则：该电力交换的生产线计量量或场址总表分配量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1598,7 +1598,7 @@ sync_with: pcr.en-US.md
 
 - Direction: 输出（`outputs`）
 - Flow type: 产品（`product`）
-- 选定流：Dog or cat food, put up for retail sale `a044700b-9c04-49d8-8842-c967c80099d4`
+- 选定流：用于零售的狗粮或猫粮 `a044700b-9c04-49d8-8842-c967c80099d4`
 - 流属性/单位：Mass / kg
 - 数量规则：实测合格产量归一化后，参考输出固定为 1 kg
 - 数值来源模式：固定值（`fixed_value`）
@@ -1623,7 +1623,7 @@ sync_with: pcr.en-US.md
 
 - Direction: 输出（`outputs`）
 - Flow type: 废物（`waste`）
-- 选定流：Waste low-density polyethylene film
+- 选定流：废低密度聚乙烯薄膜
 - 流属性/单位：Mass / kg
 - 数量规则：按去向实测数量；内部返工不得计作外部废物
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1689,7 +1689,7 @@ sync_with: pcr.en-US.md
 
 - Direction: 输出（`outputs`）
 - Flow type: 废物（`waste`）
-- 选定流：Waste corrugated paperboard
+- 选定流：废瓦楞纸板
 - 流属性/单位：Mass / kg
 - 数量规则：按去向实测数量；内部返工不得计作外部废物
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1766,7 +1766,7 @@ sync_with: pcr.en-US.md
 
 - Direction: 输入（`inputs`）
 - Flow type: 产品（`product`）
-- 选定流：Grid electricity
+- 选定流：电网电力
 - 流属性/单位：Energy / kWh
 - 数量规则：该电力交换的生产线计量量或场址总表分配量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1788,7 +1788,7 @@ sync_with: pcr.en-US.md
 
 - Direction: 输入（`inputs`）
 - Flow type: 产品（`product`）
-- 选定流：Purchased steam
+- 选定流：外购蒸汽
 - 流属性/单位：Energy / MJ
 - 数量规则：该单一载体的计量、采购或库存领用量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1810,7 +1810,7 @@ sync_with: pcr.en-US.md
 
 - Direction: 输入（`inputs`）
 - Flow type: 产品（`product`）
-- 选定流：Purchased hot water
+- 选定流：外购热水
 - 流属性/单位：Energy / MJ
 - 数量规则：该单一载体的计量、采购或库存领用量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1854,7 +1854,7 @@ sync_with: pcr.en-US.md
 
 - Direction: 输入（`inputs`）
 - Flow type: 产品（`product`）
-- 选定流：Natural gas
+- 选定流：天然气
 - 流属性/单位：Volume / m3
 - 数量规则：该单一载体的计量、采购或库存领用量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1876,7 +1876,7 @@ sync_with: pcr.en-US.md
 
 - Direction: 输入（`inputs`）
 - Flow type: 产品（`product`）
-- 选定流：Diesel fuel
+- 选定流：柴油燃料
 - 流属性/单位：Mass / kg
 - 数量规则：该单一载体的计量、采购或库存领用量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1898,7 +1898,7 @@ sync_with: pcr.en-US.md
 
 - Direction: 输入（`inputs`）
 - Flow type: 产品（`product`）
-- 选定流：Liquefied petroleum gas
+- 选定流：液化石油气
 - 流属性/单位：Mass / kg
 - 数量规则：该单一载体的计量、采购或库存领用量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1986,7 +1986,7 @@ sync_with: pcr.en-US.md
 
 - Direction: 输入（`inputs`）
 - Flow type: 产品（`product`）
-- 选定流：Process water
+- 选定流：过程用水
 - 流属性/单位：Volume / m3
 - 数量规则：分配至产品的计量或清洗日志用水量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -2008,7 +2008,7 @@ sync_with: pcr.en-US.md
 
 - Direction: 输入（`inputs`）
 - Flow type: 产品（`product`）
-- 选定流：Sodium hydroxide
+- 选定流：氢氧化钠
 - 流属性/单位：Mass / kg
 - 数量规则：根据卫生记录分配的库存领用活性物质质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -2030,7 +2030,7 @@ sync_with: pcr.en-US.md
 
 - Direction: 输入（`inputs`）
 - Flow type: 产品（`product`）
-- 选定流：Nitric acid
+- 选定流：硝酸
 - 流属性/单位：Mass / kg
 - 数量规则：根据卫生记录分配的库存领用活性物质质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -2052,7 +2052,7 @@ sync_with: pcr.en-US.md
 
 - Direction: 输入（`inputs`）
 - Flow type: 产品（`product`）
-- 选定流：Peracetic acid
+- 选定流：过氧乙酸
 - 流属性/单位：Mass / kg
 - 数量规则：根据卫生记录分配的库存领用活性物质质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -2184,7 +2184,7 @@ sync_with: pcr.en-US.md
 
 - Direction: 输出（`outputs`）
 - Flow type: 基本（`elementary`）
-- 选定流：Carbon dioxide, fossil, to air
+- 选定流：化石源二氧化碳，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：污染物特定监测质量，或根据已记录源活动量及有文件依据的因子计算
 - 数值来源模式：计算值（`calculated_value`）
@@ -2206,7 +2206,7 @@ sync_with: pcr.en-US.md
 
 - Direction: 输出（`outputs`）
 - Flow type: 基本（`elementary`）
-- 选定流：Nitrogen oxides to air
+- 选定流：氮氧化物，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：污染物特定监测质量，或根据已记录源活动量及有文件依据的因子计算
 - 数值来源模式：计算值（`calculated_value`）
@@ -2228,7 +2228,7 @@ sync_with: pcr.en-US.md
 
 - Direction: 输出（`outputs`）
 - Flow type: 基本（`elementary`）
-- 选定流：Sulfur dioxide to air
+- 选定流：二氧化硫，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：污染物特定监测质量，或根据已记录源活动量及有文件依据的因子计算
 - 数值来源模式：计算值（`calculated_value`）
@@ -2250,7 +2250,7 @@ sync_with: pcr.en-US.md
 
 - Direction: 输出（`outputs`）
 - Flow type: 基本（`elementary`）
-- 选定流：Particulate matter below 2.5 micrometres to air
+- 选定流：粒径小于2.5微米的颗粒物，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：污染物特定监测质量，或根据已记录源活动量及有文件依据的因子计算
 - 数值来源模式：计算值（`calculated_value`）
@@ -2338,7 +2338,7 @@ sync_with: pcr.en-US.md
 
 - Direction: 输出（`outputs`）
 - Flow type: 基本（`elementary`）
-- 选定流：Chemical oxygen demand to water
+- 选定流：化学需氧量，排入水体
 - 流属性/单位：Mass / kg
 - 数量规则：排放体积乘以具有代表性的实测化学需氧量浓度
 - 数值来源模式：计算值（`calculated_value`）
@@ -2360,7 +2360,7 @@ sync_with: pcr.en-US.md
 
 - Direction: 输出（`outputs`）
 - Flow type: 基本（`elementary`）
-- 选定流：Total nitrogen to water
+- 选定流：总氮，排入水体
 - 流属性/单位：Mass / kg
 - 数量规则：排放体积乘以具有代表性的实测总氮浓度
 - 数值来源模式：计算值（`calculated_value`）
@@ -2382,7 +2382,7 @@ sync_with: pcr.en-US.md
 
 - Direction: 输出（`outputs`）
 - Flow type: 基本（`elementary`）
-- 选定流：Total phosphorus to water
+- 选定流：总磷，排入水体
 - 流属性/单位：Mass / kg
 - 数量规则：排放体积乘以具有代表性的实测总磷浓度
 - 数值来源模式：计算值（`calculated_value`）

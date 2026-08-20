@@ -110,15 +110,6 @@ Record milk, cream, skimmed milk, milk powder, whey-derived dairy ingredients, a
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_batch_materials`
 - Sources: `codex-fermented-milks-243`; `codex-cream-288`; `dairy-pefcr-2025`
-- Range: Fermented-milk representative-formulation QA range for total dairy ingredients
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0.80
-  - Upper: 1.00
-  - Unit: kg/kg released net product
-  - Basis: total dairy ingredients in the plain, flavoured, and fruited spoonable examples
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: External source (`external_source`)
-  - Sources: `dairy-pefcr-2025`
 
 ###### Non-dairy formulation ingredients (`non_dairy_ingredients`)
 
@@ -292,15 +283,6 @@ Record packaging by material and component when packaging is within the declared
 - Evidence kind: Calculated from collection (`calculated_from_collection`)
 - Collection protocol: `cp_packaging_records`
 - Sources: `dairy-pefcr-2025`
-- Range: Broad packaging-mass QA range across bulk and common consumer packs
-  - Range role: QA guardrail (`qa_guardrail`)
-  - Lower: 0
-  - Upper: 1.10
-  - Unit: kg packaging/kg net product
-  - Basis: bulk product through high-mass single-use consumer container examples
-  - Basis kind: Process output (`process_output`)
-  - Evidence kind: External source (`external_source`)
-  - Sources: `dairy-pefcr-2025`
 
 ###### Facility electricity (`facility_electricity`)
 
@@ -316,15 +298,6 @@ Collect metered electricity for preparation, fermentation or acidification, pump
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_facility_utilities`
 - Sources: `dairy-pefcr-2025`; `ifc-dairy-processing-ehs-2007`
-- Range: Dairy PEFCR replaceable default for fermented-milk processing electricity
-  - Range role: Default estimate (`default_estimate`)
-  - Lower: 0.137
-  - Upper: 0.137
-  - Unit: kWh/kg product
-  - Basis: dairy-processing facility electricity per kg fermented milk product
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: External source (`external_source`)
-  - Sources: `dairy-pefcr-2025`
 
 ###### Facility thermal energy (`facility_thermal_energy`)
 
@@ -340,15 +313,6 @@ Collect fuel and purchased heat by carrier for heat treatment, hot water, sanita
 - Evidence kind: Calculated from collection (`calculated_from_collection`)
 - Collection protocol: `cp_facility_utilities`
 - Sources: `dairy-pefcr-2025`; `ifc-dairy-processing-ehs-2007`
-- Range: Dairy PEFCR replaceable default for fermented-milk processing thermal energy
-  - Range role: Default estimate (`default_estimate`)
-  - Lower: 0.590
-  - Upper: 0.590
-  - Unit: MJ/kg product
-  - Basis: dairy-processing facility thermal energy per kg fermented milk product
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: External source (`external_source`)
-  - Sources: `dairy-pefcr-2025`
 
 ##### Waste flows
 
@@ -391,15 +355,6 @@ Record refrigerant substance and annual leakage from systems serving the foregro
 - Evidence kind: Calculated from collection (`calculated_from_collection`)
 - Collection protocol: `cp_facility_utilities`
 - Sources: `dairy-pefcr-2025`
-- Range: Dairy PEFCR replaceable default refrigerant loss
-  - Range role: Default estimate (`default_estimate`)
-  - Lower: 0.000000005
-  - Upper: 0.000000005
-  - Unit: kg/kg product
-  - Basis: 5.00E-6 g refrigerant per kg fermented milk product
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: External source (`external_source`)
-  - Sources: `dairy-pefcr-2025`
 
 #### Outputs
 
@@ -418,15 +373,6 @@ This is the declared reference product after quality release at the facility col
 - Basis kind: Reference flow (`reference_flow`)
 - Evidence kind: Identity reference (`identity_reference`)
 - Sources: `dairy-pefcr-2025`
-- Range: Reference-flow identity check
-  - Range role: Allowed range (`allowed_range`)
-  - Lower: 1
-  - Upper: 1
-  - Unit: kg
-  - Basis: canonical reference amount
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: External source (`external_source`)
-  - Sources: `dairy-pefcr-2025`
 
 ##### Waste flows
 
@@ -475,15 +421,6 @@ Record make-up water for formulation, rinsing, cleaning-in-place, manual cleanin
 - Evidence kind: Calculated from collection (`calculated_from_collection`)
 - Collection protocol: `cp_sanitation_records`
 - Sources: `dairy-pefcr-2025`; `ifc-dairy-processing-ehs-2007`
-- Range: Dairy PEFCR replaceable default water use
-  - Range role: Default estimate (`default_estimate`)
-  - Lower: 3.2
-  - Upper: 3.2
-  - Unit: L/kg product
-  - Basis: dairy-processing facility water use per kg fermented milk product
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: External source (`external_source`)
-  - Sources: `dairy-pefcr-2025`
 
 ###### Acid cleaning agents (`acid_cleaning_agents`)
 
@@ -499,15 +436,6 @@ Record each acid cleaning agent as supplied and retain active concentration when
 - Evidence kind: Calculated from collection (`calculated_from_collection`)
 - Collection protocol: `cp_sanitation_records`
 - Sources: `dairy-pefcr-2025`; `ifc-dairy-processing-ehs-2007`
-- Range: Dairy PEFCR replaceable default acid-cleaner use
-  - Range role: Default estimate (`default_estimate`)
-  - Lower: 0.030
-  - Upper: 0.030
-  - Unit: kg/kg product
-  - Basis: acid cleaning agent per kg fermented milk product
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: External source (`external_source`)
-  - Sources: `dairy-pefcr-2025`
 
 ###### Alkaline cleaning agents (`alkaline_cleaning_agents`)
 
@@ -523,15 +451,6 @@ Record each alkaline cleaning agent as supplied and retain active concentration 
 - Evidence kind: Calculated from collection (`calculated_from_collection`)
 - Collection protocol: `cp_sanitation_records`
 - Sources: `dairy-pefcr-2025`; `ifc-dairy-processing-ehs-2007`
-- Range: Dairy PEFCR replaceable default alkaline-cleaner use
-  - Range role: Default estimate (`default_estimate`)
-  - Lower: 0.060
-  - Upper: 0.060
-  - Unit: kg/kg product
-  - Basis: alkaline cleaning agent per kg fermented milk product
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: External source (`external_source`)
-  - Sources: `dairy-pefcr-2025`
 
 ##### Waste flows
 
@@ -557,15 +476,6 @@ Record wastewater volume and measured COD or other locally material load before 
 - Evidence kind: Collected record (`collected_record`)
 - Collection protocol: `cp_wastewater_records`
 - Sources: `dairy-pefcr-2025`; `ifc-dairy-processing-ehs-2007`
-- Range: Dairy PEFCR replaceable default wastewater volume
-  - Range role: Default estimate (`default_estimate`)
-  - Lower: 4.6
-  - Upper: 4.6
-  - Unit: L/kg product
-  - Basis: wastewater sent to treatment per kg fermented milk product
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: External source (`external_source`)
-  - Sources: `dairy-pefcr-2025`
 
 ##### Elementary flows
 

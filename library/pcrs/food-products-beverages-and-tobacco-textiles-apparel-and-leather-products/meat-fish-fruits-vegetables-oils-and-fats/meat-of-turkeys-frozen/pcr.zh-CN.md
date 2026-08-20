@@ -144,7 +144,7 @@ Drinking water 作为一个具体输入跨越“活火鸡接收与暂养”过�
 
 Grid electricity 作为一个具体输入跨越“活火鸡接收与暂养”过程边界。须以 `receiving_grid_electricity` 独立记录，以保持适用的质量、能源、废物或排放平衡。
 
-- 选定流：Grid electricity
+- 选定流：电网电力
 - 流属性/单位：Energy / kWh; flow-property and unit-group UUIDs unresolved
 - 数量规则：依据经校准计量、称量、发票、领用记录或库存核对记录，记录可归属于该批次的数量；该交换不存在时须说明不适用。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -159,7 +159,7 @@ Grid electricity 作为一个具体输入跨越“活火鸡接收与暂养”过
 
 Natural gas 作为一个具体输入跨越“活火鸡接收与暂养”过程边界。须以 `receiving_natural_gas` 独立记录，以保持适用的质量、能源、废物或排放平衡。
 
-- 选定流：Natural gas
+- 选定流：天然气
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg; unit group `93a60a57-a4c8-11da-a746-0800200c9a66`
 - 数量规则：依据经校准计量、称量、发票、领用记录或库存核对记录，记录可归属于该批次的数量；该交换不存在时须说明不适用。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -174,7 +174,7 @@ Natural gas 作为一个具体输入跨越“活火鸡接收与暂养”过程�
 
 Diesel fuel 作为一个具体输入跨越“活火鸡接收与暂养”过程边界。须以 `receiving_diesel` 独立记录，以保持适用的质量、能源、废物或排放平衡。
 
-- 选定流：Diesel fuel
+- 选定流：柴油燃料
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg; unit group `93a60a57-a4c8-11da-a746-0800200c9a66`
 - 数量规则：依据经校准计量、称量、发票、领用记录或库存核对记录，记录可归属于该批次的数量；该交换不存在时须说明不适用。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -189,7 +189,7 @@ Diesel fuel 作为一个具体输入跨越“活火鸡接收与暂养”过程�
 
 Liquefied petroleum gas 作为一个具体输入跨越“活火鸡接收与暂养”过程边界。须以 `receiving_lpg` 独立记录，以保持适用的质量、能源、废物或排放平衡。
 
-- 选定流：Liquefied petroleum gas
+- 选定流：液化石油气
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg; unit group `93a60a57-a4c8-11da-a746-0800200c9a66`
 - 数量规则：依据经校准计量、称量、发票、领用记录或库存核对记录，记录可归属于该批次的数量；该交换不存在时须说明不适用。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -298,7 +298,7 @@ Turkey lairage wastewater 作为一个具体输出跨越“活火鸡接收与暂
 
 Ammonia to air 作为一个具体输出跨越“活火鸡接收与暂养”过程边界。须以 `receiving_ammonia_air` 独立记录，以保持适用的质量、能源、废物或排放平衡。
 
-- 选定流：Ammonia to air
+- 选定流：氨，排入空气
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg; unit group `93a60a57-a4c8-11da-a746-0800200c9a66`
 - 数量规则：依据采集的燃料、运行、监测或质量平衡记录，采用有文件依据的方法计算批次归属排放；不得与实测排放重复计算。
 - 数值来源模式：计算值（`calculated_value`）
@@ -313,7 +313,7 @@ Ammonia to air 作为一个具体输出跨越“活火鸡接收与暂养”过�
 
 Carbon dioxide, fossil, to air 作为一个具体输出跨越“活火鸡接收与暂养”过程边界。须以 `receiving_co2_air` 独立记录，以保持适用的质量、能源、废物或排放平衡。
 
-- 选定流：Carbon dioxide, fossil, to air
+- 选定流：化石源二氧化碳，排入空气
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg; unit group `93a60a57-a4c8-11da-a746-0800200c9a66`
 - 数量规则：依据采集的燃料、运行、监测或质量平衡记录，采用有文件依据的方法计算批次归属排放；不得与实测排放重复计算。
 - 数值来源模式：计算值（`calculated_value`）
@@ -328,7 +328,7 @@ Carbon dioxide, fossil, to air 作为一个具体输出跨越“活火鸡接收�
 
 Nitrogen oxides to air 作为一个具体输出跨越“活火鸡接收与暂养”过程边界。须以 `receiving_nox_air` 独立记录，以保持适用的质量、能源、废物或排放平衡。
 
-- 选定流：Nitrogen oxides to air
+- 选定流：氮氧化物，排入空气
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg; unit group `93a60a57-a4c8-11da-a746-0800200c9a66`
 - 数量规则：依据采集的燃料、运行、监测或质量平衡记录，采用有文件依据的方法计算批次归属排放；不得与实测排放重复计算。
 - 数值来源模式：计算值（`calculated_value`）
@@ -343,7 +343,7 @@ Nitrogen oxides to air 作为一个具体输出跨越“活火鸡接收与暂养
 
 Sulfur oxides to air 作为一个具体输出跨越“活火鸡接收与暂养”过程边界。须以 `receiving_sox_air` 独立记录，以保持适用的质量、能源、废物或排放平衡。
 
-- 选定流：Sulfur oxides to air
+- 选定流：硫氧化物，排入空气
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg; unit group `93a60a57-a4c8-11da-a746-0800200c9a66`
 - 数量规则：依据采集的燃料、运行、监测或质量平衡记录，采用有文件依据的方法计算批次归属排放；不得与实测排放重复计算。
 - 数值来源模式：计算值（`calculated_value`）
@@ -396,7 +396,7 @@ Accepted live turkeys 作为一个具体输入跨越“火鸡屠宰与胴体整�
 
 Process water 作为一个具体输入跨越“火鸡屠宰与胴体整理”过程边界。须以 `slaughter_process_water` 独立记录，以保持适用的质量、能源、废物或排放平衡。
 
-- 选定流：Process water
+- 选定流：过程用水
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg; unit group `93a60a57-a4c8-11da-a746-0800200c9a66`
 - 数量规则：依据经校准计量、称量、发票、领用记录或库存核对记录，记录可归属于该批次的数量；该交换不存在时须说明不适用。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -411,7 +411,7 @@ Process water 作为一个具体输入跨越“火鸡屠宰与胴体整理”过
 
 Grid electricity 作为一个具体输入跨越“火鸡屠宰与胴体整理”过程边界。须以 `slaughter_grid_electricity` 独立记录，以保持适用的质量、能源、废物或排放平衡。
 
-- 选定流：Grid electricity
+- 选定流：电网电力
 - 流属性/单位：Energy / kWh; flow-property and unit-group UUIDs unresolved
 - 数量规则：依据经校准计量、称量、发票、领用记录或库存核对记录，记录可归属于该批次的数量；该交换不存在时须说明不适用。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -426,7 +426,7 @@ Grid electricity 作为一个具体输入跨越“火鸡屠宰与胴体整理”
 
 Purchased steam 作为一个具体输入跨越“火鸡屠宰与胴体整理”过程边界。须以 `slaughter_purchased_steam` 独立记录，以保持适用的质量、能源、废物或排放平衡。
 
-- 选定流：Purchased steam
+- 选定流：外购蒸汽
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg; unit group `93a60a57-a4c8-11da-a746-0800200c9a66`
 - 数量规则：依据经校准计量、称量、发票、领用记录或库存核对记录，记录可归属于该批次的数量；该交换不存在时须说明不适用。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -441,7 +441,7 @@ Purchased steam 作为一个具体输入跨越“火鸡屠宰与胴体整理”�
 
 Purchased hot water 作为一个具体输入跨越“火鸡屠宰与胴体整理”过程边界。须以 `slaughter_purchased_hot_water` 独立记录，以保持适用的质量、能源、废物或排放平衡。
 
-- 选定流：Purchased hot water
+- 选定流：外购热水
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg; unit group `93a60a57-a4c8-11da-a746-0800200c9a66`
 - 数量规则：依据经校准计量、称量、发票、领用记录或库存核对记录，记录可归属于该批次的数量；该交换不存在时须说明不适用。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -456,7 +456,7 @@ Purchased hot water 作为一个具体输入跨越“火鸡屠宰与胴体整理
 
 Natural gas 作为一个具体输入跨越“火鸡屠宰与胴体整理”过程边界。须以 `slaughter_natural_gas` 独立记录，以保持适用的质量、能源、废物或排放平衡。
 
-- 选定流：Natural gas
+- 选定流：天然气
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg; unit group `93a60a57-a4c8-11da-a746-0800200c9a66`
 - 数量规则：依据经校准计量、称量、发票、领用记录或库存核对记录，记录可归属于该批次的数量；该交换不存在时须说明不适用。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -471,7 +471,7 @@ Natural gas 作为一个具体输入跨越“火鸡屠宰与胴体整理”过�
 
 Diesel fuel 作为一个具体输入跨越“火鸡屠宰与胴体整理”过程边界。须以 `slaughter_diesel` 独立记录，以保持适用的质量、能源、废物或排放平衡。
 
-- 选定流：Diesel fuel
+- 选定流：柴油燃料
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg; unit group `93a60a57-a4c8-11da-a746-0800200c9a66`
 - 数量规则：依据经校准计量、称量、发票、领用记录或库存核对记录，记录可归属于该批次的数量；该交换不存在时须说明不适用。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -486,7 +486,7 @@ Diesel fuel 作为一个具体输入跨越“火鸡屠宰与胴体整理”过�
 
 Liquefied petroleum gas 作为一个具体输入跨越“火鸡屠宰与胴体整理”过程边界。须以 `slaughter_lpg` 独立记录，以保持适用的质量、能源、废物或排放平衡。
 
-- 选定流：Liquefied petroleum gas
+- 选定流：液化石油气
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg; unit group `93a60a57-a4c8-11da-a746-0800200c9a66`
 - 数量规则：依据经校准计量、称量、发票、领用记录或库存核对记录，记录可归属于该批次的数量；该交换不存在时须说明不适用。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -880,7 +880,7 @@ Turkey slaughter wastewater, ordinary load 作为一个具体输出跨越“火�
 
 Carbon dioxide, fossil, to air 作为一个具体输出跨越“火鸡屠宰与胴体整理”过程边界。须以 `slaughter_co2_air` 独立记录，以保持适用的质量、能源、废物或排放平衡。
 
-- 选定流：Carbon dioxide, fossil, to air
+- 选定流：化石源二氧化碳，排入空气
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg; unit group `93a60a57-a4c8-11da-a746-0800200c9a66`
 - 数量规则：依据采集的燃料、运行、监测或质量平衡记录，采用有文件依据的方法计算批次归属排放；不得与实测排放重复计算。
 - 数值来源模式：计算值（`calculated_value`）
@@ -895,7 +895,7 @@ Carbon dioxide, fossil, to air 作为一个具体输出跨越“火鸡屠宰与�
 
 Nitrogen oxides to air 作为一个具体输出跨越“火鸡屠宰与胴体整理”过程边界。须以 `slaughter_nox_air` 独立记录，以保持适用的质量、能源、废物或排放平衡。
 
-- 选定流：Nitrogen oxides to air
+- 选定流：氮氧化物，排入空气
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg; unit group `93a60a57-a4c8-11da-a746-0800200c9a66`
 - 数量规则：依据采集的燃料、运行、监测或质量平衡记录，采用有文件依据的方法计算批次归属排放；不得与实测排放重复计算。
 - 数值来源模式：计算值（`calculated_value`）
@@ -910,7 +910,7 @@ Nitrogen oxides to air 作为一个具体输出跨越“火鸡屠宰与胴体整
 
 Sulfur oxides to air 作为一个具体输出跨越“火鸡屠宰与胴体整理”过程边界。须以 `slaughter_sox_air` 独立记录，以保持适用的质量、能源、废物或排放平衡。
 
-- 选定流：Sulfur oxides to air
+- 选定流：硫氧化物，排入空气
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg; unit group `93a60a57-a4c8-11da-a746-0800200c9a66`
 - 数量规则：依据采集的燃料、运行、监测或质量平衡记录，采用有文件依据的方法计算批次归属排放；不得与实测排放重复计算。
 - 数值来源模式：计算值（`calculated_value`）
@@ -963,7 +963,7 @@ Dressed turkey carcass, fresh 作为一个具体输入跨越“火鸡胴体分�
 
 Process water 作为一个具体输入跨越“火鸡胴体分割”过程边界。须以 `cutting_process_water` 独立记录，以保持适用的质量、能源、废物或排放平衡。
 
-- 选定流：Process water
+- 选定流：过程用水
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg; unit group `93a60a57-a4c8-11da-a746-0800200c9a66`
 - 数量规则：依据经校准计量、称量、发票、领用记录或库存核对记录，记录可归属于该批次的数量；该交换不存在时须说明不适用。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -978,7 +978,7 @@ Process water 作为一个具体输入跨越“火鸡胴体分割”过程边界
 
 Grid electricity 作为一个具体输入跨越“火鸡胴体分割”过程边界。须以 `cutting_grid_electricity` 独立记录，以保持适用的质量、能源、废物或排放平衡。
 
-- 选定流：Grid electricity
+- 选定流：电网电力
 - 流属性/单位：Energy / kWh; flow-property and unit-group UUIDs unresolved
 - 数量规则：依据经校准计量、称量、发票、领用记录或库存核对记录，记录可归属于该批次的数量；该交换不存在时须说明不适用。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -993,7 +993,7 @@ Grid electricity 作为一个具体输入跨越“火鸡胴体分割”过程边
 
 Purchased steam 作为一个具体输入跨越“火鸡胴体分割”过程边界。须以 `cutting_purchased_steam` 独立记录，以保持适用的质量、能源、废物或排放平衡。
 
-- 选定流：Purchased steam
+- 选定流：外购蒸汽
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg; unit group `93a60a57-a4c8-11da-a746-0800200c9a66`
 - 数量规则：依据经校准计量、称量、发票、领用记录或库存核对记录，记录可归属于该批次的数量；该交换不存在时须说明不适用。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1008,7 +1008,7 @@ Purchased steam 作为一个具体输入跨越“火鸡胴体分割”过程边�
 
 Purchased hot water 作为一个具体输入跨越“火鸡胴体分割”过程边界。须以 `cutting_purchased_hot_water` 独立记录，以保持适用的质量、能源、废物或排放平衡。
 
-- 选定流：Purchased hot water
+- 选定流：外购热水
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg; unit group `93a60a57-a4c8-11da-a746-0800200c9a66`
 - 数量规则：依据经校准计量、称量、发票、领用记录或库存核对记录，记录可归属于该批次的数量；该交换不存在时须说明不适用。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1023,7 +1023,7 @@ Purchased hot water 作为一个具体输入跨越“火鸡胴体分割”过程
 
 Natural gas 作为一个具体输入跨越“火鸡胴体分割”过程边界。须以 `cutting_natural_gas` 独立记录，以保持适用的质量、能源、废物或排放平衡。
 
-- 选定流：Natural gas
+- 选定流：天然气
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg; unit group `93a60a57-a4c8-11da-a746-0800200c9a66`
 - 数量规则：依据经校准计量、称量、发票、领用记录或库存核对记录，记录可归属于该批次的数量；该交换不存在时须说明不适用。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1207,7 +1207,7 @@ Turkey cutting wastewater 作为一个具体输出跨越“火鸡胴体分割”
 
 Carbon dioxide, fossil, to air 作为一个具体输出跨越“火鸡胴体分割”过程边界。须以 `cutting_co2_air` 独立记录，以保持适用的质量、能源、废物或排放平衡。
 
-- 选定流：Carbon dioxide, fossil, to air
+- 选定流：化石源二氧化碳，排入空气
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg; unit group `93a60a57-a4c8-11da-a746-0800200c9a66`
 - 数量规则：依据采集的燃料、运行、监测或质量平衡记录，采用有文件依据的方法计算批次归属排放；不得与实测排放重复计算。
 - 数值来源模式：计算值（`calculated_value`）
@@ -1222,7 +1222,7 @@ Carbon dioxide, fossil, to air 作为一个具体输出跨越“火鸡胴体分�
 
 Nitrogen oxides to air 作为一个具体输出跨越“火鸡胴体分割”过程边界。须以 `cutting_nox_air` 独立记录，以保持适用的质量、能源、废物或排放平衡。
 
-- 选定流：Nitrogen oxides to air
+- 选定流：氮氧化物，排入空气
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg; unit group `93a60a57-a4c8-11da-a746-0800200c9a66`
 - 数量规则：依据采集的燃料、运行、监测或质量平衡记录，采用有文件依据的方法计算批次归属排放；不得与实测排放重复计算。
 - 数值来源模式：计算值（`calculated_value`）
@@ -1237,7 +1237,7 @@ Nitrogen oxides to air 作为一个具体输出跨越“火鸡胴体分割”过
 
 Sulfur oxides to air 作为一个具体输出跨越“火鸡胴体分割”过程边界。须以 `cutting_sox_air` 独立记录，以保持适用的质量、能源、废物或排放平衡。
 
-- 选定流：Sulfur oxides to air
+- 选定流：硫氧化物，排入空气
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg; unit group `93a60a57-a4c8-11da-a746-0800200c9a66`
 - 数量规则：依据采集的燃料、运行、监测或质量平衡记录，采用有文件依据的方法计算批次归属排放；不得与实测排放重复计算。
 - 数值来源模式：计算值（`calculated_value`）
@@ -1305,7 +1305,7 @@ Turkey meat cuts, fresh 作为一个具体输入跨越“火鸡肉预冷与冻�
 
 Process water 作为一个具体输入跨越“火鸡肉预冷与冻结”过程边界。须以 `freezing_process_water` 独立记录，以保持适用的质量、能源、废物或排放平衡。
 
-- 选定流：Process water
+- 选定流：过程用水
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg; unit group `93a60a57-a4c8-11da-a746-0800200c9a66`
 - 数量规则：依据经校准计量、称量、发票、领用记录或库存核对记录，记录可归属于该批次的数量；该交换不存在时须说明不适用。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1320,7 +1320,7 @@ Process water 作为一个具体输入跨越“火鸡肉预冷与冻结”过程
 
 Grid electricity 作为一个具体输入跨越“火鸡肉预冷与冻结”过程边界。须以 `freezing_grid_electricity` 独立记录，以保持适用的质量、能源、废物或排放平衡。
 
-- 选定流：Grid electricity
+- 选定流：电网电力
 - 流属性/单位：Energy / kWh; flow-property and unit-group UUIDs unresolved
 - 数量规则：依据经校准计量、称量、发票、领用记录或库存核对记录，记录可归属于该批次的数量；该交换不存在时须说明不适用。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1335,7 +1335,7 @@ Grid electricity 作为一个具体输入跨越“火鸡肉预冷与冻结”过
 
 Purchased steam 作为一个具体输入跨越“火鸡肉预冷与冻结”过程边界。须以 `freezing_purchased_steam` 独立记录，以保持适用的质量、能源、废物或排放平衡。
 
-- 选定流：Purchased steam
+- 选定流：外购蒸汽
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg; unit group `93a60a57-a4c8-11da-a746-0800200c9a66`
 - 数量规则：依据经校准计量、称量、发票、领用记录或库存核对记录，记录可归属于该批次的数量；该交换不存在时须说明不适用。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1350,7 +1350,7 @@ Purchased steam 作为一个具体输入跨越“火鸡肉预冷与冻结”过�
 
 Purchased hot water 作为一个具体输入跨越“火鸡肉预冷与冻结”过程边界。须以 `freezing_purchased_hot_water` 独立记录，以保持适用的质量、能源、废物或排放平衡。
 
-- 选定流：Purchased hot water
+- 选定流：外购热水
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg; unit group `93a60a57-a4c8-11da-a746-0800200c9a66`
 - 数量规则：依据经校准计量、称量、发票、领用记录或库存核对记录，记录可归属于该批次的数量；该交换不存在时须说明不适用。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1365,7 +1365,7 @@ Purchased hot water 作为一个具体输入跨越“火鸡肉预冷与冻结”
 
 Natural gas 作为一个具体输入跨越“火鸡肉预冷与冻结”过程边界。须以 `freezing_natural_gas` 独立记录，以保持适用的质量、能源、废物或排放平衡。
 
-- 选定流：Natural gas
+- 选定流：天然气
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg; unit group `93a60a57-a4c8-11da-a746-0800200c9a66`
 - 数量规则：依据经校准计量、称量、发票、领用记录或库存核对记录，记录可归属于该批次的数量；该交换不存在时须说明不适用。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1380,7 +1380,7 @@ Natural gas 作为一个具体输入跨越“火鸡肉预冷与冻结”过程�
 
 Diesel fuel 作为一个具体输入跨越“火鸡肉预冷与冻结”过程边界。须以 `freezing_diesel` 独立记录，以保持适用的质量、能源、废物或排放平衡。
 
-- 选定流：Diesel fuel
+- 选定流：柴油燃料
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg; unit group `93a60a57-a4c8-11da-a746-0800200c9a66`
 - 数量规则：依据经校准计量、称量、发票、领用记录或库存核对记录，记录可归属于该批次的数量；该交换不存在时须说明不适用。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1395,7 +1395,7 @@ Diesel fuel 作为一个具体输入跨越“火鸡肉预冷与冻结”过程�
 
 Liquefied petroleum gas 作为一个具体输入跨越“火鸡肉预冷与冻结”过程边界。须以 `freezing_lpg` 独立记录，以保持适用的质量、能源、废物或排放平衡。
 
-- 选定流：Liquefied petroleum gas
+- 选定流：液化石油气
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg; unit group `93a60a57-a4c8-11da-a746-0800200c9a66`
 - 数量规则：依据经校准计量、称量、发票、领用记录或库存核对记录，记录可归属于该批次的数量；该交换不存在时须说明不适用。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1440,7 +1440,7 @@ Carbon dioxide refrigerant, R744 作为一个具体输入跨越“火鸡肉预�
 
 Refrigerant R404A 作为一个具体输入跨越“火鸡肉预冷与冻结”过程边界。须以 `freezing_r404a_makeup` 独立记录，以保持适用的质量、能源、废物或排放平衡。
 
-- 选定流：Refrigerant R404A
+- 选定流：制冷剂R404A
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg; unit group `93a60a57-a4c8-11da-a746-0800200c9a66`
 - 数量规则：按制冷剂种类记录可归属于指定设备的采购、充注、回收、退回及库存变化。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1594,7 +1594,7 @@ Carbon dioxide, refrigerant-grade, to air 作为一个具体输出跨越“火�
 
 Refrigerant R404A to air 作为一个具体输出跨越“火鸡肉预冷与冻结”过程边界。须以 `freezing_r404a_air` 独立记录，以保持适用的质量、能源、废物或排放平衡。
 
-- 选定流：Refrigerant R404A to air
+- 选定流：制冷剂R404A，排入空气
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg; unit group `93a60a57-a4c8-11da-a746-0800200c9a66`
 - 数量规则：按制冷剂种类以期初库存加采购量减期末库存、回收量及退回量计算释放，并与维护事件核对。
 - 数值来源模式：计算值（`calculated_value`）
@@ -1624,7 +1624,7 @@ Refrigerant R507A to air 作为一个具体输出跨越“火鸡肉预冷与冻�
 
 Carbon dioxide, fossil, to air 作为一个具体输出跨越“火鸡肉预冷与冻结”过程边界。须以 `freezing_co2_air` 独立记录，以保持适用的质量、能源、废物或排放平衡。
 
-- 选定流：Carbon dioxide, fossil, to air
+- 选定流：化石源二氧化碳，排入空气
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg; unit group `93a60a57-a4c8-11da-a746-0800200c9a66`
 - 数量规则：依据采集的燃料、运行、监测或质量平衡记录，采用有文件依据的方法计算批次归属排放；不得与实测排放重复计算。
 - 数值来源模式：计算值（`calculated_value`）
@@ -1639,7 +1639,7 @@ Carbon dioxide, fossil, to air 作为一个具体输出跨越“火鸡肉预冷�
 
 Nitrogen oxides to air 作为一个具体输出跨越“火鸡肉预冷与冻结”过程边界。须以 `freezing_nox_air` 独立记录，以保持适用的质量、能源、废物或排放平衡。
 
-- 选定流：Nitrogen oxides to air
+- 选定流：氮氧化物，排入空气
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg; unit group `93a60a57-a4c8-11da-a746-0800200c9a66`
 - 数量规则：依据采集的燃料、运行、监测或质量平衡记录，采用有文件依据的方法计算批次归属排放；不得与实测排放重复计算。
 - 数值来源模式：计算值（`calculated_value`）
@@ -1654,7 +1654,7 @@ Nitrogen oxides to air 作为一个具体输出跨越“火鸡肉预冷与冻结
 
 Sulfur oxides to air 作为一个具体输出跨越“火鸡肉预冷与冻结”过程边界。须以 `freezing_sox_air` 独立记录，以保持适用的质量、能源、废物或排放平衡。
 
-- 选定流：Sulfur oxides to air
+- 选定流：硫氧化物，排入空气
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg; unit group `93a60a57-a4c8-11da-a746-0800200c9a66`
 - 数量规则：依据采集的燃料、运行、监测或质量平衡记录，采用有文件依据的方法计算批次归属排放；不得与实测排放重复计算。
 - 数值来源模式：计算值（`calculated_value`）
@@ -1722,7 +1722,7 @@ Turkey meat cuts, frozen 作为一个具体输入跨越“火鸡肉包装与冻�
 
 Grid electricity 作为一个具体输入跨越“火鸡肉包装与冻藏”过程边界。须以 `packaging_grid_electricity` 独立记录，以保持适用的质量、能源、废物或排放平衡。
 
-- 选定流：Grid electricity
+- 选定流：电网电力
 - 流属性/单位：Energy / kWh; flow-property and unit-group UUIDs unresolved
 - 数量规则：依据经校准计量、称量、发票、领用记录或库存核对记录，记录可归属于该批次的数量；该交换不存在时须说明不适用。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1737,7 +1737,7 @@ Grid electricity 作为一个具体输入跨越“火鸡肉包装与冻藏”过
 
 Purchased steam 作为一个具体输入跨越“火鸡肉包装与冻藏”过程边界。须以 `packaging_purchased_steam` 独立记录，以保持适用的质量、能源、废物或排放平衡。
 
-- 选定流：Purchased steam
+- 选定流：外购蒸汽
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg; unit group `93a60a57-a4c8-11da-a746-0800200c9a66`
 - 数量规则：依据经校准计量、称量、发票、领用记录或库存核对记录，记录可归属于该批次的数量；该交换不存在时须说明不适用。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1752,7 +1752,7 @@ Purchased steam 作为一个具体输入跨越“火鸡肉包装与冻藏”过�
 
 Purchased hot water 作为一个具体输入跨越“火鸡肉包装与冻藏”过程边界。须以 `packaging_purchased_hot_water` 独立记录，以保持适用的质量、能源、废物或排放平衡。
 
-- 选定流：Purchased hot water
+- 选定流：外购热水
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg; unit group `93a60a57-a4c8-11da-a746-0800200c9a66`
 - 数量规则：依据经校准计量、称量、发票、领用记录或库存核对记录，记录可归属于该批次的数量；该交换不存在时须说明不适用。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1767,7 +1767,7 @@ Purchased hot water 作为一个具体输入跨越“火鸡肉包装与冻藏”
 
 Natural gas 作为一个具体输入跨越“火鸡肉包装与冻藏”过程边界。须以 `packaging_natural_gas` 独立记录，以保持适用的质量、能源、废物或排放平衡。
 
-- 选定流：Natural gas
+- 选定流：天然气
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg; unit group `93a60a57-a4c8-11da-a746-0800200c9a66`
 - 数量规则：依据经校准计量、称量、发票、领用记录或库存核对记录，记录可归属于该批次的数量；该交换不存在时须说明不适用。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1782,7 +1782,7 @@ Natural gas 作为一个具体输入跨越“火鸡肉包装与冻藏”过程�
 
 Diesel fuel 作为一个具体输入跨越“火鸡肉包装与冻藏”过程边界。须以 `packaging_diesel` 独立记录，以保持适用的质量、能源、废物或排放平衡。
 
-- 选定流：Diesel fuel
+- 选定流：柴油燃料
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg; unit group `93a60a57-a4c8-11da-a746-0800200c9a66`
 - 数量规则：依据经校准计量、称量、发票、领用记录或库存核对记录，记录可归属于该批次的数量；该交换不存在时须说明不适用。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1797,7 +1797,7 @@ Diesel fuel 作为一个具体输入跨越“火鸡肉包装与冻藏”过程�
 
 Liquefied petroleum gas 作为一个具体输入跨越“火鸡肉包装与冻藏”过程边界。须以 `packaging_lpg` 独立记录，以保持适用的质量、能源、废物或排放平衡。
 
-- 选定流：Liquefied petroleum gas
+- 选定流：液化石油气
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg; unit group `93a60a57-a4c8-11da-a746-0800200c9a66`
 - 数量规则：依据经校准计量、称量、发票、领用记录或库存核对记录，记录可归属于该批次的数量；该交换不存在时须说明不适用。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1842,7 +1842,7 @@ Carbon dioxide refrigerant, R744 作为一个具体输入跨越“火鸡肉包�
 
 Refrigerant R404A 作为一个具体输入跨越“火鸡肉包装与冻藏”过程边界。须以 `packaging_r404a_makeup` 独立记录，以保持适用的质量、能源、废物或排放平衡。
 
-- 选定流：Refrigerant R404A
+- 选定流：制冷剂R404A
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg; unit group `93a60a57-a4c8-11da-a746-0800200c9a66`
 - 数量规则：按制冷剂种类记录可归属于指定设备的采购、充注、回收、退回及库存变化。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1917,7 +1917,7 @@ Polypropylene packaging tray 作为一个具体输入跨越“火鸡肉包装与
 
 Corrugated fibreboard box 作为一个具体输入跨越“火鸡肉包装与冻藏”过程边界。须以 `packaging_corrugated_box` 独立记录，以保持适用的质量、能源、废物或排放平衡。
 
-- 选定流：Corrugated fibreboard box
+- 选定流：瓦楞纸箱
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg; unit group `93a60a57-a4c8-11da-a746-0800200c9a66`
 - 数量规则：依据领用、退回、称量及重复使用记录，记录该包装部件的净领用质量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1947,7 +1947,7 @@ High-density polyethylene reusable crate 作为一个具体输入跨越“火鸡
 
 Wood pallet 作为一个具体输入跨越“火鸡肉包装与冻藏”过程边界。须以 `packaging_wood_pallet` 独立记录，以保持适用的质量、能源、废物或排放平衡。
 
-- 选定流：Wood pallet
+- 选定流：木托盘
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg; unit group `93a60a57-a4c8-11da-a746-0800200c9a66`
 - 数量规则：依据领用、退回、称量及重复使用记录，记录该包装部件的净领用质量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1977,7 +1977,7 @@ Polypropylene strap 作为一个具体输入跨越“火鸡肉包装与冻藏”
 
 Paper label 作为一个具体输入跨越“火鸡肉包装与冻藏”过程边界。须以 `packaging_paper_label` 独立记录，以保持适用的质量、能源、废物或排放平衡。
 
-- 选定流：Paper label
+- 选定流：纸质标签
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg; unit group `93a60a57-a4c8-11da-a746-0800200c9a66`
 - 数量规则：依据领用、退回、称量及重复使用记录，记录该包装部件的净领用质量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -2005,7 +2005,7 @@ Paper label 作为一个具体输入跨越“火鸡肉包装与冻藏”过程�
 
 Meat of turkeys, frozen 作为一个具体输出跨越“火鸡肉包装与冻藏”过程边界。须以 `packaging_reference_frozen_turkey_meat` 独立记录，以保持适用的质量、能源、废物或排放平衡。
 
-- 选定流：Meat of turkeys, frozen `2cf4dbce-c2cf-4ca6-a1bc-5366fad13063`
+- 选定流：冷冻火鸡肉 `2cf4dbce-c2cf-4ca6-a1bc-5366fad13063`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg; unit group `93a60a57-a4c8-11da-a746-0800200c9a66`
 - 数量规则：将放行净产品质量归一化为恰好 1 kg；产品质量中排除全部包装部件。
 - 数值来源模式：计算值（`calculated_value`）
@@ -2143,7 +2143,7 @@ Waste polypropylene strap 作为一个具体输出跨越“火鸡肉包装与冻
 
 Waste paper label 作为一个具体输出跨越“火鸡肉包装与冻藏”过程边界。须以 `packaging_waste_paper_label` 独立记录，以保持适用的质量、能源、废物或排放平衡。
 
-- 选定流：Waste paper label
+- 选定流：废纸质标签
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg; unit group `93a60a57-a4c8-11da-a746-0800200c9a66`
 - 数量规则：记录单独称量或以其他方式量化并送往申报去向的数量，同时保留去向证据。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -2206,7 +2206,7 @@ Carbon dioxide, refrigerant-grade, to air 作为一个具体输出跨越“火�
 
 Refrigerant R404A to air 作为一个具体输出跨越“火鸡肉包装与冻藏”过程边界。须以 `packaging_r404a_air` 独立记录，以保持适用的质量、能源、废物或排放平衡。
 
-- 选定流：Refrigerant R404A to air
+- 选定流：制冷剂R404A，排入空气
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg; unit group `93a60a57-a4c8-11da-a746-0800200c9a66`
 - 数量规则：按制冷剂种类以期初库存加采购量减期末库存、回收量及退回量计算释放，并与维护事件核对。
 - 数值来源模式：计算值（`calculated_value`）
@@ -2236,7 +2236,7 @@ Refrigerant R507A to air 作为一个具体输出跨越“火鸡肉包装与冻�
 
 Carbon dioxide, fossil, to air 作为一个具体输出跨越“火鸡肉包装与冻藏”过程边界。须以 `packaging_co2_air` 独立记录，以保持适用的质量、能源、废物或排放平衡。
 
-- 选定流：Carbon dioxide, fossil, to air
+- 选定流：化石源二氧化碳，排入空气
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg; unit group `93a60a57-a4c8-11da-a746-0800200c9a66`
 - 数量规则：依据采集的燃料、运行、监测或质量平衡记录，采用有文件依据的方法计算批次归属排放；不得与实测排放重复计算。
 - 数值来源模式：计算值（`calculated_value`）
@@ -2251,7 +2251,7 @@ Carbon dioxide, fossil, to air 作为一个具体输出跨越“火鸡肉包装�
 
 Nitrogen oxides to air 作为一个具体输出跨越“火鸡肉包装与冻藏”过程边界。须以 `packaging_nox_air` 独立记录，以保持适用的质量、能源、废物或排放平衡。
 
-- 选定流：Nitrogen oxides to air
+- 选定流：氮氧化物，排入空气
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg; unit group `93a60a57-a4c8-11da-a746-0800200c9a66`
 - 数量规则：依据采集的燃料、运行、监测或质量平衡记录，采用有文件依据的方法计算批次归属排放；不得与实测排放重复计算。
 - 数值来源模式：计算值（`calculated_value`）
@@ -2266,7 +2266,7 @@ Nitrogen oxides to air 作为一个具体输出跨越“火鸡肉包装与冻藏
 
 Sulfur oxides to air 作为一个具体输出跨越“火鸡肉包装与冻藏”过程边界。须以 `packaging_sox_air` 独立记录，以保持适用的质量、能源、废物或排放平衡。
 
-- 选定流：Sulfur oxides to air
+- 选定流：硫氧化物，排入空气
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg; unit group `93a60a57-a4c8-11da-a746-0800200c9a66`
 - 数量规则：依据采集的燃料、运行、监测或质量平衡记录，采用有文件依据的方法计算批次归属排放；不得与实测排放重复计算。
 - 数值来源模式：计算值（`calculated_value`）
@@ -2304,7 +2304,7 @@ Particulate matter, less than 2.5 µm, to air 作为一个具体输出跨越“�
 
 Process water 作为一个具体输入跨越“工厂清洗与消毒”过程边界。须以 `cleaning_process_water` 独立记录，以保持适用的质量、能源、废物或排放平衡。
 
-- 选定流：Process water
+- 选定流：过程用水
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg; unit group `93a60a57-a4c8-11da-a746-0800200c9a66`
 - 数量规则：依据经校准计量、称量、发票、领用记录或库存核对记录，记录可归属于该批次的数量；该交换不存在时须说明不适用。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -2319,7 +2319,7 @@ Process water 作为一个具体输入跨越“工厂清洗与消毒”过程边
 
 Grid electricity 作为一个具体输入跨越“工厂清洗与消毒”过程边界。须以 `cleaning_grid_electricity` 独立记录，以保持适用的质量、能源、废物或排放平衡。
 
-- 选定流：Grid electricity
+- 选定流：电网电力
 - 流属性/单位：Energy / kWh; flow-property and unit-group UUIDs unresolved
 - 数量规则：依据经校准计量、称量、发票、领用记录或库存核对记录，记录可归属于该批次的数量；该交换不存在时须说明不适用。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -2334,7 +2334,7 @@ Grid electricity 作为一个具体输入跨越“工厂清洗与消毒”过程
 
 Purchased steam 作为一个具体输入跨越“工厂清洗与消毒”过程边界。须以 `cleaning_purchased_steam` 独立记录，以保持适用的质量、能源、废物或排放平衡。
 
-- 选定流：Purchased steam
+- 选定流：外购蒸汽
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg; unit group `93a60a57-a4c8-11da-a746-0800200c9a66`
 - 数量规则：依据经校准计量、称量、发票、领用记录或库存核对记录，记录可归属于该批次的数量；该交换不存在时须说明不适用。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -2349,7 +2349,7 @@ Purchased steam 作为一个具体输入跨越“工厂清洗与消毒”过程�
 
 Purchased hot water 作为一个具体输入跨越“工厂清洗与消毒”过程边界。须以 `cleaning_purchased_hot_water` 独立记录，以保持适用的质量、能源、废物或排放平衡。
 
-- 选定流：Purchased hot water
+- 选定流：外购热水
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg; unit group `93a60a57-a4c8-11da-a746-0800200c9a66`
 - 数量规则：依据经校准计量、称量、发票、领用记录或库存核对记录，记录可归属于该批次的数量；该交换不存在时须说明不适用。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -2364,7 +2364,7 @@ Purchased hot water 作为一个具体输入跨越“工厂清洗与消毒”过
 
 Natural gas 作为一个具体输入跨越“工厂清洗与消毒”过程边界。须以 `cleaning_natural_gas` 独立记录，以保持适用的质量、能源、废物或排放平衡。
 
-- 选定流：Natural gas
+- 选定流：天然气
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg; unit group `93a60a57-a4c8-11da-a746-0800200c9a66`
 - 数量规则：依据经校准计量、称量、发票、领用记录或库存核对记录，记录可归属于该批次的数量；该交换不存在时须说明不适用。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -2379,7 +2379,7 @@ Natural gas 作为一个具体输入跨越“工厂清洗与消毒”过程边�
 
 Diesel fuel 作为一个具体输入跨越“工厂清洗与消毒”过程边界。须以 `cleaning_diesel` 独立记录，以保持适用的质量、能源、废物或排放平衡。
 
-- 选定流：Diesel fuel
+- 选定流：柴油燃料
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg; unit group `93a60a57-a4c8-11da-a746-0800200c9a66`
 - 数量规则：依据经校准计量、称量、发票、领用记录或库存核对记录，记录可归属于该批次的数量；该交换不存在时须说明不适用。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -2394,7 +2394,7 @@ Diesel fuel 作为一个具体输入跨越“工厂清洗与消毒”过程边�
 
 Liquefied petroleum gas 作为一个具体输入跨越“工厂清洗与消毒”过程边界。须以 `cleaning_lpg` 独立记录，以保持适用的质量、能源、废物或排放平衡。
 
-- 选定流：Liquefied petroleum gas
+- 选定流：液化石油气
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg; unit group `93a60a57-a4c8-11da-a746-0800200c9a66`
 - 数量规则：依据经校准计量、称量、发票、领用记录或库存核对记录，记录可归属于该批次的数量；该交换不存在时须说明不适用。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -2576,7 +2576,7 @@ Benzalkonium chloride disinfection wastewater 作为一个具体输出跨越“�
 
 Final-rinse sanitation wastewater 作为一个具体输出跨越“工厂清洗与消毒”过程边界。须以 `cleaning_final_rinse_wastewater` 独立记录，以保持适用的质量、能源、废物或排放平衡。
 
-- 选定流：Final-rinse sanitation wastewater
+- 选定流：末次冲洗消毒废水
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg; unit group `93a60a57-a4c8-11da-a746-0800200c9a66`
 - 数量规则：直接记录该水流质量，或以有文件依据的流体密度将实测体积换算为质量；该水流须与其他废水流分开。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -2624,7 +2624,7 @@ Waste high-density polyethylene chemical container 作为一个具体输出跨�
 
 Carbon dioxide, fossil, to air 作为一个具体输出跨越“工厂清洗与消毒”过程边界。须以 `cleaning_co2_air` 独立记录，以保持适用的质量、能源、废物或排放平衡。
 
-- 选定流：Carbon dioxide, fossil, to air
+- 选定流：化石源二氧化碳，排入空气
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg; unit group `93a60a57-a4c8-11da-a746-0800200c9a66`
 - 数量规则：依据采集的燃料、运行、监测或质量平衡记录，采用有文件依据的方法计算批次归属排放；不得与实测排放重复计算。
 - 数值来源模式：计算值（`calculated_value`）
@@ -2639,7 +2639,7 @@ Carbon dioxide, fossil, to air 作为一个具体输出跨越“工厂清洗与�
 
 Nitrogen oxides to air 作为一个具体输出跨越“工厂清洗与消毒”过程边界。须以 `cleaning_nox_air` 独立记录，以保持适用的质量、能源、废物或排放平衡。
 
-- 选定流：Nitrogen oxides to air
+- 选定流：氮氧化物，排入空气
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg; unit group `93a60a57-a4c8-11da-a746-0800200c9a66`
 - 数量规则：依据采集的燃料、运行、监测或质量平衡记录，采用有文件依据的方法计算批次归属排放；不得与实测排放重复计算。
 - 数值来源模式：计算值（`calculated_value`）
@@ -2654,7 +2654,7 @@ Nitrogen oxides to air 作为一个具体输出跨越“工厂清洗与消毒”
 
 Sulfur oxides to air 作为一个具体输出跨越“工厂清洗与消毒”过程边界。须以 `cleaning_sox_air` 独立记录，以保持适用的质量、能源、废物或排放平衡。
 
-- 选定流：Sulfur oxides to air
+- 选定流：硫氧化物，排入空气
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg; unit group `93a60a57-a4c8-11da-a746-0800200c9a66`
 - 数量规则：依据采集的燃料、运行、监测或质量平衡记录，采用有文件依据的方法计算批次归属排放；不得与实测排放重复计算。
 - 数值来源模式：计算值（`calculated_value`）
@@ -2692,7 +2692,7 @@ Particulate matter, less than 2.5 µm, to air 作为一个具体输出跨越“�
 
 Grid electricity 作为一个具体输入跨越“场内废水处理”过程边界。须以 `wwt_grid_electricity` 独立记录，以保持适用的质量、能源、废物或排放平衡。
 
-- 选定流：Grid electricity
+- 选定流：电网电力
 - 流属性/单位：Energy / kWh; flow-property and unit-group UUIDs unresolved
 - 数量规则：依据经校准计量、称量、发票、领用记录或库存核对记录，记录可归属于该批次的数量；该交换不存在时须说明不适用。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -2905,7 +2905,7 @@ Benzalkonium chloride disinfection wastewater 作为一个具体输入跨越“�
 
 Final-rinse sanitation wastewater 作为一个具体输入跨越“场内废水处理”过程边界。须以 `wwt_final_rinse_wastewater` 独立记录，以保持适用的质量、能源、废物或排放平衡。
 
-- 选定流：Final-rinse sanitation wastewater
+- 选定流：末次冲洗消毒废水
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg; unit group `93a60a57-a4c8-11da-a746-0800200c9a66`
 - 数量规则：直接记录该水流质量，或以有文件依据的流体密度将实测体积换算为质量；该水流须与其他废水流分开。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -3026,7 +3026,7 @@ Water to receiving water 作为一个具体输出跨越“场内废水处理”�
 
 Chemical oxygen demand to water 作为一个具体输出跨越“场内废水处理”过程边界。须以 `wwt_cod_water` 独立记录，以保持适用的质量、能源、废物或排放平衡。
 
-- 选定流：Chemical oxygen demand to water
+- 选定流：化学需氧量，排入水体
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg; unit group `93a60a57-a4c8-11da-a746-0800200c9a66`
 - 数量规则：依据时间匹配的排水流量和分析记录单独计算该排放，并保留采样点、方法及时间匹配信息。
 - 数值来源模式：计算值（`calculated_value`）
@@ -3056,7 +3056,7 @@ Biochemical oxygen demand, 5-day, to water 作为一个具体输出跨越“场�
 
 Total nitrogen to water 作为一个具体输出跨越“场内废水处理”过程边界。须以 `wwt_total_n_water` 独立记录，以保持适用的质量、能源、废物或排放平衡。
 
-- 选定流：Total nitrogen to water
+- 选定流：总氮，排入水体
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg; unit group `93a60a57-a4c8-11da-a746-0800200c9a66`
 - 数量规则：依据时间匹配的排水流量和分析记录单独计算该排放，并保留采样点、方法及时间匹配信息。
 - 数值来源模式：计算值（`calculated_value`）
@@ -3071,7 +3071,7 @@ Total nitrogen to water 作为一个具体输出跨越“场内废水处理”�
 
 Total phosphorus to water 作为一个具体输出跨越“场内废水处理”过程边界。须以 `wwt_total_p_water` 独立记录，以保持适用的质量、能源、废物或排放平衡。
 
-- 选定流：Total phosphorus to water
+- 选定流：总磷，排入水体
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg; unit group `93a60a57-a4c8-11da-a746-0800200c9a66`
 - 数量规则：依据时间匹配的排水流量和分析记录单独计算该排放，并保留采样点、方法及时间匹配信息。
 - 数值来源模式：计算值（`calculated_value`）
@@ -3086,7 +3086,7 @@ Total phosphorus to water 作为一个具体输出跨越“场内废水处理”
 
 Suspended solids to water 作为一个具体输出跨越“场内废水处理”过程边界。须以 `wwt_suspended_solids_water` 独立记录，以保持适用的质量、能源、废物或排放平衡。
 
-- 选定流：Suspended solids to water
+- 选定流：悬浮固体，排入水体
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg; unit group `93a60a57-a4c8-11da-a746-0800200c9a66`
 - 数量规则：依据时间匹配的排水流量和分析记录单独计算该排放，并保留采样点、方法及时间匹配信息。
 - 数值来源模式：计算值（`calculated_value`）
@@ -3116,7 +3116,7 @@ Animal fat to water 作为一个具体输出跨越“场内废水处理”过程
 
 Methane, biogenic, to air 作为一个具体输出跨越“场内废水处理”过程边界。须以 `wwt_methane_air` 独立记录，以保持适用的质量、能源、废物或排放平衡。
 
-- 选定流：Methane, biogenic, to air
+- 选定流：生物源甲烷，排入空气
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg; unit group `93a60a57-a4c8-11da-a746-0800200c9a66`
 - 数量规则：依据采集的燃料、运行、监测或质量平衡记录，采用有文件依据的方法计算批次归属排放；不得与实测排放重复计算。
 - 数值来源模式：计算值（`calculated_value`）
@@ -3131,7 +3131,7 @@ Methane, biogenic, to air 作为一个具体输出跨越“场内废水处理”
 
 Dinitrogen monoxide to air 作为一个具体输出跨越“场内废水处理”过程边界。须以 `wwt_n2o_air` 独立记录，以保持适用的质量、能源、废物或排放平衡。
 
-- 选定流：Dinitrogen monoxide to air
+- 选定流：氧化亚氮，排入空气
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg; unit group `93a60a57-a4c8-11da-a746-0800200c9a66`
 - 数量规则：依据采集的燃料、运行、监测或质量平衡记录，采用有文件依据的方法计算批次归属排放；不得与实测排放重复计算。
 - 数值来源模式：计算值（`calculated_value`）

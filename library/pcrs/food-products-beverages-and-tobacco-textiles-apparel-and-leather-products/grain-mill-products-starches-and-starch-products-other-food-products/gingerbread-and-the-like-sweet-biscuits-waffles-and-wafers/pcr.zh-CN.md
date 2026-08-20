@@ -40,7 +40,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 1 kg 产品净质量 |
-| 参考产品流 | Sandwich Cookie `80a32a82-0f7d-4112-a92e-5adcc89f1db3` |
+| 参考产品流 | 夹心饼干/注心饼干/威化饼干 `80a32a82-0f7d-4112-a92e-5adcc89f1db3` |
 | 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | kg |
@@ -725,7 +725,7 @@ sync_with: pcr.en-US.md
 
 本行是定量参考输出。记录扣除全部包装质量后的饼干净质量。
 
-- 选定流：Sandwich Cookie `80a32a82-0f7d-4112-a92e-5adcc89f1db3`
+- 选定流：夹心饼干/注心饼干/威化饼干 `80a32a82-0f7d-4112-a92e-5adcc89f1db3`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：固定参考量 1 kg 可销售饼干净质量
 - 数值来源模式：固定值（`fixed_value`）

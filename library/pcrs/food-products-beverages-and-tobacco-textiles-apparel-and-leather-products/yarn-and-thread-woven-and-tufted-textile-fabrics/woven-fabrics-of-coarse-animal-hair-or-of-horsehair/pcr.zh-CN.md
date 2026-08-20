@@ -38,7 +38,7 @@ status: candidate
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 1 kg |
-| 参考产品流 | Woven fabrics of coarse animal hair or of horsehair `1c5ad852-86e2-4185-a68b-cdb7e3e5eb9c` |
+| 参考产品流 | 动物粗毛或马毛机织织物 `1c5ad852-86e2-4185-a68b-cdb7e3e5eb9c` |
 | 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | 质量单位组 `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | kg |
@@ -126,7 +126,7 @@ status: candidate
 
 记录卷绕、整经、上浆、织机、抽排及本过程其他设备消耗的计量或分摊电力。
 
-- 选定流：Electricity, medium voltage
+- 选定流：中压电力
 - 流属性/单位：Energy / kWh
 - 数量规则：报告批次的实测电力，或从已核对场址总表按文件化方法分摊的电力
 - 数值来源模式：前景记录（`foreground_record`）
@@ -141,7 +141,7 @@ status: candidate
 
 仅当批次实际使用木薯淀粉作上浆化学品时记录。其他上浆化学品必须各自建立具体原子产品流卡。
 
-- 选定流：Cassava Starch `00f8688a-9af4-40bf-95fd-8529f7bc70ce`
+- 选定流：木薯淀粉 `00f8688a-9af4-40bf-95fd-8529f7bc70ce`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：按批次配方称量发放的木薯淀粉质量，扣除退回的未用材料
 - 数值来源模式：前景记录（`foreground_record`）
@@ -183,7 +183,7 @@ status: candidate
 
 记录被下一场内过程接收的机织织物质量；坯布路线则记录被最终检验接收的质量。
 
-- 选定流：Woven fabrics of coarse animal hair or of horsehair `1c5ad852-86e2-4185-a68b-cdb7e3e5eb9c`
+- 选定流：动物粗毛或马毛机织织物 `1c5ad852-86e2-4185-a68b-cdb7e3e5eb9c`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：本批次经调湿并称重的合格织物产出
 - 数值来源模式：前景记录（`foreground_record`）
@@ -298,7 +298,7 @@ status: candidate
 
 记录从织造实际转入湿法或热加工的织物质量。
 
-- 选定流：Woven fabrics of coarse animal hair or of horsehair `1c5ad852-86e2-4185-a68b-cdb7e3e5eb9c`
+- 选定流：动物粗毛或马毛机织织物 `1c5ad852-86e2-4185-a68b-cdb7e3e5eb9c`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：进入湿法加工批次的调湿称重织物质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -313,7 +313,7 @@ status: candidate
 
 记录本产品路线洗涤、精练、漂白、染色、漂洗或水相整理使用的工艺用水。
 
-- 选定流：Process water `68ac99df-f4b9-43b9-8da3-661c7d51f356`
+- 选定流：工艺用水 `68ac99df-f4b9-43b9-8da3-661c7d51f356`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：供应湿法加工批次的计量用水，排除单独计量的生活用水
 - 数值来源模式：前景记录（`foreground_record`）
@@ -328,7 +328,7 @@ status: candidate
 
 记录湿处理设备、泵、加药、脱水、干燥、热定型及治理设施分配给本路线的电力。
 
-- 选定流：Electricity, medium voltage
+- 选定流：中压电力
 - 流属性/单位：Energy / kWh
 - 数量规则：报告批次的实测电力，或从已核对场址总表按文件化方法分摊的电力
 - 数值来源模式：前景记录（`foreground_record`）
@@ -358,7 +358,7 @@ status: candidate
 
 仅当申报的前处理、染色或整理配方实际发放碳酸钠时记录。
 
-- 选定流：Sodium carbonate
+- 选定流：碳酸钠
 - 流属性/单位：Mass / kg
 - 数量规则：发放给湿法加工批次的称重产品质量，扣除退回未用材料
 - 数值来源模式：前景记录（`foreground_record`）
@@ -373,7 +373,7 @@ status: candidate
 
 仅当申报的漂白或处理配方实际发放过氧化氢时记录。
 
-- 选定流：Hydrogen peroxide
+- 选定流：过氧化氢
 - 流属性/单位：Mass / kg
 - 数量规则：发放给湿法加工批次的配制产品称重质量与浓度
 - 数值来源模式：前景记录（`foreground_record`）
@@ -388,7 +388,7 @@ status: candidate
 
 仅当申报的 pH 调节、染色或整理配方实际发放乙酸时记录。
 
-- 选定流：Acetic acid
+- 选定流：乙酸
 - 流属性/单位：Mass / kg
 - 数量规则：发放给湿法加工批次的配制产品称重质量与浓度
 - 数值来源模式：前景记录（`foreground_record`）
@@ -403,7 +403,7 @@ status: candidate
 
 仅当本过程边界内直接加热、干燥、热定型或关联锅炉消耗场内天然气时记录。
 
-- 选定流：Natural gas `4bfd1abb-9106-495a-a291-ce410f205691`
+- 选定流：天然气 `4bfd1abb-9106-495a-a291-ce410f205691`
 - 流属性/单位：Gross calorific value `93a60a56-a3c8-14da-a746-0800200c9a66` / MJ
 - 数量规则：按供应商申报高位热值基准计量并分配给湿法加工批次的天然气能量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -430,7 +430,7 @@ status: candidate
 
 记录离开申报湿法与热处理路线的合格织物。
 
-- 选定流：Woven fabrics of coarse animal hair or of horsehair `1c5ad852-86e2-4185-a68b-cdb7e3e5eb9c`
+- 选定流：动物粗毛或马毛机织织物 `1c5ad852-86e2-4185-a68b-cdb7e3e5eb9c`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：湿法加工批次经调湿并称重的合格织物产出
 - 数值来源模式：前景记录（`foreground_record`）
@@ -447,7 +447,7 @@ status: candidate
 
 记录转入场内或场外处理的废水流。除非物质在处理后跨越环境边界，否则不得同时将其所含物质记作直接基本流排放。
 
-- 选定流：Wastewater, textile process (to water) `48438fa9-4988-405c-ba44-646f134e2ecc`
+- 选定流：废水，纺织工艺（排放至水体） `48438fa9-4988-405c-ba44-646f134e2ecc`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：分配给湿法加工批次的计量废水质量，或由实测体积形成的文件化换算结果
 - 数值来源模式：前景记录（`foreground_record`）
@@ -464,7 +464,7 @@ status: candidate
 
 记录分配给本过程、由场内天然气燃烧跨越场址边界的化石二氧化碳；本前景流不含燃料上游生产排放。
 
-- 选定流：Carbon dioxide, fossil, to air
+- 选定流：化石源二氧化碳，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：烟气监测记录或随前景证据保留的完整场址燃烧计算
 - 数值来源模式：前景记录（`foreground_record`）
@@ -485,7 +485,7 @@ status: candidate
 
 记录从织造或湿法加工转入最终质量放行的合格织物。
 
-- 选定流：Woven fabrics of coarse animal hair or of horsehair `1c5ad852-86e2-4185-a68b-cdb7e3e5eb9c`
+- 选定流：动物粗毛或马毛机织织物 `1c5ad852-86e2-4185-a68b-cdb7e3e5eb9c`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：进入最终检验的调湿称重织物质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -500,7 +500,7 @@ status: candidate
 
 记录检验、修边、卷装、局部抽排和包装设备使用的电力。
 
-- 选定流：Electricity, medium voltage
+- 选定流：中压电力
 - 流属性/单位：Energy / kWh
 - 数量规则：报告批次的实测电力，或从已核对场址总表按文件化方法分摊的电力
 - 数值来源模式：前景记录（`foreground_record`）
@@ -557,7 +557,7 @@ status: candidate
 
 记录检验和修边后可销售织物净质量，排除全部发运包装。
 
-- 选定流：Woven fabrics of coarse animal hair or of horsehair `1c5ad852-86e2-4185-a68b-cdb7e3e5eb9c`
+- 选定流：动物粗毛或马毛机织织物 `1c5ad852-86e2-4185-a68b-cdb7e3e5eb9c`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：合格织物经调湿并校准称量的净质量记录
 - 数值来源模式：前景记录（`foreground_record`）

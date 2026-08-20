@@ -1,10 +1,1474 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "23170"
-  title: "Other vegetable flours and meals"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.food-products-beverages-and-tobacco-textiles-apparel-and-leather-products.grain-mill-products-starches-and-starch-products-other-food-products.other-vegetable-flours-and-meals"
+  classification_refs: "CPC 3.0: 23170, Other vegetable flours and meals"
+  covered_products: "Edible single-botanical or declared blended non-cereal vegetable flours and meals produced by size reduction of dried or conditioned vegetable material and sold as flour, meal, or vegetable powder under CPC 23170."
+  excluded_products: "CPC 23110/23120 cereal flours; cereal groats and meals; CPC 21920 oilseed or oleaginous-fruit flours and meals; mustard flour; isolated starches; potato preparations classified elsewhere; mixes, doughs, compounded supplements, and products whose main function is not vegetable flour or meal; CPC 01961 live planting material; CPC 01962 cut flowers and flower buds."
+  representative_product: "Unfermented edible cassava flour made from fresh cassava roots."
+  production_route: "Receipt and preparation; optional detoxification, blanching, pressing, or conditioning; drying; milling and sieving; sanitation; packing and release."
+  market_state: "Dry, free-flowing flour or meal at the manufacturing gate in sealed sale packaging; botanical source, blend share, moisture, particle-size specification, food/feed grade, and route declared."
+functional_unit:
+  what: "Supply of a declared other vegetable flour or meal that meets its intended grade and product specification."
+  how_much: "1 kg net mass of packed saleable product at the manufacturing gate, excluding packaging mass."
+  how_well: "Botanical identity or blend composition, route, moisture, particle-size specification, grade, and packaging configuration are declared; cassava flour for direct human consumption meets the applicable safety specification and has moisture no greater than 13% m/m unless a stricter destination rule applies."
+  how_long_or_cycle: "One production lot released at the manufacturing gate; no storage duration or use cycle is included."
+  reference_flow_link: "The reference product exchange packaged_vegetable_flour equals 1 kg net saleable product."
+system_boundary:
+  rules:
+    - rule_id: boundary_gate_to_gate
+      applies_to: "Foreground boundary"
+      rule: "Include receipt through packed-product release, including preparation, conditioning, drying, milling, sieving, sanitation, internal rework, packaging, wastes, wastewater, and direct emissions."
+      source_ids:
+        - fao-save-and-grow-cassava-2013
+        - olaniran-et-al-2017
+    - rule_id: boundary_complete_exchanges
+      applies_to: "Every included process"
+      rule: "Collect all known material, energy, product, co-product, waste, and elementary exchanges; a shared meter may be allocated only by a documented calculation rule."
+      source_ids:
+        - eu-pef-2021-2279
+    - rule_id: boundary_upstream_links
+      applies_to: "Inputs before the receiving gate"
+      rule: "Keep cultivation, pre-gate processing, and transport outside the foreground process but link them through disclosed upstream datasets; do not assign zero burdens."
+      source_ids:
+        - eu-pef-2021-2279
+    - rule_id: boundary_product_route
+      applies_to: "Product identity"
+      rule: "Exclude starch extraction, oil extraction residues, cereal milling, mustard flour, mixes and doughs, and live or floral products assigned to CPC 01961 or 01962."
+      source_ids:
+        - un-cpc-3-23170
+boundary_abstraction:
+  declared_starting_condition: "Vegetable source material at the receiving scale: botanical identity, plant part, supplier, origin, wet mass, moisture, and fresh, dried, paste, or other state declared."
+  starting_condition_role: "Gate-to-gate foreground starting point; upstream cultivation and pre-gate processing remain linked background systems."
+  product_classification_scope: "Finished reference product must resolve to CPC 3.0 subclass 23170; source agricultural products keep their own upstream identities and CPC 01961/01962 products are not reference products."
+  recursive_input_rule: "Purchased flour or meal already within CPC 23170 is an upstream product input with its own dataset and is not unfolded again inside the same foreground process; its mass and share in the final blend are disclosed."
+  upstream_dataset_requirement: "Supplier-specific or representative datasets are required for source vegetable material, electricity, fuels, steam, hot water, refrigerants, cleaning chemicals, packaging, and treatment services."
+  disclosure: "Declare included unit operations, omitted conditional operations, botanical identity, route, yields, moisture basis, energy sources, co-product and waste status, allocation, wastewater destination, direct emissions, packaging, geography, period, and data gaps."
+reference_flow_definition:
+  reference_amount: "1 kg net other vegetable flour or meal"
+  product_flow_ref:
+    name: "Vegetable Powder"
+    uuid: "ec00d815-ccbe-4e9d-845a-efc929f58f56"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "botanical species and plant part"
+    - "single material or blend composition by dry mass"
+    - fresh
+    - dried-chip
+    - paste
+    - "or other starting condition"
+    - "preparation and detoxification route"
+    - "drying technology and fuel"
+    - "target and measured moisture"
+    - "particle-size specification"
+    - "food or feed grade"
+    - "packaging configuration"
+    - geography
+    - "production period"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "Reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Report 1 kg net saleable flour or meal at measured release moisture; exclude paper, polymer, pallets, and other packaging mass."
+  - id: moisture_basis
+    applies_to: "Source material, intermediate material, co-products, and wastes"
+    required_property_ref:
+      name: "Mass and moisture content"
+      uuid: ""
+    required_unit: "kg and % m/m wet basis"
+    rule: "Record wet mass and measured moisture for each materially different stream; convert to dry matter only through calc_dry_matter."
+  - id: energy_carriers
+    applies_to: "Electricity, steam, fuels, and purchased heat"
+    required_property_ref:
+      name: "Energy or carrier mass"
+      uuid: ""
+    required_unit: "kWh, MJ, or kg"
+    rule: "Preserve the metered unit and lower/higher heating-value basis; do not merge electricity, steam, hot water, or different fuels."
+  - id: packaging_mass
+    applies_to: "Primary sale packaging"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Record each packaging component separately and normalize its consumed mass to 1 kg net product."
+  - id: refrigerant_mass
+    applies_to: "Refrigerant charge and replenishment"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Record each refrigerant chemical separately; calculate leakage from charge reconciliation and product output."
+process_map:
+  - id: receipt_preparation
+    name: "Receipt and source-material preparation"
+    inclusion: "required"
+    inclusion_condition: "Always; individual washing, peeling, cutting, grating, blanching, soaking, pressing, or detoxification steps apply only when used."
+    role: "Foreground preparation"
+    quantitative_reference: "kg prepared material transferred to drying"
+  - id: drying_conditioning
+    name: "Drying and thermal conditioning"
+    inclusion: "required"
+    inclusion_condition: "Solar or ambient drying still requires material, electricity, and rejected-output records; thermal and refrigeration exchanges apply when used."
+    role: "Foreground moisture removal"
+    quantitative_reference: "kg dried material transferred to milling"
+  - id: milling_sieving
+    name: "Milling, sieving, and blending"
+    inclusion: "required"
+    inclusion_condition: "Always; blending applies only to declared multi-material products."
+    role: "Foreground size reduction"
+    quantitative_reference: "kg conforming loose flour transferred to packing"
+  - id: facility_sanitation
+    name: "Food-contact cleaning and sanitation"
+    inclusion: "required"
+    inclusion_condition: "Record dry cleaning and each wet-cleaning or disinfection exchange actually used."
+    role: "Foreground support process"
+    quantitative_reference: "kg reference product supported"
+  - id: packaging_release
+    name: "Packaging and product release"
+    inclusion: "required"
+    inclusion_condition: "Always; each primary packaging component is recorded separately."
+    role: "Foreground finishing"
+    quantitative_reference: "1 kg net packed saleable product"
+process_inventory:
+  - id: receipt_preparation
+    label: "Receipt and source-material preparation"
+    inputs:
+      product:
+        - row_id: received_vegetable_material
+          role: "Received botanical source lot"
+          name: "Vegetable source lot with declared botanical identity"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "One received lot of the declared edible vegetable source crosses the gate. Its botanical species, plant part, state, supplier, mass, and moisture are recorded without replacing it by a cereal, oil-extraction residue, planting-material, or floral proxy."
+          amount:
+            expression: "receiving-scale net mass assigned to the lot"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg packed vegetable flour or meal"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_receipt_preparation
+              source_ids:
+                - fao-utilising-root-crops
+            ranges:
+              - role: default_estimate
+                lower: "1"
+                upper: "10"
+                unit: "kg/kg packed product"
+                basis: "broad wet- or dry-source material estimate per kg product; replace with lot mass balance"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: preparation_water
+          role: "Preparation water"
+          name: "Process water"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Water added for washing, re-washing, soaking, detoxification, blanching, or wet separation is one metered product input. Water already contained in the vegetable is excluded from this card and remains in moisture balance."
+          amount:
+            expression: "metered or tank-balance water entering preparation"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg packed vegetable flour or meal"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_receipt_preparation
+              source_ids:
+                - fao-utilising-root-crops
+                - fao-who-cxs-176-1989
+            ranges:
+              - role: default_estimate
+                lower: "0"
+                upper: "20"
+                unit: "kg/kg packed product"
+                basis: "broad route-dependent estimate; zero only for evidenced dry preparation"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: preparation_electricity
+          role: "Preparation electricity"
+          name: "Electricity, low voltage"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Electricity for receiving, washing, peeling, cutting, grating, pressing, pumps, and conveyors is recorded separately from milling and drying electricity."
+          amount:
+            expression: "submetered use or documented equipment-load calculation"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg packed vegetable flour or meal"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_receipt_preparation
+              source_ids:
+                - eu-pef-2021-2279
+            ranges:
+              - role: default_estimate
+                lower: "0"
+                upper: "1"
+                unit: "kWh/kg packed product"
+                basis: "broad mechanized-preparation estimate"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: sodium_hypochlorite_preparation
+          role: "Sodium hypochlorite used on received material"
+          name: "Sodium hypochlorite"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Sodium hypochlorite contacting incoming material is recorded only when the documented food-safety procedure uses it. Do not combine it with facility disinfectant use."
+          amount:
+            expression: "active chemical mass from solution concentration and dispensed solution mass"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg packed vegetable flour or meal"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_receipt_preparation
+              source_ids:
+                - fao-who-cxc-1-1969
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: prepared_vegetable_material
+          role: "Prepared vegetable material"
+          name: "Prepared vegetable source lot with declared botanical identity"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Prepared material leaving washing, peeling, cutting, grating, pressing, soaking, or detoxification is weighed and its moisture is measured before drying."
+          amount:
+            expression: "transferred batch mass at measured moisture"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg prepared material transferred to drying"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_receipt_preparation
+              source_ids:
+                - fao-save-and-grow-cassava-2013
+            ranges: []
+      waste:
+        - row_id: rejected_vegetable_material
+          role: "Rejected incoming vegetable material"
+          name: "Rejected vegetable material"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Spoiled, contaminated, foreign, or otherwise rejected source material is recorded as one waste stream before preparation."
+          amount:
+            expression: "measured rejected lot mass and documented destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg packed vegetable flour or meal"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_receipt_preparation
+              source_ids:
+                - eu-pef-2021-2279
+            ranges: []
+        - row_id: peel_residue
+          role: "Peel residue"
+          name: "Vegetable peel residue"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Peels removed from the declared source material are weighed separately from incoming rejects, trimming residue, and sieve residue."
+          amount:
+            expression: "measured wet mass with moisture and management route"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg packed vegetable flour or meal"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_receipt_preparation
+              source_ids:
+                - fao-save-and-grow-cassava-2013
+            ranges: []
+        - row_id: trimming_residue
+          role: "Trimming residue"
+          name: "Vegetable trimming residue"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Damaged tissue and other trimming solids removed from the declared source material are weighed separately from peel and incoming rejects."
+          amount:
+            expression: "measured wet mass with moisture and management route"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg packed vegetable flour or meal"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_receipt_preparation
+              source_ids:
+                - fao-save-and-grow-cassava-2013
+            ranges: []
+        - row_id: preparation_wastewater
+          role: "Preparation wastewater"
+          name: "Food-processing wastewater from vegetable preparation"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Wastewater from washing, soaking, detoxification, blanching, pressing, or wet separation is recorded separately from sanitation wastewater."
+          amount:
+            expression: "measured discharge or water balance, with treatment destination and relevant load data"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg packed vegetable flour or meal"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_receipt_preparation
+              source_ids:
+                - olaniran-et-al-2017
+            ranges:
+              - role: default_estimate
+                lower: "0"
+                upper: "20"
+                unit: "kg/kg packed product"
+                basis: "broad route-dependent estimate; zero requires a documented dry route or closed water balance"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        []
+  - id: drying_conditioning
+    label: "Drying and thermal conditioning"
+    inputs:
+      product:
+        - row_id: drying_feed
+          role: "Prepared drying feed"
+          name: "Prepared vegetable source lot with declared botanical identity"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "The prepared material transferred from preparation is the single botanical intermediate entering drying."
+          amount:
+            expression: "transferred batch mass and moisture"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg dried material output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_drying_conditioning
+              source_ids:
+                - fao-save-and-grow-cassava-2013
+            ranges: []
+        - row_id: drying_electricity
+          role: "Drying electricity"
+          name: "Electricity, low voltage"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Electricity for fans, heat pumps, dehumidifiers, conveyors, controls, and mechanical dewatering within drying is recorded separately."
+          amount:
+            expression: "drying-system submeter or equipment-load calculation"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg packed vegetable flour or meal"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_drying_conditioning
+              source_ids:
+                - olaniran-et-al-2017
+                - eu-pef-2021-2279
+            ranges:
+              - role: default_estimate
+                lower: "0"
+                upper: "5"
+                unit: "kWh/kg packed product"
+                basis: "broad estimate spanning passive and electrically intensified drying"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: drying_steam
+          role: "Purchased drying steam"
+          name: "Steam"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Purchased steam supplied to the dryer or conditioner is one utility exchange and is not merged with hot water or on-site fuel."
+          amount:
+            expression: "condensate meter, steam meter, or documented enthalpy balance"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg packed vegetable flour or meal"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_drying_conditioning
+              source_ids:
+                - eu-pef-2021-2279
+            ranges:
+              - role: default_estimate
+                lower: "0"
+                upper: "20"
+                unit: "kg/kg packed product"
+                basis: "broad route estimate; zero only when no purchased steam is used"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: drying_natural_gas
+          role: "Natural gas for drying"
+          name: "Natural gas"
+          flow_type: "product"
+          property_unit: "Net calorific energy / MJ"
+          description: "Natural gas combusted on site for drying heat is recorded separately from every other fuel."
+          amount:
+            expression: "meter or invoice quantity converted on the declared heating-value basis"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg packed vegetable flour or meal"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_drying_conditioning
+              source_ids:
+                - eu-pef-2021-2279
+            ranges: []
+        - row_id: drying_lpg
+          role: "Liquefied petroleum gas for drying"
+          name: "Liquefied petroleum gas"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Liquefied petroleum gas combusted on site for drying heat is recorded as its own fuel exchange."
+          amount:
+            expression: "tank or invoice mass with declared heating value"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg packed vegetable flour or meal"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_drying_conditioning
+              source_ids:
+                - eu-pef-2021-2279
+            ranges: []
+        - row_id: drying_diesel
+          role: "Diesel fuel for drying or captive power"
+          name: "Diesel fuel"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Diesel combusted in a dryer, boiler, or generator assigned to production is recorded separately and the equipment role is declared."
+          amount:
+            expression: "tank issue or invoice mass assigned by operating hours or submetered generation"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg packed vegetable flour or meal"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_drying_conditioning
+              source_ids:
+                - olaniran-et-al-2017
+            ranges: []
+        - row_id: drying_coal
+          role: "Coal for drying"
+          name: "Bituminous coal"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Coal combusted in the dryer or boiler is recorded separately; coal is never represented by a generic thermal-energy card."
+          amount:
+            expression: "measured fuel issue with moisture, ash, and declared heating value when available"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg packed vegetable flour or meal"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_drying_conditioning
+              source_ids:
+                - olaniran-et-al-2017
+            ranges: []
+        - row_id: drying_wood_pellets
+          role: "Wood pellets for drying"
+          name: "Wood pellets"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Wood pellets combusted for drying heat are recorded separately with sustainable-carbon accounting kept distinct from fossil fuels."
+          amount:
+            expression: "measured fuel issue with moisture and heating value"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg packed vegetable flour or meal"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_drying_conditioning
+              source_ids:
+                - eu-pef-2021-2279
+            ranges: []
+        - row_id: drying_r134a
+          role: "R-134a refrigerant replenishment"
+          name: "1,1,1,2-Tetrafluoroethane (HFC-134a)"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "R-134a added to a heat-pump dryer or cold-conditioning system is recorded only when that chemical is present."
+          amount:
+            expression: "annual charge reconciliation allocated by operating time and normalized output"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg packed vegetable flour or meal"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_drying_conditioning
+              source_ids:
+                - ipcc-2019-refrigeration
+            ranges: []
+        - row_id: drying_r404a
+          role: "R-404A refrigerant replenishment"
+          name: "Refrigerant R-404A"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "R-404A added to a refrigeration or dehumidification system is recorded separately from R-134a."
+          amount:
+            expression: "annual charge reconciliation allocated by operating time and normalized output"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg packed vegetable flour or meal"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_drying_conditioning
+              source_ids:
+                - ipcc-2019-refrigeration
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: dried_vegetable_material
+          role: "Dried vegetable material"
+          name: "Dried vegetable source lot with declared botanical identity"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Dried chips, granules, cake, or powder transferred to milling are weighed after equilibration and sampled for moisture."
+          amount:
+            expression: "transferred mass at measured moisture"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg dried material transferred to milling"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_drying_conditioning
+              source_ids:
+                - fao-utilising-root-crops
+                - fao-who-cxs-176-1989
+            ranges: []
+      waste:
+        - row_id: dewatering_wastewater
+          role: "Dewatering wastewater"
+          name: "Press water from vegetable material dewatering"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Water mechanically expressed before thermal drying is a distinct waste stream from preparation and sanitation wastewater."
+          amount:
+            expression: "measured press-water mass or closed water balance with destination and load data"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg packed vegetable flour or meal"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_drying_conditioning
+              source_ids:
+                - fao-save-and-grow-cassava-2013
+                - olaniran-et-al-2017
+            ranges: []
+      elementary:
+        - row_id: carbon_dioxide_fossil
+          role: "Fossil carbon dioxide to air"
+          name: "Carbon dioxide, fossil, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Direct fossil carbon dioxide from on-site combustion is calculated from each fossil fuel separately and summed only after fuel-specific calculation."
+          amount:
+            expression: "fuel-specific activity data multiplied by an approved fossil CO2 factor"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg packed vegetable flour or meal"
+              kind: "fuel_inventory"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_drying_conditioning
+              source_ids:
+                - olaniran-et-al-2017
+                - eu-pef-2021-2279
+            ranges: []
+        - row_id: carbon_dioxide_biogenic
+          role: "Biogenic carbon dioxide to air"
+          name: "Carbon dioxide, biogenic, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Direct biogenic carbon dioxide from wood-pellet combustion is recorded separately from fossil carbon dioxide."
+          amount:
+            expression: "biomass fuel carbon balance using declared moisture and carbon content"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg packed vegetable flour or meal"
+              kind: "fuel_inventory"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_drying_conditioning
+              source_ids:
+                - eu-pef-2021-2279
+            ranges: []
+        - row_id: methane_to_air
+          role: "Methane to air"
+          name: "Methane, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Methane from on-site fuel combustion is calculated as its own elementary exchange."
+          amount:
+            expression: "fuel- and equipment-specific activity data multiplied by an approved emission factor"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg packed vegetable flour or meal"
+              kind: "fuel_inventory"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_drying_conditioning
+              source_ids:
+                - olaniran-et-al-2017
+            ranges: []
+        - row_id: nitrous_oxide_to_air
+          role: "Nitrous oxide to air"
+          name: "Nitrous oxide, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Nitrous oxide from on-site fuel combustion is calculated separately from methane and carbon dioxide."
+          amount:
+            expression: "fuel- and equipment-specific activity data multiplied by an approved emission factor"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg packed vegetable flour or meal"
+              kind: "fuel_inventory"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_drying_conditioning
+              source_ids:
+                - olaniran-et-al-2017
+            ranges: []
+        - row_id: nitrogen_oxides_to_air
+          role: "Nitrogen oxides to air"
+          name: "Nitrogen oxides, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Nitrogen oxides from combustion are recorded as a distinct air emission."
+          amount:
+            expression: "measured stack load or fuel- and equipment-specific factor calculation"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg packed vegetable flour or meal"
+              kind: "fuel_inventory"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_drying_conditioning
+              source_ids:
+                - olaniran-et-al-2017
+            ranges: []
+        - row_id: sulfur_dioxide_to_air
+          role: "Sulfur dioxide to air"
+          name: "Sulfur dioxide, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Sulfur dioxide from sulfur-bearing fuel is recorded separately and is zero only when fuel sulfur and control data support zero."
+          amount:
+            expression: "measured stack load or sulfur balance corrected for retained ash and controls"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg packed vegetable flour or meal"
+              kind: "fuel_inventory"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_drying_conditioning
+              source_ids:
+                - olaniran-et-al-2017
+            ranges: []
+        - row_id: particulate_matter_to_air
+          role: "Fine particulate matter to air"
+          name: "Particulate matter, <= 2.5 micrometres, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Combustion particulate matter with aerodynamic diameter at or below 2.5 micrometres is recorded separately from flour dust."
+          amount:
+            expression: "measured stack load or fuel- and control-specific factor calculation"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg packed vegetable flour or meal"
+              kind: "fuel_inventory"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_drying_conditioning
+              source_ids:
+                - eu-pef-2021-2279
+            ranges: []
+  - id: milling_sieving
+    label: "Milling, sieving, and blending"
+    inputs:
+      product:
+        - row_id: milling_feed
+          role: "Dried milling feed"
+          name: "Dried vegetable source lot with declared botanical identity"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "The dried botanical intermediate entering the mill is weighed and moisture-matched to the drying output."
+          amount:
+            expression: "transferred batch mass at measured moisture"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg conforming loose flour output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_milling_sieving
+              source_ids:
+                - fao-utilising-root-crops
+            ranges: []
+        - row_id: milling_electricity
+          role: "Milling and sieving electricity"
+          name: "Electricity, low voltage"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Electricity for mills, sifters, aspirators, conveyors, and blenders is recorded separately from earlier operations."
+          amount:
+            expression: "submetered use or equipment-load calculation"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg packed vegetable flour or meal"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_milling_sieving
+              source_ids:
+                - olaniran-et-al-2017
+                - eu-pef-2021-2279
+            ranges:
+              - role: default_estimate
+                lower: "0"
+                upper: "2"
+                unit: "kWh/kg packed product"
+                basis: "broad first-pass estimate for milling, sieving, aspiration, and blending"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: milled_vegetable_flour
+          role: "Conforming loose vegetable flour"
+          name: "Vegetable flour, loose, with declared botanical identity"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Loose flour meeting the declared moisture and particle-size specification is weighed before packaging."
+          amount:
+            expression: "accepted loose-product batch mass at measured moisture"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg conforming loose flour output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_milling_sieving
+              source_ids:
+                - fao-who-cxs-176-1989
+            ranges: []
+      waste:
+        - row_id: off_spec_flour
+          role: "Off-specification flour"
+          name: "Off-specification vegetable flour"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Flour rejected after moisture, contamination, or particle-size testing is recorded separately from recyclable coarse sieve residue."
+          amount:
+            expression: "rejected batch mass, reason, and destination"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg packed vegetable flour or meal"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_milling_sieving
+              source_ids:
+                - fao-who-cxs-176-1989
+            ranges: []
+        - row_id: coarse_sieve_residue
+          role: "Coarse sieve residue"
+          name: "Coarse vegetable fibre from flour sieving"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Coarse fibre or particles removed by sieving are weighed and classified as internal rework, saleable co-product, or waste according to actual management."
+          amount:
+            expression: "measured sieve reject mass with moisture and destination"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg packed vegetable flour or meal"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_milling_sieving
+              source_ids:
+                - fao-who-cxs-176-1989
+                - fao-utilising-root-crops
+            ranges: []
+      elementary:
+        - row_id: flour_dust_to_air
+          role: "Flour dust to air"
+          name: "Vegetable flour dust, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Uncaptured vegetable flour dust emitted from milling, sieving, transfer, or bagging is recorded as an elementary exchange, separate from captured solid residue."
+          amount:
+            expression: "measured concentration and exhaust volume or dust mass balance corrected for captured material"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg packed vegetable flour or meal"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_milling_sieving
+              source_ids:
+                - eu-pef-2021-2279
+            ranges: []
+  - id: facility_sanitation
+    label: "Food-contact cleaning and sanitation"
+    inputs:
+      product:
+        - row_id: sanitation_water
+          role: "Sanitation rinse water"
+          name: "Process water"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Ambient-temperature water used to clean or rinse food-contact equipment and rooms is recorded separately from material-preparation water and hot water."
+          amount:
+            expression: "sanitation meter or event-based tank balance"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg packed vegetable flour or meal"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_facility_sanitation
+              source_ids:
+                - fao-who-cxc-1-1969
+            ranges: []
+        - row_id: sanitation_hot_water
+          role: "Sanitation hot water"
+          name: "Hot water"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Purchased or separately generated hot water used for sanitation is one utility exchange and is not merged with steam or ambient water."
+          amount:
+            expression: "hot-water meter or event volume, with supply temperature recorded"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg packed vegetable flour or meal"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_facility_sanitation
+              source_ids:
+                - fao-who-cxc-1-1969
+            ranges:
+              - role: default_estimate
+                lower: "0"
+                upper: "10"
+                unit: "kg/kg packed product"
+                basis: "broad first-pass estimate; zero requires a documented dry-cleaning route"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: sanitation_electricity
+          role: "Sanitation electricity"
+          name: "Electricity, low voltage"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Electricity for pumps, pressure washers, vacuum systems, and cleaning support equipment is recorded separately."
+          amount:
+            expression: "submeter or equipment-load calculation assigned to sanitation events"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg packed vegetable flour or meal"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_facility_sanitation
+              source_ids:
+                - eu-pef-2021-2279
+            ranges: []
+        - row_id: sodium_hydroxide_cleaner
+          role: "Sodium hydroxide cleaner"
+          name: "Sodium hydroxide"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Sodium hydroxide used as an alkaline cleaner is recorded as active chemical mass and never combined with disinfectant."
+          amount:
+            expression: "dispensed solution mass multiplied by active concentration"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg packed vegetable flour or meal"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_facility_sanitation
+              source_ids:
+                - fao-who-cxc-1-1969
+            ranges: []
+        - row_id: sodium_hypochlorite_disinfectant
+          role: "Sodium hypochlorite disinfectant"
+          name: "Sodium hypochlorite"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Sodium hypochlorite used after cleaning is recorded as active chemical mass, separate from sodium hydroxide and material-contact treatment."
+          amount:
+            expression: "dispensed solution mass multiplied by active concentration"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg packed vegetable flour or meal"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_facility_sanitation
+              source_ids:
+                - fao-who-cxc-1-1969
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: sanitation_wastewater
+          role: "Sanitation wastewater"
+          name: "Food-processing sanitation wastewater"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Spent cleaning and rinse water is recorded separately from vegetable-preparation and dewatering wastewater, with treatment destination and cleaning-chemical load disclosed."
+          amount:
+            expression: "measured discharge or event water balance"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg packed vegetable flour or meal"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_facility_sanitation
+              source_ids:
+                - fao-who-cxc-1-1969
+                - eu-pef-2021-2279
+            ranges: []
+      elementary:
+        []
+  - id: packaging_release
+    label: "Packaging and product release"
+    inputs:
+      product:
+        - row_id: packaging_feed
+          role: "Loose flour for packing"
+          name: "Vegetable flour, loose, with declared botanical identity"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Conforming loose flour entering the packer is weighed and reconciled with packed product, retained samples, rework, dust, and off-specification product."
+          amount:
+            expression: "transferred loose-product mass at measured moisture"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg packed product output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_release
+              source_ids:
+                - fao-utilising-root-crops
+            ranges: []
+        - row_id: packaging_electricity
+          role: "Packaging electricity"
+          name: "Electricity, low voltage"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Electricity for conveying, filling, sealing, coding, check-weighing, and local dust collection is separately metered or calculated."
+          amount:
+            expression: "packaging-line submeter or equipment-load calculation"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg packed vegetable flour or meal"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_release
+              source_ids:
+                - olaniran-et-al-2017
+                - eu-pef-2021-2279
+            ranges: []
+        - row_id: kraft_paper_sack
+          role: "Kraft paper sack"
+          name: "Kraft paper sack"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "The kraft paper outer sack consumed in the declared package is recorded separately from its polymer liner."
+          amount:
+            expression: "purchased mass less stock change and measured scrap, allocated to conforming packs"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net packed vegetable flour or meal"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_release
+              source_ids:
+                - fao-utilising-root-crops
+                - eu-pef-2021-2279
+            ranges:
+              - role: default_estimate
+                lower: "0"
+                upper: "0.2"
+                unit: "kg/kg net product"
+                basis: "broad consumer-to-bulk package estimate; replace with bill of materials"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: ldpe_liner
+          role: "Low-density polyethylene liner"
+          name: "Low-density polyethylene film"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "The low-density polyethylene liner or sealed inner bag is recorded separately from the paper sack."
+          amount:
+            expression: "bill-of-material mass plus measured line loss assigned to conforming packs"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net packed vegetable flour or meal"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_release
+              source_ids:
+                - fao-utilising-root-crops
+                - eu-pef-2021-2279
+            ranges:
+              - role: default_estimate
+                lower: "0"
+                upper: "0.1"
+                unit: "kg/kg net product"
+                basis: "broad package estimate; zero only for a verified liner-free package"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: packaged_vegetable_flour
+          role: "Packed other vegetable flour or meal"
+          name: "Vegetable Powder"
+          flow_type: "product"
+          flow_ref:
+            uuid: "ec00d815-ccbe-4e9d-845a-efc929f58f56"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "The released output is the sole reference product. It must match CPC 23170, the declared botanical and route qualifiers, measured release moisture, particle-size specification, grade, and package configuration."
+          amount:
+            expression: "fixed at 1 kg net saleable product after release testing"
+            value_mode: "fixed_value"
+            specificity: "product_specific"
+            basis:
+              text: "1 kg net packed vegetable flour or meal"
+              kind: "reference_flow"
+            evidence:
+              kind: "identity_reference"
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: kraft_paper_scrap
+          role: "Kraft paper packaging scrap"
+          name: "Waste kraft paper"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Kraft paper cuttings, damaged sacks, and rejected paper packs are weighed as one packaging waste stream."
+          amount:
+            expression: "measured scrap mass and treatment destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net packed vegetable flour or meal"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_release
+              source_ids:
+                - eu-pef-2021-2279
+            ranges: []
+        - row_id: ldpe_film_scrap
+          role: "Low-density polyethylene film scrap"
+          name: "Waste low-density polyethylene film"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Damaged liners, trim, and rejected low-density polyethylene film are weighed separately from paper scrap."
+          amount:
+            expression: "measured scrap mass and treatment destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net packed vegetable flour or meal"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_release
+              source_ids:
+                - eu-pef-2021-2279
+            ranges: []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocation_avoid
+    applies_to: "Shared foreground operations"
+    rule: "Avoid allocation by submetering, batch segregation, or process subdivision whenever technically possible."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: allocation_rework
+    applies_to: "Internal coarse fraction or conforming flour returned to the same lot"
+    rule: "Treat internal rework as an internal loop without a co-product credit; retain the energy and material losses in the reference-product system."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: allocation_co_product
+    applies_to: "Saleable peel, fibre, coarse meal, or other co-product"
+    rule: "If subdivision is not possible, apply a documented physical relationship that reflects causality; dry-matter allocation is preferred for materially similar food/feed solids. If no defensible physical relationship exists, apply economic allocation and disclose prices, period, geography, and sensitivity."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: allocation_waste
+    applies_to: "Waste sent to treatment"
+    rule: "Assign collection and treatment burdens to the reference-product system up to the declared boundary; do not create an avoided-product credit without a separately justified recovery model."
+    source_ids:
+      - eu-pef-2021-2279
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_receipt_preparation
+      process_id: "receipt_preparation"
+      flow_role: "received material, water, electricity, material-contact chemical, prepared output, rejects, peel, trimming, wastewater"
+      record_type: "weighbridge and batch records; meters; chemical issue; laboratory moisture; waste manifest"
+      raw_fields: "lot_id; botanical_species; plant_part; state; supplier; origin; wet_mass_kg; moisture_percent; water_kg; electricity_kWh; chemical_name; solution_mass_kg; concentration; output_mass_kg; reject_mass_kg; peel_mass_kg; trimming_mass_kg; wastewater_kg; destination"
+      collection_method: "Calibrated scales and meters linked to production lot; laboratory moisture sampling; chemical concentration from certificate or preparation record."
+      unit: "kg; % m/m; kWh"
+      frequency: "Each lot, shift, or cleaning event; meters at least monthly with production reconciliation."
+      temporal_coverage: "At least 12 representative months or the full campaign when seasonal."
+      site_scope: "Every facility in the declared product system."
+      aggregation_rule: "Sum eligible records, subtract documented unrelated uses, then normalize to net released product; retain lot-level moisture balance."
+      quality_evidence: "Calibration, meter reconciliation, batch sheets, laboratory results, invoices, chemical certificates, and treatment receipts."
+    - protocol_id: cp_drying_conditioning
+      process_id: "drying_conditioning"
+      flow_role: "feed, dried output, electricity, steam, each fuel, each refrigerant, wastewater, and direct emissions"
+      record_type: "batch mass and moisture; utility meters; fuel and refrigerant inventory; stack or factor records"
+      raw_fields: "lot_id; feed_mass_kg; feed_moisture_percent; dried_mass_kg; dried_moisture_percent; electricity_kWh; steam_kg; fuel_name; fuel_mass_or_energy; heating_value_basis; refrigerant_name; opening_charge_kg; additions_kg; recovery_kg; closing_charge_kg; wastewater_kg; emission_factor_id; measured_emission_kg"
+      collection_method: "Calibrated scales, moisture tests, submeters, invoices and stock reconciliation; stack measurement or approved factor calculation."
+      unit: "kg; % m/m; kWh; MJ"
+      frequency: "Each batch and utility period; refrigerant at service events and annual reconciliation."
+      temporal_coverage: "At least 12 representative months or the full campaign."
+      site_scope: "Each dryer, boiler, generator, heat pump, and refrigeration system."
+      aggregation_rule: "Allocate shared utilities by metered use or documented operating-time/load rule; calculate fuel and refrigerant emissions separately before aggregation."
+      quality_evidence: "Calibration, moisture closure, invoices, fuel analysis, maintenance logs, refrigerant service records, factor provenance, and stack reports."
+    - protocol_id: cp_milling_sieving
+      process_id: "milling_sieving"
+      flow_role: "dried feed, electricity, loose flour, off-spec flour, coarse residue, and dust"
+      record_type: "batch transfer; submeter; acceptance tests; waste and dust-control records"
+      raw_fields: "lot_id; feed_mass_kg; feed_moisture_percent; electricity_kWh; loose_flour_kg; flour_moisture_percent; particle_size_result; off_spec_kg; coarse_residue_kg; rework_kg; captured_dust_kg; emitted_dust_kg"
+      collection_method: "Calibrated scales and submeter; laboratory release tests; dust mass balance or measured exhaust."
+      unit: "kg; % m/m; kWh"
+      frequency: "Each lot or shift; dust measurement at permit frequency."
+      temporal_coverage: "At least 12 representative months or full campaign."
+      site_scope: "Each mill, sifter, blender, and aspiration system."
+      aggregation_rule: "Reconcile input with product, rework, residues, dust, and moisture change; normalize accepted output to reference product."
+      quality_evidence: "Calibration, sieve checks, laboratory results, rework log, filter-change record, and emission test."
+    - protocol_id: cp_facility_sanitation
+      process_id: "facility_sanitation"
+      flow_role: "water, hot water, electricity, sodium hydroxide, sodium hypochlorite, and sanitation wastewater"
+      record_type: "sanitation event log; meters; chemical preparation and discharge records"
+      raw_fields: "event_id; area_or_equipment; method; start_time; water_kg; hot_water_kg; temperature_C; electricity_kWh; chemical_name; solution_mass_kg; active_concentration; wastewater_kg; treatment_destination; verification_result"
+      collection_method: "Meter or event-volume measurement; chemical dilution calculation; written sanitation schedule and verification."
+      unit: "kg; °C; kWh"
+      frequency: "Every sanitation event."
+      temporal_coverage: "At least 12 representative months or full campaign."
+      site_scope: "All food-contact and production-support areas included in the foreground."
+      aggregation_rule: "Assign event totals to the cleaned line's production since the previous equivalent event; disclose multi-product allocation."
+      quality_evidence: "Written procedure, operator log, concentration test, temperature record, verification swab or audit, and discharge record."
+    - protocol_id: cp_packaging_release
+      process_id: "packaging_release"
+      flow_role: "loose feed, electricity, paper sack, polyethylene liner, packed product, and packaging scrap"
+      record_type: "batch transfer; line submeter; bill of materials; stock and scrap records; release laboratory record"
+      raw_fields: "lot_id; loose_feed_kg; electricity_kWh; paper_sack_kg; ldpe_liner_kg; packed_net_kg; retained_sample_kg; paper_scrap_kg; ldpe_scrap_kg; moisture_percent; particle_size_result; grade; package_configuration"
+      collection_method: "Calibrated check-weigher and scales; submeter; procurement and stock reconciliation; release sampling."
+      unit: "kg; % m/m; kWh"
+      frequency: "Each lot or packaging run; inventory reconciliation at least monthly."
+      temporal_coverage: "At least 12 representative months or full campaign."
+      site_scope: "Every packing line in the declared system."
+      aggregation_rule: "Reconcile loose feed with released product, retained samples, rework, waste, and dust; normalize packaging to net product."
+      quality_evidence: "Scale calibration, bill of materials, invoices, stock reconciliation, scrap tickets, and signed release results."
+  calculation_rules:
+    - id: calc_reference_normalization
+      applies_to: "Every foreground exchange"
+      rule: "normalized_exchange = eligible exchange amount / net released product mass; net released product excludes packaging and nonconforming product."
+      inputs:
+        - "exchange amount"
+        - "net released product kg"
+      output: "exchange per kg reference product"
+      source_ids:
+        - eu-pef-2021-2279
+    - id: calc_dry_matter
+      applies_to: "Moist source, intermediate, product, co-product, and waste"
+      rule: "dry_mass = wet_mass × (1 - moisture_percent / 100). Keep original wet mass and moisture result."
+      inputs:
+        - "wet mass"
+        - "moisture % m/m"
+      output: "dry mass kg"
+      source_ids:
+        - fao-who-cxs-176-1989
+    - id: calc_mass_balance
+      applies_to: "Each process and total foreground"
+      rule: "mass closure = identified outputs and measured mass loss divided by identified inputs; investigate differences outside the declared tolerance and never use unexplained loss as an elementary flow."
+      inputs:
+        - input
+        - product
+        - waste
+        - wastewater
+        - "retained sample"
+        - "moisture data"
+      output: "wet- and dry-matter closure"
+      source_ids:
+        - eu-pef-2021-2279
+    - id: calc_active_cleaner
+      applies_to: "Sodium hydroxide and sodium hypochlorite"
+      rule: "active chemical mass = dispensed solution mass × active concentration mass fraction."
+      inputs:
+        - "solution mass"
+        - concentration
+      output: "kg active chemical"
+      source_ids:
+        - fao-who-cxc-1-1969
+    - id: calc_combustion_emissions
+      applies_to: "Each on-site fuel and pollutant"
+      rule: "pollutant mass = fuel activity on declared basis × approved fuel/equipment-specific emission factor; document factor identity and control efficiency."
+      inputs:
+        - "fuel amount"
+        - "heating value"
+        - factor
+        - "control efficiency"
+      output: "kg pollutant per kg product"
+      source_ids:
+        - olaniran-et-al-2017
+        - eu-pef-2021-2279
+    - id: calc_refrigerant_loss
+      applies_to: "Each refrigerant chemical"
+      rule: "loss = opening charge + additions - recovered amount - closing charge; allocate only the share attributable to included systems and period."
+      inputs:
+        - opening
+        - additions
+        - recovery
+        - "closing charge"
+        - output
+      output: "kg refrigerant loss per kg product"
+      source_ids:
+        - ipcc-2019-refrigeration
+    - id: calc_allocation
+      applies_to: "Multi-product operations"
+      rule: "Apply the declared subdivision or allocation rule consistently to all shared inputs and outputs; retain unallocated totals and allocation factors."
+      inputs:
+        - "total exchanges"
+        - "product quantities"
+        - "physical or economic factors"
+      output: "allocated exchanges"
+      source_ids:
+        - eu-pef-2021-2279
+  data_quality_requirements:
+    - id: dq_identity
+      applies_to: "Reference product and source material"
+      requirement: "Botanical species, plant part, CPC 23170 product status, route, grade, blend composition, moisture, particle size, and packaging must be traceable to each released lot."
+      evidence: "Approved specification, supplier records, batch genealogy, and release certificate."
+    - id: dq_temporal
+      applies_to: "Foreground activity data"
+      requirement: "Use at least 12 representative months or the full seasonal campaign; disclose shutdowns, abnormal batches, and extrapolation."
+      evidence: "Dated meter, production, invoice, inventory, maintenance, and laboratory records."
+    - id: dq_completeness
+      applies_to: "Every process"
+      requirement: "Reconcile all known material and energy inputs with products, co-products, wastes, wastewater, and direct emissions; document zero and not-applicable decisions for each atomic card."
+      evidence: "Process-level wet and dry mass balances, energy reconciliation, and completeness checklist."
+    - id: dq_measurement
+      applies_to: "Scales, meters, moisture, particle size, emissions, and chemical concentration"
+      requirement: "Use calibrated equipment and retain method, sampling frequency, detection limit, and uncertainty where material."
+      evidence: "Calibration certificates, methods, quality-control charts, and test reports."
+    - id: dq_geography_technology
+      applies_to: "Background links and shared utilities"
+      requirement: "Match geography, voltage, fuel, steam source, dryer technology, wastewater treatment, refrigerant, and packaging material to the foreground period and site."
+      evidence: "Supplier declarations, contracts, invoices, equipment records, and dataset metadata."
+    - id: dq_provisional_ranges
+      applies_to: "Every reasoned_estimate range"
+      requirement: "Treat the range only as a temporary screening prior; do not replace collected values with its midpoint and replace or explicitly review it before reviewed_methodology."
+      evidence: "Review record identifying retained, replaced, or removed ranges."
+validation_rules:
+  - rule_id: validate_reference_identity
+    applies_to: "Reference flow"
+    rule: "Require UUID ec00d815-ccbe-4e9d-845a-efc929f58f56, Product flow, CPC 3.0 code 23170 and title, Mass UUID 93a60a56-a3c8-11da-a746-0800200b9a66, Units of mass UUID 93a60a57-a4c8-11da-a746-0800200c9a66, and kg."
+    source_ids:
+      - un-cpc-3-23170
+  - rule_id: validate_scope_exclusions
+    applies_to: "Product identity"
+    rule: "Reject cereal flour, oilseed or oleaginous-fruit flour or meal, mustard flour, isolated starch, mixes or doughs, CPC 01961 planting material, CPC 01962 flowers, and any compounded product whose function is not vegetable flour or meal."
+    source_ids:
+      - un-cpc-3-23170
+  - rule_id: validate_qualifiers
+    applies_to: "Product and dataset metadata"
+    rule: "Fail completeness when botanical identity, route, starting condition, moisture, particle size, grade, packaging, geography, or period is missing."
+    source_ids:
+      - fao-who-cxs-176-1989
+      - eu-pef-2021-2279
+  - rule_id: validate_cassava_moisture
+    applies_to: "Cassava flour for direct human consumption"
+    rule: "Require measured release moisture <= 13% m/m unless a stricter destination requirement applies; for other botanical products require their applicable declared specification rather than silently applying the cassava limit."
+    source_ids:
+      - fao-who-cxs-176-1989
+  - rule_id: validate_atomic_inventory
+    applies_to: "Process inventory"
+    rule: "Electricity, steam, hot water, each fuel, each refrigerant, each cleaner, each packaging component, each waste stream, wastewater, and each pollutant must remain separate atomic exchanges."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: validate_mass_balance
+    applies_to: "Every process"
+    rule: "Require documented wet- and dry-matter closure; investigate unexplained differences and prohibit balancing with an invented emission."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: validate_route_zeroes
+    applies_to: "Conditional exchanges"
+    rule: "A zero or not-applicable entry requires evidence that the named exchange is absent; an unmetered or unknown value is a data gap, not zero."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: validate_sanitation
+    applies_to: "Cleaning and disinfection"
+    rule: "Require written method, frequency, chemical identity and concentration, water temperature when relevant, responsibility, and monitoring or verification evidence."
+    source_ids:
+      - fao-who-cxc-1-1969
+  - rule_id: validate_allocation
+    applies_to: "Co-products and shared utilities"
+    rule: "Require subdivision evidence or a disclosed physical/economic allocation basis, factors summing to one, consistent application, and sensitivity where economic allocation is used."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: validate_provisional_ranges
+    applies_to: "Reasoned estimates"
+    rule: "Flag every provisional range for review and prohibit presenting it as an observed, allowed, or source-backed range."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "Gate-to-gate foreground production dataset for 1 kg net packed other vegetable flour or meal."
+  downstream_use: "secondary_dataset; background_dataset after independent review and linkage to representative upstream and treatment datasets."
+  allowed_use: "Product-specific process or lifecycle models that match the declared botanical source, route, moisture, grade, geography, period, allocation, and package."
+  excluded_use: "Direct substitution for cereal flour, oilseed meal, starch, mustard flour, mixes, planting material, cut flowers, unqualified vegetable powders, agricultural cultivation, or cradle-to-grave claims without additional stages."
+  required_metadata: "PCR id and version; reference UUIDs; botanical species and plant part; blend shares; starting state; route; facility and geography; period; technology; moisture and particle size; grade; yields; energy and fuel sources; refrigerants; cleaning chemicals; wastewater and waste destinations; direct emissions; packaging; allocation; upstream dataset identities; data gaps."
+  required_quality_disclosure: "Coverage period and sites; primary-data share; calibration and sampling; mass and energy closure; allocation; background-data representativeness; provisional estimates; unresolved UUIDs; exclusions and limitations."
+  update_trigger: "Change in botanical source or blend, starting condition, detoxification or conditioning route, dryer or fuel, refrigeration system, cleaner, packaging, co-product status, allocation, facility, geography, product specification, or a material change in annual normalized exchange."
+data_sources:
+  - id: "un-cpc-3-23170"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, Central Product Classification Version 3.0, Explanatory Notes, 30 June 2025, subclass 23170. https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Exp_Notes_30Jun2025.pdf (retrieved 2026-08-20)."
+    used_for: "Official category identity and separation from CPC 01961 and 01962 and other product subclasses."
+  - id: "fao-who-cxs-176-1989"
+    type: "standard"
+    reference: "FAO/WHO Codex Alimentarius, CXS 176-1989, Standard for Edible Cassava Flour, adopted 1989, revised 1995, amended 2013. https://www.fao.org/input/download/standards/59/CXS_176e.pdf (retrieved 2026-08-20)."
+    used_for: "Representative product definition, grinding or milling and sifting route, bitter-cassava soaking, safety, and 13% m/m moisture limit."
+  - id: "fao-save-and-grow-cassava-2013"
+    type: "official_guidance"
+    reference: "FAO, Save and Grow: Cassava—A guide to sustainable production intensification, 2013, Chapter 7. https://www.fao.org/4/i3278e/i3278e.pdf (retrieved 2026-08-20)."
+    used_for: "High-quality cassava flour process decomposition: peeling, washing, grating, pressing, disintegration, sifting, drying, milling, screening, packaging, and storage."
+  - id: "fao-utilising-root-crops"
+    type: "handbook"
+    reference: "FAO, Utilising Root Crops, Section 2: Root crop flour. https://www.fao.org/4/x5049E/x5049E04.htm (retrieved 2026-08-20)."
+    used_for: "Cassava, sweet potato, taro, and yam flour route; washing, peeling, slicing, drying, grinding, sieving, sealed bags or sacks, and storage."
+  - id: "fao-who-cxc-1-1969"
+    type: "standard"
+    reference: "FAO/WHO Codex Alimentarius, CXC 1-1969, General Principles of Food Hygiene, 2022 revision. https://www.fao.org/fao-who-codexalimentarius/sh-proxy/en/?lnk=1&url=https%3A%2F%2Fworkspace.fao.org%2Fsites%2Fcodex%2FStandards%2FCXC+1-1969%2FCXC_001e.pdf (retrieved 2026-08-20)."
+    used_for: "Atomic cleaning inputs, hot-water rinsing, chemical concentration, written sanitation procedures, monitoring, and verification."
+  - id: "olaniran-et-al-2017"
+    type: "literature"
+    reference: "Olaniran, J. A.; Jekayinfa, S. O.; Agbarha, H. A. (2017). Life cycle assessment of cassava flour production: A case study in Southwest Nigeria. Journal of Engineering and Technology Research 9(1), 6-13. DOI: 10.5897/JETR2015.0580. OpenAlex: W2753030442. Full text: https://academicjournals.org/journal/JETR/article-full-text-pdf/F4996CC65461 (retrieved 2026-08-20)."
+    used_for: "Peer-reviewed full-text evidence for unit operations, foreground inventory, drying and milling energy relevance, coal and diesel, wastewater, and CO2, CH4, N2O, NOx, and SO2 exchanges."
+  - id: "eu-pef-2021-2279"
+    type: "official_guidance"
+    reference: "European Commission Recommendation (EU) 2021/2279 on the use of Environmental Footprint methods, Annex I, as corrected 23 May 2022. https://eur-lex.europa.eu/eli/reco/2021/2279/corrigendum/2022-05-23/oj/eng (retrieved 2026-08-20)."
+    used_for: "Company-specific process data, complete material/energy/product/waste/emission inventory, calculation from activity data and factors, data quality, and allocation hierarchy."
+  - id: "ipcc-2019-refrigeration"
+    type: "method_factor"
+    reference: "IPCC, 2019 Refinement to the 2006 IPCC Guidelines for National Greenhouse Gas Inventories, Volume 3, Chapter 7, Emissions of Fluorinated Substitutes for Ozone Depleting Substances. https://www.ipcc-nggip.iges.or.jp/public/2019rf/vol3.html (retrieved 2026-08-20)."
+    used_for: "Refrigerant-specific charge, service, recovery, and leakage accounting."
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:13acf1365067d375a0052248f6ef954d7748489814a7af6b8a7386febd65b479"
+  generated_content_sha256: "sha256:cd4c9c6006b96d2afd4a67c59298e01a43a7c4615f8f5380b2b3e8af0fa423f7"

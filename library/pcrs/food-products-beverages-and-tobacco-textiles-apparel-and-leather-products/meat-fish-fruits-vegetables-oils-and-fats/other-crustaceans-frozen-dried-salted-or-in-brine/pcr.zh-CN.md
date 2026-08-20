@@ -40,7 +40,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 1 |
-| 参考产品流 | Other crustaceans, frozen, dried, salted or in brine `ecae55b8-a320-44e8-9ea2-98d7ff34e4e3` |
+| 参考产品流 | 其他甲壳类动物，冷冻、干制、腌制或盐渍 `ecae55b8-a320-44e8-9ea2-98d7ff34e4e3` |
 | 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | kg |
@@ -516,7 +516,7 @@ sync_with: pcr.en-US.md
 
 这是扣除包装及任何不计入销售质量的自由液体或包冰后的定量参考输出。
 
-- 选定流：Other crustaceans, frozen, dried, salted or in brine `ecae55b8-a320-44e8-9ea2-98d7ff34e4e3`
+- 选定流：其他甲壳类动物，冷冻、干制、腌制或盐渍 `ecae55b8-a320-44e8-9ea2-98d7ff34e4e3`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：恰好 1 kg 净参考产品
 - 数值来源模式：固定值（`fixed_value`）

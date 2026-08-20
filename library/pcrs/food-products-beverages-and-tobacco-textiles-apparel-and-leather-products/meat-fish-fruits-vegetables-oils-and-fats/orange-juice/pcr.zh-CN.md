@@ -40,7 +40,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 1 kg |
-| 参考产品流 | Orange juice `858ebbd0-452b-443d-9964-94ee3f2c1c57` |
+| 参考产品流 | 橙汁 `858ebbd0-452b-443d-9964-94ee3f2c1c57` |
 | 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | kg |
@@ -74,7 +74,7 @@ sync_with: pcr.en-US.md
 
 | rule_id | 适用对象 | 规则 | source_ids |
 | --- | --- | --- | --- |
-| `boundary_foreground_route` | 橙汁前景生产 | 从所声明起始条件到制造商门口交付，纳入所有现场或受控操作，包括清洗和分级、榨汁和精制、实际采用的浓缩或复原、稳定化、储存、灌装或散装装载、就地清洗，以及可归属于该路线的现场废物或废水处理。 | `fao-fruit-juice-processing-2001`; `codex-cxs-247-2005` |
+| `boundary_foreground_route` | 橙汁前景生产 | 从所声明起始条件到制造商门口交付，纳入所有现场或受控操作，包括清洗和分级、榨汁和精制、实际采用的浓缩或复原、稳定化、储存、灌装或散装装载、就地清洗，以及可归属于该路线的现场废物或废水处理。 | `fao-fruit-juice-processing-2001`; `fao-who-cxs-247-2005` |
 | `boundary_upstream_inputs` | 产品、材料、能源、水、包装和处理输入 | 将所有跨越前景边界的输入关联到上游数据集。若鲜橙进入工厂，果园种植属于上游；若外购浓缩汁是起始条件，浓缩汁生产属于上游。 | `eu-pef-method-2021` |
 | `boundary_recursive_orange_input` | 外购橙汁或浓缩橙汁 | 在供应商门口记录一次外购橙产品并要求其上游数据集。仅纳入报告设施接收后实际实施的转化。 | `unsd-cpc-3-2025` |
 | `boundary_downstream_exclusions` | 配送、使用和生命末期 | 前景数据集不包括所声明交付点之后的配送、零售和消费者冷藏、消费者制备及包装生命末期，除非研究明确增加并标识这些阶段。 | `eu-pef-method-2021` |
@@ -202,20 +202,65 @@ sync_with: pcr.en-US.md
 - 证据类型：由采集数据计算（`calculated_from_collection`）
 - 采集协议：`cp_material_mass_balance`
 
-###### 榨汁加工助剂与补充水（`extraction_aids_water`）
+###### 提取补充水（`extraction_makeup_water`）
 
-仅在实际使用并跨越前景边界时，记录饮用水或工艺水、允许使用的酶、消泡剂、过滤助剂和其他加工助剂。
+声明的提取与精制路线使用时，将提取补充水作为独立流记录。
 
-- 选定流：每种实际使用物料分别选择数据集特定 Tiangong 产品流；构建前景数据包时选择并回读确认每个 UUID
-- 流属性/单位：各选定流的属性和参考单位
-- 数量规则：按物料记录采购量、计量量或批次投加量
+- 选定流：与设施水源匹配的饮用水或过程水供应
+- 流属性/单位：Volume / m3
+- 数量规则：计量或批记录的加水量
 - 数值来源模式：前景记录（`foreground_record`）
-- 适用范围：技术特定（`technology_specific`）
+- 适用范围：产品特定（`product_specific`）
 - 归一化基准：每 kg 中间橙汁输出
 - 基准类型：过程输出（`process_output`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_material_mass_balance`
-- 来源：`codex-cxs-247-2005`
+- 来源：`fao-who-cxs-247-2005`; `fao-fruit-juice-processing-2001`
+
+###### 果胶酶制剂（`extraction_pectinase`）
+
+声明的提取与精制路线使用时，将果胶酶制剂作为独立流记录。
+
+- 选定流：果胶酶制剂产品流
+- 流属性/单位：Mass / kg
+- 数量规则：按交付浓度计的实测批次投加量
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：产品特定（`product_specific`）
+- 归一化基准：每 kg 中间橙汁输出
+- 基准类型：过程输出（`process_output`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_material_mass_balance`
+- 来源：`fao-who-cxs-247-2005`; `fao-fruit-juice-processing-2001`
+
+###### 抗坏血酸加工助剂（`extraction_ascorbic_acid`）
+
+声明的提取与精制路线使用时，将抗坏血酸加工助剂作为独立流记录。
+
+- 选定流：抗坏血酸产品流
+- 流属性/单位：Mass / kg
+- 数量规则：实测批次投加量
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：产品特定（`product_specific`）
+- 归一化基准：每 kg 中间橙汁输出
+- 基准类型：过程输出（`process_output`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_material_mass_balance`
+- 来源：`fao-who-cxs-247-2005`; `fao-fruit-juice-processing-2001`
+
+###### 过滤助剂（`extraction_filter_aid`）
+
+声明的提取与精制路线使用时，将过滤助剂作为独立流记录。
+
+- 选定流：声明的矿物或纤维素过滤助剂产品流
+- 流属性/单位：Mass / kg
+- 数量规则：提取或精制设备的实测领用量
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：产品特定（`product_specific`）
+- 归一化基准：每 kg 中间橙汁输出
+- 基准类型：过程输出（`process_output`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_material_mass_balance`
+- 来源：`fao-who-cxs-247-2005`; `fao-fruit-juice-processing-2001`
 
 ##### 废物流
 
@@ -238,15 +283,60 @@ sync_with: pcr.en-US.md
 - 基准类型：过程输出（`process_output`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_product_quality_mass`
-- 来源：`codex-cxs-247-2005`; `fao-fruit-juice-processing-2001`
+- 来源：`fao-who-cxs-247-2005`; `fao-fruit-juice-processing-2001`
 
-###### 可销售橙皮、果肉、汁胞、籽、油或其他柑橘共产品（`extraction_coproducts`）
+###### 可销售橙皮（`coproduct_orange_peel`）
 
-按共产品分别记录外销量、产品规格、市场状态和去向。没有经济产品功能的物料改记为废物。
+将该输出共产品的质量、规格、市场状态和去向分别记录；不具有经济产品功能的材料按废物处理。
 
-- 选定流：每种可销售共产品分别选择数据集特定 Tiangong 产品流；构建前景数据包时选择并回读确认每个 UUID
+- 选定流：橙皮共产品流
 - 流属性/单位：Mass / kg
-- 数量规则：按共产品记录实测外运质量
+- 数量规则：实测输出质量
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+- 归一化基准：每 kg 中间橙汁输出
+- 基准类型：过程输出（`process_output`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_coproduct_allocation`
+- 来源：`fao-fruit-juice-processing-2001`
+
+###### 可销售橙果肉与汁胞（`coproduct_orange_pulp_cells`）
+
+将该输出共产品的质量、规格、市场状态和去向分别记录；不具有经济产品功能的材料按废物处理。
+
+- 选定流：橙果肉或汁胞共产品流
+- 流属性/单位：Mass / kg
+- 数量规则：实测输出质量
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+- 归一化基准：每 kg 中间橙汁输出
+- 基准类型：过程输出（`process_output`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_coproduct_allocation`
+- 来源：`fao-fruit-juice-processing-2001`
+
+###### 可销售橙籽（`coproduct_orange_seeds`）
+
+将该输出共产品的质量、规格、市场状态和去向分别记录；不具有经济产品功能的材料按废物处理。
+
+- 选定流：橙籽共产品流
+- 流属性/单位：Mass / kg
+- 数量规则：实测输出质量
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+- 归一化基准：每 kg 中间橙汁输出
+- 基准类型：过程输出（`process_output`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_coproduct_allocation`
+- 来源：`fao-fruit-juice-processing-2001`
+
+###### 回收橙精油（`coproduct_orange_oil`）
+
+将该输出共产品的质量、规格、市场状态和去向分别记录；不具有经济产品功能的材料按废物处理。
+
+- 选定流：橙精油产品流
+- 流属性/单位：Mass / kg
+- 数量规则：实测输出质量
 - 数值来源模式：前景记录（`foreground_record`）
 - 适用范围：场址特定（`site_specific`）
 - 归一化基准：每 kg 中间橙汁输出
@@ -257,20 +347,65 @@ sync_with: pcr.en-US.md
 
 ##### 废物流
 
-###### 榨汁残余物与废水（`extraction_residues_wastewater`）
+###### 废橙皮（`waste_orange_peel`）
 
-按物理状态和处理去向，分别记录不可销售橙皮、果肉、籽、污泥和废水。
+将废橙皮按处理去向分开，在回收抵扣或净额处理前记录。
 
-- 选定流：每种物料和去向分别选择数据集特定 Tiangong 废物流或废水流；构建前景数据包时选择并回读确认每个 UUID
-- 流属性/单位：固体为 Mass / kg；废水为 Volume / m3
-- 数量规则：按物料类别和去向记录实测质量或排放体积
-- 数值来源模式：前景记录（`foreground_record`）
+- 选定流：橙皮食品残余废物流
+- 流属性/单位：Mass / kg
+- 数量规则：未作为共产品放行的实测橙皮量
+- 数值来源模式：计算值（`calculated_value`）
 - 适用范围：场址特定（`site_specific`）
 - 归一化基准：每 kg 中间橙汁输出
 - 基准类型：过程输出（`process_output`）
-- 证据类型：采集记录（`collected_record`）
+- 证据类型：采集计算（`calculated_from_collection`）
 - 采集协议：`cp_water_wastewater`
-- 来源：`fao-fruit-juice-processing-2001`; `world-bank-fruit-vegetable-processing-1998`
+- 来源：`world-bank-fruit-vegetable-processing-1998`
+
+###### 废橙果肉与汁胞（`waste_orange_pulp_cells`）
+
+将废橙果肉与汁胞按处理去向分开，在回收抵扣或净额处理前记录。
+
+- 选定流：橙果肉或汁胞残余废物流
+- 流属性/单位：Mass / kg
+- 数量规则：未作为共产品放行的实测果肉与汁胞量
+- 数值来源模式：计算值（`calculated_value`）
+- 适用范围：场址特定（`site_specific`）
+- 归一化基准：每 kg 中间橙汁输出
+- 基准类型：过程输出（`process_output`）
+- 证据类型：采集计算（`calculated_from_collection`）
+- 采集协议：`cp_water_wastewater`
+- 来源：`world-bank-fruit-vegetable-processing-1998`
+
+###### 废橙籽（`waste_orange_seeds`）
+
+将废橙籽按处理去向分开，在回收抵扣或净额处理前记录。
+
+- 选定流：橙籽残余废物流
+- 流属性/单位：Mass / kg
+- 数量规则：未作为共产品放行的实测橙籽量
+- 数值来源模式：计算值（`calculated_value`）
+- 适用范围：场址特定（`site_specific`）
+- 归一化基准：每 kg 中间橙汁输出
+- 基准类型：过程输出（`process_output`）
+- 证据类型：采集计算（`calculated_from_collection`）
+- 采集协议：`cp_water_wastewater`
+- 来源：`world-bank-fruit-vegetable-processing-1998`
+
+###### 榨汁废水（`extraction_wastewater`）
+
+将榨汁废水按处理去向分开，在回收抵扣或净额处理前记录。
+
+- 选定流：与接收处理路线匹配的废水流
+- 流属性/单位：Volume / m3
+- 数量规则：计量排放量或经核对的榨汁水量平衡
+- 数值来源模式：计算值（`calculated_value`）
+- 适用范围：场址特定（`site_specific`）
+- 归一化基准：每 kg 中间橙汁输出
+- 基准类型：过程输出（`process_output`）
+- 证据类型：采集计算（`calculated_from_collection`）
+- 采集协议：`cp_water_wastewater`
+- 来源：`world-bank-fruit-vegetable-processing-1998`
 
 ##### 基本流
 
@@ -294,19 +429,95 @@ sync_with: pcr.en-US.md
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_product_quality_mass`
 
-###### 浓缩能源与冷却（`concentration_energy_cooling`）
+###### 浓缩电力（`concentration_electricity`）
 
-分别记录电力、燃料、蒸汽、热、冷却介质和制冷剂补充量。不得合并热量与电量。
+将浓缩电力作为纳入浓缩路线的独立流记录。
 
-- 选定流：每种能源载体或公用工程分别选择数据集特定 Tiangong 产品流；构建前景数据包时选择并回读确认每个 UUID
-- 流属性/单位：采用选定流参考单位的能量、质量或体积
-- 数量规则：计量用量，或根据设备和公用工程记录进行有依据的分配
-- 数值来源模式：前景记录（`foreground_record`）
+- 选定流：与设施电压和地域匹配的外购电力供应
+- 流属性/单位：Energy / kWh
+- 数量规则：蒸发器、泵、真空和冷却系统的计量电力
+- 数值来源模式：计算值（`calculated_value`）
 - 适用范围：技术特定（`technology_specific`）
-- 归一化基准：每 kg 浓缩橙汁输出
+- 归一化基准：每 kg 浓缩橙汁
 - 基准类型：过程输出（`process_output`）
-- 证据类型：采集记录（`collected_record`）
+- 证据类型：采集计算（`calculated_from_collection`）
 - 采集协议：`cp_utility_records`
+- 来源：eu-jrc-fdm-bref-2019
+
+###### 浓缩蒸汽（`concentration_steam`）
+
+将浓缩蒸汽作为纳入浓缩路线的独立流记录。
+
+- 选定流：与声明蒸汽条件匹配的外购蒸汽供应
+- 流属性/单位：Energy 或 Mass / MJ 或 kg 蒸汽
+- 数量规则：按蒸汽条件和冷凝水回流修正的仪表读数
+- 数值来源模式：计算值（`calculated_value`）
+- 适用范围：技术特定（`technology_specific`）
+- 归一化基准：每 kg 浓缩橙汁
+- 基准类型：过程输出（`process_output`）
+- 证据类型：采集计算（`calculated_from_collection`）
+- 采集协议：`cp_utility_records`
+- 来源：eu-jrc-fdm-bref-2019
+
+###### 浓缩天然气（`concentration_natural_gas`）
+
+将浓缩天然气作为纳入浓缩路线的独立流记录。
+
+- 选定流：与设施地域和压力匹配的天然气供应
+- 流属性/单位：Energy 或 Volume / MJ（低位热值）或 Nm3
+- 数量规则：燃料仪表读数，并保留低位热值和标准状态换算
+- 数值来源模式：计算值（`calculated_value`）
+- 适用范围：技术特定（`technology_specific`）
+- 归一化基准：每 kg 浓缩橙汁
+- 基准类型：燃料清单（`fuel_inventory`）
+- 证据类型：采集计算（`calculated_from_collection`）
+- 采集协议：`cp_utility_records`
+- 来源：eu-jrc-fdm-bref-2019
+
+###### 浓缩冷却补水（`concentration_cooling_water`）
+
+将浓缩冷却补水作为纳入浓缩路线的独立流记录。
+
+- 选定流：与设施水源匹配的过程水供应
+- 流属性/单位：Volume / m3
+- 数量规则：分开循环和排污后的补水仪表读数
+- 数值来源模式：计算值（`calculated_value`）
+- 适用范围：技术特定（`technology_specific`）
+- 归一化基准：每 kg 浓缩橙汁
+- 基准类型：过程输出（`process_output`）
+- 证据类型：采集计算（`calculated_from_collection`）
+- 采集协议：`cp_utility_records`
+- 来源：eu-jrc-fdm-bref-2019
+
+###### 浓缩 R717 补充量（`concentration_r717_makeup`）
+
+将浓缩 R717 补充量作为纳入浓缩路线的独立流记录。
+
+- 选定流：氨（R717）制冷剂产品流
+- 流属性/单位：Mass / kg
+- 数量规则：维修日志补充质量；循环充注量不是消耗量
+- 数值来源模式：计算值（`calculated_value`）
+- 适用范围：技术特定（`technology_specific`）
+- 归一化基准：每 kg 浓缩橙汁
+- 基准类型：过程输出（`process_output`）
+- 证据类型：采集计算（`calculated_from_collection`）
+- 采集协议：`cp_utility_records`
+- 来源：eu-jrc-fdm-bref-2019
+
+###### 浓缩 R404A 补充量（`concentration_r404a_makeup`）
+
+将浓缩 R404A 补充量作为纳入浓缩路线的独立流记录。
+
+- 选定流：R404A 制冷剂产品流
+- 流属性/单位：Mass / kg
+- 数量规则：维修日志补充质量；循环充注量不是消耗量
+- 数值来源模式：计算值（`calculated_value`）
+- 适用范围：技术特定（`technology_specific`）
+- 归一化基准：每 kg 浓缩橙汁
+- 基准类型：过程输出（`process_output`）
+- 证据类型：采集计算（`calculated_from_collection`）
+- 采集协议：`cp_utility_records`
+- 来源：eu-jrc-fdm-bref-2019
 
 ##### 废物流
 
@@ -329,54 +540,116 @@ sync_with: pcr.en-US.md
 - 基准类型：过程输出（`process_output`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_product_quality_mass`
-- 来源：`codex-cxs-247-2005`; `fao-fruit-juice-processing-2001`
+- 来源：`fao-who-cxs-247-2005`; `fao-fruit-juice-processing-2001`
 
-###### 回收橙香气、挥发性组分或橙油（`concentration_recovered_components`）
+###### 回收橙香气（`concentration_recovered_aroma`）
 
-将单独外售的回收组分记录为共产品。返回同一批橙汁的组分属于内部转移，不是单独产品输出。
+在内部复用、出售或判定为废物前，按去向分别记录该回收组分。
 
-- 选定流：每种外售组分选择数据集特定 Tiangong 产品流；构建前景数据包时选择 UUID 并回读确认
+- 选定流：橙香气产品流
 - 流属性/单位：Mass / kg
-- 数量规则：按组分记录实测外运质量
+- 数量规则：实测回收质量
 - 数值来源模式：前景记录（`foreground_record`）
 - 适用范围：场址特定（`site_specific`）
 - 归一化基准：每 kg 浓缩橙汁输出
 - 基准类型：过程输出（`process_output`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_coproduct_allocation`
-- 来源：`codex-cxs-247-2005`; `fao-fruit-juice-processing-2001`
+- 来源：`fao-fruit-juice-processing-2001`
 
-##### 废物流
+###### 回收橙挥发性组分（`concentration_recovered_volatiles`）
 
-###### 浓缩冷凝水与清洗废水（`concentration_condensate_wastewater`）
+在内部复用、出售或判定为废物前，按去向分别记录该回收组分。
 
-冷凝水回用作为内部转移；仅将净排放量及其处理去向记录为废水。
-
-- 选定流：与排放或处理去向匹配的数据集特定 Tiangong 废水流；构建前景数据包时选择 UUID 并回读确认
-- 流属性/单位：Volume / m3
-- 数量规则：扣除内部回用后的计量净排放量
+- 选定流：橙挥发性组分产品流
+- 流属性/单位：Mass / kg
+- 数量规则：实测回收质量
 - 数值来源模式：前景记录（`foreground_record`）
 - 适用范围：场址特定（`site_specific`）
 - 归一化基准：每 kg 浓缩橙汁输出
 - 基准类型：过程输出（`process_output`）
 - 证据类型：采集记录（`collected_record`）
-- 采集协议：`cp_water_wastewater`
+- 采集协议：`cp_coproduct_allocation`
+- 来源：`fao-fruit-juice-processing-2001`
 
-##### 基本流
+###### 回收橙油（`concentration_recovered_oil`）
 
-###### 浓缩与储存期间释放的制冷剂（`concentration_refrigerant_loss`）
+在内部复用、出售或判定为废物前，按去向分别记录该回收组分。
 
-按制冷剂种类记录实测或盘存平衡得到的对空气损失；不得将制冷剂采购量直接记录为排放。
-
-- 选定流：所释放制冷剂对应的数据集特定 Tiangong 基本流；构建前景数据包时选择 UUID 并回读确认
+- 选定流：橙精油产品流
 - 流属性/单位：Mass / kg
-- 数量规则：分配至浓缩和浓缩汁储存的制冷剂盘存平衡
+- 数量规则：实测回收质量
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：场址特定（`site_specific`）
+- 归一化基准：每 kg 浓缩橙汁输出
+- 基准类型：过程输出（`process_output`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_coproduct_allocation`
+- 来源：`fao-fruit-juice-processing-2001`
+
+##### 废物流
+
+###### 浓缩冷凝液（`concentration_condensate`）
+
+按复用、排放或处理去向分别记录蒸发器冷凝液。
+
+- 选定流：过程冷凝液流
+- 流属性/单位：Volume / m3
+- 数量规则：计量冷凝液或浓缩水量平衡
 - 数值来源模式：计算值（`calculated_value`）
 - 适用范围：场址特定（`site_specific`）
 - 归一化基准：每 kg 浓缩橙汁输出
 - 基准类型：过程输出（`process_output`）
-- 证据类型：由采集数据计算（`calculated_from_collection`）
+- 证据类型：采集计算（`calculated_from_collection`）
+- 采集协议：`cp_water_wastewater`
+- 来源：`world-bank-fruit-vegetable-processing-1998`
+
+###### 浓缩设备清洗废水（`concentration_cleaning_wastewater`）
+
+将浓缩设备清洗废水与过程冷凝液分开记录。
+
+- 选定流：与接收处理路线匹配的废水流
+- 流属性/单位：Volume / m3
+- 数量规则：计量排放量或有记录的清洗水量平衡
+- 数值来源模式：计算值（`calculated_value`）
+- 适用范围：场址特定（`site_specific`）
+- 归一化基准：每 kg 浓缩橙汁输出
+- 基准类型：过程输出（`process_output`）
+- 证据类型：采集计算（`calculated_from_collection`）
+- 采集协议：`cp_water_wastewater`
+- 来源：`world-bank-fruit-vegetable-processing-1998`
+
+##### 基本流
+
+###### 在浓缩与储存期间释放的 R717（`concentration_r717_emission`）
+
+按物质分别记录实测或核对的制冷剂损失；不得合并不同制冷剂。
+
+- 选定流：排放至空气的氨（R717）基本流
+- 流属性/单位：Mass / kg
+- 数量规则：补充充注量减去有记录回收量和库存变化，并分配至纳入设备
+- 数值来源模式：计算值（`calculated_value`）
+- 适用范围：技术特定（`technology_specific`）
+- 归一化基准：每 kg 浓缩橙汁
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：采集计算（`calculated_from_collection`）
 - 采集协议：`cp_utility_records`
+- 来源：`eu-jrc-fdm-bref-2019`
+
+###### 在浓缩与储存期间释放的 R404A（`concentration_r404a_emission`）
+
+按物质分别记录实测或核对的制冷剂损失；不得合并不同制冷剂。
+
+- 选定流：排放至空气的 R404A 基本流
+- 流属性/单位：Mass / kg
+- 数量规则：补充充注量减去有记录回收量和库存变化，并分配至纳入设备
+- 数值来源模式：计算值（`calculated_value`）
+- 适用范围：技术特定（`technology_specific`）
+- 归一化基准：每 kg 浓缩橙汁
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：采集计算（`calculated_from_collection`）
+- 采集协议：`cp_utility_records`
+- 来源：`eu-jrc-fdm-bref-2019`
 
 ### 过程：橙汁复原与调配（`juice_reconstitution_blending`）
 
@@ -397,7 +670,7 @@ sync_with: pcr.en-US.md
 - 基准类型：过程输出（`process_output`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_product_quality_mass`
-- 来源：`codex-cxs-247-2005`
+- 来源：`fao-who-cxs-247-2005`
 
 ###### 饮用级复原水（`reconstitution_water`）
 
@@ -412,22 +685,82 @@ sync_with: pcr.en-US.md
 - 基准类型：过程输出（`process_output`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_product_quality_mass`
-- 来源：`codex-cxs-247-2005`
+- 来源：`fao-who-cxs-247-2005`
 
-###### 允许的橙组分、配料和加工助剂（`blending_components_aids`）
+###### 复原橙香气（`blending_orange_aroma`）
 
-分别记录每种物理恢复的橙香气、挥发性组分、果肉或汁胞、允许的配料和加工助剂。不得把未声明物料并入平衡流。
+仅在法规允许、已声明且实际加入时，将复原橙香气单独记录；不得用作平衡流。
 
-- 选定流：每种物料分别选择数据集特定 Tiangong 产品流；构建前景数据包时选择并回读确认每个 UUID
-- 流属性/单位：各选定流的属性和参考单位
-- 数量规则：按物料记录实测批次添加量
+- 选定流：橙香气产品流
+- 流属性/单位：Mass / kg
+- 数量规则：实测批次添加量
 - 数值来源模式：前景记录（`foreground_record`）
 - 适用范围：产品特定（`product_specific`）
-- 归一化基准：每 kg 调配橙汁输出
+- 归一化基准：每 kg 混合橙汁输出
 - 基准类型：过程输出（`process_output`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_material_mass_balance`
-- 来源：`codex-cxs-247-2005`
+- 来源：`fao-who-cxs-247-2005`
+
+###### 复原橙挥发性组分（`blending_orange_volatiles`）
+
+仅在法规允许、已声明且实际加入时，将复原橙挥发性组分单独记录；不得用作平衡流。
+
+- 选定流：橙挥发性组分产品流
+- 流属性/单位：Mass / kg
+- 数量规则：实测批次添加量
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：产品特定（`product_specific`）
+- 归一化基准：每 kg 混合橙汁输出
+- 基准类型：过程输出（`process_output`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_material_mass_balance`
+- 来源：`fao-who-cxs-247-2005`
+
+###### 复原橙果肉与汁胞（`blending_orange_pulp_cells`）
+
+仅在法规允许、已声明且实际加入时，将复原橙果肉与汁胞单独记录；不得用作平衡流。
+
+- 选定流：橙果肉或汁胞产品流
+- 流属性/单位：Mass / kg
+- 数量规则：实测批次添加量
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：产品特定（`product_specific`）
+- 归一化基准：每 kg 混合橙汁输出
+- 基准类型：过程输出（`process_output`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_material_mass_balance`
+- 来源：`fao-who-cxs-247-2005`
+
+###### 添加抗坏血酸（`blending_ascorbic_acid`）
+
+仅在法规允许、已声明且实际加入时，将添加抗坏血酸单独记录；不得用作平衡流。
+
+- 选定流：抗坏血酸产品流
+- 流属性/单位：Mass / kg
+- 数量规则：实测批次添加量
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：产品特定（`product_specific`）
+- 归一化基准：每 kg 混合橙汁输出
+- 基准类型：过程输出（`process_output`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_material_mass_balance`
+- 来源：`fao-who-cxs-247-2005`
+
+###### 添加柠檬酸（`blending_citric_acid`）
+
+仅在法规允许、已声明且实际加入时，将添加柠檬酸单独记录；不得用作平衡流。
+
+- 选定流：柠檬酸产品流
+- 流属性/单位：Mass / kg
+- 数量规则：实测批次添加量
+- 数值来源模式：前景记录（`foreground_record`）
+- 适用范围：产品特定（`product_specific`）
+- 归一化基准：每 kg 混合橙汁输出
+- 基准类型：过程输出（`process_output`）
+- 证据类型：采集记录（`collected_record`）
+- 采集协议：`cp_material_mass_balance`
+- 来源：`fao-who-cxs-247-2005`
 
 ##### 废物流
 
@@ -450,7 +783,7 @@ sync_with: pcr.en-US.md
 - 基准类型：过程输出（`process_output`）
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_product_quality_mass`
-- 来源：`codex-cxs-247-2005`
+- 来源：`fao-who-cxs-247-2005`
 
 ##### 废物流
 
@@ -490,33 +823,234 @@ sync_with: pcr.en-US.md
 - 证据类型：采集记录（`collected_record`）
 - 采集协议：`cp_product_quality_mass`
 
-###### 最终调理能源与冷却（`final_energy_cooling`）
+###### 最终调理电力（`final_electricity`）
 
-分别记录用于巴氏杀菌或其他所声明保藏、冷却、储存和灌装的电力、燃料、蒸汽、热、冷却介质和制冷剂补充量。
+将巴氏杀菌或其他声明保藏、冷却、储存与灌装所用最终调理电力作为独立流记录。
 
-- 选定流：每种公用工程分别选择数据集特定 Tiangong 产品流；构建前景数据包时选择并回读确认每个 UUID
-- 流属性/单位：采用各选定流参考单位的能量、质量或体积
-- 数量规则：计量用量或有依据的设备分配量
-- 数值来源模式：前景记录（`foreground_record`）
+- 选定流：与设施电压和地域匹配的外购电力供应
+- 流属性/单位：Energy / kWh
+- 数量规则：巴氏杀菌、冷却、储存和灌装的计量电力
+- 数值来源模式：计算值（`calculated_value`）
 - 适用范围：技术特定（`technology_specific`）
 - 归一化基准：每 1 kg 参考橙汁
 - 基准类型：参考流（`reference_flow`）
-- 证据类型：采集记录（`collected_record`）
+- 证据类型：采集计算（`calculated_from_collection`）
 - 采集协议：`cp_utility_records`
 - 来源：`fao-fruit-juice-processing-2001`
 
-###### 供应的包装材料（`packaging_materials`）
+###### 最终调理蒸汽（`final_steam`）
 
-按材料分别记录纳入所声明交付边界的一级、二级和三级包装，包括封口和标签。
+将巴氏杀菌或其他声明保藏、冷却、储存与灌装所用最终调理蒸汽作为独立流记录。
 
-- 选定流：每种包装材料分别选择数据集特定 Tiangong 产品流；构建前景数据包时选择并回读确认每个 UUID
-- 流属性/单位：Mass / kg，或采用实测件数转质量换算的件数
-- 数量规则：发出包装减去实测未用退回量，再按合格产品输出归一化
+- 选定流：与声明蒸汽条件匹配的外购蒸汽供应
+- 流属性/单位：Energy 或 Mass / MJ 或 kg 蒸汽
+- 数量规则：按蒸汽条件和冷凝水回流修正的仪表读数
+- 数值来源模式：计算值（`calculated_value`）
+- 适用范围：技术特定（`technology_specific`）
+- 归一化基准：每 1 kg 参考橙汁
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：采集计算（`calculated_from_collection`）
+- 采集协议：`cp_utility_records`
+- 来源：`fao-fruit-juice-processing-2001`
+
+###### 最终调理天然气（`final_natural_gas`）
+
+将巴氏杀菌或其他声明保藏、冷却、储存与灌装所用最终调理天然气作为独立流记录。
+
+- 选定流：与设施地域和压力匹配的天然气供应
+- 流属性/单位：Energy 或 Volume / MJ（低位热值）或 Nm3
+- 数量规则：燃料仪表读数，并保留低位热值和标准状态换算
+- 数值来源模式：计算值（`calculated_value`）
+- 适用范围：技术特定（`technology_specific`）
+- 归一化基准：每 1 kg 参考橙汁
+- 基准类型：燃料清单（`fuel_inventory`）
+- 证据类型：采集计算（`calculated_from_collection`）
+- 采集协议：`cp_utility_records`
+- 来源：`fao-fruit-juice-processing-2001`
+
+###### 最终调理冷却补水（`final_cooling_water`）
+
+将巴氏杀菌或其他声明保藏、冷却、储存与灌装所用最终调理冷却补水作为独立流记录。
+
+- 选定流：与设施水源匹配的过程水供应
+- 流属性/单位：Volume / m3
+- 数量规则：分开循环和排污后的补水仪表读数
+- 数值来源模式：计算值（`calculated_value`）
+- 适用范围：技术特定（`technology_specific`）
+- 归一化基准：每 1 kg 参考橙汁
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：采集计算（`calculated_from_collection`）
+- 采集协议：`cp_utility_records`
+- 来源：`fao-fruit-juice-processing-2001`
+
+###### 最终调理 R717 补充量（`final_r717_makeup`）
+
+将巴氏杀菌或其他声明保藏、冷却、储存与灌装所用最终调理 R717 补充量作为独立流记录。
+
+- 选定流：氨（R717）制冷剂产品流
+- 流属性/单位：Mass / kg
+- 数量规则：维修日志补充质量；循环充注量不是消耗量
+- 数值来源模式：计算值（`calculated_value`）
+- 适用范围：技术特定（`technology_specific`）
+- 归一化基准：每 1 kg 参考橙汁
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：采集计算（`calculated_from_collection`）
+- 采集协议：`cp_utility_records`
+- 来源：`fao-fruit-juice-processing-2001`
+
+###### 最终调理 R404A 补充量（`final_r404a_makeup`）
+
+将巴氏杀菌或其他声明保藏、冷却、储存与灌装所用最终调理 R404A 补充量作为独立流记录。
+
+- 选定流：R404A 制冷剂产品流
+- 流属性/单位：Mass / kg
+- 数量规则：维修日志补充质量；循环充注量不是消耗量
+- 数值来源模式：计算值（`calculated_value`）
+- 适用范围：技术特定（`technology_specific`）
+- 归一化基准：每 1 kg 参考橙汁
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：采集计算（`calculated_from_collection`）
+- 采集协议：`cp_utility_records`
+- 来源：`fao-fruit-juice-processing-2001`
+
+###### 供应的钢制包装（`packaging_steel`）
+
+将钢制包装与每种其他一级、二级或三级包装材料分开记录。
+
+- 选定流：镀锡钢或钢制包装产品流
+- 流属性/单位：Mass / kg
+- 数量规则：材料领用量减去实测未用退回量，再按合格产品输出归一化
 - 数值来源模式：计算值（`calculated_value`）
 - 适用范围：产品特定（`product_specific`）
 - 归一化基准：每 1 kg 参考橙汁
 - 基准类型：参考流（`reference_flow`）
-- 证据类型：由采集数据计算（`calculated_from_collection`）
+- 证据类型：采集计算（`calculated_from_collection`）
+- 采集协议：`cp_packaging_records`
+
+###### 供应的铝制包装（`packaging_aluminium`）
+
+将铝制包装与每种其他一级、二级或三级包装材料分开记录。
+
+- 选定流：铝制包装产品流
+- 流属性/单位：Mass / kg
+- 数量规则：材料领用量减去实测未用退回量，再按合格产品输出归一化
+- 数值来源模式：计算值（`calculated_value`）
+- 适用范围：产品特定（`product_specific`）
+- 归一化基准：每 1 kg 参考橙汁
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：采集计算（`calculated_from_collection`）
+- 采集协议：`cp_packaging_records`
+
+###### 供应的玻璃包装（`packaging_glass`）
+
+将玻璃包装与每种其他一级、二级或三级包装材料分开记录。
+
+- 选定流：容器玻璃包装产品流
+- 流属性/单位：Mass / kg
+- 数量规则：材料领用量减去实测未用退回量，再按合格产品输出归一化
+- 数值来源模式：计算值（`calculated_value`）
+- 适用范围：产品特定（`product_specific`）
+- 归一化基准：每 1 kg 参考橙汁
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：采集计算（`calculated_from_collection`）
+- 采集协议：`cp_packaging_records`
+
+###### 供应的PET 包装（`packaging_pet`）
+
+将PET 包装与每种其他一级、二级或三级包装材料分开记录。
+
+- 选定流：聚对苯二甲酸乙二醇酯包装产品流
+- 流属性/单位：Mass / kg
+- 数量规则：材料领用量减去实测未用退回量，再按合格产品输出归一化
+- 数值来源模式：计算值（`calculated_value`）
+- 适用范围：产品特定（`product_specific`）
+- 归一化基准：每 1 kg 参考橙汁
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：采集计算（`calculated_from_collection`）
+- 采集协议：`cp_packaging_records`
+
+###### 供应的聚丙烯包装（`packaging_pp`）
+
+将聚丙烯包装与每种其他一级、二级或三级包装材料分开记录。
+
+- 选定流：聚丙烯包装产品流
+- 流属性/单位：Mass / kg
+- 数量规则：材料领用量减去实测未用退回量，再按合格产品输出归一化
+- 数值来源模式：计算值（`calculated_value`）
+- 适用范围：产品特定（`product_specific`）
+- 归一化基准：每 1 kg 参考橙汁
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：采集计算（`calculated_from_collection`）
+- 采集协议：`cp_packaging_records`
+
+###### 供应的聚乙烯包装（`packaging_pe`）
+
+将聚乙烯包装与每种其他一级、二级或三级包装材料分开记录。
+
+- 选定流：与声明牌号匹配的聚乙烯包装产品流
+- 流属性/单位：Mass / kg
+- 数量规则：材料领用量减去实测未用退回量，再按合格产品输出归一化
+- 数值来源模式：计算值（`calculated_value`）
+- 适用范围：产品特定（`product_specific`）
+- 归一化基准：每 1 kg 参考橙汁
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：采集计算（`calculated_from_collection`）
+- 采集协议：`cp_packaging_records`
+
+###### 供应的纸板包装（`packaging_paperboard`）
+
+将纸板包装与每种其他一级、二级或三级包装材料分开记录。
+
+- 选定流：纸板包装产品流
+- 流属性/单位：Mass / kg
+- 数量规则：材料领用量减去实测未用退回量，再按合格产品输出归一化
+- 数值来源模式：计算值（`calculated_value`）
+- 适用范围：产品特定（`product_specific`）
+- 归一化基准：每 1 kg 参考橙汁
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：采集计算（`calculated_from_collection`）
+- 采集协议：`cp_packaging_records`
+
+###### 供应的瓦楞纸板包装（`packaging_corrugated_board`）
+
+将瓦楞纸板包装与每种其他一级、二级或三级包装材料分开记录。
+
+- 选定流：瓦楞纸板包装产品流
+- 流属性/单位：Mass / kg
+- 数量规则：材料领用量减去实测未用退回量，再按合格产品输出归一化
+- 数值来源模式：计算值（`calculated_value`）
+- 适用范围：产品特定（`product_specific`）
+- 归一化基准：每 1 kg 参考橙汁
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：采集计算（`calculated_from_collection`）
+- 采集协议：`cp_packaging_records`
+
+###### 供应的纸标签（`packaging_paper_label`）
+
+将纸标签与每种其他一级、二级或三级包装材料分开记录。
+
+- 选定流：纸标签产品流
+- 流属性/单位：Mass / kg
+- 数量规则：材料领用量减去实测未用退回量，再按合格产品输出归一化
+- 数值来源模式：计算值（`calculated_value`）
+- 适用范围：产品特定（`product_specific`）
+- 归一化基准：每 1 kg 参考橙汁
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：采集计算（`calculated_from_collection`）
+- 采集协议：`cp_packaging_records`
+
+###### 供应的木托盘（`packaging_wood_pallet`）
+
+将木托盘与每种其他一级、二级或三级包装材料分开记录。
+
+- 选定流：木托盘产品流
+- 流属性/单位：Mass / kg
+- 数量规则：材料领用量减去实测未用退回量，再按合格产品输出归一化
+- 数值来源模式：计算值（`calculated_value`）
+- 适用范围：产品特定（`product_specific`）
+- 归一化基准：每 1 kg 参考橙汁
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：采集计算（`calculated_from_collection`）
 - 采集协议：`cp_packaging_records`
 
 ##### 废物流
@@ -531,7 +1065,7 @@ sync_with: pcr.en-US.md
 
 本行为定量参考。记录在所声明散装或包装交付点的合格净输出，并保留全部必需限定信息。
 
-- 选定流：Orange juice `858ebbd0-452b-443d-9964-94ee3f2c1c57`；若更具体的现行公开 Tiangong 流更准确匹配实际声明产品，则予以替换
+- 选定流：橙汁 `858ebbd0-452b-443d-9964-94ee3f2c1c57`；若更具体的现行公开 Tiangong 流更准确匹配实际声明产品，则予以替换
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：由实测合格净输出归一化后恰为 1 kg
 - 数值来源模式：固定值（`fixed_value`）
@@ -542,36 +1076,217 @@ sync_with: pcr.en-US.md
 
 ##### 废物流
 
-###### 灌装废品、包装废物与清洗废水（`filling_wastes_wastewater`）
+###### 不合格橙汁（`filling_rejected_juice`）
 
-按物料和去向分别记录废弃橙汁、包装废品、清洗残余物和净废水；扣除有记录的内部回用。
+将不合格橙汁按材料和处理去向分开，在回收抵扣或净额处理前记录。
 
-- 选定流：每种物料和去向分别选择数据集特定 Tiangong 废物流或废水流；构建前景数据包时选择并回读确认每个 UUID
-- 流属性/单位：固体和废弃产品为 Mass / kg；废水为 Volume / m3
-- 数量规则：按类别和去向记录实测废物质量或排放体积
-- 数值来源模式：前景记录（`foreground_record`）
-- 适用范围：场址特定（`site_specific`）
-- 归一化基准：每 1 kg 参考橙汁
-- 基准类型：参考流（`reference_flow`）
-- 证据类型：采集记录（`collected_record`）
-- 采集协议：`cp_water_wastewater`
-- 来源：`world-bank-fruit-vegetable-processing-1998`
-
-##### 基本流
-
-###### 最终冷却与储存期间释放的制冷剂（`final_refrigerant_loss`）
-
-按制冷剂种类记录实际或盘存核对得到的对空气损失。
-
-- 选定流：所释放制冷剂对应的数据集特定 Tiangong 基本流；构建前景数据包时选择 UUID 并回读确认
+- 选定流：橙汁产品残余废物流
 - 流属性/单位：Mass / kg
-- 数量规则：分配至最终调理和储存的制冷剂盘存平衡
+- 数量规则：返工或回收前的实测不合格橙汁
 - 数值来源模式：计算值（`calculated_value`）
 - 适用范围：场址特定（`site_specific`）
 - 归一化基准：每 1 kg 参考橙汁
 - 基准类型：参考流（`reference_flow`）
-- 证据类型：由采集数据计算（`calculated_from_collection`）
+- 证据类型：采集计算（`calculated_from_collection`）
+- 采集协议：`cp_waste_records`
+- 来源：`eu-jrc-fdm-bref-2019`
+
+###### 灌装与清洗废水（`filling_wastewater`）
+
+将灌装与清洗废水按材料和处理去向分开，在回收抵扣或净额处理前记录。
+
+- 选定流：与接收处理路线匹配的废水流
+- 流属性/单位：Volume / m3
+- 数量规则：计量排放量或生产线水量平衡
+- 数值来源模式：计算值（`calculated_value`）
+- 适用范围：场址特定（`site_specific`）
+- 归一化基准：每 1 kg 参考橙汁
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：采集计算（`calculated_from_collection`）
+- 采集协议：`cp_waste_records`
+- 来源：`eu-jrc-fdm-bref-2019`
+
+###### 钢制包装废物（`packaging_waste_steel`）
+
+将钢制包装废物按材料和处理去向分开，在回收抵扣或净额处理前记录。
+
+- 选定流：钢制包装废物流
+- 流属性/单位：Mass / kg
+- 数量规则：钢制包装领用量减去纳入量和有记录退回量
+- 数值来源模式：计算值（`calculated_value`）
+- 适用范围：场址特定（`site_specific`）
+- 归一化基准：每 1 kg 参考橙汁
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：采集计算（`calculated_from_collection`）
+- 采集协议：`cp_waste_records`
+- 来源：`eu-jrc-fdm-bref-2019`
+
+###### 铝制包装废物（`packaging_waste_aluminium`）
+
+将铝制包装废物按材料和处理去向分开，在回收抵扣或净额处理前记录。
+
+- 选定流：铝制包装废物流
+- 流属性/单位：Mass / kg
+- 数量规则：铝制包装领用量减去纳入量和有记录退回量
+- 数值来源模式：计算值（`calculated_value`）
+- 适用范围：场址特定（`site_specific`）
+- 归一化基准：每 1 kg 参考橙汁
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：采集计算（`calculated_from_collection`）
+- 采集协议：`cp_waste_records`
+- 来源：`eu-jrc-fdm-bref-2019`
+
+###### 玻璃包装废物（`packaging_waste_glass`）
+
+将玻璃包装废物按材料和处理去向分开，在回收抵扣或净额处理前记录。
+
+- 选定流：废容器玻璃流
+- 流属性/单位：Mass / kg
+- 数量规则：玻璃包装领用量减去纳入量和有记录退回量
+- 数值来源模式：计算值（`calculated_value`）
+- 适用范围：场址特定（`site_specific`）
+- 归一化基准：每 1 kg 参考橙汁
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：采集计算（`calculated_from_collection`）
+- 采集协议：`cp_waste_records`
+- 来源：`eu-jrc-fdm-bref-2019`
+
+###### PET 包装废物（`packaging_waste_pet`）
+
+将PET 包装废物按材料和处理去向分开，在回收抵扣或净额处理前记录。
+
+- 选定流：废聚对苯二甲酸乙二醇酯包装流
+- 流属性/单位：Mass / kg
+- 数量规则：PET 包装领用量减去纳入量和有记录退回量
+- 数值来源模式：计算值（`calculated_value`）
+- 适用范围：场址特定（`site_specific`）
+- 归一化基准：每 1 kg 参考橙汁
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：采集计算（`calculated_from_collection`）
+- 采集协议：`cp_waste_records`
+- 来源：`eu-jrc-fdm-bref-2019`
+
+###### 聚丙烯包装废物（`packaging_waste_pp`）
+
+将聚丙烯包装废物按材料和处理去向分开，在回收抵扣或净额处理前记录。
+
+- 选定流：废聚丙烯包装流
+- 流属性/单位：Mass / kg
+- 数量规则：PP 包装领用量减去纳入量和有记录退回量
+- 数值来源模式：计算值（`calculated_value`）
+- 适用范围：场址特定（`site_specific`）
+- 归一化基准：每 1 kg 参考橙汁
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：采集计算（`calculated_from_collection`）
+- 采集协议：`cp_waste_records`
+- 来源：`eu-jrc-fdm-bref-2019`
+
+###### 聚乙烯包装废物（`packaging_waste_pe`）
+
+将聚乙烯包装废物按材料和处理去向分开，在回收抵扣或净额处理前记录。
+
+- 选定流：与声明牌号匹配的废聚乙烯包装流
+- 流属性/单位：Mass / kg
+- 数量规则：PE 包装领用量减去纳入量和有记录退回量
+- 数值来源模式：计算值（`calculated_value`）
+- 适用范围：场址特定（`site_specific`）
+- 归一化基准：每 1 kg 参考橙汁
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：采集计算（`calculated_from_collection`）
+- 采集协议：`cp_waste_records`
+- 来源：`eu-jrc-fdm-bref-2019`
+
+###### 纸板包装废物（`packaging_waste_paperboard`）
+
+将纸板包装废物按材料和处理去向分开，在回收抵扣或净额处理前记录。
+
+- 选定流：废纸板包装流
+- 流属性/单位：Mass / kg
+- 数量规则：纸板领用量减去纳入量和有记录退回量
+- 数值来源模式：计算值（`calculated_value`）
+- 适用范围：场址特定（`site_specific`）
+- 归一化基准：每 1 kg 参考橙汁
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：采集计算（`calculated_from_collection`）
+- 采集协议：`cp_waste_records`
+- 来源：`eu-jrc-fdm-bref-2019`
+
+###### 瓦楞纸板包装废物（`packaging_waste_corrugated_board`）
+
+将瓦楞纸板包装废物按材料和处理去向分开，在回收抵扣或净额处理前记录。
+
+- 选定流：废瓦楞纸板包装流
+- 流属性/单位：Mass / kg
+- 数量规则：瓦楞纸板领用量减去纳入量和有记录退回量
+- 数值来源模式：计算值（`calculated_value`）
+- 适用范围：场址特定（`site_specific`）
+- 归一化基准：每 1 kg 参考橙汁
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：采集计算（`calculated_from_collection`）
+- 采集协议：`cp_waste_records`
+- 来源：`eu-jrc-fdm-bref-2019`
+
+###### 纸标签废物（`packaging_waste_paper_label`）
+
+将纸标签废物按材料和处理去向分开，在回收抵扣或净额处理前记录。
+
+- 选定流：废纸标签流
+- 流属性/单位：Mass / kg
+- 数量规则：纸标签领用量减去纳入量和有记录退回量
+- 数值来源模式：计算值（`calculated_value`）
+- 适用范围：场址特定（`site_specific`）
+- 归一化基准：每 1 kg 参考橙汁
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：采集计算（`calculated_from_collection`）
+- 采集协议：`cp_waste_records`
+- 来源：`eu-jrc-fdm-bref-2019`
+
+###### 木托盘废物（`packaging_waste_wood_pallet`）
+
+将木托盘废物按材料和处理去向分开，在回收抵扣或净额处理前记录。
+
+- 选定流：废木托盘流
+- 流属性/单位：Mass / kg
+- 数量规则：实测托盘损失或分配的不可复用托盘份额
+- 数值来源模式：计算值（`calculated_value`）
+- 适用范围：场址特定（`site_specific`）
+- 归一化基准：每 1 kg 参考橙汁
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：采集计算（`calculated_from_collection`）
+- 采集协议：`cp_waste_records`
+- 来源：`eu-jrc-fdm-bref-2019`
+
+##### 基本流
+
+###### 在最终冷却与储存期间释放的 R717（`final_r717_emission`）
+
+按物质分别记录实测或核对的制冷剂损失；不得合并不同制冷剂。
+
+- 选定流：排放至空气的氨（R717）基本流
+- 流属性/单位：Mass / kg
+- 数量规则：补充充注量减去有记录回收量和库存变化，并分配至纳入设备
+- 数值来源模式：计算值（`calculated_value`）
+- 适用范围：技术特定（`technology_specific`）
+- 归一化基准：每 1 kg 参考橙汁
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：采集计算（`calculated_from_collection`）
 - 采集协议：`cp_utility_records`
+- 来源：`eu-jrc-fdm-bref-2019`
+
+###### 在最终冷却与储存期间释放的 R404A（`final_r404a_emission`）
+
+按物质分别记录实测或核对的制冷剂损失；不得合并不同制冷剂。
+
+- 选定流：排放至空气的 R404A 基本流
+- 流属性/单位：Mass / kg
+- 数量规则：补充充注量减去有记录回收量和库存变化，并分配至纳入设备
+- 数值来源模式：计算值（`calculated_value`）
+- 适用范围：技术特定（`technology_specific`）
+- 归一化基准：每 1 kg 参考橙汁
+- 基准类型：参考流（`reference_flow`）
+- 证据类型：采集计算（`calculated_from_collection`）
+- 采集协议：`cp_utility_records`
+- 来源：`eu-jrc-fdm-bref-2019`
 
 ## 7. 分配与共产品处理
 
@@ -594,6 +1309,7 @@ sync_with: pcr.en-US.md
 | `cp_water_wastewater` | `orange_receiving_preparation`; `juice_extraction_finishing`; `juice_concentration_storage`; `stabilization_filling_handoff` | 供水、内部循环、净废水和污染物负荷 | 供排水仪表、清洗日志、处理记录和实验室分析 | timestamp; source; supplied_volume; recirculated_volume; discharged_volume; destination; pollutant; concentration; sample_method | 计量主要水回路和排放点；在代表运行条件下取样污染物 | m3 和污染物特定单位 | 连续或每批；分析按许可或风险频率 | 至少 12 个有代表性的月或完整季节 | 每个纳入设施、排放点和外包处理路线 | 分别报告总供水、内部循环和净排放；污染物质量为体积乘实测浓度 | 仪表校准、取样方案、实验室报告、许可记录和处理凭证 |
 | `cp_coproduct_allocation` | `juice_extraction_finishing`; `juice_concentration_storage` | 可销售共产品数量、功能、价格和去向 | 称重单、销售记录、规格和合同 | timestamp; batch_id; coproduct_id; mass; specification; destination; price; currency; price_basis; revenue | 测量外运数量并采用同一期间的交易或合同价格 | kg 和每声明单位的货币 | 每次发运；价格按月或季节汇总 | 与清单相同代表期 | 生产共产品的所有设施 | 首先细分；否则按选定物理驱动因子或同期经济价值计算分配份额 | 秤校准、发票、合同、规格、分配工作表和敏感性记录 |
 | `cp_packaging_records` | `stabilization_filling_handoff` | 一级、二级和三级包装 | 物料清单、领退记录、件数和包装质量测试 | packaging_id; material; items_issued; items_returned; item_mass; filled_units; scrap_mass | 核对领用与退回件数，并以代表性称重验证单件质量 | item 和 kg | 每个生产批次或包装运行 | 与清单相同代表期 | 每种纳入包装配置和生产线 | 净使用件数乘实测单件质量，加实测废料，再除以合格产品质量 | 批准的物料清单、秤校准、包装质量样本和核对记录 |
+| `cp_waste_records` | `stabilization_filling_handoff` | 不合格橙汁、逐材料包装废物及灌装或清洗废水 | 不合格日志、包装核对、废物外运记录和废水仪表 | timestamp; batch_id; waste_id; material; mass; volume; origin; destination; treatment; rework_or_recovery | 在返工、回收、处理或分配前分别计量每种废物材料和排放 | kg 和 m3 | 每批、每次废物外运或排放区间 | 与清单相同代表期 | 每条纳入灌装线、包装配置和排放点 | 按流身份和去向汇总；包装废物与领退记录核对，废水与水量平衡核对 | 校准秤和仪表、不合格日志、废物接收单、排放记录和核对表 |
 
 ### 计算规则
 
@@ -601,8 +1317,8 @@ sync_with: pcr.en-US.md
 | --- | --- | --- | --- | --- | --- |
 | `calc_reference_normalization` | 所有前景清单行 | 分配后数量除以合格橙汁净输出质量 kg，再乘以 1 kg | 分配后数量；合格产品净质量 | 每 1 kg 参考橙汁的数量 |  |
 | `calc_mass_balance` | 每个过程及关联前景路线 | 核对期初库存加实测输入与期末库存加实测产品输出、共产品、废物、排放和有记录内部转移；调查实质残差，不得创建未标识平衡流 | `cp_material_mass_balance` 和 `cp_product_quality_mass` 的质量记录 | 有解释的过程及路线质量平衡残差 | `fao-fruit-juice-processing-2001` |
-| `calc_reconstituted_juice` | 浓缩还原橙汁 | 最终批次质量等于浓缩汁质量加饮用水和允许添加物，再减实测损失；依据实测输入与最终 °Brix 检查可溶性固形物平衡 | 浓缩汁质量和 °Brix；水；添加物；损失；最终质量和 °Brix | 复原橙汁质量和可溶性固形物核对 | `codex-cxs-247-2005` |
-| `calc_single_strength_equivalent` | 可选跨浓度结果 | 单倍浓度当量质量等于按销售状态质量乘实测按销售状态 °Brix，再除以声明的单倍浓度目标 °Brix | 按销售状态质量；实测 °Brix；目标 °Brix | 附加 kg 单倍浓度当量结果 | `codex-cxs-247-2005` |
+| `calc_reconstituted_juice` | 浓缩还原橙汁 | 最终批次质量等于浓缩汁质量加饮用水和允许添加物，再减实测损失；依据实测输入与最终 °Brix 检查可溶性固形物平衡 | 浓缩汁质量和 °Brix；水；添加物；损失；最终质量和 °Brix | 复原橙汁质量和可溶性固形物核对 | `fao-who-cxs-247-2005` |
+| `calc_single_strength_equivalent` | 可选跨浓度结果 | 单倍浓度当量质量等于按销售状态质量乘实测按销售状态 °Brix，再除以声明的单倍浓度目标 °Brix | 按销售状态质量；实测 °Brix；目标 °Brix | 附加 kg 单倍浓度当量结果 | `fao-who-cxs-247-2005` |
 | `calc_pollutant_load` | 废水污染物排放 | 污染物质量等于净排放废水体积乘代表性实测浓度，并保持单位一致 | 排放体积；实测浓度；取样期间 | 按排放去向的污染物质量 | `world-bank-fruit-vegetable-processing-1998` |
 | `calc_economic_allocation` | 采用经济分配的共同负荷 | 某共产品分配份额等于其同期数量乘价格，再除以所有共产品数量乘价格之和；该份额仅作用于剩余不可细分负荷 | 共产品数量；同期价格；剩余共同输入输出 | 按共产品分配的清单 | `eu-pef-method-2021` |
 
@@ -621,14 +1337,15 @@ sync_with: pcr.en-US.md
 
 | rule_id | 适用对象 | 规则 | source_ids |
 | --- | --- | --- | --- |
-| `validate_identity` | 参考产品 | 若实际产品不是橙汁，或属于果肉饮料、饮料、混合果汁、发酵产品或单独副产品，或缺失必需产品状态限定信息，则失败。 | `unsd-cpc-3-2025`; `codex-cxs-247-2005` |
+| `validate_identity` | 参考产品 | 若实际产品不是橙汁，或属于果肉饮料、饮料、混合果汁、发酵产品或单独副产品，或缺失必需产品状态限定信息，则失败。 | `unsd-cpc-3-2025`; `fao-who-cxs-247-2005` |
 | `validate_reference_mass` | 定量参考 | 要求归一化后按销售状态计的橙汁净输出恰为 1 kg、采用 Mass 属性和 kg 单位，并采用已回读的通用或更具体 Tiangong 产品流。 |  |
 | `validate_route_completeness` | 过程覆盖 | 要求纳入所声明起始条件和交付之间的所有受控操作。鲜果路线需要接收和榨汁；浓缩与复原路线需要适用过程；所有路线需要最终调理，或明确声明未经处理的散装交付。 | `fao-fruit-juice-processing-2001` |
-| `validate_concentration` | 浓缩及浓缩还原产品 | 要求实测输入输出质量和 °Brix、加水或去水量、适用 Codex 或市场规格及可溶性固形物核对。不得将不同浓度状态视为每 1 kg 提供相等橙可溶性固形物。 | `codex-cxs-247-2005` |
+| `validate_concentration` | 浓缩及浓缩还原产品 | 要求实测输入输出质量和 °Brix、加水或去水量、适用 Codex 或市场规格及可溶性固形物核对。不得将不同浓度状态视为每 1 kg 提供相等橙可溶性固形物。 | `fao-who-cxs-247-2005` |
 | `validate_mass_balance` | 每个过程及路线 | 要求有记录的质量平衡核对，覆盖产品、共产品、内部转移、废物、可获得质量的废水和已识别残差；拒绝无法解释的平衡流。 | `fao-fruit-juice-processing-2001` |
 | `validate_allocation` | 多输出操作 | 要求证据表明首先尝试细分；任何物理或经济分配均遵循所声明次序，采用同期数据，并在有实质影响时披露敏感性。 | `eu-pef-method-2021` |
 | `validate_environmental_releases` | 水、废物和直接排放 | 要求净用水和废水记录、处理去向、固体残余物去向，以及制冷剂或其他实测直接排放；不得把采购输入转化为直接排放。 | `world-bank-fruit-vegetable-processing-1998` |
 | `validate_upstream_datasets` | 跨越边界的输入 | 橙、外购橙汁或浓缩汁、配料、包装、水、能源和处理服务均须有适当上游数据集或明确未解决数据缺口；拒绝递归重复供应商橙汁操作。 | `eu-pef-method-2021` |
+| `validate_atomic_inventory` | 公用工程、包装、废物和制冷剂身份 | 若本 PCR 覆盖的电力、蒸汽、天然气、冷却补水、各制冷剂、各包装材料、包装废物、不合格橙汁或灌装废水仍以组合占位，而不是独立可识别的流行，则判定失败。 | `eu-pef-method-2021`; `eu-jrc-fdm-bref-2019` |
 
 ## 10. 发布数据集画像
 
@@ -647,7 +1364,8 @@ sync_with: pcr.en-US.md
 | 来源 id | 类型 | 参考资料 | 用途 |
 | --- | --- | --- | --- |
 | `unsd-cpc-3-2025` | official_guidance | United Nations Statistics Division, Central Product Classification Version 3.0, Explanatory Notes, 30 June 2025, subclass 21431. https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Exp_Notes_30Jun2025.pdf（检索日期 2026-08-11） | 分类范围以及与其他果汁和混合果汁的区分 |
-| `codex-cxs-247-2005` | standard | FAO/WHO Codex Alimentarius, General Standard for Fruit Juices and Nectars, CXS 247-2005, amended 2025. https://www.fao.org/fao-who-codexalimentarius/sh-proxy/tr/?lnk=1&url=https%253A%252F%252Fworkspace.fao.org%252Fsites%252Fcodex%252FStandards%252FCXS%2B247-2005%252FCXS_247e.pdf（检索日期 2026-08-11） | 橙汁、浓缩、复原、组成、°Brix、加工助剂、卫生和标签规则 |
+| `fao-who-cxs-247-2005` | standard | FAO/WHO Codex Alimentarius, General Standard for Fruit Juices and Nectars, CXS 247-2005, amended 2025. https://www.fao.org/fao-who-codexalimentarius/sh-proxy/tr/?lnk=1&url=https%253A%252F%252Fworkspace.fao.org%252Fsites%252Fcodex%252FStandards%252FCXS%2B247-2005%252FCXS_247e.pdf（检索日期 2026-08-11） | 橙汁、浓缩、复原、组成、°Brix、加工助剂、卫生和标签规则 |
 | `fao-fruit-juice-processing-2001` | handbook | Bates, R.P., Morris, J.R. and Crandall, P.G. Principles and practices of small- and medium-scale fruit juice processing. FAO Agricultural Services Bulletin 146, 2001, ISBN 92-5-104661-1. https://www.fao.org/4/y2515e/y2515e13.htm（检索日期 2026-08-11） | 橙接收、清洗、榨汁、精制、浓缩、巴氏杀菌、储存、副产品和质量平衡过程分解 |
 | `eu-pef-method-2021` | official_guidance | European Commission, Recommendation (EU) 2021/2279 on the use of the Environmental Footprint methods, Annex I, 2021. https://eur-lex.europa.eu/legal-content/EN/ALL/?uri=CELEX:02021H2279-20211230（检索日期 2026-08-11） | 生命周期边界、数据质量、多功能性处理顺序、分配、回收和披露 |
 | `world-bank-fruit-vegetable-processing-1998` | official_guidance | World Bank Group, Pollution Prevention and Abatement Handbook: Fruit and Vegetable Processing, effective July 1998. https://www.ifc.org/content/dam/ifc/doc/1990/fruitandvg-ppah.pdf（检索日期 2026-08-11） | 水、废水、固体废物、污染预防、排放监测和处理流识别 |
+| `eu-jrc-fdm-bref-2019` | official_guidance | European Commission Joint Research Centre, Best Available Techniques Reference Document in the Food, Drink and Milk Industries, JRC118627, 2019. https://bureau-industrial-transformation.jrc.ec.europa.eu/sites/default/files/2020-01/JRC118627_FDM_Bref_2019_published.pdf（检索日期 2026-08-11） | 食品和饮料加工清单中能源载体、冷却水、制冷剂、包装材料、废物、废水和直接排放的分别记录 |

@@ -38,7 +38,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 1 kg |
-| 参考产品流 | Soya bean oil, refined `a113893c-4722-4285-b86e-fddcc8b54e46` |
+| 参考产品流 | 精炼大豆油 `a113893c-4722-4285-b86e-fddcc8b54e46` |
 | 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | kg |
@@ -97,7 +97,7 @@ sync_with: pcr.en-US.md
 
 粗大豆油作为主要进料跨越精炼厂边界，其上游生产保留在链接的供应商或背景数据集中。
 
-- 选定流：Soya bean oil, crude `6464d0d3-fb5d-4e46-bfb3-01327a3ddbd3`
+- 选定流：粗豆油 `6464d0d3-fb5d-4e46-bfb3-01327a3ddbd3`
 - 流属性/单位：Mass / kg
 - 数量规则：计量粗油净接收量并校正期初和期末库存
 - 数值来源模式：前景记录（`foreground_record`）
@@ -120,7 +120,7 @@ sync_with: pcr.en-US.md
 
 记录用于脱胶、水洗、清洗、真空或公用工程的采购或内部供应工艺水；自行取水另记为基本流投入。
 
-- 选定流：Process Water `94a04f7e-2d5c-41f0-b182-d54a3b373a02`
+- 选定流：工艺用水 `94a04f7e-2d5c-41f0-b182-d54a3b373a02`
 - 流属性/单位：Mass / kg
 - 数量规则：工艺供水表计量减去单独计量的循环水
 - 数值来源模式：前景记录（`foreground_record`）
@@ -143,7 +143,7 @@ sync_with: pcr.en-US.md
 
 使用中和工序时记录氢氧化钠。无碱耗的物理精炼路线须报告零值并说明替代脱酸路线。
 
-- 选定流：Sodium hydroxide, industrial grade `e0abcced-0611-4c24-9290-5a2c5a0c4169`
+- 选定流：氢氧化钠 `e0abcced-0611-4c24-9290-5a2c5a0c4169`
 - 流属性/单位：Mass / kg 交付产品及 kg 活性 NaOH
 - 数量规则：采购或领用溶液质量，另行记录浓度并计算活性质量
 - 数值来源模式：计算值（`calculated_value`）
@@ -166,7 +166,7 @@ sync_with: pcr.en-US.md
 
 使用漂白土或其他声明吸附剂去除色素和杂质时予以记录。
 
-- 选定流：Bleaching earth `8b774b7a-2054-4e39-87ec-a17cc015fae9`
+- 选定流：漂白土 `8b774b7a-2054-4e39-87ec-a17cc015fae9`
 - 流属性/单位：Mass / kg
 - 数量规则：计量脱色工序吸附剂领用量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -291,7 +291,7 @@ sync_with: pcr.en-US.md
 
 参考产品为最终过滤并校正范围内储存变化后，在精炼厂门口交付的可销售精炼油净量。
 
-- 选定流：Soya bean oil, refined `a113893c-4722-4285-b86e-fddcc8b54e46`
+- 选定流：精炼大豆油 `a113893c-4722-4285-b86e-fddcc8b54e46`
 - 流属性/单位：Mass / kg
 - 数量规则：从实测净产量归一化后的固定参考产出
 - 数值来源模式：固定值（`fixed_value`）

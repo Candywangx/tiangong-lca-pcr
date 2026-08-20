@@ -42,7 +42,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 1 kg |
-| 参考产品流 | Butter and other fats and oils derived from milk of other animals `57b3e5ff-3686-4435-96b5-9c09b765a0ac` |
+| 参考产品流 | 从其他动物奶中提取的黄油和其他油脂 `57b3e5ff-3686-4435-96b5-9c09b765a0ac` |
 | 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | kg |
@@ -198,7 +198,7 @@ sync_with: pcr.en-US.md
 
 记录制造 gate 处申报产品形态的验收净质量。选定的 Tiangong 流识别是固定的；具体数据集是否符合本残余物种类别由批次限定信息确定。
 
-- 选定流：Butter and other fats and oils derived from milk of other animals `57b3e5ff-3686-4435-96b5-9c09b765a0ac`
+- 选定流：从其他动物奶中提取的黄油和其他油脂 `57b3e5ff-3686-4435-96b5-9c09b765a0ac`
 - 流属性/单位：Mass / kg
 - 数量规则：实测验收净产品质量；归一化至 1 kg 参考产品
 - 数值来源模式：前景记录（`foreground_record`）
@@ -283,7 +283,7 @@ sync_with: pcr.en-US.md
 
 将实测未包装参考产品转入本过程，不重复计算生产负荷。
 
-- 选定流：Butter and other fats and oils derived from milk of other animals `57b3e5ff-3686-4435-96b5-9c09b765a0ac`
+- 选定流：从其他动物奶中提取的黄油和其他油脂 `57b3e5ff-3686-4435-96b5-9c09b765a0ac`
 - 流属性/单位：Mass / kg
 - 数量规则：进入包装的实测净产品质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -336,7 +336,7 @@ sync_with: pcr.en-US.md
 
 记录发运时的验收净产品质量。包装质量保留为独立清单投入，不计入 1 kg 净参考数量。
 
-- 选定流：Butter and other fats and oils derived from milk of other animals `57b3e5ff-3686-4435-96b5-9c09b765a0ac`
+- 选定流：从其他动物奶中提取的黄油和其他油脂 `57b3e5ff-3686-4435-96b5-9c09b765a0ac`
 - 流属性/单位：Mass / kg
 - 数量规则：发运时实测验收净产品质量；归一化至 1 kg 参考产品
 - 数值来源模式：前景记录（`foreground_record`）

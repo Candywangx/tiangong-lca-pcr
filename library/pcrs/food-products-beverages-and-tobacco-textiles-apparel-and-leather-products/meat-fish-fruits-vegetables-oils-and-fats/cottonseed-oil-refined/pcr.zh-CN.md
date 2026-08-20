@@ -38,7 +38,7 @@ status: candidate
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 1 kg |
-| 参考产品流 | Cottonseed oil, refined `5c448d72-c368-4fd2-a3d0-e1cc73572241` |
+| 参考产品流 | 精炼棉籽油 `5c448d72-c368-4fd2-a3d0-e1cc73572241` |
 | 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | kg |
@@ -95,7 +95,7 @@ status: candidate
 
 粗棉籽油作为主要中间投入跨越炼油厂边界。数量来自经校准的接收或转移记录，并与储罐库存核对。
 
-- 选定流：Crude cottonseed oil（精确 Tiangong UUID 未解析；不得替用 cottonseed seed flow `a60671ff-7325-4636-9fba-bcc5f6afaeeb`）
+- 选定流：Crude 棉籽 oil（精确 Tiangong UUID 未解析；不得替用 棉籽 seed flow `a60671ff-7325-4636-9fba-bcc5f6afaeeb`）
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：分配至报告期的实测粗油净投入
 - 数值来源模式：前景记录（`foreground_record`）
@@ -118,7 +118,7 @@ status: candidate
 
 脱胶、洗涤、蒸汽系统补水和产品接触清洗用水应记录，不得与废水或凝结水回收相抵消。
 
-- 选定流：Process Water `94a04f7e-2d5c-41f0-b182-d54a3b373a02`
+- 选定流：工艺用水 `94a04f7e-2d5c-41f0-b182-d54a3b373a02`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：归属于前景过程的实测计量用水，可能时按用途拆分
 - 数值来源模式：前景记录（`foreground_record`）
@@ -141,7 +141,7 @@ status: candidate
 
 仅在实际使用时记录磷酸或其他已声明脱胶助剂；供货浓度和活性酸质量必须保持可区分。
 
-- 选定流：Orthophosphoric Acid `9102d985-3980-4e5d-a870-f5164ff2e977`
+- 选定流：磷酸 `9102d985-3980-4e5d-a870-f5164ff2e977`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg 供货产品和 kg 活性酸
 - 数量规则：采用酸法脱胶批次的实测采购或投加质量与浓度
 - 数值来源模式：前景记录（`foreground_record`）
@@ -164,7 +164,7 @@ status: candidate
 
 碱仅用于化学精炼。没有烧碱中和的物理精炼路线报告为零，并记录路线。
 
-- 选定流：Sodium hydroxide `e0abcced-0611-4c24-9290-5a2c5a0c4169`
+- 选定流：氢氧化钠 `e0abcced-0611-4c24-9290-5a2c5a0c4169`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg 供货溶液和 kg 活性 NaOH
 - 数量规则：化学中和的实测溶液投加量与浓度
 - 数值来源模式：前景记录（`foreground_record`）
@@ -187,7 +187,7 @@ status: candidate
 
 脱色所用新鲜活化黏土或等效吸附剂与废吸附剂产出分开记录。
 
-- 选定流：Bleaching earth `7c9494b2-6b2f-496b-b140-acc13c4c90d9`
+- 选定流：漂白土 `7c9494b2-6b2f-496b-b140-acc13c4c90d9`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：投加到脱色操作的实测吸附剂质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -210,7 +210,7 @@ status: candidate
 
 计量电力覆盖泵、混合、离心、过滤、真空辅助、冷却、适用时的冬化以及分配的共享服务。
 
-- 选定流：alternating current, electricity consumption mix, 1-35 kV `3d76981f-964a-4865-b588-0e067a2a1163`
+- 选定流：交流电 `3d76981f-964a-4865-b588-0e067a2a1163`
 - 流属性/单位：Net calorific value `93a60a56-a3c8-11da-a746-0800200c9a66` / kWh
 - 数量规则：实测电表消耗量加上有记录的共享电力分配
 - 数值来源模式：前景记录（`foreground_record`）
@@ -233,7 +233,7 @@ status: candidate
 
 加热、干燥、真空系统和脱臭用蒸汽按质量记录；仅在前景边界内产汽时链接锅炉燃料。
 
-- 选定流：Steam `293f9fd9-5182-4d35-8aa5-ce73d4f322b7`
+- 选定流：蒸汽 `293f9fd9-5182-4d35-8aa5-ce73d4f322b7`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg 蒸汽
 - 数量规则：实测供应蒸汽；仅当所选蒸汽数据集要求净计量时扣除另行实测的返回凝结水
 - 数值来源模式：前景记录（`foreground_record`）
@@ -268,7 +268,7 @@ status: candidate
 
 放行的散装精炼油是定量参考，必须通过声明的产品规范。
 
-- 选定流：Cottonseed oil, refined `5c448d72-c368-4fd2-a3d0-e1cc73572241`
+- 选定流：精炼棉籽油 `5c448d72-c368-4fd2-a3d0-e1cc73572241`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：最终质量放行后的固定定量参考 1,000 kg
 - 数值来源模式：固定值（`fixed_value`）

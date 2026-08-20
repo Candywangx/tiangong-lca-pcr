@@ -45,7 +45,7 @@ lastReviewedCommit: 41e00bafd03530af7871e4620e59862dd779473e
 | `candidate / authored_methodology` | 3 | `review_required`，可带警告进入 guidance |
 | `scaffold / empty_scaffold` | 2,873 | `unavailable`，只在显式 legacy/all catalog scope 下可见 |
 
-CPC 3.0 的 2,877 个 leaf 仍由 coverage 完整表达：3 mapped、2,874 unmapped、0 unknown。Current mapping
+CPC 3.0 的 2,877 个 leaf 仍由 coverage 完整表达：326 mapped、2,551 unmapped、0 unknown。Current mapping
 只含 3 条 accepted material edge；2,874 个 retired-id alias 保留旧 identity locator，因此 alias 数量比
 surviving scaffold 多 1。这个分布说明当前最重要的问题不是继续增加 scaffold，而是继续安全地移除
 结构性噪声，并让少量 material PCR 能够可靠地编译、验证、审核和发布。
@@ -87,7 +87,7 @@ surviving scaffold 多 1。这个分布说明当前最重要的问题不是继�
 状态：Phase 2 的 contract/mapping/alias/redirect 步骤已完成；Phase 3 已完成 CPC `99000` 单目录 pilot，
 CPC `98000` 与 bulk physical migration 待推进。
 
-1. 已实现：ADR、迁移计划、确定性 material index 和完整 classification coverage read model；CPC 3.0 基线为 2,877 leaf、3 mapped、2,874 unmapped、0 unknown。
+1. 已实现：ADR、迁移计划、确定性 material index 和完整 classification coverage read model；CPC 3.0 当前为 2,877 leaf、326 mapped、2,551 unmapped、0 unknown。
 2. 已实现：catalog CLI 与 viewer 默认 material-first，legacy/all 只能显式请求；coverage summary/list 独立、受控并分页，known-unmapped resolve 不再伪装成方法学成功。
 3. 已实现：2,874 条 deterministic alias 以 terminal classification coverage locator 保留旧 id；alias-first
    `resolve --pcr` 返回 `legacy_id_redirect` 和 copyable next command，不自动 follow。内容命令以

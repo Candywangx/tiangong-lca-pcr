@@ -42,7 +42,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 1 |
-| 参考产品流 | Narrow woven fabrics, narrow fabrics of warp without weft assembled by adhesive (bolducs), labels, badges and similar articles of textile materials, not embroidered, braids in the piece, ornamental trimmings in the piece, without embroidery, other than knitted or crocheted, tassels, pompons and similar articles `706a70f1-432b-41bc-b000-ddf409e94f3f` |
+| 参考产品流 | 狭幅织物，用经纱而无纬纱胶粘而成的狭条织物（扎匹头带），未绣的标签、徽章及类似的纺织品，成幅的镶边，未绣的、成幅的装饰品，针织的或钩编的除外，缨、绒球及类似品 `706a70f1-432b-41bc-b000-ddf409e94f3f` |
 | 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | kg |
@@ -186,7 +186,7 @@ sync_with: pcr.en-US.md
 
 外购电力用于织机、编带机、黏合组装设备、驱动、压缩空气系统和可归属的车间空气调节。
 
-- 选定流：Electricity, supplied
+- 选定流：外购电力
 - 流属性/单位：Energy / kWh
 - 数量规则：实测或采用物理依据分配的用电量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -277,7 +277,7 @@ sync_with: pcr.en-US.md
 
 洗涤、漂白、染色、漂洗、化学整理和设备清洗的供水应计量，并与内部回用水分开。
 
-- 选定流：Process water
+- 选定流：过程用水
 - 流属性/单位：Volume / m3
 - 数量规则：已纳入整理工序的实测供水量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -292,7 +292,7 @@ sync_with: pcr.en-US.md
 
 已申报清洗、精练或 pH 控制配方消耗氢氧化钠时，将其作为一个化学品交换记录。
 
-- 选定流：Sodium hydroxide
+- 选定流：氢氧化钠
 - 流属性/单位：Mass / kg
 - 数量规则：可归属于代表批次的实测供货产品质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -307,7 +307,7 @@ sync_with: pcr.en-US.md
 
 代表路线将过氧化氢用于漂白或其他已申报处理时，应独立记录。
 
-- 选定流：Hydrogen peroxide
+- 选定流：过氧化氢
 - 流属性/单位：Mass / kg
 - 数量规则：可归属于代表批次的实测供货产品质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -322,7 +322,7 @@ sync_with: pcr.en-US.md
 
 已申报染色配方添加氯化钠时，将其作为一项独立工艺化学品记录。
 
-- 选定流：Sodium chloride
+- 选定流：氯化钠
 - 流属性/单位：Mass / kg
 - 数量规则：可归属于代表批次的实测盐供应质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -352,7 +352,7 @@ sync_with: pcr.en-US.md
 
 乙酸用于 pH 调节、中和或已申报整理配方时，应独立记录。
 
-- 选定流：Acetic acid
+- 选定流：乙酸
 - 流属性/单位：Mass / kg
 - 数量规则：可归属于代表批次的实测乙酸供应质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -367,7 +367,7 @@ sync_with: pcr.en-US.md
 
 外购电力用于整理设备、泵、加料、通风、干燥驱动和控制。
 
-- 选定流：Electricity, supplied
+- 选定流：外购电力
 - 流属性/单位：Energy / kWh
 - 数量规则：实测或采用物理依据分配的用电量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -382,7 +382,7 @@ sync_with: pcr.en-US.md
 
 场内燃烧天然气为已纳入整理路线直接或间接供热时，应与其他载能体分开记录。
 
-- 选定流：Natural gas
+- 选定流：天然气
 - 流属性/单位：Net calorific value / MJ
 - 数量规则：实测天然气消耗量，并采用有记录的低位热值换算
 - 数值来源模式：前景记录（`foreground_record`）
@@ -397,7 +397,7 @@ sync_with: pcr.en-US.md
 
 跨越场址边界的外购蒸汽应独立于场内天然气和电力记录。
 
-- 选定流：Steam, purchased
+- 选定流：外购蒸汽
 - 流属性/单位：Energy / MJ
 - 数量规则：实测蒸汽能量，或依据记录的压力、温度和焓把实测质量换算为能量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -453,7 +453,7 @@ sync_with: pcr.en-US.md
 
 已纳入场内整理热源燃烧天然气且排放跨越场址边界时，记录化石二氧化碳。
 
-- 选定流：Carbon dioxide, fossil, to air
+- 选定流：化石源二氧化碳，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：实测排放量或基于实测天然气的有记录场址计算
 - 数值来源模式：前景记录（`foreground_record`）
@@ -502,7 +502,7 @@ sync_with: pcr.en-US.md
 
 外购电力用于裁切、卷绕、组装、检验、测试和可归属的物料搬运设备。
 
-- 选定流：Electricity, supplied
+- 选定流：外购电力
 - 流属性/单位：Energy / kWh
 - 数量规则：实测或采用物理依据分配的用电量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -525,7 +525,7 @@ sync_with: pcr.en-US.md
 
 验收合格的干态或调湿态可销售产出是定量参考，并应携带所有必需产品限定信息。
 
-- 选定流：Narrow woven fabrics, narrow fabrics of warp without weft assembled by adhesive (bolducs), labels, badges and similar articles of textile materials, not embroidered, braids in the piece, ornamental trimmings in the piece, without embroidery, other than knitted or crocheted, tassels, pompons and similar articles `706a70f1-432b-41bc-b000-ddf409e94f3f`
+- 选定流：狭幅织物，用经纱而无纬纱胶粘而成的狭条织物（扎匹头带），未绣的标签、徽章及类似的纺织品，成幅的镶边，未绣的、成幅的装饰品，针织的或钩编的除外，缨、绒球及类似品 `706a70f1-432b-41bc-b000-ddf409e94f3f`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：实测验收产出质量，归一化至 1 kg 参考流
 - 数值来源模式：前景记录（`foreground_record`）
@@ -579,7 +579,7 @@ sync_with: pcr.en-US.md
 
 外购电力用于可归属于已处理纺织废水的泵、曝气、加药和污泥处理设备。
 
-- 选定流：Electricity, supplied
+- 选定流：外购电力
 - 流属性/单位：Energy / kWh
 - 数量规则：实测或采用物理依据分配的处理用电量
 - 数值来源模式：前景记录（`foreground_record`）

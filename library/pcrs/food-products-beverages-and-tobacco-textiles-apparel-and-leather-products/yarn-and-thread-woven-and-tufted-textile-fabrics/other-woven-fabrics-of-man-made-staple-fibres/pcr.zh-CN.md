@@ -38,7 +38,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 1,000 kg |
-| 参考产品流 | Other woven fabrics of man-made staple fibres `aa850d80-fcb5-40ab-8539-61771bb51c0f` |
+| 参考产品流 | 其他人造短纤维机织织物 `aa850d80-fcb5-40ab-8539-61771bb51c0f` |
 | 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | kg |
@@ -112,7 +112,7 @@ sync_with: pcr.en-US.md
 
 仅在马铃薯淀粉实际加入经纱浆料配方时记录。
 
-- 选定流：Potato Starch `1acb7b11-0259-4f61-b05b-83f1f3f11eda`
+- 选定流：马铃薯淀粉 `1acb7b11-0259-4f61-b05b-83f1f3f11eda`
 - 流属性/单位：Mass / kg
 - 数量规则：实测马铃薯淀粉净消耗量，并修正库存变化、退料和回收浆液
 - 数值来源模式：前景记录（`foreground_record`）
@@ -127,7 +127,7 @@ sync_with: pcr.en-US.md
 
 仅在聚乙烯醇实际加入经纱浆料配方时记录。
 
-- 选定流：Polyvinyl alcohol `cea707dd-98a3-451d-bc43-2dcc145091e9`
+- 选定流：聚乙烯醇 `cea707dd-98a3-451d-bc43-2dcc145091e9`
 - 流属性/单位：Mass / kg
 - 数量规则：实测聚乙烯醇净消耗量，并修正库存变化、退料和回收浆液
 - 数值来源模式：前景记录（`foreground_record`）
@@ -142,7 +142,7 @@ sync_with: pcr.en-US.md
 
 记录进入上浆和设备清洗的自来水；另行披露经核实的内部回用量。
 
-- 选定流：Tap water `d1e0e36c-07f0-4a75-bdcb-efb5d9e2ac36`
+- 选定流：自来水 `d1e0e36c-07f0-4a75-bdcb-efb5d9e2ac36`
 - 流属性/单位：Mass / kg
 - 数量规则：进入纱线准备的实测自来水质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -172,7 +172,7 @@ sync_with: pcr.en-US.md
 
 当浆料干燥或另一纳入的准备工序使用蒸汽时，记录跨越过程边界的外购蒸汽。
 
-- 选定流：Steam `293f9fd9-5182-4d35-8aa5-ce73d4f322b7`
+- 选定流：蒸汽 `293f9fd9-5182-4d35-8aa5-ce73d4f322b7`
 - 流属性/单位：Mass / kg
 - 数量规则：分配至纱线准备的计量外购蒸汽质量，并保留压力和凝结水返回状态
 - 数值来源模式：前景记录（`foreground_record`）
@@ -265,7 +265,7 @@ sync_with: pcr.en-US.md
 
 记录加入织机系统的润滑油，并排除未改变而退回库存的油。
 
-- 选定流：lubricating oil `aec6f1a5-7b09-4704-870d-434d3ada0edd`
+- 选定流：润滑油 `aec6f1a5-7b09-4704-870d-434d3ada0edd`
 - 流属性/单位：Mass / kg
 - 数量规则：实测净发油量，并修正库存变化和回收油
 - 数值来源模式：前景记录（`foreground_record`）
@@ -295,7 +295,7 @@ sync_with: pcr.en-US.md
 
 记录跨越织造过程边界、用于织机清洗或调湿的自来水。
 
-- 选定流：Tap water `d1e0e36c-07f0-4a75-bdcb-efb5d9e2ac36`
+- 选定流：自来水 `d1e0e36c-07f0-4a75-bdcb-efb5d9e2ac36`
 - 流属性/单位：Mass / kg
 - 数量规则：进入织造的实测自来水质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -403,7 +403,7 @@ sync_with: pcr.en-US.md
 
 记录进入预处理、染色、水洗和整理的自来水；另行披露经核实的内部回用量。
 
-- 选定流：Tap water `d1e0e36c-07f0-4a75-bdcb-efb5d9e2ac36`
+- 选定流：自来水 `d1e0e36c-07f0-4a75-bdcb-efb5d9e2ac36`
 - 流属性/单位：Mass / kg
 - 数量规则：进入纳入整理工序的实测自来水质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -418,7 +418,7 @@ sync_with: pcr.en-US.md
 
 仅在纳入的预处理或整理浴液实际加入氢氧化钠时记录外购氢氧化钠。
 
-- 选定流：Sodium hydroxide `e0abcced-0611-4c24-9290-5a2c5a0c4169`
+- 选定流：氢氧化钠 `e0abcced-0611-4c24-9290-5a2c5a0c4169`
 - 流属性/单位：Mass / kg
 - 数量规则：实测氢氧化钠产品净消耗量，并修正库存变化和退料
 - 数值来源模式：前景记录（`foreground_record`）
@@ -433,7 +433,7 @@ sync_with: pcr.en-US.md
 
 仅在实际加入该精确产品浓度时记录 50% 过氧化氢溶液。
 
-- 选定流：Hydrogen peroxide solution, 50% in water `afda772f-b130-4c32-9a89-c4e79ba4e0e8`
+- 选定流：过氧化氢溶液，50%（水溶液） `afda772f-b130-4c32-9a89-c4e79ba4e0e8`
 - 流属性/单位：Mass / kg
 - 数量规则：实测溶液净消耗量，并修正库存变化和退料
 - 数值来源模式：前景记录（`foreground_record`）
@@ -463,7 +463,7 @@ sync_with: pcr.en-US.md
 
 仅在纳入染浴实际加入氯化钠时记录外购氯化钠。
 
-- 选定流：Sodium chloride
+- 选定流：氯化钠
 - 流属性/单位：Mass / kg
 - 数量规则：实测氯化钠产品净消耗量，并修正库存变化和退料
 - 数值来源模式：前景记录（`foreground_record`）
@@ -523,7 +523,7 @@ sync_with: pcr.en-US.md
 
 记录纳入浴液、干燥或焙烘设备使用的外购蒸汽。
 
-- 选定流：Steam `293f9fd9-5182-4d35-8aa5-ce73d4f322b7`
+- 选定流：蒸汽 `293f9fd9-5182-4d35-8aa5-ce73d4f322b7`
 - 流属性/单位：Mass / kg
 - 数量规则：分配至纳入整理工序的计量外购蒸汽质量，并保留压力和凝结水返回状态
 - 数值来源模式：前景记录（`foreground_record`）
@@ -546,7 +546,7 @@ sync_with: pcr.en-US.md
 
 当可销售产品为整理织物时，记录离开最后一项纳入处理的织物。
 
-- 选定流：Other woven fabrics of man-made staple fibres `aa850d80-fcb5-40ab-8539-61771bb51c0f`
+- 选定流：其他人造短纤维机织织物 `aa850d80-fcb5-40ab-8539-61771bb51c0f`
 - 流属性/单位：Mass / kg
 - 数量规则：按共同水分基准计量、不含卷芯和包装的实测净织物质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -563,7 +563,7 @@ sync_with: pcr.en-US.md
 
 记录在纳入厂内处理后排放至水体的纺织湿法加工废水；其他去向需要不同的原子废物流身份。
 
-- 选定流：Wastewater, textile wet processing, to water `a60031a7-ea29-49ef-b578-90de910fcf8e`
+- 选定流：废水，纺织品湿法加工，至水体 `a60031a7-ea29-49ef-b578-90de910fcf8e`
 - 流属性/单位：Mass / kg
 - 数量规则：报告期内在排放点实测的废水质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -595,7 +595,7 @@ sync_with: pcr.en-US.md
 
 记录纳入厂内燃烧排放的化石二氧化碳。
 
-- 选定流：carbon dioxide (fossil) `08a91e70-3ddc-11dd-923d-0050c2490048`
+- 选定流：二氧化碳（化石源） `08a91e70-3ddc-11dd-923d-0050c2490048`
 - 流属性/单位：Mass / kg
 - 数量规则：纳入设备的实测或设施报告化石二氧化碳排放质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -646,7 +646,7 @@ sync_with: pcr.en-US.md
 
 仅在纳入整理时记录进入最终检验的整理织物。
 
-- 选定流：Other woven fabrics of man-made staple fibres `aa850d80-fcb5-40ab-8539-61771bb51c0f`
+- 选定流：其他人造短纤维机织织物 `aa850d80-fcb5-40ab-8539-61771bb51c0f`
 - 流属性/单位：Mass / kg
 - 数量规则：从最后一项纳入整理工序转入检验的实测转移质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -675,7 +675,7 @@ sync_with: pcr.en-US.md
 
 记录用于发运织物的低密度聚乙烯薄膜。
 
-- 选定流：Low-density polyethylene packaging film
+- 选定流：低密度聚乙烯包装膜
 - 流属性/单位：Mass / kg
 - 数量规则：纳入发运包装的实测薄膜净质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -726,7 +726,7 @@ sync_with: pcr.en-US.md
 
 这是工厂门口的验收可销售织物，不含卷芯和包装。
 
-- 选定流：Other woven fabrics of man-made staple fibres `aa850d80-fcb5-40ab-8539-61771bb51c0f`
+- 选定流：其他人造短纤维机织织物 `aa850d80-fcb5-40ab-8539-61771bb51c0f`
 - 流属性/单位：Mass / kg
 - 数量规则：按已声明水分基准计恰好 1,000 kg 验收可销售织物
 - 数值来源模式：固定值（`fixed_value`）
@@ -755,7 +755,7 @@ sync_with: pcr.en-US.md
 
 记录包装过程中废弃的低密度聚乙烯包装薄膜。
 
-- 选定流：Waste low-density polyethylene packaging film
+- 选定流：废低密度聚乙烯包装膜
 - 流属性/单位：Mass / kg
 - 数量规则：移交至指定接收处理的实测废薄膜净质量
 - 数值来源模式：前景记录（`foreground_record`）

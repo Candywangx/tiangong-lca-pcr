@@ -1582,7 +1582,7 @@ sync_with: pcr.en-US.md
 
 该产品流产出仅记录 Meat of rabbits and hares, fresh or chilled 在包装、最终检验与放行边界上的单一交换。数量按所列前景规则获得，不与其他交换合并。
 
-- 选定流：Meat of rabbits and hares, fresh or chilled `6fb95713-8813-4a4e-a0cd-1a3139e8347a`
+- 选定流：兔肉和野兔肉，新鲜或冷藏 `6fb95713-8813-4a4e-a0cd-1a3139e8347a`
 - 流属性/单位：Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg
 - 数量规则：采用工厂门口放行的净合格参考产品实测质量
 - 数值来源模式：前景记录（`foreground_record`）

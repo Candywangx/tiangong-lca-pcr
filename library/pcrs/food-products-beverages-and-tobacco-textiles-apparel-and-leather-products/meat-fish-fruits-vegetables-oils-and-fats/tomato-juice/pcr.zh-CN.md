@@ -40,7 +40,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 1,000 kg 番茄汁净重 |
-| 参考产品流 | Tomato juice `0e1f9da3-8a58-4fab-a793-1edde8bead88` |
+| 参考产品流 | 番茄汁 `0e1f9da3-8a58-4fab-a793-1edde8bead88` |
 | 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | kg |
@@ -577,7 +577,7 @@ sync_with: pcr.en-US.md
 
 这是唯一 UUID 已解决的参考产品行。计量合格净产出，排除包装质量，并归一化到 PCR 参考量。
 
-- 选定流：Tomato juice `0e1f9da3-8a58-4fab-a793-1edde8bead88`
+- 选定流：番茄汁 `0e1f9da3-8a58-4fab-a793-1edde8bead88`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg；单位组 Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66`
 - 数量规则：将实测合格净产出归一化为恰好 1,000 kg
 - 数值来源模式：计算值（`calculated_value`）

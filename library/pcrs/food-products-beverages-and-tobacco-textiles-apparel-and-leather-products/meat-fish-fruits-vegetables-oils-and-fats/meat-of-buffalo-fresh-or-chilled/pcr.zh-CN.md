@@ -40,7 +40,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 1 kg 净合格鲜或冷藏水牛肉 |
-| 参考产品流 | Meat of buffalo, fresh or chilled `e96ba1cf-ce0b-4a35-ac5b-8cabebb56116` |
+| 参考产品流 | 水牛肉，新鲜或冷藏 `e96ba1cf-ce0b-4a35-ac5b-8cabebb56116` |
 | 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | kg |

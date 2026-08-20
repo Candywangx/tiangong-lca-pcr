@@ -42,7 +42,7 @@ Tiangong 产品流 `Processed South American White Shrimp`（`e7d7c254-044d-4a15
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 1 kg 合格可销售产品 |
-| 参考产品流 | Processed South American White Shrimp `e7d7c254-044d-4a15-9d72-2e2a871bb67b` |
+| 参考产品流 | 加工南美白虾 `e7d7c254-044d-4a15-9d72-2e2a871bb67b` |
 | 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | kg |
@@ -443,7 +443,7 @@ Tiangong 产品流 `Processed South American White Shrimp`（`e7d7c254-044d-4a15
 
 这是参考产出。依据适用计量规则，它仅包括产品，不含包装、冰衣和盐水包装介质。
 
-- 选定流：Processed South American White Shrimp `e7d7c254-044d-4a15-9d72-2e2a871bb67b`
+- 选定流：加工南美白虾 `e7d7c254-044d-4a15-9d72-2e2a871bb67b`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：在声明的路线特定质量条件下恰好 1 kg 合格可销售产品
 - 数值来源模式：固定值（`fixed_value`）

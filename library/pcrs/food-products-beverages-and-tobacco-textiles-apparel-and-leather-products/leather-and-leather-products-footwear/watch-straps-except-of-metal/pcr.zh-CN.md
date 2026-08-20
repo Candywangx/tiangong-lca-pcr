@@ -39,7 +39,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 1 kg |
-| 参考产品流 | Watch straps, except of metal `19a79c1e-d7a4-422d-b754-47ea82969f9f` |
+| 参考产品流 | 表带，金属表带除外 `19a79c1e-d7a4-422d-b754-47ea82969f9f` |
 | 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | kg |
@@ -186,7 +186,7 @@ sync_with: pcr.en-US.md
 
 记录“本体转换用电”作为跨越本过程边界的单一交换；按声明路线适用，未发生时明确标记为不适用。
 
-- 选定流：Grid electricity
+- 选定流：电网电力
 - 流属性/单位：Energy / kWh
 - 数量规则：优先分表计量；否则按有记录的设备运行时间与负荷计算
 - 数值来源模式：前景记录（`foreground_record`）
@@ -406,7 +406,7 @@ sync_with: pcr.en-US.md
 
 记录“缝纫线投入”作为跨越本过程边界的单一交换；按声明路线适用，未发生时明确标记为不适用。
 
-- 选定流：Polyester sewing thread
+- 选定流：聚酯缝纫线
 - 流属性/单位：Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66
 - 数量规则：依据批次领用、退料、库存核对或配方称量记录取得净投入量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -436,7 +436,7 @@ sync_with: pcr.en-US.md
 
 记录“组装用电”作为跨越本过程边界的单一交换；按声明路线适用，未发生时明确标记为不适用。
 
-- 选定流：Grid electricity
+- 选定流：电网电力
 - 流属性/单位：Energy / kWh
 - 数量规则：优先分表计量；否则按有记录的设备运行时间与负荷计算
 - 数值来源模式：前景记录（`foreground_record`）
@@ -581,7 +581,7 @@ sync_with: pcr.en-US.md
 
 记录“表面处理用水投入”作为跨越本过程边界的单一交换；按声明路线适用，未发生时明确标记为不适用。
 
-- 选定流：Process water
+- 选定流：过程用水
 - 流属性/单位：Volume / m3
 - 数量规则：依据相应采集协议的批次记录、计量、称量或质量平衡取得
 - 数值来源模式：前景记录（`foreground_record`）
@@ -611,7 +611,7 @@ sync_with: pcr.en-US.md
 
 记录“表面处理用电”作为跨越本过程边界的单一交换；按声明路线适用，未发生时明确标记为不适用。
 
-- 选定流：Grid electricity
+- 选定流：电网电力
 - 流属性/单位：Energy / kWh
 - 数量规则：优先分表计量；否则按有记录的设备运行时间与负荷计算
 - 数值来源模式：前景记录（`foreground_record`）
@@ -626,7 +626,7 @@ sync_with: pcr.en-US.md
 
 记录“外购热水投入”作为跨越本过程边界的单一交换；按声明路线适用，未发生时明确标记为不适用。
 
-- 选定流：Purchased hot water
+- 选定流：外购热水
 - 流属性/单位：Energy / MJ
 - 数量规则：归属于批次的计量热能
 - 数值来源模式：前景记录（`foreground_record`）
@@ -641,7 +641,7 @@ sync_with: pcr.en-US.md
 
 记录“直燃干燥燃料”作为跨越本过程边界的单一交换；按声明路线适用，未发生时明确标记为不适用。
 
-- 选定流：Natural gas
+- 选定流：天然气
 - 流属性/单位：Energy / MJ
 - 数量规则：按声明低位热值基准计量的燃料能量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -747,7 +747,7 @@ sync_with: pcr.en-US.md
 
 记录“化石二氧化碳排放”作为跨越本过程边界的单一交换；按声明路线适用，未发生时明确标记为不适用。
 
-- 选定流：Carbon dioxide, fossil, to air
+- 选定流：化石源二氧化碳，排入空气
 - 流属性/单位：Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66
 - 数量规则：前景天然气记录乘以有文件支持的场址或供应商燃烧因子
 - 数值来源模式：计算值（`calculated_value`）
@@ -762,7 +762,7 @@ sync_with: pcr.en-US.md
 
 记录“氮氧化物排放”作为跨越本过程边界的单一交换；按声明路线适用，未发生时明确标记为不适用。
 
-- 选定流：Nitrogen oxides to air
+- 选定流：氮氧化物，排入空气
 - 流属性/单位：Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66
 - 数量规则：场址监测结果或前景燃料记录乘以有文件支持的设备特定因子
 - 数值来源模式：计算值（`calculated_value`）
@@ -814,7 +814,7 @@ sync_with: pcr.en-US.md
 
 记录“质检用电”作为跨越本过程边界的单一交换；按声明路线适用，未发生时明确标记为不适用。
 
-- 选定流：Grid electricity
+- 选定流：电网电力
 - 流属性/单位：Energy / kWh
 - 数量规则：优先分表计量；否则按有记录的设备运行时间与负荷计算
 - 数值来源模式：前景记录（`foreground_record`）
@@ -944,7 +944,7 @@ sync_with: pcr.en-US.md
 
 记录“瓦楞运输箱投入”作为跨越本过程边界的单一交换；按声明路线适用，未发生时明确标记为不适用。
 
-- 选定流：Corrugated paperboard shipping carton
+- 选定流：瓦楞纸板运输箱
 - 流属性/单位：Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66
 - 数量规则：空箱质量按装箱件数或经核实的占用质量分配
 - 数值来源模式：前景记录（`foreground_record`）
@@ -974,7 +974,7 @@ sync_with: pcr.en-US.md
 
 记录“包装用电”作为跨越本过程边界的单一交换；按声明路线适用，未发生时明确标记为不适用。
 
-- 选定流：Grid electricity
+- 选定流：电网电力
 - 流属性/单位：Energy / kWh
 - 数量规则：优先分表计量；否则按有记录的设备运行时间与负荷计算
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1001,7 +1001,7 @@ sync_with: pcr.en-US.md
 
 记录“参考表带输出”作为跨越本过程边界的单一交换；按声明路线适用，未发生时明确标记为不适用。
 
-- 选定流：Watch straps, except of metal `19a79c1e-d7a4-422d-b754-47ea82969f9f`
+- 选定流：表带，金属表带除外 `19a79c1e-d7a4-422d-b754-47ea82969f9f`
 - 流属性/单位：Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66
 - 数量规则：经校准的净质量并归一化至 1 kg 参考量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1033,7 +1033,7 @@ sync_with: pcr.en-US.md
 
 记录“LDPE 包装废料”作为跨越本过程边界的单一交换；按声明路线适用，未发生时明确标记为不适用。
 
-- 选定流：Waste low-density polyethylene film
+- 选定流：废低密度聚乙烯薄膜
 - 流属性/单位：Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66
 - 数量规则：批次废物称量质量
 - 数值来源模式：前景记录（`foreground_record`）

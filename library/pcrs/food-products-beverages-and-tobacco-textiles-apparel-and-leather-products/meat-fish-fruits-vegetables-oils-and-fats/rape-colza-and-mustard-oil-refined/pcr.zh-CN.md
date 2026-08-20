@@ -40,7 +40,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 1 kg |
-| 参考产品流 | Rape, colza and mustard oil, refined `e30cf6ff-7dfb-4972-affc-6cab3ae17283` |
+| 参考产品流 | 精炼油菜籽油、芥子油和芥末油 `e30cf6ff-7dfb-4972-affc-6cab3ae17283` |
 | 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | kg |
@@ -264,7 +264,7 @@ sync_with: pcr.en-US.md
 
 该流是定量参考输出。其应符合声明的油品身份、等级和产品规格，并在精炼损失后、排除的零售包装前计量。
 
-- 选定流：Rape, colza and mustard oil, refined `e30cf6ff-7dfb-4972-affc-6cab3ae17283`
+- 选定流：精炼油菜籽油、芥子油和芥末油 `e30cf6ff-7dfb-4972-affc-6cab3ae17283`
 - 流属性/单位：Mass / kg
 - 数量规则：归一化参考输出严格为 1 kg 净精炼油
 - 数值来源模式：固定值（`fixed_value`）

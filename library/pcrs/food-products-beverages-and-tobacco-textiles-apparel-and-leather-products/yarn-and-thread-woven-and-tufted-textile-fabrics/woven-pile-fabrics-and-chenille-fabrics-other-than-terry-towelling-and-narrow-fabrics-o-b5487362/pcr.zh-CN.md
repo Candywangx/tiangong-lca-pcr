@@ -40,7 +40,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 1 kg |
-| 参考产品流 | Woven pile fabrics and chenille fabrics (other than terry towelling and narrow fabrics) of man-made fibres `cb5fb579-ee14-4546-9d47-0a088d4dda76` |
+| 参考产品流 | 机织人造纤维绒头织物及绳绒织物（毛巾织物和狭幅毛圈织物除外） `cb5fb579-ee14-4546-9d47-0a088d4dda76` |
 | 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | kg |
@@ -161,7 +161,7 @@ sync_with: pcr.en-US.md
 
 记录供纱线准备、织机运行、局部抽风和织造辅助设备使用且处于定义电表边界内的电力。
 
-- 选定流：Grid electricity
+- 选定流：电网电力
 - 流属性/单位：Energy / kWh
 - 数量规则：分表读数或生产批次有凭证的电表平衡分摊
 - 数值来源模式：前景记录（`foreground_record`）
@@ -275,7 +275,7 @@ sync_with: pcr.en-US.md
 
 在工艺边界记录进入湿法加工的水，并与产品路线以外的冷却水和生活用水分开。
 
-- 选定流：Process water
+- 选定流：过程用水
 - 流属性/单位：Volume / m3
 - 数量规则：纳入纺织操作的计量供水或储罐平衡水量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -291,7 +291,7 @@ sync_with: pcr.en-US.md
 
 记录纳入路线和电表边界内泵送、加药、水洗、干燥、热定型、通风和减排所用电力。
 
-- 选定流：Grid electricity
+- 选定流：电网电力
 - 流属性/单位：Energy / kWh
 - 数量规则：纳入湿法操作的分表读数或有凭证的电表平衡分摊
 - 数值来源模式：前景记录（`foreground_record`）
@@ -307,7 +307,7 @@ sync_with: pcr.en-US.md
 
 外购蒸汽越过场址或过程边界时作为独立能源载体交换；若为现场燃烧，则应改为实际燃料及直接排放。
 
-- 选定流：Purchased steam
+- 选定流：外购蒸汽
 - 流属性/单位：Energy / MJ
 - 数量规则：按申报核算方法对凝结水回收修正后的计量蒸汽消耗
 - 数值来源模式：前景记录（`foreground_record`）
@@ -323,7 +323,7 @@ sync_with: pcr.en-US.md
 
 仅在批次配方用于申报的预处理、染色或 pH 调节步骤时记录氢氧化钠。
 
-- 选定流：Sodium hydroxide
+- 选定流：氢氧化钠
 - 流属性/单位：Mass / kg
 - 数量规则：领用制剂质量，浓度另行记录
 - 数值来源模式：前景记录（`foreground_record`）
@@ -339,7 +339,7 @@ sync_with: pcr.en-US.md
 
 对有凭证预处理配方包含过氧化氢的批次，将其作为独立条件性交换。
 
-- 选定流：Hydrogen peroxide
+- 选定流：过氧化氢
 - 流属性/单位：Mass / kg
 - 数量规则：领用制剂质量，浓度另行记录
 - 数值来源模式：前景记录（`foreground_record`）
@@ -355,7 +355,7 @@ sync_with: pcr.en-US.md
 
 仅在申报浴液或中和步骤实际投加时记录乙酸，且不与其他酸合并。
 
-- 选定流：Acetic acid
+- 选定流：乙酸
 - 流属性/单位：Mass / kg
 - 数量规则：领用制剂质量，浓度另行记录
 - 数值来源模式：前景记录（`foreground_record`）
@@ -477,7 +477,7 @@ sync_with: pcr.en-US.md
 
 纳入的场内纺织废水处理产生的污泥按湿质量、干固体质量及去向记录。
 
-- 选定流：Wastewater-treatment sludge
+- 选定流：废水处理污泥
 - 流属性/单位：Mass / kg
 - 数量规则：称量湿污泥并测定或化验干固体比例
 - 数值来源模式：前景记录（`foreground_record`）
@@ -517,7 +517,7 @@ sync_with: pcr.en-US.md
 
 记录适用设备及电表边界内刷毛、起绒、剪毛、检验、卷装、抽风和包装所用电力。
 
-- 选定流：Grid electricity
+- 选定流：电网电力
 - 流属性/单位：Energy / kWh
 - 数量规则：整理与包装的分表读数或有凭证的电表平衡分摊
 - 数值来源模式：前景记录（`foreground_record`）
@@ -573,7 +573,7 @@ sync_with: pcr.en-US.md
 
 最终产品为工厂门口放行的合格织物净干质量。本交换不含包装和不合格材料。
 
-- 选定流：Woven pile fabrics and chenille fabrics (other than terry towelling and narrow fabrics) of man-made fibres `cb5fb579-ee14-4546-9d47-0a088d4dda76`
+- 选定流：机织人造纤维绒头织物及绳绒织物（毛巾织物和狭幅毛圈织物除外） `cb5fb579-ee14-4546-9d47-0a088d4dda76`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：申报含湿基准下合格成品织物净质量
 - 数值来源模式：前景记录（`foreground_record`）

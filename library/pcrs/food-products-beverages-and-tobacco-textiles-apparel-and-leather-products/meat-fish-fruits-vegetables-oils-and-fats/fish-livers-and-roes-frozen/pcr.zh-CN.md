@@ -40,7 +40,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 1 kg 冷冻产品净质量 |
-| 参考产品流 | Fish livers and roes, frozen `4b21f535-008c-42a3-a6b7-04565095a86a` |
+| 参考产品流 | 鱼肝和鱼子，冷冻 `4b21f535-008c-42a3-a6b7-04565095a86a` |
 | 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | kg |
@@ -169,7 +169,7 @@ sync_with: pcr.en-US.md
 
 记录用于清洗、漂洗、可归属清洁卫生及相关制备的适用工艺用水。
 
-- 选定流： Process Water `94a04f7e-2d5c-41f0-b182-d54a3b373a02`
+- 选定流：工艺用水 `94a04f7e-2d5c-41f0-b182-d54a3b373a02`
 - 流属性/单位： Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则： 计量或由罐体体积得出的归属于生产批次的用水
 - 数值来源模式： 前景记录（`foreground_record`）
@@ -192,7 +192,7 @@ sync_with: pcr.en-US.md
 
 记录接收和清洗期间用于维持来料状态的外购或现场制冰。
 
-- 选定流： Ice `084c628e-9639-41fc-90f1-ee60dd12e9c6`
+- 选定流：冰 `084c628e-9639-41fc-90f1-ee60dd12e9c6`
 - 流属性/单位： Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则： 发放冰量扣除有记录的回收量；现场制冰能耗另行记录
 - 数值来源模式： 前景记录（`foreground_record`）
@@ -215,7 +215,7 @@ sync_with: pcr.en-US.md
 
 仅当 Alternating current, low-voltage grid supply 跨越本过程边界时适用；同一计量电量不得在不同电压行重复记录。
 
-- 选定流： Alternating current, low-voltage grid supply
+- 选定流：交流电，低压电网供电
 - 流属性/单位： Energy / kWh
 - 数量规则： 分表实测或有记录的设备负荷计算
 - 数值来源模式： 前景记录（`foreground_record`）
@@ -238,7 +238,7 @@ sync_with: pcr.en-US.md
 
 仅当 Alternating current, medium-voltage grid supply 跨越本过程边界时适用；同一计量电量不得在不同电压行重复记录。
 
-- 选定流： Alternating current, medium-voltage grid supply
+- 选定流：交流电，中压电网供电
 - 流属性/单位： Energy / kWh
 - 数量规则： 分表实测或有记录的设备负荷计算
 - 数值来源模式： 前景记录（`foreground_record`）
@@ -447,7 +447,7 @@ sync_with: pcr.en-US.md
 
 仅当 Alternating current, low-voltage grid supply 跨越本过程边界时适用；同一计量电量不得在不同电压行重复记录。
 
-- 选定流： Alternating current, low-voltage grid supply
+- 选定流：交流电，低压电网供电
 - 流属性/单位： Energy / kWh
 - 数量规则： 分表实测或有记录的设备负荷和运行时间计算
 - 数值来源模式： 前景记录（`foreground_record`）
@@ -470,7 +470,7 @@ sync_with: pcr.en-US.md
 
 仅当 Alternating current, medium-voltage grid supply 跨越本过程边界时适用；同一计量电量不得在不同电压行重复记录。
 
-- 选定流： Alternating current, medium-voltage grid supply
+- 选定流：交流电，中压电网供电
 - 流属性/单位： Energy / kWh
 - 数量规则： 分表实测或有记录的设备负荷和运行时间计算
 - 数值来源模式： 前景记录（`foreground_record`）
@@ -493,7 +493,7 @@ sync_with: pcr.en-US.md
 
 记录用于挂冰衣的清洁水，并将保留冰衣与喷淋或浸渍损失分别核算。
 
-- 选定流： Process Water `94a04f7e-2d5c-41f0-b182-d54a3b373a02`
+- 选定流：工艺用水 `94a04f7e-2d5c-41f0-b182-d54a3b373a02`
 - 流属性/单位： Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则： 计量用水以及实测或计算的保留冰衣质量
 - 数值来源模式： 前景记录（`foreground_record`）
@@ -516,7 +516,7 @@ sync_with: pcr.en-US.md
 
 仅适用于维修记录识别为 Refrigerant, R134a 的设备；不得与其他制冷剂补充量合并。
 
-- 选定流： Refrigerant, R134a `047bf9fb-8b5a-4070-8927-8df04e7241b3`
+- 选定流：制冷剂，R134a `047bf9fb-8b5a-4070-8927-8df04e7241b3`
 - 流属性/单位： Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则： 依据维护和库存记录分配的补充量
 - 数值来源模式： 计算值（`calculated_value`）
@@ -539,7 +539,7 @@ sync_with: pcr.en-US.md
 
 仅适用于维修记录识别为 Refrigerant R404A 的设备；不得与其他制冷剂补充量合并。
 
-- 选定流： Refrigerant R404A `76513c71-a148-484e-865f-2ab54afb4331`
+- 选定流：制冷剂R404A `76513c71-a148-484e-865f-2ab54afb4331`
 - 流属性/单位： Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则： 依据维护和库存记录分配的补充量
 - 数值来源模式： 计算值（`calculated_value`）
@@ -664,7 +664,7 @@ sync_with: pcr.en-US.md
 
 依据物质特定制冷剂平衡计算 Refrigerant R404A to air，且仅对匹配的系统记录。
 
-- 选定流： Refrigerant R404A to air
+- 选定流：制冷剂R404A，排入空气
 - 流属性/单位： Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则： 分配至所代表操作的制冷剂质量平衡损失
 - 数值来源模式： 计算值（`calculated_value`）
@@ -716,7 +716,7 @@ sync_with: pcr.en-US.md
 
 将 Polyethylene bag 作为单一包装组件记录，并核对发放量、退回量和不合格量。
 
-- 选定流： Polyethylene bag `10647902-9822-4b06-bc95-f1f30f10c261`
+- 选定流：聚乙烯袋 `10647902-9822-4b06-bc95-f1f30f10c261`
 - 流属性/单位： Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则： 组件发放质量扣除有记录退回量，再除以合格产品净产出
 - 数值来源模式： 计算值（`calculated_value`）
@@ -739,7 +739,7 @@ sync_with: pcr.en-US.md
 
 将 Corrugated cardboard 作为单一包装组件记录，并核对发放量、退回量和不合格量。
 
-- 选定流： Corrugated cardboard `8bde297e-98df-463f-bcb4-0db52bf6e0b5`
+- 选定流：瓦楞纸板 `8bde297e-98df-463f-bcb4-0db52bf6e0b5`
 - 流属性/单位： Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则： 组件发放质量扣除有记录退回量，再除以合格产品净产出
 - 数值来源模式： 计算值（`calculated_value`）
@@ -762,7 +762,7 @@ sync_with: pcr.en-US.md
 
 仅当 Alternating current, low-voltage grid supply 跨越本过程边界时适用；同一计量电量不得在不同电压行重复记录。
 
-- 选定流： Alternating current, low-voltage grid supply
+- 选定流：交流电，低压电网供电
 - 流属性/单位： Energy / kWh
 - 数量规则： 实测用电或有记录的包装线和冷库分配计算
 - 数值来源模式： 计算值（`calculated_value`）
@@ -785,7 +785,7 @@ sync_with: pcr.en-US.md
 
 仅当 Alternating current, medium-voltage grid supply 跨越本过程边界时适用；同一计量电量不得在不同电压行重复记录。
 
-- 选定流： Alternating current, medium-voltage grid supply
+- 选定流：交流电，中压电网供电
 - 流属性/单位： Energy / kWh
 - 数量规则： 实测用电或有记录的包装线和冷库分配计算
 - 数值来源模式： 计算值（`calculated_value`）
@@ -808,7 +808,7 @@ sync_with: pcr.en-US.md
 
 仅适用于维修记录识别为 Refrigerant, R134a 的设备；不得与其他制冷剂补充量合并。
 
-- 选定流： Refrigerant, R134a `047bf9fb-8b5a-4070-8927-8df04e7241b3`
+- 选定流：制冷剂，R134a `047bf9fb-8b5a-4070-8927-8df04e7241b3`
 - 流属性/单位： Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则： 依据维护和库存记录分配的补充量
 - 数值来源模式： 计算值（`calculated_value`）
@@ -831,7 +831,7 @@ sync_with: pcr.en-US.md
 
 仅适用于维修记录识别为 Refrigerant, R404A 的设备；不得与其他制冷剂补充量合并。
 
-- 选定流： Refrigerant, R404A `33db0143-ba65-4036-a57b-e32dcdecb779`
+- 选定流：制冷剂，R404A `33db0143-ba65-4036-a57b-e32dcdecb779`
 - 流属性/单位： Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则： 依据维护和库存记录分配的补充量
 - 数值来源模式： 计算值（`calculated_value`）
@@ -862,7 +862,7 @@ sync_with: pcr.en-US.md
 
 本行为冷冻库门处的声明参考流；食用产品净质量不含包装和冰衣。
 
-- 选定流： Fish livers and roes, frozen `4b21f535-008c-42a3-a6b7-04565095a86a`
+- 选定流：鱼肝和鱼子，冷冻 `4b21f535-008c-42a3-a6b7-04565095a86a`
 - 流属性/单位： Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则： 恰好 1 kg 食用冷冻产品净质量
 - 数值来源模式： 固定值（`fixed_value`）
@@ -955,7 +955,7 @@ sync_with: pcr.en-US.md
 
 依据物质特定制冷剂平衡计算 Refrigerant R404A to air，且仅对匹配的系统记录。
 
-- 选定流： Refrigerant R404A to air
+- 选定流：制冷剂R404A，排入空气
 - 流属性/单位： Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则： 分配至所代表操作的制冷剂质量平衡损失
 - 数值来源模式： 计算值（`calculated_value`）

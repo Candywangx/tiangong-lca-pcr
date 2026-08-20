@@ -1625,15 +1625,6 @@ This product output records only Buttermilk at the finishing and facility-gate d
 - Evidence kind: Source rule (`source_rule`)
 - Sources: `unsd-cpc-3-22290`; `codex-cxs-206-1999`; `eu-pef-2021-2279`
 
-- Range: Exact reference-flow conformance interval
-  - Range role: Allowed range (`allowed_range`)
-  - Lower: 1
-  - Upper: 1
-  - Unit: kg
-  - Basis: exact PCR reference amount
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: External source (`external_source`)
-  - Sources: `eu-pef-2021-2279`
 
 ##### Waste flows
 

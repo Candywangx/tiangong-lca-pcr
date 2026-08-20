@@ -40,7 +40,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 1 kg |
-| 参考产品流 | Freshwater fish, frozen `1c2a109f-6b9a-47eb-88a7-232025a03c81` |
+| 参考产品流 | 冷冻淡水鱼 `1c2a109f-6b9a-47eb-88a7-232025a03c81` |
 | 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | kg |
@@ -465,7 +465,7 @@ sync_with: pcr.en-US.md
 
 这是设施大门交付处唯一声明的参考输出。
 
-- 选定流：Freshwater fish, frozen `1c2a109f-6b9a-47eb-88a7-232025a03c81`
+- 选定流：冷冻淡水鱼 `1c2a109f-6b9a-47eb-88a7-232025a03c81`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：1 kg 冷冻淡水鱼净质量的固定参考数量
 - 数值来源模式：固定值（`fixed_value`）

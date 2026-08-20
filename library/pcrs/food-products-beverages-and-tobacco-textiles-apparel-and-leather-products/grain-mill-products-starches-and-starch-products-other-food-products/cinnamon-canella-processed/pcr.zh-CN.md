@@ -908,7 +908,7 @@ sync_with: pcr.en-US.md
 将该具名流作为本单元过程的独立原子交换记录；保留其声明的路线、来源或去向，不得与其他流合并。
 
 - 流名称：`Cinnamon (canella), processed`
-- 选定流：Cinnamon (canella), processed `3955425f-128e-48d4-b46e-04bf9ee70c22`
+- 选定流：肉桂（canella），加工品 `3955425f-128e-48d4-b46e-04bf9ee70c22`
 - 流属性/单位：Mass / kg
 - 流 UUID：`3955425f-128e-48d4-b46e-04bf9ee70c22`
 - 方向：`outputs`

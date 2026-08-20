@@ -40,7 +40,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 1 kg |
-| 参考产品流 | Woven fabrics of carded wool or of carded fine animal hair, containing 85% or more by weight of wool or fine animal hair `d5a61944-e4b9-4a9c-9b26-b2f2b413d7d0` |
+| 参考产品流 | 含羊毛或动物细毛的重量达85%或85%以上的粗梳羊毛或粗梳动物细毛机织织物 `d5a61944-e4b9-4a9c-9b26-b2f2b413d7d0` |
 | 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | 质量单位组 `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | kg |
@@ -112,7 +112,7 @@ sync_with: pcr.en-US.md
 
 仅在本过程中记录络筒、整经、适用时的上浆设备、通风和过程控制所消耗的计量电力。
 
-- 选定流：Electricity, medium voltage
+- 选定流：中压电力
 - 流属性/单位：Energy / kWh
 - 数量规则：纱线准备批次的计量或分摊电力消耗
 - 数值来源模式：前景记录（`foreground_record`）
@@ -190,7 +190,7 @@ sync_with: pcr.en-US.md
 
 通过场址计量方法记录织机、适用时归属于织机的压缩空气制备、局部通风和织造控制用电。
 
-- 选定流：Electricity, medium voltage
+- 选定流：中压电力
 - 流属性/单位：Energy / kWh
 - 数量规则：织造批次的计量或分摊电力消耗
 - 数值来源模式：前景记录（`foreground_record`）
@@ -268,7 +268,7 @@ sync_with: pcr.en-US.md
 
 仅当所声明产品路线发生洗涤、缩绒、染色、漂洗或其他水相整理步骤时记录工艺水。
 
-- 选定流：Process water
+- 选定流：过程用水
 - 流属性/单位：Volume / m3
 - 数量规则：供给适用整理批次的计量水量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -283,7 +283,7 @@ sync_with: pcr.en-US.md
 
 当外购蒸汽为缩绒、洗涤、染色、干燥或热力整理供热时单独记录蒸汽。
 
-- 选定流：Steam
+- 选定流：蒸汽
 - 流属性/单位：Energy / MJ
 - 数量规则：输送至适用整理批次的计量或发票蒸汽量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -298,7 +298,7 @@ sync_with: pcr.en-US.md
 
 仅当整理配方使用乙酸控制 pH 时，才将乙酸记录为该独立化学品输入。其他化学品必须在前景数据包中用各自的原子流行表示。
 
-- 选定流：Acetic acid
+- 选定流：乙酸
 - 流属性/单位：Mass / kg
 - 数量规则：按批准配方发料并依据化学品库存记录核实的质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -313,7 +313,7 @@ sync_with: pcr.en-US.md
 
 通过场址计量方法记录湿处理设备、烘干机、整理机、检验设备、通风和控制用电。
 
-- 选定流：Electricity, medium voltage
+- 选定流：中压电力
 - 流属性/单位：Energy / kWh
 - 数量规则：整理和检验批次的计量或分摊电力消耗
 - 数值来源模式：前景记录（`foreground_record`）
@@ -351,7 +351,7 @@ sync_with: pcr.en-US.md
 
 这是全部适用整理和最终检验后的声明参考产品。
 
-- 选定流：Woven fabrics of carded wool or of carded fine animal hair, containing 85% or more by weight of wool or fine animal hair `d5a61944-e4b9-4a9c-9b26-b2f2b413d7d0`
+- 选定流：含羊毛或动物细毛的重量达85%或85%以上的粗梳羊毛或粗梳动物细毛机织织物 `d5a61944-e4b9-4a9c-9b26-b2f2b413d7d0`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：按合格产品质量归一化后的 1 kg
 - 数值来源模式：固定值（`fixed_value`）
@@ -385,7 +385,7 @@ sync_with: pcr.en-US.md
 
 仅当现场发生天然气燃烧且该排放作为前景释放被实测时，才向适用空气隔室记录化石二氧化碳。计算排放需要另行审查的因子和计算规则。
 
-- 选定流：Carbon dioxide, fossil, to air
+- 选定流：化石源二氧化碳，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：归属于适用整理批次的化石二氧化碳实测排放
 - 数值来源模式：前景记录（`foreground_record`）

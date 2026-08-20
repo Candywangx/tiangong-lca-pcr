@@ -535,15 +535,6 @@ This is the quantitative reference output; net fish mass excludes glaze and pack
 - Basis kind: Reference flow (`reference_flow`)
 - Evidence kind: Identity reference (`identity_reference`)
 - Sources: `codex-cxs-190-1995`
-- Range: Reference-flow identity range
-  - Range role: Allowed range (`allowed_range`)
-  - Lower: 1
-  - Upper: 1
-  - Unit: kg
-  - Basis: net fish mass excluding glaze and packaging
-  - Basis kind: Reference flow (`reference_flow`)
-  - Evidence kind: External source (`external_source`)
-  - Sources: `codex-cxs-190-1995`
 
 ##### Waste flows
 

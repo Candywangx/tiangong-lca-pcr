@@ -38,7 +38,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 1 kg 净产品 |
-| 参考产品流 | Edible offal of cattle, fresh, chilled or frozen `a6673976-2ef4-4502-b9f5-bbc57099bb40` |
+| 参考产品流 | 新鲜、冷藏或冷冻的牛食用内脏 `a6673976-2ef4-4502-b9f5-bbc57099bb40` |
 | 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | kg |
@@ -129,7 +129,7 @@ sync_with: pcr.en-US.md
 
 本卡将“Electricity, grid supply”作为“活牛接收与验收”过程的一项独立输入产品流交换记录；不得与其他物理或化学流合并。
 
-- 选定流：Electricity, grid supply
+- 选定流：电网供电
 - 流属性/单位：Energy / kWh
 - 数量规则：记录“Electricity, grid supply”对应阶段的分表读数；共享电量仅以有文件记录的设备活动、停留或占用驱动因素计算批次份额。
 - 数值来源模式：计算值（`calculated_value`）
@@ -147,7 +147,7 @@ sync_with: pcr.en-US.md
 
 本卡将“Process water”作为“活牛接收与验收”过程的一项独立输入产品流交换记录；不得与其他物理或化学流合并。
 
-- 选定流：Process water
+- 选定流：过程用水
 - 流属性/单位：Volume / m3
 - 数量规则：使用专用流量计分别记录“Process water”的批次体积，并保留仪表边界、时间和去向记录。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -255,7 +255,7 @@ sync_with: pcr.en-US.md
 
 本卡将“Electricity, grid supply”作为“屠宰、去内脏与可食内脏分离”过程的一项独立输入产品流交换记录；不得与其他物理或化学流合并。
 
-- 选定流：Electricity, grid supply
+- 选定流：电网供电
 - 流属性/单位：Energy / kWh
 - 数量规则：记录“Electricity, grid supply”对应阶段的分表读数；共享电量仅以有文件记录的设备活动、停留或占用驱动因素计算批次份额。
 - 数值来源模式：计算值（`calculated_value`）
@@ -273,7 +273,7 @@ sync_with: pcr.en-US.md
 
 本卡将“Process water”作为“屠宰、去内脏与可食内脏分离”过程的一项独立输入产品流交换记录；不得与其他物理或化学流合并。
 
-- 选定流：Process water
+- 选定流：过程用水
 - 流属性/单位：Volume / m3
 - 数量规则：使用专用流量计分别记录“Process water”的批次体积，并保留仪表边界、时间和去向记录。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -645,7 +645,7 @@ sync_with: pcr.en-US.md
 
 本卡将“Ammonia to air”作为“屠宰、去内脏与可食内脏分离”过程的一项独立输出基本流交换记录；不得与其他物理或化学流合并。本卡只对应一个具名物质或监测参数及一个环境介质。
 
-- 选定流：Ammonia to air
+- 选定流：氨，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：使用同期实测排气流量与物质浓度，或对实测活动量应用经核实的设备特定因子，逐物质计算“Ammonia to air”质量。
 - 数值来源模式：计算值（`calculated_value`）
@@ -663,7 +663,7 @@ sync_with: pcr.en-US.md
 
 本卡将“Hydrogen sulfide to air”作为“屠宰、去内脏与可食内脏分离”过程的一项独立输出基本流交换记录；不得与其他物理或化学流合并。本卡只对应一个具名物质或监测参数及一个环境介质。
 
-- 选定流：Hydrogen sulfide to air
+- 选定流：硫化氢，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：使用同期实测排气流量与物质浓度，或对实测活动量应用经核实的设备特定因子，逐物质计算“Hydrogen sulfide to air”质量。
 - 数值来源模式：计算值（`calculated_value`）
@@ -813,7 +813,7 @@ sync_with: pcr.en-US.md
 
 本卡将“Electricity, grid supply”作为“按器官分别修整、清洗与检验”过程的一项独立输入产品流交换记录；不得与其他物理或化学流合并。
 
-- 选定流：Electricity, grid supply
+- 选定流：电网供电
 - 流属性/单位：Energy / kWh
 - 数量规则：记录“Electricity, grid supply”对应阶段的分表读数；共享电量仅以有文件记录的设备活动、停留或占用驱动因素计算批次份额。
 - 数值来源模式：计算值（`calculated_value`）
@@ -831,7 +831,7 @@ sync_with: pcr.en-US.md
 
 本卡将“Process water”作为“按器官分别修整、清洗与检验”过程的一项独立输入产品流交换记录；不得与其他物理或化学流合并。
 
-- 选定流：Process water
+- 选定流：过程用水
 - 流属性/单位：Volume / m3
 - 数量规则：使用专用流量计分别记录“Process water”的批次体积，并保留仪表边界、时间和去向记录。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1263,7 +1263,7 @@ sync_with: pcr.en-US.md
 
 本卡将“Electricity, grid supply”作为“条件性冷却与冻结”过程的一项独立输入产品流交换记录；不得与其他物理或化学流合并。
 
-- 选定流：Electricity, grid supply
+- 选定流：电网供电
 - 流属性/单位：Energy / kWh
 - 数量规则：记录“Electricity, grid supply”对应阶段的分表读数；共享电量仅以有文件记录的设备活动、停留或占用驱动因素计算批次份额。
 - 数值来源模式：计算值（`calculated_value`）
@@ -1281,7 +1281,7 @@ sync_with: pcr.en-US.md
 
 本卡将“Electricity, grid supply”作为“条件性冷却与冻结”过程的一项独立输入产品流交换记录；不得与其他物理或化学流合并。
 
-- 选定流：Electricity, grid supply
+- 选定流：电网供电
 - 流属性/单位：Energy / kWh
 - 数量规则：记录“Electricity, grid supply”对应阶段的分表读数；共享电量仅以有文件记录的设备活动、停留或占用驱动因素计算批次份额。
 - 数值来源模式：计算值（`calculated_value`）
@@ -1299,7 +1299,7 @@ sync_with: pcr.en-US.md
 
 本卡将“Process water”作为“条件性冷却与冻结”过程的一项独立输入产品流交换记录；不得与其他物理或化学流合并。
 
-- 选定流：Process water
+- 选定流：过程用水
 - 流属性/单位：Volume / m3
 - 数量规则：使用专用流量计分别记录“Process water”的批次体积，并保留仪表边界、时间和去向记录。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -2109,7 +2109,7 @@ sync_with: pcr.en-US.md
 
 本卡将“Electricity, grid supply”作为“组成装配、包装、储存与放行”过程的一项独立输入产品流交换记录；不得与其他物理或化学流合并。
 
-- 选定流：Electricity, grid supply
+- 选定流：电网供电
 - 流属性/单位：Energy / kWh
 - 数量规则：记录“Electricity, grid supply”对应阶段的分表读数；共享电量仅以有文件记录的设备活动、停留或占用驱动因素计算批次份额。
 - 数值来源模式：计算值（`calculated_value`）
@@ -2127,7 +2127,7 @@ sync_with: pcr.en-US.md
 
 本卡将“Electricity, grid supply”作为“组成装配、包装、储存与放行”过程的一项独立输入产品流交换记录；不得与其他物理或化学流合并。本卡仅对应冷藏状态。
 
-- 选定流：Electricity, grid supply
+- 选定流：电网供电
 - 流属性/单位：Energy / kWh
 - 数量规则：记录“Electricity, grid supply”对应阶段的分表读数；共享电量仅以有文件记录的设备活动、停留或占用驱动因素计算批次份额。
 - 数值来源模式：计算值（`calculated_value`）
@@ -2145,7 +2145,7 @@ sync_with: pcr.en-US.md
 
 本卡将“Electricity, grid supply”作为“组成装配、包装、储存与放行”过程的一项独立输入产品流交换记录；不得与其他物理或化学流合并。本卡仅对应冷冻状态。
 
-- 选定流：Electricity, grid supply
+- 选定流：电网供电
 - 流属性/单位：Energy / kWh
 - 数量规则：记录“Electricity, grid supply”对应阶段的分表读数；共享电量仅以有文件记录的设备活动、停留或占用驱动因素计算批次份额。
 - 数值来源模式：计算值（`calculated_value`）
@@ -2163,7 +2163,7 @@ sync_with: pcr.en-US.md
 
 本卡将“Low-density polyethylene film”作为“组成装配、包装、储存与放行”过程的一项独立输入产品流交换记录；不得与其他物理或化学流合并。本卡只对应一种明确的包装组件或材料特定包装废物。
 
-- 选定流：Low-density polyethylene film
+- 选定流：低密度聚乙烯薄膜
 - 流属性/单位：Mass / kg
 - 数量规则：按产品特定 BoM，以领用质量减退回质量，或以组件数量乘经核实单件质量，分别计算“Low-density polyethylene film”；托盘仅按有据循环次数处理。
 - 数值来源模式：计算值（`calculated_value`）
@@ -2181,7 +2181,7 @@ sync_with: pcr.en-US.md
 
 本卡将“Corrugated fibreboard box”作为“组成装配、包装、储存与放行”过程的一项独立输入产品流交换记录；不得与其他物理或化学流合并。
 
-- 选定流：Corrugated fibreboard box
+- 选定流：瓦楞纸箱
 - 流属性/单位：Mass / kg
 - 数量规则：仅使用经计量的前景输入与可审计计算关系计算“Corrugated fibreboard box”数量，保存输入值、公式、因子来源及批次归属。
 - 数值来源模式：计算值（`calculated_value`）
@@ -2199,7 +2199,7 @@ sync_with: pcr.en-US.md
 
 本卡将“Paper label”作为“组成装配、包装、储存与放行”过程的一项独立输入产品流交换记录；不得与其他物理或化学流合并。
 
-- 选定流：Paper label
+- 选定流：纸质标签
 - 流属性/单位：Mass / kg
 - 数量规则：仅使用经计量的前景输入与可审计计算关系计算“Paper label”数量，保存输入值、公式、因子来源及批次归属。
 - 数值来源模式：计算值（`calculated_value`）
@@ -2217,7 +2217,7 @@ sync_with: pcr.en-US.md
 
 本卡将“Wood pallet”作为“组成装配、包装、储存与放行”过程的一项独立输入产品流交换记录；不得与其他物理或化学流合并。本卡只对应一种明确的包装组件或材料特定包装废物。
 
-- 选定流：Wood pallet
+- 选定流：木托盘
 - 流属性/单位：Mass / kg
 - 数量规则：按产品特定 BoM，以领用质量减退回质量，或以组件数量乘经核实单件质量，分别计算“Wood pallet”；托盘仅按有据循环次数处理。
 - 数值来源模式：计算值（`calculated_value`）
@@ -2243,7 +2243,7 @@ sync_with: pcr.en-US.md
 
 本卡是组成装配、包装、储存、质量放行与净质量确定后的 CPC 21151 定量参考输出。
 
-- 选定流：Edible offal of cattle, fresh, chilled or frozen `a6673976-2ef4-4502-b9f5-bbc57099bb40`
+- 选定流：新鲜、冷藏或冷冻的牛食用内脏 `a6673976-2ef4-4502-b9f5-bbc57099bb40`
 - 流属性/单位：Mass / kg
 - 数量规则：记录工厂门放行的 1 kg 净合格牛可食内脏；排除包装质量，并要求申报器官组成及一个市场状态。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -2469,7 +2469,7 @@ sync_with: pcr.en-US.md
 
 本卡将“Electricity, grid supply”作为“清洗、消毒与场内热力公用工程”过程的一项独立输入产品流交换记录；不得与其他物理或化学流合并。
 
-- 选定流：Electricity, grid supply
+- 选定流：电网供电
 - 流属性/单位：Energy / kWh
 - 数量规则：记录“Electricity, grid supply”对应阶段的分表读数；共享电量仅以有文件记录的设备活动、停留或占用驱动因素计算批次份额。
 - 数值来源模式：计算值（`calculated_value`）
@@ -2487,7 +2487,7 @@ sync_with: pcr.en-US.md
 
 本卡将“Process water”作为“清洗、消毒与场内热力公用工程”过程的一项独立输入产品流交换记录；不得与其他物理或化学流合并。
 
-- 选定流：Process water
+- 选定流：过程用水
 - 流属性/单位：Volume / m3
 - 数量规则：使用专用流量计分别记录“Process water”的批次体积，并保留仪表边界、时间和去向记录。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -2505,7 +2505,7 @@ sync_with: pcr.en-US.md
 
 本卡将“Purchased steam”作为“清洗、消毒与场内热力公用工程”过程的一项独立输入产品流交换记录；不得与其他物理或化学流合并。本卡只对应一种明确载体或化学物质。
 
-- 选定流：Purchased steam
+- 选定流：外购蒸汽
 - 流属性/单位：Energy / MJ
 - 数量规则：按经校准的载体计量记录及同期温度、压力、密度或热值，将“Purchased steam”换算为交付能量，并防止替代供热路线重复计算。
 - 数值来源模式：计算值（`calculated_value`）
@@ -2523,7 +2523,7 @@ sync_with: pcr.en-US.md
 
 本卡将“Purchased hot water”作为“清洗、消毒与场内热力公用工程”过程的一项独立输入产品流交换记录；不得与其他物理或化学流合并。本卡只对应一种明确载体或化学物质。
 
-- 选定流：Purchased hot water
+- 选定流：外购热水
 - 流属性/单位：Energy / MJ
 - 数量规则：按经校准的载体计量记录及同期温度、压力、密度或热值，将“Purchased hot water”换算为交付能量，并防止替代供热路线重复计算。
 - 数值来源模式：计算值（`calculated_value`）
@@ -2541,7 +2541,7 @@ sync_with: pcr.en-US.md
 
 本卡将“Natural gas”作为“清洗、消毒与场内热力公用工程”过程的一项独立输入产品流交换记录；不得与其他物理或化学流合并。本卡只对应一种明确载体或化学物质。
 
-- 选定流：Natural gas
+- 选定流：天然气
 - 流属性/单位：Energy / MJ
 - 数量规则：按经校准的载体计量记录及同期温度、压力、密度或热值，将“Natural gas”换算为交付能量，并防止替代供热路线重复计算。
 - 数值来源模式：计算值（`calculated_value`）
@@ -2559,7 +2559,7 @@ sync_with: pcr.en-US.md
 
 本卡将“Diesel fuel”作为“清洗、消毒与场内热力公用工程”过程的一项独立输入产品流交换记录；不得与其他物理或化学流合并。本卡只对应一种明确载体或化学物质。
 
-- 选定流：Diesel fuel
+- 选定流：柴油燃料
 - 流属性/单位：Energy / MJ
 - 数量规则：按经校准的载体计量记录及同期温度、压力、密度或热值，将“Diesel fuel”换算为交付能量，并防止替代供热路线重复计算。
 - 数值来源模式：计算值（`calculated_value`）
@@ -2577,7 +2577,7 @@ sync_with: pcr.en-US.md
 
 本卡将“Liquefied petroleum gas”作为“清洗、消毒与场内热力公用工程”过程的一项独立输入产品流交换记录；不得与其他物理或化学流合并。本卡只对应一种明确载体或化学物质。
 
-- 选定流：Liquefied petroleum gas
+- 选定流：液化石油气
 - 流属性/单位：Energy / MJ
 - 数量规则：按经校准的载体计量记录及同期温度、压力、密度或热值，将“Liquefied petroleum gas”换算为交付能量，并防止替代供热路线重复计算。
 - 数值来源模式：计算值（`calculated_value`）
@@ -2595,7 +2595,7 @@ sync_with: pcr.en-US.md
 
 本卡将“Sodium hydroxide”作为“清洗、消毒与场内热力公用工程”过程的一项独立输入产品流交换记录；不得与其他物理或化学流合并。本卡只对应一种明确载体或化学物质。
 
-- 选定流：Sodium hydroxide
+- 选定流：氢氧化钠
 - 流属性/单位：Mass / kg
 - 数量规则：依据化学品库存、领用和投加记录，分别记录“Sodium hydroxide”的实际质量，并保持物质身份。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -2613,7 +2613,7 @@ sync_with: pcr.en-US.md
 
 本卡将“Sodium hypochlorite”作为“清洗、消毒与场内热力公用工程”过程的一项独立输入产品流交换记录；不得与其他物理或化学流合并。本卡只对应一种明确载体或化学物质。
 
-- 选定流：Sodium hypochlorite
+- 选定流：次氯酸钠
 - 流属性/单位：Mass / kg
 - 数量规则：依据化学品库存、领用和投加记录，分别记录“Sodium hypochlorite”的实际质量，并保持物质身份。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -2679,7 +2679,7 @@ sync_with: pcr.en-US.md
 
 本卡将“Carbon dioxide, fossil, to air”作为“清洗、消毒与场内热力公用工程”过程的一项独立输出基本流交换记录；不得与其他物理或化学流合并。本卡只对应一个具名物质或监测参数及一个环境介质。
 
-- 选定流：Carbon dioxide, fossil, to air
+- 选定流：化石源二氧化碳，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：使用同期实测排气流量与物质浓度，或对实测活动量应用经核实的设备特定因子，逐物质计算“Carbon dioxide, fossil, to air”质量。
 - 数值来源模式：计算值（`calculated_value`）
@@ -2697,7 +2697,7 @@ sync_with: pcr.en-US.md
 
 本卡将“Nitrogen monoxide to air”作为“清洗、消毒与场内热力公用工程”过程的一项独立输出基本流交换记录；不得与其他物理或化学流合并。本卡只对应一个具名物质或监测参数及一个环境介质。
 
-- 选定流：Nitrogen monoxide to air
+- 选定流：一氧化氮，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：使用同期实测排气流量与物质浓度，或对实测活动量应用经核实的设备特定因子，逐物质计算“Nitrogen monoxide to air”质量。
 - 数值来源模式：计算值（`calculated_value`）
@@ -2715,7 +2715,7 @@ sync_with: pcr.en-US.md
 
 本卡将“Nitrogen dioxide to air”作为“清洗、消毒与场内热力公用工程”过程的一项独立输出基本流交换记录；不得与其他物理或化学流合并。本卡只对应一个具名物质或监测参数及一个环境介质。
 
-- 选定流：Nitrogen dioxide to air
+- 选定流：二氧化氮，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：使用同期实测排气流量与物质浓度，或对实测活动量应用经核实的设备特定因子，逐物质计算“Nitrogen dioxide to air”质量。
 - 数值来源模式：计算值（`calculated_value`）
@@ -2733,7 +2733,7 @@ sync_with: pcr.en-US.md
 
 本卡将“Sulfur dioxide to air”作为“清洗、消毒与场内热力公用工程”过程的一项独立输出基本流交换记录；不得与其他物理或化学流合并。本卡只对应一个具名物质或监测参数及一个环境介质。
 
-- 选定流：Sulfur dioxide to air
+- 选定流：二氧化硫，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：使用同期实测排气流量与物质浓度，或对实测活动量应用经核实的设备特定因子，逐物质计算“Sulfur dioxide to air”质量。
 - 数值来源模式：计算值（`calculated_value`）
@@ -2751,7 +2751,7 @@ sync_with: pcr.en-US.md
 
 本卡将“Particulate matter below 2.5 micrometres to air”作为“清洗、消毒与场内热力公用工程”过程的一项独立输出基本流交换记录；不得与其他物理或化学流合并。本卡只对应一个具名物质或监测参数及一个环境介质。
 
-- 选定流：Particulate matter below 2.5 micrometres to air
+- 选定流：粒径小于2.5微米的颗粒物，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：使用同期实测排气流量与物质浓度，或对实测活动量应用经核实的设备特定因子，逐物质计算“Particulate matter below 2.5 micrometres to air”质量。
 - 数值来源模式：计算值（`calculated_value`）
@@ -2769,7 +2769,7 @@ sync_with: pcr.en-US.md
 
 本卡将“Particulate matter from 2.5 to 10 micrometres to air”作为“清洗、消毒与场内热力公用工程”过程的一项独立输出基本流交换记录；不得与其他物理或化学流合并。本卡只对应一个具名物质或监测参数及一个环境介质。
 
-- 选定流：Particulate matter from 2.5 to 10 micrometres to air
+- 选定流：粒径2.5至10微米的颗粒物，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：使用同期实测排气流量与物质浓度，或对实测活动量应用经核实的设备特定因子，逐物质计算“Particulate matter from 2.5 to 10 micrometres to air”质量。
 - 数值来源模式：计算值（`calculated_value`）
@@ -2793,7 +2793,7 @@ sync_with: pcr.en-US.md
 
 本卡将“Electricity, grid supply”作为“场内牛内脏废水处理”过程的一项独立输入产品流交换记录；不得与其他物理或化学流合并。
 
-- 选定流：Electricity, grid supply
+- 选定流：电网供电
 - 流属性/单位：Energy / kWh
 - 数量规则：记录“Electricity, grid supply”对应阶段的分表读数；共享电量仅以有文件记录的设备活动、停留或占用驱动因素计算批次份额。
 - 数值来源模式：计算值（`calculated_value`）
@@ -2811,7 +2811,7 @@ sync_with: pcr.en-US.md
 
 本卡将“Process water”作为“场内牛内脏废水处理”过程的一项独立输入产品流交换记录；不得与其他物理或化学流合并。
 
-- 选定流：Process water
+- 选定流：过程用水
 - 流属性/单位：Volume / m3
 - 数量规则：使用专用流量计分别记录“Process water”的批次体积，并保留仪表边界、时间和去向记录。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -2829,7 +2829,7 @@ sync_with: pcr.en-US.md
 
 本卡将“Calcium hydroxide”作为“场内牛内脏废水处理”过程的一项独立输入产品流交换记录；不得与其他物理或化学流合并。本卡只对应一种明确载体或化学物质。
 
-- 选定流：Calcium hydroxide
+- 选定流：氢氧化钙
 - 流属性/单位：Mass / kg
 - 数量规则：依据化学品库存、领用和投加记录，分别记录“Calcium hydroxide”的实际质量，并保持物质身份。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -2865,7 +2865,7 @@ sync_with: pcr.en-US.md
 
 本卡将“Ferric chloride”作为“场内牛内脏废水处理”过程的一项独立输入产品流交换记录；不得与其他物理或化学流合并。本卡只对应一种明确载体或化学物质。
 
-- 选定流：Ferric chloride
+- 选定流：氯化铁
 - 流属性/单位：Mass / kg
 - 数量规则：依据化学品库存、领用和投加记录，分别记录“Ferric chloride”的实际质量，并保持物质身份。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -3129,7 +3129,7 @@ sync_with: pcr.en-US.md
 
 本卡将“Ammonia to air”作为“场内牛内脏废水处理”过程的一项独立输出基本流交换记录；不得与其他物理或化学流合并。本卡只对应一个具名物质或监测参数及一个环境介质。
 
-- 选定流：Ammonia to air
+- 选定流：氨，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：使用同期实测排气流量与物质浓度，或对实测活动量应用经核实的设备特定因子，逐物质计算“Ammonia to air”质量。
 - 数值来源模式：计算值（`calculated_value`）
@@ -3147,7 +3147,7 @@ sync_with: pcr.en-US.md
 
 本卡将“Hydrogen sulfide to air”作为“场内牛内脏废水处理”过程的一项独立输出基本流交换记录；不得与其他物理或化学流合并。本卡只对应一个具名物质或监测参数及一个环境介质。
 
-- 选定流：Hydrogen sulfide to air
+- 选定流：硫化氢，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：使用同期实测排气流量与物质浓度，或对实测活动量应用经核实的设备特定因子，逐物质计算“Hydrogen sulfide to air”质量。
 - 数值来源模式：计算值（`calculated_value`）

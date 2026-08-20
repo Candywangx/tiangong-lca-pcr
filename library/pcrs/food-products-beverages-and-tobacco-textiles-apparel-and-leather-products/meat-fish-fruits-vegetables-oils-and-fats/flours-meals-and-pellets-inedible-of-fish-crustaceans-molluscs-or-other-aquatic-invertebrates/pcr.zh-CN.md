@@ -42,7 +42,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 1 kg |
-| 参考产品流 | Flours, meals and pellets, inedible, of fish, crustaceans, molluscs or other aquatic invertebrates `c14df87e-86ae-4718-a6a6-f8808c8fe661` |
+| 参考产品流 | 鱼类、甲壳动物、软体动物或其他水生无脊椎动物的不宜食用的粉、粗粉和丸子 `c14df87e-86ae-4718-a6a6-f8808c8fe661` |
 | 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | kg |
@@ -494,7 +494,7 @@ sync_with: pcr.en-US.md
 
 仅在确认非食品属性、声明产品形态及必需质量基准限定信息后放行参考产品。
 
-- 选定流：Flours, meals and pellets, inedible, of fish, crustaceans, molluscs or other aquatic invertebrates `c14df87e-86ae-4718-a6a6-f8808c8fe661`
+- 选定流：鱼类、甲壳动物、软体动物或其他水生无脊椎动物的不宜食用的粉、粗粉和丸子 `c14df87e-86ae-4718-a6a6-f8808c8fe661`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg；Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66`
 - 数量规则：固定参考输出 1 kg 净合格产品
 - 数值来源模式：固定值（`fixed_value`）

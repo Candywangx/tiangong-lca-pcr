@@ -42,7 +42,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 1 kg |
-| 参考产品流 | Fats, of pig and poultry, unrendered `0ba97549-7663-496e-8451-8396d31d2bcf` |
+| 参考产品流 | 猪和家禽脂肪，未煅烧的 `0ba97549-7663-496e-8451-8396d31d2bcf` |
 | 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | kg |
@@ -170,7 +170,7 @@ sync_with: pcr.en-US.md
 
 记录任何熬制前的净输出质量，并保留动物和组织/形态限定信息。
 
-- 选定流：Fats, of pig and poultry, unrendered `0ba97549-7663-496e-8451-8396d31d2bcf`
+- 选定流：猪和家禽脂肪，未煅烧的 `0ba97549-7663-496e-8451-8396d31d2bcf`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：分离和修整后的实测净质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -240,7 +240,7 @@ sync_with: pcr.en-US.md
 
 记录进入纳入的冷却、冷冻或储存操作的质量和产品限定信息。
 
-- 选定流：Fats, of pig and poultry, unrendered `0ba97549-7663-496e-8451-8396d31d2bcf`
+- 选定流：猪和家禽脂肪，未煅烧的 `0ba97549-7663-496e-8451-8396d31d2bcf`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：进入冷却、冷冻或储存操作的实测质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -293,7 +293,7 @@ sync_with: pcr.en-US.md
 
 记录离开温控操作且仍处于熬制前状态的产品质量和物理状态。
 
-- 选定流：Fats, of pig and poultry, unrendered `0ba97549-7663-496e-8451-8396d31d2bcf`
+- 选定流：猪和家禽脂肪，未煅烧的 `0ba97549-7663-496e-8451-8396d31d2bcf`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：按声明出口温度和物理状态实测净质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -348,7 +348,7 @@ sync_with: pcr.en-US.md
 
 记录进入包装或散装交接准备的产品质量，并保持批次识别。
 
-- 选定流：Fats, of pig and poultry, unrendered `0ba97549-7663-496e-8451-8396d31d2bcf`
+- 选定流：猪和家禽脂肪，未煅烧的 `0ba97549-7663-496e-8451-8396d31d2bcf`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：进入包装或散装交接准备的实测质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -386,7 +386,7 @@ sync_with: pcr.en-US.md
 
 这是唯一的定量参考输出。产品保持未熬制状态并携带全部必需限定信息。
 
-- 选定流：Fats, of pig and poultry, unrendered `0ba97549-7663-496e-8451-8396d31d2bcf`
+- 选定流：猪和家禽脂肪，未煅烧的 `0ba97549-7663-496e-8451-8396d31d2bcf`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：扣除皮重后的实测交接净质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -426,7 +426,7 @@ sync_with: pcr.en-US.md
 
 记录每个纳入运输段的装载产品净质量。
 
-- 选定流：Fats, of pig and poultry, unrendered `0ba97549-7663-496e-8451-8396d31d2bcf`
+- 选定流：猪和家禽脂肪，未煅烧的 `0ba97549-7663-496e-8451-8396d31d2bcf`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：按货运批次实测装载净质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -464,7 +464,7 @@ sync_with: pcr.en-US.md
 
 记录交货点验收的产品质量，并保留全部参考产品限定信息。
 
-- 选定流：Fats, of pig and poultry, unrendered `0ba97549-7663-496e-8451-8396d31d2bcf`
+- 选定流：猪和家禽脂肪，未煅烧的 `0ba97549-7663-496e-8451-8396d31d2bcf`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：在声明交货点实测验收净质量
 - 数值来源模式：前景记录（`foreground_record`）

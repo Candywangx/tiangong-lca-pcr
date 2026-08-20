@@ -42,7 +42,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 1 kg 净可销售粉体 |
-| 参考产品流 | Skim milk powder `bf850eca-76f2-400d-9cfa-b62c10d64c0a` |
+| 参考产品流 | 脱脂奶粉 `bf850eca-76f2-400d-9cfa-b62c10d64c0a` |
 | 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | kg |
@@ -414,7 +414,7 @@ sync_with: pcr.en-US.md
 
 这是定量参考产出。记录工厂门口合格净粉体质量，不包括容器和包装质量。
 
-- 选定流：Skim milk powder `bf850eca-76f2-400d-9cfa-b62c10d64c0a`
+- 选定流：脱脂奶粉 `bf850eca-76f2-400d-9cfa-b62c10d64c0a`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：依据灌装单元或散装发运记录计算并经批次质量平衡验证的 1 kg 净合格可销售粉体
 - 数值来源模式：计算值（`calculated_value`）
@@ -454,7 +454,7 @@ sync_with: pcr.en-US.md
 
 分别记录归属于所覆盖过程的就地清洗及其他卫生操作的新鲜和回用清洗水。
 
-- 选定流：Process water
+- 选定流：过程用水
 - 流属性/单位：Volume / m3
 - 数量规则：计量取水减去单独计量的非清洗用水；回用水作为不同内部流保留
 - 数值来源模式：前景记录（`foreground_record`）

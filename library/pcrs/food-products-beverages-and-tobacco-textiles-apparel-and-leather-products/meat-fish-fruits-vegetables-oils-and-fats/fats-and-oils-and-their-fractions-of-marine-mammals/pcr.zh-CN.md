@@ -44,7 +44,7 @@ CPC 21526 与鱼肝油、其他鱼油、其他熬制动物脂肪以及另行分�
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 1 kg |
-| 参考产品流 | Fats and oils and their fractions, of marine mammals `e203a8c3-0e12-46f4-bef7-fb2bb53cc8a3` |
+| 参考产品流 | 海洋哺乳动物的油脂及其馏分 `e203a8c3-0e12-46f4-bef7-fb2bb53cc8a3` |
 | 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | kg |
@@ -532,7 +532,7 @@ CPC 21526 与鱼肝油、其他鱼油、其他熬制动物脂肪以及另行分�
 
 记录完全合格产品的交付净重。数据集应携带全部参考流限定信息，不得暗示天工 UUID 提供认证或法律批准。
 
-- 选定流：Fats and oils and their fractions, of marine mammals `e203a8c3-0e12-46f4-bef7-fb2bb53cc8a3`
+- 选定流：海洋哺乳动物的油脂及其馏分 `e203a8c3-0e12-46f4-bef7-fb2bb53cc8a3`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：根据实测批次输出固定归一化为 1 kg 参考产品净重
 - 数值来源模式：计算值（`calculated_value`）

@@ -38,7 +38,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 1 kg |
-| 参考产品流 | Fish livers and roes, fresh or chilled `883637e3-14e1-4d82-bed8-5328706084ef` |
+| 参考产品流 | 鱼肝和鱼子，新鲜或冷藏 `883637e3-14e1-4d82-bed8-5328706084ef` |
 | 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | kg |
@@ -445,7 +445,7 @@ sync_with: pcr.en-US.md
 
 参考产出是在设施出厂门放行的新鲜或冷藏鱼肝/鱼子净产品质量。
 
-- 选定流：Fish livers and roes, fresh or chilled `883637e3-14e1-4d82-bed8-5328706084ef`
+- 选定流：鱼肝和鱼子，新鲜或冷藏 `883637e3-14e1-4d82-bed8-5328706084ef`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：每参考流恰为 1 kg 净产品
 - 数值来源模式：固定值（`fixed_value`）

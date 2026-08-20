@@ -133,7 +133,7 @@ sync_with: pcr.en-US.md
 
 “Electricity, grid supply”作为一个具体产品流进入“活禽接收与临时待宰”过程边界；其数量按 cp_receiving_lairage_records 取得。
 
-- 选定流：Electricity, grid supply
+- 选定流：电网供电
 - 流属性/单位：Energy / kWh; flow-property and unit-group UUIDs unresolved
 - 数量规则：实测Electricity, grid supply能量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -235,7 +235,7 @@ sync_with: pcr.en-US.md
 
 “Ammonia to air”作为一个具体基本流离开“活禽接收与临时待宰”过程边界；其数量按 cp_receiving_lairage_records 取得。
 
-- 选定流：Ammonia to air
+- 选定流：氨，排入空气
 - 流属性/单位：Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg
 - 数量规则：依据匹配的前景记录计算Ammonia to air质量
 - 数值来源模式：计算值（`calculated_value`）
@@ -286,7 +286,7 @@ sync_with: pcr.en-US.md
 
 “Electricity, grid supply”作为一个具体产品流进入“击晕、屠宰、放血、烫毛、脱羽、去内脏与胴体整理”过程边界；其数量按 cp_slaughter_dressing_records 取得。
 
-- 选定流：Electricity, grid supply
+- 选定流：电网供电
 - 流属性/单位：Energy / kWh; flow-property and unit-group UUIDs unresolved
 - 数量规则：实测Electricity, grid supply能量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -301,7 +301,7 @@ sync_with: pcr.en-US.md
 
 “Steam, purchased”作为一个具体产品流进入“击晕、屠宰、放血、烫毛、脱羽、去内脏与胴体整理”过程边界；其数量按 cp_slaughter_dressing_records 取得。
 
-- 选定流：Steam, purchased
+- 选定流：外购蒸汽
 - 流属性/单位：Energy / MJ; flow-property and unit-group UUIDs unresolved
 - 数量规则：实测Steam, purchased能量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -316,7 +316,7 @@ sync_with: pcr.en-US.md
 
 “Hot water, purchased”作为一个具体产品流进入“击晕、屠宰、放血、烫毛、脱羽、去内脏与胴体整理”过程边界；其数量按 cp_slaughter_dressing_records 取得。
 
-- 选定流：Hot water, purchased
+- 选定流：外购热水
 - 流属性/单位：Energy / MJ; flow-property and unit-group UUIDs unresolved
 - 数量规则：实测Hot water, purchased能量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -331,7 +331,7 @@ sync_with: pcr.en-US.md
 
 “Natural gas”作为一个具体产品流进入“击晕、屠宰、放血、烫毛、脱羽、去内脏与胴体整理”过程边界；其数量按 cp_slaughter_dressing_records 取得。
 
-- 选定流：Natural gas
+- 选定流：天然气
 - 流属性/单位：Energy / MJ; flow-property and unit-group UUIDs unresolved
 - 数量规则：实测Natural gas能量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -346,7 +346,7 @@ sync_with: pcr.en-US.md
 
 “Diesel fuel”作为一个具体产品流进入“击晕、屠宰、放血、烫毛、脱羽、去内脏与胴体整理”过程边界；其数量按 cp_slaughter_dressing_records 取得。
 
-- 选定流：Diesel fuel
+- 选定流：柴油燃料
 - 流属性/单位：Energy / MJ; flow-property and unit-group UUIDs unresolved
 - 数量规则：实测Diesel fuel能量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -361,7 +361,7 @@ sync_with: pcr.en-US.md
 
 “Liquefied petroleum gas”作为一个具体产品流进入“击晕、屠宰、放血、烫毛、脱羽、去内脏与胴体整理”过程边界；其数量按 cp_slaughter_dressing_records 取得。
 
-- 选定流：Liquefied petroleum gas
+- 选定流：液化石油气
 - 流属性/单位：Energy / MJ; flow-property and unit-group UUIDs unresolved
 - 数量规则：实测Liquefied petroleum gas能量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -673,7 +673,7 @@ sync_with: pcr.en-US.md
 
 “Carbon dioxide, fossil, to air”作为一个具体基本流离开“击晕、屠宰、放血、烫毛、脱羽、去内脏与胴体整理”过程边界；其数量按 cp_slaughter_dressing_records 取得。
 
-- 选定流：Carbon dioxide, fossil, to air
+- 选定流：化石源二氧化碳，排入空气
 - 流属性/单位：Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg
 - 数量规则：依据匹配的前景记录计算Carbon dioxide, fossil, to air质量
 - 数值来源模式：计算值（`calculated_value`）
@@ -688,7 +688,7 @@ sync_with: pcr.en-US.md
 
 “Nitrogen oxides to air”作为一个具体基本流离开“击晕、屠宰、放血、烫毛、脱羽、去内脏与胴体整理”过程边界；其数量按 cp_slaughter_dressing_records 取得。
 
-- 选定流：Nitrogen oxides to air
+- 选定流：氮氧化物，排入空气
 - 流属性/单位：Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg
 - 数量规则：依据匹配的前景记录计算Nitrogen oxides to air质量
 - 数值来源模式：计算值（`calculated_value`）
@@ -703,7 +703,7 @@ sync_with: pcr.en-US.md
 
 “Sulfur oxides to air”作为一个具体基本流离开“击晕、屠宰、放血、烫毛、脱羽、去内脏与胴体整理”过程边界；其数量按 cp_slaughter_dressing_records 取得。
 
-- 选定流：Sulfur oxides to air
+- 选定流：硫氧化物，排入空气
 - 流属性/单位：Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg
 - 数量规则：依据匹配的前景记录计算Sulfur oxides to air质量
 - 数值来源模式：计算值（`calculated_value`）
@@ -718,7 +718,7 @@ sync_with: pcr.en-US.md
 
 “Particulate matter, less than 2.5 micrometres, to air”作为一个具体基本流离开“击晕、屠宰、放血、烫毛、脱羽、去内脏与胴体整理”过程边界；其数量按 cp_slaughter_dressing_records 取得。
 
-- 选定流：Particulate matter, less than 2.5 micrometres, to air
+- 选定流：粒径小于2.5微米的颗粒物，排入空气
 - 流属性/单位：Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg
 - 数量规则：依据匹配的前景记录计算Particulate matter, less than 2.5 micrometres, to air质量
 - 数值来源模式：计算值（`calculated_value`）
@@ -769,7 +769,7 @@ sync_with: pcr.en-US.md
 
 “Electricity, grid supply”作为一个具体产品流进入“胴体分割与切块”过程边界；其数量按 cp_cutting_portioning_records 取得。
 
-- 选定流：Electricity, grid supply
+- 选定流：电网供电
 - 流属性/单位：Energy / kWh; flow-property and unit-group UUIDs unresolved
 - 数量规则：实测Electricity, grid supply能量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -982,7 +982,7 @@ sync_with: pcr.en-US.md
 
 “Electricity, grid supply”作为一个具体产品流进入“冷却与冷藏”过程边界；其数量按 cp_chilling_storage_records 取得。
 
-- 选定流：Electricity, grid supply
+- 选定流：电网供电
 - 流属性/单位：Energy / kWh; flow-property and unit-group UUIDs unresolved
 - 数量规则：实测Electricity, grid supply能量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -997,7 +997,7 @@ sync_with: pcr.en-US.md
 
 “Steam, purchased”作为一个具体产品流进入“冷却与冷藏”过程边界；其数量按 cp_chilling_storage_records 取得。
 
-- 选定流：Steam, purchased
+- 选定流：外购蒸汽
 - 流属性/单位：Energy / MJ; flow-property and unit-group UUIDs unresolved
 - 数量规则：实测Steam, purchased能量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1012,7 +1012,7 @@ sync_with: pcr.en-US.md
 
 “Hot water, purchased”作为一个具体产品流进入“冷却与冷藏”过程边界；其数量按 cp_chilling_storage_records 取得。
 
-- 选定流：Hot water, purchased
+- 选定流：外购热水
 - 流属性/单位：Energy / MJ; flow-property and unit-group UUIDs unresolved
 - 数量规则：实测Hot water, purchased能量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1027,7 +1027,7 @@ sync_with: pcr.en-US.md
 
 “Natural gas”作为一个具体产品流进入“冷却与冷藏”过程边界；其数量按 cp_chilling_storage_records 取得。
 
-- 选定流：Natural gas
+- 选定流：天然气
 - 流属性/单位：Energy / MJ; flow-property and unit-group UUIDs unresolved
 - 数量规则：实测Natural gas能量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1042,7 +1042,7 @@ sync_with: pcr.en-US.md
 
 “Diesel fuel”作为一个具体产品流进入“冷却与冷藏”过程边界；其数量按 cp_chilling_storage_records 取得。
 
-- 选定流：Diesel fuel
+- 选定流：柴油燃料
 - 流属性/单位：Energy / MJ; flow-property and unit-group UUIDs unresolved
 - 数量规则：实测Diesel fuel能量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1057,7 +1057,7 @@ sync_with: pcr.en-US.md
 
 “Liquefied petroleum gas”作为一个具体产品流进入“冷却与冷藏”过程边界；其数量按 cp_chilling_storage_records 取得。
 
-- 选定流：Liquefied petroleum gas
+- 选定流：液化石油气
 - 流属性/单位：Energy / MJ; flow-property and unit-group UUIDs unresolved
 - 数量规则：实测Liquefied petroleum gas能量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1102,7 +1102,7 @@ sync_with: pcr.en-US.md
 
 “Refrigerant R404A”作为一个具体产品流进入“冷却与冷藏”过程边界；其数量按 cp_chilling_storage_records 取得。
 
-- 选定流：Refrigerant R404A
+- 选定流：制冷剂R404A
 - 流属性/单位：Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg
 - 数量规则：实测Refrigerant R404A质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1249,7 +1249,7 @@ sync_with: pcr.en-US.md
 
 “Refrigerant R404A to air”作为一个具体基本流离开“冷却与冷藏”过程边界；其数量按 cp_chilling_storage_records 取得。
 
-- 选定流：Refrigerant R404A to air
+- 选定流：制冷剂R404A，排入空气
 - 流属性/单位：Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg
 - 数量规则：依据匹配的前景记录计算Refrigerant R404A to air质量
 - 数值来源模式：计算值（`calculated_value`）
@@ -1279,7 +1279,7 @@ sync_with: pcr.en-US.md
 
 “Carbon dioxide, fossil, to air”作为一个具体基本流离开“冷却与冷藏”过程边界；其数量按 cp_chilling_storage_records 取得。
 
-- 选定流：Carbon dioxide, fossil, to air
+- 选定流：化石源二氧化碳，排入空气
 - 流属性/单位：Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg
 - 数量规则：依据匹配的前景记录计算Carbon dioxide, fossil, to air质量
 - 数值来源模式：计算值（`calculated_value`）
@@ -1294,7 +1294,7 @@ sync_with: pcr.en-US.md
 
 “Nitrogen oxides to air”作为一个具体基本流离开“冷却与冷藏”过程边界；其数量按 cp_chilling_storage_records 取得。
 
-- 选定流：Nitrogen oxides to air
+- 选定流：氮氧化物，排入空气
 - 流属性/单位：Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg
 - 数量规则：依据匹配的前景记录计算Nitrogen oxides to air质量
 - 数值来源模式：计算值（`calculated_value`）
@@ -1309,7 +1309,7 @@ sync_with: pcr.en-US.md
 
 “Sulfur oxides to air”作为一个具体基本流离开“冷却与冷藏”过程边界；其数量按 cp_chilling_storage_records 取得。
 
-- 选定流：Sulfur oxides to air
+- 选定流：硫氧化物，排入空气
 - 流属性/单位：Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg
 - 数量规则：依据匹配的前景记录计算Sulfur oxides to air质量
 - 数值来源模式：计算值（`calculated_value`）
@@ -1324,7 +1324,7 @@ sync_with: pcr.en-US.md
 
 “Particulate matter, less than 2.5 micrometres, to air”作为一个具体基本流离开“冷却与冷藏”过程边界；其数量按 cp_chilling_storage_records 取得。
 
-- 选定流：Particulate matter, less than 2.5 micrometres, to air
+- 选定流：粒径小于2.5微米的颗粒物，排入空气
 - 流属性/单位：Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg
 - 数量规则：依据匹配的前景记录计算Particulate matter, less than 2.5 micrometres, to air质量
 - 数值来源模式：计算值（`calculated_value`）
@@ -1375,7 +1375,7 @@ sync_with: pcr.en-US.md
 
 “Electricity, grid supply”作为一个具体产品流进入“包装、净重计量与产品放行”过程边界；其数量按 cp_packaging_release_records 取得。
 
-- 选定流：Electricity, grid supply
+- 选定流：电网供电
 - 流属性/单位：Energy / kWh; flow-property and unit-group UUIDs unresolved
 - 数量规则：实测Electricity, grid supply能量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1450,7 +1450,7 @@ sync_with: pcr.en-US.md
 
 “Corrugated paperboard carton”作为一个具体产品流进入“包装、净重计量与产品放行”过程边界；其数量按 cp_packaging_release_records 取得。
 
-- 选定流：Corrugated paperboard carton
+- 选定流：瓦楞纸板箱
 - 流属性/单位：Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg
 - 数量规则：实测Corrugated paperboard carton质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1533,7 +1533,7 @@ sync_with: pcr.en-US.md
 
 合格鲜或冷藏珍珠鸡肉以恰好 1 kg 净质量离开工厂门；这是唯一携带已核验产品流 UUID 的清单卡。
 
-- 选定流：Meat of guinea fowl, fresh or chilled `8c683807-f79b-46a9-90e4-c005d506a98a`
+- 选定流：珍珠鸡肉，新鲜或冷藏 `8c683807-f79b-46a9-90e4-c005d506a98a`
 - 流属性/单位：Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg
 - 数量规则：扣除包装皮重后归一化为恰好 1 kg 的合格净产品质量
 - 数值来源模式：计算值（`calculated_value`）
@@ -1723,7 +1723,7 @@ sync_with: pcr.en-US.md
 
 “Electricity, grid supply”作为一个具体产品流进入“工厂清洗与消毒”过程边界；其数量按 cp_cleaning_sanitation_records 取得。
 
-- 选定流：Electricity, grid supply
+- 选定流：电网供电
 - 流属性/单位：Energy / kWh; flow-property and unit-group UUIDs unresolved
 - 数量规则：实测Electricity, grid supply能量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1738,7 +1738,7 @@ sync_with: pcr.en-US.md
 
 “Steam, purchased”作为一个具体产品流进入“工厂清洗与消毒”过程边界；其数量按 cp_cleaning_sanitation_records 取得。
 
-- 选定流：Steam, purchased
+- 选定流：外购蒸汽
 - 流属性/单位：Energy / MJ; flow-property and unit-group UUIDs unresolved
 - 数量规则：实测Steam, purchased能量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1753,7 +1753,7 @@ sync_with: pcr.en-US.md
 
 “Hot water, purchased”作为一个具体产品流进入“工厂清洗与消毒”过程边界；其数量按 cp_cleaning_sanitation_records 取得。
 
-- 选定流：Hot water, purchased
+- 选定流：外购热水
 - 流属性/单位：Energy / MJ; flow-property and unit-group UUIDs unresolved
 - 数量规则：实测Hot water, purchased能量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1768,7 +1768,7 @@ sync_with: pcr.en-US.md
 
 “Natural gas”作为一个具体产品流进入“工厂清洗与消毒”过程边界；其数量按 cp_cleaning_sanitation_records 取得。
 
-- 选定流：Natural gas
+- 选定流：天然气
 - 流属性/单位：Energy / MJ; flow-property and unit-group UUIDs unresolved
 - 数量规则：实测Natural gas能量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1783,7 +1783,7 @@ sync_with: pcr.en-US.md
 
 “Diesel fuel”作为一个具体产品流进入“工厂清洗与消毒”过程边界；其数量按 cp_cleaning_sanitation_records 取得。
 
-- 选定流：Diesel fuel
+- 选定流：柴油燃料
 - 流属性/单位：Energy / MJ; flow-property and unit-group UUIDs unresolved
 - 数量规则：实测Diesel fuel能量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1798,7 +1798,7 @@ sync_with: pcr.en-US.md
 
 “Liquefied petroleum gas”作为一个具体产品流进入“工厂清洗与消毒”过程边界；其数量按 cp_cleaning_sanitation_records 取得。
 
-- 选定流：Liquefied petroleum gas
+- 选定流：液化石油气
 - 流属性/单位：Energy / MJ; flow-property and unit-group UUIDs unresolved
 - 数量规则：实测Liquefied petroleum gas能量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1990,7 +1990,7 @@ sync_with: pcr.en-US.md
 
 “Carbon dioxide, fossil, to air”作为一个具体基本流离开“工厂清洗与消毒”过程边界；其数量按 cp_cleaning_sanitation_records 取得。
 
-- 选定流：Carbon dioxide, fossil, to air
+- 选定流：化石源二氧化碳，排入空气
 - 流属性/单位：Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg
 - 数量规则：依据匹配的前景记录计算Carbon dioxide, fossil, to air质量
 - 数值来源模式：计算值（`calculated_value`）
@@ -2005,7 +2005,7 @@ sync_with: pcr.en-US.md
 
 “Nitrogen oxides to air”作为一个具体基本流离开“工厂清洗与消毒”过程边界；其数量按 cp_cleaning_sanitation_records 取得。
 
-- 选定流：Nitrogen oxides to air
+- 选定流：氮氧化物，排入空气
 - 流属性/单位：Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg
 - 数量规则：依据匹配的前景记录计算Nitrogen oxides to air质量
 - 数值来源模式：计算值（`calculated_value`）
@@ -2020,7 +2020,7 @@ sync_with: pcr.en-US.md
 
 “Sulfur oxides to air”作为一个具体基本流离开“工厂清洗与消毒”过程边界；其数量按 cp_cleaning_sanitation_records 取得。
 
-- 选定流：Sulfur oxides to air
+- 选定流：硫氧化物，排入空气
 - 流属性/单位：Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg
 - 数量规则：依据匹配的前景记录计算Sulfur oxides to air质量
 - 数值来源模式：计算值（`calculated_value`）
@@ -2035,7 +2035,7 @@ sync_with: pcr.en-US.md
 
 “Particulate matter, less than 2.5 micrometres, to air”作为一个具体基本流离开“工厂清洗与消毒”过程边界；其数量按 cp_cleaning_sanitation_records 取得。
 
-- 选定流：Particulate matter, less than 2.5 micrometres, to air
+- 选定流：粒径小于2.5微米的颗粒物，排入空气
 - 流属性/单位：Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg
 - 数量规则：依据匹配的前景记录计算Particulate matter, less than 2.5 micrometres, to air质量
 - 数值来源模式：计算值（`calculated_value`）
@@ -2056,7 +2056,7 @@ sync_with: pcr.en-US.md
 
 “Electricity, grid supply”作为一个具体产品流进入“场内屠宰废水处理”过程边界；其数量按 cp_wastewater_treatment_records 取得。
 
-- 选定流：Electricity, grid supply
+- 选定流：电网供电
 - 流属性/单位：Energy / kWh; flow-property and unit-group UUIDs unresolved
 - 数量规则：实测Electricity, grid supply能量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -2323,7 +2323,7 @@ sync_with: pcr.en-US.md
 
 “Chemical oxygen demand to water”作为一个具体基本流离开“场内屠宰废水处理”过程边界；其数量按 cp_wastewater_treatment_records 取得。
 
-- 选定流：Chemical oxygen demand to water
+- 选定流：化学需氧量，排入水体
 - 流属性/单位：Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg
 - 数量规则：依据匹配的前景记录计算Chemical oxygen demand to water质量
 - 数值来源模式：计算值（`calculated_value`）
@@ -2383,7 +2383,7 @@ sync_with: pcr.en-US.md
 
 “Suspended solids to water”作为一个具体基本流离开“场内屠宰废水处理”过程边界；其数量按 cp_wastewater_treatment_records 取得。
 
-- 选定流：Suspended solids to water
+- 选定流：悬浮固体，排入水体
 - 流属性/单位：Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg
 - 数量规则：依据匹配的前景记录计算Suspended solids to water质量
 - 数值来源模式：计算值（`calculated_value`）
@@ -2413,7 +2413,7 @@ sync_with: pcr.en-US.md
 
 “Methane, biogenic, to air”作为一个具体基本流离开“场内屠宰废水处理”过程边界；其数量按 cp_wastewater_treatment_records 取得。
 
-- 选定流：Methane, biogenic, to air
+- 选定流：生物源甲烷，排入空气
 - 流属性/单位：Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg
 - 数量规则：依据匹配的前景记录计算Methane, biogenic, to air质量
 - 数值来源模式：计算值（`calculated_value`）
@@ -2428,7 +2428,7 @@ sync_with: pcr.en-US.md
 
 “Dinitrogen monoxide to air”作为一个具体基本流离开“场内屠宰废水处理”过程边界；其数量按 cp_wastewater_treatment_records 取得。
 
-- 选定流：Dinitrogen monoxide to air
+- 选定流：氧化亚氮，排入空气
 - 流属性/单位：Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg
 - 数量规则：依据匹配的前景记录计算Dinitrogen monoxide to air质量
 - 数值来源模式：计算值（`calculated_value`）

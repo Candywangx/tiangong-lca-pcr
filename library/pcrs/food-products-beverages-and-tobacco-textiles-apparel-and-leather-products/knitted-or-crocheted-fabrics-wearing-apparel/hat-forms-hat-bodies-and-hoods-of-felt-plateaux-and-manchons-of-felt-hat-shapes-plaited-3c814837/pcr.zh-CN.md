@@ -42,7 +42,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 1 kg 净参考产品 |
-| 参考产品流 | Hat-forms, hat bodies and hoods of felt, plateaux and manchons of felt, hat-shapes, plaited or made by assembling strips of any material `ef72f4d7-8f9e-401f-bcff-8dc295e94396` |
+| 参考产品流 | 毡制帽胎、帽坯和帽盔、平顶毡帽和毡帽套，编结的或用各种材料组合制成的帽壳 `ef72f4d7-8f9e-401f-bcff-8dc295e94396` |
 | 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | kg |
@@ -135,7 +135,7 @@ sync_with: pcr.en-US.md
 
 开松、梳理与成网用电仅在所声明路线和过程适用时作为一个独立产品流跨越前景过程边界。
 
-- 选定流：Electricity, medium voltage
+- 选定流：中压电力
 - 流属性/单位：Energy / kWh
 - 数量规则：记录分表电量；若由设备表和运行时间计算，应保留经校准的计算记录。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -225,7 +225,7 @@ sync_with: pcr.en-US.md
 
 毡体成形与漂洗用工艺水仅在所声明路线和过程适用时作为一个独立产品流跨越前景过程边界。
 
-- 选定流：Process water
+- 选定流：过程用水
 - 流属性/单位：Mass / kg
 - 数量规则：记录供给适用批次的过程级计量用水；不得以通用行业平均值替代。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -240,7 +240,7 @@ sync_with: pcr.en-US.md
 
 毡体成形与缩绒用电仅在所声明路线和过程适用时作为一个独立产品流跨越前景过程边界。
 
-- 选定流：Electricity, medium voltage
+- 选定流：中压电力
 - 流属性/单位：Energy / kWh
 - 数量规则：记录分表电量；若由设备表和运行时间计算，应保留经校准的计算记录。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -255,7 +255,7 @@ sync_with: pcr.en-US.md
 
 毡体成形与缩绒用外购蒸汽仅在所声明路线和过程适用时作为一个独立产品流跨越前景过程边界。
 
-- 选定流：Steam, purchased
+- 选定流：外购蒸汽
 - 流属性/单位：Energy / MJ
 - 数量规则：记录供应方计量的蒸汽能量，或由实测蒸汽质量和有记录的焓值计算。
 - 数值来源模式：计算值（`calculated_value`）
@@ -270,7 +270,7 @@ sync_with: pcr.en-US.md
 
 碱性缩绒或中和用碳酸钠仅在所声明路线和过程适用时作为一个独立产品流跨越前景过程边界。
 
-- 选定流：Sodium carbonate
+- 选定流：碳酸钠
 - 流属性/单位：Mass / kg
 - 数量规则：按批次配方和化学品领用记录记载制剂质量，并在元数据中保留浓度。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -285,7 +285,7 @@ sync_with: pcr.en-US.md
 
 酸性缩绒用硫酸仅在所声明路线和过程适用时作为一个独立产品流跨越前景过程边界。
 
-- 选定流：Sulfuric acid
+- 选定流：硫酸
 - 流属性/单位：Mass / kg
 - 数量规则：按批次配方和化学品领用记录记载制剂质量，并在元数据中保留浓度。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -300,7 +300,7 @@ sync_with: pcr.en-US.md
 
 酸性缩绒用过氧化氢仅在所声明路线和过程适用时作为一个独立产品流跨越前景过程边界。
 
-- 选定流：Hydrogen peroxide
+- 选定流：过氧化氢
 - 流属性/单位：Mass / kg
 - 数量规则：按批次配方和化学品领用记录记载制剂质量，并在元数据中保留浓度。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -388,7 +388,7 @@ sync_with: pcr.en-US.md
 
 染色与漂洗用工艺水仅在所声明路线和过程适用时作为一个独立产品流跨越前景过程边界。
 
-- 选定流：Process water
+- 选定流：过程用水
 - 流属性/单位：Mass / kg
 - 数量规则：记录供给适用批次的过程级计量用水；不得以通用行业平均值替代。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -403,7 +403,7 @@ sync_with: pcr.en-US.md
 
 调理与干燥用电仅在所声明路线和过程适用时作为一个独立产品流跨越前景过程边界。
 
-- 选定流：Electricity, medium voltage
+- 选定流：中压电力
 - 流属性/单位：Energy / kWh
 - 数量规则：记录分表电量；若由设备表和运行时间计算，应保留经校准的计算记录。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -418,7 +418,7 @@ sync_with: pcr.en-US.md
 
 调理与干燥用外购蒸汽仅在所声明路线和过程适用时作为一个独立产品流跨越前景过程边界。
 
-- 选定流：Steam, purchased
+- 选定流：外购蒸汽
 - 流属性/单位：Energy / MJ
 - 数量规则：记录供应方计量的蒸汽能量，或由实测蒸汽质量和有记录的焓值计算。
 - 数值来源模式：计算值（`calculated_value`）
@@ -433,7 +433,7 @@ sync_with: pcr.en-US.md
 
 现场调理供热用天然气仅在所声明路线和过程适用时作为一个独立产品流跨越前景过程边界。
 
-- 选定流：Natural gas
+- 选定流：天然气
 - 流属性/单位：Energy / MJ
 - 数量规则：记录分配给合格批次的实测低位热值能量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -516,7 +516,7 @@ sync_with: pcr.en-US.md
 
 现场天然气燃烧产生的化石二氧化碳作为跨越环境边界的独立基本流记录，不与其他排放合并。
 
-- 选定流：Carbon dioxide, fossil, to air
+- 选定流：化石源二氧化碳，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：依 `calc_natural_gas_emissions`，由天然气计量能量和披露的污染物特定因子计算；代表性烟气测试可替代计算。
 - 数值来源模式：计算值（`calculated_value`）
@@ -531,7 +531,7 @@ sync_with: pcr.en-US.md
 
 现场天然气燃烧产生的氮氧化物作为跨越环境边界的独立基本流记录，不与其他排放合并。
 
-- 选定流：Nitrogen oxides, to air
+- 选定流：氮氧化物，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：依 `calc_natural_gas_emissions`，由天然气计量能量和披露的污染物特定因子计算；代表性烟气测试可替代计算。
 - 数值来源模式：计算值（`calculated_value`）
@@ -568,7 +568,7 @@ sync_with: pcr.en-US.md
 
 秸秆制备与编结用电仅在所声明路线和过程适用时作为一个独立产品流跨越前景过程边界。
 
-- 选定流：Electricity, medium voltage
+- 选定流：中压电力
 - 流属性/单位：Energy / kWh
 - 数量规则：记录分表电量；若由设备表和运行时间计算，应保留经校准的计算记录。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -718,7 +718,7 @@ sync_with: pcr.en-US.md
 
 条带帽形坯组装用电仅在所声明路线和过程适用时作为一个独立产品流跨越前景过程边界。
 
-- 选定流：Electricity, medium voltage
+- 选定流：中压电力
 - 流属性/单位：Energy / kWh
 - 数量规则：记录分表电量；若由设备表和运行时间计算，应保留经校准的计算记录。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -851,7 +851,7 @@ sync_with: pcr.en-US.md
 
 检验与包装用电仅在所声明路线和过程适用时作为一个独立产品流跨越前景过程边界。
 
-- 选定流：Electricity, medium voltage
+- 选定流：中压电力
 - 流属性/单位：Energy / kWh
 - 数量规则：记录分表电量；若由设备表和运行时间计算，应保留经校准的计算记录。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -881,7 +881,7 @@ sync_with: pcr.en-US.md
 
 瓦楞纸板箱投入仅在所声明路线和过程适用时作为一个独立产品流跨越前景过程边界。
 
-- 选定流：Corrugated fibreboard box
+- 选定流：瓦楞纸箱
 - 流属性/单位：Mass / kg
 - 数量规则：按经校准的接收、领料或批次记录，记录分配给合格批次的实际质量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -915,7 +915,7 @@ sync_with: pcr.en-US.md
 
 这是唯一参考交换：工厂门处合格的未制成帽胎、帽坯、帽盔、平顶毡坯、筒状毡坯，或未定型编结/条带组装帽形坯。
 
-- 选定流：Hat-forms, hat bodies and hoods of felt, plateaux and manchons of felt, hat-shapes, plaited or made by assembling strips of any material `ef72f4d7-8f9e-401f-bcff-8dc295e94396`
+- 选定流：毡制帽胎、帽坯和帽盔、平顶毡帽和毡帽套，编结的或用各种材料组合制成的帽壳 `ef72f4d7-8f9e-401f-bcff-8dc295e94396`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：固定为 1 kg 净参考产品；运输包装质量不计入。
 - 数值来源模式：固定值（`fixed_value`）

@@ -40,7 +40,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 1 kg |
-| 参考产品流 | Vegetable waxes (other than triglycerides), whether or not refined or coloured `1933406f-ca56-4672-9678-ae3925128a03` |
+| 参考产品流 | 植物蜡（甘油三酯除外），无论是否精制或着色 `1933406f-ca56-4672-9678-ae3925128a03` |
 | 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | kg |
@@ -193,7 +193,7 @@ Crude rice bran wax作为单独记录的原子交换进入本单元过程。仅�
 
 Grid electricity作为单独记录的原子交换进入本单元过程。将接收阶段电力与后续提取和精制电力分开。
 
-- 选定流：Grid electricity
+- 选定流：电网电力
 - 流属性/单位：Energy / kWh
 - 数量规则：metered or allocated electricity used by receiving, inspection and internal handling
 - 数值来源模式：前景记录（`foreground_record`）
@@ -208,7 +208,7 @@ Grid electricity作为单独记录的原子交换进入本单元过程。将接�
 
 Diesel fuel作为单独记录的原子交换进入本单元过程。仅在实际使用柴油设备时记录。
 
-- 选定流：Diesel fuel
+- 选定流：柴油燃料
 - 流属性/单位：Energy / MJ
 - 数量规则：fuel issue or meter record for diesel-powered receiving equipment
 - 数值来源模式：前景记录（`foreground_record`）
@@ -223,7 +223,7 @@ Diesel fuel作为单独记录的原子交换进入本单元过程。仅在实际
 
 Liquefied petroleum gas作为单独记录的原子交换进入本单元过程。仅在实际使用液化石油气设备时记录。
 
-- 选定流：Liquefied petroleum gas
+- 选定流：液化石油气
 - 流属性/单位：Energy / MJ
 - 数量规则：fuel issue or meter record for LPG-powered receiving equipment
 - 数值来源模式：前景记录（`foreground_record`）
@@ -412,7 +412,7 @@ Accepted carnauba palm leaves作为单独记录的原子交换进入本单元过
 
 Process water作为单独记录的原子交换进入本单元过程。不含在清洗过程中记录的清洗水。
 
-- 选定流：Process water
+- 选定流：过程用水
 - 流属性/单位：Volume / m3
 - 数量规则：metered water charged to carnauba wax melting or washing
 - 数值来源模式：前景记录（`foreground_record`）
@@ -427,7 +427,7 @@ Process water作为单独记录的原子交换进入本单元过程。不含在�
 
 Grid electricity作为单独记录的原子交换进入本单元过程。将本阶段电表与精制阶段分开。
 
-- 选定流：Grid electricity
+- 选定流：电网电力
 - 流属性/单位：Energy / kWh
 - 数量规则：metered or allocated electricity for drying fans, beating, scraping, pumping and straining
 - 数值来源模式：前景记录（`foreground_record`）
@@ -442,7 +442,7 @@ Grid electricity作为单独记录的原子交换进入本单元过程。将本�
 
 Purchased saturated steam作为单独记录的原子交换进入本单元过程。仅在蒸汽从过程边界外购入时记录。
 
-- 选定流：Purchased saturated steam
+- 选定流：外购饱和蒸汽
 - 流属性/单位：Energy / MJ
 - 数量规则：metered purchased saturated steam delivered to carnauba melting
 - 数值来源模式：前景记录（`foreground_record`）
@@ -457,7 +457,7 @@ Purchased saturated steam作为单独记录的原子交换进入本单元过程�
 
 Purchased hot water作为单独记录的原子交换进入本单元过程。不得与蒸汽或燃料合并。
 
-- 选定流：Purchased hot water
+- 选定流：外购热水
 - 流属性/单位：Energy / MJ
 - 数量规则：metered thermal energy delivered as purchased hot water to carnauba melting
 - 数值来源模式：前景记录（`foreground_record`）
@@ -472,7 +472,7 @@ Purchased hot water作为单独记录的原子交换进入本单元过程。不�
 
 Natural gas作为单独记录的原子交换进入本单元过程。仅在实际使用天然气时记录。
 
-- 选定流：Natural gas
+- 选定流：天然气
 - 流属性/单位：Energy / MJ
 - 数量规则：metered natural gas combusted for direct or boiler heat assigned to this stage
 - 数值来源模式：前景记录（`foreground_record`）
@@ -487,7 +487,7 @@ Natural gas作为单独记录的原子交换进入本单元过程。仅在实际
 
 Diesel fuel作为单独记录的原子交换进入本单元过程。与天然气和液化石油气分开记录。
 
-- 选定流：Diesel fuel
+- 选定流：柴油燃料
 - 流属性/单位：Energy / MJ
 - 数量规则：fuel issue or meter record for diesel heat assigned to this stage
 - 数值来源模式：前景记录（`foreground_record`）
@@ -502,7 +502,7 @@ Diesel fuel作为单独记录的原子交换进入本单元过程。与天然气
 
 Liquefied petroleum gas作为单独记录的原子交换进入本单元过程。与天然气和柴油分开记录。
 
-- 选定流：Liquefied petroleum gas
+- 选定流：液化石油气
 - 流属性/单位：Energy / MJ
 - 数量规则：fuel issue or meter record for LPG heat assigned to this stage
 - 数值来源模式：前景记录（`foreground_record`）
@@ -593,7 +593,7 @@ Carnauba wax recovery wastewater作为单独记录的原子交换离开本单元
 
 Carbon dioxide, fossil, to air作为单独记录的原子交换离开本单元过程。按单一物质独立计算，不录入集合燃烧排放值。
 
-- 选定流：Carbon dioxide, fossil, to air
+- 选定流：化石源二氧化碳，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：calculated from measured stage fuel use and site-specific monitored or permitted emission factors
 - 数值来源模式：计算值（`calculated_value`）
@@ -608,7 +608,7 @@ Carbon dioxide, fossil, to air作为单独记录的原子交换离开本单元�
 
 Nitrogen monoxide to air作为单独记录的原子交换离开本单元过程。按单一物质独立计算，不录入集合燃烧排放值。
 
-- 选定流：Nitrogen monoxide to air
+- 选定流：一氧化氮，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：calculated from measured stage fuel use and site-specific monitored or permitted emission factors
 - 数值来源模式：计算值（`calculated_value`）
@@ -623,7 +623,7 @@ Nitrogen monoxide to air作为单独记录的原子交换离开本单元过程�
 
 Nitrogen dioxide to air作为单独记录的原子交换离开本单元过程。按单一物质独立计算，不录入集合燃烧排放值。
 
-- 选定流：Nitrogen dioxide to air
+- 选定流：二氧化氮，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：calculated from measured stage fuel use and site-specific monitored or permitted emission factors
 - 数值来源模式：计算值（`calculated_value`）
@@ -638,7 +638,7 @@ Nitrogen dioxide to air作为单独记录的原子交换离开本单元过程。
 
 Sulfur dioxide to air作为单独记录的原子交换离开本单元过程。按单一物质独立计算，不录入集合燃烧排放值。
 
-- 选定流：Sulfur dioxide to air
+- 选定流：二氧化硫，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：calculated from measured stage fuel use and site-specific monitored or permitted emission factors
 - 数值来源模式：计算值（`calculated_value`）
@@ -689,7 +689,7 @@ Accepted dried candelilla stalks作为单独记录的原子交换进入本单元
 
 Process water作为单独记录的原子交换进入本单元过程。将提取用水与清洗水分开。
 
-- 选定流：Process water
+- 选定流：过程用水
 - 流属性/单位：Volume / m3
 - 数量规则：metered water charged to acidified boiling and subsequent treatment
 - 数值来源模式：前景记录（`foreground_record`）
@@ -704,7 +704,7 @@ Process water作为单独记录的原子交换进入本单元过程。将提取�
 
 Sulfuric acid作为单独记录的原子交换进入本单元过程。记录供应浓度与有效酸基准。
 
-- 选定流：Sulfuric acid
+- 选定流：硫酸
 - 流属性/单位：Mass / kg
 - 数量规则：weighed sulfuric acid charged to water acidification and declared further treatment
 - 数值来源模式：前景记录（`foreground_record`）
@@ -734,7 +734,7 @@ Cellulose filter paper作为单独记录的原子交换进入本单元过程。�
 
 Grid electricity作为单独记录的原子交换进入本单元过程。将本阶段电表与精制阶段分开。
 
-- 选定流：Grid electricity
+- 选定流：电网电力
 - 流属性/单位：Energy / kWh
 - 数量规则：metered or allocated electricity for agitation, pumping, skimming and filter pressing
 - 数值来源模式：前景记录（`foreground_record`）
@@ -749,7 +749,7 @@ Grid electricity作为单独记录的原子交换进入本单元过程。将本�
 
 Purchased saturated steam作为单独记录的原子交换进入本单元过程。仅在使用外购蒸汽时记录。
 
-- 选定流：Purchased saturated steam
+- 选定流：外购饱和蒸汽
 - 流属性/单位：Energy / MJ
 - 数量规则：metered purchased saturated steam delivered to the extraction vessel
 - 数值来源模式：前景记录（`foreground_record`）
@@ -764,7 +764,7 @@ Purchased saturated steam作为单独记录的原子交换进入本单元过程�
 
 Purchased hot water作为单独记录的原子交换进入本单元过程。不得与蒸汽或燃料合并。
 
-- 选定流：Purchased hot water
+- 选定流：外购热水
 - 流属性/单位：Energy / MJ
 - 数量规则：metered thermal energy delivered as purchased hot water
 - 数值来源模式：前景记录（`foreground_record`）
@@ -779,7 +779,7 @@ Purchased hot water作为单独记录的原子交换进入本单元过程。不�
 
 Natural gas作为单独记录的原子交换进入本单元过程。仅在实际使用天然气时记录。
 
-- 选定流：Natural gas
+- 选定流：天然气
 - 流属性/单位：Energy / MJ
 - 数量规则：metered natural gas combusted for extraction heat assigned to this stage
 - 数值来源模式：前景记录（`foreground_record`）
@@ -794,7 +794,7 @@ Natural gas作为单独记录的原子交换进入本单元过程。仅在实际
 
 Diesel fuel作为单独记录的原子交换进入本单元过程。与天然气和液化石油气分开记录。
 
-- 选定流：Diesel fuel
+- 选定流：柴油燃料
 - 流属性/单位：Energy / MJ
 - 数量规则：fuel issue or meter record for diesel heat assigned to this stage
 - 数值来源模式：前景记录（`foreground_record`）
@@ -809,7 +809,7 @@ Diesel fuel作为单独记录的原子交换进入本单元过程。与天然气
 
 Liquefied petroleum gas作为单独记录的原子交换进入本单元过程。与天然气和柴油分开记录。
 
-- 选定流：Liquefied petroleum gas
+- 选定流：液化石油气
 - 流属性/单位：Energy / MJ
 - 数量规则：fuel issue or meter record for LPG heat assigned to this stage
 - 数值来源模式：前景记录（`foreground_record`）
@@ -900,7 +900,7 @@ Sulfuric-acid candelilla extraction wastewater作为单独记录的原子交换�
 
 Carbon dioxide, fossil, to air作为单独记录的原子交换离开本单元过程。按单一物质独立计算。
 
-- 选定流：Carbon dioxide, fossil, to air
+- 选定流：化石源二氧化碳，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：calculated from measured stage fuel use and site-specific monitored or permitted emission factors
 - 数值来源模式：计算值（`calculated_value`）
@@ -915,7 +915,7 @@ Carbon dioxide, fossil, to air作为单独记录的原子交换离开本单元�
 
 Nitrogen monoxide to air作为单独记录的原子交换离开本单元过程。按单一物质独立计算。
 
-- 选定流：Nitrogen monoxide to air
+- 选定流：一氧化氮，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：calculated from measured stage fuel use and site-specific monitored or permitted emission factors
 - 数值来源模式：计算值（`calculated_value`）
@@ -930,7 +930,7 @@ Nitrogen monoxide to air作为单独记录的原子交换离开本单元过程�
 
 Nitrogen dioxide to air作为单独记录的原子交换离开本单元过程。按单一物质独立计算。
 
-- 选定流：Nitrogen dioxide to air
+- 选定流：二氧化氮，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：calculated from measured stage fuel use and site-specific monitored or permitted emission factors
 - 数值来源模式：计算值（`calculated_value`）
@@ -945,7 +945,7 @@ Nitrogen dioxide to air作为单独记录的原子交换离开本单元过程。
 
 Sulfur dioxide to air作为单独记录的原子交换离开本单元过程。按单一物质独立计算。
 
-- 选定流：Sulfur dioxide to air
+- 选定流：二氧化硫，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：calculated from measured stage fuel use and site-specific monitored or permitted emission factors
 - 数值来源模式：计算值（`calculated_value`）
@@ -996,7 +996,7 @@ Accepted crude rice bran oil作为单独记录的原子交换进入本单元过�
 
 Process water作为单独记录的原子交换进入本单元过程。仅湿法工艺记录，且不含清洗水。
 
-- 选定流：Process water
+- 选定流：过程用水
 - 流属性/单位：Volume / m3
 - 数量规则：metered water charged to the selected wet-recovery operation
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1011,7 +1011,7 @@ Process water作为单独记录的原子交换进入本单元过程。仅湿法�
 
 Grid electricity作为单独记录的原子交换进入本单元过程。明确记录所选技术与电表分配。
 
-- 选定流：Grid electricity
+- 选定流：电网电力
 - 流属性/单位：Energy / kWh
 - 数量规则：metered or allocated electricity for cooling, agitation, separation, pumping and recovery
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1026,7 +1026,7 @@ Grid electricity作为单独记录的原子交换进入本单元过程。明确�
 
 Purchased saturated steam作为单独记录的原子交换进入本单元过程。仅在外购蒸汽跨越边界时记录。
 
-- 选定流：Purchased saturated steam
+- 选定流：外购饱和蒸汽
 - 流属性/单位：Energy / MJ
 - 数量规则：metered purchased saturated steam delivered to oil heating or solvent recovery
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1041,7 +1041,7 @@ Purchased saturated steam作为单独记录的原子交换进入本单元过程�
 
 Purchased hot water作为单独记录的原子交换进入本单元过程。与蒸汽和燃料分开。
 
-- 选定流：Purchased hot water
+- 选定流：外购热水
 - 流属性/单位：Energy / MJ
 - 数量规则：metered thermal energy delivered as purchased hot water
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1056,7 +1056,7 @@ Purchased hot water作为单独记录的原子交换进入本单元过程。与�
 
 Natural gas作为单独记录的原子交换进入本单元过程。仅在实际使用时记录。
 
-- 选定流：Natural gas
+- 选定流：天然气
 - 流属性/单位：Energy / MJ
 - 数量规则：metered natural gas combusted for process heat assigned to this stage
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1071,7 +1071,7 @@ Natural gas作为单独记录的原子交换进入本单元过程。仅在实际
 
 Diesel fuel作为单独记录的原子交换进入本单元过程。与天然气和液化石油气分开记录。
 
-- 选定流：Diesel fuel
+- 选定流：柴油燃料
 - 流属性/单位：Energy / MJ
 - 数量规则：fuel issue or meter record for diesel heat assigned to this stage
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1086,7 +1086,7 @@ Diesel fuel作为单独记录的原子交换进入本单元过程。与天然气
 
 Liquefied petroleum gas作为单独记录的原子交换进入本单元过程。与天然气和柴油分开记录。
 
-- 选定流：Liquefied petroleum gas
+- 选定流：液化石油气
 - 流属性/单位：Energy / MJ
 - 数量规则：fuel issue or meter record for LPG heat assigned to this stage
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1131,7 +1131,7 @@ Carbon dioxide for supercritical extraction作为单独记录的原子交换进�
 
 Ammonia refrigerant R717作为单独记录的原子交换进入本单元过程。仅记录已安装的制冷剂身份；不得合并不同制冷剂。
 
-- 选定流：Ammonia refrigerant R717
+- 选定流：氨制冷剂R717
 - 流属性/单位：Mass / kg
 - 数量规则：weighed refrigerant make-up assigned to the recovery refrigeration system
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1161,7 +1161,7 @@ Carbon dioxide refrigerant R744作为单独记录的原子交换进入本单元�
 
 Refrigerant R404A作为单独记录的原子交换进入本单元过程。仅记录已安装的制冷剂身份；不得合并不同制冷剂。
 
-- 选定流：Refrigerant R404A
+- 选定流：制冷剂R404A
 - 流属性/单位：Mass / kg
 - 数量规则：weighed refrigerant make-up assigned to the recovery refrigeration system
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1312,7 +1312,7 @@ Carbon dioxide refrigerant R744 to air作为单独记录的原子交换离开本
 
 Refrigerant R404A to air作为单独记录的原子交换离开本单元过程。不得汇总制冷剂排放。
 
-- 选定流：Refrigerant R404A to air
+- 选定流：制冷剂R404A，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：calculated from refrigerant inventory, make-up and service records for the named refrigerant
 - 数值来源模式：计算值（`calculated_value`）
@@ -1327,7 +1327,7 @@ Refrigerant R404A to air作为单独记录的原子交换离开本单元过程�
 
 Carbon dioxide, fossil, to air作为单独记录的原子交换离开本单元过程。按单一物质独立计算。
 
-- 选定流：Carbon dioxide, fossil, to air
+- 选定流：化石源二氧化碳，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：calculated from measured stage fuel use and site-specific monitored or permitted emission factors
 - 数值来源模式：计算值（`calculated_value`）
@@ -1342,7 +1342,7 @@ Carbon dioxide, fossil, to air作为单独记录的原子交换离开本单元�
 
 Nitrogen monoxide to air作为单独记录的原子交换离开本单元过程。按单一物质独立计算。
 
-- 选定流：Nitrogen monoxide to air
+- 选定流：一氧化氮，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：calculated from measured stage fuel use and site-specific monitored or permitted emission factors
 - 数值来源模式：计算值（`calculated_value`）
@@ -1357,7 +1357,7 @@ Nitrogen monoxide to air作为单独记录的原子交换离开本单元过程�
 
 Nitrogen dioxide to air作为单独记录的原子交换离开本单元过程。按单一物质独立计算。
 
-- 选定流：Nitrogen dioxide to air
+- 选定流：二氧化氮，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：calculated from measured stage fuel use and site-specific monitored or permitted emission factors
 - 数值来源模式：计算值（`calculated_value`）
@@ -1372,7 +1372,7 @@ Nitrogen dioxide to air作为单独记录的原子交换离开本单元过程。
 
 Sulfur dioxide to air作为单独记录的原子交换离开本单元过程。按单一物质独立计算。
 
-- 选定流：Sulfur dioxide to air
+- 选定流：二氧化硫，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：calculated from measured stage fuel use and site-specific monitored or permitted emission factors
 - 数值来源模式：计算值（`calculated_value`）
@@ -1513,7 +1513,7 @@ Diethyl ether作为单独记录的原子交换进入本单元过程。仅在该�
 
 Grid electricity作为单独记录的原子交换进入本单元过程。与机械回收及精制电力分开。
 
-- 选定流：Grid electricity
+- 选定流：电网电力
 - 流属性/单位：Energy / kWh
 - 数量规则：metered or allocated electricity for extraction, pumping, separation and solvent recovery
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1528,7 +1528,7 @@ Grid electricity作为单独记录的原子交换进入本单元过程。与机�
 
 Purchased saturated steam作为单独记录的原子交换进入本单元过程。仅在使用外购蒸汽时记录。
 
-- 选定流：Purchased saturated steam
+- 选定流：外购饱和蒸汽
 - 流属性/单位：Energy / MJ
 - 数量规则：metered purchased saturated steam delivered to extraction or solvent recovery
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1543,7 +1543,7 @@ Purchased saturated steam作为单独记录的原子交换进入本单元过程�
 
 Purchased hot water作为单独记录的原子交换进入本单元过程。与蒸汽和燃料分开。
 
-- 选定流：Purchased hot water
+- 选定流：外购热水
 - 流属性/单位：Energy / MJ
 - 数量规则：metered thermal energy delivered as purchased hot water
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1558,7 +1558,7 @@ Purchased hot water作为单独记录的原子交换进入本单元过程。与�
 
 Natural gas作为单独记录的原子交换进入本单元过程。仅在实际使用时记录。
 
-- 选定流：Natural gas
+- 选定流：天然气
 - 流属性/单位：Energy / MJ
 - 数量规则：metered natural gas combusted for extraction or solvent-recovery heat
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1573,7 +1573,7 @@ Natural gas作为单独记录的原子交换进入本单元过程。仅在实际
 
 Diesel fuel作为单独记录的原子交换进入本单元过程。与天然气和液化石油气分开。
 
-- 选定流：Diesel fuel
+- 选定流：柴油燃料
 - 流属性/单位：Energy / MJ
 - 数量规则：fuel issue or meter record for diesel heat assigned to this stage
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1588,7 +1588,7 @@ Diesel fuel作为单独记录的原子交换进入本单元过程。与天然气
 
 Liquefied petroleum gas作为单独记录的原子交换进入本单元过程。与天然气和柴油分开。
 
-- 选定流：Liquefied petroleum gas
+- 选定流：液化石油气
 - 流属性/单位：Energy / MJ
 - 数量规则：fuel issue or meter record for LPG heat assigned to this stage
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1895,7 +1895,7 @@ Crude rice bran wax作为单独记录的原子交换进入本单元过程。仅�
 
 Process water作为单独记录的原子交换进入本单元过程。与清洗水分开。
 
-- 选定流：Process water
+- 选定流：过程用水
 - 流属性/单位：Volume / m3
 - 数量规则：metered water charged to the wax clarification operation
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1970,7 +1970,7 @@ Cellulose filter paper作为单独记录的原子交换进入本单元过程。�
 
 Grid electricity作为单独记录的原子交换进入本单元过程。将本阶段电表与提取和成型阶段分开。
 
-- 选定流：Grid electricity
+- 选定流：电网电力
 - 流属性/单位：Energy / kWh
 - 数量规则：metered or allocated electricity for melting, agitation, pumping and filtration
 - 数值来源模式：前景记录（`foreground_record`）
@@ -1985,7 +1985,7 @@ Grid electricity作为单独记录的原子交换进入本单元过程。将本�
 
 Purchased saturated steam作为单独记录的原子交换进入本单元过程。仅在使用外购蒸汽时记录。
 
-- 选定流：Purchased saturated steam
+- 选定流：外购饱和蒸汽
 - 流属性/单位：Energy / MJ
 - 数量规则：metered purchased saturated steam delivered to wax melting
 - 数值来源模式：前景记录（`foreground_record`）
@@ -2000,7 +2000,7 @@ Purchased saturated steam作为单独记录的原子交换进入本单元过程�
 
 Purchased hot water作为单独记录的原子交换进入本单元过程。与蒸汽和燃料分开。
 
-- 选定流：Purchased hot water
+- 选定流：外购热水
 - 流属性/单位：Energy / MJ
 - 数量规则：metered thermal energy delivered as purchased hot water
 - 数值来源模式：前景记录（`foreground_record`）
@@ -2015,7 +2015,7 @@ Purchased hot water作为单独记录的原子交换进入本单元过程。与�
 
 Natural gas作为单独记录的原子交换进入本单元过程。仅在实际使用时记录。
 
-- 选定流：Natural gas
+- 选定流：天然气
 - 流属性/单位：Energy / MJ
 - 数量规则：metered natural gas combusted for clarification heat
 - 数值来源模式：前景记录（`foreground_record`）
@@ -2030,7 +2030,7 @@ Natural gas作为单独记录的原子交换进入本单元过程。仅在实际
 
 Diesel fuel作为单独记录的原子交换进入本单元过程。与天然气和液化石油气分开。
 
-- 选定流：Diesel fuel
+- 选定流：柴油燃料
 - 流属性/单位：Energy / MJ
 - 数量规则：fuel issue or meter record for clarification heat
 - 数值来源模式：前景记录（`foreground_record`）
@@ -2045,7 +2045,7 @@ Diesel fuel作为单独记录的原子交换进入本单元过程。与天然气
 
 Liquefied petroleum gas作为单独记录的原子交换进入本单元过程。与天然气和柴油分开。
 
-- 选定流：Liquefied petroleum gas
+- 选定流：液化石油气
 - 流属性/单位：Energy / MJ
 - 数量规则：fuel issue or meter record for clarification heat
 - 数值来源模式：前景记录（`foreground_record`）
@@ -2249,7 +2249,7 @@ Clarified rice bran wax作为单独记录的原子交换进入本单元过程。
 
 Hydrogen peroxide作为单独记录的原子交换进入本单元过程。记录供应浓度与有效物质基准。
 
-- 选定流：Hydrogen peroxide
+- 选定流：过氧化氢
 - 流属性/单位：Mass / kg
 - 数量规则：weighed supplied hydrogen peroxide charged to the batch
 - 数值来源模式：前景记录（`foreground_record`）
@@ -2264,7 +2264,7 @@ Hydrogen peroxide作为单独记录的原子交换进入本单元过程。记录
 
 Sulfuric acid作为单独记录的原子交换进入本单元过程。记录供应浓度与有效酸基准。
 
-- 选定流：Sulfuric acid
+- 选定流：硫酸
 - 流属性/单位：Mass / kg
 - 数量规则：weighed supplied sulfuric acid charged to candelilla refinement
 - 数值来源模式：前景记录（`foreground_record`）
@@ -2294,7 +2294,7 @@ Activated bleaching clay作为单独记录的原子交换进入本单元过程�
 
 Process water作为单独记录的原子交换进入本单元过程。与清洗水分开。
 
-- 选定流：Process water
+- 选定流：过程用水
 - 流属性/单位：Volume / m3
 - 数量规则：metered process water charged to bleaching or acid refinement
 - 数值来源模式：前景记录（`foreground_record`）
@@ -2309,7 +2309,7 @@ Process water作为单独记录的原子交换进入本单元过程。与清洗�
 
 Grid electricity作为单独记录的原子交换进入本单元过程。将本阶段电表与澄清阶段分开。
 
-- 选定流：Grid electricity
+- 选定流：电网电力
 - 流属性/单位：Energy / kWh
 - 数量规则：metered or allocated electricity for agitation, pumping and filtration
 - 数值来源模式：前景记录（`foreground_record`）
@@ -2324,7 +2324,7 @@ Grid electricity作为单独记录的原子交换进入本单元过程。将本�
 
 Purchased saturated steam作为单独记录的原子交换进入本单元过程。仅在使用外购蒸汽时记录。
 
-- 选定流：Purchased saturated steam
+- 选定流：外购饱和蒸汽
 - 流属性/单位：Energy / MJ
 - 数量规则：metered purchased saturated steam delivered to refinement
 - 数值来源模式：前景记录（`foreground_record`）
@@ -2339,7 +2339,7 @@ Purchased saturated steam作为单独记录的原子交换进入本单元过程�
 
 Purchased hot water作为单独记录的原子交换进入本单元过程。与蒸汽和燃料分开。
 
-- 选定流：Purchased hot water
+- 选定流：外购热水
 - 流属性/单位：Energy / MJ
 - 数量规则：metered thermal energy delivered as purchased hot water
 - 数值来源模式：前景记录（`foreground_record`）
@@ -2354,7 +2354,7 @@ Purchased hot water作为单独记录的原子交换进入本单元过程。与�
 
 Natural gas作为单独记录的原子交换进入本单元过程。仅在实际使用时记录。
 
-- 选定流：Natural gas
+- 选定流：天然气
 - 流属性/单位：Energy / MJ
 - 数量规则：metered natural gas combusted for refining heat
 - 数值来源模式：前景记录（`foreground_record`）
@@ -2369,7 +2369,7 @@ Natural gas作为单独记录的原子交换进入本单元过程。仅在实际
 
 Diesel fuel作为单独记录的原子交换进入本单元过程。与天然气和液化石油气分开。
 
-- 选定流：Diesel fuel
+- 选定流：柴油燃料
 - 流属性/单位：Energy / MJ
 - 数量规则：fuel issue or meter record for refining heat
 - 数值来源模式：前景记录（`foreground_record`）
@@ -2384,7 +2384,7 @@ Diesel fuel作为单独记录的原子交换进入本单元过程。与天然气
 
 Liquefied petroleum gas作为单独记录的原子交换进入本单元过程。与天然气和柴油分开。
 
-- 选定流：Liquefied petroleum gas
+- 选定流：液化石油气
 - 流属性/单位：Energy / MJ
 - 数量规则：fuel issue or meter record for refining heat
 - 数值来源模式：前景记录（`foreground_record`）
@@ -2490,7 +2490,7 @@ Acidic vegetable-wax refining wastewater作为单独记录的原子交换离开�
 
 Carbon dioxide, fossil, to air作为单独记录的原子交换离开本单元过程。按单一物质独立计算。
 
-- 选定流：Carbon dioxide, fossil, to air
+- 选定流：化石源二氧化碳，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：calculated from measured stage fuel use and site-specific monitored or permitted emission factors
 - 数值来源模式：计算值（`calculated_value`）
@@ -2505,7 +2505,7 @@ Carbon dioxide, fossil, to air作为单独记录的原子交换离开本单元�
 
 Nitrogen monoxide to air作为单独记录的原子交换离开本单元过程。按单一物质独立计算。
 
-- 选定流：Nitrogen monoxide to air
+- 选定流：一氧化氮，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：calculated from measured stage fuel use and site-specific monitored or permitted emission factors
 - 数值来源模式：计算值（`calculated_value`）
@@ -2520,7 +2520,7 @@ Nitrogen monoxide to air作为单独记录的原子交换离开本单元过程�
 
 Nitrogen dioxide to air作为单独记录的原子交换离开本单元过程。按单一物质独立计算。
 
-- 选定流：Nitrogen dioxide to air
+- 选定流：二氧化氮，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：calculated from measured stage fuel use and site-specific monitored or permitted emission factors
 - 数值来源模式：计算值（`calculated_value`）
@@ -2535,7 +2535,7 @@ Nitrogen dioxide to air作为单独记录的原子交换离开本单元过程。
 
 Sulfur dioxide to air作为单独记录的原子交换离开本单元过程。按单一物质独立计算。
 
-- 选定流：Sulfur dioxide to air
+- 选定流：二氧化硫，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：calculated from measured stage fuel use and site-specific monitored or permitted emission factors
 - 数值来源模式：计算值（`calculated_value`）
@@ -2616,7 +2616,7 @@ Bulk rice bran wax作为单独记录的原子交换进入本单元过程。在�
 
 Grid electricity作为单独记录的原子交换进入本单元过程。将本阶段电表与精制阶段分开。
 
-- 选定流：Grid electricity
+- 选定流：电网电力
 - 流属性/单位：Energy / kWh
 - 数量规则：metered or allocated electricity for remelting, pumps, flaker or slab equipment and cooling
 - 数值来源模式：前景记录（`foreground_record`）
@@ -2631,7 +2631,7 @@ Grid electricity作为单独记录的原子交换进入本单元过程。将本�
 
 Purchased saturated steam作为单独记录的原子交换进入本单元过程。仅在使用时记录。
 
-- 选定流：Purchased saturated steam
+- 选定流：外购饱和蒸汽
 - 流属性/单位：Energy / MJ
 - 数量规则：metered purchased saturated steam delivered to remelting
 - 数值来源模式：前景记录（`foreground_record`）
@@ -2646,7 +2646,7 @@ Purchased saturated steam作为单独记录的原子交换进入本单元过程�
 
 Purchased hot water作为单独记录的原子交换进入本单元过程。与蒸汽和燃料分开。
 
-- 选定流：Purchased hot water
+- 选定流：外购热水
 - 流属性/单位：Energy / MJ
 - 数量规则：metered thermal energy delivered as purchased hot water
 - 数值来源模式：前景记录（`foreground_record`）
@@ -2661,7 +2661,7 @@ Purchased hot water作为单独记录的原子交换进入本单元过程。与�
 
 Natural gas作为单独记录的原子交换进入本单元过程。仅在实际使用时记录。
 
-- 选定流：Natural gas
+- 选定流：天然气
 - 流属性/单位：Energy / MJ
 - 数量规则：metered natural gas combusted for remelting heat
 - 数值来源模式：前景记录（`foreground_record`）
@@ -2676,7 +2676,7 @@ Natural gas作为单独记录的原子交换进入本单元过程。仅在实际
 
 Diesel fuel作为单独记录的原子交换进入本单元过程。与天然气和液化石油气分开。
 
-- 选定流：Diesel fuel
+- 选定流：柴油燃料
 - 流属性/单位：Energy / MJ
 - 数量规则：fuel issue or meter record for remelting heat
 - 数值来源模式：前景记录（`foreground_record`）
@@ -2691,7 +2691,7 @@ Diesel fuel作为单独记录的原子交换进入本单元过程。与天然气
 
 Liquefied petroleum gas作为单独记录的原子交换进入本单元过程。与天然气和柴油分开。
 
-- 选定流：Liquefied petroleum gas
+- 选定流：液化石油气
 - 流属性/单位：Energy / MJ
 - 数量规则：fuel issue or meter record for remelting heat
 - 数值来源模式：前景记录（`foreground_record`）
@@ -2721,7 +2721,7 @@ Cooling water作为单独记录的原子交换进入本单元过程。与清洗�
 
 Ammonia refrigerant R717作为单独记录的原子交换进入本单元过程。仅记录已安装的制冷剂身份。
 
-- 选定流：Ammonia refrigerant R717
+- 选定流：氨制冷剂R717
 - 流属性/单位：Mass / kg
 - 数量规则：weighed refrigerant make-up assigned to the forming refrigeration system
 - 数值来源模式：前景记录（`foreground_record`）
@@ -2751,7 +2751,7 @@ Carbon dioxide refrigerant R744作为单独记录的原子交换进入本单元�
 
 Refrigerant R404A作为单独记录的原子交换进入本单元过程。仅记录已安装的制冷剂身份。
 
-- 选定流：Refrigerant R404A
+- 选定流：制冷剂R404A
 - 流属性/单位：Mass / kg
 - 数量规则：weighed refrigerant make-up assigned to the forming refrigeration system
 - 数值来源模式：前景记录（`foreground_record`）
@@ -2917,7 +2917,7 @@ Carbon dioxide refrigerant R744 to air作为单独记录的原子交换离开本
 
 Refrigerant R404A to air作为单独记录的原子交换离开本单元过程。不得汇总制冷剂排放。
 
-- 选定流：Refrigerant R404A to air
+- 选定流：制冷剂R404A，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：calculated from refrigerant inventory, make-up and service records for the named refrigerant
 - 数值来源模式：计算值（`calculated_value`）
@@ -2932,7 +2932,7 @@ Refrigerant R404A to air作为单独记录的原子交换离开本单元过程�
 
 Carbon dioxide, fossil, to air作为单独记录的原子交换离开本单元过程。按单一物质独立计算。
 
-- 选定流：Carbon dioxide, fossil, to air
+- 选定流：化石源二氧化碳，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：calculated from measured stage fuel use and site-specific monitored or permitted emission factors
 - 数值来源模式：计算值（`calculated_value`）
@@ -2947,7 +2947,7 @@ Carbon dioxide, fossil, to air作为单独记录的原子交换离开本单元�
 
 Nitrogen monoxide to air作为单独记录的原子交换离开本单元过程。按单一物质独立计算。
 
-- 选定流：Nitrogen monoxide to air
+- 选定流：一氧化氮，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：calculated from measured stage fuel use and site-specific monitored or permitted emission factors
 - 数值来源模式：计算值（`calculated_value`）
@@ -2962,7 +2962,7 @@ Nitrogen monoxide to air作为单独记录的原子交换离开本单元过程�
 
 Nitrogen dioxide to air作为单独记录的原子交换离开本单元过程。按单一物质独立计算。
 
-- 选定流：Nitrogen dioxide to air
+- 选定流：二氧化氮，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：calculated from measured stage fuel use and site-specific monitored or permitted emission factors
 - 数值来源模式：计算值（`calculated_value`）
@@ -2977,7 +2977,7 @@ Nitrogen dioxide to air作为单独记录的原子交换离开本单元过程。
 
 Sulfur dioxide to air作为单独记录的原子交换离开本单元过程。按单一物质独立计算。
 
-- 选定流：Sulfur dioxide to air
+- 选定流：二氧化硫，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：calculated from measured stage fuel use and site-specific monitored or permitted emission factors
 - 数值来源模式：计算值（`calculated_value`）
@@ -3133,7 +3133,7 @@ Carbon-steel drum作为单独记录的原子交换进入本单元过程。仅在
 
 Wooden pallet作为单独记录的原子交换进入本单元过程。仅在使用该确切包装组件时记录。
 
-- 选定流：Wooden pallet
+- 选定流：木托盘
 - 流属性/单位：Mass / kg
 - 数量规则：weighed Wooden pallet consumed for released lots
 - 数值来源模式：前景记录（`foreground_record`）
@@ -3163,7 +3163,7 @@ Linear low-density polyethylene stretch film作为单独记录的原子交换进
 
 Paper label作为单独记录的原子交换进入本单元过程。仅在使用该确切包装组件时记录。
 
-- 选定流：Paper label
+- 选定流：纸质标签
 - 流属性/单位：Mass / kg
 - 数量规则：weighed Paper label consumed for released lots
 - 数值来源模式：前景记录（`foreground_record`）
@@ -3178,7 +3178,7 @@ Paper label作为单独记录的原子交换进入本单元过程。仅在使用
 
 Grid electricity作为单独记录的原子交换进入本单元过程。将包装电力与成型电力分开。
 
-- 选定流：Grid electricity
+- 选定流：电网电力
 - 流属性/单位：Energy / kWh
 - 数量规则：metered or allocated electricity for weighing, filling, sealing, labelling and pallet wrapping
 - 数值来源模式：前景记录（`foreground_record`）
@@ -3193,7 +3193,7 @@ Grid electricity作为单独记录的原子交换进入本单元过程。将包�
 
 Diesel fuel作为单独记录的原子交换进入本单元过程。仅在实际使用柴油设备时记录。
 
-- 选定流：Diesel fuel
+- 选定流：柴油燃料
 - 流属性/单位：Energy / MJ
 - 数量规则：fuel issue or meter record for diesel-powered packaging handling equipment
 - 数值来源模式：前景记录（`foreground_record`）
@@ -3208,7 +3208,7 @@ Diesel fuel作为单独记录的原子交换进入本单元过程。仅在实际
 
 Liquefied petroleum gas作为单独记录的原子交换进入本单元过程。仅在实际使用液化石油气设备时记录。
 
-- 选定流：Liquefied petroleum gas
+- 选定流：液化石油气
 - 流属性/单位：Energy / MJ
 - 数量规则：fuel issue or meter record for LPG-powered packaging handling equipment
 - 数值来源模式：前景记录（`foreground_record`）
@@ -3235,7 +3235,7 @@ Liquefied petroleum gas作为单独记录的原子交换进入本单元过程。
 
 Vegetable waxes (other than triglycerides), whether or not refined or coloured作为单独记录的原子交换离开本单元过程。这是唯一参考产品交换；须声明植物来源、路线、精制状态、着色状态与物理形态。
 
-- 选定流：Vegetable waxes (other than triglycerides), whether or not refined or coloured `1933406f-ca56-4672-9678-ae3925128a03`
+- 选定流：植物蜡（甘油三酯除外），无论是否精制或着色 `1933406f-ca56-4672-9678-ae3925128a03`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg; Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66`
 - 数量规则：calculated net conforming wax mass normalized to exactly 1 kg, excluding all packaging mass
 - 数值来源模式：计算值（`calculated_value`）
@@ -3412,7 +3412,7 @@ Cleaning water作为单独记录的原子交换进入本单元过程。与提取
 
 Grid electricity作为单独记录的原子交换进入本单元过程。单独分配清洗电力。
 
-- 选定流：Grid electricity
+- 选定流：电网电力
 - 流属性/单位：Energy / kWh
 - 数量规则：metered or allocated electricity for cleaning pumps and clean-in-place operation
 - 数值来源模式：前景记录（`foreground_record`）
@@ -3427,7 +3427,7 @@ Grid electricity作为单独记录的原子交换进入本单元过程。单独�
 
 Purchased saturated steam作为单独记录的原子交换进入本单元过程。仅在使用外购蒸汽时记录。
 
-- 选定流：Purchased saturated steam
+- 选定流：外购饱和蒸汽
 - 流属性/单位：Energy / MJ
 - 数量规则：metered purchased saturated steam delivered to cleaning
 - 数值来源模式：前景记录（`foreground_record`）
@@ -3442,7 +3442,7 @@ Purchased saturated steam作为单独记录的原子交换进入本单元过程�
 
 Purchased hot water作为单独记录的原子交换进入本单元过程。与蒸汽和燃料分开。
 
-- 选定流：Purchased hot water
+- 选定流：外购热水
 - 流属性/单位：Energy / MJ
 - 数量规则：metered thermal energy delivered as purchased hot water for cleaning
 - 数值来源模式：前景记录（`foreground_record`）
@@ -3457,7 +3457,7 @@ Purchased hot water作为单独记录的原子交换进入本单元过程。与�
 
 Natural gas作为单独记录的原子交换进入本单元过程。仅在实际使用时记录。
 
-- 选定流：Natural gas
+- 选定流：天然气
 - 流属性/单位：Energy / MJ
 - 数量规则：metered natural gas combusted for cleaning-water heat
 - 数值来源模式：前景记录（`foreground_record`）
@@ -3472,7 +3472,7 @@ Natural gas作为单独记录的原子交换进入本单元过程。仅在实际
 
 Diesel fuel作为单独记录的原子交换进入本单元过程。与天然气和液化石油气分开。
 
-- 选定流：Diesel fuel
+- 选定流：柴油燃料
 - 流属性/单位：Energy / MJ
 - 数量规则：fuel issue or meter record for cleaning-water heat
 - 数值来源模式：前景记录（`foreground_record`）
@@ -3487,7 +3487,7 @@ Diesel fuel作为单独记录的原子交换进入本单元过程。与天然气
 
 Liquefied petroleum gas作为单独记录的原子交换进入本单元过程。与天然气和柴油分开。
 
-- 选定流：Liquefied petroleum gas
+- 选定流：液化石油气
 - 流属性/单位：Energy / MJ
 - 数量规则：fuel issue or meter record for cleaning-water heat
 - 数值来源模式：前景记录（`foreground_record`）
@@ -3502,7 +3502,7 @@ Liquefied petroleum gas作为单独记录的原子交换进入本单元过程。
 
 Sodium hydroxide作为单独记录的原子交换进入本单元过程。独立记录供应浓度与有效物质基准。
 
-- 选定流：Sodium hydroxide
+- 选定流：氢氧化钠
 - 流属性/单位：Mass / kg
 - 数量规则：weighed supplied Sodium hydroxide used in cleaning or sanitation
 - 数值来源模式：前景记录（`foreground_record`）
@@ -3517,7 +3517,7 @@ Sodium hydroxide作为单独记录的原子交换进入本单元过程。独立�
 
 Nitric acid作为单独记录的原子交换进入本单元过程。独立记录供应浓度与有效物质基准。
 
-- 选定流：Nitric acid
+- 选定流：硝酸
 - 流属性/单位：Mass / kg
 - 数量规则：weighed supplied Nitric acid used in cleaning or sanitation
 - 数值来源模式：前景记录（`foreground_record`）
@@ -3532,7 +3532,7 @@ Nitric acid作为单独记录的原子交换进入本单元过程。独立记录
 
 Phosphoric acid作为单独记录的原子交换进入本单元过程。独立记录供应浓度与有效物质基准。
 
-- 选定流：Phosphoric acid
+- 选定流：磷酸
 - 流属性/单位：Mass / kg
 - 数量规则：weighed supplied Phosphoric acid used in cleaning or sanitation
 - 数值来源模式：前景记录（`foreground_record`）
@@ -3547,7 +3547,7 @@ Phosphoric acid作为单独记录的原子交换进入本单元过程。独立�
 
 Peracetic acid作为单独记录的原子交换进入本单元过程。独立记录供应浓度与有效物质基准。
 
-- 选定流：Peracetic acid
+- 选定流：过氧乙酸
 - 流属性/单位：Mass / kg
 - 数量规则：weighed supplied Peracetic acid used in cleaning or sanitation
 - 数值来源模式：前景记录（`foreground_record`）
@@ -3562,7 +3562,7 @@ Peracetic acid作为单独记录的原子交换进入本单元过程。独立记
 
 Sodium hypochlorite作为单独记录的原子交换进入本单元过程。独立记录供应浓度与有效物质基准。
 
-- 选定流：Sodium hypochlorite
+- 选定流：次氯酸钠
 - 流属性/单位：Mass / kg
 - 数量规则：weighed supplied Sodium hypochlorite used in cleaning or sanitation
 - 数值来源模式：前景记录（`foreground_record`）
@@ -3678,7 +3678,7 @@ Sodium-hypochlorite cleaning wastewater作为单独记录的原子交换离开�
 
 Grid electricity作为单独记录的原子交换进入本单元过程。依据处理系统电表分配。
 
-- 选定流：Grid electricity
+- 选定流：电网电力
 - 流属性/单位：Energy / kWh
 - 数量规则：metered electricity used by on-site wastewater treatment
 - 数值来源模式：前景记录（`foreground_record`）
@@ -3693,7 +3693,7 @@ Grid electricity作为单独记录的原子交换进入本单元过程。依据�
 
 Ferric chloride作为单独记录的原子交换进入本单元过程。记录供应浓度与有效物质基准。
 
-- 选定流：Ferric chloride
+- 选定流：氯化铁
 - 流属性/单位：Mass / kg
 - 数量规则：weighed supplied Ferric chloride consumed by on-site wastewater treatment
 - 数值来源模式：前景记录（`foreground_record`）
@@ -3708,7 +3708,7 @@ Ferric chloride作为单独记录的原子交换进入本单元过程。记录�
 
 Sodium hydroxide作为单独记录的原子交换进入本单元过程。记录供应浓度与有效物质基准。
 
-- 选定流：Sodium hydroxide
+- 选定流：氢氧化钠
 - 流属性/单位：Mass / kg
 - 数量规则：weighed supplied Sodium hydroxide consumed by on-site wastewater treatment
 - 数值来源模式：前景记录（`foreground_record`）
@@ -3964,7 +3964,7 @@ Vegetable-wax wastewater-treatment screenings作为单独记录的原子交换�
 
 Chemical oxygen demand to water作为单独记录的原子交换离开本单元过程。独立计算该确切参数并报告分析方法。
 
-- 选定流：Chemical oxygen demand to water
+- 选定流：化学需氧量，排入水体
 - 流属性/单位：Mass / kg
 - 数量规则：calculated from matched effluent concentration and treated-water volume for the reporting period
 - 数值来源模式：计算值（`calculated_value`）
@@ -3994,7 +3994,7 @@ Biochemical oxygen demand, five-day, to water作为单独记录的原子交换�
 
 Total suspended solids to water作为单独记录的原子交换离开本单元过程。独立计算该确切参数并报告分析方法。
 
-- 选定流：Total suspended solids to water
+- 选定流：总悬浮固体，排入水体
 - 流属性/单位：Mass / kg
 - 数量规则：calculated from matched effluent concentration and treated-water volume for the reporting period
 - 数值来源模式：计算值（`calculated_value`）
@@ -4009,7 +4009,7 @@ Total suspended solids to water作为单独记录的原子交换离开本单元�
 
 Total nitrogen to water作为单独记录的原子交换离开本单元过程。独立计算该确切参数并报告分析方法。
 
-- 选定流：Total nitrogen to water
+- 选定流：总氮，排入水体
 - 流属性/单位：Mass / kg
 - 数量规则：calculated from matched effluent concentration and treated-water volume for the reporting period
 - 数值来源模式：计算值（`calculated_value`）
@@ -4024,7 +4024,7 @@ Total nitrogen to water作为单独记录的原子交换离开本单元过程。
 
 Total phosphorus to water作为单独记录的原子交换离开本单元过程。独立计算该确切参数并报告分析方法。
 
-- 选定流：Total phosphorus to water
+- 选定流：总磷，排入水体
 - 流属性/单位：Mass / kg
 - 数量规则：calculated from matched effluent concentration and treated-water volume for the reporting period
 - 数值来源模式：计算值（`calculated_value`）
@@ -4039,7 +4039,7 @@ Total phosphorus to water作为单独记录的原子交换离开本单元过程�
 
 Chloride to water作为单独记录的原子交换离开本单元过程。独立计算该确切参数并报告分析方法。
 
-- 选定流：Chloride to water
+- 选定流：氯化物，排入水体
 - 流属性/单位：Mass / kg
 - 数量规则：calculated from matched effluent concentration and treated-water volume for the reporting period
 - 数值来源模式：计算值（`calculated_value`）
@@ -4084,7 +4084,7 @@ Vegetable wax to water作为单独记录的原子交换离开本单元过程。�
 
 Methane to air作为单独记录的原子交换离开本单元过程。仅在处理过程产生甲烷时记录。
 
-- 选定流：Methane to air
+- 选定流：甲烷，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：calculated from site-specific biogas measurement or a documented treatment-specific calculation using collected wastewater data
 - 数值来源模式：计算值（`calculated_value`）
@@ -4099,7 +4099,7 @@ Methane to air作为单独记录的原子交换离开本单元过程。仅在处
 
 Carbon dioxide, biogenic, to air作为单独记录的原子交换离开本单元过程。仅在处理过程产生生物源二氧化碳时记录。
 
-- 选定流：Carbon dioxide, biogenic, to air
+- 选定流：生物源二氧化碳，排入空气
 - 流属性/单位：Mass / kg
 - 数量规则：calculated from site-specific biogas measurement or a documented treatment-specific calculation using collected wastewater data
 - 数值来源模式：计算值（`calculated_value`）

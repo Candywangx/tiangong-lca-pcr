@@ -40,7 +40,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 1 |
-| 参考产品流 | Potatoes, otherwise prepared or preserved `b158bec4-e459-437d-8106-88d2f3d92c8a` |
+| 参考产品流 | 马铃薯，以其他方式加工或腌制 `b158bec4-e459-437d-8106-88d2f3d92c8a` |
 | 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | kg |
@@ -495,7 +495,7 @@ sync_with: pcr.en-US.md
 
 本流为定量参考输出。记录恰好 1 kg 可销售成品净质量，并声明产品形态、路线、包装状态以及冷冻或非冷冻放行条件。
 
-- 选定流：Potatoes, otherwise prepared or preserved `b158bec4-e459-437d-8106-88d2f3d92c8a`
+- 选定流：马铃薯，以其他方式加工或腌制 `b158bec4-e459-437d-8106-88d2f3d92c8a`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：1 kg 可销售成品净质量
 - 数值来源模式：固定值（`fixed_value`）

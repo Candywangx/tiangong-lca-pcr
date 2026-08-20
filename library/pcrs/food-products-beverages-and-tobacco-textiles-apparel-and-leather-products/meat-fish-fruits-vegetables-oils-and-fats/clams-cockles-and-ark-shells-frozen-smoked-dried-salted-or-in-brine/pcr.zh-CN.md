@@ -38,7 +38,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 1 kg |
-| 参考产品流 | Clams, cockles and ark shells, frozen, smoked, dried, salted or in brine `7a159b9e-de7a-4ef0-906e-8f2e8615d6cd` |
+| 参考产品流 | 冷冻、烟熏、风干、盐腌或盐水浸泡的蛤蜊、蚶子和蚶壳 `7a159b9e-de7a-4ef0-906e-8f2e8615d6cd` |
 | 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | kg |
@@ -121,7 +121,7 @@ sync_with: pcr.en-US.md
 
 记录进入清洗、除砂、辅助去壳和卫生操作的计量或平衡核算用水。
 
-- 选定流：Process water
+- 选定流：过程用水
 - 流属性/单位：Mass / kg
 - 数量规则：分配至验收预处理输出的实测用水量；当路线生产线分表或经平衡核对的批次记录覆盖报告期时替换暂定范围
 - 数值来源模式：前景记录（`foreground_record`）
@@ -455,7 +455,7 @@ sync_with: pcr.en-US.md
 
 这是按申报路线、产品形态和可销售质量基准定义的天工 CPC 21265 精确通用产品流。
 
-- 选定流：Clams, cockles and ark shells, frozen, smoked, dried, salted or in brine `7a159b9e-de7a-4ef0-906e-8f2e8615d6cd`
+- 选定流：冷冻、烟熏、风干、盐腌或盐水浸泡的蛤蜊、蚶子和蚶壳 `7a159b9e-de7a-4ef0-906e-8f2e8615d6cd`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：恰好 1 kg 合格可销售产品内容物，不含即时包装
 - 数值来源模式：固定值（`fixed_value`）

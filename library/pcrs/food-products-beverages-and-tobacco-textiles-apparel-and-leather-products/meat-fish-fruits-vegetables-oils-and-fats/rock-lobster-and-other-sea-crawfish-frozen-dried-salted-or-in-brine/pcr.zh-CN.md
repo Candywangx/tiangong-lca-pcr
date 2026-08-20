@@ -38,7 +38,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 1 kg 目标产品净质量 |
-| 参考产品流 | Rock lobster and other sea crawfish, frozen, dried, salted or in brine `7b3eb43f-1808-43ec-963b-40e088052194` |
+| 参考产品流 | 冷冻的、干的、盐腌的或盐水中的岩龙虾和其他海螯虾 `7b3eb43f-1808-43ec-963b-40e088052194` |
 | 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | kg |
@@ -455,7 +455,7 @@ sync_with: pcr.en-US.md
 
 对于干制、干盐腌和盐水路线，本行为生产者门口参考产品；对于冷冻路线，本产品转入冷冻储存。
 
-- 选定流：Rock lobster and other sea crawfish, frozen, dried, salted or in brine `7b3eb43f-1808-43ec-963b-40e088052194`
+- 选定流：冷冻的、干的、盐腌的或盐水中的岩龙虾和其他海螯虾 `7b3eb43f-1808-43ec-963b-40e088052194`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：适用门口的 1 kg 目标产品净质量
 - 数值来源模式：固定值（`fixed_value`）
@@ -561,7 +561,7 @@ sync_with: pcr.en-US.md
 
 记录完成声明储存时长且尚未开始出厂配送的冷冻参考产品。
 
-- 选定流：Rock lobster and other sea crawfish, frozen, dried, salted or in brine `7b3eb43f-1808-43ec-963b-40e088052194`
+- 选定流：冷冻的、干的、盐腌的或盐水中的岩龙虾和其他海螯虾 `7b3eb43f-1808-43ec-963b-40e088052194`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：1 kg 冷冻目标产品净质量
 - 数值来源模式：固定值（`fixed_value`）

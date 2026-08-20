@@ -43,7 +43,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 1 kg 成品服装净质量 |
-| 参考产品流 | T-shirts, singlets and other vests, knitted or crocheted `4de987ca-f5f5-4001-a465-07f12ef9775f` |
+| 参考产品流 | 针织或钩编的T恤衫、背心和其他类内衣 `4de987ca-f5f5-4001-a465-07f12ef9775f` |
 | 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | kg |
@@ -743,7 +743,7 @@ sync_with: pcr.en-US.md
 
 这是定量参考输出。其质量不含包装，包装应单独记录。
 
-- 选定流：T-shirts, singlets and other vests, knitted or crocheted `4de987ca-f5f5-4001-a465-07f12ef9775f`
+- 选定流：针织或钩编的T恤衫、背心和其他类内衣 `4de987ca-f5f5-4001-a465-07f12ef9775f`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg（Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66`）
 - 数量规则：根据实测验收净输出归一化后准确等于 1 kg
 - 数值来源模式：固定值（`fixed_value`）

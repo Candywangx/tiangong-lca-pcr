@@ -45,7 +45,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 1 kg 净合格成品服装 |
-| 参考产品流 | Men's or boys' suits, coats, jackets, trousers, shorts and the like, knitted or crocheted `e5e9f30a-061b-4cbc-bdb3-3d86985acff6` |
+| 参考产品流 | 针织或钩编的男装、男童套装、外衣、夹克衫、长裤、短裤及其类似物品 `e5e9f30a-061b-4cbc-bdb3-3d86985acff6` |
 | 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | kg |
@@ -561,7 +561,7 @@ sync_with: pcr.en-US.md
 
 这是定量参考输出。包装不计入其质量，并在单独的输入卡中记录。
 
-- 选定流：Men's or boys' suits, coats, jackets, trousers, shorts and the like, knitted or crocheted `e5e9f30a-061b-4cbc-bdb3-3d86985acff6`
+- 选定流：针织或钩编的男装、男童套装、外衣、夹克衫、长裤、短裤及其类似物品 `e5e9f30a-061b-4cbc-bdb3-3d86985acff6`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：根据实测净合格输出归一化后恰好为 1 kg
 - 数值来源模式：固定值（`fixed_value`）

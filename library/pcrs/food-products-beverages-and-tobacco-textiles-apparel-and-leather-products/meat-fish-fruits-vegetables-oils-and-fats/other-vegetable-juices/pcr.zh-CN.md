@@ -42,7 +42,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 1 kg 净成品汁 |
-| 参考产品流 | Other vegetable juices `641392fd-b293-4355-affa-b1b8c936698c` |
+| 参考产品流 | 其他蔬菜汁 `641392fd-b293-4355-affa-b1b8c936698c` |
 | 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | kg |
@@ -124,7 +124,7 @@ sync_with: pcr.en-US.md
 
 记录进入清洗、水力输送、修整和准备操作的计量水。内部循环水与新鲜补充水应分开。
 
-- 选定流：Process water
+- 选定流：过程用水
 - 流属性/单位：Volume / m3
 - 数量规则：在准备过程边界计量的新鲜补充水
 - 数值来源模式：前景记录（`foreground_record`）
@@ -243,7 +243,7 @@ sync_with: pcr.en-US.md
 
 将加入产品或用于复原的水与清洁、清洗用水分开纳入。
 
-- 选定流：Process water
+- 选定流：过程用水
 - 流属性/单位：Mass / kg
 - 数量规则：计量或称量加入批次的水
 - 数值来源模式：前景记录（`foreground_record`）
@@ -468,7 +468,7 @@ sync_with: pcr.en-US.md
 
 本行是定量参考。产品质量仅为净蔬菜汁；包装保留为独立投入。
 
-- 选定流：Other vegetable juices `641392fd-b293-4355-affa-b1b8c936698c`
+- 选定流：其他蔬菜汁 `641392fd-b293-4355-affa-b1b8c936698c`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：准确 1 kg 合格净成品汁
 - 数值来源模式：固定值（`fixed_value`）

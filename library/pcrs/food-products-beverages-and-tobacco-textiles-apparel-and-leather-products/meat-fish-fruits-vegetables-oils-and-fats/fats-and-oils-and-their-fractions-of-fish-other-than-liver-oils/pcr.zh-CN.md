@@ -42,7 +42,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 1 kg |
-| 参考产品流 | Fats and oils and their fractions, of fish, other than liver oils `dacba994-e061-44ed-940e-61f7820422c6` |
+| 参考产品流 | 鱼油 `dacba994-e061-44ed-940e-61f7820422c6` |
 | 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | kg |
@@ -528,7 +528,7 @@ sync_with: pcr.en-US.md
 
 使用已核验的 Tiangong 参考身份和必需限定信息报告已放行产品。
 
-- 选定流：Fats and oils and their fractions, of fish, other than liver oils `dacba994-e061-44ed-940e-61f7820422c6`
+- 选定流：鱼油 `dacba994-e061-44ed-940e-61f7820422c6`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：1 kg 净放行产品的固定参考数量
 - 数值来源模式：固定值（`fixed_value`）

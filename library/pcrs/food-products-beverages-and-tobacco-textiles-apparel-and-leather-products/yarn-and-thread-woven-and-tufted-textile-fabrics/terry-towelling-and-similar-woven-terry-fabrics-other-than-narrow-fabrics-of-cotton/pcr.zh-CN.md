@@ -38,7 +38,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 1 kg |
-| 参考产品流 | Terry towelling and similar woven terry fabrics (other than narrow fabrics) of cotton `61be29ff-288e-4570-8335-4e03760c9255` |
+| 参考产品流 | 棉毛巾毛圈织物和类似的棉毛圈织物（狭幅织物除外） `61be29ff-288e-4570-8335-4e03760c9255` |
 | 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | kg |
@@ -127,7 +127,7 @@ sync_with: pcr.en-US.md
 
 进入浆液配制的水与后续湿处理用水分开记录。
 
-- 选定流：Process water
+- 选定流：过程用水
 - 流属性/单位：Mass / kg
 - 数量规则：浆液配制实际供水量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -142,7 +142,7 @@ sync_with: pcr.en-US.md
 
 络筒、整经、上浆及其直接驱动设备用电作为一项公用工程交换记录。
 
-- 选定流：Electricity
+- 选定流：电力
 - 流属性/单位：Energy / kWh
 - 数量规则：上浆批次计量或分配的用电量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -157,7 +157,7 @@ sync_with: pcr.en-US.md
 
 用于加热或烘干上浆纱线的外购或现场蒸汽与电力分开记录。
 
-- 选定流：Steam
+- 选定流：蒸汽
 - 流属性/单位：Energy / MJ
 - 数量规则：上浆批次实际供给的计量蒸汽能量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -212,7 +212,7 @@ sync_with: pcr.en-US.md
 
 毛圈织机及直接相关物料搬运的用电来自织造电表或有记录的共用电表分配。
 
-- 选定流：Electricity
+- 选定流：电力
 - 流属性/单位：Energy / kWh
 - 数量规则：织造批次计量或分配的用电量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -284,7 +284,7 @@ sync_with: pcr.en-US.md
 
 用于退浆、精练、适用时漂白及漂洗的水在前处理过程边界记录。
 
-- 选定流：Process water
+- 选定流：过程用水
 - 流属性/单位：Mass / kg
 - 数量规则：前处理批次实际供水量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -299,7 +299,7 @@ sync_with: pcr.en-US.md
 
 所声明路线采用氢氧化钠精练或丝光时记录。
 
-- 选定流：Sodium hydroxide
+- 选定流：氢氧化钠
 - 流属性/单位：Mass / kg
 - 数量规则：实际消耗的氢氧化钠产品实测质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -329,7 +329,7 @@ sync_with: pcr.en-US.md
 
 仅当所声明产品路线包含过氧化物漂白时记录。
 
-- 选定流：Hydrogen peroxide
+- 选定流：过氧化氢
 - 流属性/单位：Mass / kg
 - 数量规则：实际消耗的过氧化氢产品实测质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -344,7 +344,7 @@ sync_with: pcr.en-US.md
 
 用于加热前处理浴液和织物的蒸汽与电力分开记录。
 
-- 选定流：Steam
+- 选定流：蒸汽
 - 流属性/单位：Energy / MJ
 - 数量规则：前处理批次实际供给的计量蒸汽能量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -431,7 +431,7 @@ C.I. Reactive Red 195 是一项具体染料交换，仅在声明配方包含该�
 
 使用氯化钠促进染料上染时，将其作为独立配方化学品记录。
 
-- 选定流：Sodium chloride
+- 选定流：氯化钠
 - 流属性/单位：Mass / kg
 - 数量规则：实际消耗的氯化钠实测质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -446,7 +446,7 @@ C.I. Reactive Red 195 是一项具体染料交换，仅在声明配方包含该�
 
 使用碳酸钠建立染浴碱度时，将其作为独立配方化学品记录。
 
-- 选定流：Sodium carbonate
+- 选定流：碳酸钠
 - 流属性/单位：Mass / kg
 - 数量规则：实际消耗的碳酸钠实测质量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -461,7 +461,7 @@ C.I. Reactive Red 195 是一项具体染料交换，仅在声明配方包含该�
 
 染浴、漂洗、皂洗和染后洗涤用水在染色过程边界记录。
 
-- 选定流：Process water
+- 选定流：过程用水
 - 流属性/单位：Mass / kg
 - 数量规则：染色批次实际供水量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -476,7 +476,7 @@ C.I. Reactive Red 195 是一项具体染料交换，仅在声明配方包含该�
 
 用于加热染浴或染后洗涤的蒸汽与电力分开记录。
 
-- 选定流：Steam
+- 选定流：蒸汽
 - 流属性/单位：Energy / MJ
 - 数量规则：染色批次实际供给的计量蒸汽能量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -563,7 +563,7 @@ C.I. Reactive Red 195 是一项具体染料交换，仅在声明配方包含该�
 
 后整理设备、风机、泵和物料搬运用电来自专用电表或有记录的共用电表分配。
 
-- 选定流：Electricity
+- 选定流：电力
 - 流属性/单位：Energy / kWh
 - 数量规则：后整理批次计量或分配的用电量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -578,7 +578,7 @@ C.I. Reactive Red 195 是一项具体染料交换，仅在声明配方包含该�
 
 后整理和间接烘干使用的外购或现场蒸汽作为一项能源交换记录。
 
-- 选定流：Steam
+- 选定流：蒸汽
 - 流属性/单位：Energy / MJ
 - 数量规则：后整理批次实际供给的计量蒸汽能量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -593,7 +593,7 @@ C.I. Reactive Red 195 是一项具体染料交换，仅在声明配方包含该�
 
 仅当气态燃烧产物直接接触织物或在前景场址向烘干机供热时记录天然气。
 
-- 选定流：Natural gas
+- 选定流：天然气
 - 流属性/单位：Energy / MJ
 - 数量规则：直接加热烘干实际供给的计量天然气能量
 - 数值来源模式：前景记录（`foreground_record`）
@@ -612,7 +612,7 @@ C.I. Reactive Red 195 是一项具体染料交换，仅在声明配方包含该�
 
 这是经 Tiangong state-100 直接回读接受的精确 CPC 26840 参考产品输出。
 
-- 选定流：Terry towelling and similar woven terry fabrics (other than narrow fabrics) of cotton `61be29ff-288e-4570-8335-4e03760c9255`
+- 选定流：棉毛巾毛圈织物和类似的棉毛圈织物（狭幅织物除外） `61be29ff-288e-4570-8335-4e03760c9255`
 - 流属性/单位：Mass `93a60a56-a3c8-11da-a746-0800200b9a66` / kg
 - 数量规则：按所声明含水基准计 1 kg 成品织物
 - 数值来源模式：固定值（`fixed_value`）

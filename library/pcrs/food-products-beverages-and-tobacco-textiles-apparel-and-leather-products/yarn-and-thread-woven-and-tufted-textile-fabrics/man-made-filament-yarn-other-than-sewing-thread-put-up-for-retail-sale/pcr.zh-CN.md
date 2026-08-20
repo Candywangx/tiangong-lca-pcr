@@ -40,7 +40,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 1 kg 净纱线质量 |
-| 参考产品流 | Man-made filament yarn (other than sewing thread), put up for retail sale `561c51b1-b4f9-4eea-b081-e096bf93820b` |
+| 参考产品流 | 用于零售的人造长丝纱线（缝纫线除外） `561c51b1-b4f9-4eea-b081-e096bf93820b` |
 | 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | kg |
@@ -109,7 +109,7 @@ sync_with: pcr.en-US.md
 
 本卡表示一个明确供应场景：1-35 kV 交流电、中国消费组合、供应至用户。不得将其作为非中国场址的替代流。
 
-- 选定流：Alternating current, 1-35 kV, consumption mix, at user, CN `3d76981f-964a-4865-b588-0e067a2a1163`
+- 选定流：交流电 `3d76981f-964a-4865-b588-0e067a2a1163`
 - 流属性/单位：Net calorific value / MJ
 - 数量规则：记录零售卷绕与包装批次的分表电量或电表分配电量，以可审计方式将记录单位换算为 MJ，并按实测净纱线产出归一化。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -124,7 +124,7 @@ sync_with: pcr.en-US.md
 
 这是装入零售纱线包装的单个纸板卷芯。其质量与纱线及其他每个包装组件分别记录。
 
-- 选定流：Paperboard yarn-winding tube `78bf7f6e-519e-4b3d-82f0-eda15b2fee61`
+- 选定流：圆纸筒 `78bf7f6e-519e-4b3d-82f0-eda15b2fee61`
 - 流属性/单位：Mass / kg
 - 数量规则：记录领用卷芯数量和实测代表性单件质量，核对未用退回量，并计算装入该批次的质量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -139,7 +139,7 @@ sync_with: pcr.en-US.md
 
 这是装入零售包装的纸标签。除非所选 Tiangong 流和供应商规格已经包含胶黏剂、油墨或背衬材料，否则本卡不代表这些材料。
 
-- 选定流：Paper packaging label, at plant, GLO `64321117-433d-43a5-97f9-2ea624c15656`
+- 选定流：纸质标签 `64321117-433d-43a5-97f9-2ea624c15656`
 - 流属性/单位：Mass / kg
 - 数量规则：记录领用标签数量和实测代表性单件质量，核对未用退回量，并计算装入该批次的质量。
 - 数值来源模式：前景记录（`foreground_record`）
@@ -179,7 +179,7 @@ sync_with: pcr.en-US.md
 
 这是合格前景输出和参考产品。记录数量为净纱线质量，不含任何包装质量。
 
-- 选定流：Man-made filament yarn (other than sewing thread), put up for retail sale `561c51b1-b4f9-4eea-b081-e096bf93820b`
+- 选定流：用于零售的人造长丝纱线（缝纫线除外） `561c51b1-b4f9-4eea-b081-e096bf93820b`
 - 流属性/单位：Mass / kg
 - 数量规则：记录合格包装的经校准毛重和皮重，并报告批次净纱线质量。
 - 数值来源模式：前景记录（`foreground_record`）

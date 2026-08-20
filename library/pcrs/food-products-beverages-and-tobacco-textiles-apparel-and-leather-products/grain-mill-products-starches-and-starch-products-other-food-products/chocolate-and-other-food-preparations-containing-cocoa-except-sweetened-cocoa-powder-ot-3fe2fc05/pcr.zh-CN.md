@@ -40,7 +40,7 @@ sync_with: pcr.en-US.md
 | 字段 | 值 |
 | --- | --- |
 | 参考数量 | 1 kg 净可食产品 |
-| 参考产品流 | Chocolate `4c4a6e1b-a4a8-4d16-ac36-1e5492e752a3` |
+| 参考产品流 | 巧克力 `4c4a6e1b-a4a8-4d16-ac36-1e5492e752a3` |
 | 参考流属性 | Mass `93a60a56-a3c8-11da-a746-0800200b9a66` |
 | 参考单位组 | Units of mass `93a60a57-a4c8-11da-a746-0800200c9a66` |
 | 参考单位 | kg |
@@ -378,7 +378,7 @@ sync_with: pcr.en-US.md
 
 可食部分是定量参考；包装单独连接，不计入 1 kg 参考数量。
 
-- 选定流：Chocolate `4c4a6e1b-a4a8-4d16-ac36-1e5492e752a3`
+- 选定流：巧克力 `4c4a6e1b-a4a8-4d16-ac36-1e5492e752a3`
 - 流属性/单位：Mass / kg
 - 数量规则：放行核对后 1 kg 实测净可食产品
 - 数值来源模式：固定值（`fixed_value`）
