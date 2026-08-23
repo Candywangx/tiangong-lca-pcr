@@ -1,10 +1,2781 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "23914"
-  title: "Extracts, essences and concentrates of tea or maté, and preparations with a basis thereof or with a basis of tea or maté"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.food-products-beverages-and-tobacco-textiles-apparel-and-leather-products.grain-mill-products-starches-and-starch-products-other-food-products.extracts-essences-and-concentrates-of-tea-or-mate-and-preparations-with-a-basis-thereof-d5c511dd"
+  classification_refs: "CPC 3.0: 23914"
+  covered_products: "Tea or maté extracts, essences and concentrates; soluble tea or maté powders; and preparations whose declared basis is tea extract, maté extract, tea, or maté."
+  excluded_products: "Unextracted tea leaves; unextracted maté leaves; ready-to-drink beverages classified elsewhere; coffee products; herbal infusions not based on tea or maté; and products lacking a declared botanical source and delivered state."
+  representative_product: "1 kg of one declared tea-derived or maté-derived product in its delivered liquid, concentrate, powder, essence, or formulated state at factory storage."
+  production_route: "Botanical source and product state are mandatory route selectors. Water extraction is the default extraction family; enzymes, ethanol, clarification aids, aroma recovery, spray drying, freeze drying, formulation, heat treatment, on-site fuel use, and refrigeration apply only when declared and operated."
+  market_state: "Packaged intermediate ingredient or packaged finished preparation at factory storage, with actual solids or moisture, formulation, packaging, and storage condition declared."
+functional_unit:
+  what: "One declared tea-derived or maté-derived extract, essence, concentrate, soluble powder, or preparation that meets its declared composition and quality specification."
+  how_much: "1 kg net product at the factory-storage gate, excluding packaging mass."
+  how_well: "Delivered product state, botanical source, dry-solids or moisture basis, formulation, aroma-recovery status, heat-treatment status, and packaging configuration are declared and conform to the product specification."
+  how_long_or_cycle: "One production batch or campaign ending at release to factory storage; storage duration and temperature are declared when they affect refrigeration or loss."
+  reference_flow_link: "Exactly one final-product output row in packaging_and_storage, selected by the declared botanical source and product state."
+system_boundary:
+  rules:
+    - rule_id: boundary_foreground_steps
+      applies_to: "foreground manufacturing"
+      rule: "Include raw-material receipt and screening, water addition, extraction, separation, clarification or filtration, concentration, applicable route steps, sanitation, packaging, storage, and directly controlled utilities."
+      source_ids:
+        - fao-who-jmpr-boscalid-2019
+        - ec-jrc-fdm-bref-2019
+    - rule_id: boundary_route_exclusivity
+      applies_to: "route selection"
+      rule: "Declare one botanical source and one delivered product state; include aroma recovery, spray drying, freeze drying, formulation, heat treatment, fuel combustion, and refrigeration only when the declared route uses them."
+      source_ids:
+        - iso-6079-2021
+        - dao-et-al-2021-tea-spray-drying
+    - rule_id: boundary_complete_exchanges
+      applies_to: "process inventory"
+      rule: "Record all materially relevant material and energy inputs, wastes, wastewater, and direct elementary flows without collection labels or combined utility rows."
+      source_ids:
+        - eu-pef-method-2021
+        - ec-jrc-fdm-bref-2019
+    - rule_id: boundary_upstream_links
+      applies_to: "purchased inputs"
+      rule: "Link each purchased raw material, ingredient, aid, filter medium, cleaning chemical, packaging component, refrigerant, and utility to an upstream dataset with matching identity and geography; do not assign zero burden when a provider is missing."
+      source_ids:
+        - eu-pef-method-2021
+boundary_abstraction:
+  declared_starting_condition: "Tea or maté raw material received at the extract-manufacturing site, with botanical identity, prior processing state, moisture, supplier, origin, and incoming packaging declared."
+  starting_condition_role: "Foreground manufacturing input; cultivation and primary leaf processing are upstream."
+  product_classification_scope: "CPC 3.0: 23914, interpreted by the declared product identity rather than by a generic beverage or leaf flow."
+  recursive_input_rule: "A purchased tea or maté extract, concentrate, powder, essence, or preparation used as an ingredient remains a visible product input linked to its upstream dataset; do not recursively recreate its production inside this foreground package."
+  upstream_dataset_requirement: "Each raw material, ingredient, processing aid, filter medium, cleaning chemical, packaging component, refrigerant, purchased electricity, steam, or heat requires a compatible upstream provider or an explicit unresolved-provider disclosure."
+  disclosure: "Declare botanical source, input state, extraction solvent, concentration technology, applicable aroma and drying route, formulation, heat treatment, utilities, packaging, storage, exclusions, provider gaps, and any cut-off."
+reference_flow_definition:
+  reference_amount: "1 kg net declared product"
+  product_flow_ref:
+    name: "Exact Tiangong product flow unresolved; no approximate UUID assigned."
+    uuid: ""
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - botanical_source
+    - delivered_product_state
+    - tea_or_mate_type
+    - extract_or_preparation_identity
+    - net_mass
+    - dry_solids_or_moisture_basis
+    - formulation_bom
+    - extraction_solvent
+    - concentration_method
+    - aroma_recovery_status
+    - drying_route
+    - heat_treatment_status
+    - packaging_configuration
+    - storage_temperature
+    - storage_duration
+    - geography
+    - reference_period
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "final reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Normalize every exchange to 1 kg net declared product at factory storage; packaging mass is inventoried separately and is excluded from net product mass."
+  - id: solids_basis
+    applies_to: "extracts, concentrates, powders, and preparations"
+    required_property_ref:
+      name: "Mass fraction"
+      uuid: ""
+    required_unit: "kg dry solids/kg product or % w/w"
+    rule: "Record measured dry solids or moisture and the test method; conversions between wet and dry bases shall use the same batch result and retain the unrounded measurement."
+  - id: energy_carrier_separation
+    applies_to: "electricity, steam, heat, and fuels"
+    required_property_ref:
+      name: "Energy or Mass, as metered or invoiced"
+      uuid: ""
+    required_unit: "kWh, MJ, or kg"
+    rule: "Preserve each carrier as a separate atomic exchange. Do not merge electricity, steam, heat, natural gas, or another fuel before normalization."
+  - id: water_balance
+    applies_to: "added water, condensate, wastewater, and product water"
+    required_property_ref:
+      name: "Mass or volume with density"
+      uuid: ""
+    required_unit: "kg or m3"
+    rule: "Record water by stream. If volume is converted to mass, retain measured temperature/density or the documented conversion assumption."
+process_map:
+  - id: raw_material_receipt
+    name: "Raw-material receipt and screening"
+    inclusion: "required"
+    inclusion_condition: "Select exactly one botanical route; do not default both tea and maté."
+    role: "foreground preparation"
+    quantitative_reference: "per batch and per 1 kg final product"
+  - id: aqueous_extraction
+    name: "Water addition and extraction"
+    inclusion: "required"
+    inclusion_condition: "Record the actual solvent system; enzyme or ethanol inputs apply only when used."
+    role: "foreground extraction"
+    quantitative_reference: "per extraction batch"
+  - id: solid_liquid_separation
+    name: "Solid-liquid separation"
+    inclusion: "required"
+    inclusion_condition: "Include actual centrifuge, press, sieve, or equivalent separation operation."
+    role: "foreground separation"
+    quantitative_reference: "per extraction batch"
+  - id: clarification_filtration
+    name: "Clarification and filtration"
+    inclusion: "required"
+    inclusion_condition: "Record only the aids and media actually used."
+    role: "foreground purification"
+    quantitative_reference: "per clarified-extract batch"
+  - id: concentration
+    name: "Concentration"
+    inclusion: "required"
+    inclusion_condition: "Declare evaporation, membrane, or other concentration technology."
+    role: "foreground concentration"
+    quantitative_reference: "per concentrate batch"
+  - id: aroma_recovery
+    name: "Aroma recovery"
+    inclusion: "conditional"
+    inclusion_condition: "Include only when aroma is recovered, separated, returned, or sold."
+    role: "foreground recovery"
+    quantitative_reference: "per applicable batch"
+  - id: spray_drying
+    name: "Spray drying"
+    inclusion: "conditional"
+    inclusion_condition: "Include only for the declared spray-dried powder route."
+    role: "foreground drying"
+    quantitative_reference: "per spray-dried batch"
+  - id: freeze_drying
+    name: "Freeze drying"
+    inclusion: "conditional"
+    inclusion_condition: "Include only for the declared freeze-dried powder route."
+    role: "foreground drying"
+    quantitative_reference: "per freeze-dried batch"
+  - id: formulation_blending
+    name: "Formulation and blending"
+    inclusion: "conditional"
+    inclusion_condition: "Include only for a declared preparation and list every formulation ingredient separately."
+    role: "foreground formulation"
+    quantitative_reference: "per formulation batch"
+  - id: heat_treatment
+    name: "Product heat treatment"
+    inclusion: "conditional"
+    inclusion_condition: "Include only when pasteurization, sterilization, or another product heat treatment is used."
+    role: "foreground conditioning"
+    quantitative_reference: "per treated batch"
+  - id: thermal_utility_generation
+    name: "On-site thermal utility generation"
+    inclusion: "conditional"
+    inclusion_condition: "Include when fuel is combusted on site; purchased steam or heat remains a purchased input to consuming processes."
+    role: "foreground utility"
+    quantitative_reference: "per utility-metering period"
+  - id: refrigeration
+    name: "Refrigeration"
+    inclusion: "conditional"
+    inclusion_condition: "Include when process cooling or cold storage uses a refrigerant system within foreground control."
+    role: "foreground utility"
+    quantitative_reference: "per refrigerant and metering period"
+  - id: sanitation_wastewater
+    name: "Sanitation and wastewater management"
+    inclusion: "required"
+    inclusion_condition: "Include directly controlled cleaning and wastewater or sludge handling."
+    role: "foreground support"
+    quantitative_reference: "per batch or cleaning cycle"
+  - id: packaging_and_storage
+    name: "Packaging and factory storage"
+    inclusion: "required"
+    inclusion_condition: "Record each actual packaging component and storage condition."
+    role: "foreground finishing"
+    quantitative_reference: "per 1 kg final product"
+process_inventory:
+  - id: raw_material_receipt
+    label: "Raw-material receipt and screening"
+    inputs:
+      product:
+        - row_id: refined_tea_input
+          role: "Refined tea raw material"
+          name: "Refined tea"
+          flow_type: "product"
+          flow_ref:
+            uuid: "3851dbf3-8691-42a1-bb4d-84501a41bc96"
+          property_unit: "Mass / kg"
+          description: "This atomic exchange is included only when the named flow and declared route apply; it shall not be combined with another botanical source, product state, or material."
+          amount:
+            expression: "measured accepted and rejected incoming mass by lot"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg final product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_batch_records
+              source_ids: []
+            ranges: []
+        - row_id: mate_leaves_input
+          role: "Maté leaves raw material"
+          name: "Maté leaves"
+          flow_type: "product"
+          flow_ref:
+            uuid: "5e596b14-8d27-4044-a23d-addc9d67163c"
+          property_unit: "Mass / kg"
+          description: "This atomic exchange is included only when the named flow and declared route apply; it shall not be combined with another botanical source, product state, or material."
+          amount:
+            expression: "measured accepted and rejected incoming mass by lot"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg final product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_batch_records
+              source_ids: []
+            ranges: []
+        - row_id: receipt_electricity
+          role: "Screening electricity"
+          name: "Electricity"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "This atomic exchange is included only when the named flow and declared route apply; it shall not be combined with another botanical source, product state, or material."
+          amount:
+            expression: "submetered electricity for receipt, conveying, screening, and size reduction"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg final product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_records
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: tea_screening_reject
+          role: "Tea screening reject"
+          name: "Rejected tea leaf material"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "This atomic exchange is included only when the named flow and declared route apply; it shall not be combined with another botanical source, product state, or material."
+          amount:
+            expression: "measured reject mass; applicable only to the tea route"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg final product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_records
+              source_ids: []
+            ranges: []
+        - row_id: mate_screening_reject
+          role: "Maté screening reject"
+          name: "Rejected maté leaf material"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "This atomic exchange is included only when the named flow and declared route apply; it shall not be combined with another botanical source, product state, or material."
+          amount:
+            expression: "measured reject mass; applicable only to the maté route"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg final product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_records
+              source_ids: []
+            ranges: []
+        - row_id: incoming_packaging_waste
+          role: "Incoming packaging waste"
+          name: "Waste paper sack"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "This atomic exchange is included only when the named flow and declared route apply; it shall not be combined with another botanical source, product state, or material."
+          amount:
+            expression: "measured discarded incoming paper-sack mass; add separate atomic waste rows in the data package for any other actual incoming packaging material"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg final product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_records
+              source_ids: []
+            ranges: []
+      elementary:
+        []
+  - id: aqueous_extraction
+    label: "Water addition and extraction"
+    inputs:
+      product:
+        - row_id: extraction_water
+          role: "Extraction water"
+          name: "Process water"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "This atomic exchange is included only when the named flow and declared route apply; it shall not be combined with another botanical source, product state, or material."
+          amount:
+            expression: "metered water added to extraction vessels"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg final product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_extraction_records
+              source_ids:
+                - fao-who-jmpr-boscalid-2019
+            ranges: []
+        - row_id: extraction_electricity
+          role: "Extraction electricity"
+          name: "Electricity"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "This atomic exchange is included only when the named flow and declared route apply; it shall not be combined with another botanical source, product state, or material."
+          amount:
+            expression: "submetered extraction-vessel, agitation, pumping, and control electricity"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg final product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_records
+              source_ids: []
+            ranges: []
+        - row_id: extraction_purchased_steam
+          role: "Purchased extraction steam"
+          name: "Purchased steam"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "This atomic exchange is included only when the named flow and declared route apply; it shall not be combined with another botanical source, product state, or material."
+          amount:
+            expression: "metered purchased steam delivered to extraction; omit when no purchased steam is used"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg final product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_records
+              source_ids: []
+            ranges: []
+        - row_id: extraction_purchased_heat
+          role: "Purchased extraction heat"
+          name: "Purchased heat"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "This atomic exchange is included only when the named flow and declared route apply; it shall not be combined with another botanical source, product state, or material."
+          amount:
+            expression: "metered purchased non-steam heat delivered to extraction; omit when absent"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg final product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_records
+              source_ids: []
+            ranges: []
+        - row_id: pectinase_input
+          role: "Pectinase processing aid"
+          name: "Pectinase enzyme preparation"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "This atomic exchange is included only when the named flow and declared route apply; it shall not be combined with another botanical source, product state, or material."
+          amount:
+            expression: "formulation or dosing record; include only when used"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg final product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_extraction_records
+              source_ids:
+                - dao-et-al-2021-tea-spray-drying
+            ranges: []
+        - row_id: cellulase_input
+          role: "Cellulase processing aid"
+          name: "Cellulase enzyme preparation"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "This atomic exchange is included only when the named flow and declared route apply; it shall not be combined with another botanical source, product state, or material."
+          amount:
+            expression: "formulation or dosing record; include only when used"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg final product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_extraction_records
+              source_ids:
+                - dao-et-al-2021-tea-spray-drying
+            ranges: []
+        - row_id: ethanol_input
+          role: "Ethanol extraction solvent"
+          name: "Ethanol"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "This atomic exchange is included only when the named flow and declared route apply; it shall not be combined with another botanical source, product state, or material."
+          amount:
+            expression: "measured fresh and make-up ethanol; include only for a declared ethanol-assisted route"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg final product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_extraction_records
+              source_ids:
+                - dao-et-al-2021-tea-spray-drying
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: tea_extraction_liquor
+          role: "Tea extraction liquor"
+          name: "Tea extraction liquor"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "This atomic exchange is included only when the named flow and declared route apply; it shall not be combined with another botanical source, product state, or material."
+          amount:
+            expression: "measured vessel discharge; applicable only to the tea route"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg final product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_extraction_records
+              source_ids: []
+            ranges: []
+        - row_id: mate_extraction_liquor
+          role: "Maté extraction liquor"
+          name: "Maté extraction liquor"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "This atomic exchange is included only when the named flow and declared route apply; it shall not be combined with another botanical source, product state, or material."
+          amount:
+            expression: "measured vessel discharge; applicable only to the maté route"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg final product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_extraction_records
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+  - id: solid_liquid_separation
+    label: "Solid-liquid separation"
+    inputs:
+      product:
+        - row_id: separation_electricity
+          role: "Separation electricity"
+          name: "Electricity"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "This atomic exchange is included only when the named flow and declared route apply; it shall not be combined with another botanical source, product state, or material."
+          amount:
+            expression: "submetered centrifuge, press, sieve, conveyor, and pump electricity"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg final product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_records
+              source_ids: []
+            ranges: []
+        - row_id: separation_filter_cloth
+          role: "Filter cloth"
+          name: "Woven polypropylene filter cloth"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "This atomic exchange is included only when the named flow and declared route apply; it shall not be combined with another botanical source, product state, or material."
+          amount:
+            expression: "measured replacement mass allocated over processed batches; include only when used"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg final product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_separation_records
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: spent_tea_residue
+          role: "Spent tea residue"
+          name: "Spent tea leaves"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "This atomic exchange is included only when the named flow and declared route apply; it shall not be combined with another botanical source, product state, or material."
+          amount:
+            expression: "measured wet and dry residue mass with moisture result; applicable only to the tea route"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg final product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_records
+              source_ids:
+                - fao-who-jmpr-boscalid-2019
+            ranges: []
+        - row_id: spent_mate_residue
+          role: "Spent maté residue"
+          name: "Spent maté leaves"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "This atomic exchange is included only when the named flow and declared route apply; it shall not be combined with another botanical source, product state, or material."
+          amount:
+            expression: "measured wet and dry residue mass with moisture result; applicable only to the maté route"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg final product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_records
+              source_ids: []
+            ranges: []
+      elementary:
+        []
+  - id: clarification_filtration
+    label: "Clarification and filtration"
+    inputs:
+      product:
+        - row_id: clarification_electricity
+          role: "Clarification electricity"
+          name: "Electricity"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "This atomic exchange is included only when the named flow and declared route apply; it shall not be combined with another botanical source, product state, or material."
+          amount:
+            expression: "submetered clarification, filtration, and pumping electricity"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg final product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_records
+              source_ids: []
+            ranges: []
+        - row_id: diatomaceous_earth_input
+          role: "Diatomaceous-earth filter aid"
+          name: "Diatomaceous earth"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "This atomic exchange is included only when the named flow and declared route apply; it shall not be combined with another botanical source, product state, or material."
+          amount:
+            expression: "dosing record; include only when used"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg final product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_clarification_records
+              source_ids: []
+            ranges: []
+        - row_id: activated_carbon_input
+          role: "Activated-carbon clarification aid"
+          name: "Activated carbon"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "This atomic exchange is included only when the named flow and declared route apply; it shall not be combined with another botanical source, product state, or material."
+          amount:
+            expression: "dosing record; include only when used"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg final product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_clarification_records
+              source_ids: []
+            ranges: []
+        - row_id: silica_gel_input
+          role: "Silica-gel clarification aid"
+          name: "Silica gel"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "This atomic exchange is included only when the named flow and declared route apply; it shall not be combined with another botanical source, product state, or material."
+          amount:
+            expression: "dosing record; include only when used"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg final product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_clarification_records
+              source_ids:
+                - fao-who-jmpr-boscalid-2019
+            ranges: []
+        - row_id: pvpp_input
+          role: "PVPP clarification aid"
+          name: "Polyvinylpolypyrrolidone"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "This atomic exchange is included only when the named flow and declared route apply; it shall not be combined with another botanical source, product state, or material."
+          amount:
+            expression: "dosing record; include only when used"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg final product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_clarification_records
+              source_ids: []
+            ranges: []
+        - row_id: microfiltration_membrane
+          role: "Microfiltration membrane"
+          name: "Cellulose-acetate microfiltration membrane"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "This atomic exchange is included only when the named flow and declared route apply; it shall not be combined with another botanical source, product state, or material."
+          amount:
+            expression: "measured replacement mass allocated over processed batches; include only when used"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg final product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_clarification_records
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: clarification_filter_residue
+          role: "Clarification filter residue"
+          name: "Clarification filter cake"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "This atomic exchange is included only when the named flow and declared route apply; it shall not be combined with another botanical source, product state, or material."
+          amount:
+            expression: "measured wet and dry filter-cake mass with treatment destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg final product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_records
+              source_ids: []
+            ranges: []
+        - row_id: spent_filtration_membrane
+          role: "Spent filtration membrane"
+          name: "Waste cellulose-acetate membrane"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "This atomic exchange is included only when the named flow and declared route apply; it shall not be combined with another botanical source, product state, or material."
+          amount:
+            expression: "measured discarded membrane mass; include only for the membrane route"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg final product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_records
+              source_ids: []
+            ranges: []
+      elementary:
+        []
+  - id: concentration
+    label: "Concentration"
+    inputs:
+      product:
+        - row_id: concentration_electricity
+          role: "Concentration electricity"
+          name: "Electricity"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "This atomic exchange is included only when the named flow and declared route apply; it shall not be combined with another botanical source, product state, or material."
+          amount:
+            expression: "submetered evaporator, vacuum, membrane, pump, and control electricity"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg final product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_records
+              source_ids: []
+            ranges: []
+        - row_id: concentration_purchased_steam
+          role: "Purchased concentration steam"
+          name: "Purchased steam"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "This atomic exchange is included only when the named flow and declared route apply; it shall not be combined with another botanical source, product state, or material."
+          amount:
+            expression: "metered purchased steam delivered to concentration; omit when absent"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg final product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_records
+              source_ids: []
+            ranges: []
+        - row_id: concentration_purchased_heat
+          role: "Purchased concentration heat"
+          name: "Purchased heat"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "This atomic exchange is included only when the named flow and declared route apply; it shall not be combined with another botanical source, product state, or material."
+          amount:
+            expression: "metered purchased non-steam heat delivered to concentration; omit when absent"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg final product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_records
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: tea_concentrate_intermediate
+          role: "Tea concentrate intermediate"
+          name: "Tea concentrate"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "This atomic exchange is included only when the named flow and declared route apply; it shall not be combined with another botanical source, product state, or material."
+          amount:
+            expression: "measured concentrate mass and dry solids; applicable only to the tea route"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg final product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_concentration_records
+              source_ids:
+                - fao-who-jmpr-boscalid-2019
+            ranges: []
+        - row_id: mate_concentrate_intermediate
+          role: "Maté concentrate intermediate"
+          name: "Maté concentrate"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "This atomic exchange is included only when the named flow and declared route apply; it shall not be combined with another botanical source, product state, or material."
+          amount:
+            expression: "measured concentrate mass and dry solids; applicable only to the maté route"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg final product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_concentration_records
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: tea_concentration_product_loss
+          role: "Tea concentration product loss"
+          name: "Lost tea concentrate"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "This atomic exchange is included only when the named flow and declared route apply; it shall not be combined with another botanical source, product state, or material."
+          amount:
+            expression: "measured or mass-balance-calculated concentrate retained in equipment, spilled, or rejected; applicable only to the tea route"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg final product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_mass_balance_records
+              source_ids: []
+            ranges: []
+        - row_id: mate_concentration_product_loss
+          role: "Maté concentration product loss"
+          name: "Lost maté concentrate"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "This atomic exchange is included only when the named flow and declared route apply; it shall not be combined with another botanical source, product state, or material."
+          amount:
+            expression: "measured or mass-balance-calculated concentrate retained in equipment, spilled, or rejected; applicable only to the maté route"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg final product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_mass_balance_records
+              source_ids: []
+            ranges: []
+        - row_id: concentration_condensate_wastewater
+          role: "Concentration condensate wastewater"
+          name: "Concentration condensate wastewater"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "This atomic exchange is included only when the named flow and declared route apply; it shall not be combined with another botanical source, product state, or material."
+          amount:
+            expression: "metered or mass-balance-calculated condensate discharged to wastewater; exclude recovered water retained as an internal loop"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg final product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_mass_balance_records
+              source_ids: []
+            ranges: []
+      elementary:
+        []
+  - id: aroma_recovery
+    label: "Aroma recovery"
+    inputs:
+      product:
+        - row_id: aroma_recovery_electricity
+          role: "Aroma-recovery electricity"
+          name: "Electricity"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "This atomic exchange is included only when the named flow and declared route apply; it shall not be combined with another botanical source, product state, or material."
+          amount:
+            expression: "submetered recovery, condensation, vacuum, and pumping electricity; include only when aroma recovery operates"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg final product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_records
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: recovered_tea_aroma
+          role: "Recovered tea aroma"
+          name: "Recovered tea aroma fraction"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "This atomic exchange is included only when the named flow and declared route apply; it shall not be combined with another botanical source, product state, or material."
+          amount:
+            expression: "measured recovered mass and destination; tea route only"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg final product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_aroma_records
+              source_ids: []
+            ranges: []
+        - row_id: recovered_mate_aroma
+          role: "Recovered maté aroma"
+          name: "Recovered maté aroma fraction"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "This atomic exchange is included only when the named flow and declared route apply; it shall not be combined with another botanical source, product state, or material."
+          amount:
+            expression: "measured recovered mass and destination; maté route only"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg final product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_aroma_records
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+  - id: spray_drying
+    label: "Spray drying"
+    inputs:
+      product:
+        - row_id: spray_dryer_electricity
+          role: "Spray-dryer electricity"
+          name: "Electricity"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "This atomic exchange is included only when the named flow and declared route apply; it shall not be combined with another botanical source, product state, or material."
+          amount:
+            expression: "submetered atomization, air movement, separation, conveying, and controls; spray-dried powder route only"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg final product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_records
+              source_ids:
+                - dao-et-al-2021-tea-spray-drying
+            ranges: []
+        - row_id: spray_dryer_purchased_heat
+          role: "Purchased spray-dryer heat"
+          name: "Purchased heat"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "This atomic exchange is included only when the named flow and declared route apply; it shall not be combined with another botanical source, product state, or material."
+          amount:
+            expression: "metered purchased heat delivered to the spray dryer; omit when heat is generated on site"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg final product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_records
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: spray_dried_tea_powder
+          role: "Spray-dried tea powder"
+          name: "Spray-dried instant tea powder"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "This atomic exchange is included only when the named flow and declared route apply; it shall not be combined with another botanical source, product state, or material."
+          amount:
+            expression: "measured released powder mass and moisture; tea and spray-drying route only"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg final product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_drying_records
+              source_ids:
+                - dao-et-al-2021-tea-spray-drying
+            ranges: []
+        - row_id: spray_dried_mate_powder
+          role: "Spray-dried maté powder"
+          name: "Spray-dried instant maté powder"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "This atomic exchange is included only when the named flow and declared route apply; it shall not be combined with another botanical source, product state, or material."
+          amount:
+            expression: "measured released powder mass and moisture; maté and spray-drying route only"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg final product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_drying_records
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: tea_spray_dryer_product_loss
+          role: "Tea spray-dryer product loss"
+          name: "Rejected spray-dried tea powder"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "This atomic exchange is included only when the named flow and declared route apply; it shall not be combined with another botanical source, product state, or material."
+          amount:
+            expression: "measured chamber, cyclone, filter, spill, and rejected powder mass; applicable only to the tea route"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg final product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_records
+              source_ids: []
+            ranges: []
+        - row_id: mate_spray_dryer_product_loss
+          role: "Maté spray-dryer product loss"
+          name: "Rejected spray-dried maté powder"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "This atomic exchange is included only when the named flow and declared route apply; it shall not be combined with another botanical source, product state, or material."
+          amount:
+            expression: "measured chamber, cyclone, filter, spill, and rejected powder mass; applicable only to the maté route"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg final product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_records
+              source_ids: []
+            ranges: []
+      elementary:
+        - row_id: spray_dryer_particulate_emission
+          role: "Spray-dryer particulate emission"
+          name: "Particulate matter to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "This atomic exchange is included only when the named flow and declared route apply; it shall not be combined with another botanical source, product state, or material."
+          amount:
+            expression: "measured stack emission or calculated concentration-times-flow for the spray-drying exhaust after abatement"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg final product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_emission_records
+              source_ids:
+                - ec-jrc-fdm-bref-2019
+            ranges: []
+  - id: freeze_drying
+    label: "Freeze drying"
+    inputs:
+      product:
+        - row_id: freeze_dryer_electricity
+          role: "Freeze-dryer electricity"
+          name: "Electricity"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "This atomic exchange is included only when the named flow and declared route apply; it shall not be combined with another botanical source, product state, or material."
+          amount:
+            expression: "submetered freezing, vacuum, heating, condensation, and controls; freeze-dried powder route only"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg final product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_records
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: freeze_dried_tea_powder
+          role: "Freeze-dried tea powder"
+          name: "Freeze-dried instant tea powder"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "This atomic exchange is included only when the named flow and declared route apply; it shall not be combined with another botanical source, product state, or material."
+          amount:
+            expression: "measured released powder mass and moisture; tea and freeze-drying route only"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg final product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_drying_records
+              source_ids: []
+            ranges: []
+        - row_id: freeze_dried_mate_powder
+          role: "Freeze-dried maté powder"
+          name: "Freeze-dried instant maté powder"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "This atomic exchange is included only when the named flow and declared route apply; it shall not be combined with another botanical source, product state, or material."
+          amount:
+            expression: "measured released powder mass and moisture; maté and freeze-drying route only"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg final product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_drying_records
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: tea_freeze_dryer_product_loss
+          role: "Tea freeze-dryer product loss"
+          name: "Rejected freeze-dried tea powder"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "This atomic exchange is included only when the named flow and declared route apply; it shall not be combined with another botanical source, product state, or material."
+          amount:
+            expression: "measured retained, spilled, and rejected powder mass; applicable only to the tea route"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg final product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_records
+              source_ids: []
+            ranges: []
+        - row_id: mate_freeze_dryer_product_loss
+          role: "Maté freeze-dryer product loss"
+          name: "Rejected freeze-dried maté powder"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "This atomic exchange is included only when the named flow and declared route apply; it shall not be combined with another botanical source, product state, or material."
+          amount:
+            expression: "measured retained, spilled, and rejected powder mass; applicable only to the maté route"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg final product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_records
+              source_ids: []
+            ranges: []
+      elementary:
+        []
+  - id: formulation_blending
+    label: "Formulation and blending"
+    inputs:
+      product:
+        - row_id: maltodextrin_input
+          role: "Maltodextrin carrier"
+          name: "Maltodextrin"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "This atomic exchange is included only when the named flow and declared route apply; it shall not be combined with another botanical source, product state, or material."
+          amount:
+            expression: "batch formulation record; include only when declared in the formulation"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg final product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_formulation_records
+              source_ids:
+                - fao-who-jmpr-boscalid-2019
+            ranges: []
+        - row_id: whey_protein_isolate_input
+          role: "Whey-protein-isolate carrier"
+          name: "Whey protein isolate"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "This atomic exchange is included only when the named flow and declared route apply; it shall not be combined with another botanical source, product state, or material."
+          amount:
+            expression: "batch formulation record; include only when declared in the formulation"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg final product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_formulation_records
+              source_ids:
+                - dao-et-al-2021-tea-spray-drying
+            ranges: []
+        - row_id: sucrose_input
+          role: "Sucrose ingredient"
+          name: "Sucrose"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "This atomic exchange is included only when the named flow and declared route apply; it shall not be combined with another botanical source, product state, or material."
+          amount:
+            expression: "batch formulation record; include only when declared in the formulation"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg final product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_formulation_records
+              source_ids:
+                - fao-who-jmpr-boscalid-2019
+            ranges: []
+        - row_id: glucose_syrup_solids_input
+          role: "Glucose-syrup-solids ingredient"
+          name: "Glucose syrup solids"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "This atomic exchange is included only when the named flow and declared route apply; it shall not be combined with another botanical source, product state, or material."
+          amount:
+            expression: "batch formulation record; include only when declared in the formulation"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg final product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_formulation_records
+              source_ids: []
+            ranges: []
+        - row_id: aspartame_input
+          role: "Aspartame sweetener"
+          name: "Aspartame"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "This atomic exchange is included only when the named flow and declared route apply; it shall not be combined with another botanical source, product state, or material."
+          amount:
+            expression: "batch formulation record; include only when declared in the formulation"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg final product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_formulation_records
+              source_ids: []
+            ranges: []
+        - row_id: citric_acid_input
+          role: "Citric-acid ingredient"
+          name: "Citric acid"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "This atomic exchange is included only when the named flow and declared route apply; it shall not be combined with another botanical source, product state, or material."
+          amount:
+            expression: "batch formulation record; include only when declared in the formulation"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg final product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_formulation_records
+              source_ids:
+                - fao-who-jmpr-boscalid-2019
+            ranges: []
+        - row_id: blending_electricity
+          role: "Blending electricity"
+          name: "Electricity"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "This atomic exchange is included only when the named flow and declared route apply; it shall not be combined with another botanical source, product state, or material."
+          amount:
+            expression: "submetered blending, conveying, and control electricity"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg final product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_records
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: tea_formulation_product_loss
+          role: "Tea formulation product loss"
+          name: "Rejected formulated tea preparation"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "This atomic exchange is included only when the named flow and declared route apply; it shall not be combined with another botanical source, product state, or material."
+          amount:
+            expression: "measured retained, spilled, and rejected preparation mass; applicable only to the tea route"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg final product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_records
+              source_ids: []
+            ranges: []
+        - row_id: mate_formulation_product_loss
+          role: "Maté formulation product loss"
+          name: "Rejected formulated maté preparation"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "This atomic exchange is included only when the named flow and declared route apply; it shall not be combined with another botanical source, product state, or material."
+          amount:
+            expression: "measured retained, spilled, and rejected preparation mass; applicable only to the maté route"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg final product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_records
+              source_ids: []
+            ranges: []
+      elementary:
+        []
+  - id: heat_treatment
+    label: "Product heat treatment"
+    inputs:
+      product:
+        - row_id: heat_treatment_electricity
+          role: "Heat-treatment electricity"
+          name: "Electricity"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "This atomic exchange is included only when the named flow and declared route apply; it shall not be combined with another botanical source, product state, or material."
+          amount:
+            expression: "submetered treatment, pumping, holding, and control electricity; include only when operated"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg final product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_records
+              source_ids: []
+            ranges: []
+        - row_id: heat_treatment_purchased_steam
+          role: "Purchased heat-treatment steam"
+          name: "Purchased steam"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "This atomic exchange is included only when the named flow and declared route apply; it shall not be combined with another botanical source, product state, or material."
+          amount:
+            expression: "metered purchased steam delivered to product heat treatment; omit when absent"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg final product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_records
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: tea_heat_treatment_product_loss
+          role: "Tea heat-treatment product loss"
+          name: "Rejected heat-treated tea product"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "This atomic exchange is included only when the named flow and declared route apply; it shall not be combined with another botanical source, product state, or material."
+          amount:
+            expression: "measured retained, spilled, off-specification, and rejected mass"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg final product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_records
+              source_ids: []
+            ranges: []
+        - row_id: mate_heat_treatment_product_loss
+          role: "Maté heat-treatment product loss"
+          name: "Rejected heat-treated maté product"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "This atomic exchange is included only when the named flow and declared route apply; it shall not be combined with another botanical source, product state, or material."
+          amount:
+            expression: "measured retained, spilled, off-specification, and rejected mass"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg final product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_records
+              source_ids: []
+            ranges: []
+      elementary:
+        []
+  - id: thermal_utility_generation
+    label: "On-site thermal utility generation"
+    inputs:
+      product:
+        - row_id: natural_gas_input
+          role: "Natural gas fuel"
+          name: "Natural gas"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "This atomic exchange is included only when the named flow and declared route apply; it shall not be combined with another botanical source, product state, or material."
+          amount:
+            expression: "metered fuel energy; include only when combusted on site"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg final product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_fuel_records
+              source_ids: []
+            ranges: []
+        - row_id: light_fuel_oil_input
+          role: "Light fuel oil"
+          name: "Light fuel oil"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "This atomic exchange is included only when the named flow and declared route apply; it shall not be combined with another botanical source, product state, or material."
+          amount:
+            expression: "tank or invoice record; include only when combusted on site"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg final product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_fuel_records
+              source_ids: []
+            ranges: []
+        - row_id: lpg_input
+          role: "Liquefied petroleum gas"
+          name: "Liquefied petroleum gas"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "This atomic exchange is included only when the named flow and declared route apply; it shall not be combined with another botanical source, product state, or material."
+          amount:
+            expression: "tank or invoice record; include only when combusted on site"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg final product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_fuel_records
+              source_ids: []
+            ranges: []
+        - row_id: diesel_input
+          role: "Diesel fuel"
+          name: "Diesel fuel"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "This atomic exchange is included only when the named flow and declared route apply; it shall not be combined with another botanical source, product state, or material."
+          amount:
+            expression: "tank or invoice record; include only when combusted in a stationary on-site thermal unit"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg final product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_fuel_records
+              source_ids: []
+            ranges: []
+        - row_id: wood_pellet_input
+          role: "Wood-pellet fuel"
+          name: "Wood pellets"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "This atomic exchange is included only when the named flow and declared route apply; it shall not be combined with another botanical source, product state, or material."
+          amount:
+            expression: "weighed or invoice record; include only when combusted on site"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg final product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_fuel_records
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        []
+      elementary:
+        - row_id: fossil_co2_emission
+          role: "Fossil carbon-dioxide emission"
+          name: "Carbon dioxide, fossil, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "This atomic exchange is included only when the named flow and declared route apply; it shall not be combined with another botanical source, product state, or material."
+          amount:
+            expression: "measured emission or fuel-specific calculation from collected fossil-fuel consumption"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg final product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_emission_records
+              source_ids: []
+            ranges: []
+        - row_id: biogenic_co2_emission
+          role: "Biogenic carbon-dioxide emission"
+          name: "Carbon dioxide, biogenic, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "This atomic exchange is included only when the named flow and declared route apply; it shall not be combined with another botanical source, product state, or material."
+          amount:
+            expression: "measured emission or fuel-specific calculation from collected biomass-fuel consumption; report separately from fossil carbon dioxide"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg final product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_emission_records
+              source_ids: []
+            ranges: []
+        - row_id: nox_emission
+          role: "Nitrogen-oxides emission"
+          name: "Nitrogen oxides to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "This atomic exchange is included only when the named flow and declared route apply; it shall not be combined with another botanical source, product state, or material."
+          amount:
+            expression: "stack measurement or approved fuel-and-equipment factor applied to collected fuel use"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg final product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_emission_records
+              source_ids:
+                - ec-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: so2_emission
+          role: "Sulfur-dioxide emission"
+          name: "Sulfur dioxide to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "This atomic exchange is included only when the named flow and declared route apply; it shall not be combined with another botanical source, product state, or material."
+          amount:
+            expression: "stack measurement or sulfur-content calculation for applicable sulfur-containing fuels"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg final product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_emission_records
+              source_ids: []
+            ranges: []
+        - row_id: combustion_particulate_emission
+          role: "Combustion particulate emission"
+          name: "Particulate matter to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "This atomic exchange is included only when the named flow and declared route apply; it shall not be combined with another botanical source, product state, or material."
+          amount:
+            expression: "stack measurement or approved fuel-and-equipment factor applied to collected fuel use"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg final product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_emission_records
+              source_ids:
+                - ec-jrc-fdm-bref-2019
+            ranges: []
+  - id: refrigeration
+    label: "Refrigeration"
+    inputs:
+      product:
+        - row_id: refrigeration_electricity
+          role: "Refrigeration electricity"
+          name: "Electricity"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "This atomic exchange is included only when the named flow and declared route apply; it shall not be combined with another botanical source, product state, or material."
+          amount:
+            expression: "submetered process-cooling and cold-storage electricity"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg final product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_records
+              source_ids: []
+            ranges: []
+        - row_id: ammonia_refrigerant_input
+          role: "Ammonia refrigerant make-up"
+          name: "Ammonia refrigerant"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "This atomic exchange is included only when the named flow and declared route apply; it shall not be combined with another botanical source, product state, or material."
+          amount:
+            expression: "service-log make-up mass; include only when the system uses ammonia"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg final product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_refrigerant_records
+              source_ids: []
+            ranges: []
+        - row_id: r134a_refrigerant_input
+          role: "R134a refrigerant make-up"
+          name: "1,1,1,2-Tetrafluoroethane"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "This atomic exchange is included only when the named flow and declared route apply; it shall not be combined with another botanical source, product state, or material."
+          amount:
+            expression: "service-log make-up mass; include only when the system uses R134a"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg final product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_refrigerant_records
+              source_ids: []
+            ranges: []
+        - row_id: r404a_refrigerant_input
+          role: "R404A refrigerant make-up"
+          name: "R404A refrigerant"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "This atomic exchange is included only when the named flow and declared route apply; it shall not be combined with another botanical source, product state, or material."
+          amount:
+            expression: "service-log make-up mass; include only when the system uses R404A"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg final product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_refrigerant_records
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        []
+      elementary:
+        - row_id: ammonia_refrigerant_leak
+          role: "Ammonia refrigerant leakage"
+          name: "Ammonia to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "This atomic exchange is included only when the named flow and declared route apply; it shall not be combined with another botanical source, product state, or material."
+          amount:
+            expression: "measured leak or inventory-balance loss; ammonia systems only"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg final product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_refrigerant_records
+              source_ids: []
+            ranges: []
+        - row_id: r134a_refrigerant_leak
+          role: "R134a refrigerant leakage"
+          name: "1,1,1,2-Tetrafluoroethane to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "This atomic exchange is included only when the named flow and declared route apply; it shall not be combined with another botanical source, product state, or material."
+          amount:
+            expression: "measured leak or inventory-balance loss; R134a systems only"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg final product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_refrigerant_records
+              source_ids: []
+            ranges: []
+        - row_id: r404a_refrigerant_leak
+          role: "R404A refrigerant leakage"
+          name: "R404A refrigerant to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "This atomic exchange is included only when the named flow and declared route apply; it shall not be combined with another botanical source, product state, or material."
+          amount:
+            expression: "measured leak or inventory-balance loss; R404A systems only"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg final product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_refrigerant_records
+              source_ids: []
+            ranges: []
+  - id: sanitation_wastewater
+    label: "Sanitation and wastewater management"
+    inputs:
+      product:
+        - row_id: cleaning_water
+          role: "Cleaning water"
+          name: "Process water"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "This atomic exchange is included only when the named flow and declared route apply; it shall not be combined with another botanical source, product state, or material."
+          amount:
+            expression: "metered cleaning and rinse water assigned by cleaning cycle"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg final product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cleaning_records
+              source_ids:
+                - ec-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: sodium_hydroxide_cleaner
+          role: "Sodium-hydroxide cleaner"
+          name: "Sodium hydroxide"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "This atomic exchange is included only when the named flow and declared route apply; it shall not be combined with another botanical source, product state, or material."
+          amount:
+            expression: "chemical issue or dosing record; include only when used"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg final product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cleaning_records
+              source_ids: []
+            ranges: []
+        - row_id: nitric_acid_cleaner
+          role: "Nitric-acid cleaner"
+          name: "Nitric acid"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "This atomic exchange is included only when the named flow and declared route apply; it shall not be combined with another botanical source, product state, or material."
+          amount:
+            expression: "chemical issue or dosing record; include only when used"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg final product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cleaning_records
+              source_ids: []
+            ranges: []
+        - row_id: peracetic_acid_sanitizer
+          role: "Peracetic-acid sanitizer"
+          name: "Peracetic acid"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "This atomic exchange is included only when the named flow and declared route apply; it shall not be combined with another botanical source, product state, or material."
+          amount:
+            expression: "chemical issue or dosing record; include only when used"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg final product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cleaning_records
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: process_wastewater
+          role: "Process wastewater"
+          name: "Food-processing wastewater"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "This atomic exchange is included only when the named flow and declared route apply; it shall not be combined with another botanical source, product state, or material."
+          amount:
+            expression: "metered discharge by destination with COD, TSS, nitrogen, phosphorus, pH, and temperature retained when measured"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg final product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wastewater_records
+              source_ids:
+                - ec-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: wastewater_sludge
+          role: "Wastewater-treatment sludge"
+          name: "Wastewater-treatment sludge"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "This atomic exchange is included only when the named flow and declared route apply; it shall not be combined with another botanical source, product state, or material."
+          amount:
+            expression: "measured wet mass, dry solids, and treatment destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg final product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wastewater_records
+              source_ids: []
+            ranges: []
+      elementary:
+        []
+  - id: packaging_and_storage
+    label: "Packaging and factory storage"
+    inputs:
+      product:
+        - row_id: glass_bottle_input
+          role: "Glass bottle"
+          name: "Glass bottle"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "This atomic exchange is included only when the named flow and declared route apply; it shall not be combined with another botanical source, product state, or material."
+          amount:
+            expression: "packaging bill of materials and issued quantity; include only when used"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg final product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_records
+              source_ids: []
+            ranges: []
+        - row_id: pet_bottle_input
+          role: "PET bottle"
+          name: "Polyethylene terephthalate bottle"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "This atomic exchange is included only when the named flow and declared route apply; it shall not be combined with another botanical source, product state, or material."
+          amount:
+            expression: "packaging bill of materials and issued quantity; include only when used"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg final product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_records
+              source_ids: []
+            ranges: []
+        - row_id: hdpe_closure_input
+          role: "HDPE closure"
+          name: "High-density polyethylene closure"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "This atomic exchange is included only when the named flow and declared route apply; it shall not be combined with another botanical source, product state, or material."
+          amount:
+            expression: "packaging bill of materials and issued quantity; include only when used"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg final product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_records
+              source_ids: []
+            ranges: []
+        - row_id: aluminium_can_input
+          role: "Aluminium can"
+          name: "Aluminium can"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "This atomic exchange is included only when the named flow and declared route apply; it shall not be combined with another botanical source, product state, or material."
+          amount:
+            expression: "packaging bill of materials and issued quantity; include only when used"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg final product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_records
+              source_ids: []
+            ranges: []
+        - row_id: steel_drum_input
+          role: "Steel drum"
+          name: "Steel drum"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "This atomic exchange is included only when the named flow and declared route apply; it shall not be combined with another botanical source, product state, or material."
+          amount:
+            expression: "packaging bill of materials and issued quantity; include only when used"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg final product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_records
+              source_ids: []
+            ranges: []
+        - row_id: multilayer_pouch_input
+          role: "Multilayer pouch"
+          name: "PET-aluminium-PE laminate pouch"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "This atomic exchange is included only when the named flow and declared route apply; it shall not be combined with another botanical source, product state, or material."
+          amount:
+            expression: "packaging bill of materials and issued quantity; include only when this exact laminate is used"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg final product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_records
+              source_ids: []
+            ranges: []
+        - row_id: paperboard_carton_input
+          role: "Paperboard carton"
+          name: "Corrugated paperboard carton"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "This atomic exchange is included only when the named flow and declared route apply; it shall not be combined with another botanical source, product state, or material."
+          amount:
+            expression: "packaging bill of materials and issued quantity; include only when used"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg final product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_records
+              source_ids: []
+            ranges: []
+        - row_id: pe_liner_input
+          role: "Polyethylene liner"
+          name: "Low-density polyethylene liner"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "This atomic exchange is included only when the named flow and declared route apply; it shall not be combined with another botanical source, product state, or material."
+          amount:
+            expression: "packaging bill of materials and issued quantity; include only when used"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg final product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_records
+              source_ids: []
+            ranges: []
+        - row_id: wooden_pallet_input
+          role: "Wooden pallet"
+          name: "Wooden pallet"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "This atomic exchange is included only when the named flow and declared route apply; it shall not be combined with another botanical source, product state, or material."
+          amount:
+            expression: "measured pallet mass allocated by documented trips or one-way use; include only when within the declared packaging configuration"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg final product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_records
+              source_ids: []
+            ranges: []
+        - row_id: packaging_storage_electricity
+          role: "Packaging and storage electricity"
+          name: "Electricity"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "This atomic exchange is included only when the named flow and declared route apply; it shall not be combined with another botanical source, product state, or material."
+          amount:
+            expression: "submetered filling, sealing, conveying, warehouse handling, and non-refrigeration storage electricity"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg final product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_records
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: reference_product_liquid_tea_extract
+          role: "Packaged liquid tea extract"
+          name: "Packaged liquid tea extract"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "This atomic exchange is included only when the named flow and declared route apply; it shall not be combined with another botanical source, product state, or material."
+          amount:
+            expression: "exactly 1 kg net released product; tea and liquid-extract route only"
+            value_mode: "fixed_value"
+            specificity: "product_specific"
+            basis:
+              text: "reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "method_formula"
+              source_ids:
+                - eu-pef-method-2021
+            ranges: []
+        - row_id: reference_product_tea_concentrate
+          role: "Packaged tea concentrate"
+          name: "Packaged tea concentrate"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "This atomic exchange is included only when the named flow and declared route apply; it shall not be combined with another botanical source, product state, or material."
+          amount:
+            expression: "exactly 1 kg net released product; tea and liquid-concentrate route only"
+            value_mode: "fixed_value"
+            specificity: "product_specific"
+            basis:
+              text: "reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "method_formula"
+              source_ids:
+                - eu-pef-method-2021
+            ranges: []
+        - row_id: reference_product_instant_tea_powder
+          role: "Packaged instant tea powder"
+          name: "Packaged instant tea powder"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "This atomic exchange is included only when the named flow and declared route apply; it shall not be combined with another botanical source, product state, or material."
+          amount:
+            expression: "exactly 1 kg net released product; tea and powder route only"
+            value_mode: "fixed_value"
+            specificity: "product_specific"
+            basis:
+              text: "reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "method_formula"
+              source_ids:
+                - eu-pef-method-2021
+                - iso-6079-2021
+            ranges: []
+        - row_id: reference_product_tea_preparation
+          role: "Packaged tea-based preparation"
+          name: "Packaged tea-based preparation"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "This atomic exchange is included only when the named flow and declared route apply; it shall not be combined with another botanical source, product state, or material."
+          amount:
+            expression: "exactly 1 kg net released product; tea and formulated-preparation route only"
+            value_mode: "fixed_value"
+            specificity: "product_specific"
+            basis:
+              text: "reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "method_formula"
+              source_ids:
+                - eu-pef-method-2021
+            ranges: []
+        - row_id: reference_product_liquid_mate_extract
+          role: "Packaged liquid maté extract"
+          name: "Packaged liquid maté extract"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "This atomic exchange is included only when the named flow and declared route apply; it shall not be combined with another botanical source, product state, or material."
+          amount:
+            expression: "exactly 1 kg net released product; maté and liquid-extract route only"
+            value_mode: "fixed_value"
+            specificity: "product_specific"
+            basis:
+              text: "reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "method_formula"
+              source_ids:
+                - eu-pef-method-2021
+            ranges: []
+        - row_id: reference_product_mate_concentrate
+          role: "Packaged maté concentrate"
+          name: "Packaged maté concentrate"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "This atomic exchange is included only when the named flow and declared route apply; it shall not be combined with another botanical source, product state, or material."
+          amount:
+            expression: "exactly 1 kg net released product; maté and liquid-concentrate route only"
+            value_mode: "fixed_value"
+            specificity: "product_specific"
+            basis:
+              text: "reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "method_formula"
+              source_ids:
+                - eu-pef-method-2021
+            ranges: []
+        - row_id: reference_product_instant_mate_powder
+          role: "Packaged instant maté powder"
+          name: "Packaged instant maté powder"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "This atomic exchange is included only when the named flow and declared route apply; it shall not be combined with another botanical source, product state, or material."
+          amount:
+            expression: "exactly 1 kg net released product; maté and powder route only"
+            value_mode: "fixed_value"
+            specificity: "product_specific"
+            basis:
+              text: "reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "method_formula"
+              source_ids:
+                - eu-pef-method-2021
+            ranges: []
+        - row_id: reference_product_mate_preparation
+          role: "Packaged maté-based preparation"
+          name: "Packaged maté-based preparation"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "This atomic exchange is included only when the named flow and declared route apply; it shall not be combined with another botanical source, product state, or material."
+          amount:
+            expression: "exactly 1 kg net released product; maté and formulated-preparation route only"
+            value_mode: "fixed_value"
+            specificity: "product_specific"
+            basis:
+              text: "reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "method_formula"
+              source_ids:
+                - eu-pef-method-2021
+            ranges: []
+      waste:
+        - row_id: tea_packaging_product_loss
+          role: "Tea packaging product loss"
+          name: "Rejected packaged tea product"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "This atomic exchange is included only when the named flow and declared route apply; it shall not be combined with another botanical source, product state, or material."
+          amount:
+            expression: "measured filling, sealing, inspection, storage, and release-rejection mass; applicable only to the tea route"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg final product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_records
+              source_ids: []
+            ranges: []
+        - row_id: mate_packaging_product_loss
+          role: "Maté packaging product loss"
+          name: "Rejected packaged maté product"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "This atomic exchange is included only when the named flow and declared route apply; it shall not be combined with another botanical source, product state, or material."
+          amount:
+            expression: "measured filling, sealing, inspection, storage, and release-rejection mass; applicable only to the maté route"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg final product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_records
+              source_ids: []
+            ranges: []
+        - row_id: waste_glass_packaging
+          role: "Waste glass packaging"
+          name: "Waste glass packaging"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "This atomic exchange is included only when the named flow and declared route apply; it shall not be combined with another botanical source, product state, or material."
+          amount:
+            expression: "measured damaged and discarded glass packaging mass; include only when glass is used"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg final product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_records
+              source_ids: []
+            ranges: []
+        - row_id: waste_plastic_packaging
+          role: "Waste plastic packaging"
+          name: "Waste polyethylene terephthalate packaging"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "This atomic exchange is included only when the named flow and declared route apply; it shall not be combined with another botanical source, product state, or material."
+          amount:
+            expression: "measured damaged and discarded PET packaging mass; add separate atomic rows for other discarded polymers"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg final product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_records
+              source_ids: []
+            ranges: []
+        - row_id: waste_metal_packaging
+          role: "Waste metal packaging"
+          name: "Waste aluminium packaging"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "This atomic exchange is included only when the named flow and declared route apply; it shall not be combined with another botanical source, product state, or material."
+          amount:
+            expression: "measured damaged and discarded aluminium packaging mass; add a separate atomic row for steel when applicable"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg final product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_records
+              source_ids: []
+            ranges: []
+        - row_id: waste_paperboard_packaging
+          role: "Waste paperboard packaging"
+          name: "Waste corrugated paperboard"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "This atomic exchange is included only when the named flow and declared route apply; it shall not be combined with another botanical source, product state, or material."
+          amount:
+            expression: "measured damaged and discarded carton mass"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg final product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_records
+              source_ids: []
+            ranges: []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocation_subdivision_first
+    applies_to: "botanical, product-state, drying, formulation, utility, and packaging routes"
+    rule: "Subdivide meters, batches, and process records before allocation so tea and maté, liquid and powder, spray and freeze drying, and different formulations are not averaged by default."
+    source_ids:
+      - eu-pef-method-2021
+  - rule_id: allocation_internal_recovery
+    applies_to: "recovered water, solvent, aroma, and rework"
+    rule: "Treat material returned within the same product system as an internal loop; record make-up and losses and do not create an avoided-burden credit for internal recovery."
+    source_ids:
+      - eu-pef-method-2021
+  - rule_id: allocation_residue_status
+    applies_to: "spent leaves, filter cake, sludge, and product losses"
+    rule: "Treat outputs as waste unless a documented specification, transfer, purchaser, and destination demonstrate a co-product. Do not assign a credit solely because a possible use exists."
+    source_ids:
+      - eu-pef-method-2021
+  - rule_id: allocation_unavoidable_multifunctionality
+    applies_to: "jointly produced saleable outputs after subdivision"
+    rule: "If allocation remains unavoidable, document the physical relationship that drives the shared process and allocate on that basis; if no defensible physical relationship exists, use economic allocation and disclose prices, period, geography, and sensitivity."
+    source_ids:
+      - eu-pef-method-2021
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_material_batch_records
+      process_id: "raw_material_receipt"
+      flow_role: "tea or maté input and screening"
+      record_type: "weighbridge, lot, and laboratory records"
+      raw_fields: "botanical identity; supplier; origin; input state; gross mass; tare; accepted mass; reject mass; moisture"
+      collection_method: "calibrated scale and lot identity review"
+      unit: "kg; % w/w"
+      frequency: "every lot"
+      temporal_coverage: "representative reporting year"
+      site_scope: "all supplying lots to modelled line"
+      aggregation_rule: "sum masses by botanical route; normalize only within the declared route"
+      quality_evidence: "calibration, supplier document, lot trace"
+    - protocol_id: cp_extraction_records
+      process_id: "aqueous_extraction"
+      flow_role: "water, solvent, aids, and extraction liquor"
+      record_type: "batch sheet and meters"
+      raw_fields: "batch id; raw material; water; solvent; enzyme; time; temperature; liquor mass; solids"
+      collection_method: "calibrated meters, dosing logs, and laboratory solids test"
+      unit: "kg; °C; min; % w/w"
+      frequency: "every batch"
+      temporal_coverage: "representative reporting year"
+      site_scope: "all modelled extractors"
+      aggregation_rule: "sum by declared extraction route and divide by released product"
+      quality_evidence: "meter calibration, batch reconciliation"
+    - protocol_id: cp_separation_records
+      process_id: "solid_liquid_separation"
+      flow_role: "separation media and operation"
+      record_type: "maintenance and batch records"
+      raw_fields: "medium identity; installed mass; replacement date; processed mass; retained solids"
+      collection_method: "stock issue plus equipment log"
+      unit: "kg"
+      frequency: "every replacement and batch"
+      temporal_coverage: "representative reporting year"
+      site_scope: "all modelled separators"
+      aggregation_rule: "allocate replacement mass over measured processed output"
+      quality_evidence: "purchase and maintenance records"
+    - protocol_id: cp_clarification_records
+      process_id: "clarification_filtration"
+      flow_role: "aids, media, filtrate, and filter cake"
+      record_type: "batch, dosing, and maintenance records"
+      raw_fields: "aid identity; dose; medium identity; replacement mass; feed; permeate; cake; solids"
+      collection_method: "dosing system, scale, and laboratory test"
+      unit: "kg; % w/w"
+      frequency: "every batch"
+      temporal_coverage: "representative reporting year"
+      site_scope: "all modelled clarification lines"
+      aggregation_rule: "retain one aid or medium per row; reconcile feed, permeate, and residue"
+      quality_evidence: "dosing calibration, batch reconciliation"
+    - protocol_id: cp_concentration_records
+      process_id: "concentration"
+      flow_role: "concentrate output"
+      record_type: "batch and laboratory records"
+      raw_fields: "feed mass; feed solids; concentrate mass; concentrate solids; condensate; technology"
+      collection_method: "calibrated tanks or scales and solids test"
+      unit: "kg; % w/w"
+      frequency: "every batch"
+      temporal_coverage: "representative reporting year"
+      site_scope: "all modelled concentrators"
+      aggregation_rule: "aggregate only compatible technology and botanical routes"
+      quality_evidence: "calibration and solids method"
+    - protocol_id: cp_aroma_records
+      process_id: "aroma_recovery"
+      flow_role: "recovered aroma"
+      record_type: "recovery batch record"
+      raw_fields: "botanical route; recovered mass; composition or solids; return, sale, or disposal destination"
+      collection_method: "calibrated receiver and batch trace"
+      unit: "kg"
+      frequency: "every applicable batch"
+      temporal_coverage: "representative reporting year"
+      site_scope: "all modelled recovery equipment"
+      aggregation_rule: "sum by botanical route and destination"
+      quality_evidence: "calibration and destination record"
+    - protocol_id: cp_drying_records
+      process_id: "spray_drying_freeze_drying"
+      flow_role: "dried product output"
+      record_type: "dryer batch and laboratory records"
+      raw_fields: "drying route; feed mass; feed solids; powder mass; moisture; rejects"
+      collection_method: "calibrated scales and moisture test"
+      unit: "kg; % w/w"
+      frequency: "every batch"
+      temporal_coverage: "representative reporting year"
+      site_scope: "all modelled dryers"
+      aggregation_rule: "never aggregate spray and freeze drying; normalize released output"
+      quality_evidence: "calibration, moisture method, batch reconciliation"
+    - protocol_id: cp_formulation_records
+      process_id: "formulation_blending"
+      flow_role: "each declared ingredient"
+      record_type: "approved formula, issue, and batch records"
+      raw_fields: "ingredient identity; supplier; lot; issued mass; returned mass; final formulation"
+      collection_method: "weigh scale and electronic batch record"
+      unit: "kg"
+      frequency: "every batch"
+      temporal_coverage: "representative reporting year"
+      site_scope: "all modelled blending lines"
+      aggregation_rule: "one atomic row per ingredient; reconcile issued, returned, output, and loss"
+      quality_evidence: "approved formula and scale calibration"
+    - protocol_id: cp_energy_records
+      process_id: "all_foreground_processes"
+      flow_role: "electricity, purchased steam, and purchased heat"
+      record_type: "submeter and invoice records"
+      raw_fields: "carrier identity; meter start/end; energy; process; batch or period; supplier"
+      collection_method: "calibrated submeter preferred; reconciled invoice otherwise"
+      unit: "kWh; MJ"
+      frequency: "batch or monthly"
+      temporal_coverage: "representative reporting year"
+      site_scope: "all modelled equipment"
+      aggregation_rule: "keep carriers separate; allocate shared meters by documented causal driver"
+      quality_evidence: "calibration, invoice reconciliation"
+    - protocol_id: cp_fuel_records
+      process_id: "thermal_utility_generation"
+      flow_role: "each on-site fuel"
+      record_type: "meter, tank, and invoice records"
+      raw_fields: "fuel identity; quantity; lower heating value; sulfur; biogenic fraction; unit"
+      collection_method: "calibrated meter or stock reconciliation"
+      unit: "kg; m3; MJ"
+      frequency: "delivery and monthly reconciliation"
+      temporal_coverage: "representative reporting year"
+      site_scope: "all foreground combustion units"
+      aggregation_rule: "one atomic row per fuel and unit; convert with documented properties"
+      quality_evidence: "invoice, meter calibration, fuel certificate"
+    - protocol_id: cp_refrigerant_records
+      process_id: "refrigeration"
+      flow_role: "refrigerant make-up and leakage"
+      record_type: "equipment inventory and service logs"
+      raw_fields: "equipment id; refrigerant identity; opening charge; additions; recovery; closing charge; confirmed leaks"
+      collection_method: "mass-balance inventory and service weighing"
+      unit: "kg"
+      frequency: "every service and annual balance"
+      temporal_coverage: "representative reporting year"
+      site_scope: "all foreground cooling systems"
+      aggregation_rule: "calculate loss separately for each refrigerant"
+      quality_evidence: "service certificate and inventory reconciliation"
+    - protocol_id: cp_cleaning_records
+      process_id: "sanitation_wastewater"
+      flow_role: "cleaning water and each chemical"
+      record_type: "CIP or manual cleaning logs"
+      raw_fields: "cycle id; equipment; water; chemical identity; concentration; dose; return; discharge"
+      collection_method: "flow meter and chemical dosing record"
+      unit: "kg; L"
+      frequency: "every cleaning cycle"
+      temporal_coverage: "representative reporting year"
+      site_scope: "all foreground cleaning systems"
+      aggregation_rule: "one atomic row per chemical; assign by cleaned equipment or batch"
+      quality_evidence: "meter and dosing calibration"
+    - protocol_id: cp_wastewater_records
+      process_id: "sanitation_wastewater"
+      flow_role: "wastewater and sludge"
+      record_type: "discharge meter, sample, and sludge records"
+      raw_fields: "stream; flow; COD; TSS; N; P; pH; sludge wet mass; dry solids; destination"
+      collection_method: "calibrated flow meter, accredited laboratory, and scale"
+      unit: "kg; m3; mg/L; % w/w"
+      frequency: "continuous or batch; representative samples"
+      temporal_coverage: "representative reporting year"
+      site_scope: "all foreground discharges and treatment units"
+      aggregation_rule: "retain streams and destinations; calculate pollutant loads from compatible flow and concentration periods"
+      quality_evidence: "calibration, chain of custody, laboratory report"
+    - protocol_id: cp_packaging_records
+      process_id: "packaging_and_storage"
+      flow_role: "each packaging component"
+      record_type: "packaging BOM, stock issue, and line records"
+      raw_fields: "component identity; material; mass per item; items issued; returned; damaged; pallet trips"
+      collection_method: "supplier specification plus calibrated count or scale"
+      unit: "kg; item"
+      frequency: "each packaging run"
+      temporal_coverage: "representative reporting year"
+      site_scope: "all modelled packaging lines"
+      aggregation_rule: "one atomic row per material component; calculate reuse per documented trips"
+      quality_evidence: "BOM approval, supplier spec, scale check"
+    - protocol_id: cp_waste_records
+      process_id: "all_foreground_processes"
+      flow_role: "residues, filter waste, product loss, and packaging waste"
+      record_type: "scale, skip, rejection, and destination records"
+      raw_fields: "waste identity; botanical identity where relevant; wet mass; dry solids; destination; treatment"
+      collection_method: "calibrated scale and waste transfer record"
+      unit: "kg; % w/w"
+      frequency: "every batch or shipment"
+      temporal_coverage: "representative reporting year"
+      site_scope: "all foreground waste points"
+      aggregation_rule: "never combine different waste identities or destinations"
+      quality_evidence: "scale calibration and transfer receipt"
+    - protocol_id: cp_emission_records
+      process_id: "spray_drying_thermal_utility_generation"
+      flow_role: "direct air emissions"
+      record_type: "stack tests, continuous monitoring, and factor calculations"
+      raw_fields: "source; pollutant; concentration; gas flow; operating time; fuel; factor; abatement"
+      collection_method: "standard measurement or approved factor with activity data"
+      unit: "kg; mg/Nm3"
+      frequency: "permit or representative frequency"
+      temporal_coverage: "representative reporting year"
+      site_scope: "all foreground emission points"
+      aggregation_rule: "calculate each pollutant separately and reconcile to operating period"
+      quality_evidence: "laboratory report, monitor QA, factor reference"
+    - protocol_id: cp_mass_balance_records
+      process_id: "all_production_processes"
+      flow_role: "yields, losses, and condensate"
+      record_type: "batch mass balance"
+      raw_fields: "input; output; water; residue; wastewater; loss; solids"
+      collection_method: "reconciled calibrated measurements"
+      unit: "kg; % w/w"
+      frequency: "every batch"
+      temporal_coverage: "representative reporting year"
+      site_scope: "each declared botanical and product route"
+      aggregation_rule: "input mass plus additions equals products plus wastes, wastewater, emissions, and documented inventory change within uncertainty"
+      quality_evidence: "signed reconciliation and meter QA"
+  calculation_rules:
+    - id: calc_normalize_reference_mass
+      applies_to: "every inventory row"
+      rule: "normalized amount = route-compatible reporting-period amount / net released mass of the same declared final product"
+      inputs:
+        - "exchange amount"
+        - "net released product mass"
+      output: "amount per 1 kg final product"
+      source_ids: []
+    - id: calc_dry_solids_balance
+      applies_to: "extraction through packaging"
+      rule: "dry solids in = dry solids in products + residues + wastewater + losses + documented inventory change; investigate unreconciled difference"
+      inputs:
+        - "measured masses"
+        - "measured solids or moisture"
+      output: "dry-solids reconciliation"
+      source_ids:
+        - fao-who-jmpr-boscalid-2019
+    - id: calc_refrigerant_loss
+      applies_to: "each refrigerant"
+      rule: "loss = opening charge + additions - recovered quantity - closing charge, adjusted for documented equipment transfers"
+      inputs:
+        - "equipment inventory and service masses"
+      output: "refrigerant emission by identity"
+      source_ids: []
+    - id: calc_pollutant_load
+      applies_to: "wastewater or air pollutant"
+      rule: "load = compatible measured concentration × measured stream flow × operating duration, with unit conversion"
+      inputs:
+        - concentration
+        - flow
+        - time
+      output: "pollutant mass"
+      source_ids:
+        - ec-jrc-fdm-bref-2019
+    - id: calc_shared_meter
+      applies_to: "shared equipment or utility meter"
+      rule: "allocate only after subdivision is infeasible and use a documented causal driver such as equipment operating time, measured throughput, or delivered heat; disclose the driver"
+      inputs:
+        - "shared meter"
+        - "route-specific causal driver"
+      output: "route-specific amount"
+      source_ids:
+        - eu-pef-method-2021
+  data_quality_requirements:
+    - id: dq_identity
+      applies_to: "raw materials, intermediates, final product, ingredients, aids, media, fuels, refrigerants, and packaging"
+      requirement: "Retain supplier, grade, botanical identity where relevant, formulation or material specification, lot, and exact flow-name evidence; unresolved UUIDs remain disclosed."
+      evidence: "supplier documents, batch trace, Tiangong direct-read record"
+    - id: dq_route
+      applies_to: "all processes"
+      requirement: "Records shall distinguish tea from maté, liquid from powder, spray drying from freeze drying, each formulation, each fuel, and each refrigerant."
+      evidence: "process map, batch and meter tags"
+    - id: dq_measurement
+      applies_to: "mass, water, energy, solids, emissions, and waste"
+      requirement: "Use calibrated instruments or documented reconciled invoices; retain units, conversions, detection limits, and missing-data treatment."
+      evidence: "calibration and reconciliation records"
+    - id: dq_temporal
+      applies_to: "foreground data"
+      requirement: "Cover a representative continuous 12-month period or justify a shorter campaign period and seasonal representativeness."
+      evidence: "production calendar and coverage report"
+    - id: dq_completeness
+      applies_to: "foreground inventory"
+      requirement: "Reconcile all batches and report excluded processes, missing providers, unmonitored direct emissions, and cut-offs; a missing range is not permission to omit a flow."
+      evidence: "completeness and mass-balance check; eu-pef-method-2021"
+    - id: dq_representativeness
+      applies_to: "dataset publication"
+      requirement: "Report technology, geography, reference period, product specification, and route share; do not publish an averaged default that merges incompatible routes."
+      evidence: "metadata and route-separated calculation workbook"
+validation_rules:
+  - rule_id: validate_reference_identity
+    applies_to: "reference flow"
+    rule: "Exactly one botanical source and one delivered product state are declared, the output row matches them, and no approximate Tiangong reference-product UUID is used."
+    source_ids:
+      - unsd-cpc-3-0-2025
+      - iso-6079-2021
+  - rule_id: validate_reference_mass
+    applies_to: "reference amount"
+    rule: "Net released product equals exactly 1 kg after normalization and packaging mass is separate."
+    source_ids: []
+  - rule_id: validate_route_exclusivity
+    applies_to: "process map"
+    rule: "Tea and maté, liquid and powder, spray and freeze drying, and different formulations are not simultaneously defaulted; every conditional process has a declared applicability decision."
+    source_ids:
+      - iso-6079-2021
+      - dao-et-al-2021-tea-spray-drying
+  - rule_id: validate_atomic_inventory
+    applies_to: "inventory rows"
+    rule: "Every selected flow is one material, carrier, ingredient, aid, medium, waste, or elementary emission; combined collections and selector labels fail validation."
+    source_ids:
+      - eu-pef-method-2021
+  - rule_id: validate_mass_solids_balance
+    applies_to: "production batch"
+    rule: "Wet-mass and dry-solids balances reconcile within the site's documented measurement uncertainty, or the difference is investigated and disclosed."
+    source_ids:
+      - fao-who-jmpr-boscalid-2019
+  - rule_id: validate_energy_fuels
+    applies_to: "utilities"
+    rule: "Electricity, purchased steam, purchased heat, natural gas, and each other fuel are separately recorded; direct combustion emissions are present when fuel is combusted on site."
+    source_ids:
+      - ec-jrc-fdm-bref-2019
+  - rule_id: validate_formulation
+    applies_to: "preparation route"
+    rule: "The approved formulation BOM equals the sum of separately inventoried ingredients and processing aids after returns and losses; undeclared carriers, sugars, sweeteners, or additives fail validation."
+    source_ids: []
+  - rule_id: validate_wastewater_waste
+    applies_to: "outputs"
+    rule: "Tea residue, maté residue, filter residue, product loss, wastewater, sludge, and each packaging-waste material have separate amounts and destinations when applicable."
+    source_ids:
+      - ec-jrc-fdm-bref-2019
+  - rule_id: validate_refrigerants
+    applies_to: "refrigeration"
+    rule: "Each refrigerant identity, make-up, recovery, closing charge, and calculated leak are reconciled; a generic refrigerant row fails validation."
+    source_ids:
+      - ec-jrc-fdm-bref-2019
+  - rule_id: validate_data_quality
+    applies_to: "published dataset"
+    rule: "Temporal, technological, geographical, completeness, and precision evidence is retained and the data-quality assessment is reported."
+    source_ids:
+      - eu-pef-method-2021
+  - rule_id: validate_ranges
+    applies_to: "quantitative guidance"
+    rule: "No empirical range is accepted unless at least two independent original sources have compatible boundary, unit, and basis evidence; otherwise the range is omitted and the manifest evidence gap remains open."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "Foreground manufacturing data package for one declared tea-derived or maté-derived product route."
+  downstream_use: "May be published as a secondary_dataset or background_dataset after review, UUID resolution, provider linking, quality assessment, and closure or acceptance of review blockers."
+  allowed_use: "Route-matched LCA process or lifecyclemodel construction for the declared botanical source, product state, technology, formulation, geography, and reference period."
+  excluded_use: "Generic substitution across tea and maté; substitution across liquid and powder or spray and freeze drying; comparative claims without equivalent functional and quality specifications; zero-burden treatment of unresolved providers."
+  required_metadata: "PCR id; botanical source; delivered state; product specification; solids or moisture; extraction solvent; concentration method; aroma route; drying route; formulation; heat treatment; utility and refrigerant systems; packaging; storage; geography; reference period; allocation; provider links; exclusions."
+  required_quality_disclosure: "Coverage, measurement methods, calibration, missing-data treatment, mass and solids reconciliation, wastewater and emissions monitoring, allocation, uncertainty, provider gaps, UUID gaps, and unresolved range evidence."
+  update_trigger: "Change in botanical source, input state, extraction solvent, concentration or drying technology, formulation, heat treatment, fuel, refrigerant, packaging, storage, provider dataset, regulation, or evidence that materially changes the inventory."
+data_sources:
+  - id: "unsd-cpc-3-0-2025"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, Central Product Classification Version 3.0 structure, code 23914, https://unstats.un.org/unsd/classifications/Econ/CPC.cshtml (retrieved 2026-08-24)"
+    used_for: "Official category identity and scope."
+  - id: "iso-6079-2021"
+    type: "standard"
+    reference: "ISO 6079:2021, Instant tea in solid form — Specification, https://www.iso.org/standard/80197.html (retrieved 2026-08-24)"
+    used_for: "Public scope distinguishes pure solid instant tea from filled, aromatic, decaffeinated, and non-tea products; supports mandatory product-state and formulation qualification."
+  - id: "fao-who-jmpr-boscalid-2019"
+    type: "official_guidance"
+    reference: "FAO/WHO Joint Meeting on Pesticide Residues, Pesticide residues in food 2019 — Boscalid evaluation, pp. 82–84, https://www.fao.org/fileadmin/user_upload/IPM_Pesticide/JMPR/Evaluations/2019_Extra/BOSCALID_221.pdf (retrieved 2026-08-24)"
+    used_for: "Original verified tea-processing trial documenting hot-water extraction, centrifuge and sieve separation, vacuum concentration, conditional silica gel, maltodextrin, citric acid and sucrose addition, drying, and distinct extract/residue matrices; not used for category-wide ranges."
+  - id: "ec-jrc-fdm-bref-2019"
+    type: "official_guidance"
+    reference: "European Commission Joint Research Centre, Best Available Techniques Reference Document for the Food, Drink and Milk Industries, JRC118627, 2019, https://bureau-industrial-transformation.jrc.ec.europa.eu/sites/default/files/2020-01/JRC118627_FDM_Bref_2019_published.pdf (retrieved 2026-08-24)"
+    used_for: "Water, energy, raw-material, cleaning-agent, wastewater, waste, refrigerant, and direct-emission inventory and monitoring requirements."
+  - id: "eu-pef-method-2021"
+    type: "official_guidance"
+    reference: "Commission Recommendation (EU) 2021/2279, Annex I Product Environmental Footprint Method, https://eur-lex.europa.eu/eli/reco/2021/2279/2021-12-30/eng (retrieved 2026-08-24)"
+    used_for: "Functional unit and reference flow, completeness, company-specific data, data quality, system boundary, multi-functionality, allocation, and validation."
+  - id: "dao-et-al-2021-tea-spray-drying"
+    type: "literature"
+    reference: "Dao, D.T.A. et al. (2021), Optimization of spray-drying process to manufacture green tea powder and its characters, Food Science & Nutrition 9:6566–6574, https://doi.org/10.1002/fsn3.2597 (full text verified 2026-08-24)"
+    used_for: "Original process evidence for conditional washing/blanching, water/enzyme and ethanol-assisted extraction, sieving, carrier addition, atomization, hot-air drying, powder separation, and route-specific electricity/heat/material collection; not used for category-wide ranges."
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:94a16f9a0c71f31b81bcdfdb13a34da6f753d1a5fb45bc567f7cd055a99b7e60"
+  generated_content_sha256: "sha256:9970268f4147cf3c51ad03f74033a2ac8ad94403df8af0e414525ddcd8e94aff"
