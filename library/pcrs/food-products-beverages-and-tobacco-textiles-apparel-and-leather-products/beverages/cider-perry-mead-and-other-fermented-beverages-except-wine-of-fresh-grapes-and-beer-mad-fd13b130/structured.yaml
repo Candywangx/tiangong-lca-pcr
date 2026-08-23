@@ -1,10 +1,2475 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "24230"
-  title: "Cider, perry, mead and other fermented beverages, except wine of fresh grapes and beer made from malt"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.food-products-beverages-and-tobacco-textiles-apparel-and-leather-products.beverages.cider-perry-mead-and-other-fermented-beverages-except-wine-of-fresh-grapes-and-beer-mad-fd13b130"
+  classification_refs: "CPC 3.0: 24230"
+  covered_products: "Cider; perry; mead; other beverages retaining their characteristic identity from alcoholic fermentation of fruit, honey, or another declared fermentable sugar material; still, naturally sparkling, or externally carbonated variants"
+  excluded_products: "Wine of fresh grapes; beer made from malt; non-fermented beverages; vinegar; distilled spirits; products whose identity no longer remains that of a fermented beverage"
+  representative_product: "One market-ready fermented beverage within this category at the producing-facility dispatch gate"
+  production_route: "Route-specific preparation of fruit must, honey must, or another sugar-material must; alcoholic fermentation; conditional clarification, filtration, maturation, stabilization, secondary fermentation, pasteurization, carbonation, bulk preparation, and packaging"
+  market_state: "Bulk liquid or packaged liquid; raw-material route, alcohol content, sweetness, carbonation state, heat-treatment state, packaging configuration, jurisdictional designation, geography, and production campaign declared"
+functional_unit:
+  what: "Provision of a market-ready fermented beverage in this product category at the producing-facility dispatch gate"
+  how_much: "1,000 kg of net saleable reference product"
+  how_well: "Conforms to the declared jurisdictional product, composition, alcohol, food-safety, quality, and labelling specifications while retaining fermented-beverage identity"
+  how_long_or_cycle: "One completed batch or production campaign through dispatch-ready condition"
+  reference_flow_link: "Net saleable output after measured process and filling losses, before downstream distribution, retail, consumption, and end of life"
+system_boundary:
+  rules:
+    - rule_id: boundary_facility_gate
+      applies_to: "Foreground beverage system"
+      rule: "Include attributable operations from receipt of the declared feedstock or recursive same-category input through net saleable product dispatch, including route preparation, fermentation, finishing, filling or bulk preparation, cleaning, refrigeration, onsite utilities, direct releases, wastewater, residues, and wastes."
+      source_ids:
+        - un-cpc-3-2025
+        - ec-jrc-fdm-bref-2019
+        - eu-pef-2021
+    - rule_id: boundary_route_selection
+      applies_to: "Product route"
+      rule: "Apply exactly one documented feedstock-preparation route; include only the finishing, secondary-fermentation, pasteurization, carbonation, and package routes actually performed, with every non-applicable process explicitly identified."
+      source_ids:
+        - uk-welsh-cider-2015
+        - uk-welsh-perry-2015
+        - eu-czworniak-mead-2016
+        - iglesias-mead-2014
+    - rule_id: boundary_complete_exchanges
+      applies_to: "Every included process"
+      rule: "Inventory each material, utility, refrigerant, packaging component, product, residue, waste, wastewater stream, and direct emission as a separate atomic exchange. Missing upstream data are disclosed data gaps, not zero burdens."
+      source_ids:
+        - ec-jrc-fdm-bref-2019
+        - eu-pef-2021
+    - rule_id: boundary_downstream
+      applies_to: "Lifecycle model"
+      rule: "Distribution, retail refrigeration, serving, consumption, packaging end of life, and other downstream stages are outside this facility-gate dataset and require linked datasets when a full life cycle is modelled."
+      source_ids:
+        - eu-pef-2021
+boundary_abstraction:
+  declared_starting_condition: "Fruit, natural honey, another declared fermentable sugar material, or one explicitly disclosed same-category must or bulk fermented-beverage input received at the producing-facility gate"
+  starting_condition_role: "Foreground entry point for route-specific beverage manufacture"
+  product_classification_scope: "CPC 3.0 24230 fermented beverages; excludes fresh-grape wine, malt beer, non-fermented beverages, vinegar, and distilled products"
+  recursive_input_rule: "Record purchased must or bulk fermented beverage in this category once as one atomic product input with an upstream dataset; do not recursively reconstruct its production inside the receiving foreground process."
+  upstream_dataset_requirement: "Require representative upstream datasets for each feedstock, same-category intermediate, yeast, additive, processing aid, water source, energy carrier, refrigerant, packaging component, inbound transport, and offsite treatment service."
+  disclosure: "Disclose product definition, raw-material route, included and outsourced operations, excluded life-cycle stages, fermentation and conditioning route, product and alcohol losses, wastewater route, waste and co-product destinations, packaging configuration, and allocation choices."
+reference_flow_definition:
+  reference_amount: "1,000 kg"
+  product_flow_ref:
+    name: "Fermented beverage in this product category"
+    uuid: ""
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - product_name
+    - fermentable_raw_material
+    - jurisdictional_product_standard
+    - actual_alcohol_content
+    - residual_sugar_or_sweetness_class
+    - still_or_sparkling
+    - carbonation_route
+    - heat_treatment_route
+    - bulk_or_packaged
+    - packaging_configuration_and_fill_quantity
+    - geography
+    - production_campaign
+    - technology_route
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "Reference product and mass-normalised exchanges"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Report exactly 1,000 kg net saleable reference product and normalise every exchange to this mass."
+  - id: liquid_mass_conversion
+    applies_to: "Beverage, must, water, and liquid-material records measured by volume"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Convert volume to mass using a material- and temperature-specific density record; retain raw volume, temperature, density, and calculation."
+  - id: packaging_mass
+    applies_to: "Each packaging component"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Record placed-on-market mass for each component separately from component count and verified unit mass or a direct issue balance."
+  - id: energy_separation
+    applies_to: "Electricity, steam, natural gas, liquefied petroleum gas, and light fuel oil"
+    required_property_ref:
+      name: "Energy"
+      uuid: ""
+    required_unit: "kWh or MJ"
+    rule: "Preserve each carrier as a separate exchange and document energy-unit conversion and lower- or higher-heating-value basis for each fuel."
+  - id: wastewater_load
+    applies_to: "Each direct water-emission indicator"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Calculate each pollutant load separately from matched discharge volume and concentration records; do not combine COD, BOD5, TSS, nitrogen, or phosphorus."
+process_map:
+  - id: fruit_must_preparation
+    name: "Fruit reception, milling, and must preparation"
+    inclusion: "conditional"
+    inclusion_condition: "fermentable_raw_material=fruit"
+    role: "Converts received fruit into fruit must and separates fruit pomace"
+    quantitative_reference: "1,000 kg reference product"
+  - id: honey_must_preparation
+    name: "Honey-must preparation"
+    inclusion: "conditional"
+    inclusion_condition: "fermentable_raw_material=honey"
+    role: "Mixes honey and water and applies declared thermal preparation"
+    quantitative_reference: "1,000 kg reference product"
+  - id: other_must_preparation
+    name: "Other sugar-material must preparation"
+    inclusion: "conditional"
+    inclusion_condition: "fermentable_raw_material=other_sugar_material"
+    role: "Prepares the specifically declared non-fruit, non-honey fermentable material for fermentation"
+    quantitative_reference: "1,000 kg reference product"
+  - id: alcoholic_fermentation
+    name: "Alcoholic fermentation"
+    inclusion: "required"
+    inclusion_condition: "All products in scope"
+    role: "Converts fermentable sugars to alcoholic beverage and biogenic carbon dioxide"
+    quantitative_reference: "1,000 kg reference product"
+  - id: finishing_maturation
+    name: "Clarification, filtration, maturation, and stabilization"
+    inclusion: "conditional"
+    inclusion_condition: "Any listed finishing operation occurs"
+    role: "Produces finished bulk beverage and records processing aids, losses, residues, and utilities"
+    quantitative_reference: "1,000 kg reference product"
+  - id: conditioning_carbonation
+    name: "Secondary fermentation or external carbonation"
+    inclusion: "conditional"
+    inclusion_condition: "Product is bottle-conditioned, bottle-fermented, tank-conditioned, or externally carbonated"
+    role: "Produces the declared sparkling or carbonated beverage state"
+    quantitative_reference: "1,000 kg reference product"
+  - id: packaging_dispatch
+    name: "Filling, packaging, and dispatch preparation"
+    inclusion: "conditional"
+    inclusion_condition: "Product is packaged before dispatch"
+    role: "Fills and assembles the declared package without combining components"
+    quantitative_reference: "1,000 kg reference product"
+  - id: site_services_wastewater
+    name: "Site utilities, cleaning, refrigeration, and wastewater treatment"
+    inclusion: "required"
+    inclusion_condition: "Record shared services; treatment outputs apply when under foreground control"
+    role: "Records each shared carrier, chemical, refrigerant, wastewater, sludge, and direct release"
+    quantitative_reference: "1,000 kg reference product"
+process_inventory:
+  - id: fruit_must_preparation
+    label: "Fruit reception, milling, and must preparation"
+    inputs:
+      product:
+        - row_id: fresh_fermentation_fruit
+          role: "Fresh fruit feedstock"
+          name: "Fresh fermentation fruit"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the accepted mass of the specifically declared fruit delivered for pressing, pulping, or direct must preparation."
+          amount:
+            expression: "Calibrated received mass net of documented rejected loads"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_mass_balance
+              source_ids:
+                - uk-welsh-cider-2015
+                - uk-welsh-perry-2015
+            ranges: []
+        - row_id: fruit_preparation_water
+          role: "Fruit-washing and must-preparation water"
+          name: "Process water"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "Water supplied for fruit washing and must preparation is separately metered or batch-estimated."
+          amount:
+            expression: "Measured water delivered to fruit preparation"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water_records
+              source_ids:
+                - uk-welsh-cider-2015
+                - uk-welsh-perry-2015
+                - ec-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: fruit_preparation_electricity
+          role: "Electricity for fruit milling and pressing"
+          name: "Electricity, medium voltage"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Electricity powers washing, sorting, milling, pressing, pumping, and controls in this route."
+          amount:
+            expression: "Metered or defensibly sub-metered electricity used by fruit preparation"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_records
+              source_ids:
+                - uk-welsh-cider-2015
+                - uk-welsh-perry-2015
+                - ec-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: fruit_pectinase
+          role: "Pectinase for fruit-must preparation"
+          name: "Pectinase"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Pectinase is recorded only when added to aid juice extraction or clarification."
+          amount:
+            expression: "Weighed formulation mass issued to fruit-must batches"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per 1,000 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_additive_records
+              source_ids:
+                - uk-welsh-cider-2015
+                - uk-welsh-perry-2015
+            ranges: []
+        - row_id: fruit_calcium_chloride
+          role: "Calcium chloride for keeving"
+          name: "Calcium chloride"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Food-grade calcium chloride is recorded only for a declared keeving route."
+          amount:
+            expression: "Weighed calcium-chloride mass added to the batch"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per 1,000 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_additive_records
+              source_ids:
+                - uk-welsh-cider-2015
+                - uk-welsh-perry-2015
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: fruit_must_output
+          role: "Fruit must transferred to fermentation"
+          name: "Fruit must for fermented-beverage production"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Fruit must is measured at transfer and remains route-specific rather than being combined with other must identities."
+          amount:
+            expression: "Measured transfer mass or calibrated volume converted with matched density"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_material_mass_balance
+              source_ids:
+                - uk-welsh-cider-2015
+                - uk-welsh-perry-2015
+            ranges: []
+      waste:
+        - row_id: fruit_pomace
+          role: "Fruit pomace from milling and pressing"
+          name: "Fermentation fruit pomace"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Wet pomace is weighed separately and its beneficial-use, treatment, or disposal destination is declared."
+          amount:
+            expression: "Measured wet mass removed from fruit preparation"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_records
+              source_ids:
+                - uk-welsh-cider-2015
+                - uk-welsh-perry-2015
+                - ec-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: fruit_preparation_wastewater
+          role: "Fruit-preparation wastewater"
+          name: "Fruit-preparation wastewater"
+          flow_type: "waste"
+          property_unit: "Volume / m3"
+          description: "Wastewater from fruit washing, pressing equipment, and route cleaning is recorded by source and destination."
+          amount:
+            expression: "Metered or validated batch-volume discharge from fruit preparation"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wastewater_records
+              source_ids:
+                - ec-jrc-fdm-bref-2019
+            ranges: []
+      elementary:
+        []
+  - id: honey_must_preparation
+    label: "Honey-must preparation"
+    inputs:
+      product:
+        - row_id: natural_honey
+          role: "Natural honey feedstock"
+          name: "Natural honey"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Natural honey is weighed by batch and kept distinct from other fermentable raw materials."
+          amount:
+            expression: "Weighed honey issued to honey-must preparation"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_mass_balance
+              source_ids:
+                - eu-czworniak-mead-2016
+                - iglesias-mead-2014
+            ranges: []
+        - row_id: honey_must_water
+          role: "Water for honey-must dilution"
+          name: "Process water"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Water mixed with honey is part of the formulated must and is separately measured."
+          amount:
+            expression: "Measured water mass or calibrated volume converted at measured temperature"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water_records
+              source_ids:
+                - eu-czworniak-mead-2016
+                - iglesias-mead-2014
+            ranges: []
+        - row_id: honey_must_electricity
+          role: "Electricity for honey-must preparation"
+          name: "Electricity, medium voltage"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Electricity for mixing, pumping, cooling, and controls is recorded for this route."
+          amount:
+            expression: "Metered or defensibly allocated route electricity"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_records
+              source_ids:
+                - eu-czworniak-mead-2016
+                - ec-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: honey_must_steam
+          role: "Steam for cooked honey-must preparation"
+          name: "Steam, at industrial facility"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Purchased steam is recorded only when the declared mead route heats or boils honey must with steam."
+          amount:
+            expression: "Metered steam energy delivered to honey-must preparation"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per 1,000 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_records
+              source_ids:
+                - eu-czworniak-mead-2016
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: honey_must_output
+          role: "Honey must transferred to fermentation"
+          name: "Honey must for mead production"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Prepared honey must is measured after mixing, any heating, and cooling."
+          amount:
+            expression: "Measured transfer mass or calibrated volume converted with matched density"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_material_mass_balance
+              source_ids:
+                - eu-czworniak-mead-2016
+                - iglesias-mead-2014
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+  - id: other_must_preparation
+    label: "Other sugar-material must preparation"
+    inputs:
+      product:
+        - row_id: other_sugar_material
+          role: "Other fermentable sugar material"
+          name: "Other fermentable sugar material"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "The data package names one specific sugar-bearing raw material and records it separately from fruit and honey."
+          amount:
+            expression: "Weighed quantity of the specifically named sugar-bearing raw material issued to the batch"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_mass_balance
+              source_ids:
+                - un-cpc-3-2025
+            ranges: []
+        - row_id: other_must_water
+          role: "Water for other sugar-material must"
+          name: "Process water"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Water incorporated into this must is separately measured."
+          amount:
+            expression: "Measured water mass or calibrated volume converted at measured temperature"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water_records
+              source_ids:
+                - ec-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: other_must_electricity
+          role: "Electricity for other sugar-material must"
+          name: "Electricity, medium voltage"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Electricity for handling, dissolving, mixing, pumping, and cooling is recorded for this route."
+          amount:
+            expression: "Metered or defensibly allocated route electricity"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_records
+              source_ids:
+                - ec-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: other_must_steam
+          role: "Steam for other sugar-material must"
+          name: "Steam, at industrial facility"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Purchased steam is recorded only when heating or pasteurizing the prepared must."
+          amount:
+            expression: "Metered steam energy delivered to this route"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per 1,000 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_records
+              source_ids:
+                - ec-jrc-fdm-bref-2019
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: other_must_output
+          role: "Other sugar-material must transferred to fermentation"
+          name: "Other sugar-material must for fermented-beverage production"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "The prepared must retains the identity of the specifically declared raw-material route."
+          amount:
+            expression: "Measured transfer mass or calibrated volume converted with matched density"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_material_mass_balance
+              source_ids:
+                - un-cpc-3-2025
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+  - id: alcoholic_fermentation
+    label: "Alcoholic fermentation"
+    inputs:
+      product:
+        - row_id: fermentation_fruit_must
+          role: "Fruit must entering fermentation"
+          name: "Fruit must for fermented-beverage production"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "This input applies only to the fruit route and is not combined with honey or other must."
+          amount:
+            expression: "Measured transfer mass from fruit_must_preparation"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per 1,000 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_mass_balance
+              source_ids:
+                - uk-welsh-cider-2015
+                - uk-welsh-perry-2015
+            ranges: []
+        - row_id: fermentation_honey_must
+          role: "Honey must entering fermentation"
+          name: "Honey must for mead production"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "This input applies only to the mead route."
+          amount:
+            expression: "Measured transfer mass from honey_must_preparation"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per 1,000 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_mass_balance
+              source_ids:
+                - eu-czworniak-mead-2016
+                - iglesias-mead-2014
+            ranges: []
+        - row_id: fermentation_other_must
+          role: "Other sugar-material must entering fermentation"
+          name: "Other sugar-material must for fermented-beverage production"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "This input applies only to the declared other sugar-material route."
+          amount:
+            expression: "Measured transfer mass from other_must_preparation"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per 1,000 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_mass_balance
+              source_ids:
+                - un-cpc-3-2025
+            ranges: []
+        - row_id: fermentation_yeast
+          role: "Active dry beverage yeast"
+          name: "Active dry beverage yeast"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Purchased yeast is recorded when inoculation is used; spontaneous fermentation is disclosed with this row not applicable."
+          amount:
+            expression: "Weighed dry yeast added to the fermenter"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_additive_records
+              source_ids:
+                - uk-welsh-cider-2015
+                - uk-welsh-perry-2015
+                - eu-czworniak-mead-2016
+                - iglesias-mead-2014
+            ranges: []
+        - row_id: diammonium_phosphate
+          role: "Diammonium phosphate yeast nutrient"
+          name: "Diammonium phosphate"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Diammonium phosphate is recorded separately when nutrient supplementation is used."
+          amount:
+            expression: "Weighed nutrient mass added to the batch"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_additive_records
+              source_ids:
+                - iglesias-mead-2014
+            ranges: []
+        - row_id: potassium_metabisulfite
+          role: "Potassium metabisulfite addition"
+          name: "Potassium metabisulfite"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Potassium metabisulfite is recorded only when used for microbial or oxidation control."
+          amount:
+            expression: "Weighed formulation mass added to must or beverage"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_additive_records
+              source_ids:
+                - uk-welsh-cider-2015
+                - uk-welsh-perry-2015
+            ranges: []
+        - row_id: fermentation_electricity
+          role: "Electricity for fermentation control"
+          name: "Electricity, medium voltage"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Electricity for pumps, agitation, controls, cooling equipment, and tank operations is recorded here."
+          amount:
+            expression: "Metered or defensibly sub-metered fermentation electricity"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_records
+              source_ids:
+                - ec-jrc-fdm-bref-2019
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: fermented_beverage_output
+          role: "Fermented beverage transferred to finishing or dispatch"
+          name: "Fermented beverage before finishing"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "The post-fermentation beverage is measured before route-specific finishing, conditioning, or packaging."
+          amount:
+            expression: "Measured transfer mass or calibrated volume converted with matched density"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_material_mass_balance
+              source_ids:
+                - uk-welsh-cider-2015
+                - uk-welsh-perry-2015
+                - eu-czworniak-mead-2016
+                - iglesias-mead-2014
+            ranges: []
+      waste:
+        - row_id: spent_fermentation_yeast
+          role: "Spent fermentation yeast"
+          name: "Spent fermentation yeast"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Spent fermentation yeast removed from fermentation is weighed and assigned one documented destination."
+          amount:
+            expression: "Measured wet yeast mass removed during fermentation, racking, or fermenter cleaning"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_records
+              source_ids:
+                - uk-welsh-cider-2015
+                - uk-welsh-perry-2015
+                - eu-czworniak-mead-2016
+            ranges: []
+        - row_id: fermentation_lees
+          role: "Fermentation lees"
+          name: "Fermentation lees"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Lees removed from fermentation are weighed separately from spent yeast and assigned one documented destination."
+          amount:
+            expression: "Measured wet lees mass removed during racking or fermenter cleaning"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_records
+              source_ids:
+                - uk-welsh-cider-2015
+                - uk-welsh-perry-2015
+                - eu-czworniak-mead-2016
+            ranges: []
+        - row_id: fermentation_wastewater
+          role: "Fermentation wastewater"
+          name: "Fermentation wastewater"
+          flow_type: "waste"
+          property_unit: "Volume / m3"
+          description: "Fermenter, transfer-line, and racking-cleaning wastewater is recorded by source and destination."
+          amount:
+            expression: "Metered or validated batch-volume discharge from fermentation operations"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wastewater_records
+              source_ids:
+                - ec-jrc-fdm-bref-2019
+            ranges: []
+      elementary:
+        - row_id: fermentation_co2_biogenic
+          role: "Biogenic carbon dioxide from fermentation"
+          name: "Carbon dioxide, biogenic, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Carbon dioxide formed by alcoholic fermentation is measured or calculated from the documented fermentable-sugar balance."
+          amount:
+            expression: "Measured off-gas or calc_fermentation_co2"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_direct_emission_records
+              source_ids:
+                - iglesias-mead-2014
+                - uk-welsh-cider-2015
+                - uk-welsh-perry-2015
+            ranges: []
+  - id: finishing_maturation
+    label: "Clarification, filtration, maturation, and stabilization"
+    inputs:
+      product:
+        - row_id: finishing_beverage_input
+          role: "Fermented beverage entering finishing"
+          name: "Fermented beverage before finishing"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "The transferred beverage mass is reconciled with finished bulk output, residues, and losses."
+          amount:
+            expression: "Measured transfer mass from alcoholic_fermentation"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_mass_balance
+              source_ids:
+                - eu-czworniak-mead-2016
+                - iglesias-mead-2014
+                - uk-welsh-cider-2015
+                - uk-welsh-perry-2015
+            ranges: []
+        - row_id: finishing_electricity
+          role: "Electricity for finishing and maturation"
+          name: "Electricity, medium voltage"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Electricity for pumps, filtration, centrifugation, storage, cooling, and controls is recorded separately."
+          amount:
+            expression: "Metered or defensibly sub-metered finishing electricity"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_records
+              source_ids:
+                - ec-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: finishing_water
+          role: "Process water for finishing"
+          name: "Process water"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "Water used for route-specific product preparation or equipment service is recorded separately from cleaning chemicals."
+          amount:
+            expression: "Metered water delivered to finishing operations"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water_records
+              source_ids:
+                - ec-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: finishing_steam
+          role: "Steam for thermal finishing"
+          name: "Steam, at industrial facility"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Purchased steam is recorded only when hot stabilization, pasteurization, or hot cleaning is included in this process."
+          amount:
+            expression: "Metered steam energy delivered to finishing"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per 1,000 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_records
+              source_ids:
+                - eu-czworniak-mead-2016
+                - ec-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: bentonite
+          role: "Bentonite clarification aid"
+          name: "Bentonite"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Bentonite is recorded only when used for the declared beverage."
+          amount:
+            expression: "Weighed dry bentonite added to finishing"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_additive_records
+              source_ids:
+                - iglesias-mead-2014
+            ranges: []
+        - row_id: diatomaceous_earth
+          role: "Diatomaceous-earth filter aid"
+          name: "Diatomaceous earth"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Diatomaceous earth is recorded only for a route using this filter aid."
+          amount:
+            expression: "Weighed dry filter-aid mass issued to filtration"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_additive_records
+              source_ids:
+                - ec-jrc-fdm-bref-2019
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: finished_bulk_beverage
+          role: "Finished bulk fermented beverage"
+          name: "Finished bulk fermented beverage"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Finished bulk beverage is measured after route-specific clarification, filtration, maturation, and stabilization."
+          amount:
+            expression: "Measured finished-bulk mass net of retained residues and losses"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_material_mass_balance
+              source_ids:
+                - eu-czworniak-mead-2016
+                - uk-welsh-cider-2015
+                - uk-welsh-perry-2015
+            ranges: []
+      waste:
+        - row_id: spent_bentonite
+          role: "Spent bentonite"
+          name: "Spent bentonite"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Spent bentonite is weighed separately from other filter and clarification residues."
+          amount:
+            expression: "Measured wet spent-bentonite mass removed from finishing"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_records
+              source_ids:
+                - ec-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: spent_diatomaceous_earth
+          role: "Spent diatomaceous earth"
+          name: "Spent diatomaceous earth"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Spent diatomaceous earth is separately weighed and assigned a treatment destination."
+          amount:
+            expression: "Measured wet spent-filter-aid mass removed from filtration"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_records
+              source_ids:
+                - ec-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: finishing_beverage_loss
+          role: "Rejected beverage from finishing"
+          name: "Rejected fermented beverage"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Off-specification or lost beverage is measured separately from wastewater."
+          amount:
+            expression: "Measured product mass rejected, spilled, or removed during finishing"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_records
+              source_ids:
+                - ec-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: finishing_wastewater
+          role: "Finishing wastewater"
+          name: "Finishing wastewater"
+          flow_type: "waste"
+          property_unit: "Volume / m3"
+          description: "Wastewater from filtration, maturation vessels, stabilization, and finishing cleaning is recorded by destination."
+          amount:
+            expression: "Metered or validated batch-volume discharge from finishing"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wastewater_records
+              source_ids:
+                - ec-jrc-fdm-bref-2019
+            ranges: []
+      elementary:
+        []
+  - id: conditioning_carbonation
+    label: "Secondary fermentation or external carbonation"
+    inputs:
+      product:
+        - row_id: conditioning_beverage_input
+          role: "Finished beverage entering conditioning"
+          name: "Finished bulk fermented beverage"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "The beverage transferred to conditioning is measured before sugar, yeast, or carbon dioxide additions."
+          amount:
+            expression: "Measured transfer mass from finishing or direct fermentation route"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per 1,000 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_mass_balance
+              source_ids:
+                - uk-welsh-cider-2015
+                - uk-welsh-perry-2015
+            ranges: []
+        - row_id: conditioning_sucrose
+          role: "Sucrose for secondary fermentation"
+          name: "Sucrose"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Sucrose is recorded only when added to drive a declared secondary-fermentation route."
+          amount:
+            expression: "Weighed sucrose added to the conditioning batch"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per 1,000 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_additive_records
+              source_ids:
+                - uk-welsh-cider-2015
+                - uk-welsh-perry-2015
+            ranges: []
+        - row_id: conditioning_yeast
+          role: "Yeast for secondary fermentation"
+          name: "Active dry beverage yeast"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Secondary-fermentation yeast is recorded separately from primary-fermentation yeast."
+          amount:
+            expression: "Weighed dry yeast added for secondary fermentation"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per 1,000 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_additive_records
+              source_ids:
+                - uk-welsh-cider-2015
+                - uk-welsh-perry-2015
+            ranges: []
+        - row_id: beverage_carbon_dioxide
+          role: "Beverage-grade carbon dioxide for external carbonation"
+          name: "Carbon dioxide, beverage grade"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Purchased carbon dioxide is recorded only for external carbonation and not netted against fermentation carbon dioxide."
+          amount:
+            expression: "Cylinder, bulk-tank, or mass-flow-meter balance for carbon dioxide added to product"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per 1,000 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_additive_records
+              source_ids:
+                - eu-cider-perry-market-standards-2023
+            ranges: []
+        - row_id: conditioning_electricity
+          role: "Electricity for conditioning"
+          name: "Electricity, medium voltage"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Electricity for conditioning tanks, riddling, disgorging, chilling, and carbonation equipment is recorded separately."
+          amount:
+            expression: "Metered or defensibly allocated conditioning electricity"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per 1,000 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_records
+              source_ids:
+                - uk-welsh-cider-2015
+                - uk-welsh-perry-2015
+                - ec-jrc-fdm-bref-2019
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: conditioned_beverage
+          role: "Conditioned fermented beverage"
+          name: "Conditioned fermented beverage"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "The sparkling or carbonated beverage is measured before final filling or dispatch."
+          amount:
+            expression: "Measured conditioned-beverage mass net of disgorging and transfer losses"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_material_mass_balance
+              source_ids:
+                - uk-welsh-cider-2015
+                - uk-welsh-perry-2015
+            ranges: []
+      waste:
+        - row_id: secondary_fermentation_lees
+          role: "Secondary-fermentation lees"
+          name: "Secondary-fermentation lees"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Lees removed during riddling, disgorging, or tank conditioning are recorded separately."
+          amount:
+            expression: "Measured wet mass removed during secondary fermentation finishing"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per 1,000 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_records
+              source_ids:
+                - uk-welsh-cider-2015
+                - uk-welsh-perry-2015
+            ranges: []
+      elementary:
+        []
+  - id: packaging_dispatch
+    label: "Filling, packaging, and dispatch preparation"
+    inputs:
+      product:
+        - row_id: packaging_beverage_input
+          role: "Bulk beverage sent to filling"
+          name: "Finished bulk fermented beverage"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Bulk beverage transferred to the filling line is measured before package losses."
+          amount:
+            expression: "Measured transfer mass to packaging"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_mass_balance
+              source_ids:
+                - ec-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: packaging_electricity
+          role: "Packaging-line electricity"
+          name: "Electricity, medium voltage"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Electricity for rinsing, filling, closing, labelling, conveying, and pallet preparation is separately recorded."
+          amount:
+            expression: "Metered or defensibly allocated packaging-line electricity"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_records
+              source_ids:
+                - ec-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: packaging_water
+          role: "Packaging-line water"
+          name: "Process water"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "Water used on the filling line is separately metered from other process water."
+          amount:
+            expression: "Metered water delivered to packaging operations"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water_records
+              source_ids:
+                - ec-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: glass_bottle
+          role: "Glass bottles"
+          name: "Glass bottle"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Glass bottle mass is recorded only for a glass-bottle package route."
+          amount:
+            expression: "Filled-bottle count multiplied by verified empty-bottle mass plus measured rejects"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_records
+              source_ids:
+                - uk-welsh-cider-2015
+                - uk-welsh-perry-2015
+            ranges: []
+        - row_id: aluminium_can
+          role: "Aluminium beverage cans"
+          name: "Aluminium beverage can"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Aluminium can mass is recorded only for the can route."
+          amount:
+            expression: "Filled-can count multiplied by verified empty-can mass plus measured rejects"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_records
+              source_ids:
+                - eu-pef-2021
+            ranges: []
+        - row_id: steel_crown_closure
+          role: "Steel crown closures"
+          name: "Steel crown closure"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Steel crown closures are recorded separately from bottles and other closure types."
+          amount:
+            expression: "Applied-closure count multiplied by verified unit mass plus measured rejects"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_records
+              source_ids:
+                - uk-welsh-cider-2015
+                - uk-welsh-perry-2015
+            ranges: []
+        - row_id: aluminium_screw_cap
+          role: "Aluminium screw-cap closures"
+          name: "Aluminium screw-cap closure"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Aluminium screw caps are recorded only when used and remain separate from crown closures."
+          amount:
+            expression: "Applied-closure count multiplied by verified unit mass plus measured rejects"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_records
+              source_ids:
+                - eu-pef-2021
+            ranges: []
+        - row_id: paper_label
+          role: "Paper labels"
+          name: "Paper label"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Paper labels are recorded separately from containers, closures, and cartons."
+          amount:
+            expression: "Applied-label count multiplied by verified unit mass plus measured rejects"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_records
+              source_ids:
+                - eu-pef-2021
+            ranges: []
+        - row_id: corrugated_board_carton
+          role: "Corrugated board cartons"
+          name: "Corrugated board carton"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Carton mass is recorded for the declared secondary-packaging configuration."
+          amount:
+            expression: "Carton count multiplied by verified unit mass plus measured rejects"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_records
+              source_ids:
+                - eu-pef-2021
+            ranges: []
+        - row_id: ldpe_shrink_film
+          role: "Low-density polyethylene shrink film"
+          name: "Low-density polyethylene shrink film"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Shrink-film mass is recorded separately from cartons and other package components."
+          amount:
+            expression: "Issued film mass net of returned rolls, with measured line scrap added"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_records
+              source_ids:
+                - eu-pef-2021
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: reference_product_output
+          role: "Market-ready reference product"
+          name: "Fermented beverage in this product category"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This is the single reference-product exchange for the declared bulk or packaged fermented beverage."
+          amount:
+            expression: "Fixed net saleable reference amount after filling and dispatch-preparation losses"
+            value_mode: "fixed_value"
+            specificity: "product_specific"
+            basis:
+              text: "exactly 1,000 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "method_formula"
+              source_ids:
+                - un-cpc-3-2025
+                - eu-pef-2021
+            ranges: []
+      waste:
+        - row_id: packaging_beverage_loss
+          role: "Rejected beverage from filling"
+          name: "Rejected fermented beverage"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Underfills, overfills, start-up product, spills, and rejected filled product are measured separately from wastewater."
+          amount:
+            expression: "Measured beverage mass rejected or lost on the filling line"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_records
+              source_ids:
+                - ec-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: broken_glass
+          role: "Broken glass packaging"
+          name: "Broken glass packaging"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Broken or rejected glass is weighed separately from metal, paper, and plastic packaging scrap."
+          amount:
+            expression: "Measured glass reject mass from the packaging line"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_records
+              source_ids:
+                - ec-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: aluminium_can_scrap
+          role: "Aluminium-can scrap"
+          name: "Aluminium-can scrap"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Rejected aluminium cans are weighed separately from closure scrap and other packaging waste."
+          amount:
+            expression: "Measured rejected aluminium-can mass from packaging"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_records
+              source_ids:
+                - ec-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: steel_crown_closure_scrap
+          role: "Steel crown-closure scrap"
+          name: "Steel crown-closure scrap"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Rejected steel crown closures are weighed separately from cans, other closures, and other packaging waste."
+          amount:
+            expression: "Measured rejected steel crown-closure mass from packaging"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_records
+              source_ids:
+                - ec-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: aluminium_screw_cap_scrap
+          role: "Aluminium screw-cap scrap"
+          name: "Aluminium screw-cap scrap"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Rejected aluminium screw caps are weighed separately from cans, steel closures, and other packaging waste."
+          amount:
+            expression: "Measured rejected aluminium screw-cap mass from packaging"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_records
+              source_ids:
+                - ec-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: paper_label_scrap
+          role: "Paper-label scrap"
+          name: "Paper-label scrap"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Rejected paper labels are recorded separately from cartons and other packaging waste."
+          amount:
+            expression: "Measured rejected paper-label mass from packaging"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_records
+              source_ids:
+                - ec-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: corrugated_board_scrap
+          role: "Corrugated-board packaging scrap"
+          name: "Corrugated-board packaging scrap"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Rejected corrugated-board cartons are recorded separately from labels and other packaging waste."
+          amount:
+            expression: "Measured rejected corrugated-board mass from packaging"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_records
+              source_ids:
+                - ec-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: polyethylene_film_scrap
+          role: "Polyethylene-film scrap"
+          name: "Polyethylene-film scrap"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Rejected shrink film is recorded separately from all other packaging wastes."
+          amount:
+            expression: "Measured polyethylene-film reject mass from packaging"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_records
+              source_ids:
+                - ec-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: packaging_wastewater
+          role: "Packaging wastewater"
+          name: "Packaging wastewater"
+          flow_type: "waste"
+          property_unit: "Volume / m3"
+          description: "Filling-line, container-rinsing, and packaging-cleaning wastewater is recorded by destination."
+          amount:
+            expression: "Metered or validated batch-volume discharge from packaging operations"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wastewater_records
+              source_ids:
+                - ec-jrc-fdm-bref-2019
+            ranges: []
+      elementary:
+        []
+  - id: site_services_wastewater
+    label: "Site utilities, cleaning, refrigeration, and wastewater treatment"
+    inputs:
+      product:
+        - row_id: site_electricity
+          role: "Shared site electricity"
+          name: "Electricity, medium voltage"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Shared electricity not directly sub-metered to another process is separately recorded and allocated by a causal driver."
+          amount:
+            expression: "Metered shared-site electricity assigned with documented operating or load drivers"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_energy_records
+              source_ids:
+                - ec-jrc-fdm-bref-2019
+                - eu-pef-2021
+            ranges: []
+        - row_id: site_natural_gas
+          role: "Natural gas for onsite heat"
+          name: "Natural gas"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Natural gas is recorded as one fuel and is not combined with other fuels."
+          amount:
+            expression: "Metered or invoice quantity converted using documented heating value"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_records
+              source_ids:
+                - ec-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: site_lpg
+          role: "Liquefied petroleum gas for onsite heat"
+          name: "Liquefied petroleum gas"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Liquefied petroleum gas is recorded only when used and remains separate from natural gas and fuel oil."
+          amount:
+            expression: "Metered or invoice quantity converted using documented heating value"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_records
+              source_ids:
+                - ec-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: site_light_fuel_oil
+          role: "Light fuel oil for onsite heat"
+          name: "Light fuel oil"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Light fuel oil is recorded only when used and remains separate from gaseous fuels."
+          amount:
+            expression: "Metered or invoice quantity converted using documented heating value"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_records
+              source_ids:
+                - ec-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: site_steam
+          role: "Purchased steam for shared services"
+          name: "Steam, at industrial facility"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Purchased steam used by shared hot-water or cleaning systems is separately metered from fuels."
+          amount:
+            expression: "Metered shared-service steam energy"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_records
+              source_ids:
+                - ec-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: site_cleaning_water
+          role: "Cleaning and service water"
+          name: "Process water"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "Water used for shared clean-in-place, sanitation, and site services is measured separately from formulation water."
+          amount:
+            expression: "Metered or event-based water use for cleaning and shared services"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water_records
+              source_ids:
+                - ec-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: sodium_hydroxide_cleaner
+          role: "Sodium hydroxide cleaning agent"
+          name: "Sodium hydroxide"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Sodium hydroxide is recorded separately from acid and disinfectant chemicals."
+          amount:
+            expression: "Active sodium-hydroxide mass calculated from issued formulation and concentration"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_cleaning_records
+              source_ids:
+                - ec-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: nitric_acid_cleaner
+          role: "Nitric acid cleaning agent"
+          name: "Nitric acid"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Nitric acid is recorded only when used in an acid-cleaning step."
+          amount:
+            expression: "Active nitric-acid mass calculated from issued formulation and concentration"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_cleaning_records
+              source_ids:
+                - ec-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: peracetic_acid_disinfectant
+          role: "Peracetic acid disinfectant"
+          name: "Peracetic acid"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Peracetic acid is recorded separately when used for disinfection."
+          amount:
+            expression: "Active peracetic-acid mass calculated from issued formulation and concentration"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_cleaning_records
+              source_ids:
+                - ec-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: r134a_makeup
+          role: "Refrigerant R134a makeup"
+          name: "Refrigerant R134a"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "R134a additions are recorded by refrigeration circuit only when that refrigerant is present."
+          amount:
+            expression: "Servicing additions reconciled by calc_refrigerant_loss"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_refrigerant_records
+              source_ids:
+                - ec-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: r404a_makeup
+          role: "Refrigerant R404A makeup"
+          name: "Refrigerant R404A"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "R404A additions are recorded separately from R134a and ammonia."
+          amount:
+            expression: "Servicing additions reconciled by calc_refrigerant_loss"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_refrigerant_records
+              source_ids:
+                - ec-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: ammonia_refrigerant_makeup
+          role: "Anhydrous ammonia refrigerant makeup"
+          name: "Anhydrous ammonia refrigerant"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Anhydrous ammonia additions are recorded only for an ammonia refrigeration circuit."
+          amount:
+            expression: "Servicing additions reconciled by calc_refrigerant_loss"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_refrigerant_records
+              source_ids:
+                - ec-jrc-fdm-bref-2019
+            ranges: []
+      waste:
+        - row_id: wastewater_treatment_input
+          role: "Combined beverage-process wastewater to onsite treatment"
+          name: "Combined beverage-process wastewater"
+          flow_type: "waste"
+          property_unit: "Volume / m3"
+          description: "Combined process wastewater is recorded at the treatment inlet after source-process streams remain separately traceable."
+          amount:
+            expression: "Metered onsite-treatment influent volume reconciled to source streams"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wastewater_records
+              source_ids:
+                - ec-jrc-fdm-bref-2019
+            ranges: []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: treated_wastewater
+          role: "Treated beverage-process wastewater"
+          name: "Treated beverage-process wastewater"
+          flow_type: "waste"
+          property_unit: "Volume / m3"
+          description: "Treated effluent is recorded by volume and destination before direct discharge, reuse, or transfer."
+          amount:
+            expression: "Metered treatment-effluent volume"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wastewater_monitoring
+              source_ids:
+                - ec-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: wastewater_sludge
+          role: "Wastewater-treatment sludge"
+          name: "Beverage wastewater-treatment sludge"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Sludge is recorded by wet mass, dry matter where available, and one documented destination."
+          amount:
+            expression: "Measured wet sludge mass removed from onsite treatment"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_records
+              source_ids:
+                - ec-jrc-fdm-bref-2019
+            ranges: []
+      elementary:
+        - row_id: combustion_co2_fossil
+          role: "Fossil carbon dioxide from onsite fuel combustion"
+          name: "Carbon dioxide, fossil, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Fossil carbon dioxide is calculated for each fuel activity without combining fuels in the input inventory."
+          amount:
+            expression: "calc_combustion_emissions for carbon dioxide"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg reference product"
+              kind: "fuel_inventory"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_direct_emission_records
+              source_ids:
+                - eu-pef-2021
+            ranges: []
+        - row_id: combustion_ch4
+          role: "Fossil methane from onsite fuel combustion"
+          name: "Methane, fossil, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Methane is calculated as a separate direct emission."
+          amount:
+            expression: "calc_combustion_emissions for methane"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg reference product"
+              kind: "fuel_inventory"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_direct_emission_records
+              source_ids:
+                - eu-pef-2021
+            ranges: []
+        - row_id: combustion_n2o
+          role: "Nitrous oxide from onsite fuel combustion"
+          name: "Nitrous oxide, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Nitrous oxide is calculated as a separate direct emission."
+          amount:
+            expression: "calc_combustion_emissions for nitrous oxide"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg reference product"
+              kind: "fuel_inventory"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_direct_emission_records
+              source_ids:
+                - eu-pef-2021
+            ranges: []
+        - row_id: combustion_nox
+          role: "Nitrogen oxides from onsite fuel combustion"
+          name: "Nitrogen oxides, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Nitrogen oxides are calculated separately from greenhouse-gas emissions."
+          amount:
+            expression: "calc_combustion_emissions for nitrogen oxides"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg reference product"
+              kind: "fuel_inventory"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_direct_emission_records
+              source_ids:
+                - ec-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: r134a_to_air
+          role: "R134a released to air"
+          name: "1,1,1,2-Tetrafluoroethane, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "R134a loss is reported separately from every other refrigerant."
+          amount:
+            expression: "calc_refrigerant_loss for the R134a circuit"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_refrigerant_records
+              source_ids:
+                - ec-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: r404a_to_air
+          role: "R404A released to air"
+          name: "Refrigerant R404A, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "R404A loss is reported as its own refrigerant-mixture elementary flow."
+          amount:
+            expression: "calc_refrigerant_loss for the R404A circuit"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_refrigerant_records
+              source_ids:
+                - ec-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: ammonia_to_air
+          role: "Ammonia refrigerant released to air"
+          name: "Ammonia, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Anhydrous ammonia loss is reported separately from fluorinated refrigerants."
+          amount:
+            expression: "calc_refrigerant_loss for the ammonia circuit"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_refrigerant_records
+              source_ids:
+                - ec-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: cod_to_water
+          role: "Chemical oxygen demand discharged to water"
+          name: "Chemical oxygen demand, to water"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "COD is calculated from matched effluent flow and concentration records."
+          amount:
+            expression: "calc_wastewater_load for COD"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_wastewater_monitoring
+              source_ids:
+                - ec-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: bod5_to_water
+          role: "Five-day biochemical oxygen demand discharged to water"
+          name: "Biochemical oxygen demand, 5 days, to water"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "BOD5 is calculated separately from COD."
+          amount:
+            expression: "calc_wastewater_load for BOD5"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_wastewater_monitoring
+              source_ids:
+                - ec-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: tss_to_water
+          role: "Total suspended solids discharged to water"
+          name: "Total suspended solids, to water"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Total suspended solids are calculated as a separate pollutant load."
+          amount:
+            expression: "calc_wastewater_load for TSS"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_wastewater_monitoring
+              source_ids:
+                - ec-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: total_nitrogen_to_water
+          role: "Total nitrogen discharged to water"
+          name: "Nitrogen, total, to water"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Total nitrogen is calculated separately from other water-emission indicators."
+          amount:
+            expression: "calc_wastewater_load for total nitrogen"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_wastewater_monitoring
+              source_ids:
+                - ec-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: total_phosphorus_to_water
+          role: "Total phosphorus discharged to water"
+          name: "Phosphorus, total, to water"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Total phosphorus is calculated separately from other water-emission indicators."
+          amount:
+            expression: "calc_wastewater_load for total phosphorus"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_wastewater_monitoring
+              source_ids:
+                - ec-jrc-fdm-bref-2019
+            ranges: []
+allocation_rules:
+  - rule_id: allocation_avoid_by_subdivision
+    applies_to: "All foreground processes and shared site services"
+    rule: "Avoid allocation first by sub-metering or subdividing batches, lines, tanks, cleaning events, refrigeration circuits, and treatment operations so directly attributable exchanges remain with the declared product."
+    source_ids:
+      - eu-pef-2021
+      - ec-jrc-fdm-bref-2019
+  - rule_id: allocation_physical_causality
+    applies_to: "Shared operations that cannot be subdivided"
+    rule: "Allocate remaining shared inputs and outputs using a documented physical causal driver such as product mass, tank occupancy, operating time, thermal load, cleaning event, wastewater volume, or pollutant load; state why the driver reflects causality."
+    source_ids:
+      - eu-pef-2021
+  - rule_id: allocation_economic_fallback
+    applies_to: "Multiple valuable outputs without a defensible physical relationship"
+    rule: "Use a documented non-physical relationship such as contemporaneous economic value only after subdivision and physical causality are shown impracticable; disclose prices, reference period, factors, and a sensitivity result."
+    source_ids:
+      - eu-pef-2021
+  - rule_id: allocation_residue_status
+    applies_to: "Pomace, yeast, lees, recovered carbon dioxide, sludge, and other recovered outputs"
+    rule: "Treat an output as a co-product only when it is separately measured, meets a declared specification, and has documented beneficial use or market value; otherwise record it as waste. Do not subtract an avoided-product credit within this facility-gate inventory unless a broader study applies a consistent substitution method."
+    source_ids:
+      - eu-pef-2021
+      - ec-jrc-fdm-bref-2019
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_material_mass_balance
+      process_id: "all"
+      flow_role: "Feedstock, must, intermediate, and product mass"
+      record_type: "Scale, tank, density, batch, and dispatch records"
+      raw_fields: "batch_id; material_identity; route; timestamp; gross_mass; tare_mass; volume; temperature; density; opening_stock; closing_stock; transfer_loss"
+      collection_method: "Calibrated scale or calibrated volume converted with matched density"
+      unit: "kg"
+      frequency: "Each receipt, batch, transfer, and dispatch"
+      temporal_coverage: "Complete representative campaign"
+      site_scope: "All foreground operations"
+      aggregation_rule: "Reconcile route-specific inputs, outputs, stock changes, emissions, and documented losses before normalization"
+      quality_evidence: "Calibration certificates; tank charts; batch reconciliation; dispatch records"
+    - protocol_id: cp_energy_records
+      process_id: "all"
+      flow_role: "Electricity, steam, and each fuel"
+      record_type: "Meter, invoice, and equipment-allocation records"
+      raw_fields: "carrier_identity; meter_id; timestamp; quantity; unit; heating_value_basis; process_assignment; allocation_driver"
+      collection_method: "Direct sub-metering preferred; otherwise documented allocation from facility meters"
+      unit: "kWh; MJ"
+      frequency: "Continuous or invoice period"
+      temporal_coverage: "Complete representative campaign"
+      site_scope: "Foreground facility and onsite treatment"
+      aggregation_rule: "Aggregate each carrier separately; no combined energy row"
+      quality_evidence: "Meter calibration; invoices; allocation worksheet; completeness check"
+    - protocol_id: cp_water_records
+      process_id: "all"
+      flow_role: "Formulation, process, and cleaning water"
+      record_type: "Meter, batch, and cleaning-event records"
+      raw_fields: "meter_id; timestamp; volume; temperature; source; process_assignment; reuse_flag"
+      collection_method: "Direct meter or validated event estimate"
+      unit: "kg; m3"
+      frequency: "Continuous, batch, or each cleaning event"
+      temporal_coverage: "Complete representative campaign"
+      site_scope: "All foreground operations"
+      aggregation_rule: "Sum by source and process; distinguish water incorporated into product, fresh intake, and reuse"
+      quality_evidence: "Meter calibration; batch sheet; cleaning log; water balance"
+    - protocol_id: cp_additive_records
+      process_id: "all"
+      flow_role: "Yeast, nutrient, additive, processing aid, sugar, and carbon dioxide"
+      record_type: "Weighing, formulation, stock-issue, and gas-meter records"
+      raw_fields: "material_identity; supplier; active_fraction; batch_id; issued_mass; returned_mass; gas_quantity"
+      collection_method: "Weighed issue-and-return balance or calibrated dosing record"
+      unit: "kg"
+      frequency: "Each addition"
+      temporal_coverage: "Complete representative campaign"
+      site_scope: "Foreground beverage operations"
+      aggregation_rule: "Aggregate each atomic material and route separately"
+      quality_evidence: "Supplier specification; scale calibration; batch sheet; stock reconciliation"
+    - protocol_id: cp_cleaning_records
+      process_id: "site_services_wastewater"
+      flow_role: "Each cleaning or disinfectant chemical"
+      record_type: "CIP recipe, concentration, conductivity, stock, and event records"
+      raw_fields: "chemical_identity; formulation; active_fraction; event_id; process; solution_volume; concentration; recovered_quantity"
+      collection_method: "Active-mass calculation from issued formulation and measured concentration or stock balance"
+      unit: "kg"
+      frequency: "Each cleaning event"
+      temporal_coverage: "Complete representative campaign"
+      site_scope: "Foreground cleaning systems"
+      aggregation_rule: "Aggregate each active chemical separately; retain reused solution and disposal records"
+      quality_evidence: "Supplier specification; conductivity or titration record; stock reconciliation"
+    - protocol_id: cp_refrigerant_records
+      process_id: "site_services_wastewater"
+      flow_role: "Each refrigerant addition and loss"
+      record_type: "Asset register and service records"
+      raw_fields: "equipment_id; refrigerant_identity; opening_charge; added_mass; recovered_mass; closing_charge; service_date; process_assignment"
+      collection_method: "Circuit-level inventory balance"
+      unit: "kg"
+      frequency: "Each service and annual or campaign close"
+      temporal_coverage: "Period overlapping declared campaign"
+      site_scope: "Refrigeration systems serving foreground processes"
+      aggregation_rule: "Calculate and report each refrigerant separately"
+      quality_evidence: "Technician record; purchase receipt; asset register; reconciliation"
+    - protocol_id: cp_packaging_records
+      process_id: "packaging_dispatch"
+      flow_role: "Each packaging component"
+      record_type: "Bill of materials, count, unit-mass, issue, return, and reject records"
+      raw_fields: "component_identity; supplier; specification; unit_mass; issued_count; returned_count; reject_count; reusable_cycles"
+      collection_method: "Count times verified unit mass or direct mass issue balance"
+      unit: "kg"
+      frequency: "Each packaging run"
+      temporal_coverage: "Complete representative campaign"
+      site_scope: "Packaging operations under foreground control"
+      aggregation_rule: "Aggregate each component separately; reconcile product fill and rejects"
+      quality_evidence: "Supplier specification; sampled unit mass; line reconciliation"
+    - protocol_id: cp_waste_records
+      process_id: "all"
+      flow_role: "Each waste, residue, or co-product"
+      record_type: "Scale, collection, dry-matter, status, and destination records"
+      raw_fields: "waste_identity; wet_mass; dry_matter; batch_id; destination; market_status; specification; haulier"
+      collection_method: "Calibrated scale or container count with verified net mass"
+      unit: "kg"
+      frequency: "Each removal"
+      temporal_coverage: "Complete representative campaign"
+      site_scope: "All foreground processes"
+      aggregation_rule: "Aggregate each identity and destination separately; do not net sales against inputs"
+      quality_evidence: "Weigh ticket; manifest; analysis; destination evidence"
+    - protocol_id: cp_wastewater_records
+      process_id: "all"
+      flow_role: "Each source-process wastewater"
+      record_type: "Flow meter, tank, sewer, reuse, and treatment records"
+      raw_fields: "source_process; timestamp; volume; destination; sanitary_inclusion; product_loss; treatment_route"
+      collection_method: "Metered flow or validated tank-volume balance"
+      unit: "m3"
+      frequency: "Continuous or each discharge batch"
+      temporal_coverage: "Complete campaign including cleaning and peak production"
+      site_scope: "Wastewater under foreground control"
+      aggregation_rule: "Preserve source stream before aggregation; reconcile influent, effluent, reuse, and transfer"
+      quality_evidence: "Meter calibration; sewer invoice; tank log; water balance"
+    - protocol_id: cp_wastewater_monitoring
+      process_id: "site_services_wastewater"
+      flow_role: "Each wastewater pollutant"
+      record_type: "Matched flow and laboratory sample records"
+      raw_fields: "sample_id; interval; discharge_volume; cod; bod5; tss; total_nitrogen; total_phosphorus; method; detection_limit"
+      collection_method: "Representative composite sampling and documented laboratory analysis"
+      unit: "kg; mg/L; m3"
+      frequency: "Per permit and sufficient to represent production variability"
+      temporal_coverage: "Complete representative campaign"
+      site_scope: "Direct discharge under foreground control"
+      aggregation_rule: "Pair each concentration with the same flow interval and calculate each pollutant separately"
+      quality_evidence: "Chain of custody; method; laboratory QA/QC; flow-meter calibration"
+    - protocol_id: cp_direct_emission_records
+      process_id: "all"
+      flow_role: "Fermentation, combustion, and refrigerant releases"
+      record_type: "Sugar, off-gas, fuel, factor, and asset records"
+      raw_fields: "batch_id; sugar_before; sugar_after; offgas_mass; fuel_identity; fuel_quantity; factor_id; factor_value; refrigerant_identity; refrigerant_loss"
+      collection_method: "Direct measurement preferred; otherwise documented stoichiometry, factor, or asset balance"
+      unit: "kg"
+      frequency: "Each batch, fuel period, or refrigerant service"
+      temporal_coverage: "Complete representative campaign"
+      site_scope: "Direct foreground emission sources"
+      aggregation_rule: "Calculate each emitted substance separately"
+      quality_evidence: "Analytical record; invoice; factor provenance; calculation worksheet"
+  calculation_rules:
+    - id: calc_reference_normalisation
+      applies_to: "Every inventory exchange"
+      rule: "normalized_amount = campaign_amount / net_saleable_reference_product_mass × 1,000 kg"
+      inputs:
+        - "Campaign exchange amount"
+        - "net saleable product mass"
+      output: "Exchange per 1,000 kg reference product"
+      source_ids:
+        - eu-pef-2021
+    - id: calc_volume_to_mass
+      applies_to: "Must, beverage, water, and liquid materials"
+      rule: "mass = calibrated_volume × density measured or justified for the material and temperature"
+      inputs:
+        - Volume
+        - temperature
+        - density
+      output: "Material mass"
+      source_ids:
+        - eu-pef-2021
+    - id: calc_active_chemical
+      applies_to: "Formulated additives and cleaning agents"
+      rule: "active_material_mass = formulation_mass × verified active_mass_fraction"
+      inputs:
+        - "Formulation mass"
+        - "active fraction"
+      output: "Atomic active-material mass"
+      source_ids:
+        - ec-jrc-fdm-bref-2019
+    - id: calc_fermentation_co2
+      applies_to: "Alcoholic fermentation"
+      rule: "Use measured off-gas where reliable; otherwise CO2_mass = fermentable_hexose_equivalent_consumed × 88/180, adjusted for documented dissolved or recovered carbon dioxide"
+      inputs:
+        - "Sugar before and after"
+        - "batch mass"
+        - "measured off-gas"
+        - "retained or recovered carbon dioxide"
+      output: "Biogenic carbon dioxide to air"
+      source_ids:
+        - iglesias-mead-2014
+    - id: calc_refrigerant_loss
+      applies_to: "Each refrigeration circuit"
+      rule: "loss = opening_charge + additions - recovered_mass - closing_charge; retain one calculation per refrigerant"
+      inputs:
+        - "Circuit-level refrigerant inventory"
+      output: "Refrigerant emission to air"
+      source_ids:
+        - ec-jrc-fdm-bref-2019
+    - id: calc_combustion_emissions
+      applies_to: "Each fuel and emitted substance"
+      rule: "emission_mass = fuel_activity × documented fuel- and substance-specific emission_factor"
+      inputs:
+        - "Fuel quantity"
+        - "heating-value basis"
+        - "factor identity"
+      output: "Separate CO2, CH4, N2O, or NOx emission"
+      source_ids:
+        - eu-pef-2021
+    - id: calc_wastewater_load
+      applies_to: "Each direct water-emission indicator"
+      rule: "load_kg = matched_discharge_volume_m3 × concentration_mg_per_L / 1,000"
+      inputs:
+        - "Discharge volume"
+        - "matched concentration"
+      output: "Separate COD, BOD5, TSS, total-N, or total-P load"
+      source_ids:
+        - ec-jrc-fdm-bref-2019
+  data_quality_requirements:
+    - id: dq_identity
+      applies_to: "Reference product and every exchange"
+      requirement: "Retain the product definition, raw-material route, atomic flow identity, material specification, packaging component, refrigerant identity, waste status, and destination."
+      evidence: "Product standard; batch sheet; supplier specification; asset register; waste manifest"
+    - id: dq_temporal
+      applies_to: "Foreground data"
+      requirement: "Cover one complete representative production campaign including preparation, fermentation, maturation, packaging, cleaning, refrigeration, stock changes, and wastewater attributable to the product; disclose deviations."
+      evidence: "Dated meter exports; production calendar; opening and closing inventories"
+    - id: dq_measurement
+      applies_to: "Mass, volume, energy, water, chemical, packaging, and pollutant records"
+      requirement: "Use calibrated instruments or documented engineering estimates; retain units, density, active fractions, heating values, detection limits, and allocation drivers."
+      evidence: "Calibration certificate; laboratory QA/QC; calculation worksheet"
+    - id: dq_completeness
+      applies_to: "All included processes"
+      requirement: "Reconcile feedstocks, products, intermediates, product loss, utilities, additives, aids, packaging, each waste, wastewater destination, refrigerant, and direct emission; explain every missing or excluded flow."
+      evidence: "Campaign balance; signed completeness review; ec-jrc-fdm-bref-2019; eu-pef-2021"
+    - id: dq_representativeness
+      applies_to: "Foreground and linked upstream data"
+      requirement: "Characterize time, geography, technology, precision, completeness, consistency, source, and uncertainty; prioritize site-specific records for controlled processes and representative upstream datasets."
+      evidence: "Data-quality assessment; dataset metadata; eu-pef-2021"
+    - id: dq_range_integrity
+      applies_to: "Any future quantitative range"
+      requirement: "Do not convert one plant, batch, scenario, or paper value into a range. Require at least two independent, boundary-compatible verified full texts before authoring an inferred empirical range."
+      evidence: "Source comparison and range review record"
+validation_rules:
+  - rule_id: validate_reference_identity
+    applies_to: "Reference flow"
+    rule: "Require the exact 1,000 kg mass basis and all product qualifiers; keep the product-flow UUID empty until one Tiangong flow is confirmed to cover the complete category."
+    source_ids:
+      - un-cpc-3-2025
+      - eu-cider-perry-market-standards-2023
+  - rule_id: validate_scope
+    applies_to: "Product identity"
+    rule: "Confirm alcoholic fermentation is identity-forming and reject fresh-grape wine, malt beer, non-fermented beverages, vinegar, distilled spirits, and products that no longer retain fermented-beverage character."
+    source_ids:
+      - un-cpc-3-2025
+      - eu-cn-2206-2019
+  - rule_id: validate_route
+    applies_to: "Process map"
+    rule: "Require exactly one applicable must-preparation route, alcoholic fermentation, and all actually performed finishing, conditioning, packaging, utility, cleaning, refrigeration, and wastewater operations; prohibit combined route-selector exchanges."
+    source_ids:
+      - uk-welsh-cider-2015
+      - uk-welsh-perry-2015
+      - eu-czworniak-mead-2016
+      - iglesias-mead-2014
+  - rule_id: validate_atomic_inventory
+    applies_to: "Inventory rows"
+    rule: "Reject any selected flow that combines feedstocks, yeast and nutrients, electricity and heat, multiple fuels, multiple refrigerants, multiple chemicals, filtration aids, packaging components, wastes, wastewater indicators, or air emissions."
+    source_ids:
+      - ec-jrc-fdm-bref-2019
+      - eu-pef-2021
+  - rule_id: validate_mass_balance
+    applies_to: "Each process and campaign"
+    rule: "Reconcile opening stocks plus inputs against outputs, closing stocks, fermentation carbon dioxide, moisture or density changes, measured waste, wastewater product loss, and documented losses before publication."
+    source_ids:
+      - ec-jrc-fdm-bref-2019
+      - eu-pef-2021
+  - rule_id: validate_wastewater
+    applies_to: "Wastewater and direct discharge"
+    rule: "Require source-process volumes and destinations; reconcile onsite-treatment influent and effluent; calculate COD, BOD5, TSS, total nitrogen, and total phosphorus separately when monitored or required."
+    source_ids:
+      - ec-jrc-fdm-bref-2019
+  - rule_id: validate_packaging
+    applies_to: "Packaged product"
+    rule: "Reconcile fill count and net product mass and require a separate mass for every container, closure, label, carton, and film actually used, plus separate reject wastes."
+    source_ids:
+      - eu-pef-2021
+  - rule_id: validate_allocation
+    applies_to: "Shared operations and recovered outputs"
+    rule: "Require documented subdivision attempts, causal drivers, residual allocation factors, output status, and sensitivity for any non-physical fallback; prohibit undisclosed avoided-product credits."
+    source_ids:
+      - eu-pef-2021
+  - rule_id: validate_sources_and_quality
+    applies_to: "Foreground package"
+    rule: "Require source ids for externally constrained rules, foreground records for controlled processes, documented proxies for unavailable upstream data, complete quality disclosure, and explicit unresolved range and UUID gaps."
+    source_ids:
+      - ec-jrc-fdm-bref-2019
+      - eu-pef-2021
+published_dataset_profile:
+  dataset_role: "Foreground production dataset for one declared fermented beverage in this product category at the producing-facility dispatch gate"
+  downstream_use: "secondary_dataset; background_dataset after review and publication"
+  allowed_use: "Product and process LCA, supply-chain inventory, environmental-footprint studies, hotspot analysis, and scenario modelling consistent with the declared raw-material route, product standard, technology, geography, campaign, packaging, and facility-gate boundary"
+  excluded_use: "Fresh-grape wine, malt beer, non-fermented beverage, vinegar, distilled spirit, or undisclosed substitution between fruit, honey, and other sugar-material routes; consumer claims implying cradle-to-grave coverage from this facility-gate dataset alone"
+  required_metadata: "PCR id and version; product name and jurisdictional standard; fermentable raw material; actual alcohol content; residual-sugar or sweetness class; still or sparkling state; carbonation and heat-treatment routes; geography; campaign; bulk or packaged state; package bill of materials; reference mass; wastewater route; waste and co-product destinations; allocation method; upstream dataset identities"
+  required_quality_disclosure: "Primary-versus-secondary data share; measurement and conversion methods; calibration and laboratory evidence; temporal, geographical, and technological representativeness; completeness; uncertainty; allocation sensitivity; unresolved flow UUIDs; missing range evidence; exclusions and proxy datasets"
+  update_trigger: "Change in product identity or law, raw-material route or formulation, fermentation or finishing technology, energy system, refrigerant, cleaning regime, packaging configuration, wastewater route, recovered-output status, allocation method, production representativeness, or a material review finding"
+data_sources:
+  - id: "un-cpc-3-2025"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, CPC Version 3.0 Structure, 30 June 2025, code 24230: https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Structure_30Jun2025.csv"
+    used_for: "Authoritative product-category title, inclusions, and exclusions; accessed 2026-08-23"
+  - id: "eu-cider-perry-market-standards-2023"
+    type: "official_guidance"
+    reference: "European Commission, COM(2023) 200 final, Report on new marketing standards for cider and perry: https://eur-lex.europa.eu/legal-content/EN/TXT/PDF/?uri=CELEX:52023DC0200"
+    used_for: "Official evidence that cider and perry definitions, fruit-juice content, water and sugar additions, and production rules vary by jurisdiction; supports required qualifiers rather than a universal recipe; accessed 2026-08-23"
+  - id: "eu-cn-2206-2019"
+    type: "standard"
+    reference: "European Union, Explanatory Notes to the Combined Nomenclature, heading 2206, 2019/C 219/04: https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:52019XC0701(02)"
+    used_for: "Independent official description of other fermented beverages and the requirement that a product retain fermented-beverage character; accessed 2026-08-23"
+  - id: "uk-welsh-cider-2015"
+    type: "standard"
+    reference: "UK Government, Traditional Welsh Cider Product Specification V2, 14 May 2015: https://assets.publishing.service.gov.uk/media/5fd36b18d3bf7f03a934080c/protected-food-name-welsh-cider.pdf"
+    used_for: "Verified full-text cider route: fruit receipt, washing, milling, pressing, yeast or spontaneous fermentation, sulfite and keeving aids, racking, still and secondary-fermentation package routes, and traceability; accessed 2026-08-23"
+  - id: "uk-welsh-perry-2015"
+    type: "standard"
+    reference: "UK Government, Traditional Welsh Perry Product Specification V2, 14 May 2015: https://assets.publishing.service.gov.uk/media/5fd36afd8fa8f54d60878a81/protected-food-name-welsh-perry.pdf"
+    used_for: "Verified full-text perry route: pear pressing, fermentation, yeast and permitted aids, racking, still and sparkling finishing, packaging, and traceability; accessed 2026-08-23"
+  - id: "eu-czworniak-mead-2016"
+    type: "standard"
+    reference: "European Union, Czwórniak traditional mead product specification, 2016/C 188/05: https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:52016XC0527(01)"
+    used_for: "Verified official mead route: honey, water, optional fruit or herbs, steam-heated must preparation, cooling, yeast pitching, fermentation, racking, maturation, filtration, and final adjustment; accessed 2026-08-23"
+  - id: "iglesias-mead-2014"
+    type: "literature"
+    reference: "Iglesias, A. et al. Developments in the Fermentation Process and Quality Improvement Strategies for Mead Production. Molecules 19(8), 12577-12590. DOI: https://doi.org/10.3390/molecules190812577"
+    used_for: "Open full-text peer-reviewed support for honey-water must, yeast, nutrients, pasteurization, fermentation carbon dioxide, fermentation control, post-fermentation, and impurity removal"
+  - id: "ec-jrc-fdm-bref-2019"
+    type: "official_guidance"
+    reference: "European Commission Joint Research Centre, Best Available Techniques Reference Document for the Food, Drink and Milk Industries, EUR 29978 EN, JRC118627, DOI: https://doi.org/10.2760/243911"
+    used_for: "Verified full-text process inventory, water and energy monitoring, cleaning and CIP chemicals, separate residues, refrigerants, wastewater characterization and treatment, sludge, direct emissions, and data-quality evidence"
+  - id: "eu-pef-2021"
+    type: "official_guidance"
+    reference: "Commission Recommendation (EU) 2021/2279 on Environmental Footprint methods, consolidated text: https://eur-lex.europa.eu/eli/reco/2021/2279/2021-12-30/eng"
+    used_for: "Functional unit, reference flow, system boundary, completeness, company-specific data, packaging, data quality, verification, and multi-functionality hierarchy; accessed 2026-08-23"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:a4d19872b14eecd7dc0c4e722f4a410affadf4f2a3e8e007b54d7b819e9f748f"
+  generated_content_sha256: "sha256:3c744dd7bac7b5ff50fa524e1b5777b769a59b4685bc265387506a94819a0ac1"
