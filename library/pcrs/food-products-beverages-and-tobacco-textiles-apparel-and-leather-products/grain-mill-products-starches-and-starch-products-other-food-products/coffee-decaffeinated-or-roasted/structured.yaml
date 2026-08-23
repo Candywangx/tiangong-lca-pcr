@@ -1,10 +1,2075 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "23911"
-  title: "Coffee, decaffeinated or roasted"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.food-products-beverages-and-tobacco-textiles-apparel-and-leather-products.grain-mill-products-starches-and-starch-products-other-food-products.coffee-decaffeinated-or-roasted"
+  classification_refs: "CPC 3.0 23911, exact"
+  covered_products: "Decaffeinated green coffee; roasted whole-bean coffee; roasted ground coffee; roasted coffee decaffeinated before roasting"
+  excluded_products: "Non-decaffeinated green coffee as sale product; instant or soluble coffee; coffee extracts, essences, concentrates, and preparations; coffee substitutes; brewed beverages; husks and skins sold as products"
+  representative_product: "The declared CPC 23911 coffee product at the packing gate"
+  production_route: "Prepared green coffee; conditional decaffeination by exactly one declared route; conditional roasting and cooling; conditional grinding; packing"
+  market_state: "Net coffee product ready to leave the manufacturing site, with packaging inventoried separately"
+functional_unit:
+  what: "The declared decaffeinated green, roasted whole-bean, or roasted ground coffee product"
+  how_much: "1 kg net coffee product, excluding packaging mass"
+  how_well: "Conforming to the declared product form, roast specification, caffeine claim, moisture basis, particle-size specification when ground, and release-quality specification"
+  how_long_or_cycle: "One manufacturing reporting period, normalized to 1 kg of conforming net product output"
+  reference_flow_link: "unresolved_reference_product_flow"
+system_boundary:
+  rules:
+    - rule_id: boundary_gate_to_gate
+      applies_to: "Foreground package"
+      rule: "Include all manufacturing operations from green-coffee receipt through packing that physically occur at the reporting site."
+      source_ids:
+        - eu-jrc-fdm-bref-2019
+        - eu-pef-2021-2279
+    - rule_id: boundary_upstream_inputs
+      applies_to: "Purchased inputs"
+      rule: "Link upstream datasets without duplicating their production inside the foreground."
+      source_ids:
+        - eu-pef-2021-2279
+    - rule_id: boundary_route_conditioning
+      applies_to: "Decaffeination"
+      rule: "Include exactly the declared route and its actual inputs, recovery loops, wastes, wastewater, and emissions; mark alternative-route rows not applicable."
+      source_ids:
+        - eu-jrc-fdm-bref-2019
+        - shofinita-decaf-lca-2025
+    - rule_id: boundary_complete_inventory
+      applies_to: "Water, energy, materials, waste gas, wastewater, and residues"
+      rule: "Inventory each atomic exchange and its measurement or calculation basis; do not use aggregate utility, material, waste, or emission placeholders."
+      source_ids:
+        - eu-bat-fdm-2019-2031
+    - rule_id: boundary_packaging
+      applies_to: "Packing"
+      rule: "Include the actual packaging bill of materials and component scrap separately from net coffee mass."
+      source_ids:
+        - eu-jrc-fdm-bref-2019
+        - cheron-bessou-coffee-lca-2024
+boundary_abstraction:
+  declared_starting_condition: "Green coffee received at the manufacturing site, with supplier, origin, moisture, decaffeination status, and incoming mass declared"
+  starting_condition_role: "Upstream product input and foreground mass-balance starting point"
+  product_classification_scope: "CPC 3.0 23911 only for the saleable reference product; green non-decaffeinated coffee is an upstream input rather than a covered sale product"
+  recursive_input_rule: "A purchased CPC 23911 intermediate, such as decaffeinated green coffee, is recorded once as a technosphere input with its upstream dataset and is not recursively reprocessed in the foreground unless the site actually performs the process"
+  upstream_dataset_requirement: "Supplier-specific or representative upstream datasets are required for green coffee, utilities, chemicals, packaging, and purchased treatment services; geography, technology, time, and data quality shall be disclosed"
+  disclosure: "Declare product form, included process modules, decaffeination route, direct-fuel combustion, purchased utilities, emission-control and wastewater-treatment boundary, allocation, and excluded activities"
+reference_flow_definition:
+  reference_amount: "1 kg net coffee product at the manufacturing gate"
+  product_flow_ref:
+    name: "Coffee, decaffeinated or roasted"
+    uuid: ""
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "product form"
+    - "decaffeination status"
+    - "decaffeination route when applicable"
+    - "roast specification when applicable"
+    - species
+    - blend
+    - "and origin declaration"
+    - "moisture basis"
+    - "ground particle-size specification when applicable"
+    - "caffeine test method or claim basis"
+    - "packaging configuration"
+    - site
+    - geography
+    - technology
+    - "and reporting period"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "Reference product and coffee-material transfers"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Normalize all foreground exchanges to exactly 1 kg net conforming coffee product; packaging mass is excluded from the denominator."
+  - id: moisture_basis
+    applies_to: "Green, decaffeinated, roasted, and ground coffee masses"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Record as-received mass and measured moisture; state any dry-matter conversion and do not mix moisture bases."
+  - id: utility_units
+    applies_to: "Electricity, steam, purchased heat, fuels, process water, and liquid carbon dioxide"
+    required_property_ref:
+      name: "Native meter unit and SI-convertible unit"
+      uuid: ""
+    required_unit: "kWh, MJ, kg, or m3 as applicable"
+    rule: "Preserve the raw meter unit, conversion factor, lower or higher heating-value basis for fuels, and the normalized result."
+  - id: packaging_mass
+    applies_to: "Each packaging component"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Record each material component separately; do not include packaging mass in the 1 kg coffee reference amount."
+  - id: caffeine_result
+    applies_to: "Products carrying a decaffeinated claim"
+    required_property_ref:
+      name: "Method result"
+      uuid: ""
+    required_unit: "declared laboratory unit"
+    rule: "Record sampling basis, result, detection or quantification limit, and method identity; ISO 20481 may be used where applicable."
+  - id: quality_results
+    applies_to: "Roasted moisture and ground particle size"
+    required_property_ref:
+      name: "Method result"
+      uuid: ""
+    required_unit: "declared laboratory unit"
+    rule: "Keep method-specific results with lot identity; ISO 11817 and ISO 23134 may be used where applicable."
+process_map:
+  - id: green_coffee_preparation
+    name: "Green coffee receiving, cleaning, sorting, and blending"
+    inclusion: "required"
+    inclusion_condition: "Always"
+    role: "Establish incoming coffee identity and prepared lot mass"
+    quantitative_reference: "Per 1 kg net reference product"
+  - id: decaffeination
+    name: "Green coffee decaffeination and redrying"
+    inclusion: "conditional"
+    inclusion_condition: "On-site production of a decaffeinated product"
+    role: "Remove caffeine using exactly one declared route"
+    quantitative_reference: "Per 1 kg net reference product"
+  - id: roasting_cooling
+    name: "Roasting and cooling"
+    inclusion: "conditional"
+    inclusion_condition: "Roasted whole-bean or ground product"
+    role: "Roast, quench when used, cool, and separate silverskin"
+    quantitative_reference: "Per 1 kg net reference product"
+  - id: grinding
+    name: "Grinding"
+    inclusion: "conditional"
+    inclusion_condition: "Ground roasted product"
+    role: "Reduce roasted beans to declared particle-size specification"
+    quantitative_reference: "Per 1 kg net reference product"
+  - id: packing
+    name: "Packing"
+    inclusion: "required"
+    inclusion_condition: "Always"
+    role: "Produce the saleable reference product and record component packaging"
+    quantitative_reference: "Exactly 1 kg net reference product"
+  - id: cleaning_effluent_management
+    name: "Equipment cleaning and on-site effluent handling"
+    inclusion: "conditional"
+    inclusion_condition: "Water, cleaning chemicals, or on-site effluent handling are used"
+    role: "Record cleaning resources, wastewater, sludge, and any direct water release"
+    quantitative_reference: "Per 1 kg net reference product"
+process_inventory:
+  - id: green_coffee_preparation
+    label: "Green coffee receiving, cleaning, sorting, and blending"
+    inputs:
+      product:
+        - row_id: input_green_coffee
+          role: "Green coffee"
+          name: "Coffee, green"
+          flow_type: "product"
+          flow_ref:
+            uuid: "b8869823-9c26-4580-9c45-95a626e0ca2a"
+          property_unit: "Mass / kg"
+          description: "Record the weighed green coffee crossing the site boundary, adjusted only by the documented inventory-change rule."
+          amount:
+            expression: "Net received green-coffee mass attributable to the reporting product"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "Per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_green_coffee_records
+              source_ids:
+                - un-cpc-3-2025
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: input_electricity_preparation
+          role: "Electricity for preparation"
+          name: "Electricity"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record this single atomic exchange when it crosses the process boundary. Obtain its amount by the rule below and include it only when the declared product, route, and technology conditions apply."
+          amount:
+            expression: "Submetered electricity for receiving, cleaning, sorting, conveying, and blending"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "Per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_green_coffee_records
+              source_ids:
+                - eu-bat-fdm-2019-2031
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: output_prepared_green_coffee
+          role: "Prepared green coffee"
+          name: "Prepared green coffee"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record this single atomic exchange when it crosses the process boundary. Obtain its amount by the rule below and include it only when the declared product, route, and technology conditions apply."
+          amount:
+            expression: "Calculate from accepted incoming mass, separated wastes, dust losses, and inventory change"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "Per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_green_coffee_records
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+      waste:
+        - row_id: output_foreign_matter_waste
+          role: "Removed foreign matter"
+          name: "Foreign matter from green coffee cleaning, waste"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record this single atomic exchange when it crosses the process boundary. Obtain its amount by the rule below and include it only when the declared product, route, and technology conditions apply."
+          amount:
+            expression: "Weighed foreign matter sent to the declared treatment route"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "Per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_green_coffee_records
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: output_rejected_green_coffee_waste
+          role: "Rejected green coffee"
+          name: "Rejected green coffee beans, waste"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record this single atomic exchange when it crosses the process boundary. Obtain its amount by the rule below and include it only when the declared product, route, and technology conditions apply."
+          amount:
+            expression: "Weighed rejected beans sent to the declared treatment route"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "Per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_green_coffee_records
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: output_preparation_dust_waste
+          role: "Collected preparation dust"
+          name: "Coffee dust from preparation, waste"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record this single atomic exchange when it crosses the process boundary. Obtain its amount by the rule below and include it only when the declared product, route, and technology conditions apply."
+          amount:
+            expression: "Weighed dust captured by collection equipment"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "Per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_green_coffee_records
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+      elementary:
+        - row_id: output_preparation_pm_air
+          role: "Preparation particulate matter to air"
+          name: "Particulate matter, less than 10 micrometres, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record this single atomic exchange when it crosses the process boundary. Obtain its amount by the rule below and include it only when the declared product, route, and technology conditions apply."
+          amount:
+            expression: "Measured or mass-balance-calculated uncaptured preparation dust emitted to air"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "Per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_air_emission_records
+              source_ids:
+                - eu-bat-fdm-2019-2031
+            ranges: []
+  - id: decaffeination
+    label: "Green coffee decaffeination and redrying"
+    inputs:
+      product:
+        - row_id: input_prepared_green_coffee_decaf
+          role: "Prepared green coffee for decaffeination"
+          name: "Prepared green coffee"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record this single atomic exchange when it crosses the process boundary. Obtain its amount by the rule below and include it only when the declared product, route, and technology conditions apply."
+          amount:
+            expression: "Recorded prepared coffee charged to the selected decaffeination route"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "Per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_decaf_material_energy_records
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: input_process_water_decaf
+          role: "Process water for decaffeination"
+          name: "Process water"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "Record this single atomic exchange when it crosses the process boundary. Obtain its amount by the rule below and include it only when the declared product, route, and technology conditions apply."
+          amount:
+            expression: "Metered make-up and extraction water; applicable only to actual wetting, steaming, water-extraction, washing, or redrying operations"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "Per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_decaf_material_energy_records
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+                - shofinita-decaf-lca-2025
+            ranges: []
+        - row_id: input_steam_decaf
+          role: "Steam for decaffeination"
+          name: "Steam"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Record this single atomic exchange when it crosses the process boundary. Obtain its amount by the rule below and include it only when the declared product, route, and technology conditions apply."
+          amount:
+            expression: "Metered purchased or transferred steam used for moistening, stripping, or redrying; exclude steam generated from fuel already allocated to this process"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "Per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_decaf_material_energy_records
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+                - shofinita-decaf-lca-2025
+            ranges: []
+        - row_id: input_electricity_decaf
+          role: "Electricity for decaffeination"
+          name: "Electricity"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record this single atomic exchange when it crosses the process boundary. Obtain its amount by the rule below and include it only when the declared product, route, and technology conditions apply."
+          amount:
+            expression: "Submetered electricity for the selected route, recovery equipment, pumps, and redrying"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "Per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_decaf_material_energy_records
+              source_ids:
+                - eu-bat-fdm-2019-2031
+                - shofinita-decaf-lca-2025
+            ranges: []
+        - row_id: input_heat_decaf
+          role: "Purchased heat for decaffeination"
+          name: "Heat, purchased"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Record this single atomic exchange when it crosses the process boundary. Obtain its amount by the rule below and include it only when the declared product, route, and technology conditions apply."
+          amount:
+            expression: "Metered purchased heat used by decaffeination and redrying; applicable only when heat crosses the site boundary"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "Per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_decaf_material_energy_records
+              source_ids:
+                - eu-bat-fdm-2019-2031
+            ranges: []
+        - row_id: input_natural_gas_decaf
+          role: "Natural gas for decaffeination"
+          name: "Natural gas"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Record this single atomic exchange when it crosses the process boundary. Obtain its amount by the rule below and include it only when the declared product, route, and technology conditions apply."
+          amount:
+            expression: "Metered natural gas combusted on site for decaffeination heat or steam, on the declared heating-value basis"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "Per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_decaf_material_energy_records
+              source_ids:
+                - eu-bat-fdm-2019-2031
+            ranges: []
+        - row_id: input_liquefied_petroleum_gas_decaf
+          role: "Liquefied petroleum gas for decaffeination"
+          name: "Liquefied petroleum gas"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Record this single atomic exchange when it crosses the process boundary. Obtain its amount by the rule below and include it only when the declared product, route, and technology conditions apply."
+          amount:
+            expression: "Metered liquefied petroleum gas combusted on site for decaffeination heat or steam, on the declared heating-value basis"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "Per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_decaf_material_energy_records
+              source_ids:
+                - eu-bat-fdm-2019-2031
+            ranges: []
+        - row_id: input_liquid_carbon_dioxide
+          role: "Liquid carbon dioxide for carbon-dioxide decaffeination"
+          name: "Carbon dioxide, liquid"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record this single atomic exchange when it crosses the process boundary. Obtain its amount by the rule below and include it only when the declared product, route, and technology conditions apply."
+          amount:
+            expression: "Net make-up carbon dioxide charged after recovered carbon dioxide is subtracted; applicable only to the declared carbon-dioxide route"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "Per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_decaf_route_agent_records
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: input_ethyl_acetate
+          role: "Ethyl acetate for ethyl-acetate decaffeination"
+          name: "Ethyl acetate"
+          flow_type: "product"
+          flow_ref:
+            uuid: "7b656504-e685-4170-ab6a-56f948c994ee"
+          property_unit: "Mass / kg"
+          description: "Record this single atomic exchange when it crosses the process boundary. Obtain its amount by the rule below and include it only when the declared product, route, and technology conditions apply."
+          amount:
+            expression: "Net make-up ethyl acetate charged after recovered inventory is subtracted; applicable only to the declared ethyl-acetate route"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "Per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_decaf_route_agent_records
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+                - eu-extraction-solvents-2009-32
+                - shofinita-decaf-lca-2025
+            ranges: []
+        - row_id: input_dichloromethane
+          role: "Dichloromethane for dichloromethane decaffeination"
+          name: "Dichloromethane"
+          flow_type: "product"
+          flow_ref:
+            uuid: "5829259b-4eae-4041-91ec-f2259b83e756"
+          property_unit: "Mass / kg"
+          description: "Record this single atomic exchange when it crosses the process boundary. Obtain its amount by the rule below and include it only when the declared product, route, and technology conditions apply."
+          amount:
+            expression: "Net make-up dichloromethane charged after recovered inventory is subtracted; applicable only to the declared dichloromethane route"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "Per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_decaf_route_agent_records
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+                - eu-extraction-solvents-2009-32
+                - shofinita-decaf-lca-2025
+            ranges: []
+        - row_id: input_activated_carbon
+          role: "Activated carbon for water decaffeination"
+          name: "Activated carbon, food-processing grade"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record this single atomic exchange when it crosses the process boundary. Obtain its amount by the rule below and include it only when the declared product, route, and technology conditions apply."
+          amount:
+            expression: "Net activated carbon charged to caffeine adsorption; applicable only when used in the declared water route"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "Per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_decaf_route_agent_records
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: input_coffee_oil
+          role: "Coffee oil for coffee-oil decaffeination"
+          name: "Coffee oil"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record this single atomic exchange when it crosses the process boundary. Obtain its amount by the rule below and include it only when the declared product, route, and technology conditions apply."
+          amount:
+            expression: "Net make-up coffee oil charged after recovery; applicable only to the declared coffee-oil route"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "Per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_decaf_route_agent_records
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: output_decaffeinated_green_coffee
+          role: "Decaffeinated green coffee"
+          name: "Decaffeinated green coffee"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record this single atomic exchange when it crosses the process boundary. Obtain its amount by the rule below and include it only when the declared product, route, and technology conditions apply."
+          amount:
+            expression: "Calculate conforming redried product from route mass balance and measured moisture"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "Per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_decaf_output_records
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+                - iso-20481-2008
+            ranges: []
+        - row_id: output_recovered_caffeine
+          role: "Recovered caffeine"
+          name: "Caffeine, recovered"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record this single atomic exchange when it crosses the process boundary. Obtain its amount by the rule below and include it only when the declared product, route, and technology conditions apply."
+          amount:
+            expression: "Weighed recovered caffeine leaving as a separately managed product; otherwise record it in the applicable waste or wastewater row"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "Per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_decaf_output_records
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+      waste:
+        - row_id: output_spent_activated_carbon_waste
+          role: "Spent activated carbon"
+          name: "Spent activated carbon from decaffeination, waste"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record this single atomic exchange when it crosses the process boundary. Obtain its amount by the rule below and include it only when the declared product, route, and technology conditions apply."
+          amount:
+            expression: "Weighed spent carbon sent to the declared recovery or treatment route; water-route only"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "Per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_decaf_output_records
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: output_spent_ethyl_acetate_waste
+          role: "Spent ethyl acetate"
+          name: "Spent ethyl acetate, waste"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record this single atomic exchange when it crosses the process boundary. Obtain its amount by the rule below and include it only when the declared product, route, and technology conditions apply."
+          amount:
+            expression: "Weighed ethyl-acetate residue or off-specification solvent sent to recovery or treatment; ethyl-acetate route only"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "Per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_decaf_output_records
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+                - shofinita-decaf-lca-2025
+            ranges: []
+        - row_id: output_spent_dichloromethane_waste
+          role: "Spent dichloromethane"
+          name: "Spent dichloromethane, waste"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record this single atomic exchange when it crosses the process boundary. Obtain its amount by the rule below and include it only when the declared product, route, and technology conditions apply."
+          amount:
+            expression: "Weighed dichloromethane residue or off-specification solvent sent to recovery or treatment; dichloromethane route only"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "Per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_decaf_output_records
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+                - shofinita-decaf-lca-2025
+            ranges: []
+        - row_id: output_decaf_wastewater
+          role: "Decaffeination wastewater"
+          name: "Wastewater from coffee decaffeination, waste"
+          flow_type: "waste"
+          property_unit: "Volume / m3"
+          description: "Record this single atomic exchange when it crosses the process boundary. Obtain its amount by the rule below and include it only when the declared product, route, and technology conditions apply."
+          amount:
+            expression: "Metered wastewater transferred to on-site or off-site treatment; record water-route and solvent-route streams separately in source records"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "Per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_decaf_output_records
+              source_ids:
+                - eu-bat-fdm-2019-2031
+            ranges: []
+        - row_id: output_decaf_sludge_waste
+          role: "Decaffeination sludge"
+          name: "Sludge from coffee decaffeination effluent treatment, waste"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record this single atomic exchange when it crosses the process boundary. Obtain its amount by the rule below and include it only when the declared product, route, and technology conditions apply."
+          amount:
+            expression: "Weighed wet sludge with dry-matter content and treatment route declared"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "Per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_decaf_output_records
+              source_ids:
+                - eu-bat-fdm-2019-2031
+            ranges: []
+      elementary:
+        - row_id: output_decaf_carbon_dioxide_air
+          role: "Carbon dioxide released by carbon-dioxide decaffeination"
+          name: "Carbon dioxide, fossil, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record this single atomic exchange when it crosses the process boundary. Obtain its amount by the rule below and include it only when the declared product, route, and technology conditions apply."
+          amount:
+            expression: "Carbon-dioxide route inventory loss not assigned to recovered stock, product, or waste"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "Per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_decaf_emission_records
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: output_ethyl_acetate_air
+          role: "Ethyl acetate to air"
+          name: "Ethyl acetate, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record this single atomic exchange when it crosses the process boundary. Obtain its amount by the rule below and include it only when the declared product, route, and technology conditions apply."
+          amount:
+            expression: "Ethyl-acetate route solvent loss to air from validated solvent balance and emission measurement"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "Per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_decaf_emission_records
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+                - eu-bat-fdm-2019-2031
+            ranges: []
+        - row_id: output_dichloromethane_air
+          role: "Dichloromethane to air"
+          name: "Dichloromethane, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record this single atomic exchange when it crosses the process boundary. Obtain its amount by the rule below and include it only when the declared product, route, and technology conditions apply."
+          amount:
+            expression: "Dichloromethane-route solvent loss to air from validated solvent balance and emission measurement"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "Per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_decaf_emission_records
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+                - eu-bat-fdm-2019-2031
+            ranges: []
+  - id: roasting_cooling
+    label: "Roasting and cooling"
+    inputs:
+      product:
+        - row_id: input_prepared_green_coffee_roasting
+          role: "Prepared regular green coffee for roasting"
+          name: "Prepared green coffee"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record this single atomic exchange when it crosses the process boundary. Obtain its amount by the rule below and include it only when the declared product, route, and technology conditions apply."
+          amount:
+            expression: "Recorded prepared non-decaffeinated green coffee charged to the roaster; not applicable to a decaffeinated roast lot"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "Per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_roasting_records
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: input_decaffeinated_green_coffee_roasting
+          role: "Decaffeinated green coffee for roasting"
+          name: "Decaffeinated green coffee"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record this single atomic exchange when it crosses the process boundary. Obtain its amount by the rule below and include it only when the declared product, route, and technology conditions apply."
+          amount:
+            expression: "Recorded decaffeinated green coffee charged to the roaster; not applicable to a regular roast lot"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "Per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_roasting_records
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: input_electricity_roasting
+          role: "Electricity for roasting and cooling"
+          name: "Electricity"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record this single atomic exchange when it crosses the process boundary. Obtain its amount by the rule below and include it only when the declared product, route, and technology conditions apply."
+          amount:
+            expression: "Submetered electricity for roaster drives, fans, cyclones, controls, cooling, and emission control"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "Per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_roasting_energy_records
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+                - eu-bat-fdm-2019-2031
+            ranges: []
+        - row_id: input_process_water_roasting
+          role: "Quench water for roasting"
+          name: "Process water"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "Record this single atomic exchange when it crosses the process boundary. Obtain its amount by the rule below and include it only when the declared product, route, and technology conditions apply."
+          amount:
+            expression: "Metered water sprayed for quenching; applicable only when the declared roaster uses water quenching"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "Per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_roasting_energy_records
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: input_heat_roasting
+          role: "Purchased heat for roasting"
+          name: "Heat, purchased"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Record this single atomic exchange when it crosses the process boundary. Obtain its amount by the rule below and include it only when the declared product, route, and technology conditions apply."
+          amount:
+            expression: "Metered purchased heat delivered to roasting; applicable only when heat crosses the site boundary"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "Per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_roasting_energy_records
+              source_ids:
+                - eu-bat-fdm-2019-2031
+            ranges: []
+        - row_id: input_natural_gas_roasting
+          role: "Natural gas for roasting"
+          name: "Natural gas"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Record this single atomic exchange when it crosses the process boundary. Obtain its amount by the rule below and include it only when the declared product, route, and technology conditions apply."
+          amount:
+            expression: "Metered natural gas combusted by the roaster or dedicated thermal oxidizer, on the declared heating-value basis"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "Per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_roasting_energy_records
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+                - eu-bat-fdm-2019-2031
+            ranges: []
+        - row_id: input_liquefied_petroleum_gas_roasting
+          role: "Liquefied petroleum gas for roasting"
+          name: "Liquefied petroleum gas"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Record this single atomic exchange when it crosses the process boundary. Obtain its amount by the rule below and include it only when the declared product, route, and technology conditions apply."
+          amount:
+            expression: "Metered liquefied petroleum gas combusted by the roaster or dedicated thermal oxidizer, on the declared heating-value basis"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "Per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_roasting_energy_records
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+                - eu-bat-fdm-2019-2031
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: output_roasted_coffee_beans
+          role: "Roasted coffee beans"
+          name: "Roasted coffee beans"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record this single atomic exchange when it crosses the process boundary. Obtain its amount by the rule below and include it only when the declared product, route, and technology conditions apply."
+          amount:
+            expression: "Calculate conforming cooled-bean mass from weighed output, rejects, silverskin, dust, moisture loss, and inventory change"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "Per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_roasting_output_records
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+                - iso-11817-1994
+            ranges: []
+      waste:
+        - row_id: output_coffee_silverskin_waste
+          role: "Coffee silverskin"
+          name: "Coffee silverskin, waste"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record this single atomic exchange when it crosses the process boundary. Obtain its amount by the rule below and include it only when the declared product, route, and technology conditions apply."
+          amount:
+            expression: "Weighed silverskin separated by cyclone or other collection equipment, with treatment route declared"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "Per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_roasting_output_records
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: output_rejected_roasted_coffee_waste
+          role: "Rejected roasted coffee"
+          name: "Rejected roasted coffee beans, waste"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record this single atomic exchange when it crosses the process boundary. Obtain its amount by the rule below and include it only when the declared product, route, and technology conditions apply."
+          amount:
+            expression: "Weighed off-specification roasted beans sent to the declared treatment route"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "Per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_roasting_output_records
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+      elementary:
+        - row_id: output_roasting_biogenic_carbon_dioxide_air
+          role: "Biogenic carbon dioxide from coffee roasting"
+          name: "Carbon dioxide, biogenic, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record this single atomic exchange when it crosses the process boundary. Obtain its amount by the rule below and include it only when the declared product, route, and technology conditions apply."
+          amount:
+            expression: "Measured or carbon-balance-calculated carbon dioxide released from coffee during roasting, separate from fuel combustion"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "Per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_roasting_air_emission_records
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+                - eu-bat-fdm-2019-2031
+            ranges: []
+        - row_id: output_roasting_fossil_carbon_dioxide_air
+          role: "Fossil carbon dioxide from roasting fuel"
+          name: "Carbon dioxide, fossil, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record this single atomic exchange when it crosses the process boundary. Obtain its amount by the rule below and include it only when the declared product, route, and technology conditions apply."
+          amount:
+            expression: "Calculate from each recorded direct fuel input and documented carbon or emission factor; not applicable without on-site fossil-fuel combustion"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "Per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_roasting_air_emission_records
+              source_ids:
+                - eu-bat-fdm-2019-2031
+            ranges: []
+        - row_id: output_roasting_carbon_monoxide_air
+          role: "Carbon monoxide from roasting"
+          name: "Carbon monoxide, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record this single atomic exchange when it crosses the process boundary. Obtain its amount by the rule below and include it only when the declared product, route, and technology conditions apply."
+          amount:
+            expression: "Measured stack emission normalized by the corresponding production output"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "Per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_roasting_air_emission_records
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+                - eu-bat-fdm-2019-2031
+            ranges: []
+        - row_id: output_roasting_nitrogen_dioxide_air
+          role: "Nitrogen dioxide from roasting"
+          name: "Nitrogen dioxide, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record this single atomic exchange when it crosses the process boundary. Obtain its amount by the rule below and include it only when the declared product, route, and technology conditions apply."
+          amount:
+            expression: "Measured nitrogen-dioxide stack emission; if a method reports NOx, retain the method and conversion basis rather than relabelling the aggregate as nitrogen dioxide"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "Per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_roasting_air_emission_records
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+                - eu-bat-fdm-2019-2031
+            ranges: []
+        - row_id: output_roasting_ammonia_air
+          role: "Ammonia from roasting"
+          name: "Ammonia, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record this single atomic exchange when it crosses the process boundary. Obtain its amount by the rule below and include it only when the declared product, route, and technology conditions apply."
+          amount:
+            expression: "Measured stack emission normalized by the corresponding production output"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "Per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_roasting_air_emission_records
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+                - eu-bat-fdm-2019-2031
+            ranges: []
+        - row_id: output_roasting_pm_air
+          role: "Roasting particulate matter to air"
+          name: "Particulate matter, less than 10 micrometres, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record this single atomic exchange when it crosses the process boundary. Obtain its amount by the rule below and include it only when the declared product, route, and technology conditions apply."
+          amount:
+            expression: "Measured uncaptured particulate stack emission normalized by the corresponding production output"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "Per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_roasting_air_emission_records
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+                - eu-bat-fdm-2019-2031
+            ranges: []
+  - id: grinding
+    label: "Grinding"
+    inputs:
+      product:
+        - row_id: input_roasted_coffee_grinding
+          role: "Roasted beans for grinding"
+          name: "Roasted coffee beans"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record this single atomic exchange when it crosses the process boundary. Obtain its amount by the rule below and include it only when the declared product, route, and technology conditions apply."
+          amount:
+            expression: "Recorded conforming roasted beans charged to grinding"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "Per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_grinding_records
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: input_electricity_grinding
+          role: "Electricity for grinding"
+          name: "Electricity"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record this single atomic exchange when it crosses the process boundary. Obtain its amount by the rule below and include it only when the declared product, route, and technology conditions apply."
+          amount:
+            expression: "Submetered electricity for grinders, classifiers, conveyors, and dust collection"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "Per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_grinding_records
+              source_ids:
+                - eu-bat-fdm-2019-2031
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: output_ground_roasted_coffee
+          role: "Ground roasted coffee"
+          name: "Ground roasted coffee"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record this single atomic exchange when it crosses the process boundary. Obtain its amount by the rule below and include it only when the declared product, route, and technology conditions apply."
+          amount:
+            expression: "Calculate conforming ground-coffee output from weighed charge, rejects, captured dust, emitted dust, and inventory change"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "Per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_grinding_records
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+                - iso-23134-2022
+            ranges: []
+      waste:
+        - row_id: output_grinding_dust_waste
+          role: "Grinding dust"
+          name: "Coffee dust from grinding, waste"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record this single atomic exchange when it crosses the process boundary. Obtain its amount by the rule below and include it only when the declared product, route, and technology conditions apply."
+          amount:
+            expression: "Weighed coffee dust captured by grinding dust-control equipment"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "Per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_grinding_records
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: output_rejected_ground_coffee_waste
+          role: "Rejected ground coffee"
+          name: "Rejected ground roasted coffee, waste"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record this single atomic exchange when it crosses the process boundary. Obtain its amount by the rule below and include it only when the declared product, route, and technology conditions apply."
+          amount:
+            expression: "Weighed off-specification ground coffee sent to the declared treatment route"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "Per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_grinding_records
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+      elementary:
+        - row_id: output_grinding_pm_air
+          role: "Grinding particulate matter to air"
+          name: "Particulate matter, less than 10 micrometres, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record this single atomic exchange when it crosses the process boundary. Obtain its amount by the rule below and include it only when the declared product, route, and technology conditions apply."
+          amount:
+            expression: "Measured or dust-balance-calculated uncaptured particulate emitted to air"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "Per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_air_emission_records
+              source_ids:
+                - eu-bat-fdm-2019-2031
+            ranges: []
+  - id: packing
+    label: "Packing"
+    inputs:
+      product:
+        - row_id: input_decaffeinated_green_coffee_packing
+          role: "Decaffeinated green coffee for packing"
+          name: "Decaffeinated green coffee"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record this single atomic exchange when it crosses the process boundary. Obtain its amount by the rule below and include it only when the declared product, route, and technology conditions apply."
+          amount:
+            expression: "Recorded conforming product sent to packing; applicable only to decaffeinated green coffee"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "Per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packing_records
+              source_ids:
+                - un-cpc-3-2025
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: input_roasted_whole_bean_packing
+          role: "Roasted whole-bean coffee for packing"
+          name: "Roasted coffee beans"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record this single atomic exchange when it crosses the process boundary. Obtain its amount by the rule below and include it only when the declared product, route, and technology conditions apply."
+          amount:
+            expression: "Recorded conforming product sent to packing; applicable only to roasted whole-bean coffee"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "Per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packing_records
+              source_ids:
+                - un-cpc-3-2025
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: input_ground_roasted_coffee_packing
+          role: "Ground roasted coffee for packing"
+          name: "Ground roasted coffee"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record this single atomic exchange when it crosses the process boundary. Obtain its amount by the rule below and include it only when the declared product, route, and technology conditions apply."
+          amount:
+            expression: "Recorded conforming product sent to packing; applicable only to ground roasted coffee"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "Per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packing_records
+              source_ids:
+                - un-cpc-3-2025
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: input_electricity_packing
+          role: "Electricity for packing"
+          name: "Electricity"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record this single atomic exchange when it crosses the process boundary. Obtain its amount by the rule below and include it only when the declared product, route, and technology conditions apply."
+          amount:
+            expression: "Submetered electricity for filling, sealing, gas handling, coding, conveying, and pallet wrapping"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "Per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packing_records
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+                - eu-bat-fdm-2019-2031
+            ranges: []
+        - row_id: input_ldpe_packaging_film
+          role: "Low-density polyethylene packaging film"
+          name: "Low-density polyethylene film"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record this single atomic exchange when it crosses the process boundary. Obtain its amount by the rule below and include it only when the declared product, route, and technology conditions apply."
+          amount:
+            expression: "Net component mass issued to conforming packs after separately recorded scrap; applicable only when present in the bill of materials"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "Per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_bom_records
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+                - cheron-bessou-coffee-lca-2024
+            ranges: []
+        - row_id: input_aluminium_packaging_foil
+          role: "Aluminium packaging foil"
+          name: "Aluminium foil"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record this single atomic exchange when it crosses the process boundary. Obtain its amount by the rule below and include it only when the declared product, route, and technology conditions apply."
+          amount:
+            expression: "Net component mass issued to conforming packs after separately recorded scrap; applicable only when present in the bill of materials"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "Per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_bom_records
+              source_ids:
+                - cheron-bessou-coffee-lca-2024
+            ranges: []
+        - row_id: input_kraft_paperboard_carton
+          role: "Kraft paperboard carton"
+          name: "Kraft paperboard"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record this single atomic exchange when it crosses the process boundary. Obtain its amount by the rule below and include it only when the declared product, route, and technology conditions apply."
+          amount:
+            expression: "Net carton mass issued to conforming packs after separately recorded scrap; applicable only when present in the bill of materials"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "Per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_bom_records
+              source_ids:
+                - cheron-bessou-coffee-lca-2024
+            ranges: []
+        - row_id: input_polypropylene_degassing_valve
+          role: "Polypropylene degassing valve"
+          name: "Polypropylene degassing valve"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record this single atomic exchange when it crosses the process boundary. Obtain its amount by the rule below and include it only when the declared product, route, and technology conditions apply."
+          amount:
+            expression: "Net valve mass fitted to conforming packs; applicable only when present in the bill of materials"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "Per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_bom_records
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: input_wooden_pallet
+          role: "Wooden pallet"
+          name: "Wooden pallet"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record this single atomic exchange when it crosses the process boundary. Obtain its amount by the rule below and include it only when the declared product, route, and technology conditions apply."
+          amount:
+            expression: "Net non-returnable pallet mass or allocated loss of a returnable pallet; applicable only when the declared packing configuration uses pallets"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "Per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_bom_records
+              source_ids:
+                - eu-pef-2021-2279
+            ranges: []
+        - row_id: input_lldpe_stretch_film
+          role: "Linear low-density polyethylene stretch film"
+          name: "Linear low-density polyethylene stretch film"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record this single atomic exchange when it crosses the process boundary. Obtain its amount by the rule below and include it only when the declared product, route, and technology conditions apply."
+          amount:
+            expression: "Net stretch-film mass used for conforming shipments; applicable only when present in the packing configuration"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "Per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_bom_records
+              source_ids:
+                - eu-pef-2021-2279
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: output_reference_product
+          role: "Reference coffee product"
+          name: "Coffee, decaffeinated or roasted"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record this single atomic exchange when it crosses the process boundary. Obtain its amount by the rule below and include it only when the declared product, route, and technology conditions apply."
+          amount:
+            expression: "Exactly 1 kg net conforming product; packaging mass is excluded"
+            value_mode: "fixed_value"
+            specificity: "product_specific"
+            basis:
+              text: "Reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "method_formula"
+              collection_protocol_id: cp_packing_records
+              source_ids:
+                - un-cpc-3-2025
+                - eu-pef-2021-2279
+            ranges: []
+      waste:
+        - row_id: output_polyethylene_packaging_scrap
+          role: "Polyethylene packaging scrap"
+          name: "Polyethylene packaging scrap, waste"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record this single atomic exchange when it crosses the process boundary. Obtain its amount by the rule below and include it only when the declared product, route, and technology conditions apply."
+          amount:
+            expression: "Weighed low-density and linear low-density polyethylene scrap, retained as separate source records by polymer and treatment route"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "Per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_bom_records
+              source_ids:
+                - eu-bat-fdm-2019-2031
+            ranges: []
+        - row_id: output_aluminium_packaging_scrap
+          role: "Aluminium packaging scrap"
+          name: "Aluminium packaging scrap, waste"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record this single atomic exchange when it crosses the process boundary. Obtain its amount by the rule below and include it only when the declared product, route, and technology conditions apply."
+          amount:
+            expression: "Weighed aluminium foil scrap sent to the declared treatment route"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "Per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_bom_records
+              source_ids:
+                - eu-bat-fdm-2019-2031
+            ranges: []
+        - row_id: output_paperboard_packaging_scrap
+          role: "Paperboard packaging scrap"
+          name: "Paperboard packaging scrap, waste"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record this single atomic exchange when it crosses the process boundary. Obtain its amount by the rule below and include it only when the declared product, route, and technology conditions apply."
+          amount:
+            expression: "Weighed paperboard scrap sent to the declared treatment route"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "Per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_bom_records
+              source_ids:
+                - eu-bat-fdm-2019-2031
+            ranges: []
+      elementary:
+        []
+  - id: cleaning_effluent_management
+    label: "Equipment cleaning and on-site effluent handling"
+    inputs:
+      product:
+        - row_id: input_cleaning_water
+          role: "Cleaning water"
+          name: "Process water"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "Record this single atomic exchange when it crosses the process boundary. Obtain its amount by the rule below and include it only when the declared product, route, and technology conditions apply."
+          amount:
+            expression: "Metered water used for equipment and floor cleaning, excluding decaffeination and roaster-quench water"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "Per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cleaning_effluent_records
+              source_ids:
+                - eu-bat-fdm-2019-2031
+            ranges: []
+        - row_id: input_electricity_effluent
+          role: "Electricity for effluent handling"
+          name: "Electricity"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record this single atomic exchange when it crosses the process boundary. Obtain its amount by the rule below and include it only when the declared product, route, and technology conditions apply."
+          amount:
+            expression: "Submetered electricity for pumps, aeration, dewatering, and other on-site effluent equipment"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "Per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cleaning_effluent_records
+              source_ids:
+                - eu-bat-fdm-2019-2031
+            ranges: []
+        - row_id: input_sodium_hydroxide_cleaning
+          role: "Sodium hydroxide cleaning agent"
+          name: "Sodium hydroxide"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record this single atomic exchange when it crosses the process boundary. Obtain its amount by the rule below and include it only when the declared product, route, and technology conditions apply."
+          amount:
+            expression: "Net sodium hydroxide used for cleaning; applicable only when documented in the site cleaning recipe"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "Per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cleaning_effluent_records
+              source_ids:
+                - eu-bat-fdm-2019-2031
+            ranges: []
+        - row_id: input_nitric_acid_cleaning
+          role: "Nitric acid cleaning agent"
+          name: "Nitric acid"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record this single atomic exchange when it crosses the process boundary. Obtain its amount by the rule below and include it only when the declared product, route, and technology conditions apply."
+          amount:
+            expression: "Net nitric acid used for cleaning; applicable only when documented in the site cleaning recipe"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "Per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cleaning_effluent_records
+              source_ids:
+                - eu-bat-fdm-2019-2031
+            ranges: []
+      waste:
+        - row_id: input_decaf_wastewater_treatment
+          role: "Decaffeination wastewater received for on-site treatment"
+          name: "Wastewater from coffee decaffeination, waste"
+          flow_type: "waste"
+          property_unit: "Volume / m3"
+          description: "Record this single atomic exchange when it crosses the process boundary. Obtain its amount by the rule below and include it only when the declared product, route, and technology conditions apply."
+          amount:
+            expression: "Metered decaffeination wastewater entering the on-site treatment system; applicable only when treated on site"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "Per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cleaning_effluent_records
+              source_ids:
+                - eu-bat-fdm-2019-2031
+            ranges: []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: output_combined_process_wastewater
+          role: "Equipment-cleaning wastewater"
+          name: "Wastewater from coffee equipment cleaning, waste"
+          flow_type: "waste"
+          property_unit: "Volume / m3"
+          description: "Record this single atomic exchange when it crosses the process boundary. Obtain its amount by the rule below and include it only when the declared product, route, and technology conditions apply."
+          amount:
+            expression: "Metered equipment-cleaning wastewater transferred to on-site or off-site treatment, excluding decaffeination wastewater and any separately inventoried direct release"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "Per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cleaning_effluent_records
+              source_ids:
+                - eu-bat-fdm-2019-2031
+            ranges: []
+        - row_id: output_effluent_sludge_waste
+          role: "Effluent-treatment sludge"
+          name: "Coffee-processing effluent sludge, waste"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record this single atomic exchange when it crosses the process boundary. Obtain its amount by the rule below and include it only when the declared product, route, and technology conditions apply."
+          amount:
+            expression: "Weighed wet sludge with dry-matter content and treatment destination declared"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "Per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cleaning_effluent_records
+              source_ids:
+                - eu-bat-fdm-2019-2031
+            ranges: []
+      elementary:
+        - row_id: output_treated_wastewater_water
+          role: "Treated wastewater to receiving water"
+          name: "Water, treated, to surface water"
+          flow_type: "elementary"
+          property_unit: "Volume / m3"
+          description: "Record this single atomic exchange when it crosses the process boundary. Obtain its amount by the rule below and include it only when the declared product, route, and technology conditions apply."
+          amount:
+            expression: "Metered final effluent discharged directly to receiving water; not applicable when all wastewater is transferred off site"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "Per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cleaning_effluent_records
+              source_ids:
+                - eu-bat-fdm-2019-2031
+            ranges: []
+allocation_rules:
+  - rule_id: allocation_subdivide_first
+    applies_to: "Shared preparation, decaffeination, roasting, grinding, packing, utilities, and treatment"
+    rule: "First subdivide by line, batch, meter, operating time, or other causal record so the declared product receives its measured share."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: allocation_physical_then_other
+    applies_to: "Residual shared processes"
+    rule: "If subdivision is not feasible, use a documented physical causal relationship; only if no defensible physical relation exists may another documented relationship, such as economic value, be used."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: allocation_recovered_caffeine
+    applies_to: "Recovered caffeine leaving as a product"
+    rule: "Subdivide recovery where possible. Otherwise apply the hierarchy above; do not assign zero burden by default and disclose quantities, prices if used, and sensitivity."
+    source_ids:
+      - eu-pef-2021-2279
+      - eu-jrc-fdm-bref-2019
+  - rule_id: allocation_internal_recovery
+    applies_to: "Recovered solvent, carbon dioxide, coffee oil, heat, or water reused internally"
+    rule: "Model the internal loop once; record net make-up input, inventory change, wastes, and direct releases without creating a second product credit."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: allocation_waste_treatment
+    applies_to: "Silverskin, rejected beans, dust, spent agents, wastewater, sludge, and packaging scrap"
+    rule: "Record the treatment route. Do not grant an avoided-product credit inside the foreground unless the chosen downstream method explicitly requires it and all substitution assumptions are disclosed."
+    source_ids:
+      - eu-pef-2021-2279
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_green_coffee_records
+      process_id: "green_coffee_preparation"
+      flow_role: "Coffee, electricity, prepared output, foreign matter, rejects, and collected dust"
+      record_type: "Weighbridge, lot, submeter, and waste records"
+      raw_fields: "lot id; supplier; origin; green mass; moisture; electricity; output mass; waste masses; opening and closing stock"
+      collection_method: "Reconcile calibrated scales and meter totals to production lots"
+      unit: "kg; kWh"
+      frequency: "Each lot and monthly reconciliation"
+      temporal_coverage: "Representative consecutive reporting period, normally at least 12 months"
+      site_scope: "All preparation equipment serving the declared product"
+      aggregation_rule: "Sum records, subtract inventory change, and normalize by conforming net output"
+      quality_evidence: "Calibration, invoices, lot sheets, stock records, and waste tickets"
+    - protocol_id: cp_decaf_material_energy_records
+      process_id: "decaffeination"
+      flow_role: "Coffee, water, steam, electricity, purchased heat, and fuels"
+      record_type: "Batch, meter, invoice, and stock records"
+      raw_fields: "route; batch; coffee mass and moisture; water; steam; electricity; heat; each fuel; heating-value basis; operating hours"
+      collection_method: "Read route-specific meters or allocate documented shared meters causally"
+      unit: "kg; m3; MJ; kWh"
+      frequency: "Each batch and monthly reconciliation"
+      temporal_coverage: "Same reporting period as reference output"
+      site_scope: "All foreground decaffeination and redrying equipment"
+      aggregation_rule: "Sum by declared route; subtract inventory change; normalize by net output"
+      quality_evidence: "Calibrations, invoices, batch sheets, and meter maps"
+    - protocol_id: cp_decaf_route_agent_records
+      process_id: "decaffeination"
+      flow_role: "Carbon dioxide, ethyl acetate, dichloromethane, activated carbon, and coffee oil"
+      record_type: "Purchase, charge, recovery, and inventory records"
+      raw_fields: "agent identity; route; purchased; charged; recovered; opening stock; closing stock; waste"
+      collection_method: "Complete an agent-specific inventory balance for the selected route"
+      unit: "kg"
+      frequency: "Each batch and monthly closure"
+      temporal_coverage: "Same reporting period as decaffeination output"
+      site_scope: "Selected route only"
+      aggregation_rule: "Net make-up equals purchases plus opening stock minus closing stock and documented export"
+      quality_evidence: "Supplier specification, tank or cylinder records, recovery logs, and stock checks"
+    - protocol_id: cp_decaf_output_records
+      process_id: "decaffeination"
+      flow_role: "Decaffeinated coffee, caffeine, spent agents, wastewater, and sludge"
+      record_type: "Scale, laboratory, flowmeter, and waste records"
+      raw_fields: "output mass; moisture; caffeine result; recovered caffeine; each spent agent; wastewater; sludge; dry matter; destination"
+      collection_method: "Reconcile output and residue records to each route batch"
+      unit: "kg; m3; laboratory unit"
+      frequency: "Each batch or shipment"
+      temporal_coverage: "Same reporting period as decaffeination inputs"
+      site_scope: "Selected route and its on-site treatment"
+      aggregation_rule: "Sum each atomic output and normalize by conforming net product"
+      quality_evidence: "Test reports, calibrated scales, flowmeters, and transfer notes"
+    - protocol_id: cp_decaf_emission_records
+      process_id: "decaffeination"
+      flow_role: "Route-specific carbon dioxide, ethyl acetate, and dichloromethane releases"
+      record_type: "Solvent or gas balance and emission test"
+      raw_fields: "route; make-up; recovered; product retention; waste; stock change; measured exhaust concentration; flow; time"
+      collection_method: "Close each agent balance and reconcile with stack or workplace exhaust testing"
+      unit: "kg; concentration; volume"
+      frequency: "Each campaign and legally required monitoring frequency"
+      temporal_coverage: "Representative operating states in the reporting period"
+      site_scope: "All release points for selected route"
+      aggregation_rule: "Convert concentration and flow to mass and reconcile to inventory loss"
+      quality_evidence: "Sampling plan, laboratory accreditation, instrument calibration, and balance closure"
+    - protocol_id: cp_roasting_records
+      process_id: "roasting_cooling"
+      flow_role: "Green-coffee charge and roasted output"
+      record_type: "Batch and scale records"
+      raw_fields: "lot; regular or decaf status; green mass and moisture; roasted mass and moisture; roast specification; opening and closing stock"
+      collection_method: "Reconcile calibrated scales by roast lot"
+      unit: "kg"
+      frequency: "Each batch and monthly reconciliation"
+      temporal_coverage: "Same reporting period as packed output"
+      site_scope: "All roasters and coolers serving the declared product"
+      aggregation_rule: "Sum conforming lots and normalize by packed net output"
+      quality_evidence: "Batch sheets, scale calibration, and moisture test reports"
+    - protocol_id: cp_roasting_energy_records
+      process_id: "roasting_cooling"
+      flow_role: "Electricity, quench water, purchased heat, natural gas, and LPG"
+      record_type: "Meter, invoice, and equipment records"
+      raw_fields: "meter readings; fuel; heating value; quench water; operating time; thermal oxidizer use"
+      collection_method: "Use dedicated meters; otherwise allocate by documented causal operating parameter"
+      unit: "kWh; MJ; m3"
+      frequency: "Each batch or daily, reconciled monthly"
+      temporal_coverage: "Same reporting period as roasting output"
+      site_scope: "Roaster, cooler, cyclone, and dedicated control equipment"
+      aggregation_rule: "Sum each atomic utility and normalize by conforming output"
+      quality_evidence: "Meter calibration, invoices, and equipment logs"
+    - protocol_id: cp_roasting_output_records
+      process_id: "roasting_cooling"
+      flow_role: "Roasted beans, silverskin, and rejects"
+      record_type: "Scale and waste records"
+      raw_fields: "output mass; moisture; silverskin mass; reject mass; destinations; inventory change"
+      collection_method: "Reconcile product and residue mass by campaign"
+      unit: "kg"
+      frequency: "Each campaign and monthly reconciliation"
+      temporal_coverage: "Same reporting period as roasting inputs"
+      site_scope: "All roasting output handling"
+      aggregation_rule: "Sum each atomic output and close the coffee mass balance"
+      quality_evidence: "Scale calibration, waste tickets, and stock records"
+    - protocol_id: cp_roasting_air_emission_records
+      process_id: "roasting_cooling"
+      flow_role: "Biogenic and fossil carbon dioxide, carbon monoxide, nitrogen dioxide, ammonia, and particulate matter"
+      record_type: "Stack tests, continuous monitors, fuel records, and mass balances"
+      raw_fields: "source; pollutant; method; concentration; flow; time; fuel; factor; abatement status"
+      collection_method: "Use pollutant-specific monitoring and keep coffee-process carbon separate from fuel carbon"
+      unit: "kg; concentration; volume; MJ"
+      frequency: "At representative operating states and required monitoring frequency"
+      temporal_coverage: "Reporting-period technologies and controls"
+      site_scope: "Each roaster, cooler, and thermal oxidizer stack"
+      aggregation_rule: "Convert to emitted mass and normalize by corresponding production"
+      quality_evidence: "Sampling plan, accredited results, calibration, and operating log"
+    - protocol_id: cp_air_emission_records
+      process_id: "green_coffee_preparation_grinding"
+      flow_role: "Particulate matter"
+      record_type: "Dust-collection balance and emission measurement"
+      raw_fields: "captured dust; concentration; gas flow; operating time; production"
+      collection_method: "Reconcile captured and emitted dust by equipment"
+      unit: "kg; concentration; volume"
+      frequency: "Representative campaigns"
+      temporal_coverage: "Same reporting period as production"
+      site_scope: "Preparation and grinding release points"
+      aggregation_rule: "Calculate emitted mass and normalize by corresponding output"
+      quality_evidence: "Dust tickets, sampling report, and instrument calibration"
+    - protocol_id: cp_grinding_records
+      process_id: "grinding"
+      flow_role: "Roasted input, electricity, ground output, dust, rejects, and particle size"
+      record_type: "Batch, scale, submeter, and laboratory records"
+      raw_fields: "input; output; electricity; dust; rejects; stock change; particle-size result"
+      collection_method: "Reconcile grinder lots and calibrated measurement records"
+      unit: "kg; kWh; laboratory unit"
+      frequency: "Each lot and monthly reconciliation"
+      temporal_coverage: "Same reporting period as packed ground coffee"
+      site_scope: "All grinders serving the declared product"
+      aggregation_rule: "Sum each atomic flow and normalize by conforming packed output"
+      quality_evidence: "Scale and meter calibration, lot sheets, and test report"
+    - protocol_id: cp_packing_records
+      process_id: "packing"
+      flow_role: "Product inputs, electricity, and reference output"
+      record_type: "Filler, scale, submeter, and finished-goods records"
+      raw_fields: "product form; input mass; net packed mass; rejects; electricity; opening and closing stock"
+      collection_method: "Reconcile legal-metrology or calibrated filler records with finished-goods inventory"
+      unit: "kg; kWh"
+      frequency: "Each packing lot and monthly reconciliation"
+      temporal_coverage: "Same reporting period as all foreground modules"
+      site_scope: "All lines packing the declared product"
+      aggregation_rule: "Normalize all flows to exactly 1 kg net conforming coffee"
+      quality_evidence: "Calibration, batch release, and stock records"
+    - protocol_id: cp_packaging_bom_records
+      process_id: "packing"
+      flow_role: "Each packaging component and scrap"
+      record_type: "Bill of materials, purchase, issue, scrap, and stock records"
+      raw_fields: "component identity; polymer or material; unit mass; count; issued mass; scrap; returns; stock change"
+      collection_method: "Calculate net component mass from audited component records"
+      unit: "kg; count"
+      frequency: "Each packaging specification and monthly reconciliation"
+      temporal_coverage: "Specifications used during the reporting period"
+      site_scope: "Primary, secondary, and tertiary packing in scope"
+      aggregation_rule: "Sum each component separately and normalize by net coffee output"
+      quality_evidence: "Approved bill of materials, supplier specification, scale checks, and waste tickets"
+    - protocol_id: cp_cleaning_effluent_records
+      process_id: "cleaning_effluent_management"
+      flow_role: "Cleaning water, electricity, each chemical, wastewater, sludge, and direct water release"
+      record_type: "Meter, recipe, laboratory, and waste records"
+      raw_fields: "water; electricity; chemical identity and mass; influent; transferred wastewater; final effluent; pollutant results; sludge; dry matter"
+      collection_method: "Reconcile water and material balances and keep off-site waste separate from direct release"
+      unit: "kg; m3; kWh; laboratory unit"
+      frequency: "Each cleaning campaign and required discharge monitoring"
+      temporal_coverage: "Same reporting period as production"
+      site_scope: "Cleaning and on-site treatment attributable to the declared product"
+      aggregation_rule: "Sum atomic flows, allocate shared treatment causally, and normalize by net output"
+      quality_evidence: "Meter calibration, cleaning recipe, accredited analyses, permit records, and transfer notes"
+  calculation_rules:
+    - id: calc_reference_normalization
+      applies_to: "Every foreground exchange"
+      rule: "Normalized amount = reporting-period exchange × 1 kg / reporting-period conforming net coffee output."
+      inputs:
+        - "Atomic exchange total"
+        - "conforming net output"
+      output: "Amount per reference flow"
+      source_ids:
+        - eu-pef-2021-2279
+    - id: calc_coffee_mass_balance
+      applies_to: "Preparation, decaffeination, roasting, grinding, and packing"
+      rule: "Opening coffee stock + coffee input = closing coffee stock + conforming transfer or product + each coffee-bearing waste + measured or calculated direct coffee-material loss, all on declared moisture bases."
+      inputs:
+        - "Coffee masses"
+        - moisture
+        - stocks
+        - wastes
+        - emissions
+      output: "Process closure and unexplained difference"
+      source_ids:
+        - eu-jrc-fdm-bref-2019
+        - cheron-bessou-coffee-lca-2024
+    - id: calc_route_agent_balance
+      applies_to: "Each selected decaffeination agent"
+      rule: "Opening stock + purchases = closing stock + recovered internal stock + product retention + exported recovery + waste + direct release."
+      inputs:
+        - "Agent-specific inventory and measurements"
+      output: "Net make-up and route-specific loss"
+      source_ids:
+        - eu-jrc-fdm-bref-2019
+        - shofinita-decaf-lca-2025
+    - id: calc_shared_energy
+      applies_to: "Shared meters"
+      rule: "Allocate only the un-submetered remainder using documented causal operating time, throughput, or measured load; disclose the driver and test sensitivity."
+      inputs:
+        - "Shared meter"
+        - "submetered use"
+        - "causal driver"
+      output: "Process-specific utility amount"
+      source_ids:
+        - eu-bat-fdm-2019-2031
+        - eu-pef-2021-2279
+    - id: calc_stack_mass
+      applies_to: "Each direct air emission"
+      rule: "Emitted mass = pollutant concentration × dry or wet gas flow × operating duration, with reference conditions, moisture, and oxygen corrections preserved."
+      inputs:
+        - "Pollutant result"
+        - "gas flow"
+        - duration
+        - corrections
+      output: "Pollutant-specific emitted mass"
+      source_ids:
+        - eu-bat-fdm-2019-2031
+    - id: calc_packaging_mass
+      applies_to: "Each packaging component"
+      rule: "Net component mass = issued mass + opening stock − closing stock − separately weighed scrap − documented returns."
+      inputs:
+        - "Component issues"
+        - stocks
+        - scrap
+        - returns
+      output: "Component mass in conforming shipments"
+      source_ids:
+        - eu-pef-2021-2279
+    - id: calc_water_balance
+      applies_to: "Decaffeination, cleaning, and effluent handling"
+      rule: "Water input = water in product or evaporated + wastewater transferred + direct release + sludge water + inventory change; report the unexplained remainder."
+      inputs:
+        - "Metered water and all water outputs"
+      output: "Water-balance closure"
+      source_ids:
+        - eu-bat-fdm-2019-2031
+  data_quality_requirements:
+    - id: dq_primary_foreground
+      applies_to: "All foreground processes"
+      requirement: "Use site primary records for mass, water, energy, chemicals, packaging, wastes, and direct emissions; secondary estimates shall not replace available primary records."
+      evidence: "Meter, invoice, batch, laboratory, and waste documentation"
+    - id: dq_representativeness
+      applies_to: "Dataset"
+      requirement: "Assess technological, geographical, temporal, and precision or uncertainty representativeness for every material input and direct emission."
+      evidence: "Documented data-quality rating and dataset metadata"
+    - id: dq_completeness
+      applies_to: "Inventory"
+      requirement: "Demonstrate that every included process and every atomic row was recorded, calculated, or marked not applicable with a route-specific reason."
+      evidence: "Completeness matrix and mass, agent, energy, packaging, and water reconciliations"
+    - id: dq_method_traceability
+      applies_to: "Tests and calculations"
+      requirement: "Preserve method version, samples, raw units, conversion factors, allocation drivers, and calculation workbook or query lineage."
+      evidence: "Laboratory reports and reproducible calculation record"
+    - id: dq_no_unsupported_ranges
+      applies_to: "Important inventory rows"
+      requirement: "Do not publish a range until at least two independent original sources support compatible boundary, unit, and normalization bases."
+      evidence: "Source comparison record or open unresolved_range_evidence"
+validation_rules:
+  - rule_id: validate_identity_scope
+    applies_to: "Dataset identity"
+    rule: "Product form is one covered CPC 23911 form and is not instant coffee, extract, preparation, beverage, substitute, or non-decaffeinated green coffee."
+    source_ids:
+      - un-cpc-3-2025
+  - rule_id: validate_reference_mass
+    applies_to: "Reference flow"
+    rule: "Reference output equals 1 kg net coffee with packaging excluded and all required qualifiers declared."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: validate_reference_uuid
+    applies_to: "Reference flow"
+    rule: "Release validation remains inconclusive until an exact public Tiangong reference-product UUID is resolved; an approximate flow shall not be substituted."
+    source_ids: []
+  - rule_id: validate_route_exclusivity
+    applies_to: "Decaffeination"
+    rule: "Exactly one route is declared when decaffeination is in scope; alternative route-agent rows are not applicable and solvent, carbon-dioxide, or water-route losses are not merged."
+    source_ids:
+      - eu-jrc-fdm-bref-2019
+  - rule_id: validate_process_applicability
+    applies_to: "Process map"
+    rule: "Roasting is included only for roasted products, grinding only for ground products, and decaffeination only when performed in the foreground."
+    source_ids:
+      - un-cpc-3-2025
+      - eu-jrc-fdm-bref-2019
+  - rule_id: validate_mass_balance
+    applies_to: "Coffee processes"
+    rule: "Coffee-material balances close within the facility's documented measurement uncertainty; unexplained differences are reported and reviewed."
+    source_ids:
+      - eu-jrc-fdm-bref-2019
+      - cheron-bessou-coffee-lca-2024
+  - rule_id: validate_resource_inventory
+    applies_to: "All processes"
+    rule: "Water, steam, electricity, purchased heat, each fuel, each decaffeination agent, and each packaging component used are separate rows with source records."
+    source_ids:
+      - eu-bat-fdm-2019-2031
+  - rule_id: validate_waste_emissions
+    applies_to: "All processes"
+    rule: "Silverskin, rejected beans, dust, spent agents, wastewater, sludge, packaging scrap, and each direct emission are recorded separately when present."
+    source_ids:
+      - eu-jrc-fdm-bref-2019
+      - eu-bat-fdm-2019-2031
+  - rule_id: validate_decaf_claim
+    applies_to: "Decaffeinated product"
+    rule: "A lot-linked caffeine test or legally applicable claim basis is present, with method and result traceable; ISO 20481 is an applicable analytical method."
+    source_ids:
+      - iso-20481-2008
+  - rule_id: validate_eu_dcm_residue
+    applies_to: "EU-market dichloromethane route"
+    rule: "When Directive 2009/32/EC applies, demonstrate the roasted-coffee dichloromethane residue limit of 2 mg/kg and applicable extraction-solvent requirements; otherwise document the governing jurisdiction."
+    source_ids:
+      - eu-extraction-solvents-2009-32
+  - rule_id: validate_product_quality
+    applies_to: "Roasted and ground products"
+    rule: "Declare moisture method for roasted ground coffee and particle-size method for ground coffee where applicable; ISO 11817 and ISO 23134 are acceptable method identities."
+    source_ids:
+      - iso-11817-1994
+      - iso-23134-2022
+  - rule_id: validate_data_quality
+    applies_to: "Dataset"
+    rule: "Completeness, temporal, geographical, technological, and precision assessments and all allocation choices are disclosed."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: validate_ranges
+    applies_to: "Quantity ranges"
+    rule: "No range may be added from one study, one point, incompatible bases, or equal lower and upper values."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "Site-specific foreground manufacturing package for one declared CPC 3.0 23911 coffee product and route"
+  downstream_use: "Projection to process and lifecyclemodel datasets and linkage to upstream green coffee, utilities, chemicals, packaging, and treatment datasets"
+  allowed_use: "Product carbon footprint or LCA studies when product form, route, geography, technology, period, allocation, and data quality are compatible"
+  excluded_use: "Generic substitution for instant coffee, coffee beverage preparation, cultivation, primary cherry processing, or an undeclared decaffeination route"
+  required_metadata: "PCR id and version; product form; route; caffeine status and test; roast and grind specifications; moisture basis; reference-flow qualifiers; site and period; process inclusion; UUID status; allocation; packaging; upstream links"
+  required_quality_disclosure: "Primary-data share; meter and scale coverage; mass, solvent, energy, packaging, and water balance closure; data-quality ratings; not-applicable rows; uncertainty; unresolved UUID and range-evidence status"
+  update_trigger: "Product or route change; new decaffeination agent; equipment or control change; packaging specification change; material supplier or energy change; reporting-period refresh; regulatory or analytical-method change; exact reference UUID becoming available"
+data_sources:
+  - id: "un-cpc-3-2025"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, CPC Version 3.0 structure and explanatory notes, class 23911, 2025, https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Exp_Notes_30Jun2025.pdf (retrieved 2026-08-24)"
+    used_for: "Category identity and exclusions"
+  - id: "eu-jrc-fdm-bref-2019"
+    type: "official_guidance"
+    reference: "European Commission Joint Research Centre, *Best Available Techniques (BAT) Reference Document for the Food, Drink and Milk Industries*, JRC118627, 2019, DOI: 10.2760/243911, https://publications.jrc.ec.europa.eu/repository/handle/JRC118627 (official original text locally verified)"
+    used_for: "Coffee process sequence, alternative decaffeination routes, roasting, cooling, grinding, packing, silverskin, and emission identities; no quantity range inferred"
+  - id: "eu-bat-fdm-2019-2031"
+    type: "standard"
+    reference: "Commission Implementing Decision (EU) 2019/2031 establishing BAT conclusions for the food, drink and milk industries, https://eur-lex.europa.eu/eli/dec_impl/2019/2031/oj/eng (retrieved 2026-08-24)"
+    used_for: "Water, energy, raw-material, wastewater, waste-gas, residue, monitoring, and energy-management records"
+  - id: "eu-pef-2021-2279"
+    type: "official_guidance"
+    reference: "Commission Recommendation (EU) 2021/2279 on Environmental Footprint methods, consolidated text, https://eur-lex.europa.eu/eli/reco/2021/2279/2021-12-30/eng (retrieved 2026-08-24)"
+    used_for: "Functional unit, completeness, company-specific foreground data, data quality, and allocation hierarchy"
+  - id: "eu-extraction-solvents-2009-32"
+    type: "standard"
+    reference: "Directive 2009/32/EC on extraction solvents, consolidated 2023-02-16, https://eur-lex.europa.eu/eli/dir/2009/32/2023-02-16/eng (retrieved 2026-08-24)"
+    used_for: "EU-conditional ethyl acetate, carbon dioxide, and dichloromethane use and roasted-coffee dichloromethane residue requirement"
+  - id: "iso-20481-2008"
+    type: "standard"
+    reference: "ISO 20481:2008, *Coffee and coffee products — Determination of the caffeine content using high performance liquid chromatography (HPLC) — Reference method*, https://www.iso.org/standard/34185.html (retrieved 2026-08-24)"
+    used_for: "Identity and applicability of caffeine testing method"
+  - id: "iso-11817-1994"
+    type: "standard"
+    reference: "ISO 11817:1994, *Roasted ground coffee — Determination of moisture content — Karl Fischer method (Reference method)*, https://www.iso.org/standard/20100.html (retrieved 2026-08-24)"
+    used_for: "Identity and applicability of roasted-ground-coffee moisture method"
+  - id: "iso-23134-2022"
+    type: "standard"
+    reference: "ISO 23134:2022, *Coffee and coffee products — Determination of particle size of ground roasted coffee — Horizontal sieving motion method using circular brushes*, https://www.iso.org/standard/74672.html (retrieved 2026-08-24)"
+    used_for: "Identity and applicability of ground-coffee particle-size method"
+  - id: "cheron-bessou-coffee-lca-2024"
+    type: "literature"
+    reference: "Chéron-Bessou et al., *Unravelling life cycle impacts of coffee: Why do results differ so much among studies?*, Sustainable Production and Consumption, 2024, DOI: 10.1016/j.spc.2024.04.005, https://researchonline.jcu.edu.au/85847/1/85847.pdf (full text verified 2026-08-24)"
+    used_for: "Functional-unit qualifiers, primary data and mass-balance expectations, secondary processing and packaging scope, and variability caution; no quantity range inferred"
+  - id: "shofinita-decaf-lca-2025"
+    type: "literature"
+    reference: "Shofinita et al., *Life Cycle Assessment of Decaffeinated Coffee Beans Production*, Journal of Engineering and Technological Sciences 57(3), 2025, DOI: 10.5614/j.eng.technol.sci.2025.57.3.3, https://jets.itb.ac.id/jets/article/download/115/182 (full text verified 2026-08-24)"
+    used_for: "Ethyl-acetate and dichloromethane route decomposition, steaming, extraction, stripping, drying, electricity, and steam or heat; single-study quantities not used as ranges"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:6f5a39fddfb428baaf5808c424c1e8e76c71c85c6cb57526011157585aa1ad1d"
+  generated_content_sha256: "sha256:c74b6337abc10273fb76dcb80c5c36bbf76c22ff6a292b991ee43624c83567a2"
