@@ -1,10 +1,2805 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "21181"
-  title: "Pig meat, cuts, salted, dried or smoked (bacon and ham)"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.food-products-beverages-and-tobacco-textiles-apparel-and-leather-products.meat-fish-fruits-vegetables-oils-and-fats.pig-meat-cuts-salted-dried-or-smoked-bacon-and-ham"
+  classification_refs: "CPC 3.0: 21181, exact scope reference"
+  covered_products: "Whole-muscle or cut pig meat preserved by salting, drying, or smoking, including bacon, wet-cured ham, dry-cured ham, and other qualifying cured pig cuts"
+  excluded_products: "Fresh or only frozen pig meat; sausages and comminuted products; canned meat; complete prepared meals; non-pig meat; products not preserved by salting, drying, or smoking"
+  representative_product: "Packaged chilled bacon or ham manufactured from received pig meat cuts by one declared curing method and the applicable downstream route"
+  production_route: "Receive and trim; declare exactly one of dry cure, brine injection, or brine immersion; include tumbling only when used; include cooking only for cooked ham; include smoking only for a smoked route; include drying or ripening only for a dried route; cool or chill; slice only when applicable; package and refrigerate"
+  market_state: "Packaged, labelled, chilled or otherwise stored under the declared product specification at the factory gate; ready-to-eat or not-ready-to-eat status shall be declared"
+functional_unit:
+  what: "Provide a market-ready pig meat cut preserved by salting, drying, or smoking, with declared safety, composition, and route attributes"
+  how_much: "1 kg net mass of product, excluding packaging, at the end of declared factory-gate refrigerated storage"
+  how_well: "Conforming to the declared bacon, ham, or other pig-cut specification and to the declared curing, cooking, smoking, drying, slicing, packaging, and storage conditions"
+  how_long_or_cycle: "One production batch through the declared factory-gate storage duration; storage duration and temperature shall be reported"
+  reference_flow_link: "The reference product output row packaged_refrigerated_product realizes the functional unit"
+system_boundary:
+  rules:
+    - rule_id: boundary_received_cuts
+      applies_to: "foreground_start"
+      rule: "Start at documented receipt of pig meat cuts; exclude animal production, slaughter, and primary cutting but link their upstream datasets."
+      source_ids:
+        - unsd-cpc-3-0
+        - eu-commission-pef-2021-2279
+    - rule_id: boundary_route_exclusivity
+      applies_to: "curing_and_preservation_route"
+      rule: "Declare exactly one curing method. Cooking applies only to cooked ham, smoking only to smoked product, drying or ripening only to dried product, and slicing only to sliced product."
+      source_ids:
+        - usda-fsis-bacon-food-safety
+        - usda-fsis-hams-food-safety
+        - usda-fsis-rte-salt-cured-dried-2023
+    - rule_id: boundary_support_operations
+      applies_to: "foreground_support"
+      rule: "Include allocated facility utilities, sanitation, refrigeration, packaging, wastewater handling, and on-site treatment needed by the declared batch."
+      source_ids:
+        - eu-jrc-fdm-bref-2019
+        - eu-commission-pef-2021-2279
+    - rule_id: boundary_no_route_averaging
+      applies_to: "dataset_representativeness"
+      rule: "Do not average mutually exclusive dry-cure, injection, immersion, cooked, smoked, or dried routes into one default inventory unless a production-weighted market-average dataset explicitly reports the route shares."
+      source_ids:
+        - eu-commission-pef-2021-2279
+boundary_abstraction:
+  declared_starting_condition: "Chilled or frozen pig meat cuts received at the processing establishment gate, with received mass, temperature, cut identity, supplier lot, and prior preservation state documented"
+  starting_condition_role: "Upstream product input; pig production, slaughter, and primary carcass cutting are represented by linked upstream datasets and are not repeated in this foreground"
+  product_classification_scope: "Pig meat cuts whose market identity is established by salting, drying, or smoking within CPC 3.0 subclass 21181, including bacon and ham"
+  recursive_input_rule: "If a received input is already a salted, dried, or smoked pig cut in the same category, record it as a direct product input and stop category recursion at receipt; disclose its prior processing and exclude overlapping foreground steps"
+  upstream_dataset_requirement: "Link supplier-specific or representative upstream datasets for received pig meat cuts, ingredients, utilities, fuels, smoke material, cleaning agents, packaging, and waste treatment without double counting foreground operations"
+  disclosure: "Declare cut, received state, exactly one curing method, every applicable optional route step, cooking and ready-to-eat status, smoke source, drying or ripening conditions, slicing, packaging components, refrigeration conditions, co-product destinations, wastewater route, and all data gaps"
+reference_flow_definition:
+  reference_amount: "1 kg net product"
+  product_flow_ref:
+    name: "Pig meat, cuts, salted, dried or smoked (bacon and ham) — Tiangong UUID unresolved"
+    uuid: ""
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "product form"
+    - "pig cut"
+    - "curing_method exactly one of dry_cure"
+    - brine_injection
+    - "or brine_immersion"
+    - cooking_status
+    - "smoking_status and smoke source"
+    - drying_ripening_status
+    - slicing_status
+    - "ready-to-eat status"
+    - "recipe ingredient list"
+    - "packaging component list"
+    - "refrigeration temperature and duration"
+    - "production geography"
+    - "reference period"
+    - technology
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_net_mass
+    applies_to: "Reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Report net product mass after cooling, packaging operations, and the declared factory-gate storage period; exclude packaging mass."
+  - id: mass_balance_basis
+    applies_to: "Pork, ingredients, products, co-products, rejects, wastes, wastewater, sludge, smoke material, refrigerants, and packaging"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Record wet mass at the point each exchange crosses its process boundary and normalize to 1 kg reference product. Do not convert dry matter, salt content, or water content to wet mass without retaining the conversion record."
+  - id: energy_carrier_separation
+    applies_to: "Electricity, steam, purchased heat, and natural gas"
+    required_property_ref:
+      name: "Energy or mass appropriate to the purchased carrier"
+      uuid: ""
+    required_unit: "kWh, MJ, or kg"
+    rule: "Preserve the invoiced or metered unit and convert only with a documented factor. Electricity, steam, purchased heat, and every fuel remain separate exchanges."
+  - id: ingredient_identity
+    applies_to: "Every recipe ingredient"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Record the mass of each chemically or physically specific ingredient separately; active nitrite or nitrate mass shall not be confused with formulated curing-salt mass."
+  - id: refrigerant_balance
+    applies_to: "Each refrigerant"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Calculate leakage separately for each declared refrigerant from charge, additions, recovery, and ending inventory; never report a combined refrigerant flow."
+process_map:
+  - id: receipt_trimming
+    name: "Receipt and trimming"
+    inclusion: "required"
+    inclusion_condition: "Always"
+    role: "Foreground material preparation"
+    quantitative_reference: "kg received pig meat cuts"
+  - id: dry_curing
+    name: "Dry curing"
+    inclusion: "conditional"
+    inclusion_condition: "Include only when curing_method = dry_cure"
+    role: "Foreground curing"
+    quantitative_reference: "kg trimmed pig meat entering dry cure"
+  - id: brine_curing
+    name: "Brine preparation and injection or immersion"
+    inclusion: "conditional"
+    inclusion_condition: "Include only when curing_method = brine_injection or brine_immersion; declare which one"
+    role: "Foreground curing"
+    quantitative_reference: "kg trimmed pig meat entering brine cure"
+  - id: tumbling
+    name: "Tumbling or massaging"
+    inclusion: "conditional"
+    inclusion_condition: "Include only when actually applied, normally after brine curing"
+    role: "Foreground conditioning"
+    quantitative_reference: "kg brine-cured pig meat tumbled"
+  - id: cooking
+    name: "Cooking"
+    inclusion: "conditional"
+    inclusion_condition: "Include only for cooked ham"
+    role: "Foreground heat treatment"
+    quantitative_reference: "kg cured pig meat entering cooking"
+  - id: smoking
+    name: "Smoking"
+    inclusion: "conditional"
+    inclusion_condition: "Include only for a declared smoked route"
+    role: "Foreground smoke treatment"
+    quantitative_reference: "kg cured or cooked pig meat entering smoking"
+  - id: drying_ripening
+    name: "Drying and ripening"
+    inclusion: "conditional"
+    inclusion_condition: "Include only for a declared dried or ripened route"
+    role: "Foreground preservation"
+    quantitative_reference: "kg cured pig meat entering drying or ripening"
+  - id: cooling_chilling
+    name: "Cooling and chilling"
+    inclusion: "required"
+    inclusion_condition: "Apply the actual post-treatment cooling or chilled conditioning route"
+    role: "Foreground temperature control"
+    quantitative_reference: "kg product entering cooling or chilling"
+  - id: slicing
+    name: "Slicing"
+    inclusion: "conditional"
+    inclusion_condition: "Include only for sliced product"
+    role: "Foreground finishing"
+    quantitative_reference: "kg chilled product entering slicing"
+  - id: packaging
+    name: "Packaging and labelling"
+    inclusion: "required"
+    inclusion_condition: "Always; include only the actual component set"
+    role: "Foreground finishing"
+    quantitative_reference: "kg net product packaged"
+  - id: refrigerated_storage
+    name: "Refrigerated storage"
+    inclusion: "required"
+    inclusion_condition: "Always for the declared factory-gate chilled storage period"
+    role: "Foreground storage"
+    quantitative_reference: "kg packaged product and storage duration"
+  - id: facility_utilities
+    name: "Facility utilities and direct combustion"
+    inclusion: "required"
+    inclusion_condition: "Allocate actual utilities to the declared route by meters or documented physical drivers"
+    role: "Foreground support"
+    quantitative_reference: "1 kg reference product"
+  - id: facility_sanitation
+    name: "Cleaning and disinfection"
+    inclusion: "required"
+    inclusion_condition: "Include batch-allocated and period-allocated sanitation"
+    role: "Foreground support"
+    quantitative_reference: "1 kg reference product"
+  - id: onsite_wastewater_treatment
+    name: "On-site wastewater treatment"
+    inclusion: "conditional"
+    inclusion_condition: "Include only when wastewater is treated on site; otherwise record wastewater leaving the boundary"
+    role: "Foreground support"
+    quantitative_reference: "kg wastewater treated"
+process_inventory:
+  - id: receipt_trimming
+    label: "Receipt and trimming"
+    inputs:
+      product:
+        - row_id: received_pig_meat_cuts
+          role: "Received pig meat cuts"
+          name: "Chilled or frozen pig meat cuts"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This atomic exchange records the quantity of Received pig meat cuts crossing this process boundary."
+          amount:
+            expression: "Weigh accepted supplier lots at receipt, net of transport packaging and pallets"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_receipt_trimming
+              source_ids:
+                - unsd-cpc-3-0
+                - fao-who-codex-cxc-58-2005
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: trimmed_pig_meat_cut
+          role: "Trimmed pig meat cut"
+          name: "Trimmed pig meat cut"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This atomic exchange records the quantity of Trimmed pig meat cut crossing this process boundary."
+          amount:
+            expression: "Weigh trimmed cuts released to the declared curing route"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_receipt_trimming
+              source_ids:
+                - fao-who-codex-cxc-58-2005
+            ranges: []
+        - row_id: edible_pork_fat_trimmings
+          role: "Edible pork fat trimmings"
+          name: "Edible pork fat trimmings"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This atomic exchange records the quantity of Edible pork fat trimmings crossing this process boundary."
+          amount:
+            expression: "Weigh separately when sold or transferred as an edible co-product"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_receipt_trimming
+              source_ids:
+                - eu-commission-pef-2021-2279
+            ranges: []
+        - row_id: edible_pork_skin_trimmings
+          role: "Edible pork skin trimmings"
+          name: "Edible pork skin trimmings"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This atomic exchange records the quantity of Edible pork skin trimmings crossing this process boundary."
+          amount:
+            expression: "Weigh separately when sold or transferred as an edible co-product"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_receipt_trimming
+              source_ids:
+                - eu-commission-pef-2021-2279
+            ranges: []
+      waste:
+        - row_id: inedible_meat_trimmings
+          role: "Inedible meat trimmings"
+          name: "Inedible pig meat trimmings"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This atomic exchange records the quantity of Inedible meat trimmings crossing this process boundary."
+          amount:
+            expression: "Weigh material directed to waste or animal by-product treatment"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_receipt_trimming
+              source_ids:
+                - fao-who-codex-cxc-58-2005
+            ranges: []
+        - row_id: rejected_received_pig_meat
+          role: "Rejected received pig meat"
+          name: "Rejected pig meat cuts"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This atomic exchange records the quantity of Rejected received pig meat crossing this process boundary."
+          amount:
+            expression: "Weigh rejected or condemned received meat by disposition"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_receipt_trimming
+              source_ids:
+                - fao-who-codex-cxc-58-2005
+            ranges: []
+      elementary:
+        []
+  - id: dry_curing
+    label: "Dry curing"
+    inputs:
+      product:
+        - row_id: dry_cure_meat_input
+          role: "Pig meat entering dry cure"
+          name: "Trimmed pig meat cut"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This atomic exchange records the quantity of Pig meat entering dry cure crossing this process boundary."
+          amount:
+            expression: "Weigh trimmed pig meat loaded to dry curing"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_dry_curing
+              source_ids:
+                - usda-fsis-bacon-food-safety
+                - usda-fsis-rte-salt-cured-dried-2023
+            ranges: []
+        - row_id: dry_cure_sodium_chloride
+          role: "Sodium chloride for dry cure"
+          name: "Sodium chloride"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This atomic exchange records the quantity of Sodium chloride for dry cure crossing this process boundary."
+          amount:
+            expression: "Record actual sodium chloride mass applied to the batch"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_dry_curing
+              source_ids:
+                - usda-fsis-bacon-food-safety
+                - usda-fsis-rte-salt-cured-dried-2023
+            ranges: []
+        - row_id: dry_cure_sodium_nitrite
+          role: "Sodium nitrite for dry cure"
+          name: "Sodium nitrite"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This atomic exchange records the quantity of Sodium nitrite for dry cure crossing this process boundary."
+          amount:
+            expression: "Record active sodium nitrite mass when declared in the formulation; otherwise mark this atomic row not applicable"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_dry_curing
+              source_ids:
+                - usda-fsis-bacon-food-safety
+                - usda-fsis-hams-food-safety
+            ranges: []
+        - row_id: dry_cure_sodium_nitrate
+          role: "Sodium nitrate for dry cure"
+          name: "Sodium nitrate"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This atomic exchange records the quantity of Sodium nitrate for dry cure crossing this process boundary."
+          amount:
+            expression: "Record active sodium nitrate mass when declared in the formulation; otherwise mark this atomic row not applicable"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_dry_curing
+              source_ids:
+                - usda-fsis-hams-food-safety
+                - usda-fsis-rte-salt-cured-dried-2023
+            ranges: []
+        - row_id: dry_cure_sucrose
+          role: "Sucrose for dry cure"
+          name: "Sucrose"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This atomic exchange records the quantity of Sucrose for dry cure crossing this process boundary."
+          amount:
+            expression: "Record sucrose mass when declared in the formulation; otherwise mark this atomic row not applicable"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_dry_curing
+              source_ids:
+                - usda-fsis-bacon-food-safety
+                - usda-fsis-hams-food-safety
+            ranges: []
+        - row_id: dry_cure_black_pepper
+          role: "Black pepper for dry cure"
+          name: "Black pepper"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This atomic exchange records the quantity of Black pepper for dry cure crossing this process boundary."
+          amount:
+            expression: "Record black pepper mass when declared in the formulation; otherwise mark this atomic row not applicable"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_dry_curing
+              source_ids:
+                - usda-fsis-bacon-food-safety
+                - fao-who-codex-cxc-58-2005
+            ranges: []
+        - row_id: dry_cure_garlic
+          role: "Garlic for dry cure"
+          name: "Garlic"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This atomic exchange records the quantity of Garlic for dry cure crossing this process boundary."
+          amount:
+            expression: "Record garlic mass when declared in the formulation; otherwise mark this atomic row not applicable"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_dry_curing
+              source_ids:
+                - fao-who-codex-cxc-58-2005
+            ranges: []
+        - row_id: dry_cure_sodium_ascorbate
+          role: "Sodium ascorbate for dry cure"
+          name: "Sodium ascorbate"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This atomic exchange records the quantity of Sodium ascorbate for dry cure crossing this process boundary."
+          amount:
+            expression: "Record sodium ascorbate mass when declared in the formulation; otherwise mark this atomic row not applicable"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_dry_curing
+              source_ids:
+                - usda-fsis-hams-food-safety
+            ranges: []
+        - row_id: dry_cure_sodium_phosphate
+          role: "Sodium phosphate for dry cure"
+          name: "Sodium phosphate"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This atomic exchange records the quantity of Sodium phosphate for dry cure crossing this process boundary."
+          amount:
+            expression: "Record sodium phosphate mass when declared in the formulation; otherwise mark this atomic row not applicable"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_dry_curing
+              source_ids:
+                - usda-fsis-hams-food-safety
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: dry_cured_pig_meat_cut
+          role: "Dry-cured pig meat cut"
+          name: "Dry-cured pig meat cut"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This atomic exchange records the quantity of Dry-cured pig meat cut crossing this process boundary."
+          amount:
+            expression: "Weigh product leaving dry curing after the declared equalization or cure hold"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_dry_curing
+              source_ids:
+                - usda-fsis-rte-salt-cured-dried-2023
+            ranges: []
+      waste:
+        - row_id: spent_dry_cure_mixture
+          role: "Spent dry-cure mixture"
+          name: "Spent dry-cure mixture"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This atomic exchange records the quantity of Spent dry-cure mixture crossing this process boundary."
+          amount:
+            expression: "Weigh unused or removed dry-cure mixture sent to treatment"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_dry_curing
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: dry_cure_purge
+          role: "Dry-cure purge"
+          name: "Dry-cure meat purge"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This atomic exchange records the quantity of Dry-cure purge crossing this process boundary."
+          amount:
+            expression: "Collect and weigh liquid purge separately from removed dry cure"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_dry_curing
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: off_spec_dry_cured_meat
+          role: "Off-specification dry-cured meat"
+          name: "Off-specification dry-cured pig meat"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This atomic exchange records the quantity of Off-specification dry-cured meat crossing this process boundary."
+          amount:
+            expression: "Weigh rejected dry-cured product by final disposition"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_dry_curing
+              source_ids:
+                - fao-who-codex-cxc-58-2005
+            ranges: []
+      elementary:
+        []
+  - id: brine_curing
+    label: "Brine preparation and injection or immersion"
+    inputs:
+      product:
+        - row_id: brine_cure_meat_input
+          role: "Pig meat entering brine cure"
+          name: "Trimmed pig meat cut"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This atomic exchange records the quantity of Pig meat entering brine cure crossing this process boundary."
+          amount:
+            expression: "Weigh trimmed pig meat loaded to the declared injection or immersion route"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_brine_curing
+              source_ids:
+                - usda-fsis-bacon-food-safety
+                - usda-fsis-hams-food-safety
+            ranges: []
+        - row_id: brine_water
+          role: "Brine water"
+          name: "Potable process water"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This atomic exchange records the quantity of Brine water crossing this process boundary."
+          amount:
+            expression: "Meter or weigh water added to the curing brine"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_brine_curing
+              source_ids:
+                - usda-fsis-hams-food-safety
+                - fao-who-codex-cxc-58-2005
+            ranges: []
+        - row_id: brine_sodium_chloride
+          role: "Sodium chloride in brine"
+          name: "Sodium chloride"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This atomic exchange records the quantity of Sodium chloride in brine crossing this process boundary."
+          amount:
+            expression: "Record actual sodium chloride mass added to brine"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_brine_curing
+              source_ids:
+                - usda-fsis-bacon-food-safety
+                - usda-fsis-hams-food-safety
+            ranges: []
+        - row_id: brine_sodium_nitrite
+          role: "Sodium nitrite in brine"
+          name: "Sodium nitrite"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This atomic exchange records the quantity of Sodium nitrite in brine crossing this process boundary."
+          amount:
+            expression: "Record active sodium nitrite mass when declared in the formulation; otherwise mark this atomic row not applicable"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_brine_curing
+              source_ids:
+                - usda-fsis-bacon-food-safety
+                - usda-fsis-hams-food-safety
+            ranges: []
+        - row_id: brine_sodium_nitrate
+          role: "Sodium nitrate in brine"
+          name: "Sodium nitrate"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This atomic exchange records the quantity of Sodium nitrate in brine crossing this process boundary."
+          amount:
+            expression: "Record active sodium nitrate mass when declared in the formulation; otherwise mark this atomic row not applicable"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_brine_curing
+              source_ids:
+                - usda-fsis-hams-food-safety
+            ranges: []
+        - row_id: brine_sucrose
+          role: "Sucrose in brine"
+          name: "Sucrose"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This atomic exchange records the quantity of Sucrose in brine crossing this process boundary."
+          amount:
+            expression: "Record sucrose mass when declared in the formulation; otherwise mark this atomic row not applicable"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_brine_curing
+              source_ids:
+                - usda-fsis-bacon-food-safety
+                - usda-fsis-hams-food-safety
+            ranges: []
+        - row_id: brine_black_pepper
+          role: "Black pepper in brine"
+          name: "Black pepper"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This atomic exchange records the quantity of Black pepper in brine crossing this process boundary."
+          amount:
+            expression: "Record black pepper mass when declared in the formulation; otherwise mark this atomic row not applicable"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_brine_curing
+              source_ids:
+                - usda-fsis-bacon-food-safety
+                - fao-who-codex-cxc-58-2005
+            ranges: []
+        - row_id: brine_garlic
+          role: "Garlic in brine"
+          name: "Garlic"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This atomic exchange records the quantity of Garlic in brine crossing this process boundary."
+          amount:
+            expression: "Record garlic mass when declared in the formulation; otherwise mark this atomic row not applicable"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_brine_curing
+              source_ids:
+                - fao-who-codex-cxc-58-2005
+            ranges: []
+        - row_id: brine_sodium_ascorbate
+          role: "Sodium ascorbate in brine"
+          name: "Sodium ascorbate"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This atomic exchange records the quantity of Sodium ascorbate in brine crossing this process boundary."
+          amount:
+            expression: "Record sodium ascorbate mass when declared in the formulation; otherwise mark this atomic row not applicable"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_brine_curing
+              source_ids:
+                - usda-fsis-bacon-food-safety
+                - usda-fsis-hams-food-safety
+            ranges: []
+        - row_id: brine_sodium_phosphate
+          role: "Sodium phosphate in brine"
+          name: "Sodium phosphate"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This atomic exchange records the quantity of Sodium phosphate in brine crossing this process boundary."
+          amount:
+            expression: "Record sodium phosphate mass when declared in the formulation; otherwise mark this atomic row not applicable"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_brine_curing
+              source_ids:
+                - usda-fsis-hams-food-safety
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: brine_cured_pig_meat_cut
+          role: "Brine-cured pig meat cut"
+          name: "Brine-cured pig meat cut"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This atomic exchange records the quantity of Brine-cured pig meat cut crossing this process boundary."
+          amount:
+            expression: "Weigh cured meat after the declared injection or immersion hold and draining"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_brine_curing
+              source_ids:
+                - usda-fsis-hams-food-safety
+            ranges: []
+      waste:
+        - row_id: spent_curing_brine
+          role: "Spent curing brine"
+          name: "Spent curing brine"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This atomic exchange records the quantity of Spent curing brine crossing this process boundary."
+          amount:
+            expression: "Meter or weigh brine discarded from injection or immersion systems"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_brine_curing
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: brine_cure_purge
+          role: "Brine-cure purge"
+          name: "Brine-cure meat purge"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This atomic exchange records the quantity of Brine-cure purge crossing this process boundary."
+          amount:
+            expression: "Collect and weigh purge released during draining and cure hold"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_brine_curing
+              source_ids:
+                - usda-fsis-bacon-food-safety
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: off_spec_brine_cured_meat
+          role: "Off-specification brine-cured meat"
+          name: "Off-specification brine-cured pig meat"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This atomic exchange records the quantity of Off-specification brine-cured meat crossing this process boundary."
+          amount:
+            expression: "Weigh rejected brine-cured product by final disposition"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_brine_curing
+              source_ids:
+                - fao-who-codex-cxc-58-2005
+            ranges: []
+      elementary:
+        []
+  - id: tumbling
+    label: "Tumbling or massaging"
+    inputs:
+      product:
+        - row_id: tumbling_meat_input
+          role: "Brine-cured meat entering tumbling"
+          name: "Brine-cured pig meat cut"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This atomic exchange records the quantity of Brine-cured meat entering tumbling crossing this process boundary."
+          amount:
+            expression: "Weigh meat loaded into the tumbler"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_tumbling
+              source_ids:
+                - usda-fsis-hams-food-safety
+                - petit-et-al-2021-cooked-ham-lca
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: tumbled_pig_meat
+          role: "Tumbled brine-cured pig meat"
+          name: "Tumbled brine-cured pig meat cut"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This atomic exchange records the quantity of Tumbled brine-cured pig meat crossing this process boundary."
+          amount:
+            expression: "Weigh product discharged from tumbling"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_tumbling
+              source_ids:
+                - usda-fsis-hams-food-safety
+            ranges: []
+      waste:
+        - row_id: tumbling_purge
+          role: "Tumbling purge"
+          name: "Tumbling meat purge"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This atomic exchange records the quantity of Tumbling purge crossing this process boundary."
+          amount:
+            expression: "Collect and weigh purge remaining in the tumbler or discharged to drainage"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_tumbling
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+      elementary:
+        []
+  - id: cooking
+    label: "Cooking"
+    inputs:
+      product:
+        - row_id: cooking_meat_input
+          role: "Cured meat entering cooking"
+          name: "Cured pig meat cut"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This atomic exchange records the quantity of Cured meat entering cooking crossing this process boundary."
+          amount:
+            expression: "Weigh cured pig meat loaded to the cooker or oven"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cooking
+              source_ids:
+                - fao-who-codex-cxc-58-2005
+                - petit-et-al-2021-cooked-ham-lca
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: cooked_cured_ham
+          role: "Cooked cured ham"
+          name: "Cooked cured pig ham"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This atomic exchange records the quantity of Cooked cured ham crossing this process boundary."
+          amount:
+            expression: "Weigh product after cooking and before cooling; retain time-temperature records"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cooking
+              source_ids:
+                - fao-who-codex-cxc-58-2005
+                - petit-et-al-2021-cooked-ham-lca
+            ranges: []
+      waste:
+        - row_id: cooking_drip_loss
+          role: "Cooking drip loss"
+          name: "Cooked-meat drip loss"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This atomic exchange records the quantity of Cooking drip loss crossing this process boundary."
+          amount:
+            expression: "Collect and weigh liquid and fat drip removed from the cooker"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cooking
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: off_spec_cooked_ham
+          role: "Off-specification cooked ham"
+          name: "Off-specification cooked cured ham"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This atomic exchange records the quantity of Off-specification cooked ham crossing this process boundary."
+          amount:
+            expression: "Weigh rejected cooked ham by final disposition"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cooking
+              source_ids:
+                - fao-who-codex-cxc-58-2005
+            ranges: []
+      elementary:
+        []
+  - id: smoking
+    label: "Smoking"
+    inputs:
+      product:
+        - row_id: smoking_meat_input
+          role: "Meat entering smoking"
+          name: "Cured pig meat cut for smoking"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This atomic exchange records the quantity of Meat entering smoking crossing this process boundary."
+          amount:
+            expression: "Weigh cured or cooked pig meat loaded to the smokehouse"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_smoking
+              source_ids:
+                - usda-fsis-bacon-food-safety
+                - fao-who-codex-cxc-68-2009
+            ranges: []
+        - row_id: smoking_hardwood_chips
+          role: "Hardwood chips"
+          name: "Hardwood chips"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This atomic exchange records the quantity of Hardwood chips crossing this process boundary."
+          amount:
+            expression: "Weigh hardwood chips charged to smoke generation; declare wood species"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_smoking
+              source_ids:
+                - us-epa-ap42-meat-smokehouses-1995
+                - fao-who-codex-cxc-68-2009
+            ranges: []
+        - row_id: smoking_hardwood_sawdust
+          role: "Hardwood sawdust"
+          name: "Hardwood sawdust"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This atomic exchange records the quantity of Hardwood sawdust crossing this process boundary."
+          amount:
+            expression: "Weigh hardwood sawdust charged to smoke generation; declare wood species; otherwise mark this row not applicable"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_smoking
+              source_ids:
+                - us-epa-ap42-meat-smokehouses-1995
+                - fao-who-codex-cxc-68-2009
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: smoked_pig_meat_cut
+          role: "Smoked pig meat cut"
+          name: "Smoked cured pig meat cut"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This atomic exchange records the quantity of Smoked pig meat cut crossing this process boundary."
+          amount:
+            expression: "Weigh product leaving the smokehouse"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_smoking
+              source_ids:
+                - usda-fsis-bacon-food-safety
+                - fao-who-codex-cxc-68-2009
+            ranges: []
+      waste:
+        - row_id: smoke_generator_wood_ash
+          role: "Smoke-generator wood ash"
+          name: "Hardwood ash from smoke generation"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This atomic exchange records the quantity of Smoke-generator wood ash crossing this process boundary."
+          amount:
+            expression: "Weigh ash removed from the smoke generator"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_smoking
+              source_ids:
+                - fao-who-codex-cxc-68-2009
+            ranges: []
+        - row_id: smoke_scrubber_wastewater
+          role: "Smoke-scrubber wastewater"
+          name: "Smoke-scrubber wastewater"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This atomic exchange records the quantity of Smoke-scrubber wastewater crossing this process boundary."
+          amount:
+            expression: "Meter wastewater leaving smoke-gas treatment when a wet scrubber is used"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_smoking
+              source_ids:
+                - us-epa-ap42-meat-smokehouses-1995
+            ranges: []
+        - row_id: off_spec_smoked_meat
+          role: "Off-specification smoked meat"
+          name: "Off-specification smoked pig meat"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This atomic exchange records the quantity of Off-specification smoked meat crossing this process boundary."
+          amount:
+            expression: "Weigh rejected smoked product by final disposition"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_smoking
+              source_ids:
+                - fao-who-codex-cxc-58-2005
+            ranges: []
+      elementary:
+        - row_id: smoke_pm2_5_to_air
+          role: "Fine particulate matter to air"
+          name: "Particulate matter, aerodynamic diameter less than 2.5 micrometres, to air"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This atomic exchange records the quantity of Fine particulate matter to air crossing this process boundary."
+          amount:
+            expression: "Use stack measurement or a documented smokehouse-specific calculation; record control-device status"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_smoking
+              source_ids:
+                - us-epa-ap42-meat-smokehouses-1995
+            ranges: []
+        - row_id: smoke_carbon_monoxide_to_air
+          role: "Carbon monoxide to air"
+          name: "Carbon monoxide, to air"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This atomic exchange records the quantity of Carbon monoxide to air crossing this process boundary."
+          amount:
+            expression: "Use stack measurement or a documented smokehouse-specific calculation"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_smoking
+              source_ids:
+                - us-epa-ap42-meat-smokehouses-1995
+            ranges: []
+        - row_id: smoke_acrolein_to_air
+          role: "Acrolein to air"
+          name: "Acrolein, to air"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This atomic exchange records the quantity of Acrolein to air crossing this process boundary."
+          amount:
+            expression: "Report measured acrolein emissions when monitored; otherwise disclose the unquantified emission gap"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_smoking
+              source_ids:
+                - us-epa-ap42-meat-smokehouses-1995
+            ranges: []
+        - row_id: smoke_acetaldehyde_to_air
+          role: "Acetaldehyde to air"
+          name: "Acetaldehyde, to air"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This atomic exchange records the quantity of Acetaldehyde to air crossing this process boundary."
+          amount:
+            expression: "Report measured acetaldehyde emissions when monitored; otherwise disclose the unquantified emission gap"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_smoking
+              source_ids:
+                - us-epa-ap42-meat-smokehouses-1995
+            ranges: []
+        - row_id: smoke_formaldehyde_to_air
+          role: "Formaldehyde to air"
+          name: "Formaldehyde, to air"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This atomic exchange records the quantity of Formaldehyde to air crossing this process boundary."
+          amount:
+            expression: "Use stack measurement or a documented smokehouse-specific calculation"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_smoking
+              source_ids:
+                - us-epa-ap42-meat-smokehouses-1995
+                - fao-who-codex-cxc-68-2009
+            ranges: []
+        - row_id: smoke_acetic_acid_to_air
+          role: "Acetic acid to air"
+          name: "Acetic acid, to air"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This atomic exchange records the quantity of Acetic acid to air crossing this process boundary."
+          amount:
+            expression: "Use stack measurement or a documented smokehouse-specific calculation"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_smoking
+              source_ids:
+                - us-epa-ap42-meat-smokehouses-1995
+            ranges: []
+        - row_id: smoke_nitrogen_oxides_to_air
+          role: "Nitrogen oxides to air"
+          name: "Nitrogen oxides, to air"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This atomic exchange records the quantity of Nitrogen oxides to air crossing this process boundary."
+          amount:
+            expression: "Report measured nitrogen oxides or calculate from fuel and a cited facility-applicable factor"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_smoking
+              source_ids:
+                - us-epa-ap42-meat-smokehouses-1995
+                - fao-who-codex-cxc-68-2009
+            ranges: []
+        - row_id: smoke_sulfur_oxides_to_air
+          role: "Sulfur oxides to air"
+          name: "Sulfur oxides, to air"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This atomic exchange records the quantity of Sulfur oxides to air crossing this process boundary."
+          amount:
+            expression: "Report measured sulfur oxides or calculate from fuel sulfur and a cited facility-applicable factor"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_smoking
+              source_ids:
+                - fao-who-codex-cxc-68-2009
+            ranges: []
+        - row_id: smoke_benzo_a_pyrene_to_air
+          role: "Benzo[a]pyrene to air"
+          name: "Benzo[a]pyrene, to air"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This atomic exchange records the quantity of Benzo[a]pyrene to air crossing this process boundary."
+          amount:
+            expression: "Report measured benzo[a]pyrene when monitored as an individual PAH; otherwise disclose the unquantified emission gap"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_smoking
+              source_ids:
+                - fao-who-codex-cxc-68-2009
+            ranges: []
+  - id: drying_ripening
+    label: "Drying and ripening"
+    inputs:
+      product:
+        - row_id: drying_meat_input
+          role: "Cured meat entering drying or ripening"
+          name: "Cured pig meat cut for drying"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This atomic exchange records the quantity of Cured meat entering drying or ripening crossing this process boundary."
+          amount:
+            expression: "Weigh cured pig meat entering the drying or ripening room"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_drying_ripening
+              source_ids:
+                - usda-fsis-rte-salt-cured-dried-2023
+                - fao-who-codex-cxc-58-2005
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: dried_ripened_pig_meat_cut
+          role: "Dried or ripened pig meat cut"
+          name: "Dried or ripened cured pig meat cut"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This atomic exchange records the quantity of Dried or ripened pig meat cut crossing this process boundary."
+          amount:
+            expression: "Weigh product leaving drying or ripening and retain time, temperature, humidity, and product-criterion records"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_drying_ripening
+              source_ids:
+                - usda-fsis-rte-salt-cured-dried-2023
+                - fao-who-codex-cxc-58-2005
+            ranges: []
+      waste:
+        - row_id: off_spec_dried_meat
+          role: "Off-specification dried meat"
+          name: "Off-specification dried cured pig meat"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This atomic exchange records the quantity of Off-specification dried meat crossing this process boundary."
+          amount:
+            expression: "Weigh rejected dried or ripened product by final disposition"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_drying_ripening
+              source_ids:
+                - fao-who-codex-cxc-58-2005
+            ranges: []
+      elementary:
+        []
+  - id: cooling_chilling
+    label: "Cooling and chilling"
+    inputs:
+      product:
+        - row_id: cooling_product_input
+          role: "Product entering cooling or chilling"
+          name: "Treated pig meat cut before cooling"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This atomic exchange records the quantity of Product entering cooling or chilling crossing this process boundary."
+          amount:
+            expression: "Weigh product entering the declared cooling or chilled-conditioning step"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cooling_chilling
+              source_ids:
+                - fao-who-codex-cxc-58-2005
+                - usda-fsis-bacon-food-safety
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: cooled_chilled_pig_meat_cut
+          role: "Cooled or chilled pig meat cut"
+          name: "Cooled or chilled cured pig meat cut"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This atomic exchange records the quantity of Cooled or chilled pig meat cut crossing this process boundary."
+          amount:
+            expression: "Weigh product released after the validated cooling or chilling profile and retain time-temperature records"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cooling_chilling
+              source_ids:
+                - fao-who-codex-cxc-58-2005
+                - usda-fsis-bacon-food-safety
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+  - id: slicing
+    label: "Slicing"
+    inputs:
+      product:
+        - row_id: slicing_product_input
+          role: "Chilled product entering slicing"
+          name: "Chilled cured pig meat cut"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This atomic exchange records the quantity of Chilled product entering slicing crossing this process boundary."
+          amount:
+            expression: "Weigh chilled whole or block product loaded to slicing"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_slicing
+              source_ids:
+                - usda-fsis-bacon-food-safety
+                - beigbeder-et-al-2022-dry-cured-ham-packaging
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: sliced_cured_pig_meat
+          role: "Sliced cured pig meat"
+          name: "Sliced cured pig meat"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This atomic exchange records the quantity of Sliced cured pig meat crossing this process boundary."
+          amount:
+            expression: "Weigh saleable sliced product released to packaging"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_slicing
+              source_ids:
+                - beigbeder-et-al-2022-dry-cured-ham-packaging
+            ranges: []
+        - row_id: edible_slicing_offcuts
+          role: "Edible slicing offcuts"
+          name: "Edible cured-pork slicing offcuts"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This atomic exchange records the quantity of Edible slicing offcuts crossing this process boundary."
+          amount:
+            expression: "Weigh separately when transferred for edible use"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_slicing
+              source_ids:
+                - eu-commission-pef-2021-2279
+            ranges: []
+      waste:
+        - row_id: off_spec_sliced_meat
+          role: "Off-specification sliced meat"
+          name: "Off-specification sliced cured pig meat"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This atomic exchange records the quantity of Off-specification sliced meat crossing this process boundary."
+          amount:
+            expression: "Weigh rejected slices by final disposition"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_slicing
+              source_ids:
+                - fao-who-codex-cxc-58-2005
+            ranges: []
+      elementary:
+        []
+  - id: packaging
+    label: "Packaging and labelling"
+    inputs:
+      product:
+        - row_id: packaging_product_input
+          role: "Product entering packaging"
+          name: "Cured pig meat product before packaging"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This atomic exchange records the quantity of Product entering packaging crossing this process boundary."
+          amount:
+            expression: "Weigh net product entering the packaging line"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging
+              source_ids:
+                - fao-who-codex-cxc-58-2005
+            ranges: []
+        - row_id: pa_pe_vacuum_pouch
+          role: "Polyamide-polyethylene vacuum pouch"
+          name: "Polyamide-polyethylene multilayer vacuum pouch"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This atomic exchange records the quantity of Polyamide-polyethylene vacuum pouch crossing this process boundary."
+          amount:
+            expression: "Weigh pouches consumed for conforming packs; otherwise mark this row not applicable"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging
+              source_ids:
+                - pauer-et-al-2020-bacon-packaging
+            ranges: []
+        - row_id: apet_forming_tray
+          role: "Amorphous PET forming tray"
+          name: "Amorphous polyethylene terephthalate forming tray"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This atomic exchange records the quantity of Amorphous PET forming tray crossing this process boundary."
+          amount:
+            expression: "Weigh trays consumed for conforming packs; otherwise mark this row not applicable"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging
+              source_ids:
+                - pauer-et-al-2020-bacon-packaging
+                - beigbeder-et-al-2022-dry-cured-ham-packaging
+            ranges: []
+        - row_id: polyethylene_sealing_film
+          role: "Polyethylene sealing film"
+          name: "Polyethylene sealing film"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This atomic exchange records the quantity of Polyethylene sealing film crossing this process boundary."
+          amount:
+            expression: "Weigh sealing film consumed for conforming packs; otherwise mark this row not applicable"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging
+              source_ids:
+                - pauer-et-al-2020-bacon-packaging
+                - beigbeder-et-al-2022-dry-cured-ham-packaging
+            ranges: []
+        - row_id: corrugated_board_carton
+          role: "Corrugated board shipping carton"
+          name: "Corrugated board shipping carton"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This atomic exchange records the quantity of Corrugated board shipping carton crossing this process boundary."
+          amount:
+            expression: "Weigh cartons allocated to the packaged reference product"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging
+              source_ids:
+                - eu-commission-pef-2021-2279
+            ranges: []
+        - row_id: graphic_paper_label
+          role: "Graphic paper label"
+          name: "Graphic paper label"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This atomic exchange records the quantity of Graphic paper label crossing this process boundary."
+          amount:
+            expression: "Weigh labels allocated to the packaged reference product"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging
+              source_ids:
+                - pauer-et-al-2020-bacon-packaging
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: packaged_cured_pig_meat
+          role: "Packaged cured pig meat"
+          name: "Packaged cured pig meat product"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg net product"
+          description: "This atomic exchange records the quantity of Packaged cured pig meat crossing this process boundary."
+          amount:
+            expression: "Weigh conforming net product after packaging, excluding packaging mass"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging
+              source_ids:
+                - fao-who-codex-cxc-58-2005
+            ranges: []
+      waste:
+        - row_id: pa_pe_film_waste
+          role: "PA-PE film packaging waste"
+          name: "Polyamide-polyethylene film waste"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This atomic exchange records the quantity of PA-PE film packaging waste crossing this process boundary."
+          amount:
+            expression: "Weigh pouch and film trim waste separately"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging
+              source_ids:
+                - pauer-et-al-2020-bacon-packaging
+            ranges: []
+        - row_id: pet_tray_waste
+          role: "PET tray waste"
+          name: "Polyethylene terephthalate tray waste"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This atomic exchange records the quantity of PET tray waste crossing this process boundary."
+          amount:
+            expression: "Weigh rejected or damaged tray material separately"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging
+              source_ids:
+                - beigbeder-et-al-2022-dry-cured-ham-packaging
+            ranges: []
+        - row_id: polyethylene_film_waste
+          role: "Polyethylene film waste"
+          name: "Polyethylene film waste"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This atomic exchange records the quantity of Polyethylene film waste crossing this process boundary."
+          amount:
+            expression: "Weigh sealing-film trim and rejected film separately"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging
+              source_ids:
+                - beigbeder-et-al-2022-dry-cured-ham-packaging
+            ranges: []
+        - row_id: corrugated_board_waste
+          role: "Corrugated board waste"
+          name: "Corrugated board waste"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This atomic exchange records the quantity of Corrugated board waste crossing this process boundary."
+          amount:
+            expression: "Weigh damaged cartons and board trim separately"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging
+              source_ids:
+                - eu-commission-pef-2021-2279
+            ranges: []
+        - row_id: paper_label_waste
+          role: "Paper label waste"
+          name: "Graphic paper label waste"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This atomic exchange records the quantity of Paper label waste crossing this process boundary."
+          amount:
+            expression: "Weigh rejected labels and paper backing waste separately"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging
+              source_ids:
+                - pauer-et-al-2020-bacon-packaging
+            ranges: []
+        - row_id: off_spec_packaged_product
+          role: "Off-specification packaged product"
+          name: "Off-specification packaged cured pig meat"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg net product"
+          description: "This atomic exchange records the quantity of Off-specification packaged product crossing this process boundary."
+          amount:
+            expression: "Weigh rejected packaged product and record whether product and packaging are separated"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging
+              source_ids:
+                - fao-who-codex-cxc-58-2005
+            ranges: []
+      elementary:
+        []
+  - id: refrigerated_storage
+    label: "Refrigerated storage"
+    inputs:
+      product:
+        - row_id: storage_product_input
+          role: "Packaged product entering storage"
+          name: "Packaged cured pig meat product"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg net product"
+          description: "This atomic exchange records the quantity of Packaged product entering storage crossing this process boundary."
+          amount:
+            expression: "Weigh packaged product placed in factory-gate refrigerated storage"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_refrigerated_storage
+              source_ids:
+                - fao-who-codex-cxc-58-2005
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: packaged_refrigerated_product
+          role: "Packaged refrigerated reference product"
+          name: "Pig meat, cuts, salted, dried or smoked (bacon and ham) — Tiangong UUID unresolved"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg net product"
+          description: "This atomic exchange records the quantity of Packaged refrigerated reference product crossing this process boundary."
+          amount:
+            expression: "Fixed reference output of 1 kg net conforming product after the declared storage period"
+            value_mode: "fixed_value"
+            specificity: "product_specific"
+            basis:
+              text: "1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "method_formula"
+              source_ids:
+                - unsd-cpc-3-0
+                - mass-balance-identity
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+  - id: facility_utilities
+    label: "Facility utilities and direct combustion"
+    inputs:
+      product:
+        - row_id: facility_grid_electricity
+          role: "Grid electricity"
+          name: "Grid electricity"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "This atomic exchange records the quantity of Grid electricity crossing this process boundary."
+          amount:
+            expression: "Meter electricity and allocate to the declared route using process submetering or documented physical drivers"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_facility_utilities
+              source_ids:
+                - eu-commission-pef-2021-2279
+                - petit-et-al-2021-cooked-ham-lca
+            ranges: []
+        - row_id: facility_purchased_steam
+          role: "Purchased steam"
+          name: "Purchased steam"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "This atomic exchange records the quantity of Purchased steam crossing this process boundary."
+          amount:
+            expression: "Meter or calculate purchased steam delivered to the declared route; otherwise mark this row not applicable"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_facility_utilities
+              source_ids:
+                - eu-commission-pef-2021-2279
+            ranges: []
+        - row_id: facility_purchased_heat
+          role: "Purchased industrial heat"
+          name: "Purchased industrial heat"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "This atomic exchange records the quantity of Purchased industrial heat crossing this process boundary."
+          amount:
+            expression: "Meter purchased heat delivered to the declared route; otherwise mark this row not applicable"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_facility_utilities
+              source_ids:
+                - eu-commission-pef-2021-2279
+            ranges: []
+        - row_id: facility_natural_gas
+          role: "Natural gas"
+          name: "Natural gas"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "This atomic exchange records the quantity of Natural gas crossing this process boundary."
+          amount:
+            expression: "Meter natural gas combusted on site for the declared route; add one separate atomic row for every other fuel actually used"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_facility_utilities
+              source_ids:
+                - eu-commission-pef-2021-2279
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: facility_process_water
+          role: "Utility process water"
+          name: "Potable process water"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This atomic exchange records the quantity of Utility process water crossing this process boundary."
+          amount:
+            expression: "Meter process water not already recorded as recipe or sanitation water and allocate by route"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_facility_utilities
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+                - eu-commission-pef-2021-2279
+            ranges: []
+        - row_id: facility_ammonia_refrigerant
+          role: "Ammonia refrigerant make-up"
+          name: "Ammonia refrigerant"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This atomic exchange records the quantity of Ammonia refrigerant make-up crossing this process boundary."
+          amount:
+            expression: "Calculate make-up attributable to the declared route from refrigerant service and inventory records; otherwise mark this row not applicable"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_facility_utilities
+              source_ids:
+                - eu-commission-pef-2021-2279
+            ranges: []
+        - row_id: facility_r404a_refrigerant
+          role: "R-404A refrigerant make-up"
+          name: "Refrigerant R-404A"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This atomic exchange records the quantity of R-404A refrigerant make-up crossing this process boundary."
+          amount:
+            expression: "Calculate make-up attributable to the declared route from refrigerant service and inventory records; otherwise mark this row not applicable"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_facility_utilities
+              source_ids:
+                - eu-commission-pef-2021-2279
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        []
+      elementary:
+        - row_id: facility_fossil_co2_to_air
+          role: "Fossil carbon dioxide from on-site fuel"
+          name: "Carbon dioxide, fossil, to air"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This atomic exchange records the quantity of Fossil carbon dioxide from on-site fuel crossing this process boundary."
+          amount:
+            expression: "Calculate from each on-site fuel record and a cited fuel-specific factor, excluding purchased energy combustion"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "fuel_inventory"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_facility_utilities
+              source_ids:
+                - eu-commission-pef-2021-2279
+            ranges: []
+        - row_id: facility_carbon_monoxide_to_air
+          role: "Carbon monoxide from on-site fuel"
+          name: "Carbon monoxide, to air"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This atomic exchange records the quantity of Carbon monoxide from on-site fuel crossing this process boundary."
+          amount:
+            expression: "Use stack measurement or calculate from each on-site fuel record and a cited fuel-specific factor"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "fuel_inventory"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_facility_utilities
+              source_ids:
+                - eu-commission-pef-2021-2279
+            ranges: []
+        - row_id: facility_nitrogen_oxides_to_air
+          role: "Nitrogen oxides from on-site fuel"
+          name: "Nitrogen oxides, to air"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This atomic exchange records the quantity of Nitrogen oxides from on-site fuel crossing this process boundary."
+          amount:
+            expression: "Use stack measurement or calculate from each on-site fuel record and a cited fuel-specific factor"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "fuel_inventory"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_facility_utilities
+              source_ids:
+                - eu-commission-pef-2021-2279
+            ranges: []
+        - row_id: ammonia_refrigerant_leakage
+          role: "Ammonia refrigerant leakage"
+          name: "Ammonia, to air"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This atomic exchange records the quantity of Ammonia refrigerant leakage crossing this process boundary."
+          amount:
+            expression: "Calculate route-attributable ammonia leakage from the refrigerant mass balance"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_facility_utilities
+              source_ids:
+                - eu-commission-pef-2021-2279
+            ranges: []
+        - row_id: r404a_refrigerant_leakage
+          role: "R-404A refrigerant leakage"
+          name: "Refrigerant R-404A, to air"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This atomic exchange records the quantity of R-404A refrigerant leakage crossing this process boundary."
+          amount:
+            expression: "Calculate route-attributable R-404A leakage from the refrigerant mass balance"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_facility_utilities
+              source_ids:
+                - eu-commission-pef-2021-2279
+            ranges: []
+  - id: facility_sanitation
+    label: "Cleaning and disinfection"
+    inputs:
+      product:
+        - row_id: sanitation_water
+          role: "Sanitation water"
+          name: "Potable cleaning water"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This atomic exchange records the quantity of Sanitation water crossing this process boundary."
+          amount:
+            expression: "Meter water used for pre-rinse, detergent rinse, disinfection, and final rinse and allocate to the declared route"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_facility_sanitation
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+                - fao-who-codex-cxc-58-2005
+            ranges: []
+        - row_id: sodium_hydroxide_cleaner
+          role: "Sodium hydroxide cleaner"
+          name: "Sodium hydroxide"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This atomic exchange records the quantity of Sodium hydroxide cleaner crossing this process boundary."
+          amount:
+            expression: "Record active sodium hydroxide mass in alkaline cleaner consumed"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_facility_sanitation
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: nitric_acid_cleaner
+          role: "Nitric acid cleaner"
+          name: "Nitric acid"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This atomic exchange records the quantity of Nitric acid cleaner crossing this process boundary."
+          amount:
+            expression: "Record active nitric acid mass in acid cleaner consumed; otherwise mark this row not applicable"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_facility_sanitation
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: sodium_hypochlorite_disinfectant
+          role: "Sodium hypochlorite disinfectant"
+          name: "Sodium hypochlorite"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This atomic exchange records the quantity of Sodium hypochlorite disinfectant crossing this process boundary."
+          amount:
+            expression: "Record active sodium hypochlorite mass in disinfectant consumed; otherwise mark this row not applicable"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_facility_sanitation
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+                - fao-who-codex-cxc-58-2005
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: cleaning_wastewater
+          role: "Meat-processing cleaning wastewater"
+          name: "Meat-processing cleaning wastewater"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This atomic exchange records the quantity of Meat-processing cleaning wastewater crossing this process boundary."
+          amount:
+            expression: "Meter sanitation wastewater sent to on-site treatment, sewer, or off-site treatment"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_facility_sanitation
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: screened_meat_solids
+          role: "Screened meat solids from cleaning"
+          name: "Screened meat solids from cleaning"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This atomic exchange records the quantity of Screened meat solids from cleaning crossing this process boundary."
+          amount:
+            expression: "Weigh solids removed before wastewater discharge"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_facility_sanitation
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+      elementary:
+        []
+  - id: onsite_wastewater_treatment
+    label: "On-site wastewater treatment"
+    inputs:
+      product:
+        []
+      waste:
+        - row_id: wastewater_to_onsite_treatment
+          role: "Combined meat-processing wastewater to treatment"
+          name: "Meat-processing wastewater"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This atomic exchange records the quantity of Combined meat-processing wastewater to treatment crossing this process boundary."
+          amount:
+            expression: "Meter wastewater entering the on-site treatment plant, including separately recorded brine, purge, scrubber, and cleaning streams"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wastewater_treatment
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: wastewater_treatment_sludge
+          role: "Wastewater treatment sludge"
+          name: "Meat-processing wastewater treatment sludge"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This atomic exchange records the quantity of Wastewater treatment sludge crossing this process boundary."
+          amount:
+            expression: "Weigh dewatered sludge and record dry-matter content and destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wastewater_treatment
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: treated_wastewater_to_sewer
+          role: "Treated wastewater to sewer"
+          name: "Treated meat-processing wastewater to sewer"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This atomic exchange records the quantity of Treated wastewater to sewer crossing this process boundary."
+          amount:
+            expression: "Meter treated effluent transferred to a downstream sewer or off-site treatment; use elementary output rows instead for direct environmental discharge"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wastewater_treatment
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+      elementary:
+        - row_id: cod_to_water
+          role: "Chemical oxygen demand to water"
+          name: "Chemical oxygen demand, to water"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This atomic exchange records the quantity of Chemical oxygen demand to water crossing this process boundary."
+          amount:
+            expression: "Calculate discharged COD from measured effluent concentration and direct-discharge volume"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_wastewater_treatment
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: total_nitrogen_to_water
+          role: "Total nitrogen to water"
+          name: "Nitrogen, total, to water"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This atomic exchange records the quantity of Total nitrogen to water crossing this process boundary."
+          amount:
+            expression: "Calculate discharged total nitrogen from measured effluent concentration and direct-discharge volume"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_wastewater_treatment
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: total_phosphorus_to_water
+          role: "Total phosphorus to water"
+          name: "Phosphorus, total, to water"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This atomic exchange records the quantity of Total phosphorus to water crossing this process boundary."
+          amount:
+            expression: "Calculate discharged total phosphorus from measured effluent concentration and direct-discharge volume"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_wastewater_treatment
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+        - row_id: chloride_to_water
+          role: "Chloride to water"
+          name: "Chloride, to water"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This atomic exchange records the quantity of Chloride to water crossing this process boundary."
+          amount:
+            expression: "Calculate discharged chloride from measured effluent concentration and direct-discharge volume"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_wastewater_treatment
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges: []
+allocation_rules:
+  - rule_id: allocation_avoid_by_subdivision
+    applies_to: "all_shared_operations"
+    rule: "First subdivide route-specific processing and directly metered utilities, sanitation, refrigeration, packaging, waste, and emissions. Do not allocate excluded or non-applicable routes to the reference product."
+    source_ids:
+      - eu-commission-pef-2021-2279
+  - rule_id: allocation_physical_driver
+    applies_to: "shared_facility_inputs"
+    rule: "When subdivision is not possible, allocate shared electricity, steam, heat, natural gas, water, sanitation, and storage using a documented physical driver that reflects causality, such as submetered operating time, equipment load, product mass-time, or occupied refrigerated volume-time."
+    source_ids:
+      - eu-commission-pef-2021-2279
+  - rule_id: allocation_trimming_coproducts
+    applies_to: "edible_pork_fat_trimmings_and_edible_pork_skin_trimmings"
+    rule: "Keep saleable edible fat and skin as separate co-product outputs. Prefer process subdivision; if residual burdens remain, document the physical relationship or other justified allocation basis and disclose factors. Do not treat saleable co-products as zero-burden waste."
+    source_ids:
+      - eu-commission-pef-2021-2279
+  - rule_id: allocation_rework_and_rejects
+    applies_to: "off_specification_product"
+    rule: "Return rework to the originating process without creating avoided product; track repeated inputs and losses. Assign treatment burdens and credits only to the documented final destination of rejected material."
+    source_ids:
+      - fao-who-codex-cxc-58-2005
+      - eu-commission-pef-2021-2279
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_receipt_trimming
+      process_id: "receipt_trimming"
+      flow_role: "received meat, trimmed product, co-products, trimmings, rejects"
+      record_type: "weighbridge, scale, lot disposition"
+      raw_fields: "lot_id; cut; received_state; gross_mass; tare; accepted_mass; trimmed_mass; each output mass; destination"
+      collection_method: "Calibrated scales reconciled to lot and disposition records"
+      unit: "kg"
+      frequency: "Every lot or batch"
+      temporal_coverage: "Representative production year, including seasonal products"
+      site_scope: "All sites in dataset scope"
+      aggregation_rule: "Sum each atomic exchange; normalize to reference output; reconcile input to outputs and recorded loss"
+      quality_evidence: "Calibration certificates; supplier lots; disposition records; mass-balance reconciliation"
+    - protocol_id: cp_dry_curing
+      process_id: "dry_curing"
+      flow_role: "meat, each dry ingredient, cured output, purge, spent cure, reject"
+      record_type: "recipe issue, scale, batch sheet"
+      raw_fields: "batch_id; ingredient_identity; active_concentration; issued_mass; returned_mass; meat_in; product_out; purge; spent_cure; reject; cure_time; cure_temperature"
+      collection_method: "Calibrated weighing and batch reconciliation"
+      unit: "kg"
+      frequency: "Every batch"
+      temporal_coverage: "Representative production year"
+      site_scope: "Every dry-cure line and site"
+      aggregation_rule: "Sum each ingredient and output separately; normalize by reference output"
+      quality_evidence: "Approved formula; scale calibration; batch sheet; cure-control records"
+    - protocol_id: cp_brine_curing
+      process_id: "brine_curing"
+      flow_role: "meat, water, each brine ingredient, cured output, spent brine, purge, reject"
+      record_type: "brine make-up, injector or immersion log, scales, meter"
+      raw_fields: "batch_id; curing_method; water_mass; each ingredient identity and active mass; meat_in; injection_or_immersion_mass; product_out; spent_brine; purge; reject; hold_time; temperature"
+      collection_method: "Meter and calibrated scales; reconcile prepared, retained, recovered, and discarded brine"
+      unit: "kg"
+      frequency: "Every batch"
+      temporal_coverage: "Representative production year"
+      site_scope: "Every brine line and site"
+      aggregation_rule: "Keep injection and immersion routes separate; normalize atomic exchanges to reference output"
+      quality_evidence: "Approved recipe; meter and scale calibration; equipment and hold records"
+    - protocol_id: cp_tumbling
+      process_id: "tumbling"
+      flow_role: "tumbled meat and purge"
+      record_type: "batch scale and tumbler log"
+      raw_fields: "batch_id; meat_in; meat_out; purge; duration; duty_cycle; temperature"
+      collection_method: "Calibrated weighing and equipment log"
+      unit: "kg"
+      frequency: "Every batch"
+      temporal_coverage: "Representative production year"
+      site_scope: "Every tumbler used"
+      aggregation_rule: "Reconcile mass in, product out, and purge; normalize to reference output"
+      quality_evidence: "Scale calibration; tumbler batch record"
+    - protocol_id: cp_cooking
+      process_id: "cooking"
+      flow_role: "cooked product, drip, reject"
+      record_type: "cooker batch sheet and scales"
+      raw_fields: "batch_id; meat_in; product_out; drip; reject; equipment_id; time_temperature_profile; core_temperature"
+      collection_method: "Calibrated weighing and validated time-temperature recording"
+      unit: "kg"
+      frequency: "Every batch"
+      temporal_coverage: "Representative production year"
+      site_scope: "Every cooker or oven"
+      aggregation_rule: "Reconcile mass and retain route-specific thermal record"
+      quality_evidence: "Scale and temperature calibration; validated cooking schedule"
+    - protocol_id: cp_smoking
+      process_id: "smoking"
+      flow_role: "meat, each smoke material, ash, scrubber wastewater, reject, each air emission"
+      record_type: "batch sheet, scales, stack test, control-device log"
+      raw_fields: "batch_id; meat_in; meat_out; wood_species; chips_mass; sawdust_mass; ash_mass; wastewater_mass; reject; pollutant_identity; concentration; gas_flow; test_duration; control_status"
+      collection_method: "Calibrated weighing; stack measurement or documented pollutant-specific calculation"
+      unit: "kg"
+      frequency: "Each batch for materials; representative tests and required monitoring for emissions"
+      temporal_coverage: "Representative production year and operating/control states"
+      site_scope: "Every smokehouse"
+      aggregation_rule: "Calculate each pollutant separately; do not use a combined VOC or PAH exchange; normalize to reference output"
+      quality_evidence: "Stack-test report; laboratory QA; control-device log; scale calibration"
+    - protocol_id: cp_drying_ripening
+      process_id: "drying_ripening"
+      flow_role: "dried product and reject"
+      record_type: "batch scales and room control records"
+      raw_fields: "batch_id; product_in; product_out; reject; time; temperature; relative_humidity; target_product_criterion"
+      collection_method: "Calibrated weighing and continuous room monitoring"
+      unit: "kg"
+      frequency: "Every batch"
+      temporal_coverage: "Representative production year"
+      site_scope: "Every drying or ripening room"
+      aggregation_rule: "Reconcile mass and preserve declared route conditions"
+      quality_evidence: "Scale and sensor calibration; validated product criterion"
+    - protocol_id: cp_cooling_chilling
+      process_id: "cooling_chilling"
+      flow_role: "product before and after cooling"
+      record_type: "batch scale and time-temperature logger"
+      raw_fields: "batch_id; product_in; product_out; start_time; end_time; product_temperature_profile; room_temperature"
+      collection_method: "Calibrated weighing and continuous temperature recording"
+      unit: "kg"
+      frequency: "Every batch"
+      temporal_coverage: "Representative production year"
+      site_scope: "Every cooling or chilling system"
+      aggregation_rule: "Normalize product mass and retain route-specific cooling profile"
+      quality_evidence: "Scale and temperature calibration; cooling validation"
+    - protocol_id: cp_slicing
+      process_id: "slicing"
+      flow_role: "sliced output, edible offcuts, reject"
+      record_type: "line scale and production log"
+      raw_fields: "batch_id; product_in; sliced_output; edible_offcuts; reject; disposition"
+      collection_method: "Calibrated line scales and mass reconciliation"
+      unit: "kg"
+      frequency: "Every batch"
+      temporal_coverage: "Representative production year"
+      site_scope: "Every slicing line"
+      aggregation_rule: "Reconcile product, co-product, and reject by row_id"
+      quality_evidence: "Scale calibration; production and disposition records"
+    - protocol_id: cp_packaging
+      process_id: "packaging"
+      flow_role: "net product, each packaging component, each packaging waste, reject"
+      record_type: "bill of materials, issue records, scales, line counters"
+      raw_fields: "batch_id; net_product; component_identity; component_mass; issued_count; unit_mass; returned_count; each waste mass; reject_mass"
+      collection_method: "Product-specific bill of materials reconciled to issues and waste"
+      unit: "kg"
+      frequency: "Every packaging campaign"
+      temporal_coverage: "Representative production year"
+      site_scope: "Every packaging line and format"
+      aggregation_rule: "Keep each polymer, tray, carton, and label separate; normalize to net reference product"
+      quality_evidence: "Supplier specifications; BOM; count-to-mass check; waste records"
+    - protocol_id: cp_refrigerated_storage
+      process_id: "refrigerated_storage"
+      flow_role: "stored product and storage service"
+      record_type: "stock, temperature, volume and time logs"
+      raw_fields: "lot_id; net_product_mass; entry_time; exit_time; temperature_profile; occupied_volume"
+      collection_method: "Inventory reconciliation and continuous temperature logging"
+      unit: "kg and day"
+      frequency: "Every lot"
+      temporal_coverage: "Representative production year"
+      site_scope: "Every factory-gate cold store"
+      aggregation_rule: "Normalize product output; allocate shared storage by documented mass-time or volume-time"
+      quality_evidence: "Inventory records; calibrated temperature loggers; storage allocation worksheet"
+    - protocol_id: cp_facility_utilities
+      process_id: "facility_utilities"
+      flow_role: "each energy carrier, fuel, water, refrigerant, and direct emission"
+      record_type: "meters, invoices, tank and refrigerant logs, stack data"
+      raw_fields: "meter_id; process_id; start_reading; end_reading; carrier; fuel_identity; energy_content; water; refrigerant_identity; charge; addition; recovery; ending_inventory; pollutant; factor_source"
+      collection_method: "Prefer process submetering; reconcile invoices and inventories; calculate each emission separately"
+      unit: "kWh, MJ, or kg"
+      frequency: "Continuous or each billing/service period"
+      temporal_coverage: "Representative production year"
+      site_scope: "All facilities and route equipment"
+      aggregation_rule: "Subtract non-production and excluded routes; allocate with documented physical driver; normalize to reference output"
+      quality_evidence: "Meter calibration; invoices; fuel and refrigerant reconciliation; emission calculation record"
+    - protocol_id: cp_facility_sanitation
+      process_id: "facility_sanitation"
+      flow_role: "water, each cleaning or disinfecting chemical, wastewater, screened solids"
+      record_type: "chemical issue, active concentration, water and effluent meter, solids scale"
+      raw_fields: "sanitation_event; area_or_equipment; water; chemical_identity; product_concentration; active_fraction; issued_mass; wastewater; screened_solids"
+      collection_method: "Meter and weigh each chemical as active substance; allocate campaign and period sanitation"
+      unit: "kg"
+      frequency: "Every sanitation event or shift"
+      temporal_coverage: "Representative production year"
+      site_scope: "All included process areas"
+      aggregation_rule: "Keep each chemical atomic; allocate by documented sanitation driver; normalize to reference output"
+      quality_evidence: "Sanitation SOP; concentration certificate; meter and scale calibration"
+    - protocol_id: cp_wastewater_treatment
+      process_id: "onsite_wastewater_treatment"
+      flow_role: "wastewater, sludge, treated effluent, COD, nitrogen, phosphorus, chloride"
+      record_type: "influent and effluent meter, composite sample, sludge scale"
+      raw_fields: "flow_volume; density; sludge_wet_mass; sludge_dry_matter; COD; total_nitrogen; total_phosphorus; chloride; discharge_route"
+      collection_method: "Flow-proportional composite sampling and accredited analysis; calibrated flow meter"
+      unit: "kg"
+      frequency: "Flow continuously; composite samples at permit or representative frequency"
+      temporal_coverage: "Representative production year"
+      site_scope: "Every on-site treatment plant"
+      aggregation_rule: "Concentration times flow for each pollutant; normalize to reference output; distinguish sewer transfer from direct discharge"
+      quality_evidence: "Laboratory accreditation; chain of custody; meter calibration; discharge records"
+  calculation_rules:
+    - id: calc_normalize_reference
+      applies_to: "all_inventory_rows"
+      rule: "normalized amount = route-attributable amount / net kg of conforming reference product after declared storage"
+      inputs:
+        - "atomic exchange amount"
+        - "packaged_refrigerated_product net mass"
+      output: "amount per 1 kg reference product"
+      source_ids:
+        - eu-commission-pef-2021-2279
+    - id: calc_mass_reconciliation
+      applies_to: "each_material_process"
+      rule: "input mass = product outputs + co-products + wastes + measured purge or drip + documented inventory change; investigate residuals rather than assigning them to an invented flow"
+      inputs:
+        - "all mass rows for the batch"
+      output: "batch mass-balance residual and completeness finding"
+      source_ids:
+        - mass-balance-identity
+    - id: calc_active_ingredient
+      applies_to: "nitrite_nitrate_ascorbate_phosphate_and_cleaners"
+      rule: "active substance mass = formulated product mass × documented active fraction"
+      inputs:
+        - "issued product mass"
+        - "supplier active fraction"
+      output: "active ingredient mass"
+      source_ids:
+        - eu-commission-pef-2021-2279
+    - id: calc_refrigerant_leak
+      applies_to: "each_refrigerant"
+      rule: "leakage = beginning charge + additions − recovered amount − ending charge − documented transfers; allocate the result using the refrigeration service driver"
+      inputs:
+        - "refrigerant inventory and service records"
+      output: "kg of one named refrigerant to air"
+      source_ids:
+        - eu-commission-pef-2021-2279
+    - id: calc_effluent_load
+      applies_to: "each_direct_water_pollutant"
+      rule: "discharged load = measured concentration × direct-discharge volume, with unit and density conversion documented"
+      inputs:
+        - "pollutant concentration"
+        - "discharge volume"
+      output: "kg pollutant to water"
+      source_ids:
+        - eu-jrc-fdm-bref-2019
+        - eu-commission-pef-2021-2279
+    - id: calc_smoke_emission
+      applies_to: "each_smoke_pollutant"
+      rule: "pollutant mass = measured stack concentration × dry gas flow × test duration, or activity data × one documented smokehouse-specific factor; never apply one factor to a different pollutant or control state"
+      inputs:
+        - "pollutant-specific stack or activity record"
+      output: "kg of one named pollutant to air"
+      source_ids:
+        - us-epa-ap42-meat-smokehouses-1995
+        - eu-commission-pef-2021-2279
+  data_quality_requirements:
+    - id: dq_route_identity
+      applies_to: "product and process map"
+      requirement: "Document one curing method and the actual cooking, smoking, drying, slicing, packaging, and refrigeration route; no mutually exclusive process may be silently averaged in."
+      evidence: "Batch route declaration, recipe, equipment records, product specification"
+    - id: dq_atomic_bill_of_materials
+      applies_to: "ingredients, utilities, fuels, refrigerants, packaging, wastes, emissions"
+      requirement: "The bill of materials and inventory shall contain one row per specific exchange. Add a new atomic row for every declared ingredient, fuel, refrigerant, packaging component, waste, or emission not already represented."
+      evidence: "Product-specific BOM, supplier specification, direct-read flow review"
+    - id: dq_mass_completeness
+      applies_to: "each batch and annual aggregation"
+      requirement: "Reconcile received meat, ingredients retained in product, product outputs, co-products, purge, drip, rejects, wastes, and inventory changes; investigate material residuals."
+      evidence: "Batch mass balances and annual reconciliation"
+    - id: dq_temporal_coverage
+      applies_to: "foreground records"
+      requirement: "Cover a representative continuous 12-month period or justify a shorter campaign for seasonal or infrequent products; disclose abnormal production and shutdowns."
+      evidence: "Date-stamped records and representativeness statement"
+    - id: dq_measurement
+      applies_to: "meters, scales, laboratory data"
+      requirement: "Use calibrated equipment and retain method, frequency, detection limit, missing-data treatment, and uncertainty for measured utilities and emissions."
+      evidence: "Calibration, laboratory QA, maintenance, and missing-data logs"
+    - id: dq_source_and_factor
+      applies_to: "calculated values"
+      requirement: "Retain the exact source, version, applicability, unit conversion, and control state for every external factor; a source used only for process decomposition cannot supply an amount."
+      evidence: "Calculation workbook and original source"
+    - id: dq_range_evidence
+      applies_to: "all important flows"
+      requirement: "Do not author an empirical range from a single case or one point. A future inferred range requires at least two independent verified originals with compatible boundary, unit, and normalization basis."
+      evidence: "Range evidence review; unresolved-range register"
+validation_rules:
+  - rule_id: validate_reference_identity
+    applies_to: "reference_flow"
+    rule: "Confirm 1 kg net reference product, Mass UUID, Units of mass UUID, kg, and all required qualifiers; fail if a narrower bacon-only, ham-only, or broader processed-meat UUID is substituted for unresolved CPC 21181 identity."
+    source_ids:
+      - unsd-cpc-3-0
+  - rule_id: validate_route_exclusivity
+    applies_to: "process_map"
+    rule: "Require exactly one of dry_cure, brine_injection, or brine_immersion. Reject cooking outside cooked ham, smoking outside a smoked route, drying or ripening outside a dried route, or slicing outside a sliced product route."
+    source_ids:
+      - usda-fsis-bacon-food-safety
+      - usda-fsis-hams-food-safety
+      - usda-fsis-rte-salt-cured-dried-2023
+  - rule_id: validate_atomic_inventory
+    applies_to: "process_inventory"
+    rule: "Reject any combined ingredient, energy-carrier, fuel, refrigerant, packaging, waste, wastewater, sludge, or emission collection row; every selected flow must resolve to one Tiangong flow before publication."
+    source_ids:
+      - eu-commission-pef-2021-2279
+  - rule_id: validate_recipe_completeness
+    applies_to: "curing"
+    rule: "Match every declared recipe ingredient to one input row and active mass record, including salt, nitrite, nitrate, sugar, each spice, ascorbate, phosphate, and any additional ingredient."
+    source_ids:
+      - usda-fsis-bacon-food-safety
+      - usda-fsis-hams-food-safety
+      - fao-who-codex-cxc-58-2005
+  - rule_id: validate_smoke_inventory
+    applies_to: "smoking"
+    rule: "For natural-smoke routes require smoke-material identity and assess PM2.5, carbon monoxide, acrolein, acetaldehyde, formaldehyde, acetic acid, nitrogen oxides, sulfur oxides, and benzo[a]pyrene individually; record measurement, calculation, not-applicable basis, or disclosed data gap for each."
+    source_ids:
+      - us-epa-ap42-meat-smokehouses-1995
+      - fao-who-codex-cxc-68-2009
+  - rule_id: validate_mass_balance
+    applies_to: "each_material_process"
+    rule: "Check batch and annual mass-balance residuals and trace all co-products, purge, drip, rejects, wastewater, sludge, and packaging waste to destinations."
+    source_ids:
+      - mass-balance-identity
+      - eu-commission-pef-2021-2279
+  - rule_id: validate_data_quality
+    applies_to: "foreground_dataset"
+    rule: "Verify route, technological, geographical, and temporal representativeness; calibrated measurement; documented allocation; source applicability; and separation of foreground records from external evidence."
+    source_ids:
+      - eu-commission-pef-2021-2279
+      - fao-who-codex-cxc-58-2005
+published_dataset_profile:
+  dataset_role: "secondary_dataset or background_dataset derived from a completed, reviewed foreground data package"
+  downstream_use: "Process and lifecycle-model construction for pig meat cuts preserved by the declared salted, dried, or smoked route at the factory gate"
+  allowed_use: "The represented product form, pig cut, curing method, conditional process route, recipe, packaging, geography, technology, reference period, and storage condition"
+  excluded_use: "Unrepresented curing or preservation routes; fresh pig meat; sausages or comminuted products; non-pig meat; consumer cooking; distribution; substitution of unresolved or approximate UUIDs"
+  required_metadata: "PCR id and version; product and route qualifiers; reference flow; geography; reference period; technology; site coverage; allocation drivers; upstream links; data sources; UUID resolution status"
+  required_quality_disclosure: "Data coverage and gaps; mass-balance residuals; meter and laboratory quality; source and factor applicability; route shares if averaged; co-product treatment; wastewater route; emission and refrigerant gaps; absence of qualified ranges"
+  update_trigger: "Change in product scope, curing method, recipe, cooking, smoking or drying technology, packaging, refrigeration system, wastewater route, allocation driver, geography, representative period, regulation, or confirmed Tiangong identity"
+data_sources:
+  - id: "unsd-cpc-3-0"
+    type: "standard"
+    reference: "United Nations Statistics Division, Central Product Classification Version 3.0, structure and explanatory notes, CPC 21181, https://unstats.un.org/unsd/classifications/Econ/CPC (accessed 2026-08-24)"
+    used_for: "Product category scope and exclusions"
+  - id: "fao-who-codex-cxc-58-2005"
+    type: "standard"
+    reference: "FAO/WHO Codex Alimentarius, CXC 58-2005, Code of Hygienic Practice for Meat, https://workspace.fao.org/sites/codex/Standards/CXC%2058-2005/CXC_058e.pdf (accessed 2026-08-24)"
+    used_for: "Meat-processing boundary, hygiene, sanitation, temperature control, cooking, smoking, drying, curing, packaging, storage, rejects, and validation records"
+  - id: "fao-who-codex-cxc-68-2009"
+    type: "standard"
+    reference: "FAO/WHO Codex Alimentarius, CXC 68-2009, Code of Practice for the Reduction of Contamination of Food with PAH from Smoking and Direct Drying Processes, https://workspace.fao.org/sites/codex/Standards/CXC%2068-2009/CXC_068e.pdf (accessed 2026-08-24)"
+    used_for: "Smoke-material disclosure, smoking controls, and identity of combustion contaminants"
+  - id: "usda-fsis-bacon-food-safety"
+    type: "official_guidance"
+    reference: "USDA Food Safety and Inspection Service, Bacon and Food Safety, https://www.fsis.usda.gov/food-safety/safe-food-handling-and-preparation/meat-catfish/bacon-and-food-safety (accessed 2026-08-24)"
+    used_for: "Bacon trimming, dry curing, pumping, immersion, ingredients, heat processing, smoking, chilling, slicing, and packaging route decomposition"
+  - id: "usda-fsis-hams-food-safety"
+    type: "official_guidance"
+    reference: "USDA Food Safety and Inspection Service, Hams and Food Safety, https://www.fsis.usda.gov/food-safety/safe-food-handling-and-preparation/meat-catfish/hams-and-food-safety (accessed 2026-08-24)"
+    used_for: "Ham wet and dry curing, injection, tumbling, ingredients, cooking, smoking, drying, and product-state declarations"
+  - id: "usda-fsis-rte-salt-cured-dried-2023"
+    type: "official_guidance"
+    reference: "USDA FSIS-GD-2023-0002, Ready-to-Eat Fermented, Salt-Cured, and Dried Products Guideline, https://fsistraining.fsis.usda.gov/pluginfile.php/34201/mod_resource/content/1/FSIS%20Ready-to-Eat%20Fermented%2C%20Salt-Cured%2C%20and%20Dried%20Products%20Guideline%20.pdf (accessed 2026-08-24)"
+    used_for: "Dry-cured ham process decomposition, curing, equalization, drying controls, product criteria, and scientific-support limitations"
+  - id: "eu-jrc-fdm-bref-2019"
+    type: "official_guidance"
+    reference: "European Commission JRC, Best Available Techniques Reference Document for the Food, Drink and Milk Industries, JRC118627, EUR 29978 EN, doi:10.2760/243911, https://publications.jrc.ec.europa.eu/repository/handle/JRC118627 (accessed 2026-08-24)"
+    used_for: "Meat-processing utilities, cleaning sequence, cleaning chemicals, water, wastewater, solids, pollution control, and environmental data collection"
+  - id: "us-epa-ap42-meat-smokehouses-1995"
+    type: "method_factor"
+    reference: "US EPA AP-42, Section 9.5.2 Meat Smokehouses, September 1995, https://www.epa.gov/sites/default/files/2020-10/documents/c9s05-2.pdf (accessed 2026-08-24)"
+    used_for: "Smokehouse process and pollutant identity; pollutant-specific measurement or calculation design; no AP-42 value is adopted as a PCR range"
+  - id: "eu-commission-pef-2021-2279"
+    type: "standard"
+    reference: "European Commission Recommendation (EU) 2021/2279, Annex I Product Environmental Footprint Method, http://data.europa.eu/eli/reco/2021/2279/oj (accessed 2026-08-24)"
+    used_for: "Functional unit, company-specific inputs and outputs, bill of materials, direct emissions, allocation, data quality, completeness, and documentation"
+  - id: "petit-et-al-2021-cooked-ham-lca"
+    type: "literature"
+    reference: "Petit, G. et al. (2021), Comparing Innovative Versus Conventional Ham Processes via Environmental Life Cycle Assessment Supplemented with the Assessment of Nitrite Impacts on Human Health, Applied Sciences 11(1), 451, doi:10.3390/app11010451"
+    used_for: "Peer-reviewed cooked-ham manufacturing and LCI process decomposition; not quantitative range evidence"
+  - id: "pauer-et-al-2020-bacon-packaging"
+    type: "literature"
+    reference: "Pauer, E. et al. (2020), Sustainability of flexible multilayer packaging: Environmental impacts and recyclability of packaging for bacon in block, Cleaner Environmental Systems 1, 100001, doi:10.1016/j.cesys.2020.100001"
+    used_for: "Peer-reviewed bacon packaging component and packaging-process decomposition; not quantitative range evidence"
+  - id: "beigbeder-et-al-2022-dry-cured-ham-packaging"
+    type: "literature"
+    reference: "Beigbeder, J., Allal, A., and Robert, N. (2022), Ex-ante life cycle assessment of a partially reusable packaging system for dry-cured ham slices, Clean Technologies and Recycling 2(3), 119-135, doi:10.3934/ctr.2022007"
+    used_for: "Peer-reviewed dry-cured ham slicing and tray/film thermosealing decomposition; not quantitative range evidence"
+  - id: "mass-balance-identity"
+    type: "method_factor"
+    reference: "Conservation of mass applied to batch and annual foreground reconciliation"
+    used_for: "Reference normalization, process yield reconciliation, and completeness checks"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:79a69b5346c3f42502126ad0323e4893a951f88362d974c0e9eb96b9b60160f1"
+  generated_content_sha256: "sha256:831da55ec1a8ae85459b2ad6aa1288f773dd317430c4c3298a51d5da129f8dd3"
