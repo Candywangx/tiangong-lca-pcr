@@ -15,7 +15,7 @@ export function mergeVerifiedCommonUuids(existing = [], audited = []) {
   return [...merged.values()].sort((left, right) => String(left.uuid).localeCompare(String(right.uuid)));
 }
 
-export function auditReportedUuids({ report, tiangongCliRoot, runner = runTiangongFlowGet }) {
+export function auditReportedUuids({ report, tiangongCliRoot, runner = runTiangongFlowGet, supportRunner = runTiangongReferenceSupport }) {
   const results = [];
   for (const claimed of report.uuid_audits ?? []) {
     const direct = runner({ uuid: claimed.uuid, tiangongCliRoot });
@@ -23,6 +23,12 @@ export function auditReportedUuids({ report, tiangongCliRoot, runner = runTiango
     const info = flow?.flowInformation?.dataSetInformation;
     const names = localizedTexts(info?.name?.baseName);
     const referenceProperty = referenceFlowProperty(flow);
+    const flowPropertyReference = referenceProperty?.referenceToFlowPropertyDataSet;
+    const support = supportRunner({
+      flowPropertyId: String(flowPropertyReference?.["@refObjectId"] ?? ""),
+      flowPropertyVersion: String(flowPropertyReference?.["@version"] ?? ""),
+      tiangongCliRoot,
+    });
     const actual = {
       uuid: String(info?.["common:UUID"] ?? "").toLowerCase(),
       state_code: direct?.state_code,
@@ -32,6 +38,10 @@ export function auditReportedUuids({ report, tiangongCliRoot, runner = runTiango
       classifications: classificationValues(info?.classificationInformation?.["common:classification"]?.["common:class"]),
       property: localizedTexts(referenceProperty?.referenceToFlowPropertyDataSet?.["common:shortDescription"]).en ?? "",
       flow_property_uuid: String(referenceProperty?.referenceToFlowPropertyDataSet?.["@refObjectId"] ?? "").toLowerCase(),
+      unit_group_uuid: String(support?.unit_group?.id ?? "").toLowerCase(),
+      unit_group_name_en: String(support?.unit_group?.name_en ?? ""),
+      unit_group_name_zh: String(support?.unit_group?.name_zh ?? ""),
+      reference_unit: String(support?.unit_group?.reference_unit ?? ""),
     };
     const mismatches = [];
     if (actual.uuid !== claimed.uuid.toLowerCase()) mismatches.push("uuid");
@@ -41,6 +51,10 @@ export function auditReportedUuids({ report, tiangongCliRoot, runner = runTiango
     if (actual.flow_type !== normalizeFlowType(claimed.flow_type)) mismatches.push("flow_type");
     if (claimed.classification && !actual.classifications.some((value) => claimed.classification.includes(value.id) || claimed.classification.includes(value.label))) mismatches.push("classification");
     if (claimed.property && claimed.property !== actual.property) mismatches.push("property");
+    if (support?.flow_property?.state_code !== 100 || String(support?.flow_property?.id ?? "").toLowerCase() !== actual.flow_property_uuid) mismatches.push("flow_property_state");
+    if (support?.flow_property?.name_en !== actual.property) mismatches.push("flow_property_name");
+    if (support?.unit_group?.state_code !== 100 || !actual.unit_group_uuid) mismatches.push("unit_group_state");
+    if (!unitGroupClaimMatches(claimed.unit_group, actual)) mismatches.push("unit_group");
     if (claimed.hybrid_search !== true) mismatches.push("hybrid_search");
     if (mismatches.length > 0) {
       throw new GoalHarnessError("GOAL_UUID_DIRECT_AUDIT_MISMATCH", `Direct state_code=100 audit disagrees with the author report for ${claimed.uuid}: ${mismatches.join(", ")}`, { uuid: claimed.uuid, mismatches, claimed, actual });
@@ -51,7 +65,7 @@ export function auditReportedUuids({ report, tiangongCliRoot, runner = runTiango
       semantic_review: claimed.semantic_review,
       hybrid_search: true,
       checked_at: new Date().toISOString(),
-      response_sha256: `sha256:${createHash("sha256").update(stableJson(direct)).digest("hex")}`,
+      response_sha256: `sha256:${createHash("sha256").update(stableJson({ direct, support })).digest("hex")}`,
     });
   }
   return results;
@@ -111,6 +125,73 @@ function runTiangongFlowGet({ uuid, tiangongCliRoot }) {
   }
 }
 
+function runTiangongReferenceSupport({ flowPropertyId, flowPropertyVersion, tiangongCliRoot }) {
+  if (!flowPropertyId) {
+    throw new GoalHarnessError("GOAL_UUID_DIRECT_READ_FAILED", "TianGong flow does not declare a reference flow-property UUID.");
+  }
+  const result = spawnSync(process.execPath, [
+    "--env-file-if-exists=.env",
+    "--input-type=module",
+    "-e",
+    TIANGONG_REFERENCE_SUPPORT_SCRIPT,
+    flowPropertyId,
+    flowPropertyVersion,
+  ], {
+    cwd: tiangongCliRoot,
+    encoding: "utf8",
+    stdio: ["ignore", "pipe", "pipe"],
+    maxBuffer: 16 * 1024 * 1024,
+  });
+  if (result.status !== 0) {
+    throw new GoalHarnessError("GOAL_UUID_DIRECT_READ_FAILED", `TianGong public flow-property/unit-group audit failed for ${flowPropertyId}`, { flow_property_uuid: flowPropertyId, exit_code: result.status, stderr_tail: String(result.stderr ?? "").slice(-4000) });
+  }
+  try {
+    return JSON.parse(result.stdout);
+  } catch (error) {
+    throw new GoalHarnessError("GOAL_UUID_DIRECT_READ_FAILED", `TianGong flow-property/unit-group audit returned invalid JSON for ${flowPropertyId}`, { cause: error.message });
+  }
+}
+
+const TIANGONG_REFERENCE_SUPPORT_SCRIPT = String.raw`
+import { createSupabaseDataClient, requireSupabaseRestRuntime } from "./dist/src/lib/supabase-client.js";
+import { createSupabaseDataRuntime } from "./dist/src/lib/supabase-session.js";
+const [flowPropertyId, requestedVersion] = process.argv.slice(1);
+const runtime = createSupabaseDataRuntime({ runtime: requireSupabaseRestRuntime(process.env), fetchImpl: fetch, timeoutMs: 10000, now: new Date() });
+const { client } = createSupabaseDataClient(runtime, fetch, 10000);
+async function readPublic(table, id, version) {
+  let query = client.from(table).select("id,version,state_code,json").eq("id", id).eq("state_code", 100);
+  query = version ? query.eq("version", version) : query.order("version", { ascending: false }).limit(1);
+  const { data, error } = await query;
+  if (error) throw error;
+  if (!Array.isArray(data) || data.length !== 1) throw new Error("Expected exactly one public " + table + " row for " + id);
+  return data[0];
+}
+function payload(row) { return typeof row.json === "string" ? JSON.parse(row.json) : row.json; }
+function localized(value) {
+  const entries = Array.isArray(value) ? value : value ? [value] : [];
+  return Object.fromEntries(entries.map((entry) => [entry?.["@xml:lang"], entry?.["#text"]]).filter(([language, text]) => language && typeof text === "string"));
+}
+const flowPropertyRow = await readPublic("flowproperties", flowPropertyId, requestedVersion);
+const flowProperty = payload(flowPropertyRow)?.flowPropertyDataSet;
+const flowPropertyInfo = flowProperty?.flowPropertiesInformation?.dataSetInformation;
+const flowPropertyNames = localized(flowPropertyInfo?.["common:name"]);
+const unitGroupReference = flowProperty?.flowPropertiesInformation?.quantitativeReference?.referenceToReferenceUnitGroup;
+const unitGroupId = String(unitGroupReference?.["@refObjectId"] ?? "");
+const unitGroupVersion = String(unitGroupReference?.["@version"] ?? "");
+if (!unitGroupId) throw new Error("Public flow property has no reference unit-group UUID");
+const unitGroupRow = await readPublic("unitgroups", unitGroupId, unitGroupVersion);
+const unitGroup = payload(unitGroupRow)?.unitGroupDataSet;
+const unitGroupInfo = unitGroup?.unitGroupInformation?.dataSetInformation;
+const unitGroupNames = localized(unitGroupInfo?.["common:name"]);
+const referenceUnitId = String(unitGroup?.unitGroupInformation?.quantitativeReference?.referenceToReferenceUnit ?? "");
+const units = Array.isArray(unitGroup?.units?.unit) ? unitGroup.units.unit : unitGroup?.units?.unit ? [unitGroup.units.unit] : [];
+const referenceUnit = units.find((entry) => String(entry?.["@dataSetInternalID"] ?? "") === referenceUnitId);
+process.stdout.write(JSON.stringify({
+  flow_property: { id: flowPropertyRow.id, version: flowPropertyRow.version, state_code: flowPropertyRow.state_code, name_en: flowPropertyNames.en ?? flowPropertyNames["en-US"] ?? "" },
+  unit_group: { id: unitGroupRow.id, version: unitGroupRow.version, state_code: unitGroupRow.state_code, name_en: unitGroupNames.en ?? unitGroupNames["en-US"] ?? "", name_zh: unitGroupNames.zh ?? unitGroupNames["zh-CN"] ?? "", reference_unit: String(referenceUnit?.name ?? "") },
+}));
+`;
+
 function localizedTexts(value) {
   const entries = Array.isArray(value) ? value : value ? [value] : [];
   return Object.fromEntries(entries.map((entry) => [entry?.["@xml:lang"], entry?.["#text"]]).filter(([language, text]) => language && typeof text === "string"));
@@ -126,6 +207,16 @@ function referenceFlowProperty(flow) {
   const entries = Array.isArray(value) ? value : value ? [value] : [];
   const referenceId = String(flow?.flowInformation?.quantitativeReference?.referenceToReferenceFlowProperty ?? "");
   return entries.find((entry) => String(entry?.["@dataSetInternalID"] ?? "") === referenceId) ?? entries[0] ?? null;
+}
+
+function unitGroupClaimMatches(claim, actual) {
+  const normalizedClaim = String(claim ?? "").toLowerCase();
+  if (!normalizedClaim.trim()) return false;
+  if (actual.unit_group_uuid && normalizedClaim.includes(actual.unit_group_uuid)) return true;
+  const candidates = [actual.unit_group_name_en, actual.reference_unit]
+    .flatMap((value) => String(value ?? "").toLowerCase().match(/[a-z][a-z0-9]*/gu) ?? [])
+    .filter((token) => !["of", "unit", "units", "group"].includes(token));
+  return candidates.some((token) => normalizedClaim.includes(token));
 }
 
 function normalizeFlowType(value) {

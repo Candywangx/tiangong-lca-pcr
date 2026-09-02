@@ -21,18 +21,31 @@ test("UUID audit compares public direct-read identity to the author report", () 
       flowProperties: { flowProperty: [{ referenceToFlowPropertyDataSet: { "@refObjectId": "93a60a56-a3c8-11da-a746-0800200b9a66", "common:shortDescription": [{ "@xml:lang": "en", "#text": "Mass" }] } }] },
     } },
   };
-  const result = auditReportedUuids({ report, tiangongCliRoot: "/unused", runner: () => direct });
+  const supportRunner = () => ({
+    flow_property: { id: "93a60a56-a3c8-11da-a746-0800200b9a66", version: "03.00.003", state_code: 100, name_en: "Mass" },
+    unit_group: { id: "93a60a57-a4c8-11da-a746-0800200c9a66", version: "03.00.003", state_code: 100, name_en: "Units of mass", name_zh: "质量", reference_unit: "kg" },
+  });
+  const result = auditReportedUuids({ report, tiangongCliRoot: "/unused", runner: () => direct, supportRunner });
   assert.equal(result.length, 1);
   assert.equal(result[0].state_code, 100);
   assert.equal(result[0].base_name_zh, "生铁");
   assert.equal(result[0].property, "Mass");
   assert.equal(result[0].flow_property_uuid, "93a60a56-a3c8-11da-a746-0800200b9a66");
+  assert.equal(result[0].unit_group_uuid, "93a60a57-a4c8-11da-a746-0800200c9a66");
+  assert.equal(result[0].unit_group_name_en, "Units of mass");
+  assert.equal(result[0].reference_unit, "kg");
   assert.match(result[0].response_sha256, /^sha256:/u);
   const bad = structuredClone(report);
   bad.uuid_audits[0].base_name_zh = "错误名称";
   assert.throws(
-    () => auditReportedUuids({ report: bad, tiangongCliRoot: "/unused", runner: () => direct }),
+    () => auditReportedUuids({ report: bad, tiangongCliRoot: "/unused", runner: () => direct, supportRunner }),
     (error) => error.code === "GOAL_UUID_DIRECT_AUDIT_MISMATCH",
+  );
+  const wrongUnitGroup = structuredClone(report);
+  wrongUnitGroup.uuid_audits[0].unit_group = "Units of volume";
+  assert.throws(
+    () => auditReportedUuids({ report: wrongUnitGroup, tiangongCliRoot: "/unused", runner: () => direct, supportRunner }),
+    (error) => error.code === "GOAL_UUID_DIRECT_AUDIT_MISMATCH" && error.details.mismatches.includes("unit_group"),
   );
 });
 
