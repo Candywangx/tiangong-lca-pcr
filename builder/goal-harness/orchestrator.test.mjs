@@ -12,7 +12,7 @@ function git(root, args) {
   return execFileSync("git", args, { cwd: root, encoding: "utf8", stdio: ["ignore", "pipe", "pipe"] }).trim();
 }
 
-function fixture() {
+function fixture({ taskCount = 1 } = {}) {
   const root = mkdtempSync(path.join(tmpdir(), "tiangong-goal-orchestrator-"));
   git(root, ["init", "-q"]);
   git(root, ["config", "user.name", "Goal Test"]);
@@ -25,15 +25,15 @@ function fixture() {
   git(root, ["commit", "-qm", "base"]);
   const baselineCommit = git(root, ["rev-parse", "HEAD"]);
   const stateDir = path.join(root, "library/.pcr-builder-state/goals/fixture");
-  const task = {
-    id: "cpc:3.0:41111", cpc_code: "41111", product_name_en: "Pig iron", product_name_zh: "生铁",
-    pcr_path: "library/pcrs/category/item", queue_action: "promote_legacy", state: "queued", queue_order: 1,
-  };
+  const tasks = Array.from({ length: taskCount }, (_, index) => ({
+    id: `cpc:3.0:${41111 + index}`, cpc_code: String(41111 + index), product_name_en: `Product ${index + 1}`, product_name_zh: `产品 ${index + 1}`,
+    pcr_path: "library/pcrs/category/item", queue_action: "promote_legacy", state: "queued", queue_order: index + 1,
+  }));
   new GoalEventStore({ stateDir }).initialize({
     schema_version: 1,
     goal_id: "fixture",
     baseline: { commit: baselineCommit },
-    tasks: [task],
+    tasks,
     snapshots: [],
     stopped: false,
     verified_common_uuids: [],
@@ -69,6 +69,32 @@ test("dispatch creates one worktree-visible task and repeated resume does not du
     const second = await dispatchGoalAuthors({ config, stateDir, slots: 1, adapter });
     assert.equal(second.dispatched.length, 0);
     assert.equal(calls.length, 1);
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+  }
+});
+
+test("dispatch fills every open slot when another author is already active", async () => {
+  const { root, stateDir, config } = fixture({ taskCount: 7 });
+  const store = new GoalEventStore({ stateDir });
+  const [first] = store.rebuild().tasks;
+  store.append({
+    event_id: "fixture-existing-author",
+    type: "task_replaced",
+    payload: { task: { ...first, state: "authoring", thread_id: "existing-thread", turn_id: "existing-turn", transition_ids: ["authoring"] } },
+  });
+  let calls = 0;
+  const adapter = {
+    async createAuthorTask() {
+      calls += 1;
+      return { thread_id: `thread-${calls}`, turn_id: `turn-${calls}` };
+    },
+  };
+  try {
+    const result = await dispatchGoalAuthors({ config, stateDir, slots: 6, adapter });
+    assert.equal(result.dispatched.length, 5);
+    assert.equal(calls, 5);
+    assert.equal(result.state.tasks.filter((task) => task.state === "authoring").length, 6);
   } finally {
     rmSync(root, { recursive: true, force: true });
   }

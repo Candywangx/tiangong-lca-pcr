@@ -6,7 +6,7 @@ import { GoalHarnessError } from "./errors.mjs";
 import { auditReportedUuids, verifySourceLocators } from "./evidence-audit.mjs";
 import { withGoalLockAsync } from "./lock.mjs";
 import { compileAuthorPrompt } from "./prompt-compiler.mjs";
-import { activeAuthorCount, buildIntegrationSnapshot, dispatchCandidates } from "./scheduler.mjs";
+import { buildIntegrationSnapshot, dispatchCandidates } from "./scheduler.mjs";
 import { applyTaskTransition } from "./state-machine.mjs";
 import { ensureGoalWorktree } from "./worktrees.mjs";
 import { extractCompletedTurnReport, reviewAuthorWorktree } from "./author-review.mjs";
@@ -41,8 +41,7 @@ export async function dispatchGoalAuthors({ config, stateDir, slots = config.aut
     }
 
     const prepared = state.tasks.filter((task) => task.state === "preflight" && task.worktree_path && !task.thread_id);
-    const availableForNew = Math.max(0, slots - activeAuthorCount(state.tasks));
-    const selected = [...prepared, ...dispatchCandidates(state.tasks, { slots: availableForNew })].slice(0, slots);
+    const selected = [...prepared, ...dispatchCandidates(state.tasks, { slots })].slice(0, slots);
     if (dryRun) {
       return { dispatched: [], would_dispatch: selected.map((task) => task.id), state, next_action: "Repeat without --dry-run to create visible author tasks." };
     }
