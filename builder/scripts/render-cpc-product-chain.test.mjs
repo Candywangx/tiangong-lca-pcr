@@ -738,6 +738,25 @@ test("CLI rejects every argument vector except no args and exactly --check", () 
   }
 });
 
+test("package scripts expose CPC chain build/check and lint checks the report before builder lint", () => {
+  const packageJson = JSON.parse(
+    readFileSync(path.join(repoRoot, "package.json"), "utf8"),
+  );
+
+  assert.equal(
+    packageJson.scripts["cpc-chains:build"],
+    "node builder/scripts/render-cpc-product-chain.mjs",
+  );
+  assert.equal(
+    packageJson.scripts["cpc-chains:check"],
+    "node builder/scripts/render-cpc-product-chain.mjs --check",
+  );
+  assert.match(
+    packageJson.scripts.lint,
+    /npm run cpc-chains:check.*node builder\/cli\/index\.mjs lint/u,
+  );
+});
+
 test("checked-in three-chain pilot derives the exact execution and review plan", () => {
   const result = withNetworkTraps(() =>
     buildOrCheckCpcProductChain(repoRoot, { checkOnly: true }));

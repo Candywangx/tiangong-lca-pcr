@@ -28,6 +28,11 @@ Use this index to choose the smallest relevant builder context.
 - `tools/tiangong-lca-cli.md`: Tiangong CLI lookup use and fallback behavior.
 - `tools/data-sources-and-tools.md`: source roles, evidence priority, and tool selection.
 
+## Planning Artifacts
+
+- `../planning/cpc-product-chain-pilot.yaml` is the reviewed source for the CPC product-chain pilot. Run
+  `npm run cpc-chains:build` to regenerate its Markdown report and `npm run cpc-chains:check` to verify it is current.
+
 ## Methods
 
 Read method notes only when the active workflow or PCR topic needs them:

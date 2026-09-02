@@ -49,6 +49,8 @@ npm run aliases:check
 npm run catalog:build
 npm run catalog:check
 npm run catalog:recover [-- --force-stale-lock]
+npm run cpc-chains:build
+npm run cpc-chains:check
 npm run pcr:import:cpc -- --source <cpc-structure.csv> --classification-version 3.0
 npm run pcr:import:cpc -- --source <cpc-structure.csv> --classification-version 3.0 --legacy-scaffolds  # migration compatibility only
 npm run pcr:scaffold:cpc -- --source <cpc-structure.csv> --classification-version 3.0 --legacy-scaffolds  # protected legacy alias
@@ -112,6 +114,22 @@ npm run validate
 
 For the full workspace, release, transaction, and recovery invariants, use
 `builder/docs/contracts/published-revision-contract.md`.
+
+## CPC Product-Chain Planning Artifacts
+
+`npm run cpc-chains:build` validates the reviewed source at
+`builder/planning/cpc-product-chain-pilot.yaml`, derives repository-backed mapping, PCR-readiness, evidence, blocker,
+and executable-wave state, and atomically regenerates `builder/planning/cpc-product-chain-pilot.md`. The generated
+report contains the ready/blocked summary, chain diagrams, edge decisions, executable waves, review queue, and source
+list; the command reports the rebuilt Markdown path.
+
+`npm run cpc-chains:check` performs the same validation and derivation without writing, then fails if the generated
+Markdown report is missing or stale. A successful check reports that `builder/planning/cpc-product-chain-pilot.md` is
+current. Repository lint runs this check before the builder CLI lint.
+
+These files are planning artifacts, not classification mappings or canonical PCR truth. A
+`semantic_candidate` or official-source-only (`supported_by_official_source`) edge does not change an accepted mapping
+and does not trigger PCR generation.
 
 ## Executable Contract Boundary
 
