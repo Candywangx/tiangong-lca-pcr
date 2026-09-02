@@ -156,6 +156,10 @@ test("CPC product-chain contract keeps official source records distinct and date
     "https://example.com:65536/source",
     "example.com/path",
     "https://example.com/white space",
+    "https://example.com/{raw-brace}",
+    "https://example.com/\\raw-backslash",
+    "https://example.com/\u0001control",
+    "https://example.com/资料",
   ];
 
   assert.equal(validateCpcProductChain(crossShapeSource).valid, false);
@@ -165,6 +169,7 @@ test("CPC product-chain contract keeps official source records distinct and date
   for (const url of [
     "urn:isbn:9780141036144",
     "https://[2001:db8::1]/source",
+    "https://example.com/%E8%B5%84%E6%96%99",
   ]) {
     const validAbsoluteUri = structuredClone(validOfficialSource);
     validAbsoluteUri.official_sources[0].url = url;

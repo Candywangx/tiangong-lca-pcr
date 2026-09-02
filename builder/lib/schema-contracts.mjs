@@ -176,6 +176,7 @@ function resolveContractId(contract) {
 function isValidAbsoluteUri(value) {
   if (
     !/^[A-Za-z][A-Za-z0-9+.-]*:/u.test(value) ||
+    !/^(?:[A-Za-z0-9._~:/?#\[\]@!$&'()*+,;=-]|%[0-9A-Fa-f]{2})+$/u.test(value) ||
     /\s/u.test(value) ||
     /%(?![0-9A-Fa-f]{2})/u.test(value) ||
     value.indexOf("#") !== value.lastIndexOf("#")
