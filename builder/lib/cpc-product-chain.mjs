@@ -384,9 +384,12 @@ function mermaidText(value) {
 }
 
 function linkDestination(value) {
-  return encodeURI(String(value).toWellFormed())
-    .replaceAll("(", "%28")
-    .replaceAll(")", "%29");
+  const escaped = String(value)
+    .toWellFormed()
+    .replace(/[\u0000-\u0020\u007f<>\\]/g, (character) =>
+      `%${character.charCodeAt(0).toString(16).toUpperCase().padStart(2, "0")}`,
+    );
+  return `<${escaped}>`;
 }
 
 function mermaidNodeId(index) {

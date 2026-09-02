@@ -507,7 +507,7 @@ flowchart LR
 
 ## Official sources
 
-- [official-route] Official route note — Standards Office — Section 2 — The semantic route from cotton to yarn. ([source](https://example.test/route); publication DOC-7; published 2025; accessed 2026-09-02)
+- [official-route] Official route note — Standards Office — Section 2 — The semantic route from cotton to yarn. ([source](<https://example.test/route>); publication DOC-7; published 2025; accessed 2026-09-02)
 `;
 
   assert.equal(renderCpcProductChainReport(analysis), expected);
@@ -519,7 +519,7 @@ test("escapes hostile authored strings in each rendering context", () => {
     id: "source|[id]",
     title: "Title\r\n## injected heading",
     publisher: "Publisher ` ``` [link](bad)",
-    url: "https://example.test/a_(b)?q=%5D#fragment",
+    url: "https://example.test/a_(b)%20?q=%5D#fragment",
     locator: "Section 1\n```mermaid",
     supports: "Support | [link](https://evil.test)\r---",
     accessed_at: "2026-09-02",
@@ -559,7 +559,9 @@ test("escapes hostile authored strings in each rendering context", () => {
   assert.match(report, /n0\["1 Label &quot; &#93; injected --&gt; n9 &#91;&quot;boom&quot;&#93;&#92;path"\]/);
   assert.match(report, /edge&#124;&#91;link&#93;&#40;bad&#41;/);
   assert.match(report, /Ready note &#35; heading &#124; &#91;link&#93;&#40;https:\/\/evil\.test&#41; &#96;&#96;&#96;/);
-  assert.match(report, /\[source\]\(https:\/\/example\.test\/a_%28b%29\?q=%255D#fragment\)/);
+  assert.match(report, /\[source\]\(<https:\/\/example\.test\/a_\(b\)%20\?q=%5D#fragment>\)/);
+  assert.equal(report.includes("%2520"), false);
+  assert.equal(report.includes("%255D"), false);
   assert.ok(report.indexOf("source&#124;&#91;id&#93;") < report.indexOf("[second] Second source"));
   assert.equal(report, renderCpcProductChainReport(analyze(authored)));
 });
