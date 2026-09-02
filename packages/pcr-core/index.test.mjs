@@ -22,6 +22,7 @@ import {
   createFeedbackDraft,
   getClassificationCoverageSummary,
   getPcrReadiness,
+  getVerifiedPcrProjection,
   listClassificationCoverage,
   listPcrs,
   readPcrMarkdown,
@@ -684,6 +685,150 @@ test("guidance revalidates and consumes the current verified structured projecti
     );
   } finally {
     rmSync(root, { recursive: true, force: true });
+  }
+});
+
+test("getVerifiedPcrProjection returns one defensive, verified PCR snapshot", () => {
+  const root = createBoundRepositoryFixture("tiangong-pcr-verified-projection-");
+  const pcrDir = path.join(root, wheatRelativePcrPath);
+  try {
+    mkdirSync(path.dirname(pcrDir), { recursive: true });
+    cpSync(path.join(repoRoot, wheatRelativePcrPath), pcrDir, { recursive: true });
+
+    const first = getVerifiedPcrProjection({ root, pcrId: wheatSeedPcrId });
+    assert.equal(first.pcr.id, wheatSeedPcrId);
+    assert.equal(first.pcr.readiness.usable_for_guidance, true);
+    assert.deepEqual(first.readiness, first.pcr.readiness);
+    assert.notEqual(first.readiness, first.pcr.readiness);
+    assert.equal(first.readiness.projection_fingerprint.status, "current");
+    assert.equal(first.structured.product_category_identity.canonical_pcr_id, first.pcr.id);
+    assert.equal(first.source_structured, `${wheatRelativePcrPath}/structured.yaml`);
+
+    first.pcr.title["en-US"] = "mutated";
+    first.pcr.readiness.blockers.push({ code: "mutated" });
+    first.readiness.blockers.push({ code: "also_mutated" });
+    first.structured.product_category_identity.covered_products = "mutated";
+
+    const second = getVerifiedPcrProjection({ root, pcrId: wheatSeedPcrId });
+    assert.notEqual(second.pcr.title["en-US"], "mutated");
+    assert.equal(second.pcr.readiness.blockers.some(({ code }) => code === "mutated"), false);
+    assert.equal(second.readiness.blockers.some(({ code }) => code === "also_mutated"), false);
+    assert.notEqual(second.structured.product_category_identity.covered_products, "mutated");
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+  }
+});
+
+test("getVerifiedPcrProjection rejects stale, substituted, invalid, and unusable projections", () => {
+  const scenarios = [
+    {
+      name: "stale source",
+      mutate(pcrDir) {
+        const markdownPath = path.join(pcrDir, "pcr.en-US.md");
+        writeFileSync(markdownPath, `${readFileSync(markdownPath, "utf8")}\n<!-- stale -->\n`);
+      },
+      blocker: "projection_source_mismatch",
+    },
+    {
+      name: "source-substituted projection",
+      mutate(pcrDir) {
+        const structuredPath = path.join(pcrDir, "structured.yaml");
+        const structured = readFileSync(structuredPath, "utf8").replace(
+          "source_markdown: pcr.en-US.md",
+          "source_markdown: substituted.md",
+        );
+        writeFileSync(structuredPath, structured);
+      },
+      blocker: "projection_content_mismatch",
+    },
+    {
+      name: "content-substituted projection",
+      mutate(pcrDir) {
+        const structuredPath = path.join(pcrDir, "structured.yaml");
+        const structured = readFileSync(structuredPath, "utf8").replace(
+          '  reference_unit: "kg"',
+          '  reference_unit: "substituted"',
+        );
+        writeFileSync(structuredPath, structured);
+      },
+      blocker: "projection_content_mismatch",
+    },
+    {
+      name: "schema-invalid projection",
+      mutate(pcrDir) {
+        const structuredPath = path.join(pcrDir, "structured.yaml");
+        const structured = readFileSync(structuredPath, "utf8").replace(
+          "schema_version: 1",
+          "schema_version: invalid",
+        );
+        writeFileSync(structuredPath, structured);
+      },
+      blocker: "structured_schema_invalid",
+    },
+    {
+      name: "unusable lifecycle",
+      mutate(pcrDir) {
+        const manifestPath = path.join(pcrDir, "manifest.yaml");
+        const manifest = parseYaml(readFileSync(manifestPath, "utf8"));
+        manifest.status = "deprecated";
+        manifest.content_maturity = "deprecated_methodology";
+        writeFileSync(manifestPath, renderYaml(manifest));
+      },
+      blocker: "deprecated_methodology",
+    },
+  ];
+
+  for (const scenario of scenarios) {
+    const root = createBoundRepositoryFixture("tiangong-pcr-verified-rejection-");
+    const pcrDir = path.join(root, wheatRelativePcrPath);
+    try {
+      mkdirSync(path.dirname(pcrDir), { recursive: true });
+      cpSync(path.join(repoRoot, wheatRelativePcrPath), pcrDir, { recursive: true });
+      scenario.mutate(pcrDir);
+
+      assert.throws(
+        () => getVerifiedPcrProjection({ root, pcrId: wheatSeedPcrId }),
+        (error) => {
+          assert.equal(error.code, "PCR_NOT_USABLE_FOR_GUIDANCE", scenario.name);
+          assert.ok(
+            error.readiness.blockers.some(({ code }) => code === scenario.blocker),
+            `${scenario.name}: ${JSON.stringify(error.readiness.blockers)}`,
+          );
+          return true;
+        },
+      );
+    } finally {
+      rmSync(root, { recursive: true, force: true });
+    }
+  }
+});
+
+test("getVerifiedPcrProjection rejects a symlinked structured artifact", () => {
+  const root = createBoundRepositoryFixture("tiangong-pcr-verified-symlink-");
+  const outsideRoot = mkdtempSync(path.join(tmpdir(), "tiangong-pcr-verified-outside-"));
+  const pcrDir = path.join(root, wheatRelativePcrPath);
+  try {
+    mkdirSync(path.dirname(pcrDir), { recursive: true });
+    cpSync(path.join(repoRoot, wheatRelativePcrPath), pcrDir, { recursive: true });
+    const structuredPath = path.join(pcrDir, "structured.yaml");
+    const outsidePath = path.join(outsideRoot, "structured.yaml");
+    cpSync(structuredPath, outsidePath);
+    rmSync(structuredPath);
+    symlinkSync(outsidePath, structuredPath);
+
+    assert.throws(
+      () => getVerifiedPcrProjection({ root, pcrId: wheatSeedPcrId }),
+      (error) => {
+        assert.equal(error.code, "PCR_NOT_USABLE_FOR_GUIDANCE");
+        assert.ok(
+          error.readiness.blockers.some(({ code }) => code === "structured_projection_unreadable"),
+        );
+        return true;
+      },
+    );
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+    rmSync(outsideRoot, { recursive: true, force: true });
   }
 });
 

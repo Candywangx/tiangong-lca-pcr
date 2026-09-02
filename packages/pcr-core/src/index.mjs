@@ -596,6 +596,23 @@ export function buildGuidance({ root, pcrId }) {
   return buildGuidanceForOperation({ root, pcrId, operation: "guidance" });
 }
 
+export function getVerifiedPcrProjection({ root, pcrId }) {
+  const snapshot = getCurrentPcrSnapshot({ root, pcrId });
+  const { pcr, structured, structuredPath } = snapshot;
+  assertPcrUsable({ pcr, operation: "guidance" });
+  if (!structured) {
+    throw new Error(
+      `PCR ${pcrId} passed readiness without a verified structured projection.`,
+    );
+  }
+  return {
+    pcr: structuredClone(pcr),
+    readiness: structuredClone(pcr.readiness),
+    source_structured: toPosix(path.relative(root, structuredPath)),
+    structured: structuredClone(structured),
+  };
+}
+
 function buildGuidanceForOperation({ root, pcrId, operation }) {
   const snapshot = getCurrentPcrSnapshot({ root, pcrId });
   const { pcr, structured, structuredPath } = snapshot;
