@@ -12,7 +12,7 @@ import {
   writeFileSync,
 } from "node:fs";
 import path from "node:path";
-import { fileURLToPath, pathToFileURL } from "node:url";
+import { pathToFileURL } from "node:url";
 import { TextDecoder } from "node:util";
 
 import {
@@ -26,7 +26,6 @@ import {
 } from "../lib/cpc-product-chain.mjs";
 import { assertCpcProductChain } from "../lib/schema-contracts.mjs";
 
-const REPOSITORY_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../..");
 const FATAL_UTF8_DECODER = new TextDecoder("utf-8", { fatal: true });
 const READ_FLAGS =
   fsConstants.O_RDONLY | (fsConstants.O_NOFOLLOW ?? 0) | (fsConstants.O_NONBLOCK ?? 0);
@@ -38,6 +37,7 @@ const WRITE_FLAGS =
 
 export const DEFAULT_SOURCE_PATH = "builder/planning/cpc-product-chain-pilot.yaml";
 export const DEFAULT_REPORT_PATH = "builder/planning/cpc-product-chain-pilot.md";
+const REPORT_LOCK_PATH = "builder/planning/.cpc-product-chain-pilot.md.lock";
 
 function managedPath(root, relativePath, label) {
   const normalizedRoot = path.resolve(root);
@@ -139,33 +139,108 @@ function temporaryRelativePath() {
   );
 }
 
-function writeReportAtomically(root, report) {
+function acquireReportLock(root) {
+  const lockPath = managedPath(root, REPORT_LOCK_PATH, "CPC product-chain report lock");
+  assertDirectoryChain(root, path.dirname(lockPath), "CPC product-chain report lock");
+  let existing;
+  try {
+    existing = lstatSync(lockPath);
+  } catch (error) {
+    if (error?.code !== "ENOENT") throw error;
+  }
+  if (existing?.isSymbolicLink()) {
+    throw new Error(`CPC product-chain report lock path must not be a symbolic link: ${REPORT_LOCK_PATH}`);
+  }
+  if (existing && !existing.isFile()) {
+    throw new Error(`CPC product-chain report lock path must be a regular file: ${REPORT_LOCK_PATH}`);
+  }
+  if (existing) {
+    throw new Error(`CPC product-chain report lock already exists: ${REPORT_LOCK_PATH}`);
+  }
+
+  let descriptor;
+  let identity;
+  try {
+    descriptor = openSync(lockPath, WRITE_FLAGS, 0o600);
+    const opened = fstatSync(descriptor);
+    identity = { dev: opened.dev, ino: opened.ino };
+    const current = lstatSync(lockPath);
+    if (
+      !opened.isFile()
+      || current.isSymbolicLink()
+      || !current.isFile()
+      || opened.dev !== current.dev
+      || opened.ino !== current.ino
+    ) {
+      throw new Error(`CPC product-chain report lock changed while it was being opened: ${REPORT_LOCK_PATH}`);
+    }
+    writeFileSync(descriptor, `${process.pid}\n`, "utf8");
+    fsyncSync(descriptor);
+    return { descriptor, lockPath, dev: opened.dev, ino: opened.ino };
+  } catch (error) {
+    if (descriptor !== undefined) closeSync(descriptor);
+    if (identity) {
+      try {
+        const current = lstatSync(lockPath);
+        if (current.dev === identity.dev && current.ino === identity.ino) {
+          unlinkSync(lockPath);
+        }
+      } catch (cleanupError) {
+        if (cleanupError?.code !== "ENOENT") throw cleanupError;
+      }
+    }
+    throw error;
+  }
+}
+
+function releaseReportLock(lock) {
+  closeSync(lock.descriptor);
+  let current;
+  try {
+    current = lstatSync(lock.lockPath);
+  } catch (error) {
+    if (error?.code === "ENOENT") return;
+    throw error;
+  }
+  if (
+    current.isSymbolicLink()
+    || !current.isFile()
+    || current.dev !== lock.dev
+    || current.ino !== lock.ino
+  ) {
+    throw new Error(`CPC product-chain report lock changed before cleanup: ${REPORT_LOCK_PATH}`);
+  }
+  unlinkSync(lock.lockPath);
+}
+
+function writeReportAtomically(root, report, { beforeFinalCheck = () => {} } = {}) {
   const outputPath = managedPath(root, DEFAULT_REPORT_PATH, "CPC product-chain report");
   const temporaryPath = managedPath(
     root,
     temporaryRelativePath(),
     "CPC product-chain temporary report",
   );
-  const baseline = regularFileSnapshot(
-    root,
-    DEFAULT_REPORT_PATH,
-    "CPC product-chain report",
-    { allowMissing: true },
-  );
-  const existingTemporary = regularFileSnapshot(
-    root,
-    temporaryRelativePath(),
-    "CPC product-chain temporary report",
-    { allowMissing: true },
-  );
-  if (existingTemporary) {
-    throw new Error(`CPC product-chain temporary report already exists: ${temporaryRelativePath()}`);
-  }
-
+  const lock = acquireReportLock(root);
   let descriptor;
   let temporaryIdentity;
   let ownsTemporary = false;
   try {
+    const baseline = regularFileSnapshot(
+      root,
+      DEFAULT_REPORT_PATH,
+      "CPC product-chain report",
+      { allowMissing: true },
+    );
+    const existingTemporary = regularFileSnapshot(
+      root,
+      temporaryRelativePath(),
+      "CPC product-chain temporary report",
+      { allowMissing: true },
+    );
+    if (existingTemporary) {
+      throw new Error(`CPC product-chain temporary report already exists: ${temporaryRelativePath()}`);
+    }
+
     descriptor = openSync(temporaryPath, WRITE_FLAGS, 0o600);
     ownsTemporary = true;
     temporaryIdentity = fstatSync(descriptor);
@@ -184,6 +259,8 @@ function writeReportAtomically(root, report) {
     ) {
       throw new Error(`CPC product-chain temporary report changed before publication: ${temporaryRelativePath()}`);
     }
+    beforeFinalCheck();
+    assertDirectoryChain(root, path.dirname(outputPath), "CPC product-chain report");
     const currentOutput = regularFileSnapshot(
       root,
       DEFAULT_REPORT_PATH,
@@ -193,20 +270,23 @@ function writeReportAtomically(root, report) {
     if (!sameSnapshot(baseline, currentOutput)) {
       throw new Error(`CPC product-chain report changed before publication: ${DEFAULT_REPORT_PATH}`);
     }
-    assertDirectoryChain(root, path.dirname(outputPath), "CPC product-chain report");
     renameSync(temporaryPath, outputPath);
     ownsTemporary = false;
   } finally {
-    if (descriptor !== undefined) closeSync(descriptor);
-    if (ownsTemporary) {
-      try {
-        const current = lstatSync(temporaryPath);
-        if (current.dev === temporaryIdentity?.dev && current.ino === temporaryIdentity?.ino) {
-          unlinkSync(temporaryPath);
+    try {
+      if (descriptor !== undefined) closeSync(descriptor);
+      if (ownsTemporary) {
+        try {
+          const current = lstatSync(temporaryPath);
+          if (current.dev === temporaryIdentity?.dev && current.ino === temporaryIdentity?.ino) {
+            unlinkSync(temporaryPath);
+          }
+        } catch (error) {
+          if (error?.code !== "ENOENT") throw error;
         }
-      } catch (error) {
-        if (error?.code !== "ENOENT") throw error;
       }
+    } finally {
+      releaseReportLock(lock);
     }
   }
 }
@@ -255,28 +335,47 @@ function projectionInventoryField(structured, locator) {
   return value;
 }
 
-function createResolvers(root) {
+export function resolveCpcProductChainLocator(structured, locator) {
+  return locator.kind === "field"
+    ? projectionField(structured, locator.field_path)
+    : projectionInventoryField(structured, locator);
+}
+
+export function createCpcProductChainResolvers(
+  root,
+  {
+    resolveClassificationFn = resolveClassification,
+    getVerifiedPcrProjectionFn = getVerifiedPcrProjection,
+  } = {},
+) {
   const snapshots = new Map();
   const verifiedSnapshot = (pcrId) => {
     if (!snapshots.has(pcrId)) {
-      snapshots.set(pcrId, getVerifiedPcrProjection({ root, pcrId }));
+      snapshots.set(pcrId, getVerifiedPcrProjectionFn({ root, pcrId }));
     }
     return snapshots.get(pcrId);
   };
 
   return {
     resolveNode({ node }) {
-      const resolution = resolveClassification({
+      const resolution = resolveClassificationFn({
         root,
         system: "cpc",
         version: "3.0",
         code: node.code,
       });
       let pcr = null;
-      if (resolution.mapping) {
-        const snapshot = verifiedSnapshot(resolution.mapping.pcr_id);
+      if (resolution.pcr) {
+        const identity = resolution.pcr;
+        const snapshot = verifiedSnapshot(identity.id);
+        if (snapshot.pcr.id !== identity.id || snapshot.pcr.path !== identity.path) {
+          throw new Error(
+            `Verified PCR identity ${snapshot.pcr.id} at path ${snapshot.pcr.path} ` +
+              `does not match classification resolution ${identity.id} at path ${identity.path}.`,
+          );
+        }
         pcr = {
-          ...structuredClone(snapshot.pcr),
+          ...structuredClone(identity),
           readiness: structuredClone(snapshot.readiness),
         };
       }
@@ -290,9 +389,7 @@ function createResolvers(root) {
     resolvePcrEvidence({ evidence }) {
       const snapshot = verifiedSnapshot(evidence.pcr_id);
       const locator = structuredClone(evidence.locator);
-      const value = locator.kind === "field"
-        ? projectionField(snapshot.structured, locator.field_path)
-        : projectionInventoryField(snapshot.structured, locator);
+      const value = resolveCpcProductChainLocator(snapshot.structured, locator);
       return {
         pcr_id: snapshot.pcr.id,
         source_path: snapshot.source_structured,
@@ -311,7 +408,7 @@ export function buildOrCheckCpcProductChain(root, { checkOnly = false } = {}) {
   );
   const document = parseYaml(FATAL_UTF8_DECODER.decode(source.bytes));
   assertCpcProductChain(document, { source: DEFAULT_SOURCE_PATH });
-  const analysis = analyzeCpcProductChain(document, createResolvers(root));
+  const analysis = analyzeCpcProductChain(document, createCpcProductChainResolvers(root));
   const report = renderCpcProductChainReport(analysis);
 
   if (checkOnly) {
@@ -350,11 +447,13 @@ function run() {
     throw new Error(`Unexpected CPC product-chain argument: ${args.join(" ")}`);
   }
   const checkOnly = args.length === 1;
-  const result = buildOrCheckCpcProductChain(REPOSITORY_ROOT, { checkOnly });
+  const result = buildOrCheckCpcProductChain(process.cwd(), { checkOnly });
   process.stdout.write(
     `CPC product-chain report ${checkOnly ? "is current" : "was rebuilt"}: ${result.report_path}\n`,
   );
 }
+
+export const __test = Object.freeze({ writeReportAtomically });
 
 const isDirectExecution =
   process.argv[1] && import.meta.url === pathToFileURL(path.resolve(process.argv[1])).href;

@@ -24,7 +24,10 @@ import { renderYaml } from "../../packages/pcr-core/src/yaml-lite.mjs";
 import {
   DEFAULT_REPORT_PATH,
   DEFAULT_SOURCE_PATH,
+  __test,
   buildOrCheckCpcProductChain,
+  createCpcProductChainResolvers,
+  resolveCpcProductChainLocator,
 } from "./render-cpc-product-chain.mjs";
 
 const repoRoot = path.resolve(".");
@@ -37,6 +40,7 @@ const wheatSeedPath =
 const abalonePath =
   "library/pcrs/agriculture-forestry-and-fishery-products/fish-crustaceans-molluscs-and-other-aquatic-invertebrates-products/farmed-abalone-live-fresh-or-chilled";
 const temporaryReportPath = "builder/planning/.cpc-product-chain-pilot.md.tmp";
+const reportLockPath = "builder/planning/.cpc-product-chain-pilot.md.lock";
 
 function planningDocument(locator = {
   kind: "field",
@@ -161,6 +165,13 @@ function assertNoTemporaryReport(root) {
   );
 }
 
+function assertNoReportLock(root) {
+  assert.throws(
+    () => lstatSync(path.join(root, reportLockPath)),
+    (error) => error.code === "ENOENT",
+  );
+}
+
 function withNetworkTraps(callback) {
   const originalFetch = globalThis.fetch;
   const originalHttpRequest = http.request;
@@ -202,6 +213,7 @@ test("exports stable default paths and builds/checks an exact report offline", (
     assert.equal(report, built.report);
     assert.match(report, /1 ready, 0 blocked/u);
     assertNoTemporaryReport(root);
+    assertNoReportLock(root);
 
     const checked = withNetworkTraps(() =>
       buildOrCheckCpcProductChain(root, { checkOnly: true }));
@@ -213,6 +225,114 @@ test("exports stable default paths and builds/checks an exact report offline", (
   } finally {
     rmSync(root, { recursive: true, force: true });
   }
+});
+
+test("resolver preserves classification identity and caches one verified snapshot per PCR", () => {
+  const calls = [];
+  const classificationPcr = {
+    id: wheatSeedPcrId,
+    path: wheatSeedPath,
+    title: { "en-US": "classification identity" },
+    readiness: { status: "untrusted", usable_for_guidance: false },
+  };
+  const snapshot = {
+    pcr: {
+      id: wheatSeedPcrId,
+      path: wheatSeedPath,
+      title: { "en-US": "snapshot metadata must not replace classification identity" },
+      readiness: { status: "ready", usable_for_guidance: true },
+    },
+    readiness: {
+      status: "ready",
+      usable_for_guidance: true,
+      projection_fingerprint: { status: "current" },
+    },
+    source_structured: `${wheatSeedPath}/structured.yaml`,
+    structured: {
+      product_category_identity: {
+        covered_products: "verified products",
+        production_route: "verified route",
+      },
+    },
+  };
+  const resolveClassificationFn = ({ code }) => ({
+    coverage_status: "mapped",
+    coverage: { code, label: "Wheat, seed" },
+    mapping: { pcr_id: wheatSeedPcrId },
+    pcr: structuredClone(classificationPcr),
+  });
+  const resolvers = createCpcProductChainResolvers("/fixture", {
+    resolveClassificationFn,
+    getVerifiedPcrProjectionFn(args) {
+      calls.push(args);
+      return structuredClone(snapshot);
+    },
+  });
+
+  const firstNode = resolvers.resolveNode({ node: { code: "01111" } });
+  const secondNode = resolvers.resolveNode({ node: { code: "01111" } });
+  const firstLocator = {
+    kind: "field",
+    field_path: "product_category_identity.covered_products",
+  };
+  const secondLocator = {
+    kind: "field",
+    field_path: "product_category_identity.production_route",
+  };
+  const firstEvidence = resolvers.resolvePcrEvidence({
+    evidence: { pcr_id: wheatSeedPcrId, locator: firstLocator },
+  });
+  const secondEvidence = resolvers.resolvePcrEvidence({
+    evidence: { pcr_id: wheatSeedPcrId, locator: secondLocator },
+  });
+
+  assert.equal(calls.length, 1);
+  assert.deepEqual(calls[0], { root: "/fixture", pcrId: wheatSeedPcrId });
+  assert.equal(firstNode.pcr.id, classificationPcr.id);
+  assert.equal(firstNode.pcr.path, classificationPcr.path);
+  assert.equal(firstNode.pcr.title["en-US"], "classification identity");
+  assert.deepEqual(firstNode.pcr.readiness, snapshot.readiness);
+  assert.deepEqual(secondNode.pcr, firstNode.pcr);
+  assert.equal(firstEvidence.value, "verified products");
+  assert.equal(secondEvidence.value, "verified route");
+  assert.deepEqual(firstEvidence.locator, firstLocator);
+  assert.deepEqual(secondEvidence.locator, secondLocator);
+
+  const mismatched = createCpcProductChainResolvers("/fixture", {
+    resolveClassificationFn,
+    getVerifiedPcrProjectionFn() {
+      return {
+        ...structuredClone(snapshot),
+        pcr: { ...structuredClone(snapshot.pcr), path: "library/pcrs/substituted" },
+      };
+    },
+  });
+  assert.throws(
+    () => mismatched.resolveNode({ node: { code: "01111" } }),
+    /Verified PCR identity .*path.*does not match classification resolution/u,
+  );
+});
+
+test("locator helper reports a selected inventory field absent from a supplied projection", () => {
+  const locator = {
+    kind: "inventory_row",
+    process_id: "process-a",
+    direction: "inputs",
+    flow_type: "product",
+    row_id: "row-a",
+    field: "description",
+  };
+  const structured = {
+    process_inventory: [{
+      id: "process-a",
+      inputs: { product: [{ row_id: "row-a", name: "Flow A" }] },
+    }],
+  };
+
+  assert.throws(
+    () => resolveCpcProductChainLocator(structured, locator),
+    /process_inventory\.process-a\.inputs\.product\.row-a\.description/u,
+  );
 });
 
 test("resolves every allowed field locator and both inventory fields from verified bytes", () => {
@@ -261,7 +381,7 @@ test("resolves every allowed field locator and both inventory fields from verifi
     const protectedBefore = protectedDigest(root);
     for (const [locator, expected] of cases) {
       writePlanning(root, planningDocument(locator));
-      const result = buildOrCheckCpcProductChain(root);
+      const result = withNetworkTraps(() => buildOrCheckCpcProductChain(root));
       const evidence = result.analysis.chains[0].edges[0].resolved_evidence[0];
       assert.deepEqual(evidence.locator, locator);
       assert.equal(evidence.pcr_id, wheatSeedPcrId);
@@ -330,7 +450,11 @@ test("locator failures are path-aware and preserve an existing report", () => {
       writePlanning(root, document);
       const protectedBefore = protectedDigest(root);
 
-      assert.throws(() => buildOrCheckCpcProductChain(root), scenario.expected, scenario.name);
+      assert.throws(
+        () => withNetworkTraps(() => buildOrCheckCpcProductChain(root)),
+        scenario.expected,
+        scenario.name,
+      );
       assert.equal(readFileSync(path.join(root, DEFAULT_REPORT_PATH), "utf8"), sentinel);
       assert.equal(protectedDigest(root), protectedBefore);
       assertNoTemporaryReport(root);
@@ -350,7 +474,7 @@ test("stale coverage errors propagate without report or protected-source mutatio
     const protectedBefore = protectedDigest(root);
 
     assert.throws(
-      () => buildOrCheckCpcProductChain(root),
+      () => withNetworkTraps(() => buildOrCheckCpcProductChain(root)),
       /source normalized_leaves exact-byte SHA-256 mismatch/u,
     );
     assert.equal(readFileSync(reportPath, "utf8"), "sentinel\n");
@@ -383,7 +507,10 @@ test("render failures leave the report byte-identical and create no temporary fi
       throw new Error("injected render failure");
     };
 
-    assert.throws(() => buildOrCheckCpcProductChain(root), /injected render failure/u);
+    assert.throws(
+      () => withNetworkTraps(() => buildOrCheckCpcProductChain(root)),
+      /injected render failure/u,
+    );
     assert.equal(readFileSync(reportPath, "utf8"), "sentinel render bytes\n");
     assert.equal(protectedDigest(root), protectedBefore);
     assertNoTemporaryReport(root);
@@ -398,7 +525,8 @@ test("check mode never writes and rejects missing or stale output", () => {
   try {
     const protectedBefore = protectedDigest(root);
     assert.throws(
-      () => buildOrCheckCpcProductChain(root, { checkOnly: true }),
+      () => withNetworkTraps(() =>
+        buildOrCheckCpcProductChain(root, { checkOnly: true })),
       /report is missing/u,
     );
     assert.equal(protectedDigest(root), protectedBefore);
@@ -407,7 +535,8 @@ test("check mode never writes and rejects missing or stale output", () => {
     const reportPath = path.join(root, DEFAULT_REPORT_PATH);
     writeFileSync(reportPath, "stale report\n");
     assert.throws(
-      () => buildOrCheckCpcProductChain(root, { checkOnly: true }),
+      () => withNetworkTraps(() =>
+        buildOrCheckCpcProductChain(root, { checkOnly: true })),
       /report is stale/u,
     );
     assert.equal(readFileSync(reportPath, "utf8"), "stale report\n");
@@ -452,6 +581,15 @@ test("rejects symlink and non-regular managed paths without mutation", () => {
       expected: /symbolic link.*structured\.yaml/u,
     },
     {
+      name: "structured directory",
+      arrange(root) {
+        const structuredPath = path.join(root, wheatSeedPath, "structured.yaml");
+        rmSync(structuredPath);
+        mkdirSync(structuredPath);
+      },
+      expected: /not usable for guidance.*structured_projection_unreadable/u,
+    },
+    {
       name: "temporary symlink",
       arrange(root, outsideRoot) {
         symlinkSync(path.join(outsideRoot, "temp"), path.join(root, temporaryReportPath));
@@ -483,6 +621,22 @@ test("rejects symlink and non-regular managed paths without mutation", () => {
       },
       expected: /report.*regular file/u,
     },
+    {
+      name: "lock symlink",
+      arrange(root, outsideRoot) {
+        symlinkSync(path.join(outsideRoot, "lock"), path.join(root, reportLockPath));
+      },
+      expected: /lock.*symbolic link/u,
+      leavesLock: true,
+    },
+    {
+      name: "lock directory",
+      arrange(root) {
+        mkdirSync(path.join(root, reportLockPath));
+      },
+      expected: /lock.*regular file/u,
+      leavesLock: true,
+    },
   ];
   for (const scenario of scenarios) {
     const root = createRealRepositoryFixture();
@@ -490,13 +644,84 @@ test("rejects symlink and non-regular managed paths without mutation", () => {
     try {
       scenario.arrange(root, outsideRoot);
       const protectedBefore = protectedDigest(root);
-      assert.throws(() => buildOrCheckCpcProductChain(root), scenario.expected, scenario.name);
+      assert.throws(
+        () => withNetworkTraps(() => buildOrCheckCpcProductChain(root)),
+        scenario.expected,
+        scenario.name,
+      );
       assert.equal(protectedDigest(root), protectedBefore);
       if (!scenario.leavesTemporary) assertNoTemporaryReport(root);
+      if (!scenario.leavesLock) assertNoReportLock(root);
     } finally {
       rmSync(root, { recursive: true, force: true });
       rmSync(outsideRoot, { recursive: true, force: true });
     }
+  }
+});
+
+test("writer lock rejects a competing writer and compare-and-swap preserves changed output", () => {
+  const root = createRealRepositoryFixture();
+  try {
+    const reportPath = path.join(root, DEFAULT_REPORT_PATH);
+    const lockPath = path.join(root, reportLockPath);
+    writeFileSync(reportPath, "baseline\n");
+    writeFileSync(lockPath, "competing writer\n");
+    const protectedBefore = protectedDigest(root);
+
+    assert.throws(
+      () => withNetworkTraps(() => buildOrCheckCpcProductChain(root)),
+      /report lock already exists/u,
+    );
+    assert.equal(readFileSync(reportPath, "utf8"), "baseline\n");
+    assert.equal(readFileSync(lockPath, "utf8"), "competing writer\n");
+    assert.equal(protectedDigest(root), protectedBefore);
+    assertNoTemporaryReport(root);
+
+    rmSync(lockPath);
+    assert.throws(
+      () => withNetworkTraps(() =>
+        __test.writeReportAtomically(root, "managed output\n", {
+          beforeFinalCheck() {
+            writeFileSync(reportPath, "concurrent output\n");
+          },
+        })),
+      /report changed before publication/u,
+    );
+    assert.equal(readFileSync(reportPath, "utf8"), "concurrent output\n");
+    assert.equal(protectedDigest(root), protectedBefore);
+    assertNoTemporaryReport(root);
+    assertNoReportLock(root);
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+  }
+});
+
+test("CLI builds and checks successfully from a temporary fixture working directory", () => {
+  const root = createRealRepositoryFixture();
+  const scriptPath = path.join(repoRoot, "builder/scripts/render-cpc-product-chain.mjs");
+  try {
+    const protectedBefore = protectedDigest(root);
+    const built = spawnSync(process.execPath, [scriptPath], {
+      cwd: root,
+      encoding: "utf8",
+    });
+    assert.equal(built.status, 0, built.stderr);
+    assert.match(built.stdout, /was rebuilt/u);
+    const report = readFileSync(path.join(root, DEFAULT_REPORT_PATH), "utf8");
+    assert.match(report, /CPC Product-Chain Pilot Report/u);
+
+    const checked = spawnSync(process.execPath, [scriptPath, "--check"], {
+      cwd: root,
+      encoding: "utf8",
+    });
+    assert.equal(checked.status, 0, checked.stderr);
+    assert.match(checked.stdout, /is current/u);
+    assert.equal(readFileSync(path.join(root, DEFAULT_REPORT_PATH), "utf8"), report);
+    assert.equal(protectedDigest(root), protectedBefore);
+    assertNoTemporaryReport(root);
+    assertNoReportLock(root);
+  } finally {
+    rmSync(root, { recursive: true, force: true });
   }
 });
 
