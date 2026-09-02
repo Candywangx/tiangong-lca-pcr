@@ -474,6 +474,10 @@ test("renders the complete report deterministically in authored order", () => {
 
 This report shows reviewed product dependencies for planning PCR work. CPC is a product classification, not a process graph; arrows express scoped pilot relationships, not universal production routes.
 
+### Caveat
+
+\`semantic_candidate\` and official-only (\`supported_by_official_source\`) edges do not change accepted mappings and do not trigger PCR generation.
+
 ## Chain: textile title
 
 textile description

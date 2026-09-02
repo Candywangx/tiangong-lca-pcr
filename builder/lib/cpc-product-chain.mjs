@@ -423,6 +423,10 @@ export function renderCpcProductChainReport(analysis) {
     `- Edges: ${analysis.summary.edge_count} (${analysis.summary.ready_edge_count} ready, ${analysis.summary.blocked_edge_count} blocked)`,
     "",
     "This report shows reviewed product dependencies for planning PCR work. CPC is a product classification, not a process graph; arrows express scoped pilot relationships, not universal production routes.",
+    "",
+    "### Caveat",
+    "",
+    "`semantic_candidate` and official-only (`supported_by_official_source`) edges do not change accepted mappings and do not trigger PCR generation.",
   ];
 
   for (const chain of analysis.chains) {

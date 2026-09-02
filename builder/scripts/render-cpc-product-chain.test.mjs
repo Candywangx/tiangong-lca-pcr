@@ -779,5 +779,9 @@ test("checked-in three-chain pilot derives the exact execution and review plan",
     result.report,
     /CPC is a product classification, not a process graph; arrows express scoped pilot relationships, not universal production routes\./u,
   );
-  assert.doesNotMatch(result.report, /(?:candidate|official-only).*accepted mapping/iu);
+  assert.ok(result.report.includes(
+    "### Caveat\n\n" +
+      "`semantic_candidate` and official-only (`supported_by_official_source`) edges " +
+      "do not change accepted mappings and do not trigger PCR generation.",
+  ));
 });
