@@ -89,6 +89,15 @@ test("CPC product-chain contract rejects an unknown evidence state", () => {
 });
 
 test("CPC product-chain contract exhaustively constrains PCR projection locators", () => {
+  const supportedInventoryLocator = structuredClone(validCpcProductChain);
+  supportedInventoryLocator.chains[0].edges[0].evidence[0].locator = {
+    kind: "inventory_row",
+    process_id: "beer-production",
+    direction: "inputs",
+    flow_type: "product",
+    row_id: "barley",
+    field: "description",
+  };
   const unsupportedFieldLocator = structuredClone(validCpcProductChain);
   unsupportedFieldLocator.chains[0].edges[0].evidence[0].locator.field_path =
     "system_boundary.rules";
@@ -102,6 +111,7 @@ test("CPC product-chain contract exhaustively constrains PCR projection locators
     field: "amount",
   };
 
+  assert.equal(validateCpcProductChain(supportedInventoryLocator).valid, true);
   assert.equal(validateCpcProductChain(unsupportedFieldLocator).valid, false);
   assert.equal(validateCpcProductChain(unsupportedInventoryLocator).valid, false);
 });
@@ -119,7 +129,7 @@ test("CPC product-chain contract keeps official source records distinct and date
     id: "cpc-3.0",
     title: "Central Product Classification Version 3.0",
     publisher: "United Nations Statistics Division",
-    url: "https://unstats.un.org/unsd/classifications/Family/Detail/1074",
+    url: "https://unstats.un.org/unsd/classifications/CPC%203.0?lang=en&view=detail#codes",
     locator: "CPC 3.0 codes 01150 and 24310",
     supports: "The classification codes and labels used by the pilot chain.",
     accessed_at: "2026-09-02",
@@ -131,16 +141,34 @@ test("CPC product-chain contract keeps official source records distinct and date
   malformedAccessDate.official_sources = [{ ...source, accessed_at: "2026-9-2" }];
   const validOfficialSource = structuredClone(validCpcProductChain);
   validOfficialSource.official_sources = [{ ...source }];
-  const malformedOfficialSourceUrl = structuredClone(validCpcProductChain);
-  malformedOfficialSourceUrl.official_sources = [
-    { ...source, url: "https://example.com/%ZZ" },
+  validOfficialSource.chains[0].edges[0].evidence = [
+    {
+      kind: "official_source",
+      source_id: source.id,
+      supports: "The official classification supplies the CPC codes and labels.",
+    },
+  ];
+  const malformedOfficialSourceUrls = [
+    "https://example.com/%ZZ",
+    "https://exa[mple.com/path",
+    "https://example.com/#first#second",
+    "example.com/path",
+    "https://example.com/white space",
   ];
 
   assert.equal(validateCpcProductChain(crossShapeSource).valid, false);
   assert.equal(validateCpcProductChain(missingAccessDate).valid, false);
   assert.equal(validateCpcProductChain(malformedAccessDate).valid, false);
   assert.equal(validateCpcProductChain(validOfficialSource).valid, true);
-  assert.equal(validateCpcProductChain(malformedOfficialSourceUrl).valid, false);
+  for (const url of malformedOfficialSourceUrls) {
+    const malformedOfficialSourceUrl = structuredClone(validCpcProductChain);
+    malformedOfficialSourceUrl.official_sources = [{ ...source, url }];
+    assert.equal(
+      validateCpcProductChain(malformedOfficialSourceUrl).valid,
+      false,
+      `${url} must be rejected as an official source URL`,
+    );
+  }
 });
 
 test("CPC product-chain authored shapes reject derived read-model properties", () => {
