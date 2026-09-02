@@ -26,6 +26,8 @@ test("prompt compiler emits one-PCR context and the two-independent-source range
     assert.match(result.prompt, /生铁/u);
     assert.match(result.prompt, /at least two mutually independent sources/iu);
     assert.match(result.prompt, /same paper.*not independent/iu);
+    assert.match(result.prompt, /review_metadata\.unresolved\.inventory_flow_uuids/u);
+    assert.match(result.prompt, /review_metadata\.unresolved\.range_evidence_needs/u);
     assert.equal(result.prompt.includes("GLOBAL POLICY"), false);
     assert.ok(result.prompt.length < 18_000);
     assert.match(result.policy_sha256, /^sha256:[a-f0-9]{64}$/u);

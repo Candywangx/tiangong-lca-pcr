@@ -44,6 +44,7 @@ Method and evidence
 
 UUID audit
 Use hybrid search for candidate discovery, then directly read every adopted candidate with public state_code=100. Audit English and Chinese baseName, flow type, classification, property, unit group, product state, geography, technology, and generalComment. Never promote a proxy or unverified UUID to final. If no exact reference product or inventory flow exists, keep UUID empty and record the row as unresolved with an allowed reason code; this does not block the PCR. For every PCR, inventory total must equal UUID-matched rows plus explicitly unresolved rows. Use the directly read TianGong Chinese baseName for UUID-bearing Chinese rows.
+- Record every UUID-empty inventory row, including an unresolved reference product row, under manifest review_metadata.unresolved.inventory_flow_uuids as { row_id, reason_code, explanation }. The same row ids and reasons must appear in the author report inventory.unresolved array. Do not substitute a differently named manifest field; the Harness reads this exact path.
 
 Range override (authoritative over the Goal policy file)
 - An externally inferred range needs at least two mutually independent sources, both verified in original text.
@@ -51,6 +52,7 @@ Range override (authoritative over the Goal policy file)
 - Do not mechanically use the minimum and maximum; scenarios from the same paper are not independent sources.
 - A single value, lower = upper, an abstract/snippet, or an invented range is forbidden.
 - If evidence is insufficient, keep the foreground collection requirement, omit the external range, and record an unresolved range-evidence need in the manifest. This does not block the PCR.
+- Record each such need under manifest review_metadata.unresolved.range_evidence_needs; do not invent a numeric range merely to remove a lint warning.
 - Regulatory or standard limits are conformance/specification rules, not empirical ranges. A reasoned_estimate is provisional, source-id-free, and used only when it has real modeling or QA value.
 
 Authoring sequence and commit
