@@ -6,7 +6,7 @@ import path from "node:path";
 import test from "node:test";
 
 import { createSyntheticBaseline } from "./synthetic-baseline.mjs";
-import { captureExpectedFiles, landFilesCas } from "./landing.mjs";
+import { captureExpectedFiles, captureExpectedFilesFromCommit, landFilesCas } from "./landing.mjs";
 import { ensureGoalWorktree } from "./worktrees.mjs";
 
 function git(root, args) {
@@ -142,6 +142,24 @@ test("CAS landing is idempotent and fails closed on a dirty-main conflict", () =
   } finally {
     rmSync(root, { recursive: true, force: true });
     rmSync(source, { recursive: true, force: true });
+  }
+});
+
+test("baseline fingerprints support generated files larger than Node's default child-process buffer", () => {
+  const root = fixtureRepo();
+  try {
+    const relative = "library/catalog.yaml";
+    const content = `catalog:\n${"  - pcr: generated-entry\n".repeat(60_000)}`;
+    writeFileSync(path.join(root, relative), content);
+    git(root, ["add", relative]);
+    git(root, ["commit", "-qm", "large generated catalog"]);
+    const commit = git(root, ["rev-parse", "HEAD"]);
+
+    const expected = captureExpectedFilesFromCommit(root, commit, [relative]);
+    assert.equal(expected[relative].kind, "file");
+    assert.equal(expected[relative].size, Buffer.byteLength(content));
+  } finally {
+    rmSync(root, { recursive: true, force: true });
   }
 });
 

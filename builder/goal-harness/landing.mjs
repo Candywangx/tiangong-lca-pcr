@@ -17,6 +17,8 @@ import { withGoalLock } from "./lock.mjs";
 import { assertRepoPath, resolveRepoPath } from "./paths.mjs";
 import { applyTaskTransition } from "./state-machine.mjs";
 
+const GIT_BLOB_MAX_BUFFER = 256 * 1024 * 1024;
+
 export function captureExpectedFiles(root, paths) {
   return Object.fromEntries(paths.map((entry) => {
     const repoPath = assertRepoPath(entry, { allowSensitive: true });
@@ -29,7 +31,12 @@ export function captureExpectedFilesFromCommit(root, commit, paths) {
     const repoPath = assertRepoPath(entry, { allowSensitive: true });
     const result = execFileSync("git", ["cat-file", "-e", `${commit}:${repoPath}`], { cwd: root, stdio: "ignore" , encoding: "utf8" });
     void result;
-    const bytes = execFileSync("git", ["show", `${commit}:${repoPath}`], { cwd: root, encoding: "buffer", stdio: ["ignore", "pipe", "pipe"] });
+    const bytes = execFileSync("git", ["show", `${commit}:${repoPath}`], {
+      cwd: root,
+      encoding: "buffer",
+      stdio: ["ignore", "pipe", "pipe"],
+      maxBuffer: GIT_BLOB_MAX_BUFFER,
+    });
     return [repoPath, { kind: "file", sha256: createHash("sha256").update(bytes).digest("hex"), size: bytes.length }];
   }));
 }
