@@ -737,3 +737,47 @@ test("CLI rejects every argument vector except no args and exactly --check", () 
     assert.equal(result.stdout, "");
   }
 });
+
+test("checked-in three-chain pilot derives the exact execution and review plan", () => {
+  const result = withNetworkTraps(() =>
+    buildOrCheckCpcProductChain(repoRoot, { checkOnly: true }));
+
+  assert.deepEqual(result.analysis.summary, {
+    chain_count: 3,
+    node_count: 13,
+    edge_count: 9,
+    ready_edge_count: 4,
+    blocked_edge_count: 5,
+  });
+
+  const chains = Object.fromEntries(
+    result.analysis.chains.map((chain) => [chain.id, chain]),
+  );
+  assert.deepEqual(chains["grain-food"].executable_waves, [
+    ["wheat-grain"],
+    ["wheat-flour"],
+    ["bread-and-bakers-wares"],
+  ]);
+  assert.deepEqual(chains["cotton-textile"].executable_waves, [
+    ["carded-or-combed-cotton"],
+    ["cotton-yarn"],
+    ["woven-cotton-fabric"],
+  ]);
+  assert.deepEqual(chains["forestry-pulp-paper"].executable_waves, []);
+  assert.deepEqual(chains["grain-food"].review_only_node_ids, []);
+  assert.deepEqual(chains["cotton-textile"].review_only_node_ids, ["raw-cotton"]);
+  assert.deepEqual(chains["forestry-pulp-paper"].review_only_node_ids, [
+    "coniferous-pulpwood",
+    "mechanical-pulp",
+    "newsprint",
+    "nonconiferous-pulpwood",
+    "chemical-pulp",
+    "wood-free-paper",
+  ]);
+
+  assert.match(
+    result.report,
+    /CPC is a product classification, not a process graph; arrows express scoped pilot relationships, not universal production routes\./u,
+  );
+  assert.doesNotMatch(result.report, /(?:candidate|official-only).*accepted mapping/iu);
+});
