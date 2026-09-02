@@ -5,7 +5,9 @@ import { materialProjectionCompletenessIssues } from "../../packages/pcr-core/sr
 import { manifestIdentityProblems } from "./lifecycle-policy.mjs";
 import {
   assertClassificationMapping,
+  assertCpcProductChain,
   validateClassificationMapping,
+  validateCpcProductChain,
   validateManifest,
   validateMarkdownFrontmatter,
   validateRelease,
@@ -13,6 +15,158 @@ import {
   validateRevision,
   validateStructured,
 } from "./schema-contracts.mjs";
+
+const validCpcProductChain = {
+  schema_version: 1,
+  artifact_kind: "cpc_product_chain_pilot",
+  status: "draft",
+  classification_system: "CPC",
+  classification_version: "3.0",
+  official_sources: [],
+  chains: [
+    {
+      id: "barley-to-beer",
+      title: "Barley to beer",
+      description: "A pilot product chain from barley production to beer production.",
+      nodes: [
+        {
+          id: "barley",
+          code: "01150",
+          label: "Barley",
+          stage: "feedstock production",
+          role: "primary feedstock",
+        },
+        {
+          id: "beer",
+          code: "24310",
+          label: "Beer made from malt",
+          stage: "product manufacturing",
+          role: "downstream product",
+        },
+      ],
+      edges: [
+        {
+          id: "barley-feedstock-for-beer",
+          from: "barley",
+          to: "beer",
+          relationship_type: "primary_feedstock",
+          evidence_status: "supported_by_pcr",
+          boundary_assessment: "aligned",
+          interface: {
+            upstream_output_condition: "Harvested barley at the farm gate.",
+            downstream_starting_condition: "Barley received for malting.",
+            fit_summary: "The upstream output is the downstream primary feedstock.",
+          },
+          route_conditions: ["Beer production uses malted barley."],
+          evidence: [
+            {
+              kind: "pcr_projection",
+              pcr_id: "pcr.barley-seed",
+              supports: "The upstream dataset requirement identifies barley feedstock.",
+              locator: {
+                kind: "field",
+                field_path: "boundary_abstraction.upstream_dataset_requirement",
+              },
+            },
+          ],
+          review_notes: ["Confirm the malting route during methodology review."],
+        },
+      ],
+    },
+  ],
+};
+
+test("CPC product-chain contract accepts a minimal authored chain", () => {
+  assert.equal(validateCpcProductChain(validCpcProductChain).valid, true);
+  assert.equal(assertCpcProductChain(validCpcProductChain), validCpcProductChain);
+});
+
+test("CPC product-chain contract rejects an unknown evidence state", () => {
+  const unknownEvidenceState = structuredClone(validCpcProductChain);
+  unknownEvidenceState.chains[0].edges[0].evidence_status = "inferred";
+
+  assert.equal(validateCpcProductChain(unknownEvidenceState).valid, false);
+});
+
+test("CPC product-chain contract exhaustively constrains PCR projection locators", () => {
+  const unsupportedFieldLocator = structuredClone(validCpcProductChain);
+  unsupportedFieldLocator.chains[0].edges[0].evidence[0].locator.field_path =
+    "system_boundary.rules";
+  const unsupportedInventoryLocator = structuredClone(validCpcProductChain);
+  unsupportedInventoryLocator.chains[0].edges[0].evidence[0].locator = {
+    kind: "inventory_row",
+    process_id: "beer-production",
+    direction: "inputs",
+    flow_type: "product",
+    row_id: "barley",
+    field: "amount",
+  };
+
+  assert.equal(validateCpcProductChain(unsupportedFieldLocator).valid, false);
+  assert.equal(validateCpcProductChain(unsupportedInventoryLocator).valid, false);
+});
+
+test("CPC product-chain contract keeps official source records distinct and dated", () => {
+  const crossShapeSource = structuredClone(validCpcProductChain);
+  crossShapeSource.official_sources = [
+    {
+      kind: "official_source",
+      source_id: "cpc-3.0",
+      supports: "CPC labels",
+    },
+  ];
+  const source = {
+    id: "cpc-3.0",
+    title: "Central Product Classification Version 3.0",
+    publisher: "United Nations Statistics Division",
+    url: "https://unstats.un.org/unsd/classifications/Family/Detail/1074",
+    locator: "CPC 3.0 codes 01150 and 24310",
+    supports: "The classification codes and labels used by the pilot chain.",
+    accessed_at: "2026-09-02",
+  };
+  const missingAccessDate = structuredClone(validCpcProductChain);
+  missingAccessDate.official_sources = [{ ...source }];
+  delete missingAccessDate.official_sources[0].accessed_at;
+  const malformedAccessDate = structuredClone(validCpcProductChain);
+  malformedAccessDate.official_sources = [{ ...source, accessed_at: "2026-9-2" }];
+
+  assert.equal(validateCpcProductChain(crossShapeSource).valid, false);
+  assert.equal(validateCpcProductChain(missingAccessDate).valid, false);
+  assert.equal(validateCpcProductChain(malformedAccessDate).valid, false);
+});
+
+test("CPC product-chain authored shapes reject derived read-model properties", () => {
+  const derivedProperties = [
+    "scheduling_status",
+    "coverage_status",
+    "mapping",
+    "pcr_id",
+    "pcr_path",
+    "readiness",
+    "projection_status",
+    "blockers",
+    "waves",
+    "counts",
+  ];
+
+  for (const property of derivedProperties) {
+    const documentProperty = structuredClone(validCpcProductChain);
+    documentProperty[property] = "derived";
+    assert.equal(
+      validateCpcProductChain(documentProperty).valid,
+      false,
+      `${property} must be rejected on the authored document`,
+    );
+
+    const nodeProperty = structuredClone(validCpcProductChain);
+    nodeProperty.chains[0].nodes[0][property] = "derived";
+    assert.equal(
+      validateCpcProductChain(nodeProperty).valid,
+      false,
+      `${property} must be rejected on an authored node`,
+    );
+  }
+});
 
 test("manifest Schema validates shape while active identity completeness stays semantic", () => {
   const manifest = {

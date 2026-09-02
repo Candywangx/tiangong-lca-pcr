@@ -1,0 +1,233 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tiangong-lca.org/schemas/pcr/v1/cpc-product-chain.schema.json",
+  "title": "CPC product-chain pilot",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "artifact_kind",
+    "status",
+    "classification_system",
+    "classification_version",
+    "official_sources",
+    "chains"
+  ],
+  "properties": {
+    "schema_version": { "const": 1 },
+    "artifact_kind": { "const": "cpc_product_chain_pilot" },
+    "status": { "const": "draft" },
+    "classification_system": { "const": "CPC" },
+    "classification_version": { "const": "3.0" },
+    "official_sources": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/officialSource" }
+    },
+    "chains": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/chain" }
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "nonEmptyString": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "\\S"
+    },
+    "chain": {
+      "type": "object",
+      "required": ["id", "title", "description", "nodes", "edges"],
+      "properties": {
+        "id": { "$ref": "#/$defs/nonEmptyString" },
+        "title": { "$ref": "#/$defs/nonEmptyString" },
+        "description": { "$ref": "#/$defs/nonEmptyString" },
+        "nodes": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/node" }
+        },
+        "edges": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/edge" }
+        }
+      },
+      "additionalProperties": false
+    },
+    "node": {
+      "type": "object",
+      "required": ["id", "code", "label", "stage", "role"],
+      "properties": {
+        "id": { "$ref": "#/$defs/nonEmptyString" },
+        "code": { "$ref": "#/$defs/nonEmptyString" },
+        "label": { "$ref": "#/$defs/nonEmptyString" },
+        "stage": { "$ref": "#/$defs/nonEmptyString" },
+        "role": { "$ref": "#/$defs/nonEmptyString" }
+      },
+      "additionalProperties": false
+    },
+    "edge": {
+      "type": "object",
+      "required": [
+        "id",
+        "from",
+        "to",
+        "relationship_type",
+        "evidence_status",
+        "boundary_assessment",
+        "interface",
+        "route_conditions",
+        "evidence",
+        "review_notes"
+      ],
+      "properties": {
+        "id": { "$ref": "#/$defs/nonEmptyString" },
+        "from": { "$ref": "#/$defs/nonEmptyString" },
+        "to": { "$ref": "#/$defs/nonEmptyString" },
+        "relationship_type": { "const": "primary_feedstock" },
+        "evidence_status": {
+          "enum": [
+            "supported_by_pcr",
+            "supported_by_official_source",
+            "semantic_candidate"
+          ]
+        },
+        "boundary_assessment": {
+          "enum": ["aligned", "gap", "overlap", "needs_review"]
+        },
+        "interface": { "$ref": "#/$defs/interface" },
+        "route_conditions": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/nonEmptyString" }
+        },
+        "evidence": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "oneOf": [
+              { "$ref": "#/$defs/pcrFieldEvidence" },
+              { "$ref": "#/$defs/pcrInventoryEvidence" },
+              { "$ref": "#/$defs/officialSourceEvidence" }
+            ]
+          }
+        },
+        "review_notes": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/nonEmptyString" }
+        }
+      },
+      "additionalProperties": false
+    },
+    "interface": {
+      "type": "object",
+      "required": [
+        "upstream_output_condition",
+        "downstream_starting_condition",
+        "fit_summary"
+      ],
+      "properties": {
+        "upstream_output_condition": { "$ref": "#/$defs/nonEmptyString" },
+        "downstream_starting_condition": { "$ref": "#/$defs/nonEmptyString" },
+        "fit_summary": { "$ref": "#/$defs/nonEmptyString" }
+      },
+      "additionalProperties": false
+    },
+    "pcrFieldEvidence": {
+      "type": "object",
+      "required": ["kind", "pcr_id", "supports", "locator"],
+      "properties": {
+        "kind": { "const": "pcr_projection" },
+        "pcr_id": { "$ref": "#/$defs/nonEmptyString" },
+        "supports": { "$ref": "#/$defs/nonEmptyString" },
+        "locator": { "$ref": "#/$defs/fieldLocator" }
+      },
+      "additionalProperties": false
+    },
+    "fieldLocator": {
+      "type": "object",
+      "required": ["kind", "field_path"],
+      "properties": {
+        "kind": { "const": "field" },
+        "field_path": {
+          "enum": [
+            "product_category_identity.covered_products",
+            "product_category_identity.production_route",
+            "boundary_abstraction.declared_starting_condition",
+            "boundary_abstraction.upstream_dataset_requirement"
+          ]
+        }
+      },
+      "additionalProperties": false
+    },
+    "pcrInventoryEvidence": {
+      "type": "object",
+      "required": ["kind", "pcr_id", "supports", "locator"],
+      "properties": {
+        "kind": { "const": "pcr_projection" },
+        "pcr_id": { "$ref": "#/$defs/nonEmptyString" },
+        "supports": { "$ref": "#/$defs/nonEmptyString" },
+        "locator": { "$ref": "#/$defs/inventoryRowLocator" }
+      },
+      "additionalProperties": false
+    },
+    "inventoryRowLocator": {
+      "type": "object",
+      "required": [
+        "kind",
+        "process_id",
+        "direction",
+        "flow_type",
+        "row_id",
+        "field"
+      ],
+      "properties": {
+        "kind": { "const": "inventory_row" },
+        "process_id": { "$ref": "#/$defs/nonEmptyString" },
+        "direction": { "const": "inputs" },
+        "flow_type": { "const": "product" },
+        "row_id": { "$ref": "#/$defs/nonEmptyString" },
+        "field": { "enum": ["name", "description"] }
+      },
+      "additionalProperties": false
+    },
+    "officialSourceEvidence": {
+      "type": "object",
+      "required": ["kind", "source_id", "supports"],
+      "properties": {
+        "kind": { "const": "official_source" },
+        "source_id": { "$ref": "#/$defs/nonEmptyString" },
+        "supports": { "$ref": "#/$defs/nonEmptyString" }
+      },
+      "additionalProperties": false
+    },
+    "officialSource": {
+      "type": "object",
+      "required": [
+        "id",
+        "title",
+        "publisher",
+        "url",
+        "locator",
+        "supports",
+        "accessed_at"
+      ],
+      "properties": {
+        "id": { "$ref": "#/$defs/nonEmptyString" },
+        "title": { "$ref": "#/$defs/nonEmptyString" },
+        "publisher": { "$ref": "#/$defs/nonEmptyString" },
+        "url": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "^[A-Za-z][A-Za-z0-9+.-]*:[^\\s]+$"
+        },
+        "locator": { "$ref": "#/$defs/nonEmptyString" },
+        "supports": { "$ref": "#/$defs/nonEmptyString" },
+        "accessed_at": {
+          "type": "string",
+          "pattern": "^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$"
+        },
+        "publication_id": { "$ref": "#/$defs/nonEmptyString" },
+        "publication_date": { "$ref": "#/$defs/nonEmptyString" }
+      },
+      "additionalProperties": false
+    }
+  }
+}

@@ -9,6 +9,7 @@ import { isValidUtcTimestamp } from "./lifecycle-policy.mjs";
 const BUILDER_SCHEMA_FILES = [
   "catalog.schema.json",
   "classification-mapping.schema.json",
+  "cpc-product-chain.schema.json",
   "pcr-manifest.schema.json",
   "pcr-markdown-frontmatter.schema.json",
   "pcr-release-history.schema.json",
@@ -126,6 +127,10 @@ export const validateReleaseHistory = (value) =>
   validateBuilderContract("pcr-release-history.schema.json", value);
 export const assertReleaseHistory = (value, options = {}) =>
   assertBuilderContract("pcr-release-history.schema.json", value, options);
+export const validateCpcProductChain = (value) =>
+  validateBuilderContract("cpc-product-chain.schema.json", value);
+export const assertCpcProductChain = (value, options = {}) =>
+  assertBuilderContract("cpc-product-chain.schema.json", value, options);
 
 function resolveContractId(contract) {
   return contractIds.get(contract) ?? contract;
