@@ -129,10 +129,18 @@ test("CPC product-chain contract keeps official source records distinct and date
   delete missingAccessDate.official_sources[0].accessed_at;
   const malformedAccessDate = structuredClone(validCpcProductChain);
   malformedAccessDate.official_sources = [{ ...source, accessed_at: "2026-9-2" }];
+  const validOfficialSource = structuredClone(validCpcProductChain);
+  validOfficialSource.official_sources = [{ ...source }];
+  const malformedOfficialSourceUrl = structuredClone(validCpcProductChain);
+  malformedOfficialSourceUrl.official_sources = [
+    { ...source, url: "https://example.com/%ZZ" },
+  ];
 
   assert.equal(validateCpcProductChain(crossShapeSource).valid, false);
   assert.equal(validateCpcProductChain(missingAccessDate).valid, false);
   assert.equal(validateCpcProductChain(malformedAccessDate).valid, false);
+  assert.equal(validateCpcProductChain(validOfficialSource).valid, true);
+  assert.equal(validateCpcProductChain(malformedOfficialSourceUrl).valid, false);
 });
 
 test("CPC product-chain authored shapes reject derived read-model properties", () => {
