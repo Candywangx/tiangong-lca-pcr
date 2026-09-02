@@ -36,17 +36,17 @@ const SET_FLOW_PATTERNS = [
 
 const COMMON_FLOW_PATTERNS = [
   /\belectricity\b/iu,
-  /\b(process|drinking|makeup|cooling|hot)?\s*water\b/iu,
+  /^\s*(?:(?:process|drinking|makeup|make-up|cooling|hot|scrubbing|granulation)\s+water|water)\s*$/iu,
   /\bnatural gas\b/iu,
   /\bLPG\b/iu,
   /\bdiesel\b/iu,
   /\bsteam\b/iu,
   /\boxygen\b/iu,
-  /\bnitrogen\b/iu,
+  /^\s*(?:liquid|gaseous|industrial)?\s*nitrogen(?:\s+gas)?\s*$/iu,
   /\bcarbon dioxide\b/iu,
   /\bmethane\b/iu,
   /\bnitrous oxide\b/iu,
-  /电力|水|天然气|液化石油气|柴油|蒸汽|氧气|氮气|二氧化碳|甲烷|氧化亚氮/u,
+  /电力|(?:工艺|过程|饮用|补充|冷却|热|洗涤|粒化)水|天然气|液化石油气|柴油|蒸汽|氧气|氮气|二氧化碳|甲烷|氧化亚氮/u,
 ];
 
 const DIRECT_QUERY_EVIDENCE_PATTERN = /hybrid|state[_ -]?code\s*[=:]?\s*100|direct(?:ly)? (?:read|quer)|直接(?:读取|查询)|候选.*(?:拒绝|核验)|candidate.*(?:read|reject|audit)|queried|searched/iu;

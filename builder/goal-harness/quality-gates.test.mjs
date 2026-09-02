@@ -162,6 +162,29 @@ test("common UUID-empty flows require an auditable hybrid/direct-read query expl
   );
 });
 
+test("common-flow audit does not misclassify nitrogen oxides or wastewater emissions", () => {
+  const inventoryRows = rows();
+  inventoryRows.en[1].name = "Nitrogen monoxide to air";
+  inventoryRows.zh[1].name = "一氧化氮排入空气";
+  const emissionReport = report({
+    inventory: {
+      total_rows: 2,
+      matched_rows: 1,
+      unresolved_rows: 1,
+      unresolved: [{ row_id: "input_coke", reason_code: "manual_review_required", explanation: "Specific elementary-flow identity requires manual review." }],
+    },
+  });
+  assert.doesNotThrow(
+    () => assertAuthorQuality({ report: emissionReport, authorizedFiles: files, changedFiles: files, inventoryRows }),
+  );
+
+  inventoryRows.en[1].name = "Gas-scrubbing wastewater";
+  inventoryRows.zh[1].name = "煤气洗涤废水";
+  assert.doesNotThrow(
+    () => assertAuthorQuality({ report: emissionReport, authorizedFiles: files, changedFiles: files, inventoryRows }),
+  );
+});
+
 test("range gate rejects one-source external ranges and lower equals upper", () => {
   const oneSource = report({ ranges: [{ range_id: "coke_rate", evidence_kind: "external_source", source_ids: ["paper-a"], original_text_verified: true, independent_source_count: 1, provisional: false, lower: 1, upper: 2, synthesis: "Compared compatible values." }] });
   assert.throws(
