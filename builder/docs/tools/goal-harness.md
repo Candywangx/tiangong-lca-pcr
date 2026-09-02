@@ -90,9 +90,10 @@ content. Author worktrees are retained after stop and successful landing for aud
 
 ## Visible Codex tasks
 
-The adapter uses `codex app-server --stdio`, the initialize handshake, `project/list`, durable non-ephemeral
-`thread/start`, `thread/name/set`, `turn/start` with an output Schema, and `thread/read`/`thread/resume`. Each thread is
-bound to one independent Git worktree and the current visible Codex project. If this interface or project binding is
+The adapter starts the managed daemon idempotently and connects through `codex app-server proxy`, then uses the
+initialize handshake, `project/list`, durable non-ephemeral `thread/start`, `thread/name/set`, `turn/start` with an
+output Schema, and `thread/read`/`thread/resume`. Closing a short-lived CLI proxy does not interrupt author turns.
+Each thread is bound to one independent Git worktree and the current visible Codex project. If this interface or project binding is
 unavailable, dispatch stops with `GOAL_CODEX_VISIBLE_TASK_UNAVAILABLE` or `GOAL_CODEX_PROJECT_UNAVAILABLE`. There is
 no fallback to `codex exec`, hidden subagents, or multiple writers in one directory.
 

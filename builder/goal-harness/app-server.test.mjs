@@ -46,7 +46,15 @@ function mockSpawn({ failMethod = null } = {}) {
 
 test("app-server adapter creates one durable visible thread bound to the author worktree", async () => {
   const mock = mockSpawn();
-  const adapter = new CodexAppServerAdapter({ spawnFactory: () => mock.child, requestTimeoutMs: 1000 });
+  const starts = [];
+  const adapter = new CodexAppServerAdapter({
+    spawnFactory: (command, args) => {
+      starts.push({ command, args });
+      return mock.child;
+    },
+    daemonStarter: (command, args) => starts.push({ command, args }),
+    requestTimeoutMs: 1000,
+  });
   try {
     const doctor = await adapter.doctor();
     assert.equal(doctor.ok, true);
@@ -60,6 +68,8 @@ test("app-server adapter creates one durable visible thread bound to the author 
       clientUserMessageId: "goal-task-41111-attempt-1",
     });
     assert.deepEqual(task, { thread_id: "thread-visible-1", turn_id: "turn-1" });
+    assert.deepEqual(starts[0], { command: "codex", args: ["app-server", "daemon", "start"] });
+    assert.deepEqual(starts[1], { command: "codex", args: ["app-server", "proxy"] });
     const started = mock.requests.find((request) => request.method === "thread/start");
     assert.equal(started.params.cwd, "/tmp/visible-author-worktree");
     assert.equal(started.params.ephemeral, false);
@@ -76,7 +86,7 @@ test("app-server adapter creates one durable visible thread bound to the author 
 
 test("app-server failure is a stable fail-closed error with no hidden fallback", async () => {
   const mock = mockSpawn({ failMethod: "thread/start" });
-  const adapter = new CodexAppServerAdapter({ spawnFactory: () => mock.child, requestTimeoutMs: 1000 });
+  const adapter = new CodexAppServerAdapter({ spawnFactory: () => mock.child, daemonStarter: () => {}, requestTimeoutMs: 1000 });
   try {
     await assert.rejects(
       () => adapter.createAuthorTask({

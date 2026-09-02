@@ -1,4 +1,4 @@
-import { spawn } from "node:child_process";
+import { execFileSync, spawn } from "node:child_process";
 import { StringDecoder } from "node:string_decoder";
 
 import { GoalHarnessError } from "./errors.mjs";
@@ -6,14 +6,16 @@ import { GoalHarnessError } from "./errors.mjs";
 export class CodexAppServerAdapter {
   constructor({
     command = "codex",
-    args = ["app-server", "--stdio"],
+    args = ["app-server", "proxy"],
     spawnFactory = (program, programArgs, options) => spawn(program, programArgs, options),
+    daemonStarter = (program, programArgs, options) => execFileSync(program, programArgs, options),
     requestTimeoutMs = 30_000,
     environment = process.env,
   } = {}) {
     this.command = command;
     this.args = args;
     this.spawnFactory = spawnFactory;
+    this.daemonStarter = daemonStarter;
     this.requestTimeoutMs = requestTimeoutMs;
     this.environment = environment;
     this.child = null;
@@ -21,6 +23,7 @@ export class CodexAppServerAdapter {
     this.nextId = 1;
     this.pending = new Map();
     this.stderr = "";
+    this.daemonReady = false;
   }
 
   async doctor() {
@@ -165,6 +168,14 @@ export class CodexAppServerAdapter {
 
   startProcess() {
     try {
+      if (this.args[0] === "app-server" && this.args[1] === "proxy" && !this.daemonReady) {
+        this.daemonStarter(this.command, ["app-server", "daemon", "start"], {
+          stdio: ["ignore", "pipe", "pipe"],
+          env: this.environment,
+          timeout: this.requestTimeoutMs,
+        });
+        this.daemonReady = true;
+      }
       this.child = this.spawnFactory(this.command, this.args, {
         stdio: ["pipe", "pipe", "pipe"],
         env: this.environment,
@@ -234,7 +245,7 @@ function visibleTaskError(operation, error, stderr) {
   return new GoalHarnessError(
     "GOAL_CODEX_VISIBLE_TASK_UNAVAILABLE",
     `Codex visible task interface failed at ${operation}: ${error.message}`,
-    { operation, stderr_tail: stderr || null, required_interface: "codex app-server thread/start with durable threads" },
+    { operation, stderr_tail: stderr || null, required_interface: "codex app-server daemon + proxy + thread/start with durable threads" },
   );
 }
 
