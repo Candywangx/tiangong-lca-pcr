@@ -1,0 +1,52 @@
+import assert from "node:assert/strict";
+import test from "node:test";
+
+import { auditReportedUuids, verifySourceLocators } from "./evidence-audit.mjs";
+
+test("UUID audit compares public direct-read identity to the author report", () => {
+  const uuid = "11111111-1111-4111-8111-111111111111";
+  const report = { uuid_audits: [{
+    uuid, hybrid_search: true, state_code: 100, base_name_en: "Pig iron", base_name_zh: "生铁",
+    flow_type: "product", classification: "CPC 41111", property: "Mass", unit_group: "Units of mass", semantic_review: "exact",
+  }] };
+  const direct = {
+    state_code: 100,
+    flow: { flowDataSet: {
+      flowInformation: { dataSetInformation: {
+        "common:UUID": uuid,
+        name: { baseName: [{ "@xml:lang": "en", "#text": "Pig iron" }, { "@xml:lang": "zh", "#text": "生铁" }] },
+        classificationInformation: { "common:classification": { "common:class": [{ "@classId": "41111", "#text": "Pig iron" }] } },
+      } },
+      modellingAndValidation: { LCIMethod: { typeOfDataSet: "Product flow" } },
+      flowProperties: { flowProperty: { referenceToFlowPropertyDataSet: { "common:shortDescription": [{ "@xml:lang": "en", "#text": "Mass" }] } } },
+    } },
+  };
+  const result = auditReportedUuids({ report, tiangongCliRoot: "/unused", runner: () => direct });
+  assert.equal(result.length, 1);
+  assert.equal(result[0].state_code, 100);
+  assert.equal(result[0].base_name_zh, "生铁");
+  assert.match(result[0].response_sha256, /^sha256:/u);
+  const bad = structuredClone(report);
+  bad.uuid_audits[0].base_name_zh = "错误名称";
+  assert.throws(
+    () => auditReportedUuids({ report: bad, tiangongCliRoot: "/unused", runner: () => direct }),
+    (error) => error.code === "GOAL_UUID_DIRECT_AUDIT_MISMATCH",
+  );
+});
+
+test("source audit performs original locator reads and rejects discovery pages as final evidence", async () => {
+  const fetchImpl = async (url) => ({
+    ok: true, status: 200, url, headers: new Map([["content-type", "application/pdf"]]),
+    body: { getReader: () => ({ read: async () => ({ done: false, value: new TextEncoder().encode("original text") }), cancel: async () => {} }) },
+  });
+  const result = await verifySourceLocators({
+    report: { sources: [{ source_id: "standard-a", name: "Standard A", locator: "https://standards.example/a.pdf", original_text_verified: true, supports: ["boundary"] }] },
+    fetchImpl,
+  });
+  assert.equal(result[0].http_status, 200);
+  assert.match(result[0].sample_sha256, /^sha256:/u);
+  await assert.rejects(
+    () => verifySourceLocators({ report: { sources: [{ source_id: "openalex", name: "OpenAlex", locator: "https://openalex.org/W1", original_text_verified: true, supports: ["range"] }] }, fetchImpl }),
+    (error) => error.code === "GOAL_SOURCE_DISCOVERY_ONLY",
+  );
+});

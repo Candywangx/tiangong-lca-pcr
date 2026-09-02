@@ -35,6 +35,7 @@ export function planGoal(config) {
     .map((entry) => entry.code)
     .sort();
   const manifestsByCode = readTargetManifests(config.target_category_path, config);
+  const sourceSeeds = readClassificationSourceSeeds(config);
 
   const tasks = targetEntries
     .filter((entry) => (!selectedCodes || selectedCodes.has(entry.code)) && !skip.has(entry.code))
@@ -47,6 +48,7 @@ export function planGoal(config) {
     goal_id: config.goal_id,
     classification: { system: config.classification_system, version: config.classification_version },
     target_category_relative: config.target_category_relative,
+    official_source_seeds: sourceSeeds,
     scope: {
       selector: config.cpc_selector,
       total_classification_leaves: targetEntries.length,
@@ -57,6 +59,23 @@ export function planGoal(config) {
     summary: summarize(tasks),
     tasks,
   };
+}
+
+function readClassificationSourceSeeds(config) {
+  const metadataPath = path.join(
+    config.project_root,
+    "classifications",
+    "systems",
+    config.classification_system,
+    String(config.classification_version),
+    "raw",
+    "source-metadata.yaml",
+  );
+  if (!existsSync(metadataPath)) return [];
+  const metadata = parseYaml(readFileSync(metadataPath, "utf8"));
+  return metadata.source_url
+    ? [{ name: `${String(metadata.classification_system).toUpperCase()} ${metadata.classification_version} official classification source`, locator: metadata.source_url, supports: "product classification identity" }]
+    : [];
 }
 
 export function classifyEntry({ entry, manifestRecord, config }) {
@@ -145,8 +164,13 @@ function semanticSlug(value) {
 function compareTasks(left, right) {
   const priority = { promote_legacy: 0, create_new: 1, map_existing: 2, manual_review: 3, blocked: 4 };
   return (priority[left.queue_action] ?? 99) - (priority[right.queue_action] ?? 99) ||
-    String(left.pcr_path).localeCompare(String(right.pcr_path)) ||
-    left.cpc_code.localeCompare(right.cpc_code);
+    subdomainOf(left.pcr_path).localeCompare(subdomainOf(right.pcr_path)) ||
+    left.cpc_code.localeCompare(right.cpc_code) ||
+    String(left.pcr_path).localeCompare(String(right.pcr_path));
+}
+
+function subdomainOf(pcrPath) {
+  return String(pcrPath).split("/")[3] ?? "";
 }
 
 function summarize(tasks) {

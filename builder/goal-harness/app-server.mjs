@@ -9,11 +9,13 @@ export class CodexAppServerAdapter {
     args = ["app-server", "--stdio"],
     spawnFactory = (program, programArgs, options) => spawn(program, programArgs, options),
     requestTimeoutMs = 30_000,
+    environment = process.env,
   } = {}) {
     this.command = command;
     this.args = args;
     this.spawnFactory = spawnFactory;
     this.requestTimeoutMs = requestTimeoutMs;
+    this.environment = environment;
     this.child = null;
     this.connected = false;
     this.nextId = 1;
@@ -40,6 +42,7 @@ export class CodexAppServerAdapter {
     approvalPolicy = "never",
     model = null,
     clientUserMessageId = null,
+    projectId = null,
   }) {
     try {
       await this.connect();
@@ -50,6 +53,7 @@ export class CodexAppServerAdapter {
         approvalPolicy,
         sandbox,
         model,
+        projectId,
       }));
       const threadId = started?.thread?.id;
       if (!threadId) {
@@ -80,6 +84,24 @@ export class CodexAppServerAdapter {
       return await this.request("thread/resume", { threadId, persistExtendedHistory: true });
     } catch (error) {
       throw visibleTaskError("thread/resume", error, this.stderr);
+    }
+  }
+
+  async findProjectByRoot(projectRoot) {
+    try {
+      await this.connect();
+      let cursor = null;
+      do {
+        const response = await this.request("project/list", { cursor, limit: 100 });
+        const match = (response?.data ?? []).find((project) =>
+          (project.roots ?? []).some((root) => root.path === projectRoot),
+        );
+        if (match) return match;
+        cursor = response?.nextCursor ?? null;
+      } while (cursor);
+      return null;
+    } catch (error) {
+      throw visibleTaskError("project/list", error, this.stderr);
     }
   }
 
@@ -145,7 +167,7 @@ export class CodexAppServerAdapter {
     try {
       this.child = this.spawnFactory(this.command, this.args, {
         stdio: ["pipe", "pipe", "pipe"],
-        env: process.env,
+        env: this.environment,
       });
     } catch (error) {
       throw visibleTaskError("process start", error, this.stderr);

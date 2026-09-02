@@ -119,8 +119,15 @@ function reduceEvent(state, event) {
     next.plan = event.payload;
   } else if (event.type === "snapshot_created") {
     next.snapshots = [...(next.snapshots ?? []), event.payload];
+  } else if (event.type === "snapshot_replaced") {
+    next.snapshots = (next.snapshots ?? []).map((snapshot) => snapshot.id === event.payload.snapshot.id ? event.payload.snapshot : snapshot);
   } else if (event.type === "task_replaced") {
     next.tasks = (next.tasks ?? []).map((task) => task.id === event.payload.task.id ? event.payload.task : task);
+  } else if (event.type === "landing_completed") {
+    next.landed_path_fingerprints = {
+      ...(next.landed_path_fingerprints ?? {}),
+      ...(event.payload.path_fingerprints ?? {}),
+    };
   }
   return next;
 }
@@ -155,10 +162,10 @@ function atomicWriteJson(filePath, value) {
 
 function stableJson(value) {
   if (Array.isArray(value)) {
-    return `[${value.map(stableJson).join(",")}]`;
+    return `[${value.map((entry) => entry === undefined ? "null" : stableJson(entry)).join(",")}]`;
   }
   if (value && typeof value === "object") {
-    return `{${Object.keys(value).sort().map((key) => `${JSON.stringify(key)}:${stableJson(value[key])}`).join(",")}}`;
+    return `{${Object.keys(value).filter((key) => value[key] !== undefined).sort().map((key) => `${JSON.stringify(key)}:${stableJson(value[key])}`).join(",")}}`;
   }
   return JSON.stringify(value);
 }

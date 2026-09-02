@@ -51,6 +51,14 @@ npm run catalog:check
 npm run catalog:recover [-- --force-stale-lock]
 npm run cpc-chains:build
 npm run cpc-chains:check
+npm run goal:doctor -- --config <goal.yaml>
+npm run goal:plan -- --config <goal.yaml> --dry-run
+npm run goal:start -- --config <goal.yaml> --slots 1
+npm run goal:status -- --config <goal.yaml>
+npm run goal:resume -- --config <goal.yaml>
+npm run goal:integrate -- --config <goal.yaml>
+npm run goal:land -- --config <goal.yaml>
+npm run goal:stop -- --config <goal.yaml>
 npm run pcr:import:cpc -- --source <cpc-structure.csv> --classification-version 3.0
 npm run pcr:import:cpc -- --source <cpc-structure.csv> --classification-version 3.0 --legacy-scaffolds  # migration compatibility only
 npm run pcr:scaffold:cpc -- --source <cpc-structure.csv> --classification-version 3.0 --legacy-scaffolds  # protected legacy alias
@@ -111,6 +119,10 @@ npm run validate
   malformed/foreign lock when no writer is active; malformed journal or contradictory tree evidence still fails
   closed.
 - `lint` rejects stale generated vocabulary artifacts before inspecting repository content; `validate` then runs lint plus tests.
+- `goal:*` commands implement the recoverable local batch-production harness described in
+  `builder/docs/tools/goal-harness.md`. Goal state is hash-chained under the ignored Builder state root; authors use
+  durable visible Codex app-server threads in independent worktrees, and validated integrations land only through an
+  exact-byte compare-and-swap. These commands orchestrate existing Builder contracts and do not replace them.
 
 For the full workspace, release, transaction, and recovery invariants, use
 `builder/docs/contracts/published-revision-contract.md`.

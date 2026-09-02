@@ -42,7 +42,7 @@ export function validateAuthorReport(report) {
   };
 }
 
-export function assertAuthorQuality({ report, authorizedFiles, changedFiles, inventoryRows }) {
+export function assertAuthorQuality({ report, authorizedFiles, changedFiles, inventoryRows, manifestUnresolved = null }) {
   const findings = [];
   const schemaResult = validateAuthorReport(report);
   if (!schemaResult.valid) {
@@ -76,6 +76,13 @@ export function assertAuthorQuality({ report, authorizedFiles, changedFiles, inv
     [...unresolvedIds].some((rowId) => !unresolvedRows.some((row) => row.row_id === rowId))
   ) {
     findings.push({ code: "INVENTORY_ACCOUNTING_MISMATCH", message: "Inventory must satisfy total = matched UUID + explicit unresolved, with no third state." });
+  }
+  if (manifestUnresolved !== null) {
+    const manifestIds = [...new Set(manifestUnresolved)].sort();
+    const reportIds = [...unresolvedIds].sort();
+    if (!sameStrings(manifestIds, reportIds)) {
+      findings.push({ code: "MANIFEST_UNRESOLVED_MISMATCH", message: "Manifest unresolved inventory row ids must exactly match the UUID-empty rows and author report.", manifest: manifestIds, report: reportIds });
+    }
   }
 
   const alignmentMismatch = enRows.length !== zhRows.length || enRows.some((row, index) => {
@@ -119,7 +126,8 @@ export function assertAuthorQuality({ report, authorizedFiles, changedFiles, inv
     }
     if (range.evidence_kind === "external_source") {
       const sourceIds = new Set(range.source_ids ?? []);
-      if (range.independent_source_count < 2 || sourceIds.size < 2) {
+      const independenceKeys = new Set([...sourceIds].map((sourceId) => sourcesById.get(sourceId)?.independence_key).filter(Boolean));
+      if (range.independent_source_count < 2 || sourceIds.size < 2 || independenceKeys.size < 2) {
         findings.push({ code: "RANGE_INDEPENDENT_SOURCES_INSUFFICIENT", range_id: range.range_id, message: "External inferred ranges need at least two independent original sources." });
       }
       if (range.original_text_verified !== true || [...sourceIds].some((sourceId) => sourcesById.get(sourceId)?.original_text_verified !== true)) {
@@ -145,6 +153,9 @@ export function assertAuthorQuality({ report, authorizedFiles, changedFiles, inv
   }
   if (report.structured_sync?.first_run_ok !== true || report.structured_sync?.second_run_clean !== true || report.structured_sync?.schema_valid !== true) {
     findings.push({ code: "STRUCTURED_SYNC_NOT_DETERMINISTIC", message: "Structured projection must be schema-valid and a second sync must be clean." });
+  }
+  if (report.validate?.ok !== true && report.validate?.known_shared_artifact_only !== true) {
+    findings.push({ code: "AUTHOR_VALIDATE_FAILED", message: "Author validation may fail only for a precisely reported central shared-artifact dependency." });
   }
 
   if (findings.length > 0) {

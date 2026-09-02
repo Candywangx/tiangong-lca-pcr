@@ -6,7 +6,7 @@ import path from "node:path";
 import { GoalHarnessError } from "./errors.mjs";
 import { assertRepoPath, isSensitiveRepoPath, resolveRepoPath } from "./paths.mjs";
 
-export function createSyntheticBaseline({ projectRoot, goalId, trackedRoots, untrackedAllowlist, stateDir }) {
+export function createSyntheticBaseline({ projectRoot, goalId, trackedRoots, untrackedAllowlist, stateDir, dryRun = false }) {
   const safeGoalId = String(goalId);
   if (!/^[a-z0-9][a-z0-9._-]{2,79}$/u.test(safeGoalId)) {
     throw new GoalHarnessError("GOAL_ID_INVALID", `Invalid Goal id for Git ref: ${goalId}`);
@@ -45,10 +45,13 @@ export function createSyntheticBaseline({ projectRoot, goalId, trackedRoots, unt
     }
     const parent = git(projectRoot, ["rev-parse", "HEAD"]);
     const tree = git(projectRoot, ["write-tree"], { env: environment });
+    const files = Object.fromEntries(stagedPaths.map((repoPath) => [repoPath, fingerprintPath(projectRoot, repoPath)]));
+    if (dryRun) {
+      return { goal_id: safeGoalId, parent, tree, commit: null, ref: null, staged_paths: stagedPaths, files, dry_run: true };
+    }
     const commit = git(projectRoot, ["commit-tree", tree, "-p", parent, "-m", `chore(goal): synthetic baseline ${safeGoalId}`]);
     const ref = `refs/tiangong-goals/${safeGoalId}/baseline`;
     git(projectRoot, ["update-ref", ref, commit]);
-    const files = Object.fromEntries(stagedPaths.map((repoPath) => [repoPath, fingerprintPath(projectRoot, repoPath)]));
     return { goal_id: safeGoalId, parent, tree, commit, ref, staged_paths: stagedPaths, files };
   } catch (error) {
     if (error instanceof GoalHarnessError) {

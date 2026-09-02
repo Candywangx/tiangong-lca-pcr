@@ -27,6 +27,8 @@ Use this index to choose the smallest relevant builder context.
 
 - `tools/tiangong-lca-cli.md`: Tiangong CLI lookup use and fallback behavior.
 - `tools/data-sources-and-tools.md`: source roles, evidence priority, and tool selection.
+- `tools/goal-harness.md`: persistent local batch scheduling, synthetic dirty baselines, visible Codex worktree
+  authors, machine quality gates, serial integration, recovery, and CAS landing.
 
 ## Planning Artifacts
 

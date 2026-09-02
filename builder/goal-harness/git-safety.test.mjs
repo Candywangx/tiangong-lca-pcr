@@ -139,3 +139,56 @@ test("CAS landing is idempotent and fails closed on a dirty-main conflict", () =
     rmSync(source, { recursive: true, force: true });
   }
 });
+
+test("CAS landing resumes an interrupted prepared journal without overwriting a newer user edit", () => {
+  const root = fixtureRepo();
+  const source = mkdtempSync(path.join(tmpdir(), "tiangong-goal-source-"));
+  try {
+    const relative = "library/pcrs/category/item/manifest.yaml";
+    const stateDir = path.join(root, "state/landing-recovery");
+    const operationDir = path.join(stateDir, "landings/snapshot-recover");
+    const staged = path.join(operationDir, "stage", relative);
+    mkdirSync(path.dirname(path.join(source, relative)), { recursive: true });
+    mkdirSync(path.dirname(staged), { recursive: true });
+    writeFileSync(path.join(source, relative), "content_maturity: authored_methodology\n");
+    writeFileSync(staged, "content_maturity: authored_methodology\n");
+    const expected = captureExpectedFiles(root, [relative]);
+    const sourceFingerprint = captureExpectedFiles(source, [relative])[relative];
+    mkdirSync(operationDir, { recursive: true });
+    writeFileSync(path.join(operationDir, "journal.json"), `${JSON.stringify({
+      schema_version: 1,
+      snapshot_id: "snapshot-recover",
+      status: "applying",
+      paths: [relative],
+      expected,
+      sources: [{ repoPath: relative, absolutePath: path.join(source, relative), fingerprint: sourceFingerprint }],
+    }, null, 2)}\n`);
+
+    const recovered = landFilesCas({ projectRoot: root, sourceRoot: source, paths: [relative], expected, stateDir, snapshotId: "snapshot-recover" });
+    assert.equal(recovered.status, "recovered_landing");
+    assert.equal(readFileSync(path.join(root, relative), "utf8"), "content_maturity: authored_methodology\n");
+
+    const conflictState = path.join(root, "state/landing-recovery-conflict");
+    const conflictOperation = path.join(conflictState, "landings/snapshot-conflict");
+    mkdirSync(path.join(conflictOperation, "stage", path.dirname(relative)), { recursive: true });
+    writeFileSync(path.join(conflictOperation, "stage", relative), "content_maturity: authored_methodology\n");
+    const landedExpected = captureExpectedFiles(root, [relative]);
+    writeFileSync(path.join(conflictOperation, "journal.json"), `${JSON.stringify({
+      schema_version: 1,
+      snapshot_id: "snapshot-conflict",
+      status: "applying",
+      paths: [relative],
+      expected: landedExpected,
+      sources: [{ repoPath: relative, absolutePath: path.join(source, relative), fingerprint: sourceFingerprint }],
+    }, null, 2)}\n`);
+    writeFileSync(path.join(root, relative), "newer user edit\n");
+    assert.throws(
+      () => landFilesCas({ projectRoot: root, sourceRoot: source, paths: [relative], expected: landedExpected, stateDir: conflictState, snapshotId: "snapshot-conflict" }),
+      (error) => error.code === "GOAL_LAND_RECOVERY_CONFLICT" && error.details.conflicts[0].path === relative,
+    );
+    assert.equal(readFileSync(path.join(root, relative), "utf8"), "newer user edit\n");
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+    rmSync(source, { recursive: true, force: true });
+  }
+});
