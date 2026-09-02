@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { execFileSync } from "node:child_process";
-import { mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import { lstatSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import path from "node:path";
 import test from "node:test";
@@ -19,7 +19,7 @@ function fixtureRepo() {
   git(root, ["config", "user.name", "Goal Test"]);
   git(root, ["config", "user.email", "goal@example.invalid"]);
   mkdirSync(path.join(root, "library/pcrs/category/item"), { recursive: true });
-  writeFileSync(path.join(root, ".gitignore"), ".env\nstate/\n.worktrees/\n");
+  writeFileSync(path.join(root, ".gitignore"), ".env\nnode_modules/\nstate/\n.worktrees/\n");
   writeFileSync(path.join(root, "tracked.txt"), "base\n");
   writeFileSync(path.join(root, "library/pcrs/category/item/manifest.yaml"), "content_maturity: empty_scaffold\n");
   git(root, ["add", "."]);
@@ -92,6 +92,8 @@ test("synthetic baseline rejects sensitive and escaping allowlist paths", () => 
 test("worktree creation is idempotent and isolated from the dirty primary tree", () => {
   const root = fixtureRepo();
   try {
+    mkdirSync(path.join(root, "node_modules/ajv"), { recursive: true });
+    writeFileSync(path.join(root, "node_modules/ajv/package.json"), "{}\n");
     writeFileSync(path.join(root, "tracked.txt"), "dirty\n");
     const baseline = createSyntheticBaseline({
       projectRoot: root,
@@ -107,6 +109,9 @@ test("worktree creation is idempotent and isolated from the dirty primary tree",
     assert.equal(second.created, false);
     assert.equal(git(worktreePath, ["rev-parse", "HEAD"]), baseline.commit);
     assert.equal(readFileSync(path.join(worktreePath, "tracked.txt"), "utf8"), "dirty\n");
+    assert.equal(lstatSync(path.join(worktreePath, "node_modules")).isDirectory(), true);
+    assert.equal(lstatSync(path.join(worktreePath, "node_modules/ajv")).isSymbolicLink(), true);
+    assert.equal(git(worktreePath, ["status", "--short", "--untracked-files=all"]), "");
   } finally {
     rmSync(root, { recursive: true, force: true });
   }

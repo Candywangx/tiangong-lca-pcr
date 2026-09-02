@@ -97,6 +97,10 @@ Each thread is bound to one independent Git worktree and the current visible Cod
 unavailable, dispatch stops with `GOAL_CODEX_VISIBLE_TASK_UNAVAILABLE` or `GOAL_CODEX_PROJECT_UNAVAILABLE`. There is
 no fallback to `codex exec`, hidden subagents, or multiple writers in one directory.
 
+Worktree setup creates an ignored real `node_modules/` directory whose direct entries are links to the project's
+already-installed dependency tree. This gives Builder and copied-path viewer tests the same dependency baseline without
+changing package metadata, installing versions, or adding a commit-tree path outside the assigned PCR files.
+
 ## Gates
 
 The author report Schema and commit-tree review enforce the exact four files, PCR path, material Builder contracts,
