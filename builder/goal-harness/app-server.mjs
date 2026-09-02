@@ -119,6 +119,15 @@ export class CodexAppServerAdapter {
     }
   }
 
+  async interruptTurn({ threadId, turnId }) {
+    try {
+      await this.connect();
+      return await this.request("turn/interrupt", { threadId, turnId });
+    } catch (error) {
+      throw visibleTaskError("turn/interrupt", error, this.stderr);
+    }
+  }
+
   async connect() {
     if (this.connected) {
       return this.initializeResult;

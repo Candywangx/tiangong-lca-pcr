@@ -141,6 +141,7 @@ export async function harvestGoalAuthors({
   reviewFn = reviewAuthorWorktree,
   auditUuidsFn = auditReportedUuids,
   verifySourcesFn = verifySourceLocators,
+  now = () => new Date(),
 }) {
   return withGoalLockAsync(stateDir, "harvest", async () => {
     const store = new GoalEventStore({ stateDir });
@@ -155,7 +156,19 @@ export async function harvestGoalAuthors({
       if (task.state === "authoring") {
         const response = await adapter.readThread({ threadId: task.thread_id, includeTurns: true });
         const extracted = extractCompletedTurnReport(response, task.turn_id);
-        if (extracted.status === "inProgress" || extracted.status === "pending") continue;
+        if (extracted.status === "inProgress" || extracted.status === "pending") {
+          if (!authorTimedOut(task, config.author_timeout_seconds, now())) continue;
+          await adapter.interruptTurn({ threadId: task.thread_id, turnId: task.turn_id });
+          task = applyTaskTransition(task, { transition_id: `${task.id}-turn-${task.turn_id}-timeout`, to: "retryable_failure", at: now().toISOString() });
+          task = {
+            ...task,
+            failure_code: "GOAL_AUTHOR_TIMEOUT",
+            failure_message: `Visible author exceeded ${config.author_timeout_seconds} seconds; its worktree and partial result were preserved.`,
+          };
+          store.append({ event_id: `${task.id}-turn-${task.turn_id}-timeout-recorded`, type: "task_replaced", payload: { task } });
+          failures.push(task);
+          continue;
+        }
         if (extracted.status !== "completed") {
           task = applyTaskTransition(task, { transition_id: `${task.id}-turn-${task.turn_id}-failed`, to: "retryable_failure", at: new Date().toISOString() });
           task = { ...task, failure_code: "GOAL_AUTHOR_TURN_FAILED", failure_message: JSON.stringify(extracted.error ?? extracted.status) };
@@ -246,4 +259,10 @@ function authorIdentity(goalId, cpcCode, attempt) {
   const safeGoal = String(goalId).replace(/[^a-z0-9._-]+/giu, "-").slice(0, 48);
   const safeCode = String(cpcCode).replace(/[^0-9a-z]+/giu, "-");
   return `goal-${safeGoal}-${safeCode}-a${attempt}`;
+}
+
+function authorTimedOut(task, timeoutSeconds, at) {
+  if (!Number.isFinite(timeoutSeconds) || timeoutSeconds <= 0 || !task.dispatched_at) return false;
+  const started = Date.parse(task.dispatched_at);
+  return Number.isFinite(started) && at.getTime() - started >= timeoutSeconds * 1000;
 }

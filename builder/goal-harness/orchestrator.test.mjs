@@ -173,3 +173,45 @@ test("harvest records a completed machine report and promotes a reviewed task ex
     rmSync(root, { recursive: true, force: true });
   }
 });
+
+test("harvest interrupts an expired visible author and makes the target retryable", async () => {
+  const { root, stateDir, config } = fixture();
+  config.author_timeout_seconds = 60;
+  const store = new GoalEventStore({ stateDir });
+  const original = store.rebuild().tasks[0];
+  store.append({
+    event_id: "fixture-expired-author",
+    type: "task_replaced",
+    payload: { task: {
+      ...original,
+      state: "authoring",
+      thread_id: "thread-expired",
+      turn_id: "turn-expired",
+      dispatched_at: "2026-09-02T00:00:00.000Z",
+      worktree_path: root,
+      transition_ids: ["authoring"],
+    } },
+  });
+  const interrupts = [];
+  const adapter = {
+    async readThread() {
+      return { thread: { turns: [{ id: "turn-expired", status: "inProgress", items: [] }] } };
+    },
+    async interruptTurn(input) { interrupts.push(input); },
+  };
+  try {
+    const result = await harvestGoalAuthors({
+      config,
+      stateDir,
+      adapter,
+      now: () => new Date("2026-09-02T00:02:00.000Z"),
+    });
+    assert.equal(result.failures.length, 1);
+    assert.equal(result.state.tasks[0].state, "retryable_failure");
+    assert.equal(result.state.tasks[0].failure_code, "GOAL_AUTHOR_TIMEOUT");
+    assert.deepEqual(interrupts, [{ threadId: "thread-expired", turnId: "turn-expired" }]);
+    assert.equal(result.state.tasks[0].worktree_path, root);
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+  }
+});
