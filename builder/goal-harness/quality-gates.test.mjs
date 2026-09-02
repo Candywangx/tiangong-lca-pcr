@@ -1,7 +1,31 @@
 import assert from "node:assert/strict";
+import { readFile } from "node:fs/promises";
 import test from "node:test";
 
 import { assertAuthorQuality, validateAuthorReport } from "./author-gates.mjs";
+
+test("author report response schema avoids keywords rejected by Codex Structured Outputs", async () => {
+  const schemaUrl = new URL("../schemas/goal-author-report.schema.json", import.meta.url);
+  const schema = JSON.parse(await readFile(schemaUrl, "utf8"));
+  const visit = (value, path = "$") => {
+    if (!value || typeof value !== "object") return;
+    for (const keyword of ["not", "uniqueItems"]) {
+      assert.equal(Object.hasOwn(value, keyword), false, `${path} must not use unsupported keyword '${keyword}'`);
+    }
+    if (typeof value.pattern === "string") {
+      assert.equal(value.pattern.includes("(?"), false, `${path}.pattern must not use unsupported regex lookaround`);
+    }
+    if (value.type === "object" && value.properties) {
+      assert.deepEqual(
+        [...(value.required ?? [])].sort(),
+        Object.keys(value.properties).sort(),
+        `${path}.required must include every property for Codex Structured Outputs compatibility`,
+      );
+    }
+    for (const [key, child] of Object.entries(value)) visit(child, `${path}.${key}`);
+  };
+  visit(schema);
+});
 
 const pcrPath = "library/pcrs/metal-products-machinery-and-equipment/basic-metals/pig-iron";
 const files = ["manifest.yaml", "pcr.en-US.md", "pcr.zh-CN.md", "structured.yaml"].map((file) => `${pcrPath}/${file}`);
@@ -15,7 +39,7 @@ function report(overrides = {}) {
     pcr_path: pcrPath,
     queue_action: "promote_legacy",
     files,
-    sources: [{ source_id: "unsd-cpc-3", name: "UNSD CPC 3.0", locator: "https://example.invalid/cpc.pdf", original_text_verified: true, supports: ["product identity"] }],
+    sources: [{ source_id: "unsd-cpc-3", name: "UNSD CPC 3.0", locator: "https://example.invalid/cpc.pdf", original_text_verified: true, supports: ["product identity"], independence_key: "unsd", discovery_only: false }],
     uuid_audits: [{
       uuid: "11111111-1111-4111-8111-111111111111",
       hybrid_search: true,
@@ -39,7 +63,10 @@ function report(overrides = {}) {
     ranges: [],
     bilingual: { aligned: true, en_inventory_rows: 2, zh_inventory_rows: 2 },
     structured_sync: { first_run_ok: true, second_run_clean: true, schema_valid: true },
-    validate: { ok: true, exit_code: 0, known_shared_artifact_only: false },
+    validate: { ok: true, exit_code: 0, known_shared_artifact_only: false, summary: null },
+    complexity_justification: null,
+    cartesian_expansion_review: null,
+    methodology_necessity_approved: null,
     commit_sha: "a".repeat(40),
     unresolved_issues: [],
     ...overrides,
