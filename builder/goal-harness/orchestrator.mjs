@@ -3,7 +3,7 @@ import path from "node:path";
 
 import { GoalEventStore } from "./event-store.mjs";
 import { GoalHarnessError } from "./errors.mjs";
-import { auditReportedUuids, verifySourceLocators } from "./evidence-audit.mjs";
+import { auditReportedUuids, mergeVerifiedCommonUuids, verifySourceLocators } from "./evidence-audit.mjs";
 import { withGoalLockAsync } from "./lock.mjs";
 import { compileAuthorPrompt } from "./prompt-compiler.mjs";
 import { buildIntegrationSnapshot, dispatchCandidates } from "./scheduler.mjs";
@@ -134,7 +134,14 @@ export async function dispatchGoalAuthors({ config, stateDir, slots = config.aut
   });
 }
 
-export async function harvestGoalAuthors({ config, stateDir, adapter, reviewFn = reviewAuthorWorktree }) {
+export async function harvestGoalAuthors({
+  config,
+  stateDir,
+  adapter,
+  reviewFn = reviewAuthorWorktree,
+  auditUuidsFn = auditReportedUuids,
+  verifySourcesFn = verifySourceLocators,
+}) {
   return withGoalLockAsync(stateDir, "harvest", async () => {
     const store = new GoalEventStore({ stateDir });
     const validResults = [];
@@ -172,8 +179,8 @@ export async function harvestGoalAuthors({ config, stateDir, adapter, reviewFn =
           throw new GoalHarnessError("GOAL_UUID_DIRECT_READ_FAILED", "tools.tiangong_cli_root is required to independently audit final UUIDs.");
         }
         const evidenceAudit = {
-          uuid_reads: auditReportedUuids({ report, tiangongCliRoot: config.tools?.tiangong_cli_root }),
-          source_reads: await verifySourceLocators({ report }),
+          uuid_reads: auditUuidsFn({ report, tiangongCliRoot: config.tools?.tiangong_cli_root }),
+          source_reads: await verifySourcesFn({ report }),
         };
         const review = reviewFn({
           projectRoot: config.project_root,
@@ -194,6 +201,15 @@ export async function harvestGoalAuthors({ config, stateDir, adapter, reviewFn =
           unresolved_count: report.inventory?.unresolved_rows ?? review.counts?.unresolved ?? 0,
         };
         store.append({ event_id: `${task.id}-turn-${task.turn_id}-valid-result`, type: "task_replaced", payload: { task } });
+        state = store.rebuild();
+        const verifiedCommonUuids = mergeVerifiedCommonUuids(state.verified_common_uuids, evidenceAudit.uuid_reads);
+        if (JSON.stringify(verifiedCommonUuids) !== JSON.stringify(state.verified_common_uuids ?? [])) {
+          store.append({
+            event_id: `${task.id}-turn-${task.turn_id}-common-uuids`,
+            type: "verified_common_uuids_updated",
+            payload: { verified_common_uuids: verifiedCommonUuids },
+          });
+        }
         validResults.push(task);
       } catch (error) {
         if (task.state === "valid_result") {

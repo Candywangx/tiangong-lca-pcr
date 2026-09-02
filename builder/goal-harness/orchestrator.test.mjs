@@ -150,11 +150,21 @@ test("harvest records a completed machine report and promotes a reviewed task ex
       config,
       stateDir,
       adapter,
+      auditUuidsFn: () => [{
+        uuid: "11111111-1111-4111-8111-111111111111",
+        state_code: 100,
+        base_name_en: "Alternating current",
+        base_name_zh: "交流电",
+        flow_type: "product",
+        classifications: [{ id: "17100", label: "Electrical energy" }],
+      }],
+      verifySourcesFn: async () => [],
       reviewFn: () => { reviewCount += 1; return { valid: true, counts: { total: 2, matched: 1, unresolved: 1 } }; },
     });
     assert.equal(first.valid_results.length, 1);
     assert.equal(first.state.tasks[0].state, "valid_result");
     assert.equal(first.state.tasks[0].author_commit, report.commit_sha);
+    assert.deepEqual(first.state.verified_common_uuids.map((entry) => entry.uuid), ["11111111-1111-4111-8111-111111111111"]);
     assert.equal(reviewCount, 1);
     const second = await harvestGoalAuthors({ config, stateDir, adapter, reviewFn: () => { reviewCount += 1; } });
     assert.equal(second.valid_results.length, 0);

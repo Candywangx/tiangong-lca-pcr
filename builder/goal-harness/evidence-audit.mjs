@@ -4,6 +4,17 @@ import path from "node:path";
 
 import { GoalHarnessError } from "./errors.mjs";
 
+const REUSABLE_COMMON_UUID_PATTERN = /^(?:alternating current|electricity(?:,.*)?|natural gas(?: .*)?|liquefied petroleum gas|lpg|diesel(?: fuel)?|steam(?:,.*)?|hot water|process water|drinking water|industrial oxygen|industrial nitrogen|carbon dioxide(?: \(fossil\))?|methane|nitrous oxide|sodium hydroxide|sodium hypochlorite|peracetic acid|(?:refrigerant|polyethylene film|pet tray|corrugated paperboard)(?:,.*)?)$/iu;
+
+export function mergeVerifiedCommonUuids(existing = [], audited = []) {
+  const merged = new Map(existing.map((entry) => [String(entry.uuid).toLowerCase(), entry]));
+  for (const entry of audited) {
+    if (!REUSABLE_COMMON_UUID_PATTERN.test(String(entry.base_name_en ?? "").trim())) continue;
+    merged.set(String(entry.uuid).toLowerCase(), entry);
+  }
+  return [...merged.values()].sort((left, right) => String(left.uuid).localeCompare(String(right.uuid)));
+}
+
 export function auditReportedUuids({ report, tiangongCliRoot, runner = runTiangongFlowGet }) {
   const results = [];
   for (const claimed of report.uuid_audits ?? []) {

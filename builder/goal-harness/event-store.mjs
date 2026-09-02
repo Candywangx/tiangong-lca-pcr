@@ -123,6 +123,8 @@ function reduceEvent(state, event) {
     next.snapshots = (next.snapshots ?? []).map((snapshot) => snapshot.id === event.payload.snapshot.id ? event.payload.snapshot : snapshot);
   } else if (event.type === "task_replaced") {
     next.tasks = (next.tasks ?? []).map((task) => task.id === event.payload.task.id ? event.payload.task : task);
+  } else if (event.type === "verified_common_uuids_updated") {
+    next.verified_common_uuids = event.payload.verified_common_uuids;
   } else if (event.type === "landing_completed") {
     next.landed_path_fingerprints = {
       ...(next.landed_path_fingerprints ?? {}),
