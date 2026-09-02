@@ -80,7 +80,10 @@ function resolver(overrides = {}) {
           readiness: {
             status: "ready",
             usable_for_guidance: true,
-            projection_fingerprint: `sha256:${authoredNode.id}`,
+            projection_fingerprint: {
+              status: "current",
+              content_sha256: `sha256:${authoredNode.id}`,
+            },
           },
         };
     return {
@@ -127,7 +130,10 @@ test("derives a ready edge from verified downstream PCR evidence", () => {
           readiness: {
             status: "review_required",
             usable_for_guidance: true,
-            projection_fingerprint: "sha256:wheat",
+            projection_fingerprint: {
+              status: "current",
+              content_sha256: "sha256:wheat",
+            },
           },
         },
       },
@@ -177,6 +183,45 @@ test("validates resolver CPC codes and labels against authored assertions", () =
   );
 });
 
+test("rejects malformed node resolver results before they can make an edge ready", () => {
+  const authored = document([
+    chain(
+      "grain",
+      [node("wheat", "01112", "Wheat, other"), node("flour", "23110", "Wheat flour")],
+      [edge("wheat-to-flour", "wheat", "flour")],
+    ),
+  ]);
+  const valid = resolver()({ node: authored.chains[0].nodes[1] });
+  const malformedResults = [
+    { name: "missing coverage_status", mutate(result) { delete result.coverage_status; } },
+    { name: "empty coverage_status", mutate(result) { result.coverage_status = ""; } },
+    { name: "missing pcr", mutate(result) { delete result.pcr; } },
+    { name: "non-object pcr", mutate(result) { result.pcr = "pcr.flour"; } },
+    { name: "empty PCR id", mutate(result) { result.pcr.id = ""; } },
+    { name: "empty PCR path", mutate(result) { result.pcr.path = ""; } },
+    { name: "missing readiness", mutate(result) { delete result.pcr.readiness; } },
+    { name: "empty readiness status", mutate(result) { result.pcr.readiness.status = ""; } },
+    { name: "non-boolean usability", mutate(result) { result.pcr.readiness.usable_for_guidance = "true"; } },
+    { name: "missing fingerprint", mutate(result) { delete result.pcr.readiness.projection_fingerprint; } },
+    { name: "null fingerprint", mutate(result) { result.pcr.readiness.projection_fingerprint = null; } },
+    { name: "array fingerprint", mutate(result) { result.pcr.readiness.projection_fingerprint = []; } },
+  ];
+
+  for (const scenario of malformedResults) {
+    const malformed = structuredClone(valid);
+    scenario.mutate(malformed);
+    assert.throws(
+      () => analyze(authored, {
+        resolveNode(args) {
+          return args.node.id === "flour" ? malformed : resolver()(args);
+        },
+      }),
+      /node flour resolved with invalid/,
+      scenario.name,
+    );
+  }
+});
+
 test("rejects duplicate ids and endpoints outside their chain", () => {
   const duplicateChain = document([
     chain("same", [node("a", "1", "A")], []),
@@ -215,12 +260,12 @@ test("derives stable blockers for legitimate non-ready planning states", () => {
   const cases = [
     {
       name: "upstream not usable",
-      nodeOverrides: { a: { pcr: { id: "pcr.a", path: "a", readiness: { status: "draft", usable_for_guidance: false, projection_fingerprint: null } } } },
+      nodeOverrides: { a: { pcr: { id: "pcr.a", path: "a", readiness: { status: "draft", usable_for_guidance: false, projection_fingerprint: { status: "current" } } } } },
       expected: ["upstream_not_material"],
     },
     {
       name: "downstream not usable",
-      nodeOverrides: { b: { pcr: { id: "pcr.b", path: "b", readiness: { status: "draft", usable_for_guidance: false, projection_fingerprint: null } } } },
+      nodeOverrides: { b: { pcr: { id: "pcr.b", path: "b", readiness: { status: "draft", usable_for_guidance: false, projection_fingerprint: { status: "current" } } } } },
       expected: ["downstream_not_material"],
     },
     ...["gap", "overlap", "needs_review"].map((boundary) => ({
@@ -316,6 +361,34 @@ test("resolves every PCR locator and rejects malformed evidence", () => {
     chain("one", baseNodes, [edge("a-to-b", "a", "b", { evidence: [{ kind: "web_search", supports: "No typed locator" }] })]),
   ]);
   assert.throws(() => analyze(malformedKind), /unsupported evidence kind web_search/);
+});
+
+test("rejects incomplete or inconsistent PCR evidence resolver results", () => {
+  const authored = document([
+    chain("one", [node("a", "1", "A"), node("b", "2", "B")], [edge("a-to-b", "a", "b")]),
+  ]);
+  const authoredEvidence = authored.chains[0].edges[0].evidence[0];
+  const valid = evidenceResolver({ evidence: authoredEvidence });
+  const malformedResults = [
+    { name: "empty PCR id", mutate(result) { result.pcr_id = ""; } },
+    { name: "missing source path", mutate(result) { delete result.source_path; } },
+    { name: "empty source path", mutate(result) { result.source_path = ""; } },
+    { name: "missing locator", mutate(result) { delete result.locator; } },
+    { name: "wrong locator", mutate(result) { result.locator.field_path = "product_category_identity.production_route"; } },
+    { name: "missing value", mutate(result) { delete result.value; } },
+    { name: "null value", mutate(result) { result.value = null; } },
+    { name: "empty value", mutate(result) { result.value = ""; } },
+  ];
+
+  for (const scenario of malformedResults) {
+    const malformed = structuredClone(valid);
+    scenario.mutate(malformed);
+    assert.throws(
+      () => analyze(authored, { resolvePcrEvidence() { return malformed; } }),
+      /PCR evidence 0 resolved with invalid/,
+      scenario.name,
+    );
+  }
 });
 
 test("topological waves ignore blocked edges and retain authored order within a wave", () => {
@@ -417,10 +490,10 @@ flowchart LR
 
 ### Edges
 
-| Edge | From | To | Evidence | Boundary | Scheduling | Blockers |
-| --- | --- | --- | --- | --- | --- | --- |
-| carded-to-yarn | carded | yarn | supported_by_pcr | aligned | ready | — |
-| cotton-to-carded | cotton | carded | semantic_candidate | needs_review | blocked | upstream_not_material, evidence_not_pcr, boundary_not_aligned |
+| Edge | From | To | Evidence | Boundary | Scheduling | Blockers | Review notes |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| carded-to-yarn | carded | yarn | supported_by_pcr | aligned | ready | — | Review carded-to-yarn |
+| cotton-to-carded | cotton | carded | semantic_candidate | needs_review | blocked | upstream_not_material, evidence_not_pcr, boundary_not_aligned | Map the upstream cotton category. |
 
 ### Executable generation waves
 
@@ -439,4 +512,54 @@ flowchart LR
 
   assert.equal(renderCpcProductChainReport(analysis), expected);
   assert.equal(renderCpcProductChainReport(analysis), renderCpcProductChainReport(analysis));
+});
+
+test("escapes hostile authored strings in each rendering context", () => {
+  const hostileSource = {
+    id: "source|[id]",
+    title: "Title\r\n## injected heading",
+    publisher: "Publisher ` ``` [link](bad)",
+    url: "https://example.test/a_(b)?q=%5D#fragment",
+    locator: "Section 1\n```mermaid",
+    supports: "Support | [link](https://evil.test)\r---",
+    accessed_at: "2026-09-02",
+  };
+  const secondSource = {
+    id: "second",
+    title: "Second source",
+    publisher: "Publisher",
+    url: "urn:isbn:9780141036144",
+    locator: "Page 2",
+    supports: "Second in authored order",
+    accessed_at: "2026-09-02",
+  };
+  const hostileNode = node(
+    "a|cell",
+    "1",
+    'Label " ]\n  injected --> n9 ["boom"]\\path',
+  );
+  const downstream = node("b", "2", "B");
+  const hostileEdge = edge("edge|[link](bad)", "a|cell", "b", {
+    review_notes: ["Ready note\n# heading | [link](https://evil.test) ```"],
+  });
+  const authored = document([
+    {
+      ...chain("hostile", [hostileNode, downstream], [hostileEdge]),
+      title: "Chain\r\n## injected heading",
+      description: "Description\n```mermaid\nX --> Y\n```\n---",
+    },
+  ], [hostileSource, secondSource]);
+  const report = renderCpcProductChainReport(analyze(authored));
+
+  assert.equal(report.includes("\r"), false);
+  assert.equal((report.match(/```/g) ?? []).length, 2, "only the generated Mermaid fence remains");
+  assert.doesNotMatch(report, /\n## injected heading/);
+  assert.doesNotMatch(report, /\n# heading/);
+  assert.match(report, /## Chain: Chain &#35;&#35; injected heading/);
+  assert.match(report, /n0\["1 Label &quot; &#93; injected --&gt; n9 &#91;&quot;boom&quot;&#93;&#92;path"\]/);
+  assert.match(report, /edge&#124;&#91;link&#93;&#40;bad&#41;/);
+  assert.match(report, /Ready note &#35; heading &#124; &#91;link&#93;&#40;https:\/\/evil\.test&#41; &#96;&#96;&#96;/);
+  assert.match(report, /\[source\]\(https:\/\/example\.test\/a_%28b%29\?q=%255D#fragment\)/);
+  assert.ok(report.indexOf("source&#124;&#91;id&#93;") < report.indexOf("[second] Second source"));
+  assert.equal(report, renderCpcProductChainReport(analyze(authored)));
 });

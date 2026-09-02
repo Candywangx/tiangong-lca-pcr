@@ -1,3 +1,5 @@
+import { isDeepStrictEqual } from "node:util";
+
 const PCR_EVIDENCE_KIND = "pcr_projection";
 const OFFICIAL_EVIDENCE_KIND = "official_source";
 const READY_RELATIONSHIP = "primary_feedstock";
@@ -20,6 +22,18 @@ function materialResolution(resolution) {
   );
 }
 
+function isNonEmptyString(value) {
+  return typeof value === "string" && /\S/.test(value);
+}
+
+function isObject(value) {
+  return value !== null && typeof value === "object" && !Array.isArray(value);
+}
+
+function invalidNodeResolution(chainId, nodeId, field) {
+  fail(`chain ${chainId} node ${nodeId} resolved with invalid ${field}`);
+}
+
 function validateResolvedNode(chainId, authoredNode, resolved) {
   if (!resolved || typeof resolved !== "object") {
     fail(`chain ${chainId} node ${authoredNode.id} did not resolve`);
@@ -34,18 +48,52 @@ function validateResolvedNode(chainId, authoredNode, resolved) {
       `chain ${chainId} node ${authoredNode.id} resolved label ${JSON.stringify(resolved.label)} does not match authored label ${JSON.stringify(authoredNode.label)}`,
     );
   }
+  if (!isNonEmptyString(resolved.coverage_status)) {
+    invalidNodeResolution(chainId, authoredNode.id, "coverage_status");
+  }
+  if (!Object.hasOwn(resolved, "pcr") || (resolved.pcr !== null && !isObject(resolved.pcr))) {
+    invalidNodeResolution(chainId, authoredNode.id, "pcr");
+  }
+  if (resolved.pcr === null) return;
+
+  if (!isNonEmptyString(resolved.pcr.id)) {
+    invalidNodeResolution(chainId, authoredNode.id, "pcr.id");
+  }
+  if (!isNonEmptyString(resolved.pcr.path)) {
+    invalidNodeResolution(chainId, authoredNode.id, "pcr.path");
+  }
+  const readiness = resolved.pcr.readiness;
+  if (!isObject(readiness)) {
+    invalidNodeResolution(chainId, authoredNode.id, "pcr.readiness");
+  }
+  if (!isNonEmptyString(readiness.status)) {
+    invalidNodeResolution(chainId, authoredNode.id, "pcr.readiness.status");
+  }
+  if (typeof readiness.usable_for_guidance !== "boolean") {
+    invalidNodeResolution(chainId, authoredNode.id, "pcr.readiness.usable_for_guidance");
+  }
+  if (!isObject(readiness.projection_fingerprint)) {
+    invalidNodeResolution(chainId, authoredNode.id, "pcr.readiness.projection_fingerprint");
+  }
 }
 
 function validateResolvedEvidence(chainId, edge, evidence, evidenceIndex, resolved) {
   if (!resolved || typeof resolved !== "object") {
     fail(`chain ${chainId} edge ${edge.id} PCR evidence ${evidenceIndex} did not resolve`);
   }
-  for (const field of ["pcr_id", "source_path", "locator", "value"]) {
-    if (!Object.hasOwn(resolved, field) || resolved[field] === undefined) {
-      fail(
-        `chain ${chainId} edge ${edge.id} PCR evidence ${evidenceIndex} resolved without ${field}`,
-      );
-    }
+  if (!isNonEmptyString(resolved.pcr_id)) {
+    fail(`chain ${chainId} edge ${edge.id} PCR evidence ${evidenceIndex} resolved with invalid pcr_id`);
+  }
+  if (!isNonEmptyString(resolved.source_path)) {
+    fail(
+      `chain ${chainId} edge ${edge.id} PCR evidence ${evidenceIndex} resolved with invalid source_path`,
+    );
+  }
+  if (!isDeepStrictEqual(resolved.locator, evidence.locator)) {
+    fail(`chain ${chainId} edge ${edge.id} PCR evidence ${evidenceIndex} resolved with invalid locator`);
+  }
+  if (!isNonEmptyString(resolved.value)) {
+    fail(`chain ${chainId} edge ${edge.id} PCR evidence ${evidenceIndex} resolved with invalid value`);
   }
   if (resolved.pcr_id !== evidence.pcr_id) {
     fail(
@@ -283,20 +331,78 @@ export function analyzeCpcProductChain(
   };
 }
 
-function mermaidText(value) {
-  return String(value).replaceAll("\\", "\\\\").replaceAll('"', "\\\"").replaceAll("\n", " ");
+function singleLine(value) {
+  return String(value).replace(/\r\n?|\n/g, " ").replace(/\s+/g, " ");
 }
 
-function tableText(value) {
-  return String(value).replaceAll("|", "\\|").replaceAll("\n", " ");
+const MARKDOWN_ENTITIES = new Map([
+  ["&", "&amp;"],
+  ["\\", "&#92;"],
+  ["`", "&#96;"],
+  ["*", "&#42;"],
+  ["_", "&#95;"],
+  ["{", "&#123;"],
+  ["}", "&#125;"],
+  ["[", "&#91;"],
+  ["]", "&#93;"],
+  ["<", "&#60;"],
+  [">", "&#62;"],
+  ["(", "&#40;"],
+  [")", "&#41;"],
+  ["#", "&#35;"],
+  ["!", "&#33;"],
+  ["|", "&#124;"],
+]);
+
+function escapeMarkdownText(value) {
+  return singleLine(value).replace(/[&\\`*_{}[\]<>()#!|]/g, (character) =>
+    MARKDOWN_ENTITIES.get(character),
+  );
+}
+
+function markdownInlineText(value) {
+  return escapeMarkdownText(value);
+}
+
+function markdownHeadingText(value) {
+  return escapeMarkdownText(value);
+}
+
+function markdownTableText(value) {
+  return escapeMarkdownText(value);
+}
+
+function mermaidText(value) {
+  return singleLine(value)
+    .replaceAll("&", "&amp;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("\\", "&#92;")
+    .replaceAll("[", "&#91;")
+    .replaceAll("]", "&#93;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;");
+}
+
+function linkDestination(value) {
+  return encodeURI(String(value).toWellFormed())
+    .replaceAll("(", "%28")
+    .replaceAll(")", "%29");
+}
+
+function mermaidNodeId(index) {
+  return `n${index}`;
 }
 
 function renderOfficialSource(source) {
-  const details = [`[source](${source.url})`];
-  if (source.publication_id) details.push(`publication ${source.publication_id}`);
-  if (source.publication_date) details.push(`published ${source.publication_date}`);
-  details.push(`accessed ${source.accessed_at}`);
-  return `- [${source.id}] ${source.title} — ${source.publisher} — ${source.locator} — ${source.supports} (${details.join("; ")})`;
+  const details = [`[source](${linkDestination(source.url)})`];
+  if (source.publication_id) {
+    details.push(`publication ${markdownInlineText(source.publication_id)}`);
+  }
+  if (source.publication_date) {
+    details.push(`published ${markdownInlineText(source.publication_date)}`);
+  }
+  details.push(`accessed ${markdownInlineText(source.accessed_at)}`);
+  return `- [${markdownInlineText(source.id)}] ${markdownInlineText(source.title)} — ${markdownInlineText(source.publisher)} — ${markdownInlineText(source.locator)} — ${markdownInlineText(source.supports)} (${details.join("; ")})`;
 }
 
 export function renderCpcProductChainReport(analysis) {
@@ -317,10 +423,18 @@ export function renderCpcProductChainReport(analysis) {
   ];
 
   for (const chain of analysis.chains) {
-    lines.push("", `## Chain: ${chain.title}`, "", chain.description, "", "```mermaid", "flowchart LR");
+    lines.push(
+      "",
+      `## Chain: ${markdownHeadingText(chain.title)}`,
+      "",
+      markdownInlineText(chain.description),
+      "",
+      "```mermaid",
+      "flowchart LR",
+    );
     const mermaidIds = new Map();
     chain.nodes.forEach((node, index) => {
-      const mermaidId = `n${index}`;
+      const mermaidId = mermaidNodeId(index);
       mermaidIds.set(node.id, mermaidId);
       lines.push(`  ${mermaidId}["${mermaidText(`${node.code} ${node.label}`)}"]`);
     });
@@ -333,12 +447,12 @@ export function renderCpcProductChainReport(analysis) {
       "",
       "### Edges",
       "",
-      "| Edge | From | To | Evidence | Boundary | Scheduling | Blockers |",
-      "| --- | --- | --- | --- | --- | --- | --- |",
+      "| Edge | From | To | Evidence | Boundary | Scheduling | Blockers | Review notes |",
+      "| --- | --- | --- | --- | --- | --- | --- | --- |",
     );
     for (const edge of chain.edges) {
       lines.push(
-        `| ${tableText(edge.id)} | ${tableText(edge.from)} | ${tableText(edge.to)} | ${tableText(edge.evidence_status)} | ${tableText(edge.boundary_assessment)} | ${tableText(edge.scheduling_status)} | ${edge.blockers.length > 0 ? tableText(edge.blockers.join(", ")) : "—"} |`,
+        `| ${markdownTableText(edge.id)} | ${markdownTableText(edge.from)} | ${markdownTableText(edge.to)} | ${edge.evidence_status} | ${edge.boundary_assessment} | ${edge.scheduling_status} | ${edge.blockers.length > 0 ? edge.blockers.join(", ") : "—"} | ${edge.review_notes?.length ? edge.review_notes.map(markdownTableText).join("; ") : "—"} |`,
       );
     }
 
@@ -347,7 +461,7 @@ export function renderCpcProductChainReport(analysis) {
       lines.push("- None.");
     } else {
       chain.executable_waves.forEach((wave, index) => {
-        lines.push(`${index + 1}. ${wave.map(tableText).join(", ")}`);
+        lines.push(`${index + 1}. ${wave.map(markdownInlineText).join(", ")}`);
       });
     }
 
@@ -358,14 +472,16 @@ export function renderCpcProductChainReport(analysis) {
     } else {
       for (const edge of blockedEdges) {
         const notes = edge.review_notes?.length
-          ? ` — ${edge.review_notes.map(tableText).join("; ")}`
+          ? ` — ${edge.review_notes.map(markdownInlineText).join("; ")}`
           : "";
         lines.push(
-          `- ${tableText(edge.id)} (${tableText(edge.from)} → ${tableText(edge.to)}): ${edge.blockers.map(tableText).join(", ")}${notes}`,
+          `- ${markdownInlineText(edge.id)} (${markdownInlineText(edge.from)} → ${markdownInlineText(edge.to)}): ${edge.blockers.join(", ")}${notes}`,
         );
       }
       if (chain.review_only_node_ids.length > 0) {
-        lines.push(`- Review-only nodes: ${chain.review_only_node_ids.map(tableText).join(", ")}`);
+        lines.push(
+          `- Review-only nodes: ${chain.review_only_node_ids.map(markdownInlineText).join(", ")}`,
+        );
       }
     }
   }
