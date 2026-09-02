@@ -54,6 +54,53 @@ export function mergeAcceptedMappings(document, additions, { materialPcrIds }) {
   return merged;
 }
 
+export function selectIntegrationBaseCommit(state) {
+  const landed = (state.snapshots ?? [])
+    .filter((snapshot) => snapshot.state === "landed" && snapshot.integration_commit)
+    .sort((left, right) => String(left.landed_at ?? left.created_at ?? "").localeCompare(String(right.landed_at ?? right.created_at ?? "")));
+  return landed.at(-1)?.integration_commit ?? state.baseline.commit;
+}
+
+export function materializeAuthorCommitTree({ worktreePath, authorCommit, allowedFiles }) {
+  if (!/^[a-f0-9]{40,64}$/u.test(String(authorCommit))) {
+    throw new GoalHarnessError("GOAL_AUTHOR_COMMIT_INVALID", `Invalid author commit SHA: ${authorCommit}`);
+  }
+  const files = [...new Set(allowedFiles ?? [])].sort();
+  if (files.length !== 4) {
+    throw new GoalHarnessError("GOAL_INTEGRATION_AUTHOR_PATH_INVALID", `Author commit ${authorCommit} must materialize exactly four authorized files.`, { allowed_files: files });
+  }
+  git(worktreePath, ["restore", "--source", authorCommit, "--staged", "--worktree", "--", ...files]);
+  return { author_commit: authorCommit, files };
+}
+
+export function prepareIntegrationWorkspace({ config, snapshot, baseCommit }) {
+  const defaultPath = path.join(config.project_root, ".worktrees", "goals", config.goal_id, "integrations", snapshot.id);
+  const defaultBranch = `codex/goal-${safeToken(config.goal_id)}-${snapshot.id}`;
+  let worktreePath = snapshot.worktree_path ?? defaultPath;
+  let branch = snapshot.branch ?? defaultBranch;
+  let integrationAttempt = snapshot.integration_attempt ?? 1;
+  const preservedWorktreePaths = [...new Set(snapshot.preserved_worktree_paths ?? [])];
+
+  while (existsSync(worktreePath)) {
+    const actualBranch = git(worktreePath, ["branch", "--show-current"]);
+    if (actualBranch !== branch) {
+      throw new GoalHarnessError("GOAL_INTEGRATION_WORKTREE_CONFLICT", `Integration worktree is on ${actualBranch}, expected ${branch}.`);
+    }
+    const dirty = gitStatus(worktreePath).length > 0;
+    const head = git(worktreePath, ["rev-parse", "HEAD"]);
+    if (!dirty && isAncestor(worktreePath, baseCommit, head)) {
+      return { worktreePath, branch, integrationAttempt, preservedWorktreePaths };
+    }
+    preservedWorktreePaths.push(worktreePath);
+    integrationAttempt += 1;
+    worktreePath = `${defaultPath}-retry-${integrationAttempt}`;
+    branch = `${defaultBranch}-retry-${integrationAttempt}`;
+  }
+
+  ensureGoalWorktree({ projectRoot: config.project_root, worktreePath, commit: baseCommit, branch });
+  return { worktreePath, branch, integrationAttempt, preservedWorktreePaths: [...new Set(preservedWorktreePaths)] };
+}
+
 export function integrateGoalSnapshot({ config, stateDir, snapshotId = null, allowPartial = false, dryRun = false, commandRunner = runCommand }) {
   return withGoalLock(stateDir, "integrate", () => {
     const store = new GoalEventStore({ stateDir });
@@ -101,19 +148,22 @@ export function integrateGoalSnapshot({ config, stateDir, snapshotId = null, all
       throw new GoalHarnessError("GOAL_MAPPING_DECIDER_REQUIRED", "integration.decided_by is required before accepted mapping publication.");
     }
 
-    const worktreePath = snapshot.worktree_path ?? path.join(config.project_root, ".worktrees", "goals", config.goal_id, "integrations", snapshot.id);
-    const branch = snapshot.branch ?? `codex/goal-${safeToken(config.goal_id)}-${snapshot.id}`;
-    if (!existsSync(worktreePath)) {
-      ensureGoalWorktree({ projectRoot: config.project_root, worktreePath, commit: state.baseline.commit, branch });
-    } else {
-      const actualBranch = git(worktreePath, ["branch", "--show-current"]);
-      if (actualBranch !== branch) {
-        throw new GoalHarnessError("GOAL_INTEGRATION_WORKTREE_CONFLICT", `Integration worktree is on ${actualBranch}, expected ${branch}.`);
-      }
-    }
+    const baseCommit = selectIntegrationBaseCommit(state);
+    const workspace = prepareIntegrationWorkspace({ config, snapshot, baseCommit });
+    const { worktreePath, branch, integrationAttempt } = workspace;
 
-    snapshot = { ...snapshot, state: "integrating", worktree_path: worktreePath, branch, started_at: snapshot.started_at ?? new Date().toISOString() };
-    store.append({ event_id: `${snapshot.id}-integrating`, type: "snapshot_replaced", payload: { snapshot } });
+    snapshot = {
+      ...snapshot,
+      state: "integrating",
+      worktree_path: worktreePath,
+      branch,
+      base_commit: baseCommit,
+      integration_attempt: integrationAttempt,
+      preserved_worktree_paths: workspace.preservedWorktreePaths,
+      started_at: snapshot.started_at ?? new Date().toISOString(),
+      last_attempt_started_at: new Date().toISOString(),
+    };
+    store.append({ event_id: `${snapshot.id}-integrating-${integrationAttempt}`, type: "snapshot_replaced", payload: { snapshot } });
     for (const selected of tasks) {
       state = store.rebuild();
       let task = state.tasks.find((entry) => entry.id === selected.id);
@@ -124,9 +174,13 @@ export function integrateGoalSnapshot({ config, stateDir, snapshotId = null, all
     }
 
     const headBefore = git(worktreePath, ["rev-parse", "HEAD"]);
-    if (!snapshot.integration_commit && headBefore === state.baseline.commit && gitStatus(worktreePath).length === 0) {
-      for (const commit of snapshot.author_commits) {
-        git(worktreePath, ["cherry-pick", "--no-commit", commit]);
+    if (!snapshot.integration_commit && headBefore === baseCommit && gitStatus(worktreePath).length === 0) {
+      for (const selected of tasks) {
+        materializeAuthorCommitTree({
+          worktreePath,
+          authorCommit: selected.author_commit,
+          allowedFiles: selected.allowed_files,
+        });
       }
     }
     const decision = installAcceptedMappings({ config, worktreePath, snapshot, tasks });
@@ -137,7 +191,7 @@ export function integrateGoalSnapshot({ config, stateDir, snapshotId = null, all
       }
     } catch (error) {
       snapshot = { ...snapshot, state: "retryable_failure", failure_code: error.code ?? "GOAL_INTEGRATION_COMMAND_FAILED", failure_message: error.message, command_results: commandResults };
-      store.append({ event_id: `${snapshot.id}-command-failure-${commandResults.length}`, type: "snapshot_replaced", payload: { snapshot } });
+      store.append({ event_id: `${snapshot.id}-command-failure-${integrationAttempt}-${commandResults.length}`, type: "snapshot_replaced", payload: { snapshot } });
       throw error;
     }
 
@@ -149,7 +203,7 @@ export function integrateGoalSnapshot({ config, stateDir, snapshotId = null, all
       git(worktreePath, ["commit", "-m", `feat(pcr): integrate ${snapshot.id}`]);
     }
     const integrationCommit = git(worktreePath, ["rev-parse", "HEAD"]);
-    const integratedFiles = gitZ(worktreePath, ["diff", "--name-only", "-z", state.baseline.commit, integrationCommit, "--"]);
+    const integratedFiles = gitZ(worktreePath, ["diff", "--name-only", "-z", baseCommit, integrationCommit, "--"]);
     snapshot = {
       ...snapshot,
       state: "validated",
@@ -300,6 +354,15 @@ function gitStatusPaths(root) {
     .map((entry) => entry.slice(3))
     .map((entry) => entry.includes(" -> ") ? entry.split(" -> ").at(-1) : entry)
     .sort();
+}
+
+function isAncestor(root, ancestor, descendant) {
+  try {
+    execFileSync("git", ["merge-base", "--is-ancestor", ancestor, descendant], { cwd: root, stdio: "ignore" });
+    return true;
+  } catch {
+    return false;
+  }
 }
 
 function safeToken(value) {
