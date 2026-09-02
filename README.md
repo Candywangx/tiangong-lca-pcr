@@ -130,7 +130,7 @@ npm run validate
 
 The local `goal:*` Harness turns a bounded classification/category objective into a persistent, hash-chained queue.
 It captures an allowlisted synthetic commit without changing the user's index or branch, gives each author a durable
-Codex-visible task in its own Git worktree through the managed app-server daemon/proxy, verifies the exact four-file
+Codex-visible task in its own Git worktree through one Goal-owned loopback app-server daemon, verifies the exact four-file
 author commit, and serializes accepted mapping,
 catalog, coverage, viewer, validation, and consumer checks in integration snapshots. Landing uses exact-byte
 compare-and-swap and keeps author/integration worktrees after `stop` or a failed recovery. See

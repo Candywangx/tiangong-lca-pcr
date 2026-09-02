@@ -4,6 +4,7 @@ import { tmpdir } from "node:os";
 import path from "node:path";
 
 import { CodexAppServerAdapter } from "./app-server.mjs";
+import { ensureGoalAppServerDaemon } from "./app-server-daemon.mjs";
 import { loadGoalConfig } from "./config.mjs";
 import { GoalEventStore } from "./event-store.mjs";
 import { GoalHarnessError } from "./errors.mjs";
@@ -64,6 +65,8 @@ export async function doctorCommand({ configPath }) {
   }
   const codexCheck = commandCheck(config.tools.codex, ["--version"], "codex");
   checks.push(codexCheck);
+  checks.push({ name: "node_websocket", ok: typeof WebSocket === "function", detail: typeof WebSocket === "function" ? "available" : "Node.js global WebSocket is required" });
+  checks.push(commandCheck(config.tools.codex, ["app-server", "--help"], "codex_app_server_listener"));
   if (codexCheck.ok) {
     const adapter = new CodexAppServerAdapter({ command: config.tools.codex });
     try {
@@ -171,7 +174,12 @@ export async function startCommand({ configPath, slots = null, dryRun = false, r
     planCommand({ configPath, dryRun: false });
   }
   const runtime = ensureCorepackToolPath(stateDir);
-  const adapter = new CodexAppServerAdapter({ command: config.tools.codex, environment: runtime.environment });
+  const daemon = dryRun ? null : await ensureGoalAppServerDaemon({
+    stateDir,
+    command: config.tools.codex,
+    environment: runtime.environment,
+  });
+  const adapter = new CodexAppServerAdapter({ command: config.tools.codex, endpoint: daemon?.endpoint ?? null, environment: runtime.environment });
   try {
     if (!dryRun) {
       await adapter.doctor();
@@ -187,7 +195,7 @@ export async function startCommand({ configPath, slots = null, dryRun = false, r
       }
       effectiveConfig = { ...config, codex: { ...config.codex, project_id: configuredProject.id } };
     }
-    const harvest = resume
+    const harvest = resume && !dryRun
       ? await harvestGoalAuthors({ config: effectiveConfig, stateDir, adapter })
       : { valid_results: [], failures: [], snapshot: null };
     const result = await dispatchGoalAuthors({
@@ -198,7 +206,7 @@ export async function startCommand({ configPath, slots = null, dryRun = false, r
       resumeStopped: resume,
       dryRun,
     });
-    return { ...result, harvest, codex_project_id: effectiveConfig.codex?.project_id ?? null };
+    return { ...result, harvest, codex_project_id: effectiveConfig.codex?.project_id ?? null, app_server: daemon ? { endpoint: daemon.endpoint, pid: daemon.pid, reused: daemon.reused } : null };
   } finally {
     await adapter.close();
   }

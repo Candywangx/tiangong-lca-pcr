@@ -1,4 +1,4 @@
-import { execFileSync, spawn } from "node:child_process";
+import { spawn } from "node:child_process";
 import { StringDecoder } from "node:string_decoder";
 
 import { GoalHarnessError } from "./errors.mjs";
@@ -6,24 +6,26 @@ import { GoalHarnessError } from "./errors.mjs";
 export class CodexAppServerAdapter {
   constructor({
     command = "codex",
-    args = ["app-server", "proxy"],
+    args = ["app-server", "--stdio"],
+    endpoint = null,
     spawnFactory = (program, programArgs, options) => spawn(program, programArgs, options),
-    daemonStarter = (program, programArgs, options) => execFileSync(program, programArgs, options),
+    webSocketFactory = (url) => new WebSocket(url),
     requestTimeoutMs = 30_000,
     environment = process.env,
   } = {}) {
     this.command = command;
     this.args = args;
+    this.endpoint = endpoint;
     this.spawnFactory = spawnFactory;
-    this.daemonStarter = daemonStarter;
+    this.webSocketFactory = webSocketFactory;
     this.requestTimeoutMs = requestTimeoutMs;
     this.environment = environment;
     this.child = null;
+    this.socket = null;
     this.connected = false;
     this.nextId = 1;
     this.pending = new Map();
     this.stderr = "";
-    this.daemonReady = false;
   }
 
   async doctor() {
@@ -121,9 +123,7 @@ export class CodexAppServerAdapter {
     if (this.connected) {
       return this.initializeResult;
     }
-    if (!this.child) {
-      this.startProcess();
-    }
+    if (!this.child && !this.socket) await this.startTransport();
     const result = await this.request("initialize", {
       clientInfo: { name: "tiangong-pcr-goal-harness", title: "TianGong PCR Goal Harness", version: "1.0.0" },
       capabilities: { experimentalApi: true },
@@ -135,9 +135,7 @@ export class CodexAppServerAdapter {
   }
 
   request(method, params) {
-    if (!this.child) {
-      this.startProcess();
-    }
+    if (!this.child && !this.socket) throw new Error("Codex app-server transport is not connected");
     const id = this.nextId;
     this.nextId += 1;
     return new Promise((resolve, reject) => {
@@ -155,27 +153,56 @@ export class CodexAppServerAdapter {
   }
 
   async close() {
-    if (!this.child) return;
+    if (!this.child && !this.socket) return;
     for (const pending of this.pending.values()) {
       clearTimeout(pending.timeout);
       pending.reject(new Error("Codex app-server closed"));
     }
     this.pending.clear();
-    this.child.kill("SIGTERM");
+    if (this.socket) this.socket.close();
+    if (this.child) this.child.kill("SIGTERM");
     this.child = null;
+    this.socket = null;
     this.connected = false;
+  }
+
+  async startTransport() {
+    if (this.endpoint) {
+      await this.startWebSocket();
+    } else {
+      this.startProcess();
+    }
+  }
+
+  async startWebSocket() {
+    let socket;
+    try {
+      socket = this.webSocketFactory(this.endpoint);
+    } catch (error) {
+      throw visibleTaskError("websocket start", error, this.stderr);
+    }
+    this.socket = socket;
+    await new Promise((resolve, reject) => {
+      const timeout = setTimeout(() => reject(new Error(`Timed out connecting to ${this.endpoint}`)), this.requestTimeoutMs);
+      socket.addEventListener("open", () => {
+        clearTimeout(timeout);
+        resolve();
+      }, { once: true });
+      socket.addEventListener("error", (event) => {
+        clearTimeout(timeout);
+        reject(new Error(`WebSocket connection failed: ${event.message ?? "unknown error"}`));
+      }, { once: true });
+    });
+    socket.addEventListener("message", (event) => this.handleLine(String(event.data)));
+    socket.addEventListener("error", (event) => this.rejectPending(new Error(`Codex app-server WebSocket error: ${event.message ?? "unknown error"}`)));
+    socket.addEventListener("close", (event) => {
+      this.rejectPending(new Error(`Codex app-server WebSocket closed with code ${event.code ?? "unknown"}`));
+      this.connected = false;
+    });
   }
 
   startProcess() {
     try {
-      if (this.args[0] === "app-server" && this.args[1] === "proxy" && !this.daemonReady) {
-        this.daemonStarter(this.command, ["app-server", "daemon", "start"], {
-          stdio: ["ignore", "pipe", "pipe"],
-          env: this.environment,
-          timeout: this.requestTimeoutMs,
-        });
-        this.daemonReady = true;
-      }
       this.child = this.spawnFactory(this.command, this.args, {
         stdio: ["pipe", "pipe", "pipe"],
         env: this.environment,
@@ -233,6 +260,10 @@ export class CodexAppServerAdapter {
   }
 
   write(message) {
+    if (this.socket?.readyState === 1) {
+      this.socket.send(JSON.stringify(message));
+      return;
+    }
     if (!this.child?.stdin?.writable) {
       throw new Error("Codex app-server stdin is unavailable");
     }
@@ -245,7 +276,7 @@ function visibleTaskError(operation, error, stderr) {
   return new GoalHarnessError(
     "GOAL_CODEX_VISIBLE_TASK_UNAVAILABLE",
     `Codex visible task interface failed at ${operation}: ${error.message}`,
-    { operation, stderr_tail: stderr || null, required_interface: "codex app-server daemon + proxy + thread/start with durable threads" },
+    { operation, stderr_tail: stderr || null, required_interface: "codex app-server localhost WebSocket or stdio + thread/start with durable threads" },
   );
 }
 

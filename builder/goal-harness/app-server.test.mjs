@@ -44,6 +44,39 @@ function mockSpawn({ failMethod = null } = {}) {
   return { child, requests };
 }
 
+function mockWebSocket() {
+  const requests = [];
+  const emitter = new EventEmitter();
+  const socket = {
+    readyState: 0,
+    closed: false,
+    addEventListener(name, listener, options = {}) {
+      emitter[options.once ? "once" : "on"](name, listener);
+    },
+    send(line) {
+      const request = JSON.parse(line);
+      requests.push(request);
+      if (!Object.hasOwn(request, "id")) return;
+      const result = request.method === "initialize"
+        ? { userAgent: "mock-codex/1" }
+        : request.method === "thread/list"
+          ? { data: [], nextCursor: null }
+          : {};
+      queueMicrotask(() => emitter.emit("message", { data: JSON.stringify({ id: request.id, result }) }));
+    },
+    close() {
+      socket.closed = true;
+      socket.readyState = 3;
+      emitter.emit("close", { code: 1000, reason: "client close" });
+    },
+  };
+  queueMicrotask(() => {
+    socket.readyState = 1;
+    emitter.emit("open", {});
+  });
+  return { socket, requests };
+}
+
 test("app-server adapter creates one durable visible thread bound to the author worktree", async () => {
   const mock = mockSpawn();
   const starts = [];
@@ -52,7 +85,6 @@ test("app-server adapter creates one durable visible thread bound to the author 
       starts.push({ command, args });
       return mock.child;
     },
-    daemonStarter: (command, args) => starts.push({ command, args }),
     requestTimeoutMs: 1000,
   });
   try {
@@ -68,8 +100,7 @@ test("app-server adapter creates one durable visible thread bound to the author 
       clientUserMessageId: "goal-task-41111-attempt-1",
     });
     assert.deepEqual(task, { thread_id: "thread-visible-1", turn_id: "turn-1" });
-    assert.deepEqual(starts[0], { command: "codex", args: ["app-server", "daemon", "start"] });
-    assert.deepEqual(starts[1], { command: "codex", args: ["app-server", "proxy"] });
+    assert.deepEqual(starts[0], { command: "codex", args: ["app-server", "--stdio"] });
     const started = mock.requests.find((request) => request.method === "thread/start");
     assert.equal(started.params.cwd, "/tmp/visible-author-worktree");
     assert.equal(started.params.ephemeral, false);
@@ -86,7 +117,7 @@ test("app-server adapter creates one durable visible thread bound to the author 
 
 test("app-server failure is a stable fail-closed error with no hidden fallback", async () => {
   const mock = mockSpawn({ failMethod: "thread/start" });
-  const adapter = new CodexAppServerAdapter({ spawnFactory: () => mock.child, daemonStarter: () => {}, requestTimeoutMs: 1000 });
+  const adapter = new CodexAppServerAdapter({ spawnFactory: () => mock.child, requestTimeoutMs: 1000 });
   try {
     await assert.rejects(
       () => adapter.createAuthorTask({
@@ -102,4 +133,19 @@ test("app-server failure is a stable fail-closed error with no hidden fallback",
   } finally {
     await adapter.close();
   }
+});
+
+test("websocket adapter closes only its client connection so a persistent Goal daemon can survive", async () => {
+  const mock = mockWebSocket();
+  const adapter = new CodexAppServerAdapter({
+    endpoint: "ws://127.0.0.1:45123",
+    webSocketFactory: () => mock.socket,
+    spawnFactory: () => assert.fail("websocket transport must not spawn a stdio app-server"),
+    requestTimeoutMs: 1000,
+  });
+  const doctor = await adapter.doctor();
+  assert.equal(doctor.ok, true);
+  assert.equal(mock.requests[0].method, "initialize");
+  await adapter.close();
+  assert.equal(mock.socket.closed, true);
 });
