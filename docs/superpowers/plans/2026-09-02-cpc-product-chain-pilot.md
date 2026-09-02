@@ -316,6 +316,8 @@ git commit -m "feat(builder): render CPC product-chain plans"
 
 ### Task 4: Author the three-chain pilot source
 
+> Quality-review correction: the original four-ready-edge expectation was disproved by the current cotton-yarn PCR boundary. CPC 26160 → 26360 is `overlap`, not `aligned`, because the downstream PCR starts from baled fibre and already includes opening, cleaning, carding, drawing, and optional combing. Do not mislabel the boundary to preserve four ready edges.
+
 **Files:**
 - Create: `builder/planning/cpc-product-chain-pilot.yaml`
 - Modify: `builder/scripts/render-cpc-product-chain.test.mjs`
@@ -333,13 +335,13 @@ If a publication does not directly support a planned edge at an exact locator, o
 
 - [ ] **Step 2: Write a failing pilot acceptance test**
 
-Extend the adapter test to require the authored pilot to derive exactly 3 chains, 13 nodes, 9 edges, 4 ready edges, and 5 blocked edges. Assert exact executable waves:
+Extend the adapter test to require the authored pilot to derive exactly 3 chains, 13 nodes, 9 edges, 3 ready edges, and 6 blocked edges. Assert exact executable waves:
 
 - grain: `[["wheat-grain"], ["wheat-flour"], ["bread-and-bakers-wares"]]`;
-- cotton/textile: `[["carded-or-combed-cotton"], ["cotton-yarn"], ["woven-cotton-fabric"]]`;
+- cotton/textile: `[["cotton-yarn"], ["woven-cotton-fabric"]]`;
 - forestry: `[]`.
 
-Assert `raw-cotton` plus all six forestry nodes are review-only and that no forestry node appears in a wave. Run the test and confirm it fails because the pilot source does not exist.
+Assert `raw-cotton`, `carded-or-combed-cotton`, and all six forestry nodes are review-only (8 total), and that no forestry node appears in a wave. Run the test and confirm it fails because the pilot source does not exist.
 
 - [ ] **Step 3: Author the source records**
 
@@ -358,11 +360,13 @@ Use local PCR evidence for the mapped food and textile downstream nodes. Use off
 
 Set `boundary_assessment: aligned` only where the local downstream PCR explicitly starts from the upstream product condition. Use `needs_review` for all official-only forestry edges. Include route conditions: mechanical pulp/newsprint may include recovered fibre; wood-free paper requires predominantly chemical pulp and must not be generalized to all paper.
 
+For CPC 26160 → 26360, set `boundary_assessment: overlap`: the downstream cotton-yarn PCR starts from baled fibre and performs opening, cleaning, carding, drawing, and optional combing itself. Keep the edge blocked unless a future downstream-PCR revision explicitly supports purchased carded or combed cotton and excludes every duplicated operation.
+
 - [ ] **Step 4: Build and inspect the report**
 
 Run: `node builder/scripts/render-cpc-product-chain.mjs`
 
-Expected: creates `builder/planning/cpc-product-chain-pilot.md` with two ready grain edges, two ready downstream textile edges, a blocked raw-cotton edge, and all forestry edges blocked.
+Expected: creates `builder/planning/cpc-product-chain-pilot.md` with two ready grain edges, one ready yarn-to-fabric edge, blocked raw-cotton and carded/combed-cotton edges, and all forestry edges blocked. The report totals are 3 ready and 6 blocked, with 8 review-only nodes.
 
 - [ ] **Step 5: Run check mode and the acceptance test**
 

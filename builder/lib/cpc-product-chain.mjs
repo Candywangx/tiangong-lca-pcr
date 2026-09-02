@@ -372,6 +372,15 @@ function markdownTableText(value) {
   return escapeMarkdownText(value);
 }
 
+function joinedReviewNotes(reviewNotes, renderText) {
+  return reviewNotes.map((note, index) => {
+    const normalized = index === reviewNotes.length - 1
+      ? note
+      : singleLine(note).replace(/[.!?;:。！？；：]+$/u, "");
+    return renderText(normalized);
+  }).join("; ");
+}
+
 function mermaidText(value) {
   return singleLine(value)
     .replaceAll("&", "&amp;")
@@ -459,7 +468,7 @@ export function renderCpcProductChainReport(analysis) {
     );
     for (const edge of chain.edges) {
       lines.push(
-        `| ${markdownTableText(edge.id)} | ${markdownTableText(edge.from)} | ${markdownTableText(edge.to)} | ${edge.evidence_status} | ${edge.boundary_assessment} | ${edge.scheduling_status} | ${edge.blockers.length > 0 ? edge.blockers.join(", ") : "—"} | ${edge.review_notes?.length ? edge.review_notes.map(markdownTableText).join("; ") : "—"} |`,
+        `| ${markdownTableText(edge.id)} | ${markdownTableText(edge.from)} | ${markdownTableText(edge.to)} | ${edge.evidence_status} | ${edge.boundary_assessment} | ${edge.scheduling_status} | ${edge.blockers.length > 0 ? edge.blockers.join(", ") : "—"} | ${edge.review_notes?.length ? joinedReviewNotes(edge.review_notes, markdownTableText) : "—"} |`,
       );
     }
 
@@ -479,7 +488,7 @@ export function renderCpcProductChainReport(analysis) {
     } else {
       for (const edge of blockedEdges) {
         const notes = edge.review_notes?.length
-          ? ` — ${edge.review_notes.map(markdownInlineText).join("; ")}`
+          ? ` — ${joinedReviewNotes(edge.review_notes, markdownInlineText)}`
           : "";
         lines.push(
           `- ${markdownInlineText(edge.id)} (${markdownInlineText(edge.from)} → ${markdownInlineText(edge.to)}): ${edge.blockers.join(", ")}${notes}`,

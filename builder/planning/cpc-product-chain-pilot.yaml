@@ -177,18 +177,19 @@ chains:
         to: cotton-yarn
         relationship_type: primary_feedstock
         evidence_status: supported_by_pcr
-        boundary_assessment: aligned
+        boundary_assessment: overlap
         interface:
           upstream_output_condition: Baled carded or combed cotton delivered on the declared moisture basis.
-          downstream_starting_condition: Cotton fibre received at the spinning mill for fibre preparation.
-          fit_summary: The cotton-yarn PCR records received baled cotton fibre as a product input to fibre preparation.
+          downstream_starting_condition: Baled cotton fibre received at the spinning-mill gate before foreground fibre preparation.
+          fit_summary: The current cotton-yarn PCR starts from baled fibre and includes opening, cleaning, carding, drawing and optional combing within its foreground fibre-preparation process, so directly chaining a CPC 26160 prepared-cotton dataset would double-count those operations.
         route_conditions:
           - Apply to yarn containing at least 85 percent cotton and disclose recovered or recycled cotton when used.
-          - Align fibre preparation route, fibre type and moisture basis between the prepared-cotton and yarn datasets.
+          - Keep this edge blocked while the downstream PCR starts before carding and combing; do not preserve an executable wave by mislabelling the boundary as aligned.
+          - A future downstream-PCR revision may support purchased carded or combed cotton only when its starting condition moves after the purchased preparation and its inventory excludes duplicated opening, cleaning, carding, drawing and combing operations.
         evidence:
           - kind: pcr_projection
             pcr_id: pcr.food-products-beverages-and-tobacco-textiles-apparel-and-leather-products.yarn-and-thread-woven-and-tufted-textile-fabrics.cotton-yarn-other-than-sewing-thread-containing-85-or-more-by-weight-of-cotton
-            supports: The downstream yarn PCR records received cotton fibre entering fibre preparation.
+            supports: The downstream yarn PCR records baled cotton fibre entering its foreground fibre-preparation process.
             locator:
               kind: inventory_row
               process_id: fibre_preparation
@@ -196,8 +197,19 @@ chains:
               flow_type: product
               row_id: received_cotton_fibre
               field: name
+          - kind: pcr_projection
+            pcr_id: pcr.food-products-beverages-and-tobacco-textiles-apparel-and-leather-products.yarn-and-thread-woven-and-tufted-textile-fabrics.cotton-yarn-other-than-sewing-thread-containing-85-or-more-by-weight-of-cotton
+            supports: The downstream yarn PCR includes opening, cleaning, carding, drawing and optional combing electricity in foreground fibre preparation.
+            locator:
+              kind: inventory_row
+              process_id: fibre_preparation
+              direction: inputs
+              flow_type: product
+              row_id: fibre_preparation_electricity
+              field: description
         review_notes:
-          - Confirm whether the yarn route uses carded or combed cotton and preserve that distinction in foreground data.
+          - Directly chaining CPC 26160 to the current cotton-yarn PCR would repeat fibre-preparation operations already inside the downstream foreground boundary.
+          - Reassess only after a downstream-PCR revision explicitly supports purchased carded or combed cotton and conditionally excludes every duplicated preparation operation.
       - id: cotton-yarn-to-woven-cotton-fabric
         from: cotton-yarn
         to: woven-cotton-fabric

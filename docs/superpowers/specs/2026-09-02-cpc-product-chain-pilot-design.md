@@ -159,8 +159,12 @@ identifies the supporting passage. Official-only support cannot make an edge rea
 `01921 Cotton, whether or not ginned` → `26160 Cotton, carded or combed` → `26360 Cotton yarn ... at least 85% cotton` → `26620 Woven cotton fabrics ... more than 200 g/m²`
 
 - The first edge is supported by the cotton-preparation PCR's declared feedstock and inventory rows, but CPC 01921 is currently unmapped; the edge is therefore blocked.
-- The carded/combed cotton to yarn and yarn to woven fabric edges are supported by downstream PCR starting conditions and inventory inputs.
-- The three mapped downstream nodes can be ordered even while the upstream agriculture node remains a visible blocker.
+- The current cotton-yarn PCR starts from baled fibre and includes opening, cleaning, carding, drawing, and optional combing inside its foreground fibre-preparation process. Directly chaining the CPC 26160 prepared-cotton product would therefore overlap and double-count those operations, so the carded/combed-cotton-to-yarn edge is blocked even though its PCR evidence resolves.
+- A future cotton-yarn PCR revision may make that edge align only by explicitly supporting purchased carded or combed cotton as its starting condition and conditionally excluding the duplicated preparation operations.
+- Only cotton yarn to woven fabric is ready now. Raw cotton and carded/combed cotton are review-only nodes.
+
+This is a quality-review correction to the initial four-ready-edge pilot expectation. The evidence-backed boundary
+assessment is `overlap`; it must not be changed to `aligned` merely to preserve four ready edges.
 
 ### Forestry, pulp, and paper
 
@@ -187,7 +191,7 @@ It then computes deterministic topological waves over that induced subgraph only
 For the pilot, the expected ready ordering is:
 
 - Grain wave 1: wheat; wave 2: flour; wave 3: bakers' wares.
-- Textile ready subgraph wave 1: carded/combed cotton; wave 2: cotton yarn; wave 3: woven cotton fabric. The missing raw-cotton PCR is reported as an upstream blocker rather than silently inserted.
+- Textile ready subgraph wave 1: cotton yarn; wave 2: woven cotton fabric. Raw cotton and carded/combed cotton remain review-only because the first node is unmapped and the current yarn boundary overlaps fibre preparation.
 - Forestry: no executable waves; all nodes appear in the blocked review queue.
 
 ## Deterministic Rendering and Validation
@@ -257,8 +261,11 @@ Repository handoff runs the focused test, build/check commands, and `npm run val
 ## Acceptance Criteria
 
 - Three cross-industry chains are present and visually readable.
+- The exact pilot result is 13 nodes and 9 edges: 3 ready, 6 blocked, and 8 review-only nodes across the three chains.
+- Exact waves are grain `[["wheat-grain"], ["wheat-flour"], ["bread-and-bakers-wares"]]`, textile `[["cotton-yarn"], ["woven-cotton-fabric"]]`, and forestry `[]`.
 - YAML is the only hand-maintained pilot truth; the Markdown report is deterministic output.
 - Every edge exposes evidence status, scheduling status, boundary assessment, and review notes.
 - Supported and semantic-candidate relationships are never conflated.
 - The report gives executable ordering only for ready edges and a separate manual-review queue for blocked edges.
+- Joined review notes normalize intermediate terminal punctuation before the `; ` separator without bypassing Markdown escaping.
 - Existing PCRs, mappings, and CPC sources remain unchanged.

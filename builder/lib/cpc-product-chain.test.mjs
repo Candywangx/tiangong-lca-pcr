@@ -518,6 +518,24 @@ flowchart LR
   assert.equal(renderCpcProductChainReport(analysis), renderCpcProductChainReport(analysis));
 });
 
+test("normalizes review-note terminators before joining and preserves escaping", () => {
+  const authored = document([
+    chain(
+      "review-notes",
+      [node("upstream", "1", "Upstream"), node("downstream", "2", "Downstream")],
+      [edge("upstream-to-downstream", "upstream", "downstream", {
+        boundary_assessment: "overlap",
+        review_notes: ["First note.", "Keep | content!"],
+      })],
+    ),
+  ]);
+  const report = renderCpcProductChainReport(analyze(authored));
+  const normalizedNotes = "First note; Keep &#124; content&#33;";
+
+  assert.equal(report.split(normalizedNotes).length - 1, 2);
+  assert.doesNotMatch(report, /First note\.;/u);
+});
+
 test("escapes hostile authored strings in each rendering context", () => {
   const hostileSource = {
     id: "source|[id]",
