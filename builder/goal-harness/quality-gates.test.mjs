@@ -162,7 +162,7 @@ test("common UUID-empty flows require an auditable hybrid/direct-read query expl
   );
 });
 
-test("common-flow audit does not misclassify nitrogen oxides or wastewater emissions", () => {
+test("common-flow audit does not misclassify nitrogen oxides, wastewater, or oxygen-furnace products", () => {
   const inventoryRows = rows();
   inventoryRows.en[1].name = "Nitrogen monoxide to air";
   inventoryRows.zh[1].name = "一氧化氮排入空气";
@@ -180,6 +180,12 @@ test("common-flow audit does not misclassify nitrogen oxides or wastewater emiss
 
   inventoryRows.en[1].name = "Gas-scrubbing wastewater";
   inventoryRows.zh[1].name = "煤气洗涤废水";
+  assert.doesNotThrow(
+    () => assertAuthorQuality({ report: emissionReport, authorizedFiles: files, changedFiles: files, inventoryRows }),
+  );
+
+  inventoryRows.en[1].name = "Basic oxygen furnace slag";
+  inventoryRows.zh[1].name = "碱性氧气转炉渣";
   assert.doesNotThrow(
     () => assertAuthorQuality({ report: emissionReport, authorizedFiles: files, changedFiles: files, inventoryRows }),
   );
