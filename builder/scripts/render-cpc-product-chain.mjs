@@ -1,6 +1,7 @@
 import {
   closeSync,
   constants as fsConstants,
+  fchmodSync,
   fstatSync,
   fsyncSync,
   lstatSync,
@@ -248,6 +249,7 @@ function writeReportAtomically(root, report, { beforeFinalCheck = () => {} } = {
       throw new Error(`CPC product-chain temporary report is not a regular file: ${temporaryRelativePath()}`);
     }
     writeFileSync(descriptor, report, "utf8");
+    fchmodSync(descriptor, 0o644);
     fsyncSync(descriptor);
 
     const currentTemporary = lstatSync(temporaryPath);

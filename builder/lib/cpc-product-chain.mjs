@@ -112,6 +112,11 @@ function analyzeEvidence({
   if (!Array.isArray(edge.evidence) || edge.evidence.length === 0) {
     fail(`chain ${chainId} edge ${edge.id} has no evidence`);
   }
+  if (edge.evidence_status === PCR_EVIDENCE_STATUS && !downstream.pcr) {
+    fail(
+      `chain ${chainId} edge ${edge.id} is supported_by_pcr but downstream node ${edge.to} has no accepted PCR identity`,
+    );
+  }
 
   const resolvedEvidence = [];
   let hasDownstreamPcrLocator = false;

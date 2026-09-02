@@ -296,11 +296,6 @@ test("derives stable blockers for legitimate non-ready planning states", () => {
       nodeOverrides: { a: { pcr: null, coverage_status: "unmapped" } },
       expected: ["upstream_not_material"],
     },
-    {
-      name: "unmapped downstream",
-      nodeOverrides: { b: { pcr: null, coverage_status: "unmapped" } },
-      expected: ["downstream_not_material"],
-    },
   ];
 
   for (const scenario of cases) {
@@ -319,6 +314,43 @@ test("derives stable blockers for legitimate non-ready planning states", () => {
     assert.deepEqual(analysis.chains[0].executable_waves, [], scenario.name);
     assert.deepEqual(analysis.chains[0].review_only_node_ids, ["a", "b"], scenario.name);
   }
+});
+
+test("supported_by_pcr requires an accepted downstream PCR and binds every locator to it", () => {
+  const baseNodes = [node("a", "1", "A"), node("b", "2", "B")];
+  const unmappedDownstream = document([
+    chain("one", baseNodes, [edge("a-to-b", "a", "b")]),
+  ]);
+  let unresolvedEvidenceCalls = 0;
+
+  assert.throws(
+    () => analyze(unmappedDownstream, {
+      resolveNode: resolver({ b: { pcr: null, coverage_status: "unmapped" } }),
+      resolvePcrEvidence(args) {
+        unresolvedEvidenceCalls += 1;
+        return evidenceResolver(args);
+      },
+    }),
+    /edge a-to-b is supported_by_pcr but downstream node b has no accepted PCR identity/u,
+  );
+  assert.equal(unresolvedEvidenceCalls, 0);
+
+  const unrelatedValidPcr = document([
+    chain("one", baseNodes, [edge("a-to-b", "a", "b", {
+      evidence: [pcrEvidence("pcr.b"), pcrEvidence("pcr.unrelated-valid")],
+    })]),
+  ]);
+  let resolvedEvidenceCalls = 0;
+  assert.throws(
+    () => analyze(unrelatedValidPcr, {
+      resolvePcrEvidence(args) {
+        resolvedEvidenceCalls += 1;
+        return evidenceResolver(args);
+      },
+    }),
+    /PCR evidence 1 names PCR pcr.unrelated-valid but downstream node b resolves to pcr.b/u,
+  );
+  assert.equal(resolvedEvidenceCalls, 2);
 });
 
 test("resolves every PCR locator and rejects malformed evidence", () => {

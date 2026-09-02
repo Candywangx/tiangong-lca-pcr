@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
 import {
+  chmodSync,
   cpSync,
   lstatSync,
   mkdirSync,
@@ -10,6 +11,7 @@ import {
   readdirSync,
   rmSync,
   symlinkSync,
+  statSync,
   writeFileSync,
 } from "node:fs";
 import http from "node:http";
@@ -222,6 +224,24 @@ test("exports stable default paths and builds/checks an exact report offline", (
     assert.equal(readFileSync(path.join(root, DEFAULT_REPORT_PATH), "utf8"), report);
     assert.equal(protectedDigest(root), before);
     assertNoTemporaryReport(root);
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+  }
+});
+
+test("build publishes new and replacement reports as 0644 while check mode preserves mode", () => {
+  const root = createRealRepositoryFixture();
+  const reportPath = path.join(root, DEFAULT_REPORT_PATH);
+  try {
+    withNetworkTraps(() => buildOrCheckCpcProductChain(root));
+    assert.equal(statSync(reportPath).mode & 0o777, 0o644);
+
+    chmodSync(reportPath, 0o600);
+    withNetworkTraps(() => buildOrCheckCpcProductChain(root, { checkOnly: true }));
+    assert.equal(statSync(reportPath).mode & 0o777, 0o600);
+
+    withNetworkTraps(() => buildOrCheckCpcProductChain(root));
+    assert.equal(statSync(reportPath).mode & 0o777, 0o644);
   } finally {
     rmSync(root, { recursive: true, force: true });
   }
