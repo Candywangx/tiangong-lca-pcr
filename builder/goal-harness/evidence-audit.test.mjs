@@ -18,13 +18,15 @@ test("UUID audit compares public direct-read identity to the author report", () 
         classificationInformation: { "common:classification": { "common:class": [{ "@classId": "41111", "#text": "Pig iron" }] } },
       } },
       modellingAndValidation: { LCIMethod: { typeOfDataSet: "Product flow" } },
-      flowProperties: { flowProperty: { referenceToFlowPropertyDataSet: { "common:shortDescription": [{ "@xml:lang": "en", "#text": "Mass" }] } } },
+      flowProperties: { flowProperty: [{ referenceToFlowPropertyDataSet: { "@refObjectId": "93a60a56-a3c8-11da-a746-0800200b9a66", "common:shortDescription": [{ "@xml:lang": "en", "#text": "Mass" }] } }] },
     } },
   };
   const result = auditReportedUuids({ report, tiangongCliRoot: "/unused", runner: () => direct });
   assert.equal(result.length, 1);
   assert.equal(result[0].state_code, 100);
   assert.equal(result[0].base_name_zh, "生铁");
+  assert.equal(result[0].property, "Mass");
+  assert.equal(result[0].flow_property_uuid, "93a60a56-a3c8-11da-a746-0800200b9a66");
   assert.match(result[0].response_sha256, /^sha256:/u);
   const bad = structuredClone(report);
   bad.uuid_audits[0].base_name_zh = "错误名称";

@@ -22,6 +22,7 @@ export function auditReportedUuids({ report, tiangongCliRoot, runner = runTiango
     const flow = direct?.flow?.flowDataSet;
     const info = flow?.flowInformation?.dataSetInformation;
     const names = localizedTexts(info?.name?.baseName);
+    const referenceProperty = referenceFlowProperty(flow);
     const actual = {
       uuid: String(info?.["common:UUID"] ?? "").toLowerCase(),
       state_code: direct?.state_code,
@@ -29,7 +30,8 @@ export function auditReportedUuids({ report, tiangongCliRoot, runner = runTiango
       base_name_zh: names.zh ?? names["zh-CN"] ?? "",
       flow_type: normalizeFlowType(flow?.modellingAndValidation?.LCIMethod?.typeOfDataSet),
       classifications: classificationValues(info?.classificationInformation?.["common:classification"]?.["common:class"]),
-      property: localizedTexts(flow?.flowProperties?.flowProperty?.referenceToFlowPropertyDataSet?.["common:shortDescription"]).en ?? "",
+      property: localizedTexts(referenceProperty?.referenceToFlowPropertyDataSet?.["common:shortDescription"]).en ?? "",
+      flow_property_uuid: String(referenceProperty?.referenceToFlowPropertyDataSet?.["@refObjectId"] ?? "").toLowerCase(),
     };
     const mismatches = [];
     if (actual.uuid !== claimed.uuid.toLowerCase()) mismatches.push("uuid");
@@ -38,7 +40,7 @@ export function auditReportedUuids({ report, tiangongCliRoot, runner = runTiango
     if (actual.base_name_zh !== claimed.base_name_zh) mismatches.push("base_name_zh");
     if (actual.flow_type !== normalizeFlowType(claimed.flow_type)) mismatches.push("flow_type");
     if (claimed.classification && !actual.classifications.some((value) => claimed.classification.includes(value.id) || claimed.classification.includes(value.label))) mismatches.push("classification");
-    if (claimed.property && actual.property && claimed.property !== actual.property) mismatches.push("property");
+    if (claimed.property && claimed.property !== actual.property) mismatches.push("property");
     if (claimed.hybrid_search !== true) mismatches.push("hybrid_search");
     if (mismatches.length > 0) {
       throw new GoalHarnessError("GOAL_UUID_DIRECT_AUDIT_MISMATCH", `Direct state_code=100 audit disagrees with the author report for ${claimed.uuid}: ${mismatches.join(", ")}`, { uuid: claimed.uuid, mismatches, claimed, actual });
@@ -117,6 +119,13 @@ function localizedTexts(value) {
 function classificationValues(value) {
   const entries = Array.isArray(value) ? value : value ? [value] : [];
   return entries.map((entry) => ({ id: String(entry?.["@classId"] ?? ""), label: String(entry?.["#text"] ?? "") })).filter((entry) => entry.id || entry.label);
+}
+
+function referenceFlowProperty(flow) {
+  const value = flow?.flowProperties?.flowProperty;
+  const entries = Array.isArray(value) ? value : value ? [value] : [];
+  const referenceId = String(flow?.flowInformation?.quantitativeReference?.referenceToReferenceFlowProperty ?? "");
+  return entries.find((entry) => String(entry?.["@dataSetInternalID"] ?? "") === referenceId) ?? entries[0] ?? null;
 }
 
 function normalizeFlowType(value) {
