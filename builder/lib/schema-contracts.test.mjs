@@ -160,6 +160,9 @@ test("CPC product-chain contract keeps official source records distinct and date
     "https://example.com/\\raw-backslash",
     "https://example.com/\u0001control",
     "https://example.com/资料",
+    "https://example.com/[raw-bracket]",
+    "https://example.com/?q=[raw-bracket]",
+    "urn:foo[raw-bracket]",
   ];
 
   assert.equal(validateCpcProductChain(crossShapeSource).valid, false);

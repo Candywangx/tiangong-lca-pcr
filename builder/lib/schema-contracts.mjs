@@ -184,9 +184,48 @@ function isValidAbsoluteUri(value) {
     return false;
   }
   try {
-    new URL(value);
-    return true;
+    const parsed = new URL(value);
+    return hasValidRawBracketPlacement(value, parsed);
   } catch {
     return false;
   }
+}
+
+function hasValidRawBracketPlacement(value, parsed) {
+  const hasOpeningBracket = value.includes("[");
+  const hasClosingBracket = value.includes("]");
+  if (!hasOpeningBracket && !hasClosingBracket) {
+    return true;
+  }
+  if (!hasOpeningBracket || !hasClosingBracket) {
+    return false;
+  }
+
+  const schemeEnd = value.indexOf(":");
+  if (value.slice(schemeEnd + 1, schemeEnd + 3) !== "//") {
+    return false;
+  }
+  const authorityStart = schemeEnd + 3;
+  const authorityTail = value.slice(authorityStart);
+  const authorityTerminator = authorityTail.search(/[/?#]/u);
+  const authorityEnd = authorityTerminator === -1
+    ? value.length
+    : authorityStart + authorityTerminator;
+  const authority = value.slice(authorityStart, authorityEnd);
+  const hostStart = authority.lastIndexOf("@") + 1;
+  const hostAndPort = authority.slice(hostStart);
+  const closingBracket = hostAndPort.indexOf("]");
+  const afterHost = hostAndPort.slice(closingBracket + 1);
+
+  return (
+    parsed.hostname.startsWith("[") &&
+    parsed.hostname.endsWith("]") &&
+    !/[\[\]]/u.test(authority.slice(0, hostStart)) &&
+    hostAndPort.startsWith("[") &&
+    closingBracket > 1 &&
+    !hostAndPort.slice(1, closingBracket).includes("[") &&
+    !/[\[\]]/u.test(afterHost) &&
+    (afterHost === "" || /^:[0-9]+$/u.test(afterHost)) &&
+    !/[\[\]]/u.test(value.slice(authorityEnd))
+  );
 }
