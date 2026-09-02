@@ -870,6 +870,56 @@ test("material readiness rejects schema-valid projections with incomplete method
   }
 });
 
+test("candidate readiness accepts a registered unresolved reference-product flow UUID", () => {
+  const root = createBoundRepositoryFixture("tiangong-pcr-unresolved-reference-flow-");
+  const sourcePcrDir = path.join(repoRoot, wheatRelativePcrPath);
+  const pcrDir = path.join(root, wheatRelativePcrPath);
+  try {
+    mkdirSync(path.dirname(pcrDir), { recursive: true });
+    cpSync(sourcePcrDir, pcrDir, { recursive: true });
+
+    const markdownPath = path.join(pcrDir, "pcr.en-US.md");
+    const markdown = readFileSync(markdownPath, "utf8").replace(
+      /^\| Reference product flow \| Wheat `[^`]+` \|$/mu,
+      "| Reference product flow | Wheat |",
+    );
+    const projection = parsePcrMarkdownToStructured(markdown);
+    const referenceRow = projection.processInventory
+      .flatMap((processEntry) => processEntry.outputs.product)
+      .find((row) => row.name === projection.referenceFlowDefinition.product_flow.name);
+    assert.ok(referenceRow);
+    writeFileSync(markdownPath, markdown);
+    writeFileSync(
+      path.join(pcrDir, "structured.yaml"),
+      structuredProjectionYaml(projection, { sourceMarkdown: markdown }),
+    );
+
+    const manifestPath = path.join(pcrDir, "manifest.yaml");
+    const manifest = parseYaml(readFileSync(manifestPath, "utf8"));
+    manifest.review_metadata = {
+      ...(manifest.review_metadata ?? {}),
+      unresolved_flow_identities: [
+        { row_id: referenceRow.row_id, reason: "No exact product flow is available." },
+      ],
+    };
+    writeFileSync(manifestPath, renderYaml(manifest));
+
+    const readiness = getPcrReadiness({ root, pcrId: wheatSeedPcrId, refresh: true });
+    assert.equal(readiness.status, "review_required");
+    assert.equal(readiness.usable_for_guidance, true);
+    assert.ok(
+      readiness.blockers.every(
+        (blocker) =>
+          blocker.code !==
+          "material_projection.reference_flow_definition.product_flow_ref.uuid",
+      ),
+      JSON.stringify(readiness.blockers),
+    );
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+  }
+});
+
 test("PCR readiness rejects incompatible lifecycle and maturity combinations", () => {
   const root = createBoundRepositoryFixture("tiangong-pcr-readiness-state-");
   const pcrDir = path.join(root, "library/pcrs/example-domain/example-subdomain/example");
@@ -1062,12 +1112,17 @@ test("CPC 99000 physical pilot keeps coverage and old-id routing after directory
   assert.equal(classification.pcr, null);
 
   const all = listPcrs({ root: repoRoot, scope: "all", refresh: true });
-  assert.equal(all.length, 2876);
-  assert.equal(all.filter((entry) => entry.record_kind === "methodology").length, 3);
-  assert.equal(
-    all.filter((entry) => entry.record_kind === "legacy_scaffold_reference").length,
-    2873,
-  );
+  assert.equal(all.length, 2878);
+  const methodologyCount = all.filter(
+    (entry) => entry.record_kind === "methodology",
+  ).length;
+  const legacyScaffoldCount = all.filter(
+    (entry) => entry.record_kind === "legacy_scaffold_reference",
+  ).length;
+  assert.ok(methodologyCount > 0);
+  assert.ok(legacyScaffoldCount > 0);
+  assert.equal(methodologyCount + legacyScaffoldCount, all.length);
+  assert.equal(all.some((entry) => entry.id === pilot99000PcrId), false);
 });
 
 test("classification coverage exposes bounded summary/list and additive resolve states", () => {

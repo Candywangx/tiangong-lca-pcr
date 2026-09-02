@@ -1,10 +1,753 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "46330"
-  title: "Ignition wiring sets and other wiring sets of a kind used in vehicles, aircraft or ships"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.metal-products-machinery-and-equipment.electrical-machinery-and-apparatus.ignition-wiring-sets-and-other-wiring-sets-of-a-kind-used-in-vehicles-aircraft-or-ships"
+  classification_refs: "CPC 3.0: 46330 (exact classification context; mapping acceptance is governed separately)"
+  covered_products: "Complete ignition wiring sets and other complete electrical wiring sets or harness assemblies made for vehicles, aircraft, or ships, including low-voltage, high-voltage, signal, data, control, and mixed-circuit harnesses when supplied as an assembled set"
+  excluded_products: "Single insulated wires or cables; individual terminals, connectors, seals, grommets, sleeves, tapes, ties, or other parts; prepared component kits and incomplete subassemblies; wiring assemblies for buildings, appliances, stationary machinery, or telecommunications equipment; complete vehicles, aircraft, or ships"
+  representative_product: "A finished, tested, application-qualified wiring harness supplied at the manufacturing plant gate with permanently attached components and protective elements"
+  production_route: "Purchased-component preparation; cutting and stripping; crimping, soldering, welding, or splicing as applicable; connector assembly; harness forming and protection; marking; inspection and electrical testing; rework; packaging"
+  market_state: "Finished manufactured product at plant gate, before installation into a vehicle, aircraft, or ship"
+functional_unit:
+  what: "Finished and conforming ignition wiring set or other wiring set made for a vehicle, aircraft, or ship"
+  how_much: "1 kg net mass of accepted finished wiring set"
+  how_well: "Complete according to the declared bill of materials and drawing, with applicable inspection and electrical acceptance tests passed"
+  how_long_or_cycle: "One production lot or reporting-period output normalized to 1 kg of accepted product at the plant gate"
+  reference_flow_link: "The reference amount is the accepted output mass of the Tiangong product flow identified below"
+system_boundary:
+  rules:
+    - rule_id: boundary_foreground_manufacturing
+      applies_to: "foreground process scope"
+      rule: "Include on-site component preparation, termination and splicing as applicable, connector assembly, harness forming and protective covering, marking, inspection, electrical testing, rework, and packaging."
+      source_ids:
+        - ipc-whma-a-620
+        - nasa-std-8739-4a-change-4
+    - rule_id: boundary_upstream_linking
+      applies_to: "purchased inputs"
+      rule: "Keep purchased material and component production outside the foreground gate-to-gate system while linking each material input to an upstream dataset or disclosing the gap."
+      source_ids:
+        - iso-14044-2006
+        - eu-pef-method-2021
+    - rule_id: boundary_recursive_wiring_sets
+      applies_to: "purchased same-category wiring sets or sub-harnesses"
+      rule: "Record the purchased set once at the point it crosses the foreground boundary and do not expand it into supplier operations unless those operations are within the declared foreground control boundary."
+      source_ids:
+        - eu-pef-method-2021
+    - rule_id: boundary_downstream_exclusions
+      applies_to: "downstream stages"
+      rule: "Exclude installation into the vehicle, aircraft, or ship, use-phase electrical losses, maintenance, removal, and end-of-life unless a broader study explicitly adds those stages outside this gate-to-gate dataset."
+      source_ids:
+        - iso-14044-2006
+        - eu-pef-method-2021
+boundary_abstraction:
+  declared_starting_condition: "Purchased wires, cables, contacts, terminals, connector housings, seals, coverings, labels, packaging, and any purchased subassemblies received at the wiring-set manufacturing site"
+  starting_condition_role: "Upstream product inputs to the foreground manufacturing system"
+  product_classification_scope: "Complete wiring sets manufactured for vehicles, aircraft, or ships; component-only and non-transport applications are outside the reference-product scope"
+  recursive_input_rule: "A purchased complete wiring set or sub-harness within the same product category is recorded once as a product input with a linked upstream dataset and declared mass and role. Do not recursively reconstruct the supplier foreground unless it is inside the reporting organisation's operational boundary."
+  upstream_dataset_requirement: "Every material or component input contributing to the finished wiring set shall have an applicable upstream dataset or a disclosed data gap; supplier-specific data are preferred for compositionally or technologically significant inputs."
+  disclosure: "Declare the site, reporting period, product family or design basis, production stages under operational control, outsourced stages, supplied-versus-site-added components, packaging treatment, rework loop, scrap destinations, and excluded downstream installation or use stages."
+reference_flow_definition:
+  reference_amount: "1"
+  product_flow_ref:
+    name: "Ignition wiring sets and other wiring sets of a kind used in vehicles, aircraft or ships"
+    uuid: "4b3f48dd-97a6-427e-9baf-742d7eb6e9c2"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "application family (road vehicle"
+    - aircraft
+    - "or ship)"
+    - "harness function and circuit type"
+    - "declared voltage class"
+    - "conductor material and gauge or cross-section range"
+    - "insulation and jacket system"
+    - "connector and termination technology"
+    - "shielding and protective-covering configuration"
+    - "production geography and site"
+    - "production period"
+    - "applicable drawing or bill-of-material revision"
+    - "applicable acceptance and test specification"
+    - "treatment of supplied packaging"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "accepted finished wiring-set output"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Measure net accepted-product mass with calibrated equipment. Include conductors, insulation, permanent connectors, terminals, seals, grommets, shielding, labels, tapes, sleeves, tubes, ties, clips, and other permanently attached items. Exclude reusable fixtures and separately reported packaging."
+  - id: lot_normalization
+    applies_to: "all foreground inputs and outputs"
+    required_property_ref:
+      name: "Mass for material rows; the metered unit for utilities"
+      uuid: ""
+    required_unit: "kg for material rows; recorded utility unit before conversion"
+    rule: "Aggregate the same production lot or reporting period for the numerator and denominator, then divide by accepted finished-product mass to report each row per 1 kg reference flow."
+  - id: component_no_double_count
+    applies_to: "purchased sets, subassemblies, and individual components"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "If a purchased subassembly is recorded as one input, do not also record its embedded wires, terminals, connectors, or coverings as separate inputs unless the subassembly dataset expressly excludes them."
+  - id: mass_reconciliation
+    applies_to: "material inputs, accepted output, scrap, rejects, retained work in progress, and stock change"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Reconcile measured material inputs against accepted product, exported scrap or waste, rejected product, work-in-progress change, and inventory change for the same period; document rather than force-close any residual."
+process_map:
+  - id: component_preparation
+    name: "Wire, cable, and termination preparation"
+    inclusion: "required"
+    inclusion_condition: "Always; combine only when records cannot be separated, and disclose the aggregation"
+    role: "Prepare conductors, shields, terminals, seals, and connectorized leads for harness formation"
+    quantitative_reference: "prepared leads and subassemblies transferred to harness assembly"
+  - id: harness_assembly
+    name: "Harness forming and protective assembly"
+    inclusion: "required"
+    inclusion_condition: "Always"
+    role: "Route, branch, secure, cover, identify, and complete the physical harness assembly"
+    quantitative_reference: "assembled harness transferred to final test and finishing"
+  - id: testing_finishing_packaging
+    name: "Inspection, electrical testing, rework, and packaging"
+    inclusion: "required"
+    inclusion_condition: "Always; specific tests and packaging operations follow the declared design and acceptance specification"
+    role: "Confirm conformity and produce accepted finished wiring sets at the plant gate"
+    quantitative_reference: "1 kg accepted finished wiring set"
+process_inventory:
+  - id: component_preparation
+    label: "Wire, cable, and termination preparation"
+    inputs:
+      product:
+        - row_id: insulated_wires_cables
+          role: "Insulated wires and cables"
+          name: "Application-appropriate insulated wire and cable inputs selected from Tiangong for the declared material and cable construction"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record all purchased insulated conductors, multicore cables, shielded cables, and specialty cables cut or prepared for the wiring set. Quantity comes from receiving, issue, return, and stock-change records reconciled to the reporting period."
+          amount:
+            expression: "measured issued mass minus unused returned mass, adjusted for stock change"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted finished wiring set"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_component_materials
+              source_ids:
+                - ipc-whma-a-620
+                - nasa-std-8739-4a-change-4
+            ranges: []
+        - row_id: termination_components
+          role: "Terminals, connectors, seals, and termination materials"
+          name: "Product-specific terminal, connector, sealing, and termination-material flows; no single generic component flow is imposed"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record contacts, terminals, connector housings, seals, grommets, splice devices, solder, and other termination materials added during preparation. Use item-level quantities and measured or supplier-declared masses."
+          amount:
+            expression: "item count multiplied by verified unit mass, or direct issued mass where available"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted finished wiring set"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_component_materials
+              source_ids:
+                - ipc-whma-a-620
+                - nasa-std-8739-4a-change-4
+            ranges: []
+        - row_id: purchased_subassemblies
+          role: "Purchased connectorized leads and subassemblies"
+          name: "Supplier-specific prepared lead or subassembly flow matching the purchased item"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record complete purchased leads, branches, or sub-harnesses only when they cross the site boundary as identifiable products. Apply the recursive-input and no-double-count rules."
+          amount:
+            expression: "measured received-and-consumed mass for the reporting period"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted finished wiring set"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_component_materials
+              source_ids: []
+            ranges: []
+        - row_id: preparation_energy
+          role: "Preparation electricity and utilities"
+          name: "Site- and period-appropriate electricity and utility product flows"
+          flow_type: "product"
+          property_unit: "Metered utility property / metered unit"
+          description: "Record electricity and other metered utilities used for cutting, stripping, crimping, welding, soldering, cleaning, and local extraction. Allocate shared meters using documented machine time or another physical driver."
+          amount:
+            expression: "submetered use or allocated shared-meter use for the preparation process"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted finished wiring set"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_component_energy
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: prepared_leads_output
+          role: "Prepared leads and subassemblies transferred internally"
+          name: "Internal prepared-lead and subassembly flow"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the measured mass of prepared conductors, terminated leads, and subassemblies transferred to harness assembly as an internal intermediate output."
+          amount:
+            expression: "measured transfer mass or reconciled input mass less recorded preparation scrap"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per process output transferred to harness assembly"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_component_output_waste
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: preparation_scrap
+          role: "Wire, insulation, terminal, and connector preparation scrap"
+          name: "Destination- and material-specific waste flows"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record conductor offcuts, stripped insulation, rejected crimps, damaged terminals, connector parts, and collected process residues by material and destination where records permit."
+          amount:
+            expression: "measured scrap mass by waste stream; do not net revenue against material input"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted finished wiring set"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_component_output_waste
+              source_ids: []
+            ranges: []
+      elementary:
+        []
+  - id: harness_assembly
+    label: "Harness forming and protective assembly"
+    inputs:
+      product:
+        - row_id: prepared_leads_input
+          role: "Prepared leads and subassemblies received internally"
+          name: "Internal prepared-lead and subassembly flow"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the same internal intermediate quantity transferred from component preparation, without adding upstream burden a second time."
+          amount:
+            expression: "measured transfer mass equal to the corresponding internal output after reconciliation"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted finished wiring set"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_assembly_materials
+              source_ids: []
+            ranges: []
+        - row_id: protective_materials
+          role: "Protective, securing, identification, and finishing materials"
+          name: "Product-specific protective, securing, identification, and finishing-material flows"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record tapes, sleeves, tubes, braid, shields, ties, clips, labels, boots, moulding or potting materials, and other items permanently added during harness forming."
+          amount:
+            expression: "measured issued mass or item count multiplied by verified unit mass, less unused returns"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted finished wiring set"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_assembly_materials
+              source_ids:
+                - ipc-whma-a-620
+                - nasa-std-8739-4a-change-4
+            ranges: []
+        - row_id: assembly_energy
+          role: "Harness-assembly electricity and utilities"
+          name: "Site- and period-appropriate electricity and utility product flows"
+          flow_type: "product"
+          property_unit: "Metered utility property / metered unit"
+          description: "Record electricity and other metered utilities for layout boards, taping, braiding, heat shrinking, moulding or potting when used, marking, ventilation, and assembly equipment."
+          amount:
+            expression: "submetered use or allocated shared-meter use for harness assembly"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted finished wiring set"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_assembly_energy
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: assembled_harness_output
+          role: "Assembled harness transferred to final test"
+          name: "Internal assembled-harness flow"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the assembled but not yet accepted harness mass transferred to the final inspection, test, and packaging process."
+          amount:
+            expression: "measured transfer mass or reconciled assembly input less recorded assembly waste"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per process output transferred to final testing"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_assembly_output_waste
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: assembly_scrap
+          role: "Assembly trim, protective-material waste, and rejected parts"
+          name: "Destination- and material-specific waste flows"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record tapes, sleeves, ties, labels, moulding materials, rejected branches, and other assembly waste by material and destination where records permit."
+          amount:
+            expression: "measured waste mass by waste stream"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted finished wiring set"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_assembly_output_waste
+              source_ids: []
+            ranges: []
+      elementary:
+        []
+  - id: testing_finishing_packaging
+    label: "Inspection, electrical testing, rework, and packaging"
+    inputs:
+      product:
+        - row_id: assembled_harness_input
+          role: "Assembled harness received for testing"
+          name: "Internal assembled-harness flow"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the internal assembled-harness mass entering final inspection and electrical testing, matching the upstream internal transfer."
+          amount:
+            expression: "measured transfer mass equal to the corresponding internal output after reconciliation"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted finished wiring set"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_test_finish_inputs
+              source_ids: []
+            ranges: []
+        - row_id: packaging_finishing_materials
+          role: "Packaging and final finishing materials"
+          name: "Material-specific packaging and finishing product flows"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record packaging and any final labels, caps, protectors, or preservatives added after testing. Report packaging separately from net product mass and state whether it is included in the delivered dataset scope."
+          amount:
+            expression: "measured issued mass or item count multiplied by verified unit mass, less unused returns"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted finished wiring set"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_test_finish_inputs
+              source_ids: []
+            ranges: []
+        - row_id: test_finish_energy
+          role: "Test, rework, and packaging electricity"
+          name: "Site- and period-appropriate electricity product flow"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record metered electricity for continuity testing and any design-required insulation, dielectric, functional, or automated tests, plus rework and packaging equipment."
+          amount:
+            expression: "submetered use or allocated shared-meter use for test, rework, and packaging"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted finished wiring set"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_test_finish_energy
+              source_ids:
+                - ipc-whma-a-620
+                - nasa-std-8739-4a-change-4
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: finished_wiring_set
+          role: "Accepted finished wiring set"
+          name: "Ignition wiring sets and other wiring sets of a kind used in vehicles, aircraft or ships"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4b3f48dd-97a6-427e-9baf-742d7eb6e9c2"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record only complete wiring sets that passed the applicable inspection and electrical acceptance requirements as reference-product output."
+          amount:
+            expression: "measured net mass of accepted finished wiring sets; reference amount equals 1 kg"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "1 kg accepted finished wiring set"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finished_output_tests
+              source_ids:
+                - ipc-whma-a-620
+                - nasa-std-8739-4a-change-4
+            ranges: []
+      waste:
+        - row_id: rejected_finished_waste
+          role: "Scrapped rejected wiring sets and test-damaged parts"
+          name: "Destination- and material-specific waste flows"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record rejected units or parts that leave the rework loop as waste, classified by material and treatment destination where known. Do not count units still in rework as waste."
+          amount:
+            expression: "measured mass of final rejects transferred out of the rework loop"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted finished wiring set"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finished_output_tests
+              source_ids: []
+            ranges: []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocation_avoid_by_subdivision
+    applies_to: "shared site operations and meters"
+    rule: "Avoid allocation by separately metering or subdividing preparation, assembly, test, rework, and packaging operations whenever practicable."
+    source_ids:
+      - iso-14044-2006
+      - eu-pef-method-2021
+  - rule_id: allocation_internal_rework
+    applies_to: "internal rework and recovered work in progress"
+    rule: "Keep burdens and material returns inside the same foreground system; do not create a co-product credit for an item that returns to production."
+    source_ids:
+      - eu-pef-method-2021
+  - rule_id: allocation_multiple_products
+    applies_to: "unavoidable shared burdens across distinct saleable products"
+    rule: "Use a documented physical causal driver such as machine time, processed mass, or test time. If no physical relation reasonably represents burden causation, use a documented economic relation and disclose the method, period, prices, and sensitivity."
+    source_ids:
+      - iso-14044-2006
+      - eu-pef-method-2021
+  - rule_id: allocation_scrap_and_residues
+    applies_to: "sold scrap, recyclable residues, and waste"
+    rule: "Report the mass and destination as separate outputs. Do not subtract scrap revenue or an avoided burden from foreground inputs unless the broader study declares and applies a consistent recycling or substitution method."
+    source_ids:
+      - iso-14044-2006
+      - eu-pef-method-2021
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_component_materials
+      process_id: "component_preparation"
+      flow_role: "wires, cables, terminals, connectors, seals, and purchased subassemblies"
+      record_type: "receiving, issue, return, BOM, unit-mass, and inventory records"
+      raw_fields: "item_id; material_or_component_description; supplier; quantity_received; quantity_issued; quantity_returned; unit_mass; opening_stock; closing_stock; lot_id; product_family"
+      collection_method: "reconcile ERP or warehouse movements to verified BOM and unit-mass records"
+      unit: "kg and item"
+      frequency: "each receipt and issue; aggregate monthly"
+      temporal_coverage: "representative reporting period or complete production campaign"
+      site_scope: "all preparation lines in the declared site"
+      aggregation_rule: "sum consumed mass by item and product family; retain purchased subassemblies as single rows unless their datasets exclude embedded components"
+      quality_evidence: "purchase record; BOM revision; calibrated scale or supplier mass evidence; stock reconciliation"
+    - protocol_id: cp_component_energy
+      process_id: "component_preparation"
+      flow_role: "preparation electricity and utilities"
+      record_type: "meter, submeter, equipment-runtime, and utility invoice records"
+      raw_fields: "meter_id; reading_start; reading_end; utility_type; machine_runtime; allocation_driver; production_lot"
+      collection_method: "read submeters; allocate only shared consumption using a documented physical driver"
+      unit: "metered utility unit"
+      frequency: "per shift or meter interval; aggregate monthly"
+      temporal_coverage: "same period as material and accepted-output records"
+      site_scope: "all preparation equipment in the declared site"
+      aggregation_rule: "subtract meter readings and allocate shared use by machine time or another justified physical driver"
+      quality_evidence: "meter identity; calibration or invoice; allocation worksheet"
+    - protocol_id: cp_component_output_waste
+      process_id: "component_preparation"
+      flow_role: "prepared-lead transfers and preparation scrap"
+      record_type: "transfer weighment, scrap-bin, rejection, and waste-dispatch records"
+      raw_fields: "lot_id; output_mass; scrap_material; scrap_mass; destination; date"
+      collection_method: "weigh internal transfers and segregated scrap; reconcile to material inputs"
+      unit: "kg"
+      frequency: "each transfer and waste dispatch; aggregate monthly"
+      temporal_coverage: "same period as component inputs"
+      site_scope: "all preparation lines in the declared site"
+      aggregation_rule: "sum transfers and scrap by product family, material, and destination"
+      quality_evidence: "scale calibration; transfer ticket; waste manifest; reconciliation record"
+    - protocol_id: cp_assembly_materials
+      process_id: "harness_assembly"
+      flow_role: "prepared leads and protective, securing, identification, and finishing materials"
+      record_type: "transfer, issue, return, BOM, count, and unit-mass records"
+      raw_fields: "item_id; description; quantity_issued; quantity_returned; unit_mass; transfer_mass; lot_id; product_family"
+      collection_method: "reconcile internal transfers and warehouse issues to verified BOM and unit masses"
+      unit: "kg and item"
+      frequency: "each transfer and issue; aggregate monthly"
+      temporal_coverage: "same period as accepted-output records"
+      site_scope: "all harness assembly lines in the declared site"
+      aggregation_rule: "sum consumed mass by item and product family"
+      quality_evidence: "BOM and drawing revision; scale or unit-mass evidence; stock reconciliation"
+    - protocol_id: cp_assembly_energy
+      process_id: "harness_assembly"
+      flow_role: "assembly electricity and utilities"
+      record_type: "meter, equipment-runtime, and utility records"
+      raw_fields: "meter_id; reading_start; reading_end; utility_type; runtime; allocation_driver; production_lot"
+      collection_method: "read submeters; allocate shared consumption using documented physical drivers"
+      unit: "metered utility unit"
+      frequency: "per shift or meter interval; aggregate monthly"
+      temporal_coverage: "same period as assembly material records"
+      site_scope: "all assembly equipment in the declared site"
+      aggregation_rule: "subtract meter readings and allocate shared use by machine time or another justified physical driver"
+      quality_evidence: "meter identity; calibration or invoice; allocation worksheet"
+    - protocol_id: cp_assembly_output_waste
+      process_id: "harness_assembly"
+      flow_role: "assembled-harness transfers and assembly waste"
+      record_type: "transfer weighment, scrap-bin, rejection, and waste-dispatch records"
+      raw_fields: "lot_id; output_mass; waste_material; waste_mass; destination; date"
+      collection_method: "weigh internal transfers and segregated waste"
+      unit: "kg"
+      frequency: "each transfer and waste dispatch; aggregate monthly"
+      temporal_coverage: "same period as assembly inputs"
+      site_scope: "all assembly lines in the declared site"
+      aggregation_rule: "sum transfers and waste by product family, material, and destination"
+      quality_evidence: "scale calibration; transfer ticket; waste manifest; reconciliation record"
+    - protocol_id: cp_test_finish_inputs
+      process_id: "testing_finishing_packaging"
+      flow_role: "assembled harnesses, packaging, labels, caps, and finishing inputs"
+      record_type: "transfer, issue, return, BOM, count, and unit-mass records"
+      raw_fields: "item_id; description; quantity_issued; quantity_returned; unit_mass; transfer_mass; lot_id; product_family"
+      collection_method: "reconcile internal transfers and issued materials to verified BOM and unit masses"
+      unit: "kg and item"
+      frequency: "each transfer and issue; aggregate monthly"
+      temporal_coverage: "same period as accepted-output records"
+      site_scope: "all test, rework, and packaging areas in the declared site"
+      aggregation_rule: "sum consumed mass by item and product family; keep packaging separate from net reference-product mass"
+      quality_evidence: "BOM and packaging specification; scale or unit-mass evidence; stock reconciliation"
+    - protocol_id: cp_test_finish_energy
+      process_id: "testing_finishing_packaging"
+      flow_role: "test, rework, and packaging electricity"
+      record_type: "meter, test-cycle, equipment-runtime, and utility records"
+      raw_fields: "meter_id; reading_start; reading_end; test_cycles; runtime; allocation_driver; lot_id"
+      collection_method: "read submeters; allocate shared consumption using test cycles, machine time, or another physical driver"
+      unit: "kWh"
+      frequency: "per shift or meter interval; aggregate monthly"
+      temporal_coverage: "same period as accepted-output records"
+      site_scope: "all test, rework, and packaging equipment in the declared site"
+      aggregation_rule: "subtract meter readings and allocate shared use by documented physical driver"
+      quality_evidence: "meter identity; calibration or invoice; test-equipment log; allocation worksheet"
+    - protocol_id: cp_finished_output_tests
+      process_id: "testing_finishing_packaging"
+      flow_role: "accepted output, inspection and test status, rework, and final rejects"
+      record_type: "scale, production, test, nonconformance, rework, and waste records"
+      raw_fields: "serial_or_lot_id; product_family; drawing_revision; net_mass; test_specification; test_result; rework_status; reject_mass; waste_destination; date"
+      collection_method: "weigh accepted and rejected output and link test and inspection records to the lot or serial identity"
+      unit: "kg and test status"
+      frequency: "each lot or unit as required by the acceptance specification; aggregate monthly"
+      temporal_coverage: "same period as all foreground inputs"
+      site_scope: "all accepted output and final rejects from the declared site"
+      aggregation_rule: "sum accepted net mass and final reject mass; exclude unresolved work in progress from both until disposition"
+      quality_evidence: "scale calibration; current drawing and BOM; test-equipment calibration; traceable inspection and test report; nonconformance disposition"
+  calculation_rules:
+    - id: calc_count_to_mass
+      applies_to: "counted components and packaging"
+      rule: "consumed mass = (issued item count - returned item count) × verified unit mass"
+      inputs:
+        - "issued count"
+        - "returned count"
+        - "verified unit mass"
+      output: "consumed mass by item in kg"
+      source_ids: []
+    - id: calc_net_material_consumption
+      applies_to: "mass-issued materials"
+      rule: "consumed mass = opening stock + receipts - closing stock - documented returns or transfers out"
+      inputs:
+        - "opening stock"
+        - receipts
+        - "closing stock"
+        - returns
+        - transfers
+      output: "consumed input mass in kg"
+      source_ids:
+        - eu-pef-method-2021
+    - id: calc_normalize_reference_mass
+      applies_to: "every foreground inventory row"
+      rule: "normalized amount = reporting-period row amount / reporting-period accepted finished-product mass"
+      inputs:
+        - "aggregated row amount"
+        - "accepted finished-product mass"
+      output: "amount per 1 kg accepted wiring set"
+      source_ids:
+        - iso-14044-2006
+        - eu-pef-method-2021
+    - id: calc_mass_reconciliation
+      applies_to: "whole foreground system"
+      rule: "residual = total material inputs - accepted net product - exported waste and scrap - final rejects - closing work-in-progress increase + opening work-in-progress decrease; investigate and disclose the residual without forced adjustment"
+      inputs:
+        - "material inputs"
+        - "accepted product"
+        - waste
+        - scrap
+        - rejects
+        - "work-in-progress change"
+        - "stock change"
+      output: "mass reconciliation and disclosed residual in kg"
+      source_ids:
+        - eu-pef-method-2021
+  data_quality_requirements:
+    - id: dq_identity_and_scope
+      applies_to: "product identity and boundary"
+      requirement: "Retain the current drawing, bill of materials, application family, circuit and voltage class, product revision, site, period, included operations, outsourced operations, and packaging treatment."
+      evidence: "approved drawing and BOM; routing; scope statement; product metadata"
+    - id: dq_primary_records
+      applies_to: "material, energy, waste, and output quantities"
+      requirement: "Use site records for foreground quantities. Supplier or generic secondary data may describe upstream production but shall not replace measured foreground consumption or output."
+      evidence: "receiving and issue records; meters; invoices; scale tickets; production reports; waste manifests"
+    - id: dq_temporal_alignment
+      applies_to: "all foreground rows"
+      requirement: "Use one representative reporting period, normally 12 consecutive months or a complete production campaign, and align input, output, rework, stock-change, and waste records to that period. Disclose shutdowns, ramp-up, or exceptional production."
+      evidence: "period register; production calendar; meter dates; stock records; campaign report"
+    - id: dq_mass_completeness
+      applies_to: "material balance"
+      requirement: "Include all bill-of-material items and measurable process additions, accepted product, scrap, final rejects, work-in-progress change, and stock change; explain unresolved residuals and missing supplier datasets."
+      evidence: "mass-reconciliation worksheet; BOM coverage check; data-gap register"
+    - id: dq_test_traceability
+      applies_to: "inspection and electrical testing"
+      requirement: "Retain current acceptance procedures and traceable inspection and test results. At minimum record continuity testing; record insulation-resistance, dielectric-withstand, shielding, functional, or other tests when required by the declared application and specification."
+      evidence: "test specification; calibrated-equipment record; lot- or serial-linked test report; nasa-std-8739-4a-change-4; ipc-whma-a-620"
+    - id: dq_allocation
+      applies_to: "shared operations"
+      requirement: "Document every shared-meter or shared-process allocation driver and retain the calculation and sensitivity when a non-physical relation is used."
+      evidence: "allocation worksheet; meter map; production statistics; iso-14044-2006; eu-pef-method-2021"
+validation_rules:
+  - rule_id: validate_complete_set_scope
+    applies_to: "product identity"
+    rule: "Confirm that the reference product is a complete wiring set for a vehicle, aircraft, or ship, not a single wire, cable, connector, terminal, component kit, incomplete subassembly, or complete transport equipment item."
+    source_ids:
+      - ipc-whma-a-620
+  - rule_id: validate_reference_identity
+    applies_to: "reference flow"
+    rule: "Require product flow UUID 4b3f48dd-97a6-427e-9baf-742d7eb6e9c2, Mass UUID 93a60a56-a3c8-11da-a746-0800200b9a66, Units of mass UUID 93a60a57-a4c8-11da-a746-0800200c9a66, unit kg, and reference amount 1."
+    source_ids: []
+  - rule_id: validate_required_qualifiers
+    applies_to: "functional unit and dataset metadata"
+    rule: "Fail completeness when any required qualifier is absent or when the bill-of-material, drawing, test-specification, or packaging basis is not identifiable."
+    source_ids:
+      - ipc-whma-a-620
+      - nasa-std-8739-4a-change-4
+  - rule_id: validate_process_coverage
+    applies_to: "foreground process inventory"
+    rule: "Require all three process-map stages or a documented aggregation that preserves preparation, assembly, testing, rework, packaging, input, output, and waste coverage."
+    source_ids:
+      - ipc-whma-a-620
+      - nasa-std-8739-4a-change-4
+  - rule_id: validate_internal_transfers
+    applies_to: "prepared-lead and assembled-harness internal flows"
+    rule: "Confirm that each internal output has a matching downstream input and carries no duplicated upstream burden."
+    source_ids:
+      - eu-pef-method-2021
+  - rule_id: validate_mass_reconciliation
+    applies_to: "whole foreground system"
+    rule: "Require a mass-reconciliation worksheet covering inputs, accepted product, waste, scrap, rejects, work-in-progress, and stock change; unresolved residuals must be disclosed and must not be forced into another row."
+    source_ids:
+      - eu-pef-method-2021
+  - rule_id: validate_test_records
+    applies_to: "accepted output"
+    rule: "Require traceable inspection and continuity-test evidence for accepted product and all additional tests required by the declared design or acceptance specification."
+    source_ids:
+      - ipc-whma-a-620
+      - nasa-std-8739-4a-change-4
+  - rule_id: validate_allocation_disclosure
+    applies_to: "shared burdens and scrap"
+    rule: "Require the allocation driver, data period, calculations, and scrap or waste treatment to be disclosed; prohibit unexplained revenue netting or avoided-burden credits."
+    source_ids:
+      - iso-14044-2006
+      - eu-pef-method-2021
+  - rule_id: validate_no_unsourced_defaults
+    applies_to: "all foreground amounts"
+    rule: "Reject undocumented default quantities presented as measured or source-backed values. Foreground gaps shall remain explicit and replaceable."
+    source_ids:
+      - iso-14044-2006
+      - eu-pef-method-2021
+published_dataset_profile:
+  dataset_role: "Foreground gate-to-gate production dataset for a finished wiring set at the manufacturing plant gate"
+  downstream_use: "May be published as a secondary_dataset or background_dataset and used as a component-production input to vehicle, aircraft, ship, process, or lifecyclemodel studies"
+  allowed_use: "Product-family or design-specific studies whose application, voltage, material, connector, protection, geography, period, test, and packaging qualifiers are compatible with the dataset"
+  excluded_use: "Single wires, cables, connectors, terminals, incomplete kits or subassemblies; non-transport wiring applications; installed-system use or end-of-life claims; comparison across incompatible designs without additional normalization and review"
+  required_metadata: "PCR id; product flow UUID; application family; harness function; circuit and voltage class; conductor and insulation system; connector and termination technology; shielding and protection; drawing and BOM revision; site and geography; reporting period; production route; outsourced stages; applicable test specification; packaging treatment; allocation method"
+  required_quality_disclosure: "Foreground-data coverage; meter and mass-measurement basis; BOM and supplier-data coverage; mass-reconciliation residual; rejected and reworked output; test coverage and traceability; allocation drivers; upstream dataset gaps; temporal, geographical, and technological representativeness"
+  update_trigger: "Change in drawing or BOM that materially changes composition; conductor, insulation, connector, termination, shielding, or protection technology change; voltage-class or application change; site or route change; material change in supplier mix, energy mix, scrap treatment, allocation method, test regime, packaging, or reporting period"
+data_sources:
+  - id: "ipc-whma-a-620"
+    type: "standard"
+    reference: "IPC and WHMA, *Requirements and Acceptance for Cable and Wire Harness Assemblies*, official IPC description: https://www.ipc.org/ipc-validation-services-qualified-manufacturing-companies-qml-ipcwhma-620 (retrieved 2026-08-09)"
+    used_for: "Category meaning; assembly activities; crimped, mechanically secured, and soldered interconnections; inspection and test basis; process-control and acceptance-record expectations"
+  - id: "nasa-std-8739-4a-change-4"
+    type: "standard"
+    reference: "NASA-STD-8739.4A Change 4, *Workmanship Standard for Crimping, Interconnecting Cables, Harnesses, and Wiring*: https://standards.nasa.gov/node/283 (retrieved 2026-08-09)"
+    used_for: "Detailed process decomposition for forming, stripping, shielding, crimping, connector assembly, identification, cleaning, handling, testing, splicing, and quality assurance; test and record traceability for critical applications"
+  - id: "iso-14044-2006"
+    type: "standard"
+    reference: "ISO 14044:2006, *Environmental management — Life cycle assessment — Requirements and guidelines*: https://www.iso.org/standard/38498.html (retrieved 2026-08-09)"
+    used_for: "Goal and scope, inventory, allocation, reporting, limitations, and interpretation framework"
+  - id: "eu-pef-method-2021"
+    type: "official_guidance"
+    reference: "Commission Recommendation (EU) 2021/2279, Annex I, *Product Environmental Footprint Method*: https://eur-lex.europa.eu/eli/reco/2021/2279/2021-12-30/eng (retrieved 2026-08-09)"
+    used_for: "Functional unit and reference flow framing; system boundary; inventory data quality; allocation hierarchy; normalization and reporting"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:f05b2bbf3533483b1c1a9dc3a8a2c3e713d1f9bf604672e8104ef7343c4d25cd"
+  generated_content_sha256: "sha256:4bed4594817c9ab6a8673d8e8ee743a3e3109889343913cf25d069dea0ad972e"

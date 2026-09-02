@@ -141,21 +141,22 @@ CPC import mutations are protected by one lock per classification coordinate, no
 compare-and-swap check, and staged writes. The mapping is the final committed artifact, so a failed import cannot
 publish an edge whose identity or PCR target was not installed.
 
-Only an explicitly accepted edge to a material PCR is a positive mapping. CPC 3.0 currently has exactly three such
-edges (`01111`, `04412`, and `04911`); CPC 2.1 is a current v2 mapping with zero edges.
+Only an explicitly accepted edge to a material PCR is a positive mapping. CPC 3.0 currently has 417 such edges;
+CPC 2.1 is a current v2 mapping with zero edges. The canonical mapping and its durable ADR references, rather than
+an enumerated list in this guide, define the accepted set.
 Classification coverage is a derived read model under `classifications/indexes/`; it combines normalized leaves,
 mapping input, target PCR state, and coverage assessment for bounded CLI and viewer reads. Each checked-in index must
 record exact-byte SHA-256 fingerprints for its normalized-leaf and mapping sources, and consumers must reject a stale
 or substituted source. A mapped entry projects its acceptance evidence and runtime resolution rechecks it against the
 canonical mapping. The index is not authoring truth and must be regenerated from those sources. CPC 3.0 coverage
-remains complete at 2,877 leaves: 3 mapped, 2,874 unmapped, and 0 unknown.
+remains complete at 2,877 leaves: 417 mapped, 2,460 unmapped, and 0 unknown.
 
 Retired CPC leaf-derived PCR ids are recorded in the deterministic registry at
-`classifications/aliases/pcr-id-aliases.yaml`. Its 2,874 aliases are terminal locators to classification coverage;
+`classifications/aliases/pcr-id-aliases.yaml`. Its 2,460 aliases are terminal locators to classification coverage;
 they are checked before catalog lookup, cannot chain or cycle, and must not be silently followed into a PCR.
 `resolve --pcr` returns the locator and a copyable next command, while content commands fail with
 `PCR_LEGACY_ID_REDIRECT`. One physical pilot has removed CPC `99000`; it is known-unmapped and its old id redirects.
-The remaining 2,873 legacy directories are still compatibility artifacts. Bulk physical migration is not complete.
+The remaining 2,459 legacy directories are still compatibility artifacts. Bulk physical migration is not complete.
 
 ## Builder CLI and Authoring Docs
 

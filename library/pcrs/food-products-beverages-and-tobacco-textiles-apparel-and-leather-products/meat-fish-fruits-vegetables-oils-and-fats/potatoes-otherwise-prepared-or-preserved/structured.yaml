@@ -1,10 +1,949 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "21394"
-  title: "Potatoes, otherwise prepared or preserved"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.food-products-beverages-and-tobacco-textiles-apparel-and-leather-products.meat-fish-fruits-vegetables-oils-and-fats.potatoes-otherwise-prepared-or-preserved"
+  classification_refs: "CPC 3.0: 21394, Potatoes, otherwise prepared or preserved"
+  covered_products: "French fries; potato chips or crisps; mashed potato products; potatoes precooked in fat or oil; baked potato products; potato salad; kloesse; roesti; other finished potato products within the same semantic boundary; frozen and non-frozen presentations"
+  excluded_products: "Raw potatoes; raw frozen potatoes; potatoes merely boiled or steamed in water and frozen; potatoes preserved by vinegar or acetic acid; dried potatoes; starch and other products assigned to another product category"
+  representative_product: "Net finished potato product at the manufacturing plant gate, with product form, recipe class, cooking or preservation route, packaging state, and frozen or non-frozen state declared"
+  production_route: "Receipt and preparation of potatoes; route-specific size reduction, formulation, cooking, frying, baking, mashing, mixing, or other preservation; optional quick freezing and cold storage; packaging and plant-gate release"
+  market_state: "Finished manufactured product, packaged or bulk as declared, frozen or non-frozen, at plant gate"
+functional_unit:
+  what: "Provide a finished prepared or preserved potato product in its declared recipe, physical form, packaging state, and frozen or non-frozen market state"
+  how_much: "1 kg net finished product"
+  how_well: "Conforming to the declared product specification and saleable release criteria; for quick-frozen French fried potatoes, relevant Codex identity, composition, quality, and temperature criteria apply"
+  how_long_or_cycle: "One production batch through plant-gate release; declared shelf life is metadata and is not included as a use-duration service in this plant-gate foreground package"
+  reference_flow_link: "The reference flow is the net mass of saleable finished product released at the plant gate"
+system_boundary:
+  rules:
+    - rule_id: boundary_foreground_gate
+      applies_to: "Foreground package"
+      rule: "Include receiving and preparation, route-specific transformation, optional freezing and cold storage, packaging, cleaning and sanitation, on-site waste and wastewater handling, and direct emissions through plant-gate product release. Keep distribution, retail, use, and end-of-life outside this foreground package unless a downstream study explicitly extends it."
+      source_ids:
+        - eu-pef-2021-2279
+    - rule_id: boundary_complete_inventory
+      applies_to: "Foreground processes"
+      rule: "Record all known inputs and outputs, including products, co-products, water, energy, ingredients, packaging, wastes, wastewater, and emissions to air, water, and soil. Identify every co-product, by-product, rework stream, and waste stream."
+      source_ids:
+        - eu-pef-2021-2279
+    - rule_id: boundary_route_declaration
+      applies_to: "Product-specific route"
+      rule: "Include only unit operations actually used, but declare the disposition of sorting, washing, peeling, cutting, blanching, cooking, frying, baking, mashing, mixing, cooling, freezing, and storage so omission is distinguishable from non-applicability."
+      source_ids:
+        - codex-cxs-114-1981
+        - codex-cxc-8-1976
+    - rule_id: boundary_frozen_chain
+      applies_to: "Quick-frozen products"
+      rule: "Include quick freezing and on-site frozen storage, electricity, refrigerant make-up and leakage where applicable, temperature monitoring, and product losses until plant-gate dispatch; downstream refrigerated transport is outside this package but shall be linked by the downstream model."
+      source_ids:
+        - codex-cxc-8-1976
+    - rule_id: boundary_cutoff
+      applies_to: "Any proposed exclusion"
+      rule: "Avoid cut-off. If a downstream PEF-conformant study applies a cut-off, use screening evidence, keep cumulative excluded material, energy, and environmental significance within the applicable 3% rule, and explicitly justify every exclusion; the foreground package itself shall retain known material flows."
+      source_ids:
+        - eu-pef-2021-2279
+boundary_abstraction:
+  declared_starting_condition: "Potatoes, other ingredients, processing aids, packaging materials, and utilities received at the manufacturing-facility gate, each with quantity, state, supplier geography, and upstream dataset reference declared"
+  starting_condition_role: "Foreground manufacturing input gate"
+  product_classification_scope: "Finished products semantically covered by CPC 3.0 code 21394; classification is scope context and does not replace product-form and route declarations"
+  recursive_input_rule: "If a purchased semi-finished input is itself in this PCR category, record it once as a same-category product input, require a supplier-gate dataset for its upstream production, disclose its completed processing state, and do not recreate those upstream stages inside the receiving foreground process"
+  upstream_dataset_requirement: "Link representative upstream datasets for potatoes, ingredients, processing aids, energy carriers, water supply where modelled as a product flow, packaging, and same-category semi-finished inputs; disclose proxies, geography, technology, time period, and excluded data gaps"
+  disclosure: "Declare product form, recipe class, actual unit operations, frozen state, packaging state, plant location, reference period, allocation method, cut-offs, rework, co-products, wastes, wastewater treatment route, direct emissions, and all deviations from this boundary"
+reference_flow_definition:
+  reference_amount: "1"
+  product_flow_ref:
+    name: "Potatoes, otherwise prepared or preserved"
+    uuid: "b158bec4-e459-437d-8106-88d2f3d92c8a"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "product form"
+    - "recipe or ingredient class"
+    - "cooking or preservation route"
+    - "frozen or non-frozen state"
+    - "packaging format and net content"
+    - "production geography"
+    - technology
+    - "allocation status"
+    - "plant-gate release condition"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "Reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Report exactly 1 kg net saleable finished product at plant-gate release, excluding pallet and transport packaging unless that packaging is part of the declared sale unit."
+  - id: net_product_mass
+    applies_to: "Product yield and reference normalization"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Measure net product mass after final processing and before plant-gate release; separately record product retained for rework, off-specification product, samples, and losses."
+  - id: batch_to_reference_conversion
+    applies_to: "All foreground inputs and outputs"
+    required_property_ref:
+      name: "Quantity-specific property"
+      uuid: ""
+    required_unit: "Quantity-specific SI unit"
+    rule: "Normalize a batch quantity as recorded batch quantity / net saleable batch output in kg; preserve the original record and conversion factor."
+  - id: frozen_temperature_condition
+    applies_to: "Quick-frozen products"
+    required_property_ref:
+      name: "Temperature"
+      uuid: ""
+    required_unit: "degree Celsius"
+    rule: "When the declared market state is quick frozen, record thermal-centre temperature at completion of freezing and storage or dispatch temperature; the product shall reach -18 degree Celsius or colder after thermal stabilization, subject only to documented competent-authority tolerances."
+process_map:
+  - id: receiving_and_preparation
+    name: "Raw material receiving and potato preparation"
+    inclusion: "required"
+    inclusion_condition: "Always include for facility-processed potatoes; if a same-category semi-finished input bypasses an operation, declare the bypass and supplier dataset"
+    role: "Foreground receiving, sorting, cleaning, peeling, and size-reduction preparation"
+    quantitative_reference: "kg prepared potato intermediate"
+  - id: product_transformation
+    name: "Product-specific transformation"
+    inclusion: "required"
+    inclusion_condition: "Include the actual formulation and preservation operations used by the declared product route"
+    role: "Foreground cooking, frying, baking, mashing, mixing, cooling, or other transformation"
+    quantitative_reference: "kg transformed product before optional freezing and final packaging"
+  - id: quick_freezing_and_cold_storage
+    name: "Quick freezing and on-site cold storage"
+    inclusion: "conditional"
+    inclusion_condition: "Include when the declared product is quick frozen or held frozen before plant-gate release"
+    role: "Foreground freezing and frozen storage"
+    quantitative_reference: "kg frozen product released to final packaging or dispatch"
+  - id: packaging_and_release
+    name: "Packaging and plant-gate release"
+    inclusion: "required"
+    inclusion_condition: "Always include; declare bulk, primary, secondary, and reusable packaging actually used"
+    role: "Foreground packaging, final quality release, and reference-flow output"
+    quantitative_reference: "1 kg net saleable finished product"
+process_inventory:
+  - id: receiving_and_preparation
+    label: "Raw material receiving and potato preparation"
+    inputs:
+      product:
+        - row_id: received_potato_input
+          role: "Received potatoes or same-category semi-finished potato input"
+          name: "Raw potatoes or declared same-category semi-finished potato input; resolve the product-specific Tiangong UUID before publication"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the measured mass of potatoes or disclosed same-category semi-finished potato material entering preparation. Retain supplier, lot, origin, storage state, and upstream dataset identity."
+          amount:
+            expression: "weigh received usable and rejected quantities by lot and normalize the accepted input to net finished product"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net saleable finished product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_inputs
+              source_ids:
+                - unstats-cpc-3-0
+            ranges:
+              - role: qa_guardrail
+                lower: "0.5"
+                upper: "5"
+                unit: "kg"
+                basis: "per 1 kg net saleable finished product across high-moisture formulated products through low-moisture fried products"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: preparation_water
+          role: "Preparation and sanitation water"
+          name: "Process water; resolve the site-appropriate Tiangong UUID before publication"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record metered or defensibly allocated water crossing the preparation boundary for washing, peeling, transfer, and sanitation. Separate recirculated internal water from fresh make-up water."
+          amount:
+            expression: "meter fresh water by preparation line and allocate only when line-level subdivision is unavailable"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net saleable finished product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water_and_wastewater
+              source_ids:
+                - eu-pef-2021-2279
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "20"
+                unit: "kg"
+                basis: "fresh water per 1 kg net saleable finished product"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: prepared_potato_intermediate
+          role: "Prepared potato intermediate"
+          name: "Prepared potato intermediate internal product flow"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the measured mass transferred to the declared transformation route after sorting, cleaning, peeling, and cutting operations that actually apply."
+          amount:
+            expression: "measured transfer mass to product_transformation"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg prepared potato intermediate"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_product_mass
+              source_ids:
+                - codex-cxs-114-1981
+                - codex-cxc-8-1976
+            ranges: []
+      waste:
+        - row_id: preparation_residues
+          role: "Sorting, peel, trim, and preparation residues"
+          name: "Potato preparation residues; resolve waste or co-product UUIDs by actual disposition before publication"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record residues by measured mass and disposition. Classify a stream as a co-product only when it is intentionally produced, quality-controlled, and leaves with a documented beneficial use and economic value; otherwise record it as waste."
+          amount:
+            expression: "measured outgoing mass by residue class and destination"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net saleable finished product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_outputs
+              source_ids:
+                - eu-pef-2021-2279
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "4"
+                unit: "kg"
+                basis: "per 1 kg net saleable finished product"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: preparation_wastewater
+          role: "Preparation wastewater"
+          name: "Wastewater; resolve the destination-specific Tiangong waste flow before publication"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record wastewater sent to internal treatment, sewer, or external treatment, net of internally recirculated water; retain measured quantity and destination."
+          amount:
+            expression: "metered discharge or water-balance calculation from collected make-up, product carryover, evaporation, and recirculation records"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net saleable finished product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_water_and_wastewater
+              source_ids:
+                - eu-pef-2021-2279
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "20"
+                unit: "kg"
+                basis: "per 1 kg net saleable finished product"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        []
+  - id: product_transformation
+    label: "Product-specific transformation"
+    inputs:
+      product:
+        - row_id: transformation_potato_input
+          role: "Prepared potato intermediate"
+          name: "Prepared potato intermediate internal product flow"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the internal mass transferred from preparation and reconcile it to the preceding process output."
+          amount:
+            expression: "measured transfer mass from receiving_and_preparation"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg transformed product output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_product_mass
+              source_ids:
+                - codex-cxs-114-1981
+                - codex-cxc-8-1976
+            ranges: []
+        - row_id: recipe_inputs
+          role: "Ingredients, edible oil, and processing aids"
+          name: "Product-specific ingredient flows; resolve each Tiangong UUID before publication"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record every recipe ingredient and processing aid separately, including edible oil or fat, salt, sugars, seasonings, dairy or other formulation ingredients, and processing aids when used. Do not use this aggregate card as a single combined exchange in a completed dataset."
+          amount:
+            expression: "actual batch issue minus documented return to stock, recorded separately for each ingredient"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net saleable finished product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_inputs
+              source_ids:
+                - codex-cxs-114-1981
+                - eu-pef-2021-2279
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "1.5"
+                unit: "kg"
+                basis: "combined non-potato recipe inputs per 1 kg net saleable finished product; completed datasets shall disaggregate ingredients"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: transformation_electricity
+          role: "Electricity used for transformation"
+          name: "Electricity supply appropriate to site and voltage; resolve Tiangong UUID before publication"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record metered electricity for route-specific transformation equipment and line auxiliaries, with shared loads subdivided or allocated transparently."
+          amount:
+            expression: "meter by line or allocate shared metering using documented equipment runtime and power data"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net saleable finished product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_records
+              source_ids:
+                - eu-pef-2021-2279
+            ranges:
+              - role: qa_guardrail
+                lower: "0.01"
+                upper: "5"
+                unit: "kWh"
+                basis: "per 1 kg net saleable finished product"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: transformation_thermal_energy
+          role: "Thermal energy and fuels used for transformation"
+          name: "Route-specific fuel, steam, or heat supply; resolve each Tiangong UUID before publication"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Record steam, hot water, direct fuel, or other thermal-energy carriers used for blanching, cooking, frying, baking, drying incidental to the covered route, and sanitation; separate carrier identities and units."
+          amount:
+            expression: "measure fuel or heat supply and convert using documented net calorific value or metered delivered heat"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net saleable finished product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_records
+              source_ids:
+                - eu-pef-2021-2279
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "30"
+                unit: "MJ"
+                basis: "delivered thermal energy per 1 kg net saleable finished product"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: transformed_product
+          role: "Transformed potato product before optional freezing and final packaging"
+          name: "Transformed potato product internal product flow"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record measured saleable and non-saleable output after the actual cooking, frying, baking, mashing, mixing, cooling, or other preservation route."
+          amount:
+            expression: "measured transfer mass to optional freezing or final packaging"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg transformed product output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_product_mass
+              source_ids:
+                - codex-cxs-114-1981
+                - codex-cxc-8-1976
+            ranges: []
+      waste:
+        - row_id: transformation_waste
+          role: "Transformation residues and off-specification product"
+          name: "Route-specific transformation waste; resolve Tiangong UUIDs by material and destination before publication"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record spent oil, crumbs, filter residues, off-specification product, and other route-specific waste separately by composition and destination; record internally reworked product separately from waste."
+          amount:
+            expression: "measured outgoing mass by waste class and destination"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net saleable finished product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_outputs
+              source_ids:
+                - eu-pef-2021-2279
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "2"
+                unit: "kg"
+                basis: "per 1 kg net saleable finished product"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        - row_id: direct_transformation_emissions
+          role: "Direct transformation emissions"
+          name: "Pollutant-specific elementary flows; resolve each Tiangong UUID before publication"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record pollutant-specific emissions from on-site combustion, frying exhaust, or other direct release points using measurements or facility activity data and documented factors. Do not aggregate different elementary flows into one exchange."
+          amount:
+            expression: "direct measurement or site activity data x documented emission factor for each pollutant and compartment"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net saleable finished product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_direct_emissions
+              source_ids:
+                - eu-pef-2021-2279
+            ranges: []
+  - id: quick_freezing_and_cold_storage
+    label: "Quick freezing and on-site cold storage"
+    inputs:
+      product:
+        - row_id: freezing_product_input
+          role: "Product entering quick freezing"
+          name: "Transformed potato product internal product flow"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record measured mass and entry temperature of transformed product entering the quick-freezing equipment."
+          amount:
+            expression: "measured mass entering freezing"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg frozen product output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_frozen_chain_records
+              source_ids:
+                - codex-cxc-8-1976
+            ranges: []
+        - row_id: frozen_chain_electricity
+          role: "Freezing and cold-storage electricity"
+          name: "Electricity supply appropriate to site and voltage; resolve Tiangong UUID before publication"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record electricity used by quick-freezing equipment and on-site frozen storage through plant-gate release, including defrost and auxiliary loads."
+          amount:
+            expression: "meter freezing and cold-store electricity and allocate shared cold storage using documented product mass and residence time"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net saleable frozen product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_records
+              source_ids:
+                - codex-cxc-8-1976
+                - eu-pef-2021-2279
+            ranges:
+              - role: qa_guardrail
+                lower: "0.01"
+                upper: "3"
+                unit: "kWh"
+                basis: "per 1 kg net saleable frozen product through plant-gate release"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: quick_frozen_product
+          role: "Quick-frozen potato product"
+          name: "Quick-frozen potato product internal product flow"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record output mass, thermal-centre temperature after stabilization, cold-store residence time, and dispatch temperature."
+          amount:
+            expression: "measured mass transferred to final packaging or dispatch"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg quick-frozen product output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_frozen_chain_records
+              source_ids:
+                - codex-cxs-114-1981
+                - codex-cxc-8-1976
+            ranges: []
+      waste:
+        []
+      elementary:
+        - row_id: refrigerant_releases
+          role: "Refrigerant releases"
+          name: "Refrigerant-specific emission to air; resolve each Tiangong elementary-flow UUID before publication"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record each refrigerant emitted from quick-freezing and cold-storage systems using verified make-up records and inventory reconciliation; do not assume zero leakage without records."
+          amount:
+            expression: "calculated refrigerant loss from opening and closing inventory, purchases, recovery, and equipment service records"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net saleable frozen product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_refrigerant_records
+              source_ids:
+                - eu-pef-2021-2279
+            ranges: []
+  - id: packaging_and_release
+    label: "Packaging and plant-gate release"
+    inputs:
+      product:
+        - row_id: packaging_product_input
+          role: "Product entering final packaging"
+          name: "Transformed or quick-frozen potato product internal product flow"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the measured mass entering final packaging, identifying whether it comes from non-frozen transformation or quick-frozen storage."
+          amount:
+            expression: "measured mass entering final packaging"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg packaged product output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_product_mass
+              source_ids:
+                - codex-cxs-114-1981
+            ranges: []
+        - row_id: packaging_materials
+          role: "Primary, secondary, and bulk packaging"
+          name: "Material-specific packaging product flows; resolve each Tiangong UUID before publication"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record each packaging material separately by material, format, net mass, recycled-content claim when verified, and reuse count where applicable. Exclude transport pallets only when outside the declared sale unit and disclose that exclusion."
+          amount:
+            expression: "packaging bill of materials verified against purchases, stock changes, and packed-unit counts"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net saleable finished product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_records
+              source_ids:
+                - codex-cxs-114-1981
+                - eu-pef-2021-2279
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.5"
+                unit: "kg"
+                basis: "packaging per 1 kg net saleable finished product"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: reference_product_output
+          role: "Net finished product at plant gate"
+          name: "Potatoes, otherwise prepared or preserved"
+          flow_type: "product"
+          flow_ref:
+            uuid: "b158bec4-e459-437d-8106-88d2f3d92c8a"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This is the quantitative reference output. Record exactly 1 kg net saleable finished product in the declared product form, route, packaging state, and frozen or non-frozen release condition."
+          amount:
+            expression: "1 kg net saleable finished product"
+            value_mode: "fixed_value"
+            specificity: "product_specific"
+            basis:
+              text: "1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "identity_reference"
+              source_ids:
+                - unstats-cpc-3-0
+            ranges: []
+      waste:
+        - row_id: packaging_scrap
+          role: "Packaging scrap and rejected packed product"
+          name: "Material-specific packaging waste and rejected product flows; resolve Tiangong UUIDs before publication"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record packaging scrap and rejected packed product separately by material and destination; return-to-process product is rework, not waste."
+          amount:
+            expression: "measured outgoing mass by material and destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net saleable finished product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_outputs
+              source_ids:
+                - eu-pef-2021-2279
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.5"
+                unit: "kg"
+                basis: "per 1 kg net saleable finished product"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocation_avoidance
+    applies_to: "Shared preparation, transformation, freezing, storage, packaging, and utility systems"
+    rule: "First avoid allocation by sub-metering, separate batch records, and process subdivision. Collect inventory only for operations directly attributable to the declared product whenever subdivision is feasible."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: allocation_physical
+    applies_to: "Unavoidable multifunctional processes"
+    rule: "If subdivision or system expansion is not feasible, use a documented physical relationship that reflects causality, such as measured processing time, delivered heat, refrigeration load, or another verified driver. Mass allocation alone is not automatically causal."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: allocation_other_relationship
+    applies_to: "Multifunctionality without a defensible physical relationship"
+    rule: "Use economic or another relationship only after documenting why subdivision, system expansion, and physical allocation are not feasible; retain prices, reference period, currency, and sensitivity evidence."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: allocation_residue_status
+    applies_to: "Potato residues, spent oil, rework, and off-specification product"
+    rule: "Distinguish internal rework, saleable co-product, recyclable material, and waste using actual disposition and economic status. Do not credit avoided production inside this foreground inventory; any downstream substitution or system expansion shall be a separate transparent scenario."
+    source_ids:
+      - eu-pef-2021-2279
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_material_inputs
+      process_id: "receiving_and_preparation_product_transformation"
+      flow_role: "potatoes, ingredients, oils, processing aids"
+      record_type: "weighbridge, scale, batch issue, supplier lot, stock ledger"
+      raw_fields: "material identity; supplier; lot; origin; opening stock; receipts; batch issue; returns; closing stock; measured mass"
+      collection_method: "calibrated scales plus stock reconciliation"
+      unit: "kg"
+      frequency: "each lot and batch; monthly reconciliation"
+      temporal_coverage: "declared representative production period covering normal product mix"
+      site_scope: "all facilities and lines in the dataset"
+      aggregation_rule: "sum net consumed mass by material and divide by net saleable output"
+      quality_evidence: "calibration certificates; supplier records; inventory reconciliation; missing-data log"
+    - protocol_id: cp_water_and_wastewater
+      process_id: "receiving_and_preparation_product_transformation"
+      flow_role: "fresh water and wastewater"
+      record_type: "meter and water-balance records"
+      raw_fields: "meter id; opening and closing reading; make-up water; recirculation; discharge; evaporation estimate; product carryover; treatment destination"
+      collection_method: "line meter where available; otherwise documented facility balance and causal allocation"
+      unit: "kg or m3 with density conversion"
+      frequency: "continuous or shift readings; monthly reconciliation"
+      temporal_coverage: "declared representative production period"
+      site_scope: "all included preparation, transformation, and sanitation operations"
+      aggregation_rule: "reconcile input, reuse, discharge, evaporation, and product carryover; normalize to reference output"
+      quality_evidence: "meter calibration; balance closure; discharge invoice or treatment log"
+    - protocol_id: cp_energy_records
+      process_id: "product_transformation_quick_freezing_and_cold_storage_packaging_and_release"
+      flow_role: "electricity, fuel, steam, and heat"
+      record_type: "utility meters, invoices, equipment runtime"
+      raw_fields: "carrier; meter id; readings; fuel quantity; calorific value; steam or heat quantity; runtime; product mass; storage residence time"
+      collection_method: "sub-metering preferred; otherwise engineering allocation using verified runtime or refrigeration load"
+      unit: "kWh, MJ, or carrier unit with conversion"
+      frequency: "continuous or batch readings; monthly reconciliation"
+      temporal_coverage: "declared representative production period including seasonal frozen-storage conditions where applicable"
+      site_scope: "all included equipment and shared utilities"
+      aggregation_rule: "subtract non-production loads; subdivide or apply documented causal driver; normalize to reference output"
+      quality_evidence: "meter calibration; invoices; runtime logs; conversion-factor source"
+    - protocol_id: cp_product_mass
+      process_id: "all_processes"
+      flow_role: "internal transfers, saleable output, rework, and losses"
+      record_type: "calibrated scale and production ledger"
+      raw_fields: "batch id; product form; input mass; transfer mass; saleable output; rework; samples; off-specification mass"
+      collection_method: "weigh each transfer or reconcile calibrated continuous mass-flow measurement"
+      unit: "kg"
+      frequency: "each batch"
+      temporal_coverage: "full declared production period"
+      site_scope: "all included product lines"
+      aggregation_rule: "reconcile consecutive process outputs and normalize to exactly 1 kg net saleable output"
+      quality_evidence: "scale calibration; batch mass balance; release records"
+    - protocol_id: cp_waste_outputs
+      process_id: "all_processes"
+      flow_role: "residues, off-specification product, spent oil, wastewater solids, packaging scrap"
+      record_type: "scales, waste manifests, internal treatment logs"
+      raw_fields: "material; mass; moisture or concentration where relevant; destination; rework status; economic value; transporter"
+      collection_method: "weigh by stream and retain destination evidence"
+      unit: "kg"
+      frequency: "each removal or batch; monthly reconciliation"
+      temporal_coverage: "full declared production period"
+      site_scope: "all included lines and waste-handling areas"
+      aggregation_rule: "sum by material and disposition; do not net saleable co-products against waste"
+      quality_evidence: "scale calibration; manifests; invoices; treatment acceptance records"
+    - protocol_id: cp_direct_emissions
+      process_id: "product_transformation"
+      flow_role: "direct emissions to air, water, and soil"
+      record_type: "stack or effluent measurement and activity-factor calculation"
+      raw_fields: "pollutant; compartment; concentration; flow rate; operating time; fuel use; factor; factor source"
+      collection_method: "direct measurement preferred; otherwise site activity multiplied by documented factor"
+      unit: "pollutant-specific kg"
+      frequency: "monitoring schedule or each operating period"
+      temporal_coverage: "period representative of actual controls and product mix"
+      site_scope: "all included direct release points"
+      aggregation_rule: "calculate by pollutant and compartment, then normalize to reference output"
+      quality_evidence: "laboratory accreditation; instrument calibration; sampling plan; factor reference"
+    - protocol_id: cp_frozen_chain_records
+      process_id: "quick_freezing_and_cold_storage"
+      flow_role: "mass, entry temperature, thermal-centre temperature, storage and dispatch condition"
+      record_type: "calibrated temperature sensor, batch record, cold-store log"
+      raw_fields: "batch id; entry time and temperature; freezer exit time; thermal-centre temperature after stabilization; storage duration; air temperature; dispatch temperature; product mass"
+      collection_method: "continuous air monitoring plus validated direct or indirect product-temperature checks"
+      unit: "degree Celsius, hour, kg"
+      frequency: "each batch plus continuous cold-store monitoring"
+      temporal_coverage: "all frozen batches in the declared period"
+      site_scope: "all quick-freezing equipment and cold stores serving included batches"
+      aggregation_rule: "retain batch extrema and calculate mass-weighted storage duration; never average away a temperature excursion"
+      quality_evidence: "sensor calibration; alarm and deviation log; corrective-action record"
+    - protocol_id: cp_refrigerant_records
+      process_id: "quick_freezing_and_cold_storage"
+      flow_role: "refrigerant make-up, recovery, and release"
+      record_type: "purchase, inventory, recovery, and maintenance records"
+      raw_fields: "refrigerant identity; opening stock; purchases; charging; recovery; closing stock; equipment id"
+      collection_method: "annual or campaign inventory reconciliation supported by service records"
+      unit: "kg"
+      frequency: "each service event and period-end reconciliation"
+      temporal_coverage: "full declared period"
+      site_scope: "all freezing and cold-storage equipment"
+      aggregation_rule: "loss = opening stock + purchases + charged returns - closing stock - recovered or transferred quantity"
+      quality_evidence: "service invoice; cylinder weights; leak test; reconciliation"
+    - protocol_id: cp_packaging_records
+      process_id: "packaging_and_release"
+      flow_role: "packaging materials and packed units"
+      record_type: "bill of materials, purchase and stock records, pack counter"
+      raw_fields: "material; component mass; units packed; opening stock; receipts; scrap; closing stock; reuse count"
+      collection_method: "component weighing plus stock and unit-count reconciliation"
+      unit: "kg and count"
+      frequency: "each packaging specification; monthly reconciliation"
+      temporal_coverage: "full declared production period"
+      site_scope: "all packaging formats included in the dataset"
+      aggregation_rule: "calculate material mass per net product mass by format, then aggregate using actual output shares"
+      quality_evidence: "packaging specification; supplier declaration; stock reconciliation; reuse log"
+  calculation_rules:
+    - id: normalize_to_reference_mass
+      applies_to: "Every foreground amount"
+      rule: "normalized amount = recorded quantity / net saleable finished-product mass; convert the result to the required SI unit and retain original quantity and conversion"
+      inputs:
+        - "recorded quantity"
+        - "net saleable finished-product mass"
+        - "conversion factor"
+      output: "amount per 1 kg reference product"
+      source_ids:
+        - eu-pef-2021-2279
+    - id: batch_mass_balance
+      applies_to: "Each process and whole foreground package"
+      rule: "Reconcile all material inputs with product, co-product, rework, waste, wastewater-carried material where measured, emissions, and documented stock change; investigate rather than silently allocate unexplained imbalance"
+      inputs:
+        - "material inputs"
+        - outputs
+        - rework
+        - waste
+        - "stock change"
+        - "measured releases"
+      output: "disclosed balance closure and unexplained difference"
+      source_ids:
+        - eu-pef-2021-2279
+    - id: wastewater_balance
+      applies_to: "Preparation and transformation wastewater"
+      rule: "discharge = fresh make-up + imported water in materials - water in product - evaporation - exported or recovered water - stock change, using measured terms and disclosing estimated terms"
+      inputs:
+        - "water meter"
+        - recirculation
+        - "product moisture where available"
+        - evaporation
+        - "recovered water"
+      output: "wastewater quantity by destination"
+      source_ids:
+        - eu-pef-2021-2279
+    - id: direct_emission_calculation
+      applies_to: "Pollutant-specific releases without continuous direct measurement"
+      rule: "emission = site activity x documented emission factor x (1 - measured control efficiency where applicable); never reuse one factor across different pollutants or technologies without justification"
+      inputs:
+        - "activity record"
+        - factor
+        - "control efficiency"
+        - "operating period"
+      output: "pollutant mass by compartment per reference flow"
+      source_ids:
+        - eu-pef-2021-2279
+    - id: refrigerant_balance
+      applies_to: "Freezing and cold-storage refrigerants"
+      rule: "Reconcile opening stock, purchases, charges, recovered mass, transfers, and closing stock by refrigerant; positive unexplained loss is recorded as emission to air"
+      inputs:
+        - "refrigerant inventory and service records"
+      output: "refrigerant-specific release per reference flow"
+      source_ids:
+        - eu-pef-2021-2279
+  data_quality_requirements:
+    - id: dq_product_identity
+      applies_to: "Reference product and all batches"
+      requirement: "Product form, recipe class, actual unit operations, packaging format, frozen state, plant, geography, and reference period shall be traceable to production and release records."
+      evidence: "product specification; bill of materials; batch record; release record"
+    - id: dq_measurement
+      applies_to: "Mass, water, energy, temperature, and emissions"
+      requirement: "Use calibrated meters or documented engineering calculations; retain units, conversion factors, meter coverage, allocation drivers, and missing-data treatment."
+      evidence: "calibration certificates; meter map; calculation workbook or machine-readable equivalent"
+    - id: dq_temporal_coverage
+      applies_to: "Foreground averages"
+      requirement: "Use a declared period representative of normal operation, product mix, maintenance, and seasonal cold-storage conditions; disclose shutdowns, start-up, atypical campaigns, and data gaps."
+      evidence: "production calendar; meter and batch coverage report; missing-data log"
+    - id: dq_completeness
+      applies_to: "All foreground processes"
+      requirement: "Demonstrate coverage of all known product, co-product, material, water, energy, packaging, waste, wastewater, and direct elementary flows; explicitly justify exclusions and quantify applicable cut-offs."
+      evidence: "flow checklist; mass and water balances; source and proxy register; exclusion log"
+    - id: dq_representativeness
+      applies_to: "Foreground and linked upstream datasets"
+      requirement: "Assess technological, geographical, and time-related representativeness and precision; disclose proxies and any mismatch to the declared route."
+      evidence: "dataset metadata; DQR assessment; proxy justification"
+    - id: dq_frozen_chain
+      applies_to: "Quick-frozen product"
+      requirement: "Retain calibrated temperature records, excursions, corrective actions, and storage duration for every included frozen batch; do not average away nonconforming excursions."
+      evidence: "sensor calibration; batch and cold-store log; deviation and disposition record"
+    - id: dq_allocation
+      applies_to: "Shared or multifunctional processes"
+      requirement: "Retain evidence that subdivision was attempted and document every driver, factor, price, reference period, and sensitivity used for remaining allocation."
+      evidence: "meter map; allocation workbook; price record; sensitivity result"
+validation_rules:
+  - rule_id: validate_reference_flow
+    applies_to: "Reference output"
+    rule: "Confirm the quantitative reference is exactly 1 kg net saleable product using flow b158bec4-e459-437d-8106-88d2f3d92c8a, Mass property 93a60a56-a3c8-11da-a746-0800200b9a66, mass unit group 93a60a57-a4c8-11da-a746-0800200c9a66, and unit kg."
+    source_ids:
+      - unstats-cpc-3-0
+  - rule_id: validate_scope_and_qualifiers
+    applies_to: "Product identity"
+    rule: "Reject a package that omits product form, recipe or ingredient class, actual cooking or preservation route, frozen state, packaging format, production geography, technology, allocation status, or plant-gate release condition, or that falls in an explicitly excluded potato category."
+    source_ids:
+      - unstats-cpc-3-0
+      - codex-cxs-114-1981
+  - rule_id: validate_process_route
+    applies_to: "Process map and inventory"
+    rule: "Confirm every required process is represented, the conditional frozen process matches the declared product state, and every potentially applicable unit operation has an explicit included, not-applicable, or supplier-completed disposition."
+    source_ids:
+      - codex-cxs-114-1981
+      - codex-cxc-8-1976
+  - rule_id: validate_mass_and_water_balance
+    applies_to: "Foreground inventory"
+    rule: "Require process and whole-package mass reconciliation plus a water balance when water or wastewater is material; unresolved differences shall be findings, not silently allocated amounts."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: validate_frozen_condition
+    applies_to: "Quick-frozen product"
+    rule: "Confirm thermal-centre temperature reached -18 degree Celsius or colder after stabilization and that on-site cold storage and dispatch records demonstrate temperature control; report every excursion and disposition."
+    source_ids:
+      - codex-cxs-114-1981
+      - codex-cxc-8-1976
+  - rule_id: validate_allocation
+    applies_to: "Shared and multifunctional processes"
+    rule: "Confirm the hierarchy of subdivision or system expansion, physical relationship, then other relationship was followed and documented; verify residue status and prevent undisclosed avoided-burden credits."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: validate_completeness_and_cutoff
+    applies_to: "Foreground and linked datasets"
+    rule: "Confirm all known inputs and outputs are addressed, proxies and exclusions are disclosed, and any downstream PEF cut-off is screened, justified, and within the applicable cumulative threshold."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: validate_source_traceability
+    applies_to: "Records, factors, and generated dataset"
+    rule: "Confirm foreground records are traceable to calibration, supplier, meter, batch, waste, emission, and temperature evidence; confirm every external factor has a stable source and that no provisional reasoned estimate is presented as observed data."
+    source_ids:
+      - eu-pef-2021-2279
+published_dataset_profile:
+  dataset_role: "Product-specific foreground manufacturing data package normalized to 1 kg net finished potato product at plant gate"
+  downstream_use: "secondary_dataset; background_dataset after review and publication"
+  allowed_use: "Product-specific process and lifecycle-model construction when route, recipe, technology, geography, frozen state, packaging, allocation, temporal coverage, and upstream links are compatible and disclosed"
+  excluded_use: "Unqualified category-average claims; agricultural potato production without an upstream dataset; simple frozen, boiled, steamed, vinegar-preserved, or dried potato products outside this scope; consumer cooking; distribution, retail, or end-of-life claims not separately modelled; environmental declarations based on provisional reasoned-estimate ranges"
+  required_metadata: "PCR id and version used; reference product UUID; product form; recipe or ingredient class; unit operations; frozen state; packaging format; net content; plant and geography; technology; reference period; source and proxy register; upstream dataset identities; allocation and cut-off declarations; data-quality assessment"
+  required_quality_disclosure: "Meter and record coverage; calibration evidence; mass and water balance closure; temporal, technological, and geographical representativeness; missing data; proxy use; allocation sensitivity; co-product and waste disposition; temperature excursions for frozen product; status of provisional ranges"
+  update_trigger: "Material change in product specification, recipe, yield, processing technology, energy or refrigerant system, frozen-state management, packaging, supplier geography, allocation relationship, regulatory or Codex requirement, data source, or representative production period"
+data_sources:
+  - id: "unstats-cpc-3-0"
+    type: "dataset"
+    reference: "United Nations Statistics Division, Central Product Classification Version 3.0, official classification resources, https://unstats.un.org/unsd/classifications/Econ (retrieved 2026-08-11)"
+    used_for: "Product-category identity, inclusion and exclusion boundary, and classification context"
+  - id: "codex-cxs-114-1981"
+    type: "standard"
+    reference: "Codex Alimentarius, CXS 114-1981, Standard for Quick Frozen French Fried Potatoes, amended 2019, https://workspace.fao.org/sites/codex/Standards/CXS%20114-1981/CXS_114e.pdf (retrieved 2026-08-11)"
+    used_for: "Representative French-fry product definition, sorting, washing, peeling, cutting, frying, quick-freezing, composition, quality, packaging, and release-condition rules"
+  - id: "codex-cxc-8-1976"
+    type: "official_guidance"
+    reference: "Codex Alimentarius, CXC 8-1976, Code of Practice for the Processing and Handling of Quick Frozen Foods, revised 2008, https://workspace.fao.org/sites/codex/Standards/CXC%208-1976/CXC_008e.pdf (retrieved 2026-08-11)"
+    used_for: "Conditional frozen-route process decomposition, cold-chain temperature control, monitoring, storage, and traceability"
+  - id: "eu-pef-2021-2279"
+    type: "official_guidance"
+    reference: "European Commission Recommendation (EU) 2021/2279, Annex I Product Environmental Footprint Method, ELI http://data.europa.eu/eli/reco/2021/2279/oj (retrieved 2026-08-11)"
+    used_for: "Functional unit, reference flow, system boundary, complete foreground data, allocation hierarchy, cut-off, data collection, calculation, quality, and validation rules"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:30863680656e32a036fca7a97e776de530c489b8dadb9312783449a9d4a87cb3"
+  generated_content_sha256: "sha256:999f4790d8b16d7aca0a51aa0cda4ceca4fd38380baaff2abbf5c5495e4b6155"

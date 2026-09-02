@@ -1,10 +1,889 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "41533"
-  title: "Wire of aluminium"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.metal-products-machinery-and-equipment.basic-metals.wire-of-aluminium"
+  classification_refs: "CPC 3.0: 41533, Wire of aluminium, exact scope reference"
+  covered_products: "Uninsulated single wire of aluminium or aluminium alloy, including general-engineering, electrical-purpose, welding-grade, rivet/cold-heading, and comparable wire when delivered as wire"
+  excluded_products: "Drawing stock or wire rod not yet converted to finished wire; bars, rods, profiles, strip, foil, powder, tubes; insulated wire; stranded conductors, cables, plaited bands; fabricated wire articles; installed or construction-site-delivered systems"
+  representative_product: "Saleable uninsulated aluminium or aluminium-alloy wire, with declared alloy, temper, cross-section and dimensions"
+  production_route: "Receipt or integrated production of aluminium drawing stock; optional pretreatment; one or more drawing/forming passes; optional heat treatment; finishing, inspection and release"
+  market_state: "Net finished wire mass at the producing factory gate, before downstream insulation, stranding, cable assembly, installation or use"
+functional_unit:
+  what: "Production of conformity-declared, uninsulated aluminium or aluminium-alloy wire at the producing factory gate"
+  how_much: "1,000 kg net saleable finished wire"
+  how_well: "Meets the declared alloy, temper, cross-sectional shape, dimensions and tolerances, surface condition or coating, and application-specific mechanical or electrical requirements"
+  how_long_or_cycle: "One declared production lot or reporting-period production mix, consistently applied to all foreground records"
+  reference_flow_link: "aluminium_wire_output"
+system_boundary:
+  rules:
+    - rule_id: boundary_factory_gate
+      applies_to: "foreground aluminium-wire production"
+      rule: "Include directly controlled stock preparation, drawing/forming, in-line or batch heat treatment, finishing, inspection, on-site material handling, waste handling to the first off-site transfer, and release at the producing factory gate."
+      source_ids:
+        - eu-fmp-bref-2022
+        - astm-b211-b211m-19
+        - astm-b230-b230m-22
+    - rule_id: boundary_upstream_link
+      applies_to: "purchased or separately produced aluminium inputs"
+      rule: "Link primary aluminium, secondary aluminium, alloying, remelting, casting and wire-rod/drawing-stock production to traceable upstream datasets; include them in the foreground only when physically integrated and supported by facility records."
+      source_ids:
+        - environdec-basic-aluminium-pcr-1-0-2
+    - rule_id: boundary_direct_flows
+      applies_to: "all foreground processes"
+      rule: "Record electricity, fuels, water, lubricants, treatment chemicals, coating materials, packaging, process scrap, spent consumables, wastewater, solid wastes and direct elementary flows when they cross the foreground boundary; disclose every omitted or unavailable material flow."
+      source_ids:
+        - iai-aluminium-scrap-carbon-footprint-2025
+    - rule_id: boundary_downstream_exclusion
+      applies_to: "product use after factory release"
+      rule: "Exclude insulation, stranding, cable or conductor assembly, installation, use, maintenance and end-of-life from this factory-gate package unless a separately declared downstream model adds them."
+      source_ids: []
+    - rule_id: boundary_analogue_limit
+      applies_to: "process-map interpretation"
+      rule: "Use the EU FMP BREF only for the generic drawing sequence of pretreatment, drawing, optional heat treatment and finishing; confirm the actual aluminium route, chemicals and emission points from foreground records."
+      source_ids:
+        - eu-fmp-bref-2022
+boundary_abstraction:
+  declared_starting_condition: "Aluminium or aluminium-alloy drawing stock or wire rod is received at the foreground gate with declared alloy, temper/state, mass, supplier, recycled-content claim and upstream dataset; an integrated facility instead declares the first included melting, casting or rolling step."
+  starting_condition_role: "Prevents upstream aluminium production and drawing-stock preparation from being silently omitted or double counted."
+  product_classification_scope: "CPC 3.0 subclass 41533, limited to finished uninsulated single aluminium wire and explicitly separated from drawing stock, insulated wire, stranded conductors and cable."
+  recursive_input_rule: "If an input is itself finished aluminium wire within this PCR scope, record it as a visible product input with a distinct upstream dataset and do not recursively expand the same PCR inside the foreground package."
+  upstream_dataset_requirement: "Each external aluminium-bearing input, alloying material, electricity/fuel supply, treatment chemical, packaging input and off-site treatment service requires a geographically and temporally appropriate upstream dataset or a documented unresolved data gap."
+  disclosure: "Declare starting material form, alloy and temper; primary/recycled shares and chain-of-custody basis; drawing and heat-treatment route; surface treatment/coating; geography and period; scrap destination and allocation method; integration with melting/casting/rolling; and excluded downstream operations."
+reference_flow_definition:
+  reference_amount: "1,000 kg"
+  product_flow_ref:
+    name: "Aluminum wire"
+    uuid: "89db8507-09bd-45f8-ba96-4e459058412c"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "aluminium or alloy designation"
+    - temper
+    - "round or other cross-sectional shape"
+    - "nominal diameter or cross-sectional dimensions and tolerance"
+    - "bare or declared coating/surface treatment"
+    - "intended grade/application class"
+    - "drawing/forming route"
+    - "heat-treatment route"
+    - "production geography"
+    - "reporting period"
+    - "primary and recycled aluminium shares"
+    - "factory-gate market state"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "reference product and all mass-normalized inventory rows"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Normalize to 1,000 kg net saleable finished wire. Exclude pallets, reels, returnable carriers and separately modelled packaging from reference-product mass."
+  - id: intermediate_mass
+    applies_to: "drawing stock and in-plant wire intermediates"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Measure transfers on a consistent dry/net mass basis and prevent the same in-plant intermediate from being counted as an external input or output."
+  - id: length_mass_conversion
+    applies_to: "records supplied by length"
+    required_property_ref:
+      name: "declared mass and length support"
+      uuid: ""
+    required_unit: "kg and m"
+    rule: "Convert length to mass only from measured lot mass or from declared cross-sectional dimensions and alloy density; retain the dimensions, density basis, formula and uncertainty."
+  - id: energy_units
+    applies_to: "electricity and fuels"
+    required_property_ref:
+      name: "energy or fuel-specific property"
+      uuid: ""
+    required_unit: "kWh or MJ"
+    rule: "Preserve metered source units. Convert between kWh and MJ only with 1 kWh = 3.6 MJ and do not use calorific-value conversion to replace fuel mass without a documented fuel property."
+  - id: solution_mass
+    applies_to: "lubricants, cleaners, pickling agents and coatings"
+    required_property_ref:
+      name: "supplied-product mass and, when relevant, active content"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Record supplied-product mass and concentration separately when active substance or dry solids determine the inventory."
+process_map:
+  - id: stock_pretreatment
+    name: "Drawing-stock receipt and pretreatment"
+    inclusion: "conditional"
+    inclusion_condition: "Include when received or integrated stock is mechanically cleaned, degreased, pickled, rinsed, coated with carrier or otherwise prepared before drawing; otherwise document the bypass."
+    role: "foreground preparation"
+    quantitative_reference: "kg prepared stock transferred to drawing"
+  - id: wire_drawing
+    name: "Wire drawing and forming"
+    inclusion: "required"
+    inclusion_condition: "Always include the drawing/forming passes that establish the delivered wire cross-section."
+    role: "foreground production"
+    quantitative_reference: "kg drawn wire transferred onward"
+  - id: heat_treatment
+    name: "Intermediate or final heat treatment"
+    inclusion: "conditional"
+    inclusion_condition: "Include when annealing or another thermal treatment is used to reach the declared temper or properties."
+    role: "foreground conditioning"
+    quantitative_reference: "kg heat-treated wire transferred onward"
+  - id: finishing_and_release
+    name: "Finishing, inspection, packaging and factory-gate release"
+    inclusion: "required"
+    inclusion_condition: "Always include final cleaning/straightening/cutting or spooling as performed, inspection, reject handling, non-returnable packaging and release."
+    role: "foreground finishing and release"
+    quantitative_reference: "1,000 kg net saleable finished wire"
+process_inventory:
+  - id: stock_pretreatment
+    label: "Drawing-stock receipt and pretreatment"
+    inputs:
+      product:
+        - row_id: drawing_stock_input
+          role: "Aluminium or aluminium-alloy drawing stock received"
+          name: "Site-specific aluminium or aluminium-alloy wire rod/drawing stock; Tiangong UUID required during foreground package construction"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record each received or integrated lot of aluminium wire rod/drawing stock by alloy, state, supplier or internal source and upstream dataset. Do not use an unspecified-metal or construction-profile candidate as a default aluminium input."
+          amount:
+            expression: "measured net stock mass entering the foreground route"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net saleable finished wire"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_mass
+              source_ids:
+                - astm-b211-b211m-19
+                - astm-b230-b230m-22
+            ranges:
+              - role: qa_guardrail
+                lower: "1000"
+                upper: "1150"
+                unit: "kg"
+                basis: "per 1,000 kg net saleable finished wire"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: pretreatment_consumables
+          role: "Pretreatment water and process solutions supplied"
+          name: "Individual site-specific water and treatment-product flows; Tiangong UUIDs required during foreground package construction"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record water, cleaners, pickling agents, rinses, carrier coatings and other preparations as separate facility flows in the foreground package; this card defines their shared collection rule without authorizing aggregation in the final inventory."
+          amount:
+            expression: "metered water plus invoice, batch-sheet or tank-makeup records for each supplied product"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg net saleable finished wire"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_consumables
+              source_ids:
+                - eu-fmp-bref-2022
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "20100"
+                unit: "kg"
+                basis: "combined water and supplied treatment products per 1,000 kg net saleable finished wire; disaggregate before publication"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: prepared_stock_output
+          role: "Prepared drawing stock transferred internally"
+          name: "Prepared aluminium drawing stock, internal intermediate"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record the measured intermediate mass after pretreatment. This internal transfer closes the pretreatment balance and is not an external coproduct."
+          amount:
+            expression: "measured transfer mass or calculated input mass less measured pretreatment removals"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net saleable finished wire"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_material_mass
+              source_ids:
+                - mass-balance-identity
+            ranges:
+              - role: qa_guardrail
+                lower: "1000"
+                upper: "1150"
+                unit: "kg"
+                basis: "per 1,000 kg net saleable finished wire"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        - row_id: pretreatment_waste_output
+          role: "Pretreatment wastewater and removed residues"
+          name: "Site-specific pretreatment wastewater, spent bath and residue flows; Tiangong UUIDs required during foreground package construction"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Represent wastewater, spent bath, scale, sludge and captured residues as separate waste or elementary flows according to their actual destination and composition."
+          amount:
+            expression: "measured discharge/treatment records plus collected residue mass, disaggregated by waste route"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg net saleable finished wire"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_outputs
+              source_ids:
+                - eu-fmp-bref-2022
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "20200"
+                unit: "kg"
+                basis: "combined aqueous and solid pretreatment outputs per 1,000 kg net saleable finished wire; disaggregate before publication"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        []
+  - id: wire_drawing
+    label: "Wire drawing and forming"
+    inputs:
+      product:
+        - row_id: drawing_feedstock_input
+          role: "Prepared or bypassed drawing stock supplied to drawing"
+          name: "Prepared aluminium drawing stock, internal intermediate, or received stock on documented bypass"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Use the prepared-stock transfer when pretreatment is included; otherwise use the measured received drawing stock. The two paths are mutually exclusive for the same mass."
+          amount:
+            expression: "measured mass entering the first drawing pass"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net saleable finished wire"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_mass
+              source_ids:
+                - eu-fmp-bref-2022
+                - mass-balance-identity
+            ranges:
+              - role: qa_guardrail
+                lower: "1000"
+                upper: "1150"
+                unit: "kg"
+                basis: "per 1,000 kg net saleable finished wire"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: drawing_electricity_input
+          role: "Electricity supplied to drawing equipment"
+          name: "Site-specific electricity supply; Tiangong UUID required during foreground package construction"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record electricity from meters or an allocation of facility meters to drawing lines. Select the geographically and voltage-appropriate Tiangong supply flow during package construction."
+          amount:
+            expression: "metered drawing-line electricity or documented allocation from facility electricity"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net saleable finished wire"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "1"
+                upper: "2500"
+                unit: "kWh"
+                basis: "broad authoring screen per 1,000 kg net saleable finished wire"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: drawing_lubricant_input
+          role: "Drawing lubricants and die-treatment products supplied"
+          name: "Site-specific drawing lubricant or die-treatment product; Tiangong UUID required during foreground package construction"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record each lubricant, soap, emulsion and die-treatment product separately, including make-up and documented recirculation."
+          amount:
+            expression: "purchased plus opening inventory minus closing inventory, adjusted for recovered product"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg net saleable finished wire"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_consumables
+              source_ids:
+                - eu-fmp-bref-2022
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "20"
+                unit: "kg"
+                basis: "per 1,000 kg net saleable finished wire"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: drawn_wire_intermediate
+          role: "Drawn wire transferred to the next included step"
+          name: "Drawn aluminium wire, internal intermediate"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record the mass after the final drawing pass and before any separately metered heat treatment or finishing step."
+          amount:
+            expression: "measured transfer mass or calculation from feed mass less measured drawing scrap and retained samples"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net saleable finished wire"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_material_mass
+              source_ids:
+                - mass-balance-identity
+            ranges:
+              - role: qa_guardrail
+                lower: "1000"
+                upper: "1100"
+                unit: "kg"
+                basis: "per 1,000 kg net saleable finished wire"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        - row_id: drawing_scrap_output
+          role: "Drawing scrap, wire ends and rejected wire"
+          name: "Site-specific aluminium drawing scrap; Tiangong waste-flow UUID required during foreground package construction"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record clean and contaminated aluminium scrap separately by destination, internal return, external recycler, sale, disposal and measured mass."
+          amount:
+            expression: "measured scrap mass leaving the process or returned to an integrated remelting step"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net saleable finished wire"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_outputs
+              source_ids:
+                - iai-aluminium-scrap-carbon-footprint-2025
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "150"
+                unit: "kg"
+                basis: "per 1,000 kg net saleable finished wire"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: spent_lubricant_output
+          role: "Spent drawing lubricant and contaminated residues"
+          name: "Site-specific spent lubricant and contaminated-residue waste flows; Tiangong UUIDs required during foreground package construction"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record spent lubricant, filter cake and contaminated residues separately by treatment route and prevent recovered lubricant from being counted as both avoided input and waste output."
+          amount:
+            expression: "measured collection and treatment-transfer mass"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg net saleable finished wire"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_outputs
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "20"
+                unit: "kg"
+                basis: "per 1,000 kg net saleable finished wire"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        []
+  - id: heat_treatment
+    label: "Intermediate or final heat treatment"
+    inputs:
+      product:
+        - row_id: heat_treatment_wire_input
+          role: "Drawn wire supplied to heat treatment"
+          name: "Drawn aluminium wire, internal intermediate"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record only the mass routed through annealing or another heat treatment; bypassed product is transferred directly to finishing."
+          amount:
+            expression: "measured routed mass by alloy, temper target, furnace and campaign"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg net saleable finished wire"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_mass
+              source_ids:
+                - eu-fmp-bref-2022
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "1100"
+                unit: "kg"
+                basis: "routed heat-treated mass per 1,000 kg net saleable finished wire"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: heat_treatment_energy_input
+          role: "Heat-treatment electricity and fuels supplied"
+          name: "Individual site-specific electricity and fuel supplies; Tiangong UUIDs required during foreground package construction"
+          flow_type: "product"
+          property_unit: "Energy / MJ, preserving kWh meter records where applicable"
+          description: "Create separate inventory flows for each metered electricity or fuel supply. This collection card must not be published as an aggregated mixed-energy flow."
+          amount:
+            expression: "furnace- or campaign-metered energy, or a documented allocation of facility energy to treated mass"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg net saleable finished wire"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy
+              source_ids:
+                - eu-fmp-bref-2022
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "10000"
+                unit: "MJ"
+                basis: "total supplied heat-treatment energy per 1,000 kg net saleable finished wire"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: heat_treated_wire_output
+          role: "Heat-treated wire transferred internally"
+          name: "Heat-treated aluminium wire, internal intermediate"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record measured accepted wire after heat treatment plus separately measured heat-treatment rejects."
+          amount:
+            expression: "measured accepted transfer mass"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg net saleable finished wire"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_mass
+              source_ids:
+                - mass-balance-identity
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "1050"
+                unit: "kg"
+                basis: "per 1,000 kg net saleable finished wire"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+  - id: finishing_and_release
+    label: "Finishing, inspection, packaging and factory-gate release"
+    inputs:
+      product:
+        - row_id: finishing_wire_input
+          role: "Drawn or heat-treated wire supplied to finishing"
+          name: "Drawn or heat-treated aluminium wire, internal intermediate"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record exactly one routed intermediate for each lot: heat-treated wire when heat treatment applies, otherwise drawn wire on the documented bypass."
+          amount:
+            expression: "measured finishing-line input mass with mutually exclusive route flag"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg net saleable finished wire"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_mass
+              source_ids:
+                - mass-balance-identity
+            ranges:
+              - role: qa_guardrail
+                lower: "1000"
+                upper: "1050"
+                unit: "kg"
+                basis: "per 1,000 kg net saleable finished wire"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: finishing_consumables_input
+          role: "Finishing consumables and non-returnable packaging supplied"
+          name: "Individual site-specific finishing and packaging product flows; Tiangong UUIDs required during foreground package construction"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record each coating, cleaner, marking material, reel, spool, wrapping and other non-returnable packaging flow separately. Returnable carriers remain outside product mass and are modelled according to the study convention."
+          amount:
+            expression: "batch records and packaging issue records, net of documented returns"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg net saleable finished wire"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_consumables
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "150"
+                unit: "kg"
+                basis: "combined finishing consumables and non-returnable packaging per 1,000 kg net saleable finished wire; disaggregate before publication"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: aluminium_wire_output
+          role: "Saleable aluminium or aluminium-alloy wire"
+          name: "Aluminum wire"
+          flow_type: "product"
+          flow_ref:
+            uuid: "89db8507-09bd-45f8-ba96-4e459058412c"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This is the only reference product output. It represents the full category without fixing a diameter, alloy, temper or end use; all such characteristics are required qualifiers."
+          amount:
+            expression: "exactly 1,000 kg net saleable finished wire"
+            value_mode: "fixed_value"
+            specificity: "product_specific"
+            basis:
+              text: "PCR reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "method_formula"
+              source_ids:
+                - mass-balance-identity
+                - astm-b211-b211m-19
+                - astm-b230-b230m-22
+            ranges:
+              - role: allowed_range
+                lower: "1000"
+                upper: "1000"
+                unit: "kg"
+                basis: "PCR reference flow"
+                basis_kind: "reference_flow"
+                evidence_kind: "method_formula"
+                source_ids:
+                  - mass-balance-identity
+      waste:
+        - row_id: finishing_waste_output
+          role: "Finishing rejects, samples and packaging wastes"
+          name: "Individual site-specific aluminium scrap and non-metal waste flows; Tiangong UUIDs required during foreground package construction"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record aluminium rejects separately from packaging and treatment wastes, with mass, destination and any internal return to remelting."
+          amount:
+            expression: "measured reject, retained-sample and waste-transfer mass by destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net saleable finished wire"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_outputs
+              source_ids:
+                - iai-aluminium-scrap-carbon-footprint-2025
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "100"
+                unit: "kg"
+                basis: "per 1,000 kg net saleable finished wire"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocation_subdivision_first
+    applies_to: "separately metered lines, lots and optional steps"
+    rule: "Subdivide or use direct meter/lot records before allocating shared facility burdens; bypassed pretreatment and heat treatment receive no burden from those steps."
+    source_ids: []
+  - rule_id: allocation_shared_operations
+    applies_to: "shared operations producing multiple saleable wire grades or dimensions"
+    rule: "When subdivision is not possible and the causal relationship is comparable, allocate shared transformation burdens by measured net saleable wire mass; disclose and justify any different causal basis."
+    source_ids:
+      - environdec-basic-aluminium-pcr-1-0-2
+  - rule_id: allocation_process_scrap
+    applies_to: "drawing and finishing aluminium scrap"
+    rule: "Record scrap mass, alloy/contamination state, destination and chosen cut-off, substitution or coproduct approach. The library default includes transformation burdens in the wire dataset and applies no avoided-burden credit; a different programme-required approach must be reported separately and must not count the same recycling benefit twice."
+    source_ids:
+      - iai-aluminium-scrap-carbon-footprint-2025
+      - environdec-basic-aluminium-pcr-1-0-2
+  - rule_id: allocation_internal_recycling
+    applies_to: "scrap returned to an integrated remelting step"
+    rule: "Keep the internal scrap loop visible in the facility mass balance, include remelting inputs and emissions when integrated, and do not represent the same scrap as an external waste output."
+    source_ids:
+      - iai-aluminium-scrap-carbon-footprint-2025
+      - mass-balance-identity
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_material_mass
+      process_id: "stock_pretreatment_wire_drawing_heat_treatment_finishing_and_release"
+      flow_role: "external stock, internal transfers, saleable product"
+      record_type: "scale tickets, production-order records, coil/lot weights, inventory movements"
+      raw_fields: "timestamp; lot_id; alloy; temper/state; source/destination process; gross_mass; tare_mass; net_mass; route_flag; meter/scale_id"
+      collection_method: "calibrated scales reconciled to production and inventory records"
+      unit: "kg"
+      frequency: "per lot or transfer"
+      temporal_coverage: "complete declared reporting period"
+      site_scope: "every included line and outsourced step under operational control"
+      aggregation_rule: "sum net mass by lot and process; reconcile opening/closing work in progress"
+      quality_evidence: "calibration records; lot traceability; inventory reconciliation; rejected-lot log"
+    - protocol_id: cp_consumables
+      process_id: "stock_pretreatment_wire_drawing_finishing_and_release"
+      flow_role: "water, chemicals, lubricants, coatings, packaging"
+      record_type: "meters, invoices, tank levels, batch sheets, issue/return records"
+      raw_fields: "product_id; supplier; quantity; unit; concentration; opening_stock; purchases; closing_stock; recovered_quantity; process_id"
+      collection_method: "direct meter or mass-balance calculation from auditable stock records"
+      unit: "kg, with original m3 retained where metered"
+      frequency: "per batch or monthly"
+      temporal_coverage: "complete declared reporting period"
+      site_scope: "every included line and shared utility allocation"
+      aggregation_rule: "product-specific quantity = opening + purchases - closing - documented recovery; allocate shared use by measured causal driver"
+      quality_evidence: "meter calibration; invoices; batch sheets; stock reconciliation; concentration certificate"
+    - protocol_id: cp_energy
+      process_id: "wire_drawing_heat_treatment_finishing_and_release"
+      flow_role: "electricity and fuel"
+      record_type: "submeter, utility invoice, fuel issue, furnace campaign log"
+      raw_fields: "meter_id; timestamp; energy_carrier; reading_start; reading_end; unit; line/furnace; treated_mass; allocation_driver"
+      collection_method: "direct submeter preferred; otherwise documented facility-to-line allocation"
+      unit: "kWh or MJ, preserving source unit"
+      frequency: "continuous, batch or monthly"
+      temporal_coverage: "complete declared reporting period"
+      site_scope: "every included line, furnace and shared service"
+      aggregation_rule: "subtract verified non-production use and allocate shared energy by causal meter, operating time or treated mass"
+      quality_evidence: "meter calibration; invoices; operating-hour log; allocation worksheet"
+    - protocol_id: cp_waste_outputs
+      process_id: "stock_pretreatment_wire_drawing_finishing_and_release"
+      flow_role: "scrap, spent bath, lubricant, wastewater, sludge, packaging waste"
+      record_type: "scales, manifests, recycler receipts, discharge meters, laboratory records"
+      raw_fields: "waste_id; composition; alloy; contamination; mass/volume; destination; internal_return; recycler/treatment; date"
+      collection_method: "measured at generation or transfer and reconciled to manifests"
+      unit: "kg, with original m3 retained for wastewater"
+      frequency: "per transfer or batch"
+      temporal_coverage: "complete declared reporting period"
+      site_scope: "all included lines and on-site treatment"
+      aggregation_rule: "sum by waste identity and destination; separately reconcile internal aluminium return"
+      quality_evidence: "calibrated scales/meters; signed manifests; recycler receipts; analytical results"
+    - protocol_id: cp_product_qualification
+      process_id: "finishing_and_release"
+      flow_role: "reference-product identity and conformance"
+      record_type: "certificate of analysis, dimensional inspection, tensile/electrical test, release record"
+      raw_fields: "lot_id; alloy; temper; shape; dimensions; tolerance; coating; application_grade; test_method; result; disposition"
+      collection_method: "documented inspection and release against declared product specification"
+      unit: "declared test units"
+      frequency: "per released lot"
+      temporal_coverage: "complete declared reporting period"
+      site_scope: "every reference-product lot"
+      aggregation_rule: "accept only released mass; retain rejected and sampled mass in waste or work-in-progress records"
+      quality_evidence: "signed certificate; instrument calibration; release authorization; nonconformance log"
+  calculation_rules:
+    - id: calc_normalize_reference
+      applies_to: "every foreground inventory amount"
+      rule: "normalized amount = reporting-period amount / reporting-period net saleable finished-wire mass × 1,000 kg"
+      inputs:
+        - "collected flow amount"
+        - "net saleable wire mass"
+      output: "amount per 1,000 kg reference product"
+      source_ids:
+        - mass-balance-identity
+    - id: calc_route_weighting
+      applies_to: "production-mix datasets"
+      rule: "production-mix amount = sum(route amount × route saleable mass) / total saleable mass; retain separate routes when alloy, temper, heat treatment, coating or technology materially changes the inventory"
+      inputs:
+        - "route-specific normalized amounts"
+        - "route saleable masses"
+      output: "declared production-mix inventory"
+      source_ids:
+        - mass-balance-identity
+    - id: calc_metal_yield
+      applies_to: "aluminium mass balance"
+      rule: "yield = net saleable wire mass / total external aluminium-bearing drawing-stock mass; report internal returns separately rather than adding them again to external input"
+      inputs:
+        - "external aluminium input"
+        - "saleable wire"
+        - "internal return"
+        - "scrap and rejects"
+      output: "yield and reconciliation table"
+      source_ids:
+        - mass-balance-identity
+    - id: calc_mass_balance
+      applies_to: "each process and the complete foreground"
+      rule: "residual = inputs + opening work in progress - outputs - closing work in progress; investigate and disclose residual sign, magnitude and cause without forcing it to zero"
+      inputs:
+        - "measured mass flows"
+        - "work-in-progress inventory"
+      output: "process and facility mass-balance residual"
+      source_ids:
+        - mass-balance-identity
+        - iai-aluminium-scrap-carbon-footprint-2025
+    - id: calc_recycled_share
+      applies_to: "aluminium input disclosure"
+      rule: "recycled share = verified secondary aluminium mass embodied in external aluminium inputs / total aluminium mass in those inputs; do not infer secondary content from scrap output"
+      inputs:
+        - "supplier declarations"
+        - "aluminium input masses"
+        - "chain-of-custody evidence"
+      output: "primary and recycled aluminium shares"
+      source_ids:
+        - iai-aluminium-scrap-carbon-footprint-2025
+  data_quality_requirements:
+    - id: dq_identity
+      applies_to: "every released product lot"
+      requirement: "Preserve alloy, temper, cross-section, dimensions/tolerances, finish/coating, application grade and conformance basis; do not collapse materially different products into an undocumented generic average."
+      evidence: "certificate of analysis; inspection/test records; product specification; astm-b211-b211m-19; astm-b230-b230m-22"
+    - id: dq_temporal
+      applies_to: "all foreground records"
+      requirement: "Use one consistent declared reporting period covering normal operations; identify shutdowns, trials, abnormal campaigns and any shorter or non-representative coverage."
+      evidence: "timestamps; production calendar; meter/invoice periods; exception log"
+    - id: dq_completeness
+      applies_to: "all included processes"
+      requirement: "Account for all aluminium inputs and outputs, all directly metered energy, and every known treatment, waste and direct-emission flow; list unmeasured or excluded flows and their expected effect."
+      evidence: "mass balance; energy reconciliation; waste manifests; omission register"
+    - id: dq_geography_technology
+      applies_to: "upstream links and foreground route"
+      requirement: "Match upstream datasets to supplier geography, primary/secondary route, alloying and drawing-stock form; disclose proxies and technology mismatches."
+      evidence: "supplier declarations; upstream dataset metadata; route records"
+    - id: dq_allocation
+      applies_to: "shared operations and scrap"
+      requirement: "Retain allocation drivers, scrap classification, destination and method so a reviewer can reproduce the result and detect double counting."
+      evidence: "allocation worksheet; scrap ledger; recycler receipts; iai-aluminium-scrap-carbon-footprint-2025"
+validation_rules:
+  - rule_id: validate_reference_identity
+    applies_to: "reference flow"
+    rule: "Require product UUID 89db8507-09bd-45f8-ba96-4e459058412c, Mass UUID 93a60a56-a3c8-11da-a746-0800200b9a66, Units of mass UUID 93a60a57-a4c8-11da-a746-0800200c9a66, unit kg and exactly 1,000 kg net saleable output."
+    source_ids:
+      - mass-balance-identity
+  - rule_id: validate_required_qualifiers
+    applies_to: "product metadata"
+    rule: "Reject a package that omits alloy, temper, cross-sectional shape/dimensions, finish/coating, intended grade/application, route, geography, period, recycled-content basis or factory-gate state."
+    source_ids:
+      - astm-b211-b211m-19
+      - astm-b230-b230m-22
+  - rule_id: validate_scope_exclusions
+    applies_to: "product and boundary"
+    rule: "Reject drawing stock, bar/rod/profile, insulated wire, stranded conductor, cable, fabricated wire article, construction-site delivery or installed system as the reference product of this PCR."
+    source_ids:
+      - environdec-basic-aluminium-pcr-1-0-2
+  - rule_id: validate_route_logic
+    applies_to: "process map"
+    rule: "Require wire drawing and finishing/release; require an explicit included/bypassed decision for pretreatment and heat treatment; prevent duplicate intermediate input on bypass paths."
+    source_ids:
+      - eu-fmp-bref-2022
+  - rule_id: validate_inventory_evidence
+    applies_to: "inventory rows"
+    rule: "Require collected or calculated foreground amounts, linked collection protocols, source units, normalization to the reference flow and distinct Tiangong identities before publication; reasoned-estimate ranges may screen data but may not replace records."
+    source_ids: []
+  - rule_id: validate_mass_scrap_allocation
+    applies_to: "facility mass balance and recycling"
+    rule: "Require reconciled aluminium inputs, product, work in progress, internal returns, scrap and rejects; require one disclosed scrap-allocation method and prohibit duplicate recycling credit."
+    source_ids:
+      - mass-balance-identity
+      - iai-aluminium-scrap-carbon-footprint-2025
+      - environdec-basic-aluminium-pcr-1-0-2
+  - rule_id: validate_source_status
+    applies_to: "methodology review"
+    rule: "Recheck the current EPD International aluminium PCR and replace or confirm all provisional reasoned-estimate screens before active or published use."
+    source_ids:
+      - environdec-basic-aluminium-pcr-1-0-2
+published_dataset_profile:
+  dataset_role: "secondary_dataset; background_dataset"
+  downstream_use: "Foreground aluminium-wire production packages and downstream process or lifecyclemodel projections requiring factory-gate uninsulated wire"
+  allowed_use: "Product-specific or transparently weighted production-mix datasets whose product lies within the declared uninsulated single-wire scope and whose qualifiers, routes, upstream links and allocation method are complete"
+  excluded_use: "Generic aluminium metal, drawing stock, bars/rods/profiles, insulated winding wire, stranded conductors, cable, fabricated wire products, construction-site delivery, installation, use or end-of-life without a separate downstream model"
+  required_metadata: "canonical PCR id; product and support UUIDs; alloy; temper; shape/dimensions/tolerances; finish/coating; application grade; production route and bypass decisions; geography; reporting period; primary/recycled shares and evidence; upstream dataset identities; scrap destinations and allocation method; foreground source and collection-protocol links"
+  required_quality_disclosure: "temporal and site coverage; meter and scale quality; mass/energy reconciliation; missing flow identities; proxy datasets; provisional ranges used only for QA; allocation drivers; scrap contamination and destination; exclusions and residual mass-balance causes"
+  update_trigger: "Material change in alloy/product mix, drawing or heat-treatment technology, energy supply, aluminium source or recycled share, coating/finishing, scrap route or allocation method; a newer controlling PCR/standard; or evidence that a provisional range or UUID is no longer appropriate"
+data_sources:
+  - id: "environdec-basic-aluminium-pcr-1-0-2"
+    type: "standard"
+    reference: "EPD International, Basic aluminium products and special alloys, version 1.0.2 (being updated), https://www.environdec.com/pcr-library/pcr_040ae46d-0894-4dca-831b-91aa8d2b93b8 (retrieved 2026-08-09)"
+    used_for: "Parent CPC 4153 applicability, factory-gate PCR context and mandatory disclosure of the selected scrap-allocation method; update status is a review flag"
+  - id: "astm-b211-b211m-19"
+    type: "standard"
+    reference: "ASTM B211/B211M-19, Standard Specification for Aluminum and Aluminum-Alloy Rolled or Cold Finished Bar, Rod, and Wire, https://store.astm.org/b0211_b0211m-19.html (retrieved 2026-08-09)"
+    used_for: "General-engineering aluminium wire scope and alloy/temper/product-property qualifiers"
+  - id: "astm-b230-b230m-22"
+    type: "standard"
+    reference: "ASTM B230/B230M-22, Standard Specification for Aluminum 1350-H19 Wire for Electrical Purposes, https://store.astm.org/b0230_b0230m-22.html (retrieved 2026-08-09)"
+    used_for: "Electrical-purpose wire inclusion and application-specific alloy, temper, shape and conformance qualifiers"
+  - id: "eu-fmp-bref-2022"
+    type: "official_guidance"
+    reference: "European Commission JRC, Best Available Techniques Reference Document for the Ferrous Metals Processing Industry, 2022, https://eippcb.jrc.ec.europa.eu/sites/default/files/2022-12/FMP_BREF_2022.pdf (retrieved 2026-08-09)"
+    used_for: "Generic technical analogue for wire-rod pretreatment, dry/wet drawing, optional heat treatment and finishing; not aluminium-specific quantitative evidence"
+  - id: "iai-aluminium-scrap-carbon-footprint-2025"
+    type: "official_guidance"
+    reference: "International Aluminium Institute, Aluminium Scrap in Carbon Footprint Calculations, 2025, https://international-aluminium.org/wp-content/uploads/2025/10/Carbon-Footprint-of-Recycled-Aluminium-IAI-Document-Final.pdf (retrieved 2026-08-09)"
+    used_for: "Aluminium scrap mass balance, cut-off/substitution/coproduct method disclosure and prevention of double-counted recycling benefit"
+  - id: "mass-balance-identity"
+    type: "method_factor"
+    reference: "Conservation-of-mass and reference-flow normalization identity"
+    used_for: "Fixed reference amount, yield, route weighting and process/facility mass-balance calculations"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:48567031c1d30b119be38bbfcec6e5fe89036db52892c3be3b676fef7ad6f10d"
+  generated_content_sha256: "sha256:2aa6aee268961361b574d590c45b1474774879f08ec39c79b0977ffbc47163db"

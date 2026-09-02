@@ -1,10 +1,926 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "21493"
-  title: "Fruits and nuts, uncooked or cooked, frozen"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.food-products-beverages-and-tobacco-textiles-apparel-and-leather-products.meat-fish-fruits-vegetables-oils-and-fats.fruits-and-nuts-uncooked-or-cooked-frozen"
+  classification_refs: "CPC 3.0: 21493 - Fruits and nuts, uncooked or cooked, frozen"
+  covered_products: "Uncooked or cooked frozen fruits; uncooked or cooked frozen nuts; declared mixtures whose primary identity remains frozen fruit or frozen nuts; quick-frozen products only where the declared product and process meet the applicable product-specific standard"
+  excluded_products: "Fresh, dried, canned, fermented, juiced, pureed, pasted, jammed, provisionally preserved, roasted, salted, or otherwise prepared products outside the frozen-fruit-or-nut identity; frozen vegetables; products intended to be represented by a different principal food category"
+  representative_product: "Frozen banana for the supplied Tiangong product-flow UUID only; this representative is narrower than the category and is not a default identity for other species"
+  production_route: "Receipt and preparation of identified fruit or nut material; conditional cooking or blanching; freezing; conditional packaging; on-site frozen storage and factory-gate dispatch"
+  market_state: "Frozen product at factory gate, with species, composition, presentation, thermal condition, packaging condition, and intended market use declared"
+functional_unit:
+  what: "Supply an identified edible fruit or nut product in its declared frozen, uncooked or cooked condition at the producing-facility gate"
+  how_much: "1 kg net frozen product, excluding transport and sales packaging"
+  how_well: "Conforming to the declared species or mixture, ingredient composition, preparation and cooking state, presentation, freezing process claim, release temperature specification, and applicable product-specific quality standard"
+  how_long_or_cycle: "One production batch through factory-gate release; on-site frozen-storage duration and any declared shelf-life information shall be reported rather than assumed"
+  reference_flow_link: "The reference flow is the net mass of conforming frozen product needed to deliver the declared 1 kg unit"
+system_boundary:
+  rules:
+    - rule_id: boundary_foreground_operations
+      applies_to: "Foreground production"
+      rule: "Include receiving and preparation, all performed cooking or blanching, freezing, all performed packaging, on-site frozen storage, cleaning attributable to the represented production, process waste and wastewater, utility use, and direct refrigerant losses through factory-gate release."
+      source_ids:
+        - eu-pef-2021-2279
+    - rule_id: boundary_upstream_links
+      applies_to: "Upstream product inputs"
+      rule: "Link every material, ingredient, packaging, energy carrier, water supply, refrigerant, and waste-treatment service to an appropriate upstream dataset when included in the study; do not substitute the Banana reference flow for another species."
+      source_ids:
+        - eu-pef-2021-2279
+    - rule_id: boundary_exclusions
+      applies_to: "Excluded stages"
+      rule: "Document and justify excluded processes. Downstream distribution, retail, use, and end of life are outside this factory-gate foreground profile unless the declared study adds them explicitly."
+      source_ids:
+        - eu-pef-2021-2279
+    - rule_id: boundary_standard_specificity
+      applies_to: "Product-standard claims"
+      rule: "Apply CXS 52-1981 only to its specified quick-frozen strawberries and CXS 69-1981 only to its specified quick-frozen raspberries. CXS 320-2015 covers quick-frozen vegetables and shall not be used as evidence for category-wide fruit or nut requirements."
+      source_ids:
+        - codex-cxs-52-1981
+        - codex-cxs-69-1981
+        - codex-cxs-320-2015
+boundary_abstraction:
+  declared_starting_condition: "Identified fruit or nut raw material received at the processing facility, with species or mixture, supplier, origin, preparation state, mass, and temperature or preservation condition recorded"
+  starting_condition_role: "Foreground entry point for converting received fruit or nut material into conforming frozen product"
+  product_classification_scope: "Frozen fruits and nuts within the semantic scope of CPC 3.0 subclass 21493; classification does not authorize use of the Banana UUID for non-banana products"
+  recursive_input_rule: "A purchased frozen fruit or nut input in the same category shall be recorded as an upstream product input with its own supplier dataset and shall not be recursively reprocessed through this PCR unless the foreground facility actually performs the represented operation"
+  upstream_dataset_requirement: "Use product-, geography-, technology-, and time-representative datasets for agricultural production, ingredient production, packaging production, energy supply, water supply, refrigerant production, waste treatment, and inbound transport when those processes fall within the study boundary"
+  disclosure: "Declare raw-material entry condition, included facility processes, excluded life-cycle stages, product-specific standard claims, cold-chain hand-off point, allocation choices, data gaps, and whether the reference UUID is retained for frozen banana or replaced/manual-reviewed"
+reference_flow_definition:
+  reference_amount: "1 kg net frozen product"
+  product_flow_ref:
+    name: "Banana"
+    uuid: "ce6b2d04-9b60-4b60-a4e7-553d7ae67ce0"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "Fruit or nut species and variety where material"
+    - "single product or mixture composition"
+    - "raw-material condition"
+    - uncooked
+    - cooked
+    - "or blanched state"
+    - whole
+    - sliced
+    - diced
+    - "pure pieces"
+    - "or other presentation"
+    - "individual quick frozen"
+    - "block frozen"
+    - "or other declared freezing route"
+    - "product-core release temperature specification and measured result"
+    - "added ingredients and processing aids"
+    - "net product mass and packaging exclusion"
+    - "packaging format"
+    - "production geography and reference period"
+    - "on-site frozen-storage temperature and duration"
+    - "intended direct-consumption or industrial use"
+    - "applicable product-specific standard"
+    - "confirmation that the Banana UUID is used only for frozen banana or evidence of replacement/manual identity review"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "Reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Report 1 kg net conforming frozen product; exclude packaging mass and record glaze, added syrup, or other included food ingredients as part of product composition and net product mass."
+  - id: mass_basis_consistency
+    applies_to: "Fruit, nut, ingredient, product, co-product, reject, and waste masses"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Use measured wet mass in the condition crossing each process boundary. Do not convert to dry matter unless both the measured moisture basis and conversion are disclosed."
+  - id: utility_unit_preservation
+    applies_to: "Electricity, heat, fuels, water, and refrigerants"
+    required_property_ref:
+      name: "Metered property"
+      uuid: ""
+    required_unit: "Meter or invoice unit, with documented conversion"
+    rule: "Preserve raw meter or invoice units and conversion factors; normalize only after allocating the recorded quantity to the represented batch."
+  - id: temperature_claim
+    applies_to: "Product-core and storage temperature"
+    required_property_ref:
+      name: "Temperature"
+      uuid: ""
+    required_unit: "°C"
+    rule: "Record the measurement location, instrument, timestamp, stabilization condition, and applicable product specification. The -18 °C thermal-centre completion criterion from CXS 52-1981 and CXS 69-1981 is mandatory only for products claiming conformity to the respective strawberry or raspberry standard; it is not a default for banana or other products."
+process_map:
+  - id: receiving_preparation
+    name: "Raw-material receiving and preparation"
+    inclusion: "required"
+    inclusion_condition: "Always included"
+    role: "Foreground receipt, sorting, washing where performed, peeling, shelling, trimming, cutting, and formulation"
+    quantitative_reference: "kg prepared fruit or nut material leaving the process"
+  - id: cooking_treatment
+    name: "Cooking, blanching, or thermal treatment"
+    inclusion: "conditional"
+    inclusion_condition: "Include when the marketed product is cooked or when the facility performs blanching or another thermal treatment"
+    role: "Foreground thermal preparation"
+    quantitative_reference: "kg treated material leaving the process"
+  - id: freezing
+    name: "Freezing and stabilization"
+    inclusion: "required"
+    inclusion_condition: "Always included"
+    role: "Foreground freezing to the declared release condition"
+    quantitative_reference: "kg conforming frozen material leaving the freezer"
+  - id: packaging
+    name: "Product packaging"
+    inclusion: "conditional"
+    inclusion_condition: "Include when packaging or repacking occurs before factory-gate dispatch"
+    role: "Foreground packing and packaging-material use"
+    quantitative_reference: "kg net frozen product packed"
+  - id: frozen_storage_dispatch
+    name: "On-site frozen storage and dispatch"
+    inclusion: "required"
+    inclusion_condition: "Always included; record zero or minimal dwell only when supported by dispatch records"
+    role: "Foreground cold storage up to the factory-gate hand-off"
+    quantitative_reference: "1 kg net conforming frozen product dispatched"
+process_inventory:
+  - id: receiving_preparation
+    label: "Raw-material receiving and preparation"
+    inputs:
+      product:
+        - row_id: received_raw_material
+          role: "Received fruit or nut material"
+          name: "Product-appropriate fruit or nut input; select the reviewed Tiangong flow for the actual species and state"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record every received lot of fruit or nut material that enters the represented production, including species, supplier, origin, preparation state, and measured mass."
+          amount:
+            expression: "Sum accepted and rejected received-lot masses attributable to the represented batch"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg prepared fruit or nut material leaving receiving_preparation"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_batch_records
+              source_ids: []
+            ranges: []
+        - row_id: preparation_inputs
+          role: "Preparation water and added food ingredients"
+          name: "Product-appropriate water or ingredient flow; no generic UUID is prescribed by this PCR"
+          flow_type: "product"
+          property_unit: "Metered property and unit; mass inputs shall use Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record measured water, sweeteners, antioxidants, acids, salt, oils, or other food ingredients actually added during washing, preparation, or formulation as separate foreground sub-records."
+          amount:
+            expression: "Metered or batch-issued quantity attributable to the represented batch, disaggregated by material identity"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg prepared fruit or nut material leaving receiving_preparation"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_batch_records
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: prepared_material
+          role: "Prepared fruit or nut material"
+          name: "Internal prepared fruit or nut intermediate; no external product-flow UUID is prescribed"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record the measured mass transferred to freezing or to the conditional cooking process and its preparation state."
+          amount:
+            expression: "Measured transfer mass of prepared material"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per process batch"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_batch_records
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: preparation_residues
+          role: "Sorting, peeling, shelling, trimming, and preparation residues"
+          name: "Destination- and material-appropriate waste or product flow; select during dataset construction"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record each residue stream separately and identify whether it is food loss, a co-product, animal-feed material, recovery material, wastewater solids, or waste sent to treatment."
+          amount:
+            expression: "Measured residue mass by stream and destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg prepared fruit or nut material leaving receiving_preparation"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_and_water_records
+              source_ids: []
+            ranges: []
+        - row_id: preparation_wastewater
+          role: "Preparation wastewater"
+          name: "Site-appropriate wastewater flow; select during dataset construction"
+          flow_type: "waste"
+          property_unit: "Volume or mass in the measured unit"
+          description: "Record measured or metered wastewater leaving preparation, including destination and any measured pollutant data used by the treatment model."
+          amount:
+            expression: "Metered discharge or documented water balance attributable to the represented batch"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg prepared fruit or nut material leaving receiving_preparation"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_and_water_records
+              source_ids: []
+            ranges: []
+      elementary:
+        []
+  - id: cooking_treatment
+    label: "Cooking, blanching, or thermal treatment"
+    inputs:
+      product:
+        - row_id: material_to_treatment
+          role: "Prepared material sent to thermal treatment"
+          name: "Internal prepared fruit or nut intermediate"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record the measured transfer of prepared material when cooking, blanching, or another thermal treatment is performed."
+          amount:
+            expression: "Measured incoming transfer mass"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg thermally treated material leaving cooking_treatment"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_batch_records
+              source_ids: []
+            ranges: []
+        - row_id: treatment_utilities
+          role: "Thermal-treatment utilities"
+          name: "Utility-specific product flows selected for the site supply"
+          flow_type: "product"
+          property_unit: "Meter or invoice property and unit"
+          description: "Record electricity, fuel, heat, steam, and process water used by the actual treatment route as separate meter or allocation records."
+          amount:
+            expression: "Directly metered use or documented allocation from shared meters"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg thermally treated material leaving cooking_treatment"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_utility_records
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: treated_material
+          role: "Thermally treated fruit or nut material"
+          name: "Internal treated fruit or nut intermediate"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record treated-material mass and the declared cooking or blanching condition transferred to freezing."
+          amount:
+            expression: "Measured transfer mass after treatment and draining"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per process batch"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_batch_records
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: treatment_losses
+          role: "Thermal-treatment wastewater and losses"
+          name: "Destination-appropriate waste or wastewater flow"
+          flow_type: "waste"
+          property_unit: "Measured mass or volume unit"
+          description: "Record wastewater, condensate sent to treatment, spills, and removed solids by destination; do not hide cooking or draining losses in yield."
+          amount:
+            expression: "Measured discharge and loss quantities attributable to the treatment batch"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg thermally treated material leaving cooking_treatment"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_and_water_records
+              source_ids: []
+            ranges: []
+      elementary:
+        []
+  - id: freezing
+    label: "Freezing and stabilization"
+    inputs:
+      product:
+        - row_id: material_to_freezing
+          role: "Prepared or treated material sent to freezing"
+          name: "Internal prepared or treated fruit or nut intermediate"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record the measured mass and temperature of material entering the freezer and identify whether it is uncooked or cooked."
+          amount:
+            expression: "Measured freezer-feed mass"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg conforming frozen material leaving freezing"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_batch_records
+              source_ids: []
+            ranges: []
+        - row_id: freezing_energy
+          role: "Freezing electricity and other energy"
+          name: "Site-supply-specific electricity or energy flow"
+          flow_type: "product"
+          property_unit: "Energy in the metered or invoice unit"
+          description: "Record electricity and any fuel, heat, or cooling service used by freezing equipment and attributable auxiliaries."
+          amount:
+            expression: "Direct meter reading or documented shared-utility allocation for the represented batch"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg conforming frozen material leaving freezing"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_utility_records
+              source_ids: []
+            ranges: []
+        - row_id: freezing_refrigerant_input
+          role: "Refrigerant replenishment attributable to freezing"
+          name: "Refrigerant-specific product flow selected for the installed system"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record refrigerant identity and replenishment from maintenance or inventory records; allocate shared-system replenishment only with a documented rule."
+          amount:
+            expression: "Replenishment mass attributable to the freezing system and reference period"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg conforming frozen material leaving freezing"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_refrigerant_records
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: frozen_material
+          role: "Conforming frozen fruit or nut material"
+          name: "Product-appropriate frozen fruit or nut flow; Banana only for frozen banana"
+          flow_type: "product"
+          flow_ref:
+            uuid: "ce6b2d04-9b60-4b60-a4e7-553d7ae67ce0"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record frozen output mass, core-temperature result, freezing route, conformity status, and any non-conforming frozen mass separately."
+          amount:
+            expression: "Measured conforming frozen output mass"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per freezing batch"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_temperature_and_release_records
+              source_ids:
+                - codex-cxs-52-1981
+                - codex-cxs-69-1981
+            ranges: []
+      waste:
+        - row_id: nonconforming_frozen_material
+          role: "Non-conforming frozen material"
+          name: "Destination-appropriate waste or product flow"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record rejected, reworked, downgraded, or discarded frozen material separately by destination."
+          amount:
+            expression: "Measured non-conforming mass by disposition"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg conforming frozen material leaving freezing"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_and_water_records
+              source_ids: []
+            ranges: []
+      elementary:
+        - row_id: freezing_refrigerant_emission
+          role: "Direct refrigerant emissions from freezing"
+          name: "Refrigerant-specific elementary flow selected for the installed system"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Model identified refrigerant loss to air from equipment servicing, leakage records, or a documented stock balance; do not assign an unspecified generic refrigerant."
+          amount:
+            expression: "Calculated attributable refrigerant loss from collected replenishment, recovery, and inventory records"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per kg conforming frozen material leaving freezing"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_refrigerant_records
+              source_ids: []
+            ranges: []
+  - id: packaging
+    label: "Product packaging"
+    inputs:
+      product:
+        - row_id: frozen_material_to_packaging
+          role: "Frozen material entering packaging"
+          name: "Product-appropriate frozen fruit or nut flow; Banana UUID only for frozen banana"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record the measured frozen material transferred to packaging or repacking."
+          amount:
+            expression: "Measured incoming frozen material mass"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg net packed frozen product"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_records
+              source_ids: []
+            ranges: []
+        - row_id: packaging_materials
+          role: "Primary, secondary, and tertiary packaging materials"
+          name: "Material-specific packaging product flow selected during dataset construction"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record each packaging component by material, supplier specification, recycled-content claim where relevant, and issued mass. Packaging remains outside the 1 kg net product reference mass."
+          amount:
+            expression: "Issued packaging mass minus returned unused material, by component"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg net packed frozen product"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_records
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: packed_frozen_product
+          role: "Packed frozen product"
+          name: "Product-appropriate frozen fruit or nut flow; Banana only for frozen banana"
+          flow_type: "product"
+          flow_ref:
+            uuid: "ce6b2d04-9b60-4b60-a4e7-553d7ae67ce0"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record net product mass separately from packaging mass and retain lot-to-package traceability."
+          amount:
+            expression: "Sum verified net product mass in conforming packages"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per packaging batch"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_records
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: packaging_waste
+          role: "Packaging scrap and rejected packs"
+          name: "Material- and destination-specific waste flow"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record packaging scrap and rejected packed product separately by material and destination; recover the food fraction as a separate material record when practical."
+          amount:
+            expression: "Measured scrap or rejected-pack mass by component and destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg net packed frozen product"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_records
+              source_ids: []
+            ranges: []
+      elementary:
+        []
+  - id: frozen_storage_dispatch
+    label: "On-site frozen storage and dispatch"
+    inputs:
+      product:
+        - row_id: product_to_storage
+          role: "Frozen product entering on-site storage"
+          name: "Product-appropriate frozen fruit or nut flow; Banana UUID only for frozen banana"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record lot mass, entry time, entry temperature, storage zone, and packaging condition."
+          amount:
+            expression: "Measured net frozen product mass entering on-site storage"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg net frozen product dispatched"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_storage_dispatch_records
+              source_ids: []
+            ranges: []
+        - row_id: storage_utilities
+          role: "Cold-storage electricity and refrigerant replenishment"
+          name: "Site-specific electricity and refrigerant product flows"
+          flow_type: "product"
+          property_unit: "Metered energy unit for electricity; Mass / kg for refrigerant"
+          description: "Record electricity and refrigerant replenishment for the on-site frozen store, preserving separate material identities and allocating shared use with mass-time or directly metered records."
+          amount:
+            expression: "Directly metered use or documented allocation over the recorded storage dwell time"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per kg net frozen product dispatched"
+              kind: "storage_duration"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_storage_dispatch_records
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: reference_product
+          role: "Factory-gate frozen product"
+          name: "Banana"
+          flow_type: "product"
+          flow_ref:
+            uuid: "ce6b2d04-9b60-4b60-a4e7-553d7ae67ce0"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This is the quantitative reference output. Retain the selected Banana UUID only for a frozen-banana dataset; replace it or complete manual identity review for every other product."
+          amount:
+            expression: "Fixed reference amount of 1 kg net conforming frozen product after normalization"
+            value_mode: "fixed_value"
+            specificity: "product_specific"
+            basis:
+              text: "1 kg net conforming frozen product at factory gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "identity_reference"
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: storage_dispatch_losses
+          role: "Storage and dispatch losses"
+          name: "Destination-appropriate waste or product flow"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record thawed, damaged, expired, spilled, or otherwise non-conforming product by mass and destination."
+          amount:
+            expression: "Measured loss mass by lot and disposition"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg net frozen product dispatched"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_storage_dispatch_records
+              source_ids: []
+            ranges: []
+      elementary:
+        - row_id: storage_refrigerant_emission
+          role: "Direct refrigerant emissions from storage"
+          name: "Refrigerant-specific elementary flow selected for the installed system"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Calculate identified refrigerant loss to air from collected stock, recovery, and replenishment records for the cold-storage system."
+          amount:
+            expression: "Attributable refrigerant loss calculated from collected records"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per kg net frozen product dispatched"
+              kind: "storage_duration"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_refrigerant_records
+              source_ids: []
+            ranges: []
+allocation_rules:
+  - rule_id: allocation_avoid
+    applies_to: "Multi-output and shared processes"
+    rule: "First avoid allocation by subdivision or by using directly metered batch, line, equipment, or storage-zone data."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: allocation_physical_relation
+    applies_to: "Unavoidable multi-output process"
+    rule: "Where subdivision is not possible, allocate inputs and emissions using an established physical relationship that reflects how changing output quantities changes burdens; disclose the parameter, data period, and calculation."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: allocation_other_relation
+    applies_to: "No defensible physical relationship"
+    rule: "If no defensible physical relationship exists, use another justified relationship, including economic allocation where appropriate, and report prices, reference period, sensitivity, and why physical allocation was not applicable."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: allocation_residue_status
+    applies_to: "Peels, shells, trimmings, rejected food, recovered material, and other outputs"
+    rule: "Classify each output as product, co-product, material for recovery, animal feed, wastewater constituent, or waste before allocation. Record destination and do not assign avoided burdens without an explicit downstream substitution model."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: allocation_shared_cold_store
+    applies_to: "Shared frozen storage"
+    rule: "Prefer dedicated metering. Otherwise allocate storage electricity and attributable refrigerant loss using recorded product mass multiplied by recorded dwell time, unless a validated engineering model better represents zone or temperature differences."
+    source_ids:
+      - eu-pef-2021-2279
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_material_batch_records
+      process_id: "receiving_preparation"
+      flow_role: "Raw, intermediate, ingredient, and conforming product masses across receiving, treatment, and freezing"
+      record_type: "Weighbridge, scale, batch, recipe, and transfer records"
+      raw_fields: "lot_id; species_or_mixture; supplier; origin; preparation_state; ingredient_id; gross_mass; tare_mass; net_mass; moisture_basis_if_used; timestamp; destination_batch"
+      collection_method: "Calibrated weighing and controlled batch reconciliation"
+      unit: "kg and original record units"
+      frequency: "Every represented lot and batch"
+      temporal_coverage: "Declared representative production period covering relevant seasonal and operating conditions"
+      site_scope: "All facilities and lines included in the dataset"
+      aggregation_rule: "Sum by material identity and batch; subtract tare; link transfers; normalize only after conforming output is known"
+      quality_evidence: "Calibration records; lot traceability; recipe authorization; reconciliation sign-off"
+    - protocol_id: cp_utility_records
+      process_id: "freezing"
+      flow_role: "Water, electricity, fuel, heat, steam, and shared utilities across included preparation, treatment, and freezing operations"
+      record_type: "Meters, invoices, equipment logs, and production schedules"
+      raw_fields: "meter_id; utility; opening_reading; closing_reading; unit; timestamp; equipment_or_area; batch_id; allocation_driver"
+      collection_method: "Direct submetering preferred; otherwise documented allocation from synchronized production records"
+      unit: "Original meter or invoice unit"
+      frequency: "Each batch where metered; otherwise at the shortest available billing interval"
+      temporal_coverage: "Same period as represented production"
+      site_scope: "All included process equipment and shared systems"
+      aggregation_rule: "Difference readings; subtract documented non-production use; allocate shared totals using the disclosed causal driver"
+      quality_evidence: "Meter calibration or verification; invoices; operating-hour logs; allocation worksheet"
+    - protocol_id: cp_temperature_and_release_records
+      process_id: "freezing"
+      flow_role: "Freezer operation, product-core temperature, stabilization, and release conformity"
+      record_type: "Calibrated probes, continuous logger, freezer control record, and release test"
+      raw_fields: "lot_id; product; standard_claim; probe_id; measurement_location; start_time; end_time; core_temperature; stabilization_condition; freezer_temperature; conformity_decision"
+      collection_method: "Measure at defined representative or worst-case locations under the declared release procedure"
+      unit: "°C and timestamp"
+      frequency: "Every represented batch or validated sampling plan"
+      temporal_coverage: "Same period as represented production"
+      site_scope: "Every included freezer and product route"
+      aggregation_rule: "Retain batch results; do not average away a failed release result; apply product-specific standard only within its scope"
+      quality_evidence: "Probe calibration; sampling plan; signed release record; deviation and corrective-action log"
+    - protocol_id: cp_packaging_records
+      process_id: "packaging"
+      flow_role: "Net product, packaging components, and packaging waste"
+      record_type: "Packaging bill of materials, issue/return records, checkweigher, and waste logs"
+      raw_fields: "packaging_component_id; material; supplier; unit_mass; issued_count; returned_count; net_product_mass; rejected_pack_count; scrap_mass; destination"
+      collection_method: "Reconcile packaging issued, used, returned, and discarded with packed net product"
+      unit: "kg, item count, and source units"
+      frequency: "Each packaging batch"
+      temporal_coverage: "Same period as represented production"
+      site_scope: "Every included packaging line and format"
+      aggregation_rule: "Convert counts using verified component mass; aggregate by material; keep packaging mass outside net product mass"
+      quality_evidence: "Supplier specification; component-mass check; checkweigher verification; reconciliation record"
+    - protocol_id: cp_waste_and_water_records
+      process_id: "receiving_preparation"
+      flow_role: "Residues, food losses, non-conforming product, wastewater, and destinations across included preparation, treatment, and freezing operations"
+      record_type: "Scales, containers, wastewater meters, manifests, and laboratory reports"
+      raw_fields: "stream_id; material_description; mass_or_volume; unit; batch_id; destination; treatment_route; recovery_status; pollutant_measurement; timestamp"
+      collection_method: "Measure each material stream and retain destination evidence"
+      unit: "kg, m3, and laboratory units"
+      frequency: "Each batch or waste collection event"
+      temporal_coverage: "Same period as represented production"
+      site_scope: "All included processes and discharge points"
+      aggregation_rule: "Aggregate by stream and destination; prevent double counting between product loss and wastewater solids"
+      quality_evidence: "Scale or meter verification; waste transfer record; laboratory report; destination confirmation"
+    - protocol_id: cp_refrigerant_records
+      process_id: "freezing"
+      flow_role: "Refrigerant stock, charge, replenishment, recovery, and attributable loss across freezing and frozen storage"
+      record_type: "Refrigerant log, service invoice, cylinder weighing, and equipment register"
+      raw_fields: "refrigerant_identity; equipment_id; opening_stock; additions; recovered_mass; closing_stock; service_date; leak_event; equipment_assignment"
+      collection_method: "Reconcile identified refrigerant mass by equipment system and period"
+      unit: "kg"
+      frequency: "Every service, replenishment, recovery, or inventory event"
+      temporal_coverage: "Same period as represented production, with opening and closing stock"
+      site_scope: "All freezing and cold-storage systems serving included production"
+      aggregation_rule: "Calculate loss from the documented stock balance; allocate shared-system loss using disclosed service or mass-time data"
+      quality_evidence: "Technician record; cylinder weight; service invoice; equipment charge register; stock-balance review"
+    - protocol_id: cp_storage_dispatch_records
+      process_id: "frozen_storage_dispatch"
+      flow_role: "Stored mass, dwell time, storage temperature, electricity allocation, and dispatch loss"
+      record_type: "Warehouse management system, zone logger, dispatch record, and storage submeter"
+      raw_fields: "lot_id; net_mass; entry_time; dispatch_time; storage_zone; setpoint; measured_temperature; electricity_reading; refrigerant_system; loss_mass; loss_destination"
+      collection_method: "Link lot movements to zone temperature and energy records"
+      unit: "kg, h, °C, kWh, and source units"
+      frequency: "Every lot movement plus continuous or validated interval logging"
+      temporal_coverage: "Same period as represented production"
+      site_scope: "All on-site frozen stores used before factory-gate dispatch"
+      aggregation_rule: "Calculate mass-time by lot; allocate zone totals using the disclosed rule; retain excursions and losses separately"
+      quality_evidence: "Logger and meter verification; warehouse traceability; dispatch confirmation; excursion investigation"
+  calculation_rules:
+    - id: calc_net_reference_mass
+      applies_to: "Reference product"
+      rule: "Net frozen product mass = gross packed mass - tare and packaging mass; normalize the completed inventory to exactly 1 kg net conforming product."
+      inputs:
+        - "gross packed mass"
+        - "tare mass"
+        - "packaging mass"
+        - "conforming status"
+      output: "kg net reference product"
+      source_ids:
+        - eu-pef-2021-2279
+    - id: calc_inventory_normalization
+      applies_to: "Every foreground flow"
+      rule: "Normalized amount = attributable batch amount / kg net conforming factory-gate product from the same represented production."
+      inputs:
+        - "attributable flow quantity"
+        - "net conforming product mass"
+      output: "flow quantity per kg reference product"
+      source_ids:
+        - eu-pef-2021-2279
+    - id: calc_process_mass_reconciliation
+      applies_to: "Each material transformation"
+      rule: "Reconcile measured incoming fruit or nut material plus added food ingredients and retained water against product, co-product, residue, wastewater solids where measured, samples, spills, and documented mass change; investigate unexplained imbalance rather than forcing closure."
+      inputs:
+        - "all measured material inputs and outputs"
+        - "moisture or evaporation evidence where relevant"
+      output: "batch mass-reconciliation record"
+      source_ids: []
+    - id: calc_shared_utility_allocation
+      applies_to: "Shared utilities"
+      rule: "Allocate only after subtracting documented unrelated use; use direct submetering where available, otherwise a disclosed causal driver synchronized to production."
+      inputs:
+        - "shared meter total"
+        - "non-production use"
+        - "batch or equipment driver"
+      output: "utility quantity attributable to represented product"
+      source_ids:
+        - eu-pef-2021-2279
+    - id: calc_storage_mass_time
+      applies_to: "Shared frozen storage"
+      rule: "Product mass-time = sum of each lot's net mass multiplied by recorded dwell time; use the result as the default shared-zone allocation driver unless direct metering or a validated engineering model is available."
+      inputs:
+        - "lot net mass"
+        - "entry time"
+        - "dispatch time"
+        - "zone utility total"
+      output: "storage utility attributed to each product lot"
+      source_ids: []
+    - id: calc_refrigerant_loss
+      applies_to: "Freezing and storage refrigerant emissions"
+      rule: "Identified refrigerant loss = opening stock + additions - recovered mass - closing stock, reconciled with equipment service records and never below zero without investigation."
+      inputs:
+        - "opening stock"
+        - additions
+        - "recovered mass"
+        - "closing stock"
+        - "equipment assignment"
+      output: "kg identified refrigerant loss"
+      source_ids: []
+  data_quality_requirements:
+    - id: dqr_product_identity
+      applies_to: "Reference flow and all product intermediates"
+      requirement: "Species or mixture, preparation state, composition, presentation, freezing route, release condition, and intended use shall be traceable to each represented lot. The Banana UUID shall appear only for frozen banana unless a documented manual review accepts the exact use."
+      evidence: "Product specification; lot records; Tiangong flow selection; identity-review record where applicable"
+    - id: dqr_temporal
+      applies_to: "Foreground activity data"
+      requirement: "Use a declared period that represents the production route and relevant seasonal, start-up, shutdown, defrost, cleaning, and storage conditions; disclose excluded abnormal events and the reason."
+      evidence: "Dataset reference period; production calendar; exception log"
+    - id: dqr_technology_geography
+      applies_to: "Facility processes and upstream links"
+      requirement: "Identify facility, line, freezer technology, storage system, refrigerant, energy supply geography, and raw-material origin sufficiently to select representative upstream data."
+      evidence: "Equipment register; supplier records; utility contract; dataset metadata"
+    - id: dqr_measurement
+      applies_to: "Mass, utility, temperature, and refrigerant records"
+      requirement: "Retain instrument identity, unit, calibration or verification status, reading interval, allocation method, and responsible record."
+      evidence: "Calibration certificates; meter checks; service logs; signed batch records"
+    - id: dqr_completeness
+      applies_to: "Foreground inventory"
+      requirement: "Include every process performed within the declared boundary and reconcile material outputs, food loss, wastewater, packaging, utility use, and direct refrigerant losses. Any omission shall be quantified where possible, justified, and tested for significance."
+      evidence: "Process map; reconciliation; missing-data register; significance assessment"
+    - id: dqr_source_scope
+      applies_to: "Codex-based requirements"
+      requirement: "Demonstrate that the species, presentation, intended use, and process fall within the cited Codex standard before applying its requirements. Do not transfer CXS 52-1981, CXS 69-1981, or CXS 320-2015 limits to products outside their scope."
+      evidence: "Applicable standard; product specification; conformity statement"
+    - id: dqr_uncertainty
+      applies_to: "Calculated and allocated values"
+      requirement: "Identify measured inputs, calculation formula, allocation driver, data gaps, and sensitivity to material allocation or missing-data choices."
+      evidence: "Calculation workbook; allocation record; sensitivity result; quality disclosure"
+validation_rules:
+  - rule_id: validate_reference_identity
+    applies_to: "Reference product flow"
+    rule: "Fail validation when Banana UUID ce6b2d04-9b60-4b60-a4e7-553d7ae67ce0 is used for a non-banana product, an undeclared mixture, or a materially different identity without documented manual review; require a replacement Tiangong product flow otherwise."
+    source_ids: []
+  - rule_id: validate_reference_mass
+    applies_to: "Reference flow"
+    rule: "Confirm that the quantitative reference is exactly 1 kg net conforming frozen product using Mass 93a60a56-a3c8-11da-a746-0800200b9a66, Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66, and kg, with packaging excluded."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: validate_process_coverage
+    applies_to: "Foreground system"
+    rule: "Confirm receiving and preparation, freezing, and on-site frozen storage/dispatch are represented; include cooking or blanching and packaging when performed; account for cleaning, waste, wastewater, energy, and direct refrigerant loss where applicable."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: validate_temperature_claim
+    applies_to: "Quick-frozen strawberry or raspberry conformity claim"
+    rule: "For a CXS 52-1981 strawberry or CXS 69-1981 raspberry claim, verify recorded thermal-centre temperature reached -18 °C after thermal stabilization and that handling, packaging, and product scope match the cited standard. Do not run this criterion for banana, nuts, or other non-covered products."
+    source_ids:
+      - codex-cxs-52-1981
+      - codex-cxs-69-1981
+  - rule_id: validate_mass_reconciliation
+    applies_to: "Material-transforming processes"
+    rule: "Confirm measured inputs and outputs are reconciled and that rejects, residues, co-products, wastewater solids where measured, samples, and losses are not hidden in product yield. Investigate and disclose unexplained imbalance."
+    source_ids: []
+  - rule_id: validate_allocation
+    applies_to: "Multi-output and shared processes"
+    rule: "Confirm allocation was first avoided where practical; otherwise verify the selected relationship, driver, reference period, and sensitivity are documented and consistently applied."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: validate_source_scope
+    applies_to: "All external-source rules"
+    rule: "Reject a standard-derived rule when the represented product or process is outside the source scope. In particular, CXS 320-2015 shall not be treated as a frozen-fruit-or-nut standard."
+    source_ids:
+      - codex-cxs-320-2015
+  - rule_id: validate_data_quality
+    applies_to: "Foreground package"
+    rule: "Confirm traceability, temporal and technological representativeness, instrument evidence, completeness, missing-data disclosure, and calculation records meet Section 8 requirements."
+    source_ids:
+      - eu-pef-2021-2279
+published_dataset_profile:
+  dataset_role: "Factory-gate foreground dataset for an identified frozen fruit or nut product"
+  downstream_use: "secondary_dataset; background_dataset"
+  allowed_use: "Use in process or lifecycle models whose product identity, composition, preparation state, freezing route, geography, time, packaging condition, storage profile, and system boundary are compatible with the published dataset"
+  excluded_use: "Automatic representation of all CPC 21493 products by the Banana UUID; use for a non-banana species without flow replacement or manual review; use as a fresh, dried, canned, pureed, jammed, roasted, salted, or frozen-vegetable dataset; extrapolation of product-specific Codex requirements beyond covered products; undisclosed cradle-to-grave claims from this factory-gate profile"
+  required_metadata: "PCR id and status; actual product-flow name and UUID; explicit Banana-UUID applicability decision; species or mixture and variety where material; ingredient composition; raw-material state and origin; uncooked/cooked/blanched state; presentation and freezing route; release-temperature specification and result; facility geography and technology; reference period; packaging; on-site storage temperature and duration; applicable standards; boundary; allocation; upstream datasets; data-quality and uncertainty disclosures"
+  required_quality_disclosure: "Primary-data coverage; meter, scale, probe, and refrigerant-record evidence; process and mass reconciliation; allocation drivers; data gaps and exclusions; temporal, geographic, and technological representativeness; standard-scope checks; deviations and sensitivity results"
+  update_trigger: "New or corrected Tiangong product-flow identity; use for any non-banana product; changed species, composition, cooking state, freezing technology, release specification, packaging, storage system, refrigerant, facility, material supplier region, allocation relationship, product-specific standard, or material foreground data; evidence that a cited source has been revised or superseded"
+data_sources:
+  - id: "unsd-cpc-3-0-21493"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, Central Product Classification Version 3.0, subclass 21493, *Fruits and nuts, uncooked or cooked, frozen*, explanatory notes dated 30 June 2025, https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Exp_Notes_30Jun2025.pdf (retrieved 2026-08-11)"
+    used_for: "Classification reference and category-scope context only; not process, quantity, or UUID evidence"
+  - id: "eu-pef-2021-2279"
+    type: "official_guidance"
+    reference: "European Commission, Commission Recommendation (EU) 2021/2279, Annex I Product Environmental Footprint Method and Annex II PEFCR requirements, consolidated text, https://eur-lex.europa.eu/legal-content/EN/ALL/?uri=CELEX%3A02021H2279-20211230 (retrieved 2026-08-11)"
+    used_for: "Functional unit and reference flow; system-boundary documentation; process and flow completeness; allocation hierarchy; data-quality and validation principles"
+  - id: "codex-cxs-52-1981"
+    type: "standard"
+    reference: "FAO and WHO Codex Alimentarius, CXS 52-1981, *Standard for Quick Frozen Strawberries*, amended 2019 and 2022, https://www.fao.org/fao-who-codexalimentarius/sh-proxy/pl/?lnk=1&url=https%3A%2F%2Fworkspace.fao.org%2Fsites%2Fcodex%2FStandards%2FCXS+52-1981%2FCXS_052e.pdf (retrieved 2026-08-11)"
+    used_for: "Strawberry-only quick-freezing completion, handling, packaging, product identity, and conformity checks; not extrapolated to banana, other fruits, or nuts"
+  - id: "codex-cxs-69-1981"
+    type: "standard"
+    reference: "FAO and WHO Codex Alimentarius, CXS 69-1981, *Standard for Quick-Frozen Raspberries*, amended 2019 and 2022 with 2023 editorial correction, https://www.fao.org/fao-who-codexalimentarius/sh-proxy/ru/?lnk=1&url=https%253A%252F%252Fworkspace.fao.org%252Fsites%252Fcodex%252FStandards%252FCXS%2B69-1981%252FCXS_069e.pdf (retrieved 2026-08-11)"
+    used_for: "Raspberry-only quick-freezing completion, handling, packaging, product identity, and conformity checks; not extrapolated to banana, other fruits, or nuts"
+  - id: "codex-cxs-320-2015"
+    type: "standard"
+    reference: "FAO and WHO Codex Alimentarius, CXS 320-2015, *Standard for Quick-Frozen Vegetables*, amended 2017, 2020, and 2022, https://www.fao.org/fao-who-codexalimentarius/sh-proxy/es/?lnk=1&url=https%253A%252F%252Fworkspace.fao.org%252Fsites%252Fcodex%252FStandards%252FCXS%2B320-2015%252FCXS_320e.pdf (retrieved 2026-08-11)"
+    used_for: "Scope-limitation evidence only: this vegetable standard is not applied as fruit-or-nut process or quantitative evidence"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:0d3122ea43d2f09ddc7e67c01f0d385157fd01d83ae98eeb0cae6ac3f03a851d"
+  generated_content_sha256: "sha256:6707af3e1ce658dd5a1529cec1240dbe76302ff448e4a55cba5caaf81db8173d"

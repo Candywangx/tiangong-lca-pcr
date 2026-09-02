@@ -1,10 +1,1188 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "27921"
-  title: "Felt"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.food-products-beverages-and-tobacco-textiles-apparel-and-leather-products.textile-articles-other-than-apparel.felt"
+  classification_refs: "CPC 3.0: 27921 Felt"
+  covered_products: "Unmade-up felt in rolls, sheets, pads, or industrial cut lengths, made by wet felting/fulling or mechanical needling and sold as felt"
+  excluded_products: "CPC 27922 nonwovens; felt floor coverings; felt garments or headgear; made-up technical articles; paper felt; coated or impregnated textile fabrics classified elsewhere"
+  representative_product: "Factory-gate finished felt with declared fibre composition, forming route, basis weight, thickness, finish, and packaging state"
+  production_route: "Fibre receipt, opening/blending and web or batt formation; conditional needle felting or wet felting/fulling; drying, finishing, inspection, cutting and packing"
+  market_state: "Conditioned, dry-basis-declared finished felt at plant gate, packaged or unpackaged as declared"
+functional_unit:
+  what: "Supply of finished felt meeting the declared fibre composition, construction, and performance specification"
+  how_much: "1 kg finished felt on the declared conditioned or dry-mass basis"
+  how_well: "Conforms to the declared basis weight, thickness under stated pressure, fibre composition, route, binder/finish add-on, and acceptance specification"
+  how_long_or_cycle: "One production lot at the factory gate; no use-life equivalence is asserted"
+  reference_flow_link: "The net accepted mass of finished felt leaving final inspection and included in the declared packaging state"
+system_boundary:
+  rules:
+    - rule_id: boundary_gate_to_gate
+      applies_to: "Foreground felt manufacture"
+      rule: "Include receipt and handling of inputs, fibre preparation, web/batt formation, the applicable felting route, drying, finishing, inspection, cutting, rework, waste handling, and packing through accepted factory-gate felt."
+      source_ids:
+        - us-epa-textile-study-1979
+        - us-epa-textile-development-1982
+    - rule_id: boundary_route_disclosure
+      applies_to: "Conditional operations"
+      rule: "Include wet fulling, washing, dyeing, binder application, thermal treatment, and on-site combustion only when performed; disclose excluded route steps and the evidence for non-applicability."
+      source_ids:
+        - ec-jrc-textiles-bref-2023
+        - us-epa-textile-development-1982
+    - rule_id: boundary_upstream_links
+      applies_to: "Purchased inputs"
+      rule: "Model upstream production in linked datasets rather than duplicating it in the foreground process, and preserve supplier/geography/technology matching."
+      source_ids:
+        - ec-pef-method-2021
+        - iso-14044-2006
+boundary_abstraction:
+  declared_starting_condition: "Textile fibres and any binder, processing chemical, packaging component, purchased energy carrier, and water are received at the felt manufacturing site with supplier identity and mass state declared."
+  starting_condition_role: "These received inputs start foreground manufacture; their production remains in linked upstream datasets."
+  product_classification_scope: "Foreground output is unmade-up felt within CPC 27921, before conversion into carpets, garments, headgear, or other made-up articles."
+  recursive_input_rule: "Internally produced felt webs and felt intermediates remain linked foreground exchanges; purchased felt used as an input is recorded as a distinct upstream product and is not relabelled as fibre."
+  upstream_dataset_requirement: "Link composition- and geography-appropriate datasets for each purchased fibre, chemical, water supply, fuel, electricity supply, and packaging material."
+  disclosure: "Declare fibre composition and origin, recycled share, production route, wet-processing operations, binder/finish recipe, energy supply, water source, waste destinations, allocation, mass basis, packaging boundary, geography, and reference period."
+reference_flow_definition:
+  reference_amount: "1 kg"
+  product_flow_ref:
+    name: "Felt"
+    uuid: "144717eb-3301-402a-89c8-3ba5a969425a"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "textile fibre name and percentage by mass"
+    - "virgin/recycled share"
+    - "wet-felted/fulled or needle-felted route"
+    - "basis weight in g/m2"
+    - "thickness in mm and applied pressure/test method"
+    - "moisture/conditioning basis"
+    - "binder and finish identity/add-on"
+    - "colour or dyeing state"
+    - "roll/sheet dimensions"
+    - "packaging inclusion"
+    - "production geography and reference period"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "Finished felt"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Normalize all foreground exchanges to 1 kg of accepted finished felt on the declared conditioned or dry-mass basis; state which basis is used."
+  - id: basis_weight
+    applies_to: "Finished felt specification"
+    required_property_ref:
+      name: "Mass per unit area"
+      uuid: ""
+    required_unit: "g/m2"
+    rule: "Determine and report mass per unit area using ISO 9073-1:2023 when applicable to the tested construction, or a declared equivalent validated method."
+  - id: felt_thickness
+    applies_to: "Finished felt specification"
+    required_property_ref:
+      name: "Length"
+      uuid: ""
+    required_unit: "mm"
+    rule: "Report thickness together with applied pressure and test method; ISO 9073-2:1995 applies when the construction falls within its nonwoven scope."
+  - id: conditioning_basis
+    applies_to: "Physical testing and reference mass"
+    required_property_ref:
+      name: "Temperature and relative humidity"
+      uuid: ""
+    required_unit: "degC and % RH"
+    rule: "Condition and test textile specimens using ISO 139:2005 or disclose the agreed alternative atmosphere; do not mix conditioned and oven-dry masses without conversion."
+  - id: fibre_composition
+    applies_to: "Finished felt and fibre inputs"
+    required_property_ref:
+      name: "Mass fraction"
+      uuid: ""
+    required_unit: "% by mass"
+    rule: "Use the applicable regulated textile fibre names and retain the sampling, analysis method, result, and accuracy evidence used to establish composition."
+process_map:
+  - id: p_fibre_web
+    name: "Fibre preparation and web or batt formation"
+    inclusion: "required"
+    inclusion_condition: "All felt production"
+    role: "Receive, open, blend, card and form the declared fibre web or batt"
+    quantitative_reference: "1 kg accepted finished felt"
+  - id: p_needle_felting
+    name: "Mechanical needle felting"
+    inclusion: "conditional"
+    inclusion_condition: "Declared needle-felted route"
+    role: "Mechanically entangle the fibre web with barbed needles"
+    quantitative_reference: "1 kg accepted finished felt"
+  - id: p_wet_felting
+    name: "Wet felting and fulling"
+    inclusion: "conditional"
+    inclusion_condition: "Declared wet-felted or fulled route"
+    role: "Interlock feltable fibres through mechanical working, moisture, heat and any declared chemical aid"
+    quantitative_reference: "1 kg accepted finished felt"
+  - id: p_finishing_packing
+    name: "Drying, finishing, inspection, cutting and packing"
+    inclusion: "required"
+    inclusion_condition: "All felt production; individual finish and fuel cards remain conditional"
+    role: "Bring felt to declared sale specification and factory-gate state"
+    quantitative_reference: "1 kg accepted finished felt"
+process_inventory:
+  - id: p_fibre_web
+    label: "Fibre preparation and web or batt formation"
+    inputs:
+      product:
+        - row_id: raw_wool_fibre
+          role: "Wool fibre received for felt production"
+          name: "Wool fibre"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record wool fibre only for products whose declared composition contains wool; preserve grade, origin, recycled share, clean/greasy state, and moisture basis."
+          amount:
+            expression: "measured net wool fibre issued to the production lot, adjusted for stock change and returned material"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted finished felt"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_fibre_receipts
+              source_ids:
+                - eu-textile-regulation-1007-2011
+                - us-epa-textile-study-1979
+            ranges: []
+        - row_id: polyester_staple_fibre
+          role: "Polyester staple fibre received for felt production"
+          name: "Polyester staple fibre"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record polyester staple fibre only when present, including polymer grade, fibre dimensions, recycled share, and supplier lot."
+          amount:
+            expression: "measured net polyester staple fibre issued to the production lot, adjusted for stock change and returned material"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted finished felt"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_fibre_receipts
+              source_ids:
+                - eu-textile-regulation-1007-2011
+                - us-epa-textile-study-1979
+            ranges: []
+        - row_id: viscose_staple_fibre
+          role: "Viscose staple fibre received for felt production"
+          name: "Viscose staple fibre"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record viscose staple fibre only when present, including fibre dimensions, supplier grade, and recycled or recovered content claim."
+          amount:
+            expression: "measured net viscose staple fibre issued to the production lot, adjusted for stock change and returned material"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted finished felt"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_fibre_receipts
+              source_ids:
+                - eu-textile-regulation-1007-2011
+                - us-epa-textile-study-1979
+            ranges: []
+        - row_id: electricity_fibre_prep
+          role: "Electricity for opening, blending and web formation"
+          name: "Electricity"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record metered electricity consumed by fibre opening, blending, carding, web laying, dust extraction, and directly associated auxiliaries."
+          amount:
+            expression: "allocated submeter reading for the production lot or period"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted finished felt"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_fibre_prep_electricity
+              source_ids:
+                - ec-jrc-textiles-bref-2023
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: prepared_fibre_web
+          role: "Prepared fibre web or batt"
+          name: "Prepared textile fibre web"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the measured intermediate transferred to the applicable felting route, with fibre blend and web construction linked to the lot."
+          amount:
+            expression: "measured web or batt mass transferred from fibre preparation"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted finished felt"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_fibre_web_output
+              source_ids:
+                - us-epa-textile-study-1979
+            ranges: []
+      waste:
+        - row_id: fibre_preparation_waste
+          role: "Fibre preparation waste"
+          name: "Textile fibre preparation waste"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record collected fibre loss from opening, carding, web formation, filters, and housekeeping separately from material internally returned to production."
+          amount:
+            expression: "measured waste dispatched from the process after subtracting documented internal reuse"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted finished felt"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_fibre_prep_waste
+              source_ids:
+                - ec-jrc-textiles-bref-2023
+            ranges: []
+      elementary:
+        - row_id: particulate_matter_fibre_prep
+          role: "Particulate matter released during fibre preparation"
+          name: "Particulate matter to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record only measured or permit-supported particulate release after abatement, with particle fraction and air compartment stated."
+          amount:
+            expression: "monitored or tested particulate release for the production period"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted finished felt"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_fibre_prep_pm
+              source_ids:
+                - ec-jrc-textiles-bref-2023
+            ranges: []
+  - id: p_needle_felting
+    label: "Mechanical needle felting"
+    inputs:
+      product:
+        - row_id: prepared_web_input
+          role: "Prepared fibre web entering needling"
+          name: "Prepared textile fibre web"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the specific prepared web transferred into the needle loom and link it to the corresponding output from p_fibre_web."
+          amount:
+            expression: "measured web mass entering the needle-felting line"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted finished felt"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_needling_material
+              source_ids:
+                - us-epa-needle-punched-filtration-1976
+            ranges: []
+        - row_id: electricity_needling
+          role: "Electricity for needle felting"
+          name: "Electricity"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record electricity consumed by pre-needling, needle looms, conveyors, extraction, and directly associated controls."
+          amount:
+            expression: "allocated submeter reading for the needling production lot or period"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted finished felt"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_needling_electricity
+              source_ids:
+                - us-epa-needle-punched-filtration-1976
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: needle_felt_intermediate
+          role: "Needle-felted intermediate"
+          name: "Needle-felted textile intermediate"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the intermediate leaving needling with punch density, penetration, number of passes, basis weight, and width linked to the lot."
+          amount:
+            expression: "measured intermediate mass transferred to finishing"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted finished felt"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_needling_outputs
+              source_ids:
+                - us-epa-needle-punched-filtration-1976
+            ranges: []
+      waste:
+        - row_id: needle_trim_waste
+          role: "Needle-line trim and reject waste"
+          name: "Needle-felt textile waste"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record edge trim, start-up material, broken-web reject, and off-spec needled material leaving the process after documented internal reuse."
+          amount:
+            expression: "measured waste dispatched from the needle-felting process"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted finished felt"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_needling_outputs
+              source_ids:
+                - us-epa-needle-punched-filtration-1976
+            ranges: []
+      elementary:
+        []
+  - id: p_wet_felting
+    label: "Wet felting and fulling"
+    inputs:
+      product:
+        - row_id: wool_batt_input
+          role: "Wool-rich batt entering wet felting"
+          name: "Wool-rich textile fibre batt"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the declared wool-rich batt transferred into wet felting or fulling, including blend, conditioning state, and internal transfer identity."
+          amount:
+            expression: "measured batt mass entering wet felting or fulling"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted finished felt"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wet_materials
+              source_ids:
+                - us-epa-textile-study-1979
+            ranges: []
+        - row_id: process_water_wet_felting
+          role: "Process water for wet felting and washing"
+          name: "Process water"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "Record supplied water entering wetting, fulling, washing, and rinsing within this process; do not net wastewater against intake."
+          amount:
+            expression: "process submeter reading or tank-volume record for the production lot"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted finished felt"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wet_water
+              source_ids:
+                - us-epa-textile-development-1982
+                - ec-jrc-textiles-bref-2023
+            ranges: []
+        - row_id: sodium_carbonate_wet_felting
+          role: "Sodium carbonate used as wet-felting aid"
+          name: "Sodium carbonate"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record sodium carbonate only when the approved product recipe uses it; retain chemical grade, concentration, and issue record."
+          amount:
+            expression: "measured net chemical issued to the wet-felting lot"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted finished felt"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wet_materials
+              source_ids:
+                - us-epa-textile-study-1979
+            ranges: []
+        - row_id: steam_wet_felting
+          role: "Purchased steam for wet felting"
+          name: "Steam"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Record purchased steam only when it crosses the site boundary for bath heating; state pressure and condensate treatment."
+          amount:
+            expression: "metered steam supplied to wet felting and fulling"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted finished felt"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wet_steam
+              source_ids:
+                - ec-jrc-textiles-bref-2023
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: wet_felt_intermediate
+          role: "Wet-felted intermediate"
+          name: "Wet-felted textile intermediate"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the felt leaving wet felting/fulling with shrinkage, moisture, washing status, and mass basis linked to the lot."
+          amount:
+            expression: "measured intermediate mass transferred to drying and finishing"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted finished felt"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wet_outputs_waste
+              source_ids:
+                - us-epa-textile-study-1979
+                - us-epa-textile-development-1982
+            ranges: []
+      waste:
+        - row_id: wet_felting_wastewater
+          role: "Wet-felting wastewater"
+          name: "Wet-felting wastewater"
+          flow_type: "waste"
+          property_unit: "Volume / m3"
+          description: "Record the wastewater transferred to on-site or off-site treatment from wetting, fulling, washing, and rinsing."
+          amount:
+            expression: "measured discharge volume associated with the wet-felting production period"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted finished felt"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wet_outputs_waste
+              source_ids:
+                - us-epa-textile-development-1982
+                - ec-jrc-textiles-bref-2023
+            ranges: []
+        - row_id: wool_fibre_sludge
+          role: "Wool-fibre sludge from wet processing"
+          name: "Wool-fibre wet-processing sludge"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record captured fibre solids and treatment sludge separately from liquid wastewater, with destination documented."
+          amount:
+            expression: "measured wet and dry solids mass dispatched, with the reported mass basis stated"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted finished felt"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wet_outputs_waste
+              source_ids:
+                - ec-jrc-textiles-bref-2023
+            ranges: []
+      elementary:
+        []
+  - id: p_finishing_packing
+    label: "Drying, finishing, inspection, cutting and packing"
+    inputs:
+      product:
+        - row_id: needle_felt_input_finishing
+          role: "Needle-felted intermediate entering finishing"
+          name: "Needle-felted textile intermediate"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record this input only for the needle-felted route and link it to the corresponding process output."
+          amount:
+            expression: "measured intermediate mass entering finishing"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted finished felt"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing_materials
+              source_ids:
+                - us-epa-textile-study-1979
+            ranges: []
+        - row_id: wet_felt_input_finishing
+          role: "Wet-felted intermediate entering finishing"
+          name: "Wet-felted textile intermediate"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record this input only for the wet-felted route and link it to the corresponding process output."
+          amount:
+            expression: "measured intermediate mass entering drying and finishing"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted finished felt"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing_materials
+              source_ids:
+                - us-epa-textile-development-1982
+            ranges: []
+        - row_id: electricity_finishing
+          role: "Electricity for drying, finishing and packing"
+          name: "Electricity"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record metered electricity for dryers, calendars, presses, cutters, extraction, inspection, and packing equipment."
+          amount:
+            expression: "allocated submeter reading for the finishing production lot or period"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted finished felt"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing_energy
+              source_ids:
+                - ec-jrc-textiles-bref-2023
+            ranges: []
+        - row_id: natural_gas_drying
+          role: "Natural gas combusted for drying"
+          name: "Natural gas"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Record natural gas only where it is combusted within the foreground boundary for drying or heat setting."
+          amount:
+            expression: "metered gas consumption using the recorded lower or higher heating-value basis"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted finished felt"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing_energy
+              source_ids:
+                - ec-jrc-textiles-bref-2023
+            ranges: []
+        - row_id: acrylic_latex_binder
+          role: "Acrylic latex binder applied in finishing"
+          name: "Acrylic latex binder"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record acrylic latex binder only when present, using supplied wet mass and separately declared solids fraction."
+          amount:
+            expression: "measured net wet binder issued to the lot, with solids content retained"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted finished felt"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing_materials
+              source_ids:
+                - us-epa-textile-study-1979
+            ranges: []
+        - row_id: corrugated_paperboard_box
+          role: "Corrugated paperboard box used for felt"
+          name: "Corrugated paperboard box"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record corrugated boxes only when included in the declared factory-gate packaging state."
+          amount:
+            expression: "measured packaging mass issued to accepted finished felt"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted finished felt"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging
+              source_ids:
+                - ec-pef-method-2021
+            ranges: []
+        - row_id: ldpe_packaging_film
+          role: "Low-density polyethylene packaging film used for felt"
+          name: "Low-density polyethylene packaging film"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record LDPE film only when included in the declared factory-gate packaging state."
+          amount:
+            expression: "measured film mass issued to accepted finished felt"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted finished felt"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging
+              source_ids:
+                - ec-pef-method-2021
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: finished_felt
+          role: "Accepted finished felt"
+          name: "Felt"
+          flow_type: "product"
+          flow_ref:
+            uuid: "144717eb-3301-402a-89c8-3ba5a969425a"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record only saleable felt passing final inspection; rejected material belongs in the separate waste or rework record."
+          amount:
+            expression: "measured net accepted mass on the declared conditioning basis"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "1 kg accepted finished felt"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finished_felt
+              source_ids:
+                - unsd-cpc-3-2025
+                - iso-9073-1-2023
+                - iso-139-2005
+            ranges: []
+      waste:
+        - row_id: felt_offcuts
+          role: "Felt cutting offcuts and rejected finished felt"
+          name: "Felt offcut waste"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record cutting offcuts and off-spec finished felt dispatched from the process after subtracting documented internal rework."
+          amount:
+            expression: "measured waste mass by destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted finished felt"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing_wastes
+              source_ids:
+                - ec-jrc-textiles-bref-2023
+            ranges: []
+        - row_id: finishing_wastewater
+          role: "Finishing wastewater"
+          name: "Textile finishing wastewater"
+          flow_type: "waste"
+          property_unit: "Volume / m3"
+          description: "Record finishing and equipment-cleaning wastewater only when wet finishing or binder cleanup occurs in this process."
+          amount:
+            expression: "measured wastewater transferred to treatment for the finishing production period"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted finished felt"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing_wastes
+              source_ids:
+                - ec-jrc-textiles-bref-2023
+            ranges: []
+      elementary:
+        - row_id: carbon_dioxide_fossil_drying
+          role: "Fossil carbon dioxide from on-site natural-gas drying"
+          name: "Carbon dioxide, fossil, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record stack-measured fossil carbon dioxide when natural gas is combusted within the foreground boundary."
+          amount:
+            expression: "measured stack emission for the production period; do not substitute an unsourced generic factor"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted finished felt"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_combustion_emissions
+              source_ids:
+                - ec-jrc-textiles-bref-2023
+            ranges: []
+        - row_id: nitrogen_oxides_drying
+          role: "Nitrogen oxides from on-site natural-gas drying"
+          name: "Nitrogen oxides to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record monitored nitrogen oxides with the reported species convention and air compartment when on-site combustion occurs."
+          amount:
+            expression: "monitored stack emission for the production period"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted finished felt"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_combustion_emissions
+              source_ids:
+                - ec-jrc-textiles-bref-2023
+            ranges: []
+allocation_rules:
+  - rule_id: allocation_avoid
+    applies_to: "Shared equipment, utilities and treatment"
+    rule: "First subdivide by line, process, lot, meter, time record, or treatment campaign so allocation is avoided wherever practicable."
+    source_ids:
+      - iso-14044-2006
+      - ec-pef-method-2021
+  - rule_id: allocation_physical
+    applies_to: "Unavoidable shared foreground exchanges"
+    rule: "If subdivision is not practicable, allocate using a documented physical causal driver such as machine time, metered energy, bath volume, or treated mass; do not default to economic allocation without justification."
+    source_ids:
+      - iso-14044-2006
+      - ec-pef-method-2021
+  - rule_id: allocation_rework
+    applies_to: "Internally recycled web, edge trim and off-spec felt"
+    rule: "Keep internal rework inside the foreground system and report gross generation and returned mass separately; assign no avoided-product credit within the foreground inventory."
+    source_ids:
+      - ec-pef-method-2021
+  - rule_id: allocation_external_recycling
+    applies_to: "Material leaving for recycling"
+    rule: "Record the actual waste flow and destination; apply any end-of-life or recycled-content treatment only in the downstream study method and disclose it separately from foreground measured mass."
+    source_ids:
+      - ec-pef-method-2021
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_fibre_receipts
+      process_id: "p_fibre_web"
+      flow_role: "raw_wool_fibre; polyester_staple_fibre; viscose_staple_fibre"
+      record_type: "weighbridge, scale, issue and stock records"
+      raw_fields: "material identity; supplier lot; gross/tare/net mass; moisture basis; opening stock; closing stock; returns; recycled share"
+      collection_method: "calibrated weighing and inventory reconciliation"
+      unit: "kg"
+      frequency: "each receipt and issue"
+      temporal_coverage: "representative production period, minimum one complete lot"
+      site_scope: "all fibre stores feeding the declared product"
+      aggregation_rule: "net issued mass = issues + opening stock - closing stock - documented returns"
+      quality_evidence: "calibration certificate; supplier specification; composition analysis; stock reconciliation"
+    - protocol_id: cp_fibre_prep_electricity
+      process_id: "p_fibre_web"
+      flow_role: "electricity_fibre_prep"
+      record_type: "submeter record"
+      raw_fields: "meter id; start/end reading; multiplier; downtime; products and mass processed"
+      collection_method: "dedicated meter or documented shared-meter allocation"
+      unit: "kWh"
+      frequency: "shift or batch"
+      temporal_coverage: "same period as product mass"
+      site_scope: "fibre preparation line and associated extraction"
+      aggregation_rule: "sum corrected readings and allocate only documented shared loads"
+      quality_evidence: "meter calibration; reading export; allocation log"
+    - protocol_id: cp_fibre_web_output
+      process_id: "p_fibre_web"
+      flow_role: "prepared_fibre_web"
+      record_type: "intermediate transfer record"
+      raw_fields: "lot id; blend; web orientation; basis weight; width; conditioned mass"
+      collection_method: "calibrated in-line or batch weighing"
+      unit: "kg"
+      frequency: "each transfer"
+      temporal_coverage: "complete lot"
+      site_scope: "fibre preparation output"
+      aggregation_rule: "sum accepted transfers to each felting route"
+      quality_evidence: "scale check; lot genealogy; operator sign-off"
+    - protocol_id: cp_fibre_prep_waste
+      process_id: "p_fibre_web"
+      flow_role: "fibre_preparation_waste"
+      record_type: "waste container record"
+      raw_fields: "waste type; fibre composition; gross/tare/net mass; internal return; destination"
+      collection_method: "container weighing and dispatch reconciliation"
+      unit: "kg"
+      frequency: "each container"
+      temporal_coverage: "same period as product mass"
+      site_scope: "opening, carding, laying, filters and housekeeping"
+      aggregation_rule: "dispatched mass minus documented internal return"
+      quality_evidence: "scale calibration; waste manifest; reuse log"
+    - protocol_id: cp_fibre_prep_pm
+      process_id: "p_fibre_web"
+      flow_role: "particulate_matter_fibre_prep"
+      record_type: "stack or workplace-exhaust monitoring"
+      raw_fields: "sampling location; particle fraction; concentration; gas volume; operating hours; abatement status"
+      collection_method: "applicable validated monitoring method"
+      unit: "kg"
+      frequency: "permit or campaign frequency"
+      temporal_coverage: "representative operation"
+      site_scope: "all relevant exhaust points"
+      aggregation_rule: "concentration times corrected gas volume, summed by compartment"
+      quality_evidence: "laboratory report; method; detection limit; operating log"
+    - protocol_id: cp_needling_material
+      process_id: "p_needle_felting"
+      flow_role: "prepared_web_input"
+      record_type: "transfer and scale record"
+      raw_fields: "lot id; web mass; blend; width; basis weight"
+      collection_method: "calibrated weighing"
+      unit: "kg"
+      frequency: "each lot"
+      temporal_coverage: "complete needle-felting lot"
+      site_scope: "needle line input"
+      aggregation_rule: "sum transferred web mass"
+      quality_evidence: "scale check; lot genealogy"
+    - protocol_id: cp_needling_electricity
+      process_id: "p_needle_felting"
+      flow_role: "electricity_needling"
+      record_type: "submeter record"
+      raw_fields: "meter readings; multiplier; operating time; product mass"
+      collection_method: "dedicated meter or documented shared-meter allocation"
+      unit: "kWh"
+      frequency: "shift or batch"
+      temporal_coverage: "same period as product mass"
+      site_scope: "needle looms and associated equipment"
+      aggregation_rule: "sum corrected readings"
+      quality_evidence: "calibration; reading export; allocation log"
+    - protocol_id: cp_needling_outputs
+      process_id: "p_needle_felting"
+      flow_role: "needle_felt_intermediate; needle_trim_waste"
+      record_type: "production and waste records"
+      raw_fields: "good intermediate mass; punch density; penetration; passes; trim/reject mass; internal rework; destination"
+      collection_method: "calibrated weighing and lot reconciliation"
+      unit: "kg"
+      frequency: "each lot"
+      temporal_coverage: "complete needle-felting lot"
+      site_scope: "needle line"
+      aggregation_rule: "report good output, gross rejects and internal return separately"
+      quality_evidence: "scale check; machine recipe; waste manifest; lot reconciliation"
+    - protocol_id: cp_wet_materials
+      process_id: "p_wet_felting"
+      flow_role: "wool_batt_input; sodium_carbonate_wet_felting"
+      record_type: "scale, recipe and issue record"
+      raw_fields: "lot id; batt mass; chemical identity; grade; concentration; issued/returned mass"
+      collection_method: "calibrated weighing and approved recipe reconciliation"
+      unit: "kg"
+      frequency: "each batch"
+      temporal_coverage: "complete wet-felting batch"
+      site_scope: "wet-felting/fulling equipment"
+      aggregation_rule: "net issued mass by atomic material"
+      quality_evidence: "scale calibration; SDS/specification; signed recipe and batch sheet"
+    - protocol_id: cp_wet_water
+      process_id: "p_wet_felting"
+      flow_role: "process_water_wet_felting"
+      record_type: "water submeter or tank record"
+      raw_fields: "source; start/end reading; tank volume; batch id; rinse count"
+      collection_method: "calibrated submeter or verified tank-volume calculation"
+      unit: "m3"
+      frequency: "batch or shift"
+      temporal_coverage: "same period as product mass"
+      site_scope: "wetting, fulling, washing and rinsing"
+      aggregation_rule: "gross intake without netting wastewater"
+      quality_evidence: "calibration; meter export; batch sheet"
+    - protocol_id: cp_wet_steam
+      process_id: "p_wet_felting"
+      flow_role: "steam_wet_felting"
+      record_type: "steam meter record"
+      raw_fields: "mass/energy reading; pressure; condensate return; supplier boundary"
+      collection_method: "calibrated steam meter"
+      unit: "MJ"
+      frequency: "batch or shift"
+      temporal_coverage: "same period as product mass"
+      site_scope: "wet-felting heat users"
+      aggregation_rule: "sum supplied steam on declared energy basis"
+      quality_evidence: "calibration; pressure record; supplier invoice"
+    - protocol_id: cp_wet_outputs_waste
+      process_id: "p_wet_felting"
+      flow_role: "wet_felt_intermediate; wet_felting_wastewater; wool_fibre_sludge"
+      record_type: "output scale, effluent meter and waste records"
+      raw_fields: "intermediate mass/moisture; effluent volume; sludge wet/dry mass; destination"
+      collection_method: "calibrated weighing, flow metering and dispatch reconciliation"
+      unit: "kg or m3"
+      frequency: "each batch or discharge"
+      temporal_coverage: "complete wet-felting batch and matching treatment period"
+      site_scope: "wet process and hand-off to treatment"
+      aggregation_rule: "report each atomic output separately; state wet/dry basis"
+      quality_evidence: "calibration; laboratory solids result; waste manifest; lot reconciliation"
+    - protocol_id: cp_finishing_materials
+      process_id: "p_finishing_packing"
+      flow_role: "needle_felt_input_finishing; wet_felt_input_finishing; acrylic_latex_binder"
+      record_type: "transfer, scale, recipe and issue records"
+      raw_fields: "intermediate id/mass; binder identity; wet mass; solids fraction; returns"
+      collection_method: "calibrated weighing and recipe reconciliation"
+      unit: "kg"
+      frequency: "each lot"
+      temporal_coverage: "complete finishing lot"
+      site_scope: "finishing line"
+      aggregation_rule: "net issued mass by atomic material"
+      quality_evidence: "scale calibration; supplier specification; signed recipe; lot genealogy"
+    - protocol_id: cp_finishing_energy
+      process_id: "p_finishing_packing"
+      flow_role: "electricity_finishing; natural_gas_drying"
+      record_type: "electricity and gas meter records"
+      raw_fields: "readings; multipliers; heating-value basis; operating time; product mass"
+      collection_method: "calibrated meters and documented shared-meter allocation"
+      unit: "kWh or MJ"
+      frequency: "shift or batch"
+      temporal_coverage: "same period as product mass"
+      site_scope: "dryers, calendars, cutters and packing equipment"
+      aggregation_rule: "sum corrected readings by energy carrier"
+      quality_evidence: "calibration; meter export; invoice; allocation log"
+    - protocol_id: cp_packaging
+      process_id: "p_finishing_packing"
+      flow_role: "corrugated_paperboard_box; ldpe_packaging_film"
+      record_type: "packaging issue record"
+      raw_fields: "material identity; supplier lot; unit mass; units issued; returns; included product mass"
+      collection_method: "count times verified unit mass or direct weighing"
+      unit: "kg"
+      frequency: "each packing lot"
+      temporal_coverage: "complete product lot"
+      site_scope: "packing area"
+      aggregation_rule: "net issued mass by packaging component"
+      quality_evidence: "unit-mass check; supplier specification; issue/return record"
+    - protocol_id: cp_finished_felt
+      process_id: "p_finishing_packing"
+      flow_role: "finished_felt"
+      record_type: "final scale and inspection record"
+      raw_fields: "lot id; gross/tare/net mass; conditioning basis; basis weight; thickness/pressure; composition; route; finish; accepted/rejected status"
+      collection_method: "calibrated weighing and specification testing"
+      unit: "kg"
+      frequency: "each accepted lot"
+      temporal_coverage: "complete production lot"
+      site_scope: "final inspection and dispatch boundary"
+      aggregation_rule: "sum accepted net mass only"
+      quality_evidence: "calibration; ISO/equivalent test reports; certificate of analysis; inspection release"
+    - protocol_id: cp_finishing_wastes
+      process_id: "p_finishing_packing"
+      flow_role: "felt_offcuts; finishing_wastewater"
+      record_type: "waste scale, effluent meter and dispatch record"
+      raw_fields: "waste identity; mass/volume; internal rework; treatment destination; discharge period"
+      collection_method: "calibrated weighing or flow metering"
+      unit: "kg or m3"
+      frequency: "each container or discharge"
+      temporal_coverage: "same period as product mass"
+      site_scope: "cutting, finishing and cleanup"
+      aggregation_rule: "report dispatched waste after subtracting documented internal return"
+      quality_evidence: "calibration; waste manifest; effluent record; rework log"
+    - protocol_id: cp_combustion_emissions
+      process_id: "p_finishing_packing"
+      flow_role: "carbon_dioxide_fossil_drying; nitrogen_oxides_drying"
+      record_type: "stack monitoring record"
+      raw_fields: "pollutant species; concentration; gas volume; oxygen correction; operating hours; fuel use"
+      collection_method: "applicable validated stack test or continuous monitoring"
+      unit: "kg"
+      frequency: "permit or campaign frequency"
+      temporal_coverage: "representative combustion operation"
+      site_scope: "on-site natural-gas exhaust points"
+      aggregation_rule: "calculate from measured concentration and corrected gas volume only"
+      quality_evidence: "test report; method; calibration gas; detection limit; operating log"
+  calculation_rules:
+    - id: calc_reference_normalization
+      applies_to: "All inventory rows"
+      rule: "normalized amount = period or lot amount / accepted finished felt mass on the same declared mass basis"
+      inputs:
+        - "atomic flow amount"
+        - "accepted finished_felt mass"
+      output: "amount per 1 kg finished felt"
+      source_ids:
+        - iso-14044-2006
+        - ec-pef-method-2021
+    - id: calc_fibre_issue
+      applies_to: "Fibre inputs"
+      rule: "net fibre issued = issues + opening stock - closing stock - supplier returns; internal returned fibre remains separately documented"
+      inputs:
+        - issue
+        - "stock and return records"
+      output: "net kg fibre input"
+      source_ids:
+        - ec-pef-method-2021
+    - id: calc_fibre_composition
+      applies_to: "Finished-felt composition"
+      rule: "calculate percentage by mass using the declared regulatory or validated analytical method and report agreed moisture allowance and accuracy"
+      inputs:
+        - "test result"
+        - "sample pretreatment"
+        - "moisture allowance"
+        - "component masses"
+      output: "fibre percentage by mass"
+      source_ids:
+        - eu-textile-regulation-1007-2011
+    - id: calc_mass_reconciliation
+      applies_to: "Each process and complete foreground system"
+      rule: "compare atomic mass inputs with product outputs, separately measured wastes, stock change and measured releases; investigate material unexplained residuals rather than assigning them to a generic flow"
+      inputs:
+        - "input/output masses"
+        - "stock change"
+        - "moisture change"
+        - emissions
+      output: "signed mass-reconciliation record"
+      source_ids:
+        - iso-14044-2006
+        - ec-pef-method-2021
+    - id: calc_shared_resource
+      applies_to: "Shared meters and treatment"
+      rule: "allocate only after subdivision is impracticable, using the documented physical causal driver selected under allocation_physical"
+      inputs:
+        - "shared total"
+        - "causal-driver values"
+      output: "allocated atomic flow amount"
+      source_ids:
+        - iso-14044-2006
+        - ec-pef-method-2021
+  data_quality_requirements:
+    - id: dq_identity
+      applies_to: "Product, intermediates and purchased inputs"
+      requirement: "Preserve supplier/lot identity, fibre composition, route, recycled share, binder/finish, moisture basis, and Tiangong UUID decision for every used flow."
+      evidence: "supplier specifications; lot genealogy; composition test; manifest UUID decision"
+    - id: dq_measurement
+      applies_to: "Foreground quantities"
+      requirement: "Use calibrated meters or scales; retain reading interval, multiplier, corrections, detection limits, and allocation records."
+      evidence: "calibration certificates; raw exports; laboratory reports; signed calculations"
+    - id: dq_temporal
+      applies_to: "Foreground dataset"
+      requirement: "Cover a representative period that includes all declared routes and at least one complete production lot; disclose shutdown, start-up, and abnormal-event treatment."
+      evidence: "production calendar; lot list; exception log"
+    - id: dq_completeness
+      applies_to: "Inventory"
+      requirement: "Reconcile all applicable process cards and document non-applicability; keep fibres, energy carriers, packaging components, wastes, and emissions as their individual concrete exchanges."
+      evidence: "completed applicability matrix; mass reconciliation; inventory review"
+    - id: dq_testing
+      applies_to: "Basis weight, thickness and composition"
+      requirement: "State test method, specimen conditioning, sample size, applied pressure where relevant, result and uncertainty/accuracy."
+      evidence: "ISO 139, ISO 9073-1/2 or declared equivalent test reports; composition analysis"
+    - id: dq_uuid
+      applies_to: "UUID-bearing and UUID-free rows"
+      requirement: "Use a UUID only after hybrid candidate discovery and public state100 direct read confirm exact name, type, CPC or role, flow property, and unit; retain row-specific rejection reasons otherwise."
+      evidence: "Tiangong readback evidence; manifest lookup decisions"
+validation_rules:
+  - rule_id: validate_reference_identity
+    applies_to: "Reference flow"
+    rule: "Require the accepted state100 Felt product-flow UUID, CPC 27921 identity, Mass property UUID, 1 kg unit, and all required qualifiers."
+    source_ids:
+      - unsd-cpc-3-2025
+  - rule_id: validate_scope
+    applies_to: "Product classification"
+    rule: "Reject nonwovens, floor coverings, garments, headgear, paper felt, and other separately classified made-up products from this PCR."
+    source_ids:
+      - unsd-cpc-3-2025
+  - rule_id: validate_route
+    applies_to: "Process completeness"
+    rule: "Require p_fibre_web and p_finishing_packing; require at least one of p_needle_felting or p_wet_felting, and evidence for every omitted conditional operation."
+    source_ids:
+      - us-epa-textile-study-1979
+      - us-epa-textile-development-1982
+  - rule_id: validate_atomic_flows
+    applies_to: "Inventory"
+    rule: "Reject collection labels, combined energy carriers, unspecified fibre mixtures, combined packaging, combined wastes, and any card whose selected flow is not one atomic exchange."
+    source_ids:
+      - iso-14044-2006
+  - rule_id: validate_mass_basis
+    applies_to: "Normalization"
+    rule: "Require all numerator records and accepted product mass to use the same period and declared conditioning/dry-mass basis."
+    source_ids:
+      - iso-139-2005
+      - iso-14044-2006
+  - rule_id: validate_quality_tests
+    applies_to: "Product specification"
+    rule: "Require basis-weight, thickness, conditioning, and composition methods with applicable result metadata and declared alternatives where ISO 9073 scope does not apply."
+    source_ids:
+      - iso-9073-1-2023
+      - iso-9073-2-1995
+      - iso-139-2005
+      - eu-textile-regulation-1007-2011
+  - rule_id: validate_allocation
+    applies_to: "Shared resources and wastes"
+    rule: "Require documented subdivision attempt, physical causal driver when allocation remains, and separate gross waste/internal-rework records."
+    source_ids:
+      - iso-14044-2006
+      - ec-pef-method-2021
+  - rule_id: validate_uuid_status
+    applies_to: "All inventory rows"
+    rule: "Confirm accepted UUIDs by hybrid and state100 direct read; require every UUID-free row to retain its specific rejection reason in manifest review metadata."
+    source_ids:
+      - iso-14044-2006
+published_dataset_profile:
+  dataset_role: "Foreground felt manufacturing dataset suitable for review and later publication as a secondary or background dataset"
+  downstream_use: "LCA process datasets and lifecycle models requiring CPC 27921 felt at the factory gate"
+  allowed_use: "The declared fibre composition, felt-forming route, basis weight, thickness, finish, geography, technology, mass basis and packaging state match the downstream system"
+  excluded_use: "Nonwovens, felt floor coverings, made-up felt articles, paper felt, or products with materially different fibre chemistry, route, finish, performance, geography, or packaging boundary"
+  required_metadata: "PCR id/version; CPC 27921; UUID decision; fibre composition and recycled share; wet/needle route; basis weight; thickness and pressure; conditioning basis; binder/finish; packaging; geography; technology; reference period; allocation; data quality; waste destinations"
+  required_quality_disclosure: "Primary-data share, meter and test coverage, sampling and conditioning methods, composition method, mass reconciliation, allocation, missing UUIDs, proxy upstream datasets, abnormal events, and review status"
+  update_trigger: "Change in fibre blend or recycled share, felt-forming route, binder/finish, basis weight or thickness class, energy/water system, waste treatment, packaging, site/technology, allocation method, Tiangong identity, source standard, or representative period"
+data_sources:
+  - id: "unsd-cpc-3-2025"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, CPC Version 3.0 structure and explanatory notes, updated 30 June 2025, https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Exp_Notes_30Jun2025.pdf"
+    used_for: "CPC 27921 identity, adjacent exclusions and product boundary"
+  - id: "us-epa-textile-study-1979"
+    type: "official_guidance"
+    reference: "US EPA, Technical Study Report: Textile Mills Point Source Category, NEPIS 9101NAZP, https://nepis.epa.gov/Exe/ZyPURL.cgi?Dockey=9101NAZP.TXT"
+    used_for: "Felt material identity; web formation; mechanical, moisture, heat and chemical action; fibre preparation, bonding, drying and finishing decomposition"
+  - id: "us-epa-textile-development-1982"
+    type: "official_guidance"
+    reference: "US EPA, Development Document for Effluent Limitations Guidelines and Standards for the Textile Mills Point Source Category, 1982, https://19january2021snapshot.epa.gov/sites/static/files/2016-04/documents/textile-mills_dd_1982.pdf"
+    used_for: "Felted-fabric route, fulling/washing water use, wastewater and process-boundary completeness"
+  - id: "us-epa-needle-punched-filtration-1976"
+    type: "official_guidance"
+    reference: "US EPA, Efficient Use of Fibrous Structures in Filtration, NEPIS 91015XYA, https://nepis.epa.gov/Exe/ZyPURL.cgi?Dockey=91015XYA.TXT"
+    used_for: "Needle-punching mechanism, web passes, needling parameters and needle-felt process records"
+  - id: "ec-jrc-textiles-bref-2023"
+    type: "official_guidance"
+    reference: "European Commission JRC, Best Available Techniques Reference Document for the Textiles Industry, EUR 31392 EN, DOI 10.2760/355887, https://publications.jrc.ec.europa.eu/repository/handle/JRC131874"
+    used_for: "Fibre preparation, wool fulling, finishing, water/wastewater, energy, emissions monitoring and data-quality controls"
+  - id: "ec-pef-method-2021"
+    type: "official_guidance"
+    reference: "European Commission Recommendation C(2021) 9332 and Annexes on Environmental Footprint methods, https://environment.ec.europa.eu/document/download/cb899bd7-bb06-491d-9989-c856a401fcd0_en"
+    used_for: "System modelling, foreground data quality, allocation, recycling disclosure and packaging boundary"
+  - id: "iso-14044-2006"
+    type: "standard"
+    reference: "ISO 14044:2006, Environmental management — Life cycle assessment — Requirements and guidelines, https://www.iso.org/standard/38498.html"
+    used_for: "Inventory, goal/scope, allocation, reporting, quality and validation principles"
+  - id: "iso-9073-1-2023"
+    type: "standard"
+    reference: "ISO 9073-1:2023, Nonwovens — Test methods — Part 1: Determination of mass per unit area, https://www.iso.org/standard/83590.html"
+    used_for: "Applicable basis-weight measurement and reporting"
+  - id: "iso-9073-2-1995"
+    type: "standard"
+    reference: "ISO 9073-2:1995, Textiles — Test methods for nonwovens — Part 2: Determination of thickness, https://www.iso.org/standard/16652.html"
+    used_for: "Applicable thickness measurement under specified pressure"
+  - id: "iso-139-2005"
+    type: "standard"
+    reference: "ISO 139:2005, Textiles — Standard atmospheres for conditioning and testing, https://www.iso.org/standard/35179.html"
+    used_for: "Conditioning and physical-test atmosphere"
+  - id: "eu-textile-regulation-1007-2011"
+    type: "standard"
+    reference: "Regulation (EU) No 1007/2011 on textile fibre names, labelling and quantitative analysis, https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32011R1007"
+    used_for: "Fibre naming, mass composition, sampling/analysis and accuracy evidence"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:64a3f1ff227c4030b0268b3f3079da985d86db2e749a33c2691f5c7e1d94b7eb"
+  generated_content_sha256: "sha256:8dbaf0aabd1bc10134100d5bf70024e50cd3efd979f5d85dcad1a0bee14108da"

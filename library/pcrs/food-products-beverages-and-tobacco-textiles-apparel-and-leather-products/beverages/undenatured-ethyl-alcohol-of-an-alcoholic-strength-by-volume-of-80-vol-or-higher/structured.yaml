@@ -1,10 +1,1740 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "24110"
-  title: "Undenatured ethyl alcohol of an alcoholic strength by volume of 80% vol or higher"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.food-products-beverages-and-tobacco-textiles-apparel-and-leather-products.beverages.undenatured-ethyl-alcohol-of-an-alcoholic-strength-by-volume-of-80-vol-or-higher"
+  classification_refs: "CPC 3.0: 24110, Undenatured ethyl alcohol of an alcoholic strength by volume of 80% vol or higher, exact"
+  covered_products: "Saleable undenatured ethyl alcohol at least 80% vol produced by fermentation followed by distillation and rectification"
+  excluded_products: "Denatured ethanol; ethanol below 80% vol; synthetic ethanol; spirits and other beverages; fermentation broth; downstream ethanol blends"
+  representative_product: "Rectified, undenatured ethanol at the production-site gate with declared actual alcoholic strength by volume"
+  production_route: "Route-specific substrate preparation; fermentation; distillation and rectification; storage and dispatch preparation"
+  market_state: "Bulk tanker, reusable container, or packaged saleable product, undenatured and at least 80% vol"
+functional_unit:
+  what: "Rectified undenatured ethyl alcohol at the production-site gate"
+  how_much: "1,000 kg"
+  how_well: "Saleable product with measured alcoholic strength of at least 80% vol and declared product grade, water content or equivalent composition, and dispatch form"
+  how_long_or_cycle: "One completed production campaign normalized from a continuous reporting period of at least 12 months, or a shorter representative period justified for a new or materially changed plant"
+  reference_flow_link: "Rectified ethanol 276f1cf5-0aa1-4d57-ad95-9dada6e043a0"
+system_boundary:
+  rules:
+    - rule_id: boundary_plant_gate
+      applies_to: "Foreground dataset"
+      rule: "Include route-specific substrate preparation, fermentation, distillation, rectification, product storage, dispatch preparation, on-site utilities, residue handling, and wastewater treatment operated by the reporting site."
+      source_ids:
+        - nrel-ethanol-design-2011
+        - arcentales-bastidas-ethanol-lca-2022
+    - rule_id: boundary_upstream_links
+      applies_to: "Lifecycle model"
+      rule: "Link separate upstream datasets for delivered feedstocks, enzymes, chemicals, fuels, electricity, water, packaging, and inbound transport; do not embed their production in the site foreground unless the site operates it."
+      source_ids:
+        - eu-environmental-footprint-2021
+    - rule_id: boundary_product_exclusions
+      applies_to: "Product identity"
+      rule: "Exclude denaturing and any downstream blending, distribution, use, combustion, or end-of-life; exclude aging and beverage-specific finishing."
+      source_ids:
+        - unsd-cpc-3-0-24110
+        - us-epa-ap42-distilled-spirits-1997
+    - rule_id: boundary_complete_inventory
+      applies_to: "Included processes"
+      rule: "Record each material, utility, waste, co-product, and elementary emission as an atomic exchange; estimate or flag material missing flows rather than hiding them in an aggregated balance."
+      source_ids:
+        - eu-environmental-footprint-2021
+        - nrel-ethanol-design-2011
+boundary_abstraction:
+  declared_starting_condition: "Fermentable substrate or feedstock, utilities, chemicals, enzymes, and packaging delivered to the production site"
+  starting_condition_role: "Background-to-foreground interface at site receipt"
+  product_classification_scope: "Undenatured ethyl alcohol with actual alcoholic strength at least 80% vol"
+  recursive_input_rule: "Purchased conforming ethanol entering redistillation, blending, or dispatch is linked as an upstream ethanol dataset; only the reporting site's additional operations remain foreground."
+  upstream_dataset_requirement: "Use supplier-specific or representative datasets for each delivered feedstock, utility, chemical, enzyme, package, and transport service, with route and geography disclosed."
+  disclosure: "Declare feedstock route, alcohol-strength method and value, water or composition basis, site boundary, outsourced operations, utility supply mode, co-product destinations, wastewater treatment, dispatch form, reporting period, estimates, and exclusions."
+reference_flow_definition:
+  reference_amount: "1,000 kg"
+  product_flow_ref:
+    name: "Rectified ethanol"
+    uuid: "276f1cf5-0aa1-4d57-ad95-9dada6e043a0"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "actual alcoholic strength by volume"
+    - "undenatured status"
+    - "measurement temperature and test method"
+    - "water content or equivalent composition"
+    - "fermentation feedstock and route"
+    - "dehydration technology if used"
+    - "product grade"
+    - "bulk or package format"
+    - "production site"
+    - "reporting period"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "Reference product and mass-normalized inventory"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Determine net conforming ethanol mass on a calibrated dispatch or production mass basis; preserve gross, tare, stock-change, and loss records before normalizing to 1,000 kg."
+  - id: alcoholic_strength
+    applies_to: "Reference-product identity"
+    required_property_ref:
+      name: "Alcoholic strength by volume"
+      uuid: ""
+    required_unit: "% vol"
+    rule: "Report the measured value, measurement temperature, test method, and sample basis; values below 80% vol fail category identity and shall not be averaged with conforming output."
+  - id: water_and_composition
+    applies_to: "Product quality and mass balance"
+    required_property_ref:
+      name: "Mass fraction or concentration"
+      uuid: ""
+    required_unit: "declared native unit"
+    rule: "Preserve water content or an equivalent composition result and any denaturant test so that undenatured status and mass balance can be checked."
+  - id: energy_conversion
+    applies_to: "Electricity, steam, heat, and fuels"
+    required_property_ref:
+      name: "Energy"
+      uuid: ""
+    required_unit: "kWh, MJ, or native metered unit"
+    rule: "Preserve native readings, calorific-value basis, and conversion factors; do not aggregate electricity, steam, and individual fuels into one inventory exchange."
+  - id: period_normalization
+    applies_to: "All foreground exchanges"
+    required_property_ref:
+      name: "Reference-flow property"
+      uuid: ""
+    required_unit: "per 1,000 kg"
+    rule: "Reconcile receipts, production, transfers, inventories, recovered materials, wastes, and emissions over one common period before normalization."
+process_map:
+  - id: feedstock_preparation
+    name: "Feedstock preparation"
+    inclusion: "required"
+    inclusion_condition: "Apply only the atomic feedstock and treatment rows used by the declared route."
+    role: "Prepare fermentable sugars or mash for fermentation."
+    quantitative_reference: "Prepared fermentable mash transferred to fermentation"
+  - id: fermentation
+    name: "Fermentation"
+    inclusion: "required"
+    inclusion_condition: "All covered fermentation routes."
+    role: "Convert fermentable sugars to ethanol-containing broth."
+    quantitative_reference: "Fermented broth transferred to recovery"
+  - id: distillation_rectification
+    name: "Distillation and rectification"
+    inclusion: "required"
+    inclusion_condition: "All covered products."
+    role: "Separate and concentrate ethanol to at least 80% vol."
+    quantitative_reference: "Rectified ethanol transferred to storage"
+  - id: storage_dispatch
+    name: "Product storage and dispatch preparation"
+    inclusion: "required"
+    inclusion_condition: "Packaging rows apply only to the declared dispatch form."
+    role: "Store, verify, and prepare undenatured ethanol for dispatch."
+    quantitative_reference: "1,000 kg conforming product at site gate"
+  - id: onsite_utilities_wastewater
+    name: "On-site utilities and wastewater treatment"
+    inclusion: "conditional"
+    inclusion_condition: "Include each operated boiler, cogeneration, refrigeration, or wastewater-treatment activity; otherwise use purchased utility or off-site treatment datasets."
+    role: "Supply utilities and manage site wastewater and emissions without double counting purchased services."
+    quantitative_reference: "Utility output or wastewater treated"
+process_inventory:
+  - id: feedstock_preparation
+    label: "Feedstock preparation"
+    inputs:
+      product:
+        - row_id: sugarcane_juice
+          role: "Sugarcane juice"
+          name: "Sugarcane juice"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Use this route-specific substrate only when sugarcane juice enters the foreground preparation process."
+          amount:
+            expression: "Record receipt mass, soluble-solids or sugar content, moisture basis, supplier, and stock change."
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per 1,000 kg conforming ethanol"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_receipts
+              source_ids:
+                - arcentales-bastidas-ethanol-lca-2022
+            ranges: []
+        - row_id: cane_molasses
+          role: "Cane molasses"
+          name: "Cane molasses"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Use this atomic substrate only for a molasses-containing route."
+          amount:
+            expression: "Record receipt mass, sugar concentration, moisture, grade, supplier, and stock change."
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per 1,000 kg conforming ethanol"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_receipts
+              source_ids:
+                - arcentales-bastidas-ethanol-lca-2022
+            ranges: []
+        - row_id: maize_grain
+          role: "Maize grain"
+          name: "Maize grain"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Use maize as one atomic feedstock for the declared starch route."
+          amount:
+            expression: "Record receipt mass, moisture, starch content, grade, supplier, and stock change."
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per 1,000 kg conforming ethanol"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_receipts
+              source_ids:
+                - us-epa-ap42-distilled-spirits-1997
+            ranges: []
+        - row_id: corn_stover
+          role: "Corn stover"
+          name: "Corn stover"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Use corn stover only for the declared lignocellulosic route and retain dry-matter and composition records."
+          amount:
+            expression: "Record as-received and dry mass, moisture, carbohydrate and lignin composition, supplier, and stock change."
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per 1,000 kg conforming ethanol"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_receipts
+              source_ids:
+                - nrel-ethanol-design-2011
+            ranges: []
+        - row_id: feed_preparation_water
+          role: "Feed-preparation water"
+          name: "Process water"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "Record water added to milling, mashing, dilution, pretreatment, hydrolysis, or washing without including cooling water."
+          amount:
+            expression: "Meter or reconcile water supplied to feed preparation by process area."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg conforming ethanol"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_utility_meters
+              source_ids:
+                - nrel-ethanol-design-2011
+            ranges: []
+        - row_id: sulfuric_acid
+          role: "Sulfuric acid"
+          name: "Sulfuric acid"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record sulfuric acid only when used for acid pretreatment, hydrolysis, or pH control."
+          amount:
+            expression: "Record delivered product mass, concentration, purpose, and batch or meter allocation."
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per 1,000 kg conforming ethanol"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_chemical_receipts
+              source_ids:
+                - nrel-ethanol-design-2011
+            ranges: []
+        - row_id: sodium_hydroxide_feed
+          role: "Sodium hydroxide for feed preparation"
+          name: "Sodium hydroxide"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record sodium hydroxide only when used for conditioning, pH adjustment, or cleaning assigned to this process."
+          amount:
+            expression: "Record delivered product mass, concentration, purpose, and batch allocation."
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per 1,000 kg conforming ethanol"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_chemical_receipts
+              source_ids:
+                - nrel-ethanol-design-2011
+            ranges: []
+        - row_id: alpha_amylase
+          role: "Alpha-amylase"
+          name: "Alpha-amylase enzyme preparation"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record alpha-amylase as a separate enzyme input for starch liquefaction."
+          amount:
+            expression: "Record formulated-product mass, activity, concentration, and batch dose."
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per 1,000 kg conforming ethanol"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_chemical_receipts
+              source_ids:
+                - us-epa-ap42-distilled-spirits-1997
+            ranges: []
+        - row_id: glucoamylase
+          role: "Glucoamylase"
+          name: "Glucoamylase enzyme preparation"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record glucoamylase separately when used for starch saccharification."
+          amount:
+            expression: "Record formulated-product mass, activity, concentration, and batch dose."
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per 1,000 kg conforming ethanol"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_chemical_receipts
+              source_ids:
+                - us-epa-ap42-distilled-spirits-1997
+            ranges: []
+        - row_id: feed_preparation_electricity
+          role: "Feed-preparation electricity"
+          name: "Electricity, medium voltage, at plant"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record electricity used by conveying, milling, pumping, agitation, and preparation equipment."
+          amount:
+            expression: "Use submetered electricity or documented equipment load and operating time."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg conforming ethanol"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_utility_meters
+              source_ids:
+                - nrel-ethanol-design-2011
+            ranges: []
+        - row_id: feed_preparation_steam
+          role: "Feed-preparation steam"
+          name: "Saturated process steam"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Record purchased or on-site steam delivered to pretreatment, cooking, hydrolysis, or evaporation without aggregating it with fuel."
+          amount:
+            expression: "Meter steam or calculate from mass, pressure, condensate return, and verified enthalpy."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg conforming ethanol"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_utility_meters
+              source_ids:
+                - nrel-ethanol-design-2011
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: prepared_fermentable_mash
+          role: "Prepared fermentable mash"
+          name: "Prepared fermentable mash"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "The prepared sugar-containing mash or hydrolysate is the single intermediate transferred to fermentation."
+          amount:
+            expression: "Record transfer mass, dry matter, fermentable-sugar concentration, temperature, and batch identity."
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per 1,000 kg conforming ethanol"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_process_batches
+              source_ids:
+                - nrel-ethanol-design-2011
+                - us-epa-ap42-distilled-spirits-1997
+            ranges: []
+      waste:
+        - row_id: pretreatment_solid_residue
+          role: "Pretreatment solid residue"
+          name: "Lignin-rich pretreatment solid residue"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record non-marketable solids removed from feed preparation as one wet or dry waste stream with destination and composition."
+          amount:
+            expression: "Record wet mass, dry matter, composition, recovery, storage change, and destination."
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per 1,000 kg conforming ethanol"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_coproduct_records
+              source_ids:
+                - nrel-ethanol-design-2011
+            ranges: []
+        - row_id: feed_preparation_wastewater
+          role: "Feed-preparation wastewater"
+          name: "Feed-preparation wastewater"
+          flow_type: "waste"
+          property_unit: "Volume / m3"
+          description: "Record wastewater transferred from feed preparation to on-site or off-site treatment separately from solid residue."
+          amount:
+            expression: "Meter or reconcile discharge volume and retain sampled pollutant concentrations."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg conforming ethanol"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wastewater_records
+              source_ids:
+                - nrel-ethanol-design-2011
+            ranges: []
+      elementary:
+        - row_id: grain_particulate_to_air
+          role: "Grain particulate matter to air"
+          name: "Particulate matter to air"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record direct particulate emissions from dry grain receipt, handling, cleaning, and milling when those operations are foreground."
+          amount:
+            expression: "Use site measurements or a documented source-specific calculation; do not use the AP-42 distilled-spirits section as an amount factor."
+            value_mode: "calculated_value"
+            specificity: "route_specific"
+            basis:
+              text: "per 1,000 kg conforming ethanol"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_direct_emissions
+              source_ids:
+                - us-epa-ap42-distilled-spirits-1997
+            ranges: []
+  - id: fermentation
+    label: "Fermentation"
+    inputs:
+      product:
+        - row_id: fermentable_mash_input
+          role: "Fermentable mash input"
+          name: "Prepared fermentable mash"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Match this intermediate to the prepared fermentable mash transfer."
+          amount:
+            expression: "Reconcile paired transfer records, line hold-up, and losses by batch."
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per 1,000 kg conforming ethanol"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_process_batches
+              source_ids:
+                - nrel-ethanol-design-2011
+            ranges: []
+        - row_id: fermentation_yeast
+          role: "Fermentation yeast"
+          name: "Saccharomyces cerevisiae fermentation yeast"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record purchased or newly propagated fermentation yeast without double counting internal recycle."
+          amount:
+            expression: "Record fresh or dry basis, culture source, propagated quantity, reuse, and batch dose."
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per 1,000 kg conforming ethanol"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_fermentation_records
+              source_ids:
+                - us-epa-ap42-distilled-spirits-1997
+                - arcentales-bastidas-ethanol-lca-2022
+            ranges: []
+        - row_id: urea
+          role: "Urea"
+          name: "Urea"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record urea separately when used as fermentation nutrient."
+          amount:
+            expression: "Record product mass, nitrogen content, purpose, and batch dose."
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per 1,000 kg conforming ethanol"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_chemical_receipts
+              source_ids:
+                - arcentales-bastidas-ethanol-lca-2022
+            ranges: []
+        - row_id: diammonium_phosphate
+          role: "Diammonium phosphate"
+          name: "Diammonium phosphate"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record diammonium phosphate separately when used as nutrient."
+          amount:
+            expression: "Record product mass, nutrient concentration, purpose, and batch dose."
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per 1,000 kg conforming ethanol"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_chemical_receipts
+              source_ids:
+                - nrel-ethanol-design-2011
+            ranges: []
+        - row_id: polydimethylsiloxane_antifoam
+          role: "Polydimethylsiloxane antifoam"
+          name: "Polydimethylsiloxane antifoam"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record this formulated antifoam only when used; do not group it with other process chemicals."
+          amount:
+            expression: "Record formulated-product mass, concentration, and batch dose."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg conforming ethanol"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_chemical_receipts
+              source_ids:
+                - nrel-ethanol-design-2011
+            ranges: []
+        - row_id: fermentation_cooling_water
+          role: "Fermentation cooling water"
+          name: "Cooling water"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "Record net make-up cooling water assigned to fermentation, excluding recirculated internal flow."
+          amount:
+            expression: "Meter make-up and blowdown and document the allocation of shared cooling systems."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg conforming ethanol"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_utility_meters
+              source_ids:
+                - nrel-ethanol-design-2011
+            ranges: []
+        - row_id: fermentation_electricity
+          role: "Fermentation electricity"
+          name: "Electricity, medium voltage, at plant"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record electricity for agitation, pumping, cooling, cleaning, and controls assigned to fermentation."
+          amount:
+            expression: "Use submetering or documented equipment load and operating time."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg conforming ethanol"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_utility_meters
+              source_ids:
+                - nrel-ethanol-design-2011
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: fermented_ethanol_broth
+          role: "Fermented ethanol broth"
+          name: "Fermented ethanol broth"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record the single broth transfer to distillation with its ethanol concentration and batch identity."
+          amount:
+            expression: "Record transfer mass or volume and density, ethanol concentration, residual sugar, and temperature."
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per 1,000 kg conforming ethanol"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_fermentation_records
+              source_ids:
+                - nrel-ethanol-design-2011
+                - us-epa-ap42-distilled-spirits-1997
+            ranges: []
+      waste:
+        - row_id: spent_yeast_slurry
+          role: "Spent yeast slurry"
+          name: "Spent fermentation yeast slurry"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record surplus yeast leaving fermentation after subtracting internal reuse."
+          amount:
+            expression: "Record wet mass, dry matter, internal recycle, storage change, and destination."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg conforming ethanol"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_coproduct_records
+              source_ids:
+                - arcentales-bastidas-ethanol-lca-2022
+            ranges: []
+      elementary:
+        - row_id: fermentation_carbon_dioxide
+          role: "Fermentation carbon dioxide"
+          name: "Carbon dioxide, biogenic, to air"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record biogenic carbon dioxide vented from fermentation after any recovery."
+          amount:
+            expression: "Measure recovered and vented carbon dioxide or calculate from reconciled fermentable-carbon and product records with recovery explicitly subtracted."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg conforming ethanol"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_direct_emissions
+              source_ids:
+                - us-epa-ap42-distilled-spirits-1997
+                - nrel-ethanol-design-2011
+            ranges: []
+        - row_id: fermentation_ethanol_to_air
+          role: "Fermentation ethanol to air"
+          name: "Ethanol to air"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record ethanol carried in fermentation vent gas as a separate elementary emission."
+          amount:
+            expression: "Use site measurement or a documented vent mass balance; do not apply beverage-aging factors."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg conforming ethanol"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_direct_emissions
+              source_ids:
+                - us-epa-ap42-distilled-spirits-1997
+                - nrel-ethanol-design-2011
+            ranges: []
+  - id: distillation_rectification
+    label: "Distillation and rectification"
+    inputs:
+      product:
+        - row_id: fermented_broth_input
+          role: "Fermented broth input"
+          name: "Fermented ethanol broth"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Match this input to the fermented ethanol broth transfer."
+          amount:
+            expression: "Reconcile paired transfer records, line hold-up, and measured ethanol concentration."
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per 1,000 kg conforming ethanol"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_distillation_records
+              source_ids:
+                - nrel-ethanol-design-2011
+                - us-epa-ap42-distilled-spirits-1997
+            ranges: []
+        - row_id: rectification_steam
+          role: "Rectification steam"
+          name: "Saturated process steam"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Record steam supplied to beer, stripping, rectification, or dehydration units separately from fuel."
+          amount:
+            expression: "Meter steam or calculate from mass, pressure, condensate return, and verified enthalpy."
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg conforming ethanol"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_utility_meters
+              source_ids:
+                - nrel-ethanol-design-2011
+            ranges: []
+        - row_id: rectification_electricity
+          role: "Rectification electricity"
+          name: "Electricity, medium voltage, at plant"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record electricity for pumps, vacuum, controls, cooling, and product-recovery equipment."
+          amount:
+            expression: "Use submetering or documented equipment load and operating time."
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg conforming ethanol"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_utility_meters
+              source_ids:
+                - nrel-ethanol-design-2011
+            ranges: []
+        - row_id: rectification_cooling_water
+          role: "Rectification cooling water"
+          name: "Cooling water"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "Record net make-up cooling water assigned to condensers and product recovery."
+          amount:
+            expression: "Meter make-up and blowdown and document allocation of shared cooling systems."
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg conforming ethanol"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_utility_meters
+              source_ids:
+                - nrel-ethanol-design-2011
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: rectified_ethanol_intermediate
+          role: "Rectified ethanol intermediate"
+          name: "Rectified ethanol"
+          flow_type: "product"
+          flow_ref:
+            uuid: "276f1cf5-0aa1-4d57-ad95-9dada6e043a0"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record conforming undenatured ethanol transferred from rectification to storage."
+          amount:
+            expression: "Record net transfer mass, alcohol strength by volume, measurement temperature, water or composition result, and losses."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg conforming ethanol"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_distillation_records
+              source_ids:
+                - unsd-cpc-3-0-24110
+                - nrel-ethanol-design-2011
+            ranges: []
+        - row_id: fusel_oil
+          role: "Fusel oil"
+          name: "Fusel oil"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record recovered fusel oil as a separate co-product only when it has a documented destination outside the process."
+          amount:
+            expression: "Record recovered mass, composition, stock change, and destination."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg conforming ethanol"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_coproduct_records
+              source_ids:
+                - us-epa-ap42-distilled-spirits-1997
+            ranges: []
+      waste:
+        - row_id: whole_stillage
+          role: "Whole stillage"
+          name: "Whole stillage from ethanol distillation"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record distillation bottoms as whole stillage before any internal recycle or separation."
+          amount:
+            expression: "Record wet mass, dry matter, composition, internal recycle, stock change, treatment, and destination."
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per 1,000 kg conforming ethanol"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_coproduct_records
+              source_ids:
+                - us-epa-ap42-distilled-spirits-1997
+                - arcentales-bastidas-ethanol-lca-2022
+            ranges: []
+      elementary:
+        - row_id: rectification_ethanol_to_air
+          role: "Rectification ethanol to air"
+          name: "Ethanol to air"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record ethanol in condenser and column vent losses separately from fermentation and storage losses."
+          amount:
+            expression: "Measure vent emissions or calculate a documented recovery-system mass balance."
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg conforming ethanol"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_direct_emissions
+              source_ids:
+                - us-epa-ap42-distilled-spirits-1997
+                - nrel-ethanol-design-2011
+            ranges: []
+        - row_id: rectification_acetaldehyde_to_air
+          role: "Rectification acetaldehyde to air"
+          name: "Acetaldehyde to air"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record direct acetaldehyde emissions when detected or required by the site emission inventory."
+          amount:
+            expression: "Use source testing, continuous monitoring, or a documented site-specific calculation."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg conforming ethanol"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_direct_emissions
+              source_ids:
+                - us-epa-ap42-distilled-spirits-1997
+            ranges: []
+  - id: storage_dispatch
+    label: "Product storage and dispatch preparation"
+    inputs:
+      product:
+        - row_id: dispatch_ethanol_input
+          role: "Rectified ethanol for dispatch"
+          name: "Rectified ethanol"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Match this input to rectified ethanol transferred from the recovery process."
+          amount:
+            expression: "Reconcile tank receipts, stock changes, quality holds, rework, and dispatch losses."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg conforming ethanol"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_storage_dispatch_records
+              source_ids:
+                - nrel-ethanol-design-2011
+            ranges: []
+        - row_id: dispatch_electricity
+          role: "Dispatch electricity"
+          name: "Electricity, medium voltage, at plant"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record electricity for storage pumps, ventilation, loading, filling, and dispatch equipment."
+          amount:
+            expression: "Use submetering or documented equipment load and operating time."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg conforming ethanol"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_utility_meters
+              source_ids:
+                - nrel-ethanol-design-2011
+            ranges: []
+        - row_id: nitrogen_blanketing_gas
+          role: "Nitrogen blanketing gas"
+          name: "Nitrogen gas"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record nitrogen separately when tank blanketing is used."
+          amount:
+            expression: "Record metered or purchased quantity assigned to ethanol storage and loading."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg conforming ethanol"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_receipts
+              source_ids:
+                - nrel-ethanol-design-2011
+            ranges: []
+        - row_id: steel_drum
+          role: "Steel drum"
+          name: "Steel drum"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record one-way steel drums only when used for the declared dispatch form."
+          amount:
+            expression: "Record drum count, verified unit mass, reuse status, and product allocation."
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg conforming ethanol"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_records
+              source_ids:
+                - eu-environmental-footprint-2021
+            ranges: []
+        - row_id: hdpe_drum
+          role: "High-density polyethylene drum"
+          name: "High-density polyethylene drum"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record one-way high-density polyethylene drums separately when used."
+          amount:
+            expression: "Record drum count, verified unit mass, reuse status, and product allocation."
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg conforming ethanol"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_records
+              source_ids:
+                - eu-environmental-footprint-2021
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: reference_ethanol_output
+          role: "Reference ethanol output"
+          name: "Rectified ethanol"
+          flow_type: "product"
+          flow_ref:
+            uuid: "276f1cf5-0aa1-4d57-ad95-9dada6e043a0"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This is the declared reference product leaving the production-site gate."
+          amount:
+            expression: "Set to 1,000 kg of net conforming output after quality holds, stock changes, and dispatch losses."
+            value_mode: "fixed_value"
+            specificity: "product_specific"
+            basis:
+              text: "1,000 kg conforming undenatured ethanol at least 80% vol"
+              kind: "reference_flow"
+            evidence:
+              kind: "identity_reference"
+              source_ids:
+                - unsd-cpc-3-0-24110
+            ranges: []
+      waste:
+        - row_id: off_spec_ethanol
+          role: "Off-spec ethanol"
+          name: "Off-spec ethanol waste"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record ethanol that leaves the product system for treatment or disposal; internal rework remains an internal transfer."
+          amount:
+            expression: "Record mass, alcohol strength, reason for rejection, rework, recovery, and final destination."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg conforming ethanol"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_coproduct_records
+              source_ids:
+                - nrel-ethanol-design-2011
+            ranges: []
+      elementary:
+        - row_id: storage_ethanol_to_air
+          role: "Storage ethanol to air"
+          name: "Ethanol to air"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record working, breathing, loading, and fugitive ethanol losses from storage and dispatch."
+          amount:
+            expression: "Use site measurement or a documented tank and loading mass balance; do not use beverage-aging factors."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg conforming ethanol"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_direct_emissions
+              source_ids:
+                - us-epa-ap42-distilled-spirits-1997
+                - nrel-ethanol-design-2011
+            ranges: []
+  - id: onsite_utilities_wastewater
+    label: "On-site utilities and wastewater treatment"
+    inputs:
+      product:
+        - row_id: natural_gas
+          role: "Natural gas"
+          name: "Natural gas"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Record natural gas only for on-site combustion assigned to the ethanol system."
+          amount:
+            expression: "Record metered volume, standard conditions, lower or higher heating value, and allocation to utility output."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg conforming ethanol"
+              kind: "fuel_inventory"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_fuel_records
+              source_ids:
+                - nrel-ethanol-design-2011
+            ranges: []
+        - row_id: bagasse_fuel
+          role: "Bagasse fuel"
+          name: "Sugarcane bagasse fuel"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record bagasse separately when combusted on site for steam or cogeneration."
+          amount:
+            expression: "Record wet and dry mass, moisture, heating value, internal origin or purchase, and allocation to utility output."
+            value_mode: "calculated_value"
+            specificity: "route_specific"
+            basis:
+              text: "per 1,000 kg conforming ethanol"
+              kind: "fuel_inventory"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_fuel_records
+              source_ids:
+                - arcentales-bastidas-ethanol-lca-2022
+            ranges: []
+        - row_id: heavy_fuel_oil
+          role: "Heavy fuel oil"
+          name: "Heavy fuel oil"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record heavy fuel oil separately when used as boiler or cogeneration fuel."
+          amount:
+            expression: "Record delivered mass, heating value, sulfur content, stock change, and allocation to utility output."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg conforming ethanol"
+              kind: "fuel_inventory"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_fuel_records
+              source_ids:
+                - arcentales-bastidas-ethanol-lca-2022
+            ranges: []
+        - row_id: ammonia_refrigerant
+          role: "Ammonia refrigerant"
+          name: "Ammonia refrigerant"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record ammonia make-up separately when an R717 refrigeration system is used."
+          amount:
+            expression: "Calculate make-up from purchases and beginning/end inventory and reconcile service recovery."
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg conforming ethanol"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_refrigerant_records
+              source_ids:
+                - nrel-ethanol-design-2011
+            ranges: []
+        - row_id: treatment_sodium_hydroxide
+          role: "Sodium hydroxide for wastewater treatment"
+          name: "Sodium hydroxide"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record sodium hydroxide separately when consumed in on-site wastewater treatment."
+          amount:
+            expression: "Record delivered product mass, concentration, stock change, and treatment use."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg conforming ethanol"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_chemical_receipts
+              source_ids:
+                - nrel-ethanol-design-2011
+            ranges: []
+        - row_id: wastewater_to_treatment
+          role: "Wastewater to treatment"
+          name: "Ethanol-plant wastewater"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "Record the combined wastewater entering on-site treatment after preserving source-process records."
+          amount:
+            expression: "Meter influent volume and retain flow-weighted chemical oxygen demand, nitrogen, phosphorus, pH, and temperature."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg conforming ethanol"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wastewater_records
+              source_ids:
+                - nrel-ethanol-design-2011
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: onsite_steam
+          role: "On-site steam"
+          name: "Saturated process steam"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Record steam generated on site as the single utility output paired to boiler or cogeneration inputs."
+          amount:
+            expression: "Calculate from measured steam mass, pressure, temperature, feedwater, and condensate return; prevent double counting with purchased steam."
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg conforming ethanol"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_utility_meters
+              source_ids:
+                - nrel-ethanol-design-2011
+                - arcentales-bastidas-ethanol-lca-2022
+            ranges: []
+        - row_id: treated_wastewater
+          role: "Treated wastewater"
+          name: "Treated ethanol-plant wastewater"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "Record treated effluent leaving the site or transferred for further treatment."
+          amount:
+            expression: "Meter effluent volume and preserve discharge destination, permit point, and paired pollutant samples."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg conforming ethanol"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wastewater_records
+              source_ids:
+                - nrel-ethanol-design-2011
+            ranges: []
+      waste:
+        - row_id: wastewater_sludge
+          role: "Wastewater sludge"
+          name: "Ethanol-plant wastewater-treatment sludge"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record dewatered or wet sludge leaving treatment separately from effluent."
+          amount:
+            expression: "Record wet mass, dry matter, composition, storage change, and destination."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg conforming ethanol"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_coproduct_records
+              source_ids:
+                - nrel-ethanol-design-2011
+            ranges: []
+      elementary:
+        - row_id: fossil_carbon_dioxide_to_air
+          role: "Fossil carbon dioxide to air"
+          name: "Carbon dioxide, fossil, to air"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record fossil carbon dioxide from on-site combustion separately from biogenic carbon dioxide."
+          amount:
+            expression: "Calculate from each fossil fuel record and documented carbon factor, subtracting captured carbon where applicable."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg conforming ethanol"
+              kind: "fuel_inventory"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_direct_emissions
+              source_ids:
+                - nrel-ethanol-design-2011
+            ranges: []
+        - row_id: biogenic_carbon_dioxide_to_air
+          role: "Biogenic carbon dioxide to air"
+          name: "Carbon dioxide, biogenic, to air"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record biogenic carbon dioxide from bagasse or other biomass combustion separately from fermentation carbon dioxide."
+          amount:
+            expression: "Calculate from biomass fuel carbon records and documented factors, subtracting captured carbon where applicable."
+            value_mode: "calculated_value"
+            specificity: "route_specific"
+            basis:
+              text: "per 1,000 kg conforming ethanol"
+              kind: "fuel_inventory"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_direct_emissions
+              source_ids:
+                - arcentales-bastidas-ethanol-lca-2022
+            ranges: []
+        - row_id: nitrogen_oxides_to_air
+          role: "Nitrogen oxides to air"
+          name: "Nitrogen oxides to air"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record direct nitrogen oxides from on-site combustion as one pollutant exchange on the declared reporting basis."
+          amount:
+            expression: "Use source testing, continuous monitoring, or fuel- and equipment-specific calculation with the reporting basis declared."
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg conforming ethanol"
+              kind: "fuel_inventory"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_direct_emissions
+              source_ids:
+                - nrel-ethanol-design-2011
+                - us-epa-ap42-distilled-spirits-1997
+            ranges: []
+        - row_id: sulfur_dioxide_to_air
+          role: "Sulfur dioxide to air"
+          name: "Sulfur dioxide to air"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record sulfur dioxide from sulfur-bearing fuels as a separate elementary emission."
+          amount:
+            expression: "Use source testing or a fuel sulfur mass balance with retention explicitly documented."
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg conforming ethanol"
+              kind: "fuel_inventory"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_direct_emissions
+              source_ids:
+                - nrel-ethanol-design-2011
+                - us-epa-ap42-distilled-spirits-1997
+            ranges: []
+        - row_id: particulate_matter_to_air
+          role: "Particulate matter to air"
+          name: "Particulate matter to air"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record stack particulate matter separately from grain-handling particulate emissions."
+          amount:
+            expression: "Use source testing, continuous monitoring, or equipment-specific calculation and state the particle-size basis."
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg conforming ethanol"
+              kind: "fuel_inventory"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_direct_emissions
+              source_ids:
+                - nrel-ethanol-design-2011
+                - us-epa-ap42-distilled-spirits-1997
+            ranges: []
+        - row_id: ammonia_refrigerant_to_air
+          role: "Ammonia refrigerant to air"
+          name: "Ammonia to air"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record unrecovered R717 refrigerant loss as ammonia emitted to air."
+          amount:
+            expression: "Calculate from refrigerant inventory, purchases, recovery, and service records."
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg conforming ethanol"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_refrigerant_records
+              source_ids:
+                - nrel-ethanol-design-2011
+            ranges: []
+        - row_id: cod_to_water
+          role: "Chemical oxygen demand to water"
+          name: "Chemical oxygen demand to water"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record chemical oxygen demand discharged in treated effluent as one elementary exchange."
+          amount:
+            expression: "Calculate flow-weighted load from paired effluent volume and representative concentration measurements."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg conforming ethanol"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_wastewater_records
+              source_ids:
+                - nrel-ethanol-design-2011
+            ranges: []
+        - row_id: total_nitrogen_to_water
+          role: "Total nitrogen to water"
+          name: "Total nitrogen to water"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record total nitrogen discharged in treated effluent separately from chemical oxygen demand and phosphorus."
+          amount:
+            expression: "Calculate flow-weighted load from paired effluent volume and representative concentration measurements."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg conforming ethanol"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_wastewater_records
+              source_ids:
+                - nrel-ethanol-design-2011
+                - arcentales-bastidas-ethanol-lca-2022
+            ranges: []
+        - row_id: total_phosphorus_to_water
+          role: "Total phosphorus to water"
+          name: "Total phosphorus to water"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record total phosphorus discharged in treated effluent as a separate elementary exchange."
+          amount:
+            expression: "Calculate flow-weighted load from paired effluent volume and representative concentration measurements."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg conforming ethanol"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_wastewater_records
+              source_ids:
+                - nrel-ethanol-design-2011
+                - arcentales-bastidas-ethanol-lca-2022
+            ranges: []
+allocation_rules:
+  - rule_id: allocation_avoid
+    applies_to: "Multi-output foreground processes"
+    rule: "First subdivide separately metered processes and internal transfers so ethanol, steam, electricity, stillage, fusel oil, carbon dioxide recovery, and other outputs receive only causally connected exchanges."
+    source_ids:
+      - eu-environmental-footprint-2021
+  - rule_id: allocation_system_expansion
+    applies_to: "Marketable co-products"
+    rule: "Where subdivision is insufficient and a documented displaced product exists, apply system expansion or substitution and disclose the substituted function, market, quality, and sensitivity case."
+    source_ids:
+      - eu-environmental-footprint-2021
+      - arcentales-bastidas-ethanol-lca-2022
+  - rule_id: allocation_physical_then_economic
+    applies_to: "Residual unresolved multifunctionality"
+    rule: "If substitution is not justified, use a relevant physical causal relation; use economic allocation only when no defensible physical relation exists, with prices, period, geography, and sensitivity disclosed."
+    source_ids:
+      - eu-environmental-footprint-2021
+  - rule_id: allocation_waste_or_coproduct
+    applies_to: "Stillage, fusel oil, recovered carbon dioxide, lignin residue, and surplus energy"
+    rule: "Classify each output by actual destination and marketability before allocation; do not grant a co-product credit to material sent for disposal or treatment."
+    source_ids:
+      - eu-environmental-footprint-2021
+      - arcentales-bastidas-ethanol-lca-2022
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_material_receipts
+      process_id: "feedstock_preparation_storage_dispatch"
+      flow_role: "Feedstocks, nitrogen, and other received materials"
+      record_type: "invoices, weighbridge tickets, tank gauges, inventory logs, certificates"
+      raw_fields: "material identity; supplier; mass or volume; density; moisture or concentration; beginning and ending inventory; batch; date"
+      collection_method: "reconcile receipts plus beginning stock minus ending stock and transfers"
+      unit: "native unit and kg"
+      frequency: "each receipt and monthly close"
+      temporal_coverage: "common reporting period"
+      site_scope: "all included site operations"
+      aggregation_rule: "aggregate by atomic material and route before reference normalization"
+      quality_evidence: "calibrated scales or gauges; supplier certificate; inventory reconciliation"
+    - protocol_id: cp_chemical_receipts
+      process_id: "feedstock_preparation_fermentation_onsite_utilities_wastewater"
+      flow_role: "Each enzyme, nutrient, antifoam, acid, alkali, or treatment chemical"
+      record_type: "invoices, batch sheets, warehouse issues, formulation certificates"
+      raw_fields: "chemical identity; formulated-product mass; active concentration or activity; purpose; batch; inventory"
+      collection_method: "reconcile receipts, issues, return, and stock; allocate only to the consuming process"
+      unit: "kg formulated product and declared active basis"
+      frequency: "each batch and monthly close"
+      temporal_coverage: "common reporting period"
+      site_scope: "all included process areas"
+      aggregation_rule: "sum each chemical separately and normalize after stock reconciliation"
+      quality_evidence: "product specification; batch record; inventory record"
+    - protocol_id: cp_process_batches
+      process_id: "feedstock_preparation"
+      flow_role: "Prepared mash and internal transfers"
+      record_type: "batch sheets, transfer meters, laboratory results"
+      raw_fields: "transfer mass or volume; density; dry matter; fermentable sugar; temperature; batch id; losses"
+      collection_method: "pair source and destination records and reconcile line hold-up"
+      unit: "kg or m3 plus composition"
+      frequency: "each batch"
+      temporal_coverage: "common reporting period"
+      site_scope: "all included preparation lines"
+      aggregation_rule: "aggregate matched transfers without counting internal circulation"
+      quality_evidence: "calibrated transfer meter; laboratory certificate; reconciliation"
+    - protocol_id: cp_fermentation_records
+      process_id: "fermentation"
+      flow_role: "Fermentation inputs, broth, and yeast"
+      record_type: "batch logs, tank gauges, laboratory analyses"
+      raw_fields: "mash input; yeast dose; fermentation time; broth mass or volume; density; ethanol; residual sugar; recovered carbon dioxide"
+      collection_method: "reconcile each fermenter batch and product transfer"
+      unit: "kg or m3 plus concentration"
+      frequency: "each batch"
+      temporal_coverage: "common reporting period"
+      site_scope: "all fermenters in scope"
+      aggregation_rule: "aggregate conforming batches and separately report aborted batches"
+      quality_evidence: "calibrated tanks; laboratory method; batch approval"
+    - protocol_id: cp_distillation_records
+      process_id: "distillation_rectification"
+      flow_role: "Broth, rectified ethanol, and recovery performance"
+      record_type: "flowmeters, tank gauges, laboratory analyses, production logs"
+      raw_fields: "broth input; ethanol concentration; product mass; alcohol strength; water or composition; temperature; reflux or recovery records; stillage"
+      collection_method: "reconcile ethanol and total mass through recovery and transfer"
+      unit: "kg and % vol"
+      frequency: "each campaign or daily"
+      temporal_coverage: "common reporting period"
+      site_scope: "all recovery trains in scope"
+      aggregation_rule: "aggregate only output meeting the category threshold"
+      quality_evidence: "calibrated meter; alcohol-strength method; mass-balance closure"
+    - protocol_id: cp_utility_meters
+      process_id: "all_processes"
+      flow_role: "Electricity, steam, water, and utility outputs"
+      record_type: "meters, invoices, equipment runtime, steam logs"
+      raw_fields: "meter id; start and end readings; process area; pressure; temperature; condensate; operating time; conversion factor"
+      collection_method: "use submeters first; otherwise calculate from verified load and operating time"
+      unit: "native utility unit"
+      frequency: "continuous or each shift, monthly close"
+      temporal_coverage: "common reporting period"
+      site_scope: "all included meters and shared systems"
+      aggregation_rule: "subtract internal circulation and allocate shared services with disclosed drivers"
+      quality_evidence: "calibration; invoice reconciliation; engineering calculation"
+    - protocol_id: cp_fuel_records
+      process_id: "onsite_utilities_wastewater"
+      flow_role: "Each on-site fuel"
+      record_type: "flowmeters, weighbridge records, invoices, fuel certificates"
+      raw_fields: "fuel identity; quantity; moisture; heating value; carbon and sulfur; stock change; boiler or turbine"
+      collection_method: "reconcile fuel receipt and consumption by equipment"
+      unit: "native unit, kg, and MJ"
+      frequency: "each receipt and daily or monthly meter close"
+      temporal_coverage: "common reporting period"
+      site_scope: "all included combustion units"
+      aggregation_rule: "aggregate each fuel separately and allocate to measured utility output"
+      quality_evidence: "calibrated meter; supplier certificate; stock reconciliation"
+    - protocol_id: cp_refrigerant_records
+      process_id: "onsite_utilities_wastewater"
+      flow_role: "Ammonia refrigerant"
+      record_type: "purchase, inventory, recovery, and maintenance logs"
+      raw_fields: "refrigerant identity; initial and final charge; purchase; recovery; service addition; incident loss"
+      collection_method: "annual or campaign mass balance"
+      unit: "kg"
+      frequency: "each service event and annual close"
+      temporal_coverage: "common reporting period"
+      site_scope: "all included R717 systems"
+      aggregation_rule: "purchases plus initial inventory minus recovery and final inventory"
+      quality_evidence: "technician log; cylinder weights; incident record"
+    - protocol_id: cp_storage_dispatch_records
+      process_id: "storage_dispatch"
+      flow_role: "Product storage, quality release, and dispatch"
+      record_type: "tank gauges, weighbridge tickets, quality certificates, shipping records"
+      raw_fields: "receipt; stock; rework; off-spec quantity; dispatched net mass; alcohol strength; temperature; package form"
+      collection_method: "reconcile tank movements and net dispatch"
+      unit: "kg and % vol"
+      frequency: "each tank movement and shipment"
+      temporal_coverage: "common reporting period"
+      site_scope: "all product tanks and loading points"
+      aggregation_rule: "normalize only released product meeting at least 80% vol"
+      quality_evidence: "calibrated scale or tank; signed quality release; dispatch record"
+    - protocol_id: cp_packaging_records
+      process_id: "storage_dispatch"
+      flow_role: "Each one-way packaging component"
+      record_type: "purchase, issue, count, and unit-mass records"
+      raw_fields: "package material; count; unit mass; reusable or one-way status; product allocation; waste count"
+      collection_method: "multiply verified count by unit mass and reconcile stock"
+      unit: "item and kg"
+      frequency: "each filling run and monthly close"
+      temporal_coverage: "common reporting period"
+      site_scope: "all packaging lines in scope"
+      aggregation_rule: "report each component separately and exclude reusable assets unless consumed"
+      quality_evidence: "supplier specification; count reconciliation; sample weighing"
+    - protocol_id: cp_waste_coproduct_records
+      process_id: "all_processes"
+      flow_role: "Each waste or co-product"
+      record_type: "scales, tank gauges, manifests, invoices, destination records"
+      raw_fields: "identity; wet mass; dry matter; composition; stock; destination; revenue; treatment"
+      collection_method: "reconcile generation, internal reuse, sale, treatment, and stock"
+      unit: "kg or m3"
+      frequency: "each movement and monthly close"
+      temporal_coverage: "common reporting period"
+      site_scope: "all included waste and co-product stores"
+      aggregation_rule: "separate marketable output, internal recycle, and waste by destination"
+      quality_evidence: "calibrated measure; signed manifest; buyer or treatment record"
+    - protocol_id: cp_wastewater_records
+      process_id: "all_processes"
+      flow_role: "Wastewater, treated effluent, and water pollutants"
+      record_type: "flowmeters, composite samples, laboratory reports, discharge records"
+      raw_fields: "source; influent and effluent volume; COD; total nitrogen; total phosphorus; pH; temperature; sampling time"
+      collection_method: "pair representative concentration with flow over the same interval"
+      unit: "m3 and kg pollutant"
+      frequency: "continuous flow; representative composite sampling"
+      temporal_coverage: "common reporting period"
+      site_scope: "all included drains and discharge points"
+      aggregation_rule: "calculate flow-weighted loads; do not sum concentration values"
+      quality_evidence: "calibrated flowmeter; accredited or documented laboratory method; permit record"
+    - protocol_id: cp_direct_emissions
+      process_id: "all_processes"
+      flow_role: "Each direct air emission"
+      record_type: "stack tests, continuous monitoring, vent flow and concentration, mass-balance inputs"
+      raw_fields: "source id; pollutant; flow; concentration; operating time; fuel; recovery; method"
+      collection_method: "calculate each pollutant by source and reconcile recovered material"
+      unit: "kg"
+      frequency: "monitoring or test frequency required by permit, plus annual close"
+      temporal_coverage: "common reporting period"
+      site_scope: "all included vents, stacks, tanks, and loading points"
+      aggregation_rule: "sum each elementary flow separately after source-level calculation"
+      quality_evidence: "calibration; test report; permit method; mass-balance evidence"
+  calculation_rules:
+    - id: calc_reference_normalization
+      applies_to: "Every foreground exchange"
+      rule: "normalized amount = reconciled exchange amount × 1,000 kg / reconciled conforming ethanol output kg"
+      inputs:
+        - "period exchange"
+        - "net conforming output"
+      output: "amount per 1,000 kg reference flow"
+      source_ids:
+        - eu-environmental-footprint-2021
+    - id: calc_volume_to_mass
+      applies_to: "Liquid transfers recorded by volume"
+      rule: "mass = measured volume × density at the declared temperature; retain measured volume, density, temperature, and method"
+      inputs:
+        - volume
+        - density
+        - temperature
+      output: "kg liquid"
+      source_ids:
+        - eu-environmental-footprint-2021
+    - id: calc_ethanol_quality_gate
+      applies_to: "Reference product"
+      rule: "segregate output with measured alcohol strength below 80% vol from conforming output; no production-weighted averaging across the threshold"
+      inputs:
+        - "batch output"
+        - "% vol"
+        - "test method"
+      output: "conforming output kg and off-spec kg"
+      source_ids:
+        - unsd-cpc-3-0-24110
+    - id: calc_internal_transfer_reconciliation
+      applies_to: "Prepared mash, broth, ethanol, steam, and recycled materials"
+      rule: "destination input = source output - measured transfer loss - documented inventory change; internal transfers do not create upstream burden"
+      inputs:
+        - "paired records"
+        - "line hold-up"
+        - loss
+      output: "reconciled transfer"
+      source_ids:
+        - eu-environmental-footprint-2021
+    - id: calc_wastewater_load
+      applies_to: "COD, total nitrogen, and total phosphorus"
+      rule: "pollutant load = sum of representative interval volume × paired concentration, with unit conversion documented"
+      inputs:
+        - "effluent volume"
+        - "paired concentration"
+      output: "kg pollutant to water"
+      source_ids:
+        - nrel-ethanol-design-2011
+    - id: calc_refrigerant_loss
+      applies_to: "Ammonia refrigeration"
+      rule: "loss = purchases + initial charge - recovered quantity - final charge, adjusted for documented transfers"
+      inputs:
+        - purchase
+        - "initial and final inventory"
+        - recovery
+        - transfer
+      output: "kg ammonia to air"
+      source_ids:
+        - nrel-ethanol-design-2011
+    - id: calc_mass_balance
+      applies_to: "Each process and full site"
+      rule: "reconcile input, product, internal transfer, recovered co-product, waste, emission, and inventory change on compatible wet, dry, carbon, or ethanol bases; investigate material closure gaps"
+      inputs:
+        - "collected flow records"
+        - composition
+        - "stock change"
+      output: "balance and unresolved difference"
+      source_ids:
+        - eu-environmental-footprint-2021
+        - nrel-ethanol-design-2011
+  data_quality_requirements:
+    - id: dq_product_identity
+      applies_to: "Reference product"
+      requirement: "Retain alcohol-strength result, measurement temperature and method, undenatured-status evidence, water or composition result, product grade, and dispatch form for every aggregated product family."
+      evidence: "quality certificate; laboratory result; product specification"
+    - id: dq_temporal
+      applies_to: "Foreground data"
+      requirement: "Use one common period of at least 12 consecutive months unless a shorter period is demonstrably representative of a new or changed operation; disclose seasonality and shutdowns."
+      evidence: "dated raw records; production calendar; justification"
+    - id: dq_technology_route
+      applies_to: "Process inventory"
+      requirement: "Identify feedstock and pretreatment route, fermentation organism, recovery configuration, dehydration step, utility supply, wastewater treatment, and co-product management."
+      evidence: "process flow diagram; equipment list; operating narrative"
+    - id: dq_measurement
+      applies_to: "Metered and sampled data"
+      requirement: "Use calibrated instruments and documented laboratory methods; retain native values and conversion factors."
+      evidence: "calibration certificate; method; chain of custody; calculation sheet"
+    - id: dq_completeness
+      applies_to: "All included processes"
+      requirement: "Reconcile all identified atomic material, energy, waste, co-product, and elementary flows and explain missing or estimated values."
+      evidence: "completeness matrix; mass and energy balances; variance review"
+    - id: dq_supplier_background
+      applies_to: "Upstream links"
+      requirement: "Match supplier, feedstock route, geography, technology, and year where material; disclose proxies and data quality limitations."
+      evidence: "supplier data; dataset metadata; proxy rationale"
+    - id: dq_allocation
+      applies_to: "Multi-output processes"
+      requirement: "Retain subdivision, substitution, physical relation, or economic data and the sensitivity case needed to reproduce allocation."
+      evidence: "meter map; market evidence; price series; allocation calculation"
+validation_rules:
+  - rule_id: validate_identity
+    applies_to: "Reference flow"
+    rule: "Fail category conformance if the product is denatured, the measured alcoholic strength is below 80% vol, or the strength, temperature, and method are missing."
+    source_ids:
+      - unsd-cpc-3-0-24110
+  - rule_id: validate_reference_amount
+    applies_to: "Reference flow"
+    rule: "Require exactly 1,000 kg net conforming output after stock change, off-spec product, and dispatch loss reconciliation."
+    source_ids:
+      - eu-environmental-footprint-2021
+  - rule_id: validate_process_coverage
+    applies_to: "Foreground dataset"
+    rule: "Require feedstock preparation, fermentation, distillation and rectification, and storage/dispatch inventories; require each applicable on-site utility and wastewater process or an explicit linked external service."
+    source_ids:
+      - nrel-ethanol-design-2011
+  - rule_id: validate_atomic_inventory
+    applies_to: "Inventory rows"
+    rule: "Reject aggregated selected-flow labels and require electricity, steam, each fuel, each refrigerant, each feedstock, each chemical, each package, each waste, and each elementary emission to remain separate."
+    source_ids:
+      - eu-environmental-footprint-2021
+  - rule_id: validate_transfer_balance
+    applies_to: "Internal intermediates"
+    rule: "Require paired preparation-to-fermentation, fermentation-to-recovery, recovery-to-storage, and on-site steam transfers to reconcile after explicit loss and inventory change."
+    source_ids:
+      - nrel-ethanol-design-2011
+  - rule_id: validate_mass_and_ethanol_balance
+    applies_to: "Process and site totals"
+    rule: "Require documented mass and ethanol-balance checks and investigation of material unexplained differences."
+    source_ids:
+      - eu-environmental-footprint-2021
+      - nrel-ethanol-design-2011
+  - rule_id: validate_emissions_wastewater
+    applies_to: "Direct emissions and discharge"
+    rule: "Require each applicable vent, stack, refrigerant loss, wastewater flow, COD, nitrogen, and phosphorus record or a documented not-applicable determination."
+    source_ids:
+      - nrel-ethanol-design-2011
+      - us-epa-ap42-distilled-spirits-1997
+  - rule_id: validate_allocation
+    applies_to: "Multi-output processes"
+    rule: "Reject unreported or unreproducible allocation and any credit assigned to an output sent for treatment or disposal."
+    source_ids:
+      - eu-environmental-footprint-2021
+published_dataset_profile:
+  dataset_role: "secondary_dataset or background_dataset after independent review"
+  downstream_use: "Plant-gate foreground production package for process datasets and lifecycle models of undenatured ethanol at least 80% vol"
+  allowed_use: "Studies matching the declared feedstock route, technology, geography, alcohol strength, water or composition, utility supply, co-product treatment, dispatch form, and reference mass basis"
+  excluded_use: "Denatured or synthetic ethanol; ethanol below 80% vol; beverage products; unqualified global average; downstream blending, distribution, or combustion without added stages"
+  required_metadata: "PCR id and version; product flow UUID; alcohol strength, temperature, and test method; undenatured status; water or composition; feedstock and route; site and geography; technology; reporting period; dispatch form; boundary; upstream links; co-product and allocation method"
+  required_quality_disclosure: "Primary-data share; meter and laboratory coverage; mass, ethanol, water, and energy balance results; missing flows; proxies; range-evidence gaps; uncertainty; allocation sensitivity; reviewer status"
+  update_trigger: "Change in feedstock, fermentation or recovery technology, alcohol-strength specification, energy or water system, co-product destination, wastewater treatment, dispatch form, site boundary, or representative data period"
+data_sources:
+  - id: "unsd-cpc-3-0-24110"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, Central Product Classification Version 3.0, subclass 24110. https://unstats.un.org/unsd/classifications/Econ/CPC (retrieved 2026-08-23)"
+    used_for: "Official category identity, undenatured status, and minimum 80% vol threshold"
+  - id: "eu-environmental-footprint-2021"
+    type: "official_guidance"
+    reference: "European Commission Recommendation (EU) 2021/2279 on Environmental Footprint methods, Annex I. https://eur-lex.europa.eu/eli/reco/2021/2279/2021-12-30/eng (retrieved 2026-08-23)"
+    used_for: "Functional unit, boundary completeness, company-specific data, data quality, multifunctionality, allocation, and validation"
+  - id: "us-epa-ap42-distilled-spirits-1997"
+    type: "official_guidance"
+    reference: "United States Environmental Protection Agency, AP-42 Section 9.12.3, Distilled Spirits, 1997. https://www.epa.gov/sites/default/files/2020-10/documents/c9s12-3.pdf (retrieved 2026-08-23)"
+    used_for: "Grain preparation, mashing, fermentation, distillation and rectification, stillage, and direct emission candidates; its beverage-aging factors are excluded"
+  - id: "nrel-ethanol-design-2011"
+    type: "official_guidance"
+    reference: "Humbird et al., Process Design and Economics for Biochemical Conversion of Lignocellulosic Biomass to Ethanol, NREL/TP-5100-47764, 2011. https://www.nrel.gov/docs/fy11osti/47764.pdf (retrieved 2026-08-23)"
+    used_for: "Lignocellulosic route process decomposition, pretreatment, hydrolysis, fermentation, product recovery, wastewater treatment, lignin combustion, utilities, and process balances"
+  - id: "arcentales-bastidas-ethanol-lca-2022"
+    type: "literature"
+    reference: "Arcentales-Bastidas, Silva, and Ramirez, The Environmental Profile of Ethanol Derived from Sugarcane in Ecuador, Energies 15 (2022) 5421. https://doi.org/10.3390/en15155421"
+    used_for: "Verified sugarcane route decomposition, juice and molasses fermentation, yeast and urea, distillation, stillage/vinasse, bagasse cogeneration, and co-product system-expansion case"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:667d275c67e7be7439f803bd14cfdd684a78b0a2806952c2f1941de24efece14"
+  generated_content_sha256: "sha256:3a82ac91e4f80470a19abfab3e8aa8981546a0659d012f0e1c2e9b93db758bca"

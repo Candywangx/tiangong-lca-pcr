@@ -1,10 +1,1208 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "23220"
-  title: "Starches; inulin; wheat gluten; dextrins and other modified starches"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.food-products-beverages-and-tobacco-textiles-apparel-and-leather-products.grain-mill-products-starches-and-starch-products-other-food-products.starches-inulin-wheat-gluten-dextrins-and-other-modified-starches"
+  classification_refs: "CPC 3.0:23220, exact scope reference"
+  covered_products: "Native plant starches; inulin; wheat gluten; dextrins; physically, enzymatically, or chemically modified starches"
+  excluded_products: "Starch sweeteners and syrups; polyols; ethanol; finished food, paper, adhesive, textile, pharmaceutical, or other downstream formulations and articles"
+  representative_product: "Starch, represented by Tiangong flow e5842f16-31b3-4ea4-b16a-f7b06beeb6c3; representative product form only, not a default identity for other covered forms"
+  production_route: "Route-specific plant-component separation or extraction, refining, optional modification, concentration or drying, and finishing at the manufacturing site"
+  market_state: "Declared as-sold bulk or packaged powder, granule, wet cake, slurry, paste, or other specified commercial state at plant gate"
+functional_unit:
+  what: "Provide the declared CPC 23220 starch, inulin, wheat gluten, dextrin, or modified-starch product in its specified commercial form"
+  how_much: "1 kg of as-sold product at the manufacturing plant gate"
+  how_well: "Conforming to the declared product identity, botanical feedstock, native or modified status, dry-matter or moisture content, purity or grade, and intended technical specification"
+  how_long_or_cycle: "One production lot at release; shelf life is declared when relevant to the product specification"
+  reference_flow_link: "1 kg of the declared product; use the representative Starch flow only for a declared starch product when no more specific real flow exists"
+system_boundary:
+  rules:
+    - rule_id: system_boundary_rule_1
+      applies_to: "foreground_system_boundary"
+      rule: "The foreground boundary begins when the declared plant raw material or purchased intermediate crosses the manufacturing-site gate and ends when the conforming product is released in its declared bulk or packaged state at the plant gate. Include route-specific separation, extraction, refining, modification, concentration, drying, finishing, internal recycling, cleaning directly attributable to production, on-site utilities used by these operations, and on-site management of wastes, wastewater, and direct emissions."
+      source_ids: []
+    - rule_id: boundary_rule_1
+      applies_to: "foreground manufacturing"
+      rule: "Include all material, energy, water, product, co-product, waste, wastewater, and direct-emission flows attributable to the declared route from the site-gate starting condition to released product."
+      source_ids:
+        - ec-pef-recommendation-2021-2279
+        - eu-fdm-bref-2019
+    - rule_id: boundary_rule_2
+      applies_to: "route selection"
+      rule: "Include only route processes that actually occur, but record a justified not-applicable decision for each conditional process in the Process Map."
+      source_ids:
+        - eu-fdm-bref-2019
+        - us-epa-ap42-9-9-7
+    - rule_id: boundary_rule_3
+      applies_to: "purchased same-category intermediates"
+      rule: "Prevent recursion by treating a purchased same-category intermediate as a product input with its own upstream dataset."
+      source_ids:
+        - ec-pef-recommendation-2021-2279
+    - rule_id: boundary_rule_4
+      applies_to: "representative product flow"
+      rule: "Never use the representative Starch UUID for another covered form; replace it with a product-specific flow whenever a more faithful real Tiangong identity exists."
+      source_ids:
+        - un-cpc-3-0-23220
+boundary_abstraction:
+  declared_starting_condition: "Received botanical raw material or purchased intermediate with measured mass, moisture or solids, origin, supplier, and product identity"
+  starting_condition_role: "Foreground manufacturing input at the site gate"
+  product_classification_scope: "CPC 3.0:23220 products only; route and concrete product form must be declared"
+  recursive_input_rule: "A purchased native starch, inulin, gluten, dextrin, or modified-starch input is recorded once as an upstream product input and linked to an upstream dataset; do not recursively reapply this foreground route to that input"
+  upstream_dataset_requirement: "Use supplier-specific or representative upstream datasets for cultivation, primary production, and inbound supply to the declared starting condition; disclose geography, reference period, technology, and data quality"
+  disclosure: "Declare product form, feedstock, route, plant geography, reference period, allocation, included packaging, on-site treatment, excluded stages, and every substituted product-flow UUID"
+reference_flow_definition:
+  reference_amount: "1 kg as-sold product at plant gate"
+  product_flow_ref:
+    name: "Starch, representative product form only"
+    uuid: "e5842f16-31b3-4ea4-b16a-f7b06beeb6c3"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "concrete product form"
+    - "product-specific Tiangong flow decision"
+    - "botanical feedstock"
+    - native
+    - dextrin
+    - inulin
+    - wheat-gluten
+    - "or modification identity"
+    - "modification method and agents when applicable"
+    - "as-sold physical state"
+    - "dry-matter or moisture content"
+    - "purity or grade"
+    - "production route"
+    - "plant geography"
+    - "reference period"
+    - "packaging state"
+    - "allocation method"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass_as_sold
+    applies_to: "Reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Report the reference amount on the declared as-sold basis and record moisture or dry-matter content; do not mix dry-solids and as-sold masses without an explicit conversion."
+  - id: dry_matter_conversion
+    applies_to: "Raw materials, intermediates, products, and co-products"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "When comparing wet and dry streams, retain measured wet mass and solids fraction and calculate dry mass separately."
+  - id: energy_carrier_separation
+    applies_to: "Electricity, steam, and fuels"
+    required_property_ref:
+      name: "Declared energy or fuel property"
+      uuid: ""
+    required_unit: "kWh, MJ, kg, or m3 as metered"
+    rule: "Keep purchased electricity, imported steam, and each fuel separate; preserve the metered unit and document any conversion factor."
+  - id: water_accounting
+    applies_to: "Fresh, recycled, and discharged water"
+    required_property_ref:
+      name: "Declared mass or volume property"
+      uuid: ""
+    required_unit: "kg or m3"
+    rule: "Distinguish fresh intake, internally recycled process water, water embedded in product or co-products, evaporation, and discharged wastewater."
+  - id: product_flow_identity
+    applies_to: "Reference and product outputs"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "The selected product-flow UUID must match the concrete declared form; e5842f16-31b3-4ea4-b16a-f7b06beeb6c3 is permitted only as the representative Starch identity when no closer real flow exists."
+process_map:
+  - id: raw_material_receiving
+    name: "Raw-material receiving and preparation"
+    inclusion: "required"
+    inclusion_condition: "Always"
+    role: "Foreground receipt, cleaning, size reduction, and feed preparation"
+    quantitative_reference: "Per 1 kg reference product"
+  - id: starch_component_separation
+    name: "Starch or wheat-component separation and refining"
+    inclusion: "conditional"
+    inclusion_condition: "Native starch, dextrin, modified-starch, or integrated wheat-gluten route"
+    role: "Foreground wet or dry separation, washing, refining, and intermediate recovery"
+    quantitative_reference: "Per 1 kg reference product"
+  - id: inulin_extraction
+    name: "Inulin extraction and purification"
+    inclusion: "conditional"
+    inclusion_condition: "Inulin route"
+    role: "Foreground root preparation, extraction, separation, purification, and concentration"
+    quantitative_reference: "Per 1 kg reference product"
+  - id: wheat_gluten_finishing
+    name: "Wheat-gluten isolation and finishing"
+    inclusion: "conditional"
+    inclusion_condition: "Wheat gluten is the declared product or co-product"
+    role: "Foreground gluten separation, dewatering, and optional drying"
+    quantitative_reference: "Per 1 kg reference product"
+  - id: starch_modification
+    name: "Dextrinisation or starch modification"
+    inclusion: "conditional"
+    inclusion_condition: "Dextrin or modified starch is declared"
+    role: "Foreground physical, enzymatic, or chemical transformation and post-treatment"
+    quantitative_reference: "Per 1 kg reference product"
+  - id: product_finishing
+    name: "Product finishing and plant-gate release"
+    inclusion: "required"
+    inclusion_condition: "Always"
+    role: "Foreground concentration or drying, screening, storage, packaging, and release"
+    quantitative_reference: "1 kg conforming as-sold product"
+  - id: onsite_residuals_management
+    name: "On-site residuals and emission management"
+    inclusion: "conditional"
+    inclusion_condition: "Wastewater, captured dust, organic residues, or direct emissions arise on site"
+    role: "Foreground collection, treatment, recovery, and discharge"
+    quantitative_reference: "Per 1 kg reference product"
+process_inventory:
+  - id: raw_material_receiving
+    label: "Raw-material receiving and preparation"
+    inputs:
+      product:
+        - row_id: plant_raw_material_input
+          role: "Declared botanical raw material or purchased intermediate"
+          name: "Product-specific Tiangong flow to be resolved for the declared feedstock"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the actual feedstock entering the site, such as maize, wheat, potatoes, chicory roots, another declared starch feedstock, wheat flour, or purchased native starch. A purchased CPC 23220 intermediate requires its own upstream dataset and does not inherit the representative Starch UUID."
+          amount:
+            expression: "measured received mass by lot, with moisture or solids fraction"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg conforming reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_materials_and_aids
+              source_ids:
+                - eu-fdm-bref-2019
+                - us-epa-ap42-9-9-7
+            ranges: []
+      waste:
+        - row_id: preparation_reject_output
+          role: "Removed foreign material and preparation rejects"
+          name: "Site-specific waste flow to be resolved"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Measure screenings, soil, stones, damaged roots or grain, and other rejects removed before processing."
+          amount:
+            expression: "measured reject mass by destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg conforming reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_coproducts_and_wastes
+              source_ids:
+                - us-epa-ap42-9-9-7
+            ranges: []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: prepared_feed_output
+          role: "Prepared process feed"
+          name: "Internal intermediate; no external flow UUID required unless it crosses the dataset boundary"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Calculate prepared feed as received feed less measured rejects and documented storage or preparation losses."
+          amount:
+            expression: "calculated prepared mass and dry mass"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg conforming reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_materials_and_aids
+              source_ids:
+                - eu-fdm-bref-2019
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+  - id: starch_component_separation
+    label: "Starch or wheat-component separation and refining"
+    inputs:
+      product:
+        - row_id: separation_feed_input
+          role: "Prepared plant feed"
+          name: "Internal intermediate matching prepared_feed_output"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Transfer the measured prepared feed from the receiving process. Route-specific operations may include dry milling, wet milling or steeping, grinding, screening, centrifugation, washing, and dewatering."
+          amount:
+            expression: "transferred prepared mass and dry mass"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg conforming reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_materials_and_aids
+              source_ids:
+                - eu-fdm-bref-2019
+                - us-epa-ap42-9-9-7
+            ranges: []
+        - row_id: process_water_input
+          role: "Fresh process water"
+          name: "Site-specific water flow to be resolved"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "Measure fresh water supplied to steeping, separation, washing, and cleaning while retaining internal recycle separately."
+          amount:
+            expression: "metered fresh water attributable to the process"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg conforming reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_utilities_and_water
+              source_ids:
+                - eu-fdm-bref-2019
+            ranges: []
+        - row_id: processing_aids_input
+          role: "Separation aids and pH-control agents"
+          name: "Product-specific chemical or enzyme flow to be resolved"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record each acid, sulfite-bearing agent, enzyme, salt, alkali, filter aid, cleaning chemical retained in the production balance, or other process aid separately when used."
+          amount:
+            expression: "measured issued quantity less documented return"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg conforming reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_materials_and_aids
+              source_ids:
+                - eu-fdm-bref-2019
+                - us-epa-ap42-9-9-7
+            ranges: []
+        - row_id: electricity_input
+          role: "Electricity used for milling and separation"
+          name: "Site electricity supply mix to be resolved"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Measure electricity for conveying, milling, screening, centrifugation, pumping, and associated controls."
+          amount:
+            expression: "sub-metered use or allocation from measured equipment load and operating time"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg conforming reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_utilities_and_water
+              source_ids:
+                - eu-fdm-bref-2019
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: separated_component_output
+          role: "Refined starch slurry or separated wheat fractions"
+          name: "Internal route-specific intermediate"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Measure the mass and solids of the refined starch slurry and, for wheat routes, separated gluten and soluble or fibre fractions before finishing."
+          amount:
+            expression: "measured wet mass and calculated dry mass by component"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg conforming reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_product_identity_and_output
+              source_ids:
+                - eu-fdm-bref-2019
+            ranges: []
+        - row_id: coproduct_output
+          role: "Marketable germ, fibre, protein, or soluble co-products"
+          name: "Product-specific co-product flow to be resolved"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record each co-product separately with destination, wet mass, solids, and commercial status; do not combine marketable co-products with waste."
+          amount:
+            expression: "measured shipped or transferred quantity by co-product"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg conforming reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_coproducts_and_wastes
+              source_ids:
+                - eu-fdm-bref-2019
+                - us-epa-ap42-9-9-7
+            ranges: []
+      waste:
+        - row_id: wastewater_output
+          role: "Separation wastewater or organic residual"
+          name: "Site-specific wastewater flow to be resolved"
+          flow_type: "waste"
+          property_unit: "Volume / m3"
+          description: "Record wastewater volume and load at the point it leaves the process for on-site treatment, off-site treatment, or discharge."
+          amount:
+            expression: "measured flow with sampled load indicators and destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg conforming reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_direct_emissions_and_wastewater
+              source_ids:
+                - eu-fdm-bref-2019
+            ranges: []
+      elementary:
+        []
+  - id: inulin_extraction
+    label: "Inulin extraction and purification"
+    inputs:
+      product:
+        - row_id: inulin_feed_input
+          role: "Prepared inulin-bearing feedstock"
+          name: "Product-specific feedstock flow to be resolved"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record chicory roots or another explicitly declared inulin-bearing feedstock after receiving and preparation."
+          amount:
+            expression: "measured feedstock mass with dry matter"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg conforming inulin product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_materials_and_aids
+              source_ids:
+                - eu-feed-materials-catalogue-68-2013
+            ranges: []
+        - row_id: inulin_water_and_aids_input
+          role: "Extraction water and purification aids"
+          name: "Product-specific water and aid flows to be resolved"
+          flow_type: "product"
+          property_unit: "Volume or mass / m3 or kg"
+          description: "Measure extraction water and record filtration, decolourisation, ion-exchange, antifoam, and other aids separately when used."
+          amount:
+            expression: "measured quantity by material"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg conforming inulin product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_materials_and_aids
+              source_ids:
+                - eu-feed-materials-catalogue-68-2013
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: inulin_intermediate_output
+          role: "Purified or concentrated inulin intermediate"
+          name: "Product-specific inulin flow to be resolved; never use the representative Starch UUID"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Measure the recovered inulin stream and its solids or concentration before final drying or release."
+          amount:
+            expression: "measured wet mass and calculated dry inulin mass"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg conforming inulin product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_product_identity_and_output
+              source_ids:
+                - eu-feed-materials-catalogue-68-2013
+            ranges: []
+        - row_id: inulin_coproduct_output
+          role: "Chicory pulp, molasses, or vinasses co-products"
+          name: "Product-specific co-product flow to be resolved"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record each marketable or recovered co-product separately, including whether pulp is pressed or dried and whether the stream is sold, recovered, land-applied, or treated."
+          amount:
+            expression: "measured quantity, dry matter, and destination"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg conforming inulin product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_coproducts_and_wastes
+              source_ids:
+                - eu-feed-materials-catalogue-68-2013
+            ranges: []
+      waste:
+        - row_id: inulin_residual_output
+          role: "Inulin-route wastewater and spent purification media"
+          name: "Site-specific waste or wastewater flow to be resolved"
+          flow_type: "waste"
+          property_unit: "Mass or volume / kg or m3"
+          description: "Measure wastewater and spent filtration or ion-exchange media by treatment destination."
+          amount:
+            expression: "measured quantity by residual type"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg conforming inulin product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_direct_emissions_and_wastewater
+              source_ids:
+                - eu-feed-materials-catalogue-68-2013
+            ranges: []
+      elementary:
+        []
+  - id: wheat_gluten_finishing
+    label: "Wheat-gluten isolation and finishing"
+    inputs:
+      product:
+        - row_id: wet_gluten_input
+          role: "Separated wet gluten stream"
+          name: "Internal wet-gluten intermediate or purchased product-specific flow"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Transfer the measured wet-gluten stream from the wheat-component separation process; if purchased, link it to its upstream dataset instead."
+          amount:
+            expression: "measured wet mass and solids fraction"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg conforming wheat-gluten product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_product_identity_and_output
+              source_ids:
+                - eu-fdm-bref-2019
+            ranges: []
+        - row_id: gluten_finishing_energy_input
+          role: "Finishing electricity and thermal energy"
+          name: "Site-specific electricity, steam, or fuel flows to be resolved separately"
+          flow_type: "product"
+          property_unit: "Energy or fuel property / kWh, MJ, kg, or m3"
+          description: "Measure energy used for dewatering, drying, milling, and screening wheat gluten."
+          amount:
+            expression: "metered or equipment-specific measured use"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg conforming wheat-gluten product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_utilities_and_water
+              source_ids:
+                - eu-fdm-bref-2019
+                - us-epa-ap42-9-9-7
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: wheat_gluten_output
+          role: "Conforming wheat gluten"
+          name: "Product-specific wheat-gluten Tiangong flow to be resolved"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the actual wheat-gluten product flow, grade, moisture, and protein specification. Never use the representative Starch UUID."
+          amount:
+            expression: "measured conforming as-sold output"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "1 kg conforming wheat-gluten product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_product_identity_and_output
+              source_ids:
+                - eu-fdm-bref-2019
+            ranges: []
+      waste:
+        []
+      elementary:
+        - row_id: particulate_emission_output
+          role: "Captured and released drying particulate"
+          name: "Product-specific particulate flow to be resolved"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Measure captured dust as a waste or recovered product and measured stack particulate as an elementary flow; do not combine the two."
+          amount:
+            expression: "measured emission or validated calculation from monitoring data"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg conforming wheat-gluten product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_direct_emissions_and_wastewater
+              source_ids:
+                - eu-fdm-bref-2019
+                - us-epa-ap42-9-9-7
+            ranges: []
+  - id: starch_modification
+    label: "Dextrinisation or starch modification"
+    inputs:
+      product:
+        - row_id: native_starch_input
+          role: "Declared native starch feed"
+          name: "Product-specific native-starch flow; the representative Starch UUID may be used only when no closer real starch flow exists"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the native starch slurry, wet cake, or dry starch entering modification, with its botanical origin and solids."
+          amount:
+            expression: "measured as-sold or wet mass with calculated dry starch mass"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg conforming dextrin or modified-starch product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_materials_and_aids
+              source_ids:
+                - eu-fdm-bref-2019
+            ranges: []
+        - row_id: modification_agents_input
+          role: "Modification agents, enzymes, water, and catalysts"
+          name: "Product-specific input flows to be resolved"
+          flow_type: "product"
+          property_unit: "Mass or volume / kg or m3"
+          description: "Record each chemical, enzyme, catalyst, water input, neutralising agent, washing aid, and purification material separately according to the declared modification method."
+          amount:
+            expression: "measured issued amount less documented recovery or return"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg conforming dextrin or modified-starch product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_materials_and_aids
+              source_ids:
+                - eu-fdm-bref-2019
+                - us-epa-ap42-9-9-7
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: modified_product_intermediate_output
+          role: "Modified-starch or dextrin intermediate"
+          name: "Product-specific dextrin or modified-starch flow to be resolved; never default to the representative Starch UUID"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the product-specific transformed stream after reaction and any washing or dewatering. The concrete modification identity is mandatory."
+          amount:
+            expression: "measured wet or dry mass with solids and specification status"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg conforming dextrin or modified-starch product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_product_identity_and_output
+              source_ids:
+                - eu-fdm-bref-2019
+                - us-epa-ap42-9-9-7
+            ranges: []
+      waste:
+        - row_id: modification_residual_output
+          role: "Modification wastewater and spent media"
+          name: "Site-specific waste or wastewater flow to be resolved"
+          flow_type: "waste"
+          property_unit: "Mass or volume / kg or m3"
+          description: "Record aqueous residuals, spent media, off-spec material, and recovered agents by destination."
+          amount:
+            expression: "measured quantity by residual type and destination"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg conforming dextrin or modified-starch product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_direct_emissions_and_wastewater
+              source_ids:
+                - eu-fdm-bref-2019
+            ranges: []
+      elementary:
+        - row_id: modification_air_emission_output
+          role: "Direct air emissions from modification and drying"
+          name: "Pollutant-specific elementary flow to be resolved"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record measured particulate, acid mist, volatile organic compounds, sulfur dioxide, or other reportable direct emissions when applicable; do not infer an emission factor from flow identity."
+          amount:
+            expression: "measured or permit-approved calculation from foreground monitoring"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg conforming dextrin or modified-starch product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_direct_emissions_and_wastewater
+              source_ids:
+                - eu-fdm-bref-2019
+                - us-epa-ap42-9-9-7
+            ranges: []
+  - id: product_finishing
+    label: "Product finishing and plant-gate release"
+    inputs:
+      product:
+        - row_id: product_intermediate_input
+          role: "Route-specific product intermediate"
+          name: "Internal intermediate matching the declared product route"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Transfer the route-specific purified, separated, modified, or concentrated intermediate into finishing."
+          amount:
+            expression: "measured transferred mass and solids"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg conforming reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_product_identity_and_output
+              source_ids:
+                - eu-fdm-bref-2019
+            ranges: []
+        - row_id: thermal_energy_input
+          role: "Electricity and thermal energy for finishing"
+          name: "Site-specific electricity, steam, and fuel flows to be resolved separately"
+          flow_type: "product"
+          property_unit: "Energy or fuel property / kWh, MJ, kg, or m3"
+          description: "Measure electricity, steam, and fuels used for concentration, dewatering, drying, milling, screening, conveying, and storage separately."
+          amount:
+            expression: "sub-metered use or documented equipment allocation"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg conforming reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_utilities_and_water
+              source_ids:
+                - eu-fdm-bref-2019
+                - us-epa-ap42-9-9-7
+            ranges: []
+        - row_id: packaging_material_input
+          role: "Packaging materials"
+          name: "Packaging-material-specific flow to be resolved"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record primary, secondary, and tertiary packaging only when included in the declared market state, separated by material and actual mass."
+          amount:
+            expression: "measured packaging consumption net of documented return"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg packaged reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging
+              source_ids:
+                - ec-pef-recommendation-2021-2279
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: reference_product_output
+          role: "Conforming declared product at plant gate"
+          name: "Declared product-specific flow; representative Starch only under the stated limitation"
+          flow_type: "product"
+          flow_ref:
+            uuid: "e5842f16-31b3-4ea4-b16a-f7b06beeb6c3"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record the actual product-specific Tiangong flow and qualifiers. Use Starch e5842f16-31b3-4ea4-b16a-f7b06beeb6c3 only for a declared starch form when no more specific real flow exists."
+          amount:
+            expression: "exactly 1 kg conforming as-sold product after normalization"
+            value_mode: "fixed_value"
+            specificity: "product_specific"
+            basis:
+              text: "1 kg declared reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "method_formula"
+              source_ids:
+                - ec-pef-recommendation-2021-2279
+            ranges: []
+      waste:
+        - row_id: organic_waste_output
+          role: "Off-spec product, captured dust, and packaging waste"
+          name: "Site-specific waste flow to be resolved"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Measure each residual separately and distinguish rework, recovered co-product, recycling, treatment, and disposal."
+          amount:
+            expression: "measured mass by residual and destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg conforming reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_coproducts_and_wastes
+              source_ids:
+                - eu-fdm-bref-2019
+                - us-epa-ap42-9-9-7
+            ranges: []
+      elementary:
+        - row_id: finishing_air_emission_output
+          role: "Finishing particulate and combustion emissions"
+          name: "Pollutant-specific elementary flow to be resolved"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record pollutant-specific direct emissions from dryers and on-site combustion using measured monitoring or a documented calculation; captured material remains a waste or recovered product flow."
+          amount:
+            expression: "measured or calculated from foreground monitoring and fuel records"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg conforming reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_direct_emissions_and_wastewater
+              source_ids:
+                - eu-fdm-bref-2019
+                - us-epa-ap42-9-9-7
+            ranges: []
+  - id: onsite_residuals_management
+    label: "On-site residuals and emission management"
+    inputs:
+      product:
+        - row_id: residual_treatment_input
+          role: "Treatment chemicals and imported treatment energy"
+          name: "Material- and energy-specific flows to be resolved"
+          flow_type: "product"
+          property_unit: "Declared property / kg, kWh, MJ, or m3"
+          description: "Record chemicals, electricity, steam, and fuels used for on-site wastewater, air-emission, or residual treatment."
+          amount:
+            expression: "measured treatment input attributable to the product system"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg conforming reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_direct_emissions_and_wastewater
+              source_ids:
+                - eu-fdm-bref-2019
+            ranges: []
+      waste:
+        - row_id: residuals_received_input
+          role: "Process wastewater and captured residuals received for treatment"
+          name: "Internal waste streams matching upstream outputs"
+          flow_type: "waste"
+          property_unit: "Mass or volume / kg or m3"
+          description: "Transfer measured wastewater, captured dust, sludge precursors, spent media, and organic residuals into the applicable treatment operation without double counting."
+          amount:
+            expression: "measured transferred quantity by stream"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg conforming reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_direct_emissions_and_wastewater
+              source_ids:
+                - eu-fdm-bref-2019
+            ranges: []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: recovered_treatment_output
+          role: "Recovered biogas, water, or material"
+          name: "Product-specific recovered flow to be resolved"
+          flow_type: "product"
+          property_unit: "Declared property / kg, m3, kWh, or MJ"
+          description: "Record recovered outputs only when measured and actually reused or exported; link internal reuse to the consuming process."
+          amount:
+            expression: "measured recovered quantity and destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg conforming reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_coproducts_and_wastes
+              source_ids:
+                - eu-fdm-bref-2019
+            ranges: []
+      waste:
+        - row_id: treatment_waste_output
+          role: "Treatment sludge and spent media"
+          name: "Site-specific waste flow to be resolved"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Measure dewatered sludge and spent media by treatment or disposal destination."
+          amount:
+            expression: "measured wet mass and dry solids by destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg conforming reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_direct_emissions_and_wastewater
+              source_ids:
+                - eu-fdm-bref-2019
+            ranges: []
+      elementary:
+        - row_id: treated_release_output
+          role: "Treated effluent and residual direct emissions"
+          name: "Compartment- and pollutant-specific elementary flows to be resolved"
+          flow_type: "elementary"
+          property_unit: "Mass or volume / kg or m3"
+          description: "Record receiving compartment, measured discharge volume, sampled pollutant loads, and any residual air emissions from on-site treatment."
+          amount:
+            expression: "calculated load from measured flow and concentration, or direct measured mass"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg conforming reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_direct_emissions_and_wastewater
+              source_ids:
+                - eu-fdm-bref-2019
+            ranges: []
+allocation_rules:
+  - rule_id: allocation_rule_1
+    applies_to: "Multi-output separation, extraction, and refining"
+    rule: "First subdivide processes and meters so inputs and outputs directly attributable to starch, gluten, germ, fibre, protein, pulp, solubles, inulin, or other outputs remain with those operations."
+    source_ids:
+      - ec-pef-recommendation-2021-2279
+      - eu-fdm-bref-2019
+  - rule_id: allocation_rule_2
+    applies_to: "Remaining multifunctionality"
+    rule: "If subdivision is not possible, investigate system expansion and document the added functions and datasets before applying allocation."
+    source_ids:
+      - ec-pef-recommendation-2021-2279
+  - rule_id: allocation_rule_3
+    applies_to: "Physical allocation"
+    rule: "When subdivision and system expansion are not feasible, use a documented physical relationship that reflects the process causality, such as separately measured dry mass, solids, or another justified physical driver; do not select a driver only to favour the reference product."
+    source_ids:
+      - ec-pef-recommendation-2021-2279
+  - rule_id: allocation_rule_4
+    applies_to: "Economic fallback"
+    rule: "Use economic allocation only when no relevant physical relationship can be justified; use a representative price period, perform sensitivity analysis, and disclose the result and rationale."
+    source_ids:
+      - ec-pef-recommendation-2021-2279
+  - rule_id: allocation_rule_5
+    applies_to: "Co-product and residual classification"
+    rule: "Do not assign zero burden to a marketable co-product and do not classify a material as waste merely to avoid allocation; record destination, commercial status, dry matter, and allocation treatment."
+    source_ids:
+      - eu-fdm-bref-2019
+      - eu-feed-materials-catalogue-68-2013
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_product_identity_and_output
+      process_id: "all_production_processes"
+      flow_role: "Product identity, intermediates, and conforming output"
+      record_type: "Batch, laboratory, and production records"
+      raw_fields: "product name; product-flow UUID decision; feedstock; modification identity; physical state; lot; wet mass; solids or moisture; purity or grade; release status"
+      collection_method: "Calibrated scales, laboratory methods, and batch reconciliation"
+      unit: "kg; mass fraction"
+      frequency: "Each lot, aggregated monthly"
+      temporal_coverage: "Representative continuous 12-month period or complete campaign"
+      site_scope: "All lines producing the declared product"
+      aggregation_rule: "Sum conforming output and calculate weighted composition; exclude rework until released"
+      quality_evidence: "Calibration, test method, certificates of analysis, and release records"
+    - protocol_id: cp_materials_and_aids
+      process_id: "raw_material_receiving_route_processes"
+      flow_role: "Raw materials, process aids, enzymes, and chemicals"
+      record_type: "Weighbridge, invoice, tank, silo, and issue records"
+      raw_fields: "material identity; supplier; origin; lot; quantity; unit; moisture or concentration; opening and closing stock; return; destination process"
+      collection_method: "Reconcile purchases and inventory movements to process issues"
+      unit: "kg; m3"
+      frequency: "Each delivery or issue, aggregated monthly"
+      temporal_coverage: "Same period as product output"
+      site_scope: "All relevant site stores and production lines"
+      aggregation_rule: "Opening stock + receipts - closing stock - documented return, allocated only with documented process driver"
+      quality_evidence: "Supplier documents, meter or scale calibration, and stock reconciliation"
+    - protocol_id: cp_utilities_and_water
+      process_id: "route_processes_product_finishing"
+      flow_role: "Electricity, fuels, steam, fresh water, recycle, and evaporation"
+      record_type: "Meter, utility invoice, fuel stock, and equipment records"
+      raw_fields: "carrier; meter; quantity; unit; operating time; process; fresh or recycled water status; conversion factor"
+      collection_method: "Prefer sub-metering; otherwise documented equipment or operating-hour allocation"
+      unit: "kWh; MJ; kg; m3"
+      frequency: "Continuous or shift, aggregated monthly"
+      temporal_coverage: "Same period as product output"
+      site_scope: "All production and relevant on-site utility systems"
+      aggregation_rule: "Sum measured use by carrier; subtract internal transfers; normalize after allocation"
+      quality_evidence: "Meter calibration, invoice reconciliation, and documented conversion factors"
+    - protocol_id: cp_coproducts_and_wastes
+      process_id: "all_production_processes"
+      flow_role: "Co-products, rework, rejects, captured dust, sludge, and waste"
+      record_type: "Scale, dispatch, transfer, and waste-manifest records"
+      raw_fields: "stream identity; commercial or waste status; wet mass; solids; destination; treatment; price where economic fallback is used"
+      collection_method: "Measure at transfer or dispatch and reconcile internal rework"
+      unit: "kg; mass fraction"
+      frequency: "Each transfer, aggregated monthly"
+      temporal_coverage: "Same period as product output"
+      site_scope: "All route and residual-management processes"
+      aggregation_rule: "Sum by stream and destination; count internal rework once when finally released or discarded"
+      quality_evidence: "Scale calibration, dispatch evidence, contracts, and waste manifests"
+    - protocol_id: cp_direct_emissions_and_wastewater
+      process_id: "route_processes_onsite_residuals_management"
+      flow_role: "Direct air emissions, wastewater, and treatment releases"
+      record_type: "Continuous or periodic monitoring, laboratory, permit, and flow records"
+      raw_fields: "source; pollutant; compartment; concentration; flow; sampling period; control status; wastewater destination; sludge; treatment input and output"
+      collection_method: "Use applicable validated monitoring methods and calculate loads from matched flow and concentration periods"
+      unit: "kg; m3; mg/L; mg/Nm3"
+      frequency: "As monitored, aggregated to production period"
+      temporal_coverage: "Same period as product output; disclose sampling gaps"
+      site_scope: "All attributable stacks, vents, drains, and on-site treatment"
+      aggregation_rule: "Sum measured loads; do not substitute AP-42 factors for available site monitoring"
+      quality_evidence: "Laboratory accreditation, calibration, sampling plan, permits, and monitoring reports"
+    - protocol_id: cp_packaging
+      process_id: "product_finishing"
+      flow_role: "Included packaging materials"
+      record_type: "Packaging issue and product dispatch records"
+      raw_fields: "material; packaging level; issued mass; returned mass; packed product mass; format"
+      collection_method: "Reconcile packaging issues with packed output"
+      unit: "kg"
+      frequency: "Each packaging run, aggregated monthly"
+      temporal_coverage: "Same period as packaged product output"
+      site_scope: "All included packaging lines"
+      aggregation_rule: "Net packaging issued divided by packed conforming output"
+      quality_evidence: "Supplier specification, stock reconciliation, and scale calibration"
+    - protocol_id: cp_allocation_basis
+      process_id: "all_multi_output_processes"
+      flow_role: "Allocation decision and driver"
+      record_type: "Meter, mass balance, price, and decision records"
+      raw_fields: "process; outputs; subdivision status; system-expansion option; selected driver; dry mass; physical property; price period; price; sensitivity case"
+      collection_method: "Apply the hierarchy in Section 7 and retain rejected alternatives"
+      unit: "kg dry matter; declared driver; currency"
+      frequency: "Each reporting period and when route changes"
+      temporal_coverage: "Same period as inventory"
+      site_scope: "Every multifunctional process"
+      aggregation_rule: "Apply one consistent documented basis to all jointly attributable inputs and outputs"
+      quality_evidence: "Process diagram, meter boundary, calculation workbook, and reviewer approval"
+  calculation_rules:
+    - id: calc_rule_1
+      applies_to: "Inventory normalization"
+      rule: "normalized amount = reporting-period amount / reporting-period conforming as-sold output"
+      inputs:
+        - "Collected flow amount"
+        - "conforming product output"
+      output: "Amount per 1 kg reference product"
+      source_ids:
+        - ec-pef-recommendation-2021-2279
+    - id: calc_rule_2
+      applies_to: "Dry-matter conversion"
+      rule: "dry mass = wet mass × measured solids mass fraction; retain both wet and dry results"
+      inputs:
+        - "Wet mass"
+        - "solids or moisture result"
+      output: "kg dry matter and kg wet stream"
+      source_ids:
+        - eu-fdm-bref-2019
+    - id: calc_rule_3
+      applies_to: "Wastewater and stack loads"
+      rule: "pollutant mass = matched concentration × measured volumetric flow, with explicit unit and standard-condition conversion"
+      inputs:
+        - Concentration
+        - flow
+        - duration
+        - "temperature and pressure where required"
+      output: "Pollutant-specific mass"
+      source_ids:
+        - eu-fdm-bref-2019
+        - us-epa-ap42-9-9-7
+    - id: calc_rule_4
+      applies_to: "Energy conversion"
+      rule: "Convert only with a documented physical conversion factor; keep original meter reading and carrier identity"
+      inputs:
+        - "Meter reading"
+        - unit
+        - "conversion factor"
+      output: "Energy in reporting unit and original unit"
+      source_ids:
+        - eu-fdm-bref-2019
+    - id: calc_rule_5
+      applies_to: "Mass reconciliation"
+      rule: "Reconcile feed dry matter to product, co-product, waste, measured emissions, and documented inventory change; investigate rather than erase an unexplained residual"
+      inputs:
+        - "Dry-mass inputs and outputs"
+        - "stock changes"
+      output: "Reconciliation statement and unresolved residual"
+      source_ids:
+        - eu-fdm-bref-2019
+    - id: calc_rule_6
+      applies_to: "Allocation"
+      rule: "Apply Section 7 hierarchy at each multifunctional process and normalize only after jointly attributable burdens are partitioned"
+      inputs:
+        - "Sub-metered burdens"
+        - "output quantities"
+        - "selected driver"
+        - "sensitivity data"
+      output: "Allocated inventory by output"
+      source_ids:
+        - ec-pef-recommendation-2021-2279
+  data_quality_requirements:
+    - id: dq_product_identity
+      applies_to: "Reference product"
+      requirement: "Retain the concrete product name, product-flow UUID decision, feedstock, route, modification identity, physical state, moisture or dry matter, grade, and packaging state; the representative Starch UUID cannot substitute for a different form."
+      evidence: "Product specification, release record, flow lookup decision, and batch metadata"
+    - id: dq_temporal
+      applies_to: "Foreground inventory"
+      requirement: "Use a representative continuous 12-month period or the complete production campaign; disclose shutdowns, abnormal events, and any mismatch between numerator and output periods."
+      evidence: "Dated meters, batch records, operating calendar, and reconciliation"
+    - id: dq_completeness
+      applies_to: "Materials and releases"
+      requirement: "Cover all mapped processes, utilities, water, aids, products, co-products, wastes, wastewater, and direct emissions; document not-applicable conditional processes and unresolved mass residuals."
+      evidence: "Process map, completeness checklist, dry-mass reconciliation, and monitoring inventory"
+    - id: dq_measurement
+      applies_to: "Quantitative records"
+      requirement: "Use calibrated meters and scales where available; document estimation methods, conversion factors, sampling, detection limits, and data gaps."
+      evidence: "Calibration certificates, laboratory reports, calculation files, and gap register"
+    - id: dq_allocation
+      applies_to: "Multi-output processes"
+      requirement: "Retain the allocation hierarchy decision, process subdivisions, driver data, price period if used, and sensitivity result."
+      evidence: "Allocation workbook, meter map, price evidence, and reviewer approval"
+    - id: dq_upstream
+      applies_to: "Purchased inputs"
+      requirement: "Identify supplier, geography, technology, reference period, and representativeness of upstream datasets, especially for botanical feedstocks and purchased CPC 23220 intermediates."
+      evidence: "Supplier records, dataset metadata, and data-quality assessment"
+    - id: dq_source_provenance
+      applies_to: "All calculated values"
+      requirement: "Link every calculated result to raw records, formula version, author, and calculation date; do not treat external process descriptions as site measurements."
+      evidence: "Traceable calculation package and source references"
+validation_rules:
+  - rule_id: validation_rule_1
+    applies_to: "Product identity"
+    rule: "Fail if the concrete product form and required qualifiers are missing, or if the representative Starch UUID is used for inulin, wheat gluten, dextrin, modified starch, or a product with a more specific real flow."
+    source_ids:
+      - un-cpc-3-0-23220
+  - rule_id: validation_rule_2
+    applies_to: "Reference amount"
+    rule: "Fail if the reference output is not 1 kg as-sold product on the declared moisture or dry-matter basis, or if dry and as-sold masses are mixed without conversion."
+    source_ids:
+      - ec-pef-recommendation-2021-2279
+  - rule_id: validation_rule_3
+    applies_to: "Process coverage"
+    rule: "Fail if a required process lacks inventory, or if a conditional route process is neither included nor explicitly marked not applicable with justification."
+    source_ids:
+      - eu-fdm-bref-2019
+      - us-epa-ap42-9-9-7
+  - rule_id: validation_rule_4
+    applies_to: "Co-products and allocation"
+    rule: "Fail if a marketable co-product is hidden as waste, given zero burden without justification, or handled without the allocation hierarchy and supporting data."
+    source_ids:
+      - ec-pef-recommendation-2021-2279
+      - eu-feed-materials-catalogue-68-2013
+  - rule_id: validation_rule_5
+    applies_to: "Water, waste, and direct emissions"
+    rule: "Fail if fresh and recycled water are conflated, wastewater destination is missing, captured dust is reported as an elementary emission, or relevant measured direct emissions are omitted."
+    source_ids:
+      - eu-fdm-bref-2019
+      - us-epa-ap42-9-9-7
+  - rule_id: validation_rule_6
+    applies_to: "Data provenance"
+    rule: "Fail if a collected or calculated amount cannot be traced to its collection protocol and reporting period, or if an external process description is presented as a site-specific amount."
+    source_ids:
+      - ec-pef-recommendation-2021-2279
+  - rule_id: validation_rule_7
+    applies_to: "Mass reconciliation"
+    rule: "Require a documented dry-matter reconciliation across product, co-products, waste, emissions, and inventory change; unresolved residuals must be disclosed and reviewed."
+    source_ids:
+      - eu-fdm-bref-2019
+published_dataset_profile:
+  dataset_role: "Foreground manufacturing dataset for one declared CPC 23220 product form and route"
+  downstream_use: "secondary_dataset; background_dataset after review of representativeness and uncertainty"
+  allowed_use: "Product-specific process, lifecycle model, hotspot, supplier, and scenario studies consistent with declared product, route, geography, period, allocation, and plant-gate boundary"
+  excluded_use: "Automatic use of the representative Starch UUID for another form; undisclosed substitution across feedstocks, modification chemistries, technologies, geographies, periods, or as-sold states; comparative assertions without a compatible reviewed rule set"
+  required_metadata: "Concrete product-flow UUID decision; CPC reference; product form; feedstock; route; modification method and agents; physical state; moisture or dry matter; grade; geography; period; technology; packaging; system boundary; allocation; data sources"
+  required_quality_disclosure: "Primary-data share; meter and sampling coverage; unresolved UUIDs; estimated values; mass-balance residual; allocation sensitivity; upstream dataset representativeness; exclusions and data gaps"
+  update_trigger: "Product-flow identity change; new specific Tiangong flow; feedstock or route change; modification chemistry change; material process or control change; allocation change; packaging change; material data-quality improvement; reporting period renewal"
+data_sources:
+  - id: "un-cpc-3-0-23220"
+    type: "dataset"
+    reference: "United Nations Statistics Division, Central Product Classification Version 3.0, subclass 23220, https://unstats.un.org/unsd/classifications/Econ/Structure/Detail/EN/2100/23220 (retrieved 2026-08-10)"
+    used_for: "Official category scope and representative-flow limitation"
+  - id: "eu-fdm-bref-2019"
+    type: "official_guidance"
+    reference: "European Commission Joint Research Centre, Best Available Techniques Reference Document for the Food, Drink and Milk Industries, JRC118627, 2019, Chapter 14, https://bureau-industrial-transformation.jrc.ec.europa.eu/sites/default/files/2020-01/JRC118627_FDM_Bref_2019_published.pdf (retrieved 2026-08-10)"
+    used_for: "Starch and wheat-gluten route decomposition, modification, water and energy accounting, co-products, wastewater, drying, and direct-emission monitoring"
+  - id: "us-epa-ap42-9-9-7"
+    type: "official_guidance"
+    reference: "United States Environmental Protection Agency, AP-42 Section 9.9.7 Corn Wet Milling, January 1995, https://www.epa.gov/sites/default/files/2020-10/documents/c9s09-7.pdf (retrieved 2026-08-10)"
+    used_for: "Wet-milling process decomposition, grain handling, separation, drying, and candidate air-emission sources; route-specific, not a site value source"
+  - id: "ec-pef-recommendation-2021-2279"
+    type: "standard"
+    reference: "Commission Recommendation (EU) 2021/2279 on the use of the Environmental Footprint methods, corrected 23 May 2022, http://data.europa.eu/eli/reco/2021/2279/oj (retrieved 2026-08-10)"
+    used_for: "Functional unit, reference-flow normalization, inventory completeness, multifunctionality hierarchy, data collection, and quality disclosure"
+  - id: "eu-feed-materials-catalogue-68-2013"
+    type: "standard"
+    reference: "Commission Regulation (EU) No 68/2013 on the Catalogue of feed materials, consolidated text, http://data.europa.eu/eli/reg/2013/68/oj (retrieved 2026-08-10)"
+    used_for: "Inulin production co-product identities including pressed or dried chicory pulp, chicory molasses, and chicory vinasses"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:d1819cdd9aefc74601289ef56de835df1c915108a2419dfc93386a8de9fe8bb7"
+  generated_content_sha256: "sha256:ac34f26f833d578adc7e9efcf6865a04b1e64f9a5ada12d4141f06c6bb9a1b8a"

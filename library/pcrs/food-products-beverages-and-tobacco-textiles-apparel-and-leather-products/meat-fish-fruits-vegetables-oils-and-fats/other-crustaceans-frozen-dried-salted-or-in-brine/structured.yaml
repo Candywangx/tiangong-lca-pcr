@@ -1,10 +1,896 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "21259"
-  title: "Other crustaceans, frozen, dried, salted or in brine"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.food-products-beverages-and-tobacco-textiles-apparel-and-leather-products.meat-fish-fruits-vegetables-oils-and-fats.other-crustaceans-frozen-dried-salted-or-in-brine"
+  classification_refs: "CPC 3.0: 21259, exact classification reference"
+  covered_products: "Edible non-shrimp and non-prawn crustaceans preserved by freezing, drying, dry salting, or brining; whole, portioned, or meat forms; raw or cooked as declared"
+  excluded_products: "Shrimps and prawns; live or fresh/chilled-only crustaceans; canned, smoked-only, or fermented products; molluscs and other aquatic invertebrates; mixed seafood products without separable crustacean inventory"
+  representative_product: "Packaged preserved other-crustacean product at the processing-facility gate"
+  production_route: "Receipt and primary preparation, one explicitly declared preservation route, then packing and route-appropriate storage"
+  market_state: "Frozen, dried, dry-salted, or in brine; raw/cooked status and whole/portion/meat form declared"
+functional_unit:
+  what: "Edible other-crustacean product preserved by the declared route and ready for dispatch"
+  how_much: "1 kg net product mass, excluding packaging and free draining liquid unless that liquid is sold as part of the declared product"
+  how_well: "Species or commercial group, anatomical form, raw/cooked state, preservation route, food-safety acceptance basis, and route-specific condition are declared"
+  how_long_or_cycle: "One production lot through facility dispatch; storage duration within the foreground boundary is declared"
+  reference_flow_link: "The reference product output final_reference_product from packing_and_storage"
+system_boundary:
+  rules:
+    - rule_id: boundary_facility_gate
+      applies_to: "foreground_processes"
+      rule: "Include receipt, primary preparation, the declared preservation operation, packing, route-appropriate on-site storage, on-site water and energy, direct refrigerant loss, and wastes or effluents to the point they leave the facility."
+      source_ids:
+        - codex-cxc-52-2003
+        - eu-pef-2021-2279
+    - rule_id: boundary_route_condition
+      applies_to: "preservation_route"
+      rule: "Include only operations actually used for the declared lot: freezing and frozen storage, drying and any associated heating, dry salting, or brining. A multi-route result requires measured route shares and separate route inventories before aggregation."
+      source_ids:
+        - codex-cxc-52-2003
+        - fao-seafood-safety-quality-2003
+    - rule_id: boundary_food_safety_controls
+      applies_to: "reception_and_processing"
+      rule: "Include resources and losses caused by potable-water/clean-ice use, temperature control, sanitation, product rejection, and documented hazard controls when they occur in the foreground system."
+      source_ids:
+        - codex-cxc-52-2003
+        - fao-seafood-safety-quality-2003
+    - rule_id: boundary_exclusions
+      applies_to: "life_cycle_model"
+      rule: "Model harvest/aquaculture, inbound transport, post-dispatch distribution, retail, use, and end-of-life in separate linked datasets; do not silently omit them from a cradle-to-grave study."
+      source_ids:
+        - eu-pef-2021-2279
+boundary_abstraction:
+  declared_starting_condition: "Accepted edible-grade crustacean raw material at the facility gate, with species/group, origin, incoming form, raw/cooked state, temperature, and prior preservation disclosed"
+  starting_condition_role: "Upstream product input to the foreground preparation process"
+  product_classification_scope: "Other crustaceans preserved by freezing, drying, dry salting, or brining; shrimp and prawn products are outside scope"
+  recursive_input_rule: "If an input is already a product within this PCR scope, record it once as a technosphere input with an upstream dataset and do not reconstruct its prior preservation recursively inside the foreground boundary"
+  upstream_dataset_requirement: "Use a geographically and technologically representative harvest/aquaculture and inbound-supply dataset for received crustaceans, or disclose a proxy and its limitations"
+  disclosure: "Declare the actual route, incoming and outgoing product condition, cooking or shell removal, facility geography, storage duration, packaging, co-products, waste treatment, and any excluded on-site operation"
+reference_flow_definition:
+  reference_amount: "1"
+  product_flow_ref:
+    name: "Other crustaceans, frozen, dried, salted or in brine"
+    uuid: "ecae55b8-a320-44e8-9ea2-98d7ff34e4e3"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "species or commercial group"
+    - "wild-caught or farmed origin when known"
+    - "whole/section/meat form"
+    - "raw or cooked state"
+    - "exact preservation route"
+    - "glazing share for frozen product"
+    - "final moisture basis for dried product"
+    - "salt addition and dry-salted or brined state"
+    - "whether brine is included in sale mass"
+    - "packaging format"
+    - "dispatch temperature"
+    - "foreground storage duration"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_net_mass
+    applies_to: "Reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Normalize all inventory to 1 kg net edible product at dispatch. Exclude packaging and separately draining brine; disclose and subtract ice glaze not sold as product mass."
+  - id: route_condition_basis
+    applies_to: "Frozen, dried, dry-salted, or brined product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Record mass at the declared dispatch condition and report glaze, moisture, and salt/brine basis needed to compare lots. Do not convert between preservation states without measured mass and condition data."
+  - id: energy_unit_consistency
+    applies_to: "Electricity and thermal energy"
+    required_property_ref:
+      name: "Energy"
+      uuid: ""
+    required_unit: "kWh for electricity; MJ for thermal energy"
+    rule: "Preserve metered units and document conversion factors. Allocate shared utility meters only through a documented calculation rule."
+  - id: mass_balance_basis
+    applies_to: "Raw material, product, residues, water retained, and salt retained"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Reconcile input and output masses per lot; separately disclose evaporated water, drained liquid, wastewater, and unmeasured loss rather than forcing closure into product yield."
+process_map:
+  - id: reception_and_preparation
+    name: "Reception and primary preparation"
+    inclusion: "required"
+    inclusion_condition: "All covered products"
+    role: "Foreground receipt, washing as used, grading, cooking as used, shell removal or cutting, and separation of rejects/residues"
+    quantitative_reference: "kg accepted crustacean input and kg prepared crustacean output"
+  - id: declared_preservation
+    name: "Declared preservation route"
+    inclusion: "required"
+    inclusion_condition: "Exactly one route or a measured product mix: freezing, drying, dry salting, or brining"
+    role: "Foreground route-specific preservation"
+    quantitative_reference: "kg preserved bulk product"
+  - id: packing_and_storage
+    name: "Packing and route-appropriate storage"
+    inclusion: "required"
+    inclusion_condition: "All covered products; cold storage applies only to the frozen route"
+    role: "Foreground packing, storage, and dispatch preparation"
+    quantitative_reference: "1 kg net reference product"
+process_inventory:
+  - id: reception_and_preparation
+    label: "Reception and primary preparation"
+    inputs:
+      product:
+        - row_id: accepted_crustacean_input
+          role: "Accepted crustacean raw material"
+          name: "Other crustacean raw material; Tiangong UUID pending review"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the measured incoming mass that enters preparation."
+          amount:
+            expression: "measured accepted lot mass"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_lot_mass_balance
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "1"
+                upper: "10"
+                unit: "kg/kg net reference product"
+                basis: "broad candidate-stage range spanning meat, whole-product, and dried routes"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: preparation_water
+          role: "Process water"
+          name: "Process water; Tiangong UUID pending review"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record potable or otherwise food-suitable water crossing the foreground boundary for washing, cooking, thawing, or sanitation allocated to the lot."
+          amount:
+            expression: "measured water use or allocated meter record"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water_ice_records
+              source_ids:
+                - codex-cxc-52-2003
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "20"
+                unit: "kg/kg net reference product"
+                basis: "broad replaceable candidate-stage screening range"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: handling_ice
+          role: "Ice used in handling"
+          name: "Ice; Tiangong UUID pending review"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record purchased or on-site-produced food-suitable ice actually used for the lot; avoid double counting water and ice production."
+          amount:
+            expression: "measured ice charged to the lot"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water_ice_records
+              source_ids:
+                - codex-cxc-52-2003
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "2"
+                unit: "kg/kg net reference product"
+                basis: "broad replaceable candidate-stage screening range"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: prepared_crustacean_output
+          role: "Prepared crustacean intermediate"
+          name: "Prepared crustacean intermediate; Tiangong UUID pending review"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Calculate the prepared mass transferred to the declared preservation route from lot records."
+          amount:
+            expression: "measured transfer mass"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_lot_mass_balance
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0.1"
+                upper: "1"
+                unit: "kg/kg accepted crustacean input"
+                basis: "prepared-output mass fraction of accepted input"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        - row_id: preparation_residues
+          role: "Shells, rejects, and other preparation residues"
+          name: "Crustacean preparation residue; Tiangong UUID pending review"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Separate measured edible rejects, shells, viscera, and other residues by destination; reclassify a sold output as a co-product."
+          amount:
+            expression: "measured residue mass by treatment or sale destination"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted crustacean input"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_lot_mass_balance
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.9"
+                unit: "kg/kg accepted crustacean input"
+                basis: "broad replaceable range for whole, portioned, and meat forms"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: preparation_wastewater
+          role: "Preparation wastewater"
+          name: "Wastewater; Tiangong UUID pending review"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record wastewater leaving preparation, including allocated sanitation water, without subtracting pollutants that require separate elementary or treatment records."
+          amount:
+            expression: "measured discharge or water-balance calculation"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_waste_effluent_records
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "20"
+                unit: "kg/kg net reference product"
+                basis: "broad replaceable candidate-stage screening range"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        []
+  - id: declared_preservation
+    label: "Declared preservation route"
+    inputs:
+      product:
+        - row_id: prepared_crustacean_input
+          role: "Prepared crustacean input"
+          name: "Prepared crustacean intermediate; Tiangong UUID pending review"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Transfer the prepared intermediate without duplicating upstream burdens."
+          amount:
+            expression: "equal to prepared_crustacean_output transferred to this route"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_lot_mass_balance
+              source_ids: []
+            ranges: []
+        - row_id: preservation_electricity
+          role: "Preservation electricity"
+          name: "Electricity; Tiangong UUID pending review"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record metered or allocated electricity for freezing, drying fans, brine circulation, pumping, and route-specific equipment actually used."
+          amount:
+            expression: "metered or documented allocation of route electricity"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg preserved bulk product"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_route_input_records
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "20"
+                unit: "kWh/kg preserved bulk product"
+                basis: "broad replaceable range across declared routes and technologies"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: preservation_thermal_energy
+          role: "Thermal energy for cooking or drying"
+          name: "Thermal energy; Tiangong UUID pending review"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Include only when the declared route cooks the product or uses supplied heat for drying."
+          amount:
+            expression: "measured fuel/steam/heat use converted to delivered thermal energy"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg preserved bulk product"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_route_input_records
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "50"
+                unit: "MJ/kg preserved bulk product"
+                basis: "broad replaceable range; zero only when no cooking or thermal drying occurs"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: preservation_salt
+          role: "Salt input"
+          name: "Sodium chloride; Tiangong UUID pending review"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Include food-grade salt only for dry salting or brining and record retained and discharged salt through the lot balance."
+          amount:
+            expression: "measured salt charged to the lot"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_route_input_records
+              source_ids:
+                - codex-cxc-52-2003
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "1"
+                unit: "kg/kg net reference product"
+                basis: "broad replaceable range; must be zero for routes without added salt"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: brining_water
+          role: "Brining water"
+          name: "Process water; Tiangong UUID pending review"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Include only for the brined route and distinguish fresh make-up water from recirculated brine."
+          amount:
+            expression: "measured fresh water charged to brine preparation"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_route_input_records
+              source_ids:
+                - codex-cxc-52-2003
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "10"
+                unit: "kg/kg net reference product"
+                basis: "broad replaceable range; must be zero outside the brined route"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: preserved_bulk_output
+          role: "Preserved bulk crustacean product"
+          name: "Preserved other-crustacean bulk product; Tiangong UUID pending review"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record product mass after the declared preservation route and before final packing."
+          amount:
+            expression: "measured preserved bulk transfer mass"
+            value_mode: "calculated_value"
+            specificity: "route_specific"
+            basis:
+              text: "per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_lot_mass_balance
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "1"
+                upper: "1.5"
+                unit: "kg/kg net reference product"
+                basis: "broad replaceable allowance for packing loss and excluded free liquid"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        - row_id: spent_brine_wastewater
+          role: "Spent brine and preservation wastewater"
+          name: "Saline wastewater or process wastewater; Tiangong UUID pending review"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record spent brine, thaw/cook liquor, cleaning discharge, and other route wastewater separately where treatment differs."
+          amount:
+            expression: "measured discharge or water-and-salt balance"
+            value_mode: "calculated_value"
+            specificity: "route_specific"
+            basis:
+              text: "per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_waste_effluent_records
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "10"
+                unit: "kg/kg net reference product"
+                basis: "broad replaceable range, with saline and non-saline streams distinguished"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        - row_id: freezing_refrigerant_loss
+          role: "Direct refrigerant loss during freezing"
+          name: "Refrigerant emission to air; Tiangong UUID pending review"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Include only for freezing equipment within the foreground boundary; identify the refrigerant and avoid counting maintenance charge as an emission."
+          amount:
+            expression: "annual or event-based refrigerant loss allocated to the declared frozen-product throughput"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg frozen bulk product"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_storage_refrigeration_records
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.1"
+                unit: "kg/kg frozen bulk product"
+                basis: "broad replaceable candidate-stage screening range"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+  - id: packing_and_storage
+    label: "Packing and route-appropriate storage"
+    inputs:
+      product:
+        - row_id: preserved_bulk_input
+          role: "Preserved bulk product input"
+          name: "Preserved other-crustacean bulk product; Tiangong UUID pending review"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Transfer the route-specific preserved bulk product to packing without mixing undeclared preservation states."
+          amount:
+            expression: "equal to preserved_bulk_output transferred to packing"
+            value_mode: "calculated_value"
+            specificity: "route_specific"
+            basis:
+              text: "per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_lot_mass_balance
+              source_ids: []
+            ranges: []
+        - row_id: packaging_materials
+          role: "Primary and secondary packaging"
+          name: "Packaging material by material type; Tiangong UUID pending review"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record each packaging material by mass, including liners, cartons, labels, and route-specific barrier packaging."
+          amount:
+            expression: "bill-of-material mass less measured unused return, normalized to packed net product"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_records
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0.001"
+                upper: "0.5"
+                unit: "kg/kg net reference product"
+                basis: "broad replaceable candidate-stage screening range"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: storage_electricity
+          role: "Storage electricity"
+          name: "Electricity; Tiangong UUID pending review"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record electricity for route-appropriate on-site storage over the declared duration; cold storage is conditional on the frozen route."
+          amount:
+            expression: "metered or allocated storage electricity for declared throughput and duration"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net reference product over declared foreground storage"
+              kind: "storage_duration"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_storage_refrigeration_records
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "10"
+                unit: "kWh/kg net reference product"
+                basis: "broad replaceable range over the declared foreground storage duration"
+                basis_kind: "storage_duration"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: final_reference_product
+          role: "Packaged reference product"
+          name: "Other crustaceans, frozen, dried, salted or in brine"
+          flow_type: "product"
+          flow_ref:
+            uuid: "ecae55b8-a320-44e8-9ea2-98d7ff34e4e3"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This is the quantitative reference output after excluding packaging and any non-sale free liquid or glaze from net product mass."
+          amount:
+            expression: "exactly 1 kg net reference product"
+            value_mode: "fixed_value"
+            specificity: "not_applicable"
+            basis:
+              text: "reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "identity_reference"
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: packaging_scrap
+          role: "Packaging scrap"
+          name: "Packaging waste by material type; Tiangong UUID pending review"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record measured foreground packing scrap by material and destination."
+          amount:
+            expression: "packaging issued minus packaging incorporated and returned"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_records
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.1"
+                unit: "kg/kg net reference product"
+                basis: "broad replaceable candidate-stage screening range"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        - row_id: storage_refrigerant_loss
+          role: "Direct refrigerant loss during frozen storage"
+          name: "Refrigerant emission to air; Tiangong UUID pending review"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Include only for frozen-route storage within the foreground boundary."
+          amount:
+            expression: "annual or event-based refrigerant loss allocated by frozen storage throughput and duration"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg frozen reference product over declared storage"
+              kind: "storage_duration"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_storage_refrigeration_records
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.1"
+                unit: "kg/kg frozen reference product"
+                basis: "broad replaceable candidate-stage screening range"
+                basis_kind: "storage_duration"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+allocation_rules:
+  - rule_id: allocation_subdivision_first
+    applies_to: "shared_processes"
+    rule: "Avoid allocation by separately metering route, product form, cooking, preparation, packing, and storage operations whenever technically feasible."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: allocation_joint_outputs
+    applies_to: "marketable_co_products"
+    rule: "When subdivision is not feasible, apply a documented physical relation that reflects the underlying process. If no defensible physical relation exists and economic allocation is used, record price basis, reference period, currency, route, and a sensitivity result."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: allocation_residue_status
+    applies_to: "shells_rejects_and_liquids"
+    rule: "Outputs sent to treatment remain wastes and receive treatment burdens without avoided-product credit unless a consequential study explicitly requires it. A sold or internally used material is a co-product and shall be included in the allocation decision."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: allocation_route_separation
+    applies_to: "multi_route_facilities"
+    rule: "Allocate shared utilities using measured drivers such as equipment meter, operating time, throughput, storage volume-time, or another documented causal driver before aggregating separately calculated route results."
+    source_ids:
+      - eu-pef-2021-2279
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_lot_mass_balance
+      process_id: "reception_and_preparation_declared_preservation_packing_and_storage"
+      flow_role: "raw, intermediate, final, residue, and free-liquid masses"
+      record_type: "weigh tickets and batch records"
+      raw_fields: "lot_id; route; product_form; incoming_mass; prepared_mass; preserved_mass; packed_net_mass; glaze_mass; free_liquid_mass; residue_mass"
+      collection_method: "calibrated scales and reconciled batch records"
+      unit: "kg"
+      frequency: "each lot"
+      temporal_coverage: "representative production period, normally at least 12 months or disclosed shorter campaign"
+      site_scope: "each reporting facility and route"
+      aggregation_rule: "sum by lot and route, then divide by eligible net reference-product mass"
+      quality_evidence: "scale calibration, lot traceability, and signed mass-balance review"
+    - protocol_id: cp_water_ice_records
+      process_id: "reception_and_preparation"
+      flow_role: "water and ice"
+      record_type: "meters, invoices, and batch charge logs"
+      raw_fields: "meter_start; meter_end; ice_mass; allocation_driver; sanitation_share"
+      collection_method: "direct measurement preferred; documented causal allocation otherwise"
+      unit: "kg"
+      frequency: "each lot or meter period"
+      temporal_coverage: "same period as product data"
+      site_scope: "each facility"
+      aggregation_rule: "subtract non-production use and allocate to route/product using documented driver"
+      quality_evidence: "meter checks, invoices, and allocation worksheet"
+    - protocol_id: cp_route_input_records
+      process_id: "declared_preservation"
+      flow_role: "electricity, thermal energy, salt, and brining water"
+      record_type: "meters, fuel/steam records, and formulation sheets"
+      raw_fields: "route; equipment; electricity; fuel_or_heat; conversion_factor; salt_charge; fresh_water; recirculated_brine"
+      collection_method: "route meter or batch formulation record"
+      unit: "kWh; MJ; kg"
+      frequency: "each lot or meter period"
+      temporal_coverage: "same period as product data"
+      site_scope: "each facility and preservation route"
+      aggregation_rule: "aggregate only within the declared route and normalize to preserved output"
+      quality_evidence: "meter calibration, invoices, formulation approval, and unit-conversion record"
+    - protocol_id: cp_waste_effluent_records
+      process_id: "reception_and_preparation_declared_preservation"
+      flow_role: "residues, wastewater, spent brine, and treatment destination"
+      record_type: "scales, discharge meters, manifests, and balance calculations"
+      raw_fields: "stream_id; saline_status; mass_or_volume; density; treatment; sale_status; destination"
+      collection_method: "direct measurement preferred; documented balance where unavailable"
+      unit: "kg"
+      frequency: "each lot or reporting period"
+      temporal_coverage: "same period as product data"
+      site_scope: "each facility and stream"
+      aggregation_rule: "keep treatment destinations and saline/non-saline streams separate"
+      quality_evidence: "manifests, meter records, sampling plan, and balance reconciliation"
+    - protocol_id: cp_packaging_records
+      process_id: "packing_and_storage"
+      flow_role: "packaging incorporated and scrap"
+      record_type: "bill of materials, purchase records, and scrap weights"
+      raw_fields: "material; units_issued; unit_mass; returned_units; scrap_mass; packed_net_mass"
+      collection_method: "specification mass verified by sample weighing"
+      unit: "kg"
+      frequency: "packaging run"
+      temporal_coverage: "same period as product data"
+      site_scope: "each product format and facility"
+      aggregation_rule: "calculate incorporated mass by material per net product mass"
+      quality_evidence: "current specifications, sample weights, and stock reconciliation"
+    - protocol_id: cp_storage_refrigeration_records
+      process_id: "declared_preservation_packing_and_storage"
+      flow_role: "storage electricity, duration, and refrigerant loss"
+      record_type: "meters, warehouse logs, refrigerant service records"
+      raw_fields: "route; storage_temperature; entry_time; dispatch_time; electricity; refrigerant_type; charge_added; recovered_mass; throughput"
+      collection_method: "meter and service-log calculation"
+      unit: "kWh; h or day; kg"
+      frequency: "monthly and each service event"
+      temporal_coverage: "same period as product data"
+      site_scope: "each facility"
+      aggregation_rule: "allocate by measured zone meter or documented mass-volume-time driver"
+      quality_evidence: "meter record, temperature log, service invoice, and leak calculation"
+  calculation_rules:
+    - id: calc_reference_normalization
+      applies_to: "all inventory rows"
+      rule: "normalized amount = eligible lot or period amount / net kg of conforming reference product; exclude packaging, separately draining brine, and disclosed glaze from denominator"
+      inputs:
+        - "collected flow amount"
+        - "packed net mass"
+        - "glaze/free-liquid status"
+      output: "amount per 1 kg net reference product"
+      source_ids:
+        - eu-pef-2021-2279
+    - id: calc_mass_balance
+      applies_to: "each production lot"
+      rule: "reconcile received material, added water/ice/salt retained, intermediates, product, residues, discharged liquid, evaporated water, and documented unmeasured difference"
+      inputs:
+        - cp_lot_mass_balance
+        - cp_water_ice_records
+        - cp_waste_effluent_records
+      output: "lot mass-balance statement and yield"
+      source_ids:
+        - codex-cxc-52-2003
+    - id: calc_route_separation
+      applies_to: "multi-route facilities"
+      rule: "calculate each preservation route independently; aggregate only using measured net-product route shares for the declared reporting period"
+      inputs:
+        - "route inventory"
+        - "route net output"
+      output: "explicitly weighted product mix"
+      source_ids:
+        - eu-pef-2021-2279
+    - id: calc_shared_utilities
+      applies_to: "shared meters and storage"
+      rule: "allocated utility = shared total × documented causal driver share; disclose driver and unallocated remainder"
+      inputs:
+        - "meter total"
+        - "route operating time"
+        - throughput
+        - "or storage mass-volume-time"
+      output: "route-specific utility amount"
+      source_ids:
+        - eu-pef-2021-2279
+  data_quality_requirements:
+    - id: dq_product_identity
+      applies_to: "reference product and raw material"
+      requirement: "Retain species/commercial group, origin, form, raw/cooked state, preservation route, lot, and dispatch condition; do not substitute shrimp/prawn or mollusc data without a disclosed proxy review."
+      evidence: "classification record, supplier specification, lot traceability, and unsd-cpc-3-0-2025"
+    - id: dq_route_and_food_safety
+      applies_to: "preparation and preservation"
+      requirement: "Retain route-specific time-temperature, salting/brining or drying-control records and food-safety release evidence appropriate to the product; a failed or rejected lot is not conforming reference output."
+      evidence: "HACCP or equivalent control records and codex-cxc-52-2003; fao-seafood-safety-quality-2003"
+    - id: dq_temporal_coverage
+      applies_to: "foreground activity data"
+      requirement: "Use a representative period covering seasonal and operational variability, normally 12 consecutive months; disclose a shorter seasonal campaign and justify representativeness."
+      evidence: "dated meters, invoices, production logs, and eu-pef-2021-2279"
+    - id: dq_completeness
+      applies_to: "foreground inventory"
+      requirement: "Cover at least 95% of measured foreground input and output mass and all known environmentally relevant energy, refrigerant, saline-effluent, and waste streams; list exclusions and assess their significance."
+      evidence: "mass balance, exclusion log, and eu-pef-2021-2279"
+    - id: dq_measurement
+      applies_to: "foreground records"
+      requirement: "Prefer calibrated measurement; document estimates, meter allocation, density conversions, missing-data treatment, and uncertainty."
+      evidence: "calibration records, worksheets, and meter/invoice reconciliation"
+    - id: dq_provisional_ranges
+      applies_to: "reasoned_estimate ranges"
+      requirement: "Treat every provisional range as a screening flag, not a default publication value; replace it with foreground data or reviewed source evidence before activation unless methodology review explicitly accepts it."
+      evidence: "review record and source replacement log"
+validation_rules:
+  - rule_id: validate_reference_flow
+    applies_to: "reference_product"
+    rule: "Confirm exactly 1 kg net product uses product flow ecae55b8-a320-44e8-9ea2-98d7ff34e4e3, Mass 93a60a56-a3c8-11da-a746-0800200b9a66, unit group 93a60a57-a4c8-11da-a746-0800200c9a66, and kg."
+    source_ids: []
+  - rule_id: validate_route_declaration
+    applies_to: "product_and_process_map"
+    rule: "Confirm preservation route, raw/cooked state, form, glaze/moisture/salt/brine basis, dispatch temperature, and storage duration are declared; reject unconditional mixing of routes."
+    source_ids:
+      - unsd-cpc-3-0-2025
+      - codex-cxc-52-2003
+  - rule_id: validate_conditional_inputs
+    applies_to: "declared_preservation"
+    rule: "Confirm freezing and frozen-storage records occur only for frozen product, thermal drying only when used, salt only when added, and brining water/spent brine only for the brined route."
+    source_ids:
+      - codex-cxc-52-2003
+  - rule_id: validate_mass_balance
+    applies_to: "each lot"
+    rule: "Confirm raw, intermediate, product, residue, retained water/salt, wastewater/free liquid, evaporation, and unmeasured loss are reconciled without counting packaging as product."
+    source_ids:
+      - codex-cxc-52-2003
+  - rule_id: validate_allocation
+    applies_to: "co_products_and_shared_operations"
+    rule: "Confirm subdivision was attempted first and every remaining allocation has a causal driver, co-product/waste decision, and sensitivity when economic allocation is used."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: validate_food_safety_release
+    applies_to: "conforming_output"
+    rule: "Confirm the lot has the route-specific acceptance and food-safety control evidence required for its declared market state; rejected product is recorded as waste or rework, not reference output."
+    source_ids:
+      - codex-cxc-52-2003
+      - fao-seafood-safety-quality-2003
+  - rule_id: validate_provisional_estimates
+    applies_to: "inventory_ranges"
+    rule: "Flag every reasoned_estimate as unresolved for methodology review and confirm it is not represented as measured, source-backed, or mandatory."
+    source_ids: []
+  - rule_id: validate_uuid_gaps
+    applies_to: "non_reference_flows"
+    rule: "Confirm unresolved non-reference Tiangong UUIDs remain explicit review items and are not replaced by unverified approximate flows."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "Facility-gate foreground production dataset for a declared preserved other-crustacean product"
+  downstream_use: "secondary_dataset; background_dataset"
+  allowed_use: "Product and facility comparisons only when route, species/group, product form, dispatch condition, geography, technology, allocation, and storage basis are sufficiently comparable; may be linked with separate upstream and downstream datasets"
+  excluded_use: "Unqualified average across frozen, dried, dry-salted, and brined routes; proxy for shrimp/prawn, mollusc, canned, smoked-only, fermented, fresh/chilled, harvest/aquaculture, distribution, retail, cooking, or consumption"
+  required_metadata: "PCR id; facility and geography; reporting period; species/commercial group and origin; product form; raw/cooked state; declared route; glaze, moisture, salt/brine and net-mass basis; technology; storage duration/temperature; packaging; allocation; upstream datasets; waste treatment; data owners and review state"
+  required_quality_disclosure: "Primary-data share and period; meter coverage and allocation drivers; mass-balance difference; route shares; missing data and proxies; reasoned estimates; non-reference UUID gaps; food-safety release basis; uncertainty and exclusions"
+  update_trigger: "Material change in species mix, raw-material origin, product form, preservation technology or route share, energy/refrigerant system, formulation, yield, packaging, storage, allocation, regulation/food-safety control, or data older than the organization’s review interval"
+data_sources:
+  - id: "unsd-cpc-3-0-2025"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, Central Product Classification Version 3.0, structure and explanatory materials, https://unstats.un.org/unsd/classifications/Econ/cpc (retrieved 2026-08-11)"
+    used_for: "Classification scope and distinction of CPC 21259"
+  - id: "codex-cxc-52-2003"
+    type: "standard"
+    reference: "Codex Alimentarius, CXC 52-2003, Code of Practice for Fish and Fishery Products, official Codex text listing and current English text, https://www.fao.org/fao-who-codexalimentarius/codex-texts/codes-of-practice/en/ (retrieved 2026-08-11)"
+    used_for: "Facility process decomposition, water/ice and hygiene controls, preservation-route controls, temperature handling, rejection and food-safety validation"
+  - id: "fao-seafood-safety-quality-2003"
+    type: "official_guidance"
+    reference: "FAO Fisheries Technical Paper 444, Assessment and Management of Seafood Safety and Quality, ISBN 92-5-104954-8, https://www.fao.org/4/y4743e/y4743e00.htm (retrieved 2026-08-11)"
+    used_for: "Seafood hazard-control evidence for fresh/frozen crustaceans and dried, salted, or lightly preserved products; traceability and food-safety quality records"
+  - id: "eu-pef-2021-2279"
+    type: "official_guidance"
+    reference: "European Commission Recommendation (EU) 2021/2279 on the use of the Environmental Footprint methods, CELEX 32021H2279, https://eur-lex.europa.eu/eli/reco/2021/2279/oj/eng (retrieved 2026-08-11)"
+    used_for: "System boundary completeness, foreground data quality, subdivision and allocation hierarchy, temporal representativeness, and transparent aggregation"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:16b5a27e06acf5e6b6f7cefc30f83e4599fc24c7bbfcd8190e70a30fc7005cde"
+  generated_content_sha256: "sha256:55ab980aeadae78727014aaaf313003469f686cbdedda4f2d22e6d9f8897b612"

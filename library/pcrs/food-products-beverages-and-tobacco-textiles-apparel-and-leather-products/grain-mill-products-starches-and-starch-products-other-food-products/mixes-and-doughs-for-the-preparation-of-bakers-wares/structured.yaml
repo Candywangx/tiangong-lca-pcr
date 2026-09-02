@@ -1,10 +1,2724 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "23180"
-  title: "Mixes and doughs for the preparation of bakers' wares"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.food-products-beverages-and-tobacco-textiles-apparel-and-leather-products.grain-mill-products-starches-and-starch-products-other-food-products.mixes-and-doughs-for-the-preparation-of-bakers-wares"
+  classification_refs: "CPC 3.0: 23180, exact"
+  covered_products: "Unbaked dry bakery mixes; unbaked wet doughs or batters in ambient, chilled, or frozen market state; bulk, divided, or shaped product forms"
+  excluded_products: "Flour and starch sold as such; finished or part-baked bakers' wares; baked bread, cakes, biscuits, pizza, and pastries; prepared meals; customer baking; post-gate distribution"
+  representative_product: "One declared formulation and one mutually exclusive route of unbaked bakery mix or dough at the manufacturing factory gate"
+  production_route: "Exactly one of dry_mix_ambient, wet_dough_ambient, wet_dough_chilled, wet_dough_frozen"
+  market_state: "Dry ambient mix, ambient wet dough or batter, chilled wet dough or batter, or frozen wet dough or batter, declared without cross-state averaging"
+functional_unit:
+  what: "Net mass of one declared formulation of unbaked bakery mix, dough, or batter at the factory gate"
+  how_much: "1 kg net product, excluding packaging"
+  how_well: "Conforming to the declared route_code, formulation, leavening mode, moisture, make-up state, storage temperature, shelf-life, and quality specification"
+  how_long_or_cycle: "One production campaign normalized to 1 kg of released product after route-specific storage to the declared factory gate"
+  reference_flow_link: "0252f353-8398-4eab-9e26-6a13e4b4f06b"
+system_boundary:
+  rules:
+    - rule_id: sb_route_lock
+      applies_to: "All foreground datasets"
+      rule: "Select exactly one route_code and one formulation_id. Do not average dry mix, ambient wet dough, chilled wet dough, or frozen wet dough, and do not combine different leavening or preservation routes."
+      source_ids:
+        - un-cpc-v3-explanatory-notes-2025
+    - rule_id: sb_included_operations
+      applies_to: "Selected route"
+      rule: "Include every listed process whose gate is satisfied, from ingredient receipt through factory-gate storage, together with directly attributable sanitation, refrigerant loss, wastewater, waste, and onsite utility burdens."
+      source_ids:
+        - us-epa-bakery-oven-act-1992
+        - eu-emas-food-beverage-2017
+        - eu-fdm-bref-2019
+    - rule_id: sb_upstream_links
+      applies_to: "Purchased inputs"
+      rule: "Keep upstream production and inbound transport outside the foreground process but link representative datasets; disclose any missing upstream coverage."
+      source_ids:
+        - ghg-protocol-product-standard-2011
+    - rule_id: sb_excluded_downstream
+      applies_to: "Downstream preparation"
+      rule: "Exclude proofing, thawing, baking, retail storage, consumption, and end-of-life after the declared factory gate unless the dataset explicitly expands its boundary; never import finished-bakery-product oven burdens into this product route."
+      source_ids:
+        - un-cpc-v3-explanatory-notes-2025
+        - us-epa-bakery-oven-act-1992
+    - rule_id: sb_cold_route
+      applies_to: "wet_dough_chilled and wet_dough_frozen"
+      rule: "Include actual conditioning and cold-storage electricity, temperature records, refrigerant additions and releases, cold losses, and storage duration. Apply the Codex quick-frozen temperature rules only when the product is declared quick frozen."
+      source_ids:
+        - codex-cxc-8-1976
+        - eu-emas-food-beverage-2017
+    - rule_id: sb_shared_services
+      applies_to: "Shared utility, cleaning, warehouse, and refrigeration systems"
+      rule: "Prefer process subdivision and sub-metering. If shared services remain, allocate by a documented causal driver and retain the unallocated facility total and reconciliation."
+      source_ids:
+        - ghg-protocol-product-standard-2011
+    - rule_id: sb_direct_emissions
+      applies_to: "Site emissions"
+      rule: "Include separate elementary flows for each direct emission actually occurring; do not hide combustion, refrigerant, dust, fermentation, or direct-water releases inside generic emissions cards."
+      source_ids:
+        - eu-emas-food-beverage-2017
+        - eu-fdm-bref-2019
+boundary_abstraction:
+  declared_starting_condition: "Individually identified ingredients, packaging, purchased energy, water, and cleaning chemicals received at the manufacturing site boundary with quantity, supplier geography, and upstream dataset reference declared"
+  starting_condition_role: "Foreground gate-to-gate production starts at receipt; upstream production and inbound transport remain linked product systems rather than omitted burdens"
+  product_classification_scope: "Unbaked bakery mixes and doughs within the reviewed CPC 3.0 23180 semantic boundary; classification is context, not canonical identity"
+  recursive_input_rule: "A purchased mix or dough already within this PCR category is an individual technosphere input with its own upstream dataset and declared route; do not recursively reopen or silently absorb its production inventory"
+  upstream_dataset_requirement: "Link representative upstream datasets for every ingredient, packaging material, energy carrier, water supply, cleaning chemical, refrigerant, transport service, and waste treatment used by the selected route"
+  disclosure: "Declare route_code, formulation_id, leavening_mode, make_up_state, site, geography, campaign period, product temperature, storage duration, packaging, cut-offs, allocation, rework, and all deviations from this boundary"
+reference_flow_definition:
+  reference_amount: "1 kg"
+  product_flow_ref:
+    name: "Mixes and doughs for the preparation of bakers' wares"
+    uuid: "0252f353-8398-4eab-9e26-6a13e4b4f06b"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - route_code
+    - formulation_id
+    - leavening_mode
+    - make_up_state
+    - net_mass_basis
+    - moisture_or_water_mass_fraction
+    - storage_temperature_setpoint
+    - storage_duration
+    - packaging_configuration
+    - shelf_life
+    - production_site_and_geography
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_net_mass
+    applies_to: "Reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Report net product mass after route-specific conditioning and storage and before packaging mass; packaging is a separate inventory input."
+  - id: formulation_mass
+    applies_to: "Ingredients and intermediate product"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Record every actual ingredient as an individual named flow and retain batch recipe, issue, return, and rework records; do not report an aggregate ingredients or materials flow."
+  - id: water_and_moisture
+    applies_to: "Formulation water and product moisture"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Record added water separately from ingredient moisture and report the measured or specification-based final moisture or water mass fraction."
+  - id: electricity_energy
+    applies_to: "Electricity"
+    required_property_ref:
+      name: "Energy"
+      uuid: ""
+    required_unit: "kWh"
+    rule: "Record metered electricity by included process; convert other electrical energy units to kWh with the disclosed exact conversion."
+  - id: thermal_energy
+    applies_to: "Natural gas, LPG, diesel, purchased steam, and purchased hot water"
+    required_property_ref:
+      name: "Net calorific energy"
+      uuid: ""
+    required_unit: "MJ"
+    rule: "Keep each carrier as a separate flow; state net calorific value, source, and conversion for fuel quantities and do not merge carriers as thermal energy."
+  - id: cold_storage_time
+    applies_to: "Chilling, freezing, and cold storage"
+    required_property_ref:
+      name: "Energy and time"
+      uuid: ""
+    required_unit: "kWh; tonne-day"
+    rule: "Record conditioning electricity separately from storage electricity where meters allow; report storage duration and normalize shared cold-store electricity using product mass × residence time only when direct sub-metering is unavailable."
+  - id: refrigerant_mass
+    applies_to: "Refrigerant charge, addition, recovery, and loss"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Identify the actual refrigerant chemical and calculate each refrigerant loss separately; do not report a generic refrigerants flow or combine different chemicals."
+  - id: packaging_mass
+    applies_to: "Primary, secondary, and tertiary packaging"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Measure each packaging material separately and report net packaging placed on the reference product plus separately measured scrap."
+  - id: wastewater_and_pollutants
+    applies_to: "Wastewater and direct water emissions"
+    required_property_ref:
+      name: "Volume and mass"
+      uuid: ""
+    required_unit: "m3; kg"
+    rule: "Record wastewater volume as a waste flow; if discharge is direct, report each measured pollutant load as a separate elementary flow and avoid double counting loads already modelled in an external wastewater-treatment dataset."
+  - id: air_emissions
+    applies_to: "Direct air emissions"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Report each measured or calculated substance separately, including combustion emissions, refrigerant releases, ingredient dust, biogenic carbon dioxide, and ethanol where applicable."
+process_map:
+  - id: ingredient_receiving_and_dosing
+    name: "Ingredient receiving, storage, and dosing"
+    inclusion: "required"
+    inclusion_condition: "All routes; instantiate only the individually named formulation flows actually used"
+    role: "Foreground material preparation"
+    quantitative_reference: "Per 1,000 kg released reference product"
+  - id: dry_sieving_and_blending
+    name: "Dry sieving and blending"
+    inclusion: "conditional"
+    inclusion_condition: "Include only when route_code = dry_mix_ambient"
+    role: "Foreground dry-mix production"
+    quantitative_reference: "Per 1,000 kg released dry mix"
+  - id: dough_mixing_and_kneading
+    name: "Wet mixing and kneading"
+    inclusion: "conditional"
+    inclusion_condition: "Include only when route_code is wet_dough_ambient, wet_dough_chilled, or wet_dough_frozen"
+    role: "Foreground wet-dough production"
+    quantitative_reference: "Per 1,000 kg released wet dough or batter"
+  - id: fermentation_resting_and_makeup
+    name: "Fermentation, resting, dividing, and shaping"
+    inclusion: "conditional"
+    inclusion_condition: "Include each operation only when performed; fermentation requires leavening_mode = yeast or mixed"
+    role: "Foreground product development and make-up"
+    quantitative_reference: "Per 1,000 kg product leaving the operation"
+  - id: temperature_conditioning_and_cold_storage
+    name: "Chilling or freezing and cold storage"
+    inclusion: "conditional"
+    inclusion_condition: "Include only when route_code = wet_dough_chilled or wet_dough_frozen; lock conditioning method and storage state"
+    role: "Foreground preservation"
+    quantitative_reference: "Per 1,000 kg released chilled or frozen product and declared storage duration"
+  - id: packaging
+    name: "Primary and secondary packaging"
+    inclusion: "required"
+    inclusion_condition: "All routes; instantiate only actual named packaging materials"
+    role: "Foreground packing"
+    quantitative_reference: "Per 1,000 kg net product packed"
+  - id: ambient_finished_storage
+    name: "Ambient finished-product storage"
+    inclusion: "conditional"
+    inclusion_condition: "Include only when route_code = dry_mix_ambient or wet_dough_ambient"
+    role: "Foreground storage"
+    quantitative_reference: "Per 1,000 kg released product and declared storage duration"
+  - id: cleaning_and_sanitation
+    name: "Cleaning and sanitation"
+    inclusion: "required"
+    inclusion_condition: "Include actual dry and wet cleaning attributable to included production"
+    role: "Foreground hygiene support"
+    quantitative_reference: "Per 1,000 kg released reference product"
+  - id: onsite_thermal_utility
+    name: "Onsite steam or hot-water generation"
+    inclusion: "conditional"
+    inclusion_condition: "Include only when an onsite fuelled utility supplies an included process; otherwise record purchased steam or hot water directly"
+    role: "Foreground utility supply"
+    quantitative_reference: "Per MJ useful steam or hot water supplied to included processes"
+process_inventory:
+  - id: ingredient_receiving_and_dosing
+    label: "Ingredient receiving, storage, and dosing"
+    inputs:
+      product:
+        - row_id: wheat_flour
+          role: "Wheat flour"
+          name: "Wheat flour"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record wheat flour only when present in the locked formulation."
+          amount:
+            expression: "Net batch issue minus documented return, normalized to released product"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg released reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_ingredient_mass
+              source_ids:
+                - us-epa-bakery-oven-act-1992
+            ranges: []
+        - row_id: rice_flour
+          role: "Rice flour"
+          name: "Rice flour"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record rice flour separately when used, including gluten-free formulations."
+          amount:
+            expression: "Net batch issue minus documented return, normalized to released product"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg released reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_ingredient_mass
+              source_ids: []
+            ranges: []
+        - row_id: maize_flour
+          role: "Maize flour"
+          name: "Maize flour"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record maize flour separately when used."
+          amount:
+            expression: "Net batch issue minus documented return, normalized to released product"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg released reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_ingredient_mass
+              source_ids: []
+            ranges: []
+        - row_id: potato_starch
+          role: "Potato starch"
+          name: "Potato starch"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record potato starch separately when used as a formulation ingredient; the input does not change the output category identity."
+          amount:
+            expression: "Net batch issue minus documented return, normalized to released product"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg released reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_ingredient_mass
+              source_ids: []
+            ranges: []
+        - row_id: formulation_water
+          role: "Potable formulation water"
+          name: "Potable water"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record added formulation water separately from cleaning water and ingredient moisture."
+          amount:
+            expression: "Metered or weighed water charged to the locked formulation"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg released reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_ingredient_mass
+              source_ids:
+                - us-epa-bakery-oven-act-1992
+            ranges: []
+        - row_id: bakers_yeast
+          role: "Baker's yeast"
+          name: "Baker's yeast"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record baker's yeast only for yeast or mixed leavening modes."
+          amount:
+            expression: "Net batch issue, reported as received product mass"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg released reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_ingredient_mass
+              source_ids:
+                - us-epa-bakery-oven-act-1992
+            ranges: []
+        - row_id: sodium_chloride
+          role: "Sodium chloride"
+          name: "Sodium chloride"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record food-grade sodium chloride separately when used."
+          amount:
+            expression: "Net batch issue minus documented return"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg released reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_ingredient_mass
+              source_ids:
+                - us-epa-bakery-oven-act-1992
+            ranges: []
+        - row_id: sucrose
+          role: "Sucrose"
+          name: "Sucrose"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record sucrose separately from other sweeteners when used."
+          amount:
+            expression: "Net batch issue minus documented return"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg released reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_ingredient_mass
+              source_ids:
+                - us-epa-bakery-oven-act-1992
+            ranges: []
+        - row_id: palm_shortening
+          role: "Palm shortening"
+          name: "Palm shortening"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record palm shortening separately when used; another fat or oil requires its own named atomic flow card in the foreground package."
+          amount:
+            expression: "Net batch issue minus documented return"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg released reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_ingredient_mass
+              source_ids:
+                - us-epa-bakery-oven-act-1992
+            ranges: []
+        - row_id: skim_milk_powder
+          role: "Skim milk powder"
+          name: "Skim milk powder"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record skim milk powder separately when used."
+          amount:
+            expression: "Net batch issue minus documented return"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg released reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_ingredient_mass
+              source_ids:
+                - us-epa-bakery-oven-act-1992
+            ranges: []
+        - row_id: whole_egg_powder
+          role: "Whole egg powder"
+          name: "Whole egg powder"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record whole egg powder separately when used; liquid egg requires its own named row in the foreground package."
+          amount:
+            expression: "Net batch issue minus documented return"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg released reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_ingredient_mass
+              source_ids: []
+            ranges: []
+        - row_id: sodium_hydrogen_carbonate
+          role: "Sodium hydrogen carbonate"
+          name: "Sodium hydrogen carbonate"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record sodium hydrogen carbonate separately for chemical or mixed leavening."
+          amount:
+            expression: "Net batch issue minus documented return"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg released reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_ingredient_mass
+              source_ids: []
+            ranges: []
+        - row_id: monocalcium_phosphate
+          role: "Monocalcium phosphate"
+          name: "Monocalcium phosphate"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record monocalcium phosphate separately when it is the declared leavening acid."
+          amount:
+            expression: "Net batch issue minus documented return"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg released reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_ingredient_mass
+              source_ids: []
+            ranges: []
+        - row_id: mono_diglycerides
+          role: "Mono- and diglycerides of fatty acids"
+          name: "Mono- and diglycerides of fatty acids"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the declared mono- and diglyceride emulsifier preparation separately when used."
+          amount:
+            expression: "Net batch issue minus documented return"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg released reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_ingredient_mass
+              source_ids:
+                - us-epa-bakery-oven-act-1992
+            ranges: []
+        - row_id: alpha_amylase_preparation
+          role: "Alpha-amylase enzyme preparation"
+          name: "Alpha-amylase enzyme preparation"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the formulated alpha-amylase preparation separately when used, using purchased preparation mass rather than active enzyme mass unless both are reported."
+          amount:
+            expression: "Net batch issue of the purchased preparation"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg released reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_ingredient_mass
+              source_ids:
+                - us-epa-bakery-oven-act-1992
+            ranges: []
+        - row_id: calcium_propionate
+          role: "Calcium propionate"
+          name: "Calcium propionate"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record calcium propionate separately when used as a preservative."
+          amount:
+            expression: "Net batch issue minus documented return"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg released reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_ingredient_mass
+              source_ids:
+                - us-epa-bakery-oven-act-1992
+            ranges: []
+        - row_id: receiving_dosing_electricity
+          role: "Receiving and dosing electricity"
+          name: "Electricity, supplied to the manufacturing site"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record electricity for unloading, conveying, storage, sieving before dosing, and weighing that is attributable to the selected formulation."
+          amount:
+            expression: "Sub-metered electricity or calculated equipment power × operating time"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg released reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_receiving_dosing_energy
+              source_ids:
+                - eu-emas-food-beverage-2017
+            ranges:
+              - role: qa_guardrail
+                lower: "0.5"
+                upper: "30"
+                unit: "kWh"
+                basis: "per 1,000 kg released reference product"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: dosed_formulation_batch
+          role: "Dosed formulation batch"
+          name: "Dosed formulation batch"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the mass transferred to dry blending or wet mixing; ingredient identities remain available in the underlying inventory."
+          amount:
+            expression: "Sum of net individual ingredient charges after receiving and dosing losses"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg released reference product"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_ingredient_mass
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: wheat_flour_waste
+          role: "Waste wheat flour"
+          name: "Waste wheat flour"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record separately weighed wheat-flour spills and rejected wheat flour sent to the declared treatment route. Each other discarded ingredient shall use its own specifically named atomic waste-flow card."
+          amount:
+            expression: "Measured discarded ingredient mass net of documented return or rework"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg released reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_receiving_dosing_losses
+              source_ids:
+                - eu-emas-food-beverage-2017
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "50"
+                unit: "kg"
+                basis: "per 1,000 kg released reference product"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: incoming_paper_sack_waste
+          role: "Empty incoming paper sacks"
+          name: "Waste kraft paper sacks"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record paper ingredient sacks discarded after emptying; reusable or returned packaging is reported separately."
+          amount:
+            expression: "Weighed discarded paper sack mass"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg released reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_receiving_dosing_losses
+              source_ids: []
+            ranges: []
+        - row_id: incoming_plastic_liner_waste
+          role: "Empty incoming plastic liners"
+          name: "Waste polyethylene liners"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record plastic ingredient liners discarded after emptying."
+          amount:
+            expression: "Weighed discarded liner mass"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg released reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_receiving_dosing_losses
+              source_ids: []
+            ranges: []
+      elementary:
+        - row_id: flour_particulate_to_air_receiving
+          role: "Flour particulate matter to air"
+          name: "Particulate matter, flour dust, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record captured-and-released or directly emitted flour particulate mass from receiving and dosing, based on monitoring or a documented site emission calculation."
+          amount:
+            expression: "Measured emission or calculated handled mass × site-specific release factor after control"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg released reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_receiving_dosing_losses
+              source_ids:
+                - eu-fdm-bref-2019
+            ranges: []
+  - id: dry_sieving_and_blending
+    label: "Dry sieving and blending"
+    inputs:
+      product:
+        - row_id: dry_dosed_batch_input
+          role: "Dosed dry formulation batch"
+          name: "Dosed dry formulation batch"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the dosed formulation entering the dry route without adding wet-route material."
+          amount:
+            expression: "Measured transferred batch mass"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg dry blend output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_dry_blend_records
+              source_ids: []
+            ranges: []
+        - row_id: dry_blending_electricity
+          role: "Dry blending electricity"
+          name: "Electricity, supplied to the manufacturing site"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record electricity for sieving, conveying, blending, and dust collection on the dry route."
+          amount:
+            expression: "Sub-metered electricity or equipment power × operating time"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg dry blend output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_dry_blend_records
+              source_ids:
+                - eu-emas-food-beverage-2017
+            ranges:
+              - role: qa_guardrail
+                lower: "2"
+                upper: "100"
+                unit: "kWh"
+                basis: "per 1,000 kg dry blend output"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: blended_dry_premix
+          role: "Blended dry bakery premix"
+          name: "Blended dry bakery premix"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record dry premix released to packaging."
+          amount:
+            expression: "Measured good output mass after dry blending"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg dry blend output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_dry_blend_records
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: dry_blending_reject
+          role: "Dry blending reject"
+          name: "Rejected dry bakery premix"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record screened oversize, off-specification blend, and unreworked line residue as one declared waste treatment flow only when their treatment route is the same; otherwise split them."
+          amount:
+            expression: "Measured dry reject mass net of documented same-product rework"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg dry blend output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_dry_blend_records
+              source_ids:
+                - eu-emas-food-beverage-2017
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "50"
+                unit: "kg"
+                basis: "per 1,000 kg dry blend output"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        - row_id: flour_particulate_to_air_blending
+          role: "Flour particulate matter to air"
+          name: "Particulate matter, flour dust, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record dry blending particulate released after the actual control system."
+          amount:
+            expression: "Measured emission or calculated handled mass × site-specific release factor after control"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg dry blend output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_dry_blend_records
+              source_ids:
+                - eu-fdm-bref-2019
+            ranges: []
+  - id: dough_mixing_and_kneading
+    label: "Wet mixing and kneading"
+    inputs:
+      product:
+        - row_id: wet_dosed_batch_input
+          role: "Dosed wet formulation batch"
+          name: "Dosed wet formulation batch"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the dosed formulation entering the selected wet route."
+          amount:
+            expression: "Measured transferred batch mass"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg mixed dough or batter output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_dough_mixing_records
+              source_ids:
+                - us-epa-bakery-oven-act-1992
+            ranges: []
+        - row_id: dough_mixing_electricity
+          role: "Dough mixing electricity"
+          name: "Electricity, supplied to the manufacturing site"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record electricity for mixers, kneaders, pumps, and local conveying."
+          amount:
+            expression: "Sub-metered electricity or equipment power × loaded operating time"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg mixed dough or batter output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_dough_mixing_records
+              source_ids:
+                - us-epa-bakery-oven-act-1992
+                - eu-emas-food-beverage-2017
+            ranges:
+              - role: qa_guardrail
+                lower: "5"
+                upper: "180"
+                unit: "kWh"
+                basis: "per 1,000 kg mixed dough or batter output"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: mixed_dough_or_batter
+          role: "Mixed dough or batter"
+          name: "Mixed bakery dough or batter"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the measured mixed output and identify dough or batter state in product metadata."
+          amount:
+            expression: "Measured good output mass from the mixer"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg mixed dough or batter output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_dough_mixing_records
+              source_ids:
+                - us-epa-bakery-oven-act-1992
+            ranges: []
+      waste:
+        - row_id: wet_mixing_reject
+          role: "Wet mixing reject"
+          name: "Rejected wet bakery dough or batter"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record dough or batter rejected during mixing and transfer, net of same-product rework."
+          amount:
+            expression: "Measured rejected mass net of documented same-product rework"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg mixed dough or batter output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_dough_mixing_records
+              source_ids:
+                - eu-emas-food-beverage-2017
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "80"
+                unit: "kg"
+                basis: "per 1,000 kg mixed dough or batter output"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        []
+  - id: fermentation_resting_and_makeup
+    label: "Fermentation, resting, dividing, and shaping"
+    inputs:
+      product:
+        - row_id: mixed_dough_input
+          role: "Mixed dough input"
+          name: "Mixed bakery dough"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record mixed dough entering only the fermentation, resting, dividing, or shaping steps actually performed."
+          amount:
+            expression: "Measured transferred dough mass"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg product leaving this process"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_fermentation_makeup_records
+              source_ids:
+                - us-epa-bakery-oven-act-1992
+            ranges: []
+        - row_id: fermentation_makeup_electricity
+          role: "Fermentation and make-up electricity"
+          name: "Electricity, supplied to the manufacturing site"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record electricity for agitation, conveyors, dividers, rounders, moulders, and controlled rooms that are actually used."
+          amount:
+            expression: "Sub-metered electricity or equipment power × operating time"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg product leaving this process"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_fermentation_makeup_records
+              source_ids:
+                - us-epa-bakery-oven-act-1992
+                - eu-emas-food-beverage-2017
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "250"
+                unit: "kWh"
+                basis: "per 1,000 kg product leaving this process"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: fermentation_purchased_steam
+          role: "Purchased steam for humidity control"
+          name: "Steam, purchased"
+          flow_type: "product"
+          property_unit: "Net calorific energy / MJ"
+          description: "Record purchased steam separately when used for controlled humidity; onsite steam is supplied by onsite_thermal_utility and is not also recorded as purchased steam."
+          amount:
+            expression: "Metered steam quantity converted with measured or supplier enthalpy difference"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg product leaving this process"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_fermentation_makeup_records
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: prepared_dough_after_makeup
+          role: "Prepared dough after make-up"
+          name: "Prepared unbaked bakery dough"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record bulk, divided, or shaped product as declared by make_up_state."
+          amount:
+            expression: "Measured good output mass after the last included operation"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg product leaving this process"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_fermentation_makeup_records
+              source_ids:
+                - us-epa-bakery-oven-act-1992
+            ranges: []
+      waste:
+        - row_id: fermentation_makeup_reject
+          role: "Fermentation or make-up reject"
+          name: "Rejected prepared bakery dough"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record dough rejected during fermentation, resting, dividing, or shaping, net of rework."
+          amount:
+            expression: "Measured rejected mass net of documented same-product rework"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg product leaving this process"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_fermentation_makeup_records
+              source_ids: []
+            ranges: []
+      elementary:
+        - row_id: fermentation_biogenic_co2
+          role: "Biogenic carbon dioxide from dough fermentation"
+          name: "Carbon dioxide, biogenic, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record biogenic carbon dioxide released before the factory gate only when yeast fermentation occurs and the release is measured or calculated from a documented mass balance."
+          amount:
+            expression: "Measured release or documented substrate-to-carbon-dioxide calculation for the included fermentation time"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg product leaving this process"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_fermentation_makeup_records
+              source_ids:
+                - us-epa-bakery-oven-act-1992
+            ranges: []
+        - row_id: fermentation_ethanol_to_air
+          role: "Ethanol from dough fermentation to air"
+          name: "Ethanol, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record ethanol released before baking only when yeast fermentation occurs and a site measurement or defensible pre-oven balance is available; do not apply bakery oven emission factors to unbaked dough production."
+          amount:
+            expression: "Site measurement or documented pre-oven fermentation balance only"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg product leaving this process"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_fermentation_makeup_records
+              source_ids:
+                - us-epa-bakery-oven-act-1992
+            ranges: []
+  - id: temperature_conditioning_and_cold_storage
+    label: "Chilling or freezing and cold storage"
+    inputs:
+      product:
+        - row_id: unconditioned_wet_product
+          role: "Unconditioned wet dough or batter"
+          name: "Unconditioned wet bakery dough or batter"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the wet product entering the locked chilled or frozen route."
+          amount:
+            expression: "Measured mass entering conditioning"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg released chilled or frozen product"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cold_route_records
+              source_ids: []
+            ranges: []
+        - row_id: cold_route_electricity
+          role: "Conditioning and cold-storage electricity"
+          name: "Electricity, supplied to the manufacturing site"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record chilling or freezing electricity and cold-storage electricity for the selected state; retain separate meter channels where available and never average chilled and frozen routes."
+          amount:
+            expression: "Conditioning sub-meter kWh + allocated cold-store kWh for actual tonne-day residence"
+            value_mode: "calculated_value"
+            specificity: "route_specific"
+            basis:
+              text: "per 1,000 kg released chilled or frozen product and declared storage duration"
+              kind: "storage_duration"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_cold_route_records
+              source_ids:
+                - codex-cxc-8-1976
+                - eu-emas-food-beverage-2017
+            ranges:
+              - role: uncertainty_range
+                lower: "10"
+                upper: "1200"
+                unit: "kWh"
+                basis: "per 1,000 kg released chilled or frozen product including declared factory storage"
+                basis_kind: "storage_duration"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: ammonia_refrigerant_input
+          role: "Ammonia refrigerant addition"
+          name: "Ammonia, refrigerant grade"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record net ammonia addition attributable to the selected cold route when ammonia is the installed refrigerant."
+          amount:
+            expression: "Opening charge + purchases - closing charge - recovered mass, allocated only after system reconciliation"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg released chilled or frozen product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_cold_route_records
+              source_ids:
+                - eu-emas-food-beverage-2017
+                - codex-cxc-8-1976
+            ranges: []
+        - row_id: r404a_refrigerant_input
+          role: "R404A refrigerant addition"
+          name: "Refrigerant R404A"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record net R404A addition separately when R404A is the installed refrigerant."
+          amount:
+            expression: "Opening charge + purchases - closing charge - recovered mass, allocated only after system reconciliation"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg released chilled or frozen product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_cold_route_records
+              source_ids:
+                - eu-emas-food-beverage-2017
+                - codex-cxc-8-1976
+            ranges: []
+        - row_id: r134a_refrigerant_input
+          role: "R134a refrigerant addition"
+          name: "Refrigerant R134a"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record net R134a addition separately when R134a is the installed refrigerant."
+          amount:
+            expression: "Opening charge + purchases - closing charge - recovered mass, allocated only after system reconciliation"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg released chilled or frozen product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_cold_route_records
+              source_ids:
+                - eu-emas-food-beverage-2017
+                - codex-cxc-8-1976
+            ranges: []
+        - row_id: r744_refrigerant_input
+          role: "Carbon dioxide refrigerant addition"
+          name: "Carbon dioxide, refrigerant grade, R744"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record net R744 carbon dioxide addition separately when R744 is the installed refrigerant."
+          amount:
+            expression: "Opening charge + purchases - closing charge - recovered mass, allocated only after system reconciliation"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg released chilled or frozen product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_cold_route_records
+              source_ids:
+                - eu-emas-food-beverage-2017
+                - codex-cxc-8-1976
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: cold_reference_product_output
+          role: "Chilled or frozen reference product at factory gate"
+          name: "Mixes and doughs for the preparation of bakers' wares"
+          flow_type: "product"
+          flow_ref:
+            uuid: "0252f353-8398-4eab-9e26-6a13e4b4f06b"
+          property_unit: "Mass / kg"
+          description: "Record only the selected market state and actual release temperature after the declared packaging sequence and factory cold storage; quick-frozen claims require thermal-centre and cold-chain records."
+          amount:
+            expression: "1,000 kg net released reference product for normalization"
+            value_mode: "fixed_value"
+            specificity: "route_specific"
+            basis:
+              text: "per 1,000 kg released chilled or frozen product"
+              kind: "reference_flow"
+            evidence:
+              kind: "identity_reference"
+              source_ids:
+                - codex-cxc-8-1976
+            ranges: []
+      waste:
+        - row_id: cold_route_product_loss
+          role: "Cold-route product loss"
+          name: "Rejected chilled or frozen bakery dough or batter"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record temperature-abused, freezer-damaged, or otherwise rejected product net of rework."
+          amount:
+            expression: "Measured rejected mass net of documented same-product rework"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per 1,000 kg released chilled or frozen product"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cold_route_records
+              source_ids:
+                - codex-cxc-8-1976
+                - eu-emas-food-beverage-2017
+            ranges: []
+      elementary:
+        - row_id: ammonia_refrigerant_to_air
+          role: "Ammonia refrigerant to air"
+          name: "Ammonia, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record reconciled ammonia loss to air separately."
+          amount:
+            expression: "Reconciled ammonia loss not transferred to recovery or waste treatment"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg released chilled or frozen product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_cold_route_records
+              source_ids:
+                - eu-emas-food-beverage-2017
+                - codex-cxc-8-1976
+            ranges: []
+        - row_id: r404a_refrigerant_to_air
+          role: "R404A refrigerant to air"
+          name: "Refrigerant R404A, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record reconciled R404A loss to air separately."
+          amount:
+            expression: "Reconciled R404A loss not transferred to recovery or waste treatment"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg released chilled or frozen product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_cold_route_records
+              source_ids:
+                - eu-emas-food-beverage-2017
+                - codex-cxc-8-1976
+            ranges: []
+        - row_id: r134a_refrigerant_to_air
+          role: "R134a refrigerant to air"
+          name: "Refrigerant R134a, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record reconciled R134a loss to air separately."
+          amount:
+            expression: "Reconciled R134a loss not transferred to recovery or waste treatment"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg released chilled or frozen product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_cold_route_records
+              source_ids:
+                - eu-emas-food-beverage-2017
+                - codex-cxc-8-1976
+            ranges: []
+        - row_id: r744_refrigerant_to_air
+          role: "R744 carbon dioxide refrigerant to air"
+          name: "Carbon dioxide, fossil, to air, from refrigerant R744"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record reconciled R744 loss to air separately from combustion and biogenic carbon dioxide."
+          amount:
+            expression: "Reconciled R744 loss not transferred to recovery or waste treatment"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg released chilled or frozen product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_cold_route_records
+              source_ids:
+                - eu-emas-food-beverage-2017
+                - codex-cxc-8-1976
+            ranges: []
+  - id: packaging
+    label: "Primary and secondary packaging"
+    inputs:
+      product:
+        - row_id: unpacked_route_product
+          role: "Unpacked route product"
+          name: "Unpacked bakery mix, dough, or batter"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the good product mass entering packaging from exactly one route."
+          amount:
+            expression: "Measured mass entering packaging"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per 1,000 kg net product packed"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_records
+              source_ids: []
+            ranges: []
+        - row_id: packaging_electricity
+          role: "Packaging electricity"
+          name: "Electricity, supplied to the manufacturing site"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record electricity for filling, sealing, labelling, case packing, and pallet wrapping."
+          amount:
+            expression: "Sub-metered electricity or equipment power × operating time"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg net product packed"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_records
+              source_ids:
+                - eu-emas-food-beverage-2017
+            ranges:
+              - role: qa_guardrail
+                lower: "1"
+                upper: "120"
+                unit: "kWh"
+                basis: "per 1,000 kg net product packed"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: ldpe_packaging_film
+          role: "Low-density polyethylene film"
+          name: "Low-density polyethylene film"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record LDPE film separately when used for liners, pouches, or wrapping."
+          amount:
+            expression: "Issued LDPE film - returned film - measured LDPE scrap"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg net product packed"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_records
+              source_ids:
+                - eu-emas-food-beverage-2017
+            ranges: []
+        - row_id: pp_packaging_film
+          role: "Polypropylene film"
+          name: "Polypropylene film"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record polypropylene film separately when used."
+          amount:
+            expression: "Issued polypropylene film - returned film - measured polypropylene scrap"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg net product packed"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_records
+              source_ids:
+                - eu-emas-food-beverage-2017
+            ranges: []
+        - row_id: kraft_paper_bag
+          role: "Kraft paper bag"
+          name: "Kraft paper bag"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record kraft paper bag mass separately when used."
+          amount:
+            expression: "Issued bag count × verified mass per bag - returned bag mass"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg net product packed"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_records
+              source_ids:
+                - eu-emas-food-beverage-2017
+            ranges: []
+        - row_id: corrugated_board_case
+          role: "Corrugated board case"
+          name: "Corrugated board case"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record corrugated board cases separately when used."
+          amount:
+            expression: "Issued case count × verified mass per case - returned case mass"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg net product packed"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_records
+              source_ids:
+                - eu-emas-food-beverage-2017
+            ranges: []
+        - row_id: pe_stretch_film
+          role: "Polyethylene stretch film"
+          name: "Polyethylene stretch film"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record pallet stretch film separately when used."
+          amount:
+            expression: "Issued stretch-film roll mass - remaining roll mass - measured scrap"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg net product packed"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_records
+              source_ids:
+                - eu-emas-food-beverage-2017
+            ranges:
+              - role: uncertainty_range
+                lower: "0"
+                upper: "50"
+                unit: "kg"
+                basis: "per 1,000 kg net product packed; replace with measured issued-and-returned roll mass"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: packed_route_product
+          role: "Packed route product"
+          name: "Packed bakery mix, dough, or batter"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record packed product gross mass and retain net product and each packaging component separately."
+          amount:
+            expression: "Measured net product + measured packaging mass"
+            value_mode: "calculated_value"
+            specificity: "route_specific"
+            basis:
+              text: "per 1,000 kg net product packed"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_records
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: ldpe_packaging_scrap
+          role: "LDPE packaging scrap"
+          name: "Waste low-density polyethylene film"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record LDPE scrap separately from other polymers and paper."
+          amount:
+            expression: "Measured LDPE trim and rejected-film mass"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net product packed"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_records
+              source_ids:
+                - eu-emas-food-beverage-2017
+            ranges: []
+        - row_id: pp_packaging_scrap
+          role: "Polypropylene packaging scrap"
+          name: "Waste polypropylene film"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record polypropylene scrap separately."
+          amount:
+            expression: "Measured polypropylene trim and rejected-film mass"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net product packed"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_records
+              source_ids:
+                - eu-emas-food-beverage-2017
+            ranges: []
+        - row_id: kraft_paper_packaging_scrap
+          role: "Kraft-paper packaging scrap"
+          name: "Waste kraft paper"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record kraft-paper bag and label scrap separately from corrugated board and polymer scrap."
+          amount:
+            expression: "Measured rejected kraft-paper bag and label mass sent to the declared treatment route"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net product packed"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_records
+              source_ids:
+                - eu-emas-food-beverage-2017
+            ranges: []
+        - row_id: corrugated_board_packaging_scrap
+          role: "Corrugated-board packaging scrap"
+          name: "Waste corrugated board"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record corrugated-board case scrap separately from kraft paper and polymer scrap."
+          amount:
+            expression: "Measured rejected corrugated-board case mass sent to the declared treatment route"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net product packed"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_records
+              source_ids:
+                - eu-emas-food-beverage-2017
+            ranges: []
+      elementary:
+        []
+  - id: ambient_finished_storage
+    label: "Ambient finished-product storage"
+    inputs:
+      product:
+        - row_id: packed_ambient_product
+          role: "Packed ambient-route product"
+          name: "Packed ambient bakery mix, dough, or batter"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record packed dry mix or ambient wet product entering ambient storage."
+          amount:
+            expression: "Measured mass received into ambient finished storage"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per 1,000 kg released reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_ambient_storage_records
+              source_ids: []
+            ranges: []
+        - row_id: ambient_storage_electricity
+          role: "Ambient storage electricity"
+          name: "Electricity, supplied to the manufacturing site"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record attributable lighting, ventilation, and handling electricity; exclude cold-store electricity."
+          amount:
+            expression: "Sub-metered kWh or warehouse kWh allocated by product mass × residence time"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg released reference product and declared storage duration"
+              kind: "storage_duration"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_ambient_storage_records
+              source_ids:
+                - eu-emas-food-beverage-2017
+            ranges:
+              - role: qa_guardrail
+                lower: "0.1"
+                upper: "80"
+                unit: "kWh"
+                basis: "per 1,000 kg released product for declared factory storage"
+                basis_kind: "storage_duration"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: reference_product_output
+          role: "Reference product at factory gate"
+          name: "Mixes and doughs for the preparation of bakers' wares"
+          flow_type: "product"
+          flow_ref:
+            uuid: "0252f353-8398-4eab-9e26-6a13e4b4f06b"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record net released product mass; packaging remains separate."
+          amount:
+            expression: "1,000 kg net released reference product for normalization"
+            value_mode: "fixed_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg released reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "identity_reference"
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: ambient_storage_product_loss
+          role: "Ambient storage product loss"
+          name: "Rejected ambient bakery mix, dough, or batter"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record expired, damaged, or contaminated ambient product net of rework."
+          amount:
+            expression: "Measured discarded mass net of documented same-product rework"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg released reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_ambient_storage_records
+              source_ids:
+                - eu-emas-food-beverage-2017
+            ranges: []
+      elementary:
+        []
+  - id: cleaning_and_sanitation
+    label: "Cleaning and sanitation"
+    inputs:
+      product:
+        - row_id: cleaning_electricity
+          role: "Cleaning electricity"
+          name: "Electricity, supplied to the manufacturing site"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record electricity for pumps, floor machines, clean-in-place systems, and ventilation during cleaning."
+          amount:
+            expression: "Sub-metered cleaning electricity or equipment power × cleaning time"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg released reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_cleaning_records
+              source_ids:
+                - eu-emas-food-beverage-2017
+                - eu-fdm-bref-2019
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "250"
+                unit: "kWh"
+                basis: "per 1,000 kg released reference product"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: cleaning_water
+          role: "Cleaning water"
+          name: "Process water"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "Record potable or process water used for wet cleaning separately from formulation water."
+          amount:
+            expression: "Metered cleaning water or calibrated flow × duration"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg released reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_cleaning_records
+              source_ids:
+                - eu-emas-food-beverage-2017
+                - eu-fdm-bref-2019
+            ranges:
+              - role: qa_guardrail
+                lower: "0.02"
+                upper: "12"
+                unit: "m3"
+                basis: "per 1,000 kg released reference product"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: purchased_hot_water
+          role: "Purchased hot water"
+          name: "Hot water, purchased"
+          flow_type: "product"
+          property_unit: "Net calorific energy / MJ"
+          description: "Record purchased hot water separately when no onsite utility supplies it."
+          amount:
+            expression: "Metered mass × measured or supplier enthalpy difference"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg released reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_cleaning_records
+              source_ids:
+                - eu-emas-food-beverage-2017
+                - eu-fdm-bref-2019
+            ranges: []
+        - row_id: cleaning_purchased_steam
+          role: "Purchased steam for cleaning"
+          name: "Steam, purchased"
+          flow_type: "product"
+          property_unit: "Net calorific energy / MJ"
+          description: "Record purchased steam separately when used and not supplied by the onsite thermal utility."
+          amount:
+            expression: "Metered steam mass × measured or supplier enthalpy difference"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg released reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_cleaning_records
+              source_ids:
+                - eu-emas-food-beverage-2017
+                - eu-fdm-bref-2019
+            ranges: []
+        - row_id: sodium_hydroxide_cleaner
+          role: "Sodium hydroxide cleaning solution"
+          name: "Sodium hydroxide cleaning solution"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record purchased sodium hydroxide product mass separately, with concentration disclosed."
+          amount:
+            expression: "Purchased formulated-product mass issued to included cleaning"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg released reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_cleaning_records
+              source_ids:
+                - eu-emas-food-beverage-2017
+                - eu-fdm-bref-2019
+            ranges: []
+        - row_id: nitric_acid_cleaner
+          role: "Nitric acid cleaning solution"
+          name: "Nitric acid cleaning solution"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record purchased nitric acid product mass separately, with concentration disclosed."
+          amount:
+            expression: "Purchased formulated-product mass issued to included cleaning"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg released reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_cleaning_records
+              source_ids:
+                - eu-emas-food-beverage-2017
+                - eu-fdm-bref-2019
+            ranges: []
+        - row_id: peracetic_acid_sanitizer
+          role: "Peracetic acid sanitizer"
+          name: "Peracetic acid sanitizer"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record purchased peracetic-acid sanitizer mass separately, with concentration disclosed."
+          amount:
+            expression: "Purchased formulated-product mass issued to included sanitation"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg released reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_cleaning_records
+              source_ids:
+                - eu-emas-food-beverage-2017
+                - eu-fdm-bref-2019
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: cleaning_wastewater
+          role: "Wastewater to treatment"
+          name: "Wastewater from bakery mix and dough cleaning"
+          flow_type: "waste"
+          property_unit: "Volume / m3"
+          description: "Record wastewater volume sent to the declared onsite or external treatment route."
+          amount:
+            expression: "Metered discharge volume attributable to included cleaning"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg released reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_effluent_records
+              source_ids:
+                - eu-emas-food-beverage-2017
+                - eu-fdm-bref-2019
+            ranges:
+              - role: qa_guardrail
+                lower: "0.02"
+                upper: "12"
+                unit: "m3"
+                basis: "per 1,000 kg released reference product"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: cleaning_food_solids_waste
+          role: "Recovered food solids from cleaning"
+          name: "Recovered bakery mix and dough solids from cleaning"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record dry-cleaned and screened food solids sent to the declared treatment route."
+          amount:
+            expression: "Measured recovered solids net of documented rework"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg released reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_effluent_records
+              source_ids:
+                - eu-emas-food-beverage-2017
+                - eu-fdm-bref-2019
+            ranges: []
+      elementary:
+        - row_id: cod_to_water
+          role: "Chemical oxygen demand to water"
+          name: "Chemical oxygen demand, to water"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record direct COD load only for onsite final discharge; omit when an external treatment dataset already carries the pollutant releases."
+          amount:
+            expression: "Flow-weighted COD concentration × direct-discharge volume"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg released reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_effluent_records
+              source_ids:
+                - eu-fdm-bref-2019
+            ranges: []
+        - row_id: bod5_to_water
+          role: "Biochemical oxygen demand to water"
+          name: "Biochemical oxygen demand, 5-day, to water"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record direct BOD5 load separately when monitored and directly discharged."
+          amount:
+            expression: "Flow-weighted BOD5 concentration × direct-discharge volume"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg released reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_effluent_records
+              source_ids:
+                - eu-fdm-bref-2019
+            ranges: []
+        - row_id: tss_to_water
+          role: "Total suspended solids to water"
+          name: "Total suspended solids, to water"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record direct suspended-solids load separately when monitored and directly discharged."
+          amount:
+            expression: "Flow-weighted suspended-solids concentration × direct-discharge volume"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg released reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_effluent_records
+              source_ids:
+                - eu-fdm-bref-2019
+            ranges: []
+        - row_id: total_nitrogen_to_water
+          role: "Total nitrogen to water"
+          name: "Nitrogen, total, to water"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record direct total-nitrogen load separately when monitored and directly discharged."
+          amount:
+            expression: "Flow-weighted total-nitrogen concentration × direct-discharge volume"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg released reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_effluent_records
+              source_ids:
+                - eu-fdm-bref-2019
+            ranges: []
+        - row_id: total_phosphorus_to_water
+          role: "Total phosphorus to water"
+          name: "Phosphorus, total, to water"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record direct total-phosphorus load separately when monitored and directly discharged."
+          amount:
+            expression: "Flow-weighted total-phosphorus concentration × direct-discharge volume"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg released reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_effluent_records
+              source_ids:
+                - eu-fdm-bref-2019
+            ranges: []
+  - id: onsite_thermal_utility
+    label: "Onsite steam or hot-water generation"
+    inputs:
+      product:
+        - row_id: natural_gas_fuel
+          role: "Natural gas"
+          name: "Natural gas"
+          flow_type: "product"
+          property_unit: "Net calorific energy / MJ"
+          description: "Record natural gas separately when burned onsite for included steam or hot water."
+          amount:
+            expression: "Metered gas quantity × site or supplier net calorific value"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per MJ useful steam or hot water supplied to included processes"
+              kind: "fuel_inventory"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_thermal_utility_records
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "1.05"
+                upper: "3"
+                unit: "MJ"
+                basis: "per MJ useful steam or hot water output"
+                basis_kind: "fuel_inventory"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: lpg_fuel
+          role: "Liquefied petroleum gas"
+          name: "Liquefied petroleum gas"
+          flow_type: "product"
+          property_unit: "Net calorific energy / MJ"
+          description: "Record LPG separately when burned onsite; do not combine with natural gas or diesel."
+          amount:
+            expression: "Metered LPG mass or volume × site or supplier net calorific value"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per MJ useful steam or hot water supplied to included processes"
+              kind: "fuel_inventory"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_thermal_utility_records
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "1.05"
+                upper: "3"
+                unit: "MJ"
+                basis: "per MJ useful steam or hot water output"
+                basis_kind: "fuel_inventory"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: diesel_fuel
+          role: "Diesel fuel"
+          name: "Diesel fuel"
+          flow_type: "product"
+          property_unit: "Net calorific energy / MJ"
+          description: "Record diesel separately when burned in an included boiler or heater."
+          amount:
+            expression: "Metered diesel volume × density × site or supplier net calorific value"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per MJ useful steam or hot water supplied to included processes"
+              kind: "fuel_inventory"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_thermal_utility_records
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "1.05"
+                upper: "3.5"
+                unit: "MJ"
+                basis: "per MJ useful steam or hot water output"
+                basis_kind: "fuel_inventory"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: thermal_utility_electricity
+          role: "Thermal-utility electricity"
+          name: "Electricity, supplied to the manufacturing site"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record boiler fans, pumps, controls, and water-treatment electricity separately."
+          amount:
+            expression: "Sub-metered utility electricity or equipment power × operating time"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per MJ useful steam or hot water supplied to included processes"
+              kind: "fuel_inventory"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_thermal_utility_records
+              source_ids: []
+            ranges: []
+        - row_id: boiler_feedwater
+          role: "Boiler feedwater"
+          name: "Boiler feedwater"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "Record treated feedwater entering the onsite utility separately from cleaning water."
+          amount:
+            expression: "Metered makeup feedwater"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per MJ useful steam or hot water supplied to included processes"
+              kind: "fuel_inventory"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_thermal_utility_records
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: onsite_steam_output
+          role: "Onsite steam supplied"
+          name: "Steam, onsite"
+          flow_type: "product"
+          property_unit: "Net calorific energy / MJ"
+          description: "Record useful steam delivered to included processes."
+          amount:
+            expression: "Delivered steam mass × measured enthalpy difference"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per MJ useful steam supplied"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_thermal_utility_records
+              source_ids: []
+            ranges: []
+        - row_id: onsite_hot_water_output
+          role: "Onsite hot water supplied"
+          name: "Hot water, onsite"
+          flow_type: "product"
+          property_unit: "Net calorific energy / MJ"
+          description: "Record useful hot water delivered to included processes."
+          amount:
+            expression: "Delivered water mass × heat capacity × measured temperature rise"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per MJ useful hot water supplied"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_thermal_utility_records
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: boiler_blowdown_wastewater
+          role: "Boiler blowdown wastewater"
+          name: "Boiler blowdown wastewater"
+          flow_type: "waste"
+          property_unit: "Volume / m3"
+          description: "Record boiler blowdown sent to the declared treatment route."
+          amount:
+            expression: "Metered or calculated blowdown volume"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per MJ useful steam or hot water supplied"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_thermal_utility_records
+              source_ids: []
+            ranges: []
+      elementary:
+        - row_id: combustion_fossil_co2
+          role: "Fossil carbon dioxide from fuel combustion"
+          name: "Carbon dioxide, fossil, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record fossil carbon dioxide separately for the actual fuel inventory."
+          amount:
+            expression: "Fuel net calorific energy × disclosed fuel-specific emission factor"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per MJ useful steam or hot water supplied"
+              kind: "fuel_inventory"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_combustion_emissions
+              source_ids: []
+            ranges: []
+        - row_id: combustion_methane
+          role: "Methane from fuel combustion"
+          name: "Methane, fossil, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record combustion methane separately."
+          amount:
+            expression: "Fuel net calorific energy × disclosed fuel- and technology-specific emission factor"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per MJ useful steam or hot water supplied"
+              kind: "fuel_inventory"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_combustion_emissions
+              source_ids: []
+            ranges: []
+        - row_id: combustion_nitrous_oxide
+          role: "Nitrous oxide from fuel combustion"
+          name: "Nitrous oxide, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record combustion nitrous oxide separately."
+          amount:
+            expression: "Fuel net calorific energy × disclosed fuel- and technology-specific emission factor"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per MJ useful steam or hot water supplied"
+              kind: "fuel_inventory"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_combustion_emissions
+              source_ids: []
+            ranges: []
+        - row_id: combustion_nox
+          role: "Nitrogen oxides from fuel combustion"
+          name: "Nitrogen oxides, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record nitrogen oxides separately as the inventory convention requires."
+          amount:
+            expression: "Stack measurement or fuel net calorific energy × disclosed technology-specific emission factor"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per MJ useful steam or hot water supplied"
+              kind: "fuel_inventory"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_combustion_emissions
+              source_ids: []
+            ranges: []
+        - row_id: combustion_carbon_monoxide
+          role: "Carbon monoxide from fuel combustion"
+          name: "Carbon monoxide, fossil, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record carbon monoxide separately."
+          amount:
+            expression: "Stack measurement or fuel net calorific energy × disclosed technology-specific emission factor"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per MJ useful steam or hot water supplied"
+              kind: "fuel_inventory"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_combustion_emissions
+              source_ids: []
+            ranges: []
+        - row_id: combustion_pm25
+          role: "Fine particulate matter from fuel combustion"
+          name: "Particulate matter, less than 2.5 micrometres, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record PM2.5 separately when applicable to the selected fuel and equipment."
+          amount:
+            expression: "Stack measurement or fuel net calorific energy × disclosed technology-specific emission factor"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per MJ useful steam or hot water supplied"
+              kind: "fuel_inventory"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_combustion_emissions
+              source_ids: []
+            ranges: []
+allocation_rules:
+  - rule_id: al_avoid_allocation
+    applies_to: "All multi-output or shared processes"
+    rule: "Avoid allocation first through route-specific datasets, process subdivision, separate batch records, and sub-metering."
+    source_ids:
+      - ghg-protocol-product-standard-2011
+  - rule_id: al_no_route_average
+    applies_to: "Facilities producing multiple product states"
+    rule: "Never allocate by first averaging dry, ambient, chilled, and frozen routes. Establish separate route inventories before treating genuinely shared services."
+    source_ids:
+      - ghg-protocol-product-standard-2011
+      - codex-cxc-8-1976
+  - rule_id: al_rework
+    applies_to: "Same-product rework"
+    rule: "Return same-formulation rework to the originating route as an internal loop and disclose gross generation and returned mass; do not count returned mass as waste or a co-product."
+    source_ids:
+      - ghg-protocol-product-standard-2011
+  - rule_id: al_shared_service_physical
+    applies_to: "Shared electricity, cleaning, storage, refrigeration, and utilities"
+    rule: "If subdivision is unavailable, use a causal physical driver: metered operating time for equipment, cleaned surface or cleaning cycle for sanitation, tonne-day and temperature lift for storage, or delivered useful heat for thermal utilities."
+    source_ids:
+      - ghg-protocol-product-standard-2011
+      - eu-emas-food-beverage-2017
+  - rule_id: al_economic_fallback
+    applies_to: "Residual shared burdens"
+    rule: "Use economic allocation only when no defensible physical relationship exists; disclose prices, period, geography, volatility, and a physical-versus-economic sensitivity result."
+    source_ids:
+      - ghg-protocol-product-standard-2011
+  - rule_id: al_waste_and_saleable_output
+    applies_to: "Residues and off-specification product"
+    rule: "Treat an output with no economic value and a required treatment route as waste. If sold or used as a functionally valuable output, classify it as a co-product and apply the allocation hierarchy."
+    source_ids:
+      - ghg-protocol-product-standard-2011
+  - rule_id: al_recycling
+    applies_to: "Packaging and other recyclable wastes"
+    rule: "Report the selected recycling convention and keep collection, sorting, treatment, recycled-content credit, and any avoided-burden claim explicit; do not mix conventions within one dataset."
+    source_ids:
+      - ghg-protocol-product-standard-2011
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_route_formulation_release
+      process_id: "ingredient_receiving_and_dosing"
+      flow_role: "route and product identity"
+      record_type: "production master and release record"
+      raw_fields: "route_code; formulation_id; leavening_mode; make_up_state; moisture_or_water_mass_fraction; storage_temperature_setpoint; storage_duration; packaging_configuration; shelf_life; released_net_mass_kg"
+      collection_method: "Approved product specification joined to released lots"
+      unit: "kg; °C; h"
+      frequency: "Each released lot"
+      temporal_coverage: "Representative consecutive campaigns covering at least one year or the full available campaign period if shorter"
+      site_scope: "Every included production site and line"
+      aggregation_rule: "Keep routes and formulations separate; sum only released lots with identical required qualifiers"
+      quality_evidence: "Approved formula; batch genealogy; release certificate; calibrated product scale; temperature record"
+    - protocol_id: cp_ingredient_mass
+      process_id: "ingredient_receiving_and_dosing"
+      flow_role: "each named ingredient input"
+      record_type: "weigh ticket and batch issue record"
+      raw_fields: "ingredient_name; supplier_lot; formulation_id; issued_kg; returned_kg; reworked_kg; ingredient_moisture_fraction; batch_id"
+      collection_method: "Calibrated weigh system reconciled to inventory issues and returns"
+      unit: "kg"
+      frequency: "Each batch"
+      temporal_coverage: "Same lots and campaigns as product output"
+      site_scope: "Every included dosing line"
+      aggregation_rule: "net_ingredient_kg = issued_kg - returned_kg; normalize only within one formulation_id and route_code"
+      quality_evidence: "Scale calibration; supplier lot; recipe approval; issue-return reconciliation"
+    - protocol_id: cp_receiving_dosing_energy
+      process_id: "ingredient_receiving_and_dosing"
+      flow_role: "receiving and dosing electricity"
+      record_type: "meter or equipment log"
+      raw_fields: "meter_start_kwh; meter_end_kwh; equipment_kw; loaded_runtime_h; batch_id"
+      collection_method: "Dedicated meter preferred; otherwise verified power × loaded runtime"
+      unit: "kWh"
+      frequency: "Each campaign or meter interval"
+      temporal_coverage: "At least one representative year or full campaign period"
+      site_scope: "Each included receiving and dosing system"
+      aggregation_rule: "Subtract documented idle or unrelated use; divide by released net mass for the same route"
+      quality_evidence: "Meter identifier and calibration; runtime log; reconciliation to facility bill"
+    - protocol_id: cp_receiving_dosing_losses
+      process_id: "ingredient_receiving_and_dosing"
+      flow_role: "ingredient waste, incoming packaging waste, and dust"
+      record_type: "waste ticket, mass balance, and emission record"
+      raw_fields: "waste_name; treatment_route; gross_kg; reworked_kg; captured_dust_kg; released_dust_kg; batch_id"
+      collection_method: "Weigh each waste stream; use monitored or site-approved dust calculation"
+      unit: "kg"
+      frequency: "Each batch or waste pickup"
+      temporal_coverage: "Same campaigns as product output"
+      site_scope: "Each included receiving and dosing system"
+      aggregation_rule: "Keep paper, plastic, food waste, captured dust, and released dust separate"
+      quality_evidence: "Waste scale calibration; treatment receipt; filter log; emission calculation"
+    - protocol_id: cp_dry_blend_records
+      process_id: "dry_sieving_and_blending"
+      flow_role: "dry route mass, electricity, reject, and dust"
+      record_type: "batch, meter, and waste record"
+      raw_fields: "route_code; batch_input_kg; good_output_kg; reject_kg; rework_kg; meter_kwh; runtime_h; released_dust_kg"
+      collection_method: "Calibrated mass records plus dedicated meter or verified power × runtime"
+      unit: "kg; kWh"
+      frequency: "Each dry batch"
+      temporal_coverage: "Representative consecutive dry-route campaigns"
+      site_scope: "Each dry line"
+      aggregation_rule: "Normalize only dry_mix_ambient batches; reconcile input = good output + reject + dust + stock change"
+      quality_evidence: "Scale and meter calibration; batch genealogy; dust-control log"
+    - protocol_id: cp_dough_mixing_records
+      process_id: "dough_mixing_and_kneading"
+      flow_role: "wet route mass, electricity, and reject"
+      record_type: "batch, mixer, and waste record"
+      raw_fields: "route_code; batch_input_kg; good_output_kg; reject_kg; rework_kg; meter_kwh; mixer_kw; loaded_runtime_h"
+      collection_method: "Calibrated mass records and dedicated meter or verified power × loaded runtime"
+      unit: "kg; kWh"
+      frequency: "Each wet batch"
+      temporal_coverage: "Representative consecutive wet-route campaigns"
+      site_scope: "Each mixer and wet line"
+      aggregation_rule: "Keep ambient, chilled, and frozen route_code values separate; reconcile mass by batch"
+      quality_evidence: "Scale and meter calibration; mixer log; batch genealogy"
+    - protocol_id: cp_fermentation_makeup_records
+      process_id: "fermentation_resting_and_makeup"
+      flow_role: "included operations, energy, steam, mass, and direct fermentation releases"
+      record_type: "process historian, batch, and emission record"
+      raw_fields: "operation_codes; leavening_mode; input_kg; output_kg; reject_kg; rework_kg; meter_kwh; steam_kg; steam_enthalpy_mj_per_kg; fermentation_time_h; released_co2_kg; released_ethanol_kg"
+      collection_method: "Record only performed operations; meter utilities and use site measurement or documented pre-oven balance for releases"
+      unit: "kg; kWh; MJ; h"
+      frequency: "Each batch or campaign"
+      temporal_coverage: "Representative consecutive campaigns for each selected operation set"
+      site_scope: "Each included fermentation and make-up line"
+      aggregation_rule: "Aggregate only identical operation_codes and leavening_mode; no bakery-oven factor transfer"
+      quality_evidence: "Historian export; utility meter; batch genealogy; emission-method record"
+    - protocol_id: cp_cold_route_records
+      process_id: "temperature_conditioning_and_cold_storage"
+      flow_role: "conditioning, storage, refrigerant, temperature, and loss"
+      record_type: "energy meter, temperature logger, refrigerant ledger, and stock record"
+      raw_fields: "route_code; conditioning_method; input_kg; released_kg; reject_kg; conditioning_kwh; storage_kwh; storage_duration_h; product_temperature_c; refrigerant_name; opening_charge_kg; purchased_kg; recovered_kg; closing_charge_kg"
+      collection_method: "Separate conditioning and storage meters where available; calibrated continuous temperature log; annual refrigerant mass balance by named chemical"
+      unit: "kg; kWh; h; °C"
+      frequency: "Each batch plus continuous temperature and annual refrigerant reconciliation"
+      temporal_coverage: "At least one full seasonal year when the route operates year-round"
+      site_scope: "Each cold system and route"
+      aggregation_rule: "Keep chilled and frozen route_code values separate; allocate shared storage only by tonne-day adjusted for documented temperature lift"
+      quality_evidence: "Meter and logger calibration; refrigerant invoices and recovery records; stock reconciliation; alarm log"
+    - protocol_id: cp_packaging_records
+      process_id: "packaging"
+      flow_role: "each named packaging input, scrap, and electricity"
+      record_type: "bill of materials, issue record, scale, and meter"
+      raw_fields: "material_name; package_count; verified_mass_per_item_kg; issued_kg; returned_kg; scrap_kg; packed_net_product_kg; meter_kwh"
+      collection_method: "Count × verified item mass or direct weighing; dedicated meter or verified power × runtime"
+      unit: "kg; kWh"
+      frequency: "Each packaging campaign"
+      temporal_coverage: "Same released lots as reference product"
+      site_scope: "Each packaging line and configuration"
+      aggregation_rule: "Keep LDPE, PP, kraft paper, corrugated board, and stretch film separate; reconcile issued = packed + scrap + returned"
+      quality_evidence: "Packaging specification; scale and meter calibration; issue-return reconciliation"
+    - protocol_id: cp_ambient_storage_records
+      process_id: "ambient_finished_storage"
+      flow_role: "ambient storage energy, residence, release, and loss"
+      record_type: "warehouse meter and stock movement"
+      raw_fields: "route_code; lot_id; mass_in_kg; mass_out_kg; discarded_kg; meter_kwh; entry_time; release_time"
+      collection_method: "Dedicated meter preferred; otherwise complete warehouse meter allocated by mass × residence time"
+      unit: "kg; kWh; h"
+      frequency: "Each stock movement and meter interval"
+      temporal_coverage: "At least one representative year or full campaign period"
+      site_scope: "Each ambient warehouse"
+      aggregation_rule: "Include only dry_mix_ambient and wet_dough_ambient; reconcile stock change and losses"
+      quality_evidence: "Meter calibration; warehouse stock ledger; release record"
+    - protocol_id: cp_cleaning_records
+      process_id: "cleaning_and_sanitation"
+      flow_role: "cleaning electricity, water, heat, and each named chemical"
+      record_type: "cleaning log, issue record, and utility meter"
+      raw_fields: "cleaning_cycle_id; area_or_equipment; route_code; water_m3; electricity_kwh; hot_water_kg; inlet_temperature_c; outlet_temperature_c; steam_kg; sodium_hydroxide_solution_kg; nitric_acid_solution_kg; peracetic_acid_solution_kg; product_concentration"
+      collection_method: "Meter utilities and weigh or reconcile each formulated chemical issue"
+      unit: "m3; kWh; kg; °C"
+      frequency: "Each cleaning cycle"
+      temporal_coverage: "Representative production and changeover cycles over the reporting period"
+      site_scope: "Every included line and shared sanitation system"
+      aggregation_rule: "Assign direct cycles to route; allocate shared cycles by documented causal driver and reconcile to site totals"
+      quality_evidence: "Cleaning schedule; meter calibration; chemical issue record; concentration certificate"
+    - protocol_id: cp_effluent_records
+      process_id: "cleaning_and_sanitation"
+      flow_role: "wastewater, recovered solids, and direct pollutant loads"
+      record_type: "flow meter, laboratory sample, and waste ticket"
+      raw_fields: "discharge_destination; wastewater_m3; solids_kg; cod_mg_per_l; bod5_mg_per_l; tss_mg_per_l; total_n_mg_per_l; total_p_mg_per_l; sample_time; flow_period"
+      collection_method: "Flow-proportional composite sampling and accredited or controlled laboratory method; weigh screened solids"
+      unit: "m3; kg; mg/L"
+      frequency: "Each discharge period with sampling frequency justified by variability"
+      temporal_coverage: "Same reporting period as production"
+      site_scope: "Every discharge point and treatment route in scope"
+      aggregation_rule: "concentration_kg_per_m3 × matching discharge_m3; report direct releases only at the final onsite discharge point"
+      quality_evidence: "Flow-meter calibration; chain of custody; method and detection limit; treatment receipt"
+    - protocol_id: cp_thermal_utility_records
+      process_id: "onsite_thermal_utility"
+      flow_role: "each fuel, electricity, feedwater, useful heat, and blowdown"
+      record_type: "fuel meter, utility meter, water meter, and operating log"
+      raw_fields: "fuel_name; fuel_quantity; density_kg_per_l; ncv_mj_per_unit; electricity_kwh; feedwater_m3; steam_kg; steam_enthalpy_mj_per_kg; hot_water_kg; temperature_rise_c; blowdown_m3"
+      collection_method: "Meter every carrier separately and calculate useful output from measured thermodynamic state"
+      unit: "MJ; kWh; m3; kg; °C"
+      frequency: "Each meter interval"
+      temporal_coverage: "At least one representative year or complete campaign period"
+      site_scope: "Each included boiler or heater"
+      aggregation_rule: "No carrier averaging; reconcile fuel energy to useful heat, losses, and stock change"
+      quality_evidence: "Meter calibration; fuel invoice; supplier NCV; steam or hot-water state record"
+    - protocol_id: cp_combustion_emissions
+      process_id: "onsite_thermal_utility"
+      flow_role: "each combustion emission"
+      record_type: "stack test, continuous monitor, or fuel-factor calculation"
+      raw_fields: "fuel_name; fuel_energy_mj; pollutant_name; measured_concentration; exhaust_flow; emission_factor; factor_unit; factor_source"
+      collection_method: "Prefer stack or continuous measurement; otherwise multiply separate fuel energy by a current disclosed fuel- and technology-specific factor"
+      unit: "kg; MJ"
+      frequency: "Each test or factor interval"
+      temporal_coverage: "Same period as fuel inventory"
+      site_scope: "Each combustion unit"
+      aggregation_rule: "Calculate each substance and fuel separately; aggregate only after calculation"
+      quality_evidence: "Test report or monitor QA; factor citation; fuel-energy reconciliation"
+  calculation_rules:
+    - id: calc_net_ingredient_mass
+      applies_to: "Each ingredient"
+      rule: "net_ingredient_kg = issued_kg - returned_kg; same-product rework is disclosed separately and not subtracted from virgin ingredient identity"
+      inputs:
+        - issued_kg
+        - returned_kg
+        - reworked_kg
+        - released_net_mass_kg
+      output: "kg ingredient per 1,000 kg released product"
+      source_ids:
+        - ghg-protocol-product-standard-2011
+    - id: calc_process_energy
+      applies_to: "Each electricity row"
+      rule: "normalized_kwh = attributable_meter_kwh × 1000 / released_or_process_output_kg"
+      inputs:
+        - meter_start_kwh
+        - meter_end_kwh
+        - attributable_fraction
+        - output_kg
+      output: "kWh per 1,000 kg output"
+      source_ids:
+        - eu-emas-food-beverage-2017
+    - id: calc_storage_energy
+      applies_to: "Shared ambient or cold storage"
+      rule: "allocated_kwh = complete_storage_kwh × product_tonne_days / sum_all_product_tonne_days; apply a documented temperature-lift refinement when products use materially different setpoints"
+      inputs:
+        - complete_storage_kwh
+        - product_mass_t
+        - residence_days
+        - storage_setpoint_c
+      output: "kWh per 1,000 kg released product"
+      source_ids:
+        - eu-emas-food-beverage-2017
+        - ghg-protocol-product-standard-2011
+    - id: calc_refrigerant_loss
+      applies_to: "Each named refrigerant"
+      rule: "loss_kg = opening_charge_kg + purchased_kg - closing_charge_kg - recovered_kg - documented_transfer_kg; negative or unreconciled results are invalid"
+      inputs:
+        - opening_charge_kg
+        - purchased_kg
+        - closing_charge_kg
+        - recovered_kg
+        - documented_transfer_kg
+      output: "kg named refrigerant to air before causal allocation"
+      source_ids:
+        - eu-emas-food-beverage-2017
+        - codex-cxc-8-1976
+    - id: calc_packaging_mass
+      applies_to: "Each packaging material"
+      rule: "packaging_to_product_kg = issued_kg - returned_kg - scrap_kg; reconcile with package_count × verified_mass_per_item_kg"
+      inputs:
+        - issued_kg
+        - returned_kg
+        - scrap_kg
+        - package_count
+        - verified_mass_per_item_kg
+      output: "kg named packaging per 1,000 kg net product"
+      source_ids:
+        - eu-emas-food-beverage-2017
+    - id: calc_cleaning_heat
+      applies_to: "Hot water and steam"
+      rule: "hot_water_mj = water_kg × 4.186 kJ_per_kg_K × temperature_rise_K / 1000; steam_mj = steam_kg × measured_enthalpy_difference_mj_per_kg"
+      inputs:
+        - water_kg
+        - temperature_rise_K
+        - steam_kg
+        - measured_enthalpy_difference_mj_per_kg
+      output: "MJ useful cleaning heat"
+      source_ids:
+        - eu-fdm-bref-2019
+    - id: calc_fuel_energy
+      applies_to: "Natural gas, LPG, and diesel"
+      rule: "fuel_energy_mj = metered_quantity × documented_density_if_needed × supplier_or_site_ncv"
+      inputs:
+        - fuel_quantity
+        - density
+        - ncv
+      output: "MJ per named fuel"
+      source_ids: []
+    - id: calc_combustion_emission
+      applies_to: "Each fuel and pollutant"
+      rule: "pollutant_kg = fuel_energy_mj × disclosed_emission_factor_kg_per_mj; do not calculate until factor source, fuel, technology, and oxidation basis are declared"
+      inputs:
+        - fuel_energy_mj
+        - emission_factor_kg_per_mj
+      output: "kg individual pollutant"
+      source_ids: []
+    - id: calc_effluent_load
+      applies_to: "Each direct water pollutant"
+      rule: "pollutant_kg = flow_weighted_concentration_mg_per_l × matching_discharge_m3 / 1000"
+      inputs:
+        - concentration_mg_per_l
+        - discharge_m3
+      output: "kg individual pollutant to water"
+      source_ids:
+        - eu-fdm-bref-2019
+    - id: calc_mass_balance
+      applies_to: "Each process and whole foreground system"
+      rule: "mass_balance_gap_kg = total_mass_inputs_kg - total_mass_outputs_kg - measured_direct_mass_emissions_kg - stock_change_kg; report gap and investigate against the route-specific threshold"
+      inputs:
+        - "all mass inputs"
+        - "all product and waste outputs"
+        - "direct mass emissions"
+        - "stock change"
+      output: "kg and percent mass-balance gap"
+      source_ids:
+        - ghg-protocol-product-standard-2011
+  data_quality_requirements:
+    - id: dq_route_identity
+      applies_to: "Dataset identity"
+      requirement: "Declare exactly one route_code and one formulation_id and retain lot genealogy from ingredient issue through released product."
+      evidence: "Approved specification, batch genealogy, and release records"
+    - id: dq_temporal
+      applies_to: "Foreground measurements"
+      requirement: "Use temporally matched inputs and outputs; normally cover at least one representative year, or disclose shorter campaigns, seasonality, shutdowns, and start-up losses."
+      evidence: "Dated meter, batch, stock, and waste records"
+    - id: dq_technology_geography
+      applies_to: "Foreground and upstream data"
+      requirement: "Describe actual mixer, conditioner, cold system, packaging line, thermal utility, site, and geography; assess upstream datasets for technological, temporal, and geographic representativeness."
+      evidence: "Equipment register, site metadata, supplier and dataset metadata"
+    - id: dq_completeness
+      applies_to: "Atomic flow inventory"
+      requirement: "Reconcile material, energy, refrigerant, water, packaging, waste, and emission records. Any actual ingredient, fuel, refrigerant, cleaning chemical, packaging material, waste, or emitted substance missing from the listed cards shall be added as its own named atomic row before publication."
+      evidence: "Reconciliation worksheet and completeness sign-off"
+    - id: dq_meter_quality
+      applies_to: "Measurements"
+      requirement: "Retain meter identity, calibration or verification status, resolution, missing-data handling, and the fraction of output covered."
+      evidence: "Calibration certificates, meter register, and missing-data log"
+    - id: dq_cold_chain
+      applies_to: "Chilled and frozen routes"
+      requirement: "Retain product and storage temperature time series, conditioning endpoint, storage duration, alarm excursions, and instrument checks. For quick-frozen product, document thermal-centre completion at -18 °C or colder and subsequent -18 °C cold-chain control."
+      evidence: "Calibrated logger records and release review; codex-cxc-8-1976"
+    - id: dq_refrigerant
+      applies_to: "Cold systems"
+      requirement: "Reconcile opening charge, purchases, additions, recovery, transfer, and closing charge for each named refrigerant; disclose unreconciled difference and allocation."
+      evidence: "Refrigerant ledger, invoices, service and recovery records"
+    - id: dq_reasoned_estimates
+      applies_to: "Provisional ranges"
+      requirement: "Every reasoned_estimate range is a broad authoring QA or sensitivity prior, not a default foreground value. Test the lower and upper bounds when the flow is material and replace the range with reviewed route/site evidence before it becomes publication-critical."
+      evidence: "Sensitivity result and review disposition"
+    - id: dq_tiangong_comment_defect
+      applies_to: "Reference-flow identity"
+      requirement: "The reference flow UUID, name, CPC 23180 classification, Product flow type, and Mass reference are consistent, but its generalComment says CPC 232. Disclose this defect and never use the comment as methodology or scope evidence."
+      evidence: "Tiangong identity fields for UUID 0252f353-8398-4eab-9e26-6a13e4b4f06b"
+    - id: dq_source_limits
+      applies_to: "External evidence"
+      requirement: "EPA bakery material is limited to mainly yeast-leavened bread operations and predates current equipment; use it only for ingredient and unit-operation candidates. Codex quick-frozen rules apply only to declared quick-frozen product. EU food-sector sources are environmental guidance, not product-specific amount defaults."
+      evidence: "Source applicability matrix and reviewer sign-off"
+validation_rules:
+  - rule_id: val_reference_identity
+    applies_to: "Reference flow"
+    rule: "Require UUID 0252f353-8398-4eab-9e26-6a13e4b4f06b, exact product name, CPC 23180 classification leaf, Product flow type, and Mass property; flag the CPC 232 generalComment defect without using it as evidence."
+    source_ids: []
+  - rule_id: val_route_exclusive
+    applies_to: "Dataset route"
+    rule: "Fail if route_code is missing, outside the four allowed values, or if records from more than one route_code are averaged."
+    source_ids:
+      - un-cpc-v3-explanatory-notes-2025
+  - rule_id: val_process_gates
+    applies_to: "Process map"
+    rule: "Require every process whose condition is true and reject dry blending on wet routes, wet mixing on dry routes, cold conditioning on ambient routes, or fermentation where the operation is not performed."
+    source_ids:
+      - us-epa-bakery-oven-act-1992
+      - codex-cxc-8-1976
+  - rule_id: val_atomic_inputs
+    applies_to: "Product inputs"
+    rule: "Fail any aggregate materials, ingredients, chemicals, cleaning agents, packaging, energy carriers, fuels, thermal energy, or refrigerants row; require one named flow per actual substance or product."
+    source_ids:
+      - eu-emas-food-beverage-2017
+      - eu-fdm-bref-2019
+  - rule_id: val_atomic_outputs
+    applies_to: "Waste and elementary outputs"
+    rule: "Fail any aggregate wastes or emissions row; require separate treatment flows and separate substances for air and water releases."
+    source_ids:
+      - eu-fdm-bref-2019
+  - rule_id: val_uuid_scope
+    applies_to: "UUID-bearing inventory"
+    rule: "Permit the verified UUIDs only on the reference product and its Mass reference property; all other flow UUIDs remain blank until individually mapped by the foreground author."
+    source_ids: []
+  - rule_id: val_mass_balance
+    applies_to: "Each process and whole system"
+    rule: "Require a reported mass-balance gap and investigation of unexplained differences; never close the balance with an unnamed other material, waste, or emission."
+    source_ids:
+      - ghg-protocol-product-standard-2011
+  - rule_id: val_cold_records
+    applies_to: "Chilled and frozen routes"
+    rule: "Require conditioning method, product temperature, storage setpoint, duration, electricity, named refrigerant reconciliation, and product loss."
+    source_ids:
+      - codex-cxc-8-1976
+      - eu-emas-food-beverage-2017
+  - rule_id: val_quick_frozen_claim
+    applies_to: "Quick-frozen product"
+    rule: "When freezing_claim = quick_frozen, require evidence that the thermal centre reached -18 °C or colder after stabilization and that subsequent storage was maintained at -18 °C or colder, subject to declared permitted tolerances."
+    source_ids:
+      - codex-cxc-8-1976
+  - rule_id: val_energy_carriers
+    applies_to: "Thermal utility"
+    rule: "Fail combined fuel or thermal-energy inputs; natural gas, LPG, diesel, purchased steam, and purchased hot water shall remain separate and reconcile to useful heat."
+    source_ids:
+      - eu-emas-food-beverage-2017
+      - eu-fdm-bref-2019
+  - rule_id: val_refrigerants
+    applies_to: "Cold systems"
+    rule: "Fail generic refrigerant entries or combined refrigerant losses; require actual chemical identity and a non-negative reconciled mass balance."
+    source_ids:
+      - eu-emas-food-beverage-2017
+      - codex-cxc-8-1976
+  - rule_id: val_effluent_double_count
+    applies_to: "Wastewater and water emissions"
+    rule: "If wastewater is sent to external treatment, do not also report treatment-plant releases as direct site emissions; if discharge is onsite final, require measured individual loads and discharge destination."
+    source_ids:
+      - eu-fdm-bref-2019
+  - rule_id: val_allocation
+    applies_to: "Shared processes"
+    rule: "Require documented subdivision attempt, causal driver, unallocated total, allocated total, and reconciliation; require sensitivity when economic allocation is used."
+    source_ids:
+      - ghg-protocol-product-standard-2011
+  - rule_id: val_reasoned_estimates
+    applies_to: "Amount ranges"
+    rule: "Prohibit a reasoned_estimate from silently becoming the foreground amount. Require collection protocol values and disclose any sensitivity use of provisional bounds."
+    source_ids:
+      - ghg-protocol-product-standard-2011
+  - rule_id: val_source_applicability
+    applies_to: "Method evidence"
+    rule: "Reject bakery-oven emission factors for this unbaked product boundary and reject the erroneous Tiangong generalComment as a source."
+    source_ids:
+      - us-epa-bakery-oven-act-1992
+  - rule_id: val_bilingual_machine_semantics
+    applies_to: "Bilingual PCR"
+    rule: "Require identical ordered process_id, row_id, rule_id, protocol_id, controlled tokens, formulas, numerical values, UUIDs, source_ids, and source URLs across en-US and zh-CN."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "Route- and formulation-specific foreground production dataset for unbaked bakery mixes, doughs, or batters"
+  downstream_use: "secondary_dataset; background_dataset after methodology, translation, identity, and data-quality review"
+  allowed_use: "Upstream modelling of a declared unbaked mix or dough route when all required qualifiers, storage state, geography, time period, and upstream links are compatible"
+  excluded_use: "Proxy for baked or part-baked products; cross-route average; substitute for another formulation without sensitivity review; claim about consumer baking; use of the erroneous CPC 232 generalComment as evidence"
+  required_metadata: "pcr_id; route_code; formulation_id; leavening_mode; make_up_state; moisture_or_water_mass_fraction; net_mass_basis; site; geography; campaign_period; conditioning_method; storage_temperature_setpoint; storage_duration; packaging_configuration; shelf_life; allocation_method; cut_offs; rework; upstream_dataset_refs"
+  required_quality_disclosure: "Coverage and calibration of meters; mass-balance gap; data representativeness; source applicability; named refrigerant reconciliation; wastewater destination; provisional reasoned estimates and sensitivity; Tiangong generalComment defect; unresolved unit-group UUID"
+  update_trigger: "Formula, supplier, route, mixer, conditioner, refrigerant, storage temperature or duration, packaging, utility, waste treatment, allocation, regulation, reference-flow identity, or material production-volume change"
+data_sources:
+  - id: "un-cpc-v3-explanatory-notes-2025"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, CPC Version 3.0 Explanatory Notes, code 23180, https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Exp_Notes_30Jun2025.pdf (retrieved 2026-08-13)"
+    used_for: "Official classification identity and separation from CPC 232 and finished bakers' wares"
+  - id: "us-epa-bakery-oven-act-1992"
+    type: "official_guidance"
+    reference: "U.S. EPA, Alternative Control Technology Document for Bakery Oven Emissions, EPA-453/R-92-017, https://www.epa.gov/sites/default/files/2020-08/documents/bakery92.pdf (retrieved 2026-08-13)"
+    used_for: "Dough-process decomposition, common ingredient candidates, mixing, fermentation, dividing, shaping, and explicit limitation against transferring oven factors"
+  - id: "eu-emas-food-beverage-2017"
+    type: "official_guidance"
+    reference: "Commission Decision (EU) 2017/1508, food and beverage manufacturing sectoral reference document, https://eur-lex.europa.eu/eli/dec/2017/1508/oj/eng (retrieved 2026-08-13)"
+    used_for: "Process-level energy indicators, packaging, cleaning water/energy/chemicals, refrigeration efficiency, named refrigerant leakage, and food-waste records"
+  - id: "eu-fdm-bref-2019"
+    type: "official_guidance"
+    reference: "European Commission JRC, Best Available Techniques Reference Document for the Food, Drink and Milk Industries, JRC118627, https://publications.jrc.ec.europa.eu/repository/handle/JRC118627 (retrieved 2026-08-13)"
+    used_for: "Food-manufacturing environmental aspects, cleaning, water, wastewater, energy, dust, direct emissions, monitoring, and treatment context"
+  - id: "codex-cxc-8-1976"
+    type: "standard"
+    reference: "Codex Alimentarius, Code of Practice for the Processing and Handling of Quick Frozen Foods, CXC 8-1976, revision 2008, https://www.fao.org/fao-who-codexalimentarius/sh-proxy/fr/?lnk=1&url=https%253A%252F%252Fworkspace.fao.org%252Fsites%252Fcodex%252FStandards%252FCXC%2B8-1976%252FCXC_008e.pdf (retrieved 2026-08-13)"
+    used_for: "Quick-freezing definition, -18 °C completion and cold-chain rule, temperature monitoring, packaging, storage, and refrigerant-leak prevention"
+  - id: "ghg-protocol-product-standard-2011"
+    type: "standard"
+    reference: "WRI and WBCSD, Product Life Cycle Accounting and Reporting Standard, 2011, https://ghgprotocol.org/sites/default/files/standards/Product-Life-Cycle-Accounting-Reporting-Standard-EReader_041613_0.pdf (retrieved 2026-08-13)"
+    used_for: "Process maps, primary data, data-quality assessment, allocation hierarchy, subdivision, disclosure, and sensitivity expectations"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:8835ef07ca242e3220f53d879ac77ba6c952f9611e7b2a134332f5596cbe13b1"
+  generated_content_sha256: "sha256:26a3bc059e5920789d12995e0dbda0ffaf076b6c0708319491f32a6812c192db"

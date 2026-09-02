@@ -1,7 +1,10 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 
-import { materialProjectionCompletenessIssues } from "../../packages/pcr-core/src/projection-completeness.mjs";
+import {
+  hasDeclaredUnresolvedReferenceProductFlow,
+  materialProjectionCompletenessIssues,
+} from "../../packages/pcr-core/src/projection-completeness.mjs";
 import { manifestIdentityProblems } from "./lifecycle-policy.mjs";
 import {
   assertClassificationMapping,
@@ -319,6 +322,126 @@ test("structured Schema permits empty sections whose material completeness is ch
     completenessIssues.some(
       (issue) => issue.code === "material_projection.process_inventory.flow_rows",
     ),
+  );
+});
+
+test("candidate completeness permits a blank product flow UUID only when its output row is registered unresolved", () => {
+  const projection = {
+    reference_flow_definition: {
+      reference_amount: "1 kg",
+      product_flow_ref: { name: "Example product", uuid: "" },
+      flow_property_ref: { uuid: "mass-property" },
+      unit_group_ref: { uuid: "mass-units" },
+      reference_unit: "kg",
+    },
+    process_inventory: [
+      {
+        outputs: {
+          product: [{ row_id: "reference_product", name: "Example product" }],
+          waste: [],
+          elementary: [],
+        },
+      },
+    ],
+  };
+  const manifest = {
+    status: "candidate",
+    content_maturity: "authored_methodology",
+    review_metadata: {
+      unresolved_flow_identities: [
+        { row_id: "reference_product", reason: "No exact product flow is available." },
+      ],
+    },
+  };
+
+  assert.equal(hasDeclaredUnresolvedReferenceProductFlow(projection, manifest), true);
+  assert.equal(
+    hasDeclaredUnresolvedReferenceProductFlow(projection, {
+      ...manifest,
+      review_metadata: {
+        unresolved_flow_identities: [
+          "No exact Tiangong reference product flow was found for Example product.",
+        ],
+      },
+    }),
+    true,
+  );
+  assert.equal(
+    hasDeclaredUnresolvedReferenceProductFlow(
+      {
+        ...projection,
+        reference_flow_definition: {
+          ...projection.reference_flow_definition,
+          product_flow_ref: {
+            name: "Example product; exact UUID pending correction",
+            uuid: "",
+          },
+        },
+      },
+      {
+        ...manifest,
+        review_metadata: {
+          unresolved: [{ issue_id: "tiangong-reference-product-flow-property" }],
+        },
+      },
+    ),
+    true,
+  );
+  assert.equal(
+    hasDeclaredUnresolvedReferenceProductFlow(projection, {
+      ...manifest,
+      review_metadata: {
+        unresolved: [{ code: "reference_product_flow_uuid" }],
+      },
+    }),
+    true,
+  );
+  assert.equal(
+    hasDeclaredUnresolvedReferenceProductFlow(projection, {
+      ...manifest,
+      review_metadata: {
+        reference_flow_identity: {
+          status: "unresolved",
+          unresolved_support_fields: ["reference_product_flow_uuid"],
+        },
+      },
+    }),
+    true,
+  );
+  assert.equal(
+    hasDeclaredUnresolvedReferenceProductFlow(projection, {
+      ...manifest,
+      review_metadata: {
+        unresolved_flow_identities: ["reference_product_example_product"],
+      },
+    }),
+    true,
+  );
+  assert.equal(
+    materialProjectionCompletenessIssues(projection, {
+      allowUnresolvedProductFlowUuid: true,
+    }).some(
+      (issue) =>
+        issue.code ===
+        "material_projection.reference_flow_definition.product_flow_ref.uuid",
+    ),
+    false,
+  );
+
+  assert.equal(
+    hasDeclaredUnresolvedReferenceProductFlow(projection, {
+      ...manifest,
+      review_metadata: { unresolved_flow_identities: ["different_row"] },
+    }),
+    false,
+  );
+  assert.equal(
+    materialProjectionCompletenessIssues(projection).some(
+      (issue) =>
+        issue.code ===
+        "material_projection.reference_flow_definition.product_flow_ref.uuid",
+    ),
+    true,
   );
 });
 

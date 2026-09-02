@@ -1,10 +1,472 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "26461"
-  title: "Yarn (other than sewing thread) of artificial staple fibres, containing less than 85% by weight of such fibres, not put up for retail sale"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.food-products-beverages-and-tobacco-textiles-apparel-and-leather-products.yarn-and-thread-woven-and-tufted-textile-fabrics.yarn-other-than-sewing-thread-of-artificial-staple-fibres-containing-less-than-85-by-we-91af20fd"
+  classification_refs: "CPC 3.0: 26461 (exact)"
+  covered_products: "Yarn other than sewing thread, containing artificial staple fibres at less than 85% of total fibre mass, and not put up for retail sale"
+  excluded_products: "Sewing thread; yarn with artificial staple fibres at 85% or more by mass; retail-sale yarn; filament yarn; yarn without verified fibre-composition records"
+  representative_product: "Ring-spun blended yarn containing a declared artificial staple-fibre fraction below 85% by mass, supplied at the spinning-mill gate and not put up for retail sale"
+  production_route: "Mixed-sliver drawing, roving, staple-fibre spinning, optional twisting when required by the product specification, and winding"
+  market_state: "Finished non-retail yarn at spinning-mill gate; net yarn mass reported separately from any carrier or packaging"
+functional_unit:
+  what: "Conforming non-retail yarn, other than sewing thread, produced from a declared staple-fibre blend containing artificial staple fibres below 85% by mass"
+  how_much: "1 kg net yarn"
+  how_well: "Meets the declared yarn count, composition, spinning system, twist, conditioning or moisture state, and commercial quality specification"
+  how_long_or_cycle: "One declared production lot at the spinning-mill gate"
+  reference_flow_link: "reference_yarn_output"
+system_boundary:
+  rules:
+    - rule_id: boundary_core_route
+      applies_to: "foreground spinning system"
+      rule: "Include drawing, roving, spinning, product-required twisting, winding, directly consumed electricity, directly applied spinning lubricant, and separately measured process wastes from receipt of mixed sliver through conforming yarn at the mill gate."
+      source_ids:
+        - jrc-textiles-bref-2023
+    - rule_id: boundary_upstream_sliver
+      applies_to: "incoming mixed staple-fibre sliver"
+      rule: "Keep manufacture of constituent fibres and preparation of the received mixed sliver outside the core foreground process, but require linked upstream datasets and composition disclosure."
+      source_ids:
+        - jrc-textiles-bref-2023
+    - rule_id: boundary_product_scope
+      applies_to: "reference product"
+      rule: "Apply the category only when the yarn is not sewing thread, is not put up for retail sale, and contains artificial staple fibres below 85% of total fibre mass."
+      source_ids:
+        - unsd-cpc-3-0-2025
+boundary_abstraction:
+  declared_starting_condition: "Mixed staple-fibre sliver with documented constituent masses and an artificial-staple-fibre fraction below 85% by mass, received ready for drawing"
+  starting_condition_role: "Upstream product input to the foreground spinning process"
+  product_classification_scope: "CPC 3.0 code 26461 finished yarn only; the incoming sliver remains an upstream intermediate product"
+  recursive_input_rule: "A same-category yarn input must remain a visible product input linked to its own upstream dataset and must not be folded into the reference output"
+  upstream_dataset_requirement: "Link each incoming mixed-sliver lot to a supplier-specific or representative upstream dataset that discloses constituent fibres, composition, conditioning or moisture basis, geography, and preparation boundary"
+  disclosure: "Declare all integrated operations added before sliver drawing or after yarn winding, including dyeing, wet finishing, carrier production, or packaging"
+reference_flow_definition:
+  reference_amount: "1 kg"
+  product_flow_ref:
+    name: "Yarn (other than sewing thread) of artificial staple fibres, containing less than 85% by weight of such fibres, not put up for retail sale"
+    uuid: "2fde586f-9999-4f3e-8022-fe0d8a19e270"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "artificial staple-fibre type and mass fraction"
+    - "every other fibre constituent and mass fraction"
+    - "yarn count"
+    - "spinning system"
+    - "twist specification"
+    - "dyed or undyed state"
+    - "conditioning or moisture state"
+    - "production geography"
+    - "production-lot period"
+    - "non-retail market state"
+    - "net-mass treatment of carriers and packaging"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Report 1 kg net conforming yarn at the declared conditioning or moisture state; exclude the mass of cones, reusable carriers, and packaging."
+  - id: constituent_mass
+    applies_to: "incoming sliver and yarn constituents"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Determine each constituent mass on one consistent conditioning or moisture basis and retain the measurement basis with the lot record."
+  - id: electricity_energy
+    applies_to: "purchased alternating-current electricity"
+    required_property_ref:
+      name: "Energy"
+      uuid: ""
+    required_unit: "kWh"
+    rule: "Record meter-based electricity for the production period and disclose voltage level, grid geography, and whether on-site generation is separately metered."
+  - id: waste_mass
+    applies_to: "fibre fly and off-spec yarn"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Weigh each waste stream separately and retain its destination and recovery or treatment status."
+process_map:
+  - id: staple_spinning_winding
+    name: "Staple-fibre spinning and winding"
+    inclusion: "required"
+    inclusion_condition: "Incoming mixed sliver meets the declared starting condition"
+    role: "Foreground unit process converting mixed sliver into finished non-retail yarn"
+    quantitative_reference: "1 kg net conforming yarn output"
+process_inventory:
+  - id: staple_spinning_winding
+    label: "Staple-fibre spinning and winding"
+    inputs:
+      product:
+        - row_id: mixed_staple_fibre_sliver_input
+          role: "Mixed staple-fibre sliver input"
+          name: "Mixed staple-fibre sliver with declared artificial-staple-fibre fraction below 85% by mass"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "One declared mixed-sliver product enters the process. Its constituent-fibre mass fractions are lot attributes; the selected flow is the physical blend received at the mill, not a list or selector of possible fibres."
+          amount:
+            expression: "Measure the mass issued to the represented production lot on the same conditioning or moisture basis used for the yarn mass balance."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "Per 1 kg net conforming yarn output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_mixed_sliver_receipts
+              source_ids:
+                - jrc-textiles-bref-2023
+            ranges: []
+        - row_id: purchased_ac_electricity_input
+          role: "Purchased alternating-current electricity input"
+          name: "Purchased alternating-current electricity at the facility meter with declared voltage level and grid geography"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "One facility-metered electricity scenario supplies the spinning and winding equipment. Voltage level and grid geography are mandatory scenario attributes and must not be replaced by an unspecified electricity flow."
+          amount:
+            expression: "Record the metered electricity attributable to the represented production lot or allocate a shared meter using the documented causal production driver."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "Per 1 kg net conforming yarn output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_electricity_meter
+              source_ids:
+                - jrc-textiles-bref-2023
+            ranges: []
+        - row_id: staple_spinning_lubricant_input
+          role: "Staple-fibre spinning lubricant input"
+          name: "Staple-fibre spinning lubricant used in the declared production lot"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record one declared lubricant product when lubricant is directly applied within the foreground process. The product or formulation identity must be retained; oils used for other fibre or filament routes are not interchangeable."
+          amount:
+            expression: "Measure lubricant withdrawn less documented returns for the represented production lot; record zero only when operating records demonstrate that no lubricant is applied within this process."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "Per 1 kg net conforming yarn output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_spinning_lubricant
+              source_ids:
+                - jrc-textiles-bref-2023
+            ranges: []
+        - row_id: paperboard_yarn_cone_input
+          role: "Paperboard yarn cone input"
+          name: "Paperboard yarn cone delivered with the non-retail yarn"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the specific paperboard yarn cone only when it is delivered with the non-retail yarn and is not a reusable mill carrier returned before the product gate."
+          amount:
+            expression: "Measure total delivered cone mass or calculate it from delivered cone count and a verified supplier mass per cone."
+            value_mode: "foreground_record"
+            specificity: "scenario_specific"
+            basis:
+              text: "Per 1 kg net conforming yarn output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_paperboard_yarn_cones
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: reference_yarn_output
+          role: "Reference yarn output"
+          name: "Yarn (other than sewing thread) of artificial staple fibres, containing less than 85% by weight of such fibres, not put up for retail sale"
+          flow_type: "product"
+          flow_ref:
+            uuid: "2fde586f-9999-4f3e-8022-fe0d8a19e270"
+          property_unit: "Mass / kg"
+          description: "This is the conforming net yarn output at the spinning-mill gate. Carrier and packaging mass are excluded from the 1 kg reference amount and are recorded separately when delivered."
+          amount:
+            expression: "Set to exactly 1 kg after normalizing measured net conforming yarn mass at the declared conditioning or moisture state."
+            value_mode: "fixed_value"
+            specificity: "generic"
+            basis:
+              text: "1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "identity_reference"
+              collection_protocol_id: cp_yarn_output
+              source_ids:
+                - unsd-cpc-3-0-2025
+            ranges: []
+      waste:
+        - row_id: loose_staple_fibre_fly_output
+          role: "Loose staple-fibre fly output"
+          name: "Loose artificial-blend staple-fibre fly from spinning and winding"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Loose fly collected from spinning and winding is recorded as one physically distinct waste stream and is not combined with off-spec yarn."
+          amount:
+            expression: "Weigh the separately collected fly generated during the represented production lot."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "Per 1 kg net conforming yarn output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_loose_fibre_fly
+              source_ids:
+                - jrc-textiles-bref-2023
+            ranges: []
+        - row_id: offspec_blended_yarn_output
+          role: "Off-spec blended yarn output"
+          name: "Off-spec artificial-blend yarn from spinning and winding"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Yarn rejected during spinning, twisting, or winding is recorded separately from loose fibre fly and from conforming product."
+          amount:
+            expression: "Weigh off-spec yarn removed from the represented production lot and record its reuse, recycling, or treatment destination."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "Per 1 kg net conforming yarn output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_offspec_yarn
+              source_ids:
+                - jrc-textiles-bref-2023
+            ranges: []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocation_subdivision
+    applies_to: "separately measurable production lots and operations"
+    rule: "Prefer physical subdivision and dedicated meters or issue records so that the represented yarn lot receives its directly measured inputs and outputs."
+    source_ids: []
+  - rule_id: allocation_shared_records
+    applies_to: "shared electricity, lubricant, or carrier records"
+    rule: "When direct subdivision is unavailable, use a documented causal production driver from foreground records; disclose the driver, formula, period, and affected products."
+    source_ids: []
+  - rule_id: allocation_recovered_material
+    applies_to: "fibre fly or off-spec yarn with beneficial use"
+    rule: "Treat the stream as waste unless the foreground records demonstrate a separately intended co-product; if it is a co-product, model it separately and disclose the allocation method without assigning an undocumented credit."
+    source_ids: []
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_mixed_sliver_receipts
+      process_id: "staple_spinning_winding"
+      flow_role: "mixed_staple_fibre_sliver_input"
+      record_type: "Lot receipt and issue record"
+      raw_fields: "sliver product identity; supplier; lot id; each constituent fibre; each constituent mass; artificial-fibre type; conditioning or moisture state; issued mass"
+      collection_method: "Reconcile supplier delivery records with calibrated scale issue records"
+      unit: "kg and mass fraction"
+      frequency: "Each received and issued lot"
+      temporal_coverage: "Full represented production period"
+      site_scope: "All sliver used for the represented site and product lot"
+      aggregation_rule: "Sum issued mass by lot on one declared conditioning or moisture basis"
+      quality_evidence: "Supplier specification; receiving record; scale identifier and calibration status; composition test or certificate"
+    - protocol_id: cp_electricity_meter
+      process_id: "staple_spinning_winding"
+      flow_role: "purchased_ac_electricity_input"
+      record_type: "Electricity meter record"
+      raw_fields: "meter id; opening and closing readings; reading time; voltage level; grid geography; on-site generation export and import; production-line assignment"
+      collection_method: "Read calibrated revenue or submeter and reconcile the reading interval with production time"
+      unit: "kWh"
+      frequency: "At least each production lot or shortest reconciled meter interval"
+      temporal_coverage: "Full represented production period"
+      site_scope: "All equipment included in the foreground process"
+      aggregation_rule: "Meter difference less separately metered exports, assigned by direct submeter or documented causal driver"
+      quality_evidence: "Meter identifier; calibration or utility bill; reading log; allocation record"
+    - protocol_id: cp_spinning_lubricant
+      process_id: "staple_spinning_winding"
+      flow_role: "staple_spinning_lubricant_input"
+      record_type: "Material issue record"
+      raw_fields: "product or trade name; formulation or safety-data-sheet reference; lot id; opening stock; receipts; closing stock; documented returns"
+      collection_method: "Inventory reconciliation for the represented production period"
+      unit: "kg"
+      frequency: "Each production lot or inventory period"
+      temporal_coverage: "Full represented production period"
+      site_scope: "All lubricant applied within the foreground process"
+      aggregation_rule: "Opening stock plus receipts minus closing stock and documented returns, assigned to represented lots"
+      quality_evidence: "Purchase record; stock ledger; safety data sheet; scale or dispensing record"
+    - protocol_id: cp_paperboard_yarn_cones
+      process_id: "staple_spinning_winding"
+      flow_role: "paperboard_yarn_cone_input"
+      record_type: "Carrier issue and delivery record"
+      raw_fields: "cone product identity; delivered count; returned count; verified mass per cone or total mass; reuse status"
+      collection_method: "Reconcile packing and dispatch records with supplier mass specification or weighing"
+      unit: "kg"
+      frequency: "Each dispatched lot"
+      temporal_coverage: "Full represented production period"
+      site_scope: "Cones crossing the declared product gate"
+      aggregation_rule: "Include delivered non-returned cone mass only"
+      quality_evidence: "Dispatch record; supplier specification or scale record; return log"
+    - protocol_id: cp_yarn_output
+      process_id: "staple_spinning_winding"
+      flow_role: "reference_yarn_output"
+      record_type: "Finished-lot mass and quality record"
+      raw_fields: "product id; lot id; gross mass; cone and packaging mass; net yarn mass; yarn count; twist; spinning system; each fibre fraction; dyed state; conditioning or moisture state"
+      collection_method: "Weigh finished lots and subtract separately verified carrier and packaging mass"
+      unit: "kg"
+      frequency: "Each finished lot"
+      temporal_coverage: "Full represented production period"
+      site_scope: "All conforming yarn represented by the dataset"
+      aggregation_rule: "Sum conforming net yarn mass on the declared conditioning or moisture basis"
+      quality_evidence: "Calibrated scale record; quality certificate; composition result; packing list"
+    - protocol_id: cp_loose_fibre_fly
+      process_id: "staple_spinning_winding"
+      flow_role: "loose_staple_fibre_fly_output"
+      record_type: "Waste weighing and destination record"
+      raw_fields: "waste identity; collection point; mass; lot or period; reuse, recycling, or treatment destination"
+      collection_method: "Separate collection and weighing"
+      unit: "kg"
+      frequency: "Each collection or production lot"
+      temporal_coverage: "Full represented production period"
+      site_scope: "All included spinning and winding collection points"
+      aggregation_rule: "Sum separately weighed fly mass; do not combine with off-spec yarn"
+      quality_evidence: "Scale record; waste log; destination receipt"
+    - protocol_id: cp_offspec_yarn
+      process_id: "staple_spinning_winding"
+      flow_role: "offspec_blended_yarn_output"
+      record_type: "Reject weighing and destination record"
+      raw_fields: "reject identity; reason; mass; lot; internal reuse, recycling, or treatment destination"
+      collection_method: "Separate rejection record and weighing"
+      unit: "kg"
+      frequency: "Each rejection or production lot"
+      temporal_coverage: "Full represented production period"
+      site_scope: "All included spinning, twisting, and winding operations"
+      aggregation_rule: "Sum separately weighed off-spec yarn mass; do not combine with loose fibre fly"
+      quality_evidence: "Quality rejection record; scale record; destination receipt"
+  calculation_rules:
+    - id: calc_artificial_fibre_fraction
+      applies_to: "reference product and incoming mixed sliver"
+      rule: "artificial staple-fibre fraction = artificial staple-fibre mass / total constituent-fibre mass; the recorded fraction must be below 85% and all constituent fractions must reconcile to the declared total under the documented measurement and rounding convention"
+      inputs:
+        - "constituent-fibre masses"
+        - "artificial-fibre identification"
+      output: "artificial staple-fibre mass fraction"
+      source_ids:
+        - unsd-cpc-3-0-2025
+    - id: calc_reference_normalization
+      applies_to: "every quantitative inventory row"
+      rule: "normalized amount = measured or reconciled row amount / measured net conforming yarn output mass"
+      inputs:
+        - "row amount"
+        - "net conforming yarn output mass"
+      output: "amount per 1 kg net conforming yarn"
+      source_ids: []
+    - id: calc_electricity_use
+      applies_to: "purchased alternating-current electricity"
+      rule: "electricity use = reconciled meter import assigned to the foreground process / measured net conforming yarn output mass"
+      inputs:
+        - "meter readings"
+        - exports
+        - "lot assignment"
+        - "output mass"
+      output: "kWh per 1 kg net conforming yarn"
+      source_ids: []
+    - id: calc_delivered_cone_mass
+      applies_to: "paperboard yarn cones"
+      rule: "delivered cone mass = non-returned delivered cone count multiplied by verified supplier mass per cone, or direct total measured mass when available"
+      inputs:
+        - "delivered count"
+        - "returned count"
+        - "verified mass per cone or total mass"
+      output: "kg cone per 1 kg net conforming yarn"
+      source_ids: []
+  data_quality_requirements:
+    - id: dq_product_identity
+      applies_to: "reference yarn"
+      requirement: "Retain the exact product UUID and the declared CPC 26461 scope qualifiers, including non-retail market state and exclusion of sewing thread."
+      evidence: "Product-flow identity; lot quality specification"
+    - id: dq_composition
+      applies_to: "sliver and yarn"
+      requirement: "Identify every constituent fibre and retain masses or mass fractions on a common conditioning or moisture basis; do not infer an unrecorded blend composition."
+      evidence: "Supplier specification; composition test or certificate; lot mass record"
+    - id: dq_temporal_alignment
+      applies_to: "all foreground records"
+      requirement: "Cover the same represented production period or document reconciliation from a different meter or inventory interval."
+      evidence: "Timestamped meter, material, production, and waste records"
+    - id: dq_completeness
+      applies_to: "process inventory"
+      requirement: "Include each directly consumed product, delivered carrier, conforming product, separately collected waste, and any direct elementary flow as its own atomic exchange."
+      evidence: "Inventory reconciliation and process walk-through"
+    - id: dq_identity_gaps
+      applies_to: "unresolved inventory flow UUIDs"
+      requirement: "Preserve the specific exchange name and review status; do not substitute a broader, adjacent, or differently classified Tiangong flow."
+      evidence: "Manifest identity review and subsequent hybrid-search plus direct-read evidence"
+    - id: dq_mass_balance
+      applies_to: "represented production lot"
+      requirement: "Reconcile incoming sliver mass with conforming yarn, loose fibre fly, off-spec yarn, and any other separately recorded mass output within the site's documented measurement uncertainty."
+      evidence: "Scale records; lot reconciliation; uncertainty disclosure"
+validation_rules:
+  - rule_id: validate_reference_identity
+    applies_to: "reference flow"
+    rule: "Confirm the exact product UUID 2fde586f-9999-4f3e-8022-fe0d8a19e270, Product flow type, CPC 26461 semantics, Mass property UUID, Units of mass UUID, and kg reference unit."
+    source_ids:
+      - unsd-cpc-3-0-2025
+  - rule_id: validate_category_scope
+    applies_to: "reference yarn"
+    rule: "Confirm that the product is not sewing thread, is not put up for retail sale, contains artificial staple fibres, and has an artificial-staple-fibre share below 85% of total fibre mass."
+    source_ids:
+      - unsd-cpc-3-0-2025
+  - rule_id: validate_composition_reconciliation
+    applies_to: "reference yarn and incoming sliver"
+    rule: "Require every constituent fibre to be named and the constituent fractions to reconcile to the declared total under the documented measurement and rounding convention."
+    source_ids: []
+  - rule_id: validate_reference_mass
+    applies_to: "reference amount"
+    rule: "Confirm exactly 1 kg net conforming yarn at the declared conditioning or moisture state and exclude cone and packaging mass."
+    source_ids: []
+  - rule_id: validate_atomic_inventory
+    applies_to: "every inventory card"
+    rule: "Confirm that each card describes one physical product, waste, or elementary flow and contains no collection label, selector instruction, or combined alternative."
+    source_ids: []
+  - rule_id: validate_electricity_context
+    applies_to: "purchased alternating-current electricity"
+    rule: "Require metered quantity, voltage level, grid geography, reading period, and treatment of on-site generation; reject an unspecified electricity candidate."
+    source_ids:
+      - jrc-textiles-bref-2023
+  - rule_id: validate_mass_balance
+    applies_to: "represented production lot"
+    rule: "Reconcile incoming sliver mass with conforming yarn and all separately recorded mass outputs within documented site measurement uncertainty."
+    source_ids: []
+  - rule_id: validate_unresolved_identities
+    applies_to: "inventory UUID references"
+    rule: "Require every UUID to have exact hybrid-search and direct-read evidence; keep unresolved rows UUID-free and disclosed rather than using rejected candidates."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "Foreground unit-process dataset for staple-fibre spinning and winding"
+  downstream_use: "Secondary dataset and background dataset for studies requiring a matching CPC 26461 non-retail blended-yarn input"
+  allowed_use: "Products matching the declared artificial-fibre share, constituent-fibre composition, yarn specification, starting condition, production route, geography, technology, and conditioning or moisture state"
+  excluded_use: "Sewing thread; retail-sale yarn; filament yarn; yarn with artificial staple fibres at 85% or more by mass; yarn lacking composition evidence; wet processing or fibre manufacture not represented by linked datasets"
+  required_metadata: "Exact reference UUID; constituent-fibre composition; yarn count; spinning system; twist; dyed state; conditioning or moisture state; geography; technology; production period; electricity scenario; carrier and packaging treatment; upstream sliver dataset"
+  required_quality_disclosure: "Foreground-record coverage; meter and scale basis; allocation or subdivision method; composition evidence; mass-balance result; waste destinations; unresolved UUID identities; deviations from the core boundary"
+  update_trigger: "Change to product classification scope, reference-flow identity, fibre-composition rule, starting condition, spinning route, exact inventory UUID resolution, or material foreground evidence"
+data_sources:
+  - id: "unsd-cpc-3-0-2025"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, *Central Product Classification (CPC) Version 3.0 Explanatory Notes*, code 26461, 30 June 2025. https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Exp_Notes_30Jun2025.pdf"
+    used_for: "Exact product-category boundary, exclusions, artificial-fibre mass-share criterion, and classification validation"
+  - id: "jrc-textiles-bref-2023"
+    type: "official_guidance"
+    reference: "European Commission Joint Research Centre, *Best Available Techniques (BAT) Reference Document for the Textiles Industry*, January 2023, Sections 2.4.2-2.4.3 and 4.7.2. https://bureau-industrial-transformation.jrc.ec.europa.eu/sites/default/files/2023-01/TXT_BREF_2023_for_publishing%20ISSN%201831-9424_final_1_revised.pdf"
+    used_for: "Staple-fibre spinning process decomposition; spinning-lubricant relevance; electricity as the main spinning energy input; separate collection of loose fibres and yarn rejects"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:05a43282add94220800d2e4f000bdb919fe72d04eb4a4612872195d805afa69b"
+  generated_content_sha256: "sha256:fdb93e24d6b2f35e92a0453998d48beb17755831a831476b2402671816aa1186"

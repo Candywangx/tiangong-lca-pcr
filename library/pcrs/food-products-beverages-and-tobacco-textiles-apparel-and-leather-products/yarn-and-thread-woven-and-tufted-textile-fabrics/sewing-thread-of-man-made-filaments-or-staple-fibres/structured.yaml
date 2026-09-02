@@ -1,10 +1,495 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "26410"
-  title: "Sewing thread of man-made filaments or staple fibres"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.food-products-beverages-and-tobacco-textiles-apparel-and-leather-products.yarn-and-thread-woven-and-tufted-textile-fabrics.sewing-thread-of-man-made-filaments-or-staple-fibres"
+  classification_refs: "CPC 3.0: 26410 - Sewing thread of man-made filaments or staple fibres"
+  covered_products: "Sewing thread made from man-made continuous filaments or synthetic or artificial staple fibres, supplied in an undyed or separately modelled dyed/finished state"
+  excluded_products: "Yarn not manufactured for sewing; natural-fibre sewing thread; embroidery yarn not sold as sewing thread; fishing line, cordage, twine, fabric, apparel, and sewing operations"
+  representative_product: "Undyed, lubricated, wound sewing thread made from multiple or cabled man-made filament yarn and supplied on a declared cone"
+  production_route: "Purchased yarn reception; doubling/cabling or twisting; textile twisting-oil application; winding/coning; inspection; packing; separately linked wet processing when applicable"
+  market_state: "Factory-gate saleable sewing thread with fibre family, filament/staple route, linear density, ply, twist, finish, colour state, cone/spool type, and packaging declared"
+functional_unit:
+  what: "Saleable sewing thread of man-made filaments or staple fibres at the factory gate"
+  how_much: "1 kg net mass of sewing thread, excluding cone/spool and transport packaging"
+  how_well: "Meets the declared fibre family and composition, filament or staple route, linear density, ply, twist direction and level, tensile/elongation grade, finish, colour state, and packaging specification"
+  how_long_or_cycle: "One completed production lot at factory gate; no use-duration equivalence is claimed"
+  reference_flow_link: "final_sewing_thread"
+system_boundary:
+  rules:
+    - rule_id: boundary_core_conversion
+      applies_to: "core foreground process"
+      rule: "Include all on-site doubling, cabling, twisting, twisting-oil application, winding/coning, inspection, rework, and packing required to produce the declared sewing thread."
+      source_ids:
+        - jrc-textiles-bref-2023
+    - rule_id: boundary_wet_processing
+      applies_to: "marketed dyed or chemically finished thread"
+      rule: "When wet treatment or chemical finishing is part of the marketed state, link a separate foreground process and report every actual atomic chemical, water, energy, wastewater, residue, and direct-emission flow."
+      source_ids:
+        - jrc-textiles-bref-2023
+        - eu-textiles-bat-2022
+    - rule_id: boundary_upstream_downstream
+      applies_to: "product system"
+      rule: "Keep incoming-yarn production upstream and distribution, sewing, use, and end of life downstream; do not claim cradle-to-gate coverage unless those datasets are linked."
+      source_ids:
+        - iso-14044-2006
+boundary_abstraction:
+  declared_starting_condition: "Purchased man-made yarn received at the sewing-thread conversion facility, with fibre composition, filament/staple route, prior dyeing/finish state, mass, supplier, and lot identity declared"
+  starting_condition_role: "Upstream product input to the gate-to-gate sewing-thread conversion dataset"
+  product_classification_scope: "Sewing thread within CPC 3.0 code 26410; classification is scope evidence and not canonical PCR identity"
+  recursive_input_rule: "A purchased input already classified as sewing thread of CPC 26410 shall remain a separate upstream product flow and shall not be relabelled as raw yarn or recursively expanded inside this dataset."
+  upstream_dataset_requirement: "Each purchased yarn or sewing-thread input requires a compatible upstream dataset or an explicit documented data gap; the upstream dataset shall match fibre family, composition, route, geography, and market state."
+  disclosure: "Disclose which thread-forming, wet-processing, finishing, winding, inspection, and packing operations occur on site and identify every excluded or separately linked operation."
+reference_flow_definition:
+  reference_amount: "1 kg"
+  product_flow_ref:
+    name: "Yarn"
+    uuid: "c98c206f-fee3-45d6-9549-b22eeb6b058b"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "CPC 26410 product identity"
+    - "fibre family and mass composition"
+    - "filament or staple route"
+    - "recycled-content claim if any"
+    - "linear density"
+    - "number of plies"
+    - "twist direction and twist level"
+    - "colour and wet-processing state"
+    - "lubricant/finish identity"
+    - "cone or spool type"
+    - "net product mass"
+    - "production geography"
+    - "reporting period"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_product_mass
+    applies_to: "final sewing thread"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Determine net conditioned thread mass at the declared factory-gate state; exclude cone/spool and transport packaging and disclose the conditioning or moisture basis."
+  - id: material_mass_basis
+    applies_to: "yarn, twisting oil, cone/spool, box, and waste rows"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Record each atomic material or waste by measured mass and normalize it to 1 kg net sewing-thread output."
+  - id: electricity_energy_basis
+    applies_to: "alternating-current input"
+    required_property_ref:
+      name: "Net calorific value"
+      uuid: "93a60a56-a3c8-11da-a746-0800200c9a66"
+    required_unit: "kWh"
+    rule: "Preserve the metered electricity quantity in kWh and document the voltage level, geography, and supplier or grid-mix basis."
+process_map:
+  - id: thread_conversion_winding_packaging
+    name: "Thread conversion, winding, and packaging"
+    inclusion: "required"
+    inclusion_condition: "Always included for factory-gate sewing-thread production"
+    role: "Foreground mechanical conversion and packing"
+    quantitative_reference: "1 kg net saleable sewing thread"
+  - id: wet_processing_linked
+    name: "Linked wet processing or chemical finishing"
+    inclusion: "conditional"
+    inclusion_condition: "Include as a separate linked foreground process when the marketed thread is dyed, washed, heat-set, coated, or otherwise chemically finished"
+    role: "Route-specific foreground wet processing"
+    quantitative_reference: "1 kg treated thread transferred to final winding or factory gate"
+process_inventory:
+  - id: thread_conversion_winding_packaging
+    label: "Thread conversion, winding, and packaging"
+    inputs:
+      product:
+        - row_id: input_man_made_filament_yarn
+          role: "Man-made filament yarn route input"
+          name: "Yarn of man-made filaments, multiple or cabled (other than sewing thread, high tenacity yarn of polyamides, polyesters or viscose rayon), not put up for retail sale"
+          flow_type: "product"
+          flow_ref:
+            uuid: "d3526e15-e0a8-4d96-8688-2738fd9d20ba"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record this atomic product only for the filament route. Supplier and lot records shall establish that it is incoming yarn and not already saleable sewing thread."
+          amount:
+            expression: "measured net mass received and consumed by the production lot"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net saleable sewing thread"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_input_records
+              source_ids:
+                - jrc-textiles-bref-2023
+            ranges: []
+        - row_id: input_synthetic_staple_yarn
+          role: "Synthetic staple-fibre yarn route input"
+          name: "Yarn (other than sewing thread) of synthetic staple fibres, containing 85% or more by weight of such fibres"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record this atomic product only for a qualifying synthetic staple-fibre route. The exact Tiangong UUID remains unresolved; the less-than-85% and artificial-fibre candidates were rejected as non-equivalent."
+          amount:
+            expression: "measured net mass received and consumed by the production lot"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net saleable sewing thread"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_input_records
+              source_ids:
+                - jrc-textiles-bref-2023
+            ranges: []
+        - row_id: input_artificial_staple_yarn
+          role: "Artificial staple-fibre yarn route input"
+          name: "Yarn (other than sewing thread) of artificial staple fibres, containing 85% or more by weight of such fibres, not put up for retail sale"
+          flow_type: "product"
+          flow_ref:
+            uuid: "b2fccf4f-e4c4-4723-9e9b-ef0956abd0fc"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record this atomic product only for the artificial staple-fibre route and retain the declared artificial-fibre composition."
+          amount:
+            expression: "measured net mass received and consumed by the production lot"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net saleable sewing thread"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_input_records
+              source_ids:
+                - jrc-textiles-bref-2023
+            ranges: []
+        - row_id: input_textile_twisting_oil
+          role: "Textile twisting oil"
+          name: "Textile twisting oil"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record the mass of the textile twisting oil formulation applied during coning or twisting. The exact Tiangong UUID is unresolved because the generic lubricating-oil candidate does not preserve the textile-use semantics."
+          amount:
+            expression: "measured mass issued to and consumed by the production lot, net of documented returns"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net saleable sewing thread"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_input_records
+              source_ids:
+                - jrc-textiles-bref-2023
+            ranges: []
+        - row_id: input_medium_voltage_electricity
+          role: "Medium-voltage alternating current"
+          name: "alternating current"
+          flow_type: "product"
+          flow_ref:
+            uuid: "3d76981f-964a-4865-b588-0e067a2a1163"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200c9a66 / kWh"
+          description: "Record metered alternating-current consumption for twisting, winding, inspection, extraction, and packing equipment at the declared 1-35 kV supply boundary."
+          amount:
+            expression: "production-line or allocated facility-meter consumption during the production lot"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net saleable sewing thread"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_electricity_meter
+              source_ids: []
+            ranges: []
+        - row_id: input_polypropylene_thread_cone
+          role: "Polypropylene sewing-thread cone"
+          name: "Polypropylene sewing-thread cone"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record this atomic packaging component when the saleable thread remains wound on a polypropylene cone. The exact Tiangong UUID is unresolved; polypropylene resin was rejected because it is not the manufactured cone."
+          amount:
+            expression: "measured or supplier-declared mass of cones incorporated in the production lot"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net saleable sewing thread"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_records
+              source_ids: []
+            ranges: []
+        - row_id: input_corrugated_board_box
+          role: "Corrugated board box"
+          name: "corrugated board boxes"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f197bec-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record the atomic corrugated-board transport box mass used for the declared factory-gate product."
+          amount:
+            expression: "measured or supplier-declared box mass consumed by the production lot"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net saleable sewing thread"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_records
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: final_sewing_thread
+          role: "Final sewing thread"
+          name: "Yarn"
+          flow_type: "product"
+          flow_ref:
+            uuid: "c98c206f-fee3-45d6-9549-b22eeb6b058b"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record the net mass of conforming factory-gate sewing thread. Cone/spool and transport packaging mass shall not be included in this reference-product quantity."
+          amount:
+            expression: "measured net mass of released conforming sewing thread"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "1 kg net saleable sewing thread"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_product_output
+              source_ids:
+                - unsd-cpc-3-0-2025
+            ranges: []
+      waste:
+        - row_id: output_synthetic_thread_offcuts
+          role: "Synthetic sewing-thread offcuts"
+          name: "Synthetic sewing-thread offcuts"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record cut ends, damaged thread, and unrecoverable synthetic thread removed from the production lot as one specific waste flow. The exact Tiangong UUID remains unresolved; waste fibre fabric was rejected as non-equivalent."
+          amount:
+            expression: "measured mass transferred to the declared waste-management route"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net saleable sewing thread"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_output
+              source_ids: []
+            ranges: []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocation_subdivision_first
+    applies_to: "shared conversion and packing operations"
+    rule: "First subdivide or meter product lines, lots, and wet-processing operations so that sewing-thread inputs, energy, packaging, and wastes are directly assigned wherever practicable."
+    source_ids:
+      - iso-14044-2006
+  - rule_id: allocation_physical_mass
+    applies_to: "residual shared burdens"
+    rule: "If subdivision or direct metering cannot remove a shared burden, allocate it by net mass of conforming product output, disclose the affected flows and allocation fraction, and test sensitivity when another physical relation may materially change results."
+    source_ids:
+      - iso-14044-2006
+  - rule_id: allocation_rework_and_waste
+    applies_to: "internal rework and waste outputs"
+    rule: "Return internally rewound or reworked thread to the same lot without treating it as a co-product; record only material leaving for external recovery or disposal as waste and disclose any credited external recovery outside this gate-to-gate inventory."
+    source_ids:
+      - iso-14044-2006
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_material_input_records
+      process_id: "thread_conversion_winding_packaging"
+      flow_role: "route-applicable yarn and textile twisting oil"
+      record_type: "weighbridge, warehouse issue, invoice, and return record"
+      raw_fields: "material identity; Tiangong UUID if resolved; supplier; lot; fibre composition; opening mass; issued mass; returned mass"
+      collection_method: "reconcile purchase/warehouse records with lot issue and return records"
+      unit: "kg"
+      frequency: "each lot; monthly reconciliation"
+      temporal_coverage: "declared reporting period"
+      site_scope: "all in-scope conversion lines"
+      aggregation_rule: "consumed mass = issued mass minus documented return; normalize by conforming thread output"
+      quality_evidence: "calibrated scale record; supplier specification; inventory reconciliation"
+    - protocol_id: cp_electricity_meter
+      process_id: "thread_conversion_winding_packaging"
+      flow_role: "medium-voltage alternating current"
+      record_type: "electricity meter and production-time record"
+      raw_fields: "meter start; meter end; voltage level; production line; lot time; shared-load basis"
+      collection_method: "direct submetering preferred; otherwise documented physical allocation from facility meter"
+      unit: "kWh"
+      frequency: "each lot or shift; monthly reconciliation"
+      temporal_coverage: "declared reporting period"
+      site_scope: "all in-scope conversion and packing equipment"
+      aggregation_rule: "subtract documented idle/non-product load and divide assigned kWh by conforming thread output"
+      quality_evidence: "meter calibration; bill reconciliation; allocation worksheet"
+    - protocol_id: cp_packaging_records
+      process_id: "thread_conversion_winding_packaging"
+      flow_role: "polypropylene cone and corrugated board box"
+      record_type: "packaging issue, supplier mass specification, and return record"
+      raw_fields: "component identity; component count; unit mass; issued count; returned count"
+      collection_method: "weigh representative components and reconcile issued less returned quantities"
+      unit: "kg"
+      frequency: "each packaging lot"
+      temporal_coverage: "declared reporting period"
+      site_scope: "all packaging used for the reference product"
+      aggregation_rule: "component mass = net count multiplied by verified unit mass; normalize by net thread output"
+      quality_evidence: "scale calibration; supplier specification; count reconciliation"
+    - protocol_id: cp_product_output
+      process_id: "thread_conversion_winding_packaging"
+      flow_role: "final sewing thread"
+      record_type: "finished-goods scale and quality-release record"
+      raw_fields: "lot; gross mass; tare mass; net thread mass; moisture/conditioning basis; rejected mass"
+      collection_method: "weigh released product and subtract separately measured cone/spool and packaging tare"
+      unit: "kg"
+      frequency: "each lot"
+      temporal_coverage: "declared reporting period"
+      site_scope: "all released reference product"
+      aggregation_rule: "sum conforming net thread mass only"
+      quality_evidence: "calibrated scale; quality release; tare verification"
+    - protocol_id: cp_waste_output
+      process_id: "thread_conversion_winding_packaging"
+      flow_role: "synthetic sewing-thread offcuts"
+      record_type: "waste-bin scale ticket and transfer record"
+      raw_fields: "waste identity; source lot; container tare; gross mass; destination; date"
+      collection_method: "weigh each transfer and subtract container tare"
+      unit: "kg"
+      frequency: "each transfer; monthly reconciliation"
+      temporal_coverage: "declared reporting period"
+      site_scope: "all in-scope conversion lines"
+      aggregation_rule: "sum net offcut mass by lot and normalize by conforming output"
+      quality_evidence: "calibrated scale; transfer receipt; mass-balance reconciliation"
+  calculation_rules:
+    - id: calc_net_reference_mass
+      applies_to: "final sewing thread"
+      rule: "net_thread_kg = gross_released_kg - cone_spool_tare_kg - transport_packaging_tare_kg"
+      inputs:
+        - "released gross mass"
+        - "cone/spool tare"
+        - "packaging tare"
+      output: "net sewing-thread mass"
+      source_ids:
+        - iso-14048-2002
+    - id: calc_material_normalization
+      applies_to: "mass-based inputs and waste"
+      rule: "normalized_kg_per_kg = lot_flow_kg / conforming_net_thread_kg"
+      inputs:
+        - "lot flow mass"
+        - "conforming net output mass"
+      output: "kg per kg reference flow"
+      source_ids:
+        - iso-14048-2002
+    - id: calc_energy_normalization
+      applies_to: "medium-voltage alternating current"
+      rule: "normalized_kWh_per_kg = assigned_lot_kWh / conforming_net_thread_kg"
+      inputs:
+        - "assigned meter consumption"
+        - "conforming net output mass"
+      output: "kWh per kg reference flow"
+      source_ids:
+        - iso-14048-2002
+  data_quality_requirements:
+    - id: dq_product_identity
+      applies_to: "reference product and yarn inputs"
+      requirement: "Retain product specification, fibre composition, filament/staple route, linear density, ply, twist, finish, colour state, and CPC 26410 classification evidence."
+      evidence: "supplier certificate; bill of materials; quality-release record"
+    - id: dq_temporal_coverage
+      applies_to: "all foreground flows"
+      requirement: "Use a representative continuous 12-month period where available, or disclose a shorter campaign/lot period and its seasonality, downtime, and product-mix limitations."
+      evidence: "dated meter, warehouse, production, and waste records"
+    - id: dq_completeness
+      applies_to: "process boundary"
+      requirement: "Reconcile yarn input, twisting oil, packaging, electricity, conforming product, rework, and thread offcuts; identify separately linked wet processing and every known excluded flow."
+      evidence: "signed mass-balance and boundary checklist"
+    - id: dq_measurement
+      applies_to: "mass and electricity"
+      requirement: "Use calibrated instruments or supplier-certified unit masses and retain the allocation worksheet for any shared meter."
+      evidence: "calibration certificate; supplier specification; meter reconciliation"
+    - id: dq_uuid_resolution
+      applies_to: "unresolved atomic flows"
+      requirement: "Before active review, repeat Tiangong lookup for each unresolved row and accept a UUID only after state, flow type, name semantics, property, and unit are verified."
+      evidence: "review record linked by row_id"
+validation_rules:
+  - rule_id: validate_reference_identity
+    applies_to: "reference product"
+    rule: "Fail category conformance unless the dataset declares sewing-thread use, man-made filament or staple-fibre composition, CPC 26410 scope, and all required qualifiers."
+    source_ids:
+      - unsd-cpc-3-0-2025
+  - rule_id: validate_reference_mass
+    applies_to: "reference flow"
+    rule: "Fail when the reference quantity includes cone/spool or transport-packaging mass, lacks a conditioning basis, or is not normalized to 1 kg net conforming thread."
+    source_ids:
+      - iso-14048-2002
+  - rule_id: validate_atomic_inventory
+    applies_to: "all inventory rows"
+    rule: "Fail when a selected flow combines materials, utilities, packaging components, wastes, emissions, or future selection instructions; each row shall identify one atomic exchange."
+    source_ids:
+      - jrc-textiles-bref-2023
+  - rule_id: validate_route_boundary
+    applies_to: "dyed or chemically finished product"
+    rule: "Fail full factory-gate conformance when marketed wet processing is omitted or represented without a linked process containing actual atomic recipe, water, energy, wastewater, residue, and direct-emission records."
+    source_ids:
+      - jrc-textiles-bref-2023
+      - eu-textiles-bat-2022
+  - rule_id: validate_mass_balance
+    applies_to: "conversion lot"
+    rule: "Require documented reconciliation of incoming yarn and oil with conforming thread, internal rework, retained stock change, and offcut waste; report any unexplained imbalance rather than forcing closure."
+    source_ids:
+      - iso-14048-2002
+  - rule_id: validate_uuid_state
+    applies_to: "UUID-bearing rows"
+    rule: "Accept a Tiangong UUID only when direct read confirms state_code 100, the required flow type, matching name semantics, and the declared flow property/unit."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "Foreground gate-to-gate production dataset for factory-gate sewing thread of man-made filaments or staple fibres"
+  downstream_use: "secondary_dataset; background_dataset after review and geographic, technological, and product-state representativeness assessment"
+  allowed_use: "Cradle-to-gate or broader LCA models when compatible upstream yarn and any route-applicable wet-processing datasets are linked and required qualifiers match"
+  excluded_use: "Natural-fibre sewing thread; generic yarn not made for sewing; cradle-to-gate claims without upstream yarn; dyed/finished product claims with omitted wet processing; use-stage or durability equivalence"
+  required_metadata: "PCR id and version; CPC 26410; product qualifiers; facility and geography; reporting period; technology; boundary; upstream yarn links; linked wet-processing process if any; allocation; data quality; unresolved UUID disclosure"
+  required_quality_disclosure: "Primary-record share; meter and scale coverage; temporal and site coverage; shared-meter allocation; mass-balance result; excluded flows; wet-processing link status; unresolved UUID rows"
+  update_trigger: "Change in fibre family/composition, yarn route, twisting technology, finish or wet-processing route, energy supply, packaging, allocation, facility geography, or evidence that materially changes the inventory"
+data_sources:
+  - id: "unsd-cpc-3-0-2025"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, Central Product Classification (CPC) Version 3.0 Explanatory Notes, code 26410, 30 June 2025, https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Exp_Notes_30Jun2025.pdf (retrieved 2026-08-12)"
+    used_for: "Official product-category identity and separation from non-sewing yarn categories"
+  - id: "jrc-textiles-bref-2023"
+    type: "official_guidance"
+    reference: "European Commission Joint Research Centre, Best Available Techniques (BAT) Reference Document for the Textiles Industry, 2023, ISSN 1831-9424, https://bureau-industrial-transformation.jrc.ec.europa.eu/reference/textiles-industry (retrieved 2026-08-12)"
+    used_for: "Man-made-fibre yarn preparation, twisting and winding, coning/twisting oils, yarn dyeing, and wet-processing boundary decomposition"
+  - id: "eu-textiles-bat-2022"
+    type: "official_guidance"
+    reference: "Commission Implementing Decision (EU) 2022/2508 establishing BAT conclusions for the textiles industry, ELI http://data.europa.eu/eli/dec_impl/2022/2508/oj (retrieved 2026-08-12)"
+    used_for: "Material, water and energy inventories; chemical-management, emissions and wastewater records for linked wet processing"
+  - id: "iso-14044-2006"
+    type: "standard"
+    reference: "ISO 14044:2006, Environmental management - Life cycle assessment - Requirements and guidelines, https://www.iso.org/standard/38498.html (official description retrieved 2026-08-12)"
+    used_for: "LCI boundary, allocation, reporting, and interpretation framework"
+  - id: "iso-14048-2002"
+    type: "standard"
+    reference: "ISO/TS 14048:2002, Environmental management - Life cycle assessment - Data documentation format, https://www.iso.org/standard/29872.html (official description retrieved 2026-08-12)"
+    used_for: "Transparent foreground record, calculation, and data-quality documentation"
+  - id: "wang-down-jackets-2023"
+    type: "literature"
+    reference: "Wang et al., Carbon Footprint and Water Footprint Assessment of Down Jackets, 2023, DOI 10.1177/24723444231172216"
+    used_for: "Peer-reviewed full-text confirmation that polyester sewing thread is an accessory product and that textile thread production includes spinning, dyeing, and finishing stages"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:f5f01f18a08dd13fa66eee9e4ca48aabb6273e0eb63fcdd1808a2404d8af36f9"
+  generated_content_sha256: "sha256:a5ab83789c1e7659d07c1c303843cedac5672798efc0f434bb213122c3e15c67"

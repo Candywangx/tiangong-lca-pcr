@@ -1,10 +1,1330 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "24492"
-  title: "Non-alcoholic beer"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.food-products-beverages-and-tobacco-textiles-apparel-and-leather-products.beverages.non-alcoholic-beer"
+  classification_refs: "CPC 3.0: 24492 Non-alcoholic beer"
+  covered_products: "Finished non-alcoholic malt or cereal beverages and comparable yeast-fermented ginger or herb beers that meet the declared jurisdictional or market specification"
+  excluded_products: "Alcoholic beer outside the declared non-alcoholic specification; unfermented soft drinks not marketed as fermented beer-type beverages; upstream malt or ingredient production as foreground; downstream distribution, retail, serving, and end-of-life"
+  representative_product: "Packaged non-alcoholic fermented beverage released at the production-site gate"
+  production_route: "Ingredient preparation and wort production; fermentation and conditioning; optional alcohol-control treatment; stabilization, filling, and packaging"
+  market_state: "Finished liquid beverage, carbonated or still, in the declared primary packaging at plant gate"
+functional_unit:
+  what: "Provide a finished non-alcoholic beer-type beverage meeting the declared formulation and alcohol specification"
+  how_much: "1 kg net beverage mass"
+  how_well: "Released product meeting declared alcohol content, formulation, carbonation, stabilization, and packaging specifications"
+  how_long_or_cycle: "One released production lot at the plant gate; no storage or service duration is included"
+  reference_flow_link: "The reference flow is the net beverage mass required to deliver the functional unit; packaging is recorded separately as an input"
+system_boundary:
+  rules:
+    - rule_id: boundary_core_brewing
+      applies_to: "foreground production"
+      rule: "Include ingredient receiving and handling, wort preparation, fermentation, conditioning, stabilization, filling, packaging, on-site utilities, cleaning, and wastewater handling when performed by or for the reporting facility."
+      source_ids:
+        - us-epa-ap42-malt-beverages-1996
+    - rule_id: boundary_route_specific_alcohol_control
+      applies_to: "alcohol-control route"
+      rule: "Include fermentation arrest, dilution or blending, membrane separation, thermal alcohol removal, recovered alcohol handling, and associated energy, water, media, losses, and emissions whenever used; disclose omitted route stages as not applicable."
+      source_ids: []
+    - rule_id: boundary_direct_releases
+      applies_to: "site emissions and wastes"
+      rule: "Include measured or calculated fermentation carbon dioxide and volatile organic releases, combustion and refrigerant emissions, wastewater, sludge, spent yeast, spent grain, trub, filter media, cleaning losses, and packaging rejects."
+      source_ids:
+        - us-epa-ap42-malt-beverages-1996
+    - rule_id: boundary_purchased_inputs
+      applies_to: "upstream supply"
+      rule: "Link each purchased material, packaging component, energy carrier, water supply, and outsourced treatment service to an upstream dataset; do not treat missing upstream burdens as zero."
+      source_ids:
+        - iso-14044-lca-2006
+    - rule_id: boundary_downstream_exclusion
+      applies_to: "gate dataset"
+      rule: "Exclude distribution, retail, serving, consumer refrigeration, and end-of-life from this gate dataset and disclose them as downstream exclusions."
+      source_ids:
+        - iso-14044-lca-2006
+boundary_abstraction:
+  declared_starting_condition: "Ingredients, process aids, packaging, and utilities are received at the foreground facility with quantity, supplier, composition or grade, and upstream dataset references declared"
+  starting_condition_role: "Gate-to-gate foreground starting condition with linked cradle-to-gate background datasets for purchased inputs"
+  product_classification_scope: "Finished non-alcoholic beer-type beverages within the semantic product scope; CPC 3.0 code 24492 is mapping context rather than canonical identity"
+  recursive_input_rule: "A purchased intermediate non-alcoholic beer within the same category is recorded once as an input and linked to an upstream dataset; its production is not recursively rebuilt inside this foreground package"
+  upstream_dataset_requirement: "Use representative upstream datasets for all material ingredients, packaging, fuels, electricity, water supply, treatment chemicals, and external waste or wastewater treatment"
+  disclosure: "Declare product route, facility boundary, excluded operations, allocation choices, data period, geography, alcohol specification, packaging format, outsourced operations, and any same-category intermediate input"
+reference_flow_definition:
+  reference_amount: "1 kg"
+  product_flow_ref:
+    name: "Non-alcoholic beer"
+    uuid: "6fe10289-5a7d-4ca7-a73c-e698bca5a320"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "applicable non-alcoholic definition and threshold"
+    - "measured alcohol content and test method"
+    - "formulation family"
+    - "fermentation and alcohol-control route"
+    - "carbonation state"
+    - "pasteurization or sterile-filling status"
+    - "primary packaging format"
+    - "production geography and period"
+    - "density and temperature when volume is converted to mass"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_net_mass
+    applies_to: "reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Normalize all inventory to 1 kg of released net beverage, excluding primary and secondary packaging mass."
+  - id: volume_to_mass_conversion
+    applies_to: "beverage quantities recorded by volume"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Convert volume to mass using product-specific measured density at a declared temperature; retain the volume, density, temperature, and calculation record."
+  - id: alcohol_content_measurement
+    applies_to: "product qualification"
+    required_property_ref:
+      name: "Alcohol by volume"
+      uuid: ""
+    required_unit: "% vol"
+    rule: "Record the measured alcohol content, analytical method, sampling date, and applicable jurisdictional threshold; do not infer compliance from the product name alone."
+  - id: packaging_mass_separation
+    applies_to: "packaging inputs"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Report each packaging material by measured or supplier-declared mass and keep packaging mass outside the 1 kg net beverage reference amount."
+  - id: batch_mass_balance
+    applies_to: "all liquid and solid process stages"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Reconcile ingredient, intermediate, product, co-product, loss, waste, and wastewater records on the same batch and period basis before normalization."
+process_map:
+  - id: brewhouse_preparation
+    name: "Ingredient handling and wort preparation"
+    inclusion: "required"
+    inclusion_condition: "Always"
+    role: "Foreground brewing and ingredient conversion"
+    quantitative_reference: "kg cooled wort transferred to fermentation"
+  - id: fermentation_conditioning
+    name: "Fermentation and conditioning"
+    inclusion: "required"
+    inclusion_condition: "Always"
+    role: "Foreground biological conversion and product conditioning"
+    quantitative_reference: "kg conditioned beverage transferred onward"
+  - id: alcohol_control
+    name: "Route-specific alcohol control"
+    inclusion: "conditional"
+    inclusion_condition: "Include when a distinct arrest, separation, dilution, or blending operation changes alcohol content after or during fermentation"
+    role: "Foreground alcohol-content control"
+    quantitative_reference: "kg alcohol-controlled beverage output"
+  - id: packaging_release
+    name: "Stabilization, filling, packaging, and release"
+    inclusion: "required"
+    inclusion_condition: "Always"
+    role: "Foreground final product preparation"
+    quantitative_reference: "1 kg released net beverage"
+  - id: site_services
+    name: "Utilities, cleaning, and wastewater management"
+    inclusion: "required"
+    inclusion_condition: "Always; allocate shared services to the reporting product"
+    role: "Cross-cutting foreground support"
+    quantitative_reference: "service quantities allocated to 1 kg released net beverage"
+process_inventory:
+  - id: brewhouse_preparation
+    label: "Ingredient handling and wort preparation"
+    inputs:
+      product:
+        - row_id: brewing_water
+          role: "Brewing and formulation water"
+          name: "Water, process quality"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record water incorporated into the beverage or used directly in wort preparation. Cleaning water belongs under site services."
+          amount:
+            expression: "Metered or batch-formula water delivered to wort and formulation operations"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg released net beverage"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_brewhouse_batch_records
+              source_ids:
+                - us-epa-ap42-malt-beverages-1996
+            ranges:
+              - role: qa_guardrail
+                lower: "0.5"
+                upper: "20"
+                unit: "kg"
+                basis: "per 1 kg released net beverage"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: fermentable_ingredients
+          role: "Fermentable ingredients and botanical materials"
+          name: "Fermentable ingredients and botanical materials"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record malt, cereal adjuncts, sugars, ginger, herbs, or other declared fermentable formulation materials separately in the foreground package."
+          amount:
+            expression: "Accepted mass from batch sheets, weigh scales, or supplier delivery records"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg released net beverage"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_brewhouse_batch_records
+              source_ids:
+                - us-epa-ap42-malt-beverages-1996
+            ranges:
+              - role: qa_guardrail
+                lower: "0.01"
+                upper: "1"
+                unit: "kg"
+                basis: "per 1 kg released net beverage"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: brewing_aids
+          role: "Hops, yeast, and process aids"
+          name: "Brewing ingredients and process aids"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record hops or extracts, yeast additions, enzymes, filtration aids, salts, acids, and other recipe or processing aids by material."
+          amount:
+            expression: "Mass issued to the production lot from batch and inventory records"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg released net beverage"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_brewhouse_batch_records
+              source_ids:
+                - us-epa-ap42-malt-beverages-1996
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.2"
+                unit: "kg"
+                basis: "per 1 kg released net beverage"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: brewhouse_energy
+          role: "Brewhouse electricity and thermal energy"
+          name: "Electricity and thermal energy"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Record metered electricity and delivered fuel or steam used for milling, mashing, boiling, pumping, separation, and wort cooling."
+          amount:
+            expression: "Metered process energy or allocated facility energy calculated from verified meters and operating records"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg released net beverage"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_brewhouse_energy_records
+              source_ids:
+                - us-epa-ap42-malt-beverages-1996
+            ranges:
+              - role: qa_guardrail
+                lower: "0.05"
+                upper: "30"
+                unit: "MJ"
+                basis: "per 1 kg released net beverage"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: cooled_wort
+          role: "Cooled wort transferred to fermentation"
+          name: "Cooled wort"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the mass of wort after solids separation and cooling at the transfer point to fermentation."
+          amount:
+            expression: "Measured vessel transfer mass or volume converted with measured density"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg released net beverage"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_brewhouse_batch_records
+              source_ids:
+                - us-epa-ap42-malt-beverages-1996
+            ranges:
+              - role: qa_guardrail
+                lower: "0.5"
+                upper: "2"
+                unit: "kg"
+                basis: "per 1 kg released net beverage"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: recovered_brewhouse_residue
+          role: "Recovered brewers grain or trub"
+          name: "Recovered brewers grain or trub"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record separately measured residue only as a product output when it leaves the system with a documented beneficial use and meets the declared co-product criterion."
+          amount:
+            expression: "Measured wet and, where relevant, dry mass dispatched for beneficial use"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg released net beverage"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_brewhouse_batch_records
+              source_ids:
+                - us-epa-ap42-malt-beverages-1996
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "1"
+                unit: "kg wet residue"
+                basis: "per 1 kg released net beverage"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        - row_id: brewhouse_solid_waste
+          role: "Discarded spent grain, trub, and filter residue"
+          name: "Brewery organic solid waste"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record residues without documented beneficial use as waste outputs to the actual treatment route."
+          amount:
+            expression: "Measured wet mass leaving brewhouse operations for treatment or disposal"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg released net beverage"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_brewhouse_batch_records
+              source_ids:
+                - us-epa-ap42-malt-beverages-1996
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "1"
+                unit: "kg wet waste"
+                basis: "per 1 kg released net beverage"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        - row_id: brewhouse_air_emissions
+          role: "Direct brewhouse air emissions"
+          name: "Direct brewhouse emissions to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record measured or method-calculated particulate matter, combustion emissions, and volatile releases that cross the site boundary during ingredient handling, boiling, and residue drying."
+          amount:
+            expression: "Pollutant-specific measured emissions or calculation from recorded fuel and approved factors"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg released net beverage"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_brewhouse_energy_records
+              source_ids:
+                - us-epa-ap42-malt-beverages-1996
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "1"
+                unit: "kg pollutant"
+                basis: "per 1 kg released net beverage and pollutant"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+  - id: fermentation_conditioning
+    label: "Fermentation and conditioning"
+    inputs:
+      product:
+        - row_id: wort_to_fermentation
+          role: "Cooled wort input"
+          name: "Cooled wort"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the same transfer quantity reported as cooled wort output from the brewhouse process."
+          amount:
+            expression: "Matched inter-process transfer mass"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg released net beverage"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_fermentation_batch_records
+              source_ids:
+                - us-epa-ap42-malt-beverages-1996
+            ranges:
+              - role: qa_guardrail
+                lower: "0.5"
+                upper: "2"
+                unit: "kg"
+                basis: "per 1 kg released net beverage"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: fermentation_energy
+          role: "Fermentation, cooling, and conditioning energy"
+          name: "Electricity and thermal energy"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Record electricity and thermal energy for fermentation control, cooling, storage, filtration, carbonation, and stabilization before final filling."
+          amount:
+            expression: "Metered energy or verified allocation from shared refrigeration and utility meters"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg released net beverage"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_fermentation_batch_records
+              source_ids:
+                - us-epa-ap42-malt-beverages-1996
+            ranges:
+              - role: qa_guardrail
+                lower: "0.01"
+                upper: "20"
+                unit: "MJ"
+                basis: "per 1 kg released net beverage"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: purchased_carbon_dioxide
+          role: "Purchased carbonation gas"
+          name: "Carbon dioxide, beverage grade"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record purchased carbon dioxide used for carbonation or inerting; separately record internally recovered carbon dioxide to prevent double counting."
+          amount:
+            expression: "Supplier quantity or mass-flow record issued to the product lot"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg released net beverage"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_fermentation_batch_records
+              source_ids:
+                - us-epa-ap42-malt-beverages-1996
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.1"
+                unit: "kg"
+                basis: "per 1 kg released net beverage"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: conditioned_beverage
+          role: "Conditioned beverage transferred onward"
+          name: "Conditioned beer-type beverage"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record beer or beer-type beverage after fermentation, aging, clarification, and conditioning and before any distinct alcohol-control or packaging process."
+          amount:
+            expression: "Measured transfer mass or volume converted with measured density"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg released net beverage"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_fermentation_batch_records
+              source_ids:
+                - us-epa-ap42-malt-beverages-1996
+            ranges:
+              - role: qa_guardrail
+                lower: "0.5"
+                upper: "1.5"
+                unit: "kg"
+                basis: "per 1 kg released net beverage"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: recovered_fermentation_outputs
+          role: "Recovered fermentation carbon dioxide or yeast"
+          name: "Recovered carbon dioxide or yeast"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record carbon dioxide or yeast as product outputs only when separately measured, meeting a declared specification, and dispatched for internal substitution or external beneficial use."
+          amount:
+            expression: "Separately measured recovered output mass with destination and quality record"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg released net beverage"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_fermentation_batch_records
+              source_ids:
+                - us-epa-ap42-malt-beverages-1996
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.3"
+                unit: "kg"
+                basis: "per 1 kg released net beverage"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        - row_id: fermentation_residue_waste
+          role: "Surplus yeast and filtration residue"
+          name: "Fermentation and filtration residue waste"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record surplus yeast, filtration media, and conditioning residues sent to treatment without beneficial-use status."
+          amount:
+            expression: "Measured wet mass by treatment route"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg released net beverage"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_fermentation_batch_records
+              source_ids:
+                - us-epa-ap42-malt-beverages-1996
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.3"
+                unit: "kg wet waste"
+                basis: "per 1 kg released net beverage"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        - row_id: fermentation_air_emissions
+          role: "Fermentation carbon dioxide and volatile releases"
+          name: "Fermentation emissions to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record unrecovered biogenic carbon dioxide and measured or method-calculated ethanol and other volatile releases from fermentation, conditioning, storage, and filtration."
+          amount:
+            expression: "Pollutant-specific measured release or calculation from recorded fermentation and approved factors"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg released net beverage"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_fermentation_batch_records
+              source_ids:
+                - us-epa-ap42-malt-beverages-1996
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.5"
+                unit: "kg pollutant"
+                basis: "per 1 kg released net beverage and pollutant"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+  - id: alcohol_control
+    label: "Route-specific alcohol control"
+    inputs:
+      product:
+        - row_id: beverage_to_alcohol_control
+          role: "Beverage entering alcohol control"
+          name: "Fermented or partly fermented beer-type beverage"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the mass and measured alcohol content of the beverage entering a distinct arrest, separation, dilution, or blending stage."
+          amount:
+            expression: "Measured transfer mass and inlet alcohol content"
+            value_mode: "calculated_value"
+            specificity: "route_specific"
+            basis:
+              text: "per 1 kg released net beverage"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_alcohol_control_records
+              source_ids:
+                - ttb-malt-beverage-alcohol-content-2023
+            ranges:
+              - role: qa_guardrail
+                lower: "0.5"
+                upper: "2"
+                unit: "kg"
+                basis: "per 1 kg released net beverage"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: alcohol_control_services
+          role: "Alcohol-control energy and process media"
+          name: "Alcohol-control energy and process media"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Record route-specific electricity, heat, vacuum, water, membrane or adsorbent replacement, and other process aids separately where the route uses them."
+          amount:
+            expression: "Metered energy plus separately recorded replacement media; preserve original units by item"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg alcohol-controlled beverage output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_alcohol_control_records
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "30"
+                unit: "MJ"
+                basis: "per 1 kg alcohol-controlled beverage output"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: alcohol_controlled_beverage
+          role: "Alcohol-controlled beverage"
+          name: "Alcohol-controlled non-alcoholic beer-type beverage"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record output mass, measured alcohol content, and route yield before transfer to final stabilization and packaging."
+          amount:
+            expression: "Measured transfer mass passing the declared alcohol specification"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg released net beverage"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_alcohol_control_records
+              source_ids:
+                - ttb-malt-beverage-alcohol-content-2023
+            ranges:
+              - role: qa_guardrail
+                lower: "0.5"
+                upper: "1.5"
+                unit: "kg"
+                basis: "per 1 kg released net beverage"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: recovered_alcohol_output
+          role: "Recovered ethanol or concentrate"
+          name: "Recovered ethanol or alcoholic concentrate"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record recovered ethanol or concentrate as a product output only when separately measured, meeting a specification, and dispatched for documented beneficial use."
+          amount:
+            expression: "Measured recovered mass and composition with destination record"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per 1 kg released net beverage"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_alcohol_control_records
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.5"
+                unit: "kg"
+                basis: "per 1 kg released net beverage"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        - row_id: alcohol_control_waste
+          role: "Alcohol-control wastewater and spent media"
+          name: "Alcohol-control waste"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record wastewater, spent membranes, adsorbents, and unrecovered concentrates by actual treatment route."
+          amount:
+            expression: "Measured waste mass or discharge volume converted with measured density"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg alcohol-controlled beverage output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_alcohol_control_records
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "10"
+                unit: "kg"
+                basis: "per 1 kg alcohol-controlled beverage output"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        []
+  - id: packaging_release
+    label: "Stabilization, filling, packaging, and release"
+    inputs:
+      product:
+        - row_id: bulk_beverage_to_packaging
+          role: "Bulk non-alcoholic beverage"
+          name: "Bulk non-alcoholic beer-type beverage"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the qualified bulk beverage entering final stabilization or filling, including measured alcohol content."
+          amount:
+            expression: "Matched transfer mass entering the packaging process"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg released net beverage"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_release_records
+              source_ids:
+                - ttb-malt-beverage-alcohol-content-2023
+            ranges:
+              - role: qa_guardrail
+                lower: "1"
+                upper: "1.2"
+                unit: "kg"
+                basis: "per 1 kg released net beverage"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: packaging_materials
+          role: "Primary, secondary, and tertiary packaging"
+          name: "Packaging materials by material and component"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record each packaging material and component separately, including containers, closures, labels, cartons, trays, film, pallets, and reusable packaging losses."
+          amount:
+            expression: "Measured component mass multiplied by accepted packed units, adjusted for recorded rejects"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg released net beverage"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_release_records
+              source_ids:
+                - iso-14044-lca-2006
+            ranges:
+              - role: qa_guardrail
+                lower: "0.001"
+                upper: "1"
+                unit: "kg"
+                basis: "per 1 kg released net beverage"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: packaging_energy
+          role: "Filling and stabilization energy"
+          name: "Electricity and thermal energy"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Record electricity and heat for final filtration, pasteurization or sterile filling, container preparation, filling, conveying, and packing."
+          amount:
+            expression: "Metered line energy or verified allocation from packaging-line operating records"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg released net beverage"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_release_records
+              source_ids:
+                - us-epa-ap42-malt-beverages-1996
+            ranges:
+              - role: qa_guardrail
+                lower: "0.01"
+                upper: "10"
+                unit: "MJ"
+                basis: "per 1 kg released net beverage"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: packaged_non_alcoholic_beer
+          role: "Released packaged non-alcoholic beer"
+          name: "Non-alcoholic beer"
+          flow_type: "product"
+          flow_ref:
+            uuid: "6fe10289-5a7d-4ca7-a73c-e698bca5a320"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This is the declared reference product output. Its amount is net beverage mass; packaging is not included in the 1 kg reference amount."
+          amount:
+            expression: "1 kg released net beverage passing product and alcohol-content checks"
+            value_mode: "fixed_value"
+            specificity: "not_applicable"
+            basis:
+              text: "1 kg released net beverage"
+              kind: "reference_flow"
+            evidence:
+              kind: "identity_reference"
+              source_ids:
+                - ttb-malt-beverage-alcohol-content-2023
+            ranges:
+              - role: allowed_range
+                lower: "1"
+                upper: "1"
+                unit: "kg"
+                basis: "per reference flow"
+                basis_kind: "reference_flow"
+                evidence_kind: "method_formula"
+                source_ids:
+                  - iso-14044-lca-2006
+      waste:
+        - row_id: filling_beverage_loss
+          role: "Filling losses and rejected beverage"
+          name: "Rejected or lost beverage"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record spills, start-up and shutdown losses, damaged packs, and rejected beverage by recovery or treatment route."
+          amount:
+            expression: "Beverage mass entering packaging minus released product, retained inventory change, and documented recovery"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg released net beverage"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_release_records
+              source_ids:
+                - us-epa-ap42-malt-beverages-1996
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.2"
+                unit: "kg"
+                basis: "per 1 kg released net beverage"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: packaging_scrap
+          role: "Packaging rejects and scrap"
+          name: "Packaging waste by material"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record rejected containers, closures, labels, cartons, films, and other packaging scrap by material and treatment route."
+          amount:
+            expression: "Measured or counted rejected components converted with component mass"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg released net beverage"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_release_records
+              source_ids:
+                - us-epa-ap42-malt-beverages-1996
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.2"
+                unit: "kg"
+                basis: "per 1 kg released net beverage"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        []
+  - id: site_services
+    label: "Utilities, cleaning, and wastewater management"
+    inputs:
+      product:
+        - row_id: cleaning_water
+          role: "Cleaning and service water"
+          name: "Water, process quality"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record water used for cleaning-in-place, container washing, rinsing, utility generation, and site services, excluding water already recorded as formulation water."
+          amount:
+            expression: "Metered site or subsystem water less separately metered formulation water, allocated by documented service driver"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg released net beverage"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_site_service_records
+              source_ids:
+                - us-epa-ap42-malt-beverages-1996
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "30"
+                unit: "kg"
+                basis: "per 1 kg released net beverage"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: cleaning_chemicals
+          role: "Cleaning chemicals and treatment materials"
+          name: "Cleaning and treatment chemicals"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record caustic, acid, sanitizer, detergent, water-treatment chemicals, and wastewater-treatment materials separately."
+          amount:
+            expression: "Inventory issue or dosing record allocated to the reporting product and period"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg released net beverage"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_site_service_records
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.2"
+                unit: "kg"
+                basis: "per 1 kg released net beverage"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: site_service_energy
+          role: "Shared site electricity and thermal energy"
+          name: "Electricity and thermal energy"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Record shared refrigeration, compressed air, steam, hot water, lighting, and treatment energy not already assigned to another process."
+          amount:
+            expression: "Residual metered site energy allocated using documented operating-hour, load, or service-demand drivers"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg released net beverage"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_site_service_records
+              source_ids:
+                - iso-14044-lca-2006
+            ranges:
+              - role: qa_guardrail
+                lower: "0.01"
+                upper: "30"
+                unit: "MJ"
+                basis: "per 1 kg released net beverage"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: process_wastewater
+          role: "Process wastewater to treatment"
+          name: "Brewery process wastewater"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record wastewater quantity and route, including alcohol-bearing losses, scrubber water, cleaning effluent, and alcohol-control wastewater without double counting."
+          amount:
+            expression: "Metered discharge or water balance reconciled with water incorporated in product, evaporation, and other outputs"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg released net beverage"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_site_service_records
+              source_ids:
+                - us-epa-ap42-malt-beverages-1996
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "30"
+                unit: "kg"
+                basis: "per 1 kg released net beverage"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: treatment_residue
+          role: "Wastewater sludge and spent treatment material"
+          name: "Wastewater-treatment residue"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record sludge, spent carbon, filters, and other treatment residues by measured mass and actual treatment destination."
+          amount:
+            expression: "Measured wet or dry mass with basis and destination declared"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg released net beverage"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_site_service_records
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.5"
+                unit: "kg"
+                basis: "per 1 kg released net beverage"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        - row_id: site_service_emissions
+          role: "Direct utility, treatment, and refrigerant emissions"
+          name: "Direct site-service emissions to air or water"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record pollutant-specific combustion, wastewater-treatment, and refrigerant releases that cross the site boundary and are not already assigned to another process."
+          amount:
+            expression: "Measured releases or calculations from recorded fuel, treatment, and refrigerant activity using approved factors"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg released net beverage"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_site_service_records
+              source_ids:
+                - iso-14044-lca-2006
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "1"
+                unit: "kg pollutant"
+                basis: "per 1 kg released net beverage and pollutant"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+allocation_rules:
+  - rule_id: allocation_avoid_by_subdivision
+    applies_to: "all foreground operations"
+    rule: "Prefer process subdivision and direct measurement. Assign separately metered ingredients, utilities, emissions, wastes, and packaging to the product lot before any allocation."
+    source_ids:
+      - iso-14044-lca-2006
+  - rule_id: allocation_recovered_outputs
+    applies_to: "spent grain, yeast, carbon dioxide, ethanol, and other recovered outputs"
+    rule: "Treat an output as a co-product only when it is separately measured, meets a declared specification, and has documented beneficial use. Otherwise record it as waste. If subdivision cannot resolve shared burdens, use a documented physical relationship that reflects the process; use economic allocation only when no defensible physical relationship exists and report a sensitivity result."
+    source_ids:
+      - iso-14044-lca-2006
+      - us-epa-ap42-malt-beverages-1996
+  - rule_id: allocation_recycling_no_avoided_credit
+    applies_to: "packaging scrap, organic residues, wastewater products, and recovered materials"
+    rule: "Report the actual outgoing material and treatment route. Do not subtract an avoided-production credit inside this gate inventory unless the broader study applies and documents a consistent recycling or substitution method."
+    source_ids:
+      - iso-14044-lca-2006
+  - rule_id: allocation_shared_site_services
+    applies_to: "shared utilities, cleaning, refrigeration, and wastewater treatment"
+    rule: "Allocate shared services using measured demand where available; otherwise use a documented causal driver such as operating hours, mass throughput, thermal load, or wastewater load. Do not allocate solely by total sales value without justification."
+    source_ids:
+      - iso-14044-lca-2006
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_brewhouse_batch_records
+      process_id: "brewhouse_preparation"
+      flow_role: "ingredients, water, wort, residues, and waste"
+      record_type: "batch sheets, weigh records, tank levels, density tests, and dispatch records"
+      raw_fields: "batch_id; material_id; input_mass; input_volume; density; temperature; wort_output; residue_mass; destination"
+      collection_method: "reconcile signed batch and inventory records to vessel transfers"
+      unit: "kg; L; kg/L; °C"
+      frequency: "each batch"
+      temporal_coverage: "at least one representative continuous 12-month period or all batches if production is shorter"
+      site_scope: "all foreground brewhouse lines producing the declared product"
+      aggregation_rule: "sum batch quantities, adjust opening and closing inventory, then normalize to released net product mass"
+      quality_evidence: "calibrated scales or meters; batch sign-off; density test; material and destination traceability"
+    - protocol_id: cp_brewhouse_energy_records
+      process_id: "brewhouse_preparation"
+      flow_role: "electricity, heat, fuel, and direct emissions"
+      record_type: "submeter, fuel invoice, steam record, operating log, and emissions test or factor record"
+      raw_fields: "meter_id; start_reading; end_reading; fuel_quantity; steam_quantity; operating_hours; pollutant; factor; factor_source"
+      collection_method: "read dedicated meters where available and document causal allocation for shared supply"
+      unit: "kWh; MJ; kg fuel; kg pollutant"
+      frequency: "monthly and each material campaign"
+      temporal_coverage: "same period as product output"
+      site_scope: "all brewhouse equipment and on-site residue drying in scope"
+      aggregation_rule: "convert to MJ, calculate pollutant-specific releases, and normalize to released net product mass"
+      quality_evidence: "meter calibration; invoice reconciliation; factor identity and version; allocation workbook"
+    - protocol_id: cp_fermentation_batch_records
+      process_id: "fermentation_conditioning"
+      flow_role: "wort, energy, fermentation outputs, residues, and air releases"
+      record_type: "transfer meter, fermentation log, refrigeration meter, gas-flow record, laboratory result, and waste ticket"
+      raw_fields: "batch_id; inlet_mass; inlet_density; yeast_mass; energy; outlet_mass; alcohol_content; recovered_co2; recovered_yeast; residue_mass; vent_measurement"
+      collection_method: "reconcile vessel transfers and laboratory release records for each lot"
+      unit: "kg; L; kg/L; MJ; % vol"
+      frequency: "each batch with monthly utility reconciliation"
+      temporal_coverage: "same period as product output"
+      site_scope: "all fermentation, aging, filtration, and conditioning vessels in scope"
+      aggregation_rule: "calculate transfers, recovery, losses, and emissions on a batch basis and normalize to released net product mass"
+      quality_evidence: "calibrated transfer and gas meters; laboratory QA; vessel reconciliation; waste destination records"
+    - protocol_id: cp_alcohol_control_records
+      process_id: "alcohol_control"
+      flow_role: "inlet and outlet beverage, alcohol content, energy, media, recovered alcohol, and waste"
+      record_type: "process run log, transfer meter, laboratory result, energy meter, media replacement, recovery log, and waste manifest"
+      raw_fields: "run_id; route; inlet_mass; inlet_abv; outlet_mass; outlet_abv; energy; water; media_mass; recovered_ethanol; wastewater; waste_destination"
+      collection_method: "record every alcohol-control run and preserve inlet/outlet mass and alcohol analysis"
+      unit: "kg; L; % vol; MJ"
+      frequency: "each run"
+      temporal_coverage: "same period as product output"
+      site_scope: "every alcohol-control unit or contracted operation used for the product"
+      aggregation_rule: "reconcile route-specific mass and alcohol balance and normalize accepted output to released net product mass"
+      quality_evidence: "analytical method and calibration; meter records; recovery specification; contractor data when outsourced"
+    - protocol_id: cp_packaging_release_records
+      process_id: "packaging_release"
+      flow_role: "bulk beverage, packaging, energy, released product, filling loss, and rejects"
+      record_type: "filler counters, tank levels, component specifications, weigh checks, line meters, release certificate, and reject log"
+      raw_fields: "lot_id; inlet_mass; density; packed_units; net_content; component_mass; energy; rejected_units; beverage_loss; release_abv"
+      collection_method: "reconcile line input, released output, rejects, and inventory change for each product-format lot"
+      unit: "kg; item; kg/item; MJ; % vol"
+      frequency: "each packaging lot"
+      temporal_coverage: "same period as product output"
+      site_scope: "all filling and packaging lines producing the declared product"
+      aggregation_rule: "calculate net beverage output and component masses by format, then normalize to 1 kg net beverage"
+      quality_evidence: "legal metrology or checkweigh records; component specifications; release approval; alcohol test; line reconciliation"
+    - protocol_id: cp_site_service_records
+      process_id: "site_services"
+      flow_role: "service water, chemicals, shared energy, wastewater, sludge, and direct releases"
+      record_type: "site and submeter readings, chemical inventory, utility invoices, discharge meter, laboratory analysis, waste ticket, and refrigerant log"
+      raw_fields: "period; meter_id; water; energy; chemical_mass; wastewater; concentration; sludge_mass; refrigerant_added; fuel; allocation_driver"
+      collection_method: "reconcile site totals with submetered processes and document residual service allocation"
+      unit: "kg; m3; kWh; MJ; mg/L; kg pollutant"
+      frequency: "monthly with annual reconciliation"
+      temporal_coverage: "same representative period as product output"
+      site_scope: "complete foreground facility, excluding documented unrelated production before allocation"
+      aggregation_rule: "subtract directly assigned use, allocate residual services by causal drivers, and normalize to released net product mass"
+      quality_evidence: "calibrated meters; invoice balance; discharge laboratory QA; waste manifests; refrigerant service records; allocation review"
+  calculation_rules:
+    - id: calc_normalize_to_reference_mass
+      applies_to: "all inventory rows"
+      rule: "normalized amount = period or batch amount / released net beverage mass for the same scope and period"
+      inputs:
+        - "collected amount"
+        - "released net beverage mass"
+      output: "amount per 1 kg released net beverage"
+      source_ids:
+        - iso-14044-lca-2006
+    - id: calc_volume_to_mass
+      applies_to: "beverage, water, and wastewater recorded by volume"
+      rule: "mass = measured volume × measured product-specific density at the declared temperature"
+      inputs:
+        - volume
+        - density
+        - temperature
+      output: "kg"
+      source_ids: []
+    - id: calc_energy_conversion
+      applies_to: "electricity, steam, and fuels"
+      rule: "preserve original quantity and convert to MJ using a documented unit conversion or fuel property; do not use an unreferenced combustion factor"
+      inputs:
+        - "original energy or fuel quantity"
+        - "conversion factor"
+      output: "MJ per 1 kg released net beverage"
+      source_ids:
+        - iso-14044-lca-2006
+    - id: calc_packaging_mass
+      applies_to: "packaging components"
+      rule: "packaging mass = accepted packed units × measured or supplier-declared component mass + recorded component rejects"
+      inputs:
+        - "packed units"
+        - "component mass"
+        - "reject count or mass"
+      output: "kg packaging by material per 1 kg released net beverage"
+      source_ids: []
+    - id: calc_batch_mass_balance
+      applies_to: "each production and packaging stage"
+      rule: "input mass + opening inventory = outputs + closing inventory + recovered products + wastes + measured or estimated releases; investigate and disclose residual imbalance"
+      inputs:
+        - "all batch mass records and inventory changes"
+      output: "stage balance and unexplained residual"
+      source_ids:
+        - iso-14044-lca-2006
+    - id: calc_alcohol_compliance
+      applies_to: "product qualification and alcohol-control output"
+      rule: "compare measured alcohol content with the explicitly declared jurisdictional or market threshold and retain the analytical method and decision record"
+      inputs:
+        - "measured alcohol content"
+        - "analytical method"
+        - "applicable threshold"
+      output: "pass or fail and declared value"
+      source_ids:
+        - ttb-malt-beverage-alcohol-content-2023
+    - id: calc_wastewater_load
+      applies_to: "wastewater emissions where concentration data exist"
+      rule: "pollutant load = discharged volume × measured concentration, with unit conversion and sampling representativeness documented"
+      inputs:
+        - "discharge volume"
+        - "pollutant concentration"
+        - "sampling period"
+      output: "kg pollutant per 1 kg released net beverage"
+      source_ids: []
+  data_quality_requirements:
+    - id: dq_product_identity
+      applies_to: "reference product and each product format"
+      requirement: "Preserve formulation family, route, alcohol specification, measured alcohol content, carbonation, stabilization, package format, geography, and production period."
+      evidence: "approved recipe; product specification; label or market specification; laboratory release result"
+    - id: dq_temporal_representativeness
+      applies_to: "all foreground data"
+      requirement: "Use one continuous representative 12-month period when available; if production is seasonal or shorter, cover all production and disclose the period and missing seasons."
+      evidence: "production calendar; meter period; batch list; justification of representativeness"
+    - id: dq_measurement_control
+      applies_to: "mass, volume, energy, alcohol, and emission records"
+      requirement: "Identify instruments and methods, calibration or verification status, conversion factors, and data owners; distinguish measured, calculated, and estimated values."
+      evidence: "calibration certificates; laboratory QA; meter register; calculation workbook"
+    - id: dq_completeness
+      applies_to: "process map and inventory"
+      requirement: "Cover every required process and every applicable conditional process; reconcile material, alcohol, packaging, water, and energy balances and disclose excluded or unquantified flows."
+      evidence: "process-flow diagram; balance checks; exclusion register; missing-data log"
+    - id: dq_supplier_and_background_links
+      applies_to: "purchased inputs and services"
+      requirement: "Record supplier, grade or composition, geography, time period, and upstream dataset reference for material inputs; document proxy selection and substitution when exact data are unavailable."
+      evidence: "purchase record; specification; supplier declaration; dataset mapping register"
+    - id: dq_allocation_and_outsourcing
+      applies_to: "shared services, co-products, and contracted operations"
+      requirement: "Preserve subdivision, allocation drivers, co-product criteria, sensitivity results, and contractor data boundaries."
+      evidence: "allocation workbook; dispatch records; contractor inventory; sensitivity calculation"
+    - id: dq_provisional_ranges
+      applies_to: "all reasoned-estimate ranges"
+      requirement: "Treat provisional ranges only as QA screens; they shall not overwrite valid foreground records and shall be replaced or explicitly accepted during methodology review before publication."
+      evidence: "QA report; reviewer decision; source update record"
+validation_rules:
+  - rule_id: validate_reference_identity
+    applies_to: "reference flow"
+    rule: "Require exactly 1 kg net beverage using the declared Tiangong product flow, Mass property, units-of-mass group, and kg unit."
+    source_ids: []
+  - rule_id: validate_required_qualifiers
+    applies_to: "dataset metadata"
+    rule: "Fail completeness when any required qualifier is missing, including applicable alcohol threshold, measured alcohol content and method, formulation family, route, carbonation, stabilization, packaging, geography, period, and density basis where used."
+    source_ids:
+      - ttb-malt-beverage-alcohol-content-2023
+  - rule_id: validate_alcohol_claim
+    applies_to: "released product"
+    rule: "Require a measured alcohol result and compare it with the declared jurisdictional or market specification; do not assume one global threshold or infer compliance from the product name."
+    source_ids:
+      - ttb-malt-beverage-alcohol-content-2023
+  - rule_id: validate_process_coverage
+    applies_to: "process inventory"
+    rule: "Require brewhouse preparation, fermentation and conditioning, packaging and release, and site services; require the alcohol-control process whenever a distinct arrest, separation, dilution, or blending stage is declared."
+    source_ids:
+      - us-epa-ap42-malt-beverages-1996
+  - rule_id: validate_interprocess_transfers
+    applies_to: "wort, conditioned beverage, and bulk beverage"
+    rule: "Match each inter-process output and input on the same mass, density, lot, and inventory-change basis; explain any difference."
+    source_ids: []
+  - rule_id: validate_mass_balance
+    applies_to: "each process and reporting period"
+    rule: "Flag unexplained stage or site mass-balance residuals and prohibit balancing by silently deleting losses, wastes, recovered outputs, or emissions."
+    source_ids:
+      - iso-14044-lca-2006
+  - rule_id: validate_no_double_counting
+    applies_to: "water, energy, recovered carbon dioxide, packaging, wastewater, and shared services"
+    rule: "Ensure formulation and cleaning water, direct and shared energy, purchased and recovered carbon dioxide, packaging mass and net beverage mass, and process-specific and site wastewater are not double counted."
+    source_ids: []
+  - rule_id: validate_allocation
+    applies_to: "co-products and shared services"
+    rule: "Require documented subdivision or allocation driver, co-product criterion, and sensitivity when economic allocation is used."
+    source_ids:
+      - iso-14044-lca-2006
+  - rule_id: validate_range_use
+    applies_to: "provisional reasoned estimates"
+    rule: "Treat values outside provisional ranges as review flags rather than automatic errors when verified foreground evidence is present; reject substitution of a provisional midpoint for missing foreground data without disclosure."
+    source_ids: []
+  - rule_id: validate_sources_and_background
+    applies_to: "external evidence and purchased inputs"
+    rule: "Require every cited source id to resolve and every material purchased input or treatment service to have an upstream dataset or a disclosed data gap."
+    source_ids:
+      - iso-14044-lca-2006
+published_dataset_profile:
+  dataset_role: "Foreground gate-to-gate production dataset for finished packaged non-alcoholic beer, with linked upstream inputs and explicit direct releases"
+  downstream_use: "secondary_dataset; background_dataset"
+  allowed_use: "Product and facility LCA, supply-chain inventory, footprint screening, and lifecyclemodel construction when the declared product route, alcohol specification, packaging, geography, period, and boundary match the study"
+  excluded_use: "Comparative public claims without review; alcoholic beer or unrelated soft drinks; use-phase or full cradle-to-grave results without added downstream stages; substitution of provisional QA ranges for site records"
+  required_metadata: "canonical PCR id; product and formulation; applicable alcohol definition and threshold; measured alcohol content and method; route; package format and component masses; geography; production period; facility boundary; process coverage; allocation; upstream dataset links; data gaps"
+  required_quality_disclosure: "measured versus calculated versus estimated shares; meter and laboratory QA; temporal and geographic representativeness; mass and alcohol balance; completeness; allocation sensitivity; source-backed and provisional ranges; outsourced data quality"
+  update_trigger: "Material change in formulation, alcohol-control technology, energy or water system, package format, facility boundary, allocation, legal product definition, upstream dataset, or a change exceeding the producer's documented significance threshold"
+data_sources:
+  - id: "ttb-malt-beverage-alcohol-content-2023"
+    type: "official_guidance"
+    reference: "U.S. Alcohol and Tobacco Tax and Trade Bureau, “Malt Beverage Labeling: Alcohol Content,” TTB G 2023-2, https://www.ttb.gov/regulated-commodities/beverage-alcohol/beer/labeling/malt-beverage-alcohol-content (retrieved 2026-08-11)"
+    used_for: "Product qualification evidence; measured alcohol declaration; illustration of jurisdiction-specific non-alcoholic and alcohol-free thresholds"
+  - id: "us-epa-ap42-malt-beverages-1996"
+    type: "official_guidance"
+    reference: "U.S. Environmental Protection Agency, AP-42 Section 9.12.1, “Malt Beverages,” October 1996, https://www.epa.gov/sites/default/files/2020-10/documents/c9s12-1.pdf (retrieved 2026-08-11)"
+    used_for: "Brewing process decomposition; fermentation, conditioning, packaging, residues, wastewater, and direct-emission flow candidates"
+  - id: "iso-14044-lca-2006"
+    type: "standard"
+    reference: "ISO 14044:2006, “Environmental management — Life cycle assessment — Requirements and guidelines,” https://www.iso.org/standard/38498.html (confirmed current in 2022; retrieved 2026-08-11)"
+    used_for: "Goal and scope, life-cycle inventory structure, allocation hierarchy, reporting, and interpretation requirements"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:349b3b4b8fc43cf6d682f7682760ef37ff6dd42bf59ff2c703745b3a2433a697"
+  generated_content_sha256: "sha256:73270d5b5a948c9c6de0d9c52904e3ee953857d8a2e6dcab15b3fcd2d6595c4c"

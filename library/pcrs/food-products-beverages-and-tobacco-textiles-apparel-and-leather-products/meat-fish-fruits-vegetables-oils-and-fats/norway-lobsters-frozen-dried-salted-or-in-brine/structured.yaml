@@ -1,10 +1,846 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "21254"
-  title: "Norway lobsters, frozen, dried, salted or in brine"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.food-products-beverages-and-tobacco-textiles-apparel-and-leather-products.meat-fish-fruits-vegetables-oils-and-fats.norway-lobsters-frozen-dried-salted-or-in-brine"
+  classification_refs: "CPC 3.0: 21254 (exact)"
+  covered_products: "Raw *Nephrops norvegicus*, in shell or not, frozen, dried, salted, or in brine"
+  excluded_products: "Live, fresh or chilled product sold without the declared preservation step; cooked, smoked, canned or otherwise processed product; other lobster species; inseparable multi-route averages"
+  representative_product: "Raw Norway lobster preserved by the single route declared for the foreground data package"
+  production_route: "Receipt and preparation; exactly one of freezing, drying, salting or brining; packaging; on-site storage when applicable"
+  market_state: "Packaged preserved product at the processor gate, with route, shell/presentation state and storage condition declared"
+functional_unit:
+  what: "Preserved raw Norway lobster suitable for its declared market presentation"
+  how_much: "1 kg net product mass"
+  how_well: "*Nephrops norvegicus*; declared frozen, dried, salted or brined route; declared in-shell or shell-off presentation; food-safety release criteria met"
+  how_long_or_cycle: "One production lot through processor-gate dispatch, including the actual declared on-site storage duration"
+  reference_flow_link: "norway_lobster_preserved_net_mass"
+system_boundary:
+  rules:
+    - rule_id: boundary_route_separation
+      applies_to: "All foreground operations"
+      rule: "Include receipt/preparation, exactly one declared preservation route, packaging and applicable on-site storage. Keep route-specific inputs and outputs separate; do not create an unconditional combined frozen/dried/salted/brined inventory."
+      source_ids:
+        - unsd-cpc-3-0
+        - codex-cxc-52-2003
+    - rule_id: boundary_upstream_inputs
+      applies_to: "Raw lobster, packaging, salt, water, energy and ancillary materials"
+      rule: "Model inputs crossing the processor gate as product flows linked to representative upstream datasets. Capture or aquaculture and inbound transport remain upstream unless the study explicitly extends the foreground boundary and discloses that extension."
+      source_ids:
+        - eu-pef-2021-2279
+    - rule_id: boundary_food_safety
+      applies_to: "Receipt, preparation, preservation, packaging and storage"
+      rule: "Include the measurements and control records needed by the facility's prerequisite and HACCP-based food-safety system; food-safety compliance is a release condition, not an environmental credit."
+      source_ids:
+        - codex-cxc-52-2003
+        - codex-cxs-95-1981
+boundary_abstraction:
+  declared_starting_condition: "Raw *Nephrops norvegicus* received live, fresh or chilled at the processor gate, with source, harvest method, presentation, temperature and incoming mass documented"
+  starting_condition_role: "Upstream product input to the foreground processing system"
+  product_classification_scope: "Preserved raw Norway lobster corresponding to CPC 3.0 code 21254; classification does not replace the semantic species, route and presentation qualifiers"
+  recursive_input_rule: "If an input is already a product within this PCR scope, record it as a purchased preserved product input with its upstream dataset and do not recreate its preservation operations; disclose the quantity and reason"
+  upstream_dataset_requirement: "Use representative upstream datasets for capture or aquaculture, landing, ice/chilling and inbound transport corresponding to the declared raw-material source"
+  disclosure: "Report raw-material origin, wild or farmed source, harvest method when known, incoming state, preservation route, product presentation, facility geography, production period, storage regime and any excluded or outsourced operation"
+reference_flow_definition:
+  reference_amount: "1 kg net product mass"
+  product_flow_ref:
+    name: "Norway lobsters, frozen, dried, salted or in brine"
+    uuid: "0906636d-b63a-40c2-b99a-d3df121fcac6"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "species: *Nephrops norvegicus*"
+    - "preservation route: frozen"
+    - dried
+    - "salted or brined"
+    - "presentation: in shell or shell-off"
+    - "raw state"
+    - "net-mass method"
+    - "free brine or glaze exclusion"
+    - "packaging format"
+    - "production geography and period"
+    - "storage temperature and duration when applicable"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "Reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Normalize all inventory results to 1 kg net product mass at processor-gate dispatch. Exclude packaging, free preserving brine and external ice or glaze from the reference mass; for glazed frozen product, determine deglazed net mass consistently with CXS 95-1981."
+  - id: mass_state
+    applies_to: "Raw input, prepared intermediate, product, residuals and wastewater"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Record weighed mass and measurement state for each lot. Declare whether shell, surface water, salt uptake, glaze and free brine are included; do not mix wet, drained, deglazed and dry-matter bases."
+  - id: energy_units
+    applies_to: "Electricity and thermal energy"
+    required_property_ref:
+      name: "Energy"
+      uuid: ""
+    required_unit: "kWh or MJ"
+    rule: "Retain metered units and conversion factors. Convert only with documented factors and keep electricity separate from fuels or purchased heat."
+  - id: storage_basis
+    applies_to: "Refrigeration and storage inputs"
+    required_property_ref:
+      name: "Energy or Mass"
+      uuid: ""
+    required_unit: "kWh, MJ or kg"
+    rule: "Record actual storage duration, temperature regime, equipment scope and product throughput; allocate shared storage using the rule in section 7."
+process_map:
+  - id: receive_prepare
+    name: "Raw-material receipt and preparation"
+    inclusion: "required"
+    inclusion_condition: "Always; preparation actions are recorded only when performed"
+    role: "Establish lot identity, mass and hygienic starting condition"
+    quantitative_reference: "kg prepared raw Norway lobster"
+  - id: route_preservation
+    name: "Declared preservation route"
+    inclusion: "required"
+    inclusion_condition: "Execute exactly one declared route: frozen, dried, salted or brined"
+    role: "Produce the preserved product state without mixing route inventories"
+    quantitative_reference: "kg preserved product before packaging"
+  - id: pack_product
+    name: "Packaging and final net-mass determination"
+    inclusion: "required"
+    inclusion_condition: "Always"
+    role: "Produce the packaged processor-gate product and reference mass"
+    quantitative_reference: "kg net packaged product excluding packaging, free brine and external glaze"
+  - id: store_dispatch
+    name: "On-site storage to dispatch"
+    inclusion: "conditional"
+    inclusion_condition: "Required for frozen product and whenever any route is stored before dispatch"
+    role: "Maintain declared product condition until processor-gate dispatch"
+    quantitative_reference: "kg product dispatched and storage-duration record"
+process_inventory:
+  - id: receive_prepare
+    label: "Raw-material receipt and preparation"
+    inputs:
+      product:
+        - row_id: raw_lobster_input
+          role: "Eligible raw Norway lobster"
+          name: "Raw Norway lobster, exact Tiangong flow pending review"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Raw live, fresh or chilled *Nephrops norvegicus* crosses the processor-gate boundary with an upstream dataset."
+          amount:
+            expression: "Weighed received mass by lot, retaining source, temperature, presentation and wild/farmed status"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg prepared raw Norway lobster output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_lot_mass_route
+              source_ids:
+                - unsd-cpc-3-0
+                - codex-cxc-52-2003
+            ranges: []
+        - row_id: preparation_water_ice
+          role: "Water and ice used in preparation"
+          name: "Process water and ice, exact Tiangong flows pending review"
+          flow_type: "product"
+          property_unit: "Volume or Mass / m3 or kg"
+          description: "Record potable or otherwise food-safety-compliant water and ice that cross the foreground boundary for washing, rinsing or chilling."
+          amount:
+            expression: "Metered, tank-difference or purchase-record quantity; report water and ice separately and record source"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg prepared raw Norway lobster output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_energy_records
+              source_ids:
+                - codex-cxc-52-2003
+                - codex-cxs-95-1981
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: prepared_lobster
+          role: "Prepared raw Norway lobster"
+          name: "Prepared raw Norway lobster, exact Tiangong flow pending review"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Prepared lobster is the measured intermediate passed to the declared preservation route."
+          amount:
+            expression: "Weighed prepared mass by lot"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg prepared raw Norway lobster output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_lot_mass_route
+              source_ids:
+                - codex-cxc-52-2003
+            ranges: []
+      waste:
+        - row_id: preparation_residuals
+          role: "Rejected lobster and removed material"
+          name: "Seafood preparation residual, exact Tiangong flow pending review"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record rejects, shell or other removed material by destination and legal waste or co-product status."
+          amount:
+            expression: "Weighed or mass-balance-derived quantity by destination; calculation is allowed only when all contributing masses are recorded"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg prepared raw Norway lobster output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_lot_mass_route
+              source_ids:
+                - codex-cxc-52-2003
+            ranges: []
+        - row_id: preparation_wastewater
+          role: "Preparation wastewater"
+          name: "Seafood-processing wastewater, exact Tiangong flow pending review"
+          flow_type: "waste"
+          property_unit: "Volume / m3"
+          description: "Record wastewater leaving preparation, including destination and whether its quantity is metered or calculated from water balance."
+          amount:
+            expression: "Metered discharge or calculated water balance with retained inputs and losses"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg prepared raw Norway lobster output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_and_emissions
+              source_ids:
+                - codex-cxc-52-2003
+            ranges: []
+      elementary:
+        []
+  - id: route_preservation
+    label: "Declared preservation route"
+    inputs:
+      product:
+        - row_id: preservation_lobster_input
+          role: "Prepared lobster input"
+          name: "Prepared raw Norway lobster, exact Tiangong flow pending review"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the measured prepared-lobster input to the single declared route."
+          amount:
+            expression: "Weighed route input by lot"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg preserved product output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_lot_mass_route
+              source_ids:
+                - codex-cxc-52-2003
+            ranges: []
+        - row_id: route_water_ice
+          role: "Route water, ice or brine water"
+          name: "Process water or ice, exact Tiangong flow pending review"
+          flow_type: "product"
+          property_unit: "Volume or Mass / m3 or kg"
+          description: "Record only water or ice used by the declared route, including glazing water for frozen product and brine water for brined product; omit the row when no such input occurs."
+          amount:
+            expression: "Metered or batch-record quantity separated by use and route"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per kg preserved product output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_energy_records
+              source_ids:
+                - codex-cxc-52-2003
+                - codex-cxs-95-1981
+            ranges: []
+        - row_id: preservation_salt
+          role: "Salt input"
+          name: "Food-grade salt, exact Tiangong flow pending review"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record food-grade salt only for salted or brined production and distinguish initial charge, make-up and recoverable carry-over."
+          amount:
+            expression: "Weighed batch issue less documented recovered carry-over; zero or omitted for frozen and unsalted dried routes"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per kg preserved product output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_energy_records
+              source_ids:
+                - codex-cxc-52-2003
+            ranges: []
+        - row_id: preservation_energy
+          role: "Electricity and thermal energy"
+          name: "Electricity, fuel or purchased heat, exact Tiangong flows pending review"
+          flow_type: "product"
+          property_unit: "Energy / kWh or MJ"
+          description: "Record metered electricity and any fuel or purchased heat used by freezing, drying, brine circulation or other equipment actually operated for the declared route."
+          amount:
+            expression: "Route-submetered use; otherwise allocate a shared meter by documented equipment time, load and rated demand under allocation_shared_resources"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg preserved product output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_energy_records
+              source_ids:
+                - eu-pef-2021-2279
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: preserved_lobster
+          role: "Route-specific preserved Norway lobster"
+          name: "Norway lobsters, frozen, dried, salted or in brine"
+          flow_type: "product"
+          flow_ref:
+            uuid: "0906636d-b63a-40c2-b99a-d3df121fcac6"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record product mass and route endpoint. Frozen product shall reach and remain at the route temperature required by the applicable product specification; dried, salted and brined products shall retain route-specific endpoint and food-safety records."
+          amount:
+            expression: "Weighed preserved product before packaging, with route and measurement state declared"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg preserved product output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_lot_mass_route
+              source_ids:
+                - codex-cxc-52-2003
+                - codex-cxs-95-1981
+            ranges: []
+      waste:
+        - row_id: preservation_residuals
+          role: "Preservation residuals and spent brine"
+          name: "Route-specific food-processing residual or spent brine, exact Tiangong flows pending review"
+          flow_type: "waste"
+          property_unit: "Mass or Volume / kg or m3"
+          description: "Record off-specification product, fines, spent salt or brine and other route residuals separately by destination; do not combine free brine with product mass."
+          amount:
+            expression: "Measured batch discharge or documented mass balance by residual type and destination"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per kg preserved product output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_and_emissions
+              source_ids:
+                - codex-cxc-52-2003
+            ranges: []
+        - row_id: preservation_wastewater
+          role: "Preservation wastewater"
+          name: "Seafood-processing wastewater, exact Tiangong flow pending review"
+          flow_type: "waste"
+          property_unit: "Volume / m3"
+          description: "Record cleaning, thawing, rinsing or brine-management wastewater when it leaves the process boundary."
+          amount:
+            expression: "Metered discharge or calculated water balance, separated from spent brine when destinations differ"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per kg preserved product output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_and_emissions
+              source_ids:
+                - codex-cxc-52-2003
+            ranges: []
+      elementary:
+        - row_id: preservation_refrigerant_loss
+          role: "Refrigerant released during preservation"
+          name: "Refrigerant emission to air by actual substance, exact Tiangong elementary flow pending review"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Include route equipment refrigerant losses only when refrigeration equipment is within the foreground operational boundary."
+          amount:
+            expression: "Substance-specific service-record loss allocated to the equipment and reporting period; do not apply an uncited default leakage rate"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg preserved product output during the reporting period"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_refrigerant_records
+              source_ids:
+                - eu-pef-2021-2279
+            ranges: []
+  - id: pack_product
+    label: "Packaging and final net-mass determination"
+    inputs:
+      product:
+        - row_id: packaging_product_input
+          role: "Preserved lobster input"
+          name: "Norway lobsters, frozen, dried, salted or in brine"
+          flow_type: "product"
+          flow_ref:
+            uuid: "0906636d-b63a-40c2-b99a-d3df121fcac6"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record route-specific preserved product entering packaging without changing the declared route."
+          amount:
+            expression: "Weighed packaging-line input by lot"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg net packaged product output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_lot_mass_route
+              source_ids:
+                - codex-cxs-95-1981
+            ranges: []
+        - row_id: packaging_materials
+          role: "Primary and secondary packaging"
+          name: "Packaging material by actual material and component, exact Tiangong flows pending review"
+          flow_type: "product"
+          property_unit: "Mass or Items / kg or item"
+          description: "Record each packaging material and purchased component separately, including reusable packaging cycles when claimed."
+          amount:
+            expression: "Purchase, issue or bill-of-material quantity reconciled to packed units; convert item counts with documented item mass"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg net packaged product output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_records
+              source_ids:
+                - eu-pef-2021-2279
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: norway_lobster_preserved_net_mass
+          role: "Net packaged reference product"
+          name: "Norway lobsters, frozen, dried, salted or in brine"
+          flow_type: "product"
+          flow_ref:
+            uuid: "0906636d-b63a-40c2-b99a-d3df121fcac6"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This is the reference flow. Net product mass excludes packaging, free preserving brine and external ice or glaze and retains the declared shell/presentation state."
+          amount:
+            expression: "1 kg net product mass after applying calc_net_product_mass"
+            value_mode: "fixed_value"
+            specificity: "not_applicable"
+            basis:
+              text: "1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "method_formula"
+              collection_protocol_id: cp_lot_mass_route
+              source_ids:
+                - codex-cxs-95-1981
+            ranges: []
+      waste:
+        - row_id: packaging_scrap
+          role: "Packaging scrap"
+          name: "Packaging waste by material, exact Tiangong flows pending review"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record line scrap and rejected packaging separately by material and destination."
+          amount:
+            expression: "Measured scrap or packaging material balance"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg net packaged product output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_records
+              source_ids:
+                - eu-pef-2021-2279
+            ranges: []
+      elementary:
+        []
+  - id: store_dispatch
+    label: "On-site storage to dispatch"
+    inputs:
+      product:
+        - row_id: stored_product_input
+          role: "Packaged preserved product entering storage"
+          name: "Norway lobsters, frozen, dried, salted or in brine"
+          flow_type: "product"
+          flow_ref:
+            uuid: "0906636d-b63a-40c2-b99a-d3df121fcac6"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record packaged product entering on-site storage. This process is mandatory for frozen product and conditional for other routes."
+          amount:
+            expression: "Weighed or reconciled packaged product entering storage"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg product dispatched"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_storage_records
+              source_ids:
+                - codex-cxs-95-1981
+            ranges: []
+        - row_id: storage_energy
+          role: "Storage electricity and heat"
+          name: "Electricity or purchased heat, exact Tiangong flows pending review"
+          flow_type: "product"
+          property_unit: "Energy / kWh or MJ"
+          description: "Record actual electricity and any heat used to maintain the declared storage condition."
+          amount:
+            expression: "Submetered use or documented shared-store allocation using storage time, occupied capacity and monitored load"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg product dispatched for the declared storage duration"
+              kind: "storage_duration"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_storage_records
+              source_ids:
+                - codex-cxs-95-1981
+                - eu-pef-2021-2279
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: dispatched_product
+          role: "Preserved product dispatched"
+          name: "Norway lobsters, frozen, dried, salted or in brine"
+          flow_type: "product"
+          flow_ref:
+            uuid: "0906636d-b63a-40c2-b99a-d3df121fcac6"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record dispatched mass, storage duration and condition. Frozen product shall be maintained at -18 °C or colder through this process."
+          amount:
+            expression: "Weighed or reconciled dispatch mass by lot"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg product dispatched"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_storage_records
+              source_ids:
+                - codex-cxs-95-1981
+            ranges: []
+      waste:
+        - row_id: storage_product_loss
+          role: "Storage losses"
+          name: "Off-specification Norway lobster product, exact Tiangong flow pending review"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record damaged, temperature-abused or otherwise rejected product by destination."
+          amount:
+            expression: "Weighed storage loss by lot and destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg product dispatched"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_storage_records
+              source_ids:
+                - codex-cxc-52-2003
+                - codex-cxs-95-1981
+            ranges: []
+      elementary:
+        - row_id: storage_refrigerant_loss
+          role: "Refrigerant released during storage"
+          name: "Refrigerant emission to air by actual substance, exact Tiangong elementary flow pending review"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Include refrigerant loss from in-scope cold stores by actual substance."
+          amount:
+            expression: "Substance-specific service-record loss allocated to the cold store and reporting period; do not apply an uncited default leakage rate"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg product dispatched during the reporting period"
+              kind: "storage_duration"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_refrigerant_records
+              source_ids:
+                - eu-pef-2021-2279
+            ranges: []
+allocation_rules:
+  - rule_id: allocation_route_separation
+    applies_to: "Multiple preservation routes or materially different presentations"
+    rule: "Avoid allocation by subdividing route, line, batch and presentation inventories. Do not allocate a combined multi-route inventory to the reference product when route-specific records can be obtained."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: allocation_co_products
+    applies_to: "Marketed shell, meat, residual or other co-product"
+    rule: "First seek process subdivision or a documented physical causal relationship. If this is not feasible, use an economic relationship based on contemporaneous net revenue and report prices, period and sensitivity; do not assign zero burden solely because an output is secondary."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: allocation_shared_resources
+    applies_to: "Shared water, energy, packaging equipment and storage"
+    rule: "Prefer direct metering. Otherwise use a documented physical driver such as equipment time and load, line throughput, occupied cold-store capacity and storage duration; disclose the driver and test whether it materially changes results."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: allocation_waste_treatment
+    applies_to: "Rejects, wastewater, spent brine, packaging scrap and refrigerant losses"
+    rule: "Do not treat waste as a co-product unless a documented market function exists. Include in-boundary collection or treatment operations and emissions, and disclose any downstream waste-treatment dataset and recycling or recovery convention."
+    source_ids:
+      - eu-pef-2021-2279
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_lot_mass_route
+      process_id: "receive_prepare_route_preservation_pack_product"
+      flow_role: "Lot identity, route and mass balance"
+      record_type: "Weighbridge, scale, batch and release records"
+      raw_fields: "lot_id; species; source; wild_or_farmed; incoming_state; route; presentation; raw_mass; prepared_mass; preserved_mass; packed_net_mass; free_brine_or_glaze_mass; residual_mass"
+      collection_method: "Calibrated weighing linked by lot; route and presentation recorded at each transfer"
+      unit: "kg"
+      frequency: "Each lot"
+      temporal_coverage: "Representative production period, normally at least 12 consecutive months or all seasonal campaigns"
+      site_scope: "All in-scope lines and sites"
+      aggregation_rule: "Sum by lot and route; normalize only after mass-state reconciliation"
+      quality_evidence: "Calibration, lot traceability, release record and reconciliation explanation"
+    - protocol_id: cp_material_energy_records
+      process_id: "receive_prepare_route_preservation"
+      flow_role: "Water, ice, salt, electricity, fuel and heat"
+      record_type: "Meter, invoice, tank, batch issue and equipment records"
+      raw_fields: "timestamp; meter_or_record_id; material_or_energy; quantity; unit; route; line; lot_or_period; allocation_driver"
+      collection_method: "Direct submeter or batch issue preferred; reconcile shared totals to invoices"
+      unit: "Native unit plus converted m3, kg, kWh or MJ"
+      frequency: "Each batch or meter interval"
+      temporal_coverage: "Same period as production data"
+      site_scope: "All in-scope utilities and route equipment"
+      aggregation_rule: "Sum by route and lot/period; allocate only under allocation_shared_resources"
+      quality_evidence: "Meter calibration, invoices, conversion factors and reconciliation"
+    - protocol_id: cp_packaging_records
+      process_id: "pack_product"
+      flow_role: "Packaging input and scrap"
+      record_type: "Bill of materials, purchase, issue and scrap records"
+      raw_fields: "component_id; material; item_mass; items_issued; reusable_cycles; scrap_mass; packed_units; lot_id"
+      collection_method: "Reconcile issued components, packed units, stock change and scrap"
+      unit: "kg and item"
+      frequency: "Each packaging campaign"
+      temporal_coverage: "Same period as production data"
+      site_scope: "All primary and secondary packaging in scope"
+      aggregation_rule: "Convert items using measured item mass; report each material separately"
+      quality_evidence: "Supplier specification, item-mass sample and inventory reconciliation"
+    - protocol_id: cp_storage_records
+      process_id: "store_dispatch"
+      flow_role: "Stored mass, time, temperature and energy"
+      record_type: "Warehouse management, temperature logger and meter records"
+      raw_fields: "lot_id; mass_in; mass_out; loss_mass; entry_time; exit_time; temperature_series; meter_use; occupied_capacity"
+      collection_method: "Link dispatch lots to storage interval and monitored condition"
+      unit: "kg; h or day; °C; kWh or MJ"
+      frequency: "Continuous temperature; each receipt/dispatch; each meter interval"
+      temporal_coverage: "Same period as production data"
+      site_scope: "All in-scope storage rooms"
+      aggregation_rule: "Product-time and capacity-weighted aggregation; preserve route and temperature regime"
+      quality_evidence: "Logger calibration, alarms, corrective actions and meter reconciliation"
+    - protocol_id: cp_waste_and_emissions
+      process_id: "receive_prepare_route_preservation_pack_product_store_dispatch"
+      flow_role: "Residuals, wastewater and destinations"
+      record_type: "Scales, flow meters, manifests and treatment records"
+      raw_fields: "waste_id; type; mass_or_volume; unit; route; lot_or_period; destination; treatment; co_product_status"
+      collection_method: "Measure separately by material and destination; water balance only when meters are unavailable"
+      unit: "kg or m3"
+      frequency: "Each batch, shipment or reporting interval"
+      temporal_coverage: "Same period as production data"
+      site_scope: "All in-scope discharge and waste points"
+      aggregation_rule: "Sum by type and destination; reconcile to mass and water balances"
+      quality_evidence: "Manifests, meter records, treatment invoices and reconciliation"
+    - protocol_id: cp_refrigerant_records
+      process_id: "route_preservation_store_dispatch"
+      flow_role: "Refrigerant stock and service balance"
+      record_type: "Equipment register, purchase, charge, recovery and service records"
+      raw_fields: "equipment_id; refrigerant; opening_stock; purchases; charged; recovered; closing_stock; service_date; operating_scope"
+      collection_method: "Substance-specific stock/service balance; exclude equipment outside the foreground boundary"
+      unit: "kg"
+      frequency: "Each service event and annual reconciliation"
+      temporal_coverage: "Same period as production data"
+      site_scope: "All in-scope refrigeration equipment"
+      aggregation_rule: "Calculate loss by calc_refrigerant_loss, then allocate to in-scope throughput"
+      quality_evidence: "Service certificates, stock reconciliation and equipment register"
+    - protocol_id: cp_food_safety_route
+      process_id: "receive_prepare_route_preservation_pack_product_store_dispatch"
+      flow_role: "Route endpoint and release controls"
+      record_type: "HACCP, sanitation, temperature, salinity, moisture and release records as applicable"
+      raw_fields: "lot_id; route; control_point; limit; result; timestamp; corrective_action; release_status"
+      collection_method: "Use the facility's validated route-specific food-safety plan and applicable Codex controls"
+      unit: "Route-specific"
+      frequency: "Each control point and lot"
+      temporal_coverage: "Same period as production data"
+      site_scope: "Every declared route and line"
+      aggregation_rule: "No averaging across failed and released lots; link exceptions to corrective action"
+      quality_evidence: "HACCP validation, monitoring, verification and release authorization"
+  calculation_rules:
+    - id: calc_net_product_mass
+      applies_to: "Packaged reference product"
+      rule: "Net product mass = gross filled-container mass - packaging tare - free preserving brine - external ice or glaze. Use the legally applicable drained or deglazed method and retain shell/presentation state."
+      inputs:
+        - "gross mass"
+        - "packaging tare"
+        - "free brine mass"
+        - "external ice/glaze mass"
+      output: "kg net product mass"
+      source_ids:
+        - codex-cxs-95-1981
+    - id: calc_route_yield
+      applies_to: "Receipt, preparation and preservation"
+      rule: "Yield = net preserved product mass / eligible raw lobster input mass for the same lot and route. Report residual destinations and explain unreconciled mass; do not use an uncited default yield."
+      inputs:
+        - "eligible raw mass"
+        - "net preserved mass"
+        - "residual and discharge records"
+      output: "route-specific kg/kg yield and reconciliation"
+      source_ids:
+        - codex-cxc-52-2003
+    - id: calc_inventory_normalization
+      applies_to: "All inventory rows"
+      rule: "Normalized amount = allocated foreground amount / dispatched net product mass for the same route, site and period."
+      inputs:
+        - "foreground amount"
+        - "allocation record"
+        - "dispatched net product mass"
+      output: "amount per 1 kg reference flow"
+      source_ids:
+        - eu-pef-2021-2279
+    - id: calc_refrigerant_loss
+      applies_to: "Refrigeration equipment"
+      rule: "Refrigerant loss = opening stock + purchases + charged quantity - recovered quantity - closing stock, reconciled with service records and restricted to in-scope equipment."
+      inputs:
+        - "substance-specific stock and service fields"
+      output: "kg refrigerant emitted by substance before allocation"
+      source_ids:
+        - eu-pef-2021-2279
+  data_quality_requirements:
+    - id: dq_identity_traceability
+      applies_to: "Raw input and reference product"
+      requirement: "Demonstrate *Nephrops norvegicus* identity, lot traceability, route, raw state, presentation and processor-gate net-mass basis."
+      evidence: "Supplier/landing record, species identification, lot record, label and release record; unsd-cpc-3-0; codex-cxs-95-1981"
+    - id: dq_temporal_geographic_technology
+      applies_to: "All foreground data"
+      requirement: "Use data representative of the declared sites, technologies, seasonal production and reporting period; disclose gaps, outsourced operations and substitutions."
+      evidence: "Site list, equipment register, production calendar and representativeness assessment; eu-pef-2021-2279"
+    - id: dq_completeness_reconciliation
+      applies_to: "Mass, water, energy, packaging, waste and refrigerant records"
+      requirement: "Reconcile inputs and outputs at route and reporting-period level. Investigate rather than silently close material gaps; report data coverage and estimation share."
+      evidence: "Mass/water/energy balances, invoices, meter coverage and gap log; eu-pef-2021-2279"
+    - id: dq_measurement_quality
+      applies_to: "Metered and weighed records"
+      requirement: "Retain units, calibration status, sampling frequency, conversion factors and responsible data owner."
+      evidence: "Calibration certificates, raw exports, scale logs and calculation workbook"
+    - id: dq_food_safety_records
+      applies_to: "All declared routes"
+      requirement: "Retain validated route-specific controls, monitoring, corrective action and release evidence. Frozen product records shall demonstrate the applicable freezing and storage condition."
+      evidence: "HACCP and release records; codex-cxc-52-2003; codex-cxs-95-1981"
+    - id: dq_provisional_values
+      applies_to: "Missing foreground quantities"
+      requirement: "Do not introduce a numerical default or QA range without reviewed evidence. Any temporary estimate shall be labelled reasoned_estimate, documented as replaceable and reported in the data-quality disclosure."
+      evidence: "Data-gap register and reviewer decision"
+validation_rules:
+  - rule_id: validate_reference_identity
+    applies_to: "Reference flow"
+    rule: "Fail if the product-flow UUID, Mass property UUID, unit-group UUID, 1 kg amount, species, raw state, route, presentation or net-mass qualifiers are missing or inconsistent."
+    source_ids:
+      - unsd-cpc-3-0
+      - codex-cxs-95-1981
+  - rule_id: validate_single_route
+    applies_to: "Process map and inventory"
+    rule: "Fail if no preservation route is declared, more than one route is combined without separate inventories, or a route-specific input is applied unconditionally to another route."
+    source_ids:
+      - unsd-cpc-3-0
+      - codex-cxc-52-2003
+  - rule_id: validate_mass_and_units
+    applies_to: "Lot and normalized inventory"
+    rule: "Fail if reference mass includes packaging, free brine or external glaze; if mass states are mixed without conversion; or if lot inputs, products and residuals lack a documented reconciliation."
+    source_ids:
+      - codex-cxs-95-1981
+  - rule_id: validate_route_controls
+    applies_to: "Preservation and storage"
+    rule: "Fail if applicable food-safety release records are absent. For frozen product, fail if the thermal centre did not reach -18 °C or colder after stabilization or storage was not maintained at -18 °C or colder."
+    source_ids:
+      - codex-cxc-52-2003
+      - codex-cxs-95-1981
+  - rule_id: validate_allocation
+    applies_to: "Co-products and shared resources"
+    rule: "Fail if avoidable route aggregation remains, an allocation driver lacks records, a marketed co-product is assigned zero burden without justification, or waste conventions are undisclosed."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: validate_data_completeness
+    applies_to: "Foreground package"
+    rule: "Fail if required protocols omit route/site/period coverage, if material data gaps are hidden, or if any numerical temporary value is not labelled reasoned_estimate and disclosed as replaceable."
+    source_ids:
+      - eu-pef-2021-2279
+published_dataset_profile:
+  dataset_role: "Foreground product-system dataset for preserved raw Norway lobster at the processor gate"
+  downstream_use: "secondary_dataset; background_dataset after review for scope, representativeness and data quality"
+  allowed_use: "Route-specific process or lifecycle modelling that matches species, raw state, presentation, geography, technology, period and processor-gate boundary"
+  excluded_use: "Live/fresh/chilled, cooked, smoked, canned or other lobster products; other species; undisclosed multi-route averages; capture/aquaculture claims not supported by the linked upstream dataset"
+  required_metadata: "PCR id; CPC reference; product-flow UUID; species; raw state; preservation route; presentation; net-mass method; site and geography; technology; reporting period; raw-material source; allocation method; storage temperature and duration; upstream datasets"
+  required_quality_disclosure: "Protocol coverage; metered/weighed share; estimation share; mass/water/energy reconciliation; representativeness; route controls; allocation drivers; non-reference UUID gaps; temporary reasoned_estimate values and replacement plan"
+  update_trigger: "Change in species/scope, preservation route, line technology, energy or refrigerant system, packaging, co-product market, allocation driver, upstream source, site mix, regulation or food-safety specification; or new reviewed quantitative evidence"
+data_sources:
+  - id: "unsd-cpc-3-0"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, Central Product Classification Version 3.0, official structure and explanatory notes, https://unstats.un.org/unsd/classifications/Econ/cpc (retrieved 2026-08-11)"
+    used_for: "Product-category scope, *Nephrops norvegicus* identity and preservation-route exclusions"
+  - id: "codex-cxc-52-2003"
+    type: "standard"
+    reference: "Codex Alimentarius, CXC 52-2003, Code of Practice for Fish and Fishery Products, https://www.fao.org/4/a1553e/a1553e00.pdf (retrieved 2026-08-11)"
+    used_for: "Process decomposition, prerequisite programmes, HACCP-based controls, hygienic handling, route and storage records"
+  - id: "codex-cxs-95-1981"
+    type: "standard"
+    reference: "Codex Alimentarius, CXS 95-1981, Standard for Quick-Frozen Lobsters, amended 2024, https://openknowledge.fao.org/handle/20.500.14283/ce0070en (retrieved 2026-08-11)"
+    used_for: "Norway lobster species and frozen-route definition, -18 °C endpoint/storage, glazing water, deglazed net mass, labelling and release checks"
+  - id: "eu-pef-2021-2279"
+    type: "official_guidance"
+    reference: "European Commission, Recommendation (EU) 2021/2279 on the use of Environmental Footprint methods, CELEX 32021H2279, https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32021H2279 (retrieved 2026-08-11)"
+    used_for: "Boundary consistency, allocation hierarchy, shared-resource allocation, packaging, data quality, completeness and disclosure"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:dff6d3264a6747fe9bc6197247d3d51279ca5e1cd9c644776291ed472209d0f3"
+  generated_content_sha256: "sha256:aeaaf771aca485ec15820230edef5cc1d05fa4cbaed3e4c2ef013031780be2eb"

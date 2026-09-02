@@ -1,10 +1,1856 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "21232"
-  title: "Fish including fillets, smoked"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.food-products-beverages-and-tobacco-textiles-apparel-and-leather-products.meat-fish-fruits-vegetables-oils-and-fats.fish-including-fillets-smoked"
+  classification_refs: "CPC 3.0: 21232, Fish including fillets, smoked"
+  covered_products: "Whole, portioned, or filleted fish for which hot smoking or cold smoking is the defining processing and preservation route"
+  excluded_products: "Fish preserved principally by canning, non-smoke drying, cooking without smoking, salting alone, pickling, or fermentation; products described only as smoke-flavoured without a declared smoking operation"
+  representative_product: "Packaged smoked fish or smoked fish fillet at the smoking-facility gate"
+  production_route: "Receipt and preparation of fish; optional salting or brining; smoking with recorded process controls; cooling; packaging; on-site conditioned storage"
+  market_state: "Saleable packaged product, with chilled, frozen, or other validated storage state declared"
+functional_unit:
+  what: "Smoked fish, including smoked fish fillets, supplied as a saleable food product"
+  how_much: "1 kg net mass of product, excluding tertiary transport packaging"
+  how_well: "Conforming to the declared species, cut, smoking route, salt treatment, packaging, storage condition, food-safety plan, and market specification"
+  how_long_or_cycle: "One production lot through packaged product at the facility gate; any on-site holding duration is declared"
+  reference_flow_link: "Net packaged smoked-fish output from cool_pack_store"
+system_boundary:
+  rules:
+    - rule_id: boundary_gate_to_gate
+      applies_to: "Foreground package"
+      rule: "Include receipt, thawing when used, washing and trimming, salting or brining when used, smoking, cooling, packaging, sanitation-related water and energy attributable to production, on-site conditioned storage, residues, wastewater, direct emissions, and refrigerant losses through the facility gate."
+      source_ids:
+        - codex-cxc-52-2003
+        - eu-pef-2021-2279
+    - rule_id: boundary_upstream_handoff
+      applies_to: "Received fish and other purchased inputs"
+      rule: "Represent capture or aquaculture, upstream primary preservation, input production, and inbound transport with disclosed upstream datasets; do not omit these from a cradle-to-gate model merely because they are outside the foreground process."
+      source_ids:
+        - eu-pef-2021-2279
+    - rule_id: boundary_route_disclosure
+      applies_to: "Product and processes"
+      rule: "Record the actual hot- or cold-smoking route, smoke-generation medium, salting/brining, thermal controls, cooling, packaging, and storage condition; do not substitute an unrecorded generic route."
+      source_ids:
+        - codex-cxc-52-2003
+boundary_abstraction:
+  declared_starting_condition: "Fish received at the smoking facility, with species, supplier, capture or aquaculture origin, cut, fresh/chilled/frozen state, receipt mass, temperature, and transport condition declared"
+  starting_condition_role: "Purchased upstream product input and hand-off point between upstream fish production/logistics datasets and foreground smoking operations"
+  product_classification_scope: "Smoked fish and smoked fish fillets; the external CPC reference is classification context rather than canonical PCR identity"
+  recursive_input_rule: "A purchased input already meeting the smoked-fish category is recorded once as an upstream product input with its own dataset and shall not be recursively decomposed under this PCR; disclose any further smoking or repacking performed"
+  upstream_dataset_requirement: "Use supplier-specific datasets when available; otherwise use geographically, technologically, temporally, species-, and production-system-representative datasets for capture or aquaculture, landing, primary preservation, and inbound transport"
+  disclosure: "Declare excluded upstream and downstream stages, source-fish origin and state, process route, smoke-generation route, salting/brining, on-site cold storage, co-products, wastes, wastewater treatment, packaging, data period, and allocation choices"
+reference_flow_definition:
+  reference_amount: "1 kg"
+  product_flow_ref:
+    name: "Fish including fillets, smoked"
+    uuid: "6d9e8d0f-edaf-4960-b9db-557ef8220d26"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "Species and scientific or accepted market name"
+    - whole
+    - portioned
+    - "or filleted form"
+    - "incoming fresh"
+    - chilled
+    - "or frozen state"
+    - "hot- or cold-smoking route"
+    - "direct or regenerated smoke and smoking medium"
+    - "salting or brining route"
+    - "final moisture or water-activity specification when controlled"
+    - "net mass"
+    - "packaging format and material"
+    - chilled
+    - frozen
+    - "or other validated storage state and temperature"
+    - "raw-fish origin and production system"
+    - "processing geography"
+    - "production and holding dates"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_net_mass
+    applies_to: "Reference smoked-fish output"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Normalize all inventory results to 1 kg net smoked-fish product. Exclude tare and packaging mass from the reference amount and report packaging separately."
+  - id: wet_mass_consistency
+    applies_to: "Fish, salt, water, ice, residues, wastewater, and packaging"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Preserve measured wet-mass basis. When dry matter, salt concentration, or moisture is used, retain the measurement basis and conversion records rather than silently mixing wet and dry mass."
+  - id: energy_conversion
+    applies_to: "Electricity and thermal energy"
+    required_property_ref:
+      name: "Energy"
+      uuid: ""
+    required_unit: "kWh or MJ"
+    rule: "Preserve metered units and declared lower- or higher-heating-value basis; document every conversion and avoid treating electricity and thermal energy as interchangeable."
+  - id: lot_normalization
+    applies_to: "Lot-level foreground records"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg/kg reference product"
+    rule: "Aggregate records over the declared lot or representative period, then divide by conforming net smoked-fish output after excluding packaging mass."
+process_map:
+  - id: receive_prepare
+    name: "Fish receipt and preparation"
+    inclusion: "required"
+    inclusion_condition: "Always included"
+    role: "Foreground receipt, thawing when applicable, washing, heading/gutting/trimming/filleting as performed"
+    quantitative_reference: "kg prepared fish transferred to curing and smoking"
+  - id: cure_smoke
+    name: "Salting, brining, and smoking"
+    inclusion: "required"
+    inclusion_condition: "Always included; salting/brining sub-operations are recorded as zero when demonstrably absent"
+    role: "Foreground preservation and defining smoking operation"
+    quantitative_reference: "kg smoked fish before final cooling and packaging"
+  - id: cool_pack_store
+    name: "Cooling, packaging, and on-site storage"
+    inclusion: "required"
+    inclusion_condition: "Always included; chilled, frozen, or other validated storage route is declared"
+    role: "Foreground product finishing and reference-flow delivery"
+    quantitative_reference: "1 kg net packaged smoked fish"
+process_inventory:
+  - id: receive_prepare
+    label: "Fish receipt and preparation"
+    inputs:
+      product:
+        - row_id: received_whole_fish
+          role: "Received whole fish"
+          name: "Raw whole fish"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record whole fish crossing the facility boundary, with species, supplier, origin, production system, and fresh, chilled, or frozen state retained as qualifiers."
+          amount:
+            expression: "Measured accepted receipt mass for this product form, net of transport packaging and rejected loads"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net packaged smoked fish"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_raw_fish_receipts
+              source_ids: []
+            ranges: []
+        - row_id: received_fish_fillets
+          role: "Received fish fillets"
+          name: "Raw fish fillets"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record fish fillets crossing the facility boundary, with species, supplier, origin, production system, and fresh, chilled, or frozen state retained as qualifiers."
+          amount:
+            expression: "Measured accepted receipt mass for this product form, net of transport packaging and rejected loads"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net packaged smoked fish"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_raw_fish_receipts
+              source_ids: []
+            ranges: []
+        - row_id: preparation_water
+          role: "Preparation water"
+          name: "Process water"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record metered or allocated water used for thawing, washing, product cleaning, and preparation operations attributable to the production lot."
+          amount:
+            expression: "Metered water or documented allocation from a calibrated shared meter"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg prepared fish output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water_records
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "20"
+                unit: "kg/kg prepared fish"
+                basis: "broad replaceable water-use screen per process output"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: preparation_ice
+          role: "Ice used on site"
+          name: "Ice for food processing"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record purchased or on-site-produced ice used after receipt; do not double count the water and energy used for on-site ice production."
+          amount:
+            expression: "Purchased mass or production and issue records"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg prepared fish output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_ice_records
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "2"
+                unit: "kg/kg prepared fish"
+                basis: "broad replaceable ice-use screen per process output"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: prepared_fish
+          role: "Prepared fish transferred to smoking"
+          name: "Prepared fish intermediate"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Calculate the wet mass transferred after thawing, washing, cutting, and draining from batch weigh records."
+          amount:
+            expression: "Measured transfer mass; otherwise closing mass balance from collected receipt, residue, and loss records"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per preparation batch"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_preparation_mass_balance
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0.25"
+                upper: "1.05"
+                unit: "kg/kg accepted received fish"
+                basis: "broad replaceable transfer-yield screen"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        - row_id: preparation_fish_heads
+          role: "Removed fish heads"
+          name: "Fish heads from preparation"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record fish heads removed during preparation as a separate material stream."
+          amount:
+            expression: "Measured container or dispatch mass for this material, kept separate from other residues and destinations"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg prepared fish output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_residue_records
+              source_ids: []
+            ranges: []
+        - row_id: preparation_fish_viscera
+          role: "Removed fish viscera"
+          name: "Fish viscera from preparation"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record fish viscera removed during preparation as a separate material stream."
+          amount:
+            expression: "Measured container or dispatch mass for this material, kept separate from other residues and destinations"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg prepared fish output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_residue_records
+              source_ids: []
+            ranges: []
+        - row_id: preparation_fish_bones
+          role: "Removed fish bones"
+          name: "Fish bones from preparation"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record fish bones removed during preparation as a separate material stream."
+          amount:
+            expression: "Measured container or dispatch mass for this material, kept separate from other residues and destinations"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg prepared fish output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_residue_records
+              source_ids: []
+            ranges: []
+        - row_id: preparation_fish_skin
+          role: "Removed fish skin"
+          name: "Fish skin from preparation"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record fish skin removed during preparation as a separate material stream."
+          amount:
+            expression: "Measured container or dispatch mass for this material, kept separate from other residues and destinations"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg prepared fish output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_residue_records
+              source_ids: []
+            ranges: []
+        - row_id: preparation_fish_trimmings
+          role: "Fish trimmings"
+          name: "Fish trimmings from preparation"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record fish trimmings removed during cutting or filleting as a separate material stream."
+          amount:
+            expression: "Measured container or dispatch mass for this material, kept separate from other residues and destinations"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg prepared fish output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_residue_records
+              source_ids: []
+            ranges: []
+        - row_id: preparation_rejected_fish
+          role: "Rejected raw fish"
+          name: "Rejected raw fish"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record raw fish rejected after receipt or preparation separately from removed anatomical materials."
+          amount:
+            expression: "Measured container or dispatch mass for this material, kept separate from other residues and destinations"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg prepared fish output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_residue_records
+              source_ids: []
+            ranges: []
+        - row_id: preparation_wastewater
+          role: "Preparation wastewater"
+          name: "Fish-preparation wastewater"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record wastewater leaving preparation, its destination, and whether its amount is measured or derived from water balance."
+          amount:
+            expression: "Measured discharge or calculated water balance with retained assumptions"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg prepared fish output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_wastewater_records
+              source_ids: []
+            ranges: []
+      elementary:
+        []
+  - id: cure_smoke
+    label: "Salting, brining, and smoking"
+    inputs:
+      product:
+        - row_id: prepared_fish_input
+          role: "Prepared fish input"
+          name: "Prepared fish intermediate"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the matched transfer mass from receive_prepare without creating a second upstream fish input."
+          amount:
+            expression: "Matched batch transfer mass from prepared_fish"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per smoking batch"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_preparation_mass_balance
+              source_ids: []
+            ranges: []
+        - row_id: food_grade_salt
+          role: "Food-grade salt"
+          name: "Food-grade salt for brine preparation"
+          flow_type: "product"
+          flow_ref:
+            uuid: "3a5fa711-4648-4d58-b94d-67b79e7476c7"
+          property_unit: "Mass / kg"
+          description: "Record food-grade sodium chloride used for dry salting or fresh brine make-up separately from recirculated brine."
+          amount:
+            expression: "Purchase, issue, formulation, and brine make-up records"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg smoked fish before packaging"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_salt_brine_records
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.5"
+                unit: "kg/kg smoked fish"
+                basis: "broad replaceable salt-input screen excluding process water"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: smoking_water
+          role: "Brining and cleaning water"
+          name: "Process water"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record water used for brine make-up, rinsing, and smoking-area product-contact cleaning attributable to the lot or period."
+          amount:
+            expression: "Metered water or documented allocation from calibrated shared meters"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg smoked fish before packaging"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water_records
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "20"
+                unit: "kg/kg smoked fish"
+                basis: "broad replaceable water-use screen per process output"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: smoking_hardwood_logs
+          role: "Hardwood logs for smoke generation"
+          name: "Untreated hardwood logs for food smoking"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record untreated hardwood logs when they are the direct smoke-generation medium."
+          amount:
+            expression: "Purchase and batch issue records, net of returned unused material"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg smoked fish before packaging"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_smoking_medium_records
+              source_ids: []
+            ranges: []
+        - row_id: smoking_hardwood_chips
+          role: "Hardwood chips for smoke generation"
+          name: "Untreated hardwood chips for food smoking"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record untreated hardwood chips when they are the direct smoke-generation medium."
+          amount:
+            expression: "Purchase and batch issue records, net of returned unused material"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg smoked fish before packaging"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_smoking_medium_records
+              source_ids: []
+            ranges: []
+        - row_id: smoking_hardwood_sawdust
+          role: "Hardwood sawdust for smoke generation"
+          name: "Untreated hardwood sawdust for food smoking"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record untreated hardwood sawdust when it is the direct smoke-generation medium."
+          amount:
+            expression: "Purchase and batch issue records, net of returned unused material"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg smoked fish before packaging"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_smoking_medium_records
+              source_ids: []
+            ranges: []
+        - row_id: smoking_liquid_smoke
+          role: "Liquid smoke preparation"
+          name: "Food-grade liquid smoke condensate"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record food-grade smoke condensate when regenerated smoke or a liquid-smoke preparation crosses the foreground boundary."
+          amount:
+            expression: "Purchase and batch issue records, net of returned unused material"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg smoked fish before packaging"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_smoking_medium_records
+              source_ids: []
+            ranges: []
+        - row_id: smoking_grid_electricity_low_voltage
+          role: "Low-voltage grid electricity for curing and smoking"
+          name: "Grid electricity, low voltage"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record public-grid electricity supplied below 1 kV when that voltage and supply scenario apply."
+          amount:
+            expression: "Metered electricity or equipment-load-and-runtime calculation reconciled to facility totals"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg smoked fish before packaging"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_records
+              source_ids: []
+            ranges: []
+        - row_id: smoking_grid_electricity_medium_voltage
+          role: "Medium-voltage grid electricity for curing and smoking"
+          name: "Grid electricity, medium voltage"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record public-grid electricity supplied at 1–35 kV when that voltage and supply scenario apply."
+          amount:
+            expression: "Metered electricity or equipment-load-and-runtime calculation reconciled to facility totals"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg smoked fish before packaging"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_records
+              source_ids: []
+            ranges: []
+        - row_id: smoking_steam
+          role: "Purchased process steam"
+          name: "Purchased process steam"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record purchased steam separately and retain supply pressure, temperature, and condensate-return conditions."
+          amount:
+            expression: "Metered carrier or fuel quantity converted with recorded heating value and efficiency assumptions"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg smoked fish before packaging"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_records
+              source_ids: []
+            ranges: []
+        - row_id: smoking_hot_water
+          role: "Purchased hot water"
+          name: "Purchased industrial hot water"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Record purchased hot water separately and retain supply and return temperatures."
+          amount:
+            expression: "Metered carrier or fuel quantity converted with recorded heating value and efficiency assumptions"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg smoked fish before packaging"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_records
+              source_ids: []
+            ranges: []
+        - row_id: smoking_natural_gas
+          role: "Natural gas for on-site heat"
+          name: "Natural gas, burned in industrial furnace"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4bfd1abb-9106-495a-a291-ce410f205691"
+          property_unit: "Gross calorific value / MJ"
+          description: "Record natural gas supplied to on-site heat generation separately from every other fuel."
+          amount:
+            expression: "Metered carrier or fuel quantity converted with recorded heating value and efficiency assumptions"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg smoked fish before packaging"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_records
+              source_ids: []
+            ranges: []
+        - row_id: smoking_lpg
+          role: "Liquefied petroleum gas for on-site heat"
+          name: "Liquefied petroleum gas"
+          flow_type: "product"
+          flow_ref:
+            uuid: "d54ae71a-1245-4e3f-b694-dbf2b22bbf7d"
+          property_unit: "Mass / kg"
+          description: "Record liquefied petroleum gas supplied to on-site heat generation separately from every other fuel."
+          amount:
+            expression: "Metered carrier or fuel quantity converted with recorded heating value and efficiency assumptions"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg smoked fish before packaging"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_records
+              source_ids: []
+            ranges: []
+        - row_id: smoking_diesel
+          role: "Diesel oil for on-site heat"
+          name: "Diesel oil"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record diesel oil supplied to on-site heat generation separately from every other fuel."
+          amount:
+            expression: "Metered carrier or fuel quantity converted with recorded heating value and efficiency assumptions"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg smoked fish before packaging"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_records
+              source_ids: []
+            ranges: []
+        - row_id: smoking_fuel_oil
+          role: "Heavy fuel oil for on-site heat"
+          name: "Heavy fuel oil"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record heavy fuel oil supplied to on-site heat generation separately from every other fuel."
+          amount:
+            expression: "Metered carrier or fuel quantity converted with recorded heating value and efficiency assumptions"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg smoked fish before packaging"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_records
+              source_ids: []
+            ranges: []
+        - row_id: smoking_wood_pellets
+          role: "Wood pellets for on-site heat"
+          name: "Untreated wood pellets"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record untreated wood pellets supplied as biomass fuel separately from smoking media and every other fuel."
+          amount:
+            expression: "Metered carrier or fuel quantity converted with recorded heating value and efficiency assumptions"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg smoked fish before packaging"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_records
+              source_ids: []
+            ranges: []
+        - row_id: smoking_compressed_air
+          role: "Compressed air for curing and smoking"
+          name: "Compressed air"
+          flow_type: "product"
+          flow_ref:
+            uuid: "46e2b1e4-5a4e-4579-b6a2-65b03f9ce825"
+          property_unit: "Volume / m3"
+          description: "Record compressed air supplied to pneumatic process equipment separately from electricity and fuels."
+          amount:
+            expression: "Metered compressed-air volume or compressor-load-and-runtime calculation reconciled to facility totals"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg smoked fish before packaging"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_records
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: smoked_fish_intermediate
+          role: "Smoked fish before final packaging"
+          name: "Smoked fish intermediate"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record cooled or cooling-ready smoked-fish transfer mass and link it to the smoking control record."
+          amount:
+            expression: "Measured transfer mass after smoking and before final packaging"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per smoking batch"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_smoking_batch_records
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0.2"
+                upper: "1.2"
+                unit: "kg/kg prepared fish input"
+                basis: "broad replaceable yield screen including possible brine uptake and moisture loss"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        - row_id: spent_brine
+          role: "Spent brine"
+          name: "Spent high-salinity brine"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record discarded curing brine separately from other wastewater and solid residues."
+          amount:
+            expression: "Measured collection or dispatch mass for this material, kept separate from other residues and destinations"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg smoked fish before packaging"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_residue_records
+              source_ids: []
+            ranges: []
+        - row_id: spent_smoking_wood
+          role: "Spent smoking wood"
+          name: "Spent hardwood smoking logs"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record charred or otherwise spent hardwood logs from smoke generation as a separate waste material."
+          amount:
+            expression: "Measured collection or dispatch mass for this material, kept separate from other residues and destinations"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg smoked fish before packaging"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_residue_records
+              source_ids: []
+            ranges: []
+        - row_id: spent_smoking_wood_chips
+          role: "Spent smoking wood chips"
+          name: "Spent hardwood smoking chips"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record spent hardwood chips from smoke generation as a separate waste material."
+          amount:
+            expression: "Measured collection or dispatch mass for this material, kept separate from other residues and destinations"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg smoked fish before packaging"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_residue_records
+              source_ids: []
+            ranges: []
+        - row_id: spent_smoking_sawdust
+          role: "Spent smoking sawdust"
+          name: "Spent hardwood smoking sawdust"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record spent hardwood sawdust from smoke generation as a separate waste material."
+          amount:
+            expression: "Measured collection or dispatch mass for this material, kept separate from other residues and destinations"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg smoked fish before packaging"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_residue_records
+              source_ids: []
+            ranges: []
+        - row_id: rejected_smoked_fish
+          role: "Rejected smoked fish"
+          name: "Off-specification smoked fish"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record smoked fish rejected before finishing separately from smoking media and brine residues."
+          amount:
+            expression: "Measured collection or dispatch mass for this material, kept separate from other residues and destinations"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg smoked fish before packaging"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_residue_records
+              source_ids: []
+            ranges: []
+        - row_id: smoking_wastewater
+          role: "Brining and smoking-area wastewater"
+          name: "Saline fish-processing wastewater"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record non-brine wastewater from curing and smoking-area cleaning separately, retaining salt load, treatment, and destination records."
+          amount:
+            expression: "Measured discharge or calculated water balance with retained assumptions"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg smoked fish before packaging"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_wastewater_records
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "20"
+                unit: "kg/kg smoked fish"
+                basis: "broad replaceable discharge screen per process output"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        - row_id: smoking_fossil_co2
+          role: "Fossil carbon dioxide to air"
+          name: "Carbon dioxide (fossil), to air, unspecified"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-923d-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Record fossil carbon dioxide from on-site fossil-fuel combustion as a separate elementary flow."
+          amount:
+            expression: "Monitoring result or calculation from collected activity data and reviewed emission factors"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg smoked fish before packaging"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_air_emission_records
+              source_ids: []
+            ranges: []
+        - row_id: smoking_biogenic_co2
+          role: "Biogenic carbon dioxide to air"
+          name: "Carbon dioxide (biogenic), to air, unspecified"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-9c15-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Record biogenic carbon dioxide from smoking wood or biomass fuel as a separate elementary flow."
+          amount:
+            expression: "Monitoring result or calculation from collected activity data and reviewed emission factors"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg smoked fish before packaging"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_air_emission_records
+              source_ids: []
+            ranges: []
+        - row_id: smoking_fossil_co
+          role: "Fossil carbon monoxide to air"
+          name: "Carbon monoxide (fossil), to air, unspecified"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-924e-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Record fossil-origin carbon monoxide from on-site fossil-fuel combustion separately."
+          amount:
+            expression: "Monitoring result or calculation from collected activity data and reviewed emission factors"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg smoked fish before packaging"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_air_emission_records
+              source_ids: []
+            ranges: []
+        - row_id: smoking_biogenic_co
+          role: "Biogenic carbon monoxide to air"
+          name: "Carbon monoxide (biogenic), to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record biogenic-origin carbon monoxide from smoking wood or biomass fuel separately."
+          amount:
+            expression: "Monitoring result or calculation from collected activity data and reviewed emission factors"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg smoked fish before packaging"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_air_emission_records
+              source_ids: []
+            ranges: []
+        - row_id: smoking_nox
+          role: "Nitrogen oxides to air"
+          name: "Nitrogen oxides to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record nitrogen oxides using the monitored or factor-defined reporting basis and retain that basis."
+          amount:
+            expression: "Monitoring result or calculation from collected activity data and reviewed emission factors"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg smoked fish before packaging"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_air_emission_records
+              source_ids: []
+            ranges: []
+        - row_id: smoking_so2
+          role: "Sulfur dioxide to air"
+          name: "Sulfur dioxide, to air, unspecified"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "fe0acd60-3ddc-11dd-ac48-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Record sulfur dioxide from on-site fuel or smoke generation as a separate elementary flow."
+          amount:
+            expression: "Monitoring result or calculation from collected activity data and reviewed emission factors"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg smoked fish before packaging"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_air_emission_records
+              source_ids: []
+            ranges: []
+        - row_id: smoking_pm25
+          role: "Fine particulate matter to air"
+          name: "Particles (PM0.2 - PM2.5) to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record fine particulate matter in the stated size fraction and retain the monitored stack or release context."
+          amount:
+            expression: "Monitoring result or calculation from collected activity data and reviewed emission factors"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg smoked fish before packaging"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_air_emission_records
+              source_ids: []
+            ranges: []
+        - row_id: smoking_fossil_ch4
+          role: "Fossil methane to air"
+          name: "Methane (fossil), to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record methane from fossil-fuel combustion separately from methane attributable to biomass."
+          amount:
+            expression: "Monitoring result or calculation from collected activity data and reviewed emission factors"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg smoked fish before packaging"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_air_emission_records
+              source_ids: []
+            ranges: []
+        - row_id: smoking_biogenic_ch4
+          role: "Biogenic methane to air"
+          name: "Methane (biogenic), to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record methane from smoking wood or biomass fuel separately from fossil-origin methane."
+          amount:
+            expression: "Monitoring result or calculation from collected activity data and reviewed emission factors"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg smoked fish before packaging"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_air_emission_records
+              source_ids: []
+            ranges: []
+        - row_id: smoking_n2o
+          role: "Nitrous oxide to air"
+          name: "Nitrous oxide, to air, unspecified"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-94c3-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Record nitrous oxide from on-site fuel or smoke generation as a separate elementary flow."
+          amount:
+            expression: "Monitoring result or calculation from collected activity data and reviewed emission factors"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg smoked fish before packaging"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_air_emission_records
+              source_ids: []
+            ranges: []
+        - row_id: smoking_nmvoc
+          role: "Non-methane volatile organic compounds to air"
+          name: "Non-methane volatile organic compounds to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record non-methane volatile organic compounds on the monitored or factor-defined reporting basis."
+          amount:
+            expression: "Monitoring result or calculation from collected activity data and reviewed emission factors"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg smoked fish before packaging"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_air_emission_records
+              source_ids: []
+            ranges: []
+  - id: cool_pack_store
+    label: "Cooling, packaging, and on-site storage"
+    inputs:
+      product:
+        - row_id: smoked_fish_input
+          role: "Smoked fish transferred for finishing"
+          name: "Smoked fish intermediate"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Match this input to smoked_fish_intermediate by batch and mass."
+          amount:
+            expression: "Matched batch transfer mass"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per finishing batch"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_smoking_batch_records
+              source_ids: []
+            ranges: []
+        - row_id: finishing_grid_electricity_low_voltage
+          role: "Low-voltage grid electricity for finishing"
+          name: "Grid electricity, low voltage"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record public-grid electricity supplied below 1 kV for cooling, freezing, packaging, and storage when that voltage and supply scenario apply."
+          amount:
+            expression: "Sub-metered use or documented allocation from equipment load, runtime, throughput, and facility totals"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net packaged smoked fish"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_records
+              source_ids: []
+            ranges: []
+        - row_id: finishing_grid_electricity_medium_voltage
+          role: "Medium-voltage grid electricity for finishing"
+          name: "Grid electricity, medium voltage"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record public-grid electricity supplied at 1–35 kV for cooling, freezing, packaging, and storage when that voltage and supply scenario apply."
+          amount:
+            expression: "Sub-metered use or documented allocation from equipment load, runtime, throughput, and facility totals"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net packaged smoked fish"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_records
+              source_ids: []
+            ranges: []
+        - row_id: packaging_vacuum_pouch
+          role: "Vacuum pouch"
+          name: "Multilayer plastic vacuum pouch"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the mass of multilayer vacuum pouches when this primary packaging component is used."
+          amount:
+            expression: "Purchase and issue records reconciled to packed units, minus returned unused material for this component"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net packaged smoked fish"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_records
+              source_ids: []
+            ranges: []
+        - row_id: packaging_polyethylene_film
+          role: "Polyethylene packaging film"
+          name: "Polyethylene heat-seal film"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record polyethylene heat-seal film separately from pouches, trays, cartons, and labels."
+          amount:
+            expression: "Purchase and issue records reconciled to packed units, minus returned unused material for this component"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net packaged smoked fish"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_records
+              source_ids: []
+            ranges: []
+        - row_id: packaging_polypropylene_tray
+          role: "Polypropylene packaging tray"
+          name: "Polypropylene food packaging tray"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record polypropylene trays separately when used for modified-atmosphere or other primary packaging."
+          amount:
+            expression: "Purchase and issue records reconciled to packed units, minus returned unused material for this component"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net packaged smoked fish"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_records
+              source_ids: []
+            ranges: []
+        - row_id: packaging_corrugated_cardboard
+          role: "Corrugated cardboard packaging"
+          name: "Corrugated cardboard"
+          flow_type: "product"
+          flow_ref:
+            uuid: "8bde297e-98df-463f-bcb4-0db52bf6e0b5"
+          property_unit: "Mass / kg"
+          description: "Record corrugated cardboard used for secondary cases or cartons separately."
+          amount:
+            expression: "Purchase and issue records reconciled to packed units, minus returned unused material for this component"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net packaged smoked fish"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_records
+              source_ids: []
+            ranges: []
+        - row_id: packaging_paper_label
+          role: "Paper packaging label"
+          name: "Paper label"
+          flow_type: "product"
+          flow_ref:
+            uuid: "64321117-433d-43a5-97f9-2ea624c15656"
+          property_unit: "Mass / kg"
+          description: "Record paper labels separately from every structural packaging component."
+          amount:
+            expression: "Purchase and issue records reconciled to packed units, minus returned unused material for this component"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net packaged smoked fish"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_records
+              source_ids: []
+            ranges: []
+        - row_id: refrigerant_r717_makeup
+          role: "R717 refrigerant make-up"
+          name: "Refrigeration-grade anhydrous ammonia (R717)"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record R717 additions attributable to the reporting period separately from every other refrigerant."
+          amount:
+            expression: "Service invoices, cylinder mass reconciliation, or maintenance-system addition records for this refrigerant"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net packaged smoked fish"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_refrigerant_records
+              source_ids: []
+            ranges: []
+        - row_id: refrigerant_r404a_makeup
+          role: "R404A refrigerant make-up"
+          name: "Refrigerant R404A"
+          flow_type: "product"
+          flow_ref:
+            uuid: "76513c71-a148-484e-865f-2ab54afb4331"
+          property_unit: "Mass / kg"
+          description: "Record R404A additions attributable to the reporting period separately from every other refrigerant."
+          amount:
+            expression: "Service invoices, cylinder mass reconciliation, or maintenance-system addition records for this refrigerant"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net packaged smoked fish"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_refrigerant_records
+              source_ids: []
+            ranges: []
+        - row_id: refrigerant_r134a_makeup
+          role: "R134a refrigerant make-up"
+          name: "Refrigerant R134a"
+          flow_type: "product"
+          flow_ref:
+            uuid: "047bf9fb-8b5a-4070-8927-8df04e7241b3"
+          property_unit: "Mass / kg"
+          description: "Record R134a additions attributable to the reporting period separately from every other refrigerant."
+          amount:
+            expression: "Service invoices, cylinder mass reconciliation, or maintenance-system addition records for this refrigerant"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net packaged smoked fish"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_refrigerant_records
+              source_ids: []
+            ranges: []
+        - row_id: refrigerant_r744_makeup
+          role: "R744 refrigerant make-up"
+          name: "Refrigeration-grade carbon dioxide (R744)"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record R744 additions attributable to the reporting period separately from every other refrigerant."
+          amount:
+            expression: "Service invoices, cylinder mass reconciliation, or maintenance-system addition records for this refrigerant"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net packaged smoked fish"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_refrigerant_records
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: packaged_smoked_fish
+          role: "Net packaged smoked fish reference output"
+          name: "Fish including fillets, smoked"
+          flow_type: "product"
+          flow_ref:
+            uuid: "6d9e8d0f-edaf-4960-b9db-557ef8220d26"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record saleable net product mass excluding packaging; this is the reference-flow output."
+          amount:
+            expression: "1 kg net mass after normalization from measured conforming lot output"
+            value_mode: "fixed_value"
+            specificity: "not_applicable"
+            basis:
+              text: "1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "identity_reference"
+              collection_protocol_id: cp_product_output_records
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: vacuum_pouch_scrap
+          role: "Vacuum pouch scrap"
+          name: "Multilayer plastic vacuum pouch scrap"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record rejected or trimmed multilayer vacuum pouches separately from other packaging waste."
+          amount:
+            expression: "Measured waste-container, stock-reconciliation, or dispatch records for this material"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net packaged smoked fish"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_residue_records
+              source_ids: []
+            ranges: []
+        - row_id: polyethylene_film_scrap
+          role: "Polyethylene film scrap"
+          name: "Polyethylene packaging film scrap"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record polyethylene packaging film scrap separately from other packaging waste."
+          amount:
+            expression: "Measured waste-container, stock-reconciliation, or dispatch records for this material"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net packaged smoked fish"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_residue_records
+              source_ids: []
+            ranges: []
+        - row_id: polypropylene_tray_scrap
+          role: "Polypropylene tray scrap"
+          name: "Rejected polypropylene packaging trays"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record rejected polypropylene trays separately from other packaging waste."
+          amount:
+            expression: "Measured waste-container, stock-reconciliation, or dispatch records for this material"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net packaged smoked fish"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_residue_records
+              source_ids: []
+            ranges: []
+        - row_id: corrugated_cardboard_scrap
+          role: "Corrugated cardboard packaging scrap"
+          name: "Packaging waste, cardboard"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "72270223-04b1-4986-a546-94e5a0821317"
+          property_unit: "Mass / kg"
+          description: "Record corrugated cardboard trim and rejected cartons separately from other packaging waste."
+          amount:
+            expression: "Measured waste-container, stock-reconciliation, or dispatch records for this material"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net packaged smoked fish"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_residue_records
+              source_ids: []
+            ranges: []
+        - row_id: paper_label_scrap
+          role: "Paper label scrap"
+          name: "Paper packaging label scrap"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record rejected paper labels separately from other packaging waste."
+          amount:
+            expression: "Measured waste-container, stock-reconciliation, or dispatch records for this material"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net packaged smoked fish"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_residue_records
+              source_ids: []
+            ranges: []
+        - row_id: offspec_finished_smoked_fish
+          role: "Off-specification finished smoked fish"
+          name: "Off-specification finished smoked fish"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record finished smoked fish rejected during packaging or release separately from packaging scraps."
+          amount:
+            expression: "Measured waste-container, stock-reconciliation, or dispatch records for this material"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net packaged smoked fish"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_residue_records
+              source_ids: []
+            ranges: []
+      elementary:
+        - row_id: refrigerant_r717_emission
+          role: "R717 refrigerant emission to air"
+          name: "Ammonia, to air, unspecified"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-a2a9-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Report R717 loss as ammonia mass to air, adjusted for documented recovery, stock change, and transfers."
+          amount:
+            expression: "Calculated from the collected balance for this refrigerant; never substitute carbon-dioxide-equivalent mass for substance mass"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net packaged smoked fish"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_refrigerant_records
+              source_ids: []
+            ranges: []
+        - row_id: refrigerant_r404a_emission
+          role: "R404A refrigerant emission to air"
+          name: "Refrigerant R404A to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Report R404A loss as refrigerant-mixture mass; do not replace it with component flows without a reviewed composition and splitting rule."
+          amount:
+            expression: "Calculated from the collected balance for this refrigerant; never substitute carbon-dioxide-equivalent mass for substance mass"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net packaged smoked fish"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_refrigerant_records
+              source_ids: []
+            ranges: []
+        - row_id: refrigerant_r134a_emission
+          role: "R134a refrigerant emission to air"
+          name: "HFC-134a, to air, unspecified"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "fe0acd60-3ddc-11dd-a6d2-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Report R134a loss as HFC-134a mass to air, adjusted for documented recovery, stock change, and transfers."
+          amount:
+            expression: "Calculated from the collected balance for this refrigerant; never substitute carbon-dioxide-equivalent mass for substance mass"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net packaged smoked fish"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_refrigerant_records
+              source_ids: []
+            ranges: []
+        - row_id: refrigerant_r744_emission
+          role: "R744 refrigerant emission to air"
+          name: "Carbon dioxide from R744 to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Report R744 loss as refrigerant carbon-dioxide mass to air without assigning fossil or biogenic origin unless the supply record supports it."
+          amount:
+            expression: "Calculated from the collected balance for this refrigerant; never substitute carbon-dioxide-equivalent mass for substance mass"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net packaged smoked fish"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_refrigerant_records
+              source_ids: []
+            ranges: []
+allocation_rules:
+  - rule_id: allocation_avoid_first
+    applies_to: "All multifunctional operations"
+    rule: "First avoid allocation through process subdivision or expansion with separately measured process and destination records where technically justified."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: allocation_residue_status
+    applies_to: "Fish trimmings, recovered edible material, spent smoking medium, and other outputs"
+    rule: "Classify each output as product, co-product, recyclable material, or waste using its documented destination and market function; do not assign co-product credit to material sent for treatment as waste."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: allocation_physical_then_economic
+    applies_to: "Unavoidable shared burdens"
+    rule: "Where subdivision is not feasible, use a documented physical relationship that reflects the causal use of resources. If no defensible physical relationship exists, use economic allocation with prices, reference period, currency, and sensitivity disclosed."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: allocation_mass_balance
+    applies_to: "Lot outputs"
+    rule: "Reconcile received fish, added ingredients, moisture change, reference product, co-products, residues, and wastewater before allocation; explain material imbalance outside measured uncertainty."
+    source_ids:
+      - eu-pef-2021-2279
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_raw_fish_receipts
+      process_id: "receive_prepare"
+      flow_role: "received fish"
+      record_type: "supplier and receiving records"
+      raw_fields: "supplier; species; origin; capture_or_aquaculture; cut; state; gross_mass; tare; accepted_mass; receipt_temperature; date; lot"
+      collection_method: "Calibrated scale plus receiving and traceability records"
+      unit: "kg; °C"
+      frequency: "every lot"
+      temporal_coverage: "full study period"
+      site_scope: "all supplying routes to included site"
+      aggregation_rule: "sum accepted net mass by product and lot"
+      quality_evidence: "scale calibration; supplier traceability; rejection log"
+    - protocol_id: cp_water_records
+      process_id: "receive_prepare_cure_smoke"
+      flow_role: "process water"
+      record_type: "meter and production records"
+      raw_fields: "opening_meter; closing_meter; shared_use_allocation; lot; process; date"
+      collection_method: "Sub-meter or documented allocation from calibrated site meter"
+      unit: "kg or m3"
+      frequency: "daily or batch"
+      temporal_coverage: "full study period with seasonal coverage"
+      site_scope: "all included water users"
+      aggregation_rule: "convert volume using recorded conditions when material; allocate shared use by documented causal driver"
+      quality_evidence: "meter calibration; reconciliation to invoice or main meter"
+    - protocol_id: cp_ice_records
+      process_id: "receive_prepare"
+      flow_role: "ice"
+      record_type: "purchase or production records"
+      raw_fields: "purchased_mass; produced_mass; issued_mass; returned_mass; lot; date"
+      collection_method: "Weighing, invoices, and issue records"
+      unit: "kg"
+      frequency: "every lot or daily"
+      temporal_coverage: "full study period"
+      site_scope: "included preparation operations"
+      aggregation_rule: "net issued ice; separately account on-site production water and energy"
+      quality_evidence: "scale record; invoice; production log"
+    - protocol_id: cp_preparation_mass_balance
+      process_id: "receive_prepare"
+      flow_role: "preparation transfers"
+      record_type: "batch mass balance"
+      raw_fields: "accepted_fish; prepared_transfer; residues; wastewater; stock_change; lot"
+      collection_method: "Calibrated batch scales and reconciled production records"
+      unit: "kg"
+      frequency: "every batch"
+      temporal_coverage: "full study period"
+      site_scope: "included preparation lines"
+      aggregation_rule: "calculate lot balance and aggregate mass-weighted values"
+      quality_evidence: "calibration; batch reconciliation; explanation of imbalance"
+    - protocol_id: cp_salt_brine_records
+      process_id: "cure_smoke"
+      flow_role: "salt and brine"
+      record_type: "formulation and issue records"
+      raw_fields: "ingredient; concentration; fresh_makeup; recirculated_mass; discard_mass; lot; date"
+      collection_method: "Formulation sheets, calibrated weighing, and tank records"
+      unit: "kg; mass fraction"
+      frequency: "every batch"
+      temporal_coverage: "full study period"
+      site_scope: "all included curing systems"
+      aggregation_rule: "count fresh input once; track recirculation internally"
+      quality_evidence: "formulation approval; scale calibration; tank reconciliation"
+    - protocol_id: cp_smoking_medium_records
+      process_id: "cure_smoke"
+      flow_role: "smoking medium"
+      record_type: "purchase and issue records"
+      raw_fields: "medium_type; supplier; mass; moisture_basis; returned_mass; batch"
+      collection_method: "Calibrated weighing and inventory reconciliation"
+      unit: "kg"
+      frequency: "every batch or delivery"
+      temporal_coverage: "full study period"
+      site_scope: "all smoke generators serving included production"
+      aggregation_rule: "net consumed mass by medium and batch"
+      quality_evidence: "invoice; scale calibration; stock reconciliation"
+    - protocol_id: cp_energy_records
+      process_id: "cure_smoke_cool_pack_store"
+      flow_role: "electricity and thermal energy"
+      record_type: "meters, fuel records, and runtime logs"
+      raw_fields: "meter_start; meter_end; fuel_quantity; heating_value_basis; equipment; runtime; throughput; holding_duration; date"
+      collection_method: "Sub-metering preferred; otherwise documented engineering allocation reconciled to facility totals"
+      unit: "kWh; MJ; fuel unit"
+      frequency: "batch, daily, or monthly meter interval"
+      temporal_coverage: "at least one representative year or justified full campaign"
+      site_scope: "all included equipment and storage zones"
+      aggregation_rule: "aggregate by energy carrier and allocate shared use using causal driver"
+      quality_evidence: "meter calibration; invoice reconciliation; equipment log"
+    - protocol_id: cp_smoking_batch_records
+      process_id: "cure_smoke"
+      flow_role: "smoking controls and output"
+      record_type: "validated food-safety and batch records"
+      raw_fields: "species; cut; salting_or_brining; smoke_route; medium; chamber_time; chamber_temperature; product_temperature; moisture_or_aw_if_controlled; input_mass; output_mass; deviations; disposition"
+      collection_method: "Approved batch record and calibrated control instruments"
+      unit: "kg; time; °C; declared moisture or aw unit"
+      frequency: "every batch"
+      temporal_coverage: "full study period"
+      site_scope: "every included smoking chamber and product route"
+      aggregation_rule: "retain batch values; aggregate mass-weighted only after deviation review"
+      quality_evidence: "instrument calibration; food-safety plan; release authorization"
+    - protocol_id: cp_residue_records
+      process_id: "receive_prepare_cure_smoke_cool_pack_store"
+      flow_role: "residues and waste"
+      record_type: "weighing and destination records"
+      raw_fields: "material; mass; destination; product_or_waste_status; transporter; date; lot"
+      collection_method: "Calibrated scale, container records, and dispatch documentation"
+      unit: "kg"
+      frequency: "every batch or dispatch"
+      temporal_coverage: "full study period"
+      site_scope: "all included process wastes and recovered outputs"
+      aggregation_rule: "sum by material, status, and destination; do not net unlike outputs"
+      quality_evidence: "calibration; waste transfer note; sales record where applicable"
+    - protocol_id: cp_wastewater_records
+      process_id: "receive_prepare_cure_smoke"
+      flow_role: "wastewater"
+      record_type: "meter, balance, and treatment records"
+      raw_fields: "inflow; discharge; stock_change; evaporation; stream; salt_load_if_measured; treatment; destination; period"
+      collection_method: "Discharge meter preferred; otherwise documented water balance"
+      unit: "kg or m3; concentration where measured"
+      frequency: "daily, batch, or billing period"
+      temporal_coverage: "full study period"
+      site_scope: "all included drains and segregated streams"
+      aggregation_rule: "convert and aggregate by stream and treatment route"
+      quality_evidence: "meter calibration; sampling record; treatment invoice; balance closure"
+    - protocol_id: cp_air_emission_records
+      process_id: "cure_smoke"
+      flow_role: "direct air emissions"
+      record_type: "monitoring or factor calculation records"
+      raw_fields: "pollutant; measured_concentration; gas_flow; fuel; smoking_medium; factor; factor_source; runtime; control_device"
+      collection_method: "Stack monitoring or calculation from recorded activity and reviewed factors"
+      unit: "pollutant-specific mass"
+      frequency: "monitoring campaign or every calculation period"
+      temporal_coverage: "representative operating modes in study period"
+      site_scope: "all included on-site combustion and smoke generation"
+      aggregation_rule: "pollutant-specific mass; retain method and uncertainty"
+      quality_evidence: "laboratory report; instrument calibration; factor reference"
+    - protocol_id: cp_packaging_records
+      process_id: "cool_pack_store"
+      flow_role: "packaging"
+      record_type: "bill of materials and issue records"
+      raw_fields: "component; material; unit_mass; units_packed; scrap; returned_material; supplier"
+      collection_method: "Component weighing and stock reconciliation"
+      unit: "kg"
+      frequency: "each packaging specification and reporting period"
+      temporal_coverage: "full study period"
+      site_scope: "all included packaging formats"
+      aggregation_rule: "component mass times packed units plus measured attributable scrap"
+      quality_evidence: "specification; calibrated scale; purchase reconciliation"
+    - protocol_id: cp_refrigerant_records
+      process_id: "cool_pack_store"
+      flow_role: "refrigerant"
+      record_type: "service and stock-balance records"
+      raw_fields: "substance; opening_stock; purchases; additions; recovery; closing_stock; equipment; throughput; period"
+      collection_method: "Maintenance system, invoices, and cylinder mass balance"
+      unit: "kg by substance"
+      frequency: "every service event and annual closure"
+      temporal_coverage: "full study period"
+      site_scope: "all refrigeration serving included operations"
+      aggregation_rule: "additions minus documented recovery and stock transfers, allocated by causal equipment use"
+      quality_evidence: "service invoice; technician record; cylinder reconciliation"
+    - protocol_id: cp_product_output_records
+      process_id: "cool_pack_store"
+      flow_role: "reference product"
+      record_type: "packing and dispatch records"
+      raw_fields: "product_code; species; form; smoke_route; pack_count; gross_mass; tare; net_mass; rejects; lot; date"
+      collection_method: "Calibrated checkweigher or batch scales linked to release records"
+      unit: "kg"
+      frequency: "every lot"
+      temporal_coverage: "full study period"
+      site_scope: "all included final products"
+      aggregation_rule: "sum conforming net mass excluding packaging"
+      quality_evidence: "calibration; release record; inventory reconciliation"
+  calculation_rules:
+    - id: calc_reference_normalization
+      applies_to: "All inventory rows"
+      rule: "normalized amount = attributable period or lot amount / conforming net packaged smoked-fish mass"
+      inputs:
+        - "attributable amount"
+        - "conforming net output"
+      output: "amount per 1 kg reference product"
+      source_ids:
+        - eu-pef-2021-2279
+    - id: calc_preparation_yield
+      applies_to: "receive_prepare"
+      rule: "prepared-fish yield = prepared transfer mass / accepted received-fish mass"
+      inputs:
+        - "accepted received fish"
+        - "prepared transfer"
+      output: "kg/kg"
+      source_ids:
+        - eu-pef-2021-2279
+    - id: calc_smoking_yield
+      applies_to: "cure_smoke"
+      rule: "smoking yield = smoked-fish transfer mass / prepared-fish input mass; report ingredient uptake and moisture loss when measured"
+      inputs:
+        - "prepared fish"
+        - ingredients
+        - "smoked-fish transfer"
+        - "measured moisture data"
+      output: "kg/kg and disclosed mass-change drivers"
+      source_ids:
+        - codex-cxc-52-2003
+    - id: calc_water_balance
+      applies_to: "Wastewater rows"
+      rule: "wastewater = measured discharge, or water and ice inputs plus relevant product water released minus retained water, evaporation, and other documented outputs"
+      inputs:
+        - water
+        - ice
+        - brine
+        - "stock change"
+        - "retained water"
+        - evaporation
+      output: "kg wastewater by stream"
+      source_ids:
+        - eu-pef-2021-2279
+    - id: calc_refrigerant_loss
+      applies_to: "refrigerant_r717_emission; refrigerant_r404a_emission; refrigerant_r134a_emission; refrigerant_r744_emission"
+      rule: "substance loss = additions + opening stock + purchases - recovery - closing stock - documented transfers, constrained to the equipment boundary"
+      inputs:
+        - "substance-specific refrigerant records"
+      output: "kg substance emitted"
+      source_ids:
+        - eu-pef-2021-2279
+    - id: calc_mass_balance
+      applies_to: "Each process and whole foreground system"
+      rule: "inputs + opening stock = products + co-products + wastes + measured emissions + closing stock + documented moisture change and uncertainty"
+      inputs:
+        - "all mass records"
+      output: "closure percentage and unexplained imbalance"
+      source_ids:
+        - eu-pef-2021-2279
+  data_quality_requirements:
+    - id: dq_identity_traceability
+      applies_to: "Raw fish and final product"
+      requirement: "Retain lot-level linkage for species, origin, capture or aquaculture system, incoming state, process route, packaging, and final storage specification."
+      evidence: "Supplier traceability, receiving, batch, release, and dispatch records; codex-cxc-52-2003"
+    - id: dq_measurement
+      applies_to: "Mass, water, energy, temperature, time, and control parameters"
+      requirement: "Use calibrated instruments appropriate to the decision and retain calibration status, units, missing-data treatment, and conversion basis."
+      evidence: "Calibration certificates, meter reconciliation, approved procedures; codex-cxc-52-2003"
+    - id: dq_temporal
+      applies_to: "Foreground study period"
+      requirement: "Cover a representative production year or the complete seasonal campaign and disclose shutdowns, atypical lots, storage duration, and substitutions."
+      evidence: "Production calendar, meter periods, purchasing and dispatch reconciliation; eu-pef-2021-2279"
+    - id: dq_technology_geography
+      applies_to: "Process and upstream datasets"
+      requirement: "Match smoking technology, smoke medium, hot/cold route, cooling/storage system, geography, species, and capture/aquaculture origin; document proxy use."
+      evidence: "Site specification, supplier records, dataset metadata; eu-pef-2021-2279"
+    - id: dq_completeness
+      applies_to: "Foreground inventory"
+      requirement: "Reconcile fish, ingredients, water, energy, packaging, products, co-products, wastes, wastewater, direct emissions, and refrigerant losses; explain exclusions and material imbalances."
+      evidence: "Mass, water, energy, refrigerant, and waste balances; eu-pef-2021-2279"
+    - id: dq_food_safety_controls
+      applies_to: "Smoking, cooling, packaging, and storage"
+      requirement: "Retain the approved product-specific control plan, monitored critical parameters, deviations, corrective action, and release decision; this PCR does not invent universal time-temperature, microbiological, contaminant, moisture, or shelf-life limits."
+      evidence: "Food-safety plan and batch records; codex-cxc-52-2003"
+validation_rules:
+  - rule_id: validate_reference_flow
+    applies_to: "Reference output"
+    rule: "Confirm exactly 1 kg net packaged smoked fish using the declared product UUID, Mass property, mass unit group, and kg; packaging mass shall not be included."
+    source_ids:
+      - unsd-cpc-3-0
+  - rule_id: validate_qualifiers
+    applies_to: "Dataset metadata"
+    rule: "Reject an incomplete package when required species, form, incoming state, smoking route and medium, salting/brining, storage state, packaging, origin, geography, or production/holding dates are absent."
+    source_ids:
+      - unsd-cpc-3-0
+      - codex-cxc-52-2003
+  - rule_id: validate_process_route
+    applies_to: "Foreground inventory"
+    rule: "Confirm that each required process has a matched detailed inventory, route-specific records, and no double counting of intermediate fish, smoking medium versus fuel, ice production, or shared utilities."
+    source_ids:
+      - codex-cxc-52-2003
+  - rule_id: validate_mass_balance
+    applies_to: "Process and system totals"
+    rule: "Calculate process and overall mass-balance closure and require explanation of moisture change, stock change, measurement uncertainty, or missing flows for material imbalance."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: validate_allocation
+    applies_to: "Multifunctional processes"
+    rule: "Confirm allocation avoidance was attempted first and that every remaining physical or economic allocation key, co-product status, data period, and sensitivity is disclosed."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: validate_food_safety_evidence
+    applies_to: "Smoking and finishing records"
+    rule: "Confirm that the actual product specification supplies applicable smoking, cooling, storage, microbiological, chemical-contaminant, moisture or water-activity, and shelf-life criteria plus monitored release evidence; report inconclusive if these criteria are absent."
+    source_ids:
+      - codex-cxc-52-2003
+  - rule_id: validate_provisional_ranges
+    applies_to: "Important inventory flows"
+    rule: "Treat every reasoned_estimate interval only as a QA flag. A value outside the interval requires explanation, while a value inside it does not constitute evidence; replace provisional ranges before publication-critical use."
+    source_ids: []
+  - rule_id: validate_data_quality
+    applies_to: "Completed data package"
+    rule: "Report temporal, geographical, technological, precision, completeness, consistency, and source representativeness, including proxy datasets and skipped checks."
+    source_ids:
+      - eu-pef-2021-2279
+published_dataset_profile:
+  dataset_role: "Foreground production dataset for smoked fish at the smoking-facility gate"
+  downstream_use: "secondary_dataset; background_dataset when geography, species, production route, technology, storage state, and data-quality needs are compatible"
+  allowed_use: "Cradle-to-gate or broader models that add compatible upstream fish and input datasets and avoid overlap with this foreground boundary; comparisons only when functional, quality, storage, and route specifications are equivalent"
+  excluded_use: "Direct representation of unsmoked, canned, salted-only, dried-only, pickled, fermented, or merely smoke-flavoured fish; substitution across materially different species, hot/cold routes, production systems, storage states, or geographies without review"
+  required_metadata: "PCR id and status; product-flow UUID; species and form; origin and capture/aquaculture system; incoming state; smoking and smoke-generation route; salt/brine route; storage and packaging specification; facility geography and technology; study period; net output; upstream datasets; co-products and allocation; data sources and provisional estimates"
+  required_quality_disclosure: "Primary-data share; meter and scale coverage; temporal, geographical, and technological representativeness; data gaps and proxy datasets; mass/water/energy balance closure; food-safety control evidence; uncertainty; all reasoned_estimate uses and unresolved UUIDs"
+  update_trigger: "Change in species mix, sourcing or production system, smoking route or medium, formulation, equipment, energy carrier, cooling/freezing/storage route, packaging, co-product destination, allocation, wastewater or emissions control, refrigerant, regulation, product safety specification, or evidence causing a material inventory change"
+data_sources:
+  - id: "unsd-cpc-3-0"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, Central Product Classification (CPC) Version 3.0, code 21232, Fish including fillets, smoked. https://unstats.un.org/unsd/classifications/Econ/cpc"
+    used_for: "Product category boundary and classification context"
+  - id: "codex-cxc-52-2003"
+    type: "standard"
+    reference: "Codex Alimentarius, CXC 52-2003, Code of Practice for Fish and Fishery Products, official Codex text (listed as revised through 2019). https://www.fao.org/fao-who-codexalimentarius/codex-texts/codes-of-practice/en/"
+    used_for: "Fish-processing route decomposition, hygiene and process-control records, smoking/cooling/packaging quality requirements"
+  - id: "eu-pef-2021-2279"
+    type: "official_guidance"
+    reference: "European Commission Recommendation (EU) 2021/2279 on the use of the Environmental Footprint methods, CELEX 32021H2279. http://data.europa.eu/eli/reco/2021/2279/oj"
+    used_for: "Boundary completeness, allocation hierarchy, foreground data quality, normalization, and validation disclosure"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:aeeaf3c72807726a541fe53aa4d4ad9bbb0a93edf1bcc34a529a3161e2d21d07"
+  generated_content_sha256: "sha256:3cee9cf72e7bbcbb950e8518e25977715a32f1fff7559d9082872a61e4368596"

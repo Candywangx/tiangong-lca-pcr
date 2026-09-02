@@ -1,10 +1,2495 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "21114"
-  title: "Meat of rabbits and hares, fresh or chilled"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.food-products-beverages-and-tobacco-textiles-apparel-and-leather-products.meat-fish-fruits-vegetables-oils-and-fats.meat-of-rabbits-and-hares-fresh-or-chilled"
+  classification_refs: "CPC 3.0: 21114 Meat of rabbits and hares, fresh or chilled"
+  covered_products: "Fresh or chilled rabbit meat and fresh or chilled hare meat, as whole dressed carcasses or standard meat cuts, excluding edible offal"
+  excluded_products: "Frozen rabbit or hare meat; edible offal sold as the reference product; meat of other species; live animals"
+  representative_product: "Net conforming chilled rabbit carcass or rabbit meat cuts released at the processing-plant gate"
+  production_route: "Live-animal reception; slaughter, bleeding, skinning, evisceration; carcass finishing or standard cutting; chilling; refrigerated holding; inspection; packaging when used"
+  market_state: "Fresh or chilled without freezing, packaged or bulk as declared, at the processing-plant gate"
+functional_unit:
+  what: "Net conforming rabbit meat or hare meat supplied fresh or chilled for downstream food use"
+  how_much: "1 kg net product excluding packaging and edible offal"
+  how_well: "Meets the declared specification, species identity, presentation, hygiene acceptance, and fresh-or-chilled temperature condition without freezing"
+  how_long_or_cycle: "One production lot and plant-gate release; no downstream storage service is included"
+  reference_flow_link: "reference_rabbit_hare_meat_output"
+system_boundary:
+  rules:
+    - rule_id: boundary_foreground_gate
+      applies_to: "foreground system boundary"
+      rule: "Start with live rabbits or live hares received at the slaughterhouse gate and end with net conforming fresh or chilled meat released at the processing-plant gate."
+      source_ids:
+        - ec-jrc-sa-bref-2024
+        - eu-pef-2021
+    - rule_id: boundary_required_operations
+      applies_to: "included operations"
+      rule: "Include animal reception, slaughter, bleeding, skinning, evisceration, carcass finishing or standard cutting, chilling, refrigerated holding, cleaning, sanitation, wastewater handling, final inspection, and packaging when used."
+      source_ids:
+        - ec-jrc-sa-bref-2024
+    - rule_id: boundary_exclusions
+      applies_to: "excluded foreground operations"
+      rule: "Exclude animal farming, feed production, transport to the slaughterhouse, retail, distribution after the plant gate, cooking or use, and end-of-life; represent them with linked datasets only when the study expands beyond this foreground package."
+      source_ids:
+        - ec-jrc-sa-bref-2024
+        - eu-pef-2021
+    - rule_id: boundary_product_state
+      applies_to: "product state"
+      rule: "Exclude frozen meat and edible offal from the reference product; record edible offal and other saleable outputs separately and disclose whether the reference product is fresh or chilled without freezing."
+      source_ids:
+        - un-cpc-v3-2025
+        - ec-jrc-sa-bref-2024
+boundary_abstraction:
+  declared_starting_condition: "Live rabbit or live hare received at the slaughterhouse gate with species, lot, supplier, live mass, arrival time, condition, and acceptance result declared"
+  starting_condition_role: "Foreground gate condition; farming and inbound animal transport are linked upstream datasets rather than foreground slaughter operations"
+  product_classification_scope: "CPC 21114 only: rabbit or hare meat supplied fresh or chilled, excluding frozen meat and edible offal as the reference product"
+  recursive_input_rule: "If fresh or chilled rabbit or hare meat re-enters an included process, record it as one species-specific product input and link its upstream dataset rather than recursively recreating its production"
+  upstream_dataset_requirement: "Link compatible datasets for animal farming, inbound transport, purchased utilities, chemicals, packaging, and any off-site waste or wastewater treatment"
+  disclosure: "Declare species, product presentation, fresh-or-chilled condition, cut-off, upstream links, on-site versus off-site treatment, allocation method, destinations, packaging, geography, technology, period, and data gaps"
+reference_flow_definition:
+  reference_amount: "1 kg"
+  product_flow_ref:
+    name: "Meat of rabbits and hares, fresh or chilled"
+    uuid: "6fb95713-8813-4a4e-a0cd-1a3139e8347a"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - species
+    - "whole carcass or cut presentation"
+    - "bone-in status"
+    - "offal exclusion"
+    - "fresh or chilled state"
+    - "exit temperature"
+    - "net mass"
+    - "packaging format"
+    - "grade or conformity specification"
+    - "processing geography and period"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_net_mass
+    applies_to: "reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Measure net conforming meat mass after chilling and final inspection; exclude packaging, edible offal, rejects, and free liquid not sold with the product."
+  - id: live_and_output_mass
+    applies_to: "animals, carcasses, meat, co-products, and solid wastes"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Preserve species-specific gross mass records and normalize only after reconciling the corresponding process balance."
+  - id: water_volume
+    applies_to: "process water and wastewater"
+    required_property_ref:
+      name: "Volume"
+      uuid: ""
+    required_unit: "m3"
+    rule: "Use metered volume or a documented balance and do not convert pollutant mass into wastewater volume."
+  - id: energy_carriers
+    applies_to: "electricity, steam, hot water, natural gas, diesel, and LPG"
+    required_property_ref:
+      name: "Energy"
+      uuid: ""
+    required_unit: "kWh or MJ"
+    rule: "Keep electricity and each thermal carrier separate; document heating-value basis and every unit conversion."
+  - id: temperature_state
+    applies_to: "chilled product"
+    required_property_ref:
+      name: "Temperature"
+      uuid: ""
+    required_unit: "degree C"
+    rule: "Record product temperature and time evidence sufficient to demonstrate fresh-or-chilled state without freezing."
+process_map:
+  - id: animal_receiving
+    name: "Animal reception and holding"
+    inclusion: "required"
+    inclusion_condition: "Required for every slaughter lot entering the foreground boundary."
+    role: "Receive, identify, inspect, and hold live rabbits or hares before slaughter."
+    quantitative_reference: "kg accepted live animal"
+  - id: slaughter_dressing
+    name: "Slaughter, bleeding, skinning, and evisceration"
+    inclusion: "required"
+    inclusion_condition: "Required for every product route."
+    role: "Convert accepted live animals into species-specific dressed carcasses and separately recorded edible and non-edible outputs."
+    quantitative_reference: "kg dressed carcass"
+  - id: cutting_portioning
+    name: "Carcass finishing and standard cutting"
+    inclusion: "required"
+    inclusion_condition: "Required; for a whole-carcass market form this process records finishing and zero or minimal cutting."
+    role: "Trim, finish, and form the declared whole carcass or meat cuts before chilling."
+    quantitative_reference: "kg prepared meat before chilling"
+  - id: chilling_storage
+    name: "Chilling and refrigerated holding"
+    inclusion: "required"
+    inclusion_condition: "Required to establish and maintain the fresh-or-chilled state before plant-gate release."
+    role: "Cool prepared meat without freezing and hold it under controlled refrigerated conditions."
+    quantitative_reference: "kg conforming chilled meat"
+  - id: cleaning_wastewater
+    name: "Cleaning, sanitation, and wastewater treatment"
+    inclusion: "required"
+    inclusion_condition: "Required for the included slaughter and cutting operations; off-site wastewater treatment may replace the on-site treatment sub-step only with a linked dataset."
+    role: "Clean food-contact equipment and treat or transfer each wastewater stream without aggregating pollutant emissions."
+    quantitative_reference: "m3 treated effluent"
+  - id: packaging_release
+    name: "Packaging, final inspection, and release"
+    inclusion: "required"
+    inclusion_condition: "Required for plant-gate release; each packaging-material card is conditional on the declared format."
+    role: "Inspect, pack when applicable, weigh, and release net conforming fresh or chilled rabbit or hare meat."
+    quantitative_reference: "1 kg net reference product"
+process_inventory:
+  - id: animal_receiving
+    label: "Animal reception and holding"
+    inputs:
+      product:
+        - row_id: live_rabbit_input
+          role: "Live rabbit input"
+          name: "Live rabbit at slaughterhouse gate"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "This product input records only Live rabbit at slaughterhouse gate crossing the animal reception and holding boundary. Its quantity is obtained from the stated foreground rule and is not combined with another exchange."
+          amount:
+            expression: "Measured live mass accepted into the reception area; applicable only to rabbit lots"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted live animal output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_animal_receiving
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-pef-2021
+            ranges: []
+        - row_id: live_hare_input
+          role: "Live hare input"
+          name: "Live hare at slaughterhouse gate"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "This product input records only Live hare at slaughterhouse gate crossing the animal reception and holding boundary. Its quantity is obtained from the stated foreground rule and is not combined with another exchange."
+          amount:
+            expression: "Measured live mass accepted into the reception area; applicable only to hare lots"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted live animal output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_animal_receiving
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-pef-2021
+            ranges: []
+        - row_id: reception_process_water_input
+          role: "Reception process water"
+          name: "Process water supplied to animal reception"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "This product input records only Process water supplied to animal reception crossing the animal reception and holding boundary. Its quantity is obtained from the stated foreground rule and is not combined with another exchange."
+          amount:
+            expression: "Metered water supplied to reception pens and animal handling equipment"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted live animal output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_animal_receiving
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-pef-2021
+            ranges: []
+        - row_id: reception_electricity_input
+          role: "Reception electricity"
+          name: "Electricity supplied to animal reception equipment"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "This product input records only Electricity supplied to animal reception equipment crossing the animal reception and holding boundary. Its quantity is obtained from the stated foreground rule and is not combined with another exchange."
+          amount:
+            expression: "Submetered electricity or documented equipment allocation for reception and holding"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted live animal output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_animal_receiving
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-pef-2021
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: accepted_live_rabbit_output
+          role: "Accepted live rabbit output"
+          name: "Accepted live rabbit for slaughter"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "This product output records only Accepted live rabbit for slaughter crossing the animal reception and holding boundary. Its quantity is obtained from the stated foreground rule and is not combined with another exchange."
+          amount:
+            expression: "Measured rabbit live mass transferred to slaughter after inspection"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted live animal output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_animal_receiving
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-pef-2021
+            ranges: []
+        - row_id: accepted_live_hare_output
+          role: "Accepted live hare output"
+          name: "Accepted live hare for slaughter"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "This product output records only Accepted live hare for slaughter crossing the animal reception and holding boundary. Its quantity is obtained from the stated foreground rule and is not combined with another exchange."
+          amount:
+            expression: "Measured hare live mass transferred to slaughter after inspection"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg accepted live animal output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_animal_receiving
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-pef-2021
+            ranges: []
+      waste:
+        - row_id: doa_rabbit_carcass_output
+          role: "Rabbit dead-on-arrival waste"
+          name: "Rabbit carcass dead on arrival"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "This waste output records only Rabbit carcass dead on arrival crossing the animal reception and holding boundary. Its quantity is obtained from the stated foreground rule and is not combined with another exchange."
+          amount:
+            expression: "Measured mass of rabbit carcasses rejected before slaughter"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted live animal output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_animal_receiving
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-pef-2021
+            ranges: []
+        - row_id: doa_hare_carcass_output
+          role: "Hare dead-on-arrival waste"
+          name: "Hare carcass dead on arrival"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "This waste output records only Hare carcass dead on arrival crossing the animal reception and holding boundary. Its quantity is obtained from the stated foreground rule and is not combined with another exchange."
+          amount:
+            expression: "Measured mass of hare carcasses rejected before slaughter"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted live animal output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_animal_receiving
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-pef-2021
+            ranges: []
+        - row_id: rabbit_manure_output
+          role: "Rabbit manure waste"
+          name: "Rabbit manure from reception pens"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "This waste output records only Rabbit manure from reception pens crossing the animal reception and holding boundary. Its quantity is obtained from the stated foreground rule and is not combined with another exchange."
+          amount:
+            expression: "Measured or container-weighed rabbit manure removed from reception pens"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted live animal output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_animal_receiving
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-pef-2021
+            ranges: []
+        - row_id: hare_manure_output
+          role: "Hare manure waste"
+          name: "Hare manure from reception pens"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "This waste output records only Hare manure from reception pens crossing the animal reception and holding boundary. Its quantity is obtained from the stated foreground rule and is not combined with another exchange."
+          amount:
+            expression: "Measured or container-weighed hare manure removed from reception pens"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted live animal output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_animal_receiving
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-pef-2021
+            ranges: []
+        - row_id: lairage_wastewater_output
+          role: "Reception wastewater"
+          name: "Lairage wastewater from animal reception"
+          flow_type: "waste"
+          property_unit: "Volume / m3"
+          description: "This waste output records only Lairage wastewater from animal reception crossing the animal reception and holding boundary. Its quantity is obtained from the stated foreground rule and is not combined with another exchange."
+          amount:
+            expression: "Metered or balance-calculated wastewater transferred to the wastewater process"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted live animal output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_animal_receiving
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-pef-2021
+            ranges: []
+      elementary:
+        []
+  - id: slaughter_dressing
+    label: "Slaughter, bleeding, skinning, and evisceration"
+    inputs:
+      product:
+        - row_id: accepted_live_rabbit_input
+          role: "Accepted rabbit input"
+          name: "Accepted live rabbit for slaughter"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "This product input records only Accepted live rabbit for slaughter crossing the slaughter, bleeding, skinning, and evisceration boundary. Its quantity is obtained from the stated foreground rule and is not combined with another exchange."
+          amount:
+            expression: "Measured rabbit live mass transferred from reception"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg dressed carcass output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_slaughter_dressing
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-pef-2021
+            ranges: []
+        - row_id: accepted_live_hare_input
+          role: "Accepted hare input"
+          name: "Accepted live hare for slaughter"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "This product input records only Accepted live hare for slaughter crossing the slaughter, bleeding, skinning, and evisceration boundary. Its quantity is obtained from the stated foreground rule and is not combined with another exchange."
+          amount:
+            expression: "Measured hare live mass transferred from reception"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg dressed carcass output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_slaughter_dressing
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-pef-2021
+            ranges: []
+        - row_id: slaughter_process_water_input
+          role: "Slaughter process water"
+          name: "Process water supplied to slaughter and dressing"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "This product input records only Process water supplied to slaughter and dressing crossing the slaughter, bleeding, skinning, and evisceration boundary. Its quantity is obtained from the stated foreground rule and is not combined with another exchange."
+          amount:
+            expression: "Metered water used for slaughter, carcass washing, and dressing"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg dressed carcass output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_slaughter_dressing
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-pef-2021
+            ranges: []
+        - row_id: slaughter_electricity_input
+          role: "Slaughter electricity"
+          name: "Electricity supplied to slaughter and dressing equipment"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "This product input records only Electricity supplied to slaughter and dressing equipment crossing the slaughter, bleeding, skinning, and evisceration boundary. Its quantity is obtained from the stated foreground rule and is not combined with another exchange."
+          amount:
+            expression: "Submetered electricity or documented equipment allocation for slaughter and dressing"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg dressed carcass output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_slaughter_dressing
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-pef-2021
+            ranges: []
+        - row_id: slaughter_purchased_steam_input
+          role: "Purchased steam"
+          name: "Purchased steam supplied to slaughter and dressing"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "This product input records only Purchased steam supplied to slaughter and dressing crossing the slaughter, bleeding, skinning, and evisceration boundary. Its quantity is obtained from the stated foreground rule and is not combined with another exchange."
+          amount:
+            expression: "Metered purchased steam supplied to this process; not applicable when absent"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg dressed carcass output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_slaughter_dressing
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-pef-2021
+            ranges: []
+        - row_id: slaughter_purchased_hot_water_input
+          role: "Purchased hot water"
+          name: "Purchased hot water supplied to slaughter and dressing"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "This product input records only Purchased hot water supplied to slaughter and dressing crossing the slaughter, bleeding, skinning, and evisceration boundary. Its quantity is obtained from the stated foreground rule and is not combined with another exchange."
+          amount:
+            expression: "Metered purchased hot-water energy supplied to this process; not applicable when absent"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg dressed carcass output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_slaughter_dressing
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-pef-2021
+            ranges: []
+        - row_id: slaughter_natural_gas_input
+          role: "Natural gas fuel"
+          name: "Natural gas combusted for slaughterhouse thermal demand"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "This product input records only Natural gas combusted for slaughterhouse thermal demand crossing the slaughter, bleeding, skinning, and evisceration boundary. Its quantity is obtained from the stated foreground rule and is not combined with another exchange."
+          amount:
+            expression: "Metered lower-heating-value energy of natural gas used by equipment serving this process; not applicable when absent"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg dressed carcass output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_slaughter_dressing
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-pef-2021
+            ranges: []
+        - row_id: slaughter_diesel_input
+          role: "Diesel fuel"
+          name: "Diesel combusted for slaughterhouse thermal demand"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "This product input records only Diesel combusted for slaughterhouse thermal demand crossing the slaughter, bleeding, skinning, and evisceration boundary. Its quantity is obtained from the stated foreground rule and is not combined with another exchange."
+          amount:
+            expression: "Fuel issue records converted to lower-heating-value energy for equipment serving this process; not applicable when absent"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg dressed carcass output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_slaughter_dressing
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-pef-2021
+            ranges: []
+        - row_id: slaughter_lpg_input
+          role: "Liquefied petroleum gas fuel"
+          name: "Liquefied petroleum gas combusted for slaughterhouse thermal demand"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "This product input records only Liquefied petroleum gas combusted for slaughterhouse thermal demand crossing the slaughter, bleeding, skinning, and evisceration boundary. Its quantity is obtained from the stated foreground rule and is not combined with another exchange."
+          amount:
+            expression: "Fuel issue records converted to lower-heating-value energy for equipment serving this process; not applicable when absent"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg dressed carcass output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_slaughter_dressing
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-pef-2021
+            ranges: []
+        - row_id: slaughter_sodium_hydroxide_input
+          role: "Sodium hydroxide cleaner"
+          name: "Sodium hydroxide cleaning solution supplied to slaughter equipment"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "This product input records only Sodium hydroxide cleaning solution supplied to slaughter equipment crossing the slaughter, bleeding, skinning, and evisceration boundary. Its quantity is obtained from the stated foreground rule and is not combined with another exchange."
+          amount:
+            expression: "Measured solution mass and recorded active concentration; not applicable when this chemical is absent"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg dressed carcass output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_slaughter_dressing
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-pef-2021
+            ranges: []
+        - row_id: slaughter_peracetic_acid_input
+          role: "Peracetic acid disinfectant"
+          name: "Peracetic acid disinfectant solution supplied to slaughter equipment"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "This product input records only Peracetic acid disinfectant solution supplied to slaughter equipment crossing the slaughter, bleeding, skinning, and evisceration boundary. Its quantity is obtained from the stated foreground rule and is not combined with another exchange."
+          amount:
+            expression: "Measured solution mass and recorded active concentration; not applicable when this disinfectant is absent"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg dressed carcass output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_slaughter_dressing
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-pef-2021
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: rabbit_dressed_carcass_output
+          role: "Rabbit dressed carcass output"
+          name: "Rabbit dressed carcass after evisceration"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "This product output records only Rabbit dressed carcass after evisceration crossing the slaughter, bleeding, skinning, and evisceration boundary. Its quantity is obtained from the stated foreground rule and is not combined with another exchange."
+          amount:
+            expression: "Measured rabbit dressed-carcass mass after bleeding, skinning, and evisceration"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg dressed carcass output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_slaughter_dressing
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-pef-2021
+            ranges: []
+        - row_id: rabbit_liver_output
+          role: "Rabbit liver co-product"
+          name: "Rabbit liver for human consumption"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "This product output records only Rabbit liver for human consumption crossing the slaughter, bleeding, skinning, and evisceration boundary. Its quantity is obtained from the stated foreground rule and is not combined with another exchange."
+          amount:
+            expression: "Measured conforming rabbit liver mass transferred as an edible co-product"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg dressed carcass output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_slaughter_dressing
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-pef-2021
+            ranges: []
+        - row_id: rabbit_heart_output
+          role: "Rabbit heart co-product"
+          name: "Rabbit heart for human consumption"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "This product output records only Rabbit heart for human consumption crossing the slaughter, bleeding, skinning, and evisceration boundary. Its quantity is obtained from the stated foreground rule and is not combined with another exchange."
+          amount:
+            expression: "Measured conforming rabbit heart mass transferred as an edible co-product"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg dressed carcass output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_slaughter_dressing
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-pef-2021
+            ranges: []
+        - row_id: rabbit_kidney_output
+          role: "Rabbit kidney co-product"
+          name: "Rabbit kidney for human consumption"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "This product output records only Rabbit kidney for human consumption crossing the slaughter, bleeding, skinning, and evisceration boundary. Its quantity is obtained from the stated foreground rule and is not combined with another exchange."
+          amount:
+            expression: "Measured conforming rabbit kidney mass transferred as an edible co-product"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg dressed carcass output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_slaughter_dressing
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-pef-2021
+            ranges: []
+        - row_id: hare_dressed_carcass_output
+          role: "Hare dressed carcass output"
+          name: "Hare dressed carcass after evisceration"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "This product output records only Hare dressed carcass after evisceration crossing the slaughter, bleeding, skinning, and evisceration boundary. Its quantity is obtained from the stated foreground rule and is not combined with another exchange."
+          amount:
+            expression: "Measured hare dressed-carcass mass after bleeding, skinning, and evisceration"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg dressed carcass output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_slaughter_dressing
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-pef-2021
+            ranges: []
+        - row_id: hare_liver_output
+          role: "Hare liver co-product"
+          name: "Hare liver for human consumption"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "This product output records only Hare liver for human consumption crossing the slaughter, bleeding, skinning, and evisceration boundary. Its quantity is obtained from the stated foreground rule and is not combined with another exchange."
+          amount:
+            expression: "Measured conforming hare liver mass transferred as an edible co-product"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg dressed carcass output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_slaughter_dressing
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-pef-2021
+            ranges: []
+        - row_id: hare_heart_output
+          role: "Hare heart co-product"
+          name: "Hare heart for human consumption"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "This product output records only Hare heart for human consumption crossing the slaughter, bleeding, skinning, and evisceration boundary. Its quantity is obtained from the stated foreground rule and is not combined with another exchange."
+          amount:
+            expression: "Measured conforming hare heart mass transferred as an edible co-product"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg dressed carcass output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_slaughter_dressing
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-pef-2021
+            ranges: []
+        - row_id: hare_kidney_output
+          role: "Hare kidney co-product"
+          name: "Hare kidney for human consumption"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "This product output records only Hare kidney for human consumption crossing the slaughter, bleeding, skinning, and evisceration boundary. Its quantity is obtained from the stated foreground rule and is not combined with another exchange."
+          amount:
+            expression: "Measured conforming hare kidney mass transferred as an edible co-product"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg dressed carcass output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_slaughter_dressing
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-pef-2021
+            ranges: []
+      waste:
+        - row_id: rabbit_blood_output
+          role: "Rabbit blood output"
+          name: "Rabbit blood from slaughter"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "This waste output records only Rabbit blood from slaughter crossing the slaughter, bleeding, skinning, and evisceration boundary. Its quantity is obtained from the stated foreground rule and is not combined with another exchange."
+          amount:
+            expression: "Measured or balance-calculated rabbit blood sent to the documented destination"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg dressed carcass output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_slaughter_dressing
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-pef-2021
+            ranges: []
+        - row_id: rabbit_skin_output
+          role: "Rabbit skin output"
+          name: "Rabbit skin from slaughter"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "This waste output records only Rabbit skin from slaughter crossing the slaughter, bleeding, skinning, and evisceration boundary. Its quantity is obtained from the stated foreground rule and is not combined with another exchange."
+          amount:
+            expression: "Measured rabbit skin mass sent to the documented destination"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg dressed carcass output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_slaughter_dressing
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-pef-2021
+            ranges: []
+        - row_id: rabbit_inedible_viscera_output
+          role: "Rabbit inedible viscera"
+          name: "Rabbit inedible viscera from slaughter"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "This waste output records only Rabbit inedible viscera from slaughter crossing the slaughter, bleeding, skinning, and evisceration boundary. Its quantity is obtained from the stated foreground rule and is not combined with another exchange."
+          amount:
+            expression: "Measured rabbit inedible-viscera mass sent to the documented destination"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg dressed carcass output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_slaughter_dressing
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-pef-2021
+            ranges: []
+        - row_id: rabbit_digestive_content_output
+          role: "Rabbit digestive-tract content"
+          name: "Rabbit digestive-tract content from slaughter"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "This waste output records only Rabbit digestive-tract content from slaughter crossing the slaughter, bleeding, skinning, and evisceration boundary. Its quantity is obtained from the stated foreground rule and is not combined with another exchange."
+          amount:
+            expression: "Measured or balance-calculated rabbit digestive-tract content removed during evisceration"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg dressed carcass output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_slaughter_dressing
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-pef-2021
+            ranges: []
+        - row_id: hare_blood_output
+          role: "Hare blood output"
+          name: "Hare blood from slaughter"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "This waste output records only Hare blood from slaughter crossing the slaughter, bleeding, skinning, and evisceration boundary. Its quantity is obtained from the stated foreground rule and is not combined with another exchange."
+          amount:
+            expression: "Measured or balance-calculated hare blood sent to the documented destination"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg dressed carcass output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_slaughter_dressing
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-pef-2021
+            ranges: []
+        - row_id: hare_skin_output
+          role: "Hare skin output"
+          name: "Hare skin from slaughter"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "This waste output records only Hare skin from slaughter crossing the slaughter, bleeding, skinning, and evisceration boundary. Its quantity is obtained from the stated foreground rule and is not combined with another exchange."
+          amount:
+            expression: "Measured hare skin mass sent to the documented destination"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg dressed carcass output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_slaughter_dressing
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-pef-2021
+            ranges: []
+        - row_id: hare_inedible_viscera_output
+          role: "Hare inedible viscera"
+          name: "Hare inedible viscera from slaughter"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "This waste output records only Hare inedible viscera from slaughter crossing the slaughter, bleeding, skinning, and evisceration boundary. Its quantity is obtained from the stated foreground rule and is not combined with another exchange."
+          amount:
+            expression: "Measured hare inedible-viscera mass sent to the documented destination"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg dressed carcass output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_slaughter_dressing
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-pef-2021
+            ranges: []
+        - row_id: hare_digestive_content_output
+          role: "Hare digestive-tract content"
+          name: "Hare digestive-tract content from slaughter"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "This waste output records only Hare digestive-tract content from slaughter crossing the slaughter, bleeding, skinning, and evisceration boundary. Its quantity is obtained from the stated foreground rule and is not combined with another exchange."
+          amount:
+            expression: "Measured or balance-calculated hare digestive-tract content removed during evisceration"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg dressed carcass output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_slaughter_dressing
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-pef-2021
+            ranges: []
+        - row_id: slaughter_wastewater_output
+          role: "Slaughter wastewater"
+          name: "Slaughter and carcass-washing wastewater"
+          flow_type: "waste"
+          property_unit: "Volume / m3"
+          description: "This waste output records only Slaughter and carcass-washing wastewater crossing the slaughter, bleeding, skinning, and evisceration boundary. Its quantity is obtained from the stated foreground rule and is not combined with another exchange."
+          amount:
+            expression: "Metered or balance-calculated wastewater transferred to the wastewater process"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg dressed carcass output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_slaughter_dressing
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-pef-2021
+            ranges: []
+      elementary:
+        - row_id: slaughter_natural_gas_co2_output
+          role: "Fossil carbon dioxide from natural gas"
+          name: "Carbon dioxide, fossil, to air from natural gas combustion for slaughterhouse thermal demand"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "This elementary output records only Carbon dioxide, fossil, to air from natural gas combustion for slaughterhouse thermal demand crossing the slaughter, bleeding, skinning, and evisceration boundary. Its quantity is obtained from the stated foreground rule and is not combined with another exchange."
+          amount:
+            expression: "Recorded natural gas energy multiplied by a documented site, supplier, or regulatory fossil-carbon factor"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg dressed carcass output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_slaughter_dressing
+              source_ids:
+                - eu-pef-2021
+            ranges: []
+        - row_id: slaughter_diesel_co2_output
+          role: "Fossil carbon dioxide from diesel"
+          name: "Carbon dioxide, fossil, to air from diesel combustion for slaughterhouse thermal demand"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "This elementary output records only Carbon dioxide, fossil, to air from diesel combustion for slaughterhouse thermal demand crossing the slaughter, bleeding, skinning, and evisceration boundary. Its quantity is obtained from the stated foreground rule and is not combined with another exchange."
+          amount:
+            expression: "Recorded diesel energy multiplied by a documented site, supplier, or regulatory fossil-carbon factor"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg dressed carcass output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_slaughter_dressing
+              source_ids:
+                - eu-pef-2021
+            ranges: []
+        - row_id: slaughter_lpg_co2_output
+          role: "Fossil carbon dioxide from liquefied petroleum gas"
+          name: "Carbon dioxide, fossil, to air from liquefied petroleum gas combustion for slaughterhouse thermal demand"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "This elementary output records only Carbon dioxide, fossil, to air from liquefied petroleum gas combustion for slaughterhouse thermal demand crossing the slaughter, bleeding, skinning, and evisceration boundary. Its quantity is obtained from the stated foreground rule and is not combined with another exchange."
+          amount:
+            expression: "Recorded liquefied petroleum gas energy multiplied by a documented site, supplier, or regulatory fossil-carbon factor"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg dressed carcass output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_slaughter_dressing
+              source_ids:
+                - eu-pef-2021
+            ranges: []
+  - id: cutting_portioning
+    label: "Carcass finishing and standard cutting"
+    inputs:
+      product:
+        - row_id: rabbit_dressed_carcass_input
+          role: "Rabbit dressed carcass input"
+          name: "Rabbit dressed carcass after evisceration"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "This product input records only Rabbit dressed carcass after evisceration crossing the carcass finishing and standard cutting boundary. Its quantity is obtained from the stated foreground rule and is not combined with another exchange."
+          amount:
+            expression: "Measured rabbit dressed-carcass mass received from slaughter and dressing"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg prepared meat output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cutting_portioning
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-pef-2021
+            ranges: []
+        - row_id: hare_dressed_carcass_input
+          role: "Hare dressed carcass input"
+          name: "Hare dressed carcass after evisceration"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "This product input records only Hare dressed carcass after evisceration crossing the carcass finishing and standard cutting boundary. Its quantity is obtained from the stated foreground rule and is not combined with another exchange."
+          amount:
+            expression: "Measured hare dressed-carcass mass received from slaughter and dressing"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg prepared meat output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cutting_portioning
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-pef-2021
+            ranges: []
+        - row_id: cutting_process_water_input
+          role: "Cutting process water"
+          name: "Process water supplied to carcass finishing and cutting"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "This product input records only Process water supplied to carcass finishing and cutting crossing the carcass finishing and standard cutting boundary. Its quantity is obtained from the stated foreground rule and is not combined with another exchange."
+          amount:
+            expression: "Metered water used for carcass finishing, cutting, and food-contact rinsing"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg prepared meat output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cutting_portioning
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-pef-2021
+            ranges: []
+        - row_id: cutting_electricity_input
+          role: "Cutting electricity"
+          name: "Electricity supplied to carcass cutting equipment"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "This product input records only Electricity supplied to carcass cutting equipment crossing the carcass finishing and standard cutting boundary. Its quantity is obtained from the stated foreground rule and is not combined with another exchange."
+          amount:
+            expression: "Submetered electricity or documented equipment allocation for carcass finishing and cutting"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg prepared meat output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cutting_portioning
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-pef-2021
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: rabbit_prepared_meat_output
+          role: "Rabbit prepared meat output"
+          name: "Rabbit meat prepared for chilling"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "This product output records only Rabbit meat prepared for chilling crossing the carcass finishing and standard cutting boundary. Its quantity is obtained from the stated foreground rule and is not combined with another exchange."
+          amount:
+            expression: "Measured net rabbit carcass or cut mass transferred to chilling"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg prepared meat output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_cutting_portioning
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-pef-2021
+            ranges: []
+        - row_id: rabbit_edible_fat_output
+          role: "Rabbit edible fat co-product"
+          name: "Rabbit edible fat trimming"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "This product output records only Rabbit edible fat trimming crossing the carcass finishing and standard cutting boundary. Its quantity is obtained from the stated foreground rule and is not combined with another exchange."
+          amount:
+            expression: "Measured conforming rabbit fat trimming transferred for food use"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg prepared meat output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cutting_portioning
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-pef-2021
+            ranges: []
+        - row_id: rabbit_edible_meat_trim_output
+          role: "Rabbit edible meat trimming co-product"
+          name: "Rabbit edible meat trimming"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "This product output records only Rabbit edible meat trimming crossing the carcass finishing and standard cutting boundary. Its quantity is obtained from the stated foreground rule and is not combined with another exchange."
+          amount:
+            expression: "Measured conforming rabbit meat trimming transferred for food use"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg prepared meat output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cutting_portioning
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-pef-2021
+            ranges: []
+        - row_id: hare_prepared_meat_output
+          role: "Hare prepared meat output"
+          name: "Hare meat prepared for chilling"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "This product output records only Hare meat prepared for chilling crossing the carcass finishing and standard cutting boundary. Its quantity is obtained from the stated foreground rule and is not combined with another exchange."
+          amount:
+            expression: "Measured net hare carcass or cut mass transferred to chilling"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg prepared meat output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_cutting_portioning
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-pef-2021
+            ranges: []
+        - row_id: hare_edible_fat_output
+          role: "Hare edible fat co-product"
+          name: "Hare edible fat trimming"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "This product output records only Hare edible fat trimming crossing the carcass finishing and standard cutting boundary. Its quantity is obtained from the stated foreground rule and is not combined with another exchange."
+          amount:
+            expression: "Measured conforming hare fat trimming transferred for food use"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg prepared meat output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cutting_portioning
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-pef-2021
+            ranges: []
+        - row_id: hare_edible_meat_trim_output
+          role: "Hare edible meat trimming co-product"
+          name: "Hare edible meat trimming"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "This product output records only Hare edible meat trimming crossing the carcass finishing and standard cutting boundary. Its quantity is obtained from the stated foreground rule and is not combined with another exchange."
+          amount:
+            expression: "Measured conforming hare meat trimming transferred for food use"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg prepared meat output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cutting_portioning
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-pef-2021
+            ranges: []
+      waste:
+        - row_id: rabbit_bone_output
+          role: "Rabbit bone output"
+          name: "Rabbit bone from carcass cutting"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "This waste output records only Rabbit bone from carcass cutting crossing the carcass finishing and standard cutting boundary. Its quantity is obtained from the stated foreground rule and is not combined with another exchange."
+          amount:
+            expression: "Measured rabbit bone mass sent to the documented destination"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg prepared meat output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cutting_portioning
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-pef-2021
+            ranges: []
+        - row_id: rabbit_inedible_trim_output
+          role: "Rabbit inedible trimming"
+          name: "Rabbit inedible trimming from carcass cutting"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "This waste output records only Rabbit inedible trimming from carcass cutting crossing the carcass finishing and standard cutting boundary. Its quantity is obtained from the stated foreground rule and is not combined with another exchange."
+          amount:
+            expression: "Measured rabbit inedible-trimming mass sent to the documented destination"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg prepared meat output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cutting_portioning
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-pef-2021
+            ranges: []
+        - row_id: hare_bone_output
+          role: "Hare bone output"
+          name: "Hare bone from carcass cutting"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "This waste output records only Hare bone from carcass cutting crossing the carcass finishing and standard cutting boundary. Its quantity is obtained from the stated foreground rule and is not combined with another exchange."
+          amount:
+            expression: "Measured hare bone mass sent to the documented destination"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg prepared meat output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cutting_portioning
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-pef-2021
+            ranges: []
+        - row_id: hare_inedible_trim_output
+          role: "Hare inedible trimming"
+          name: "Hare inedible trimming from carcass cutting"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "This waste output records only Hare inedible trimming from carcass cutting crossing the carcass finishing and standard cutting boundary. Its quantity is obtained from the stated foreground rule and is not combined with another exchange."
+          amount:
+            expression: "Measured hare inedible-trimming mass sent to the documented destination"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg prepared meat output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cutting_portioning
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-pef-2021
+            ranges: []
+        - row_id: cutting_wastewater_output
+          role: "Cutting wastewater"
+          name: "Carcass-cutting and food-contact-rinse wastewater"
+          flow_type: "waste"
+          property_unit: "Volume / m3"
+          description: "This waste output records only Carcass-cutting and food-contact-rinse wastewater crossing the carcass finishing and standard cutting boundary. Its quantity is obtained from the stated foreground rule and is not combined with another exchange."
+          amount:
+            expression: "Metered or balance-calculated wastewater transferred to the wastewater process"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg prepared meat output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_cutting_portioning
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-pef-2021
+            ranges: []
+      elementary:
+        []
+  - id: chilling_storage
+    label: "Chilling and refrigerated holding"
+    inputs:
+      product:
+        - row_id: rabbit_prepared_meat_input
+          role: "Rabbit prepared meat input"
+          name: "Rabbit meat prepared for chilling"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "This product input records only Rabbit meat prepared for chilling crossing the chilling and refrigerated holding boundary. Its quantity is obtained from the stated foreground rule and is not combined with another exchange."
+          amount:
+            expression: "Measured rabbit meat mass received from carcass finishing and cutting"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg conforming chilled meat output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_chilling_storage
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-pef-2021
+            ranges: []
+        - row_id: hare_prepared_meat_input
+          role: "Hare prepared meat input"
+          name: "Hare meat prepared for chilling"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "This product input records only Hare meat prepared for chilling crossing the chilling and refrigerated holding boundary. Its quantity is obtained from the stated foreground rule and is not combined with another exchange."
+          amount:
+            expression: "Measured hare meat mass received from carcass finishing and cutting"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg conforming chilled meat output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_chilling_storage
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-pef-2021
+            ranges: []
+        - row_id: chilling_electricity_input
+          role: "Chilling electricity"
+          name: "Electricity supplied to meat chilling and cold-storage equipment"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "This product input records only Electricity supplied to meat chilling and cold-storage equipment crossing the chilling and refrigerated holding boundary. Its quantity is obtained from the stated foreground rule and is not combined with another exchange."
+          amount:
+            expression: "Submetered electricity or documented refrigeration-system allocation"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg conforming chilled meat output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_chilling_storage
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-pef-2021
+            ranges: []
+        - row_id: r717_refrigerant_makeup_input
+          role: "R-717 refrigerant make-up"
+          name: "Ammonia (R-717) refrigerant make-up"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "This product input records only Ammonia (R-717) refrigerant make-up crossing the chilling and refrigerated holding boundary. Its quantity is obtained from the stated foreground rule and is not combined with another exchange."
+          amount:
+            expression: "Measured refrigerant make-up supplied to the chilling system; not applicable when R-717 is absent"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg conforming chilled meat output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_chilling_storage
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-pef-2021
+            ranges: []
+        - row_id: r134a_refrigerant_makeup_input
+          role: "R-134a refrigerant make-up"
+          name: "1,1,1,2-Tetrafluoroethane (R-134a) refrigerant make-up"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "This product input records only 1,1,1,2-Tetrafluoroethane (R-134a) refrigerant make-up crossing the chilling and refrigerated holding boundary. Its quantity is obtained from the stated foreground rule and is not combined with another exchange."
+          amount:
+            expression: "Measured refrigerant make-up supplied to the chilling system; not applicable when R-134a is absent"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg conforming chilled meat output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_chilling_storage
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-pef-2021
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: rabbit_chilled_meat_output
+          role: "Rabbit chilled meat output"
+          name: "Rabbit meat, fresh or chilled, before packaging"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "This product output records only Rabbit meat, fresh or chilled, before packaging crossing the chilling and refrigerated holding boundary. Its quantity is obtained from the stated foreground rule and is not combined with another exchange."
+          amount:
+            expression: "Measured conforming rabbit meat mass after chilling and refrigerated holding"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg conforming chilled meat output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_chilling_storage
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-pef-2021
+            ranges: []
+        - row_id: hare_chilled_meat_output
+          role: "Hare chilled meat output"
+          name: "Hare meat, fresh or chilled, before packaging"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "This product output records only Hare meat, fresh or chilled, before packaging crossing the chilling and refrigerated holding boundary. Its quantity is obtained from the stated foreground rule and is not combined with another exchange."
+          amount:
+            expression: "Measured conforming hare meat mass after chilling and refrigerated holding"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg conforming chilled meat output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_chilling_storage
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-pef-2021
+            ranges: []
+      waste:
+        - row_id: rabbit_temperature_reject_output
+          role: "Rabbit temperature-control reject"
+          name: "Rabbit meat rejected after chilling temperature deviation"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "This waste output records only Rabbit meat rejected after chilling temperature deviation crossing the chilling and refrigerated holding boundary. Its quantity is obtained from the stated foreground rule and is not combined with another exchange."
+          amount:
+            expression: "Measured rabbit meat mass rejected for documented temperature or time nonconformity"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg conforming chilled meat output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_chilling_storage
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-pef-2021
+            ranges: []
+        - row_id: hare_temperature_reject_output
+          role: "Hare temperature-control reject"
+          name: "Hare meat rejected after chilling temperature deviation"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "This waste output records only Hare meat rejected after chilling temperature deviation crossing the chilling and refrigerated holding boundary. Its quantity is obtained from the stated foreground rule and is not combined with another exchange."
+          amount:
+            expression: "Measured hare meat mass rejected for documented temperature or time nonconformity"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg conforming chilled meat output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_chilling_storage
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-pef-2021
+            ranges: []
+      elementary:
+        - row_id: r717_to_air_output
+          role: "R-717 emitted to air"
+          name: "Ammonia (R-717), to air from meat refrigeration"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "This elementary output records only Ammonia (R-717), to air from meat refrigeration crossing the chilling and refrigerated holding boundary. Its quantity is obtained from the stated foreground rule and is not combined with another exchange."
+          amount:
+            expression: "Refrigerant charge balance using opening charge, make-up, closing charge, recovery, and documented transfers"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg conforming chilled meat output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_chilling_storage
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-pef-2021
+            ranges: []
+        - row_id: r134a_to_air_output
+          role: "R-134a emitted to air"
+          name: "1,1,1,2-Tetrafluoroethane (R-134a), to air from meat refrigeration"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "This elementary output records only 1,1,1,2-Tetrafluoroethane (R-134a), to air from meat refrigeration crossing the chilling and refrigerated holding boundary. Its quantity is obtained from the stated foreground rule and is not combined with another exchange."
+          amount:
+            expression: "Refrigerant charge balance using opening charge, make-up, closing charge, recovery, and documented transfers"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg conforming chilled meat output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_chilling_storage
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-pef-2021
+            ranges: []
+  - id: cleaning_wastewater
+    label: "Cleaning, sanitation, and wastewater treatment"
+    inputs:
+      product:
+        - row_id: sanitation_process_water_input
+          role: "Sanitation process water"
+          name: "Process water supplied to plant cleaning and sanitation"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "This product input records only Process water supplied to plant cleaning and sanitation crossing the cleaning, sanitation, and wastewater treatment boundary. Its quantity is obtained from the stated foreground rule and is not combined with another exchange."
+          amount:
+            expression: "Metered water used for cleaning and sanitation within the included plant"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 m3 treated effluent output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cleaning_wastewater
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-pef-2021
+            ranges: []
+        - row_id: wastewater_electricity_input
+          role: "Wastewater-treatment electricity"
+          name: "Electricity supplied to slaughterhouse wastewater treatment"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "This product input records only Electricity supplied to slaughterhouse wastewater treatment crossing the cleaning, sanitation, and wastewater treatment boundary. Its quantity is obtained from the stated foreground rule and is not combined with another exchange."
+          amount:
+            expression: "Submetered electricity or documented equipment allocation for wastewater treatment"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 m3 treated effluent output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cleaning_wastewater
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-pef-2021
+            ranges: []
+        - row_id: wastewater_sodium_hydroxide_input
+          role: "Wastewater pH-control chemical"
+          name: "Sodium hydroxide solution supplied to wastewater treatment"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "This product input records only Sodium hydroxide solution supplied to wastewater treatment crossing the cleaning, sanitation, and wastewater treatment boundary. Its quantity is obtained from the stated foreground rule and is not combined with another exchange."
+          amount:
+            expression: "Measured solution mass and active concentration; not applicable when absent"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 m3 treated effluent output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cleaning_wastewater
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-pef-2021
+            ranges: []
+        - row_id: ferric_chloride_input
+          role: "Ferric chloride coagulant"
+          name: "Ferric chloride solution supplied to wastewater treatment"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "This product input records only Ferric chloride solution supplied to wastewater treatment crossing the cleaning, sanitation, and wastewater treatment boundary. Its quantity is obtained from the stated foreground rule and is not combined with another exchange."
+          amount:
+            expression: "Measured solution mass and active concentration; not applicable when absent"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 m3 treated effluent output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cleaning_wastewater
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-pef-2021
+            ranges: []
+        - row_id: anionic_polyacrylamide_input
+          role: "Anionic polyacrylamide flocculant"
+          name: "Anionic polyacrylamide flocculant supplied to wastewater treatment"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "This product input records only Anionic polyacrylamide flocculant supplied to wastewater treatment crossing the cleaning, sanitation, and wastewater treatment boundary. Its quantity is obtained from the stated foreground rule and is not combined with another exchange."
+          amount:
+            expression: "Measured product mass; not applicable when absent"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 m3 treated effluent output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cleaning_wastewater
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-pef-2021
+            ranges: []
+      waste:
+        - row_id: lairage_wastewater_input
+          role: "Reception wastewater input"
+          name: "Lairage wastewater from animal reception"
+          flow_type: "waste"
+          property_unit: "Volume / m3"
+          description: "This waste input records only Lairage wastewater from animal reception crossing the cleaning, sanitation, and wastewater treatment boundary. Its quantity is obtained from the stated foreground rule and is not combined with another exchange."
+          amount:
+            expression: "Metered reception wastewater entering treatment"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 m3 treated effluent output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cleaning_wastewater
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-pef-2021
+            ranges: []
+        - row_id: slaughter_wastewater_input
+          role: "Slaughter wastewater input"
+          name: "Slaughter and carcass-washing wastewater"
+          flow_type: "waste"
+          property_unit: "Volume / m3"
+          description: "This waste input records only Slaughter and carcass-washing wastewater crossing the cleaning, sanitation, and wastewater treatment boundary. Its quantity is obtained from the stated foreground rule and is not combined with another exchange."
+          amount:
+            expression: "Metered slaughter wastewater entering treatment"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 m3 treated effluent output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cleaning_wastewater
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-pef-2021
+            ranges: []
+        - row_id: cutting_wastewater_input
+          role: "Cutting wastewater input"
+          name: "Carcass-cutting and food-contact-rinse wastewater"
+          flow_type: "waste"
+          property_unit: "Volume / m3"
+          description: "This waste input records only Carcass-cutting and food-contact-rinse wastewater crossing the cleaning, sanitation, and wastewater treatment boundary. Its quantity is obtained from the stated foreground rule and is not combined with another exchange."
+          amount:
+            expression: "Metered cutting wastewater entering treatment"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 m3 treated effluent output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cleaning_wastewater
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-pef-2021
+            ranges: []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: wastewater_screenings_output
+          role: "Wastewater screenings"
+          name: "Screenings from slaughterhouse wastewater treatment"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "This waste output records only Screenings from slaughterhouse wastewater treatment crossing the cleaning, sanitation, and wastewater treatment boundary. Its quantity is obtained from the stated foreground rule and is not combined with another exchange."
+          amount:
+            expression: "Measured dewatered screenings sent to the documented destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 m3 treated effluent output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cleaning_wastewater
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-pef-2021
+            ranges: []
+        - row_id: daf_sludge_output
+          role: "Dissolved-air-flotation sludge"
+          name: "Dissolved-air-flotation sludge from slaughterhouse wastewater treatment"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "This waste output records only Dissolved-air-flotation sludge from slaughterhouse wastewater treatment crossing the cleaning, sanitation, and wastewater treatment boundary. Its quantity is obtained from the stated foreground rule and is not combined with another exchange."
+          amount:
+            expression: "Measured dewatered flotation sludge sent to the documented destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 m3 treated effluent output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cleaning_wastewater
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-pef-2021
+            ranges: []
+      elementary:
+        - row_id: treated_effluent_water_output
+          role: "Treated effluent water"
+          name: "Water, to surface water from slaughterhouse wastewater treatment"
+          flow_type: "elementary"
+          property_unit: "Volume / m3"
+          description: "This elementary output records only Water, to surface water from slaughterhouse wastewater treatment crossing the cleaning, sanitation, and wastewater treatment boundary. Its quantity is obtained from the stated foreground rule and is not combined with another exchange."
+          amount:
+            expression: "Metered treated effluent discharged to surface water; not applicable when transferred off site"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 m3 treated effluent output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cleaning_wastewater
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-pef-2021
+            ranges: []
+        - row_id: bod5_to_water_output
+          role: "Biochemical oxygen demand to water"
+          name: "Biochemical oxygen demand (BOD5), to surface water"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "This elementary output records only Biochemical oxygen demand (BOD5), to surface water crossing the cleaning, sanitation, and wastewater treatment boundary. Its quantity is obtained from the stated foreground rule and is not combined with another exchange."
+          amount:
+            expression: "Measured effluent volume multiplied by the matched laboratory concentration"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 m3 treated effluent output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_cleaning_wastewater
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-pef-2021
+            ranges: []
+        - row_id: cod_to_water_output
+          role: "Chemical oxygen demand to water"
+          name: "Chemical oxygen demand (COD), to surface water"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "This elementary output records only Chemical oxygen demand (COD), to surface water crossing the cleaning, sanitation, and wastewater treatment boundary. Its quantity is obtained from the stated foreground rule and is not combined with another exchange."
+          amount:
+            expression: "Measured effluent volume multiplied by the matched laboratory concentration"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 m3 treated effluent output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_cleaning_wastewater
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-pef-2021
+            ranges: []
+        - row_id: tss_to_water_output
+          role: "Suspended solids to water"
+          name: "Total suspended solids, to surface water"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "This elementary output records only Total suspended solids, to surface water crossing the cleaning, sanitation, and wastewater treatment boundary. Its quantity is obtained from the stated foreground rule and is not combined with another exchange."
+          amount:
+            expression: "Measured effluent volume multiplied by the matched laboratory concentration"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 m3 treated effluent output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_cleaning_wastewater
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-pef-2021
+            ranges: []
+        - row_id: total_nitrogen_to_water_output
+          role: "Total nitrogen to water"
+          name: "Nitrogen, total, to surface water"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "This elementary output records only Nitrogen, total, to surface water crossing the cleaning, sanitation, and wastewater treatment boundary. Its quantity is obtained from the stated foreground rule and is not combined with another exchange."
+          amount:
+            expression: "Measured effluent volume multiplied by the matched laboratory concentration"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 m3 treated effluent output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_cleaning_wastewater
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-pef-2021
+            ranges: []
+        - row_id: total_phosphorus_to_water_output
+          role: "Total phosphorus to water"
+          name: "Phosphorus, total, to surface water"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "This elementary output records only Phosphorus, total, to surface water crossing the cleaning, sanitation, and wastewater treatment boundary. Its quantity is obtained from the stated foreground rule and is not combined with another exchange."
+          amount:
+            expression: "Measured effluent volume multiplied by the matched laboratory concentration"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 m3 treated effluent output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_cleaning_wastewater
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-pef-2021
+            ranges: []
+  - id: packaging_release
+    label: "Packaging, final inspection, and release"
+    inputs:
+      product:
+        - row_id: rabbit_chilled_meat_input
+          role: "Rabbit chilled meat input"
+          name: "Rabbit meat, fresh or chilled, before packaging"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "This product input records only Rabbit meat, fresh or chilled, before packaging crossing the packaging, final inspection, and release boundary. Its quantity is obtained from the stated foreground rule and is not combined with another exchange."
+          amount:
+            expression: "Measured conforming rabbit meat mass received from chilled holding"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net reference product"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_release
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-pef-2021
+            ranges: []
+        - row_id: hare_chilled_meat_input
+          role: "Hare chilled meat input"
+          name: "Hare meat, fresh or chilled, before packaging"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "This product input records only Hare meat, fresh or chilled, before packaging crossing the packaging, final inspection, and release boundary. Its quantity is obtained from the stated foreground rule and is not combined with another exchange."
+          amount:
+            expression: "Measured conforming hare meat mass received from chilled holding"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net reference product"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_release
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-pef-2021
+            ranges: []
+        - row_id: pp_tray_input
+          role: "Polypropylene tray"
+          name: "Polypropylene tray for chilled meat packaging"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "This product input records only Polypropylene tray for chilled meat packaging crossing the packaging, final inspection, and release boundary. Its quantity is obtained from the stated foreground rule and is not combined with another exchange."
+          amount:
+            expression: "Measured or purchase-reconciled tray mass used for the declared packaging format; not applicable when absent"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net reference product"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_release
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-pef-2021
+            ranges: []
+        - row_id: pe_film_input
+          role: "Polyethylene lidding film"
+          name: "Polyethylene lidding film for chilled meat packaging"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "This product input records only Polyethylene lidding film for chilled meat packaging crossing the packaging, final inspection, and release boundary. Its quantity is obtained from the stated foreground rule and is not combined with another exchange."
+          amount:
+            expression: "Measured or purchase-reconciled film mass used for the declared packaging format; not applicable when absent"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net reference product"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_release
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-pef-2021
+            ranges: []
+        - row_id: cellulose_pad_input
+          role: "Cellulose absorbent pad"
+          name: "Cellulose absorbent pad for chilled meat packaging"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "This product input records only Cellulose absorbent pad for chilled meat packaging crossing the packaging, final inspection, and release boundary. Its quantity is obtained from the stated foreground rule and is not combined with another exchange."
+          amount:
+            expression: "Measured or purchase-reconciled pad mass used for the declared packaging format; not applicable when absent"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net reference product"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_release
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-pef-2021
+            ranges: []
+        - row_id: paper_label_input
+          role: "Paper label"
+          name: "Paper label for chilled meat packaging"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "This product input records only Paper label for chilled meat packaging crossing the packaging, final inspection, and release boundary. Its quantity is obtained from the stated foreground rule and is not combined with another exchange."
+          amount:
+            expression: "Measured or purchase-reconciled label mass used for the declared packaging format; not applicable when absent"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net reference product"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_release
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-pef-2021
+            ranges: []
+        - row_id: corrugated_carton_input
+          role: "Corrugated transport carton"
+          name: "Corrugated paperboard carton for chilled meat transport"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "This product input records only Corrugated paperboard carton for chilled meat transport crossing the packaging, final inspection, and release boundary. Its quantity is obtained from the stated foreground rule and is not combined with another exchange."
+          amount:
+            expression: "Measured or purchase-reconciled carton mass used for the declared packaging format; not applicable when absent"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net reference product"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_release
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-pef-2021
+            ranges: []
+        - row_id: packaging_electricity_input
+          role: "Packaging electricity"
+          name: "Electricity supplied to meat packaging and final-inspection equipment"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "This product input records only Electricity supplied to meat packaging and final-inspection equipment crossing the packaging, final inspection, and release boundary. Its quantity is obtained from the stated foreground rule and is not combined with another exchange."
+          amount:
+            expression: "Submetered electricity or documented equipment allocation for packaging and final inspection"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net reference product"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_release
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-pef-2021
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: reference_rabbit_hare_meat_output
+          role: "Reference fresh or chilled meat output"
+          name: "Meat of rabbits and hares, fresh or chilled"
+          flow_type: "product"
+          flow_ref:
+            uuid: "6fb95713-8813-4a4e-a0cd-1a3139e8347a"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This product output records only Meat of rabbits and hares, fresh or chilled crossing the packaging, final inspection, and release boundary. Its quantity is obtained from the stated foreground rule and is not combined with another exchange."
+          amount:
+            expression: "Measured net mass of conforming reference product released at the plant gate"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net conforming fresh or chilled reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_release
+              source_ids:
+                - un-cpc-v3-2025
+                - eu-pef-2021
+            ranges: []
+      waste:
+        - row_id: packaged_rabbit_reject_output
+          role: "Rabbit final-product reject"
+          name: "Rabbit meat rejected during final inspection"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "This waste output records only Rabbit meat rejected during final inspection crossing the packaging, final inspection, and release boundary. Its quantity is obtained from the stated foreground rule and is not combined with another exchange."
+          amount:
+            expression: "Measured net rabbit meat mass rejected at final inspection"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net reference product"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_release
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-pef-2021
+            ranges: []
+        - row_id: packaged_hare_reject_output
+          role: "Hare final-product reject"
+          name: "Hare meat rejected during final inspection"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "This waste output records only Hare meat rejected during final inspection crossing the packaging, final inspection, and release boundary. Its quantity is obtained from the stated foreground rule and is not combined with another exchange."
+          amount:
+            expression: "Measured net hare meat mass rejected at final inspection"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net reference product"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_release
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-pef-2021
+            ranges: []
+        - row_id: waste_pp_tray_output
+          role: "Waste polypropylene tray"
+          name: "Waste polypropylene tray from chilled meat packaging"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "This waste output records only Waste polypropylene tray from chilled meat packaging crossing the packaging, final inspection, and release boundary. Its quantity is obtained from the stated foreground rule and is not combined with another exchange."
+          amount:
+            expression: "Measured or purchase-reconciled packaging material discarded before product release"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net reference product"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_release
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-pef-2021
+            ranges: []
+        - row_id: waste_pe_film_output
+          role: "Waste polyethylene film"
+          name: "Waste polyethylene film from chilled meat packaging"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "This waste output records only Waste polyethylene film from chilled meat packaging crossing the packaging, final inspection, and release boundary. Its quantity is obtained from the stated foreground rule and is not combined with another exchange."
+          amount:
+            expression: "Measured or purchase-reconciled packaging material discarded before product release"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net reference product"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_release
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-pef-2021
+            ranges: []
+        - row_id: waste_cellulose_pad_output
+          role: "Waste cellulose pad"
+          name: "Waste cellulose absorbent pad from chilled meat packaging"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "This waste output records only Waste cellulose absorbent pad from chilled meat packaging crossing the packaging, final inspection, and release boundary. Its quantity is obtained from the stated foreground rule and is not combined with another exchange."
+          amount:
+            expression: "Measured or purchase-reconciled packaging material discarded before product release"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net reference product"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_release
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-pef-2021
+            ranges: []
+        - row_id: waste_paper_label_output
+          role: "Waste paper label"
+          name: "Waste paper label from chilled meat packaging"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "This waste output records only Waste paper label from chilled meat packaging crossing the packaging, final inspection, and release boundary. Its quantity is obtained from the stated foreground rule and is not combined with another exchange."
+          amount:
+            expression: "Measured or purchase-reconciled packaging material discarded before product release"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net reference product"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_release
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-pef-2021
+            ranges: []
+        - row_id: waste_corrugated_carton_output
+          role: "Waste corrugated carton"
+          name: "Waste corrugated paperboard carton from chilled meat packaging"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "This waste output records only Waste corrugated paperboard carton from chilled meat packaging crossing the packaging, final inspection, and release boundary. Its quantity is obtained from the stated foreground rule and is not combined with another exchange."
+          amount:
+            expression: "Measured or purchase-reconciled packaging material discarded before product release"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net reference product"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_release
+              source_ids:
+                - ec-jrc-sa-bref-2024
+                - eu-pef-2021
+            ranges: []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocation_subdivision_first
+    applies_to: "slaughter, dressing, and cutting"
+    rule: "Use subdivision or direct metering to assign separately measurable operations to rabbit meat, hare meat, edible organs, skins, blood, fat, meat trimmings, and other outputs before applying allocation."
+    source_ids:
+      - eu-pef-2021
+  - rule_id: allocation_causal_then_economic
+    applies_to: "unavoidable multifunctionality"
+    rule: "When subdivision cannot eliminate multifunctionality, apply a documented physical causal relationship; if no defensible physical relationship exists, use representative economic values and disclose prices, period, geography, and sensitivity."
+    source_ids:
+      - eu-pef-2021
+  - rule_id: allocation_gross_output_records
+    applies_to: "all co-products and wastes"
+    rule: "Record the gross measured mass and destination of each specific output before allocation and do not net revenues, treatment credits, or avoided products against foreground inventory quantities."
+    source_ids:
+      - ec-jrc-sa-bref-2024
+      - eu-pef-2021
+  - rule_id: allocation_waste_boundary
+    applies_to: "waste treatment"
+    rule: "Assign waste handling to the producer up to the documented waste-system boundary; any downstream recycling or substitution credit belongs to the declared downstream model and must not be embedded silently."
+    source_ids:
+      - eu-pef-2021
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_animal_receiving
+      process_id: "animal_receiving"
+      flow_role: "Live-animal, water, electricity, acceptance, mortality, manure, and reception-wastewater records"
+      record_type: "lot receipt, scale, inspection, meter, pen-cleaning, and waste records"
+      raw_fields: "species; lot; supplier; arrival time; live mass; accepted mass; dead-on-arrival mass; water; electricity; manure; wastewater"
+      collection_method: "Calibrated livestock scales, meters, inspection logs, and destination records"
+      unit: "kg; m3; kWh"
+      frequency: "Per production lot with monthly reconciliation"
+      temporal_coverage: "At least one representative continuous 12-month period or the complete production campaign"
+      site_scope: "All included equipment and operating areas for this process"
+      aggregation_rule: "Sum each atomic flow separately by species and lot, reconcile balances, then normalize to the process quantitative reference"
+      quality_evidence: "Calibration, approved specifications, signed logs, laboratory reports where applicable, and mass-balance review"
+    - protocol_id: cp_slaughter_dressing
+      process_id: "slaughter_dressing"
+      flow_role: "Species-specific carcass, edible organ, non-edible output, water, utility, fuel, chemical, wastewater, and emission records"
+      record_type: "slaughter lot, scale, meter, fuel, chemical issue, sanitation, and destination records"
+      raw_fields: "species; live input; carcass; liver; heart; kidney; blood; skin; viscera; digestive content; water; electricity; steam; hot water; each fuel; each chemical; wastewater"
+      collection_method: "Calibrated scales and meters reconciled to slaughter lots and signed destination records"
+      unit: "kg; m3; kWh; MJ"
+      frequency: "Per production lot with monthly reconciliation"
+      temporal_coverage: "At least one representative continuous 12-month period or the complete production campaign"
+      site_scope: "All included equipment and operating areas for this process"
+      aggregation_rule: "Sum each atomic flow separately by species and lot, reconcile balances, then normalize to the process quantitative reference"
+      quality_evidence: "Calibration, approved specifications, signed logs, laboratory reports where applicable, and mass-balance review"
+    - protocol_id: cp_cutting_portioning
+      process_id: "cutting_portioning"
+      flow_role: "Carcass input, prepared meat, edible trimming, bone, inedible trimming, water, electricity, and wastewater records"
+      record_type: "cutting lot, scale, cutting plan, meter, reject, and destination records"
+      raw_fields: "species; carcass input; market presentation; prepared meat; edible fat; edible meat trim; bone; inedible trim; water; electricity; wastewater"
+      collection_method: "Calibrated scales and meters reconciled to cutting plans and lot records"
+      unit: "kg; m3; kWh"
+      frequency: "Per production lot with monthly reconciliation"
+      temporal_coverage: "At least one representative continuous 12-month period or the complete production campaign"
+      site_scope: "All included equipment and operating areas for this process"
+      aggregation_rule: "Sum each atomic flow separately by species and lot, reconcile balances, then normalize to the process quantitative reference"
+      quality_evidence: "Calibration, approved specifications, signed logs, laboratory reports where applicable, and mass-balance review"
+    - protocol_id: cp_chilling_storage
+      process_id: "chilling_storage"
+      flow_role: "Prepared meat, chilled output, temperature reject, electricity, refrigerant, and cold-room records"
+      record_type: "lot, scale, temperature logger, electricity meter, refrigerant service, and reject records"
+      raw_fields: "species; input mass; output mass; product temperature; time; electricity; refrigerant identity; opening charge; make-up; recovery; closing charge; reject mass"
+      collection_method: "Calibrated scales, continuous temperature records, electricity meters, and refrigerant service logs"
+      unit: "kg; kWh; degree C; h"
+      frequency: "Per production lot with monthly reconciliation"
+      temporal_coverage: "At least one representative continuous 12-month period or the complete production campaign"
+      site_scope: "All included equipment and operating areas for this process"
+      aggregation_rule: "Sum each atomic flow separately by species and lot, reconcile balances, then normalize to the process quantitative reference"
+      quality_evidence: "Calibration, approved specifications, signed logs, laboratory reports where applicable, and mass-balance review"
+    - protocol_id: cp_cleaning_wastewater
+      process_id: "cleaning_wastewater"
+      flow_role: "Wastewater inflow, sanitation water, treatment electricity, chemical, residual, effluent, and pollutant records"
+      record_type: "flow meter, chemical issue, laboratory, sludge, screening, discharge, and transfer records"
+      raw_fields: "source stream; inflow; water; electricity; each chemical; screenings; sludge; effluent volume; BOD5; COD; TSS; total nitrogen; total phosphorus; discharge route"
+      collection_method: "Calibrated flow meters, accredited laboratory results, chemical records, and signed waste destinations"
+      unit: "m3; kg; kWh; mg/L"
+      frequency: "Per production lot with monthly reconciliation"
+      temporal_coverage: "At least one representative continuous 12-month period or the complete production campaign"
+      site_scope: "All included equipment and operating areas for this process"
+      aggregation_rule: "Sum each atomic flow separately by species and lot, reconcile balances, then normalize to the process quantitative reference"
+      quality_evidence: "Calibration, approved specifications, signed logs, laboratory reports where applicable, and mass-balance review"
+    - protocol_id: cp_packaging_release
+      process_id: "packaging_release"
+      flow_role: "Species-specific chilled meat, net product, packaging item, packaging waste, electricity, reject, and release records"
+      record_type: "lot, scale, BOM, purchase, issue, meter, inspection, reject, and dispatch records"
+      raw_fields: "species; presentation; fresh-or-chilled state; input mass; net released mass; each packaging mass; each packaging waste; electricity; reject; dispatch"
+      collection_method: "Calibrated scales and meters reconciled to the product BOM, inspection, and dispatch records"
+      unit: "kg; kWh"
+      frequency: "Per production lot with monthly reconciliation"
+      temporal_coverage: "At least one representative continuous 12-month period or the complete production campaign"
+      site_scope: "All included equipment and operating areas for this process"
+      aggregation_rule: "Sum each atomic flow separately by species and lot, reconcile balances, then normalize to the process quantitative reference"
+      quality_evidence: "Calibration, approved specifications, signed logs, laboratory reports where applicable, and mass-balance review"
+  calculation_rules:
+    - id: calc_receiving_balance
+      applies_to: "animal reception"
+      rule: "Opening live mass plus receipts equals accepted transfer plus dead-on-arrival carcasses plus measured removals plus closing live mass; investigate differences."
+      inputs:
+        - species
+        - receipts
+        - "accepted mass"
+        - "dead-on-arrival mass"
+        - removals
+        - "opening and closing live mass"
+      output: "Species-specific receiving balance"
+      source_ids:
+        - ec-jrc-sa-bref-2024
+    - id: calc_slaughter_balance
+      applies_to: "slaughter and dressing"
+      rule: "Reconcile accepted live mass to dressed carcass, each edible organ, blood, skin, inedible viscera, digestive content, wastewater-carried solids where quantified, and stock change."
+      inputs:
+        - "species-specific slaughter and destination records"
+      output: "Species-specific slaughter mass balance"
+      source_ids:
+        - ec-jrc-sa-bref-2024
+        - eu-pef-2021
+    - id: calc_cutting_balance
+      applies_to: "carcass finishing and cutting"
+      rule: "Reconcile dressed carcass input to prepared meat, edible fat, edible meat trimming, bone, inedible trimming, wastewater-carried solids where quantified, and stock change."
+      inputs:
+        - "species-specific cutting records"
+      output: "Species-specific cutting mass balance"
+      source_ids:
+        - ec-jrc-sa-bref-2024
+        - eu-pef-2021
+    - id: calc_fuel_co2
+      applies_to: "direct fuel combustion"
+      rule: "Multiply each fuel energy record by its documented site, supplier, or regulatory fossil-carbon factor without combining fuels."
+      inputs:
+        - "fuel identity"
+        - energy
+        - factor
+        - "factor source and validity period"
+      output: "Fossil CO2 for one fuel and process"
+      source_ids:
+        - eu-pef-2021
+    - id: calc_refrigerant_loss
+      applies_to: "chilling and refrigerated holding"
+      rule: "Opening charge plus make-up minus recovered quantity minus closing charge minus documented transfers equals loss to air for each refrigerant."
+      inputs:
+        - "refrigerant identity"
+        - "opening charge"
+        - make-up
+        - recovery
+        - "closing charge"
+        - transfers
+      output: "Loss to air for one refrigerant"
+      source_ids:
+        - ec-jrc-sa-bref-2024
+        - eu-pef-2021
+    - id: calc_effluent_load
+      applies_to: "wastewater discharge"
+      rule: "Multiply matched treated-effluent volume by the laboratory concentration for one pollutant and convert units explicitly."
+      inputs:
+        - "effluent volume"
+        - "pollutant concentration"
+        - "sampling period"
+        - "conversion factor"
+      output: "Mass of one pollutant discharged"
+      source_ids:
+        - ec-jrc-sa-bref-2024
+    - id: calc_reference_mass
+      applies_to: "packaging and release"
+      rule: "Net released mass equals gross packaged or bulk product mass minus packaging mass; reconcile species-specific inputs, rejects, samples, and stock change."
+      inputs:
+        - "gross mass"
+        - "each packaging mass"
+        - "species-specific chilled input"
+        - rejects
+        - samples
+        - "stock change"
+      output: "Net kg reference product"
+      source_ids:
+        - eu-pef-2021
+  data_quality_requirements:
+    - id: dq_product_identity
+      applies_to: "reference product"
+      requirement: "Record species, whole carcass or cut presentation, bone-in status, offal exclusion, fresh-or-chilled state, exit temperature, net mass, packaging format, grade, site, and production period."
+      evidence: "Approved product specification, inspection, temperature, label, and dispatch records"
+    - id: dq_company_specific
+      applies_to: "foreground inventory"
+      requirement: "Use company-specific activity data for included manufacturing processes and retain the raw records used for each atomic flow."
+      evidence: "Meters, scales, invoices, issue records, logs, laboratory reports, and supplier records"
+    - id: dq_temporal_scope
+      applies_to: "all processes"
+      requirement: "Use a representative continuous 12-month period or complete production campaign and disclose seasonal, species, product-mix, shutdown, and abnormal-operation coverage."
+      evidence: "Production calendar, lot register, maintenance log, and representativeness statement"
+    - id: dq_completeness
+      applies_to: "inventory"
+      requirement: "Account for every declared material, utility, fuel, refrigerant, cleaning chemical, packaging item, co-product, waste, and elementary emission or document why the atomic row is not applicable."
+      evidence: "Signed completeness checklist and reconciled process records"
+    - id: dq_measurement
+      applies_to: "measured data"
+      requirement: "Retain instrument identity, calibration status, reading frequency, estimation or allocation method, and uncertainty or data limitation for each measured or derived value."
+      evidence: "Calibration certificates, meter map, calculation workbook, and review record"
+    - id: dq_external_links
+      applies_to: "upstream and downstream datasets"
+      requirement: "Document geography, technology, time, product state, allocation compatibility, and quality of linked farming, transport, purchased utility, material, chemical, packaging, waste, and treatment datasets."
+      evidence: "Dataset metadata and data-quality assessment"
+validation_rules:
+  - rule_id: validate_reference_identity
+    applies_to: "reference product"
+    rule: "Confirm CPC 21114, species, fresh-or-chilled state, exclusion of frozen meat and offal, net mass, presentation, and plant-gate release."
+    source_ids:
+      - un-cpc-v3-2025
+  - rule_id: validate_reference_uuid
+    applies_to: "reference flow"
+    rule: "Confirm that the reference output alone uses UUID 6fb95713-8813-4a4e-a0cd-1a3139e8347a, Mass 93a60a56-a3c8-11da-a746-0800200b9a66, unit group 93a60a57-a4c8-11da-a746-0800200c9a66, and kg."
+    source_ids: []
+  - rule_id: validate_process_completeness
+    applies_to: "foreground process map"
+    rule: "Confirm all six required process records exist and that any off-site wastewater treatment is linked rather than omitted."
+    source_ids:
+      - ec-jrc-sa-bref-2024
+  - rule_id: validate_atomic_inventory
+    applies_to: "inventory"
+    rule: "Reject collection labels and require separate rows for each species, material, utility, fuel, refrigerant, chemical, packaging item, waste, co-product, and elementary emission."
+    source_ids:
+      - ec-jrc-sa-bref-2024
+      - eu-pef-2021
+  - rule_id: validate_mass_balance
+    applies_to: "receiving, slaughter, cutting, chilling, and packaging"
+    rule: "Reconcile measured inputs, conforming outputs, specific co-products, specific wastes, rejects, and stock change for every lot and investigate unexplained differences."
+    source_ids:
+      - ec-jrc-sa-bref-2024
+      - eu-pef-2021
+  - rule_id: validate_energy_refrigerant
+    applies_to: "utilities and refrigeration"
+    rule: "Reconcile stage electricity and each thermal fuel separately; reconcile each refrigerant from opening charge, make-up, recovery, closing charge, and transfer records."
+    source_ids:
+      - ec-jrc-sa-bref-2024
+      - eu-pef-2021
+  - rule_id: validate_effluent
+    applies_to: "wastewater treatment"
+    rule: "Match effluent volume and each reported pollutant load to the same sampling period, analytical result, discharge route, and operating record."
+    source_ids:
+      - ec-jrc-sa-bref-2024
+  - rule_id: validate_transparency
+    applies_to: "published dataset"
+    rule: "Retain company-specific records, allocation choices, exclusions, data gaps, factors, representativeness, and quality evidence sufficient for independent review."
+    source_ids:
+      - eu-pef-2021
+published_dataset_profile:
+  dataset_role: "Foreground production dataset for fresh or chilled rabbit or hare meat at the processing-plant gate"
+  downstream_use: "secondary_dataset; background_dataset when reviewed and representative for the consuming model"
+  allowed_use: "Link to downstream food products and lifecycle models whose species, product state, presentation, geography, technology, period, allocation, and quality needs match the dataset"
+  excluded_use: "Frozen meat, edible offal as the reference product, other species, live-animal production, retail or use-stage modelling, or an unmatched technology or allocation context"
+  required_metadata: "PCR id; CPC 21114; reference UUID; species; presentation; bone-in status; offal exclusion; fresh-or-chilled condition and temperature; net mass; packaging; site; geography; technology; period; process coverage; allocation; destinations; upstream and downstream links"
+  required_quality_disclosure: "Company-specific data coverage; meter and scale coverage; laboratory methods; mass-balance closure; allocation sensitivity; refrigerant balance; data gaps; exclusions; substitutions; dataset quality and representativeness"
+  update_trigger: "Change in species mix, product presentation, process route, chilling system, refrigerant, fuel, cleaning chemistry, wastewater route, packaging format, allocation basis, site, regulation, or representative period"
+data_sources:
+  - id: "un-cpc-v3-2025"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, CPC Version 3.0 official classification entry and CPC_Ver_3.0_Structure_30Jun2025.csv, https://unstats.un.org/unsd/classifications/Econ/CPC, accessed 2026-08-13"
+    used_for: "Exact CPC 21114 fresh-or-chilled scope and exclusion of frozen meat and offal from the reference category"
+  - id: "ec-jrc-sa-bref-2024"
+    type: "official_guidance"
+    reference: "European Commission Joint Research Centre, Best Available Techniques Reference Document for the Slaughterhouses, Animal By-products and Edible Co-products Industries, JRC135916, DOI 10.2760/18199, https://publications.jrc.ec.europa.eu/repository/handle/JRC135916, accessed 2026-08-13"
+    used_for: "Animal reception, slaughter, dressing, cutting, chilling, cleaning, utilities, wastewater, emissions, and specific output process structure without default quantities"
+  - id: "eu-pef-2021"
+    type: "official_guidance"
+    reference: "European Commission Recommendation (EU) 2021/2279, consolidated Product Environmental Footprint method, https://eur-lex.europa.eu/eli/reco/2021/2279/2021-12-30/eng, accessed 2026-08-13"
+    used_for: "Product-specific inventory, company-specific manufacturing data, complete LCI, allocation hierarchy, transparency, data quality, and verification"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:a3ed03668a43e8aff6208df845c0166e37f6f43c40bb70fb8bb32114dd0a04ce"
+  generated_content_sha256: "sha256:983532b7a206c5319151112db7c4a743bae3cd2e7a94d7ecb319d9a5bb4b16a7"

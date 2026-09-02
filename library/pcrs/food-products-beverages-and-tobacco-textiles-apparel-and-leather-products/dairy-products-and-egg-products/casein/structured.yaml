@@ -1,10 +1,1057 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "22260"
-  title: "Casein"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.food-products-beverages-and-tobacco-textiles-apparel-and-leather-products.dairy-products-and-egg-products.casein"
+  classification_refs: "CPC 3.0 22260 Casein"
+  covered_products: "Dried acid casein; dried rennet or other enzyme-coagulated casein; edible or technical grade when sold as casein"
+  excluded_products: "Caseinates; other casein derivatives; casein glues and adhesives; formulated blends in which casein is an ingredient rather than the declared product"
+  representative_product: "Dry casein powder or granules at the manufacturing gate"
+  production_route: "Acid precipitation or rennet/other suitable coagulating-enzyme route, declared and inventoried separately according to the route actually operated"
+  market_state: "Bulk or packaged dry product at factory gate, with grade, route, moisture or dry-matter basis, animal origin of milk, physical form, and packaging status declared"
+functional_unit:
+  what: "Casein supplied as a dry dairy protein product at the manufacturing gate"
+  how_much: "1 kg net casein product, excluding packaging"
+  how_well: "Product is identified as acid casein or rennet/other enzyme-coagulated casein and declares edible or technical grade, moisture or dry-matter basis, physical form, and applicable product specification"
+  how_long_or_cycle: "One delivered factory-gate production output; no service duration applies"
+  reference_flow_link: "rf_casein"
+system_boundary:
+  rules:
+    - rule_id: boundary_factory_gate
+      applies_to: "foreground production"
+      rule: "Include receipt of the declared milk-derived feed, route-specific coagulation, curd separation, washing, dewatering, drying, finishing, on-site utilities directly attributable to production, and treatment of foreground wastes through the point at which dry casein is ready at the manufacturing gate."
+      source_ids:
+        - codex-cxs-290-1995
+        - eu-fdm-bat-2019-2031
+    - rule_id: boundary_route_actual
+      applies_to: "coagulation route"
+      rule: "Include acidulant or starter-culture operations only for an acid route and rennet or other coagulating-enzyme operations only for an enzyme route. Do not create a hybrid average unless the reporting product and period actually contain both routes and the weighting is disclosed."
+      source_ids:
+        - codex-cxs-290-1995
+    - rule_id: boundary_upstream_feed
+      applies_to: "milk-derived feed"
+      rule: "Represent milk production and supplier processing before the declared facility receipt point with traceable upstream datasets; do not silently recreate them inside the casein foreground."
+      source_ids:
+        - eu-pef-2021-2279
+    - rule_id: boundary_downstream
+      applies_to: "post-gate stages"
+      rule: "Exclude distribution, customer formulation, use, and end-of-life from the foreground production dataset. A downstream lifecycle model may add them without changing this reference flow."
+      source_ids:
+        - eu-pef-2021-2279
+    - rule_id: boundary_no_conversion
+      applies_to: "product scope"
+      rule: "Stop the casein foreground before neutralisation to caseinate or conversion to another derivative, glue, or adhesive."
+      source_ids:
+        - un-cpc-3-0-casein
+        - codex-cxs-290-1995
+boundary_abstraction:
+  declared_starting_condition: "Milk-derived feed material received at the casein facility, normally skimmed milk or another declared product obtained from milk"
+  starting_condition_role: "Upstream product input to foreground casein manufacture"
+  product_classification_scope: "CPC 3.0 22260 Casein; the foreground output remains casein and excludes caseinates, derivatives, glues, and adhesives"
+  recursive_input_rule: "Purchased casein entering reprocessing shall be recorded as a same-category input with its upstream dataset and shall not cause its upstream production to be recreated; internal rework that does not cross the facility boundary shall be disclosed and netted once in the batch balance"
+  upstream_dataset_requirement: "Supplier- and route-representative dataset for the milk-derived feed, including geography, technology, time period, product state, dry-matter or moisture basis, and allocation status"
+  disclosure: "Declare feed material, animal origin, edible or technical grade, coagulation route, facility location, reporting period, drying technology, on-site or off-site wastewater treatment, packaging status, and all allocation choices"
+reference_flow_definition:
+  reference_amount: "1 kg"
+  product_flow_ref:
+    name: "Casein"
+    uuid: "53f7b47f-8d1a-4420-8e79-e931990656e6"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "coagulation route"
+    - "edible or technical grade"
+    - "moisture or dry-matter basis and test method"
+    - "milk animal origin"
+    - "physical form"
+    - "product specification"
+    - "facility and geography"
+    - "production period"
+    - "packaging status"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_net_mass
+    applies_to: "Reference casein product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Report net casein product mass and exclude packaging. Use the verified casein product flow and Units of mass identities shown in section 3."
+  - id: moisture_basis
+    applies_to: "Casein, wet curd, and intermediate yields"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Record whether each mass is as-received, wet, dry, or corrected to a declared moisture or dry-matter basis. Do not apply Codex composition limits as conversion factors; use batch or lot measurements."
+  - id: route_separation
+    applies_to: "Acid and enzyme coagulation records"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Keep route-specific inputs, outputs, yields, water, and energy separate. A weighted result may be reported only with production-mass weights for the same declared period."
+  - id: energy_units
+    applies_to: "Electricity and thermal energy"
+    required_property_ref:
+      name: "Energy"
+      uuid: ""
+    required_unit: "kWh and MJ"
+    rule: "Preserve metered units and conversion factors. Do not combine electricity and thermal energy into one unqualified amount."
+process_map:
+  - id: casein_coagulation
+    name: "Route-specific casein coagulation"
+    inclusion: "required"
+    inclusion_condition: ""
+    role: "Convert the declared milk-derived feed into casein curd and liquid co-product by the actual acid or enzyme route"
+    quantitative_reference: "Per kg dry casein reference product"
+  - id: curd_recovery_washing
+    name: "Curd recovery, washing, and dewatering"
+    inclusion: "required"
+    inclusion_condition: ""
+    role: "Separate curd, remove soluble constituents, wash, and dewater the curd"
+    quantitative_reference: "Per kg dry casein reference product"
+  - id: drying_finishing
+    name: "Drying, milling, finishing, and packing"
+    inclusion: "required"
+    inclusion_condition: ""
+    role: "Dry and finish casein to the declared factory-gate state"
+    quantitative_reference: "1 kg net casein reference product"
+  - id: onsite_wastewater_treatment
+    name: "On-site wastewater treatment"
+    inclusion: "conditional"
+    inclusion_condition: "Include when wastewater generated by casein production is treated within the reporting facility boundary"
+    role: "Treat attributable wastewater and report releases and treatment residues"
+    quantitative_reference: "Per kg dry casein reference product"
+process_inventory:
+  - id: casein_coagulation
+    label: "Route-specific casein coagulation"
+    inputs:
+      product:
+        - row_id: milk_derived_feed
+          role: "Milk-derived feed material"
+          name: "Skimmed milk or other declared milk-derived feed"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the qualified skimmed milk or other declared product obtained from milk that crosses into the casein coagulation process. Supplier processing before receipt remains upstream."
+          amount:
+            expression: "measured received mass attributable to the batch or reporting period"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg dry casein reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_coagulation_batch_records
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "10"
+                upper: "100"
+                unit: "kg/kg dry casein"
+                basis: "temporary broad screen for milk-derived feed input per kg dry casein; replace when complete site or batch records are available or the feed basis changes"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: acid_route_agent
+          role: "Acidulant or lactic starter for the acid route"
+          name: "Route-specific acidulant or lactic starter"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record this row only when acid precipitation is the actual route. Identify direct mineral-acid addition, lactic fermentation, or another declared acidification method; omit the row for an enzyme route."
+          amount:
+            expression: "measured purchased or prepared amount attributable to acid-route batches"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per 1 kg dry acid casein reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_coagulation_batch_records
+              source_ids:
+                - codex-cxs-290-1995
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "2"
+                unit: "kg/kg dry acid casein"
+                basis: "temporary broad screen covering direct acid or prepared starter inputs; replace when route-specific records are available or the acidification method changes"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: enzyme_route_agent
+          role: "Rennet or other coagulating enzyme for the enzyme route"
+          name: "Rennet or other suitable coagulating enzyme"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record this row only when rennet or another suitable coagulating enzyme is the actual route; omit it for an acid route."
+          amount:
+            expression: "measured commercial preparation amount attributable to enzyme-route batches, with preparation strength disclosed"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per 1 kg dry enzyme-coagulated casein reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_coagulation_batch_records
+              source_ids:
+                - codex-cxs-290-1995
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.1"
+                unit: "kg/kg dry enzyme-coagulated casein"
+                basis: "temporary broad screen for commercial enzyme preparation; replace when route-specific records are available or preparation strength changes"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: coagulation_electricity
+          role: "Coagulation electricity"
+          name: "Electricity, supplied to the facility"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record metered or defensibly allocated electricity for feed handling, agitation, pumping, and coagulation controls."
+          amount:
+            expression: "metered electricity or calculated allocation from verified submeter and operating records"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg dry casein reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_resource_meter_records
+              source_ids:
+                - eu-pef-2021-2279
+                - eu-fdm-bat-2019-2031
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "10"
+                unit: "kWh/kg dry casein"
+                basis: "temporary broad screen; replace after complete route-specific meter coverage or when equipment changes"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: coagulation_thermal_energy
+          role: "Coagulation thermal energy"
+          name: "Thermal energy supplied to coagulation"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Record steam, hot-water, or fuel-derived thermal energy used within coagulation, without merging it with electricity."
+          amount:
+            expression: "measured energy carrier use converted with documented factors and allocated to the actual route"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg dry casein reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_resource_meter_records
+              source_ids:
+                - eu-pef-2021-2279
+                - eu-fdm-bat-2019-2031
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "100"
+                unit: "MJ/kg dry casein"
+                basis: "temporary broad screen; replace after complete route-specific energy records or when heating technology changes"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: coagulated_casein_curd
+          role: "Coagulated casein curd"
+          name: "Wet casein curd"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Calculate wet curd leaving coagulation from measured transfer mass and moisture or dry-matter testing. Keep acid and enzyme routes separate."
+          amount:
+            expression: "measured wet curd mass and calculated dry-matter equivalent by batch"
+            value_mode: "calculated_value"
+            specificity: "route_specific"
+            basis:
+              text: "per 1 kg dry casein reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_coagulation_batch_records
+              source_ids:
+                - codex-cxs-290-1995
+            ranges:
+              - role: qa_guardrail
+                lower: "1"
+                upper: "10"
+                unit: "kg wet curd/kg dry casein"
+                basis: "temporary broad screen for wet curd transfer; replace when paired mass and moisture records cover the declared period"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: coagulation_serum
+          role: "Liquid serum co-product"
+          name: "Acid serum or rennet-casein serum, route-specific"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the liquid stream separated from the coagulum as a co-product when it leaves for beneficial use; otherwise classify it according to its actual waste-management route."
+          amount:
+            expression: "measured transfer mass or volume converted with measured density"
+            value_mode: "calculated_value"
+            specificity: "route_specific"
+            basis:
+              text: "per 1 kg dry casein reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_coagulation_batch_records
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "100"
+                unit: "kg/kg dry casein"
+                basis: "temporary broad screen for liquid co-product; replace when route-specific transfer and density records cover the declared period or destination changes"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+  - id: curd_recovery_washing
+    label: "Curd recovery, washing, and dewatering"
+    inputs:
+      product:
+        - row_id: curd_input
+          role: "Coagulated casein curd input"
+          name: "Wet casein curd"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Carry the route-specific wet curd from coagulation into separation and washing without duplicating the upstream milk-derived feed."
+          amount:
+            expression: "measured internal transfer reconciled to the coagulation output"
+            value_mode: "calculated_value"
+            specificity: "route_specific"
+            basis:
+              text: "per 1 kg dry casein reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_washing_dewatering_records
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "1"
+                upper: "10"
+                unit: "kg wet curd/kg dry casein"
+                basis: "temporary broad screen; replace when paired coagulation and washing transfer records cover the declared period"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: curd_washing_water
+          role: "Curd washing water"
+          name: "Water supplied for casein-curd washing"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record potable or process-quality water that crosses into curd washing; include recycled water only once and disclose its source and quality control."
+          amount:
+            expression: "measured make-up water plus separately recorded recovered-water input, net of internal recirculation counted within the process"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg dry casein reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_washing_dewatering_records
+              source_ids:
+                - codex-cxs-290-1995
+                - eu-fdm-bat-2019-2031
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "200"
+                unit: "kg/kg dry casein"
+                basis: "temporary broad screen for make-up water; replace when process-level water balance covers the declared period or washing configuration changes"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: recovery_electricity
+          role: "Recovery and dewatering electricity"
+          name: "Electricity, supplied to the facility"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record electricity for separation, washing, pumping, and mechanical dewatering."
+          amount:
+            expression: "metered electricity or calculated allocation from verified submeter and operating records"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg dry casein reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_resource_meter_records
+              source_ids:
+                - eu-pef-2021-2279
+                - eu-fdm-bat-2019-2031
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "10"
+                unit: "kWh/kg dry casein"
+                basis: "temporary broad screen; replace after complete equipment-level records or when dewatering technology changes"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: dewatered_casein_curd
+          role: "Washed and dewatered casein curd"
+          name: "Washed and dewatered casein curd"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record dewatered curd mass and moisture or dry matter before drying, retaining the actual route identifier."
+          amount:
+            expression: "measured transfer mass corrected only with measured moisture or dry matter"
+            value_mode: "calculated_value"
+            specificity: "route_specific"
+            basis:
+              text: "per 1 kg dry casein reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_washing_dewatering_records
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "1"
+                upper: "5"
+                unit: "kg wet curd/kg dry casein"
+                basis: "temporary broad screen; replace when paired transfer and moisture records cover the declared period"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        - row_id: washing_wastewater
+          role: "Casein washing wastewater"
+          name: "Casein-production wastewater"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record the net liquid waste stream leaving washing and dewatering, including destination and whether it is treated on site or transferred off site."
+          amount:
+            expression: "measured discharge or transfer volume converted with measured or justified density and reconciled to the process water balance"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg dry casein reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_washing_dewatering_records
+              source_ids:
+                - eu-fdm-bat-2019-2031
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "300"
+                unit: "kg/kg dry casein"
+                basis: "temporary broad screen; replace when process-level wastewater monitoring covers the declared period or treatment routing changes"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        []
+  - id: drying_finishing
+    label: "Drying, milling, finishing, and packing"
+    inputs:
+      product:
+        - row_id: dewatered_curd_input
+          role: "Dewatered casein curd input"
+          name: "Washed and dewatered casein curd"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Carry the measured dewatered curd into drying and reconcile it to the upstream output."
+          amount:
+            expression: "measured internal transfer corrected only with measured moisture or dry matter"
+            value_mode: "calculated_value"
+            specificity: "route_specific"
+            basis:
+              text: "per 1 kg dry casein reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_drying_finishing_records
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "1"
+                upper: "5"
+                unit: "kg wet curd/kg dry casein"
+                basis: "temporary broad screen; replace when paired feed and product records cover the declared period or dryer feed condition changes"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: drying_electricity
+          role: "Drying and finishing electricity"
+          name: "Electricity, supplied to the facility"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record electricity for drying auxiliaries, milling, conveying, sieving, dust control, and packing where included."
+          amount:
+            expression: "metered electricity or calculated allocation from verified submeter and operating records"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg dry casein reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_resource_meter_records
+              source_ids:
+                - eu-pef-2021-2279
+                - eu-fdm-bat-2019-2031
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "10"
+                unit: "kWh/kg dry casein"
+                basis: "temporary broad screen; replace after complete dryer and finishing meter coverage or when equipment changes"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: drying_thermal_energy
+          role: "Drying thermal energy"
+          name: "Thermal energy supplied to drying"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Record delivered steam, hot air, or fuel-derived thermal energy used for drying, with energy carrier and conversion basis disclosed."
+          amount:
+            expression: "measured energy carrier use converted with documented factors and allocated to the dryer campaign"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg dry casein reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_resource_meter_records
+              source_ids:
+                - eu-pef-2021-2279
+                - eu-fdm-bat-2019-2031
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "100"
+                unit: "MJ/kg dry casein"
+                basis: "temporary broad screen; replace after complete dryer energy records or when drying technology or feed moisture changes"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: primary_packaging
+          role: "Primary packaging materials"
+          name: "Route- and product-specific primary packaging materials"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record packaging only when the declared factory-gate product is packaged. Omit this row for a declared bulk unpackaged product."
+          amount:
+            expression: "measured packaging issued minus verified returns and unused material, by packaging type"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net casein reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_drying_finishing_records
+              source_ids:
+                - eu-pef-2021-2279
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "1"
+                unit: "kg/kg net casein"
+                basis: "temporary broad screen; replace when product-specific packaging records cover the declared period or packaging format changes"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: casein_reference_product
+          role: "Casein reference product"
+          name: "Casein"
+          flow_type: "product"
+          flow_ref:
+            uuid: "53f7b47f-8d1a-4420-8e79-e931990656e6"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Report the net dry casein product at the manufacturing gate. The UUID, property, unit group, and unit are fixed by section 3; product quality values remain measured foreground qualifiers."
+          amount:
+            expression: "exactly 1 kg net reference product after normalization"
+            value_mode: "fixed_value"
+            specificity: "product_specific"
+            basis:
+              text: "one PCR reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "source_rule"
+              source_ids:
+                - un-cpc-3-0-casein
+                - codex-cxs-290-1995
+            ranges:
+              - role: allowed_range
+                lower: "1"
+                upper: "1"
+                unit: "kg"
+                basis: "exact normalized net casein reference product mass"
+                basis_kind: "reference_flow"
+                evidence_kind: "source_rule"
+                source_ids:
+                  - un-cpc-3-0-casein
+                  - codex-cxs-290-1995
+      waste:
+        - row_id: offspec_casein_waste
+          role: "Off-specification casein and finishing residues"
+          name: "Off-specification casein and finishing residues"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record off-specification casein, collected fines not returned as internal rework, and other product residues by actual destination."
+          amount:
+            expression: "measured waste transfer net of documented internal rework"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg dry casein reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_drying_finishing_records
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "1"
+                unit: "kg/kg dry casein"
+                basis: "temporary broad screen; replace when weighed waste and internal-rework records cover the declared period or product specification changes"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        - row_id: drying_particulate_emission
+          role: "Channelled particulate matter from drying and finishing"
+          name: "Particulate matter to air, size fraction and compartment declared"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record only the measured or calculated release to air after abatement. Do not convert a BAT-associated performance level into a generic emission amount."
+          amount:
+            expression: "measured concentration and gas flow integrated over operating time, or another documented site-specific method"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg dry casein reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_emission_and_wastewater_records
+              source_ids:
+                - eu-fdm-bat-2019-2031
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.1"
+                unit: "kg/kg dry casein"
+                basis: "temporary broad screen only; replace when representative concentration, flow, control-device, and operating-time records are available or abatement changes"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+  - id: onsite_wastewater_treatment
+    label: "On-site wastewater treatment"
+    inputs:
+      product:
+        - row_id: wastewater_treatment_inputs
+          role: "Wastewater-treatment electricity and chemicals"
+          name: "Wastewater-treatment electricity and chemicals, disaggregated in the foreground package"
+          flow_type: "product"
+          property_unit: "Multiple properties / declared units"
+          description: "Record treatment electricity and chemicals as separate underlying records; aggregate here only after preserving carrier and chemical identities in the data package."
+          amount:
+            expression: "metered electricity and measured chemical issue records attributable to casein wastewater"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg dry casein reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_emission_and_wastewater_records
+              source_ids:
+                - eu-fdm-bat-2019-2031
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "10"
+                unit: "kg-or-kWh/kg dry casein, disaggregated before use"
+                basis: "temporary broad presence and magnitude screen only; replace with separate electricity and chemical records before quantitative use or when treatment technology changes"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        - row_id: wastewater_to_treatment
+          role: "Casein-production wastewater received for treatment"
+          name: "Casein-production wastewater"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Include only wastewater treated within the reporting facility. Off-site treatment shall instead be represented by a traceable waste-treatment dataset."
+          amount:
+            expression: "measured treatment inflow attributable to casein production and reconciled with upstream wastewater outputs"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg dry casein reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_emission_and_wastewater_records
+              source_ids:
+                - eu-fdm-bat-2019-2031
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "300"
+                unit: "kg/kg dry casein"
+                basis: "temporary broad screen; replace when attributable treatment-inflow records cover the declared period or routing changes"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: wastewater_sludge
+          role: "Wastewater-treatment sludge"
+          name: "Wastewater-treatment sludge"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record sludge and other treatment residues by measured mass, solids basis, and destination."
+          amount:
+            expression: "measured wet mass with dry-solids content and destination declared"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg dry casein reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_emission_and_wastewater_records
+              source_ids:
+                - eu-fdm-bat-2019-2031
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "10"
+                unit: "kg wet sludge/kg dry casein"
+                basis: "temporary broad screen; replace when sludge mass, dry-solids, and destination records cover the declared period or treatment changes"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        - row_id: treated_water_discharge
+          role: "Treated wastewater discharge"
+          name: "Treated wastewater and monitored substances to the receiving water compartment"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record actual releases to water by receiving compartment and monitored relevant parameters; do not use BAT performance values as the inventory."
+          amount:
+            expression: "measured flow combined with site-specific monitored concentrations or loads for relevant substances"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg dry casein reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_emission_and_wastewater_records
+              source_ids:
+                - eu-fdm-bat-2019-2031
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "300"
+                unit: "kg water/kg dry casein"
+                basis: "temporary broad flow screen only; replace when flow and relevant-parameter monitoring covers the declared period or discharge conditions change"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+allocation_rules:
+  - rule_id: allocation_avoid
+    applies_to: "shared casein production operations"
+    rule: "First use process subdivision, route-specific metering, or another documented separation that avoids allocation while preserving mass and energy balances."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: allocation_liquid_coproduct
+    applies_to: "casein and beneficial liquid serum co-product"
+    rule: "When subdivision cannot resolve shared burdens, apply a documented physical relationship only when it reflects the causal use of resources. If no defensible physical relationship exists, use an economic relationship based on a representative declared period and report a sensitivity result."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: allocation_cream_or_other_output
+    applies_to: "additional milk-derived co-products"
+    rule: "If cream separation or another milk-processing step is inside the foreground, disclose all co-products and apply the same hierarchy. Do not import a supplier allocation without confirming that its boundary and product state match the declared starting condition."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: allocation_waste_and_rework
+    applies_to: "wastes, residues, and internal rework"
+    rule: "Do not treat internal rework as a second output. Record net rework once. Classify a liquid or solid stream as co-product only when its beneficial use and product status are evidenced; otherwise model its actual waste treatment."
+    source_ids:
+      - eu-fdm-bat-2019-2031
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_coagulation_batch_records
+      process_id: "casein_coagulation"
+      flow_role: "feed, route agent, curd, and serum"
+      record_type: "batch production record"
+      raw_fields: "batch id; route; feed identity and mass; acidulant, starter, or enzyme identity and amount; curd mass; serum mass or volume and density; moisture or dry matter; timestamps"
+      collection_method: "calibrated scales, tank levels, flow meters, formulation records, and laboratory results reconciled by batch"
+      unit: "kg; L; kg/L; mass fraction"
+      frequency: "each batch or continuous campaign with defined cut points"
+      temporal_coverage: "all batches or campaigns in the declared reporting period"
+      site_scope: "each producing facility and route"
+      aggregation_rule: "sum attributable records, convert volumes with measured density, calculate dry mass with measured moisture, and normalize to net dry casein output"
+      quality_evidence: "calibration records; batch sheets; laboratory certificates; reconciliation sign-off"
+    - protocol_id: cp_washing_dewatering_records
+      process_id: "curd_recovery_washing"
+      flow_role: "curd transfer, water, dewatered curd, and wastewater"
+      record_type: "batch and meter record"
+      raw_fields: "batch id; inlet curd mass and moisture; make-up and recovered water; outlet curd mass and moisture; wastewater flow; recycle; destination"
+      collection_method: "transfer scales, water and wastewater meters, moisture tests, and batch mass balance"
+      unit: "kg; L; mass fraction"
+      frequency: "each batch plus meter total for each campaign"
+      temporal_coverage: "all production days in the declared reporting period"
+      site_scope: "each washing and dewatering line"
+      aggregation_rule: "reconcile inlet, outlet, recycle, and wastewater; count internal recirculation once; normalize to net dry casein"
+      quality_evidence: "meter calibration; laboratory results; signed water balance; destination records"
+    - protocol_id: cp_drying_finishing_records
+      process_id: "drying_finishing"
+      flow_role: "dryer feed, casein product, packaging, waste, and internal rework"
+      record_type: "batch, inventory, and quality record"
+      raw_fields: "campaign id; route; wet feed mass and moisture; net casein mass and moisture; grade; product specification; packaging issued and returned; off-specification mass; fines; rework; destinations"
+      collection_method: "calibrated scales, moisture tests, warehouse issue records, quality release records, and waste manifests"
+      unit: "kg; mass fraction"
+      frequency: "each batch or dryer campaign"
+      temporal_coverage: "all campaigns in the declared reporting period"
+      site_scope: "each dryer and finishing line"
+      aggregation_rule: "reconcile dry solids, net internal rework once, subtract packaging from reference product mass, and normalize to 1 kg net casein"
+      quality_evidence: "scale calibration; laboratory certificate; release record; inventory reconciliation; waste manifest"
+    - protocol_id: cp_resource_meter_records
+      process_id: "casein_coagulation_curd_recovery_washing_drying_finishing"
+      flow_role: "electricity and thermal energy"
+      record_type: "meter and utility record"
+      raw_fields: "meter id; process or line; timestamp; opening and closing readings; energy carrier; steam or fuel amount; conversion factor; operating time; allocation driver"
+      collection_method: "calibrated submeters where available; otherwise documented engineering allocation from main meters and operating records"
+      unit: "kWh; MJ; carrier-specific units"
+      frequency: "meter interval and each production campaign"
+      temporal_coverage: "complete declared reporting period including shutdown and cleaning where attributable"
+      site_scope: "each facility, route, and major process"
+      aggregation_rule: "subtract verified non-production loads, allocate shared use with documented causal driver, preserve electricity and thermal energy separately, and normalize to net casein"
+      quality_evidence: "meter calibration; invoices; conversion-factor source; allocation worksheet; operating log"
+    - protocol_id: cp_emission_and_wastewater_records
+      process_id: "drying_finishing_onsite_wastewater_treatment"
+      flow_role: "particulate release, treatment inputs, sludge, and treated discharge"
+      record_type: "monitoring and transfer record"
+      raw_fields: "source id; flow; concentration; parameter; sampling time; operating time; treatment electricity and chemicals; sludge mass and solids; receiving compartment; destination"
+      collection_method: "site monitoring, laboratory analysis, flow meters, emission calculations, chemical issue records, and waste transfer records"
+      unit: "kg; kg/h; mg/Nm3; m3; mg/L; kWh; mass fraction"
+      frequency: "according to permit and monitoring plan, plus each material operating change"
+      temporal_coverage: "representative normal operation and declared reporting period"
+      site_scope: "each relevant emission point and treatment system"
+      aggregation_rule: "integrate measured concentration and flow over attributable operation, calculate loads, normalize to net casein, and retain non-detect treatment"
+      quality_evidence: "monitoring report; laboratory accreditation; calibration; chain of custody; permit record; calculation worksheet"
+  calculation_rules:
+    - id: calc_dry_mass
+      applies_to: "curd and casein mass"
+      rule: "dry mass = measured as-received mass × measured dry-matter fraction; never substitute a Codex maximum or minimum for the batch measurement"
+      inputs:
+        - "as-received mass"
+        - "measured moisture or dry matter"
+      output: "kg dry matter"
+      source_ids:
+        - codex-cxs-290-1995
+    - id: calc_reference_normalisation
+      applies_to: "all inventory rows"
+      rule: "normalized amount = attributable process amount ÷ net kg casein reference product for the same route, facility, and period"
+      inputs:
+        - "attributable amount"
+        - "net casein mass"
+      output: "amount per 1 kg casein"
+      source_ids:
+        - eu-pef-2021-2279
+    - id: calc_route_weighting
+      applies_to: "result containing both acid and enzyme routes"
+      rule: "calculate each route first; combined amount = sum of route amount × route net-casein mass share, with shares and period disclosed"
+      inputs:
+        - "route-specific normalized amounts"
+        - "route net-casein masses"
+      output: "production-mass-weighted amount"
+      source_ids:
+        - codex-cxs-290-1995
+        - eu-pef-2021-2279
+    - id: calc_mass_balance
+      applies_to: "coagulation, washing, and drying"
+      rule: "reconcile measured inputs with products, co-products, wastes, releases, inventory change, and documented measurement uncertainty on consistent moisture or dry-matter bases"
+      inputs:
+        - "measured masses"
+        - moisture
+        - recycle
+        - "inventory change"
+      output: "signed process mass balance and unexplained difference"
+      source_ids:
+        - eu-fdm-bat-2019-2031
+    - id: calc_emission_load
+      applies_to: "monitored air and water releases"
+      rule: "emitted load = representative measured concentration × measured flow integrated over attributable operating time, with unit conversions and non-detect handling documented"
+      inputs:
+        - concentration
+        - flow
+        - time
+        - "detection-limit rule"
+      output: "kg release per 1 kg casein"
+      source_ids:
+        - eu-fdm-bat-2019-2031
+  data_quality_requirements:
+    - id: dq_product_identity
+      applies_to: "reference product"
+      requirement: "Demonstrate that the output is casein and not a caseinate, other derivative, glue, adhesive, or formulated blend; declare edible or technical grade and the applicable route."
+      evidence: "product specification; sales description; process flow; CXS 290 declaration when edible"
+    - id: dq_route_specificity
+      applies_to: "production inventory"
+      requirement: "Keep acid and enzyme routes separate through data collection and calculation; record only the route agents actually used."
+      evidence: "batch route code; formulation record; process flow; route-specific mass and energy reconciliation"
+    - id: dq_primary_data
+      applies_to: "foreground processes"
+      requirement: "Use facility- and product-specific records for feed, route agents, water, energy, products, co-products, wastes, and direct releases. A reasoned estimate is not an acceptable final foreground value."
+      evidence: "signed batch records; calibrated meters; invoices; laboratory and monitoring reports; calculation worksheets"
+    - id: dq_temporal_completeness
+      applies_to: "reporting period"
+      requirement: "Cover every production batch or campaign and attributable shutdown, cleaning, rework, and treatment event in the declared period, or disclose and justify each gap."
+      evidence: "production calendar; completeness reconciliation; missing-data log; gap treatment"
+    - id: dq_estimate_replacement
+      applies_to: "provisional ranges"
+      requirement: "Treat every reasoned_estimate range as temporary authoring or QA screening only. Replace it with reviewed site- or batch-specific evidence once a complete declared reporting period is available, or immediately after a material change in route, equipment, grade, feed, packaging, or treatment."
+      evidence: "approved replacement dataset; review record; change-control record"
+    - id: dq_source_limits
+      applies_to: "Codex and BAT sources"
+      requirement: "Use Codex provisions for edible-product identity and route distinction and use BAT for process and monitoring coverage. Do not use composition limits, quality factors, BAT-AELs, or indicative BAT performance levels as generic casein LCI values."
+      evidence: "source-use review linked to codex-cxs-290-1995 and eu-fdm-bat-2019-2031"
+    - id: dq_representativeness
+      applies_to: "published dataset"
+      requirement: "Disclose technological, geographical, temporal, and precision representativeness, including the actual dryer, coagulation route, facility, period, and data gaps."
+      evidence: "data quality assessment; dataset metadata; verification record"
+validation_rules:
+  - rule_id: validate_identity_scope
+    applies_to: "product identity"
+    rule: "Fail validation if the declared output is a caseinate, other derivative, casein glue, adhesive, or formulation rather than casein."
+    source_ids:
+      - un-cpc-3-0-casein
+      - codex-cxs-290-1995
+      - codex-cxs-206-1999
+  - rule_id: validate_reference_identity
+    applies_to: "reference flow"
+    rule: "Require product flow UUID 53f7b47f-8d1a-4420-8e79-e931990656e6, Mass property UUID 93a60a56-a3c8-11da-a746-0800200b9a66, Units of mass group UUID 93a60a57-a4c8-11da-a746-0800200c9a66, unit kg, and exactly 1 kg net casein after normalization."
+    source_ids:
+      - un-cpc-3-0-casein
+  - rule_id: validate_route
+    applies_to: "coagulation inventory"
+    rule: "Require exactly the actual declared route for each batch or campaign. Acid-route agents shall not be reported for an enzyme-only route, and rennet or other enzyme agents shall not be reported for an acid-only route."
+    source_ids:
+      - codex-cxs-290-1995
+  - rule_id: validate_boundary
+    applies_to: "process coverage"
+    rule: "Require coagulation, curd recovery and washing, drying and finishing, route-specific utilities, wastewater routing, wastes, direct releases, co-product destinations, and upstream milk-derived-feed dataset disclosure."
+    source_ids:
+      - eu-fdm-bat-2019-2031
+      - eu-pef-2021-2279
+  - rule_id: validate_mass_basis
+    applies_to: "mass and yield"
+    rule: "Require consistent as-received, wet, dry, or corrected bases; reject any conversion that substitutes a Codex composition limit for measured batch moisture or dry matter."
+    source_ids:
+      - codex-cxs-290-1995
+  - rule_id: validate_allocation
+    applies_to: "multi-output processes"
+    rule: "Require allocation hierarchy, selected relationship, period, factors, co-product classification, and sensitivity where economic allocation is used; factors shall sum to one within documented rounding."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: validate_primary_records
+    applies_to: "foreground values"
+    rule: "Reject reasoned_estimate as a final amount for a published foreground dataset. Require traceable site or batch records and disclosed calculation for every material foreground row."
+    source_ids:
+      - eu-pef-2021-2279
+      - eu-fdm-bat-2019-2031
+  - rule_id: validate_source_use
+    applies_to: "source-derived constraints"
+    rule: "Reject use of Codex composition or quality limits and BAT emission or performance levels as uniform inventory quantities. Site monitoring and production records shall determine the LCI."
+    source_ids:
+      - codex-cxs-290-1995
+      - eu-fdm-bat-2019-2031
+  - rule_id: validate_bilingual_alignment
+    applies_to: "PCR renderings"
+    rule: "Require the same ordered system-boundary, allocation, and validation rule identifiers in the English and Chinese renderings."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "Foreground casein production data package and factory-gate unit-process dataset"
+  downstream_use: "May support secondary_dataset or background_dataset use after review of route, geography, time, technology, allocation, and data quality"
+  allowed_use: "Route- and grade-matched modelling of casein production and downstream lifecycle models that preserve the declared reference-flow qualifiers"
+  excluded_use: "Direct proxy for caseinates, other derivatives, casein glues or adhesives; substitution between acid and enzyme routes without disclosed weighting; use of provisional ranges as final LCI"
+  required_metadata: "PCR id; casein flow UUID; facility and geography; reporting period; acid or enzyme route; edible or technical grade; moisture or dry-matter basis; animal origin; feed state; dryer and treatment technology; packaging status; allocation; upstream datasets"
+  required_quality_disclosure: "Meter and batch coverage; laboratory and monitoring methods; data gaps; estimate replacement; mass-balance difference; allocation sensitivity; technological, geographical, temporal, and precision representativeness"
+  update_trigger: "New reviewed site or batch evidence replacing a provisional range; material change in feed, route, equipment, grade, drying, packaging, wastewater treatment, abatement, allocation, or product specification; corrected UUID identity"
+data_sources:
+  - id: "un-cpc-3-0-casein"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, Central Product Classification Version 3.0 Explanatory Notes, subclass 22260 Casein, https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Exp_Notes_30Jun2025.pdf, retrieved 2026-08-12"
+    used_for: "Classification identity and product-scope anchor only"
+  - id: "codex-cxs-290-1995"
+    type: "standard"
+    reference: "Codex Alimentarius, CXS 290-1995 Standard for Edible Casein Products, revised 2001 and amended through 2023, https://workspace.fao.org/sites/codex/Standards/CXS%20290-1995/CXS_290e.pdf, retrieved 2026-08-12"
+    used_for: "Edible acid casein, rennet casein, and caseinate distinction; route decomposition; potable washing water and edible-product identity; not generic LCI values"
+  - id: "codex-cxs-206-1999"
+    type: "standard"
+    reference: "Codex Alimentarius, CXS 206-1999 General Standard for the Use of Dairy Terms, amended 2022, https://workspace.fao.org/sites/codex/Standards/CXS%20206-1999/CXS_206e.pdf, retrieved 2026-08-12"
+    used_for: "Milk-product terminology and identity disclosure"
+  - id: "eu-pef-2021-2279"
+    type: "official_guidance"
+    reference: "Commission Recommendation (EU) 2021/2279 on Environmental Footprint methods, OJ L 471, https://eur-lex.europa.eu/eli/reco/2021/2279/oj/eng, retrieved 2026-08-12"
+    used_for: "Product-specific foreground data, life-cycle boundary, allocation hierarchy, representativeness, reporting, and verification"
+  - id: "eu-fdm-bat-2019-2031"
+    type: "official_guidance"
+    reference: "Commission Implementing Decision (EU) 2019/2031 establishing BAT conclusions for the food, drink and milk industries, OJ L 313, https://eur-lex.europa.eu/eli/dec_impl/2019/2031/oj/eng, retrieved 2026-08-12"
+    used_for: "Process-level inventory and monitoring coverage for water, energy, raw materials, wastewater, waste gas, residues, and treatment; BAT values are not generic LCI"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:79865820875418e9cd11f751c165c591e63a1507cf1a9599e58af434dee988c3"
+  generated_content_sha256: "sha256:82f8e6a5efa0d3946fcdeb954cd8e258cef258c390028d616663aa755b8d48dc"

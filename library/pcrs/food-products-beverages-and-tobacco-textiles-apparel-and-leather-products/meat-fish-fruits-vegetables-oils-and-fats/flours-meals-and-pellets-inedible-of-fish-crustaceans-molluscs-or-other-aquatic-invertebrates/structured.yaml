@@ -1,10 +1,829 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "21291"
-  title: "Flours, meals and pellets, inedible, of fish, crustaceans, molluscs or other aquatic invertebrates"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.food-products-beverages-and-tobacco-textiles-apparel-and-leather-products.meat-fish-fruits-vegetables-oils-and-fats.flours-meals-and-pellets-inedible-of-fish-crustaceans-molluscs-or-other-aquatic-invertebrates"
+  classification_refs: "CPC 3.0: 21291 (exact)"
+  covered_products: "Inedible flours, meals and pellets made from fish, crustaceans, molluscs or other aquatic invertebrates, including declared mixtures"
+  excluded_products: "Edible fish meal or seafood powder; food ingredients; aquatic-plant meals; fish oil as reference product; products without a demonstrated inedible/non-food identity"
+  representative_product: "Factory-gate inedible aquatic-animal meal, with flour or pellet form declared when applicable"
+  production_route: "Exactly one conversion route per dataset: wet thermal rendering with pressing and drying, or direct drying and milling without a pressing stage; final sizing or pelletizing follows the selected route"
+  market_state: "Dry loose or packaged flour, meal or pellet for declared non-food use at the factory gate"
+functional_unit:
+  what: "Inedible flour, meal or pellets made from fish, crustaceans, molluscs or other aquatic invertebrates"
+  how_much: "1 kg net product mass at the factory gate"
+  how_well: "Meets the producer's declared product specification and is explicitly identified as inedible/non-food; product form, source composition and route are declared"
+  how_long_or_cycle: "One production lot at factory-gate release; no service duration applies"
+  reference_flow_link: "inedible_aquatic_animal_flour_meal_or_pellets"
+system_boundary:
+  rules:
+    - rule_id: boundary_foreground_operations
+      applies_to: "foreground_processes"
+      rule: "Include receiving/preparation, exactly one conversion route, and final sizing or pelletizing through factory-gate release; include applicable utilities, packaging, rejects, wastes, co-products and direct emissions."
+      source_ids:
+        - codex-cxc-52-2003
+    - rule_id: boundary_upstream_completeness
+      applies_to: "upstream_inputs"
+      rule: "Do not treat upstream aquatic raw material, energy, water, packaging or transport burdens as zero merely because they are outside the foreground process map; link compatible upstream datasets and disclose exclusions and cut-offs."
+      source_ids:
+        - eu-pef-2021-2279
+    - rule_id: boundary_non_food_identity
+      applies_to: "product_scope"
+      rule: "Keep the reference product explicitly inedible/non-food and separate from edible fish meal or seafood powder in flow identity, dataset name, product specification and intended-use metadata."
+      source_ids:
+        - unsd-cpc-3-0-21291
+    - rule_id: boundary_route_exclusivity
+      applies_to: "conversion_route"
+      rule: "Select either wet_thermal_conversion or direct_drying_conversion for one product lot or dataset segment; never sum both routes for the same material. Separate and mass-weight route segments before aggregation when a facility operates both."
+      source_ids: []
+boundary_abstraction:
+  declared_starting_condition: "Aquatic-animal raw material accepted at the facility gate, with source composition, physical state, prior preservation or supplier processing, moisture, salt/brine condition, ice glaze/free liquid and inedible status declared as applicable"
+  starting_condition_role: "Foreground entry condition for facility conversion; it is not a claim of burden-free raw material"
+  product_classification_scope: "Output exactly within CPC 3.0 subclass 21291; the PCR identity remains independent of CPC"
+  recursive_input_rule: "If an input already meets this PCR product definition, record it as a same-category upstream product with its own dataset and do not recreate its upstream production inside the receiving process; disclose input and output quantities to prevent recursion and double counting"
+  upstream_dataset_requirement: "Use supplier-specific or representative datasets for aquatic raw material, electricity, fuels, water, packaging and transport required by the study; state geography, technology, time period and allocation status"
+  disclosure: "Declare source-material origin and status, selected mutually exclusive route, gate condition, applicable exclusions and cut-offs, co-product/waste classification, net-mass conversion, moisture basis, salt/brine condition, glaze/drained-mass treatment and data gaps"
+reference_flow_definition:
+  reference_amount: "1 kg"
+  product_flow_ref:
+    name: "Flours, meals and pellets, inedible, of fish, crustaceans, molluscs or other aquatic invertebrates"
+    uuid: "c14df87e-86ae-4718-a6a6-f8808c8fe661"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "Explicit inedible/non-food identity and intended non-food destination"
+    - flour
+    - "meal or pellet form"
+    - "fish/crustacean/mollusc/other aquatic-invertebrate composition and mixed-species status"
+    - "selected conversion route"
+    - "net mass basis and factory-gate condition"
+    - "moisture content and measurement basis"
+    - "salt content or salinity when salted or brined material affects mass or yield"
+    - "packaging inclusion or exclusion"
+    - gross
+    - "deglazed or drained mass and treatment of ice glaze or free liquid when applicable"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_net_mass
+    applies_to: "Reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Report 1 kg net product at factory-gate release. Exclude packaging, free liquid and removable ice glaze; where material is sold glazed or in liquid, record gross and deglazed or drained mass and document the conversion."
+  - id: moisture_basis
+    applies_to: "Reference product and route mass balance"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Record moisture fraction, test method, sampling point and whether each mass is wet-basis or dry-matter-basis; do not mix bases within yield, allocation or mass-balance calculations."
+  - id: salt_and_liquid_basis
+    applies_to: "Salted, brined, washed or marine-source material"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Record added salt or salinity and free-liquid treatment when they materially affect net mass, drying demand or yield; convert all quantities to the declared net product basis."
+  - id: inventory_normalization
+    applies_to: "All foreground inventory rows"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Preserve measured source units, then normalize each lot or period total by conforming net reference-product output; keep electricity, fuel and water carrier units explicit before conversion."
+process_map:
+  - id: raw_material_receiving
+    name: "Raw material receiving and preparation"
+    inclusion: "required"
+    inclusion_condition: "All datasets"
+    role: "Foreground receiving, inspection, thawing/draining when applicable, size reduction and transfer"
+    quantitative_reference: "kg accepted aquatic raw material and kg prepared material"
+  - id: wet_thermal_conversion
+    name: "Wet thermal conversion, pressing and drying"
+    inclusion: "conditional"
+    inclusion_condition: "Select when the declared route cooks or thermally treats wet material and separates liquid or oil before drying; mutually exclusive with direct_drying_conversion for the same material"
+    role: "Foreground conversion route"
+    quantitative_reference: "kg dried meal intermediate"
+  - id: direct_drying_conversion
+    name: "Direct drying and milling"
+    inclusion: "conditional"
+    inclusion_condition: "Select when material is dried and milled without a pressing/separation stage; mutually exclusive with wet_thermal_conversion for the same material"
+    role: "Foreground conversion route"
+    quantitative_reference: "kg dried meal intermediate"
+  - id: final_conditioning
+    name: "Final sizing, optional pelletizing and release"
+    inclusion: "required"
+    inclusion_condition: "All datasets; pelletizing and packaging rows apply only when performed"
+    role: "Foreground final conditioning and factory-gate release"
+    quantitative_reference: "1 kg net conforming reference product"
+process_inventory:
+  - id: raw_material_receiving
+    label: "Raw material receiving and preparation"
+    inputs:
+      product:
+        - row_id: accepted_aquatic_raw_material
+          role: "Accepted inedible aquatic-animal raw material"
+          name: "Aquatic-animal raw material (site-selected Tiangong flow; UUID unresolved)"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record lot-specific fish, crustacean, mollusc or other aquatic-invertebrate material crossing the facility gate. Keep source composition, prior processing, inedible status, moisture, salt/brine and glaze/free-liquid condition with the record."
+          amount:
+            expression: "measured accepted wet or declared dry mass by lot, before preparation losses"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_receiving_records
+              source_ids:
+                - codex-cxc-52-2003
+            ranges:
+              - role: qa_guardrail
+                lower: "1"
+                upper: "20"
+                unit: "kg accepted raw material/kg net product"
+                basis: "broad wet- or dry-material screen per 1 kg net reference product"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: prepared_material_output
+          role: "Prepared material transferred to the selected route"
+          name: "Prepared aquatic-animal material (site-selected Tiangong flow; UUID unresolved)"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Calculate the mass transferred after draining, sorting and size reduction. Transfer it to exactly one conversion route."
+          amount:
+            expression: "accepted mass minus measured rejects, removed free liquid and inventory change"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_receiving_records
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: receiving_rejects
+          role: "Receiving rejects and removed foreign material"
+          name: "Receiving rejects (site-selected Tiangong waste flow; UUID unresolved)"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record rejected raw material, foreign matter and separately removed material by actual treatment destination; do not classify a marketable output as waste."
+          amount:
+            expression: "measured mass by lot and treatment destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg accepted raw material"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_receiving_records
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.5"
+                unit: "kg/kg accepted raw material"
+                basis: "reject mass fraction of accepted raw material"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        []
+  - id: wet_thermal_conversion
+    label: "Wet thermal conversion, pressing and drying"
+    inputs:
+      product:
+        - row_id: wet_route_material_input
+          role: "Prepared material for wet thermal conversion"
+          name: "Prepared aquatic-animal material (site-selected Tiangong flow; UUID unresolved)"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record only material assigned to this route. The same material shall not enter direct_drying_conversion."
+          amount:
+            expression: "measured route-feed mass reconciled to prepared_material_output"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per kg dried meal intermediate"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wet_route_records
+              source_ids:
+                - codex-cxc-52-2003
+            ranges: []
+        - row_id: wet_route_electricity
+          role: "Wet-route electricity"
+          name: "Electricity, supplied (site-selected Tiangong flow; UUID unresolved)"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record metered or allocated electricity for cooking controls, pressing, pumping, drying auxiliaries and milling on this route."
+          amount:
+            expression: "route-metered electricity or allocation from a documented submetering calculation"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg dried meal intermediate"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wet_route_records
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "5"
+                unit: "kWh/kg dried meal intermediate"
+                basis: "broad first-pass wet-route electricity screen"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: wet_route_thermal_energy
+          role: "Wet-route thermal energy carriers"
+          name: "Thermal energy carrier (carrier-specific Tiangong flow; UUID unresolved)"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Record each purchased steam, heat or fuel carrier separately; record direct combustion emissions under the corresponding elementary flows."
+          amount:
+            expression: "metered carrier consumption and lower- or higher-heating-value convention as declared"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg dried meal intermediate"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wet_route_records
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "50"
+                unit: "MJ/kg dried meal intermediate"
+                basis: "broad first-pass wet-route thermal-energy screen"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: wet_route_intermediate
+          role: "Dried meal intermediate from wet route"
+          name: "Inedible aquatic-animal meal intermediate (site-selected Tiangong flow; UUID unresolved)"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Measure dried intermediate sent to final conditioning and record moisture at the transfer point."
+          amount:
+            expression: "measured transfer mass on the declared moisture basis"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg prepared material input"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wet_route_records
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0.03"
+                upper: "1"
+                unit: "kg/kg prepared material"
+                basis: "wet-route intermediate yield on declared moisture bases"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: wet_route_coproduct
+          role: "Recovered oil or other marketable co-product"
+          name: "Recovered aquatic-animal co-product (co-product-specific Tiangong flow; UUID unresolved)"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record each marketable separated output independently. If none is produced, record the row as not applicable rather than assigning zero burden by assumption."
+          amount:
+            expression: "measured saleable co-product mass by type and destination"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg prepared material input"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wet_route_records
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.6"
+                unit: "kg/kg prepared material"
+                basis: "co-product mass fraction on the declared wet or dry basis"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        - row_id: wet_route_waste
+          role: "Wet-route wastewater and non-marketable residues"
+          name: "Wastewater or process residue (waste-specific Tiangong flow; UUID unresolved)"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record wastewater and solid residues separately in the foreground dataset by treatment destination; this card defines their common collection rule, not a combined database flow."
+          amount:
+            expression: "measured discharge or transfer quantity for each waste type"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg dried meal intermediate"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wet_route_records
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "20"
+                unit: "kg/kg dried meal intermediate"
+                basis: "broad screen including separated water from wet material"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        - row_id: wet_route_direct_emissions
+          role: "Direct wet-route emissions"
+          name: "Direct emission (substance-specific Tiangong elementary flow; UUID unresolved)"
+          flow_type: "elementary"
+          property_unit: "substance-specific property / substance-specific unit"
+          description: "Record each measured or calculated direct combustion, drying or dust emission as its own elementary flow when it crosses the environment boundary."
+          amount:
+            expression: "monitored value or calculation from collected carrier use and a reviewed factor"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg dried meal intermediate"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_wet_route_records
+              source_ids: []
+            ranges: []
+  - id: direct_drying_conversion
+    label: "Direct drying and milling"
+    inputs:
+      product:
+        - row_id: direct_route_material_input
+          role: "Prepared material for direct drying"
+          name: "Prepared aquatic-animal material (site-selected Tiangong flow; UUID unresolved)"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record only material assigned to direct drying without a pressing/separation stage. The same material shall not enter wet_thermal_conversion."
+          amount:
+            expression: "measured route-feed mass reconciled to prepared_material_output"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per kg dried meal intermediate"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_direct_route_records
+              source_ids: []
+            ranges: []
+        - row_id: direct_route_energy
+          role: "Direct-route electricity and thermal carriers"
+          name: "Electricity or thermal energy carrier (carrier-specific Tiangong flow; UUID unresolved)"
+          flow_type: "product"
+          property_unit: "Energy / kWh or MJ, retained by carrier"
+          description: "Record electricity and each thermal carrier as separate product-flow exchanges in the foreground dataset, using this common route collection rule."
+          amount:
+            expression: "metered carrier-specific consumption; do not sum unlike units"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg dried meal intermediate"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_direct_route_records
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "60"
+                unit: "MJ-equivalent/kg dried meal intermediate"
+                basis: "screening conversion only; source carrier units remain authoritative"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: direct_route_intermediate
+          role: "Dried meal intermediate from direct route"
+          name: "Inedible aquatic-animal meal intermediate (site-selected Tiangong flow; UUID unresolved)"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Measure dried and milled intermediate sent to final conditioning and record moisture at the transfer point."
+          amount:
+            expression: "measured transfer mass on the declared moisture basis"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg prepared material input"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_direct_route_records
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0.03"
+                upper: "1"
+                unit: "kg/kg prepared material"
+                basis: "direct-route intermediate yield on declared moisture bases"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        - row_id: direct_route_waste
+          role: "Direct-route rejects and collected fines"
+          name: "Direct-route process waste (waste-specific Tiangong flow; UUID unresolved)"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record non-recycled rejects, dust-control residues and off-specification material by treatment destination; internal recycle is recorded separately and not double counted as waste."
+          amount:
+            expression: "measured waste transfer minus documented internal recycle"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg dried meal intermediate"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_direct_route_records
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.5"
+                unit: "kg/kg dried meal intermediate"
+                basis: "non-recycled route-waste fraction"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        - row_id: direct_route_direct_emissions
+          role: "Direct drying emissions"
+          name: "Direct emission (substance-specific Tiangong elementary flow; UUID unresolved)"
+          flow_type: "elementary"
+          property_unit: "substance-specific property / substance-specific unit"
+          description: "Record each measured or calculated direct combustion or particulate emission as its own elementary flow when it crosses the environment boundary."
+          amount:
+            expression: "monitored value or calculation from collected carrier use and a reviewed factor"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg dried meal intermediate"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_direct_route_records
+              source_ids: []
+            ranges: []
+  - id: final_conditioning
+    label: "Final sizing, optional pelletizing and release"
+    inputs:
+      product:
+        - row_id: selected_route_intermediate
+          role: "Intermediate from the selected route"
+          name: "Inedible aquatic-animal meal intermediate (site-selected Tiangong flow; UUID unresolved)"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Receive intermediate from exactly one route per lot or separately metered dataset segment."
+          amount:
+            expression: "measured input reconciled to the selected route output and inventory change"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_final_conditioning_records
+              source_ids: []
+            ranges: []
+        - row_id: final_conditioning_electricity
+          role: "Final-conditioning electricity"
+          name: "Electricity, supplied (site-selected Tiangong flow; UUID unresolved)"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record electricity for final milling, sieving, optional pelletizing, cooling and packing when performed."
+          amount:
+            expression: "metered electricity or documented equipment-level calculation"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_final_conditioning_records
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "3"
+                unit: "kWh/kg net product"
+                basis: "broad sizing, pelletizing and packing electricity screen"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: packaging_input
+          role: "Packaging material"
+          name: "Packaging material (material-specific Tiangong flow; UUID unresolved)"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Include each packaging material only when packaging is supplied with the factory-gate product; exclude packaging mass from the 1 kg net product."
+          amount:
+            expression: "measured or purchase-reconciled packaging consumption net of unused returns"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_final_conditioning_records
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.5"
+                unit: "kg/kg net product"
+                basis: "packaging supplied per 1 kg net product"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: inedible_aquatic_animal_flour_meal_or_pellets
+          role: "Conforming inedible aquatic-animal flour, meal or pellets"
+          name: "Flours, meals and pellets, inedible, of fish, crustaceans, molluscs or other aquatic invertebrates"
+          flow_type: "product"
+          flow_ref:
+            uuid: "c14df87e-86ae-4718-a6a6-f8808c8fe661"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg; Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66"
+          description: "Release the reference product only after confirming its non-food identity, declared product form and required mass-basis qualifiers."
+          amount:
+            expression: "fixed reference output of 1 kg net conforming product"
+            value_mode: "fixed_value"
+            specificity: "not_applicable"
+            basis:
+              text: "1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "identity_reference"
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: final_conditioning_waste
+          role: "Final rejects and non-recycled fines"
+          name: "Final-conditioning waste (waste-specific Tiangong flow; UUID unresolved)"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record off-specification product, packaging losses and non-recycled fines separately by treatment destination."
+          amount:
+            expression: "measured mass minus documented internal recycle"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_final_conditioning_records
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.3"
+                unit: "kg/kg net product"
+                basis: "non-recycled final reject fraction"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocation_subdivision_first
+    applies_to: "route_and_process_outputs"
+    rule: "Avoid allocation by route separation, process subdivision and direct metering wherever outputs can be separately modelled. Keep the two conversion routes separate before any facility-level aggregation."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: allocation_physical_then_other
+    applies_to: "unavoidable_multi_output_process"
+    rule: "When subdivision is not possible, use a documented causal physical relationship between inputs/emissions and outputs. If no defensible physical relationship exists, use an economic or other justified relationship, disclose prices and period, and test sensitivity."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: allocation_output_classification
+    applies_to: "coproduct_waste_and_internal_recycle"
+    rule: "Classify marketable recovered oil or other usable output as a co-product, treatment-bound material as waste, and same-process recirculation as internal recycle. Do not double count internal recycle or assign zero upstream burden solely from a residue label."
+    source_ids:
+      - eu-pef-2021-2279
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_receiving_records
+      process_id: "raw_material_receiving"
+      flow_role: "accepted material, prepared transfer, removed liquid and rejects"
+      record_type: "lot ticket, scale record, inspection and specification record"
+      raw_fields: "lot_id; source composition; inedible status; gross_mass; net/drained/deglazed_mass; moisture; salt_or_salinity; free_liquid_or_glaze; rejects; inventory_change"
+      collection_method: "calibrated weighing plus lot inspection and representative sampling"
+      unit: "kg and declared fractions"
+      frequency: "each lot"
+      temporal_coverage: "representative production period including material variability"
+      site_scope: "all included receiving points"
+      aggregation_rule: "reconcile accepted input to prepared transfer, rejects, removed liquid and stock change; normalize to net reference output"
+      quality_evidence: "scale calibration; sampling/test method; lot traceability; reconciliation sign-off"
+    - protocol_id: cp_wet_route_records
+      process_id: "wet_thermal_conversion"
+      flow_role: "route feed, utilities, intermediate, co-products, wastes and direct emissions"
+      record_type: "batch log, meter, invoice, laboratory result and waste record"
+      raw_fields: "batch_id; feed_mass; feed_moisture; electricity; carrier_energy; water; intermediate_mass/moisture; co-product_mass; wastewater; residue; emission_activity_data; inventory_change"
+      collection_method: "route submetering and batch mass balance; calculate emissions only with reviewed factors"
+      unit: "kg, kWh, MJ and substance-specific units"
+      frequency: "each batch or meter interval"
+      temporal_coverage: "representative operating period covering load and raw-material variability"
+      site_scope: "all equipment assigned to wet route"
+      aggregation_rule: "aggregate only compatible batches; normalize to dried intermediate and then net reference output"
+      quality_evidence: "meter calibration; carrier conversion convention; moisture method; mass-balance closure; factor identity"
+    - protocol_id: cp_direct_route_records
+      process_id: "direct_drying_conversion"
+      flow_role: "route feed, energy, intermediate, wastes and direct emissions"
+      record_type: "batch log, meter, invoice, laboratory result and waste record"
+      raw_fields: "batch_id; feed_mass/moisture; electricity; thermal_carrier; intermediate_mass/moisture; rejects; fines; emission_activity_data; inventory_change"
+      collection_method: "route submetering and batch mass balance; keep energy carriers separate"
+      unit: "kg, kWh, MJ and substance-specific units"
+      frequency: "each batch or meter interval"
+      temporal_coverage: "representative operating period covering load and raw-material variability"
+      site_scope: "all equipment assigned to direct route"
+      aggregation_rule: "aggregate only compatible batches; normalize to dried intermediate and then net reference output"
+      quality_evidence: "meter calibration; moisture method; mass-balance closure; factor identity"
+    - protocol_id: cp_final_conditioning_records
+      process_id: "final_conditioning"
+      flow_role: "selected intermediate, sizing/pelletizing energy, packaging, product and rejects"
+      record_type: "production order, meter, bill of materials, scale and release specification"
+      raw_fields: "lot_id; route_id; intermediate_mass/moisture; electricity; product_form; packaging_by_material; gross_mass; net_mass; product_moisture; salt_or_salinity; rejects; inventory_change"
+      collection_method: "calibrated weighing, metering, packaging reconciliation and release sampling"
+      unit: "kg, kWh and declared fractions"
+      frequency: "each production lot"
+      temporal_coverage: "same representative period as selected route"
+      site_scope: "all final-conditioning and packing lines in scope"
+      aggregation_rule: "reconcile route input to net product, rejects and stock change; exclude packaging/free liquid/removable glaze from reference mass"
+      quality_evidence: "scale/meter calibration; bill of materials; release test; route traceability; reconciliation sign-off"
+  calculation_rules:
+    - id: calc_net_reference_mass
+      applies_to: "factory-gate product"
+      rule: "net_reference_mass = gross_mass - packaging_mass - removable_glaze_mass - free_liquid_mass; use direct net weighing when available and retain the reconciliation"
+      inputs:
+        - gross_mass
+        - packaging_mass
+        - removable_glaze_mass
+        - free_liquid_mass
+        - direct_net_mass
+      output: "kg net reference product"
+      source_ids: []
+    - id: calc_dry_matter
+      applies_to: "each material balance point"
+      rule: "dry_matter_mass = measured_mass × (1 - moisture_mass_fraction); apply only when moisture is expressed as a 0-to-1 wet-basis mass fraction and preserve the test method"
+      inputs:
+        - measured_mass
+        - moisture_mass_fraction
+        - "basis declaration"
+      output: "kg dry matter"
+      source_ids: []
+    - id: calc_normalized_exchange
+      applies_to: "each inventory exchange"
+      rule: "normalized_amount = compatible-period exchange amount / compatible-period net conforming reference-product output"
+      inputs:
+        - "exchange amount"
+        - "net output"
+        - "route and period identifiers"
+      output: "amount per 1 kg net reference product"
+      source_ids:
+        - eu-pef-2021-2279
+    - id: calc_mass_balance
+      applies_to: "each process and full foreground system"
+      rule: "discrepancy = inputs + opening_stock - products - co-products - wastes - removed_liquids - closing_stock; calculate on both declared wet mass and dry matter when moisture changes materially"
+      inputs:
+        - "all mass inputs/outputs"
+        - "stock change"
+        - "moisture data"
+      output: "signed and percentage discrepancy with investigation note"
+      source_ids: []
+  data_quality_requirements:
+    - id: dq_identity_and_traceability
+      applies_to: "all lots"
+      requirement: "Preserve source composition, inedible/non-food status, route, product form, destination, lot links and applicable moisture/salt/glaze/drained-mass facts from receipt through release."
+      evidence: "Lot genealogy, specifications, inspection and release records; unsd-cpc-3-0-21291; codex-cxc-52-2003"
+    - id: dq_measurement_basis
+      applies_to: "mass, moisture and utility data"
+      requirement: "Use calibrated equipment or documented invoice reconciliation; identify sampling and test methods, energy conversion convention, missing intervals and estimation method."
+      evidence: "Calibration, laboratory, meter and invoice records"
+    - id: dq_temporal_and_operating_coverage
+      applies_to: "foreground dataset"
+      requirement: "Cover a representative production period and relevant source-material, load, route and seasonal variability; disclose shutdown, start-up, abnormal and excluded periods."
+      evidence: "Production calendar, batch list and coverage reconciliation; eu-pef-2021-2279"
+    - id: dq_completeness_and_balance
+      applies_to: "process and facility inventory"
+      requirement: "Reconcile all material outputs, co-products, wastes, removed liquid, internal recycle and inventory change; investigate unexplained discrepancies and disclose unresolved gaps."
+      evidence: "Wet-mass and dry-matter balances, waste manifests and inventory records"
+    - id: dq_background_representativeness
+      applies_to: "linked upstream datasets"
+      requirement: "Document geography, technology, reference year, allocation status and compatibility for aquatic material, energy, water, packaging and transport datasets."
+      evidence: "Dataset metadata and selection rationale; eu-pef-2021-2279"
+validation_rules:
+  - rule_id: validate_reference_identity
+    applies_to: "reference_flow"
+    rule: "Require exactly 1 kg net output with product flow UUID c14df87e-86ae-4718-a6a6-f8808c8fe661, Mass UUID 93a60a56-a3c8-11da-a746-0800200b9a66, Units of mass UUID 93a60a57-a4c8-11da-a746-0800200c9a66 and unit kg."
+    source_ids: []
+  - rule_id: validate_inedible_scope
+    applies_to: "product_identity"
+    rule: "Reject a dataset presented as edible fish meal, seafood powder or other food ingredient, or lacking an explicit inedible/non-food declaration."
+    source_ids:
+      - unsd-cpc-3-0-21291
+  - rule_id: validate_route_selection
+    applies_to: "process_map"
+    rule: "Require exactly one of wet_thermal_conversion and direct_drying_conversion for each lot or separately modelled segment; require raw_material_receiving and final_conditioning."
+    source_ids: []
+  - rule_id: validate_required_qualifiers
+    applies_to: "reference_flow"
+    rule: "Require every applicable qualifier, including net mass, moisture basis, salt/salinity, packaging and gross/deglazed/drained mass treatment; mark non-applicable conditions explicitly."
+    source_ids: []
+  - rule_id: validate_mass_and_transfer_balance
+    applies_to: "foreground_inventory"
+    rule: "Reconcile transfers between processes and calculate wet-mass and, when material, dry-matter balances; flag unexplained discrepancy for review rather than silently scaling outputs."
+    source_ids: []
+  - rule_id: validate_allocation_and_output_class
+    applies_to: "multi_output_processes"
+    rule: "Require subdivision or a documented allocation relation and consistent co-product, waste and internal-recycle classification; prohibit double counting."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: validate_provisional_ranges
+    applies_to: "reasoned_estimate_ranges"
+    rule: "Treat every reasoned_estimate range as a non-conformance screen only; replace it when representative foreground or reviewed external evidence becomes available and never use it as a publication-critical allowed range without explicit review."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "Foreground product dataset for factory-gate production of CPC 3.0 21291 inedible aquatic-animal flour, meal or pellets"
+  downstream_use: "secondary_dataset; background_dataset"
+  allowed_use: "LCA modelling of a declared non-food product made by one compatible route, product form, raw-material composition and factory-gate condition; aggregation only after route-specific modelling and mass-weighting"
+  excluded_use: "Edible fish meal, edible seafood powder, food ingredients, aquatic-plant meal, fish oil as reference product, safety or nutritional claims, or facilities/routes materially inconsistent with declared metadata"
+  required_metadata: "Canonical PCR id; CPC 3.0 21291 reference; product UUID; inedible status and intended destination; aquatic source composition; product form; route; facility geography/technology/time; net mass and moisture basis; salt/salinity and gross/deglazed/drained mass treatment when applicable; packaging basis; allocation; cut-offs; data quality; unresolved gaps"
+  required_quality_disclosure: "Foreground coverage and representativeness; meter/scale/test basis; wet- and dry-mass closure; allocation and co-product/waste classification; background dataset selection; provisional reasoned-estimate rows and their replacement status"
+  update_trigger: "Rebuild or segment the dataset when route, equipment, fuel/electricity supply, source-material mix or condition, moisture/salt specification, yield, co-product recovery, product form, packaging or allocation materially changes; replace each provisional range when representative measured or reviewed external evidence becomes available"
+data_sources:
+  - id: "unsd-cpc-3-0-21291"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, Central Product Classification (CPC) Version 3.0, subclass 21291, “Flours, meals and pellets, inedible, of fish, crustaceans, molluscs or other aquatic invertebrates”"
+    used_for: "Exact category identity and separation from edible products"
+  - id: "codex-cxc-52-2003"
+    type: "standard"
+    reference: "Codex Alimentarius, Code of Practice for Fish and Fishery Products, CXC 52-2003, current applicable revision"
+    used_for: "Directly related aquatic raw-material receiving, condition/traceability and process-control structure; used only as process evidence and not to confer food status"
+  - id: "eu-pef-2021-2279"
+    type: "official_guidance"
+    reference: "Commission Recommendation (EU) 2021/2279 of 15 December 2021 on the use of the Environmental Footprint methods, Annex I Product Environmental Footprint method, CELEX 32021H2279"
+    used_for: "System-boundary completeness, foreground data quality, normalization and allocation hierarchy"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:fa37e6c7a264992fa2d8d560147830b7c124d1e2ac586beee99cf62c26d75ec7"
+  generated_content_sha256: "sha256:43bfb2a4df3914ae94538cfab3062e4d6ef8ea5bdcc0c2a934bd42b5e510d876"

@@ -1,10 +1,1044 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "23161"
-  title: "Rice, semi- or wholly milled"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.food-products-beverages-and-tobacco-textiles-apparel-and-leather-products.grain-mill-products-starches-and-starch-products-other-food-products.rice-semi-or-wholly-milled"
+  classification_refs: "CPC 3.0: 23161, Rice, semi- or wholly milled"
+  covered_products: "Semi-milled rice; wholly milled rice; declared head-rice and broken-kernel blends sold as milled rice; parboiled milled rice when the parboiling route is declared"
+  excluded_products: "Paddy rice; husked or brown rice sold as such; rice flour; rice starch; cooked or otherwise prepared rice foods; cultivation-stage rice products"
+  representative_product: "Food-grade wholly milled rice, graded and ready for dispatch from a commercial rice mill"
+  production_route: "Paddy receipt and conditioning; optional parboiling; dehusking; paddy separation; whitening or polishing to the declared degree; grading or blending; optional packaging"
+  market_state: "Bulk or packaged food-grade rice at the mill gate, as received, with moisture, milling degree, broken-kernel fraction, parboiling state, and packaging state declared"
+functional_unit:
+  what: "Food-grade semi-milled or wholly milled rice ready for dispatch from the rice-milling facility"
+  how_much: "1 kg net rice product at the declared as-received moisture content"
+  how_well: "Meets the declared product specification for milling degree, moisture, broken-kernel fraction, impurities, parboiling state, and packaging state"
+  how_long_or_cycle: "One production lot or campaign represented by the foreground data package; no service life is assigned"
+  reference_flow_link: "The functional unit is realized by exactly 1 kg of the Tiangong reference product flow below"
+system_boundary:
+  rules:
+    - rule_id: sb_foreground_start_end
+      applies_to: "Foreground rice-milling system"
+      rule: "Begin at weighed paddy receipt and include all onsite cleaning, drying or tempering, parboiling, dehusking, separation, whitening or polishing, grading or blending, storage, and packaging operations that are actually performed before the declared mill-gate product is dispatched."
+      source_ids:
+        - fao-grain-postharvest-rice-milling
+        - fao-prevention-postharvest-losses-rice-milling
+    - rule_id: sb_upstream_linkage
+      applies_to: "Upstream inputs"
+      rule: "Represent cultivation, off-site conditioning, inbound transport, purchased utilities, packaging production, and off-site treatment with linked upstream datasets; do not duplicate an activity already included in an upstream dataset."
+      source_ids:
+        - iso-14044-lca-requirements
+        - eu-2021-2279-environmental-footprint
+    - rule_id: sb_conditional_routes
+      applies_to: "Conditional operations"
+      rule: "Include onsite drying, parboiling, polishing or glazing, by-product energy recovery, and packaging only when performed; record the route-specific utilities, outputs, emissions, and wastes and state why an omitted branch does not apply."
+      source_ids:
+        - fao-rice-human-nutrition-postharvest
+        - fao-prevention-postharvest-losses-rice-milling
+    - rule_id: sb_recursive_category_input
+      applies_to: "Same-category product inputs"
+      rule: "Record incoming semi-milled or wholly milled rice as a product input with an upstream dataset and stop category recursion at that recorded boundary."
+      source_ids:
+        - iso-14044-lca-requirements
+    - rule_id: sb_downstream_exclusions
+      applies_to: "Downstream stages"
+      rule: "Exclude distribution beyond the mill gate, retail, cooking, consumption, and consumer end-of-life unless the declared study scope explicitly adds them with separate processes and datasets."
+      source_ids:
+        - iso-14044-lca-requirements
+boundary_abstraction:
+  declared_starting_condition: "Weighed paddy rice received at the milling facility, with supplier or origin, receipt time, moisture, impurity fraction, and prior drying or parboiling state declared"
+  starting_condition_role: "Foreground entry point for the rice-milling data package"
+  product_classification_scope: "Semi-milled or wholly milled rice independently of the external classification code used to locate this PCR"
+  recursive_input_rule: "If semi-milled or wholly milled rice enters a foreground step, record it once as a product input linked to an upstream dataset and do not recursively reconstruct the same category inside that step"
+  upstream_dataset_requirement: "Link paddy cultivation, off-site drying or parboiling, inbound transport, purchased energy, water supply, packaging production, and off-site treatment datasets when those activities are outside the foreground facility boundary"
+  disclosure: "Declare the paddy condition at receipt, onsite operations, parboiling route, milling technology, degree of milling, treatment of broken rice and other outputs, packaging scope, storage period, and all exclusions"
+reference_flow_definition:
+  reference_amount: "1 kg"
+  product_flow_ref:
+    name: "Rice, semi- or wholly milled"
+    uuid: "4125cc1c-d304-48b4-a701-f40a581df3c3"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "degree of milling"
+    - "as-received moisture content"
+    - "broken-kernel fraction"
+    - "parboiled or non-parboiled route"
+    - "bulk or packaged delivery state"
+    - "included packaging"
+    - "facility geography"
+    - "milling technology"
+    - "production period"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "Reference product and all mass-normalized inventory results"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Report the reference product on a net as-received mass basis and normalize the foreground inventory to exactly 1 kg of conforming reference product."
+  - id: moisture_basis
+    applies_to: "Paddy input, intermediate rice, reference product, and material co-products"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg and mass % moisture"
+    rule: "Record the moisture basis for each material mass; do not compare or convert wet-basis and dry-basis masses without the paired moisture measurement and documented formula."
+  - id: material_mass_balance_unit
+    applies_to: "Product, co-product, residue, and waste mass balance"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Convert all material flows to kg on their recorded moisture basis before balancing, and disclose any moisture correction separately."
+  - id: energy_unit_preservation
+    applies_to: "Electricity and fuel-energy records"
+    required_property_ref:
+      name: "Declared energy property"
+      uuid: ""
+    required_unit: "kWh for electricity; MJ for thermal energy"
+    rule: "Preserve invoiced or metered units and record every conversion factor; do not treat fuel mass as energy without a declared heating value and basis."
+process_map:
+  - id: paddy_receiving_conditioning
+    name: "Paddy receipt, cleaning, and conditioning"
+    inclusion: "required"
+    inclusion_condition: "Always included; onsite drying or tempering is represented only when performed"
+    role: "Foreground receiving and conditioning"
+    quantitative_reference: "kg conditioned paddy transferred to milling"
+  - id: parboiling
+    name: "Parboiling and redrying"
+    inclusion: "conditional"
+    inclusion_condition: "Include when the declared product is produced from paddy parboiled at the foreground facility"
+    role: "Foreground route-specific treatment"
+    quantitative_reference: "kg parboiled paddy transferred to milling"
+  - id: milling_separation
+    name: "Dehusking, whitening or polishing, and separation"
+    inclusion: "required"
+    inclusion_condition: "Always included for semi-milled or wholly milled rice"
+    role: "Foreground core production"
+    quantitative_reference: "kg conforming bulk milled rice"
+  - id: packaging
+    name: "Product packaging for dispatch"
+    inclusion: "conditional"
+    inclusion_condition: "Include when packaging is part of the declared mill-gate delivery state"
+    role: "Foreground finishing"
+    quantitative_reference: "kg packaged reference product"
+process_inventory:
+  - id: paddy_receiving_conditioning
+    label: "Paddy receipt, cleaning, and conditioning"
+    inputs:
+      product:
+        - row_id: received_paddy
+          role: "Paddy rice received at the mill"
+          name: "Paddy rice"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Paddy rice crosses the foreground boundary at the facility gate. Receipt mass, moisture, impurity fraction, supplier or origin, and prior treatment state are collected for every represented lot."
+          amount:
+            expression: "measured net paddy receipt mass allocated to the represented production lot"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg conforming reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_paddy_receipts
+              source_ids:
+                - fao-grain-postharvest-rice-milling
+            ranges:
+              - role: qa_guardrail
+                lower: "1.43"
+                upper: "1.67"
+                unit: "kg paddy/kg conforming reference product"
+                basis: "reciprocal of the FAO illustrative 60 kg white-rice to 70 kg white-plus-broken-rice output per 100 kg paddy, with the treatment of broken rice declared"
+                basis_kind: "reference_flow"
+                evidence_kind: "external_source"
+                source_ids:
+                  - fao-grain-postharvest-rice-milling
+        - row_id: conditioning_electricity
+          role: "Electricity for receiving and conditioning"
+          name: "Electricity, supplied to facility"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record metered electricity for conveying, aspiration, cleaning, drying, and conditioning equipment included in this process."
+          amount:
+            expression: "metered or invoice-reconciled electricity attributable to receiving and conditioning"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg conditioned paddy output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_conditioning_energy
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "1"
+                unit: "kWh/kg conditioned paddy"
+                basis: "broad screening interval for receiving, cleaning, conveying, and any onsite conditioning"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: conditioned_paddy
+          role: "Conditioned paddy sent to the milling line"
+          name: "Conditioned paddy rice"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record the net mass and moisture of cleaned or otherwise conditioned paddy transferred to the milling process."
+          amount:
+            expression: "measured transfer mass after stock-change correction"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg received paddy"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_conditioning_outputs
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0.8"
+                upper: "1"
+                unit: "kg conditioned paddy/kg received paddy"
+                basis: "broad screen for removal of impurities and conditioning loss; replace with reviewed site evidence"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        - row_id: receiving_screenings
+          role: "Removed impurities and screenings"
+          name: "Rice-mill receiving screenings"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record stones, straw, empty grains, and other removed material by its actual destination and waste or recovered-material classification."
+          amount:
+            expression: "measured or mass-balance-derived screenings sent to each destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg received paddy"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_conditioning_outputs
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.2"
+                unit: "kg/kg received paddy"
+                basis: "broad first-pass screen; replace with facility mass records"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        []
+  - id: parboiling
+    label: "Parboiling and redrying"
+    inputs:
+      product:
+        - row_id: paddy_to_parboiling
+          role: "Conditioned paddy for parboiling"
+          name: "Conditioned paddy rice"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record only paddy entering an onsite soaking, steaming, and redrying route."
+          amount:
+            expression: "measured net input mass and moisture at parboiling entry"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per 1 kg parboiled paddy output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_parboiling_inputs
+              source_ids:
+                - fao-rice-human-nutrition-postharvest
+            ranges: []
+        - row_id: parboiling_water
+          role: "Process water for soaking and steam generation"
+          name: "Process water"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record all freshwater or supplied process water entering soaking, washing, and direct steam-contact operations."
+          amount:
+            expression: "metered water supplied to the represented parboiling lot"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg parboiled paddy output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_parboiling_inputs
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "10"
+                unit: "kg water/kg parboiled paddy"
+                basis: "broad screening interval covering no onsite parboiling through water-intensive batch operation; replace with metered evidence"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: parboiling_thermal_energy
+          role: "Thermal energy for steaming and redrying"
+          name: "Thermal energy supplied to parboiling"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Record purchased fuel or steam and separately report any rice-husk energy used onsite without netting it from the husk output."
+          amount:
+            expression: "metered steam or fuel energy calculated from measured fuel and declared heating value"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg parboiled paddy output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_parboiling_inputs
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "20"
+                unit: "MJ/kg parboiled paddy"
+                basis: "broad first-pass screen for soaking heat, steaming, and redrying; replace with metered energy and fuel evidence"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: parboiled_paddy
+          role: "Parboiled paddy sent to milling"
+          name: "Parboiled paddy rice"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record output mass, moisture, and stock change after steaming and redrying."
+          amount:
+            expression: "measured net output mass after redrying and stock-change correction"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per 1 kg parboiled paddy output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_parboiling_outputs
+              source_ids:
+                - fao-rice-human-nutrition-postharvest
+            ranges: []
+      waste:
+        - row_id: parboiling_wastewater
+          role: "Parboiling wastewater"
+          name: "Wastewater from rice parboiling"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record wastewater mass or volume, discharge route, and treatment destination without subtracting evaporated water from the wastewater record."
+          amount:
+            expression: "metered discharge or water-balance-derived wastewater sent to each destination"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg parboiled paddy output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_parboiling_outputs
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "10"
+                unit: "kg wastewater/kg parboiled paddy"
+                basis: "broad water-balance screen; replace with metered discharge and evaporation evidence"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        - row_id: parboiling_direct_emissions
+          role: "Direct emissions from onsite parboiling energy"
+          name: "Substance-specific emissions to air from onsite fuel use"
+          flow_type: "elementary"
+          property_unit: "Substance-specific mass / kg"
+          description: "Report each emitted elementary substance separately using measured emissions or fuel-specific factors applied to collected fuel records."
+          amount:
+            expression: "measured emission or collected fuel quantity multiplied by the applicable emission factor"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg parboiled paddy output"
+              kind: "fuel_inventory"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_direct_emissions
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "5"
+                unit: "kg emitted substance/kg parboiled paddy"
+                basis: "deliberately broad per-substance screen; replace with measured emissions or fuel-specific factor evidence"
+                basis_kind: "fuel_inventory"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+  - id: milling_separation
+    label: "Dehusking, whitening or polishing, and separation"
+    inputs:
+      product:
+        - row_id: milling_paddy_input
+          role: "Paddy entering the milling line"
+          name: "Conditioned or parboiled paddy rice"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record conditioned or parboiled paddy entering dehusking, including mass and moisture."
+          amount:
+            expression: "measured transfer mass to the milling line after stock-change correction"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per 1 kg conforming bulk milled rice output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_milling_inputs
+              source_ids:
+                - fao-grain-postharvest-rice-milling
+            ranges:
+              - role: qa_guardrail
+                lower: "1.43"
+                upper: "1.67"
+                unit: "kg paddy/kg conforming milled rice"
+                basis: "reciprocal of the FAO illustrative 60 to 70 percent milled-rice output depending on whether broken rice is included in the declared product"
+                basis_kind: "process_output"
+                evidence_kind: "external_source"
+                source_ids:
+                  - fao-grain-postharvest-rice-milling
+        - row_id: milling_electricity
+          role: "Electricity for milling and separation"
+          name: "Electricity, supplied to facility"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record electricity for dehusking, aspiration, separation, whitening, polishing, grading, conveying, and dust collection."
+          amount:
+            expression: "metered or invoice-reconciled electricity attributable to the milling line"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg conforming bulk milled rice output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_milling_energy
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0.01"
+                upper: "1"
+                unit: "kWh/kg conforming bulk milled rice"
+                basis: "broad first-pass screen across mill scales and equipment configurations; replace with metered evidence"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: bulk_milled_rice
+          role: "Conforming semi-milled or wholly milled rice"
+          name: "Rice, semi- or wholly milled"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4125cc1c-d304-48b4-a701-f40a581df3c3"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This is the quantitative reference output before optional packaging. Record net mass, moisture, milling degree, and broken-kernel fraction."
+          amount:
+            expression: "exactly 1 kg after normalization of the measured conforming output"
+            value_mode: "fixed_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "identity_reference"
+              source_ids:
+                - fao-grain-postharvest-rice-milling
+            ranges:
+              - role: qa_guardrail
+                lower: "0.60"
+                upper: "0.70"
+                unit: "kg conforming milled rice/kg paddy"
+                basis: "FAO illustrative balance gives 0.60 kg white rice plus 0.10 kg broken grains per kg paddy; the declared product treatment of broken rice determines the comparison basis"
+                basis_kind: "process_output"
+                evidence_kind: "external_source"
+                source_ids:
+                  - fao-grain-postharvest-rice-milling
+        - row_id: broken_rice_coproduct
+          role: "Broken rice separated from the declared product"
+          name: "Broken milled rice"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record broken kernels as a separate co-product only when they are not included in the declared reference product blend."
+          amount:
+            expression: "measured separated broken-rice mass sold or transferred to each destination"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg paddy entering milling"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_milling_outputs
+              source_ids:
+                - fao-grain-postharvest-rice-milling
+            ranges: []
+        - row_id: rice_bran_flour_coproduct
+          role: "Rice bran and flour fraction"
+          name: "Rice bran and milling flour"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record bran, germ, polish, and flour fractions separately when measured separately; otherwise disclose the combined fraction and destination."
+          amount:
+            expression: "measured mass sent to each sale, feed, extraction, energy, or treatment destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg paddy entering milling"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_milling_outputs
+              source_ids:
+                - fao-grain-postharvest-rice-milling
+                - fao-rice-human-nutrition-postharvest
+            ranges: []
+        - row_id: rice_husk_coproduct
+          role: "Rice husk or hull"
+          name: "Rice husk"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record husk mass and whether it is sold, used as fuel onsite, transferred for another use, or discarded; onsite use remains both an output and an energy input to prevent hidden netting."
+          amount:
+            expression: "measured husk mass sent to each destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg paddy entering milling"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_milling_outputs
+              source_ids:
+                - fao-grain-postharvest-rice-milling
+                - fao-prevention-postharvest-losses-rice-milling
+            ranges: []
+      waste:
+        - row_id: milling_rejects_dust
+          role: "Milling rejects and collected dust"
+          name: "Rice-mill rejects and collected dust"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record non-product fines, contaminated material, captured dust, and maintenance clean-out by mass and destination."
+          amount:
+            expression: "measured or mass-balance-derived material sent to each treatment destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg paddy entering milling"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_milling_outputs
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.2"
+                unit: "kg/kg paddy entering milling"
+                basis: "broad first-pass screen; replace with facility mass records"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        - row_id: milling_particulate_air
+          role: "Uncaptured particulate emissions to air"
+          name: "Particulate matter to air, substance-specific"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record each particulate elementary flow using stack or workplace exhaust measurements, permit reports, or a documented dust-collection mass balance."
+          amount:
+            expression: "measured emission or calculated uncaptured fraction from collected dust records"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg conforming bulk milled rice output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_direct_emissions
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.05"
+                unit: "kg/kg conforming bulk milled rice"
+                basis: "deliberately broad first-pass screen; replace with measured or permitted emission evidence"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+  - id: packaging
+    label: "Product packaging for dispatch"
+    inputs:
+      product:
+        - row_id: packaging_bulk_rice_input
+          role: "Bulk conforming milled rice"
+          name: "Rice, semi- or wholly milled"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4125cc1c-d304-48b4-a701-f40a581df3c3"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record the net mass and quality of rice entering packaging and reconcile it with packaged output, samples, spills, and stock change."
+          amount:
+            expression: "measured bulk rice input to the packaging lot"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg packaged reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_records
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "1"
+                upper: "1.1"
+                unit: "kg bulk rice/kg packaged reference product"
+                basis: "broad screen for product sampling, spills, rejects, and stock change; replace with packaging-line records"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: packaging_material_input
+          role: "Packaging materials"
+          name: "Product-specific packaging material"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record each primary, secondary, and tertiary packaging material separately by material, recycled content if known, and net mass entering the represented lot."
+          amount:
+            expression: "purchase- and stock-reconciled packaging mass used for the represented product"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg packaged reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_records
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.2"
+                unit: "kg packaging/kg packaged reference product"
+                basis: "broad screen covering bulk delivery through small consumer packs; replace with bill-of-material evidence"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: packaged_milled_rice
+          role: "Packaged reference rice"
+          name: "Rice, semi- or wholly milled"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4125cc1c-d304-48b4-a701-f40a581df3c3"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "The net rice content, excluding packaging mass, realizes the same reference flow as bulk rice."
+          amount:
+            expression: "exactly 1 kg net rice content after normalization"
+            value_mode: "fixed_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "identity_reference"
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "1"
+                upper: "1"
+                unit: "kg net rice/kg reference flow"
+                basis: "fixed by the declared reference amount; packaging mass is excluded"
+                basis_kind: "reference_flow"
+                evidence_kind: "source_rule"
+                source_ids: []
+      waste:
+        - row_id: packaging_waste
+          role: "Packaging scrap and rejected packs"
+          name: "Packaging waste, material-specific"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record packaging scrap, damaged packs, and rejected product-packaging combinations by material and destination; recoverable rice shall be returned to the rice balance rather than hidden in packaging waste."
+          amount:
+            expression: "measured packaging waste sent to each recovery or disposal destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg packaged reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_records
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.05"
+                unit: "kg/kg packaged reference product"
+                basis: "broad first-pass process-loss screen; replace with site waste records"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: alloc_avoid_by_subdivision
+    applies_to: "Milled rice, broken rice, bran or flour, husk, and other outputs"
+    rule: "First avoid allocation by subdividing separately metered operations or by expanding the system only when the declared study method permits it; retain gross output quantities before any credit or allocation."
+    source_ids:
+      - iso-14044-lca-requirements
+      - eu-2021-2279-environmental-footprint
+  - rule_id: alloc_output_classification
+    applies_to: "All non-reference outputs"
+    rule: "Classify each output consistently as co-product, recovered material, waste, or elementary flow using its actual destination and market function; do not change classification only to obtain a preferred burden result."
+    source_ids:
+      - iso-14044-lca-requirements
+  - rule_id: alloc_residual_hierarchy
+    applies_to: "Multi-output milling when allocation cannot be avoided"
+    rule: "Use a physical relationship that reflects the causal production relationship when justified; otherwise use economic allocation based on documented contemporaneous prices, and disclose method, period, geography, currency, moisture basis, and sensitivity."
+    source_ids:
+      - iso-14044-lca-requirements
+      - eu-2021-2279-environmental-footprint
+  - rule_id: alloc_waste_treatment
+    applies_to: "Screenings, rejects, wastewater, captured dust, and packaging waste"
+    rule: "Keep burdens of onsite handling and required treatment within the foreground system; any downstream recovery credit or burden shall follow the declared study method and shall not be double counted."
+    source_ids:
+      - iso-14044-lca-requirements
+  - rule_id: alloc_balance_check
+    applies_to: "Every allocated multi-output process"
+    rule: "Allocation fractions shall sum to 1 within reported rounding precision, and unallocated gross mass and energy balances shall be retained for validation."
+    source_ids:
+      - iso-14044-lca-requirements
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_paddy_receipts
+      process_id: "paddy_receiving_conditioning"
+      flow_role: "Received paddy input"
+      record_type: "Weighbridge and intake-quality records"
+      raw_fields: "lot_id; supplier_or_origin; receipt_time; gross_mass; tare_mass; moisture_percent_wet_basis; impurity_percent; prior_drying; prior_parboiling"
+      collection_method: "Calibrated weighbridge plus representative lot sampling"
+      unit: "kg; mass %"
+      frequency: "Each receipt lot"
+      temporal_coverage: "Full represented production period"
+      site_scope: "All supplying lots for the represented facility and product"
+      aggregation_rule: "Sum net mass; mass-weight quality fields; reconcile opening and closing paddy stock"
+      quality_evidence: "Calibration record; sampling plan; weigh ticket; supplier record; stock reconciliation"
+    - protocol_id: cp_conditioning_energy
+      process_id: "paddy_receiving_conditioning"
+      flow_role: "Electricity and onsite conditioning energy"
+      record_type: "Meter, invoice, and equipment log"
+      raw_fields: "meter_id; opening_reading; closing_reading; invoice_quantity; operating_hours; allocation_driver; conditioned_mass"
+      collection_method: "Submeter preferred; otherwise invoice reconciliation with documented allocation"
+      unit: "kWh; MJ"
+      frequency: "Each meter period or production campaign"
+      temporal_coverage: "Full represented production period"
+      site_scope: "All included receiving and conditioning equipment"
+      aggregation_rule: "Meter difference minus unrelated use; allocate only when subdivision is unavailable"
+      quality_evidence: "Meter calibration; invoice; operating log; allocation worksheet"
+    - protocol_id: cp_conditioning_outputs
+      process_id: "paddy_receiving_conditioning"
+      flow_role: "Conditioned paddy and removed impurities"
+      record_type: "Transfer-weight and waste records"
+      raw_fields: "lot_id; conditioned_mass; conditioned_moisture; screenings_mass; destination; opening_stock; closing_stock"
+      collection_method: "Calibrated scale or reconciled mass balance"
+      unit: "kg; mass %"
+      frequency: "Each lot or shift"
+      temporal_coverage: "Full represented production period"
+      site_scope: "All receiving and conditioning lines"
+      aggregation_rule: "Sum destination-specific outputs after stock correction"
+      quality_evidence: "Scale calibration; transfer ticket; waste manifest; stock record"
+    - protocol_id: cp_parboiling_inputs
+      process_id: "parboiling"
+      flow_role: "Paddy, water, steam, and fuel inputs"
+      record_type: "Batch, meter, and fuel records"
+      raw_fields: "batch_id; paddy_mass; paddy_moisture; water_meter; steam_meter; fuel_quantity; heating_value_basis; electricity"
+      collection_method: "Batch weighing and calibrated utility meters; fuel invoices reconciled to stock"
+      unit: "kg; m3; kWh; MJ"
+      frequency: "Each batch and utility meter period"
+      temporal_coverage: "Full represented parboiled-rice production period"
+      site_scope: "All onsite soaking, steaming, and redrying equipment"
+      aggregation_rule: "Convert water volume with measured or declared density; calculate fuel energy without netting husk output"
+      quality_evidence: "Meter calibration; batch sheet; invoice; fuel analysis; stock reconciliation"
+    - protocol_id: cp_parboiling_outputs
+      process_id: "parboiling"
+      flow_role: "Parboiled paddy and wastewater"
+      record_type: "Batch output and discharge records"
+      raw_fields: "batch_id; output_mass; output_moisture; wastewater_volume_or_mass; evaporation_estimate; destination; opening_stock; closing_stock"
+      collection_method: "Calibrated scale and effluent meter or documented water balance"
+      unit: "kg; m3"
+      frequency: "Each batch or discharge period"
+      temporal_coverage: "Full represented parboiled-rice production period"
+      site_scope: "All onsite parboiling lines and discharge points"
+      aggregation_rule: "Stock-correct outputs; keep measured discharge separate from calculated evaporation"
+      quality_evidence: "Scale and meter calibration; batch sheet; discharge record; water-balance worksheet"
+    - protocol_id: cp_milling_inputs
+      process_id: "milling_separation"
+      flow_role: "Paddy input to milling"
+      record_type: "Transfer scale and line log"
+      raw_fields: "lot_id; input_mass; input_moisture; paddy_route; line_id; start_time; end_time; opening_stock; closing_stock"
+      collection_method: "Calibrated transfer scale or reconciled intake-output balance"
+      unit: "kg; mass %"
+      frequency: "Each lot or shift"
+      temporal_coverage: "Full represented production period"
+      site_scope: "All milling lines producing the reference product"
+      aggregation_rule: "Sum stock-corrected input by route and product"
+      quality_evidence: "Scale calibration; line log; lot traceability; stock record"
+    - protocol_id: cp_milling_energy
+      process_id: "milling_separation"
+      flow_role: "Milling electricity and fuel"
+      record_type: "Meter, invoice, and operating records"
+      raw_fields: "meter_id; opening_reading; closing_reading; invoice_quantity; operating_hours; line_id; product_mass; allocation_driver"
+      collection_method: "Submeter preferred; otherwise invoice reconciliation with documented allocation"
+      unit: "kWh; MJ"
+      frequency: "Each meter period or shift"
+      temporal_coverage: "Full represented production period"
+      site_scope: "All dehusking, whitening, polishing, grading, conveying, and dust-control equipment"
+      aggregation_rule: "Meter difference minus unrelated use; normalize to conforming output"
+      quality_evidence: "Meter calibration; invoice; operating log; reconciliation worksheet"
+    - protocol_id: cp_milling_outputs
+      process_id: "milling_separation"
+      flow_role: "Milled rice, broken rice, bran, husk, rejects, and collected dust"
+      record_type: "Product scale, silo, sale, and waste records"
+      raw_fields: "lot_id; output_type; mass; moisture; destination; product_grade; broken_fraction; opening_stock; closing_stock"
+      collection_method: "Calibrated scales and stock or dispatch reconciliation"
+      unit: "kg; mass %"
+      frequency: "Each lot, shift, or dispatch"
+      temporal_coverage: "Full represented production period"
+      site_scope: "Every product, co-product, residue, and waste outlet"
+      aggregation_rule: "Sum stock-corrected mass by output and destination before allocation"
+      quality_evidence: "Scale calibration; sales or transfer ticket; waste record; laboratory grade report; stock record"
+    - protocol_id: cp_packaging_records
+      process_id: "packaging"
+      flow_role: "Rice, packaging material, packaged output, and packaging waste"
+      record_type: "Batch, bill-of-material, purchase, and waste records"
+      raw_fields: "batch_id; bulk_rice_input; net_packaged_rice; packaging_material; packaging_mass; rejected_pack_mass; recovered_rice; opening_stock; closing_stock"
+      collection_method: "Calibrated product scale plus bill-of-material and stock reconciliation"
+      unit: "kg; item count"
+      frequency: "Each packaging batch"
+      temporal_coverage: "Full represented packaged-product period"
+      site_scope: "All included packaging lines and materials"
+      aggregation_rule: "Convert item counts with measured item mass; reconcile net rice separately from packaging"
+      quality_evidence: "Scale calibration; packaging specification; purchase invoice; waste ticket; batch reconciliation"
+    - protocol_id: cp_direct_emissions
+      process_id: "parboiling"
+      flow_role: "Direct air and water emissions"
+      record_type: "Stack, permit, laboratory, fuel, and discharge records"
+      raw_fields: "substance_id; measured_concentration; flow_rate; duration; fuel_quantity; emission_factor; wastewater_volume; discharge_concentration"
+      collection_method: "Direct measurement preferred; otherwise source-specific factor applied to collected activity data"
+      unit: "kg; mg/m3; m3; MJ"
+      frequency: "Each monitoring event and reporting period"
+      temporal_coverage: "Full represented operating period"
+      site_scope: "Every included onsite emission and discharge point"
+      aggregation_rule: "Calculate substance mass by point; do not aggregate unlike elementary flows"
+      quality_evidence: "Laboratory report; monitoring plan; permit return; factor reference; calculation worksheet"
+  calculation_rules:
+    - id: calc_normalize_reference_mass
+      applies_to: "Every foreground inventory amount"
+      rule: "normalized amount = stock-corrected process amount / net conforming reference-product mass"
+      inputs:
+        - "process amount"
+        - "opening stock"
+        - "closing stock"
+        - "net conforming output"
+      output: "amount per 1 kg reference product"
+      source_ids:
+        - iso-14044-lca-requirements
+    - id: calc_moisture_correction
+      applies_to: "Comparison of material masses on a dry basis"
+      rule: "dry mass = as-received mass × (1 - moisture mass fraction); retain the original as-received mass and moisture record"
+      inputs:
+        - "as-received mass"
+        - "moisture mass fraction"
+      output: "dry-basis comparison mass"
+      source_ids:
+        - fao-grain-postharvest-rice-milling
+        - fao-rice-human-nutrition-postharvest
+    - id: calc_material_balance
+      applies_to: "Receiving, parboiling, milling, and packaging"
+      rule: "balance gap = inputs + opening stock - outputs - closing stock; report water evaporation separately when relevant and investigate rather than force-closing unexplained gaps"
+      inputs:
+        - "all measured material inputs"
+        - outputs
+        - "stock changes"
+        - evaporation
+      output: "process mass-balance gap and gap fraction"
+      source_ids:
+        - iso-14044-lca-requirements
+    - id: calc_fuel_energy
+      applies_to: "Fuel-derived thermal energy"
+      rule: "thermal energy = measured fuel quantity × declared lower or higher heating value on a consistent basis"
+      inputs:
+        - "fuel quantity"
+        - "heating value"
+        - "heating-value basis"
+      output: "MJ thermal energy"
+      source_ids:
+        - iso-14044-lca-requirements
+    - id: calc_allocation_fraction
+      applies_to: "Residual multi-output allocation"
+      rule: "allocated burden for output i = unallocated process burden × declared allocation driver for i / sum of the driver over all co-products"
+      inputs:
+        - "unallocated burden"
+        - "co-product outputs"
+        - "selected physical or economic driver"
+      output: "allocated burden and allocation fraction by output"
+      source_ids:
+        - iso-14044-lca-requirements
+        - eu-2021-2279-environmental-footprint
+  data_quality_requirements:
+    - id: dq_reference_identity
+      applies_to: "Reference product"
+      requirement: "Use Tiangong flow 4125cc1c-d304-48b4-a701-f40a581df3c3, Mass 93a60a56-a3c8-11da-a746-0800200b9a66, Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66, and kg without dataset versions."
+      evidence: "Dataset reference-flow record and UUID validation"
+    - id: dq_product_qualifiers
+      applies_to: "Reference product and production lot"
+      requirement: "Declare every required qualifier and preserve lot traceability from paddy receipt to conforming output."
+      evidence: "Product specification; laboratory result; lot genealogy; process log"
+    - id: dq_temporal_coverage
+      applies_to: "Foreground activity data"
+      requirement: "Cover one representative operating year or a complete production campaign; disclose shutdowns, seasonal gaps, product changes, and any extrapolation."
+      evidence: "Date-bounded meter, production, purchase, stock, and dispatch records; eu-2021-2279-environmental-footprint"
+    - id: dq_technology_geography
+      applies_to: "Facility representation"
+      requirement: "Describe facility geography, mill scale, dehusking and whitening technology, parboiling route, energy system, dust control, storage, and packaging configuration."
+      evidence: "Facility profile; equipment list; process flow diagram; fao-prevention-postharvest-losses-rice-milling"
+    - id: dq_completeness_balance
+      applies_to: "Material, energy, water, product, co-product, waste, and emission records"
+      requirement: "Reconcile all included processes and disclose missing outlets, unmetered shared utilities, unexplained balance gaps, and excluded minor flows rather than silently assigning zero."
+      evidence: "Signed balance and reconciliation worksheets; iso-14044-lca-requirements"
+    - id: dq_provisional_ranges
+      applies_to: "Every reasoned_estimate range"
+      requirement: "Treat the range only as a QA flag, never as an automatic replacement for foreground data; replace or explicitly accept it during methodology review."
+      evidence: "Review record identifying retained or replaced provisional ranges"
+    - id: dq_source_traceability
+      applies_to: "External evidence and calculation factors"
+      requirement: "Retain source title, stable reference, retrieval date for web sources, factor version, applicability, and calculation worksheet."
+      evidence: "Source register and calculation archive; eu-2021-2279-environmental-footprint"
+validation_rules:
+  - rule_id: val_reference_identity
+    applies_to: "Reference flow"
+    rule: "Fail conformance if the reference product UUID, Mass UUID, unit-group UUID, reference unit, or reference amount differs from the declared reference-flow object without an approved PCR revision."
+    source_ids:
+      - iso-14044-lca-requirements
+  - rule_id: val_required_qualifiers
+    applies_to: "Dataset metadata"
+    rule: "Fail conformance when any required qualifier is absent or when product and process records disagree on milling degree, moisture basis, broken-kernel treatment, parboiling route, or packaging state."
+    source_ids:
+      - fao-rice-human-nutrition-postharvest
+      - fao-grain-postharvest-rice-milling
+  - rule_id: val_process_coverage
+    applies_to: "Process inventory"
+    rule: "Require every required process and require an applicability decision for every conditional process; an included branch shall carry its inputs, outputs, utilities, wastes, and direct emissions."
+    source_ids:
+      - fao-prevention-postharvest-losses-rice-milling
+  - rule_id: val_material_balance
+    applies_to: "Each foreground process and aggregate facility balance"
+    rule: "Calculate and report the mass-balance gap on consistent moisture bases; investigate unexplained gaps against a documented site tolerance and do not force the balance by altering the reference output."
+    source_ids:
+      - iso-14044-lca-requirements
+  - rule_id: val_allocation
+    applies_to: "Multi-output process"
+    rule: "Verify output classification, avoidance rationale, allocation driver, source period, allocation fractions summing to 1 within reported rounding precision, and sensitivity when an alternative method could materially change results."
+    source_ids:
+      - iso-14044-lca-requirements
+      - eu-2021-2279-environmental-footprint
+  - rule_id: val_energy_water_reconciliation
+    applies_to: "Electricity, fuel, water, steam, and wastewater"
+    rule: "Reconcile meters, invoices, stocks, and production periods; disclose shared-utility allocation and prevent onsite husk use or recovered water from being netted invisibly."
+    source_ids:
+      - iso-14044-lca-requirements
+  - rule_id: val_qa_guardrails
+    applies_to: "Inventory ranges"
+    rule: "A value outside a QA guardrail triggers documented review of measurement, normalization, route, moisture basis, and source applicability; it shall not be clipped to the guardrail or replaced automatically."
+    source_ids:
+      - fao-grain-postharvest-rice-milling
+  - rule_id: val_source_and_estimate_status
+    applies_to: "Evidence register"
+    rule: "Verify that every cited source id resolves in Data Sources and every provisional numerical range is labelled reasoned_estimate with qa_guardrail; fail publication review if a publication-critical estimate remains unreviewed."
+    source_ids:
+      - eu-2021-2279-environmental-footprint
+published_dataset_profile:
+  dataset_role: "Foreground production dataset for semi-milled or wholly milled rice at a declared rice-milling facility"
+  downstream_use: "secondary_dataset; background_dataset"
+  allowed_use: "Product and process LCA for declared rice products and routes when geography, technology, product qualifiers, boundary, allocation, and data quality are compatible"
+  excluded_use: "Paddy cultivation; husked rice sold without milling; rice flour or starch production; cooked rice; consumer use; undeclared parboiling or packaging routes; comparative public claims without method-compatible review"
+  required_metadata: "PCR id; Tiangong reference-flow UUIDs; facility geography; production period; technology; paddy origin and condition; milling degree; moisture basis; broken-kernel fraction; parboiling state; packaging state; boundary; allocation method; dataset version"
+  required_quality_disclosure: "Temporal, geographic, and technological representativeness; metering and calibration; mass, energy, and water balances; missing flows; shared-utility allocation; co-product treatment; provisional estimates; source and factor versions; uncertainty and review status"
+  update_trigger: "Material change in product specification, paddy route, milling or parboiling technology, energy system, packaging, allocation basis, facility geography, production mix, measurement system, source evidence, or Tiangong reference identity"
+data_sources:
+  - id: "fao-grain-postharvest-rice-milling"
+    type: "official_guidance"
+    reference: "FAO, Agricultural engineering in development - Grain and post-harvest systems, rice section, https://www.fao.org/4/T0522E/T0522E03.htm, retrieved 2026-08-11"
+    used_for: "Paddy condition, process sequence, approximately 14% moisture guidance, illustrative 100 kg paddy output balance, and by-product destinations"
+  - id: "fao-prevention-postharvest-losses-rice-milling"
+    type: "official_guidance"
+    reference: "FAO, Prevention of post-harvest food losses: Small-scale rice milling, https://www.fao.org/4/x0039e/x0039e06.htm, retrieved 2026-08-11"
+    used_for: "Cleaning, 12-14% hulling moisture guidance, dehusking, whitening, polishing, grading, and conditional parboiling process decomposition"
+  - id: "fao-rice-human-nutrition-postharvest"
+    type: "official_guidance"
+    reference: "FAO, Rice in human nutrition: Rice post-harvest processing, parboiling and home preparation, https://www.fao.org/4/t0567e/T0567E0h.htm, retrieved 2026-08-11"
+    used_for: "Milling-route distinctions, moisture and tempering context, bran removal, parboiling, and separated fractions"
+  - id: "iso-14044-lca-requirements"
+    type: "standard"
+    reference: "ISO 14044:2006, Environmental management - Life cycle assessment - Requirements and guidelines, https://www.iso.org/standard/38498.html, confirmed current by ISO in 2022, retrieved 2026-08-11"
+    used_for: "Goal and scope consistency, inventory and allocation hierarchy, data quality, interpretation, reporting, and review"
+  - id: "eu-2021-2279-environmental-footprint"
+    type: "official_guidance"
+    reference: "European Commission Recommendation (EU) 2021/2279 on the Environmental Footprint methods, CELEX 32021H2279, https://eur-lex.europa.eu/legal-content/EN/ALL/?uri=CELEX%3A32021H2279, retrieved 2026-08-11"
+    used_for: "Life-cycle data quality, verification, process subdivision, allocation disclosure, and downstream dataset use"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:a1744df0846bb5bf85b183d1347bb4616a3f96e163c7e098ed72b76705db6e27"
+  generated_content_sha256: "sha256:8edf9db1d9908afe311c0a02bd7108d14910e0dde5bc54761ffb7e3fdb37b95a"

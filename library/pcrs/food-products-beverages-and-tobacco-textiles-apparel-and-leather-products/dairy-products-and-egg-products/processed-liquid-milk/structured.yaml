@@ -1,10 +1,806 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "22110"
-  title: "Processed liquid milk"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.food-products-beverages-and-tobacco-textiles-apparel-and-leather-products.dairy-products-and-egg-products.processed-liquid-milk"
+  classification_refs: "CPC 3.0 22110, Processed liquid milk, exact"
+  covered_products: "Unflavoured processed liquid milk, including whole, partially skimmed, skimmed, fortified, pasteurised, homogenised, sterilised, UHT, and composition-equivalent reconstituted milk"
+  excluded_products: "Raw milk; fresh or concentrated cream; concentrated, evaporated, condensed, or dried milk; sweetened, flavoured, fermented, curdled, or acidified milk; infant formula; plant-based alternatives"
+  representative_product: "Unflavoured processed cow milk in its declared primary package, ready for dispatch at the dairy gate"
+  production_route: "Milk reception and chilled storage; conditional clarification, separation, and standardisation; heat treatment; conditional homogenisation; cooling; filling; storage; cleaning and effluent management"
+  market_state: "Finished liquid product at dairy gate; refrigerated for pasteurised or other cold-chain products, or ambient-stable in an aseptic package for a validated UHT or sterilised route"
+functional_unit:
+  what: "Supply of processed liquid milk meeting the declared composition, food-safety treatment, and packaging specification at the dairy gate"
+  how_much: "1 kg net mass of processed liquid milk, excluding the mass of its primary and secondary packaging"
+  how_well: "Conforms to the declared animal species, fat class, solids or fortification specification, heat-treatment route, homogenisation state, packaging configuration, and applicable food-safety requirements"
+  how_long_or_cycle: "One production lot at release from the dairy gate; shelf-life duration and required storage temperature are declared but no consumer storage service is included"
+  reference_flow_link: "The functional unit is realised by exactly 1 kg of the Tiangong product flow specified below"
+system_boundary:
+  rules:
+    - rule_id: boundary_start_at_dairy_reception
+      applies_to: "foreground system boundary"
+      rule: "Include milk reception, acceptance measurement, chilled storage, applicable standardisation, heat treatment, homogenisation, cooling, filling, dairy-gate storage, cleaning, product losses, and process wastewater generated for the declared product route."
+      source_ids:
+        - ifc-dairy-ehs-2007
+        - unsd-cpc-22110
+    - rule_id: boundary_upstream_inputs
+      applies_to: "upstream technosphere"
+      rule: "Connect source milk, reconstitution ingredients where applicable, utilities, water, chemicals, packaging, and refrigerant supply through explicit upstream datasets; do not silently omit their production."
+      source_ids:
+        - ifc-dairy-ehs-2007
+    - rule_id: boundary_downstream_exclusion
+      applies_to: "downstream stages"
+      rule: "Exclude distribution after the dairy gate, retail, consumer refrigeration, consumption, packaging end-of-life, and product end-of-life from the foreground process, while identifying them as downstream stages for a lifecycle model."
+      source_ids:
+        - idf-dairy-pefcr-2018
+    - rule_id: boundary_losses_and_effluent
+      applies_to: "losses and emissions"
+      rule: "Include rejected milk, spills, separator residues, packaging scrap, cleaning chemicals, wastewater, treatment sludge, and direct refrigerant or combustion emissions when they cross the foreground boundary; disclose recovery, treatment, and destination."
+      source_ids:
+        - ifc-dairy-ehs-2007
+    - rule_id: boundary_heat_route
+      applies_to: "heat treatment"
+      rule: "Record the actual treatment route and its time-temperature or equivalent validation records. Apply the legal food-safety criteria of the production jurisdiction and disclose the criteria used."
+      source_ids:
+        - eu-reg-853-2004
+boundary_abstraction:
+  declared_starting_condition: "Accepted milk at the dairy reception point, with supplier or source, animal species, quantity, temperature, composition, acceptance status, and lot or delivery time declared"
+  starting_condition_role: "Foreground collection starts with reception, storage, and processing at the dairy; production of source milk is represented by a matched upstream dataset"
+  product_classification_scope: "Unflavoured processed liquid milk within the reviewed semantic scope of CPC 3.0 22110, independent of the classification system used by a consuming dataset"
+  recursive_input_rule: "When processed liquid milk or off-specification milk from the same category is used as rework, record it as a distinct technosphere input with origin and quantity, terminate recursion at its supplying dataset, and prevent double counting of its prior processing"
+  upstream_dataset_requirement: "Use geographically, temporally, technologically, animal-species, and composition-matched datasets for raw or reconstituted milk components, electricity, fuels or steam, water, cleaning chemicals, refrigerants, and packaging materials"
+  disclosure: "Declare source-milk route, facility geography, allocation boundary, included unit operations, bypassed or outsourced operations, heat-treatment and storage route, packaging scope, wastewater destination, and any process data shared with other dairy products"
+reference_flow_definition:
+  reference_amount: "1 kg net processed liquid milk"
+  product_flow_ref:
+    name: "Processed liquid milk"
+    uuid: "02cfe33a-6f85-4477-bfde-c8057d01cfa1"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "animal species and source-milk identity"
+    - "raw-milk versus composition-equivalent reconstituted route"
+    - "fat class or measured fat content"
+    - "protein and total-solids basis"
+    - "heat-treatment route"
+    - "homogenisation state"
+    - fortification
+    - "package material and nominal fill size or bulk delivery"
+    - "net-product mass basis"
+    - "production geography"
+    - "dairy-gate storage temperature"
+    - "declared shelf life"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_net_mass
+    applies_to: "reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Report the net mass of liquid milk only. Record packaging as separate inventory inputs and do not include packaging mass in the 1 kg reference amount."
+  - id: volume_to_mass
+    applies_to: "milk, water, and liquid chemical records"
+    required_property_ref:
+      name: "Mass or volume with measured conversion basis"
+      uuid: ""
+    required_unit: "kg or m3"
+    rule: "Convert volume records to mass only with a density applicable to the measured material, temperature, composition, and lot or reporting period. Retain the original volume, density, temperature, and calculation."
+  - id: composition_basis
+    applies_to: "milk and dairy co-products"
+    required_property_ref:
+      name: "Mass fraction"
+      uuid: ""
+    required_unit: "kg/kg"
+    rule: "Record fat, protein, and total solids on a consistent analytical and wet-mass basis; identify sampling method and averaging period. Do not infer a missing composition from a product name."
+  - id: energy_carrier_separation
+    applies_to: "purchased electricity, fuels, steam, hot water, and cooling"
+    required_property_ref:
+      name: "Energy"
+      uuid: ""
+    required_unit: "kWh, MJ, or MWh"
+    rule: "Preserve each energy carrier as a separate exchange. For facility-level QA only, convert electricity and thermal energy to MWh using documented physical unit conversions and do not combine primary energy with delivered energy."
+  - id: wastewater_volume
+    applies_to: "process wastewater"
+    required_property_ref:
+      name: "Volume"
+      uuid: ""
+    required_unit: "m3"
+    rule: "Report discharged wastewater volume after subtracting separately metered uncontaminated water that does not enter the process-wastewater system. Preserve treatment destination and measurement point."
+process_map:
+  - id: milk_reception_and_standardisation
+    name: "Milk reception and standardisation"
+    inclusion: "required"
+    inclusion_condition: "Always include reception and storage; include clarification, separation, composition adjustment, or reconstitution only when performed for the declared product"
+    role: "Foreground material preparation"
+    quantitative_reference: "kg accepted milk and kg standardised milk leaving the process"
+  - id: heat_treatment_and_filling
+    name: "Heat treatment, cooling, and filling"
+    inclusion: "required"
+    inclusion_condition: "Always include the validated heat-treatment and filling route; homogenisation and aseptic filling apply when used"
+    role: "Foreground product manufacture"
+    quantitative_reference: "1 kg net processed liquid milk at dairy gate; Tiangong category process identity bf42212c-0425-402b-85bc-64ec44aec568"
+  - id: sanitation_and_wastewater_management
+    name: "Sanitation and wastewater management"
+    inclusion: "required"
+    inclusion_condition: "Include all cleaning, CIP, tanker or line washing, effluent collection, and on-site treatment attributable to the declared product route"
+    role: "Cross-cutting foreground support and treatment"
+    quantitative_reference: "reporting-period services allocated to the reference product"
+process_inventory:
+  - id: milk_reception_and_standardisation
+    label: "Milk reception and standardisation"
+    inputs:
+      product:
+        - row_id: source_milk_input
+          role: "Accepted source milk"
+          name: "Site- and species-specific source milk or declared reconstitution components; exact Tiangong flow identity must be selected for the foreground package"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Accepted raw milk, or declared preserved milk components and water for a composition-equivalent reconstituted route, enters the foreground dairy after quantity, temperature, quality, species, and composition checks."
+          amount:
+            expression: "measured accepted mass after rejection, normalized to the net reference product"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net processed liquid milk at dairy gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_milk_mass_and_composition
+              source_ids:
+                - unsd-cpc-22110
+                - ifc-dairy-ehs-2007
+            ranges:
+              - role: qa_guardrail
+                lower: "0.95"
+                upper: "1.20"
+                unit: "kg/kg net processed liquid milk"
+                basis: "accepted source milk before separation losses or co-product removal per reference product"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: reception_electricity
+          role: "Reception and separation electricity"
+          name: "Geography- and voltage-matched electricity product flow"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Electricity for unloading, pumping, cooling, storage agitation, clarification, and separation is recorded from submeters or a documented facility allocation."
+          amount:
+            expression: "measured electricity attributable to reception and standardisation"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net processed liquid milk at dairy gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_utility_records
+              source_ids:
+                - ifc-dairy-ehs-2007
+                - eu-fdm-bat-2019
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: standardised_milk_output
+          role: "Standardised milk intermediate"
+          name: "Standardised milk intermediate, represented as an internal product flow without reusing the final reference product as an external output"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Accepted milk after the declared clarification, separation, composition adjustment, reconstitution, or storage steps is passed to heat treatment."
+          amount:
+            expression: "measured transfer mass reconciled with source milk, co-products, rejects, and retained line inventory"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net processed liquid milk at dairy gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_milk_mass_and_composition
+              source_ids:
+                - ifc-dairy-ehs-2007
+            ranges: []
+        - row_id: separation_coproduct
+          role: "Cream or other marketable milk fraction"
+          name: "Exact cream or milk-fraction product flow matching the sold or transferred material"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "When fat standardisation or separation produces a marketable milk fraction, record its measured mass and composition as a co-product rather than a waste."
+          amount:
+            expression: "measured co-product mass and composition leaving the process"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net processed liquid milk at dairy gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_milk_mass_and_composition
+              source_ids:
+                - ifc-dairy-ehs-2007
+                - iso-14044-2006
+            ranges: []
+      waste:
+        - row_id: reception_rejects
+          role: "Rejected milk and separator residues"
+          name: "Destination-specific organic waste or wastewater flow"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Rejected deliveries, filter or separator residues, and milk lost during reception are recorded by destination; recovered food or feed material is reclassified as a product only when it has a documented use."
+          amount:
+            expression: "measured rejection, spill, filter-residue, and separator-discharge mass"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net processed liquid milk at dairy gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_and_effluent_records
+              source_ids:
+                - ifc-dairy-ehs-2007
+            ranges: []
+      elementary:
+        []
+  - id: heat_treatment_and_filling
+    label: "Heat treatment, cooling, and filling"
+    inputs:
+      product:
+        - row_id: standardised_milk_input
+          role: "Standardised milk feed"
+          name: "Standardised milk internal product flow"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "The reconciled intermediate milk from reception and standardisation enters the validated heat-treatment route."
+          amount:
+            expression: "measured transfer mass from the preceding process"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net processed liquid milk at dairy gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_milk_mass_and_composition
+              source_ids:
+                - ifc-dairy-ehs-2007
+            ranges: []
+        - row_id: process_electricity
+          role: "Process electricity"
+          name: "Geography- and voltage-matched electricity product flow"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Electricity for pumping, homogenisation, heat-exchange auxiliaries, cooling, filling, packaging equipment, and product storage is retained as a separate carrier."
+          amount:
+            expression: "measured submetered electricity or documented allocation from facility meters"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net processed liquid milk at dairy gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_utility_records
+              source_ids:
+                - ifc-dairy-ehs-2007
+                - eu-fdm-bat-2019
+            ranges: []
+        - row_id: thermal_energy
+          role: "Thermal energy carriers"
+          name: "Carrier- and supplier-specific fuel, steam, or hot-water product flow"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Fuel, steam, or hot-water inputs used for heat treatment and product-temperature control are recorded as separate purchased carriers or on-site fuel inputs without combining their delivered quantities."
+          amount:
+            expression: "metered delivered thermal energy or calculated energy from measured fuel use and a documented conversion"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net processed liquid milk at dairy gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_utility_records
+              source_ids:
+                - ifc-dairy-ehs-2007
+                - eu-fdm-bat-2019
+            ranges: []
+        - row_id: primary_packaging
+          role: "Primary packaging materials"
+          name: "Material-specific packaging product flows matching the actual package bill of materials"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "All package components needed to contain and protect the reference product are recorded by material and component, including caps, closures, labels, and aseptic barrier layers where present."
+          amount:
+            expression: "issued packaging minus documented reusable or recycled in-process scrap, reconciled with good packaged units"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net processed liquid milk at dairy gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_records
+              source_ids:
+                - ifc-dairy-ehs-2007
+            ranges:
+              - role: qa_guardrail
+                lower: "0.005"
+                upper: "0.050"
+                unit: "kg packaging/kg net processed liquid milk"
+                basis: "total primary-package components issued per reference product"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: processed_liquid_milk_output
+          role: "Processed liquid milk reference product"
+          name: "Processed liquid milk"
+          flow_type: "product"
+          flow_ref:
+            uuid: "02cfe33a-6f85-4477-bfde-c8057d01cfa1"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "The released, conforming product at the dairy gate is the quantitative reference output."
+          amount:
+            expression: "fixed at 1 kg net liquid-milk mass after release checks; package mass is excluded"
+            value_mode: "fixed_value"
+            specificity: "product_specific"
+            basis:
+              text: "1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "identity_reference"
+              source_ids:
+                - unsd-cpc-22110
+            ranges: []
+      waste:
+        - row_id: filling_rejects
+          role: "Off-specification product and packaging scrap"
+          name: "Destination-specific milk-product waste and packaging-waste flows"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Product losses, start-up and shutdown losses, damaged packages, and packaging offcuts are separately measured and assigned to reuse, recovery, wastewater, recycling, treatment, or disposal."
+          amount:
+            expression: "measured or mass-balanced rejected product and packaging material by destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net processed liquid milk at dairy gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_and_effluent_records
+              source_ids:
+                - ifc-dairy-ehs-2007
+            ranges: []
+      elementary:
+        - row_id: refrigerant_leakage
+          role: "Refrigerant leakage to air"
+          name: "Exact Tiangong elementary flow for the recorded refrigerant species emitted to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "When mechanical refrigeration serves the declared route, leakage is reported by actual refrigerant species; no generic refrigerant elementary flow may replace the substance-specific flow."
+          amount:
+            expression: "annual inventory loss plus service additions minus documented recovery, allocated to the declared product route"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net processed liquid milk at dairy gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_refrigerant_records
+              source_ids:
+                - ifc-dairy-ehs-2007
+            ranges: []
+  - id: sanitation_and_wastewater_management
+    label: "Sanitation and wastewater management"
+    inputs:
+      product:
+        - row_id: process_cleaning_water
+          role: "Process and cleaning water"
+          name: "Geography- and quality-matched water supply product flow"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "Potable or otherwise approved water used for product-contact operations, rinsing, tanker and line cleaning, CIP, and floor cleaning is measured at the relevant boundary."
+          amount:
+            expression: "metered process and cleaning water attributable to the declared product route"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net processed liquid milk at dairy gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cip_and_water_records
+              source_ids:
+                - ifc-dairy-ehs-2007
+            ranges: []
+        - row_id: cleaning_chemicals
+          role: "Cleaning and sanitation chemicals"
+          name: "Formulation- or active-ingredient-specific chemical product flow"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Alkaline, acidic, disinfecting, and other cleaning agents are recorded by supplied formulation and active concentration without substituting a generic chemical for an unknown formulation."
+          amount:
+            expression: "issued chemical mass reconciled with stock change and dilution records"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net processed liquid milk at dairy gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cip_and_water_records
+              source_ids:
+                - ifc-dairy-ehs-2007
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: process_wastewater
+          role: "Process wastewater to treatment"
+          name: "Wastewater flow matching the actual treatment route and receiving system"
+          flow_type: "waste"
+          property_unit: "Volume / m3"
+          description: "Milk-bearing rinses, CIP discharge, tanker and line wash water, and other contaminated streams are recorded at the discharge or treatment-entry meter with destination and on-site treatment declared."
+          amount:
+            expression: "measured process-wastewater discharge attributable to the declared product route"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted source milk"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_and_effluent_records
+              source_ids:
+                - ifc-dairy-ehs-2007
+                - eu-fdm-bat-2019
+            ranges:
+              - role: qa_guardrail
+                lower: "0.0003"
+                upper: "0.0030"
+                unit: "m3/kg raw material"
+                basis: "yearly average specific wastewater discharge for facilities where market milk is at least 80 percent of production"
+                basis_kind: "process_output"
+                evidence_kind: "external_source"
+                source_ids:
+                  - eu-fdm-bat-2019
+        - row_id: wastewater_sludge
+          role: "Wastewater-treatment sludge"
+          name: "Destination-specific wastewater-treatment sludge flow"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "When wastewater is treated on site, treatment sludge and other residuals are recorded by wet or dry mass basis and destination."
+          amount:
+            expression: "measured sludge mass with solids content, treatment, recovery, and disposal route"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net processed liquid milk at dairy gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_and_effluent_records
+              source_ids:
+                - ifc-dairy-ehs-2007
+            ranges: []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocation_avoid_by_subdivision
+    applies_to: "all shared dairy operations"
+    rule: "First avoid allocation by submetering and subdividing unit operations, and assign directly measured packaging, heat-treatment, cleaning, storage, and waste-management records to the product route that causes them."
+    source_ids:
+      - iso-14044-2006
+      - idf-dairy-pefcr-2018
+  - rule_id: allocation_reconcile_milk_components
+    applies_to: "standardisation and separation"
+    rule: "Reconcile input and output mass plus fat, protein, and total solids before allocation. Cream and other saleable milk fractions are co-products; product losses and treatment residuals are not co-products unless a documented beneficial use makes them products."
+    source_ids:
+      - ifc-dairy-ehs-2007
+  - rule_id: allocation_physical_relationship
+    applies_to: "residual shared burdens"
+    rule: "When subdivision cannot remove a shared burden, use a documented physical relationship that reflects the causal use of the operation, such as throughput, treatment time, cooling load, or retained milk solids. Do not default to total wet mass when it does not represent the causal relationship."
+    source_ids:
+      - iso-14044-2006
+  - rule_id: allocation_other_relationship
+    applies_to: "no defensible physical relationship"
+    rule: "If no defensible physical relationship exists, use another documented relationship such as contemporaneous economic value, disclose price period and geography, and report a sensitivity check against a plausible alternative."
+    source_ids:
+      - iso-14044-2006
+  - rule_id: allocation_no_avoided_burden_credit
+    applies_to: "wastes and recovered materials"
+    rule: "Do not credit avoided products inside the foreground dataset unless the declared LCA modelling framework explicitly requires substitution. Report recovery outputs and treatment destinations transparently for downstream modelling."
+    source_ids:
+      - iso-14044-2006
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_milk_mass_and_composition
+      process_id: "milk_reception_and_standardisation"
+      flow_role: "source milk, intermediates, products, co-products"
+      record_type: "weighbridge, calibrated flow meter, silo balance, laboratory record, batch record"
+      raw_fields: "delivery mass or volume; density and temperature when converted; species; supplier; fat; protein; total solids; accepted or rejected mass; intermediate transfer; co-product mass"
+      collection_method: "capture each delivery and production lot; reconcile daily mass and composition"
+      unit: "kg; kg/kg; °C"
+      frequency: "each delivery and lot, aggregated daily and monthly"
+      temporal_coverage: "at least 12 consecutive representative months or the full campaign"
+      site_scope: "all reception, storage, separation, and product lines serving the declared product"
+      aggregation_rule: "sum masses after stock correction; calculate composition-weighted averages; normalize to released net product"
+      quality_evidence: "calibration records, laboratory QA, stock reconciliation, rejection logs"
+    - protocol_id: cp_utility_records
+      process_id: "heat_treatment_and_filling"
+      flow_role: "electricity and thermal carriers"
+      record_type: "utility meter, submeter, invoice, fuel or steam meter"
+      raw_fields: "carrier identity; meter start and end; fuel quantity; steam or heat quantity; electricity; production downtime; allocation driver"
+      collection_method: "capture carrier-specific meters and reconcile with facility invoices"
+      unit: "kWh; MJ; MWh; carrier unit"
+      frequency: "continuous or shift, aggregated monthly"
+      temporal_coverage: "at least 12 consecutive representative months or the full campaign"
+      site_scope: "all meters serving reception, processing, filling, cold storage, and allocated utilities"
+      aggregation_rule: "subtract excluded users; preserve carriers; allocate shared quantities with section 7 rules; normalize to accepted milk and net product"
+      quality_evidence: "meter calibration, invoice reconciliation, documented conversion factors"
+    - protocol_id: cp_heat_treatment_records
+      process_id: "heat_treatment_and_filling"
+      flow_role: "validated treatment and release"
+      record_type: "automated time-temperature chart, divert-valve record, sterilisation or UHT validation, release test"
+      raw_fields: "route; inlet and outlet temperature; holding time; flow or batch; diversion events; validation criterion; release status"
+      collection_method: "retain continuous critical-control records and exception review for each lot"
+      unit: "°C; s or min; pass/fail"
+      frequency: "continuous for each lot"
+      temporal_coverage: "full reporting period"
+      site_scope: "every heat-treatment line serving the declared product"
+      aggregation_rule: "link each released lot to treatment record and applicable legal or HACCP criterion"
+      quality_evidence: "instrument calibration, HACCP verification, release authorization"
+    - protocol_id: cp_packaging_records
+      process_id: "heat_treatment_and_filling"
+      flow_role: "primary packaging and rejects"
+      record_type: "bill of materials, issue and return log, filler count, scrap record"
+      raw_fields: "component; material; supplier; component mass; units issued; good units; scrap; recycled or disposed quantity"
+      collection_method: "reconcile packaging stock and line counts by product code"
+      unit: "kg; item"
+      frequency: "each production lot, aggregated monthly"
+      temporal_coverage: "full reporting period"
+      site_scope: "every filling and packing line serving the declared product"
+      aggregation_rule: "issued minus returned stock, separated by component and destination, divided by net product"
+      quality_evidence: "supplier specifications, component weigh checks, line reconciliation"
+    - protocol_id: cp_cip_and_water_records
+      process_id: "sanitation_and_wastewater_management"
+      flow_role: "water and cleaning agents"
+      record_type: "water meter, CIP recipe, chemical issue and stock record"
+      raw_fields: "water volume; CIP circuit; cycle count; concentration; supplied formulation; chemical mass; recovered rinse; product route"
+      collection_method: "meter water and reconcile chemical issues with recipes and stock"
+      unit: "m3; kg; kg active ingredient"
+      frequency: "each CIP cycle or shift, aggregated monthly"
+      temporal_coverage: "full reporting period"
+      site_scope: "all circuits and cleaning activities attributable to the declared product"
+      aggregation_rule: "subtract documented reuse; allocate shared cycles by causal driver; normalize to net product"
+      quality_evidence: "meter calibration, concentration tests, CIP completion logs, stock reconciliation"
+    - protocol_id: cp_waste_and_effluent_records
+      process_id: "sanitation_and_wastewater_management"
+      flow_role: "rejects, wastewater, sludge, packaging waste"
+      record_type: "waste scale, effluent meter, treatment log, disposal or recovery manifest"
+      raw_fields: "waste identity; mass or volume; solids content; COD or BOD when monitored; treatment; destination; recovery status"
+      collection_method: "meter or weigh each stream at a defined boundary and retain destination evidence"
+      unit: "kg; m3; kg dry solids"
+      frequency: "continuous or each shipment, aggregated monthly"
+      temporal_coverage: "full reporting period"
+      site_scope: "all product-route and shared treatment streams"
+      aggregation_rule: "keep streams separate; apply stock or solids correction; normalize to accepted milk and net product"
+      quality_evidence: "meter calibration, laboratory QA, manifests, treatment records"
+    - protocol_id: cp_refrigerant_records
+      process_id: "heat_treatment_and_filling"
+      flow_role: "refrigerant emissions"
+      record_type: "refrigerant inventory, purchase, service, recovery, and equipment log"
+      raw_fields: "refrigerant species; opening and closing charge; additions; recovered mass; equipment and service event"
+      collection_method: "annual mass balance by refrigerant species and equipment group"
+      unit: "kg"
+      frequency: "each service event, reconciled annually"
+      temporal_coverage: "full reporting year"
+      site_scope: "refrigeration equipment serving the declared route"
+      aggregation_rule: "opening inventory plus additions minus closing inventory and recovered mass, allocated by documented cooling-load driver"
+      quality_evidence: "service certificates, cylinder records, leak-test and recovery logs"
+  calculation_rules:
+    - id: calc_reference_normalisation
+      applies_to: "all inventory rows"
+      rule: "normalized amount = reporting-period amount attributable to the declared route divided by reporting-period net mass of released processed liquid milk"
+      inputs:
+        - "attributable amount"
+        - "net released product mass"
+      output: "amount per 1 kg reference flow"
+      source_ids: []
+    - id: calc_volume_to_mass
+      applies_to: "milk records reported by volume"
+      rule: "mass = measured volume multiplied by density measured or documented for the applicable material, temperature, composition, and period"
+      inputs:
+        - volume
+        - density
+        - temperature
+        - composition
+      output: "kg milk or liquid input"
+      source_ids: []
+    - id: calc_mass_and_solids_balance
+      applies_to: "reception and standardisation"
+      rule: "reconcile input mass and fat, protein, and total solids against products, co-products, wastes, stock change, and documented measurement uncertainty"
+      inputs:
+        - "source milk"
+        - components
+        - products
+        - co-products
+        - waste
+        - "stock change"
+        - composition
+      output: "mass and component closure percentages"
+      source_ids:
+        - ifc-dairy-ehs-2007
+    - id: calc_site_energy_intensity
+      applies_to: "facility-level energy QA"
+      rule: "specific energy = total delivered electricity plus delivered thermal energy converted to MWh divided by tonnes of raw materials; retain carrier-specific exchanges separately"
+      inputs:
+        - electricity
+        - "thermal energy"
+        - "raw-material mass"
+      output: "MWh/tonne raw materials"
+      source_ids:
+        - eu-fdm-bat-2019
+    - id: calc_wastewater_intensity
+      applies_to: "facility-level wastewater QA"
+      rule: "specific wastewater discharge = metered process-wastewater discharge divided by tonnes of raw materials"
+      inputs:
+        - "process wastewater volume"
+        - "raw-material mass"
+      output: "m3/tonne raw materials"
+      source_ids:
+        - eu-fdm-bat-2019
+    - id: calc_refrigerant_loss
+      applies_to: "refrigeration"
+      rule: "emitted mass = opening charge plus additions minus closing charge minus recovered refrigerant, calculated separately for each species"
+      inputs:
+        - "inventory and service records"
+      output: "kg refrigerant emitted by species"
+      source_ids:
+        - ifc-dairy-ehs-2007
+  data_quality_requirements:
+    - id: dq_product_identity
+      applies_to: "reference product"
+      requirement: "Product species, composition, treatment route, package, geography, storage condition, and net mass basis are complete and consistent with the reference flow."
+      evidence: "approved product specification, label or bulk contract, release record"
+    - id: dq_temporal_coverage
+      applies_to: "foreground activity data"
+      requirement: "Use at least 12 consecutive representative months unless the product is seasonal or campaign-based; explain downtime, abnormal production, and extrapolation."
+      evidence: "dated meter extracts, production calendar, invoices, batch records"
+    - id: dq_mass_balance
+      applies_to: "milk and packaging"
+      requirement: "Reconcile milk and primary packaging input, product, co-product, waste, stock change, and documented uncertainty before normalisation."
+      evidence: "signed mass-balance workbook, stock records, calibration evidence"
+    - id: dq_metering_and_conversion
+      applies_to: "measured quantities"
+      requirement: "Identify meter, calibration status, measurement point, original unit, conversion factor, and responsible record owner."
+      evidence: "calibration certificates, meter map, calculation record"
+    - id: dq_allocation
+      applies_to: "shared operations and co-products"
+      requirement: "Retain direct assignments, allocation driver values, allocation factors, price or physical data when used, and sensitivity result."
+      evidence: "allocation worksheet and source records"
+    - id: dq_source_dataset_match
+      applies_to: "upstream datasets"
+      requirement: "Document temporal, geographic, technological, species, composition, carrier, material, and treatment-route match; disclose proxies and their expected direction of bias."
+      evidence: "dataset metadata and proxy justification"
+    - id: dq_traceability
+      applies_to: "all foreground records"
+      requirement: "Trace every normalized value to an immutable source record, calculation rule, responsible person or system, and reporting period without embedding private credentials."
+      evidence: "record identifiers, audit trail, QA approval"
+validation_rules:
+  - rule_id: validate_reference_identity
+    applies_to: "reference flow"
+    rule: "The reference output UUID, Mass flow-property UUID, Units of mass unit-group UUID, reference unit kg, and fixed amount 1 kg must exactly match section 3 and the output row."
+    source_ids: []
+  - rule_id: validate_required_qualifiers
+    applies_to: "dataset metadata"
+    rule: "Reject an incomplete package when any required qualifier is absent, ambiguous, or inconsistent with the selected product flow and process route."
+    source_ids:
+      - unsd-cpc-22110
+  - rule_id: validate_scope_exclusions
+    applies_to: "product category"
+    rule: "Reject raw milk, cream, concentrated or dried milk, sweetened, fermented, acidified, flavoured milk, and non-dairy alternatives from this PCR."
+    source_ids:
+      - unsd-cpc-22110
+  - rule_id: validate_heat_treatment
+    applies_to: "heat-treatment route"
+    rule: "Require treatment route, time-temperature or equivalent validation, exception handling, applicable jurisdictional criterion, and lot release linkage; if EU criteria are claimed, verify them against Regulation (EC) No 853/2004."
+    source_ids:
+      - eu-reg-853-2004
+  - rule_id: validate_mass_and_solids_closure
+    applies_to: "milk processing"
+    rule: "Flag unexplained imbalance in total milk mass or fat, protein, and total solids; the package must state closure, measurement uncertainty, stock change, and corrective action rather than forcing the balance."
+    source_ids:
+      - ifc-dairy-ehs-2007
+  - rule_id: validate_energy_qa
+    applies_to: "facility-level energy"
+    rule: "For a facility where market milk is at least 80 percent of production, compare yearly specific delivered energy with 0.1 to 0.6 MWh per tonne of raw materials; values outside the indicative range require explanation, not automatic replacement."
+    source_ids:
+      - eu-fdm-bat-2019
+  - rule_id: validate_wastewater_qa
+    applies_to: "facility-level wastewater"
+    rule: "For a facility where market milk is at least 80 percent of production, compare yearly specific process-wastewater discharge with 0.3 to 3.0 m3 per tonne of raw materials; values outside the indicative range require boundary and meter review."
+    source_ids:
+      - eu-fdm-bat-2019
+  - rule_id: validate_coproduct_allocation
+    applies_to: "standardisation and shared operations"
+    rule: "Require co-product classification, direct assignment, allocation driver, factor totals, and sensitivity disclosure; allocation factors across outputs must sum to one for each shared burden."
+    source_ids:
+      - iso-14044-2006
+  - rule_id: validate_waste_destinations
+    applies_to: "waste and effluent"
+    rule: "Every reject, residue, packaging scrap, wastewater, sludge, and recovered stream must have a quantity, classification, and destination without double counting recovery and disposal."
+    source_ids:
+      - ifc-dairy-ehs-2007
+  - rule_id: validate_no_double_counting
+    applies_to: "foreground and upstream datasets"
+    rule: "Verify that dairy reception and processing are not simultaneously embedded in the upstream milk dataset and repeated in the foreground, and that rework is not recursively expanded twice."
+    source_ids: []
+  - rule_id: validate_refrigerant_species
+    applies_to: "refrigeration emissions"
+    rule: "When refrigeration applies, require substance-specific inventory and elementary-flow identity; reject a generic refrigerant emission that obscures the actual species."
+    source_ids:
+      - ifc-dairy-ehs-2007
+published_dataset_profile:
+  dataset_role: "Foreground production dataset for processed liquid milk at the dairy gate"
+  downstream_use: "May be published as a secondary_dataset or background_dataset after review, and may supply a downstream process or lifecyclemodel for distribution, retail, use, and end-of-life"
+  allowed_use: "Attributional dairy-gate inventories and broader lifecycle models whose product composition, treatment route, package, geography, time, allocation, and upstream milk route match the dataset"
+  excluded_use: "Raw-milk production; cream, concentrated, dried, sweetened, fermented, acidified, or flavoured milk; plant-based alternatives; unsupported comparison of unlike species, fat classes, treatments, packages, or allocation methods"
+  required_metadata: "PCR id and version when published; product and required qualifiers; geography; reference year and reporting period; facility and technology description; included and outsourced operations; upstream dataset identities; allocation method; data owners; review status"
+  required_quality_disclosure: "Primary-data coverage; meter and laboratory QA; mass and solids closure; co-product and waste handling; energy and wastewater QA comparisons; proxy datasets; uncertainty and sensitivity; unresolved identity or range limitations"
+  update_trigger: "Material change in source milk or formulation, heat-treatment or filling technology, package, facility, utility mix, wastewater treatment, allocation method, legal food-safety requirements, Tiangong reference identities, or evidence used for QA ranges"
+data_sources:
+  - id: "unsd-cpc-22110"
+    type: "dataset"
+    reference: "United Nations Statistics Division, CPC classification detail for code 22110, https://unstats.un.org/unsd/classifications/Econ/Detail/EN/1073/22110, retrieved 2026-08-10"
+    used_for: "Included and excluded product scope and classification identity"
+  - id: "ifc-dairy-ehs-2007"
+    type: "official_guidance"
+    reference: "World Bank Group / IFC, Environmental, Health, and Safety Guidelines for Dairy Processing, 30 April 2007, https://www.ifc.org/content/dam/ifc/doc/2000/2007-dairy-processing-ehs-guidelines-en.pdf, retrieved 2026-08-10"
+    used_for: "Dairy process decomposition, reception and cooling, standardisation, heat treatment, packaging, CIP, waste, wastewater, energy, and data-quality controls"
+  - id: "eu-fdm-bat-2019"
+    type: "standard"
+    reference: "Commission Implementing Decision (EU) 2019/2031 establishing BAT conclusions for the food, drink and milk industries, Official Journal L 313, 4 December 2019, https://eur-lex.europa.eu/eli/dec_impl/2019/2031/oj, retrieved 2026-08-10"
+    used_for: "Market-milk facility specific-energy and specific-wastewater-discharge QA ranges and resource-efficiency context"
+  - id: "eu-reg-853-2004"
+    type: "standard"
+    reference: "Regulation (EC) No 853/2004, consolidated text of 27 January 2026, Annex III Section IX, https://eur-lex.europa.eu/eli/reg/2004/853/2026-01-27/eng, retrieved 2026-08-10"
+    used_for: "Heat-treatment route, time-temperature or equivalent validation, and release-record requirements"
+  - id: "iso-14044-2006"
+    type: "standard"
+    reference: "ISO 14044:2006, Environmental management — Life cycle assessment — Requirements and guidelines, including published amendments, https://www.iso.org/standard/38498.html, retrieved 2026-08-10"
+    used_for: "Allocation hierarchy, physical relationships, other relationships, sensitivity, reporting, and review"
+  - id: "idf-dairy-pefcr-2018"
+    type: "official_guidance"
+    reference: "International Dairy Federation, Dairy Product Environmental Footprint 2018, https://fil-idf.org/dairy-declaration/dairy-product-environmental-footprint-2018/, retrieved 2026-08-10"
+    used_for: "Dairy life-cycle stages, primary and secondary data roles, data quality, and downstream boundary disclosure"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:97d7589d8de2baeb18464a385d3ceb480eba75deacfa10c76e54dc2f1fc2a490"
+  generated_content_sha256: "sha256:1b4997d8c83664ab1375cd4cb6be0d638640864191e2a64d3c9344868b5e23fb"

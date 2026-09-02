@@ -191,14 +191,14 @@ classifications/indexes/<system>-<version>-coverage.json
 Current mapping 使用 `schema_version: 2` / `status: current`，只保存已接受的 positive edge。每条 edge
 必须指向 material PCR，relation 只能是 `exact`、`broader`、`narrower` 或 `proxy`，并携带
 `acceptance.status`、`decided_by`、`decided_at_utc` 和 durable `decision_ref`。Candidate suggestion 和
-`manual_review` 是 coverage assessment，不进入 positive mapping。CPC 3.0 当前只有 `01111`、`04412`、
-`04911` 三条 accepted edge；CPC 2.1 是零 edge 的 current v2 mapping。
+`manual_review` 是 coverage assessment，不进入 positive mapping。CPC 3.0 当前有 279 条 accepted edge；
+CPC 2.1 是零 edge 的 current v2 mapping。Accepted set 以 canonical mapping 及其 durable ADR 为准。
 
 Mapping 文件表达 classification-to-PCR accepted edge 输入；coverage index 则是由 normalized leaf、mapping
 和 PCR lifecycle state 确定性生成的 read model。其 source descriptor 固定生成契约，以及两份输入的
 exact-byte SHA-256；读取时输入路径或字节不一致都会 fail closed。Mapped entry 同时投影 acceptance
 evidence，runtime resolve 会与 canonical mapping 再次比对。Coverage index 不是新的 authoring truth，
-不能手工替代 mapping。CPC 3.0 read model 仍完整覆盖 2,877 leaf：3 mapped、2,874 unmapped、0 unknown。
+不能手工替代 mapping。CPC 3.0 read model 仍完整覆盖 2,877 leaf：417 mapped、2,460 unmapped、0 unknown。
 已知 leaf 可以合法地处于 `unmapped`、`candidate_suggestion` 或 `manual_review`，此时不得为了让覆盖率
 看起来完整而自动创建 PCR id。Coverage index 缺失时 resolve 直接 fail closed，不得退回只读 mapping
 并自动选择 PCR。
@@ -212,7 +212,7 @@ artifact set。目标路径、symlink、baseline、staged bytes 和 transaction 
 不宣称 filesystem-level instantaneous atomic exchange。
 
 `classifications/aliases/pcr-id-aliases.yaml` 是从 retained CPC leaf identity inventory 与 accepted mapping
-确定性生成的 retired-id registry。当前 2,874 条 alias 都是 terminal `classification_coverage` locator；
+确定性生成的 retired-id registry。当前 2,598 条 alias 都是 terminal locator；
 source 唯一，不得与 material id 冲突，不得成链或成环。Alias lookup 优先于 catalog lookup，即使物理
 scaffold 仍存在也返回 redirect；locator 不会被自动 follow 成 PCR。Catalog 以 canonical path、exact-byte
 SHA-256 和 entry count 绑定 registry，缺失、截断或字节漂移必须在运行时 fail closed。
@@ -231,8 +231,8 @@ legacy scaffold；目标已存在时必须与确定性 legacy template 逐字节
 覆盖 accepted edge 或改写 PCR。
 
 Phase 2 的 importer cutover、edge acceptance、positive mapping 收缩、alias registry 和 old-id redirect
-已完成。Phase 3 只完成一个物理 pilot：删除 CPC `99000` 的四文件目录；它现在是 known-unmapped，旧 id
-返回 coverage redirect。仓库现有 2,876 个 PCR 目录，其中 3 个 material、2,873 个 legacy scaffold。
+已完成。Phase 3 已删除 CPC `99000` 的四文件目录，并完成后续审核通过的原位 material 提升。仓库现有
+2,878 个 PCR 目录，其中 419 个 material、2,459 个 legacy scaffold。
 CPC `98000` 与后续批量物理迁移仍待执行。
 
 ### Module
@@ -452,7 +452,7 @@ feedback 可以触发 PCR 内容更新、mapping 修复、UUID 修正、range ev
 
 ## 治理边界
 
-迁移期剩余的 2,873 个 leaf PCR scaffold 仍可保持空状态，但它们不进入默认 material catalog。Governance 和
+迁移期剩余的 2,459 个 leaf PCR scaffold 仍可保持空状态，但它们不进入默认 material catalog。Governance 和
 docpact 检查覆盖 builder assets、mappings、coverage indexes、modules、package surfaces、skills、feedback
 intake 和 project contracts；大型 legacy 目录 `library/pcrs/**` 在 PCR 文件成为 material authored
 records 前仍保持排除。Phase 2 的 importer cutover、edge acceptance、positive mapping 收缩、alias

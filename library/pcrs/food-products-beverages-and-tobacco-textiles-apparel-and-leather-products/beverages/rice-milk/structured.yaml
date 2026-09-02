@@ -1,10 +1,979 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "24424"
-  title: "Rice milk"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.food-products-beverages-and-tobacco-textiles-apparel-and-leather-products.beverages.rice-milk"
+  classification_refs: "CPC 3.0: 24424 Rice milk"
+  covered_products: "Finished liquid plant beverages manufactured principally from rice, including whole-rice, broken-rice, rice-flour, and rice-syrup routes; plain, sweetened, flavoured, or fortified variants"
+  excluded_products: "Animal-milk blends; lactose-containing beverages; infant formula; fermented rice yoghurt or probiotic beverages; rice gruel; ingredient rice syrup; mixed plant beverages not characterised by rice"
+  representative_product: "Marketable rice milk formulated as a stable liquid beverage"
+  production_route: "Rice receipt and preparation; milling or slurry preparation; optional gelatinisation and enzymatic starch conversion; filtration or separation; formulation and fortification; homogenisation; thermal treatment; filling, primary packaging, and declared storage conditioning"
+  market_state: "Finished packaged beverage at the manufacturing plant gate, declared as shelf-stable, ambient, chilled, or frozen as applicable"
+functional_unit:
+  what: "Supply of a finished rice-derived plant beverage suitable for its declared food or beverage use"
+  how_much: "1 kg of rice milk"
+  how_well: "Saleable product meeting the producer's declared composition, food-safety, stability, and packaging release specifications"
+  how_long_or_cycle: "One released production output at the plant gate; declared shelf life is reported as a qualifier and no consumer-use duration is modelled"
+  reference_flow_link: "The functional unit is realised by 1 kg net mass of conforming rice milk, excluding the mass of primary packaging"
+system_boundary:
+  rules:
+    - rule_id: boundary_foreground_gate
+      applies_to: "Foreground rice-milk production"
+      rule: "Include all on-site material and energy use from receipt of rice ingredients through preparation, conversion, separation, formulation, homogenisation, thermal treatment, filling, and release of packaged product; conditionally include only the steps actually used and document omissions."
+      source_ids:
+        - sahni-cereal-beverages-2023
+        - tu-rice-milk-processing-2025
+    - rule_id: boundary_upstream_links
+      applies_to: "Purchased inputs and off-site services"
+      rule: "Represent the production and delivery of purchased materials, energy, packaging, and treatment services with linked upstream datasets rather than recreating them inside the foreground process."
+      source_ids:
+        - eu-pef-2021
+    - rule_id: boundary_downstream_disclosure
+      applies_to: "Distribution, retail, use, and end-of-life"
+      rule: "Keep downstream stages outside this foreground dataset, disclose the exclusion, and add them explicitly when the dataset is used in a cradle-to-grave life-cycle model."
+      source_ids:
+        - eu-pef-2021
+boundary_abstraction:
+  declared_starting_condition: "Rice or a declared rice-derived ingredient, water, formulation materials, utilities, and packaging are received at the beverage manufacturing site with quantity, supplier, geography, and upstream-dataset references; the rice ingredient form and solids or moisture basis are declared."
+  starting_condition_role: "Entry condition for foreground gate-to-gate rice-milk manufacturing"
+  product_classification_scope: "CPC 3.0 code 24424, limited to rice-characterised non-animal liquid milk substitutes"
+  recursive_input_rule: "Rice milk used as an ingredient shall be represented as a separately referenced upstream product dataset and shall not recursively invoke this foreground manufacturing system."
+  upstream_dataset_requirement: "Link upstream datasets for rice or rice-derived ingredients, other food ingredients, enzymes and processing aids, water supply, electricity, fuels or heat, packaging materials, transport to plant when in scope, and waste or wastewater treatment."
+  disclosure: "Declare rice ingredient form and origin, formulation, solids content, processing route, thermal treatment, production geography and period, packaging, storage state, excluded stages, allocation choices, and any missing upstream dataset."
+reference_flow_definition:
+  reference_amount: "1 kg"
+  product_flow_ref:
+    name: "Rice milk"
+    uuid: "9f4c117d-e8ff-488f-89f6-c2ab7ca763e1"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "rice ingredient form and origin"
+    - "formulation and fortification"
+    - "total-solids or dry-matter content"
+    - "heat-treatment route"
+    - "shelf-stable or chilled state"
+    - "primary packaging format and net fill"
+    - "production geography and reference period"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "Reference rice milk"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Report net beverage mass excluding primary packaging; convert volume records with a measured or documented batch-specific density and retain the density, temperature, and source record."
+  - id: ingredient_mass_basis
+    applies_to: "Rice, water, additives, enzymes, and other formulation inputs"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Record as-received mass and separately report concentration, moisture, or solids content where it affects formulation or comparability; do not silently convert dry matter to as-received mass."
+  - id: energy_consistency
+    applies_to: "Electricity and thermal-energy records"
+    required_property_ref:
+      name: "Energy"
+      uuid: ""
+    required_unit: "kWh for electricity; MJ for fuels, steam, or heat"
+    rule: "Preserve metered units and conversion factors; do not mix purchased energy with useful process heat without stating efficiency and calculation method."
+  - id: packaging_separation
+    applies_to: "Primary and secondary packaging"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Report each packaging material separately per 1 kg net beverage and do not include packaging mass in the reference product amount."
+process_map:
+  - id: rice_preparation
+    name: "Rice ingredient receiving and preparation"
+    inclusion: "required"
+    inclusion_condition: "Always; operations not used for pre-cleaned flour or syrup are recorded as not applicable"
+    role: "Foreground raw-material preparation"
+    quantitative_reference: "kg prepared rice ingredient transferred forward"
+  - id: slurry_conversion
+    name: "Slurry preparation and starch conversion"
+    inclusion: "required"
+    inclusion_condition: "Always; gelatinisation and enzyme use are conditional on the declared rice ingredient and recipe"
+    role: "Foreground extraction and conversion"
+    quantitative_reference: "kg converted rice slurry"
+  - id: separation_formulation
+    name: "Separation, blending, and fortification"
+    inclusion: "required"
+    inclusion_condition: "Always; physical separation is recorded as not applicable for routes without insoluble-residue removal"
+    role: "Foreground formulation"
+    quantitative_reference: "kg formulated beverage base"
+  - id: stabilisation_treatment
+    name: "Homogenisation and thermal treatment"
+    inclusion: "required"
+    inclusion_condition: "Always; record the actual homogenisation and pasteurisation, sterilisation, or UHT route"
+    role: "Foreground product stabilisation and food-safety treatment"
+    quantitative_reference: "kg treated rice milk"
+  - id: filling_storage
+    name: "Filling, packaging, cooling, and plant storage"
+    inclusion: "required"
+    inclusion_condition: "Always; cooling and refrigerated storage apply only to chilled products"
+    role: "Foreground finishing"
+    quantitative_reference: "kg saleable rice milk at plant gate"
+process_inventory:
+  - id: rice_preparation
+    label: "Rice ingredient receiving and preparation"
+    inputs:
+      product:
+        - row_id: rice_input
+          role: "Rice ingredient"
+          name: "Rice or declared rice-derived ingredient"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the actual rice, broken rice, rice flour, or rice syrup entering production, including supplier, origin, as-received mass, and solids or moisture basis."
+          amount:
+            expression: "measured as-received mass consumed by released production"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg saleable rice milk"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_rice_preparation_batch
+              source_ids:
+                - sahni-cereal-beverages-2023
+            ranges:
+              - role: default_estimate
+                lower: "0.05"
+                upper: "0.30"
+                unit: "kg/kg rice milk"
+                basis: "broad initial estimate per 1 kg saleable rice milk; replace with formulation and batch records"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: prepared_rice
+          role: "Prepared rice ingredient"
+          name: "Prepared rice ingredient"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Transfer the measured prepared rice, flour, syrup, or milled material to slurry preparation and retain any moisture or solids adjustment."
+          amount:
+            expression: "measured transfer mass or calculated dry-matter-equivalent transfer"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per kg prepared rice ingredient transferred"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_rice_preparation_batch
+              source_ids:
+                - sahni-cereal-beverages-2023
+            ranges: []
+      waste:
+        - row_id: rice_preparation_rejects
+          role: "Rejected rice and cleaning residues"
+          name: "Rice preparation residues"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record rejected grain, foreign material, dust, and other cleaning residues leaving the process, with destination and treatment route."
+          amount:
+            expression: "measured or reconciled reject mass"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg saleable rice milk"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_rice_preparation_batch
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.05"
+                unit: "kg/kg rice milk"
+                basis: "broad initial reject fraction per 1 kg saleable rice milk; replace with site records"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        []
+  - id: slurry_conversion
+    label: "Slurry preparation and starch conversion"
+    inputs:
+      product:
+        - row_id: conversion_rice_input
+          role: "Prepared rice ingredient"
+          name: "Prepared rice ingredient"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the prepared rice ingredient transferred from the preceding process."
+          amount:
+            expression: "measured transfer mass"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg converted slurry output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_slurry_conversion_batch
+              source_ids:
+                - sahni-cereal-beverages-2023
+            ranges: []
+        - row_id: conversion_water
+          role: "Process and formulation water"
+          name: "Process water"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record water added for slurry formation, washing within this process, dilution, and enzyme reactions; keep cleaning-in-place water in its own utility record when separately metered."
+          amount:
+            expression: "metered or batch-recipe water consumed"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg saleable rice milk"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_slurry_conversion_batch
+              source_ids:
+                - sahni-cereal-beverages-2023
+                - tu-rice-milk-processing-2025
+            ranges:
+              - role: default_estimate
+                lower: "0.70"
+                upper: "1.50"
+                unit: "kg/kg rice milk"
+                basis: "broad initial formulation and process-water estimate per 1 kg saleable rice milk; replace with recipe and meter records"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: conversion_enzymes
+          role: "Processing enzymes"
+          name: "Food-processing enzyme preparation"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record alpha-amylase, glucoamylase, or other enzymes when used, including commercial preparation mass, activity, and carrier concentration."
+          amount:
+            expression: "measured commercial enzyme preparation consumed"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg converted slurry output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_slurry_conversion_batch
+              source_ids:
+                - sahni-cereal-beverages-2023
+                - tu-rice-milk-processing-2025
+            ranges: []
+        - row_id: conversion_electricity
+          role: "Conversion electricity"
+          name: "Electricity, supplied to rice-milk conversion"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record electricity used for milling, pumping, agitation, and conversion equipment, allocated from submetered or documented equipment records."
+          amount:
+            expression: "metered electricity or calculated equipment load multiplied by operating time"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg saleable rice milk"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_slurry_conversion_batch
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0.01"
+                upper: "1.00"
+                unit: "kWh/kg rice milk"
+                basis: "broad initial conversion-electricity estimate per 1 kg saleable rice milk; replace with metered data"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: conversion_heat
+          role: "Conversion heat"
+          name: "Process heat supplied to rice-milk conversion"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Record fuel, steam, or purchased heat used for roasting when applied, gelatinisation, liquefaction, and saccharification temperature control."
+          amount:
+            expression: "metered heat or fuel use converted with documented net calorific value and efficiency"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg saleable rice milk"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_slurry_conversion_batch
+              source_ids:
+                - tu-rice-milk-processing-2025
+            ranges:
+              - role: qa_guardrail
+                lower: "0.10"
+                upper: "5.00"
+                unit: "MJ/kg rice milk"
+                basis: "broad initial thermal-energy estimate per 1 kg saleable rice milk; replace with metered fuel, steam, or heat records"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: converted_slurry
+          role: "Converted rice slurry"
+          name: "Converted rice slurry"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the mass and solids content of converted slurry transferred to separation and formulation."
+          amount:
+            expression: "measured transfer mass with solids content"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg converted slurry output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_slurry_conversion_batch
+              source_ids:
+                - sahni-cereal-beverages-2023
+                - tu-rice-milk-processing-2025
+            ranges: []
+      waste:
+        - row_id: conversion_wastewater
+          role: "Conversion losses and cleaning wastewater"
+          name: "Rice-processing wastewater and conversion losses"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record drained slurry, off-spec material, and wastewater from this process separately where meters or batch records permit; report treatment destination."
+          amount:
+            expression: "measured discharge mass or volume converted using measured density"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg saleable rice milk"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_slurry_conversion_batch
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "1.00"
+                unit: "kg/kg rice milk"
+                basis: "broad initial process wastewater estimate per 1 kg saleable rice milk; replace with discharge records"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        []
+  - id: separation_formulation
+    label: "Separation, blending, and fortification"
+    inputs:
+      product:
+        - row_id: formulation_slurry_input
+          role: "Converted rice slurry"
+          name: "Converted rice slurry"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record converted slurry received from starch conversion."
+          amount:
+            expression: "measured transfer mass"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg formulated beverage base"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_formulation_batch
+              source_ids: []
+            ranges: []
+        - row_id: formulation_ingredients
+          role: "Formulation and fortification ingredients"
+          name: "Declared formulation ingredients"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record vegetable oil, sweeteners, salt, flavours, stabilisers, emulsifiers, vitamins, minerals, and other recipe ingredients separately with commercial concentration and supplier data."
+          amount:
+            expression: "measured quantity of each commercial ingredient added"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg saleable rice milk"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_formulation_batch
+              source_ids:
+                - sahni-cereal-beverages-2023
+                - tu-rice-milk-processing-2025
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: formulated_base
+          role: "Formulated rice beverage base"
+          name: "Formulated rice beverage base"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the mass, solids content, and formulation identifier of the beverage base sent to stabilisation and thermal treatment."
+          amount:
+            expression: "measured transfer mass"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg formulated beverage base"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_formulation_batch
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: separation_residue
+          role: "Insoluble rice residue and filtration losses"
+          name: "Insoluble rice residue"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record retained solids, filter losses, and their destination; distinguish marketable co-product from waste sent to treatment."
+          amount:
+            expression: "measured wet mass with dry-matter content and destination"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg saleable rice milk"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_formulation_batch
+              source_ids:
+                - sahni-cereal-beverages-2023
+                - tu-rice-milk-processing-2025
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.20"
+                unit: "kg wet residue/kg rice milk"
+                basis: "broad initial wet-residue estimate per 1 kg saleable rice milk; replace with measured residue mass and dry matter"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        []
+  - id: stabilisation_treatment
+    label: "Homogenisation and thermal treatment"
+    inputs:
+      product:
+        - row_id: treatment_base_input
+          role: "Formulated rice beverage base"
+          name: "Formulated rice beverage base"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the formulated base entering homogenisation and heat treatment."
+          amount:
+            expression: "measured transfer mass"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg treated rice milk"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_treatment_batch
+              source_ids: []
+            ranges: []
+        - row_id: treatment_electricity
+          role: "Treatment electricity"
+          name: "Electricity, supplied to product treatment"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record electricity for homogenisation, pumps, control systems, and thermal-treatment equipment."
+          amount:
+            expression: "metered electricity or calculated equipment load multiplied by operating time"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg saleable rice milk"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_treatment_batch
+              source_ids:
+                - tu-rice-milk-processing-2025
+            ranges:
+              - role: qa_guardrail
+                lower: "0.01"
+                upper: "0.50"
+                unit: "kWh/kg rice milk"
+                basis: "broad initial treatment-electricity estimate per 1 kg saleable rice milk; replace with metered data"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: treatment_heat
+          role: "Treatment heat"
+          name: "Process heat supplied to thermal treatment"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Record steam, fuel, or purchased heat for pasteurisation, sterilisation, or UHT processing and retain time-temperature records."
+          amount:
+            expression: "metered heat or fuel use converted with documented net calorific value and efficiency"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg saleable rice milk"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_treatment_batch
+              source_ids:
+                - tu-rice-milk-processing-2025
+            ranges:
+              - role: qa_guardrail
+                lower: "0.10"
+                upper: "3.00"
+                unit: "MJ/kg rice milk"
+                basis: "broad initial thermal-treatment energy estimate per 1 kg saleable rice milk; replace with metered data"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: treated_rice_milk
+          role: "Treated rice milk"
+          name: "Rice milk"
+          flow_type: "product"
+          flow_ref:
+            uuid: "9f4c117d-e8ff-488f-89f6-c2ab7ca763e1"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record treated product mass and actual homogenisation and heat-treatment parameters released to filling."
+          amount:
+            expression: "measured conforming product transferred to filling"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg treated rice milk output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_treatment_batch
+              source_ids:
+                - tu-rice-milk-processing-2025
+            ranges: []
+      waste:
+        - row_id: treatment_losses
+          role: "Off-spec treated product and cleaning wastewater"
+          name: "Treatment losses and wastewater"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record off-spec product, start-up or shutdown losses, and cleaning wastewater with destination."
+          amount:
+            expression: "measured or reconciled loss mass"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg saleable rice milk"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_treatment_batch
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.10"
+                unit: "kg/kg rice milk"
+                basis: "broad initial combined loss estimate per 1 kg saleable rice milk; replace with site records"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        []
+  - id: filling_storage
+    label: "Filling, packaging, cooling, and plant storage"
+    inputs:
+      product:
+        - row_id: filling_product_input
+          role: "Treated rice milk"
+          name: "Rice milk"
+          flow_type: "product"
+          flow_ref:
+            uuid: "9f4c117d-e8ff-488f-89f6-c2ab7ca763e1"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record treated rice milk entering the filling line."
+          amount:
+            expression: "measured transfer mass"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg saleable rice milk output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_filling_storage_batch
+              source_ids: []
+            ranges: []
+        - row_id: packaging_inputs
+          role: "Primary and secondary packaging"
+          name: "Declared beverage packaging materials"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record each packaging material and component separately, including container, closure, label, sleeve, carton, and pallet share when within the declared boundary."
+          amount:
+            expression: "issued packaging less documented returns and unused stock, reconciled to conforming filled units"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net saleable rice milk"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_filling_storage_batch
+              source_ids:
+                - eu-pef-2021
+            ranges:
+              - role: qa_guardrail
+                lower: "0.01"
+                upper: "0.20"
+                unit: "kg packaging/kg net rice milk"
+                basis: "broad initial packaging estimate per 1 kg net saleable rice milk; replace with bill-of-material and fill-count records"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: filling_storage_electricity
+          role: "Filling and storage electricity"
+          name: "Electricity, supplied to filling and storage"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record electricity for filling, sealing, conveyors, cooling, and on-site product storage during the declared residence time."
+          amount:
+            expression: "metered electricity allocated to released production using operating time or mass throughput"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg saleable rice milk"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_filling_storage_batch
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0.005"
+                upper: "0.50"
+                unit: "kWh/kg rice milk"
+                basis: "broad initial electricity estimate including declared on-site storage; replace with metered data"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: reference_product_output
+          role: "Saleable packaged rice milk"
+          name: "Rice milk"
+          flow_type: "product"
+          flow_ref:
+            uuid: "9f4c117d-e8ff-488f-89f6-c2ab7ca763e1"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This is the reference product output. Record net beverage mass separately from packaging mass and retain released fill-count and quality records."
+          amount:
+            expression: "1 kg net mass of released rice milk"
+            value_mode: "fixed_value"
+            specificity: "not_applicable"
+            basis:
+              text: "1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "identity_reference"
+              collection_protocol_id: cp_filling_storage_batch
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: filling_waste
+          role: "Packaging scrap and off-spec filled product"
+          name: "Packaging and filled-product waste"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record damaged packaging, line scrap, rejected filled units, and returned product separately by material and destination."
+          amount:
+            expression: "measured scrap and rejected-product mass"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg saleable rice milk"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_filling_storage_batch
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.10"
+                unit: "kg/kg rice milk"
+                basis: "broad initial combined filling-loss estimate per 1 kg saleable rice milk; replace with site records"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocation_avoid
+    applies_to: "Processes producing rice milk and another valuable output"
+    rule: "Avoid allocation by separately metering or subdividing independently operated preparation, separation, utility, and packaging activities whenever technically feasible."
+    source_ids:
+      - eu-pef-2021
+  - rule_id: allocation_physical_then_economic
+    applies_to: "Marketable rice solids, syrup, or other co-products"
+    rule: "Where subdivision is not feasible, use a documented physical causal relationship when it represents how inputs and energy generate the co-products; otherwise use economic allocation based on representative prices and disclose quantities, prices, period, and sensitivity."
+    source_ids:
+      - eu-pef-2021
+  - rule_id: allocation_waste_and_recycling
+    applies_to: "Residues, wastewater, packaging scrap, and recovered materials"
+    rule: "Classify each output as co-product, recyclable material, or waste before assigning burdens. Include foreground collection and treatment burdens; apply avoided-burden or recycling credits only when the downstream model declares the method and prevents double counting."
+    source_ids:
+      - eu-pef-2021
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_rice_preparation_batch
+      process_id: "rice_preparation"
+      flow_role: "rice input, prepared transfer, and rejects"
+      record_type: "receiving tickets; lot records; scales; moisture or solids tests"
+      raw_fields: "lot_id; rice_form; supplier; origin; input_kg; moisture_or_solids_percent; prepared_output_kg; reject_kg; reject_destination"
+      collection_method: "Calibrated mass measurement reconciled by production lot"
+      unit: "kg; percent"
+      frequency: "Each received and processed lot"
+      temporal_coverage: "Declared representative production period"
+      site_scope: "All rice preparation serving the reported product"
+      aggregation_rule: "Sum mass by lot and normalize to conforming reference product; preserve dry-matter adjustments separately"
+      quality_evidence: "Scale calibration; supplier specification; lot traceability; moisture or solids test"
+    - protocol_id: cp_slurry_conversion_batch
+      process_id: "slurry_conversion"
+      flow_role: "water, enzymes, energy, converted slurry, and losses"
+      record_type: "recipe; water meter; ingredient issue; electricity meter; fuel or steam meter; batch transfer and discharge records"
+      raw_fields: "batch_id; water_kg; enzyme_product_kg; enzyme_activity; electricity_kWh; heat_MJ; slurry_output_kg; slurry_solids_percent; loss_kg"
+      collection_method: "Batch recipe and calibrated meters; equipment-load calculation only when submetering is unavailable"
+      unit: "kg; kWh; MJ; percent"
+      frequency: "Each batch with utility totals reconciled at least monthly"
+      temporal_coverage: "Declared representative production period"
+      site_scope: "All conversion equipment and shared utilities serving the reported product"
+      aggregation_rule: "Sum product-specific records; allocate shared utilities by documented operating time or mass throughput; normalize to conforming reference product"
+      quality_evidence: "Meter calibration; recipe approval; equipment runtime; conversion factor record"
+    - protocol_id: cp_formulation_batch
+      process_id: "separation_formulation"
+      flow_role: "formulation ingredients, beverage base, and residues"
+      record_type: "formulation sheet; ingredient issue; transfer scale; filter or residue records"
+      raw_fields: "batch_id; ingredient_id; ingredient_kg; concentration; base_output_kg; solids_percent; residue_wet_kg; residue_dry_matter_percent; destination"
+      collection_method: "Batch-level mass records and laboratory solids measurements"
+      unit: "kg; percent"
+      frequency: "Each batch"
+      temporal_coverage: "Declared representative production period"
+      site_scope: "All separation and blending lines serving the reported product"
+      aggregation_rule: "Sum by formulation and normalize to conforming reference product; retain each ingredient separately"
+      quality_evidence: "Approved formulation; scale calibration; laboratory method; residue destination ticket"
+    - protocol_id: cp_treatment_batch
+      process_id: "stabilisation_treatment"
+      flow_role: "treatment energy, product transfer, and losses"
+      record_type: "homogeniser log; time-temperature record; meters; batch release; cleaning and loss record"
+      raw_fields: "batch_id; input_kg; output_kg; electricity_kWh; heat_MJ; homogenisation_parameter; treatment_temperature; holding_time; loss_kg"
+      collection_method: "Automated production logs and calibrated meters reconciled to batch mass"
+      unit: "kg; kWh; MJ; process parameter"
+      frequency: "Each batch; utilities reconciled at least monthly"
+      temporal_coverage: "Declared representative production period"
+      site_scope: "All homogenisation and thermal-treatment equipment serving the reported product"
+      aggregation_rule: "Sum released batches and normalize energy and losses to conforming reference product"
+      quality_evidence: "Calibrated sensors and meters; validated heat-treatment program; batch release record"
+    - protocol_id: cp_filling_storage_batch
+      process_id: "filling_storage"
+      flow_role: "packaged output, packaging, electricity, and filling waste"
+      record_type: "packaging bill of materials; issue and return records; fill counts; checkweigher; electricity meter; storage log; scrap record"
+      raw_fields: "sku; packaging_material; issued_kg; returned_kg; good_units; net_fill_kg; product_output_kg; electricity_kWh; storage_duration; scrap_kg"
+      collection_method: "Inventory reconciliation, calibrated checkweigher, and metered energy"
+      unit: "kg; kWh; hour or day"
+      frequency: "Each production run; energy and inventory reconciled at least monthly"
+      temporal_coverage: "Declared representative production period"
+      site_scope: "Filling, cooling, and on-site storage serving the reported product"
+      aggregation_rule: "Calculate net beverage separately from packaging; normalize material and energy totals to released beverage mass"
+      quality_evidence: "Packaging specification; mass-balance reconciliation; checkweigher calibration; release record"
+  calculation_rules:
+    - id: calc_mass_normalisation
+      applies_to: "All mass inventory rows"
+      rule: "normalized amount = eligible foreground mass / net mass of released conforming rice milk"
+      inputs:
+        - input
+        - output
+        - residue
+        - "or waste mass"
+        - "released rice-milk mass"
+      output: "kg per kg rice milk"
+      source_ids: []
+    - id: calc_energy_normalisation
+      applies_to: "Electricity and thermal energy"
+      rule: "normalized energy = product-attributed energy / net mass of released conforming rice milk; document any shared-utility allocation"
+      inputs:
+        - "metered energy"
+        - "allocation driver"
+        - "released rice-milk mass"
+      output: "kWh or MJ per kg rice milk"
+      source_ids:
+        - eu-pef-2021
+    - id: calc_volume_to_mass
+      applies_to: "Volume-based beverage and water records"
+      rule: "mass = measured volume multiplied by density measured or documented for the relevant material, temperature, and batch"
+      inputs:
+        - volume
+        - density
+        - "measurement temperature"
+      output: "kg"
+      source_ids: []
+    - id: calc_packaging_intensity
+      applies_to: "Packaging inputs"
+      rule: "packaging intensity = (issued packaging - documented returns - unused closing stock attributable to the run) / net released beverage mass"
+      inputs:
+        - "packaging inventory"
+        - "fill counts"
+        - "net fill"
+        - "released beverage mass"
+      output: "kg packaging per kg rice milk"
+      source_ids: []
+    - id: calc_mass_balance
+      applies_to: "Each process and linked production batch"
+      rule: "mass-balance difference = total mass inputs - total product, co-product, waste, measured loss, and stock-change outputs; report both kg and percent of total input and investigate material unexplained differences"
+      inputs:
+        - "all mass inputs and outputs"
+        - "opening and closing stock"
+      output: "mass-balance difference in kg and percent"
+      source_ids: []
+    - id: calc_coproduct_allocation
+      applies_to: "Shared burdens requiring allocation"
+      rule: "Apply the selected physical or economic allocation factor consistently to shared inputs and emissions; retain the unallocated inventory and factor derivation"
+      inputs:
+        - "unallocated inventory"
+        - "co-product quantities"
+        - "physical relation or representative prices"
+      output: "allocated inventory per kg rice milk"
+      source_ids:
+        - eu-pef-2021
+  data_quality_requirements:
+    - id: dq_identity
+      applies_to: "Reference product"
+      requirement: "Use the specified Rice milk product-flow UUID and Mass property; declare all required qualifiers and confirm the product is rice-characterised and non-animal."
+      evidence: "Tiangong identity readback; product specification; approved formulation"
+    - id: dq_measurement
+      applies_to: "Material and energy records"
+      requirement: "Use calibrated or verified measurement systems; retain original units, conversion factors, meter boundaries, and uncertainty or estimation method."
+      evidence: "Calibration certificates; meter maps; calculation records; eu-pef-2021"
+    - id: dq_temporal
+      applies_to: "Foreground dataset"
+      requirement: "Cover the declared representative production period and include relevant seasonal, recipe, start-up, and operating modes, or disclose and justify exclusions."
+      evidence: "Dated batch and utility records; production schedule; eu-pef-2021"
+    - id: dq_completeness
+      applies_to: "Process inventory"
+      requirement: "Account for every required process and every listed material, energy, product, residue, wastewater, and packaging role, or mark it not applicable with justification."
+      evidence: "Completeness matrix; mass and energy reconciliation; waste records"
+    - id: dq_geography_technology
+      applies_to: "Foreground and upstream datasets"
+      requirement: "Match the actual plant geography, grid, fuel, rice source, treatment technology, packaging, and waste destinations; disclose proxy datasets and their limitations."
+      evidence: "Site metadata; supplier records; dataset metadata; eu-pef-2021"
+    - id: dq_product_quality
+      applies_to: "Saleable rice milk"
+      requirement: "Link inventory totals only to batches released against the declared composition, solids, food-safety, stability, heat-treatment, fill, and storage specifications."
+      evidence: "Approved specification; laboratory and release records; time-temperature log; tu-rice-milk-processing-2025"
+validation_rules:
+  - rule_id: validate_reference_flow
+    applies_to: "Reference product and functional unit"
+    rule: "Verify that 1 kg net rice milk uses product flow 9f4c117d-e8ff-488f-89f6-c2ab7ca763e1, Mass property 93a60a56-a3c8-11da-a746-0800200b9a66, unit group 93a60a57-a4c8-11da-a746-0800200c9a66, and unit kg; reject packaging-inclusive reference mass."
+    source_ids: []
+  - rule_id: validate_product_scope
+    applies_to: "Product identity"
+    rule: "Confirm rice is the characterising cereal ingredient, the beverage is non-animal and lactose-free, and every required qualifier is present; reject excluded product types."
+    source_ids:
+      - unsd-cpc-3-2025
+  - rule_id: validate_process_coverage
+    applies_to: "Foreground boundary"
+    rule: "Confirm each required process has records or an explicit not-applicable statement for route-specific operations, and confirm upstream and downstream boundary treatment is disclosed."
+    source_ids:
+      - eu-pef-2021
+      - sahni-cereal-beverages-2023
+      - tu-rice-milk-processing-2025
+  - rule_id: validate_inventory_provenance
+    applies_to: "Inventory rows"
+    rule: "Confirm every foreground or calculated amount links to its stated collection protocol and source record; flag unlabelled defaults and any reasoned estimate used as final foreground data."
+    source_ids: []
+  - rule_id: validate_mass_balance
+    applies_to: "Each process and production period"
+    rule: "Require reported mass-balance difference in kg and percent, investigate unexplained differences judged material to the dataset, and retain corrective-action or acceptance evidence."
+    source_ids: []
+  - rule_id: validate_allocation
+    applies_to: "Co-products, residues, and recycled materials"
+    rule: "Confirm classification of each output, documented allocation hierarchy and factor, sensitivity where economic allocation is used, and no double-counted recycling or avoided-burden credit."
+    source_ids:
+      - eu-pef-2021
+  - rule_id: validate_data_quality
+    applies_to: "Dataset release"
+    rule: "Confirm calibration, temporal coverage, technology and geography match, completeness, product release, and proxy disclosures meet the declared data-quality requirements."
+    source_ids:
+      - eu-pef-2021
+published_dataset_profile:
+  dataset_role: "Foreground production dataset for finished rice milk at the manufacturing plant gate"
+  downstream_use: "secondary_dataset; background_dataset"
+  allowed_use: "Product and process modelling where rice-milk formulation, production route, geography, time period, packaging, and storage state match the declared dataset or are adjusted transparently"
+  excluded_use: "Direct product comparisons or public comparative claims without equivalent functional performance, system boundary, allocation, data quality, geography, time period, and packaging; modelling excluded product types; use of provisional reasoned estimates as verified site data"
+  required_metadata: "PCR id and version when published; product-flow UUID; formulation and fortification; rice ingredient form and origin; solids content; production route; heat treatment; site geography; reference period; packaging; storage state; allocation; upstream datasets; collection protocols"
+  required_quality_disclosure: "Data coverage and gaps; metering and calculation methods; mass-balance result; allocation factors; proxy datasets; reasoned estimates; excluded stages; product release evidence; uncertainty and limitations"
+  update_trigger: "Material change in rice source or form, formulation, solids content, conversion or heat-treatment technology, plant or energy supply, packaging, storage regime, co-product route, allocation basis, waste treatment, or representative production period"
+data_sources:
+  - id: "unsd-cpc-3-2025"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, *Central Product Classification (CPC) Version 3.0 Explanatory Notes*, 2025, https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Exp_Notes_30Jun2025.pdf (retrieved 2026-08-11)"
+    used_for: "CPC 24424 classification identity and rice-milk product scope"
+  - id: "eu-pef-2021"
+    type: "official_guidance"
+    reference: "European Commission, *Commission Recommendation (EU) 2021/2279 on the use of the Environmental Footprint methods to measure and communicate the life cycle environmental performance of products and organisations*, 2021, https://eur-lex.europa.eu/eli/reco/2021/2279/oj/eng (retrieved 2026-08-11)"
+    used_for: "Life-cycle boundary linkage, purchased-input and packaging modelling, allocation hierarchy, data quality, and downstream disclosure"
+  - id: "sahni-cereal-beverages-2023"
+    type: "literature"
+    reference: "Sahni et al., *A comprehensive review on functional beverages from cereal grains—characterization of nutraceutical potential, processing technologies and product types*, 2023, https://pmc.ncbi.nlm.nih.gov/articles/PMC10275771/ (retrieved 2026-08-11)"
+    used_for: "Commercial rice-milk process decomposition: milling, water addition, starch hydrolysis, filtering, fortification, and homogenisation"
+  - id: "tu-rice-milk-processing-2025"
+    type: "literature"
+    reference: "Tu et al., *Influence of homogenization and pasteurization on the physical characteristics, antioxidant properties, and microbial content of VD20 rice milk*, Scientific Reports 15, 9683 (2025), DOI: 10.1038/s41598-025-88436-z"
+    used_for: "Rice-milk batch process stages, mass-transfer points, homogenisation, thermal-treatment records, and product-quality evidence"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:f44e9784faaed672524e034d42b98c177a91746c3a6f759b287442f673d1ced3"
+  generated_content_sha256: "sha256:2f2dfd941b6908377f25cbbc94dff1f6a0fadaa21aa6d3509aa2ba6729e4fd25"

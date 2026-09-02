@@ -1,10 +1,872 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "26320"
-  title: "Yarn of wool, containing 85% or more by weight of wool, not put up for retail sale"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.food-products-beverages-and-tobacco-textiles-apparel-and-leather-products.yarn-and-thread-woven-and-tufted-textile-fabrics.yarn-of-wool-containing-85-or-more-by-weight-of-wool-not-put-up-for-retail-sale"
+  classification_refs: "CPC 3.0: 26320, exact semantic reference"
+  covered_products: "Single, folded, or cabled industrial wool yarn containing at least 85% wool by mass, supplied in non-retail form"
+  excluded_products: "Yarn below 85% wool by mass; retail yarn packages; sewing thread; yarn principally of fine or coarse animal hair other than wool; woven, knitted, tufted, or otherwise finished fabric"
+  representative_product: "Finished bulk wool yarn containing at least 85% wool by mass, wound for industrial delivery"
+  production_route: "Declared woollen or worsted spinning route from prepared wool input through spinning, winding, conditioning, and industrial packing"
+  market_state: "Factory-gate industrial yarn, non-retail, with declared fibre composition, dye state, linear density, twist, ply count, winding form, and conditioning state"
+functional_unit:
+  what: "Industrial wool yarn suitable for the declared downstream weaving, knitting, or other textile conversion"
+  how_much: "1 kg of finished yarn at the declared conditioning state"
+  how_well: "At least 85% wool by mass and conforming to the declared linear density, twist direction and level, ply count, dye state, winding form, and quality specification"
+  how_long_or_cycle: "One completed production batch or campaign measured at the yarn-mill gate"
+  reference_flow_link: "wool_yarn_output"
+system_boundary:
+  rules:
+    - rule_id: boundary_starting_condition
+      applies_to: "all foreground packages"
+      rule: "Begin at the physically declared prepared-wool receipt point and include every onsite operation through accepted non-retail yarn at the factory gate."
+      source_ids:
+        - bianco-et-al-2023-wool-lca
+    - rule_id: boundary_route_separation
+      applies_to: "woollen and worsted routes"
+      rule: "Identify route-specific carding, gilling, combing, drawing, roving, spinning, and winding steps; do not average materially different routes without reporting their production-weighted shares."
+      source_ids:
+        - bianco-et-al-2023-wool-lca
+    - rule_id: boundary_secondary_fibres
+      applies_to: "yarn containing less than 100% wool"
+      rule: "Record every non-wool fibre as its own specifically named product input and verify that the final yarn contains at least 85% wool by mass."
+      source_ids:
+        - unsd-cpc-3-2025
+    - rule_id: boundary_wet_processing
+      applies_to: "onsite scouring, dyeing, rinsing, or finishing"
+      rule: "These activities are outside the default boundary; when onsite, add their water, energy, process chemicals, wastewater, waste gas, and waste as separate atomic exchanges and apply relevant textile BAT monitoring."
+      source_ids:
+        - ec-jrc-textiles-bref-2023
+        - eu-textiles-bat-2022
+boundary_abstraction:
+  declared_starting_condition: "Scoured wool, wool top, or another specifically named prepared wool input received at the yarn mill"
+  starting_condition_role: "Upstream product input whose previous farming, scouring, carbonising, dyeing, or top-making burdens are represented by a supplier or secondary dataset"
+  product_classification_scope: "Finished yarn matching CPC 3.0 code 26320; classification does not replace the declared physical product boundary"
+  recursive_input_rule: "Reprocessed yarn that already matches this category shall be recorded as one atomic yarn product input with its own upstream dataset and shall not be recursively expanded through this PCR inside the same foreground process"
+  upstream_dataset_requirement: "Each wool, secondary-fibre, chemical, utility, and packing input crossing the foreground boundary requires a geographically, technologically, and temporally appropriate upstream dataset or a documented data gap"
+  disclosure: "Declare starting material state, fibre composition, route, onsite versus outsourced steps, dye state, conditioning method, energy supply, waste fate, recovered co-products, packing form, geography, site, and production period"
+reference_flow_definition:
+  reference_amount: "1 kg"
+  product_flow_ref:
+    name: "Yarn of wool, containing 85% or more by weight of wool, not put up for retail sale"
+    uuid: "10c7de33-bef0-4310-98e7-734d8e2e4c9f"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "wool mass fraction"
+    - "woollen or worsted route"
+    - virgin
+    - recycled
+    - "or mixed wool feed"
+    - "fibre source and supplier"
+    - "dyed or undyed state"
+    - "linear density in tex"
+    - "twist direction and level"
+    - "ply count"
+    - "winding form"
+    - "moisture or conditioning state"
+    - site
+    - geography
+    - "production period"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "final reference yarn and all mass-normalized exchanges"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Measure the accepted finished-yarn mass at the declared conditioning state and use that same state for batch normalization; disclose any moisture correction."
+  - id: yarn_linear_density
+    applies_to: "final reference yarn"
+    required_property_ref:
+      name: "Linear density"
+      uuid: ""
+    required_unit: "tex"
+    rule: "Report yarn linear density in tex or convert the declared count system to tex using a documented conversion consistent with ISO 1144."
+  - id: packaged_product_separation
+    applies_to: "final yarn and industrial packing"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Report net yarn mass separately from paper cores, boxes, and any other individually identified packing components."
+  - id: electricity_energy
+    applies_to: "electricity exchanges"
+    required_property_ref:
+      name: "Net calorific value"
+      uuid: "93a60a56-a3c8-11da-a746-0800200c9a66"
+    required_unit: "kWh"
+    rule: "Preserve metered electricity in kWh; if another energy unit is used, document the conversion and retain the verified less-than-1-kV user consumption-mix identity."
+process_map:
+  - id: fibre_preparation
+    name: "Fibre preparation, blending, and route-specific carding or combing"
+    inclusion: "required"
+    inclusion_condition: "Include only operations performed at the reporting yarn mill; disclose purchased top or sliver operations as upstream when already embodied in the input"
+    role: "Foreground prepared-fibre production"
+    quantitative_reference: "kg prepared wool sliver transferred to spinning"
+  - id: spinning_and_winding
+    name: "Spinning, optional plying, and winding"
+    inclusion: "required"
+    inclusion_condition: "Plying is included only for folded or cabled yarn; all reported products require spinning and winding"
+    role: "Foreground yarn formation"
+    quantitative_reference: "kg unconditioned bulk wool yarn transferred to final conditioning and packing"
+  - id: conditioning_and_packing
+    name: "Final conditioning and industrial packing"
+    inclusion: "required"
+    inclusion_condition: "Direct water use is included only when water crosses the process boundary; every actual packing component is recorded separately"
+    role: "Foreground final-product preparation"
+    quantitative_reference: "kg accepted finished wool yarn at the declared conditioning state"
+process_inventory:
+  - id: fibre_preparation
+    label: "Fibre preparation, blending, and route-specific carding or combing"
+    inputs:
+      product:
+        - row_id: scoured_wool_input
+          role: "Received scoured wool"
+          name: "Scoured Wool"
+          flow_type: "product"
+          flow_ref:
+            uuid: "1f286780-8831-47b4-88dd-582d6b7f8947"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record scoured, degreased wool when it is the prepared-wool starting input to onsite opening, blending, or carding. Do not use this row for greasy raw wool."
+          amount:
+            expression: "measured received mass reconciled to stock movements for the reporting batch"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg prepared wool sliver transferred to spinning"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_fibre_materials
+              source_ids:
+                - bianco-et-al-2023-wool-lca
+            ranges: []
+        - row_id: wool_top_input
+          role: "Received wool top"
+          name: "Wool top"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record purchased wool top only when it crosses the foreground boundary as a separately measured feedstock. Its UUID remains unresolved because the retrieved candidate carried an incompatible yarn classification."
+          amount:
+            expression: "measured received mass reconciled to stock movements for the reporting batch"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg prepared wool sliver transferred to spinning"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_fibre_materials
+              source_ids:
+                - bianco-et-al-2023-wool-lca
+            ranges: []
+        - row_id: fibre_preparation_electricity_input
+          role: "Less-than-1-kV grid electricity for fibre preparation"
+          name: "Alternating current; less than 1 kV; consumption mix at user; electricity mix"
+          flow_type: "product"
+          flow_ref:
+            uuid: "50657322-939c-4829-a87b-47c093bfa6a7"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200c9a66 / kWh"
+          description: "Record electricity consumed by opening, blending, carding, gilling, combing, drawing, roving, extraction, and directly attributable auxiliary equipment in this process."
+          amount:
+            expression: "process-submeter reading or documented allocation from the site meter"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg prepared wool sliver transferred to spinning"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_fibre_energy
+              source_ids:
+                - bianco-et-al-2023-wool-lca
+                - eu-textiles-bat-2022
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: prepared_wool_sliver_output
+          role: "Prepared wool sliver transferred to spinning"
+          name: "Prepared wool sliver"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the single prepared wool sliver intermediate leaving fibre preparation. Keep woollen and worsted route identity in the batch record."
+          amount:
+            expression: "measured transfer mass at the process hand-off"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg prepared wool sliver transferred to spinning"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_fibre_materials
+              source_ids:
+                - bianco-et-al-2023-wool-lca
+            ranges: []
+      waste:
+        - row_id: fibre_preparation_waste_output
+          role: "Wool fibre waste from fibre preparation"
+          name: "Wool fibre preparation waste"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record the measured wool fibre waste removed during opening, carding, combing, and related preparation. Disclose whether it is recycled, sold, treated, or disposed."
+          amount:
+            expression: "measured waste mass by batch and destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg prepared wool sliver transferred to spinning"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_fibre_waste
+              source_ids:
+                - bianco-et-al-2023-wool-lca
+                - eu-textiles-bat-2022
+            ranges: []
+      elementary:
+        - row_id: fibre_preparation_pm10_output
+          role: "PM10 emitted through an urban high stack"
+          name: "particles (PM10), emissions to urban air high stack"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "9fbb5096-ed5b-11e6-bc64-92361f002671"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record PM10 only for channelled fibre-preparation emissions released to the verified urban-air high-stack compartment. Use a different atomic elementary flow when the actual receiving compartment differs."
+          amount:
+            expression: "measured emission mass or a documented calculation from airflow and concentration records"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per kg prepared wool sliver transferred to spinning"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_fibre_air_emissions
+              source_ids:
+                - eu-textiles-bat-2022
+            ranges: []
+  - id: spinning_and_winding
+    label: "Spinning, optional plying, and winding"
+    inputs:
+      product:
+        - row_id: prepared_wool_sliver_input
+          role: "Prepared wool sliver received from fibre preparation"
+          name: "Prepared wool sliver"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the same physical prepared wool sliver transferred from the preceding foreground process."
+          amount:
+            expression: "measured transfer mass reconciled with prepared_wool_sliver_output"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg unconditioned bulk wool yarn transferred to final conditioning and packing"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_spinning_materials
+              source_ids:
+                - bianco-et-al-2023-wool-lca
+            ranges: []
+        - row_id: spinning_electricity_input
+          role: "Less-than-1-kV grid electricity for spinning and winding"
+          name: "Alternating current; less than 1 kV; consumption mix at user; electricity mix"
+          flow_type: "product"
+          flow_ref:
+            uuid: "50657322-939c-4829-a87b-47c093bfa6a7"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200c9a66 / kWh"
+          description: "Record electricity consumed by spinning, optional plying, winding, extraction, compressed-air generation attributable to this process, and directly attributable auxiliary equipment."
+          amount:
+            expression: "process-submeter reading or documented allocation from the site meter"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg unconditioned bulk wool yarn transferred to final conditioning and packing"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_spinning_energy
+              source_ids:
+                - bianco-et-al-2023-wool-lca
+                - eu-textiles-bat-2022
+            ranges: []
+        - row_id: spinning_lubricant_input
+          role: "Mineral-oil-based wool spinning lubricant"
+          name: "Mineral-oil-based wool spinning lubricant"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record this lubricant only when a mineral-oil-based wool spinning lubricant is actually dosed. Other lubricants shall be added as their own atomic product flows rather than substituted into this row."
+          amount:
+            expression: "measured issued mass minus documented returned stock for the reporting batch"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg unconditioned bulk wool yarn transferred to final conditioning and packing"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_spinning_materials
+              source_ids:
+                - eu-textiles-bat-2022
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: unconditioned_wool_yarn_output
+          role: "Unconditioned bulk wool yarn transferred to final preparation"
+          name: "Unconditioned bulk wool yarn containing at least 85% wool by mass"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the single non-retail yarn intermediate before final conditioning and packing. It shall contain at least 85% wool by mass."
+          amount:
+            expression: "measured transfer mass before final conditioning and industrial packing"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg unconditioned bulk wool yarn transferred to final conditioning and packing"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_spinning_materials
+              source_ids:
+                - bianco-et-al-2023-wool-lca
+            ranges: []
+      waste:
+        - row_id: spinning_waste_output
+          role: "Wool fibre waste from spinning and winding"
+          name: "wool spinning waste"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "db23708c-5c2f-4b7e-9098-910948275caa"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record the measured soft waste and hard waste leaving spinning and winding as this single wool-spinning-waste flow only when they share the same treatment route; otherwise split treatment-distinct wastes into separate atomic rows."
+          amount:
+            expression: "measured waste mass by batch and destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg unconditioned bulk wool yarn transferred to final conditioning and packing"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_spinning_waste
+              source_ids:
+                - bianco-et-al-2023-wool-lca
+                - eu-textiles-bat-2022
+            ranges: []
+      elementary:
+        - row_id: spinning_pm10_output
+          role: "PM10 emitted through an urban high stack during spinning"
+          name: "particles (PM10), emissions to urban air high stack"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "9fbb5096-ed5b-11e6-bc64-92361f002671"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record PM10 only for channelled spinning or winding emissions released to the verified urban-air high-stack compartment. Use a different atomic elementary flow when the actual receiving compartment differs."
+          amount:
+            expression: "measured emission mass or a documented calculation from airflow and concentration records"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per kg unconditioned bulk wool yarn transferred to final conditioning and packing"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_spinning_air_emissions
+              source_ids:
+                - eu-textiles-bat-2022
+            ranges: []
+  - id: conditioning_and_packing
+    label: "Final conditioning and industrial packing"
+    inputs:
+      product:
+        - row_id: unconditioned_wool_yarn_input
+          role: "Unconditioned bulk wool yarn received for final preparation"
+          name: "Unconditioned bulk wool yarn containing at least 85% wool by mass"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the same physical unconditioned yarn transferred from spinning and winding."
+          amount:
+            expression: "measured transfer mass reconciled with unconditioned_wool_yarn_output"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg accepted finished wool yarn"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_final_materials
+              source_ids: []
+            ranges: []
+        - row_id: conditioning_electricity_input
+          role: "Less-than-1-kV grid electricity for conditioning and packing"
+          name: "Alternating current; less than 1 kV; consumption mix at user; electricity mix"
+          flow_type: "product"
+          flow_ref:
+            uuid: "50657322-939c-4829-a87b-47c093bfa6a7"
+          property_unit: "Net calorific value 93a60a56-a3c8-11da-a746-0800200c9a66 / kWh"
+          description: "Record electricity consumed by conditioning equipment, final winding, inspection, extraction, and packing equipment."
+          amount:
+            expression: "process-submeter reading or documented allocation from the site meter"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg accepted finished wool yarn"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_final_energy
+              source_ids:
+                - eu-textiles-bat-2022
+            ranges: []
+        - row_id: conditioning_process_water_input
+          role: "Process water used for direct yarn conditioning"
+          name: "Process Water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "94a04f7e-2d5c-41f0-b182-d54a3b373a02"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record process water only when it crosses the process boundary for direct yarn humidification or conditioning. Water used by an offsite utility remains in that utility dataset."
+          amount:
+            expression: "measured water delivered to the conditioning operation"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg accepted finished wool yarn"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_conditioning_water
+              source_ids:
+                - eu-textiles-bat-2022
+            ranges: []
+        - row_id: paperboard_tube_input
+          role: "Paperboard tube for yarn winding"
+          name: "Cardboard tube or Paper core"
+          flow_type: "product"
+          flow_ref:
+            uuid: "78bf7f6e-519e-4b3d-82f0-eda15b2fee61"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record the paperboard tube or paper core incorporated into the industrial yarn delivery form."
+          amount:
+            expression: "measured or purchase-record mass of tubes consumed for accepted product"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg accepted finished wool yarn"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packing_materials
+              source_ids: []
+            ranges: []
+        - row_id: corrugated_box_input
+          role: "Corrugated board box for industrial shipment"
+          name: "corrugated board boxes"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f197bec-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record corrugated board boxes used for non-retail industrial delivery. Do not use this row for paper cores, plastic film, pallets, or other packing components."
+          amount:
+            expression: "measured or purchase-record mass of boxes consumed for accepted product"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg accepted finished wool yarn"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packing_materials
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: wool_yarn_output
+          role: "Accepted finished non-retail wool yarn"
+          name: "Yarn of wool, containing 85% or more by weight of wool, not put up for retail sale"
+          flow_type: "product"
+          flow_ref:
+            uuid: "10c7de33-bef0-4310-98e7-734d8e2e4c9f"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record the accepted finished yarn after final conditioning and industrial packing checks. Packing mass is excluded from the reference amount."
+          amount:
+            expression: "measured net accepted yarn mass at the declared conditioning state"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "1 kg accepted finished wool yarn"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_final_product
+              source_ids:
+                - unsd-cpc-3-2025
+                - iso-2060-1994
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocation_subdivision_first
+    applies_to: "separately metered operations and products"
+    rule: "Avoid allocation by subdividing fibre preparation, spinning, winding, conditioning, and packing wherever their inputs and outputs are independently recorded."
+    source_ids:
+      - iso-14044-2006
+      - bianco-et-al-2023-wool-lca
+  - rule_id: allocation_internal_recycling
+    applies_to: "wool waste returned to the same batch or process"
+    rule: "Treat internally returned wool fibre as an internal loop, report the gross waste and returned amount, and do not create an avoided-product credit inside the same foreground process."
+    source_ids:
+      - bianco-et-al-2023-wool-lca
+  - rule_id: allocation_exported_co_products
+    applies_to: "noils, recoverable fibre, or other valuable outputs leaving the system"
+    rule: "Report each exported co-product separately; if subdivision or system expansion is not feasible, document and justify the chosen physical or economic allocation and provide a sensitivity result when it materially changes the yarn burden."
+    source_ids:
+      - iso-14044-2006
+      - bianco-et-al-2023-wool-lca
+  - rule_id: allocation_waste_treatment
+    applies_to: "waste sent to treatment"
+    rule: "Assign collection and treatment burdens consistently with the declared waste-treatment dataset and disclose any cut-off, recycling, or substitution convention."
+    source_ids:
+      - iso-14044-2006
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_fibre_materials
+      process_id: "fibre_preparation"
+      flow_role: "scoured_wool_input; wool_top_input; prepared_wool_sliver_output"
+      record_type: "weighbridge, scale, and stock records"
+      raw_fields: "batch_id, material_id, fibre_composition, opening_stock, received_mass, closing_stock, transfer_mass, moisture_state"
+      collection_method: "calibrated scales plus stock reconciliation"
+      unit: "kg"
+      frequency: "each batch"
+      temporal_coverage: "all batches in reporting period"
+      site_scope: "each reporting mill"
+      aggregation_rule: "sum batch inputs and transfers, then normalize to prepared sliver output"
+      quality_evidence: "calibration records, supplier specification, stock reconciliation"
+    - protocol_id: cp_fibre_energy
+      process_id: "fibre_preparation"
+      flow_role: "fibre_preparation_electricity_input"
+      record_type: "electricity meter"
+      raw_fields: "meter_id, start_reading, end_reading, shared_load_basis, batch_output"
+      collection_method: "process submeter or documented site-meter allocation"
+      unit: "kWh"
+      frequency: "each batch or shift"
+      temporal_coverage: "representative full reporting period"
+      site_scope: "each reporting mill"
+      aggregation_rule: "net consumption allocated to fibre preparation and normalized to prepared sliver output"
+      quality_evidence: "meter calibration and allocation worksheet"
+    - protocol_id: cp_fibre_waste
+      process_id: "fibre_preparation"
+      flow_role: "fibre_preparation_waste_output"
+      record_type: "waste scale and dispatch records"
+      raw_fields: "batch_id, waste_type, gross_mass, tare_mass, destination, returned_mass"
+      collection_method: "weigh each waste container or reconcile dispatch records"
+      unit: "kg"
+      frequency: "each batch and dispatch"
+      temporal_coverage: "all batches in reporting period"
+      site_scope: "each reporting mill"
+      aggregation_rule: "sum net waste by destination and normalize to prepared sliver output"
+      quality_evidence: "scale calibration, transfer note, destination evidence"
+    - protocol_id: cp_fibre_air_emissions
+      process_id: "fibre_preparation"
+      flow_role: "fibre_preparation_pm10_output"
+      record_type: "stack monitoring record"
+      raw_fields: "stack_id, airflow, PM10_concentration, operating_time, treated_output"
+      collection_method: "direct measurement or calculation from measured airflow and concentration"
+      unit: "kg"
+      frequency: "monitoring campaign and operating period"
+      temporal_coverage: "period representative of reported operation"
+      site_scope: "each applicable emission point"
+      aggregation_rule: "calculate emitted mass and normalize to prepared sliver output"
+      quality_evidence: "method, instrument calibration, sampling report"
+    - protocol_id: cp_spinning_materials
+      process_id: "spinning_and_winding"
+      flow_role: "prepared_wool_sliver_input; spinning_lubricant_input; unconditioned_wool_yarn_output"
+      record_type: "scales, issue records, and batch production log"
+      raw_fields: "batch_id, material_id, input_mass, lubricant_issued, lubricant_returned, yarn_transfer_mass, fibre_composition"
+      collection_method: "calibrated scales and stores reconciliation"
+      unit: "kg"
+      frequency: "each batch"
+      temporal_coverage: "all batches in reporting period"
+      site_scope: "each reporting mill"
+      aggregation_rule: "sum net inputs and output by batch, then normalize to unconditioned yarn output"
+      quality_evidence: "calibration records, issue vouchers, batch reconciliation"
+    - protocol_id: cp_spinning_energy
+      process_id: "spinning_and_winding"
+      flow_role: "spinning_electricity_input"
+      record_type: "electricity meter"
+      raw_fields: "meter_id, start_reading, end_reading, shared_load_basis, yarn_output"
+      collection_method: "process submeter or documented site-meter allocation"
+      unit: "kWh"
+      frequency: "each batch or shift"
+      temporal_coverage: "representative full reporting period"
+      site_scope: "each reporting mill"
+      aggregation_rule: "net consumption allocated to spinning and winding and normalized to unconditioned yarn output"
+      quality_evidence: "meter calibration and allocation worksheet"
+    - protocol_id: cp_spinning_waste
+      process_id: "spinning_and_winding"
+      flow_role: "spinning_waste_output"
+      record_type: "waste scale and dispatch records"
+      raw_fields: "batch_id, waste_type, gross_mass, tare_mass, destination, returned_mass"
+      collection_method: "weigh each waste container or reconcile dispatch records"
+      unit: "kg"
+      frequency: "each batch and dispatch"
+      temporal_coverage: "all batches in reporting period"
+      site_scope: "each reporting mill"
+      aggregation_rule: "sum net waste by destination and normalize to unconditioned yarn output"
+      quality_evidence: "scale calibration, transfer note, destination evidence"
+    - protocol_id: cp_spinning_air_emissions
+      process_id: "spinning_and_winding"
+      flow_role: "spinning_pm10_output"
+      record_type: "stack monitoring record"
+      raw_fields: "stack_id, airflow, PM10_concentration, operating_time, yarn_output"
+      collection_method: "direct measurement or calculation from measured airflow and concentration"
+      unit: "kg"
+      frequency: "monitoring campaign and operating period"
+      temporal_coverage: "period representative of reported operation"
+      site_scope: "each applicable emission point"
+      aggregation_rule: "calculate emitted mass and normalize to unconditioned yarn output"
+      quality_evidence: "method, instrument calibration, sampling report"
+    - protocol_id: cp_final_materials
+      process_id: "conditioning_and_packing"
+      flow_role: "unconditioned_wool_yarn_input"
+      record_type: "scale and transfer records"
+      raw_fields: "batch_id, input_mass, moisture_state, transfer_time"
+      collection_method: "calibrated scale at process receipt"
+      unit: "kg"
+      frequency: "each batch"
+      temporal_coverage: "all batches in reporting period"
+      site_scope: "each reporting mill"
+      aggregation_rule: "sum process input and reconcile to upstream transfer"
+      quality_evidence: "calibration and reconciliation record"
+    - protocol_id: cp_final_energy
+      process_id: "conditioning_and_packing"
+      flow_role: "conditioning_electricity_input"
+      record_type: "electricity meter"
+      raw_fields: "meter_id, start_reading, end_reading, shared_load_basis, accepted_yarn_mass"
+      collection_method: "process submeter or documented site-meter allocation"
+      unit: "kWh"
+      frequency: "each batch or shift"
+      temporal_coverage: "representative full reporting period"
+      site_scope: "each reporting mill"
+      aggregation_rule: "net consumption allocated to final preparation and normalized to accepted yarn"
+      quality_evidence: "meter calibration and allocation worksheet"
+    - protocol_id: cp_conditioning_water
+      process_id: "conditioning_and_packing"
+      flow_role: "conditioning_process_water_input"
+      record_type: "water meter"
+      raw_fields: "meter_id, start_reading, end_reading, operating_time, accepted_yarn_mass"
+      collection_method: "direct process-water meter"
+      unit: "kg"
+      frequency: "each batch or shift"
+      temporal_coverage: "representative full reporting period"
+      site_scope: "each reporting mill"
+      aggregation_rule: "net direct conditioning water normalized to accepted yarn"
+      quality_evidence: "meter calibration and water balance"
+    - protocol_id: cp_packing_materials
+      process_id: "conditioning_and_packing"
+      flow_role: "paperboard_tube_input; corrugated_box_input"
+      record_type: "purchase, issue, and mass records"
+      raw_fields: "component_id, component_mass, quantity_issued, quantity_returned, accepted_yarn_mass"
+      collection_method: "weighed representative component plus issue reconciliation"
+      unit: "kg"
+      frequency: "each packing batch"
+      temporal_coverage: "all batches in reporting period"
+      site_scope: "each reporting mill"
+      aggregation_rule: "net component mass consumed and normalized to accepted yarn"
+      quality_evidence: "scale calibration, purchase specification, issue record"
+    - protocol_id: cp_final_product
+      process_id: "conditioning_and_packing"
+      flow_role: "wool_yarn_output"
+      record_type: "final scale and quality-release record"
+      raw_fields: "batch_id, gross_mass, packing_mass, net_yarn_mass, moisture_state, wool_fraction, linear_density_tex, twist, ply_count, dye_state, winding_form, accepted_quantity"
+      collection_method: "calibrated final-product scale plus laboratory or certificate checks"
+      unit: "kg"
+      frequency: "each released batch"
+      temporal_coverage: "all released batches in reporting period"
+      site_scope: "each reporting mill"
+      aggregation_rule: "sum accepted net yarn mass only"
+      quality_evidence: "calibration, test report, release certificate"
+  calculation_rules:
+    - id: calc_process_normalization
+      applies_to: "every process inventory row"
+      rule: "Divide the batch or period exchange by the matched accepted output mass for that process; do not mix moisture states across numerator and denominator."
+      inputs:
+        - "collected exchange"
+        - "matched process output"
+        - "declared moisture state"
+      output: "exchange per kg process output"
+      source_ids:
+        - iso-14044-2006
+    - id: calc_net_packing_mass
+      applies_to: "final reference yarn"
+      rule: "Net accepted yarn mass equals measured gross packed mass minus the separately measured mass of every packing component."
+      inputs:
+        - "gross packed mass"
+        - "paper-core mass"
+        - "box mass"
+        - "other individually recorded packing masses"
+      output: "net accepted yarn mass"
+      source_ids:
+        - iso-2060-1994
+    - id: calc_pm10_mass
+      applies_to: "channelled PM10 rows"
+      rule: "Calculate emitted mass from measured concentration, measured dry-gas flow, and operating time using compatible units; preserve sampling and averaging metadata."
+      inputs:
+        - "PM10 concentration"
+        - airflow
+        - "operating time"
+      output: "PM10 emitted mass"
+      source_ids:
+        - eu-textiles-bat-2022
+    - id: calc_route_weighting
+      applies_to: "aggregated multi-route dataset"
+      rule: "Weight route-specific normalized inventories by accepted production mass and disclose every route share; retain route-specific results."
+      inputs:
+        - "route inventories"
+        - "accepted mass by route"
+      output: "production-weighted aggregate inventory"
+      source_ids:
+        - bianco-et-al-2023-wool-lca
+  data_quality_requirements:
+    - id: dq_product_identity
+      applies_to: "reference yarn"
+      requirement: "Confirm at least 85% wool by mass, non-retail market state, and all required qualifiers for each released product family."
+      evidence: "formulation or fibre test, product specification, release record"
+    - id: dq_mass_consistency
+      applies_to: "all material flows"
+      requirement: "Reconcile measured inputs, outputs, internal returns, stock change, and losses for each process and explain unresolved mass-balance differences."
+      evidence: "batch mass balance and stock reconciliation"
+    - id: dq_metering
+      applies_to: "electricity, water, and channelled emissions"
+      requirement: "Use calibrated meters or documented allocation and monitoring methods; retain meter coverage and shared-load assumptions."
+      evidence: "calibration certificate, meter map, monitoring report"
+    - id: dq_temporal_coverage
+      applies_to: "all foreground rows"
+      requirement: "Cover a representative reporting period, include seasonal or product-mix variation when material, and identify excluded downtime or abnormal operation."
+      evidence: "production calendar and coverage assessment"
+    - id: dq_route_representation
+      applies_to: "woollen and worsted production"
+      requirement: "Keep route-specific records until any production-weighted aggregation is performed."
+      evidence: "route-coded batch records and weighting worksheet"
+    - id: dq_source_traceability
+      applies_to: "all external and upstream data"
+      requirement: "Record supplier, geography, technology, time period, dataset version, and substitution rationale for every upstream dataset."
+      evidence: "dataset registry and supplier evidence"
+validation_rules:
+  - rule_id: validate_reference_identity
+    applies_to: "reference flow"
+    rule: "The final output UUID shall be 10c7de33-bef0-4310-98e7-734d8e2e4c9f, the flow type shall be Product flow, the CPC leaf shall be 26320, and the flow property shall be Mass."
+    source_ids:
+      - unsd-cpc-3-2025
+  - rule_id: validate_wool_fraction
+    applies_to: "final yarn"
+    rule: "Reject a package when the declared or tested wool mass fraction is below 85%."
+    source_ids:
+      - unsd-cpc-3-2025
+  - rule_id: validate_reference_amount
+    applies_to: "final yarn"
+    rule: "Confirm that the reference amount is 1 kg net accepted yarn at the declared conditioning state and excludes industrial packing mass."
+    source_ids:
+      - iso-2060-1994
+  - rule_id: validate_required_qualifiers
+    applies_to: "final yarn"
+    rule: "Reject an incomplete package when any required qualifier in the reference-flow definition is absent."
+    source_ids:
+      - iso-1144-2016
+      - iso-2060-1994
+  - rule_id: validate_required_processes
+    applies_to: "process map"
+    rule: "Require fibre_preparation, spinning_and_winding, and conditioning_and_packing records, with explicit zero or not-applicable evidence only when a named operation or exchange is demonstrably absent."
+    source_ids:
+      - bianco-et-al-2023-wool-lca
+  - rule_id: validate_atomic_inventory
+    applies_to: "every inventory row"
+    rule: "Each exchange shall identify one product, waste, or elementary flow; combined carriers, combined packing materials, selector instructions, and plural catch-all flows are invalid."
+    source_ids:
+      - eu-textiles-bat-2022
+  - rule_id: validate_flow_identity
+    applies_to: "UUID-bearing inventory rows"
+    rule: "Confirm state code 100, the declared Product, Waste, or Elementary flow type, semantic name, reference property, and receiving compartment where applicable before use."
+    source_ids: []
+  - rule_id: validate_unresolved_rows
+    applies_to: "rows without UUID"
+    rule: "Require the exact row_id and selected single-flow name to match manifest unresolved_identity and prohibit publication until the identity gap is resolved or formally reviewed."
+    source_ids: []
+  - rule_id: validate_mass_balance
+    applies_to: "each foreground process"
+    rule: "Reconcile product and material inputs, product outputs, waste, internal return, stock change, and measured losses; report and justify residual imbalance."
+    source_ids:
+      - eu-textiles-bat-2022
+  - rule_id: validate_allocation
+    applies_to: "multi-output process"
+    rule: "Confirm subdivision priority and disclose any physical or economic allocation basis, data, and sensitivity result."
+    source_ids:
+      - iso-14044-2006
+      - bianco-et-al-2023-wool-lca
+published_dataset_profile:
+  dataset_role: "foreground production dataset for non-retail wool yarn manufacture"
+  downstream_use: "secondary_dataset; background_dataset after review and publication"
+  allowed_use: "weaving, knitting, textile conversion, product LCA, supply-chain screening, and route-specific benchmarking that match the declared yarn and geography"
+  excluded_use: "yarn below 85% wool; retail yarn; other-animal-hair yarn; fabric or garment production; undisclosed route averages; wet processing not represented in the inventory"
+  required_metadata: "canonical PCR id, CPC 26320 reference, product UUID, wool fraction, woollen or worsted route, fibre origin, secondary fibres, dye state, tex, twist, ply, winding form, conditioning state, net mass, site, geography, period, upstream datasets, waste fate, allocation, and unresolved data gaps"
+  required_quality_disclosure: "measurement coverage, calibration, mass balance, route shares, supplier-data quality, temporal and geographic representativeness, allocation sensitivity, exclusions, and uncertainty"
+  update_trigger: "change in fibre composition, prepared-wool starting condition, route, equipment, energy supply, lubricant, conditioning, packing, waste fate, allocation, site, geography, or production period that materially changes the normalized inventory"
+data_sources:
+  - id: "unsd-cpc-3-2025"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, Central Product Classification Version 3.0 explanatory notes, code 26320, 30 June 2025, https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Exp_Notes_30Jun2025.pdf, retrieved 2026-08-12"
+    used_for: "category identity, wool-content threshold, non-retail market state"
+  - id: "ec-jrc-textiles-bref-2023"
+    type: "official_guidance"
+    reference: "European Commission Joint Research Centre, Best Available Techniques Reference Document for the Textiles Industry, JRC131874, EUR 31392 EN, DOI 10.2760/355887, https://publications.jrc.ec.europa.eu/repository/handle/JRC131874, retrieved 2026-08-12"
+    used_for: "fibre preparation and wet-processing boundary, input-output inventory, monitoring and quality controls"
+  - id: "eu-textiles-bat-2022"
+    type: "official_guidance"
+    reference: "Commission Implementing Decision (EU) 2022/2508 establishing BAT conclusions for the textiles industry, https://eur-lex.europa.eu/legal-content/EN/TXT/HTML/?uri=CELEX:32022D2508, retrieved 2026-08-12"
+    used_for: "materials, water, energy, chemicals, emissions, waste monitoring, and process-level record requirements"
+  - id: "iso-1144-2016"
+    type: "standard"
+    reference: "ISO 1144:2016, Textiles — Universal system for designating linear density (Tex System), https://www.iso.org/standard/70774.html, retrieved 2026-08-12"
+    used_for: "tex reporting and count-system conversion"
+  - id: "iso-2060-1994"
+    type: "standard"
+    reference: "ISO 2060:1994, Textiles — Yarn from packages — Determination of linear density (mass per unit length) by the skein method, https://www.iso.org/standard/6837.html, retrieved 2026-08-12"
+    used_for: "yarn mass and linear-density measurement context"
+  - id: "iso-14044-2006"
+    type: "standard"
+    reference: "ISO 14044:2006, Environmental management — Life cycle assessment — Requirements and guidelines, https://www.iso.org/standard/38498.html, retrieved 2026-08-12"
+    used_for: "LCI consistency, allocation, documentation, and interpretation"
+  - id: "bianco-et-al-2023-wool-lca"
+    type: "literature"
+    reference: "Bianco, I., Picerno, G., and Blengini, G.A. (2023), Life Cycle Assessment (LCA) of Worsted and Woollen processing in wool production: ReviWool noils and other wool co-products, Journal of Cleaner Production 415, 137877, DOI 10.1016/j.jclepro.2023.137877"
+    used_for: "woollen and worsted process decomposition, intermediates, waste streams, electricity, route distinction, and allocation"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:e693a49cddfede53be8fb8e68ab587985f978ebb987f53161b049c40765ddaec"
+  generated_content_sha256: "sha256:c5916c58e5cc5f7d7d8dec9afd194d091d7392a01c37545e835c982327e4b46f"

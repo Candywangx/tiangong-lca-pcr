@@ -1,10 +1,1068 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "21392"
-  title: "Flour, meal, powder, flakes, granules and pellets of potatoes"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.food-products-beverages-and-tobacco-textiles-apparel-and-leather-products.meat-fish-fruits-vegetables-oils-and-fats.flour-meal-powder-flakes-granules-and-pellets-of-potatoes"
+  classification_refs: "CPC 3.0: 21392, exact scope"
+  covered_products: "Potato flour, meal, powder, flakes, granules, and pellets made principally from potato tubers and retaining processed-potato identity"
+  excluded_products: "Potato starch or modified starch; fresh, frozen, or simply preserved potatoes; prepared dishes and fried snacks; compound mixes not principally potato; animal feed; products principally from other crops"
+  representative_product: "Generic qualifying potato flour, meal, powder, flakes, granules, or pellets, with the selected form declared"
+  production_route: "Exactly one declared conversion route: cooked-mash drying and forming, or raw-piece drying and size reduction; finishing and packing follow the selected route"
+  market_state: "Factory-gate, quality-released product; bulk or packed; food-grade or explicitly declared non-food-grade; moisture and applicable mass qualifiers declared"
+functional_unit:
+  what: "A qualifying potato flour, meal, powder, flake, granule, or pellet product that provides processed potato material in the declared form and grade"
+  how_much: "1 kg net product mass at the factory gate, excluding packaging, pallets, glaze, and free liquid"
+  how_well: "Meets the producer's declared release specification for product form, moisture, particle or piece form, formulation, intended use, and food-grade status where applicable"
+  how_long_or_cycle: "One production lot or campaign through quality release; no use-phase duration is assigned"
+  reference_flow_link: "The functional unit is realized by the single Tiangong reference product flow below at 1 kg net qualifying product"
+system_boundary:
+  rules:
+    - rule_id: boundary_foreground_operations
+      applies_to: "all qualifying routes"
+      rule: "Include receiving, inspection, cleaning and preparation, exactly one conversion route, finishing, quality release, packing when present, directly used utilities, direct emissions, wastewater, rejects, and wastes through the factory gate."
+      source_ids:
+        - eu-pef-2021-2279
+    - rule_id: boundary_upstream_links
+      applies_to: "purchased inputs"
+      rule: "Keep purchased inputs visible and link representative upstream datasets; do not replace primary foreground quantities with generic amounts when site records exist."
+      source_ids:
+        - eu-pef-2021-2279
+    - rule_id: boundary_route_exclusivity
+      applies_to: "conversion routes"
+      rule: "Select either the cooked-mash route or the raw-piece route for each homogeneous lot; a combined inventory is conforming only when physically separate product quantities are modelled as separate lots or weighted datasets."
+      source_ids: []
+    - rule_id: boundary_grade_condition
+      applies_to: "intended use"
+      rule: "Apply Codex food hygiene controls only to food-grade production. For a non-food-grade product, declare the industrial intended use and exclude food-only sanitation, ingredient, and food-contact assumptions unless they actually occur."
+      source_ids:
+        - codex-cxc-1-1969
+    - rule_id: boundary_packaging
+      applies_to: "packed product"
+      rule: "Include primary and secondary packaging used to release the declared product; exclude packaging from the 1 kg net-product reference mass and disclose any omitted tertiary distribution packaging."
+      source_ids:
+        - eu-pef-2021-2279
+boundary_abstraction:
+  declared_starting_condition: "Raw potato tubers received at the foreground facility gate with supplier, origin, lot mass, and acceptance condition declared"
+  starting_condition_role: "Purchased source material entering the directly controlled receiving and processing system"
+  product_classification_scope: "Potato-derived flour, meal, powder, flakes, granules, and pellets within the semantic product boundary represented by CPC 3.0 code 21392"
+  recursive_input_rule: "If a qualifying same-category potato product is used as an input, keep it visible as a purchased product input, link an upstream dataset, and begin foreground accounting at its receipt rather than reconstructing its upstream production inside this data package"
+  upstream_dataset_requirement: "Link raw potatoes, ingredients, energy carriers, water supply, packaging, and other purchased inputs to geographically and technologically representative upstream datasets"
+  disclosure: "Declare product form, selected route, starting material condition, food-grade or non-food-grade status, facility and geography, temporal coverage, cut-offs, excluded operations, and whether packaging is included"
+reference_flow_definition:
+  reference_amount: "1 kg net qualifying product"
+  product_flow_ref:
+    name: "Flour, meal, powder, flakes, granules and pellets of potatoes"
+    uuid: "ab16817e-97bc-46df-99e6-362d7a934676"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "product form"
+    - "production route"
+    - "intended use and food-grade status"
+    - "net-mass basis"
+    - "moisture content on an as-sold basis"
+    - "added-salt content or salinity where applicable"
+    - "glaze status and glaze-excluded mass where applicable"
+    - "drained-mass basis where free liquid is present"
+    - "formulation and processing aids retained in product"
+    - "packaging state"
+    - "release specification"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Normalize all results to 1 kg quality-released net product at the factory gate."
+  - id: net_product_mass
+    applies_to: "reference product and lot yield"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Use product mass excluding all packaging, pallets, glaze, and free liquid; if free liquid is present, record both gross and drained mass and use drained mass for the reference amount."
+  - id: moisture_basis
+    applies_to: "product and potato material"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg and percent"
+    rule: "Report moisture as mass percent on an as-sold wet basis and retain the sampling method; calculate dry matter as net mass multiplied by one minus the moisture mass fraction."
+  - id: salt_and_glaze_condition
+    applies_to: "products with added salt, brine, glaze, or free liquid"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg and percent"
+    rule: "Declare added-salt content or measured salinity and separately disclose glaze-excluded or drained mass where applicable; do not count excluded glaze or free liquid in the 1 kg reference amount."
+  - id: route_exclusivity
+    applies_to: "conversion inventory"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Activate exactly one conversion route for a homogeneous product lot; do not sum cooked-mash and raw-piece route inventories for the same output."
+process_map:
+  - id: potato_receiving_preparation
+    name: "Potato receiving and preparation"
+    inclusion: "required"
+    inclusion_condition: "Always included from facility-gate receipt through prepared potato material"
+    role: "foreground preparation"
+    quantitative_reference: "Per kg net qualifying product"
+  - id: cooked_mash_conversion
+    name: "Cooked-mash drying and forming"
+    inclusion: "conditional"
+    inclusion_condition: "Include only when the declared route cooks or mashes potatoes before drying and forming; mutually exclusive with raw_piece_conversion for one homogeneous lot"
+    role: "foreground conversion"
+    quantitative_reference: "Per kg net qualifying product from this route"
+  - id: raw_piece_conversion
+    name: "Raw-piece drying and size reduction"
+    inclusion: "conditional"
+    inclusion_condition: "Include only when the declared route dries potato pieces before milling, granulating, or pelletizing; mutually exclusive with cooked_mash_conversion for one homogeneous lot"
+    role: "foreground conversion"
+    quantitative_reference: "Per kg net qualifying product from this route"
+  - id: finishing_packaging
+    name: "Finishing, quality release, and packaging"
+    inclusion: "required"
+    inclusion_condition: "Always included; packing inputs are recorded only when the released product is packed"
+    role: "foreground finishing"
+    quantitative_reference: "1 kg net qualifying product"
+process_inventory:
+  - id: potato_receiving_preparation
+    label: "Potato receiving and preparation"
+    inputs:
+      product:
+        - row_id: raw_potatoes
+          role: "Accepted raw potatoes"
+          name: "Raw potatoes"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record accepted potato tubers crossing the facility gate, including supplier lot, received mass, acceptance status, and measured or sampled moisture or solids information where available."
+          amount:
+            expression: "measured accepted raw-potato mass allocated to the production lot"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net qualifying product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_receiving_quality
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "1"
+                upper: "8"
+                unit: "kg/kg net product"
+                basis: "applies only before representative route-specific yield records exist; replace after three representative campaigns or stronger product-specific evidence"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: preparation_water
+          role: "Preparation water"
+          name: "Process water"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record metered or reconciled water supplied for washing, peeling support, cutting, or other preparation operations."
+          amount:
+            expression: "measured preparation-water input attributed to the lot"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net qualifying product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_preparation_resources
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "10"
+                unit: "kg/kg net product"
+                basis: "applies only when no representative meter reconciliation exists; replace when metered campaign data cover the selected preparation technology"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: preparation_electricity
+          role: "Preparation electricity"
+          name: "Electricity, supplied to facility"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record electricity for conveying, washing, sorting, peeling, cutting, and directly controlled preparation equipment."
+          amount:
+            expression: "metered electricity or equipment load multiplied by operating time and reconciled to the lot"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net qualifying product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_preparation_resources
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0.001"
+                upper: "2"
+                unit: "kWh/kg net product"
+                basis: "applies only before route-specific submeter data exist; replace when representative metering or verified equipment records are available"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: prepared_potato_material
+          role: "Prepared potato material"
+          name: "Prepared potato material"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record the measured prepared potato mass transferred to the selected conversion route, with retained moisture or solids information linked to the lot."
+          amount:
+            expression: "measured transfer mass to exactly one selected conversion route"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net qualifying product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_preparation_outputs
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0.8"
+                upper: "8"
+                unit: "kg/kg net product"
+                basis: "applies only before representative preparation-yield records exist; replace after measured input, reject, and transfer masses close for representative campaigns"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        - row_id: preparation_rejects
+          role: "Potato rejects and preparation residues"
+          name: "Potato preparation residues"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record soil-bearing rejects, peel, trimmings, and off-specification potato material separately when their treatment or destination differs."
+          amount:
+            expression: "measured residue and reject mass by destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net qualifying product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_preparation_outputs
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "2"
+                unit: "kg/kg net product"
+                basis: "applies only when weighed residue records are unavailable; replace when destination-specific weights close the preparation mass balance"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: preparation_wastewater
+          role: "Preparation wastewater"
+          name: "Wastewater from potato preparation"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record wastewater leaving the foreground boundary, including measured quantity and treatment destination; do not duplicate water retained in product or residues."
+          amount:
+            expression: "metered discharge or reconciled water balance attributed to the lot"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net qualifying product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_preparation_outputs
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "10"
+                unit: "kg/kg net product"
+                basis: "applies only before a discharge-meter or water-balance reconciliation exists; replace with representative measured discharge data"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        []
+  - id: cooked_mash_conversion
+    label: "Cooked-mash drying and forming"
+    inputs:
+      product:
+        - row_id: wet_route_feed
+          role: "Prepared potato feed to cooked-mash route"
+          name: "Prepared potato material"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record prepared potato material entering cooking, mashing, drying, flaking, granulating, or pellet-forming operations for this route only."
+          amount:
+            expression: "measured feed transferred from preparation to this route"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net qualifying product from the cooked-mash route"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wet_route_records
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0.8"
+                upper: "8"
+                unit: "kg/kg net product"
+                basis: "applies only before representative cooked-route yield data exist; replace when measured feed, product, water loss, and residues close for representative campaigns"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: wet_route_heat
+          role: "Cooked-route process heat"
+          name: "Process heat or fuel, route-specific"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Record purchased steam, heat, or fuel input for cooking and drying; if fuel is combusted on site, also record direct stack emissions using measured fuel composition or applicable emission records."
+          amount:
+            expression: "metered thermal energy, steam enthalpy calculation, or measured fuel use converted to energy"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net qualifying product from the cooked-mash route"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wet_route_records
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0.1"
+                upper: "50"
+                unit: "MJ/kg net product"
+                basis: "applies only before technology-specific thermal records exist; replace with representative metered steam, heat, or fuel data and verified conversion factors"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: wet_route_electricity
+          role: "Cooked-route electricity"
+          name: "Electricity, supplied to facility"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record electricity for cooking support, mashing, conveying, drying auxiliaries, flaking, granulating, pelletizing, and dust control used by the selected route."
+          amount:
+            expression: "submetered electricity or reconciled equipment load and operating time"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net qualifying product from the cooked-mash route"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wet_route_records
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0.01"
+                upper: "10"
+                unit: "kWh/kg net product"
+                basis: "applies only before route submeters or verified equipment records exist; replace with representative cooked-route electricity records"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: wet_route_intermediate
+          role: "Cooked-route potato intermediate"
+          name: "Cooked-route potato intermediate"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record the dried and formed potato intermediate transferred to finishing, including product form and moisture at transfer."
+          amount:
+            expression: "measured intermediate mass transferred to finishing"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net qualifying product from the cooked-mash route"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wet_route_records
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0.8"
+                upper: "1.5"
+                unit: "kg/kg net product"
+                basis: "applies only before measured finishing-yield records exist; replace when intermediate and final-product weights cover representative campaigns"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        - row_id: wet_route_waste
+          role: "Cooked-route wastewater and rejects"
+          name: "Cooked-route wastewater and rejects"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record route wastewater, off-specification mash, fines, and rejects separately by measured mass and treatment destination where practicable."
+          amount:
+            expression: "measured wastewater and reject quantities by destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net qualifying product from the cooked-mash route"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wet_route_records
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "10"
+                unit: "kg/kg net product"
+                basis: "applies only before route-specific discharge and reject measurements exist; replace with measured destination-specific records"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        - row_id: wet_route_water_to_air
+          role: "Water evaporated during cooked-route drying"
+          name: "Water, to air"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Calculate water transferred to air from measured feed and product moisture and reconciled water inputs; do not treat it as fossil carbon dioxide or duplicate wastewater."
+          amount:
+            expression: "calculated water balance using measured masses and moisture fractions"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net qualifying product from the cooked-mash route"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_wet_route_records
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "8"
+                unit: "kg/kg net product"
+                basis: "applies only before validated moisture and mass balances exist; replace with calculated campaign values from representative measurements"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+  - id: raw_piece_conversion
+    label: "Raw-piece drying and size reduction"
+    inputs:
+      product:
+        - row_id: dry_route_feed
+          role: "Prepared potato feed to raw-piece route"
+          name: "Prepared potato material"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record prepared potato pieces entering drying followed by milling, grinding, flaking, granulating, or pelletizing for this route only."
+          amount:
+            expression: "measured feed transferred from preparation to this route"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net qualifying product from the raw-piece route"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_dry_route_records
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0.8"
+                upper: "8"
+                unit: "kg/kg net product"
+                basis: "applies only before representative raw-piece-route yield data exist; replace when feed, product, water loss, and residues close for representative campaigns"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: dry_route_heat
+          role: "Raw-piece-route process heat"
+          name: "Process heat or fuel, route-specific"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Record purchased heat or fuel used for drying and thermal conditioning; on-site combustion requires separate direct-emission records."
+          amount:
+            expression: "metered thermal energy or measured fuel use converted to energy"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net qualifying product from the raw-piece route"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_dry_route_records
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0.1"
+                upper: "50"
+                unit: "MJ/kg net product"
+                basis: "applies only before technology-specific thermal records exist; replace with representative metered heat or fuel data and verified conversion factors"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: dry_route_electricity
+          role: "Raw-piece-route electricity"
+          name: "Electricity, supplied to facility"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record electricity for conveying, drying auxiliaries, milling, sieving, flaking, granulating, pelletizing, and dust control."
+          amount:
+            expression: "submetered electricity or reconciled equipment load and operating time"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net qualifying product from the raw-piece route"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_dry_route_records
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0.01"
+                upper: "10"
+                unit: "kWh/kg net product"
+                basis: "applies only before route submeters or verified equipment records exist; replace with representative raw-piece-route electricity records"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: dry_route_intermediate
+          role: "Raw-piece-route potato intermediate"
+          name: "Raw-piece-route potato intermediate"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record the dried and size-reduced potato intermediate transferred to finishing, including form and moisture at transfer."
+          amount:
+            expression: "measured intermediate mass transferred to finishing"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net qualifying product from the raw-piece route"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_dry_route_records
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0.8"
+                upper: "1.5"
+                unit: "kg/kg net product"
+                basis: "applies only before measured finishing-yield records exist; replace when intermediate and final-product weights cover representative campaigns"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        - row_id: dry_route_rejects
+          role: "Raw-piece-route rejects and fines"
+          name: "Raw-piece-route rejects and fines"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record off-specification pieces, milling rejects, and recovered or discarded fines separately by destination."
+          amount:
+            expression: "measured reject and fine mass by reuse, recovery, or treatment destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net qualifying product from the raw-piece route"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_dry_route_records
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.5"
+                unit: "kg/kg net product"
+                basis: "applies only before destination-specific reject records exist; replace with measured campaign records"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        - row_id: dry_route_water_to_air
+          role: "Water evaporated during raw-piece drying"
+          name: "Water, to air"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Calculate water transferred to air from measured feed and product moisture; separately record captured dust or direct combustion emissions when they cross the boundary."
+          amount:
+            expression: "calculated water balance using measured masses and moisture fractions"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net qualifying product from the raw-piece route"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_dry_route_records
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "8"
+                unit: "kg/kg net product"
+                basis: "applies only before validated moisture and mass balances exist; replace with calculated campaign values from representative measurements"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: dry_route_particulate
+          role: "Uncaptured particulate matter"
+          name: "Particulate matter, to air"
+          flow_type: "elementary"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record measured particulate emissions to air after abatement when milling, sieving, or forming creates a direct release; captured dust remains a waste or recovered product flow."
+          amount:
+            expression: "measured outlet concentration multiplied by measured gas flow and operating time, or a reviewed site-specific estimate"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net qualifying product from the raw-piece route"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_dry_route_records
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.05"
+                unit: "kg/kg net product"
+                basis: "applies only for screening before representative emission measurements exist; replace with measured or regulator-reviewed site evidence"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+  - id: finishing_packaging
+    label: "Finishing, quality release, and packaging"
+    inputs:
+      product:
+        - row_id: selected_route_intermediate
+          role: "Intermediate from selected route"
+          name: "Potato product intermediate from selected route"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record intermediate product from exactly one selected conversion route and retain the route identifier in the lot record."
+          amount:
+            expression: "measured intermediate mass entering finishing"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net qualifying product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing_records
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0.8"
+                upper: "1.5"
+                unit: "kg/kg net product"
+                basis: "applies only before representative finishing-yield records exist; replace when measured intermediate and released-product weights close for representative campaigns"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: declared_ingredients
+          role: "Declared ingredients and retained processing aids"
+          name: "Declared ingredient or retained processing aid"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record salt, permitted ingredients, or processing aids retained in the product; do not add food-grade ingredients to a non-food-grade model unless actually used."
+          amount:
+            expression: "weighed issue quantity minus documented return or loss, by ingredient"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net qualifying product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing_records
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.5"
+                unit: "kg/kg net product"
+                basis: "applies only before formulation and issue records are available; replace immediately with the released formulation and lot-specific issue records"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: packaging_materials
+          role: "Packaging materials"
+          name: "Packaging materials, by material"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record primary and secondary packaging by material and measured issue quantity; packaging is not part of the 1 kg reference-product mass."
+          amount:
+            expression: "packaging issued to conforming units minus documented unused returns, normalized to net product mass"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net qualifying product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing_records
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "1"
+                unit: "kg/kg net product"
+                basis: "applies only before packaging bill-of-material and issue records exist; replace with product-format-specific packaging records"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: finishing_electricity
+          role: "Finishing and packaging electricity"
+          name: "Electricity, supplied to facility"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record electricity for final milling, sieving, blending, agglomeration, pelletizing, quality-release support, and packing actually used."
+          amount:
+            expression: "submetered electricity or reconciled equipment load and operating time"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net qualifying product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing_records
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0.001"
+                upper: "5"
+                unit: "kWh/kg net product"
+                basis: "applies only before finishing and packing meter data exist; replace with representative technology-specific records"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: reference_product_output
+          role: "Quality-released reference product"
+          name: "Flour, meal, powder, flakes, granules and pellets of potatoes"
+          flow_type: "product"
+          flow_ref:
+            uuid: "ab16817e-97bc-46df-99e6-362d7a934676"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This is the exact generic Tiangong CPC 21392 product flow. Record 1 kg net released product with all required qualifiers; packaging, glaze, and free liquid are excluded."
+          amount:
+            expression: "fixed reference output of 1 kg net qualifying product"
+            value_mode: "fixed_value"
+            specificity: "generic"
+            basis:
+              text: "1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "identity_reference"
+              source_ids: []
+            ranges:
+              - role: allowed_range
+                lower: "1"
+                upper: "1"
+                unit: "kg"
+                basis: "exact net product reference amount after excluding packaging, glaze, and free liquid"
+                basis_kind: "reference_flow"
+                evidence_kind: "identity_reference"
+                source_ids: []
+      waste:
+        - row_id: finishing_waste
+          role: "Finishing rejects and packaging waste"
+          name: "Finishing rejects and packaging waste"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record off-specification product, captured fines not returned to product, and packaging waste separately by destination; internal rework shall not be double counted as a new input and output."
+          amount:
+            expression: "measured waste and reject mass by material and destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net qualifying product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing_records
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.5"
+                unit: "kg/kg net product"
+                basis: "applies only before destination-specific finishing and packaging waste records exist; replace with measured campaign records"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocation_avoid_by_subdivision
+    applies_to: "route, batch, and separable operations"
+    rule: "First subdivide records by facility, line, route, product lot, and directly metered operation so burdens remain causally linked and allocation is avoided where practicable."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: allocation_internal_rework
+    applies_to: "internal rework"
+    rule: "Keep internal rework inside the foreground mass balance and do not assign a separate avoided-product credit unless it crosses the system boundary as a documented co-product."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: allocation_co_products
+    applies_to: "saleable co-products"
+    rule: "When subdivision cannot resolve shared burdens, use a physical relation such as measured dry mass only when it reflects the underlying causal relation; otherwise use a documented economic relation and report a sensitivity result."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: allocation_waste_treatment
+    applies_to: "wastes and recoverable residues"
+    rule: "Report destination, treatment, and any system-model credit consistently; do not treat a residue as both an allocated co-product and an unallocated waste."
+    source_ids:
+      - eu-pef-2021-2279
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_receiving_quality
+      process_id: "potato_receiving_preparation"
+      flow_role: "accepted raw potatoes and starting condition"
+      record_type: "weighbridge, receiving, supplier, and quality records"
+      raw_fields: "supplier; origin; lot_id; gross_mass; tare_mass; accepted_mass; rejection_mass; moisture_or_solids; acceptance_result"
+      collection_method: "calibrated weighbridge or scales plus representative quality sampling"
+      unit: "kg; percent"
+      frequency: "every received lot"
+      temporal_coverage: "representative production period, normally at least 12 months or all campaigns for seasonal operation"
+      site_scope: "all supplying lots attributable to the declared facility and product"
+      aggregation_rule: "sum accepted mass by lot and retain weighted quality results before normalization"
+      quality_evidence: "calibration records; sampling method; supplier and lot traceability; acceptance records"
+    - protocol_id: cp_preparation_resources
+      process_id: "potato_receiving_preparation"
+      flow_role: "water and electricity inputs"
+      record_type: "meters, invoices, and equipment logs"
+      raw_fields: "meter_start; meter_end; allocation_period; production_time; equipment_load; lot_output"
+      collection_method: "direct meter preferred; otherwise reconciled invoice or verified load-time calculation"
+      unit: "kg water; kWh"
+      frequency: "each lot or shortest representative metering interval"
+      temporal_coverage: "same period as product output"
+      site_scope: "directly controlled preparation operations"
+      aggregation_rule: "subtract unrelated uses, allocate only unavoidable shared totals with disclosed basis, and normalize to released net product"
+      quality_evidence: "meter identification; calibration or invoice reconciliation; operating logs"
+    - protocol_id: cp_preparation_outputs
+      process_id: "potato_receiving_preparation"
+      flow_role: "prepared material, residues, and wastewater"
+      record_type: "transfer scales, waste tickets, and discharge meters"
+      raw_fields: "prepared_mass; prepared_moisture; residue_mass_by_destination; wastewater_volume_or_mass; lot_id"
+      collection_method: "calibrated scale and discharge meter or closed water balance"
+      unit: "kg; percent"
+      frequency: "each lot or campaign"
+      temporal_coverage: "same period as associated input records"
+      site_scope: "all preparation outputs for the declared product"
+      aggregation_rule: "reconcile input potato and water with transfer, residue, wastewater, and retained or evaporated water"
+      quality_evidence: "scale calibration; destination tickets; water-balance closure"
+    - protocol_id: cp_wet_route_records
+      process_id: "cooked_mash_conversion"
+      flow_role: "cooked-route feed, utilities, outputs, and water balance"
+      record_type: "batch sheets, scales, meters, fuel records, moisture tests, and waste records"
+      raw_fields: "route_id; feed_mass; feed_moisture; steam_or_fuel; electricity; intermediate_mass; product_moisture; wastewater; rejects; operating_time"
+      collection_method: "batch measurement with direct meters and representative moisture tests"
+      unit: "kg; percent; MJ; kWh"
+      frequency: "each batch or shortest representative metering interval"
+      temporal_coverage: "all cooked-route campaigns in the declared period"
+      site_scope: "cooked-mash route only"
+      aggregation_rule: "reconcile mass, moisture, energy, waste, and output; normalize only to product from this route"
+      quality_evidence: "route lock; meter and scale records; test method; mass and water closure"
+    - protocol_id: cp_dry_route_records
+      process_id: "raw_piece_conversion"
+      flow_role: "raw-piece-route feed, utilities, outputs, water, rejects, and particulate"
+      record_type: "batch sheets, scales, meters, moisture tests, waste records, and emission monitoring"
+      raw_fields: "route_id; feed_mass; feed_moisture; heat_or_fuel; electricity; intermediate_mass; product_moisture; rejects; captured_dust; outlet_concentration; gas_flow; operating_time"
+      collection_method: "batch measurement, direct meters, moisture tests, and site emission measurement where release occurs"
+      unit: "kg; percent; MJ; kWh; concentration; gas volume"
+      frequency: "each batch; emissions at the applicable monitoring frequency"
+      temporal_coverage: "all raw-piece-route campaigns in the declared period"
+      site_scope: "raw-piece route only"
+      aggregation_rule: "reconcile mass, moisture, energy, waste, output, and measured releases; normalize only to product from this route"
+      quality_evidence: "route lock; calibration; test method; waste tickets; monitoring records; mass and water closure"
+    - protocol_id: cp_finishing_records
+      process_id: "finishing_packaging"
+      flow_role: "intermediate, ingredients, packaging, electricity, released product, and wastes"
+      record_type: "batch formulation, issue, scale, meter, packaging bill-of-material, release, and waste records"
+      raw_fields: "route_id; intermediate_mass; ingredient_issue_and_return; packaging_issue_and_return; electricity; gross_product_mass; net_product_mass; moisture; salt_or_salinity; glaze_mass; drained_mass; rejects; release_status"
+      collection_method: "calibrated scales, formulation reconciliation, direct meters or verified load-time records, and quality testing"
+      unit: "kg; percent; kWh"
+      frequency: "every finishing lot or campaign"
+      temporal_coverage: "all released lots in the declared period"
+      site_scope: "all finishing and packing operations for the declared product"
+      aggregation_rule: "include released lots and attributable rejects, exclude packaging and applicable glaze or free liquid from net product, and normalize to released net mass"
+      quality_evidence: "formulation approval; packaging specification; calibration; test method; release and waste records"
+  calculation_rules:
+    - id: calc_net_reference_mass
+      applies_to: "released product"
+      rule: "Net reference mass equals gross filled product-system mass minus packaging, pallets, applicable glaze, and free liquid; when liquid is present use measured drained product mass."
+      inputs:
+        - "gross mass"
+        - "tare and packaging mass"
+        - "glaze mass"
+        - "drained mass"
+        - "release status"
+      output: "kg net qualifying product"
+      source_ids: []
+    - id: calc_dry_matter
+      applies_to: "potatoes, intermediates, and product"
+      rule: "Dry matter equals measured mass multiplied by one minus wet-basis moisture fraction; retain the measured as-sold mass as the reference basis."
+      inputs:
+        - "measured mass"
+        - "wet-basis moisture percent"
+      output: "kg dry matter and kg as-sold mass"
+      source_ids: []
+    - id: calc_route_normalization
+      applies_to: "each homogeneous route lot"
+      rule: "Divide attributable input, waste, and direct-emission quantities by released net product from that same route and period; do not combine route totals before route-specific normalization."
+      inputs:
+        - "route-tagged inventory"
+        - "released net product"
+      output: "inventory per kg net product by route"
+      source_ids:
+        - eu-pef-2021-2279
+    - id: calc_mass_balance
+      applies_to: "each process and lot"
+      rule: "Reconcile measured inputs with products, wastes, retained water, evaporated water, and stock change; investigate material imbalance beyond the facility's documented measurement uncertainty."
+      inputs:
+        - "input and output masses"
+        - moisture
+        - "stock change"
+      output: "disclosed mass and water balance"
+      source_ids:
+        - eu-pef-2021-2279
+    - id: calc_shared_burden
+      applies_to: "unavoidable shared operations"
+      rule: "Apply the allocation hierarchy in section 7, retain the selected factor and basis, and report sensitivity when an economic fallback is used."
+      inputs:
+        - "shared burden"
+        - "co-product quantities"
+        - "physical or economic factor"
+      output: "allocated inventory by product"
+      source_ids:
+        - eu-pef-2021-2279
+  data_quality_requirements:
+    - id: dq_identity_traceability
+      applies_to: "all lots"
+      requirement: "Retain supplier, potato origin, facility, product form, route, formulation, intended use, grade, and lot linkage through release."
+      evidence: "Receiving, batch, formulation, and release records; CPC identity from unsd-cpc-3-0-21392"
+    - id: dq_measurement
+      applies_to: "mass, moisture, salinity, energy, water, and emissions"
+      requirement: "Use calibrated or verified instruments and retain test methods, meter boundaries, conversion factors, and uncertainty or reconciliation evidence."
+      evidence: "Calibration, laboratory, meter, invoice-reconciliation, and monitoring records"
+    - id: dq_temporal_coverage
+      applies_to: "foreground inventory"
+      requirement: "Cover a representative production period and disclose seasonality, shutdowns, atypical lots, and any sampling or extrapolation."
+      evidence: "Period coverage report consistent with eu-pef-2021-2279"
+    - id: dq_completeness
+      applies_to: "process inventory"
+      requirement: "Account for the selected route's material, water, energy, packaging, wastes, and direct releases; document exclusions and close mass and water balances."
+      evidence: "Balance worksheets and completeness review consistent with eu-pef-2021-2279"
+    - id: dq_food_grade_condition
+      applies_to: "food-grade lots only"
+      requirement: "Retain hygiene-control and traceability evidence appropriate to food production; do not claim Codex conformity for non-food-grade lots."
+      evidence: "Food safety plan and records guided by codex-cxc-1-1969"
+    - id: dq_estimate_replacement
+      applies_to: "provisional ranges"
+      requirement: "Identify every reasoned_estimate used for screening and replace it with representative foreground evidence or reviewed transferable evidence before activation unless a reviewer explicitly accepts continued provisional use."
+      evidence: "Range replacement log and methodology review record"
+validation_rules:
+  - rule_id: validation_category_identity
+    applies_to: "product identity"
+    rule: "Confirm the product is principally processed potato material in one covered form and is not potato starch, modified starch, a prepared dish, snack, feed, or another excluded product."
+    source_ids:
+      - unsd-cpc-3-0-21392
+  - rule_id: validation_reference_flow
+    applies_to: "reference flow"
+    rule: "Confirm the output uses product flow ab16817e-97bc-46df-99e6-362d7a934676, Mass 93a60a56-a3c8-11da-a746-0800200b9a66, Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66, kg, and exactly 1 kg net qualifying product."
+    source_ids: []
+  - rule_id: validation_mass_qualifiers
+    applies_to: "product release"
+    rule: "Require product form, route, intended use, net-mass basis, moisture, applicable salt or salinity, applicable glaze-excluded or drained mass, formulation, packaging state, and release specification; explicitly mark inapplicable qualifiers."
+    source_ids: []
+  - rule_id: validation_route_exclusivity
+    applies_to: "process map"
+    rule: "Confirm exactly one conversion route is active for each homogeneous lot and that inactive-route inputs, outputs, and burdens are zero rather than combined."
+    source_ids: []
+  - rule_id: validation_balance_and_inventory
+    applies_to: "foreground inventory"
+    rule: "Confirm every required process has records, all purchased inputs have upstream links, wastes have destinations, direct releases are reported where they occur, and route-specific mass and water balances are reconciled."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: validation_grade_boundary
+    applies_to: "intended use"
+    rule: "Confirm food-grade lots retain applicable hygiene evidence and non-food-grade lots remain explicitly non-food without assumed food-only controls."
+    source_ids:
+      - codex-cxc-1-1969
+  - rule_id: validation_provisional_ranges
+    applies_to: "reasoned estimates"
+    rule: "Treat every reasoned range as a screening finding only; require replacement or explicit reviewer acceptance when representative campaigns or stronger transferable evidence become available."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "Foreground data package and unit-process or aggregated factory-gate dataset for the declared qualifying potato product"
+  downstream_use: "May be used as a secondary_dataset or background_dataset in process and lifecyclemodel projections when geography, technology, route, grade, and product form are representative"
+  allowed_use: "Factory-gate modelling of the declared potato flour, meal, powder, flakes, granules, or pellets with complete qualifiers and disclosed allocation"
+  excluded_use: "Potato starch or modified starch; fresh or simply preserved potatoes; prepared foods or snacks; animal feed; products from other crops; undisclosed mixtures of mutually exclusive routes; substitution across food-grade and non-food-grade boundaries without justification"
+  required_metadata: "PCR id; CPC reference; Tiangong reference-flow UUID; product form; route; facility and geography; intended use and grade; formulation; net-mass, moisture, salt or salinity, glaze, and drained-mass qualifiers as applicable; temporal coverage; allocation; upstream links; packaging state; release specification"
+  required_quality_disclosure: "Primary-data share; meter and scale quality; sampling and test methods; mass and water balance; route coverage; allocation sensitivity; exclusions; waste destinations; direct-emission methods; remaining reasoned estimates and their replacement status"
+  update_trigger: "Change in product form, route, technology, formulation, intended use, release specification, moisture or mass basis, packaging, allocation, facility representativeness, source rules, Tiangong identity, or availability of evidence that replaces a reasoned estimate"
+data_sources:
+  - id: "unsd-cpc-3-0-21392"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, Central Product Classification Version 3.0, code 21392, “Flour, meal, powder, flakes, granules and pellets of potatoes”; https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Structure_30Jun2025.csv; accessed 2026-08-11"
+    used_for: "Exact category identity and covered product forms"
+  - id: "codex-cxc-1-1969"
+    type: "standard"
+    reference: "Codex Alimentarius, CXC 1-1969, General Principles of Food Hygiene; https://www.fao.org/fao-who-codexalimentarius/codex-texts/codes-of-practice/en/; accessed 2026-08-11"
+    used_for: "Conditional hygiene, traceability, and food-grade data-quality rules; not applied to non-food-grade production"
+  - id: "eu-pef-2021-2279"
+    type: "official_guidance"
+    reference: "European Commission Recommendation (EU) 2021/2279 on the use of the Environmental Footprint methods; https://eur-lex.europa.eu/eli/reco/2021/2279/oj; accessed 2026-08-11"
+    used_for: "Life-cycle inventory boundary, primary-data preference, allocation hierarchy, normalization, completeness, and data-quality disclosure"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:d499820a333cd84d3104683749060b9a51fcd736e7e532588a7e031fe680cf63"
+  generated_content_sha256: "sha256:5e9e965ac389835ef0d645af5f3a6f52bb5808e617be1ff8c8669697ae2a5d5e"

@@ -1,10 +1,3154 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "46420"
-  title: "Electric accumulators"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.metal-products-machinery-and-equipment.electrical-machinery-and-apparatus.electric-accumulators"
+  classification_refs: "CPC 3.0: 46420 Electric accumulators"
+  covered_products: "Finished rechargeable cells, batteries, modules, and packs"
+  excluded_products: "Primary batteries; separately sold parts; spent batteries; chargers; power-conversion equipment; complete storage installations"
+  representative_product: "A conforming 3C lithium battery; representative only for that verified route"
+  production_route: "Route-specific electrode or plate preparation; cell assembly; formation and testing; optional module or pack assembly; carrier-specific utilities"
+  market_state: "New conforming accumulator released at the factory gate"
+functional_unit:
+  what: "Factory-gate production of a conforming finished rechargeable electric accumulator"
+  how_much: "1 kg of released finished product"
+  how_well: "Meets declared chemistry, voltage, capacity, energy, safety configuration, and release-test specification"
+  how_long_or_cycle: "One production lot; lifetime performance remains a separate qualifier"
+  reference_flow_link: "Net released-product mass normalized to 1 kg"
+system_boundary:
+  rules:
+    - rule_id: boundary_route_declaration
+      applies_to: "All packages"
+      rule: "Declare chemistry, product level, starting condition, process applicability, and included utilities before selecting rows."
+      source_ids:
+        - eu-batteries-regulation-2023
+        - ec-battery-pefcr-2018
+    - rule_id: boundary_atomic_inventory
+      applies_to: "Materials, energy, waste, wastewater, air and water releases"
+      rule: "Use one concrete exchange per row; add a new named row when the actual substance, material, carrier, compartment, or waste differs."
+      source_ids:
+        - ec-pef-method-2021
+        - us-epa-battery-effluent-guidelines
+    - rule_id: boundary_purchased_inputs
+      applies_to: "Purchased materials, components, cells, utilities, packaging"
+      rule: "Keep every input visible and link an upstream dataset; do not recursively reproduce a purchased accumulator."
+      source_ids:
+        - ec-pef-method-2021
+    - rule_id: boundary_terminal_gate
+      applies_to: "Reference product"
+      rule: "End at factory-gate release; keep use and end-of-life downstream."
+      source_ids:
+        - eu-batteries-regulation-2023
+    - rule_id: boundary_no_route_extrapolation
+      applies_to: "Route evidence"
+      rule: "Do not generalize lithium-ion, lead-acid, nickel-cadmium, or nickel-metal-hydride identities or quantities to another route."
+      source_ids:
+        - ec-battery-pefcr-2018
+        - argonne-battery-lca-2010
+boundary_abstraction:
+  declared_starting_condition: "Declare whether the facility receives active materials, prepared electrodes or plates, finished rechargeable cells, finished modules, or another named intermediate, including chemistry, physical state, and included components."
+  starting_condition_role: "The starting condition determines which electrode, plate, cell, formation, module, pack, utility, and treatment operations are foreground and which purchased inputs require upstream datasets."
+  product_classification_scope: "CPC 3.0 code 46420, limited to finished electric accumulators; primary batteries, separately sold parts, spent batteries, chargers, power-conversion equipment, and complete storage installations remain outside scope."
+  recursive_input_rule: "Keep a purchased finished cell, module, or other accumulator as one visible product input linked to its upstream dataset; do not recursively reproduce its manufacturing inventory inside the receiving process."
+  upstream_dataset_requirement: "Link every purchased atomic material, component, cell, utility carrier, refrigerant, and included packaging item to a geographically, technologically, and temporally representative upstream dataset, or record a specific unresolved data gap."
+  disclosure: "Disclose chemistry, product level, starting condition, applicable and omitted processes, cut-offs, internal returns, waste and emission treatment, included packaging, and every proxy or unresolved upstream link."
+reference_flow_definition:
+  reference_amount: "1 kg"
+  product_flow_ref:
+    name: "3C Lithium Battery"
+    uuid: "000abc1e-59e3-4336-bfd6-66575a4b0bda"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - chemistry
+    - "product level"
+    - application
+    - model
+    - voltage
+    - capacity
+    - "rated energy where applicable"
+    - "state of charge"
+    - "included components and packaging"
+    - route
+    - facility
+    - geography
+    - period
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_product_mass
+    applies_to: "Finished product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Measure net released-product mass with a calibrated scale and preserve the packaging convention."
+  - id: material_mass
+    applies_to: "Each named material, component, waste, or released substance"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Record each atomic exchange separately; count-to-mass conversion requires model-specific item mass."
+  - id: electricity_energy
+    applies_to: "Each electricity row"
+    required_property_ref:
+      name: "Energy"
+      uuid: ""
+    required_unit: "kWh"
+    rule: "Preserve imported, returned, reused, and exported registers separately."
+  - id: thermal_carrier_energy
+    applies_to: "Steam, hot water, natural gas, diesel, LPG"
+    required_property_ref:
+      name: "Energy"
+      uuid: ""
+    required_unit: "MJ"
+    rule: "Meter and convert each named carrier separately; never report generic heat."
+  - id: water_stream
+    applies_to: "Water and wastewater"
+    required_property_ref:
+      name: "Mass or volume"
+      uuid: ""
+    required_unit: "kg or m3"
+    rule: "Preserve stream identity; calculate each elemental water release from concentration and flow."
+process_map:
+  - id: electrode_plate_preparation
+    name: "Electrode and plate preparation"
+    inclusion: "conditional"
+    inclusion_condition: "Include only for electrodes or plates made or finished on-site."
+    role: "Chemistry-specific electrode or plate manufacture"
+    quantitative_reference: "kg of conforming prepared electrode or plate"
+  - id: cell_assembly_sealing
+    name: "Cell assembly, electrolyte filling, and sealing"
+    inclusion: "conditional"
+    inclusion_condition: "Include when rechargeable cells are manufactured on-site."
+    role: "Chemistry-specific cell manufacture"
+    quantitative_reference: "kg of sealed unformed cells"
+  - id: formation_ageing_testing
+    name: "Formation, ageing, and release testing"
+    inclusion: "required"
+    inclusion_condition: "Apply to on-site formation and every final release-test operation."
+    role: "Electrical activation and quality release"
+    quantitative_reference: "kg of conforming tested accumulator"
+  - id: module_pack_assembly
+    name: "Module and pack assembly"
+    inclusion: "conditional"
+    inclusion_condition: "Include when cells, modules, controls, interconnects, housings, cooling parts, or included packaging are assembled on-site."
+    role: "Final accumulator assembly"
+    quantitative_reference: "kg of conforming finished accumulator"
+  - id: site_utilities_treatment
+    name: "Site utilities and pollution control"
+    inclusion: "conditional"
+    inclusion_condition: "Include each carrier or treatment train only when it serves the declared product and is not already measured in another foreground process."
+    role: "Carrier-specific utility supply and release accounting"
+    quantitative_reference: "kg of conforming finished accumulator served"
+process_inventory:
+  - id: electrode_plate_preparation
+    label: "Electrode and plate preparation"
+    inputs:
+      product:
+        - row_id: nmc_cathode_active_input
+          role: "Lithium nickel manganese cobalt oxide cathode active material"
+          name: "Lithium nickel manganese cobalt oxide cathode active material"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Lithium-ion NMC cathode route only."
+          amount:
+            expression: "Record the route-specific foreground quantity from reconciled receipts, issues, meters, laboratory results, or waste records; use zero only with a documented not-applicable determination."
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg of the conforming output of this process"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_electrode_materials
+              source_ids:
+                - ec-battery-pefcr-2018
+                - argonne-lib-flows-2012
+            ranges: []
+        - row_id: lfp_cathode_active_input
+          role: "Lithium iron phosphate cathode active material"
+          name: "Lithium iron phosphate cathode active material"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Lithium-ion LFP cathode route only."
+          amount:
+            expression: "Record the route-specific foreground quantity from reconciled receipts, issues, meters, laboratory results, or waste records; use zero only with a documented not-applicable determination."
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg of the conforming output of this process"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_electrode_materials
+              source_ids:
+                - ec-battery-pefcr-2018
+                - argonne-lib-flows-2012
+            ranges: []
+        - row_id: lmo_cathode_active_input
+          role: "Lithium manganese oxide cathode active material"
+          name: "Lithium manganese oxide cathode active material"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Lithium-ion LMO cathode route only."
+          amount:
+            expression: "Record the route-specific foreground quantity from reconciled receipts, issues, meters, laboratory results, or waste records; use zero only with a documented not-applicable determination."
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg of the conforming output of this process"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_electrode_materials
+              source_ids:
+                - ec-battery-pefcr-2018
+                - argonne-lib-flows-2012
+            ranges: []
+        - row_id: graphite_anode_active_input
+          role: "Graphite anode active material"
+          name: "Graphite anode active material"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Lithium-ion graphite-anode route only."
+          amount:
+            expression: "Record the route-specific foreground quantity from reconciled receipts, issues, meters, laboratory results, or waste records; use zero only with a documented not-applicable determination."
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg of the conforming output of this process"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_electrode_materials
+              source_ids:
+                - ec-battery-pefcr-2018
+                - argonne-lib-flows-2012
+            ranges: []
+        - row_id: lead_oxide_active_input
+          role: "Lead oxide for battery paste"
+          name: "Lead oxide for battery paste"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Lead-acid plate route only."
+          amount:
+            expression: "Record the route-specific foreground quantity from reconciled receipts, issues, meters, laboratory results, or waste records; use zero only with a documented not-applicable determination."
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg of the conforming output of this process"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_electrode_materials
+              source_ids:
+                - ec-battery-pefcr-2018
+                - argonne-lib-flows-2012
+            ranges: []
+        - row_id: lead_alloy_grid_input
+          role: "Lead alloy grid"
+          name: "Lead alloy grid"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Lead-acid plate route only."
+          amount:
+            expression: "Record the route-specific foreground quantity from reconciled receipts, issues, meters, laboratory results, or waste records; use zero only with a documented not-applicable determination."
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg of the conforming output of this process"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_electrode_materials
+              source_ids:
+                - ec-battery-pefcr-2018
+                - argonne-lib-flows-2012
+            ranges: []
+        - row_id: nickel_hydroxide_active_input
+          role: "Nickel hydroxide positive-electrode material"
+          name: "Nickel hydroxide positive-electrode material"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Nickel-cadmium and nickel-metal-hydride positive-electrode routes only."
+          amount:
+            expression: "Record the route-specific foreground quantity from reconciled receipts, issues, meters, laboratory results, or waste records; use zero only with a documented not-applicable determination."
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg of the conforming output of this process"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_electrode_materials
+              source_ids:
+                - ec-battery-pefcr-2018
+                - argonne-lib-flows-2012
+            ranges: []
+        - row_id: cadmium_hydroxide_active_input
+          role: "Cadmium hydroxide negative-electrode material"
+          name: "Cadmium hydroxide negative-electrode material"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Nickel-cadmium negative-electrode route only."
+          amount:
+            expression: "Record the route-specific foreground quantity from reconciled receipts, issues, meters, laboratory results, or waste records; use zero only with a documented not-applicable determination."
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg of the conforming output of this process"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_electrode_materials
+              source_ids:
+                - ec-battery-pefcr-2018
+                - argonne-lib-flows-2012
+            ranges: []
+        - row_id: metal_hydride_alloy_input
+          role: "Hydrogen-storage metal alloy negative-electrode material"
+          name: "Hydrogen-storage metal alloy negative-electrode material"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Nickel-metal-hydride negative-electrode route only."
+          amount:
+            expression: "Record the route-specific foreground quantity from reconciled receipts, issues, meters, laboratory results, or waste records; use zero only with a documented not-applicable determination."
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg of the conforming output of this process"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_electrode_materials
+              source_ids:
+                - ec-battery-pefcr-2018
+                - argonne-lib-flows-2012
+            ranges: []
+        - row_id: pvdf_binder_input
+          role: "Polyvinylidene fluoride binder"
+          name: "Polyvinylidene fluoride binder"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Lithium-ion solvent-based electrode route only."
+          amount:
+            expression: "Record the route-specific foreground quantity from reconciled receipts, issues, meters, laboratory results, or waste records; use zero only with a documented not-applicable determination."
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg of the conforming output of this process"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_electrode_materials
+              source_ids:
+                - ec-battery-pefcr-2018
+                - argonne-lib-flows-2012
+            ranges: []
+        - row_id: sbr_binder_input
+          role: "Styrene-butadiene rubber binder"
+          name: "Styrene-butadiene rubber binder"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Lithium-ion water-based graphite-anode route only."
+          amount:
+            expression: "Record the route-specific foreground quantity from reconciled receipts, issues, meters, laboratory results, or waste records; use zero only with a documented not-applicable determination."
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg of the conforming output of this process"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_electrode_materials
+              source_ids:
+                - ec-battery-pefcr-2018
+                - argonne-lib-flows-2012
+            ranges: []
+        - row_id: carbon_black_input
+          role: "Carbon black conductive additive"
+          name: "Carbon black conductive additive"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only routes whose approved formulation contains carbon black."
+          amount:
+            expression: "Record the route-specific foreground quantity from reconciled receipts, issues, meters, laboratory results, or waste records; use zero only with a documented not-applicable determination."
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg of the conforming output of this process"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_electrode_materials
+              source_ids:
+                - ec-battery-pefcr-2018
+                - argonne-lib-flows-2012
+            ranges: []
+        - row_id: nmp_solvent_input
+          role: "N-Methyl-2-pyrrolidone (NMP)"
+          name: "N-Methyl-2-pyrrolidone (NMP)"
+          flow_type: "product"
+          flow_ref:
+            uuid: "5c41bfdd-a740-4672-aa66-88df7ea25f81"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Lithium-ion PVDF electrode-slurry route only; record virgin and externally recovered NMP separately from internal recirculation."
+          amount:
+            expression: "Record the route-specific foreground quantity from reconciled receipts, issues, meters, laboratory results, or waste records; use zero only with a documented not-applicable determination."
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg of the conforming output of this process"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_electrode_materials
+              source_ids:
+                - ec-battery-pefcr-2018
+                - argonne-lib-flows-2012
+            ranges: []
+        - row_id: deionised_water_slurry_input
+          role: "Deionised water"
+          name: "Deionised water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "5b3acbab-2518-4406-8736-d21f222d757a"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only water-based slurry, washing, or paste routes; do not merge with cooling water."
+          amount:
+            expression: "Record the route-specific foreground quantity from reconciled receipts, issues, meters, laboratory results, or waste records; use zero only with a documented not-applicable determination."
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg of the conforming output of this process"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_electrode_materials
+              source_ids:
+                - ec-battery-pefcr-2018
+            ranges: []
+        - row_id: aluminium_foil_collector_input
+          role: "Aluminium foil current collector"
+          name: "Aluminium foil current collector"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Lithium-ion cathode route only."
+          amount:
+            expression: "Record the route-specific foreground quantity from reconciled receipts, issues, meters, laboratory results, or waste records; use zero only with a documented not-applicable determination."
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg of the conforming output of this process"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_electrode_materials
+              source_ids:
+                - ec-battery-pefcr-2018
+                - us-epa-nickel-battery-1996
+            ranges: []
+        - row_id: copper_foil_collector_input
+          role: "Copper foil current collector"
+          name: "Copper foil current collector"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Lithium-ion graphite-anode route only."
+          amount:
+            expression: "Record the route-specific foreground quantity from reconciled receipts, issues, meters, laboratory results, or waste records; use zero only with a documented not-applicable determination."
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg of the conforming output of this process"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_electrode_materials
+              source_ids:
+                - ec-battery-pefcr-2018
+                - us-epa-nickel-battery-1996
+            ranges: []
+        - row_id: nickel_plated_steel_substrate_input
+          role: "Nickel-plated steel electrode substrate"
+          name: "Nickel-plated steel electrode substrate"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Applicable nickel-based electrode routes only."
+          amount:
+            expression: "Record the route-specific foreground quantity from reconciled receipts, issues, meters, laboratory results, or waste records; use zero only with a documented not-applicable determination."
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg of the conforming output of this process"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_electrode_materials
+              source_ids:
+                - ec-battery-pefcr-2018
+                - us-epa-nickel-battery-1996
+            ranges: []
+        - row_id: electrode_electricity_input
+          role: "Electricity, alternating current, at plant"
+          name: "Electricity, alternating current, at plant"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Site-metered electricity attributable to electrode or plate preparation; applicable to every on-site route using electrical equipment."
+          amount:
+            expression: "Record metered electricity for mixing, coating, drying, curing, calendaring, slitting, ventilation, and dry-room service attributable to this process; do not merge it with thermal carriers."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg of the conforming output of this process"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_electrode_utilities
+              source_ids:
+                - ec-battery-pefcr-2018
+                - porzio-scown-2021
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: lithium_cathode_electrode_output
+          role: "Prepared lithium-ion cathode electrode"
+          name: "Prepared lithium-ion cathode electrode"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Lithium-ion route only."
+          amount:
+            expression: "Record the route-specific foreground quantity from reconciled receipts, issues, meters, laboratory results, or waste records; use zero only with a documented not-applicable determination."
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg of the conforming output of this process"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_electrode_materials
+              source_ids:
+                - us-epa-ap42-lead-acid-1995
+                - us-epa-nickel-battery-1996
+                - argonne-lib-flows-2012
+            ranges: []
+        - row_id: lithium_anode_electrode_output
+          role: "Prepared lithium-ion anode electrode"
+          name: "Prepared lithium-ion anode electrode"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Lithium-ion route only."
+          amount:
+            expression: "Record the route-specific foreground quantity from reconciled receipts, issues, meters, laboratory results, or waste records; use zero only with a documented not-applicable determination."
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg of the conforming output of this process"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_electrode_materials
+              source_ids:
+                - us-epa-ap42-lead-acid-1995
+                - us-epa-nickel-battery-1996
+                - argonne-lib-flows-2012
+            ranges: []
+        - row_id: lead_positive_plate_output
+          role: "Prepared lead-acid positive plate"
+          name: "Prepared lead-acid positive plate"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Lead-acid route only."
+          amount:
+            expression: "Record the route-specific foreground quantity from reconciled receipts, issues, meters, laboratory results, or waste records; use zero only with a documented not-applicable determination."
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg of the conforming output of this process"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_electrode_materials
+              source_ids:
+                - us-epa-ap42-lead-acid-1995
+                - us-epa-nickel-battery-1996
+                - argonne-lib-flows-2012
+            ranges: []
+        - row_id: lead_negative_plate_output
+          role: "Prepared lead-acid negative plate"
+          name: "Prepared lead-acid negative plate"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Lead-acid route only."
+          amount:
+            expression: "Record the route-specific foreground quantity from reconciled receipts, issues, meters, laboratory results, or waste records; use zero only with a documented not-applicable determination."
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg of the conforming output of this process"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_electrode_materials
+              source_ids:
+                - us-epa-ap42-lead-acid-1995
+                - us-epa-nickel-battery-1996
+                - argonne-lib-flows-2012
+            ranges: []
+        - row_id: nickel_positive_plate_output
+          role: "Prepared nickel hydroxide positive plate"
+          name: "Prepared nickel hydroxide positive plate"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Nickel-cadmium or nickel-metal-hydride route only."
+          amount:
+            expression: "Record the route-specific foreground quantity from reconciled receipts, issues, meters, laboratory results, or waste records; use zero only with a documented not-applicable determination."
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg of the conforming output of this process"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_electrode_materials
+              source_ids:
+                - us-epa-ap42-lead-acid-1995
+                - us-epa-nickel-battery-1996
+                - argonne-lib-flows-2012
+            ranges: []
+        - row_id: cadmium_negative_plate_output
+          role: "Prepared cadmium negative plate"
+          name: "Prepared cadmium negative plate"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Nickel-cadmium route only."
+          amount:
+            expression: "Record the route-specific foreground quantity from reconciled receipts, issues, meters, laboratory results, or waste records; use zero only with a documented not-applicable determination."
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg of the conforming output of this process"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_electrode_materials
+              source_ids:
+                - us-epa-ap42-lead-acid-1995
+                - us-epa-nickel-battery-1996
+                - argonne-lib-flows-2012
+            ranges: []
+        - row_id: metal_hydride_negative_plate_output
+          role: "Prepared metal-hydride negative plate"
+          name: "Prepared metal-hydride negative plate"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Nickel-metal-hydride route only."
+          amount:
+            expression: "Record the route-specific foreground quantity from reconciled receipts, issues, meters, laboratory results, or waste records; use zero only with a documented not-applicable determination."
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg of the conforming output of this process"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_electrode_materials
+              source_ids:
+                - us-epa-ap42-lead-acid-1995
+                - us-epa-nickel-battery-1996
+                - argonne-lib-flows-2012
+            ranges: []
+      waste:
+        - row_id: nmp_distillation_residue_output
+          role: "NMP distillation residue"
+          name: "NMP distillation residue"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Lithium-ion NMP recovery route only."
+          amount:
+            expression: "Record the route-specific foreground quantity from reconciled receipts, issues, meters, laboratory results, or waste records; use zero only with a documented not-applicable determination."
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg of the conforming output of this process"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_electrode_waste_releases
+              source_ids:
+                - ec-battery-pefcr-2018
+                - us-epa-ap42-lead-acid-1995
+                - us-epa-nickel-battery-1996
+            ranges: []
+        - row_id: lithium_cathode_coating_scrap_output
+          role: "Lithium-ion cathode coating scrap"
+          name: "Lithium-ion cathode coating scrap"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Lithium-ion cathode route only."
+          amount:
+            expression: "Record the route-specific foreground quantity from reconciled receipts, issues, meters, laboratory results, or waste records; use zero only with a documented not-applicable determination."
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg of the conforming output of this process"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_electrode_waste_releases
+              source_ids:
+                - ec-battery-pefcr-2018
+                - us-epa-ap42-lead-acid-1995
+                - us-epa-nickel-battery-1996
+            ranges: []
+        - row_id: lithium_anode_coating_scrap_output
+          role: "Lithium-ion anode coating scrap"
+          name: "Lithium-ion anode coating scrap"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Lithium-ion anode route only."
+          amount:
+            expression: "Record the route-specific foreground quantity from reconciled receipts, issues, meters, laboratory results, or waste records; use zero only with a documented not-applicable determination."
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg of the conforming output of this process"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_electrode_waste_releases
+              source_ids:
+                - ec-battery-pefcr-2018
+                - us-epa-ap42-lead-acid-1995
+                - us-epa-nickel-battery-1996
+            ranges: []
+        - row_id: lead_paste_scrap_output
+          role: "Lead-bearing paste scrap"
+          name: "Lead-bearing paste scrap"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Lead-acid route only."
+          amount:
+            expression: "Record the route-specific foreground quantity from reconciled receipts, issues, meters, laboratory results, or waste records; use zero only with a documented not-applicable determination."
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg of the conforming output of this process"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_electrode_waste_releases
+              source_ids:
+                - ec-battery-pefcr-2018
+                - us-epa-ap42-lead-acid-1995
+                - us-epa-nickel-battery-1996
+            ranges: []
+        - row_id: cadmium_plate_scrap_output
+          role: "Cadmium-bearing plate scrap"
+          name: "Cadmium-bearing plate scrap"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Nickel-cadmium route only."
+          amount:
+            expression: "Record the route-specific foreground quantity from reconciled receipts, issues, meters, laboratory results, or waste records; use zero only with a documented not-applicable determination."
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg of the conforming output of this process"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_electrode_waste_releases
+              source_ids:
+                - ec-battery-pefcr-2018
+                - us-epa-ap42-lead-acid-1995
+                - us-epa-nickel-battery-1996
+            ranges: []
+        - row_id: nickel_plate_scrap_output
+          role: "Nickel-bearing plate scrap"
+          name: "Nickel-bearing plate scrap"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Nickel-based routes only."
+          amount:
+            expression: "Record the route-specific foreground quantity from reconciled receipts, issues, meters, laboratory results, or waste records; use zero only with a documented not-applicable determination."
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg of the conforming output of this process"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_electrode_waste_releases
+              source_ids:
+                - ec-battery-pefcr-2018
+                - us-epa-ap42-lead-acid-1995
+                - us-epa-nickel-battery-1996
+            ranges: []
+      elementary:
+        - row_id: nmp_to_air_output
+          role: "N-Methyl-2-pyrrolidone to air"
+          name: "N-Methyl-2-pyrrolidone to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Lithium-ion NMP route only."
+          amount:
+            expression: "Record the route-specific foreground quantity from reconciled receipts, issues, meters, laboratory results, or waste records; use zero only with a documented not-applicable determination."
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg of the conforming output of this process"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_electrode_waste_releases
+              source_ids:
+                - us-epa-ap42-lead-acid-1995
+                - us-epa-nickel-battery-1996
+            ranges: []
+        - row_id: lead_to_air_output
+          role: "Lead to air"
+          name: "Lead to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Lead-acid route only."
+          amount:
+            expression: "Record the route-specific foreground quantity from reconciled receipts, issues, meters, laboratory results, or waste records; use zero only with a documented not-applicable determination."
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg of the conforming output of this process"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_electrode_waste_releases
+              source_ids:
+                - us-epa-ap42-lead-acid-1995
+                - us-epa-nickel-battery-1996
+            ranges: []
+        - row_id: nickel_to_air_output
+          role: "Nickel to air"
+          name: "Nickel to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Nickel-based routes only."
+          amount:
+            expression: "Record the route-specific foreground quantity from reconciled receipts, issues, meters, laboratory results, or waste records; use zero only with a documented not-applicable determination."
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg of the conforming output of this process"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_electrode_waste_releases
+              source_ids:
+                - us-epa-ap42-lead-acid-1995
+                - us-epa-nickel-battery-1996
+            ranges: []
+        - row_id: cadmium_to_air_output
+          role: "Cadmium to air"
+          name: "Cadmium to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Nickel-cadmium route only."
+          amount:
+            expression: "Record the route-specific foreground quantity from reconciled receipts, issues, meters, laboratory results, or waste records; use zero only with a documented not-applicable determination."
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg of the conforming output of this process"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_electrode_waste_releases
+              source_ids:
+                - us-epa-ap42-lead-acid-1995
+                - us-epa-nickel-battery-1996
+            ranges: []
+  - id: cell_assembly_sealing
+    label: "Cell assembly, electrolyte filling, and sealing"
+    inputs:
+      product:
+        - row_id: lithium_cathode_electrode_input
+          role: "Prepared lithium-ion cathode electrode"
+          name: "Prepared lithium-ion cathode electrode"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Lithium-ion route only."
+          amount:
+            expression: "Record the route-specific foreground quantity from reconciled receipts, issues, meters, laboratory results, or waste records; use zero only with a documented not-applicable determination."
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg of the conforming output of this process"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cell_materials
+              source_ids:
+                - ec-battery-pefcr-2018
+                - argonne-lib-flows-2012
+                - us-epa-ap42-lead-acid-1995
+                - us-epa-nickel-battery-1996
+            ranges: []
+        - row_id: lithium_anode_electrode_input
+          role: "Prepared lithium-ion anode electrode"
+          name: "Prepared lithium-ion anode electrode"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Lithium-ion route only."
+          amount:
+            expression: "Record the route-specific foreground quantity from reconciled receipts, issues, meters, laboratory results, or waste records; use zero only with a documented not-applicable determination."
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg of the conforming output of this process"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cell_materials
+              source_ids:
+                - ec-battery-pefcr-2018
+                - argonne-lib-flows-2012
+                - us-epa-ap42-lead-acid-1995
+                - us-epa-nickel-battery-1996
+            ranges: []
+        - row_id: lead_positive_plate_input
+          role: "Prepared lead-acid positive plate"
+          name: "Prepared lead-acid positive plate"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Lead-acid route only."
+          amount:
+            expression: "Record the route-specific foreground quantity from reconciled receipts, issues, meters, laboratory results, or waste records; use zero only with a documented not-applicable determination."
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg of the conforming output of this process"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cell_materials
+              source_ids:
+                - ec-battery-pefcr-2018
+                - argonne-lib-flows-2012
+                - us-epa-ap42-lead-acid-1995
+                - us-epa-nickel-battery-1996
+            ranges: []
+        - row_id: lead_negative_plate_input
+          role: "Prepared lead-acid negative plate"
+          name: "Prepared lead-acid negative plate"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Lead-acid route only."
+          amount:
+            expression: "Record the route-specific foreground quantity from reconciled receipts, issues, meters, laboratory results, or waste records; use zero only with a documented not-applicable determination."
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg of the conforming output of this process"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cell_materials
+              source_ids:
+                - ec-battery-pefcr-2018
+                - argonne-lib-flows-2012
+                - us-epa-ap42-lead-acid-1995
+                - us-epa-nickel-battery-1996
+            ranges: []
+        - row_id: nickel_positive_plate_input
+          role: "Prepared nickel hydroxide positive plate"
+          name: "Prepared nickel hydroxide positive plate"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Nickel-based routes only."
+          amount:
+            expression: "Record the route-specific foreground quantity from reconciled receipts, issues, meters, laboratory results, or waste records; use zero only with a documented not-applicable determination."
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg of the conforming output of this process"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cell_materials
+              source_ids:
+                - ec-battery-pefcr-2018
+                - argonne-lib-flows-2012
+                - us-epa-ap42-lead-acid-1995
+                - us-epa-nickel-battery-1996
+            ranges: []
+        - row_id: cadmium_negative_plate_input
+          role: "Prepared cadmium negative plate"
+          name: "Prepared cadmium negative plate"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Nickel-cadmium route only."
+          amount:
+            expression: "Record the route-specific foreground quantity from reconciled receipts, issues, meters, laboratory results, or waste records; use zero only with a documented not-applicable determination."
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg of the conforming output of this process"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cell_materials
+              source_ids:
+                - ec-battery-pefcr-2018
+                - argonne-lib-flows-2012
+                - us-epa-ap42-lead-acid-1995
+                - us-epa-nickel-battery-1996
+            ranges: []
+        - row_id: metal_hydride_negative_plate_input
+          role: "Prepared metal-hydride negative plate"
+          name: "Prepared metal-hydride negative plate"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Nickel-metal-hydride route only."
+          amount:
+            expression: "Record the route-specific foreground quantity from reconciled receipts, issues, meters, laboratory results, or waste records; use zero only with a documented not-applicable determination."
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg of the conforming output of this process"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cell_materials
+              source_ids:
+                - ec-battery-pefcr-2018
+                - argonne-lib-flows-2012
+                - us-epa-ap42-lead-acid-1995
+                - us-epa-nickel-battery-1996
+            ranges: []
+        - row_id: polyethylene_separator_input
+          role: "Polyethylene battery separator"
+          name: "Polyethylene battery separator"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only product designs specifying PE separator."
+          amount:
+            expression: "Record the route-specific foreground quantity from reconciled receipts, issues, meters, laboratory results, or waste records; use zero only with a documented not-applicable determination."
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg of the conforming output of this process"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cell_materials
+              source_ids:
+                - ec-battery-pefcr-2018
+                - argonne-lib-flows-2012
+                - us-epa-ap42-lead-acid-1995
+                - us-epa-nickel-battery-1996
+            ranges: []
+        - row_id: polypropylene_separator_input
+          role: "Polypropylene battery separator"
+          name: "Polypropylene battery separator"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only product designs specifying PP separator."
+          amount:
+            expression: "Record the route-specific foreground quantity from reconciled receipts, issues, meters, laboratory results, or waste records; use zero only with a documented not-applicable determination."
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg of the conforming output of this process"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cell_materials
+              source_ids:
+                - ec-battery-pefcr-2018
+                - argonne-lib-flows-2012
+                - us-epa-ap42-lead-acid-1995
+                - us-epa-nickel-battery-1996
+            ranges: []
+        - row_id: glass_fibre_mat_separator_input
+          role: "Glass-fibre mat battery separator"
+          name: "Glass-fibre mat battery separator"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Absorbent-glass-mat lead-acid route only."
+          amount:
+            expression: "Record the route-specific foreground quantity from reconciled receipts, issues, meters, laboratory results, or waste records; use zero only with a documented not-applicable determination."
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg of the conforming output of this process"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cell_materials
+              source_ids:
+                - ec-battery-pefcr-2018
+                - argonne-lib-flows-2012
+                - us-epa-ap42-lead-acid-1995
+                - us-epa-nickel-battery-1996
+            ranges: []
+        - row_id: ethylene_carbonate_input
+          role: "Ethylene carbonate electrolyte solvent"
+          name: "Ethylene carbonate electrolyte solvent"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Lithium-ion carbonate-electrolyte route only."
+          amount:
+            expression: "Record the route-specific foreground quantity from reconciled receipts, issues, meters, laboratory results, or waste records; use zero only with a documented not-applicable determination."
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg of the conforming output of this process"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cell_materials
+              source_ids:
+                - ec-battery-pefcr-2018
+                - argonne-lib-flows-2012
+                - us-epa-ap42-lead-acid-1995
+                - us-epa-nickel-battery-1996
+            ranges: []
+        - row_id: dimethyl_carbonate_input
+          role: "Dimethyl carbonate electrolyte solvent"
+          name: "Dimethyl carbonate electrolyte solvent"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Lithium-ion carbonate-electrolyte route only."
+          amount:
+            expression: "Record the route-specific foreground quantity from reconciled receipts, issues, meters, laboratory results, or waste records; use zero only with a documented not-applicable determination."
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg of the conforming output of this process"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cell_materials
+              source_ids:
+                - ec-battery-pefcr-2018
+                - argonne-lib-flows-2012
+                - us-epa-ap42-lead-acid-1995
+                - us-epa-nickel-battery-1996
+            ranges: []
+        - row_id: lithium_hexafluorophosphate_input
+          role: "Lithium hexafluorophosphate electrolyte salt"
+          name: "Lithium hexafluorophosphate electrolyte salt"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Lithium-ion LiPF6 electrolyte route only."
+          amount:
+            expression: "Record the route-specific foreground quantity from reconciled receipts, issues, meters, laboratory results, or waste records; use zero only with a documented not-applicable determination."
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg of the conforming output of this process"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cell_materials
+              source_ids:
+                - ec-battery-pefcr-2018
+                - argonne-lib-flows-2012
+                - us-epa-ap42-lead-acid-1995
+                - us-epa-nickel-battery-1996
+            ranges: []
+        - row_id: sulfuric_acid_electrolyte_input
+          role: "Sulfuric acid electrolyte"
+          name: "Sulfuric acid electrolyte"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Lead-acid route only."
+          amount:
+            expression: "Record the route-specific foreground quantity from reconciled receipts, issues, meters, laboratory results, or waste records; use zero only with a documented not-applicable determination."
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg of the conforming output of this process"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cell_materials
+              source_ids:
+                - ec-battery-pefcr-2018
+                - argonne-lib-flows-2012
+                - us-epa-ap42-lead-acid-1995
+                - us-epa-nickel-battery-1996
+            ranges: []
+        - row_id: potassium_hydroxide_electrolyte_input
+          role: "Potassium hydroxide electrolyte"
+          name: "Potassium hydroxide electrolyte"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Nickel-cadmium and nickel-metal-hydride routes only."
+          amount:
+            expression: "Record the route-specific foreground quantity from reconciled receipts, issues, meters, laboratory results, or waste records; use zero only with a documented not-applicable determination."
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg of the conforming output of this process"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cell_materials
+              source_ids:
+                - ec-battery-pefcr-2018
+                - argonne-lib-flows-2012
+                - us-epa-ap42-lead-acid-1995
+                - us-epa-nickel-battery-1996
+            ranges: []
+        - row_id: steel_cell_can_input
+          role: "Steel cell can"
+          name: "Steel cell can"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only steel-can product configurations."
+          amount:
+            expression: "Record the route-specific foreground quantity from reconciled receipts, issues, meters, laboratory results, or waste records; use zero only with a documented not-applicable determination."
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg of the conforming output of this process"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cell_materials
+              source_ids:
+                - ec-battery-pefcr-2018
+                - argonne-lib-flows-2012
+                - us-epa-ap42-lead-acid-1995
+                - us-epa-nickel-battery-1996
+            ranges: []
+        - row_id: aluminium_pouch_laminate_input
+          role: "Aluminium-plastic pouch laminate"
+          name: "Aluminium-plastic pouch laminate"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Pouch-cell configuration only."
+          amount:
+            expression: "Record the route-specific foreground quantity from reconciled receipts, issues, meters, laboratory results, or waste records; use zero only with a documented not-applicable determination."
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg of the conforming output of this process"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cell_materials
+              source_ids:
+                - ec-battery-pefcr-2018
+                - argonne-lib-flows-2012
+                - us-epa-ap42-lead-acid-1995
+                - us-epa-nickel-battery-1996
+            ranges: []
+        - row_id: polypropylene_battery_case_input
+          role: "Polypropylene battery case"
+          name: "Polypropylene battery case"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only polypropylene-case configurations."
+          amount:
+            expression: "Record the route-specific foreground quantity from reconciled receipts, issues, meters, laboratory results, or waste records; use zero only with a documented not-applicable determination."
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg of the conforming output of this process"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cell_materials
+              source_ids:
+                - ec-battery-pefcr-2018
+                - argonne-lib-flows-2012
+                - us-epa-ap42-lead-acid-1995
+                - us-epa-nickel-battery-1996
+            ranges: []
+        - row_id: copper_terminal_input
+          role: "Copper battery terminal"
+          name: "Copper battery terminal"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only designs specifying a copper terminal."
+          amount:
+            expression: "Record the route-specific foreground quantity from reconciled receipts, issues, meters, laboratory results, or waste records; use zero only with a documented not-applicable determination."
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg of the conforming output of this process"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cell_materials
+              source_ids:
+                - ec-battery-pefcr-2018
+                - argonne-lib-flows-2012
+                - us-epa-ap42-lead-acid-1995
+                - us-epa-nickel-battery-1996
+            ranges: []
+        - row_id: lead_terminal_input
+          role: "Lead battery terminal"
+          name: "Lead battery terminal"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Lead-acid designs specifying a lead terminal."
+          amount:
+            expression: "Record the route-specific foreground quantity from reconciled receipts, issues, meters, laboratory results, or waste records; use zero only with a documented not-applicable determination."
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg of the conforming output of this process"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cell_materials
+              source_ids:
+                - ec-battery-pefcr-2018
+                - argonne-lib-flows-2012
+                - us-epa-ap42-lead-acid-1995
+                - us-epa-nickel-battery-1996
+            ranges: []
+        - row_id: cell_assembly_electricity_input
+          role: "Electricity, alternating current, at plant"
+          name: "Electricity, alternating current, at plant"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Site-metered electricity attributable to cell assembly, filling, sealing, vacuum, and dry-room equipment."
+          amount:
+            expression: "Record metered electricity for stacking or winding, filling, sealing, vacuum, dry-room, and directly attributable ventilation; do not merge with thermal carriers."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg of the conforming output of this process"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cell_utilities
+              source_ids:
+                - ec-battery-pefcr-2018
+                - porzio-scown-2021
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: unformed_lithium_ion_cell_output
+          role: "Unformed lithium-ion rechargeable cell"
+          name: "Unformed lithium-ion rechargeable cell"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Lithium-ion route only."
+          amount:
+            expression: "Record the route-specific foreground quantity from reconciled receipts, issues, meters, laboratory results, or waste records; use zero only with a documented not-applicable determination."
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg of the conforming output of this process"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cell_materials
+              source_ids:
+                - ec-battery-pefcr-2018
+                - us-epa-ap42-lead-acid-1995
+                - us-epa-nickel-battery-1996
+            ranges: []
+        - row_id: unformed_lead_acid_cell_output
+          role: "Unformed lead-acid rechargeable cell"
+          name: "Unformed lead-acid rechargeable cell"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Lead-acid route only."
+          amount:
+            expression: "Record the route-specific foreground quantity from reconciled receipts, issues, meters, laboratory results, or waste records; use zero only with a documented not-applicable determination."
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg of the conforming output of this process"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cell_materials
+              source_ids:
+                - ec-battery-pefcr-2018
+                - us-epa-ap42-lead-acid-1995
+                - us-epa-nickel-battery-1996
+            ranges: []
+        - row_id: unformed_nickel_cadmium_cell_output
+          role: "Unformed nickel-cadmium rechargeable cell"
+          name: "Unformed nickel-cadmium rechargeable cell"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Nickel-cadmium route only."
+          amount:
+            expression: "Record the route-specific foreground quantity from reconciled receipts, issues, meters, laboratory results, or waste records; use zero only with a documented not-applicable determination."
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg of the conforming output of this process"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cell_materials
+              source_ids:
+                - ec-battery-pefcr-2018
+                - us-epa-ap42-lead-acid-1995
+                - us-epa-nickel-battery-1996
+            ranges: []
+        - row_id: unformed_nickel_metal_hydride_cell_output
+          role: "Unformed nickel-metal-hydride rechargeable cell"
+          name: "Unformed nickel-metal-hydride rechargeable cell"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Nickel-metal-hydride route only."
+          amount:
+            expression: "Record the route-specific foreground quantity from reconciled receipts, issues, meters, laboratory results, or waste records; use zero only with a documented not-applicable determination."
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg of the conforming output of this process"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cell_materials
+              source_ids:
+                - ec-battery-pefcr-2018
+                - us-epa-ap42-lead-acid-1995
+                - us-epa-nickel-battery-1996
+            ranges: []
+      waste:
+        - row_id: ethylene_carbonate_waste_output
+          role: "Ethylene carbonate electrolyte waste"
+          name: "Ethylene carbonate electrolyte waste"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Lithium-ion carbonate-electrolyte route only; determine this constituent from direct segregation or a documented waste-composition balance."
+          amount:
+            expression: "Record the route-specific foreground quantity from reconciled receipts, issues, meters, laboratory results, or waste records; use zero only with a documented not-applicable determination."
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg of the conforming output of this process"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cell_waste_releases
+              source_ids:
+                - ec-battery-pefcr-2018
+                - us-epa-battery-effluent-guidelines
+            ranges: []
+        - row_id: dimethyl_carbonate_waste_output
+          role: "Dimethyl carbonate electrolyte waste"
+          name: "Dimethyl carbonate electrolyte waste"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Lithium-ion carbonate-electrolyte route only; determine this constituent from direct segregation or a documented waste-composition balance."
+          amount:
+            expression: "Record the route-specific foreground quantity from reconciled receipts, issues, meters, laboratory results, or waste records; use zero only with a documented not-applicable determination."
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg of the conforming output of this process"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cell_waste_releases
+              source_ids:
+                - ec-battery-pefcr-2018
+                - us-epa-battery-effluent-guidelines
+            ranges: []
+        - row_id: lithium_hexafluorophosphate_waste_output
+          role: "Lithium hexafluorophosphate electrolyte-salt waste"
+          name: "Lithium hexafluorophosphate electrolyte-salt waste"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Lithium-ion LiPF6 electrolyte route only; determine this constituent from direct segregation or a documented waste-composition balance."
+          amount:
+            expression: "Record the route-specific foreground quantity from reconciled receipts, issues, meters, laboratory results, or waste records; use zero only with a documented not-applicable determination."
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg of the conforming output of this process"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cell_waste_releases
+              source_ids:
+                - ec-battery-pefcr-2018
+                - us-epa-battery-effluent-guidelines
+            ranges: []
+        - row_id: sulfuric_acid_electrolyte_waste_output
+          role: "Spent sulfuric acid electrolyte"
+          name: "Spent sulfuric acid electrolyte"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Lead-acid route only."
+          amount:
+            expression: "Record the route-specific foreground quantity from reconciled receipts, issues, meters, laboratory results, or waste records; use zero only with a documented not-applicable determination."
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg of the conforming output of this process"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cell_waste_releases
+              source_ids:
+                - ec-battery-pefcr-2018
+                - us-epa-battery-effluent-guidelines
+            ranges: []
+        - row_id: potassium_hydroxide_electrolyte_waste_output
+          role: "Spent potassium hydroxide electrolyte"
+          name: "Spent potassium hydroxide electrolyte"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Nickel-based alkaline-electrolyte routes only."
+          amount:
+            expression: "Record the route-specific foreground quantity from reconciled receipts, issues, meters, laboratory results, or waste records; use zero only with a documented not-applicable determination."
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg of the conforming output of this process"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cell_waste_releases
+              source_ids:
+                - ec-battery-pefcr-2018
+                - us-epa-battery-effluent-guidelines
+            ranges: []
+        - row_id: polyethylene_separator_scrap_output
+          role: "Polyethylene separator scrap"
+          name: "Polyethylene separator scrap"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Only PE-separator configurations."
+          amount:
+            expression: "Record the route-specific foreground quantity from reconciled receipts, issues, meters, laboratory results, or waste records; use zero only with a documented not-applicable determination."
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg of the conforming output of this process"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cell_waste_releases
+              source_ids:
+                - ec-battery-pefcr-2018
+                - us-epa-battery-effluent-guidelines
+            ranges: []
+        - row_id: polypropylene_separator_scrap_output
+          role: "Polypropylene separator scrap"
+          name: "Polypropylene separator scrap"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Only PP-separator configurations."
+          amount:
+            expression: "Record the route-specific foreground quantity from reconciled receipts, issues, meters, laboratory results, or waste records; use zero only with a documented not-applicable determination."
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg of the conforming output of this process"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cell_waste_releases
+              source_ids:
+                - ec-battery-pefcr-2018
+                - us-epa-battery-effluent-guidelines
+            ranges: []
+      elementary:
+        - row_id: ethylene_carbonate_to_air_output
+          role: "Ethylene carbonate to air"
+          name: "Ethylene carbonate to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Lithium-ion routes using ethylene carbonate only; keep separate from every other electrolyte solvent."
+          amount:
+            expression: "Record the route-specific foreground quantity from reconciled receipts, issues, meters, laboratory results, or waste records; use zero only with a documented not-applicable determination."
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg of the conforming output of this process"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cell_waste_releases
+              source_ids:
+                - us-epa-ap42-lead-acid-1995
+                - ec-battery-pefcr-2018
+            ranges: []
+        - row_id: dimethyl_carbonate_to_air_output
+          role: "Dimethyl carbonate to air"
+          name: "Dimethyl carbonate to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Lithium-ion routes using dimethyl carbonate only; keep separate from every other electrolyte solvent."
+          amount:
+            expression: "Record the route-specific foreground quantity from reconciled receipts, issues, meters, laboratory results, or waste records; use zero only with a documented not-applicable determination."
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg of the conforming output of this process"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cell_waste_releases
+              source_ids:
+                - us-epa-ap42-lead-acid-1995
+                - ec-battery-pefcr-2018
+            ranges: []
+        - row_id: sulfuric_acid_mist_cell_to_air_output
+          role: "Sulfuric acid mist to air"
+          name: "Sulfuric acid mist to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Lead-acid assembly and filling route only."
+          amount:
+            expression: "Record the route-specific foreground quantity from reconciled receipts, issues, meters, laboratory results, or waste records; use zero only with a documented not-applicable determination."
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg of the conforming output of this process"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cell_waste_releases
+              source_ids:
+                - us-epa-ap42-lead-acid-1995
+                - ec-battery-pefcr-2018
+            ranges: []
+  - id: formation_ageing_testing
+    label: "Formation, ageing, and release testing"
+    inputs:
+      product:
+        - row_id: unformed_lithium_ion_cell_input
+          role: "Unformed lithium-ion rechargeable cell"
+          name: "Unformed lithium-ion rechargeable cell"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Lithium-ion route only."
+          amount:
+            expression: "Record the route-specific foreground quantity from reconciled receipts, issues, meters, laboratory results, or waste records; use zero only with a documented not-applicable determination."
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg of the conforming output of this process"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_formation_testing
+              source_ids:
+                - ec-battery-pefcr-2018
+            ranges: []
+        - row_id: unformed_lead_acid_cell_input
+          role: "Unformed lead-acid rechargeable cell"
+          name: "Unformed lead-acid rechargeable cell"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Lead-acid route only."
+          amount:
+            expression: "Record the route-specific foreground quantity from reconciled receipts, issues, meters, laboratory results, or waste records; use zero only with a documented not-applicable determination."
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg of the conforming output of this process"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_formation_testing
+              source_ids:
+                - ec-battery-pefcr-2018
+            ranges: []
+        - row_id: unformed_nickel_cadmium_cell_input
+          role: "Unformed nickel-cadmium rechargeable cell"
+          name: "Unformed nickel-cadmium rechargeable cell"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Nickel-cadmium route only."
+          amount:
+            expression: "Record the route-specific foreground quantity from reconciled receipts, issues, meters, laboratory results, or waste records; use zero only with a documented not-applicable determination."
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg of the conforming output of this process"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_formation_testing
+              source_ids:
+                - ec-battery-pefcr-2018
+            ranges: []
+        - row_id: unformed_nickel_metal_hydride_cell_input
+          role: "Unformed nickel-metal-hydride rechargeable cell"
+          name: "Unformed nickel-metal-hydride rechargeable cell"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Nickel-metal-hydride route only."
+          amount:
+            expression: "Record the route-specific foreground quantity from reconciled receipts, issues, meters, laboratory results, or waste records; use zero only with a documented not-applicable determination."
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg of the conforming output of this process"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_formation_testing
+              source_ids:
+                - ec-battery-pefcr-2018
+            ranges: []
+        - row_id: formation_electricity_input
+          role: "Electricity, alternating current, at plant"
+          name: "Electricity, alternating current, at plant"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Imported site-metered electricity attributable to formation, ageing, cycling, and release testing."
+          amount:
+            expression: "Record imported metered electricity for formation, ageing, cycling, and release testing before subtracting separately metered electricity returned and reused."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg of the conforming output of this process"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_formation_testing
+              source_ids:
+                - ec-battery-pefcr-2018
+                - porzio-scown-2021
+            ranges: []
+        - row_id: formation_cooling_water_input
+          role: "Deionised water"
+          name: "Deionised water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "5b3acbab-2518-4406-8736-d21f222d757a"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Make-up deionised water crossing the formation-cooling boundary; applicable only where this water quality is actually used."
+          amount:
+            expression: "Record make-up deionised cooling water only when it crosses the process boundary; do not record closed-loop recirculation as repeated input."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg of the conforming output of this process"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_formation_testing
+              source_ids:
+                - ec-battery-pefcr-2018
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: tested_lithium_ion_cell_output
+          role: "Tested lithium-ion rechargeable cell"
+          name: "Tested lithium-ion rechargeable cell"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Lithium-ion route only."
+          amount:
+            expression: "Record the route-specific foreground quantity from reconciled receipts, issues, meters, laboratory results, or waste records; use zero only with a documented not-applicable determination."
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg of the conforming output of this process"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_formation_testing
+              source_ids:
+                - ec-battery-pefcr-2018
+            ranges: []
+        - row_id: tested_lead_acid_cell_output
+          role: "Tested lead-acid rechargeable cell"
+          name: "Tested lead-acid rechargeable cell"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Lead-acid route only."
+          amount:
+            expression: "Record the route-specific foreground quantity from reconciled receipts, issues, meters, laboratory results, or waste records; use zero only with a documented not-applicable determination."
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg of the conforming output of this process"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_formation_testing
+              source_ids:
+                - ec-battery-pefcr-2018
+            ranges: []
+        - row_id: tested_nickel_cadmium_cell_output
+          role: "Tested nickel-cadmium rechargeable cell"
+          name: "Tested nickel-cadmium rechargeable cell"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Nickel-cadmium route only."
+          amount:
+            expression: "Record the route-specific foreground quantity from reconciled receipts, issues, meters, laboratory results, or waste records; use zero only with a documented not-applicable determination."
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg of the conforming output of this process"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_formation_testing
+              source_ids:
+                - ec-battery-pefcr-2018
+            ranges: []
+        - row_id: tested_nickel_metal_hydride_cell_output
+          role: "Tested nickel-metal-hydride rechargeable cell"
+          name: "Tested nickel-metal-hydride rechargeable cell"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Nickel-metal-hydride route only."
+          amount:
+            expression: "Record the route-specific foreground quantity from reconciled receipts, issues, meters, laboratory results, or waste records; use zero only with a documented not-applicable determination."
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg of the conforming output of this process"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_formation_testing
+              source_ids:
+                - ec-battery-pefcr-2018
+            ranges: []
+        - row_id: formation_exported_electricity_output
+          role: "Electricity exported from formation testing"
+          name: "Electricity exported from formation testing"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Separately metered electricity that leaves formation testing and crosses the declared foreground boundary."
+          amount:
+            expression: "Record only electricity separately metered as crossing the foreground boundary; do not also subtract it from imported electricity."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg of the conforming output of this process"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_formation_testing
+              source_ids:
+                - ec-pef-method-2021
+            ranges: []
+      waste:
+        - row_id: rejected_lithium_ion_cell_output
+          role: "Rejected lithium-ion rechargeable cell"
+          name: "Rejected lithium-ion rechargeable cell"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Lithium-ion route only."
+          amount:
+            expression: "Record the route-specific foreground quantity from reconciled receipts, issues, meters, laboratory results, or waste records; use zero only with a documented not-applicable determination."
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg of the conforming output of this process"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_formation_testing
+              source_ids:
+                - us-epa-ap42-lead-acid-1995
+                - us-epa-battery-effluent-guidelines
+            ranges: []
+        - row_id: rejected_lead_acid_cell_output
+          role: "Rejected lead-acid rechargeable cell"
+          name: "Rejected lead-acid rechargeable cell"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Lead-acid route only."
+          amount:
+            expression: "Record the route-specific foreground quantity from reconciled receipts, issues, meters, laboratory results, or waste records; use zero only with a documented not-applicable determination."
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg of the conforming output of this process"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_formation_testing
+              source_ids:
+                - us-epa-ap42-lead-acid-1995
+                - us-epa-battery-effluent-guidelines
+            ranges: []
+        - row_id: rejected_nickel_cadmium_cell_output
+          role: "Rejected nickel-cadmium rechargeable cell"
+          name: "Rejected nickel-cadmium rechargeable cell"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Nickel-cadmium route only."
+          amount:
+            expression: "Record the route-specific foreground quantity from reconciled receipts, issues, meters, laboratory results, or waste records; use zero only with a documented not-applicable determination."
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg of the conforming output of this process"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_formation_testing
+              source_ids:
+                - us-epa-ap42-lead-acid-1995
+                - us-epa-battery-effluent-guidelines
+            ranges: []
+        - row_id: rejected_nickel_metal_hydride_cell_output
+          role: "Rejected nickel-metal-hydride rechargeable cell"
+          name: "Rejected nickel-metal-hydride rechargeable cell"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Nickel-metal-hydride route only."
+          amount:
+            expression: "Record the route-specific foreground quantity from reconciled receipts, issues, meters, laboratory results, or waste records; use zero only with a documented not-applicable determination."
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg of the conforming output of this process"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_formation_testing
+              source_ids:
+                - us-epa-ap42-lead-acid-1995
+                - us-epa-battery-effluent-guidelines
+            ranges: []
+        - row_id: formation_wastewater_output
+          role: "Formation-process wastewater"
+          name: "Formation-process wastewater"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Only when a physically collected formation wastewater stream leaves this process; substance releases to water remain separate elementary flows."
+          amount:
+            expression: "Record the route-specific foreground quantity from reconciled receipts, issues, meters, laboratory results, or waste records; use zero only with a documented not-applicable determination."
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg of the conforming output of this process"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_formation_testing
+              source_ids:
+                - us-epa-ap42-lead-acid-1995
+                - us-epa-battery-effluent-guidelines
+            ranges: []
+      elementary:
+        - row_id: formation_hydrogen_to_air_output
+          role: "Hydrogen to air"
+          name: "Hydrogen to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Lead-acid formation route when vented hydrogen crosses the boundary."
+          amount:
+            expression: "Record the route-specific foreground quantity from reconciled receipts, issues, meters, laboratory results, or waste records; use zero only with a documented not-applicable determination."
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg of the conforming output of this process"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_formation_testing
+              source_ids:
+                - us-epa-ap42-lead-acid-1995
+            ranges: []
+        - row_id: sulfuric_acid_mist_formation_to_air_output
+          role: "Sulfuric acid mist to air"
+          name: "Sulfuric acid mist to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Lead-acid formation route only."
+          amount:
+            expression: "Record the route-specific foreground quantity from reconciled receipts, issues, meters, laboratory results, or waste records; use zero only with a documented not-applicable determination."
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg of the conforming output of this process"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_formation_testing
+              source_ids:
+                - us-epa-ap42-lead-acid-1995
+            ranges: []
+  - id: module_pack_assembly
+    label: "Module and pack assembly"
+    inputs:
+      product:
+        - row_id: tested_lithium_ion_cell_input
+          role: "Tested lithium-ion rechargeable cell"
+          name: "Tested lithium-ion rechargeable cell"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Lithium-ion module or pack route only."
+          amount:
+            expression: "Record the route-specific foreground quantity from reconciled receipts, issues, meters, laboratory results, or waste records; use zero only with a documented not-applicable determination."
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg of the conforming output of this process"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_pack_assembly
+              source_ids:
+                - ec-battery-pefcr-2018
+                - argonne-lib-flows-2012
+            ranges: []
+        - row_id: tested_lead_acid_cell_input
+          role: "Tested lead-acid rechargeable cell"
+          name: "Tested lead-acid rechargeable cell"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Lead-acid battery assembly route only."
+          amount:
+            expression: "Record the route-specific foreground quantity from reconciled receipts, issues, meters, laboratory results, or waste records; use zero only with a documented not-applicable determination."
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg of the conforming output of this process"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_pack_assembly
+              source_ids:
+                - ec-battery-pefcr-2018
+                - argonne-lib-flows-2012
+            ranges: []
+        - row_id: tested_nickel_cadmium_cell_input
+          role: "Tested nickel-cadmium rechargeable cell"
+          name: "Tested nickel-cadmium rechargeable cell"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Nickel-cadmium battery assembly route only."
+          amount:
+            expression: "Record the route-specific foreground quantity from reconciled receipts, issues, meters, laboratory results, or waste records; use zero only with a documented not-applicable determination."
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg of the conforming output of this process"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_pack_assembly
+              source_ids:
+                - ec-battery-pefcr-2018
+                - argonne-lib-flows-2012
+            ranges: []
+        - row_id: tested_nickel_metal_hydride_cell_input
+          role: "Tested nickel-metal-hydride rechargeable cell"
+          name: "Tested nickel-metal-hydride rechargeable cell"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Nickel-metal-hydride battery assembly route only."
+          amount:
+            expression: "Record the route-specific foreground quantity from reconciled receipts, issues, meters, laboratory results, or waste records; use zero only with a documented not-applicable determination."
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg of the conforming output of this process"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_pack_assembly
+              source_ids:
+                - ec-battery-pefcr-2018
+                - argonne-lib-flows-2012
+            ranges: []
+        - row_id: aluminium_pack_enclosure_input
+          role: "Aluminium battery-pack enclosure"
+          name: "Aluminium battery-pack enclosure"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only designs specifying an aluminium enclosure."
+          amount:
+            expression: "Record the route-specific foreground quantity from reconciled receipts, issues, meters, laboratory results, or waste records; use zero only with a documented not-applicable determination."
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg of the conforming output of this process"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_pack_assembly
+              source_ids:
+                - ec-battery-pefcr-2018
+                - argonne-lib-flows-2012
+            ranges: []
+        - row_id: steel_pack_enclosure_input
+          role: "Steel battery-pack enclosure"
+          name: "Steel battery-pack enclosure"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only designs specifying a steel enclosure."
+          amount:
+            expression: "Record the route-specific foreground quantity from reconciled receipts, issues, meters, laboratory results, or waste records; use zero only with a documented not-applicable determination."
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg of the conforming output of this process"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_pack_assembly
+              source_ids:
+                - ec-battery-pefcr-2018
+                - argonne-lib-flows-2012
+            ranges: []
+        - row_id: copper_busbar_input
+          role: "Copper busbar"
+          name: "Copper busbar"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only designs specifying a copper busbar."
+          amount:
+            expression: "Record the route-specific foreground quantity from reconciled receipts, issues, meters, laboratory results, or waste records; use zero only with a documented not-applicable determination."
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg of the conforming output of this process"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_pack_assembly
+              source_ids:
+                - ec-battery-pefcr-2018
+                - argonne-lib-flows-2012
+            ranges: []
+        - row_id: insulated_copper_cable_input
+          role: "Insulated copper cable"
+          name: "Insulated copper cable"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only designs containing this cable."
+          amount:
+            expression: "Record the route-specific foreground quantity from reconciled receipts, issues, meters, laboratory results, or waste records; use zero only with a documented not-applicable determination."
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg of the conforming output of this process"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_pack_assembly
+              source_ids:
+                - ec-battery-pefcr-2018
+                - argonne-lib-flows-2012
+            ranges: []
+        - row_id: battery_management_pcb_input
+          role: "Printed circuit board for battery management system"
+          name: "Printed circuit board for battery management system"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only products containing a battery-management circuit."
+          amount:
+            expression: "Record the route-specific foreground quantity from reconciled receipts, issues, meters, laboratory results, or waste records; use zero only with a documented not-applicable determination."
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg of the conforming output of this process"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_pack_assembly
+              source_ids:
+                - ec-battery-pefcr-2018
+                - argonne-lib-flows-2012
+            ranges: []
+        - row_id: electrical_connector_input
+          role: "Electrical connector for battery pack"
+          name: "Electrical connector for battery pack"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only products containing this connector."
+          amount:
+            expression: "Record the route-specific foreground quantity from reconciled receipts, issues, meters, laboratory results, or waste records; use zero only with a documented not-applicable determination."
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg of the conforming output of this process"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_pack_assembly
+              source_ids:
+                - ec-battery-pefcr-2018
+                - argonne-lib-flows-2012
+            ranges: []
+        - row_id: ethylene_glycol_coolant_input
+          role: "Ethylene glycol coolant"
+          name: "Ethylene glycol coolant"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only liquid-cooled designs using ethylene glycol."
+          amount:
+            expression: "Record the route-specific foreground quantity from reconciled receipts, issues, meters, laboratory results, or waste records; use zero only with a documented not-applicable determination."
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg of the conforming output of this process"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_pack_assembly
+              source_ids:
+                - ec-battery-pefcr-2018
+                - argonne-lib-flows-2012
+            ranges: []
+        - row_id: deionised_water_coolant_input
+          role: "Deionised water"
+          name: "Deionised water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "5b3acbab-2518-4406-8736-d21f222d757a"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Only liquid-cooled designs using deionised water; record separately from ethylene glycol."
+          amount:
+            expression: "Record the route-specific foreground quantity from reconciled receipts, issues, meters, laboratory results, or waste records; use zero only with a documented not-applicable determination."
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg of the conforming output of this process"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_pack_assembly
+              source_ids:
+                - ec-battery-pefcr-2018
+                - argonne-lib-flows-2012
+            ranges: []
+        - row_id: corrugated_cardboard_carton_input
+          role: "Corrugated cardboard carton"
+          name: "Corrugated cardboard carton"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only packaging included at the declared factory gate."
+          amount:
+            expression: "Record the route-specific foreground quantity from reconciled receipts, issues, meters, laboratory results, or waste records; use zero only with a documented not-applicable determination."
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg of the conforming output of this process"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_pack_assembly
+              source_ids:
+                - ec-battery-pefcr-2018
+                - argonne-lib-flows-2012
+            ranges: []
+        - row_id: wood_pallet_input
+          role: "Wood pallet"
+          name: "Wood pallet"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only pallets included at the declared factory gate."
+          amount:
+            expression: "Record the route-specific foreground quantity from reconciled receipts, issues, meters, laboratory results, or waste records; use zero only with a documented not-applicable determination."
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg of the conforming output of this process"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_pack_assembly
+              source_ids:
+                - ec-battery-pefcr-2018
+                - argonne-lib-flows-2012
+            ranges: []
+        - row_id: polyethylene_packaging_film_input
+          role: "Polyethylene packaging film"
+          name: "Polyethylene packaging film"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Only film included at the declared factory gate."
+          amount:
+            expression: "Record the route-specific foreground quantity from reconciled receipts, issues, meters, laboratory results, or waste records; use zero only with a documented not-applicable determination."
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg of the conforming output of this process"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_pack_assembly
+              source_ids:
+                - ec-battery-pefcr-2018
+                - argonne-lib-flows-2012
+            ranges: []
+        - row_id: pack_assembly_electricity_input
+          role: "Electricity, alternating current, at plant"
+          name: "Electricity, alternating current, at plant"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Site-metered electricity attributable to module or pack joining, fastening, welding, controls installation, and final testing."
+          amount:
+            expression: "Record metered electricity for joining, fastening, welding, electronics installation, leak testing, and final assembly; do not merge with heat or fuel."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg of the conforming output of this process"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_pack_assembly
+              source_ids:
+                - ec-battery-pefcr-2018
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: reference_product_output
+          role: "3C Lithium Battery"
+          name: "3C Lithium Battery"
+          flow_type: "product"
+          flow_ref:
+            uuid: "000abc1e-59e3-4336-bfd6-66575a4b0bda"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "The verified CPC 46420 Product/Mass reference output, applicable only to the declared 3C lithium-battery route."
+          amount:
+            expression: "Set exactly 1 kg for the CPC 46420 representative lithium-battery route after release-test acceptance; another chemistry must remain unresolved until an exact Product/Mass CPC 46420 state100 flow is verified."
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "1 kg of conforming finished reference product"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_pack_assembly
+              source_ids:
+                - unsd-cpc-3-0
+            ranges: []
+      waste:
+        - row_id: aluminium_enclosure_scrap_output
+          role: "Aluminium enclosure scrap"
+          name: "Aluminium enclosure scrap"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Aluminium-enclosure route only."
+          amount:
+            expression: "Record the route-specific foreground quantity from reconciled receipts, issues, meters, laboratory results, or waste records; use zero only with a documented not-applicable determination."
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg of the conforming output of this process"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_pack_assembly
+              source_ids:
+                - ec-battery-pefcr-2018
+            ranges: []
+        - row_id: steel_enclosure_scrap_output
+          role: "Steel enclosure scrap"
+          name: "Steel enclosure scrap"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Steel-enclosure route only."
+          amount:
+            expression: "Record the route-specific foreground quantity from reconciled receipts, issues, meters, laboratory results, or waste records; use zero only with a documented not-applicable determination."
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg of the conforming output of this process"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_pack_assembly
+              source_ids:
+                - ec-battery-pefcr-2018
+            ranges: []
+        - row_id: copper_busbar_scrap_output
+          role: "Copper busbar scrap"
+          name: "Copper busbar scrap"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Copper-busbar route only."
+          amount:
+            expression: "Record the route-specific foreground quantity from reconciled receipts, issues, meters, laboratory results, or waste records; use zero only with a documented not-applicable determination."
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg of the conforming output of this process"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_pack_assembly
+              source_ids:
+                - ec-battery-pefcr-2018
+            ranges: []
+        - row_id: battery_electronic_waste_output
+          role: "Battery-management electronic waste"
+          name: "Battery-management electronic waste"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Only products with battery-management electronics."
+          amount:
+            expression: "Record the route-specific foreground quantity from reconciled receipts, issues, meters, laboratory results, or waste records; use zero only with a documented not-applicable determination."
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg of the conforming output of this process"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_pack_assembly
+              source_ids:
+                - ec-battery-pefcr-2018
+            ranges: []
+        - row_id: cardboard_packaging_waste_output
+          role: "Corrugated cardboard packaging waste"
+          name: "Corrugated cardboard packaging waste"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Only when cardboard becomes waste inside the declared gate."
+          amount:
+            expression: "Record the route-specific foreground quantity from reconciled receipts, issues, meters, laboratory results, or waste records; use zero only with a documented not-applicable determination."
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg of the conforming output of this process"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_pack_assembly
+              source_ids:
+                - ec-battery-pefcr-2018
+            ranges: []
+        - row_id: polyethylene_packaging_waste_output
+          role: "Polyethylene packaging-film waste"
+          name: "Polyethylene packaging-film waste"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Only when film becomes waste inside the declared gate."
+          amount:
+            expression: "Record the route-specific foreground quantity from reconciled receipts, issues, meters, laboratory results, or waste records; use zero only with a documented not-applicable determination."
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg of the conforming output of this process"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_pack_assembly
+              source_ids:
+                - ec-battery-pefcr-2018
+            ranges: []
+      elementary:
+        []
+  - id: site_utilities_treatment
+    label: "Site utilities and pollution control"
+    inputs:
+      product:
+        - row_id: site_steam_input
+          role: "Steam supplied to battery manufacturing"
+          name: "Steam supplied to battery manufacturing"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Metered steam serving the declared battery-manufacturing route; keep separate from hot water and fuels."
+          amount:
+            expression: "Record metered purchased or generated steam; do not relabel it as generic heat."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg of the conforming output of this process"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_site_utilities
+              source_ids:
+                - ec-battery-pefcr-2018
+            ranges: []
+        - row_id: site_hot_water_input
+          role: "Hot water supplied to battery manufacturing"
+          name: "Hot water supplied to battery manufacturing"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Metered hot-water energy serving the declared battery-manufacturing route; keep separate from steam."
+          amount:
+            expression: "Record metered hot water separately from steam."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg of the conforming output of this process"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_site_utilities
+              source_ids:
+                - ec-battery-pefcr-2018
+            ranges: []
+        - row_id: site_natural_gas_input
+          role: "Natural gas combusted on site"
+          name: "Natural gas combusted on site"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Metered natural gas combusted in equipment serving the declared product; keep separate from other fuels."
+          amount:
+            expression: "Record the metered lower-heating-value energy of this single fuel used for the declared product; do not merge different fuels."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg of the conforming output of this process"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_site_utilities
+              source_ids:
+                - ec-pef-method-2021
+            ranges: []
+        - row_id: site_diesel_input
+          role: "Diesel fuel combusted on site"
+          name: "Diesel fuel combusted on site"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Metered diesel combusted in equipment serving the declared product; keep separate from other fuels."
+          amount:
+            expression: "Record the metered lower-heating-value energy of this single fuel used for the declared product; do not merge different fuels."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg of the conforming output of this process"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_site_utilities
+              source_ids:
+                - ec-pef-method-2021
+            ranges: []
+        - row_id: site_lpg_input
+          role: "Liquefied petroleum gas combusted on site"
+          name: "Liquefied petroleum gas combusted on site"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Metered LPG combusted in equipment serving the declared product; keep separate from other fuels."
+          amount:
+            expression: "Record the metered lower-heating-value energy of this single fuel used for the declared product; do not merge different fuels."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg of the conforming output of this process"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_site_utilities
+              source_ids:
+                - ec-pef-method-2021
+            ranges: []
+        - row_id: site_r134a_refrigerant_input
+          role: "Refrigerant R-134a"
+          name: "Refrigerant R-134a"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Named R-134a make-up charged to cooling equipment serving the declared product; other refrigerants require separate rows."
+          amount:
+            expression: "Record purchased make-up R-134a charged to equipment serving the declared product; any other refrigerant must be a separate named row."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg of the conforming output of this process"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_site_utilities
+              source_ids:
+                - ec-pef-method-2021
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: lead_bearing_wastewater_output
+          role: "Lead-bearing battery-manufacturing wastewater"
+          name: "Lead-bearing battery-manufacturing wastewater"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Lead-acid route only. Record the physically collected wastewater mass or volume; do not use it in place of substance releases to water."
+          amount:
+            expression: "Record the route-specific foreground quantity from reconciled receipts, issues, meters, laboratory results, or waste records; use zero only with a documented not-applicable determination."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg of the conforming output of this process"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_site_releases
+              source_ids:
+                - us-epa-battery-effluent-guidelines
+            ranges: []
+        - row_id: nickel_bearing_wastewater_output
+          role: "Nickel-bearing battery-manufacturing wastewater"
+          name: "Nickel-bearing battery-manufacturing wastewater"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Nickel-based routes only. Record the physically collected wastewater mass or volume; do not use it in place of substance releases to water."
+          amount:
+            expression: "Record the route-specific foreground quantity from reconciled receipts, issues, meters, laboratory results, or waste records; use zero only with a documented not-applicable determination."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg of the conforming output of this process"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_site_releases
+              source_ids:
+                - us-epa-battery-effluent-guidelines
+            ranges: []
+        - row_id: cadmium_bearing_wastewater_output
+          role: "Cadmium-bearing battery-manufacturing wastewater"
+          name: "Cadmium-bearing battery-manufacturing wastewater"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Nickel-cadmium route only. Record the physically collected wastewater mass or volume; do not use it in place of substance releases to water."
+          amount:
+            expression: "Record the route-specific foreground quantity from reconciled receipts, issues, meters, laboratory results, or waste records; use zero only with a documented not-applicable determination."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg of the conforming output of this process"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_site_releases
+              source_ids:
+                - us-epa-battery-effluent-guidelines
+            ranges: []
+        - row_id: cobalt_bearing_wastewater_output
+          role: "Cobalt-bearing battery-manufacturing wastewater"
+          name: "Cobalt-bearing battery-manufacturing wastewater"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Cobalt-containing lithium-ion route only. Record the physically collected wastewater mass or volume; do not use it in place of substance releases to water."
+          amount:
+            expression: "Record the route-specific foreground quantity from reconciled receipts, issues, meters, laboratory results, or waste records; use zero only with a documented not-applicable determination."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg of the conforming output of this process"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_site_releases
+              source_ids:
+                - us-epa-battery-effluent-guidelines
+            ranges: []
+      elementary:
+        - row_id: lead_to_water_output
+          role: "Lead to water"
+          name: "Lead to water"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Lead-acid route only."
+          amount:
+            expression: "Record the mass of this single named substance released to the stated compartment from monitoring or a documented substance balance."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg of the conforming output of this process"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_site_releases
+              source_ids:
+                - us-epa-battery-effluent-guidelines
+                - ec-pef-method-2021
+            ranges: []
+        - row_id: nickel_to_water_output
+          role: "Nickel to water"
+          name: "Nickel to water"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Nickel-based routes only."
+          amount:
+            expression: "Record the mass of this single named substance released to the stated compartment from monitoring or a documented substance balance."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg of the conforming output of this process"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_site_releases
+              source_ids:
+                - us-epa-battery-effluent-guidelines
+                - ec-pef-method-2021
+            ranges: []
+        - row_id: cadmium_to_water_output
+          role: "Cadmium to water"
+          name: "Cadmium to water"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Nickel-cadmium route only."
+          amount:
+            expression: "Record the mass of this single named substance released to the stated compartment from monitoring or a documented substance balance."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg of the conforming output of this process"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_site_releases
+              source_ids:
+                - us-epa-battery-effluent-guidelines
+                - ec-pef-method-2021
+            ranges: []
+        - row_id: cobalt_to_water_output
+          role: "Cobalt to water"
+          name: "Cobalt to water"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Cobalt-containing lithium-ion route only."
+          amount:
+            expression: "Record the mass of this single named substance released to the stated compartment from monitoring or a documented substance balance."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg of the conforming output of this process"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_site_releases
+              source_ids:
+                - us-epa-battery-effluent-guidelines
+                - ec-pef-method-2021
+            ranges: []
+        - row_id: carbon_dioxide_fossil_to_air_output
+          role: "Carbon dioxide, fossil, to air"
+          name: "Carbon dioxide, fossil, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Only on-site fossil-fuel combustion attributable to the declared product."
+          amount:
+            expression: "Record the mass of this single named substance released to the stated compartment from monitoring or a documented substance balance."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg of the conforming output of this process"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_site_releases
+              source_ids:
+                - us-epa-battery-effluent-guidelines
+                - ec-pef-method-2021
+            ranges: []
+        - row_id: nitric_oxide_to_air_output
+          role: "Nitric oxide to air"
+          name: "Nitric oxide to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Only measured or calculated on-site combustion releases."
+          amount:
+            expression: "Record the mass of this single named substance released to the stated compartment from monitoring or a documented substance balance."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg of the conforming output of this process"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_site_releases
+              source_ids:
+                - us-epa-battery-effluent-guidelines
+                - ec-pef-method-2021
+            ranges: []
+        - row_id: nitrogen_dioxide_to_air_output
+          role: "Nitrogen dioxide to air"
+          name: "Nitrogen dioxide to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Only measured or calculated on-site combustion releases reported as nitrogen dioxide mass."
+          amount:
+            expression: "Record the mass of this single named substance released to the stated compartment from monitoring or a documented substance balance."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg of the conforming output of this process"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_site_releases
+              source_ids:
+                - us-epa-battery-effluent-guidelines
+                - ec-pef-method-2021
+            ranges: []
+        - row_id: sulfur_dioxide_to_air_output
+          role: "Sulfur dioxide to air"
+          name: "Sulfur dioxide to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Only measured or calculated on-site combustion releases."
+          amount:
+            expression: "Record the mass of this single named substance released to the stated compartment from monitoring or a documented substance balance."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg of the conforming output of this process"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_site_releases
+              source_ids:
+                - us-epa-battery-effluent-guidelines
+                - ec-pef-method-2021
+            ranges: []
+        - row_id: r134a_to_air_output
+          role: "Refrigerant R-134a to air"
+          name: "Refrigerant R-134a to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Only measured or mass-balance leakage of R-134a."
+          amount:
+            expression: "Record the mass of this single named substance released to the stated compartment from monitoring or a documented substance balance."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg of the conforming output of this process"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_site_releases
+              source_ids:
+                - us-epa-battery-effluent-guidelines
+                - ec-pef-method-2021
+            ranges: []
+allocation_rules:
+  - rule_id: allocation_subdivision_first
+    applies_to: "Shared operations"
+    rule: "Subdivide by chemistry, model, line, lot, and meter before allocation."
+    source_ids:
+      - ec-pef-method-2021
+  - rule_id: allocation_causal_driver
+    applies_to: "Residual shared utilities"
+    rule: "Use a documented causal driver such as metered energy, equipment time, dry-room volume-time, treated volume, or throughput; mass is the last resort."
+    source_ids:
+      - ec-pef-method-2021
+      - porzio-scown-2021
+  - rule_id: allocation_internal_recovery
+    applies_to: "Scrap, solvent, water, and electricity returned internally"
+    rule: "Model internal return once; record make-up, recovery burden, and losses, and prohibit duplicate credit."
+    source_ids:
+      - ec-pef-method-2021
+  - rule_id: allocation_export
+    applies_to: "Exported electricity and material leaving the system"
+    rule: "Keep as a separate output and disclose the downstream method; do not also subtract or credit it in the foreground total."
+    source_ids:
+      - ec-pef-method-2021
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_electrode_materials
+      process_id: "electrode_plate_preparation"
+      flow_role: "Route-specific materials and prepared electrodes"
+      record_type: "source records"
+      raw_fields: "receipts, issues, returns, stock, batch output"
+      collection_method: "Reconcile named exchange records to process output and stock change"
+      unit: "kg"
+      frequency: "each lot; monthly reconciliation"
+      temporal_coverage: "same representative period"
+      site_scope: "all serving lines and systems"
+      aggregation_rule: "aggregate only identical flow, route, compartment, and unit"
+      quality_evidence: "calibration, invoice, BOM, laboratory, or manifest evidence"
+    - protocol_id: cp_electrode_utilities
+      process_id: "electrode_plate_preparation"
+      flow_role: "Electricity"
+      record_type: "source records"
+      raw_fields: "meter id, readings, allocation driver, output mass"
+      collection_method: "Reconcile named exchange records to process output and stock change"
+      unit: "kWh"
+      frequency: "continuous; monthly reconciliation"
+      temporal_coverage: "same representative period"
+      site_scope: "all serving lines and systems"
+      aggregation_rule: "aggregate only identical flow, route, compartment, and unit"
+      quality_evidence: "calibration, invoice, BOM, laboratory, or manifest evidence"
+    - protocol_id: cp_electrode_waste_releases
+      process_id: "electrode_plate_preparation"
+      flow_role: "Scrap and single-substance air releases"
+      record_type: "source records"
+      raw_fields: "waste identity, mass, substance, compartment, concentration, volume"
+      collection_method: "Reconcile named exchange records to process output and stock change"
+      unit: "kg"
+      frequency: "each shipment or monitoring event"
+      temporal_coverage: "same representative period"
+      site_scope: "all serving lines and systems"
+      aggregation_rule: "aggregate only identical flow, route, compartment, and unit"
+      quality_evidence: "calibration, invoice, BOM, laboratory, or manifest evidence"
+    - protocol_id: cp_cell_materials
+      process_id: "cell_assembly_sealing"
+      flow_role: "Cell components, electrolyte constituents, and sealed cells"
+      record_type: "source records"
+      raw_fields: "BOM revision, item, lot, issue, return, output mass"
+      collection_method: "Reconcile named exchange records to process output and stock change"
+      unit: "kg"
+      frequency: "each lot; monthly reconciliation"
+      temporal_coverage: "same representative period"
+      site_scope: "all serving lines and systems"
+      aggregation_rule: "aggregate only identical flow, route, compartment, and unit"
+      quality_evidence: "calibration, invoice, BOM, laboratory, or manifest evidence"
+    - protocol_id: cp_cell_utilities
+      process_id: "cell_assembly_sealing"
+      flow_role: "Electricity"
+      record_type: "source records"
+      raw_fields: "meter id, readings, allocation driver, output mass"
+      collection_method: "Reconcile named exchange records to process output and stock change"
+      unit: "kWh"
+      frequency: "continuous; monthly reconciliation"
+      temporal_coverage: "same representative period"
+      site_scope: "all serving lines and systems"
+      aggregation_rule: "aggregate only identical flow, route, compartment, and unit"
+      quality_evidence: "calibration, invoice, BOM, laboratory, or manifest evidence"
+    - protocol_id: cp_cell_waste_releases
+      process_id: "cell_assembly_sealing"
+      flow_role: "Material-specific waste and single-substance air releases"
+      record_type: "source records"
+      raw_fields: "waste identity, mass, substance, compartment, concentration, volume"
+      collection_method: "Reconcile named exchange records to process output and stock change"
+      unit: "kg"
+      frequency: "each shipment or monitoring event"
+      temporal_coverage: "same representative period"
+      site_scope: "all serving lines and systems"
+      aggregation_rule: "aggregate only identical flow, route, compartment, and unit"
+      quality_evidence: "calibration, invoice, BOM, laboratory, or manifest evidence"
+    - protocol_id: cp_formation_testing
+      process_id: "formation_ageing_testing"
+      flow_role: "Cells, electricity, water, rejects, wastewater, and releases"
+      record_type: "source records"
+      raw_fields: "cycler log, meter readings, batch, pass/fail, mass, discharge result"
+      collection_method: "Reconcile named exchange records to process output and stock change"
+      unit: "kg, kWh"
+      frequency: "each cycle and batch"
+      temporal_coverage: "same representative period"
+      site_scope: "all serving lines and systems"
+      aggregation_rule: "aggregate only identical flow, route, compartment, and unit"
+      quality_evidence: "calibration, invoice, BOM, laboratory, or manifest evidence"
+    - protocol_id: cp_pack_assembly
+      process_id: "module_pack_assembly"
+      flow_role: "Cells, pack parts, packaging, electricity, product, and material-specific waste"
+      record_type: "source records"
+      raw_fields: "as-built BOM, issue, return, meter, release mass, waste ticket"
+      collection_method: "Reconcile named exchange records to process output and stock change"
+      unit: "kg, kWh"
+      frequency: "each lot; monthly reconciliation"
+      temporal_coverage: "same representative period"
+      site_scope: "all serving lines and systems"
+      aggregation_rule: "aggregate only identical flow, route, compartment, and unit"
+      quality_evidence: "calibration, invoice, BOM, laboratory, or manifest evidence"
+    - protocol_id: cp_site_utilities
+      process_id: "site_utilities_treatment"
+      flow_role: "Steam, hot water, fuels, and refrigerant make-up"
+      record_type: "source records"
+      raw_fields: "carrier identity, meter or invoice, heating value, allocation driver"
+      collection_method: "Reconcile named exchange records to process output and stock change"
+      unit: "kg, MJ"
+      frequency: "continuous or each invoice"
+      temporal_coverage: "same representative period"
+      site_scope: "all serving lines and systems"
+      aggregation_rule: "aggregate only identical flow, route, compartment, and unit"
+      quality_evidence: "calibration, invoice, BOM, laboratory, or manifest evidence"
+    - protocol_id: cp_site_releases
+      process_id: "site_utilities_treatment"
+      flow_role: "Route-specific wastewater and single-substance releases"
+      record_type: "source records"
+      raw_fields: "stream identity, volume, substance, concentration, compartment, treatment"
+      collection_method: "Reconcile named exchange records to process output and stock change"
+      unit: "kg, m3"
+      frequency: "each monitoring event; monthly reconciliation"
+      temporal_coverage: "same representative period"
+      site_scope: "all serving lines and systems"
+      aggregation_rule: "aggregate only identical flow, route, compartment, and unit"
+      quality_evidence: "calibration, invoice, BOM, laboratory, or manifest evidence"
+  calculation_rules:
+    - id: calc_reference_normalization
+      applies_to: "Every row"
+      rule: "Attributable period amount / net kg of conforming released product."
+      inputs:
+        - "named period exchange"
+        - "stock change"
+        - "released mass"
+      output: "amount per 1 kg reference product"
+      source_ids: []
+    - id: calc_material_consumption
+      applies_to: "Each material or component"
+      rule: "Receipts + opening stock - closing stock - external returns; cancel documented internal transfers once."
+      inputs:
+        - "item-specific stock records"
+      output: "net external consumption"
+      source_ids: []
+    - id: calc_substance_release
+      applies_to: "Each air or water substance"
+      rule: "Concentration × measured flow or documented input-output substance balance, with conversions retained."
+      inputs:
+        - "substance concentration"
+        - flow
+        - "density when needed"
+      output: "kg by substance and compartment"
+      source_ids:
+        - us-epa-battery-effluent-guidelines
+    - id: calc_energy_register
+      applies_to: "Electricity"
+      rule: "Imported electricity minus separately metered internal return; exported electricity stays a separate output."
+      inputs:
+        - import
+        - "internal return"
+        - export
+      output: "net input and separate export"
+      source_ids:
+        - ec-pef-method-2021
+    - id: calc_mass_balance
+      applies_to: "Each process and package"
+      rule: "Reconcile inputs and opening stock to products, each waste, each release, and closing stock; investigate residuals."
+      inputs:
+        - "atomic rows and stock"
+      output: "residual and explanation"
+      source_ids: []
+  data_quality_requirements:
+    - id: dq_identity
+      applies_to: "Product and route"
+      requirement: "Preserve chemistry, product level, model, application, capacity, energy, state of charge, starting condition, and BOM revision."
+      evidence: "specification, release certificate, BOM"
+    - id: dq_atomicity
+      applies_to: "Every inventory row"
+      requirement: "One named exchange, one direction, one flow type, one property, one unit, one route condition, and one compartment when elementary."
+      evidence: "row-level mapping review"
+    - id: dq_completeness
+      applies_to: "Foreground boundary"
+      requirement: "Reconcile every applicable material, utility carrier, waste, wastewater, and air or water release; document not-applicable rows."
+      evidence: "process map, meters, manifests, permits"
+    - id: dq_traceability
+      applies_to: "Collected or calculated values"
+      requirement: "Preserve raw record, conversion, allocation driver, calculation version, reviewer, and link to normalized value."
+      evidence: "audit trail and calculation digest"
+    - id: dq_uuid_identity
+      applies_to: "Tiangong-linked rows"
+      requirement: "Require hybrid-search discovery and direct state100 confirmation of exact semantics, type, property, and unit before adding a UUID."
+      evidence: "search result and state100 read record"
+validation_rules:
+  - rule_id: validate_reference_flow
+    applies_to: "Reference product"
+    rule: "Require exactly 1 kg, CPC 46420, Product flow, Mass 93a60a56-a3c8-11da-a746-0800200b9a66, and unit group 93a60a57-a4c8-11da-a746-0800200c9a66."
+    source_ids:
+      - unsd-cpc-3-0
+  - rule_id: validate_route_applicability
+    applies_to: "Inventory"
+    rule: "Require one declared route and include only applicable atomic rows; prohibit replacing absent rows with a chemistry-specific collection label."
+    source_ids:
+      - ec-battery-pefcr-2018
+  - rule_id: validate_no_unverified_uuid
+    applies_to: "Inventory links"
+    rule: "Reject any UUID lacking both exact hybrid-search and state100 evidence."
+    source_ids: []
+  - rule_id: validate_no_estimated_range
+    applies_to: "Inventory amounts"
+    rule: "Reject reasoned-estimate, AI-generated, or broad all-route quantity ranges; use foreground records or explicit calculation rules."
+    source_ids: []
+  - rule_id: validate_carrier_separation
+    applies_to: "Utilities"
+    rule: "Require electricity, steam, hot water, natural gas, diesel, LPG, and each refrigerant to remain separate."
+    source_ids:
+      - ec-pef-method-2021
+  - rule_id: validate_release_separation
+    applies_to: "Wastewater and elementary flows"
+    rule: "Require physical wastewater streams and each named substance-to-air or substance-to-water exchange separately."
+    source_ids:
+      - us-epa-battery-effluent-guidelines
+  - rule_id: validate_bilingual_alignment
+    applies_to: "Canonical and translation"
+    rule: "Require identical process_id, row_id, rule_id, source_id, UUID, and card order."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "Factory-gate foreground package for one specified finished rechargeable accumulator"
+  downstream_use: "Link the package to representative upstream datasets for cradle-to-gate modelling, or use it as the production stage in a process or lifecyclemodel that adds distribution, use, second life, and end-of-life consistently."
+  allowed_use: "Cradle-to-gate modelling with linked upstream datasets; facility improvement; downstream lifecycle models"
+  excluded_use: "Cradle-to-grave claim without downstream stages; comparison based only on kg; substitution across chemistry routes"
+  required_metadata: "chemistry; product level; application; model; facility; geography; period; state of charge; starting condition; BOM; route; boundary; allocation; packaging"
+  required_quality_disclosure: "Temporal, geographical, and technological representativeness; meter, scale, BOM, waste, and emission-record coverage; allocation shares and drivers; stock corrections; mass-balance residual; data gaps, proxies, cut-offs, measurement uncertainty, reviewer, and calculation traceability."
+  update_trigger: "Material change in chemistry, format, BOM, electrode route, electrolyte, facility, electricity, dry-room, formation, allocation, or packaging"
+data_sources:
+  - id: "unsd-cpc-3-0"
+    type: "dataset"
+    reference: "United Nations Statistics Division, Central Product Classification Version 3.0, code 46420 Electric accumulators, https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Structure_30Jun2025.csv (retrieved 2026-08-13)"
+    used_for: "Official CPC identity and exclusions."
+  - id: "eu-batteries-regulation-2023"
+    type: "standard"
+    reference: "Regulation (EU) 2023/1542 concerning batteries and waste batteries, consolidated text, https://eur-lex.europa.eu/eli/reg/2023/1542/2024-07-18/eng (retrieved 2026-08-13)"
+    used_for: "Life-cycle stage separation; model and plant-specific carbon-footprint information; bill of materials, energy, and auxiliaries."
+  - id: "ec-pef-method-2021"
+    type: "official_guidance"
+    reference: "European Commission Recommendation (EU) 2021/2279, Annex I Product Environmental Footprint Method, https://environment.ec.europa.eu/document/download/680503dc-5a19-4f6a-bb92-84d9bfc8f312_en (retrieved 2026-08-13)"
+    used_for: "Primary data, allocation hierarchy, consistency, and data-quality rules."
+  - id: "ec-battery-pefcr-2018"
+    type: "official_guidance"
+    reference: "European Commission, Product Environmental Footprint Category Rules for High Specific Energy Rechargeable Batteries for Mobile Applications, version 2018, https://www.sazp.sk/dokument/f/baterie-a-akumulatory-pdf.pdf (retrieved 2026-08-13)"
+    used_for: "Mobile-battery scope limitation; bill-of-material activity data; chemistry-specific materials; manufacturing operations, utilities, waste, and direct-release data fields."
+  - id: "jrc-cfb-battery-2025"
+    type: "official_guidance"
+    reference: "European Commission Joint Research Centre, Rules for calculating the Carbon Footprint of Batteries, https://eplca.jrc.ec.europa.eu/LCDN/developerEF.xhtml (retrieved 2026-08-13)"
+    used_for: "Status and applicability of EU battery carbon-footprint rules; no draft EV value is generalized to all CPC 46420 products."
+  - id: "argonne-battery-lca-2010"
+    type: "literature"
+    reference: "Sullivan and Gaines, A Review of Battery Life-Cycle Analysis: State of Knowledge and Critical Needs, ANL/ESD/10-7, Argonne National Laboratory, 2010, https://publications.anl.gov/anlpubs/2010/11/68455.pdf (retrieved 2026-08-13)"
+    used_for: "Multi-chemistry boundary and manufacturing-stage separation."
+  - id: "argonne-lib-flows-2012"
+    type: "literature"
+    reference: "Dunn et al., Material and Energy Flows in the Materials Production, Assembly, and End-of-Life Stages of the Automotive Lithium-Ion Battery Life Cycle, Argonne National Laboratory, 2012, https://publications.anl.gov/anlpubs/2012/06/73645.pdf (retrieved 2026-08-13)"
+    used_for: "LMO lithium-ion route material identities and process decomposition only; no quantities generalized."
+  - id: "porzio-scown-2021"
+    type: "literature"
+    reference: "Porzio and Scown, Life-Cycle Assessment Considerations for Batteries and Battery Materials, Advanced Energy Materials 11 (2021), DOI 10.1002/aenm.202100771, https://www.osti.gov/pages/biblio/1808206 (retrieved 2026-08-13)"
+    used_for: "Peer-reviewed guidance on facility-scale electrode, dry-room, solvent-recovery, formation, and service-functional-unit data needs."
+  - id: "us-epa-ap42-lead-acid-1995"
+    type: "official_guidance"
+    reference: "US EPA, AP-42 Section 12.15 Storage Battery Production, 1995, https://www.epa.gov/sites/default/files/2020-11/documents/c12s15.pdf (retrieved 2026-08-13)"
+    used_for: "Lead-acid grid, paste, curing, assembly, formation, reclaim, lead particulate, and sulfuric-acid mist identities."
+  - id: "us-epa-nickel-battery-1996"
+    type: "official_guidance"
+    reference: "US EPA, Locating and Estimating Air Emissions from Sources of Nickel, battery manufacturing section, 1996, https://www.epa.gov/sites/default/files/2020-11/documents/nickel.pdf (retrieved 2026-08-13)"
+    used_for: "Nickel-cadmium and nickel-based electrode materials, substrate preparation, washing, and nickel/cadmium compound releases."
+  - id: "us-epa-battery-effluent-guidelines"
+    type: "official_guidance"
+    reference: "US EPA, Battery Manufacturing Effluent Guidelines, https://www.epa.gov/eg/battery-manufacturing-effluent-guidelines (retrieved 2026-08-13)"
+    used_for: "Route-specific wastewater sources and separately regulated lead, cadmium, nickel, zinc, cobalt, copper, iron, and manganese releases."
+  - id: "eu-bref-battery-status-2026"
+    type: "official_guidance"
+    reference: "European Commission Joint Research Centre, BAT reference documents portal, Production of Batteries in Giga-Factories status: drawing up started, https://eippcb.jrc.ec.europa.eu/reference (retrieved 2026-08-13)"
+    used_for: "Records that a battery-gigafactory BREF is under development, so no draft BAT value is treated as an adopted CPC-wide requirement."
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:265e150bbbb70f07d1c5c409a9c56488e8e20e5de4adb0a274a1a89847914423"
+  generated_content_sha256: "sha256:817dc97cbe93cbd404eda98432bf3b2f15ab5df2a712080b9eefdf734127fb41"

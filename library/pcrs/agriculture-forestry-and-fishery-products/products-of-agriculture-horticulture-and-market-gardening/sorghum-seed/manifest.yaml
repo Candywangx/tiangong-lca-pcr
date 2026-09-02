@@ -2,10 +2,10 @@ schema_version: 1
 id: pcr.agriculture-forestry-and-fishery-products.products-of-agriculture-horticulture-and-market-gardening.sorghum-seed
 title:
   en-US: "Sorghum, seed"
-  zh-CN: null
-status: scaffold
+  zh-CN: "高粱，种子"
+status: candidate
 pcr_kind: product_category_rule
-content_maturity: empty_scaffold
+content_maturity: authored_methodology
 domains:
   - "agriculture-forestry-and-fishery-products"
 modules:
@@ -22,16 +22,33 @@ target_entities:
   - flow
   - process
   - lifecyclemodel
+  - dataset
 languages:
   canonical: en-US
   available:
     - en-US
     - zh-CN
 translation_status:
-  zh-CN: scaffold_pending_translation
+  zh-CN: aligned
 classification_refs:
   - system: CPC
     version: "3.0"
     code: "01141"
     title: "Sorghum, seed"
     mapping_type: exact
+review_metadata:
+  unresolved_uuid_refs:
+    - row_id: cultivated_seed_lot
+      issue: "No Tiangong intermediate product flow is selected. The name-matching cultivation process resolves its quantitative reference to CPC 01142 Sorghum, other, so that output is candidate-only and must not be used by default."
+    - row_id: dried_seed_lot
+      issue: "No distinct Tiangong UUID is confirmed for the dried but uncleaned intermediate seed lot; resolve a semantically exact intermediate flow before publication if the process is represented as a separate dataset."
+  process_identity_candidates:
+    - process_uuid: "6abc83b3-e8a8-46ee-a935-106fd62734c4"
+      decision: candidate_only
+      reason: "Process name matches seed-crop cultivation, but its quantitative reference output is Sorghum, other (CPC 01142), not the target seed flow."
+    - process_uuid: "e3340c6f-c36a-4ee0-81bf-ae5d2686acf6"
+      decision: candidate_exact_output
+      reason: "Post-harvest drying and handling process outputs the confirmed target Sorghum, seed flow; retain as an identity candidate, not as inventory evidence."
+    - process_uuid: "c1933b4e-86c6-4282-a27f-a06bf7ce85f7"
+      decision: candidate_exact_output
+      reason: "Seed cleaning and conditioning process outputs the confirmed target Sorghum, seed flow; retain as an identity candidate, not as inventory evidence."

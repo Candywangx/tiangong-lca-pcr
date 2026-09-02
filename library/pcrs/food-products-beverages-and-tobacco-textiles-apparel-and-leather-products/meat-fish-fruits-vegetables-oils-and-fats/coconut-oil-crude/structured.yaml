@@ -1,10 +1,996 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "21661"
-  title: "Coconut oil, crude"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.food-products-beverages-and-tobacco-textiles-apparel-and-leather-products.meat-fish-fruits-vegetables-oils-and-fats.coconut-oil-crude"
+  classification_refs: "CPC 3.0: 21661, Coconut oil, crude (mapping context only)"
+  covered_products: "Unrefined coconut oil derived from coconut kernel or copra by mechanical expelling, with conditional solvent recovery from pressed cake; bulk crude coconut oil intended for refining or technical processing"
+  excluded_products: "Virgin or cold-pressed coconut oil marketed for direct consumption; refined, bleached, deodorised, fractionated, hydrogenated, or formulated coconut oils; coconut milk and cream; palm-kernel and other botanical oils"
+  representative_product: "Bulk crude coconut oil from copra, clarified or filtered and ready for dispatch from the oil mill"
+  production_route: "Copra receipt and preparation; mechanical pressing; optional pressed-cake solvent extraction and solvent recovery; crude-oil clarification or filtration; bulk storage"
+  market_state: "Unrefined bulk oil at oil-mill gate; extraction route, origin, lot, moisture, impurities, and applicable commercial quality specification declared"
+functional_unit:
+  what: "Crude coconut oil supplied at the oil-mill gate for subsequent refining or technical processing"
+  how_much: "1 kg crude coconut oil"
+  how_well: "Unrefined oil derived from coconut kernel or copra, clarified or filtered, with extraction route and applicable lot quality specification declared"
+  how_long_or_cycle: "One production lot at dispatch; no service duration applies"
+  reference_flow_link: "crude_coconut_oil_output"
+system_boundary:
+  rules:
+    - rule_id: boundary_core_operations
+      applies_to: "All datasets"
+      rule: "Include copra receiving and preparation, mechanical pressing, crude-oil separation or filtration, transfers, and storage through the oil-mill dispatch point."
+      source_ids:
+        - eu-jrc-fdm-bref-2019
+        - codex-cxs-210-1999
+    - rule_id: boundary_conditional_solvent
+      applies_to: "Solvent-assisted mills"
+      rule: "Include pressed-cake extraction, miscella distillation, meal desolventising, solvent recovery, make-up solvent, wastewater, waste, and fugitive or channelled solvent releases when this route is operated."
+      source_ids:
+        - eu-jrc-fdm-bref-2019
+    - rule_id: boundary_refining_exclusion
+      applies_to: "All datasets"
+      rule: "Exclude degumming, neutralisation, bleaching, deodorisation, fractionation, and hydrogenation; if performed at the same site, meter or allocate them to a downstream refining dataset."
+      source_ids:
+        - eu-jrc-fdm-bref-2019
+    - rule_id: boundary_upstream_disclosure
+      applies_to: "Copra supply"
+      rule: "Exclude cultivation, harvest, dehusking, shelling, and copra drying only when they are represented by an upstream dataset; on-site performance of any such operation must be separately inventoried and disclosed."
+      source_ids:
+        - iso-14044-2006
+    - rule_id: boundary_no_hazardous_cutoff
+      applies_to: "Materiality screening"
+      rule: "Do not omit solvent, direct air emissions, wastewater, hazardous chemicals, or hazardous wastes solely because their mass share is small; disclose any other excluded flow and its screening basis."
+      source_ids:
+        - iso-14044-2006
+        - eu-jrc-fdm-bref-2019
+boundary_abstraction:
+  declared_starting_condition: "Dried coconut kernel (copra) received at the first oil-mill control point, with supplier, origin, received mass, moisture basis, and whether upstream dehusking, shelling, and drying are included in the upstream dataset declared"
+  starting_condition_role: "Gate-to-gate foreground starting condition for crude-oil extraction; copra production and drying are upstream product systems unless performed within the reporting facility"
+  product_classification_scope: "Crude, unrefined coconut oil derived from coconut kernel or copra; downstream refining and consumer-grade virgin or cold-pressed oil are outside this PCR"
+  recursive_input_rule: "Returned or reworked crude coconut oil from the same lot or facility is an internal loop and is not counted as a new product input; externally purchased crude coconut oil is disclosed and modelled with a separate upstream dataset and must not be silently relabelled as foreground output"
+  upstream_dataset_requirement: "Use geographically and temporally representative upstream datasets for copra, purchased energy, fuels, water, solvent, filter aids, and other technosphere inputs; disclose missing upstream coverage"
+  disclosure: "Declare the mill gate, included unit operations, mechanical or solvent route, treatment of internal recycle, allocation method, excluded upstream and downstream stages, geography, production period, and any shared utilities"
+reference_flow_definition:
+  reference_amount: "1 kg"
+  product_flow_ref:
+    name: "Coconut oil, crude"
+    uuid: "8b18e824-f237-4a70-9127-ddabde706d15"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "unrefined state"
+    - "copra or kernel origin"
+    - "mechanical-only or mechanical-plus-solvent route"
+    - "production geography"
+    - "production period and lot"
+    - "moisture and volatile matter test basis"
+    - "insoluble impurities test basis"
+    - "free-fatty-acid or acid-value test basis"
+    - "storage condition"
+    - "intended downstream refining or technical use"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "Reference crude coconut oil"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Normalize all inventory results to 1 kg net crude coconut oil leaving final clarification or storage; exclude container tare and report the weighing point."
+  - id: material_mass_basis
+    applies_to: "Copra, cake or meal, wastes, filter residues, and solvent"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Record mass as received and, where moisture changes materially affect yield or balance, also record moisture and dry matter using the stated sampling method."
+  - id: energy_consistency
+    applies_to: "Purchased electricity, fuels, and steam"
+    required_property_ref:
+      name: "Energy or mass as metered"
+      uuid: ""
+    required_unit: "kWh, MJ, or kg"
+    rule: "Preserve the metered unit and conversion factor; do not add fuel energy and generated steam energy when both describe the same energy supply."
+  - id: water_balance
+    applies_to: "Process and cleaning water"
+    required_property_ref:
+      name: "Mass or volume"
+      uuid: ""
+    required_unit: "kg or m3"
+    rule: "Record net make-up water separately from internally recirculated water and report discharged wastewater separately; state density if volume is converted to mass."
+  - id: solvent_balance
+    applies_to: "Conditional solvent-extraction route"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Record solvent make-up, opening and closing inventory, recovered internal recycle, off-site transfers, destruction, and releases on one consistent campaign balance."
+process_map:
+  - id: copra_receiving_preparation
+    name: "Copra receiving and preparation"
+    inclusion: "required"
+    inclusion_condition: "Always included"
+    role: "Receive, inspect, clean, size-reduce, and condition copra for extraction"
+    quantitative_reference: "kg prepared copra transferred"
+  - id: mechanical_oil_extraction
+    name: "Mechanical oil extraction"
+    inclusion: "required"
+    inclusion_condition: "Always included"
+    role: "Press prepared copra and separate pressed crude oil from coconut press cake"
+    quantitative_reference: "kg pressed crude oil transferred"
+  - id: solvent_oil_recovery
+    name: "Solvent oil recovery from pressed cake"
+    inclusion: "conditional"
+    inclusion_condition: "Include only when pressed cake is solvent-extracted"
+    role: "Recover residual oil and produce desolventised meal or cake"
+    quantitative_reference: "kg extracted crude oil transferred"
+  - id: crude_oil_clarification_storage
+    name: "Crude-oil clarification and storage"
+    inclusion: "required"
+    inclusion_condition: "Always included"
+    role: "Combine route streams, settle or filter, and store crude coconut oil for dispatch"
+    quantitative_reference: "1 kg crude coconut oil dispatched"
+process_inventory:
+  - id: copra_receiving_preparation
+    label: "Copra receiving and preparation"
+    inputs:
+      product:
+        - row_id: copra_input
+          role: "Copra received at the oil mill"
+          name: "Copra (candidate; Tiangong UUID unresolved)"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Dried coconut kernel crosses the foreground boundary at receipt. Supplier tickets and receiving measurements provide the quantity and quality basis."
+          amount:
+            expression: "measured net received mass accepted for the production lot"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg crude coconut oil dispatched"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_mass_quality
+              source_ids:
+                - codex-cxs-210-1999
+            ranges:
+              - role: qa_guardrail
+                lower: "1.4"
+                upper: "3.5"
+                unit: "kg/kg crude coconut oil"
+                basis: "received copra per 1 kg crude coconut oil dispatched"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: preparation_electricity
+          role: "Preparation electricity"
+          name: "Electricity, supplied (candidate; Tiangong UUID unresolved)"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Electricity used for receiving, conveying, cleaning, size reduction, and conditioning auxiliaries is recorded by submeter or defensible allocation from a shared meter."
+          amount:
+            expression: "measured or allocated net purchased electricity"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg crude coconut oil dispatched"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_by_process
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.5"
+                unit: "kWh/kg crude coconut oil"
+                basis: "preparation electricity per 1 kg crude coconut oil dispatched"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: prepared_copra_output
+          role: "Prepared copra transferred to pressing"
+          name: "Prepared copra, internal intermediate (candidate; Tiangong UUID unresolved)"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Prepared copra is an internal intermediate; record its measured mass and moisture without assigning an external product credit."
+          amount:
+            expression: "measured mass transferred to pressing"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per preparation-process output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_mass_quality
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: preparation_rejects
+          role: "Separated foreign material and rejected copra"
+          name: "Copra preparation rejects (candidate; Tiangong UUID unresolved)"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Stones, metal, dirt, spoiled copra, and other removed material are recorded by destination and waste or recovered-material status."
+          amount:
+            expression: "measured reject mass by destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg crude coconut oil dispatched"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_residuals_emissions
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.15"
+                unit: "kg/kg crude coconut oil"
+                basis: "preparation rejects per 1 kg crude coconut oil dispatched"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        - row_id: preparation_dust_air
+          role: "Preparation dust released to air"
+          name: "Particulate matter, to air (candidate; Tiangong UUID unresolved)"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Direct dust after any capture system is reported as an elementary emission; captured dust remains a waste or recovered material."
+          amount:
+            expression: "measured release or calculated value from measured exhaust flow, concentration, and operating time"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg crude coconut oil dispatched"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_residuals_emissions
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.01"
+                unit: "kg/kg crude coconut oil"
+                basis: "released particulate matter per 1 kg crude coconut oil dispatched"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+  - id: mechanical_oil_extraction
+    label: "Mechanical oil extraction"
+    inputs:
+      product:
+        - row_id: prepared_copra_input
+          role: "Prepared copra"
+          name: "Prepared copra, internal intermediate (candidate; Tiangong UUID unresolved)"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "The internal prepared-copra transfer must match the output of copra_receiving_preparation over the same lot balance."
+          amount:
+            expression: "transferred mass from preparation"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per mechanical-extraction output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_mass_quality
+              source_ids: []
+            ranges: []
+        - row_id: extraction_electricity
+          role: "Extraction electricity"
+          name: "Electricity, supplied (candidate; Tiangong UUID unresolved)"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Electricity for presses, conveyors, pumps, and associated controls is recorded for the production campaign."
+          amount:
+            expression: "measured or allocated net purchased electricity"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg crude coconut oil dispatched"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_by_process
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0.01"
+                upper: "2"
+                unit: "kWh/kg crude coconut oil"
+                basis: "mechanical-extraction electricity per 1 kg crude coconut oil dispatched"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: conditioning_thermal_energy
+          role: "Conditioning thermal energy"
+          name: "Thermal energy carrier or steam used on site (candidate; Tiangong UUID unresolved)"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Fuel or purchased steam used to heat or condition copra before or during pressing is recorded only when applied; report the actual carrier and avoid double counting steam and its generating fuel."
+          amount:
+            expression: "measured fuel lower-heating-value input or metered purchased steam energy"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg crude coconut oil dispatched"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_by_process
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "10"
+                unit: "MJ/kg crude coconut oil"
+                basis: "conditioning energy per 1 kg crude coconut oil dispatched"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: pressed_crude_oil_output
+          role: "Pressed crude coconut oil intermediate"
+          name: "Crude coconut oil, internal intermediate"
+          flow_type: "product"
+          flow_ref:
+            uuid: "8b18e824-f237-4a70-9127-ddabde706d15"
+          property_unit: "Mass / kg"
+          description: "Pressed oil is an internal intermediate transferred to clarification or combined with solvent-extracted oil."
+          amount:
+            expression: "measured net mass transferred from pressing"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per mechanical-extraction output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_mass_quality
+              source_ids: []
+            ranges: []
+        - row_id: press_cake_output
+          role: "Coconut press cake"
+          name: "Coconut press cake (candidate; Tiangong UUID unresolved)"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Pressed cake is reported as a co-product when sold or transferred for beneficial use, as an internal intermediate when solvent-extracted on site, or as waste when discarded."
+          amount:
+            expression: "measured mass and destination status"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg crude coconut oil dispatched"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_mass_quality
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges:
+              - role: qa_guardrail
+                lower: "0.3"
+                upper: "2.5"
+                unit: "kg/kg crude coconut oil"
+                basis: "press cake before optional solvent extraction per 1 kg crude coconut oil dispatched"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+  - id: solvent_oil_recovery
+    label: "Solvent oil recovery from pressed cake"
+    inputs:
+      product:
+        - row_id: press_cake_extraction_input
+          role: "Pressed cake sent to extraction"
+          name: "Coconut press cake, internal intermediate (candidate; Tiangong UUID unresolved)"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "This internal flow is included only for mills that extract residual oil from pressed cake."
+          amount:
+            expression: "measured mass charged to the extractor"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per solvent-recovery process output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_mass_quality
+              source_ids: []
+            ranges: []
+        - row_id: makeup_solvent_input
+          role: "Make-up extraction solvent"
+          name: "Extraction solvent, make-up (candidate; Tiangong UUID unresolved)"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Make-up solvent crossing the facility boundary is recorded separately from recovered internal recycle."
+          amount:
+            expression: "purchased or tank-balanced make-up solvent"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg crude coconut oil dispatched"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_solvent_balance
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.05"
+                unit: "kg/kg crude coconut oil"
+                basis: "make-up solvent per 1 kg crude coconut oil dispatched"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: solvent_route_energy
+          role: "Solvent-route energy"
+          name: "Electricity, steam, and fuel by carrier (candidate; Tiangong UUID unresolved)"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Record electricity and thermal energy for extraction, miscella distillation, desolventising, meal drying, and solvent recovery by carrier."
+          amount:
+            expression: "measured carrier-specific energy converted to MJ with conversion factors retained"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg crude coconut oil dispatched"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_by_process
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "15"
+                unit: "MJ/kg crude coconut oil"
+                basis: "combined reported energy carriers per 1 kg crude coconut oil dispatched"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: solvent_route_water
+          role: "Solvent-route process water"
+          name: "Process water (candidate; Tiangong UUID unresolved)"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Net make-up and process water are recorded separately from recirculated cooling water."
+          amount:
+            expression: "measured net make-up water crossing the facility boundary"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg crude coconut oil dispatched"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water_balance
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "5"
+                unit: "kg/kg crude coconut oil"
+                basis: "net make-up water per 1 kg crude coconut oil dispatched"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: solvent_crude_oil_output
+          role: "Solvent-extracted crude coconut oil intermediate"
+          name: "Crude coconut oil, internal intermediate"
+          flow_type: "product"
+          flow_ref:
+            uuid: "8b18e824-f237-4a70-9127-ddabde706d15"
+          property_unit: "Mass / kg"
+          description: "Recovered crude oil is an internal intermediate transferred to final clarification or blending."
+          amount:
+            expression: "measured net recovered oil transferred"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per solvent-recovery process output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_mass_quality
+              source_ids: []
+            ranges: []
+        - row_id: desolventised_meal_output
+          role: "Desolventised coconut meal or cake"
+          name: "Desolventised coconut meal or cake (candidate; Tiangong UUID unresolved)"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Meal or cake leaving solvent recovery is reported as a co-product only when it meets a declared specification and has a beneficial destination; otherwise classify it as waste."
+          amount:
+            expression: "measured mass by specification and destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg crude coconut oil dispatched"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_mass_quality
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges:
+              - role: qa_guardrail
+                lower: "0.3"
+                upper: "2.5"
+                unit: "kg/kg crude coconut oil"
+                basis: "desolventised meal or cake per 1 kg crude coconut oil dispatched"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        - row_id: solvent_route_wastewater
+          role: "Solvent-route wastewater"
+          name: "Wastewater, solvent-route (candidate; Tiangong UUID unresolved)"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Wastewater from solvent-water separation, equipment cleaning, and related route operations is measured at discharge before treatment or transfer."
+          amount:
+            expression: "measured discharged mass or volume with density stated"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg crude coconut oil dispatched"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water_balance
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "2"
+                unit: "kg/kg crude coconut oil"
+                basis: "wastewater per 1 kg crude coconut oil dispatched"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        - row_id: solvent_release_air
+          role: "Solvent released to air"
+          name: "Extraction solvent, to air (candidate; Tiangong UUID unresolved)"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Fugitive and channelled releases are quantified by measurement or a reconciled solvent balance; do not equate all make-up solvent with air release."
+          amount:
+            expression: "measured release or reconciled solvent-balance result by release pathway"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg crude coconut oil dispatched"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_solvent_balance
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.05"
+                unit: "kg/kg crude coconut oil"
+                basis: "solvent released to air per 1 kg crude coconut oil dispatched"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+  - id: crude_oil_clarification_storage
+    label: "Crude-oil clarification and storage"
+    inputs:
+      product:
+        - row_id: crude_oil_intermediate_input
+          role: "Crude-oil intermediates"
+          name: "Crude coconut oil, internal intermediate"
+          flow_type: "product"
+          flow_ref:
+            uuid: "8b18e824-f237-4a70-9127-ddabde706d15"
+          property_unit: "Mass / kg"
+          description: "Pressed and, when applicable, solvent-extracted crude-oil streams are reconciled before clarification."
+          amount:
+            expression: "measured combined mass entering clarification"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per clarification-process output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_mass_quality
+              source_ids: []
+            ranges: []
+        - row_id: clarification_electricity
+          role: "Clarification electricity"
+          name: "Electricity, supplied (candidate; Tiangong UUID unresolved)"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Electricity for pumps, settling or centrifugation, filtration, and storage is recorded for the lot or period."
+          amount:
+            expression: "measured or allocated net purchased electricity"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg crude coconut oil dispatched"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_by_process
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.5"
+                unit: "kWh/kg crude coconut oil"
+                basis: "clarification and storage electricity per 1 kg crude coconut oil dispatched"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: filter_aid_input
+          role: "Filter aid and other clarification consumables"
+          name: "Filter aid, unspecified (candidate; Tiangong UUID unresolved)"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Filter aid or other consumables are recorded when they cross the foreground boundary."
+          amount:
+            expression: "measured issued mass by material type"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg crude coconut oil dispatched"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_mass_quality
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.05"
+                unit: "kg/kg crude coconut oil"
+                basis: "filter aid per 1 kg crude coconut oil dispatched"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: crude_coconut_oil_output
+          role: "Crude coconut oil at oil-mill gate"
+          name: "Coconut oil, crude"
+          flow_type: "product"
+          flow_ref:
+            uuid: "8b18e824-f237-4a70-9127-ddabde706d15"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This is the quantitative reference flow. It is the net, unrefined crude coconut oil mass dispatched after clarification or filtration and storage."
+          amount:
+            expression: "fixed reference output after measured lot normalization"
+            value_mode: "fixed_value"
+            specificity: "not_applicable"
+            basis:
+              text: "1 kg crude coconut oil dispatched"
+              kind: "reference_flow"
+            evidence:
+              kind: "identity_reference"
+              source_ids:
+                - codex-cxs-210-1999
+            ranges: []
+      waste:
+        - row_id: clarification_residue
+          role: "Clarification solids and spent filter material"
+          name: "Oil-bearing clarification residue (candidate; Tiangong UUID unresolved)"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Retained solids, oil-bearing filter cake, and spent filter media are reported by treatment or recovery destination."
+          amount:
+            expression: "measured residue mass by destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg crude coconut oil dispatched"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_residuals_emissions
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.1"
+                unit: "kg/kg crude coconut oil"
+                basis: "clarification residue per 1 kg crude coconut oil dispatched"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocation_avoid_by_subdivision
+    applies_to: "Shared operations and utilities"
+    rule: "First avoid allocation through process subdivision, submetering, lot tracking, or another physically defensible separation of copra preparation, pressing, optional solvent recovery, and clarification."
+    source_ids:
+      - iso-14044-2006
+      - eu-pef-2021-2279
+  - rule_id: allocation_cake_meal
+    applies_to: "Crude coconut oil and saleable press cake or desolventised meal"
+    rule: "When subdivision cannot resolve the joint operation, prefer a documented physical causal relationship. If none can be demonstrated, allocate by site-specific economic value using consistent net revenue at the same mill gate over a representative period; disclose prices, period, currency, allocation shares, and sensitivity to a mass-based result."
+    source_ids:
+      - iso-14044-2006
+      - eu-pef-2021-2279
+  - rule_id: allocation_residual_status
+    applies_to: "Rejects, residues, recovered solvent, and wastes"
+    rule: "Do not assign co-product credit to internal solvent recycle, internal rework, or material sent for disposal. Treat a residual as a co-product only when it meets a declared specification and has a documented beneficial destination and value."
+    source_ids:
+      - iso-14044-2006
+      - eu-jrc-fdm-bref-2019
+  - rule_id: allocation_shared_services
+    applies_to: "Shared electricity, steam, water, treatment, and storage"
+    rule: "Allocate shared services using measured consumption where possible; otherwise use a documented causal driver such as operating hours, throughput, heat duty, or discharge load and test material shared-service allocations for sensitivity."
+    source_ids:
+      - iso-14044-2006
+      - eu-pef-2021-2279
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_material_mass_quality
+      process_id: "all_mapped_processes"
+      flow_role: "copra, intermediates, oil, cake or meal, filter aid"
+      record_type: "weighbridge tickets, scale logs, tank gauges, transfer records, laboratory certificates"
+      raw_fields: "timestamp; lot_id; material_id; gross_mass; tare_mass; net_mass; moisture; impurities; FFA_or_acid_value; origin; destination; instrument_id"
+      collection_method: "calibrated weighing or tank gauging with representative sampling and stated test method"
+      unit: "kg; mass %; declared test unit"
+      frequency: "each receipt, transfer, and dispatch lot"
+      temporal_coverage: "at least one representative production year or complete declared campaign"
+      site_scope: "each included mill and production line"
+      aggregation_rule: "reconcile opening stock + receipts - closing stock - transfers by lot and normalize to net dispatched oil"
+      quality_evidence: "calibration records; sampling plan; laboratory method; stock reconciliation"
+    - protocol_id: cp_energy_by_process
+      process_id: "all_mapped_processes"
+      flow_role: "electricity, fuel, and purchased steam"
+      record_type: "meters, fuel invoices, boiler logs, run-time records"
+      raw_fields: "timestamp; process_id; carrier; meter_start; meter_end; fuel_mass_or_volume; heating_value; steam_mass; allocation_driver"
+      collection_method: "submetering preferred; otherwise documented engineering allocation from shared meters"
+      unit: "kWh; MJ; kg carrier"
+      frequency: "monthly and each production campaign"
+      temporal_coverage: "same period as product output"
+      site_scope: "each included line; shared utility boundary declared"
+      aggregation_rule: "subtract exports, retain conversion factors, and allocate shared utilities by causal driver"
+      quality_evidence: "meter calibration; invoices; fuel specification; allocation worksheet"
+    - protocol_id: cp_water_balance
+      process_id: "solvent_oil_recovery_and_cleaning_operations"
+      flow_role: "make-up water, recirculated water, wastewater"
+      record_type: "water meters, tank records, discharge meters"
+      raw_fields: "timestamp; source; make_up_volume; recirculated_volume; discharge_volume; density; treatment_destination"
+      collection_method: "meter boundary-crossing water and identify internal recycle separately"
+      unit: "m3; kg"
+      frequency: "monthly and each production campaign"
+      temporal_coverage: "same period as product output"
+      site_scope: "each included mill and discharge point"
+      aggregation_rule: "net make-up and discharge are separately normalized; internal recirculation is memo information"
+      quality_evidence: "meter calibration; water-balance reconciliation; discharge record"
+    - protocol_id: cp_solvent_balance
+      process_id: "solvent_oil_recovery"
+      flow_role: "make-up solvent, recovered solvent, transfers, destruction, releases"
+      record_type: "purchase records, tank levels, recovery meters, stack tests, leak records"
+      raw_fields: "solvent_identity; opening_stock; receipts; closing_stock; recovered_recycle; offsite_transfer; destroyed_mass; measured_air_release; unexplained_loss"
+      collection_method: "closed campaign mass balance supplemented by measured release-pathway data"
+      unit: "kg"
+      frequency: "each campaign and monthly reconciliation"
+      temporal_coverage: "complete solvent-route operating period"
+      site_scope: "each extraction and recovery system"
+      aggregation_rule: "reconcile all solvent inputs, inventories, recycle, transfers, destruction, and releases; do not assign all make-up to air"
+      quality_evidence: "calibrated tank or flow meters; purchase records; leak survey; stack-test report; signed balance"
+    - protocol_id: cp_residuals_emissions
+      process_id: "all_mapped_processes"
+      flow_role: "rejects, wastes, residues, dust, direct releases"
+      record_type: "waste tickets, scales, stack tests, exhaust logs, treatment manifests"
+      raw_fields: "timestamp; row_id; mass; concentration; exhaust_flow; operating_time; destination; treatment; recovery_status"
+      collection_method: "weigh residuals and calculate releases from measured concentration × flow × operating time where applicable"
+      unit: "kg; mg/Nm3; Nm3/h; h"
+      frequency: "each shipment and monitoring event"
+      temporal_coverage: "same period as product output"
+      site_scope: "each included source and destination"
+      aggregation_rule: "aggregate by row and destination, then normalize to dispatched oil"
+      quality_evidence: "calibration; laboratory report; chain-of-custody or waste manifest"
+    - protocol_id: cp_coproduct_value
+      process_id: "mechanical_oil_extraction_and_solvent_oil_recovery"
+      flow_role: "allocation drivers for oil, cake, and meal"
+      record_type: "sales invoices, transfer prices, quantity records"
+      raw_fields: "product_id; quantity; specification; net_price; currency; date; destination; internal_transfer_basis"
+      collection_method: "collect comparable mill-gate values net of separable downstream handling"
+      unit: "kg; currency/kg"
+      frequency: "each transaction; summarized monthly"
+      temporal_coverage: "representative 12-month period or justified campaign"
+      site_scope: "each included mill"
+      aggregation_rule: "calculate quantity-weighted net value using one currency and price basis"
+      quality_evidence: "invoice sample; currency conversion; price-basis review"
+  calculation_rules:
+    - id: calc_reference_normalization
+      applies_to: "All inventory rows"
+      rule: "normalized amount = period or lot amount / net kg of crude_coconut_oil_output dispatched for the same boundary and period"
+      inputs:
+        - "row amount"
+        - "net crude-oil output"
+      output: "amount per 1 kg crude coconut oil"
+      source_ids:
+        - iso-14044-2006
+    - id: calc_material_balance
+      applies_to: "Each process and whole mill"
+      rule: "opening stocks + external receipts + internal transfers in = closing stocks + external outputs + internal transfers out + measured wastes and emissions + documented balance difference; internal transfers cancel at whole-mill level"
+      inputs:
+        - "mass and stock records"
+      output: "process and whole-mill balance plus unexplained difference"
+      source_ids:
+        - iso-14044-2006
+    - id: calc_direct_air_release
+      applies_to: "Measured dust or solvent releases"
+      rule: "released mass = concentration × dry or wet exhaust flow × operating time, with reference conditions and unit conversions documented"
+      inputs:
+        - concentration
+        - "exhaust flow"
+        - "operating time"
+      output: "kg released by pathway"
+      source_ids:
+        - eu-jrc-fdm-bref-2019
+    - id: calc_solvent_reconciliation
+      applies_to: "Solvent route"
+      rule: "unexplained solvent loss = opening stock + receipts - closing stock - off-site transfers - documented destruction; report measured air/water/waste pathways separately and reconcile, without forcing the entire difference to air"
+      inputs:
+        - "solvent balance fields"
+      output: "kg solvent by fate and unexplained difference"
+      source_ids:
+        - eu-jrc-fdm-bref-2019
+    - id: calc_economic_allocation
+      applies_to: "Joint oil and saleable cake or meal"
+      rule: "product value share = quantity × consistent net mill-gate price / sum of quantity × net price for all co-products; apply shares only after subdivision has been exhausted"
+      inputs:
+        - "product quantities"
+        - "comparable prices"
+        - "currency basis"
+      output: "allocation factors summing to 1"
+      source_ids:
+        - iso-14044-2006
+        - eu-pef-2021-2279
+  data_quality_requirements:
+    - id: dq_product_identity
+      applies_to: "Reference product and copra"
+      requirement: "Retain lot linkage, botanical origin as coconut kernel or copra, extraction route, unrefined status, and declared moisture, impurity, and FFA or acid-value test bases."
+      evidence: "receiving records; product certificate; laboratory method; codex-cxs-210-1999"
+    - id: dq_temporal
+      applies_to: "Foreground inventory"
+      requirement: "Use at least one representative production year; a shorter complete campaign is allowed only for seasonal or batch production with dates, throughput, downtime, and representativeness justification disclosed."
+      evidence: "dated meters, invoices, batch records, and production logs"
+    - id: dq_geography_technology
+      applies_to: "Foreground and upstream data"
+      requirement: "Identify mill location, copra origin, extraction technology, solvent use, energy carriers, and pollution controls; justify upstream datasets against those characteristics."
+      evidence: "site metadata; supplier declarations; equipment list; dataset selection record"
+    - id: dq_completeness
+      applies_to: "Material, energy, water, wastes, and emissions"
+      requirement: "Reconcile all process maps and report missing, estimated, or allocated flows. Solvent, direct emissions, wastewater, and hazardous wastes cannot be omitted only because their mass is small."
+      evidence: "process balance; utility reconciliation; solvent balance; waste manifests; eu-jrc-fdm-bref-2019"
+    - id: dq_measurement
+      applies_to: "Collected foreground values"
+      requirement: "Identify instrument, calibration state, sampling method, test method, frequency, and any data substitution; preserve raw records and conversion factors."
+      evidence: "calibration certificates; sampling plan; laboratory reports; calculation workbook"
+    - id: dq_estimate_replacement
+      applies_to: "Every provisional QA range"
+      requirement: "Treat reasoned_estimate ranges only as screening flags. Replace or confirm them with reviewed coconut-oil foreground evidence before active status; values outside a guardrail require investigation, not automatic rejection."
+      evidence: "review record; site evidence; documented investigation"
+validation_rules:
+  - rule_id: validate_reference_identity
+    applies_to: "Reference flow"
+    rule: "Require exactly 1 kg net output of Tiangong flow 8b18e824-f237-4a70-9127-ddabde706d15 with Mass 93a60a56-a3c8-11da-a746-0800200b9a66, unit group 93a60a57-a4c8-11da-a746-0800200c9a66, and all required qualifiers."
+    source_ids:
+      - codex-cxs-210-1999
+  - rule_id: validate_scope_route
+    applies_to: "Process coverage"
+    rule: "Require all required processes and require solvent_oil_recovery only when solvent extraction occurs; reject inclusion of refining inside the crude-oil unit process unless it is separately metered or allocated to a downstream dataset."
+    source_ids:
+      - eu-jrc-fdm-bref-2019
+  - rule_id: validate_internal_transfers
+    applies_to: "Process links"
+    rule: "Require prepared copra, cake sent to extraction, and crude-oil intermediate inputs to reconcile with their corresponding outputs over the same lot or period."
+    source_ids:
+      - iso-14044-2006
+  - rule_id: validate_material_balance
+    applies_to: "Each process and whole mill"
+    rule: "Require a disclosed mass-balance difference and investigation of unexplained losses; do not silently close the balance by changing the reference output or assigning the difference to air."
+    source_ids:
+      - iso-14044-2006
+  - rule_id: validate_energy_water
+    applies_to: "Utilities"
+    rule: "Require carrier-specific energy, net make-up water, internal recirculation memo flows, and wastewater discharge to use consistent boundaries and conversions without double counting."
+    source_ids:
+      - eu-jrc-fdm-bref-2019
+  - rule_id: validate_solvent_route
+    applies_to: "Conditional solvent route"
+    rule: "Require solvent identity and a reconciled balance covering make-up, inventories, recovered recycle, transfers, destruction, and measured releases; omission is an error when the route is included."
+    source_ids:
+      - eu-jrc-fdm-bref-2019
+  - rule_id: validate_allocation
+    applies_to: "Joint products and shared services"
+    rule: "Require the allocation hierarchy, driver, values, period, factor sum, and sensitivity result to be disclosed whenever subdivision does not fully avoid allocation."
+    source_ids:
+      - iso-14044-2006
+      - eu-pef-2021-2279
+  - rule_id: validate_provisional_ranges
+    applies_to: "QA guardrails"
+    rule: "Flag values outside a provisional reasoned_estimate QA guardrail for review. Do not substitute the guardrail midpoint or treat the range as an allowed conformance interval."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "Foreground production dataset for crude coconut oil at the oil-mill gate"
+  downstream_use: "secondary_dataset; background_dataset after independent methodology and data-quality review"
+  allowed_use: "Cradle-to-gate or later life-cycle models that add representative upstream copra and utility datasets and downstream refining, transport, use, and end-of-life as required by goal and scope"
+  excluded_use: "Direct representation of virgin or refined coconut oil; direct consumer product claims; substitution for coconut cultivation or copra drying; comparative public claims without applicable review"
+  required_metadata: "PCR id; reference-flow UUID and qualifiers; mill and copra geography; production period; extraction route; included processes; upstream datasets; utility carriers; allocation method and factors; co-product status; quality test methods"
+  required_quality_disclosure: "Foreground coverage; measured, calculated, allocated, and estimated shares; mass- and solvent-balance differences; missing UUIDs; provisional range use; data age; laboratory and meter quality; exclusions and sensitivity results"
+  update_trigger: "Change in copra origin or preparation, extraction technology, solvent, energy system, co-product market, allocation driver, pollution control, product specification, or a material foreground value; or evidence showing provisional guardrails are no longer appropriate"
+data_sources:
+  - id: "codex-cxs-210-1999"
+    type: "standard"
+    reference: "Codex Alimentarius, CXS 210-1999, Standard for Named Vegetable Oils, amended 2026, https://www.fao.org/fao-who-codexalimentarius/sh-proxy/en/?lnk=1&url=https%253A%252F%252Fworkspace.fao.org%252Fsites%252Fcodex%252FStandards%252FCXS%2B210-1999%252FCXS_210e.pdf (retrieved 2026-08-11)"
+    used_for: "Coconut-oil identity, crude-oil status and quality-specification context"
+  - id: "eu-jrc-fdm-bref-2019"
+    type: "official_guidance"
+    reference: "European Commission Joint Research Centre, Best Available Techniques (BAT) Reference Document for the Food, Drink and Milk Industries, 2019, https://eippcb.jrc.ec.europa.eu/sites/default/files/2020-01/JRC118627_FDM_Bref_2019_published.pdf (retrieved 2026-08-11)"
+    used_for: "Crude vegetable-oil process decomposition, separation from refining, utilities, solvent route, emissions, wastes, and co-products"
+  - id: "iso-14044-2006"
+    type: "standard"
+    reference: "ISO 14044:2006, Environmental management — Life cycle assessment — Requirements and guidelines, confirmed 2022, https://www.iso.org/standard/38498.html (retrieved 2026-08-11)"
+    used_for: "LCA scope, inventory consistency, allocation hierarchy, reporting, and review"
+  - id: "eu-pef-2021-2279"
+    type: "official_guidance"
+    reference: "European Commission Recommendation (EU) 2021/2279 on the use of Environmental Footprint methods, https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32021H2279 (retrieved 2026-08-11)"
+    used_for: "Allocation disclosure, data quality, representativeness, and sensitivity expectations"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:719fc5c916ccbfa04e4b3ca77c752cc285bbfe387738306f98729635e9344829"
+  generated_content_sha256: "sha256:7fd9e7e942b9d652c27ce626fbbd3378f8268ce0951f95a4c10f4f54a9be5cbd"

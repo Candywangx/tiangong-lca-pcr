@@ -1,10 +1,784 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "21234"
-  title: "Edible fish offal ; fish fins, heads, tails, maws and other edible fish offal"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.food-products-beverages-and-tobacco-textiles-apparel-and-leather-products.meat-fish-fruits-vegetables-oils-and-fats.edible-fish-offal-fish-fins-heads-tails-maws-and-other-edible-fish-offal"
+  classification_refs: "CPC 3.0: 21234, exact"
+  covered_products: "Fish fins, heads, tails, maws or swim bladders, and other declared edible fish offal sold for human consumption"
+  excluded_products: "Non-edible offal; fish meal; fish oil; gelatin or collagen; feed, pet-food, pharmaceutical, or fertilizer products; whole fish and fillets; composite prepared meals"
+  representative_product: "Packed edible fish offal in the declared anatomical and preservation form at the processor gate"
+  production_route: "Separation or receipt -> sorting and preparation -> route-specific preservation or stabilization -> packing -> processor-gate release"
+  market_state: "Declared chilled, frozen, salted, brined, dried, smoked, or combined preserved state, fit for human consumption"
+functional_unit:
+  what: "Edible fish offal in the declared anatomical, species, preservation, and packaging form"
+  how_much: "1 kg net product mass"
+  how_well: "Fit for human consumption and meeting the declared product specification and applicable food-safety requirements"
+  how_long_or_cycle: "One processor-gate product output; no service duration"
+  reference_flow_link: "rf_edible_fish_offal"
+system_boundary:
+  rules:
+    - rule_id: sb_include_foreground_operations
+      applies_to: "All foreground routes"
+      rule: "Include receiving, sorting, washing or trimming, route-specific chilling/freezing, salting/brining, drying, smoking or other declared stabilization, packing, on-site storage, utility use, rejects, wastewater, and direct refrigerant or combustion emissions when these operations occur."
+      source_ids:
+        - codex-cxc-52-2003
+    - rule_id: sb_link_upstream_supply
+      applies_to: "Incoming fish or separated edible offal"
+      rule: "Link upstream capture or aquaculture, landing, transport, and primary fish-processing burdens through representative upstream datasets rather than omitting them."
+      source_ids:
+        - eu-pef-2021
+    - rule_id: sb_exclude_downstream_by_default
+      applies_to: "Processor-gate study"
+      rule: "Exclude distribution, retail, consumer storage, cooking, consumption, and end-of-life unless the declared study goal extends the boundary; disclose every extension."
+      source_ids:
+        - eu-pef-2021
+    - rule_id: sb_food_safety_records
+      applies_to: "Product-contact and preservation operations"
+      rule: "Retain process control and food-safety records needed to demonstrate that the offal remained intended and suitable for human consumption; apply the product- and market-specific legal controls."
+      source_ids:
+        - codex-cxc-52-2003
+boundary_abstraction:
+  declared_starting_condition: "Edible fish anatomical parts separated at an upstream fish-processing operation or received from a supplier, with species or commercial group, part, mass basis, temperature or preservation state, origin, and edible disposition declared"
+  starting_condition_role: "Foreground input condition for preparation and preservation of edible offal; upstream capture, aquaculture, landing, and primary fish-processing burdens remain represented by linked upstream datasets"
+  product_classification_scope: "Edible fish offal and listed edible fish anatomical parts prepared for human consumption; CPC 3.0 code 21234 is an exact classification reference"
+  recursive_input_rule: "An incoming edible-offal product already within this PCR category shall be recorded once as a product input and linked to its upstream dataset; do not recreate its upstream preparation inventory inside the receiving process"
+  upstream_dataset_requirement: "Require a representative upstream dataset for the incoming fish or separated offal, including the allocation applied at the point where edible offal is separated from the main fish product"
+  disclosure: "Declare species or group, anatomical part, origin, incoming condition, preservation route, food-safety disposition, cut-off, allocation, packaging, storage duration, geography, and reference period"
+reference_flow_definition:
+  reference_amount: "1 kg net product mass"
+  product_flow_ref:
+    name: "Edible fish offal, fish fins, heads, tails, maws and other edible fish offal"
+    uuid: "be045cb1-719b-41b1-9bec-bf27cf50c401"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "fish species or declared commercial species group"
+    - "anatomical part"
+    - "edible status"
+    - "preservation route"
+    - "chilled or frozen state and target temperature where applicable"
+    - salt
+    - brine
+    - drying
+    - "or smoking treatment where applicable"
+    - "net mass basis"
+    - "packaging form"
+    - "processor-gate geography and reference period"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "Reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Report exactly 1 kg net edible product, excluding packaging, as the reference flow."
+  - id: wet_dry_salt_basis
+    applies_to: "Product and material mass"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "State whether each mass is as-received, drained, wet, dry, or salt-inclusive; do not combine unlike bases without a recorded conversion."
+  - id: water_volume_conversion
+    applies_to: "Metered water"
+    required_property_ref:
+      name: "Mass or volume"
+      uuid: ""
+    required_unit: "kg or m3"
+    rule: "Preserve measured volume where available; when converting water volume to mass, record the density assumption and measurement temperature."
+  - id: energy_carrier_separation
+    applies_to: "Electricity and fuels"
+    required_property_ref:
+      name: "Energy or mass/volume appropriate to the carrier"
+      uuid: ""
+    required_unit: "kWh, MJ, kg, or m3"
+    rule: "Keep electricity, purchased heat, and each fuel separate; record conversion factors and lower or higher heating-value basis where energy conversion is used."
+  - id: net_packaging_exclusion
+    applies_to: "Reference product and packaging"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Packaging is an inventory input and shall not be included in the 1 kg net product reference amount."
+process_map:
+  - id: receiving_preparation
+    name: "Receiving, sorting, washing, and preparation"
+    inclusion: "required"
+    inclusion_condition: "Always; individual washing, trimming, and icing operations are recorded when performed"
+    role: "Establishes edible product identity and prepared intermediate mass"
+    quantitative_reference: "kg prepared edible offal"
+  - id: preservation_packing
+    name: "Preservation, stabilization, storage, and packing"
+    inclusion: "required"
+    inclusion_condition: "At least one declared preservation or stabilization route; route-specific inputs apply only when used"
+    role: "Produces the packed processor-gate reference product"
+    quantitative_reference: "1 kg net edible fish offal output"
+process_inventory:
+  - id: receiving_preparation
+    label: "Receiving, sorting, washing, and preparation"
+    inputs:
+      product:
+        - row_id: incoming_edible_parts
+          role: "Incoming edible fish parts"
+          name: "Incoming edible fish offal or fish parts; Tiangong UUID pending review"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record separated edible offal or fish parts entering foreground preparation, including supplier, species or group, anatomical part, incoming state, and the upstream dataset link."
+          amount:
+            expression: "measured as-received mass accepted into the lot"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net reference product output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_mass_balance
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "1.0"
+                upper: "5.0"
+                unit: "kg/kg reference product"
+                basis: "incoming wet or as-received mass per 1 kg net finished product"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: preparation_water
+          role: "Process and product-contact water"
+          name: "Process water; Tiangong UUID pending review"
+          flow_type: "product"
+          property_unit: "Mass or volume / kg or m3"
+          description: "Record metered water crossing the process boundary for washing, rinsing, de-salting, or product-contact preparation; keep sanitation water separable when feasible."
+          amount:
+            expression: "measured water use allocated to the production lot"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net reference product output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water_energy
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "20"
+                unit: "kg/kg reference product"
+                basis: "water supplied per 1 kg net finished product"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: handling_ice
+          role: "Ice used during handling"
+          name: "Ice; Tiangong UUID pending review"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record purchased or on-site produced ice used for product temperature control and avoid double counting its embedded water and ice-making electricity."
+          amount:
+            expression: "measured ice issued to the lot, net of recovered and separately measured unused ice where justified"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net reference product output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_preservation_inputs
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "1.5"
+                unit: "kg/kg reference product"
+                basis: "ice used per 1 kg net finished product"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: prepared_offal_intermediate
+          role: "Prepared edible offal intermediate"
+          name: "Prepared edible fish offal intermediate; Tiangong UUID pending review"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the weighed edible intermediate transferred to preservation and keep its state and mass basis consistent with the receiving mass balance."
+          amount:
+            expression: "measured transfer mass"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net reference product output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_mass_balance
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: preparation_residues
+          role: "Rejected or non-edible fish residues"
+          name: "Fish-processing residues; Tiangong UUID pending review"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record trimmings, rejected parts, spoiled material, and other residues by destination and legal classification; do not relabel an economically sold co-product as waste."
+          amount:
+            expression: "measured or mass-balance-calculated residue mass by destination"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net reference product output"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_mass_balance
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "4.0"
+                unit: "kg/kg reference product"
+                basis: "preparation residues per 1 kg net finished product"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: preparation_wastewater
+          role: "Preparation wastewater"
+          name: "Fish-processing wastewater; Tiangong UUID pending review"
+          flow_type: "waste"
+          property_unit: "Mass or volume / kg or m3"
+          description: "Record wastewater leaving preparation, including product solids and salt where relevant, and link it to the actual treatment route."
+          amount:
+            expression: "measured discharge or a documented water-balance calculation"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net reference product output"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_waste_wastewater
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "25"
+                unit: "kg/kg reference product"
+                basis: "wastewater discharged per 1 kg net finished product"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        []
+  - id: preservation_packing
+    label: "Preservation, stabilization, storage, and packing"
+    inputs:
+      product:
+        - row_id: prepared_offal_input
+          role: "Prepared edible offal input"
+          name: "Prepared edible fish offal intermediate; Tiangong UUID pending review"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Transfer the prepared intermediate without adding another upstream burden; the row closes the foreground process link."
+          amount:
+            expression: "equal to the measured output transferred from receiving_preparation, adjusted only for documented inter-process storage loss"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net reference product output"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_mass_balance
+              source_ids: []
+            ranges: []
+        - row_id: salt_brine_input
+          role: "Salt or brine ingredients"
+          name: "Salt and brine ingredients; Tiangong UUID pending review"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record salt and prepared brine separately when salting, brining, de-salting, or salt-assisted preservation occurs."
+          amount:
+            expression: "measured net issue to the lot, with brine concentration and recovery declared"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net reference product output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_preservation_inputs
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.5"
+                unit: "kg/kg reference product"
+                basis: "salt-equivalent input per 1 kg net finished product"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: smoking_material
+          role: "Smoking material"
+          name: "Smoking material; Tiangong UUID pending review"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record wood, chips, condensate, smoke flavouring, or other smoking material only for the declared route, with direct emissions separately inventoried where applicable."
+          amount:
+            expression: "measured material consumed by the production lot"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net reference product output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_preservation_inputs
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.5"
+                unit: "kg/kg reference product"
+                basis: "smoking material consumed per 1 kg net finished product"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: electricity_input
+          role: "Electricity"
+          name: "Electricity, market-specific; Tiangong UUID pending review"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record metered or allocated electricity for preparation support, refrigeration, freezing, drying, smoking, ventilation, storage, and packing without double counting on-site generation fuel."
+          amount:
+            expression: "submetered use or documented allocation from facility meters"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net reference product output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water_energy
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0.05"
+                upper: "10"
+                unit: "kWh/kg reference product"
+                basis: "electricity used per 1 kg net finished product"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: thermal_energy_input
+          role: "Purchased heat or fuel"
+          name: "Purchased heat or process fuel; Tiangong UUID pending review"
+          flow_type: "product"
+          property_unit: "Energy, mass, or volume / MJ, kg, or m3"
+          description: "Record purchased heat and each fuel separately for drying, smoking, hot-water generation, or other thermal operations."
+          amount:
+            expression: "metered heat or measured fuel issue converted with a documented factor"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net reference product output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water_energy
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "30"
+                unit: "MJ/kg reference product"
+                basis: "purchased thermal energy per 1 kg net finished product"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: packaging_input
+          role: "Packaging materials"
+          name: "Packaging material by type; Tiangong UUID pending review"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record primary, secondary, and tertiary packaging by material and net supplied mass; reusable packaging shall include trip count and loss assumptions."
+          amount:
+            expression: "bill-of-material or measured packaging use, net of separately recorded internal scrap"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net reference product output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0.001"
+                upper: "0.5"
+                unit: "kg/kg reference product"
+                basis: "packaging supplied per 1 kg net finished product"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: refrigerant_makeup
+          role: "Refrigerant make-up"
+          name: "Refrigerant by substance; Tiangong UUID pending review"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record refrigerant purchased or added to equipment serving the product route and allocate it using service records, equipment charge, operating time, or another disclosed driver."
+          amount:
+            expression: "calculated product share of documented refrigerant make-up"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net reference product output"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_refrigerant
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.02"
+                unit: "kg/kg reference product"
+                basis: "refrigerant make-up attributed per 1 kg net finished product"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: rf_edible_fish_offal
+          role: "Packed edible fish offal reference product"
+          name: "Edible fish offal, fish fins, heads, tails, maws and other edible fish offal"
+          flow_type: "product"
+          flow_ref:
+            uuid: "be045cb1-719b-41b1-9bec-bf27cf50c401"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This is the net processor-gate output realizing the functional unit; packaging mass is excluded from its amount."
+          amount:
+            expression: "exactly 1 kg net edible product"
+            value_mode: "fixed_value"
+            specificity: "product_specific"
+            basis:
+              text: "1 kg net reference product output"
+              kind: "reference_flow"
+            evidence:
+              kind: "identity_reference"
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: preservation_wastes
+          role: "Preservation and packaging wastes"
+          name: "Preservation and packaging wastes by material; Tiangong UUID pending review"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record product losses, spent brine or salt, ash, smoking residues, and packaging scrap separately by treatment or recovery destination."
+          amount:
+            expression: "measured waste mass or documented mass-balance result"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net reference product output"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_waste_wastewater
+              source_ids: []
+            ranges: []
+        - row_id: preservation_wastewater
+          role: "Preservation wastewater"
+          name: "Preservation-process wastewater; Tiangong UUID pending review"
+          flow_type: "waste"
+          property_unit: "Mass or volume / kg or m3"
+          description: "Record discharged brine, cleaning water, thawing water, and other route-specific wastewater with salinity or relevant treatment attributes where available."
+          amount:
+            expression: "measured discharge or documented water balance"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net reference product output"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_waste_wastewater
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "10"
+                unit: "kg/kg reference product"
+                basis: "wastewater discharged per 1 kg net finished product"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        - row_id: refrigerant_emissions
+          role: "Direct refrigerant emissions"
+          name: "Refrigerant emission to air by substance; Tiangong UUID pending review"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Report each refrigerant substance emitted to air from equipment serving the declared route; do not report make-up as both a product input and an elementary emission unless the system model requires both linked representations."
+          amount:
+            expression: "calculated from service records and inventory balance under calc_refrigerant_loss"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net reference product output"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_refrigerant
+              source_ids: []
+            ranges: []
+allocation_rules:
+  - rule_id: al_avoid_by_subdivision
+    applies_to: "Shared fish-processing and preservation operations"
+    rule: "Prefer process subdivision, submetering, and lot-specific mass records so burdens can be assigned directly before allocation."
+    source_ids:
+      - eu-pef-2021
+  - rule_id: al_upstream_separation
+    applies_to: "Incoming edible offal separated with a main fish product"
+    rule: "Require the upstream dataset to disclose the separation point and allocation. Where a measurable physical causal relation supports joint production, apply it consistently; otherwise use an economic relation based on representative prices and report a sensitivity case."
+    source_ids:
+      - eu-pef-2021
+  - rule_id: al_foreground_coproducts
+    applies_to: "Saleable products leaving the foreground route"
+    rule: "Treat an output as a co-product only when it has a demonstrated market or intended beneficial use. Allocate shared burdens with the selected physical or economic driver and report quantities, prices or physical parameters, reference period, and sensitivity."
+    source_ids:
+      - eu-pef-2021
+  - rule_id: al_waste_and_credits
+    applies_to: "Wastes, recovered materials, and energy"
+    rule: "Keep waste handling burdens in the foreground system. Do not apply avoided-burden or recycling credits unless the declared study method explicitly requires them; disclose the formula and prevent double counting."
+    source_ids:
+      - eu-pef-2021
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_mass_balance
+      process_id: "receiving_preparation_preservation_packing"
+      flow_role: "incoming, intermediate, product, residue, and loss masses"
+      record_type: "weighbridge, scale, lot, and stock records"
+      raw_fields: "lot_id; species_or_group; anatomical_part; state; gross_mass; tare; net_mass; moisture_or_drained_basis; disposition"
+      collection_method: "calibrated scales and reconciled lot records"
+      unit: "kg"
+      frequency: "each lot; monthly reconciliation"
+      temporal_coverage: "representative continuous 12-month period or declared campaign"
+      site_scope: "all foreground lines and storage steps in scope"
+      aggregation_rule: "sum net mass by homogeneous product route; normalize to accepted net reference output"
+      quality_evidence: "calibration records; stock reconciliation; rejected-lot log; mass-balance closure"
+    - protocol_id: cp_water_energy
+      process_id: "both_processes"
+      flow_role: "water, electricity, heat, and fuels"
+      record_type: "meters, invoices, and equipment logs"
+      raw_fields: "meter_id; opening; closing; unit; fuel_type; heating_value_basis; allocation_driver; production_mass"
+      collection_method: "submeter first; otherwise documented facility-meter allocation"
+      unit: "native unit and normalized kg, m3, kWh, or MJ"
+      frequency: "meter interval and monthly"
+      temporal_coverage: "same period as production, covering seasonal operation"
+      site_scope: "all equipment serving the declared route"
+      aggregation_rule: "subtract documented non-production use; allocate shared use with operating time, throughput, or another causal driver"
+      quality_evidence: "meter checks; invoices; conversion factors; allocation worksheet"
+    - protocol_id: cp_preservation_inputs
+      process_id: "preservation_packing"
+      flow_role: "ice, salt, brine, smoking material, and route-specific additives"
+      record_type: "issue, recipe, tank, and batch records"
+      raw_fields: "lot_id; material; mass; concentration; recovered_mass; route; batch_output"
+      collection_method: "weighed issue and recipe or tank balance"
+      unit: "kg"
+      frequency: "each batch"
+      temporal_coverage: "same period as production"
+      site_scope: "all declared preservation routes"
+      aggregation_rule: "net consumed amount divided by net reference output"
+      quality_evidence: "scale calibration; recipe authorization; brine concentration or recovery record"
+    - protocol_id: cp_packaging
+      process_id: "preservation_packing"
+      flow_role: "primary, secondary, and tertiary packaging"
+      record_type: "bills of material, purchase, and scrap records"
+      raw_fields: "material; unit_mass; units_used; scrap; reuse_cycles; loss_rate"
+      collection_method: "item count times verified unit mass, reconciled to issues and scrap"
+      unit: "kg"
+      frequency: "each specification change; monthly aggregation"
+      temporal_coverage: "same period as production"
+      site_scope: "all packaging used for the reference product"
+      aggregation_rule: "net packaging supplied divided by net product; reusable packaging allocated by verified trips"
+      quality_evidence: "specification sheet; unit-mass check; scrap log; reuse evidence"
+    - protocol_id: cp_waste_wastewater
+      process_id: "both_processes"
+      flow_role: "solid waste, residues, wastewater, and destinations"
+      record_type: "scales, manifests, meters, laboratory, and treatment records"
+      raw_fields: "waste_type; mass_or_volume; destination; date; salinity_or_relevant_parameter; treatment"
+      collection_method: "direct measurement preferred; documented material or water balance otherwise"
+      unit: "kg or m3"
+      frequency: "each collection or discharge; monthly aggregation"
+      temporal_coverage: "same period as production"
+      site_scope: "all foreground waste and discharge points"
+      aggregation_rule: "aggregate by composition and destination; no netting against co-products"
+      quality_evidence: "manifests; meter records; treatment invoices; balance reconciliation"
+    - protocol_id: cp_refrigerant
+      process_id: "preservation_packing"
+      flow_role: "refrigerant make-up and direct loss"
+      record_type: "service and refrigerant stock records"
+      raw_fields: "substance; equipment_id; charge; opening_stock; purchases; additions; recovery; closing_stock; service_date; allocation_driver"
+      collection_method: "annual inventory balance reconciled to service records"
+      unit: "kg by substance"
+      frequency: "each service event; annual balance"
+      temporal_coverage: "at least the production reference period"
+      site_scope: "all cooling and freezing equipment serving the route"
+      aggregation_rule: "calculate loss by substance and allocate using causal equipment service or operating data"
+      quality_evidence: "technician records; purchase invoices; stock reconciliation"
+  calculation_rules:
+    - id: calc_net_reference_output
+      applies_to: "Reference product"
+      rule: "net product mass = gross packed mass - packaging tare; normalize all flows by total conforming net product mass"
+      inputs:
+        - "gross packed mass"
+        - tare
+        - "rejected output"
+      output: "kg net reference product"
+      source_ids: []
+    - id: calc_normalized_flow
+      applies_to: "Every quantitative inventory row"
+      rule: "normalized amount = amount attributable to homogeneous route / kg net reference product output"
+      inputs:
+        - "collected amount"
+        - "allocation driver"
+        - "net output"
+      output: "amount per kg reference product"
+      source_ids:
+        - eu-pef-2021
+    - id: calc_mass_balance
+      applies_to: "Both processes"
+      rule: "incoming material + added materials = product + co-products + wastes + measured stock change + quantified losses, using consistent wet, dry, drained, and salt bases"
+      inputs:
+        - "all mass rows"
+        - "stock change"
+        - "basis conversions"
+      output: "mass-balance closure and unexplained difference"
+      source_ids: []
+    - id: calc_refrigerant_loss
+      applies_to: "Refrigeration equipment"
+      rule: "loss by substance = opening stock + purchases - closing stock - recovered stock, reconciled to equipment additions; allocate only the route-attributable share"
+      inputs:
+        - "refrigerant inventory and service records"
+        - "allocation driver"
+      output: "kg refrigerant emitted per kg reference product"
+      source_ids: []
+    - id: calc_allocation_share
+      applies_to: "Joint operations"
+      rule: "allocation share = declared product driver / sum of the same driver for all co-products; apply one consistent driver to shared burdens"
+      inputs:
+        - "product masses or other physical driver"
+        - "representative net revenues where economic allocation is used"
+      output: "dimensionless allocation share"
+      source_ids:
+        - eu-pef-2021
+  data_quality_requirements:
+    - id: dq_identity
+      applies_to: "Product and reference flow"
+      requirement: "Record species or group, anatomical part, edible status, route, product state, net-mass basis, packaging, geography, and period."
+      evidence: "product specification; lot records; label; flow UUID confirmation"
+    - id: dq_temporal
+      applies_to: "Foreground activity data"
+      requirement: "Use a representative 12-month period where continuous production exists, or disclose the complete campaign and seasonal limitation."
+      evidence: "dated meter, lot, invoice, stock, and production records"
+    - id: dq_completeness
+      applies_to: "Process inventory"
+      requirement: "Cover all in-scope process steps, declare the achieved coverage of attributable foreground mass and energy, and disclose every omitted or estimated remainder rather than silently cutting it off."
+      evidence: "coverage table; meter map; mass and energy reconciliation"
+    - id: dq_mass_balance
+      applies_to: "Material flows"
+      requirement: "Reconcile incoming mass, additions, product, co-products, wastes, stock change, moisture change, and losses; declare and justify the site-specific reconciliation tolerance and investigate differences outside it."
+      evidence: "signed balance worksheet and basis conversions"
+    - id: dq_route_representativeness
+      applies_to: "Preservation route"
+      requirement: "Do not combine chilled/frozen, salted/brined, dried, and smoked routes without production-weighted data and explicit route shares."
+      evidence: "route-level production and utility records"
+    - id: dq_source_hierarchy
+      applies_to: "Estimated or secondary values"
+      requirement: "Prefer site and supplier records; identify every proxy, reasoned estimate, and secondary dataset and state the replacement plan or uncertainty."
+      evidence: "data-source register and quality assessment eu-pef-2021"
+    - id: dq_food_safety_traceability
+      applies_to: "Edible disposition and preservation"
+      requirement: "Retain traceability, temperature or preservation-control, sanitation, rejection, and corrective-action records required for the declared product and market."
+      evidence: "HACCP or equivalent control records; lot release records codex-cxc-52-2003"
+validation_rules:
+  - rule_id: vr_reference_flow
+    applies_to: "Reference product"
+    rule: "Verify exactly one reference output of 1 kg net edible fish offal with the specified product-flow, Mass-property, unit-group UUIDs, and all required qualifiers."
+    source_ids: []
+  - rule_id: vr_scope_route
+    applies_to: "Product identity and boundary"
+    rule: "Verify the dataset represents edible fish offal for human consumption, declares one or more preservation routes, and includes every performed foreground step and linked upstream supply."
+    source_ids:
+      - unsd-cpc-3-2025
+      - codex-cxc-52-2003
+  - rule_id: vr_mass_balance
+    applies_to: "All mass flows"
+    rule: "Verify consistent mass bases, a documented mass balance, and a justified site-specific reconciliation tolerance; a difference outside that tolerance shall produce a finding."
+    source_ids: []
+  - rule_id: vr_energy_water_waste
+    applies_to: "Foreground inventory"
+    rule: "Verify water, ice, energy, salt or brine, smoking material, packaging, waste, wastewater, and refrigerant rows are present when applicable, with collected values or an explicit justified zero or non-applicability statement."
+    source_ids:
+      - codex-cxc-52-2003
+      - eu-pef-2021
+  - rule_id: vr_allocation
+    applies_to: "Shared and joint operations"
+    rule: "Verify allocation choice, driver, co-product set, upstream separation treatment, and sensitivity are disclosed and no burden or credit is double counted."
+    source_ids:
+      - eu-pef-2021
+  - rule_id: vr_estimate_disclosure
+    applies_to: "Provisional data"
+    rule: "Verify every use of a provisional range is labelled reasoned_estimate; such ranges are screening flags, not evidence of conformity, and require replacement or uncertainty disclosure."
+    source_ids: []
+  - rule_id: vr_food_safety_disclosure
+    applies_to: "Route controls"
+    rule: "Verify applicable food-safety control records and market-specific numeric limits are identified; do not validate legal compliance from this PCR's LCA QA ranges."
+    source_ids:
+      - codex-cxc-52-2003
+published_dataset_profile:
+  dataset_role: "Foreground production dataset for packed edible fish offal at the processor gate"
+  downstream_use: "secondary_dataset; background_dataset after methodology review and quality disclosure"
+  allowed_use: "Product-footprint and LCA modelling for the declared species or group, anatomical part, preservation route, geography, technology, and period"
+  excluded_use: "Whole-fish, fillet, fish-meal, fish-oil, gelatin, feed, pet-food, pharmaceutical, composite-meal, or unrepresented preservation routes; legal food-safety conformity assessment"
+  required_metadata: "PCR id; product-flow UUID; species or group; anatomical part; edible status; preservation route; product temperature/state; packaging; net-mass basis; geography; technology; reference period; upstream dataset; allocation; cut-off; route shares"
+  required_quality_disclosure: "Record coverage; mass-balance closure; meter and scale quality; route representativeness; estimates and proxies; reasoned-estimate replacements; allocation sensitivity; food-safety record scope; unresolved UUIDs"
+  update_trigger: "Material change in species mix, anatomical part, preservation technology, energy system, packaging, yield, allocation, plant geography, legal control, or data older than the declared representativeness period"
+data_sources:
+  - id: "unsd-cpc-3-2025"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, Central Product Classification Version 3.0 structure, code 21234, 30 June 2025; https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Structure_30Jun2025.csv"
+    used_for: "Official classification title and product-category boundary context"
+  - id: "codex-cxc-52-2003"
+    type: "standard"
+    reference: "Codex Alimentarius, CXC 52-2003, Code of Practice for Fish and Fishery Products, current official Codex text indexed by FAO; https://www.fao.org/fao-who-codexalimentarius/codex-texts/codes-of-practice/en/"
+    used_for: "Fish-product hygiene process decomposition, handling and preservation controls, traceability, and food-safety record boundary"
+  - id: "eu-pef-2021"
+    type: "official_guidance"
+    reference: "European Commission Recommendation (EU) 2021/2279 on the use of the Environmental Footprint methods, CELEX 32021H2279; https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32021H2279"
+    used_for: "Life-cycle boundary, data quality, allocation hierarchy, documentation, and sensitivity principles"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:17f76e391abcba6d5128559e45ae149fe6b74bc5bf8e0af7b84b7dca11656738"
+  generated_content_sha256: "sha256:3f6f27c4316720d8757637b2565471f3989a29a1a5626593a730001f720c87bc"

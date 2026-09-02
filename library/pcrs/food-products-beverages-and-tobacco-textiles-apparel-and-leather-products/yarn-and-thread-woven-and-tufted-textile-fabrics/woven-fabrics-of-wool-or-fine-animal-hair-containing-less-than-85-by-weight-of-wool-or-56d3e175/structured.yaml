@@ -1,10 +1,527 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "26540"
-  title: "Woven fabrics of wool or fine animal hair, containing less than 85% by weight of wool or fine animal hair"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.food-products-beverages-and-tobacco-textiles-apparel-and-leather-products.yarn-and-thread-woven-and-tufted-textile-fabrics.woven-fabrics-of-wool-or-fine-animal-hair-containing-less-than-85-by-weight-of-wool-or-56d3e175"
+  classification_refs: "CPC 3.0: 26540 (exact)"
+  covered_products: "Woven fabrics containing less than 85% by mass of wool and/or fine animal hair, including blends with other declared fibres"
+  excluded_products: "Woven fabrics containing 85% or more wool or fine animal hair; knitted, crocheted, nonwoven, tufted, carpet, yarn, fibre, and finished-garment products"
+  representative_product: "A production-lot-specific roll of woven wool- or fine-animal-hair-blend fabric at the reporting factory gate"
+  production_route: "Purchased yarn preparation and weaving, with lot-applicable on-site wet processing, finishing, inspection, and roll packaging"
+  market_state: "Factory-gate woven fabric in the declared greige, dyed, or finished state, supplied in rolls or another declared dispatch form"
+functional_unit:
+  what: "Factory-gate woven fabric meeting the declared fibre-composition, construction, and finishing specification"
+  how_much: "1 kg net fabric mass"
+  how_well: "Conforming output with declared wool/fine-animal-hair share below 85% by mass and declared blend, weave, width, mass per area, colour, and finish"
+  how_long_or_cycle: "One reported production lot at factory gate; no use-life duration is assigned"
+  reference_flow_link: "1 kg of compliant reference-product output from integrated_woven_fabric_manufacturing"
+system_boundary:
+  rules:
+    - rule_id: boundary_factory_gate
+      applies_to: "foreground manufacturing"
+      rule: "Include purchased-yarn receipt and preparation, weaving, in-process inspection, and factory-gate dispatch; include on-site wet processing, finishing, and packaging when performed for the reported lot."
+      source_ids:
+        - jrc-textiles-bref-2023
+        - eu-bat-textiles-2022
+    - rule_id: boundary_upstream_links
+      applies_to: "purchased inputs"
+      rule: "Represent upstream production of yarn, water, electricity, steam, process chemicals, and packaging with linked upstream datasets; do not reproduce those upstream processes in the foreground inventory."
+      source_ids: []
+    - rule_id: boundary_route_disclosure
+      applies_to: "route-dependent operations"
+      rule: "Declare whether wet processing, dyeing, finishing, and packaging occur on site, are purchased as services, or are absent; include only exchanges that cross the selected foreground boundary and prevent double counting with linked datasets."
+      source_ids:
+        - eu-bat-textiles-2022
+    - rule_id: boundary_atomic_inventory
+      applies_to: "all foreground exchanges"
+      rule: "Record every actually used material, process chemical, energy carrier, packaging component, waste stream, and elementary emission as its own exchange with an exact identity; do not use grouped or selector flows."
+      source_ids:
+        - eu-bat-textiles-2022
+boundary_abstraction:
+  declared_starting_condition: "Purchased yarns with declared fibre composition, yarn form, mass, supplier, and upstream dataset references at receipt to the reporting site"
+  starting_condition_role: "Foreground boundary entry for fabric manufacture"
+  product_classification_scope: "Woven fabrics containing less than 85% by mass of wool and/or fine animal hair"
+  recursive_input_rule: "If an input already belongs to this same woven-fabric category, record it once as a linked upstream product dataset and exclude its internal manufacture from this foreground process."
+  upstream_dataset_requirement: "Link each purchased yarn, utility, chemical, packaging component, and outsourced treatment to a geographically and temporally appropriate upstream dataset or disclose the unresolved gap."
+  disclosure: "Declare yarn composition, supplier state, included on-site operations, outsourced operations, allocation choices, packaging state, production period, geography, and any excluded exchange."
+reference_flow_definition:
+  reference_amount: "1 kg"
+  product_flow_ref:
+    name: "Woven fabrics of wool or fine animal hair, containing less than 85% by weight of wool or fine animal hair"
+    uuid: "89be6289-db50-45f3-9a41-389357845e7f"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "fibre composition by mass"
+    - "wool and fine-animal-hair mass share"
+    - "other fibre constituents"
+    - "weave construction"
+    - "fabric width"
+    - "mass per area"
+    - "greige/dyed/finished state"
+    - "colour or shade"
+    - "finish and treatment route"
+    - "production geography"
+    - "production period"
+    - "dispatch and packaging state"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Measure net compliant fabric mass, excluding roll cores and other dispatch packaging, at the declared conditioning or moisture state. Preserve the measured state and do not apply an unrecorded dry-mass correction."
+  - id: lot_normalization
+    applies_to: "foreground exchanges"
+    required_property_ref:
+      name: "Row-specific property"
+      uuid: ""
+    required_unit: "Row-specific unit"
+    rule: "Record each exchange in its metered or transaction unit and normalize it to 1 kg of net compliant reference-product output for the same production lot and boundary."
+  - id: packaging_separation
+    applies_to: "dispatch packaging"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Record each packaging component separately as an input; do not include packaging mass in the reference-product mass."
+process_map:
+  - id: integrated_woven_fabric_manufacturing
+    name: "Integrated woven fabric manufacturing"
+    inclusion: "required"
+    inclusion_condition: "Applies to every reported production lot; route-specific wet processing, steam use, and packaging inputs are recorded only when they occur within the reporting site boundary."
+    role: "foreground production"
+    quantitative_reference: "1 kg net compliant woven-fabric output"
+process_inventory:
+  - id: integrated_woven_fabric_manufacturing
+    label: "Integrated woven fabric manufacturing"
+    inputs:
+      product:
+        - row_id: wool_blend_yarn_input
+          role: "Wool-blend weaving yarn input"
+          name: "Wool-blend weaving yarn"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Wool-blend weaving yarn is recorded separately when wool-bearing yarn crosses the factory boundary for the reported lot."
+          amount:
+            expression: "foreground-recorded received mass attributable to the reported production lot"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net compliant reference-product output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_yarn_inputs
+              source_ids: []
+            ranges: []
+        - row_id: fine_animal_hair_blend_yarn_input
+          role: "Fine-animal-hair-blend weaving yarn input"
+          name: "Fine-animal-hair-blend weaving yarn"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Fine-animal-hair-blend weaving yarn is recorded separately when such yarn crosses the factory boundary for the reported lot."
+          amount:
+            expression: "foreground-recorded received mass attributable to the reported production lot"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net compliant reference-product output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_yarn_inputs
+              source_ids: []
+            ranges: []
+        - row_id: process_water_input
+          role: "Process water input"
+          name: "Process Water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "94a04f7e-2d5c-41f0-b182-d54a3b373a02"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Process water is recorded when it is supplied to on-site sizing, washing, dyeing, finishing, cleaning, or another lot-attributable manufacturing operation."
+          amount:
+            expression: "foreground-recorded process-water mass attributable to the reported production lot"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net compliant reference-product output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_process_water
+              source_ids:
+                - eu-bat-textiles-2022
+            ranges: []
+        - row_id: electricity_medium_voltage_input
+          role: "Medium-voltage electricity input"
+          name: "Electricity, medium voltage"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Medium-voltage electricity supplied to yarn preparation, weaving, on-site finishing, inspection, and dispatch operations is recorded for the reported lot."
+          amount:
+            expression: "foreground-recorded metered or allocated electricity use attributable to the reported production lot"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net compliant reference-product output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_electricity
+              source_ids:
+                - eu-bat-textiles-2022
+            ranges: []
+        - row_id: steam_input
+          role: "Purchased steam input"
+          name: "Steam"
+          flow_type: "product"
+          flow_ref:
+            uuid: "293f9fd9-5182-4d35-8aa5-ce73d4f322b7"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Purchased steam is recorded when it crosses the site boundary for lot-attributable wet processing, drying, heat-setting, or finishing."
+          amount:
+            expression: "foreground-recorded purchased steam mass attributable to the reported production lot"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net compliant reference-product output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_steam
+              source_ids:
+                - eu-bat-textiles-2022
+            ranges: []
+        - row_id: paperboard_core_input
+          role: "Paperboard roll core input"
+          name: "Paperboard roll core"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "The paperboard core is recorded when it is supplied with the dispatched fabric roll."
+          amount:
+            expression: "foreground-recorded mass of paperboard cores supplied with the reported lot"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net compliant reference-product output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_dispatch_packaging
+              source_ids: []
+            ranges: []
+        - row_id: ldpe_packaging_film_input
+          role: "Low-density polyethylene packaging film input"
+          name: "Low-density polyethylene packaging film"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Low-density polyethylene film is recorded when it wraps or protects the dispatched fabric."
+          amount:
+            expression: "foreground-recorded mass of low-density polyethylene packaging film supplied with the reported lot"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net compliant reference-product output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_dispatch_packaging
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: reference_fabric_output
+          role: "Reference woven fabric output"
+          name: "Woven fabrics of wool or fine animal hair, containing less than 85% by weight of wool or fine animal hair"
+          flow_type: "product"
+          flow_ref:
+            uuid: "89be6289-db50-45f3-9a41-389357845e7f"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "The compliant factory-gate woven fabric is the quantitative reference for all lot-normalized exchanges."
+          amount:
+            expression: "foreground-recorded net compliant fabric mass at the declared conditioning or moisture state"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "1 kg net compliant reference-product output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_reference_product
+              source_ids:
+                - unsd-cpc-v3-26540
+            ranges: []
+      waste:
+        - row_id: textile_offcuts_output
+          role: "Woven-fabric offcuts output"
+          name: "Woven-fabric offcuts matching the reference-product composition"
+          flow_type: "waste"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Edge trimmings, rejected pieces, and other solid offcuts matching the reported fabric lot are combined only when they form one physically managed waste stream with the same treatment route."
+          amount:
+            expression: "foreground-recorded mass leaving the foreground process as this specific offcut waste stream"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net compliant reference-product output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_textile_offcuts
+              source_ids: []
+            ranges: []
+        - row_id: wet_processing_wastewater_output
+          role: "Wet-processing wastewater output"
+          name: "Wastewater, textile wet processing, to water"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "a60031a7-ea29-49ef-b578-90de910fcf8e"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Textile wet-processing wastewater is recorded when it leaves an on-site wet process for treatment, sewer discharge, recycling outside the process, or another declared destination."
+          amount:
+            expression: "foreground-recorded wastewater mass attributable to the reported production lot"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net compliant reference-product output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wet_processing_wastewater
+              source_ids:
+                - eu-bat-textiles-2022
+            ranges: []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocation_avoid
+    applies_to: "shared foreground operations"
+    rule: "Avoid allocation by separately metering or subdividing yarn preparation, weaving, wet processing, finishing, and packaging whenever records permit."
+    source_ids: []
+  - rule_id: allocation_lot_linkage
+    applies_to: "multiple fabric lots"
+    rule: "Assign inputs and outputs directly to the production lot using machine, batch, recipe, meter, and dispatch records before applying any allocation."
+    source_ids: []
+  - rule_id: allocation_residual
+    applies_to: "unavoidable shared inputs and outputs"
+    rule: "When subdivision and direct assignment are not possible, disclose the chosen physical relationship and calculation; do not treat waste as a co-product unless it leaves as a separately documented product with an intended function."
+    source_ids: []
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_yarn_inputs
+      process_id: "integrated_woven_fabric_manufacturing"
+      flow_role: "wool-blend and fine-animal-hair-blend yarn inputs"
+      record_type: "goods receipt, issue record, and fibre-composition certificate"
+      raw_fields: "yarn identity; supplier; lot; fibre composition by mass; received mass; issued mass; returned mass"
+      collection_method: "reconcile purchase/receipt and production issue records to the reported fabric lot"
+      unit: "kg"
+      frequency: "each receipt and lot issue"
+      temporal_coverage: "full reporting period and reported lot"
+      site_scope: "reporting factory"
+      aggregation_rule: "sum net yarn mass attributable to the lot by exact yarn identity"
+      quality_evidence: "calibrated scale record; supplier certificate; lot traceability"
+    - protocol_id: cp_process_water
+      process_id: "integrated_woven_fabric_manufacturing"
+      flow_role: "process water input"
+      record_type: "meter, batch record, or tank balance"
+      raw_fields: "meter start/end; batch volume or mass; density when volume is converted to mass; reuse quantity; lot link"
+      collection_method: "read process-level meters or documented batch balances and exclude internally recycled water from repeated boundary counting"
+      unit: "kg"
+      frequency: "each batch or meter interval"
+      temporal_coverage: "full reporting period and reported lot"
+      site_scope: "reporting factory"
+      aggregation_rule: "aggregate net boundary input attributable to the lot"
+      quality_evidence: "meter calibration; water balance; batch log"
+    - protocol_id: cp_electricity
+      process_id: "integrated_woven_fabric_manufacturing"
+      flow_role: "medium-voltage electricity input"
+      record_type: "electricity meter and machine runtime record"
+      raw_fields: "meter start/end; machine line; runtime; lot; allocation driver"
+      collection_method: "use submetered consumption where available and document any allocation of shared electricity"
+      unit: "kWh"
+      frequency: "each meter interval or production lot"
+      temporal_coverage: "full reporting period and reported lot"
+      site_scope: "reporting factory"
+      aggregation_rule: "aggregate lot-attributable electricity without upstream generation losses"
+      quality_evidence: "meter calibration; energy audit; runtime log"
+    - protocol_id: cp_steam
+      process_id: "integrated_woven_fabric_manufacturing"
+      flow_role: "purchased steam input"
+      record_type: "steam meter and batch record"
+      raw_fields: "steam meter start/end; supplier; pressure or condition; condensate return; lot link"
+      collection_method: "use boundary steam-meter readings and assign only the net purchased quantity to the lot"
+      unit: "kg"
+      frequency: "each meter interval or batch"
+      temporal_coverage: "full reporting period and reported lot"
+      site_scope: "reporting factory"
+      aggregation_rule: "aggregate lot-attributable purchased steam"
+      quality_evidence: "meter calibration; supplier invoice; batch log"
+    - protocol_id: cp_dispatch_packaging
+      process_id: "integrated_woven_fabric_manufacturing"
+      flow_role: "paperboard core and LDPE film inputs"
+      record_type: "packaging issue and dispatch record"
+      raw_fields: "component identity; material; component mass; quantity issued; returned quantity; lot link"
+      collection_method: "reconcile packaging-store issues with dispatched rolls"
+      unit: "kg"
+      frequency: "each dispatch lot"
+      temporal_coverage: "full reporting period and reported lot"
+      site_scope: "reporting factory"
+      aggregation_rule: "sum each packaging component separately; exclude packaging from product mass"
+      quality_evidence: "scale record; packaging specification; dispatch record"
+    - protocol_id: cp_reference_product
+      process_id: "integrated_woven_fabric_manufacturing"
+      flow_role: "reference woven fabric output"
+      record_type: "production and quality release record"
+      raw_fields: "product identity; lot; gross mass; tare; net mass; fibre composition; width; mass per area; finish; moisture or conditioning state; accepted and rejected mass"
+      collection_method: "use calibrated net-mass measurement for quality-released output"
+      unit: "kg"
+      frequency: "each production lot"
+      temporal_coverage: "full reporting period and reported lot"
+      site_scope: "reporting factory"
+      aggregation_rule: "sum compliant net fabric mass only"
+      quality_evidence: "calibrated scale; quality release; composition test or supplier traceability"
+    - protocol_id: cp_textile_offcuts
+      process_id: "integrated_woven_fabric_manufacturing"
+      flow_role: "woven-fabric offcuts output"
+      record_type: "waste weighing and transfer record"
+      raw_fields: "waste identity; source line; lot; mass; storage change; destination"
+      collection_method: "weigh the specific offcut stream and reconcile transfers and inventory change"
+      unit: "kg"
+      frequency: "each transfer and reporting-period close"
+      temporal_coverage: "full reporting period and reported lot"
+      site_scope: "reporting factory"
+      aggregation_rule: "sum net mass leaving as the declared offcut stream"
+      quality_evidence: "calibrated scale; waste transfer note; inventory reconciliation"
+    - protocol_id: cp_wet_processing_wastewater
+      process_id: "integrated_woven_fabric_manufacturing"
+      flow_role: "wet-processing wastewater output"
+      record_type: "effluent meter and treatment/discharge record"
+      raw_fields: "flow or mass; density when converted; batch or line; destination; recycled quantity; lot link"
+      collection_method: "meter the wastewater boundary flow and exclude water recycled within the same foreground process"
+      unit: "kg"
+      frequency: "each discharge interval or batch"
+      temporal_coverage: "full reporting period and reported lot"
+      site_scope: "reporting factory"
+      aggregation_rule: "aggregate net wastewater leaving the process boundary"
+      quality_evidence: "meter calibration; water balance; treatment or discharge record"
+  calculation_rules:
+    - id: calc_lot_normalization
+      applies_to: "every foreground exchange"
+      rule: "Divide the foreground-recorded lot quantity by the net compliant reference-product mass from the same lot and boundary; preserve the exchange's stated unit."
+      inputs:
+        - "lot exchange quantity"
+        - "lot net compliant fabric mass"
+      output: "exchange amount per 1 kg reference product"
+      source_ids: []
+    - id: calc_textile_mass_reconciliation
+      applies_to: "yarn inputs, reference fabric, and textile offcuts"
+      rule: "Reconcile net yarn inputs against compliant fabric output, offcut outputs, other separately identified textile outputs, and documented inventory change; investigate rather than hide any residual."
+      inputs:
+        - "net yarn input"
+        - "compliant fabric output"
+        - "each textile waste/output"
+        - "work-in-progress change"
+      output: "disclosed textile mass-balance reconciliation"
+      source_ids: []
+  data_quality_requirements:
+    - id: dq_product_identity
+      applies_to: "reference product"
+      requirement: "Demonstrate the exact product name, Product flow type, CPC 26540 classification, Mass property, kg reference unit, and lot-specific fibre composition below 85% wool and/or fine animal hair by mass."
+      evidence: "state_code 100 Tiangong identity read; product specification; composition certificate or test"
+    - id: dq_temporal_linkage
+      applies_to: "all exchanges"
+      requirement: "Use records covering the same production period and link batch, machine, meter, material, waste, and dispatch records to the reported lot or disclose the allocation basis."
+      evidence: "dated primary records and lot traceability"
+    - id: dq_input_output_inventory
+      applies_to: "integrated process"
+      requirement: "Maintain a reviewed inventory of textile materials, process chemicals, water, energy, wastewater, waste gas, and solid waste that identifies quantities and relevant characteristics."
+      evidence: "eu-bat-textiles-2022; site input/output inventory"
+    - id: dq_atomic_chemical_records
+      applies_to: "process chemicals"
+      requirement: "Record each actually used chemical formulation as a separate product-flow exchange with its exact commercial or chemical identity and measured lot quantity; aggregated chemical classes are incomplete."
+      evidence: "chemical inventory; safety data sheet; batch recipe; issue record"
+    - id: dq_route_completeness
+      applies_to: "wet processing and finishing"
+      requirement: "When on-site wet processing or finishing is declared, retain water and energy balances, exact chemical records, wastewater records, and treatment/discharge destinations for the same route and period."
+      evidence: "jrc-textiles-bref-2023; eu-bat-textiles-2022; meter and batch records"
+validation_rules:
+  - rule_id: validate_reference_identity
+    applies_to: "reference flow"
+    rule: "Require the exact reference-product UUID, Product flow type, CPC 26540 identity, Mass flow property UUID, kg unit, and all required qualifiers."
+    source_ids:
+      - unsd-cpc-v3-26540
+  - rule_id: validate_composition_threshold
+    applies_to: "reference product"
+    rule: "Reject a dataset if the declared wool and fine-animal-hair mass share is missing or is not less than 85% of the fabric mass."
+    source_ids:
+      - unsd-cpc-v3-26540
+  - rule_id: validate_reference_mass
+    applies_to: "reference amount"
+    rule: "Confirm that the denominator is 1 kg net compliant fabric at the declared conditioning or moisture state and excludes dispatch packaging."
+    source_ids: []
+  - rule_id: validate_process_boundary
+    applies_to: "foreground process"
+    rule: "Confirm that weaving is included, every on-site route step is declared, upstream purchased-input production is linked rather than duplicated, and outsourced operations are disclosed."
+    source_ids:
+      - jrc-textiles-bref-2023
+      - eu-bat-textiles-2022
+  - rule_id: validate_atomic_exchanges
+    applies_to: "process inventory"
+    rule: "Reject grouped, plural, selector, or placeholder exchanges; each material, chemical, energy supply, packaging component, waste stream, and elementary emission must have its own row and exact identity."
+    source_ids:
+      - eu-bat-textiles-2022
+  - rule_id: validate_foreground_evidence
+    applies_to: "inventory amounts"
+    rule: "Require foreground meter, transaction, batch, mass-balance, or dispatch evidence for every reported amount; do not substitute an AI-authored quantity or range."
+    source_ids: []
+  - rule_id: validate_wet_route
+    applies_to: "on-site wet processing"
+    rule: "If wet processing is present, require process-water and wastewater records, exact chemical rows, energy records, treatment destination, and prevention of double counting for reused water."
+    source_ids:
+      - eu-bat-textiles-2022
+  - rule_id: validate_mass_reconciliation
+    applies_to: "textile materials"
+    rule: "Require a documented reconciliation of yarn inputs, compliant fabric output, each textile waste/output, and inventory change, with any residual investigated and disclosed."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "Foreground factory-gate product dataset for woven wool- or fine-animal-hair-blend fabric"
+  downstream_use: "secondary_dataset; background_dataset"
+  allowed_use: "Product-footprint, process, and lifecyclemodel studies whose product composition, route, geography, period, and finishing state match the declared dataset"
+  excluded_use: "Fabrics with 85% or more wool/fine animal hair, nonwoven or knitted products, yarn production, garments, or undisclosed extrapolation across materially different wet-processing and finishing routes"
+  required_metadata: "canonical PCR id; reference-product UUID; fibre composition; wool/fine-animal-hair mass share; weave; width; mass per area; colour; finish; conditioning or moisture state; geography; period; technology; on-site and outsourced operations; allocation; packaging state"
+  required_quality_disclosure: "primary-record coverage; meter and scale status; lot linkage; exact chemical inventory; water and energy balances where applicable; wastewater destination; mass-balance residual; unresolved UUIDs and upstream dataset gaps"
+  update_trigger: "Change in fibre blend, yarn route, weaving technology, wet-processing or finishing recipe, site energy/water system, packaging specification, allocation method, geography, or reporting period that materially changes the inventory"
+data_sources:
+  - id: "unsd-cpc-v3-26540"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, CPC Version 3.0 explanatory notes, code 26540, https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Exp_Notes_30Jun2025.pdf (accessed 2026-08-12)"
+    used_for: "Product-category name, hierarchy, and less-than-85% composition boundary"
+  - id: "jrc-textiles-bref-2023"
+    type: "official_guidance"
+    reference: "European Commission Joint Research Centre, Best Available Techniques Reference Document for the Textiles Industry, January 2023, https://eippcb.jrc.ec.europa.eu/reference/textiles-industry (accessed 2026-08-12)"
+    used_for: "Textile process decomposition, wet-processing applicability, input/output inventory, water, energy, chemicals, and waste controls"
+  - id: "eu-bat-textiles-2022"
+    type: "official_guidance"
+    reference: "Commission Implementing Decision (EU) 2022/2508 establishing BAT conclusions for the textiles industry, https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32022D2508 (accessed 2026-08-12)"
+    used_for: "Foreground input/output inventory, weaving energy, water balance, chemical inventory, wastewater, route disclosure, and validation rules"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:c9c87318849f1bef9ad75a36236910058444272920dd3e2d4feb88bc8db763f9"
+  generated_content_sha256: "sha256:94f52fe50c0da4af9d9e163445fbfc9d8f099858b39ae6dc2b76eb7fd398a021"

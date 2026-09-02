@@ -1,10 +1,685 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "21393"
-  title: "Dried potatoes and other dried vegetables"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.food-products-beverages-and-tobacco-textiles-apparel-and-leather-products.meat-fish-fruits-vegetables-oils-and-fats.dried-potatoes-and-other-dried-vegetables"
+  classification_refs: "CPC 3.0 21393, Dried potatoes and other dried vegetables (unsd-cpc-3-0-2025)"
+  covered_products: "Potatoes and other vegetables dried from a succulent state by one declared artificial route, including freeze-drying, or by one declared sun-plus-artificial route; whole or declared cut forms"
+  excluded_products: "Potato flour, meal, powder, flakes, granules, or pellets; frozen, pickled, canned, fermented, sugar-preserved, or otherwise non-dried vegetables; meals; dried fruit; cereal grains; mature dried pulses or legumes; dried spices; unqualified route mixtures"
+  representative_product: "Exact Tiangong product flow Dried Vegetables dc43358a-8159-496d-b2e9-a30c8fb3e38a"
+  production_route: "Route-specific preparation, one declared and exclusive drying technology, and finishing/packaging; production mixes require separately modelled route datasets and documented shares"
+  market_state: "Bulk or packaged dried vegetable at the manufacturer gate, on a declared finished-product moisture basis and net mass excluding packaging"
+functional_unit:
+  what: "Dried potatoes or another identified dried vegetable supplied in a declared product form"
+  how_much: "1 kg net mass of dried product, excluding packaging"
+  how_well: "Vegetable identity, product form, finished-product moisture value and wet/dry measurement basis, pretreatment, drying route and technology, and packaging state are declared; the product meets the applicable commercial and food-safety specification"
+  how_long_or_cycle: "One production lot delivered at the manufacturer gate; no use duration is assigned to this intermediate product"
+  reference_flow_link: "The functional unit is realized by exactly 1 kg of the reference product flow at the declared finished-product moisture"
+system_boundary:
+  rules:
+    - rule_id: sb_factory_gate
+      applies_to: "Foreground unit process"
+      rule: "Include receipt and storage at the facility, inspection/sorting, applicable washing and pretreatment, the declared drying route, cooling/equilibration, finishing, packaging where supplied, on-site utilities, wastes, wastewater, and direct emissions through the manufacturer gate."
+      source_ids:
+        - codex-cxc-5-1971
+        - eu-pef-2021-2279
+    - rule_id: sb_route_exclusivity
+      applies_to: "Drying route"
+      rule: "Model exactly one declared technology configuration per unit-process dataset. If a market or production mix is needed, keep route datasets separate and combine them only in a higher-level mix with documented mass shares and reference periods."
+      source_ids:
+        - codex-cxc-5-1971
+    - rule_id: sb_upstream_linkage
+      applies_to: "Linked lifecycle model"
+      rule: "For cradle-to-gate or broader results, connect upstream vegetable production and all relevant supplied materials, energy, water, transport, packaging, and waste-treatment datasets; justify and disclose any exclusion."
+      source_ids:
+        - eu-pef-2021-2279
+    - rule_id: sb_direct_contact
+      applies_to: "Drying medium and direct-contact heating"
+      rule: "Identify whether combustion gas or another drying medium contacts the food. Include consumed fuel and relevant direct emissions in the foreground where combustion occurs on site, and disclose product-contact controls."
+      source_ids:
+        - codex-cxc-5-1971
+        - eu-pef-2021-2279
+boundary_abstraction:
+  declared_starting_condition: "Identified fresh or otherwise succulent potatoes or vegetables received at the dehydration facility, with origin, product form, incoming moisture basis, prior preservation or pretreatment, and transport-to-gate status declared"
+  starting_condition_role: "Foreground gate input; cultivation, harvest, and transport before facility receipt are represented by linked upstream datasets when the study extends upstream"
+  product_classification_scope: "CPC 3.0 21393; methodology applies only when product identity and preservation by drying are consistent with the covered-products statement"
+  recursive_input_rule: "An incoming dried vegetable already within this PCR category is recorded as a technosphere product input with its own upstream dataset and declared moisture and route; its earlier drying is not repeated inside the receiving process"
+  upstream_dataset_requirement: "Link representative datasets for vegetable production, transport, water, energy carriers, pretreatment aids, packaging materials, and waste treatment as applicable; document geography, technology, time, and any proxy"
+  disclosure: "Declare vegetable identity and form, incoming and final moisture values and bases, pretreatment, the single drying route and technology, drying medium/direct-contact status, product yield, packaging state, allocation choices, exclusions, and data gaps"
+reference_flow_definition:
+  reference_amount: "1 kg net dried product"
+  product_flow_ref:
+    name: "Dried Vegetables"
+    uuid: "dc43358a-8159-496d-b2e9-a30c8fb3e38a"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "vegetable common and"
+    - "where material"
+    - "botanical identity"
+    - "product form and particle-size or cut description"
+    - "incoming moisture value and wet/dry basis"
+    - "finished-product moisture value and wet/dry basis"
+    - "pretreatment sequence and aids"
+    - "drying route and technology"
+    - "drying medium or direct-contact fuel status"
+    - "bulk or packaging format"
+    - "net-mass basis"
+    - geography
+    - "reference period"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_net_mass
+    applies_to: "Reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Normalize every inventory result to 1 kg net dried product at the declared finished-product moisture; exclude packaging mass from the reference amount."
+  - id: moisture_basis
+    applies_to: "Incoming, intermediate, and dried vegetable"
+    required_property_ref:
+      name: "Mass fraction"
+      uuid: ""
+    required_unit: "kg water/kg material or %"
+    rule: "State whether every moisture value is wet basis or dry basis and use one internally consistent conversion convention; do not compare or combine values with unstated or different bases."
+  - id: mass_balance
+    applies_to: "Each process and the combined foreground system"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Reconcile vegetable input into saleable dried output, removed water, rejected solids, samples, and other losses on the same reporting basis; investigate and disclose material imbalance."
+  - id: energy_carrier_separation
+    applies_to: "Drying and finishing energy"
+    required_property_ref:
+      name: "Energy or fuel-specific property"
+      uuid: ""
+    required_unit: "kWh, MJ, or fuel mass/volume unit"
+    rule: "Record electricity, purchased heat, and each fuel separately and retain carrier, technology, and metering basis; do not collapse them into an undocumented generic energy total."
+process_map:
+  - id: raw_preparation
+    name: "Raw-material receipt and preparation"
+    inclusion: "required"
+    inclusion_condition: "Always; individual washing, peeling, cutting, blanching, or treatment steps are included only when performed"
+    role: "Convert the identified received vegetable to the declared feed condition for drying while tracking removals and additions"
+    quantitative_reference: "kg prepared wet vegetable sent to drying"
+  - id: declared_drying
+    name: "Declared drying route"
+    inclusion: "required"
+    inclusion_condition: "Exactly one route and technology configuration per unit-process dataset"
+    role: "Remove water using the declared artificial or sun-plus-artificial route without pooling incompatible technologies"
+    quantitative_reference: "kg dried vegetable leaving the declared dryer at measured moisture"
+  - id: finishing_packaging
+    name: "Finishing, packaging, and factory-gate output"
+    inclusion: "required"
+    inclusion_condition: "Packaging inputs are included when the product is supplied packaged; otherwise declare bulk state"
+    role: "Cool or equilibrate, inspect, size or mill only within the covered form, pack where applicable, and report net saleable output"
+    quantitative_reference: "1 kg net Dried Vegetables at declared moisture"
+process_inventory:
+  - id: raw_preparation
+    label: "Raw-material receipt and preparation"
+    inputs:
+      product:
+        - row_id: raw_vegetable_input
+          role: "Identified vegetable received"
+          name: "Product-specific fresh or succulent potato or vegetable flow"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the actual potato or vegetable entering the facility, including its identity, origin, received form, incoming moisture basis, and any prior treatment."
+          amount:
+            expression: "measured net received mass allocated to the production lot"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg prepared wet vegetable sent to drying"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_raw_material
+              source_ids: []
+            ranges: []
+        - row_id: preparation_water
+          role: "Preparation water"
+          name: "Process water appropriate to the site supply"
+          flow_type: "product"
+          property_unit: "Volume or Mass / m3 or kg"
+          description: "Record water crossing the process boundary for washing, conveying, blanching, cooling, or other declared preparation; separate reused water and make-up water where material."
+          amount:
+            expression: "metered or batch-record water supplied, net of documented internal recirculation"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg prepared wet vegetable sent to drying"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_preparation_inputs
+              source_ids:
+                - codex-cxc-5-1971
+            ranges: []
+        - row_id: pretreatment_materials
+          role: "Pretreatment materials and aids"
+          name: "Substance-specific product flow selected for the actual pretreatment"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record each declared peeling aid, anti-browning agent, firming agent, preservative, or other processing aid separately when used; do not assume a treatment applies to all vegetables."
+          amount:
+            expression: "measured issue or batch recipe amount for each substance"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg prepared wet vegetable sent to drying"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_preparation_inputs
+              source_ids:
+                - codex-cxc-5-1971
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: prepared_wet_vegetable
+          role: "Prepared wet vegetable sent to drying"
+          name: "Product-specific prepared wet vegetable flow"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Calculate the mass transferred to the declared dryer after sorting and pretreatment, with identity, form, pretreatment, and measured moisture basis retained."
+          amount:
+            expression: "measured transfer mass or calculated input less measured removals"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per kg prepared wet vegetable sent to drying"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_raw_material
+              source_ids:
+                - codex-cxc-5-1971
+            ranges: []
+      waste:
+        - row_id: preparation_solid_residues
+          role: "Rejected and removed vegetable material"
+          name: "Destination-specific biogenic residue or waste flow"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record soil-bearing rejects, peel, trimmings, damaged material, and other removed vegetable fractions by actual destination and regulatory classification."
+          amount:
+            expression: "measured residue mass by destination or a disclosed lot mass-balance residual"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg prepared wet vegetable sent to drying"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_raw_material
+              source_ids:
+                - codex-cxc-5-1971
+            ranges: []
+        - row_id: preparation_wastewater
+          role: "Preparation wastewater"
+          name: "Site-specific wastewater flow to the actual treatment route"
+          flow_type: "waste"
+          property_unit: "Volume or Mass / m3 or kg"
+          description: "Record wastewater leaving the foreground process, including treatment destination and materially altered characteristics where available."
+          amount:
+            expression: "metered discharge or calculated water input less documented retained, evaporated, and recirculated water"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per kg prepared wet vegetable sent to drying"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_preparation_inputs
+              source_ids:
+                - codex-cxc-5-1971
+            ranges: []
+      elementary:
+        []
+  - id: declared_drying
+    label: "Declared drying route"
+    inputs:
+      product:
+        - row_id: dryer_feed
+          role: "Prepared vegetable feed"
+          name: "Product-specific prepared wet vegetable flow"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the prepared vegetable entering the selected dryer, preserving vegetable identity, product form, pretreatment, feed moisture value, and moisture basis."
+          amount:
+            expression: "measured dryer feed mass"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg dried vegetable leaving the dryer"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_drying_route
+              source_ids: []
+            ranges: []
+        - row_id: drying_electricity
+          role: "Drying electricity"
+          name: "Geography- and voltage-specific electricity supply"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record metered electricity for the declared dryer and its integral fans, pumps, vacuum, refrigeration, controls, and material handling; allocate shared meters transparently."
+          amount:
+            expression: "metered electricity or documented engineering allocation from a shared meter"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg dried vegetable leaving the dryer"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_drying_route
+              source_ids:
+                - eu-pef-2021-2279
+            ranges: []
+        - row_id: drying_heat_or_fuel
+          role: "Drying heat or fuel"
+          name: "Carrier-specific purchased heat or fuel flow"
+          flow_type: "product"
+          property_unit: "Energy, Mass, or Volume / MJ, kWh, kg, or m3 as metered"
+          description: "Record purchased heat and each fuel separately when used by the declared route. State whether combustion is on site and whether combustion gases contact the product."
+          amount:
+            expression: "metered delivery or consumption for the production lot, separately by carrier"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg dried vegetable leaving the dryer"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_drying_route
+              source_ids:
+                - codex-cxc-5-1971
+                - eu-pef-2021-2279
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: dryer_product
+          role: "Dried vegetable before finishing"
+          name: "Product-specific dried vegetable intermediate"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record dried output mass and measured moisture at dryer discharge. The record remains specific to the declared route and is not averaged with another technology."
+          amount:
+            expression: "measured net dryer output at measured moisture"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg dried vegetable leaving the dryer"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_drying_route
+              source_ids:
+                - codex-cxc-5-1971
+            ranges: []
+      waste:
+        - row_id: dryer_rejects
+          role: "Dryer off-specification material"
+          name: "Destination-specific dried vegetable residue or waste flow"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record scorched, contaminated, spilled, or otherwise off-specification dried material by actual recovery or treatment destination."
+          amount:
+            expression: "measured mass by destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg dried vegetable leaving the dryer"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_drying_route
+              source_ids: []
+            ranges: []
+      elementary:
+        - row_id: on_site_drying_emissions
+          role: "On-site drying emissions"
+          name: "Substance-specific elementary emission flow"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "When fuel is combusted on site, record each relevant elementary emission separately from measured fuel use and a documented current factor or direct measurement; do not double count emissions embedded in a purchased-energy dataset."
+          amount:
+            expression: "direct measurement or measured fuel consumption multiplied by a disclosed applicable emission factor"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg dried vegetable leaving the dryer"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_drying_route
+              source_ids:
+                - eu-pef-2021-2279
+            ranges: []
+  - id: finishing_packaging
+    label: "Finishing, packaging, and factory-gate output"
+    inputs:
+      product:
+        - row_id: finishing_feed
+          role: "Dried vegetable received for finishing"
+          name: "Product-specific dried vegetable intermediate"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the route-specific dried intermediate entering cooling, equilibration, inspection, sizing, and packaging operations."
+          amount:
+            expression: "measured transferred mass at measured moisture"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net factory-gate dried product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing_packaging
+              source_ids: []
+            ranges: []
+        - row_id: packaging_materials
+          role: "Packaging materials"
+          name: "Material-specific packaging product flow"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record each primary, secondary, and tertiary packaging material when supplied with the product, including actual mass, recycled content if known, and reuse count where relevant. For bulk product, declare the reusable or customer-owned container treatment."
+          amount:
+            expression: "measured packaging mass or bill-of-material amount per packed net product"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net factory-gate dried product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing_packaging
+              source_ids:
+                - eu-pef-2021-2279
+            ranges: []
+        - row_id: finishing_electricity
+          role: "Finishing and packaging electricity"
+          name: "Geography- and voltage-specific electricity supply"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record electricity for cooling, equilibration, inspection, sizing, conveying, metal detection, and packaging when these operations occur."
+          amount:
+            expression: "metered electricity or documented allocation from a shared meter"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net factory-gate dried product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing_packaging
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: dried_vegetables_reference_product
+          role: "Net dried vegetable reference product"
+          name: "Dried Vegetables"
+          flow_type: "product"
+          flow_ref:
+            uuid: "dc43358a-8159-496d-b2e9-a30c8fb3e38a"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Report exactly 1 kg net dried vegetable at the declared finished-product moisture and with all required qualifiers. Packaging mass is not part of the reference amount."
+          amount:
+            expression: "fixed reference output of 1 kg net dried product"
+            value_mode: "fixed_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net factory-gate dried product"
+              kind: "reference_flow"
+            evidence:
+              kind: "identity_reference"
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: finishing_wastes
+          role: "Finishing rejects and packaging scrap"
+          name: "Destination-specific product residue or packaging waste flow"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record product fines or rejects and packaging scrap separately by material and actual recovery or treatment destination."
+          amount:
+            expression: "measured mass by material and destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net factory-gate dried product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing_packaging
+              source_ids: []
+            ranges: []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: alloc_avoid
+    applies_to: "Shared processes and multiple outputs"
+    rule: "First avoid allocation by sub-metering, subdividing the process, or keeping vegetable identities, product grades, and drying routes in separate unit processes."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: alloc_physical
+    applies_to: "Unavoidable joint production with a defensible physical relationship"
+    rule: "If subdivision or system expansion cannot be applied, allocate according to the physical relationship that reflects how inputs and burdens change with the outputs, such as dry-solids mass or another documented causal parameter; do not select a basis only because data are convenient."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: alloc_other_relationship
+    applies_to: "Unavoidable joint production without a defensible physical relationship"
+    rule: "If no physical relationship can be established, use another documented relationship, such as economic value, with contemporaneous prices, reference period, calculation, and sensitivity disclosed."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: alloc_residues
+    applies_to: "Rejects, by-products, recovered material, and wastes"
+    rule: "Classify each output consistently with its actual destination. Do not assign zero burden or a credit merely from its name; document any burden split, substitution, treatment, and avoided-product assumption."
+    source_ids:
+      - eu-pef-2021-2279
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_raw_material
+      process_id: "raw_preparation"
+      flow_role: "Vegetable receipt, transfer, rejects, and identity"
+      record_type: "Lot receipt, weighbridge, scale, moisture test, and disposition records"
+      raw_fields: "vegetable identity; origin; received form; received mass; incoming moisture value; moisture basis; rejected mass; prepared transfer mass; dates; lot id"
+      collection_method: "Reconcile calibrated mass records and representative moisture tests to each production lot"
+      unit: "kg; % or kg water/kg material"
+      frequency: "Each lot, with moisture sampling appropriate to within-lot variability"
+      temporal_coverage: "Representative production period, normally at least 12 consecutive months or a justified shorter campaign"
+      site_scope: "Each facility and product identity"
+      aggregation_rule: "Sum masses by lot; calculate mass-weighted moisture only among records with the same basis; normalize to prepared output"
+      quality_evidence: "Calibration records; sampling plan; laboratory method; lot reconciliation; origin and identity records"
+    - protocol_id: cp_preparation_inputs
+      process_id: "raw_preparation"
+      flow_role: "Water, pretreatment inputs, and wastewater"
+      record_type: "Meter, batch sheet, recipe, purchasing, and discharge records"
+      raw_fields: "water make-up; recirculation; discharge; each aid identity and mass; operating time; treated mass; wastewater destination"
+      collection_method: "Prefer dedicated meters and verified batch issues; document shared-meter allocation"
+      unit: "m3; kg; h"
+      frequency: "Each lot or meter interval linked to production"
+      temporal_coverage: "Same period as represented production"
+      site_scope: "Each preparation line and facility"
+      aggregation_rule: "Subtract documented internal recirculation only once; aggregate each material separately and normalize to prepared output"
+      quality_evidence: "Meter checks; batch sheets; formulation approval; invoices; discharge records"
+    - protocol_id: cp_drying_route
+      process_id: "declared_drying"
+      flow_role: "Route identity, feed/output, moisture, energy, rejects, and direct emissions"
+      record_type: "Dryer batch, control-system, meter, fuel, laboratory, and maintenance records"
+      raw_fields: "route; equipment; feed mass and moisture basis; output mass and moisture basis; electricity; purchased heat; fuel by carrier; direct-contact status; time; temperature/pressure as relevant; rejects; emission measurement or factor reference"
+      collection_method: "Use calibrated meters and representative moisture sampling; retain route configuration and factor provenance"
+      unit: "kg; % or kg water/kg material; kWh; MJ; fuel unit; h; process-condition unit"
+      frequency: "Each lot or meter interval linked to one route"
+      temporal_coverage: "Route-representative production period, normally at least 12 consecutive months or a justified seasonal campaign"
+      site_scope: "Each dryer and facility; never pool incompatible technologies without separate datasets"
+      aggregation_rule: "Reconcile feed dry solids and output; aggregate each carrier separately; normalize to measured dryer output at declared moisture"
+      quality_evidence: "Meter calibration; lab method; control-system export; fuel invoices; route diagram; maintenance and factor records"
+    - protocol_id: cp_finishing_packaging
+      process_id: "finishing_packaging"
+      flow_role: "Net product, packaging, electricity, and finishing wastes"
+      record_type: "Packing, scale, bill-of-material, meter, quality-release, and waste records"
+      raw_fields: "product identity; route link; input and net output mass; final moisture and basis; form; package format; each packaging mass; electricity; rejects; scrap destination; lot id"
+      collection_method: "Reconcile calibrated net-content and packaging records to released lots"
+      unit: "kg; % or kg water/kg material; kWh"
+      frequency: "Each released lot or meter interval"
+      temporal_coverage: "Same period as represented production"
+      site_scope: "Each finishing or packaging line and facility"
+      aggregation_rule: "Sum released net product excluding packaging; keep packaging materials and waste destinations separate; normalize to 1 kg net product"
+      quality_evidence: "Scale calibration; bill of materials; quality certificate; packaging specification; meter and waste records"
+  calculation_rules:
+    - id: calc_reference_normalization
+      applies_to: "All foreground flows"
+      rule: "normalized flow = period flow / net kg of conforming dried product at the declared finished-product moisture"
+      inputs:
+        - "period flow"
+        - "released net product mass"
+        - "final moisture record"
+      output: "flow amount per 1 kg reference product"
+      source_ids:
+        - eu-pef-2021-2279
+    - id: calc_dry_solids_balance
+      applies_to: "Preparation and drying"
+      rule: "dry solids = material mass × (1 − moisture fraction on wet basis); when a dry-basis moisture is reported, convert it to wet basis before balancing and retain the original result"
+      inputs:
+        - "input and output masses"
+        - "moisture values"
+        - "moisture bases"
+        - "rejects and samples"
+      output: "reconciled dry-solids balance and unexplained difference"
+      source_ids: []
+    - id: calc_removed_water
+      applies_to: "Declared drying route"
+      rule: "removed water = feed water − product water − measured water in removed material; report unmeasured condensate or exhaust moisture as the balance term, not as freshwater consumption"
+      inputs:
+        - "feed and output mass/moisture"
+        - "reject mass/moisture"
+      output: "kg water removed per kg dryer output"
+      source_ids: []
+    - id: calc_route_mix
+      applies_to: "Higher-level production or market mix only"
+      rule: "combine separately normalized route datasets using documented net-product mass shares summing to 1 for the same product specification and reference period"
+      inputs:
+        - "route-specific datasets"
+        - "production shares"
+        - "common qualifier set"
+      output: "qualified mixed-production dataset"
+      source_ids:
+        - eu-pef-2021-2279
+    - id: calc_on_site_emissions
+      applies_to: "On-site fuel combustion"
+      rule: "calculate each emission from measured fuel and a disclosed applicable factor, or use direct measurement; do not add the same combustion emission when it is already included in a purchased-energy dataset"
+      inputs:
+        - "fuel consumption"
+        - "factor or measurement"
+        - "energy dataset boundary"
+      output: "substance-specific elementary emission per reference flow"
+      source_ids:
+        - eu-pef-2021-2279
+  data_quality_requirements:
+    - id: dq_identity_route
+      applies_to: "All represented production"
+      requirement: "Trace each record to vegetable identity, product form, pretreatment, one drying route/technology, facility, lot or meter interval, and reference period."
+      evidence: "Lot genealogy, route diagram, batch records, and dataset metadata"
+    - id: dq_mass_moisture
+      applies_to: "Mass and moisture data"
+      requirement: "Use calibrated mass measurements and a documented sampling and analytical method; state moisture basis and sampling coverage, and reconcile dry solids across the foreground system."
+      evidence: "Calibration certificates, sampling plan, lab records, and mass-balance worksheet"
+    - id: dq_temporal_geographic
+      applies_to: "Foreground and linked data"
+      requirement: "Use data representative of the declared geography, technology, and reference period; explain seasonal campaigns, shutdowns, shared facilities, proxies, and any period shorter than 12 consecutive months."
+      evidence: "Production calendar, meter coverage, supplier metadata, proxy justification, and sensitivity record"
+    - id: dq_completeness
+      applies_to: "Inventory completeness"
+      requirement: "Check all material and energy inputs, water, packaging, saleable output, rejects, wastewater, waste destinations, and direct emissions relevant to the declared configuration; document exclusions and their expected significance."
+      evidence: "Completeness checklist, process flow diagram, purchase-to-meter reconciliation, and exclusion log"
+    - id: dq_source_quality
+      applies_to: "Secondary datasets and factors"
+      requirement: "Record dataset or factor provider, version, geography, technology, reference year, access date, boundary, and substitution rationale; replace a proxy when representative reviewed data become available."
+      evidence: "Source register and replacement log"
+validation_rules:
+  - rule_id: val_reference_identity
+    applies_to: "Reference flow"
+    rule: "The output shall use Dried Vegetables dc43358a-8159-496d-b2e9-a30c8fb3e38a, Mass 93a60a56-a3c8-11da-a746-0800200b9a66, Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66, and kg, normalized to exactly 1 kg net product excluding packaging."
+    source_ids: []
+  - rule_id: val_required_qualifiers
+    applies_to: "Product and dataset metadata"
+    rule: "Reject conformance when vegetable identity, product form, incoming and final moisture values and bases, pretreatment, drying route/technology, packaging state, or net-mass basis is missing."
+    source_ids:
+      - codex-cxc-5-1971
+  - rule_id: val_route_exclusivity
+    applies_to: "Process map"
+    rule: "Confirm that the unit-process inventory represents one declared route. A higher-level mix is acceptable only when route datasets remain separate and documented shares sum to 1 for a common specification and period."
+    source_ids:
+      - codex-cxc-5-1971
+      - eu-pef-2021-2279
+  - rule_id: val_mass_balance
+    applies_to: "Foreground inventory"
+    rule: "Confirm that input vegetable mass and dry solids reconcile with net product, removed water, rejects, samples, and other losses; report the unexplained residual and its investigation."
+    source_ids: []
+  - rule_id: val_inventory_completeness
+    applies_to: "Foreground and linked inventory"
+    rule: "Confirm coverage of applicable water, pretreatment materials, electricity, heat and fuels by carrier, packaging, rejects, wastewater, direct emissions, upstream links, and waste destinations without double counting."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: val_codex_controls
+    applies_to: "Processing and storage records"
+    rule: "Confirm that the dataset declares applicable sorting, washing/preparation, drying-medium contact, finished-product moisture control, packaging protection, and storage humidity controls; absence from the physical process must be explicit rather than silently assumed."
+    source_ids:
+      - codex-cxc-5-1971
+  - rule_id: val_data_quality
+    applies_to: "Dataset evidence"
+    rule: "Confirm temporal, geographic, technological, and measurement representativeness, record calibration and sampling evidence, disclose proxies and exclusions, and identify the trigger for replacing any reasoned_estimate."
+    source_ids:
+      - eu-pef-2021-2279
+published_dataset_profile:
+  dataset_role: "Route-specific factory-gate foreground dataset for the manufacture of an identified dried potato or other dried vegetable"
+  downstream_use: "secondary_dataset; background_dataset"
+  allowed_use: "Product carbon-footprint or LCA models requiring a qualified dried-vegetable manufacturing dataset; route-specific benchmarking when functional unit, vegetable identity, product form, moisture, pretreatment, technology, geography, period, and allocation are equivalent"
+  excluded_use: "Unqualified substitution across vegetables, product forms, moisture specifications, pretreatments, or incompatible drying technologies; direct comparison of route mixes with different shares or periods; claims extending beyond the declared boundary without downstream stages"
+  required_metadata: "Reference UUIDs and unit; vegetable identity; product form; feed and final moisture values and bases; pretreatment; drying route, technology, and medium contact; facility geography; reference period; bulk/packaging format; net-mass basis; yield; allocation; upstream datasets; exclusions and proxies"
+  required_quality_disclosure: "Meter and lot coverage; calibration and moisture method; mass/dry-solids reconciliation; route share if a higher-level mix; data quality and proxy assessment; allocation basis and sensitivity; completeness and uncertainty; any reasoned_estimate and replacement trigger"
+  update_trigger: "Replace the dataset when the vegetable or form changes materially, final moisture specification changes, pretreatment or drying technology changes, route share changes, packaging changes materially, facility or energy supply changes, the data age no longer represents production, or representative campaign/reviewed evidence becomes available for a provisional estimate"
+data_sources:
+  - id: "unsd-cpc-3-0-2025"
+    type: "standard"
+    reference: "United Nations Statistics Division, Central Product Classification Version 3.0, subclass 21393, *Dried potatoes and other dried vegetables*, explanatory notes dated 30 June 2025, https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Exp_Notes_30Jun2025.pdf (retrieved 2026-08-11)"
+    used_for: "Official classification coordinate and category exclusions"
+  - id: "codex-cxc-5-1971"
+    type: "standard"
+    reference: "Codex Alimentarius, CXC 5-1971, *Code of Hygienic Practice for Dehydrated Fruits and Vegetables Including Edible Fungi*, https://workspace.fao.org/sites/codex/Standards/CXC%205-1971/CXC_005e.pdf (retrieved 2026-08-11)"
+    used_for: "Direct product scope; raw-material handling; sorting and washing; drying-medium control; packaging; finished-product moisture and storage controls"
+  - id: "eu-pef-2021-2279"
+    type: "official_guidance"
+    reference: "European Commission, Recommendation (EU) 2021/2279, Annex I, Product Environmental Footprint Method, CELEX 32021H2279, ELI http://data.europa.eu/eli/reco/2021/2279/oj (retrieved 2026-08-11)"
+    used_for: "Functional/reference unit; system-boundary completeness; route datasets and production mixes; multi-functionality hierarchy; data collection, quality, and reporting"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:501a1d5df0e5b8a3ce180a6d9527a0a4e1d0be491c9ca47d499892b61004380b"
+  generated_content_sha256: "sha256:a3757afdeadf9d2eba7480e0544d4f5f7f7caf789f23041de0ca201638ad2077"

@@ -1,10 +1,1196 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "22252"
-  title: "Cheese from milk of buffalo, fresh or processed"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.food-products-beverages-and-tobacco-textiles-apparel-and-leather-products.dairy-products-and-egg-products.cheese-from-milk-of-buffalo-fresh-or-processed"
+  classification_refs: "CPC 3.0: 22252, Cheese from milk of buffalo, fresh or processed (unsd-cpc-3-0)"
+  covered_products: "Cheese made exclusively from buffalo milk and buffalo milk-derived ingredients; fresh/unripened, ripened, or processed; brined or unbrined; with declared ingredients and packaging state"
+  excluded_products: "Cheese containing any non-buffalo milk-derived input unless a separate documented classification decision establishes applicability; non-cheese dairy products; plant-based analogues; separately marketed whey products"
+  representative_product: "Factory-gate buffalo-milk cheese in the declared product state"
+  production_route: "Receipt and verification of buffalo milk and milk-derived materials; preparation and cheesemaking; draining, salting or brining as applicable; ripening or processed-cheese manufacture as applicable; packaging and factory storage as applicable"
+  market_state: "Declare fresh/unripened, ripened, or processed; brined or unbrined; ingredient/formulation state; packaged or unpackaged; storage condition; and net-mass basis"
+functional_unit:
+  what: "Buffalo-milk cheese in the declared fresh/unripened, ripened, or processed market state"
+  how_much: "1 kg net cheese product at the reporting factory gate"
+  how_well: "Conforms to the declared product specification and buffalo-only milk-origin claim; no product-quality threshold is used as an LCI factor"
+  how_long_or_cycle: "One completed production lot through the declared factory-gate release point, including ripening, brining, packaging, and factory storage only when applicable"
+  reference_flow_link: "The functional unit is realized by the single Tiangong product flow and mass reference object below"
+system_boundary:
+  rules:
+    - rule_id: system_boundary_rule_1
+      applies_to: "foreground_system_boundary"
+      rule: "The foreground boundary begins when buffalo milk and other purchased materials are received at the reporting cheese facility. It includes identity checks and reception, storage and preparation of milk, thermal treatment or standardisation when performed, coagulation and curd handling, whey separation, salting or brining, ripening, processed-cheese operations, packaging, factory storage, cleaning, refrigeration, on-site utility use, direct emissions, waste handling, and on-site wastewater treatment when these activities serve the declared product. Upstream production of buffalo milk, ingredients, energy carriers, water, packaging, and purchased services is represented by linked supplier-specific or appropriate secondary datasets. Distribution after the declared factory gate, retail, consumer use, and end-of-life are outside this foreground dataset unless a downstream lifecycle model adds them transparently."
+      source_ids: []
+    - rule_id: boundary_buffalo_origin
+      applies_to: "all milk and milk-derived inputs"
+      rule: "Include this product category only when supplier and batch evidence supports buffalo origin for every milk-derived input. Any non-buffalo input triggers an explicit classification determination before modelling proceeds."
+      source_ids:
+        - codex-cxs-206-1999
+        - unsd-cpc-3-0
+    - rule_id: boundary_route_state
+      applies_to: "foreground process selection"
+      rule: "Include only process modules actually used by the declared route, but do not omit ripening, brining, processing, packaging, cold storage, cleaning, refrigeration, waste, or wastewater activities when they occur."
+      source_ids:
+        - codex-cxs-283-1978
+        - codex-cxs-221-2001
+        - eu-fdm-bat-2019
+    - rule_id: boundary_upstream_links
+      applies_to: "purchased inputs and services"
+      rule: "Represent production of received materials and purchased services with linked upstream datasets rather than duplicating them in the cheese factory foreground."
+      source_ids:
+        - eu-pef-2021
+    - rule_id: boundary_bat_applicability
+      applies_to: "application of EU FDM BAT evidence"
+      rule: "Use EU FDM BAT requirements or performance information only when the reporting installation and operating basis fall within the Decision's stated scope and the cited dairy condition applies. Never transfer facility-level or product-quality values into a universal cheese LCI."
+      source_ids:
+        - eu-fdm-bat-2019
+boundary_abstraction:
+  declared_starting_condition: "Buffalo milk and all other milk-derived inputs received at the reporting facility, identified by supplier, lot, animal species, physical state, and quantity"
+  starting_condition_role: "Upstream product inputs with linked production datasets; the cheese factory foreground starts at receipt"
+  product_classification_scope: "Buffalo-only cheese in CPC 3.0 subclass 22252; the cheese state may be fresh/unripened, ripened, or processed when declared"
+  recursive_input_rule: "Purchased buffalo cheese or curd used to make the reference product is recorded as an input with its own upstream dataset and is not recursively recreated inside this foreground dataset. Purchased mixed-species cheese or curd triggers classification determination before use of this PCR."
+  upstream_dataset_requirement: "Link buffalo milk, purchased buffalo cheese/curd, other ingredients, energy, water, packaging, and external treatment or transport services to temporally, geographically, and technologically representative upstream datasets; disclose proxies"
+  disclosure: "Declare animal-species evidence, milk and milk-derived ingredient composition, cheese state, salt/brine state, ingredients and aids, packaging state, net-mass basis, facility and lot coverage, co-products, allocation, exclusions, and all upstream proxies"
+reference_flow_definition:
+  reference_amount: "1 kg"
+  product_flow_ref:
+    name: "Cheese from milk of buffalo, fresh or processed"
+    uuid: "4b760369-5f64-47c7-b922-9dbe4b8abf98"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "milk animal species and buffalo-only evidence"
+    - "mixed-milk determination if triggered"
+    - "cheese state as fresh/unripened"
+    - ripened
+    - "or processed"
+    - "named variety or product specification"
+    - "salt and brine state"
+    - "ingredients and processing aids"
+    - "packaging format and packaged/unpackaged state"
+    - "reference net-mass basis"
+    - "factory-gate storage condition"
+    - "production lot and reporting period"
+reference_flows:
+  []
+measurement_rules:
+  - id: measurement_reference_mass
+    applies_to: "reference cheese output"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Measure the released reference cheese on the declared net-product basis. Exclude packaging mass and separately present free brine from the 1 kg cheese reference amount; inventory them separately. If commercial records use another basis, retain the original record and document the conversion."
+  - id: measurement_milk_species
+    applies_to: "milk and milk-derived inputs"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Record each animal species and supplier lot separately. Do not merge non-buffalo milk-derived material into a generic milk total; any non-buffalo quantity triggers the mixed-milk classification rule."
+  - id: measurement_product_state
+    applies_to: "reference product and intermediate cheese"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Preserve the measured state at each weighing point and declare whether mass is before or after draining, salting/brining, ripening, processing, and packaging. Do not apply a standard moisture, yield, or retention factor."
+  - id: measurement_brine
+    applies_to: "salt and brine inputs and outputs"
+    required_property_ref:
+      name: "Mass or volume with measured density"
+      uuid: ""
+    required_unit: "kg or m3"
+    rule: "Record make-up salt, make-up water, purchased brine, recirculated internal brine, purge, carry-over, and wastewater separately. Convert volume to mass only with batch- or period-specific density evidence."
+  - id: measurement_energy
+    applies_to: "electricity, fuels, steam, heat, cooling, and compressed air"
+    required_property_ref:
+      name: "Delivered energy or physical carrier quantity"
+      uuid: ""
+    required_unit: "kWh, MJ, kg, or m3 as recorded"
+    rule: "Retain original meter or invoice units and conversion factors. Allocate common utilities only after separately metered process use has been exhausted; do not use a generic cheese-energy factor."
+  - id: measurement_packaging
+    applies_to: "primary, secondary, and tertiary packaging"
+    required_property_ref:
+      name: "Mass or item count with measured item mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Record packaging by material and format. Convert item counts to mass using supplier specifications or measured lot-average item mass, and keep packaging outside the net cheese reference mass."
+process_map:
+  - id: milk_reception_preparation
+    name: "Buffalo milk reception and preparation"
+    inclusion: "required"
+    inclusion_condition: "Always included"
+    role: "Foreground receipt, identity control, storage, and preparation"
+    quantitative_reference: "kg buffalo milk and milk-derived material received by lot"
+  - id: cheesemaking_separation
+    name: "Cheesemaking and whey separation"
+    inclusion: "required"
+    inclusion_condition: "Always included"
+    role: "Foreground coagulation, curd handling, draining, salting, and separation"
+    quantitative_reference: "kg cheese output and co-products by batch"
+  - id: ripening_brining
+    name: "Ripening and brining"
+    inclusion: "conditional"
+    inclusion_condition: "Include when the declared product is ripened or held in brine, or when brine management occurs"
+    role: "Foreground maturation, brine management, storage, and losses"
+    quantitative_reference: "kg cheese entering and leaving the operation by batch"
+  - id: processed_cheese_manufacture
+    name: "Processed-cheese manufacture"
+    inclusion: "conditional"
+    inclusion_condition: "Include when the declared reference product is processed cheese"
+    role: "Foreground blending, heating/emulsifying, forming, and cooling"
+    quantitative_reference: "kg processed cheese output by batch"
+  - id: packaging_factory_storage
+    name: "Packaging and factory storage"
+    inclusion: "conditional"
+    inclusion_condition: "Include when packaging or storage occurs before the declared factory gate"
+    role: "Foreground packing, refrigeration, and release"
+    quantitative_reference: "kg net cheese released and packaging used"
+  - id: cleaning_wastewater
+    name: "Cleaning and on-site wastewater or waste handling"
+    inclusion: "required"
+    inclusion_condition: "Always include cleaning; include on-site treatment operations that serve the product"
+    role: "Foreground support and environmental control"
+    quantitative_reference: "allocated activity and outputs per reporting period"
+process_inventory:
+  - id: milk_reception_preparation
+    label: "Buffalo milk reception and preparation"
+    inputs:
+      product:
+        - row_id: buffalo_milk_inputs
+          role: "Buffalo milk and buffalo milk-derived materials received"
+          name: "Buffalo milk or applicable buffalo milk-derived product; use the exact Tiangong flow selected for the supplier material"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record each supplier lot of buffalo milk, cream, milk solids, or other buffalo milk-derived material that crosses the facility boundary. Keep animal-species evidence and physical state with the quantity record."
+          amount:
+            expression: "measured accepted mass by supplier lot and material state"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net reference cheese output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_milk_origin_receipts
+              source_ids:
+                - codex-cxs-206-1999
+            ranges: []
+        - row_id: preparation_water
+          role: "Water used in milk preparation"
+          name: "Process water matched to the site supply"
+          flow_type: "product"
+          property_unit: "Volume / m3 or Mass / kg"
+          description: "Record water added to product or used directly in preparation separately from cleaning water."
+          amount:
+            expression: "measured batch use; no default quantity"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net reference cheese output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water_records
+              source_ids:
+                - eu-fdm-bat-2019
+            ranges: []
+        - row_id: preparation_energy
+          role: "Electricity and thermal utilities for receipt and preparation"
+          name: "Site-specific electricity and energy-carrier flows"
+          flow_type: "product"
+          property_unit: "Energy / kWh or MJ; carrier mass or volume in original record unit"
+          description: "Record metered electricity and delivered fuels, steam, heat, cooling, or compressed air used for receiving, storage, pumping, thermal treatment, separation, or standardisation."
+          amount:
+            expression: "measured process use or documented allocation from common meters; no default quantity"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net reference cheese output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_utility_records
+              source_ids:
+                - eu-fdm-bat-2019
+            ranges: []
+      waste:
+        - row_id: rejected_milk
+          role: "Rejected milk or reception residues"
+          name: "Rejected milk or applicable organic waste flow matched to actual fate"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record rejected, spilled, or discarded milk-derived material by fate; do not net it against accepted input."
+          amount:
+            expression: "measured rejected or lost mass by lot and destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net reference cheese output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_records
+              source_ids:
+                - eu-fdm-bat-2019
+            ranges: []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: prepared_buffalo_milk
+          role: "Prepared buffalo milk for cheesemaking"
+          name: "Internal prepared buffalo milk"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Track the internal prepared-milk quantity and state to support batch mass balance; it does not cross the product system boundary when consumed on site."
+          amount:
+            expression: "measured transfer mass by batch"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per batch transferred to cheesemaking"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_batch_mass_balance
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+  - id: cheesemaking_separation
+    label: "Cheesemaking and whey separation"
+    inputs:
+      product:
+        - row_id: cheesemaking_milk
+          role: "Prepared buffalo milk"
+          name: "Internal prepared buffalo milk"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record prepared buffalo milk entering the vat by batch and preserve its link to reception lots."
+          amount:
+            expression: "measured vat input mass by batch"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per cheesemaking batch"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_batch_mass_balance
+              source_ids:
+                - codex-cxs-283-1978
+            ranges: []
+        - row_id: cheesemaking_ingredients
+          role: "Cultures, coagulants, salt, ingredients, and processing aids"
+          name: "Ingredient- and formulation-specific product flow"
+          flow_type: "product"
+          property_unit: "Mass / kg or original auditable purchasing unit"
+          description: "Record every material added to the cheese, curd, surface, or process, including starter cultures, coagulating agents, salt, permitted ingredients, additives, and processing aids. Preserve ingredient function and whether material remains in product, co-product, wastewater, or waste."
+          amount:
+            expression: "batch issue or dosing record; no standard recipe or retention factor"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net reference cheese output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_ingredient_dosing_records
+              source_ids:
+                - codex-cxs-283-1978
+                - codex-cxs-221-2001
+            ranges: []
+        - row_id: cheesemaking_water_energy
+          role: "Cheesemaking water and utilities"
+          name: "Site-specific water and utility flows"
+          flow_type: "product"
+          property_unit: "Volume, mass, or energy in original auditable units"
+          description: "Record process water, electricity, heat, steam, cooling, and compressed air consumed in cheesemaking, curd handling, and separation."
+          amount:
+            expression: "measured process use or documented common-meter allocation; no default quantity"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net reference cheese output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water_energy_records
+              source_ids:
+                - eu-fdm-bat-2019
+            ranges: []
+      waste:
+        - row_id: cheesemaking_waste
+          role: "Cheesemaking losses and off-specification material"
+          name: "Waste flow matched to material and actual management route"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record curd fines, spilled material, filters, and off-specification cheese separately by treatment or recovery route."
+          amount:
+            expression: "measured or mass-balance-reconciled waste by batch or reporting period"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net reference cheese output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_records
+              source_ids:
+                - eu-fdm-bat-2019
+            ranges: []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: primary_cheese_output
+          role: "Buffalo-milk cheese before conditional finishing"
+          name: "Cheese from milk of buffalo, fresh or processed"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4b760369-5f64-47c7-b922-9dbe4b8abf98"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Measure cheese leaving the primary cheesemaking step and identify whether it is released as fresh cheese or transferred to ripening, brining, processed-cheese manufacture, or packaging."
+          amount:
+            expression: "measured batch output at the declared transfer state; no default yield"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per cheesemaking batch"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_product_release_records
+              source_ids:
+                - codex-cxs-283-1978
+                - codex-cxs-221-2001
+            ranges: []
+        - row_id: whey_coproducts
+          role: "Whey and other milk-derived co-products"
+          name: "Co-product-specific flow matched to actual state and destination"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record whey, cream, whey cream, or recovered milk solids as separate product outputs only when they leave the process for beneficial use and meet the declared destination specification."
+          amount:
+            expression: "measured output mass by batch and destination; no default whey yield"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per cheesemaking batch"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_coproduct_records
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: whey_to_treatment
+          role: "Whey sent to waste treatment"
+          name: "Whey waste matched to actual treatment route"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Whey without a beneficial product destination is a waste output and shall not be reported as a co-product."
+          amount:
+            expression: "measured or reconciled mass by batch and destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per cheesemaking batch"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_coproduct_records
+              source_ids: []
+            ranges: []
+      elementary:
+        []
+  - id: ripening_brining
+    label: "Ripening and brining"
+    inputs:
+      product:
+        - row_id: ripening_input_cheese
+          role: "Cheese entering ripening or brining"
+          name: "Internal buffalo-milk cheese"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record cheese mass and state at entry and link it to the originating batch."
+          amount:
+            expression: "measured entry mass by batch"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per ripening or brining batch"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_ripening_brining_records
+              source_ids:
+                - codex-cxs-283-1978
+            ranges: []
+        - row_id: ripening_brine_utilities
+          role: "Brine, salt, water, and ripening utilities"
+          name: "Material- and utility-specific flows matched to site supply"
+          flow_type: "product"
+          property_unit: "Mass, volume, or energy in original auditable units"
+          description: "Record brine make-up and purge constituents, washing or surface-treatment materials, electricity, cooling, heat, and humidity-control utilities used during the declared operation."
+          amount:
+            expression: "measured batch or period use, with recirculated internal brine excluded from new external input"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg cheese leaving ripening or brining"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_ripening_brining_records
+              source_ids:
+                - codex-cxs-283-1978
+                - eu-fdm-bat-2019
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: ripened_brined_cheese
+          role: "Ripened or brined buffalo-milk cheese"
+          name: "Cheese from milk of buffalo, fresh or processed"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4b760369-5f64-47c7-b922-9dbe4b8abf98"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record cheese mass, ripening duration, brine state, and release condition. Free brine accompanying the market product remains a separately inventoried material and is not included in net cheese mass."
+          amount:
+            expression: "measured released cheese mass by batch; no standard aging-loss factor"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per ripening or brining batch"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_product_release_records
+              source_ids:
+                - codex-cxs-283-1978
+            ranges: []
+      waste:
+        - row_id: brine_ripening_waste
+          role: "Brine purge and ripening losses"
+          name: "Waste flow matched to material state and destination"
+          flow_type: "waste"
+          property_unit: "Mass / kg or Volume / m3"
+          description: "Record spent brine, surface material, trim, and spoiled cheese separately by fate."
+          amount:
+            expression: "measured batch or reporting-period output; no default loss factor"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg cheese leaving ripening or brining"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_records
+              source_ids:
+                - eu-fdm-bat-2019
+            ranges: []
+      elementary:
+        []
+  - id: processed_cheese_manufacture
+    label: "Processed-cheese manufacture"
+    inputs:
+      product:
+        - row_id: processed_cheese_inputs
+          role: "Buffalo cheese and declared formulation inputs"
+          name: "Ingredient-specific flow; buffalo cheese uses the reference product flow when applicable"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record each cheese, dairy ingredient, water, salt, emulsifying salt, additive, and other formulation input by batch. Every milk-derived input remains subject to the buffalo-only rule."
+          amount:
+            expression: "measured batch formulation quantity; no standard recipe"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg processed cheese output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_processed_cheese_batch_records
+              source_ids:
+                - codex-cxs-206-1999
+            ranges: []
+        - row_id: processed_cheese_energy
+          role: "Processing electricity and thermal energy"
+          name: "Site-specific electricity and energy-carrier flows"
+          flow_type: "product"
+          property_unit: "Energy / kWh or MJ; carrier quantity in original record unit"
+          description: "Record energy for blending, heating/emulsifying, forming, and cooling from meters or documented common-utility allocation."
+          amount:
+            expression: "measured batch or reporting-period use; no default quantity"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg processed cheese output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_utility_records
+              source_ids:
+                - eu-fdm-bat-2019
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: processed_cheese_output
+          role: "Processed buffalo-milk cheese output"
+          name: "Cheese from milk of buffalo, fresh or processed"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4b760369-5f64-47c7-b922-9dbe4b8abf98"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Measure finished processed cheese and retain the complete formulation and animal-species evidence."
+          amount:
+            expression: "measured batch output; no default conversion yield"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per processed-cheese batch"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_product_release_records
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: processed_cheese_waste
+          role: "Processed-cheese residues and off-specification product"
+          name: "Waste or rework flow matched to actual destination"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record residues and off-specification outputs by recovery, rework, or waste route without netting them against product output."
+          amount:
+            expression: "measured batch output by fate"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per processed-cheese batch"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_records
+              source_ids: []
+            ranges: []
+      elementary:
+        []
+  - id: packaging_factory_storage
+    label: "Packaging and factory storage"
+    inputs:
+      product:
+        - row_id: packaging_materials
+          role: "Packaging materials"
+          name: "Packaging-material-specific product flow"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record primary, secondary, and allocated tertiary packaging by material, format, supplier, and batch or reporting period."
+          amount:
+            expression: "measured issue quantity or item count converted with supplier or measured item mass"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net reference cheese output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_records
+              source_ids: []
+            ranges: []
+        - row_id: packaging_storage_energy
+          role: "Packaging and storage utilities"
+          name: "Site-specific utility flow"
+          flow_type: "product"
+          property_unit: "Energy / kWh or MJ; carrier quantity in original record unit"
+          description: "Record electricity, heat, cooling, compressed air, and other utilities used before factory-gate release."
+          amount:
+            expression: "measured process use or documented common-meter allocation; no default quantity"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net reference cheese output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_utility_records
+              source_ids:
+                - eu-fdm-bat-2019
+            ranges: []
+      waste:
+        - row_id: packaging_waste
+          role: "Packaging waste and damaged product"
+          name: "Waste flow matched to material and treatment route"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record unused or damaged packaging and product losses separately by material and destination."
+          amount:
+            expression: "measured reporting-period output"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net reference cheese output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_records
+              source_ids: []
+            ranges: []
+      elementary:
+        - row_id: refrigerant_emissions
+          role: "Refrigerant emissions from factory cooling"
+          name: "Refrigerant-specific elementary emission flow"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Calculate direct refrigerant emissions from verified additions, recoveries, stock changes, and equipment records for the product-serving cooling system."
+          amount:
+            expression: "calculated loss by refrigerant from collected service and stock records"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net reference cheese output"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_refrigerant_records
+              source_ids:
+                - eu-pef-2021
+            ranges: []
+    outputs:
+      product:
+        - row_id: reference_cheese_output
+          role: "Factory-gate reference cheese"
+          name: "Cheese from milk of buffalo, fresh or processed"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4b760369-5f64-47c7-b922-9dbe4b8abf98"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This is the declared fresh/unripened, ripened, or processed buffalo-milk cheese released at the factory gate on the net cheese mass basis."
+          amount:
+            expression: "measured net released product mass; normalize all inventory to 1 kg"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "1 kg net reference cheese output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_product_release_records
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+  - id: cleaning_wastewater
+    label: "Cleaning and on-site wastewater or waste handling"
+    inputs:
+      product:
+        - row_id: cleaning_treatment_inputs
+          role: "Cleaning water, chemicals, and treatment materials"
+          name: "Material-specific site supply flow"
+          flow_type: "product"
+          property_unit: "Mass / kg or Volume / m3"
+          description: "Record cleaning-in-place and other sanitation water, detergents, disinfectants, and on-site wastewater or waste-treatment materials serving the modelled production."
+          amount:
+            expression: "measured use by system or documented allocation from reporting-period totals"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net reference cheese output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cleaning_treatment_records
+              source_ids:
+                - eu-fdm-bat-2019
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: wastewater_residues
+          role: "Wastewater, sludge, and treatment residues"
+          name: "Wastewater or residue flow matched to actual treatment and destination"
+          flow_type: "waste"
+          property_unit: "Volume / m3, Mass / kg, and measured pollutant load as applicable"
+          description: "Record wastewater volume and relevant loads, plus sludge and other residues, at the actual hand-off or emission point. Keep diverted whey, brine, and product losses visible rather than hiding them in a generic wastewater total."
+          amount:
+            expression: "measured discharge and laboratory or treatment records; no default discharge factor"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net reference cheese output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wastewater_records
+              source_ids:
+                - eu-fdm-bat-2019
+            ranges: []
+      elementary:
+        - row_id: direct_site_emissions
+          role: "Direct air and water emissions from on-site operations"
+          name: "Substance- and compartment-specific elementary flow"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record measured or calculated elementary emissions from boilers, refrigeration, wastewater treatment, and other included site operations by substance and method."
+          amount:
+            expression: "site measurement or calculation from collected operating records and an applicable documented method"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net reference cheese output"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_direct_emission_records
+              source_ids:
+                - eu-fdm-bat-2019
+            ranges: []
+allocation_rules:
+  - rule_id: allocation_subdivision_first
+    applies_to: "shared operations and utilities"
+    rule: "Avoid allocation by separately metering or otherwise subdividing reception, cheesemaking, ripening/brining, processed-cheese manufacture, packaging, storage, cleaning, and treatment activities whenever the records permit."
+    source_ids:
+      - eu-pef-2021
+  - rule_id: allocation_internal_recycling
+    applies_to: "internal whey, curd, brine, rework, and recovered heat"
+    rule: "Model internal recirculation once and do not create a co-product credit for material or energy that does not cross the product system boundary."
+    source_ids:
+      - eu-pef-2021
+  - rule_id: allocation_coproduct_status
+    applies_to: "whey and other milk-derived outputs"
+    rule: "Treat an output as a co-product only when it leaves for documented beneficial use and has an upstream-recognised product function; otherwise model it as waste to its actual treatment route."
+    source_ids:
+      - eu-pef-2021
+  - rule_id: allocation_residual_burdens
+    applies_to: "cheese and co-products after subdivision"
+    rule: "If subdivision or a defensible physical causal relation cannot resolve shared burdens, use a documented allocation basis consistent across the reporting period, disclose quantities and prices or physical parameters, and test sensitivity to an alternative relevant basis. Do not prescribe a universal whey or cheese allocation factor."
+    source_ids:
+      - eu-pef-2021
+  - rule_id: allocation_waste_treatment
+    applies_to: "waste and wastewater treatment"
+    rule: "Assign treatment inputs, direct emissions, and residues to the generating processes where traceable; otherwise allocate the common system using measured causal drivers such as wastewater volume and pollutant load, and disclose the method."
+    source_ids:
+      - eu-fdm-bat-2019
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_milk_origin_receipts
+      process_id: "milk_reception_preparation"
+      flow_role: "milk and milk-derived inputs"
+      record_type: "supplier delivery, certificate, and receiving record"
+      raw_fields: "supplier; lot; material; animal species; milk origin claim; mass; physical state; acceptance; date"
+      collection_method: "reconcile receiving scale or calibrated meter with supplier documents and identity evidence"
+      unit: "kg"
+      frequency: "every delivery lot"
+      temporal_coverage: "all lots in reporting period"
+      site_scope: "all supplying sites and reporting facility"
+      aggregation_rule: "sum accepted mass by material, species, lot, and state; never merge species before classification check"
+      quality_evidence: "calibrated measurement; supplier certificate; lot traceability; exception log"
+    - protocol_id: cp_ingredient_dosing_records
+      process_id: "cheesemaking_separation"
+      flow_role: "ingredients and processing aids"
+      record_type: "recipe issue, dosing, and stock record"
+      raw_fields: "batch; material; supplier lot; animal species where milk-derived; issued mass; returned mass; function"
+      collection_method: "reconcile batch dosing with inventory movement and formulation"
+      unit: "kg or original unit"
+      frequency: "every batch"
+      temporal_coverage: "representative production period including all declared products"
+      site_scope: "reporting facility"
+      aggregation_rule: "net issued quantity by batch and ingredient; preserve fate and milk species"
+      quality_evidence: "approved formulation; scale calibration; stock reconciliation"
+    - protocol_id: cp_water_records
+      process_id: "milk_reception_preparation"
+      flow_role: "preparation water"
+      record_type: "meter, batch sheet, and invoice"
+      raw_fields: "meter; start; end; batch; use; source; density if converted"
+      collection_method: "direct meter preferred; documented allocation only for unmetered common supply"
+      unit: "m3 or kg"
+      frequency: "every batch or meter interval"
+      temporal_coverage: "full reporting period"
+      site_scope: "reporting facility"
+      aggregation_rule: "subtract verified non-product uses, then normalize to released cheese"
+      quality_evidence: "meter calibration; reconciliation; allocation record"
+    - protocol_id: cp_water_energy_records
+      process_id: "cheesemaking_separation"
+      flow_role: "cheesemaking water and utilities"
+      record_type: "meter and operating record"
+      raw_fields: "utility; meter; start; end; batch; operating hours; carrier quantity"
+      collection_method: "direct process metering or documented common-meter allocation"
+      unit: "original meter unit"
+      frequency: "batch, shift, or meter interval"
+      temporal_coverage: "full reporting period"
+      site_scope: "reporting facility"
+      aggregation_rule: "aggregate by utility and process, then normalize to released cheese"
+      quality_evidence: "calibration; invoices; meter coverage; allocation key"
+    - protocol_id: cp_energy_utility_records
+      process_id: "multiple"
+      flow_role: "process utilities"
+      record_type: "meter, fuel invoice, and operating record"
+      raw_fields: "process; carrier; meter; start; end; purchase; stock change; conversion factor"
+      collection_method: "reconcile submeter totals with facility purchases and stock changes"
+      unit: "kWh, MJ, kg, or m3"
+      frequency: "meter interval and monthly reconciliation"
+      temporal_coverage: "full reporting period including seasonal storage"
+      site_scope: "reporting facility"
+      aggregation_rule: "process use first; allocate residual common use with documented causal driver"
+      quality_evidence: "calibration; invoices; stock reconciliation; conversion source"
+    - protocol_id: cp_batch_mass_balance
+      process_id: "cheesemaking_separation"
+      flow_role: "internal transfers and batch balance"
+      record_type: "batch production record"
+      raw_fields: "all material inputs; internal transfers; outputs; losses; start and end stock; state"
+      collection_method: "weigh or meter each material at defined transfer points"
+      unit: "kg"
+      frequency: "every batch"
+      temporal_coverage: "all included batches"
+      site_scope: "reporting facility"
+      aggregation_rule: "reconcile inputs, outputs, and stock change by batch before period aggregation"
+      quality_evidence: "calibrated scales; batch closure; exception investigation"
+    - protocol_id: cp_product_release_records
+      process_id: "multiple"
+      flow_role: "cheese outputs and reference product"
+      record_type: "batch release and warehouse record"
+      raw_fields: "batch; product; state; net mass; brine state; packaging; release date; disposition"
+      collection_method: "verified production scale and released-stock reconciliation"
+      unit: "kg"
+      frequency: "every released lot"
+      temporal_coverage: "all released lots in reporting period"
+      site_scope: "reporting facility"
+      aggregation_rule: "sum released net cheese mass by declared product state; exclude free brine and packaging"
+      quality_evidence: "scale calibration; release approval; warehouse reconciliation"
+    - protocol_id: cp_coproduct_records
+      process_id: "cheesemaking_separation"
+      flow_role: "whey and milk-derived co-products"
+      record_type: "transfer and dispatch record"
+      raw_fields: "batch; output; state; mass; destination; sale or beneficial use evidence"
+      collection_method: "measure at transfer and reconcile dispatch"
+      unit: "kg"
+      frequency: "every batch or dispatch"
+      temporal_coverage: "full reporting period"
+      site_scope: "reporting facility and direct recipient"
+      aggregation_rule: "sum separately by output state and destination; classify non-beneficial output as waste"
+      quality_evidence: "calibrated meter or scale; dispatch note; recipient evidence"
+    - protocol_id: cp_ripening_brining_records
+      process_id: "ripening_brining"
+      flow_role: "cheese, brine, salt, water, and utilities"
+      record_type: "batch, brine-management, and storage log"
+      raw_fields: "cheese entry and exit mass; dates; brine make-up; purge; carry-over; salt; water; utilities; losses"
+      collection_method: "weigh cheese at entry and exit and meter or reconcile brine materials and utilities"
+      unit: "kg, m3, kWh, or MJ"
+      frequency: "every batch and brine intervention"
+      temporal_coverage: "full ripening or brining duration for released lots"
+      site_scope: "reporting facility"
+      aggregation_rule: "link all records to originating and released lots; distinguish recirculation from external input"
+      quality_evidence: "scale and meter calibration; brine log; stock and batch reconciliation"
+    - protocol_id: cp_processed_cheese_batch_records
+      process_id: "processed_cheese_manufacture"
+      flow_role: "processed-cheese formulation"
+      record_type: "batch formulation and production record"
+      raw_fields: "each input; milk species; mass; output; rework; temperature/time where used for process identity"
+      collection_method: "reconcile issued formulation with measured outputs and residues"
+      unit: "kg"
+      frequency: "every batch"
+      temporal_coverage: "all included processed-cheese batches"
+      site_scope: "reporting facility"
+      aggregation_rule: "aggregate only batches matching declared formulation and buffalo-only rule"
+      quality_evidence: "approved formulation; calibrated scales; batch closure"
+    - protocol_id: cp_packaging_records
+      process_id: "packaging_factory_storage"
+      flow_role: "packaging materials"
+      record_type: "packaging issue, supplier specification, and reject record"
+      raw_fields: "material; format; supplier lot; issued items or mass; returned items; rejects; item mass"
+      collection_method: "reconcile packaging issues with packed output and rejects"
+      unit: "kg or item"
+      frequency: "each packaging lot with monthly reconciliation"
+      temporal_coverage: "full reporting period"
+      site_scope: "reporting facility"
+      aggregation_rule: "convert counts using lot-specific mass and sum by material"
+      quality_evidence: "supplier specification; measured item mass; stock reconciliation"
+    - protocol_id: cp_waste_records
+      process_id: "multiple"
+      flow_role: "material losses and wastes"
+      record_type: "waste transfer, scale, and destination record"
+      raw_fields: "source process; material; state; mass; destination; recovery; date"
+      collection_method: "measure at collection or dispatch and reconcile with batch or period balance"
+      unit: "kg or m3"
+      frequency: "each transfer with monthly reconciliation"
+      temporal_coverage: "full reporting period"
+      site_scope: "reporting facility and direct treatment destination"
+      aggregation_rule: "aggregate by source, material, and treatment route without netting against inputs"
+      quality_evidence: "scale or meter evidence; transfer note; treatment receipt"
+    - protocol_id: cp_cleaning_treatment_records
+      process_id: "cleaning_wastewater"
+      flow_role: "cleaning and treatment inputs"
+      record_type: "cleaning programme, dosing, meter, and stock record"
+      raw_fields: "system; chemical; water; dose; operating cycle; stock movement; served processes"
+      collection_method: "direct dosing and water metering or documented allocation"
+      unit: "kg or m3"
+      frequency: "every cleaning cycle or meter interval"
+      temporal_coverage: "full reporting period"
+      site_scope: "reporting facility"
+      aggregation_rule: "aggregate by served system and allocate residual common cleaning using documented driver"
+      quality_evidence: "calibration; stock reconciliation; cleaning log"
+    - protocol_id: cp_wastewater_records
+      process_id: "cleaning_wastewater"
+      flow_role: "wastewater and residues"
+      record_type: "flow meter, sample, laboratory, and treatment record"
+      raw_fields: "discharge volume; sampling time; concentration; pollutant load; destination; sludge and residue mass"
+      collection_method: "flow measurement and representative sampling appropriate to the discharge"
+      unit: "m3, kg, or mg/L with load calculation"
+      frequency: "continuous or permit/management frequency"
+      temporal_coverage: "full reporting period with variability retained"
+      site_scope: "reporting facility discharge and on-site treatment"
+      aggregation_rule: "calculate loads from matched flow and concentration data; allocate with documented causal drivers"
+      quality_evidence: "meter calibration; laboratory QA; sample representativeness; treatment reconciliation"
+    - protocol_id: cp_refrigerant_records
+      process_id: "packaging_factory_storage"
+      flow_role: "refrigerant losses"
+      record_type: "equipment inventory, service, purchase, recovery, and stock record"
+      raw_fields: "refrigerant; equipment; opening stock; additions; recovery; closing stock; transfer"
+      collection_method: "annual or reporting-period mass balance by refrigerant and equipment system"
+      unit: "kg"
+      frequency: "each service event and period close"
+      temporal_coverage: "full reporting period"
+      site_scope: "systems serving included operations"
+      aggregation_rule: "calculate unrecovered loss and allocate only across served products with documented driver"
+      quality_evidence: "service certificates; cylinder weights; inventory reconciliation"
+    - protocol_id: cp_direct_emission_records
+      process_id: "cleaning_wastewater"
+      flow_role: "direct site emissions"
+      record_type: "monitoring and operating record"
+      raw_fields: "source; substance; compartment; measured value; flow; operating time; method; calculation factor"
+      collection_method: "use applicable monitoring or calculation method and preserve original observations"
+      unit: "kg and original measurement unit"
+      frequency: "method- or permit-specific"
+      temporal_coverage: "full reporting period"
+      site_scope: "included site sources"
+      aggregation_rule: "calculate period mass by substance, then attribute to served operations"
+      quality_evidence: "method record; calibration; laboratory QA; applicability statement"
+  calculation_rules:
+    - id: calc_buffalo_origin_check
+      applies_to: "all milk-derived inputs"
+      rule: "List every milk-derived input by animal species. Applicability is buffalo-only when all such inputs are evidenced as buffalo. Any non-buffalo or unknown species result is a classification-review trigger, not a quantity to be silently included."
+      inputs:
+        - "supplier and batch animal-species records"
+        - formulation
+      output: "buffalo-only pass or mixed/unknown classification trigger"
+      source_ids:
+        - codex-cxs-206-1999
+        - unsd-cpc-3-0
+    - id: calc_reference_normalization
+      applies_to: "all inventory rows"
+      rule: "normalized amount = attributable reporting-period or batch amount / released net reference cheese mass on the declared basis"
+      inputs:
+        - "attributable amount"
+        - "released net cheese mass"
+      output: "amount per 1 kg reference cheese"
+      source_ids:
+        - eu-pef-2021
+    - id: calc_net_cheese_mass
+      applies_to: "reference product"
+      rule: "net cheese mass = gross marketed unit mass - packaging mass - separately present free brine mass; use measured values for the same lot and declare any commercial convention that differs"
+      inputs:
+        - "gross unit mass"
+        - "packaging mass"
+        - "free brine mass"
+      output: "kg net cheese"
+      source_ids: []
+    - id: calc_batch_mass_balance
+      applies_to: "milk preparation, cheesemaking, ripening/brining, and processing"
+      rule: "measured inputs + opening stock = measured outputs + closing stock + measured or reconciled losses; investigate unexplained imbalance rather than forcing a standard yield"
+      inputs:
+        - "batch input"
+        - output
+        - stock
+        - "and loss records"
+      output: "reconciled batch balance and unexplained difference"
+      source_ids: []
+    - id: calc_brine_balance
+      applies_to: "brining"
+      rule: "external brine inputs = make-up water + make-up salt + purchased brine; outputs and stock change shall separately identify product carry-over, purge, wastewater, recovery, and closing stock"
+      inputs:
+        - "brine composition"
+        - make-up
+        - purge
+        - carry-over
+        - "and stock records"
+      output: "material-specific brine balance"
+      source_ids: []
+    - id: calc_utility_allocation
+      applies_to: "common utilities"
+      rule: "attributable utility = measured process use; for unmetered residuals, apply a disclosed causal driver over the same period and retain both facility total and allocation denominator"
+      inputs:
+        - meters
+        - invoices
+        - "operating driver"
+        - "product output"
+      output: "utility by process and product"
+      source_ids:
+        - eu-fdm-bat-2019
+        - eu-pef-2021
+    - id: calc_refrigerant_loss
+      applies_to: "refrigeration systems"
+      rule: "loss by refrigerant = opening stock + additions + received transfers - closing stock - recovered quantity - outgoing transfers, reconciled with service events"
+      inputs:
+        - "refrigerant stock and service records"
+      output: "kg direct emission by refrigerant"
+      source_ids:
+        - eu-pef-2021
+    - id: calc_wastewater_load
+      applies_to: "wastewater"
+      rule: "pollutant load shall be calculated from temporally matched discharge flow and measured concentration using the documented sampling and aggregation method; do not substitute a cheese quality or facility benchmark"
+      inputs:
+        - flow
+        - concentration
+        - "sampling interval"
+      output: "kg pollutant by reporting period"
+      source_ids:
+        - eu-fdm-bat-2019
+  data_quality_requirements:
+    - id: dq_species_traceability
+      applies_to: "milk and milk-derived inputs"
+      requirement: "Trace every input to supplier and lot animal-species evidence; unknown or non-buffalo origin blocks exact use of this PCR pending classification determination."
+      evidence: "supplier certificate; receiving record; formulation and lot link"
+    - id: dq_state_traceability
+      applies_to: "reference cheese"
+      requirement: "Link the released mass to fresh/unripened, ripened, or processed state; brine/salt state; formulation; packaging; storage condition; and net-mass basis."
+      evidence: "product specification; batch release; packaging and warehouse records"
+    - id: dq_measurement
+      applies_to: "foreground quantities"
+      requirement: "Use calibrated meters or scales where available, preserve original units, and document all conversions and allocations."
+      evidence: "calibration certificates; meter coverage; conversion record"
+    - id: dq_temporal
+      applies_to: "reporting period"
+      requirement: "Cover a representative production period and the full ripening or storage duration attributable to released lots; disclose seasonal, campaign, shutdown, and product-mix effects."
+      evidence: "production calendar; lot genealogy; reporting-period reconciliation"
+    - id: dq_completeness
+      applies_to: "foreground boundary"
+      requirement: "Reconcile milk, ingredients, cheese, co-products, wastes, water, energy, brine, packaging, wastewater, and direct emissions; disclose missing streams and proxies."
+      evidence: "mass and utility balances; completeness checklist; exception log"
+    - id: dq_source_applicability
+      applies_to: "external rules and benchmarks"
+      requirement: "Record jurisdiction, installation threshold, product mix, process state, and other applicability conditions before using a source. Product-quality limits and BAT facility indicators shall not be treated as universal LCI amounts."
+      evidence: "source applicability statement linked to each use"
+    - id: dq_upstream
+      applies_to: "linked datasets"
+      requirement: "Prefer supplier-specific buffalo milk and material datasets when available; otherwise document geographic, temporal, and technological representativeness and proxy limitations."
+      evidence: "dataset metadata; supplier linkage; proxy justification"
+validation_rules:
+  - rule_id: validation_reference_identity
+    applies_to: "reference flow"
+    rule: "Require product flow UUID 4b760369-5f64-47c7-b922-9dbe4b8abf98, Mass UUID 93a60a56-a3c8-11da-a746-0800200b9a66, unit-group UUID 93a60a57-a4c8-11da-a746-0800200c9a66, reference unit kg, and reference amount 1 kg."
+    source_ids: []
+  - rule_id: validation_buffalo_only
+    applies_to: "category applicability"
+    rule: "Pass exact category applicability only when every milk and milk-derived input has buffalo-origin evidence."
+    source_ids:
+      - codex-cxs-206-1999
+      - unsd-cpc-3-0
+  - rule_id: validation_mixed_milk
+    applies_to: "category applicability"
+    rule: "If any non-buffalo or unknown-species milk-derived input exists, require a documented classification determination and do not report this PCR as an exact match until accepted."
+    source_ids:
+      - codex-cxs-206-1999
+      - unsd-cpc-3-0
+  - rule_id: validation_product_state
+    applies_to: "reference product"
+    rule: "Require declaration of fresh/unripened, ripened, or processed state; named variety or specification; salt/brine state; ingredients; packaging; storage condition; and net-mass basis."
+    source_ids:
+      - codex-cxs-283-1978
+      - codex-cxs-221-2001
+  - rule_id: validation_process_coverage
+    applies_to: "process inventory"
+    rule: "Require both required process modules and every conditional module triggered by the declared route, including brining, ripening, processed-cheese manufacture, packaging, storage, refrigeration, and on-site treatment when applicable."
+    source_ids:
+      - eu-fdm-bat-2019
+  - rule_id: validation_mass_balance
+    applies_to: "each production route"
+    rule: "Require reconciled batch or period mass balances with unexplained differences investigated and disclosed; reject substitution of a generic yield or loss factor."
+    source_ids: []
+  - rule_id: validation_allocation
+    applies_to: "co-products and shared operations"
+    rule: "Require subdivision evidence or a documented causal/allocation basis, co-product destination evidence, consistent reporting-period application, and sensitivity where residual allocation is material."
+    source_ids:
+      - eu-pef-2021
+  - rule_id: validation_source_scope
+    applies_to: "use of standards and BAT evidence"
+    rule: "Require an applicability statement for every externally sourced constraint. Reject any use of Codex product-quality limits or EU FDM BAT facility indicators as universal recipe, yield, energy, water, wastewater, or emission values."
+    source_ids:
+      - codex-cxs-283-1978
+      - codex-cxs-221-2001
+      - eu-fdm-bat-2019
+  - rule_id: validation_foreground_records
+    applies_to: "quantitative inventory"
+    rule: "Require site- and batch-specific records or an explicit PCR calculation rule for all material quantities. Missing records remain data gaps and shall not be replaced by undocumented defaults."
+    source_ids:
+      - eu-pef-2021
+      - eu-fdm-bat-2019
+  - rule_id: validation_inventory_completeness
+    applies_to: "foreground dataset"
+    rule: "Require milk and ingredients, product and co-products, water and utilities, brine, packaging, waste, wastewater, and direct-emission checks with skipped or non-applicable items reported explicitly."
+    source_ids:
+      - eu-fdm-bat-2019
+published_dataset_profile:
+  dataset_role: "Foreground production dataset suitable for publication as a secondary_dataset or background_dataset after review"
+  downstream_use: "Factory-gate process datasets and lifecycle models for declared buffalo-only fresh/unripened, ripened, or processed cheese products"
+  allowed_use: "Use for products matching buffalo-only origin, product state, formulation, brine, packaging, storage, geography, technology, and time represented by the dataset; broader use requires documented representativeness review"
+  excluded_use: "Mixed-milk cheese without classification determination; cattle-, sheep-, goat-, or other non-buffalo cheese; non-cheese products; routes or market states not represented; direct use of Codex quality limits or BAT facility indicators as LCI defaults"
+  required_metadata: "PCR id and version used; Tiangong reference flow UUID; CPC context; facility geography and technology; reporting period; animal-species evidence; product state and specification; salt/brine, ingredient, packaging, net-mass, and storage state; process coverage; upstream links; co-product status and allocation"
+  required_quality_disclosure: "Primary-data coverage; calibration and reconciliation; temporal, geographic, and technological representativeness; missing flows; allocation and sensitivity; data-source applicability; proxy datasets; uncertainty and review status"
+  update_trigger: "Change in milk species or supplier-origin evidence, formulation, cheese state, brine practice, packaging, technology, facility, allocation, co-product destination, upstream dataset, reporting period representativeness, or material water/energy/emission performance"
+data_sources:
+  - id: "unsd-cpc-3-0"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, Central Product Classification Version 3.0, structure and explanatory notes, subclass 22252, https://unstats.un.org/unsd/classifications/Econ/CPC (retrieved 2026-08-12)"
+    used_for: "Classification identity and buffalo-milk product boundary only"
+  - id: "codex-cxs-206-1999"
+    type: "standard"
+    reference: "Codex Alimentarius, General Standard for the Use of Dairy Terms, CXS 206-1999, amended 2022, https://www.fao.org/fao-who-codexalimentarius/sh-proxy/en/?lnk=1&url=https%3A%2F%2Fworkspace.fao.org%2Fsites%2Fcodex%2FStandards%2FCXS%2B206-1999%2FCXS_206e.pdf (retrieved 2026-08-12)"
+    used_for: "Milk and milk-product definitions, animal-species declaration, and mixed-species trigger; not LCI quantities"
+  - id: "codex-cxs-283-1978"
+    type: "standard"
+    reference: "Codex Alimentarius, General Standard for Cheese, CXS 283-1978, amended 2024, https://www.fao.org/fao-who-codexalimentarius/sh-proxy/en/?lnk=1&url=https%3A%2F%2Fworkspace.fao.org%2Fsites%2Fcodex%2FStandards%2FCXS%2B283-1978%2FCXS_283e.pdf (retrieved 2026-08-12)"
+    used_for: "Cheese identity, ripening and brine-state descriptors, and candidate process/ingredient coverage; composition and quality provisions are not LCI factors"
+  - id: "codex-cxs-221-2001"
+    type: "standard"
+    reference: "Codex Alimentarius, Group Standard for Unripened Cheese Including Fresh Cheese, CXS 221-2001, amended 2022, https://www.fao.org/fao-who-codexalimentarius/sh-proxy/en/?lnk=1&url=https%3A%2F%2Fworkspace.fao.org%2Fsites%2Fcodex%2FStandards%2FCXS%2B221-2001%2FCXS_221e.pdf (retrieved 2026-08-12)"
+    used_for: "Fresh/unripened product-state identity and candidate ingredient/process coverage; quality provisions are not LCI factors"
+  - id: "eu-pef-2021"
+    type: "official_guidance"
+    reference: "European Commission, Recommendation (EU) 2021/2279 on the use of the Environmental Footprint methods, Annex I Product Environmental Footprint method, http://data.europa.eu/eli/reco/2021/2279/oj (retrieved 2026-08-12)"
+    used_for: "Life-cycle boundary, data, allocation, calculation, quality, and disclosure principles; no cheese-specific default quantities"
+  - id: "eu-fdm-bat-2019"
+    type: "official_guidance"
+    reference: "European Commission, Implementing Decision (EU) 2019/2031 establishing BAT conclusions for the food, drink and milk industries, http://data.europa.eu/eli/dec_impl/2019/2031/oj (retrieved 2026-08-12)"
+    used_for: "Applicable dairy process coverage, resource and emission inventory, water/wastewater, energy, and monitoring topics; facility scope and operating conditions must be checked before use"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:c16ef0832fc4464db4fd3cddfd45fff5ca9d0d4c77ae2a3a46e240d7c91afbb4"
+  generated_content_sha256: "sha256:54908c3da3a1e6ca6e3ed4af5c5db93697f09b3672557a06dd21273a2afaf7ec"

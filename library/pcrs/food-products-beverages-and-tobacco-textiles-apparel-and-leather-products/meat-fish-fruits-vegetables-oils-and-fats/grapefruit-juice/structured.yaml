@@ -1,10 +1,1072 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "21432"
-  title: "Grapefruit juice"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.food-products-beverages-and-tobacco-textiles-apparel-and-leather-products.meat-fish-fruits-vegetables-oils-and-fats.grapefruit-juice"
+  classification_refs: "CPC 3.0: 21432 (Grapefruit juice; exact mapping context)"
+  covered_products: "Unfermented single-strength grapefruit juice; not-from-concentrate grapefruit juice; grapefruit juice from concentrate; declared blends of directly expressed and reconstituted grapefruit juice"
+  excluded_products: "Grapefruit juice concentrate sold as concentrate; grapefruit nectar; multi-fruit juices; flavoured or diluted juice drinks that do not meet the declared grapefruit-juice identity; fermented grapefruit beverages; fresh grapefruit"
+  representative_product: "Unfermented single-strength grapefruit juice released at the processing-site gate"
+  production_route: "Fresh grapefruit receipt, preparation, mechanical juice extraction and finishing, with optional concentration steps under the same foreground control; and/or receipt of grapefruit concentrate followed by reconstitution and blending; then preservation, cooling, and factory-gate preparation"
+  market_state: "Finished liquid in a declared bulk, aseptic, chilled, frozen, canned, or other primary-packaged state at the processing-site gate"
+functional_unit:
+  what: "Finished, unfermented grapefruit juice intended for direct consumption"
+  how_much: "1 kg net mass of grapefruit juice, excluding primary and secondary packaging"
+  how_well: "Meets the declared route-specific grapefruit-juice identity, composition, preservation, and market requirements; reconstituted juice meets at least 10.0 degrees Brix at 20 degrees C under the Codex baseline unless a stricter applicable requirement is declared"
+  how_long_or_cycle: "One production lot at factory-gate release; shelf life is a required qualifier but is not the normalization basis"
+  reference_flow_link: "grapefruit_juice_reference_output"
+system_boundary:
+  rules:
+    - rule_id: boundary_controlled_operations
+      applies_to: "foreground operations"
+      rule: "Include every controlled operation needed to convert the declared received grapefruit-derived inputs into the reference product, including route-specific preparation, extraction, screening, reconstitution or blending, preservation, cooling, filling, cleaning, and on-site residue or effluent management."
+      source_ids:
+        - jrc-fdm-bref-2019
+    - rule_id: boundary_upstream_links
+      applies_to: "purchased inputs and services"
+      rule: "Represent excluded upstream production and off-site treatment with linked datasets rather than treating purchased grapefruit, concentrate, ingredients, packaging, energy, transport, or waste treatment as burden-free."
+      source_ids:
+        - ec-pef-method-2021
+    - rule_id: boundary_route_specificity
+      applies_to: "route selection"
+      rule: "Include only processes that occurred for the represented production mix, but declare the not-from-concentrate and from-concentrate shares and retain intermediate mass balances for each route."
+      source_ids: []
+    - rule_id: boundary_direct_releases
+      applies_to: "controlled site releases"
+      rule: "Record direct emissions, refrigerant losses, wastewater, solid residues, and product losses that cross the controlled-site boundary; do not hide them in a generic utility total."
+      source_ids:
+        - jrc-fdm-bref-2019
+    - rule_id: boundary_downstream_exclusion
+      applies_to: "factory-gate dataset"
+      rule: "Exclude distribution, retail, consumer use, and end-of-life from this foreground package unless the declared study extends the boundary and reports those stages separately."
+      source_ids: []
+boundary_abstraction:
+  declared_starting_condition: "Harvested grapefruit, single-strength grapefruit juice, and/or grapefruit concentrate received at the processing site, with quantity, origin, supplier, concentration state, and transport hand-off declared"
+  starting_condition_role: "Gate-to-gate foreground starting condition with linked upstream supply datasets"
+  product_classification_scope: "Grapefruit juice only; route intermediates remain explicit and must not broaden the PCR to grapefruit nectar, mixed juice, fresh fruit, or concentrate sold as the reference product"
+  recursive_input_rule: "Record purchased grapefruit juice or concentrate as an explicit product input and link it to an upstream dataset; do not recursively reproduce its manufacture inside the same foreground package unless those operations are under the reporting site's control and are subdivided as foreground processes"
+  upstream_dataset_requirement: "Link representative upstream datasets for grapefruit cultivation and harvest, purchased juice or concentrate, ingredients and processing aids, packaging, utilities, fuels, refrigerants, inbound transport, and off-site waste or wastewater treatment"
+  disclosure: "Declare route shares, origin and concentration state of each grapefruit-derived input, controlled operations, preservation and packaging state, temporal and geographic coverage, cut-offs, data gaps, co-product fate, and allocation choices"
+reference_flow_definition:
+  reference_amount: "1 kg"
+  product_flow_ref:
+    name: "Grapefruit juice"
+    uuid: "796385da-cb79-4275-8087-13bc9656ff65"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "route share (not-from-concentrate and/or from-concentrate)"
+    - "fruit species and product identity"
+    - "measured soluble-solids result and method"
+    - "preservation method"
+    - "bulk or primary-package state and packaging material"
+    - "pulp or clarification state"
+    - "added sweetener and other optional ingredient status"
+    - "production geography and period"
+    - "shelf-life or storage condition"
+    - "co-product and waste treatment"
+    - "allocation method"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_net_mass
+    applies_to: "reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Normalize all foreground amounts to 1 kg net grapefruit juice at factory-gate release; exclude packaging mass from the reference amount and record packaging separately."
+  - id: route_mass_conversion
+    applies_to: "all route inputs and outputs"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Preserve measured lot masses and moisture or concentration state. Convert volume records to mass only with a batch- or product-specific density and retain the density value, temperature, method, and source record."
+  - id: soluble_solids_check
+    applies_to: "reconstituted grapefruit juice"
+    required_property_ref:
+      name: "Soluble solids by refractometry"
+      uuid: ""
+    required_unit: "degrees Brix at 20 degrees C"
+    rule: "Record the corrected soluble-solids result and method. Under the Codex baseline, reconstituted grapefruit juice must be at least 10.0 degrees Brix; apply and cite a stricter market rule when relevant."
+  - id: energy_carrier_accounting
+    applies_to: "electricity, fuels, steam, refrigeration, and recovered energy"
+    required_property_ref:
+      name: "Energy or carrier-specific property"
+      uuid: ""
+    required_unit: "kWh, MJ, or carrier mass/volume unit"
+    rule: "Keep purchased carriers and on-site conversions separate; record metered quantities and conversion factors before normalizing to the reference flow."
+process_map:
+  - id: fresh_fruit_extraction
+    name: "Fresh grapefruit preparation, extraction, and finishing"
+    inclusion: "conditional"
+    inclusion_condition: "Include when fresh grapefruit is processed under foreground control."
+    role: "Foreground conversion of accepted fruit to juice intermediate and separated citrus materials"
+    quantitative_reference: "Per kg accepted fresh grapefruit and per kg juice intermediate"
+  - id: reconstitution_blending
+    name: "Concentrate receipt, reconstitution, and blending"
+    inclusion: "conditional"
+    inclusion_condition: "Include when grapefruit concentrate, purchased single-strength juice, or permitted blending ingredients are used under foreground control."
+    role: "Foreground formulation of route-specific juice intermediate"
+    quantitative_reference: "Per kg blended grapefruit juice intermediate"
+  - id: stabilisation_factory_gate
+    name: "Preservation, cooling, filling, and factory-gate preparation"
+    inclusion: "required"
+    inclusion_condition: "Always include the actual preservation and release operations; include filling and primary packaging when performed by the reporting site."
+    role: "Production of the declared reference grapefruit juice"
+    quantitative_reference: "Per 1 kg reference product"
+  - id: site_services_effluent
+    name: "Cleaning, utility support, and effluent handling"
+    inclusion: "required"
+    inclusion_condition: "Include site services attributable to the represented production and all controlled effluent or residue management."
+    role: "Supporting foreground operations and boundary-crossing releases"
+    quantitative_reference: "Per 1 kg reference product"
+process_inventory:
+  - id: fresh_fruit_extraction
+    label: "Fresh grapefruit preparation, extraction, and finishing"
+    inputs:
+      product:
+        - row_id: fresh_grapefruit_input
+          role: "Accepted fresh grapefruit"
+          name: "Grapefruit, fresh"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record sound grapefruit entering the controlled preparation line after separately identifying rejected inbound fruit. Supplier and lot mass records connect the foreground operation to the upstream fruit dataset."
+          amount:
+            expression: "accepted fresh-grapefruit mass assigned to the represented production lot"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference grapefruit juice"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_fresh_route_mass_records
+              source_ids: []
+            ranges:
+              - role: default_estimate
+                lower: "1.0"
+                upper: "5.0"
+                unit: "kg fresh grapefruit/kg reference grapefruit juice"
+                basis: "broad initial route-specific estimate pending reviewed site or literature evidence"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: fresh_route_water
+          role: "Preparation and extraction water"
+          name: "Process water"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record process water used for washing, fruit handling, oil recovery, extraction support, and finishing when it crosses the process boundary; do not combine it with CIP water."
+          amount:
+            expression: "metered or tank-balance water supplied to the fresh-fruit route"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference grapefruit juice"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_fresh_route_utility_records
+              source_ids: []
+            ranges:
+              - role: default_estimate
+                lower: "0"
+                upper: "10"
+                unit: "kg water/kg reference grapefruit juice"
+                basis: "broad initial estimate including route variability, pending reviewed evidence"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: fresh_route_electricity
+          role: "Fresh-route electricity"
+          name: "Electricity, supplied to processing site"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record metered electricity for conveying, sorting, washing, oil recovery, extraction, screening, pumping, and finishing assigned to this route."
+          amount:
+            expression: "route-specific meter total or documented allocation of site electricity"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference grapefruit juice"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_fresh_route_utility_records
+              source_ids: []
+            ranges:
+              - role: default_estimate
+                lower: "0"
+                upper: "2"
+                unit: "kWh/kg reference grapefruit juice"
+                basis: "broad initial estimate pending reviewed technology-specific evidence"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: screened_juice_intermediate
+          role: "Screened grapefruit juice intermediate"
+          name: "Grapefruit juice, intermediate"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the measured juice mass after mechanical extraction and screening or finishing, before downstream blending or preservation."
+          amount:
+            expression: "measured intermediate juice mass at the extraction-process hand-off"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg accepted fresh grapefruit and per 1 kg reference grapefruit juice"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_fresh_route_mass_records
+              source_ids: []
+            ranges: []
+        - row_id: recovered_grapefruit_oil
+          role: "Recovered grapefruit oil"
+          name: "Grapefruit essential oil"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record recovered citrus oil as a co-product only when it leaves the process with a documented use or market; otherwise record its actual waste treatment."
+          amount:
+            expression: "measured recovered oil mass leaving the extraction process as a co-product"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg accepted fresh grapefruit"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_fresh_route_mass_records
+              source_ids: []
+            ranges: []
+        - row_id: usable_citrus_residue
+          role: "Usable peel, pulp, and seed co-product"
+          name: "Grapefruit peel, pulp, and seeds for further use"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record separated citrus solids as product output only when a documented downstream use makes them a co-product; identify the material state and destination."
+          amount:
+            expression: "measured usable residue mass dispatched for further use"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg accepted fresh grapefruit"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_fresh_route_mass_records
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: fresh_route_organic_waste
+          role: "Rejected fruit and unusable citrus residue"
+          name: "Citrus processing organic waste"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record rejected fruit, peel, pulp, seeds, and other organic solids that leave without a co-product function, separated by treatment route where materially different."
+          amount:
+            expression: "measured waste mass by destination and treatment route"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg accepted fresh grapefruit and per 1 kg reference grapefruit juice"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_fresh_route_mass_records
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "1.0"
+                unit: "kg residue/kg accepted fresh grapefruit"
+                basis: "physical upper screen before investigating measurement boundary or moisture-state errors"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: fresh_route_wastewater
+          role: "Fresh-route wastewater"
+          name: "Wastewater from fruit-juice processing"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record wastewater leaving fruit preparation, oil recovery, extraction, and finishing before site treatment or off-site transfer."
+          amount:
+            expression: "measured or water-balance wastewater mass assigned to the fresh-fruit route"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference grapefruit juice"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_site_water_effluent_records
+              source_ids: []
+            ranges:
+              - role: default_estimate
+                lower: "0"
+                upper: "12"
+                unit: "kg wastewater/kg reference grapefruit juice"
+                basis: "broad initial estimate pending reviewed site evidence"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        []
+  - id: reconstitution_blending
+    label: "Concentrate receipt, reconstitution, and blending"
+    inputs:
+      product:
+        - row_id: grapefruit_derived_input
+          role: "Grapefruit concentrate or purchased juice intermediate"
+          name: "Grapefruit juice concentrate or purchased single-strength grapefruit juice"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record each purchased grapefruit-derived input separately by concentration state, soluble solids, supplier, origin, and lot; link each to an upstream dataset."
+          amount:
+            expression: "measured input mass by concentration state and supplier lot"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference grapefruit juice"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_reconstitution_batch_records
+              source_ids: []
+            ranges:
+              - role: default_estimate
+                lower: "0.05"
+                upper: "1.2"
+                unit: "kg input/kg reference grapefruit juice"
+                basis: "broad initial range spanning concentrate and single-strength inputs pending product-specific evidence"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: reconstitution_water
+          role: "Potable reconstitution water"
+          name: "Potable water"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record potable water added to reconstitute concentrate or adjust the declared blend; keep it separate from cleaning and cooling water."
+          amount:
+            expression: "batch-meter or formulation-record water mass"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference grapefruit juice"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_reconstitution_batch_records
+              source_ids: []
+            ranges:
+              - role: default_estimate
+                lower: "0"
+                upper: "1.0"
+                unit: "kg water/kg reference grapefruit juice"
+                basis: "broad initial formulation range pending batch-specific concentration data"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: optional_ingredients
+          role: "Optional ingredients and processing aids"
+          name: "Declared ingredient or processing aid, substance-specific"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record every added sweetener, restored grapefruit component, clarification material, processing aid, or other permitted ingredient by substance and actual batch mass; legal permissibility is market-specific."
+          amount:
+            expression: "formulation or issue-record mass for each substance"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference grapefruit juice"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_reconstitution_batch_records
+              source_ids: []
+            ranges: []
+        - row_id: blending_electricity
+          role: "Reconstitution and blending electricity"
+          name: "Electricity, supplied to processing site"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record metered or allocated electricity for concentrate handling, pumping, mixing, clarification, and blending."
+          amount:
+            expression: "route-specific meter total or documented allocation of site electricity"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference grapefruit juice"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_reconstitution_utility_records
+              source_ids: []
+            ranges:
+              - role: default_estimate
+                lower: "0"
+                upper: "1"
+                unit: "kWh/kg reference grapefruit juice"
+                basis: "broad initial estimate pending reviewed technology-specific evidence"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: blended_juice_intermediate
+          role: "Blended grapefruit juice intermediate"
+          name: "Grapefruit juice, blended intermediate"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the measured formulation output transferred to preservation, together with soluble solids, temperature, and route shares."
+          amount:
+            expression: "measured batch output mass at the blending-process hand-off"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference grapefruit juice"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_reconstitution_batch_records
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: blending_product_loss
+          role: "Off-specification blend and formulation loss"
+          name: "Grapefruit-juice formulation waste"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record off-specification product, tank heel, filter residue, and unrecovered formulation loss by actual destination."
+          amount:
+            expression: "measured or mass-balance loss assigned to the blending batch"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference grapefruit juice"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_reconstitution_batch_records
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.2"
+                unit: "kg loss/kg blended juice intermediate"
+                basis: "broad initial mass-balance screen pending reviewed site evidence"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        []
+  - id: stabilisation_factory_gate
+    label: "Preservation, cooling, filling, and factory-gate preparation"
+    inputs:
+      product:
+        - row_id: juice_to_stabilisation
+          role: "Juice intermediate supplied to preservation"
+          name: "Grapefruit juice, pre-preservation intermediate"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the mass, route shares, soluble solids, and temperature of juice entering the actual preservation and factory-gate preparation sequence."
+          amount:
+            expression: "measured transfer mass from extraction and/or blending"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference grapefruit juice"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_factory_gate_batch_records
+              source_ids: []
+            ranges: []
+        - row_id: preservation_thermal_energy
+          role: "Thermal energy or steam"
+          name: "Thermal energy carrier, route-specific"
+          flow_type: "product"
+          property_unit: "Energy / kWh or MJ"
+          description: "Record purchased heat, fuel, or steam used for pasteurisation, sterilisation, evaporation, hot filling, or other declared preservation; keep carrier types separate."
+          amount:
+            expression: "metered carrier use or documented equipment energy balance"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg reference grapefruit juice"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_stabilisation_utility_records
+              source_ids: []
+            ranges:
+              - role: default_estimate
+                lower: "0"
+                upper: "5"
+                unit: "kWh/kg reference grapefruit juice"
+                basis: "broad initial estimate spanning preservation technologies pending reviewed route-specific evidence"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: stabilisation_electricity
+          role: "Stabilisation and filling electricity"
+          name: "Electricity, supplied to processing site"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record electricity for pumping, heat exchange, cooling, refrigeration, aseptic systems, filling, conveyors, and product storage attributable to this process."
+          amount:
+            expression: "process meter total or documented allocation of site electricity"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference grapefruit juice"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_stabilisation_utility_records
+              source_ids: []
+            ranges:
+              - role: default_estimate
+                lower: "0"
+                upper: "2"
+                unit: "kWh/kg reference grapefruit juice"
+                basis: "broad initial estimate pending reviewed site and technology evidence"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: primary_packaging_input
+          role: "Primary packaging"
+          name: "Primary packaging material, material-specific"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record each primary package, closure, liner, and aseptic component when filling occurs within the foreground boundary; omit the row only for a declared unpackaged bulk output."
+          amount:
+            expression: "packaging issue records minus returned unused material, by material and component"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg reference grapefruit juice"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_factory_gate_batch_records
+              source_ids: []
+            ranges:
+              - role: default_estimate
+                lower: "0"
+                upper: "0.5"
+                unit: "kg packaging/kg reference grapefruit juice"
+                basis: "broad initial estimate spanning bulk and retail primary-package states pending packaging-specific evidence"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: grapefruit_juice_reference_output
+          role: "Grapefruit juice reference output"
+          name: "Grapefruit juice"
+          flow_type: "product"
+          flow_ref:
+            uuid: "796385da-cb79-4275-8087-13bc9656ff65"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This is the net finished grapefruit juice released at the processing-site gate after the declared preservation and factory-gate preparation operations."
+          amount:
+            expression: "fixed reference output of 1 kg net grapefruit juice, excluding packaging"
+            value_mode: "fixed_value"
+            specificity: "generic"
+            basis:
+              text: "1 kg reference grapefruit juice"
+              kind: "reference_flow"
+            evidence:
+              kind: "identity_reference"
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: factory_gate_product_loss
+          role: "Product and packaging loss at preservation or filling"
+          name: "Product or packaging waste, material-specific"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record preservation rejects, start-up and changeover product, tank heel, damaged packages, and packaging scrap separately by material and destination."
+          amount:
+            expression: "measured waste mass or reconciled batch mass balance"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference grapefruit juice"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_factory_gate_batch_records
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.2"
+                unit: "kg loss/kg reference grapefruit juice"
+                basis: "broad initial mass-balance screen pending reviewed site evidence"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        - row_id: refrigerant_leakage
+          role: "Refrigerant leakage to air"
+          name: "Refrigerant emission to air, substance-specific"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "When refrigeration equipment serves the represented product, record each refrigerant substance released to air from top-up and service records; do not combine substances."
+          amount:
+            expression: "annual or campaign refrigerant loss allocated using documented equipment service and production records"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference grapefruit juice"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_site_environmental_records
+              source_ids: []
+            ranges: []
+  - id: site_services_effluent
+    label: "Cleaning, utility support, and effluent handling"
+    inputs:
+      product:
+        - row_id: cip_water
+          role: "Cleaning and CIP water"
+          name: "Process water for cleaning"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record water used for cleaning tanks, pipes, extractors, fillers, floors, and other controlled equipment; distinguish fresh, reused, and recovered water where records permit."
+          amount:
+            expression: "metered CIP and sanitation water assigned to the represented production"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference grapefruit juice"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_site_water_effluent_records
+              source_ids: []
+            ranges:
+              - role: default_estimate
+                lower: "0"
+                upper: "20"
+                unit: "kg water/kg reference grapefruit juice"
+                basis: "broad initial estimate pending reviewed site evidence"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: cip_cleaning_agents
+          role: "Cleaning chemicals"
+          name: "Cleaning agent, substance-specific"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record each detergent, acid, alkali, disinfectant, and other cleaning chemical supplied to the controlled operations."
+          amount:
+            expression: "issue, dosing, or tank-balance mass by chemical"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference grapefruit juice"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_site_water_effluent_records
+              source_ids: []
+            ranges:
+              - role: default_estimate
+                lower: "0"
+                upper: "0.1"
+                unit: "kg chemical/kg reference grapefruit juice"
+                basis: "broad initial estimate pending reviewed chemical-specific evidence"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: site_service_electricity
+          role: "Site-service electricity"
+          name: "Electricity, supplied to processing site"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record electricity for CIP, compressed air, water pumping, wastewater handling, and other attributable site services not already assigned to a product process."
+          amount:
+            expression: "service meter total or documented allocation to represented production"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference grapefruit juice"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_site_service_utility_records
+              source_ids: []
+            ranges:
+              - role: default_estimate
+                lower: "0"
+                upper: "1"
+                unit: "kWh/kg reference grapefruit juice"
+                basis: "broad initial estimate pending reviewed site evidence"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: site_wastewater
+          role: "Wastewater to on-site or off-site treatment"
+          name: "Wastewater from grapefruit-juice processing"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record wastewater volume or mass and relevant pollutant measurements at the hand-off to on-site treatment, off-site treatment, or permitted discharge; separate uncontaminated cooling water when applicable."
+          amount:
+            expression: "effluent meter total or documented site water balance assigned to represented production"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference grapefruit juice"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_site_water_effluent_records
+              source_ids: []
+            ranges:
+              - role: default_estimate
+                lower: "0"
+                upper: "25"
+                unit: "kg wastewater/kg reference grapefruit juice"
+                basis: "broad initial estimate pending reviewed site evidence"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: effluent_treatment_residue
+          role: "Wastewater-treatment sludge and separated solids"
+          name: "Wastewater-treatment residue"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "When treatment is controlled by the reporting site, record sludge and separated solids by dry or wet mass basis and actual destination."
+          amount:
+            expression: "measured residue mass with moisture basis and destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg reference grapefruit juice"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_site_environmental_records
+              source_ids: []
+            ranges: []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocation_avoid
+    applies_to: "juice, grapefruit oil, usable citrus solids, and other co-products"
+    rule: "First avoid allocation by subdividing independently measured operations or by expanding the system when the additional functions and substituted products are robustly demonstrated."
+    source_ids:
+      - ec-pef-method-2021
+  - rule_id: allocation_physical
+    applies_to: "inseparable multifunctional operations"
+    rule: "If subdivision or system expansion is not practicable, use a documented, quantifiable physical relationship that reflects how inputs and outputs provide the functions; do not default to mass merely because masses are available."
+    source_ids:
+      - ec-pef-method-2021
+  - rule_id: allocation_other_relationship
+    applies_to: "multifunctional operations lacking a defensible physical relationship"
+    rule: "Use another relationship, such as site- and period-specific economic value, only after documenting why subdivision, system expansion, and physical allocation were rejected; disclose prices, period, currency, factors, and sensitivity."
+    source_ids:
+      - ec-pef-method-2021
+  - rule_id: allocation_waste_status
+    applies_to: "peel, pulp, seeds, rejected fruit, off-specification juice, and sludge"
+    rule: "Classify each output as product, co-product, or waste from its documented destination and function. Waste treatment remains in the generating system; do not assign avoided-production credits without a separately justified system-expansion model."
+    source_ids:
+      - ec-pef-method-2021
+  - rule_id: allocation_shared_site_services
+    applies_to: "utilities and site services shared with other products"
+    rule: "Prefer sub-metering. Otherwise allocate only the residual shared amount using a causal driver such as process time, metered throughput, cleaning cycle, or equipment demand, and retain the calculation."
+    source_ids:
+      - ec-pef-method-2021
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_fresh_route_mass_records
+      process_id: "fresh_fruit_extraction"
+      flow_role: "Fruit, juice intermediate, citrus oil, usable residue, and waste masses"
+      record_type: "weighbridge, batch ticket, tank level, dispatch record"
+      raw_fields: "lot_id; timestamp; accepted_fruit_mass_kg; rejected_fruit_mass_kg; juice_intermediate_mass_kg; oil_mass_kg; usable_residue_mass_kg; waste_mass_kg; moisture_basis; destination"
+      collection_method: "Reconcile calibrated scales, tank measurements, and dispatch records by production lot."
+      unit: "kg"
+      frequency: "each lot or shift"
+      temporal_coverage: "complete represented production period"
+      site_scope: "all controlled fresh-fruit lines"
+      aggregation_rule: "Sum by lot and route; normalize to net reference-product mass; retain separate co-product and waste destinations."
+      quality_evidence: "scale calibration; batch reconciliation; signed dispatch or waste record"
+    - protocol_id: cp_fresh_route_utility_records
+      process_id: "fresh_fruit_extraction"
+      flow_role: "Water and electricity"
+      record_type: "meter, invoice, equipment log"
+      raw_fields: "meter_id; opening_reading; closing_reading; timestamp; route_runtime; production_mass_kg; allocation_driver"
+      collection_method: "Use route sub-meters; when absent, reconcile site totals and allocate only residual use with a documented causal driver."
+      unit: "kg water; kWh"
+      frequency: "meter interval and each production campaign"
+      temporal_coverage: "complete represented production period"
+      site_scope: "all controlled fresh-fruit lines"
+      aggregation_rule: "Subtract verified non-production use, assign to route, and normalize to reference-product mass."
+      quality_evidence: "meter calibration; invoice reconciliation; allocation worksheet"
+    - protocol_id: cp_reconstitution_batch_records
+      process_id: "reconstitution_blending"
+      flow_role: "Grapefruit-derived inputs, water, ingredients, intermediate output, and loss"
+      record_type: "formulation, batch sheet, tank meter, laboratory result"
+      raw_fields: "batch_id; input_id; supplier; origin; concentration_state; input_mass_kg; water_mass_kg; ingredient_mass_kg; output_mass_kg; brix_20c; temperature; loss_mass_kg"
+      collection_method: "Reconcile issued materials, calibrated tank or scale readings, and laboratory soluble-solids results for each batch."
+      unit: "kg; degrees Brix"
+      frequency: "each batch"
+      temporal_coverage: "complete represented production period"
+      site_scope: "all controlled blending lines"
+      aggregation_rule: "Sum by product recipe and route share; calculate mass balance and normalize to net reference-product mass."
+      quality_evidence: "approved formula; instrument calibration; batch release record"
+    - protocol_id: cp_reconstitution_utility_records
+      process_id: "reconstitution_blending"
+      flow_role: "Electricity and other route utilities"
+      record_type: "meter and equipment runtime log"
+      raw_fields: "meter_id; opening_reading; closing_reading; runtime; rated_load; batch_id; output_mass_kg"
+      collection_method: "Prefer sub-metering; otherwise use validated runtime and load data for residual allocation."
+      unit: "kWh"
+      frequency: "meter interval and each batch campaign"
+      temporal_coverage: "complete represented production period"
+      site_scope: "all controlled blending lines"
+      aggregation_rule: "Assign route utility use to batches and normalize to reference-product mass."
+      quality_evidence: "meter calibration; runtime log; calculation worksheet"
+    - protocol_id: cp_factory_gate_batch_records
+      process_id: "stabilisation_factory_gate"
+      flow_role: "Juice input, finished output, packaging, and product or packaging loss"
+      record_type: "batch ticket, filler counter, package bill, scale, warehouse release"
+      raw_fields: "batch_id; input_mass_kg; finished_net_mass_kg; package_component; package_mass_kg; rejected_product_mass_kg; packaging_scrap_mass_kg; preservation_method; storage_state"
+      collection_method: "Reconcile process transfers, filler or scale records, packaging issues, rejects, and warehouse releases."
+      unit: "kg"
+      frequency: "each lot or shift"
+      temporal_coverage: "complete represented production period"
+      site_scope: "all controlled preservation and filling lines"
+      aggregation_rule: "Sum released net product and separately normalize packaging and losses to 1 kg reference product."
+      quality_evidence: "scale and filler calibration; packaging stock reconciliation; release record"
+    - protocol_id: cp_stabilisation_utility_records
+      process_id: "stabilisation_factory_gate"
+      flow_role: "Thermal energy, electricity, cooling, and refrigeration"
+      record_type: "meter, fuel or steam invoice, equipment log"
+      raw_fields: "carrier_id; quantity; unit; energy_content; meter_reading; runtime; preservation_method; product_mass_kg"
+      collection_method: "Use process meters or reconcile carrier invoices and equipment records with documented conversion factors."
+      unit: "kWh; MJ; carrier-specific unit"
+      frequency: "meter interval and each campaign"
+      temporal_coverage: "complete represented production period"
+      site_scope: "all controlled preservation, cooling, filling, and storage equipment"
+      aggregation_rule: "Keep carriers separate, assign to represented operations, and normalize to reference-product mass."
+      quality_evidence: "meter calibration; invoice; energy-conversion record"
+    - protocol_id: cp_site_water_effluent_records
+      process_id: "site_services_effluent"
+      flow_role: "Cleaning water, cleaning chemicals, and wastewater"
+      record_type: "water meter, dosing log, effluent meter, laboratory sample"
+      raw_fields: "meter_id; water_source; water_mass_kg; chemical_id; chemical_mass_kg; effluent_mass_kg; COD; BOD; TSS; pH; discharge_destination; sampling_time"
+      collection_method: "Reconcile inlet, reuse, product water, evaporation, and effluent meters; retain chemical dosing and representative effluent analyses."
+      unit: "kg; mg/L where analysed"
+      frequency: "each cleaning cycle or meter interval; effluent sampling per permit or site plan"
+      temporal_coverage: "complete represented production period"
+      site_scope: "all controlled process and effluent systems"
+      aggregation_rule: "Allocate only residual shared services with a documented driver and normalize to reference-product mass."
+      quality_evidence: "meter calibration; dosing record; accredited or documented laboratory report; water balance"
+    - protocol_id: cp_site_service_utility_records
+      process_id: "site_services_effluent"
+      flow_role: "Electricity and other utilities for shared site services"
+      record_type: "sub-meter, invoice, equipment log"
+      raw_fields: "meter_id; quantity; unit; runtime; service_area; production_mass_kg; allocation_driver"
+      collection_method: "Sub-meter where possible; otherwise reconcile site totals and causally allocate residual service use."
+      unit: "kWh; MJ; carrier-specific unit"
+      frequency: "meter interval"
+      temporal_coverage: "complete represented production period"
+      site_scope: "all relevant controlled site services"
+      aggregation_rule: "Remove separately metered product-process use, allocate the residual, and normalize to reference-product mass."
+      quality_evidence: "meter calibration; invoice reconciliation; allocation worksheet"
+    - protocol_id: cp_site_environmental_records
+      process_id: "site_services_effluent"
+      flow_role: "Refrigerant losses, treatment residues, and direct releases"
+      record_type: "refrigerant service log, residue ticket, permit monitoring, emission calculation"
+      raw_fields: "substance_id; opening_inventory; purchases; closing_inventory; recovered_mass; emitted_mass; residue_mass; moisture_basis; destination; monitoring_result; factor_source"
+      collection_method: "Use substance-specific inventory balance, calibrated measurement, or an approved factor applied to collected activity data."
+      unit: "kg; release-specific unit"
+      frequency: "each service event and reporting period"
+      temporal_coverage: "complete represented production period"
+      site_scope: "all controlled refrigeration and treatment systems"
+      aggregation_rule: "Calculate each substance or residue separately and normalize to reference-product mass."
+      quality_evidence: "service certificate; inventory reconciliation; laboratory or permit record; factor citation"
+  calculation_rules:
+    - id: calc_reference_normalization
+      applies_to: "every inventory row"
+      rule: "normalized amount = amount assigned to represented production / released net grapefruit-juice mass"
+      inputs:
+        - "assigned amount"
+        - "released net grapefruit-juice mass"
+      output: "amount per 1 kg reference grapefruit juice"
+      source_ids: []
+    - id: calc_fresh_route_yield
+      applies_to: "fresh_fruit_extraction"
+      rule: "fresh-route juice yield = screened juice intermediate mass / accepted fresh-grapefruit mass"
+      inputs:
+        - "screened juice intermediate mass"
+        - "accepted fresh-grapefruit mass"
+      output: "kg juice intermediate/kg accepted fresh grapefruit"
+      source_ids:
+        - jrc-fdm-bref-2019
+    - id: calc_route_mass_balance
+      applies_to: "each route and production lot"
+      rule: "mass-balance discrepancy = total measured mass inputs - total measured product, co-product, waste, and measured release outputs; investigate rather than force the discrepancy to zero"
+      inputs:
+        - "all measured mass inputs and outputs"
+        - "moisture and concentration states"
+      output: "disclosed discrepancy and reconciliation status"
+      source_ids: []
+    - id: calc_reconstitution_brix_check
+      applies_to: "reconstituted grapefruit juice"
+      rule: "compare the corrected refractometric soluble-solids result at 20 degrees C with the 10.0 degrees Brix Codex minimum and any stricter declared market rule"
+      inputs:
+        - "corrected soluble-solids result"
+        - "measurement temperature and correction"
+        - "applicable market threshold"
+      output: "pass/fail plus measured value and cited threshold"
+      source_ids:
+        - codex-cxs-247-2005
+        - us-21-cfr-146-132
+    - id: calc_allocation_factor
+      applies_to: "residual multifunctional burdens"
+      rule: "allocation factor for output i = documented driver for output i / sum of the same driver across all co-products; apply only after the hierarchy in Section 7"
+      inputs:
+        - "output quantities or values for one consistent driver"
+        - "subdivision assessment"
+      output: "disclosed allocation factor by output"
+      source_ids:
+        - ec-pef-method-2021
+  data_quality_requirements:
+    - id: dq_product_identity
+      applies_to: "every represented product"
+      requirement: "Retain product name, grapefruit species or declared legal identity, route shares, concentration state, soluble solids, preservation, packaging state, added ingredients, geography, period, and shelf-life or storage condition."
+      evidence: "Approved specification, laboratory result, recipe, label or release record"
+    - id: dq_temporal_coverage
+      applies_to: "foreground activity data"
+      requirement: "Cover the full declared production period and capture seasonal or campaign variation; explain shutdowns, missing intervals, and extrapolation."
+      evidence: "Meter completeness report, production calendar, and gap log"
+    - id: dq_measurement_traceability
+      applies_to: "measured quantities"
+      requirement: "Use calibrated or verified measurement systems and preserve raw readings, units, conversion factors, and responsible record owner."
+      evidence: "Calibration certificate, meter or scale log, and conversion worksheet"
+    - id: dq_mass_balance
+      applies_to: "fruit, juice, concentrate, water, co-products, wastes, and losses"
+      requirement: "Reconcile route-specific mass inputs and outputs on consistent moisture and concentration states; disclose unexplained discrepancies and corrective action."
+      evidence: "Lot or campaign mass-balance worksheet"
+    - id: dq_allocation
+      applies_to: "shared operations and co-products"
+      requirement: "Document the allocation hierarchy assessment, causal driver, factors, data period, and sensitivity; retain unallocated measurements where subdivision is possible."
+      evidence: "Allocation decision record and calculation worksheet"
+    - id: dq_upstream_representativeness
+      applies_to: "linked datasets"
+      requirement: "Match input identity, geography, technology, concentration state, temporal coverage, transport hand-off, and treatment route; disclose proxies."
+      evidence: "Dataset metadata and proxy justification"
+    - id: dq_provisional_ranges
+      applies_to: "all reasoned_estimate ranges"
+      requirement: "Treat provisional ranges only as authoring or QA screens; they must not overwrite collected values and must be replaced by reviewed evidence or explicitly accepted before publication-critical use."
+      evidence: "Review record and replacement source or acceptance decision"
+validation_rules:
+  - rule_id: validate_reference_flow
+    applies_to: "reference output"
+    rule: "Confirm exactly one reference output of 1 kg net Grapefruit juice uses product-flow UUID 796385da-cb79-4275-8087-13bc9656ff65, Mass UUID 93a60a56-a3c8-11da-a746-0800200b9a66, unit-group UUID 93a60a57-a4c8-11da-a746-0800200c9a66, and unit kg; packaging mass is separate."
+    source_ids: []
+  - rule_id: validate_product_scope
+    applies_to: "product identity"
+    rule: "Reject nectar, concentrate sold as concentrate, multi-fruit juice, flavoured drinks outside the declared juice identity, fermented beverages, and fresh fruit from this PCR."
+    source_ids:
+      - codex-cxs-247-2005
+      - us-21-cfr-146-132
+  - rule_id: validate_route_completeness
+    applies_to: "represented production mix"
+    rule: "Confirm route shares sum to the represented production, every occurring conditional process is included, purchased juice or concentrate has an upstream dataset, and no controlled operation is omitted."
+    source_ids:
+      - jrc-fdm-bref-2019
+  - rule_id: validate_soluble_solids
+    applies_to: "reconstituted grapefruit juice"
+    rule: "Confirm a corrected soluble-solids result at 20 degrees C is present and is at least 10.0 degrees Brix under the Codex baseline, or meets the cited stricter applicable market threshold."
+    source_ids:
+      - codex-cxs-247-2005
+      - us-21-cfr-146-132
+  - rule_id: validate_inventory_completeness
+    applies_to: "foreground inventory"
+    rule: "Confirm all product, co-product, waste, wastewater, packaging, utility, and direct elementary releases crossing the controlled boundary are represented or explicitly documented as not applicable."
+    source_ids:
+      - jrc-fdm-bref-2019
+      - ec-pef-method-2021
+  - rule_id: validate_mass_balance
+    applies_to: "each route and production lot"
+    rule: "Confirm masses use consistent states, the mass-balance discrepancy is calculated, and material discrepancies are investigated and disclosed rather than silently allocated."
+    source_ids: []
+  - rule_id: validate_allocation
+    applies_to: "multifunctional and shared operations"
+    rule: "Confirm the Section 7 hierarchy is followed, drivers and factors are reproducible, and waste treatment or avoided-production credits are not double counted."
+    source_ids:
+      - ec-pef-method-2021
+  - rule_id: validate_data_quality
+    applies_to: "published foreground dataset"
+    rule: "Confirm protocol coverage, calibration or verification evidence, temporal and geographic representativeness, source links, proxy disclosure, and provisional-range review status are complete."
+    source_ids:
+      - ec-pef-method-2021
+published_dataset_profile:
+  dataset_role: "Foreground production dataset for finished grapefruit juice at the processing-site gate"
+  downstream_use: "secondary_dataset; background_dataset"
+  allowed_use: "Product-footprint, process, and lifecyclemodel studies whose product identity, route mix, geography, period, preservation, packaging state, and boundary match the dataset or are transparently adapted"
+  excluded_use: "Direct representation of grapefruit concentrate, nectar, multi-fruit or flavoured drinks, fermented beverages, fresh grapefruit, or downstream distribution, use, and end-of-life without additional modelling"
+  required_metadata: "Canonical PCR id; reference-flow UUIDs; route shares; input origin and concentration state; soluble-solids result and method; preservation; packaging state and mass; geography; period; technology; shelf-life or storage condition; co-product and waste destinations; allocation; data gaps; upstream dataset links"
+  required_quality_disclosure: "Foreground coverage and protocol completeness; calibration and reconciliation evidence; route mass balance; temporal and geographic representativeness; allocation sensitivity; proxy datasets; provisional reasoned estimates and their review status; excluded stages"
+  update_trigger: "Material change in fruit or concentrate sourcing, recipe or soluble-solids target, route mix, extraction or preservation technology, energy or water system, packaging, site allocation, co-product destination, waste or wastewater treatment, regulatory identity requirement, or a foreground-data period no longer representative"
+data_sources:
+  - id: "codex-cxs-247-2005"
+    type: "standard"
+    reference: "Codex Alimentarius, General Standard for Fruit Juices and Nectars, CXS 247-2005, https://www.fao.org/input/download/standards/10154/CXS_247e.pdf (retrieved 2026-08-11)"
+    used_for: "Fruit-juice identity and composition; potable reconstitution water; authenticity and quality checks; minimum 10.0 degrees Brix for reconstituted grapefruit juice"
+  - id: "us-21-cfr-146-132"
+    type: "standard"
+    reference: "U.S. eCFR, 21 CFR 146.132, Grapefruit juice, https://www.ecfr.gov/current/title-21/section-146.132 (official XML issue date 2026-08-06; retrieved 2026-08-11)"
+    used_for: "Grapefruit-juice identity, directly expressed and from-concentrate distinctions, 10 percent soluble-solids rule for the U.S. standard, permitted preservation, and market-specific labelling context"
+  - id: "jrc-fdm-bref-2019"
+    type: "official_guidance"
+    reference: "European Commission Joint Research Centre, Best Available Techniques (BAT) Reference Document for the Food, Drink and Milk Industries, EUR 29978 EN, JRC118627, 2019, doi:10.2760/243911, https://eippcb.jrc.ec.europa.eu/sites/default/files/2020-01/JRC118627_FDM_Bref_2019_published.pdf (retrieved 2026-08-11)"
+    used_for: "Citrus-juice process decomposition; sorting, washing, oil recovery, mechanical extraction, screening, preservation, concentration, cleaning, wastewater, energy, and solid-residue boundary"
+  - id: "ec-pef-method-2021"
+    type: "official_guidance"
+    reference: "European Commission Recommendation (EU) 2021/2279 on the Environmental Footprint methods, Annex I, Sections 4.5 and 4.6, https://eur-lex.europa.eu/eli/reco/2021/2279/oj/eng (retrieved 2026-08-11)"
+    used_for: "Multifunctionality hierarchy, subdivision and system expansion, physical and other allocation relationships, company-specific inventory collection, and data-quality expectations"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:6f9d63b429f13e633a00ec25d96db891880d43d4219a6942ddac829b731773c3"
+  generated_content_sha256: "sha256:90a00a8fa138b501d64692c9456d36354f900bb489027819b884e0602f79a7f7"

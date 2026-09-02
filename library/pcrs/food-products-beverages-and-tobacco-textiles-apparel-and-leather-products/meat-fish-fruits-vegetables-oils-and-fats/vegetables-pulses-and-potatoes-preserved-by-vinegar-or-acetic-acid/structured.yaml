@@ -1,10 +1,1113 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "21340"
-  title: "Vegetables, pulses and potatoes, preserved by vinegar or acetic acid"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.food-products-beverages-and-tobacco-textiles-apparel-and-leather-products.meat-fish-fruits-vegetables-oils-and-fats.vegetables-pulses-and-potatoes-preserved-by-vinegar-or-acetic-acid"
+  classification_refs: "CPC 3.0: 21340 — Vegetables, pulses and potatoes, preserved by vinegar or acetic acid"
+  covered_products: "Whole, cut, or prepared vegetables, pulses, and potatoes preserved primarily through vinegar or acetic-acid acidulation; fresh-pack and declared cured or fermented routes; retail, food-service, or repacking packs"
+  excluded_products: "Raw, frozen, dried, sugar-preserved, oil-preserved, or salt-only products; relishes; kimchi; sauerkraut; table olives; products intended for a materially different principal transformation"
+  representative_product: "Acid-preserved cucumber represented by Tiangong flow Cucumbers; this is narrower than the full category and is not a generic flow for other vegetables, pulses, or potatoes"
+  production_route: "Exactly one route per foreground dataset: direct acidulation of prepared fresh material, or curing/fermentation followed by acid adjustment; filling, sealing, and stabilization follow the selected route"
+  market_state: "Stabilized product at the preserving facility gate, with product species, presentation, packing medium, preservation route, package format, net mass, and drained mass where relevant declared"
+functional_unit:
+  what: "Edible vegetable, pulse, or potato product preserved primarily by vinegar or acetic acid and delivered at the preserving facility gate"
+  how_much: "1 kg net product mass, including edible packing medium where sold with the product and excluding primary, secondary, and tertiary packaging"
+  how_well: "Conforming to the declared product identity, route, presentation, packing medium, legally applicable quality and safety specification, and an equilibrium pH of 4.6 or less for products modelled under the cited Codex acid-preserved product definitions"
+  how_long_or_cycle: "One production lot at the factory gate after stabilization; no use-duration service is claimed"
+  reference_flow_link: "1 kg of final preserved product output from filling_sealing_stabilization"
+system_boundary:
+  rules:
+    - rule_id: sb_foreground_completeness
+      applies_to: "Facility foreground"
+      rule: "Include receiving, preparation, the one selected preservation route, filling, sealing, stabilization, utilities, cleaning, product losses, rejects, wastewater, packaging scrap, and known direct emissions from those operations."
+      source_ids:
+        - eu-pef-2021-2279
+        - codex-cxs-260-2007
+    - rule_id: sb_route_exclusivity
+      applies_to: "Preservation route"
+      rule: "Model exactly one of direct_acidulation or curing_fermentation_acid_adjustment for a product lot. If a reporting period contains both routes, build separate route inventories and combine only after route-specific normalization using documented output mass shares."
+      source_ids:
+        - codex-cxs-115-1981
+        - codex-cxs-260-2007
+    - rule_id: sb_upstream_and_downstream
+      applies_to: "Linked life-cycle stages"
+      rule: "Connect representative upstream datasets for all purchased inputs and services. Distribution, retail, consumer use, and end-of-life are outside this factory-gate foreground dataset and must be added for a cradle-to-grave study."
+      source_ids:
+        - eu-pef-2021-2279
+    - rule_id: sb_exclusion_disclosure
+      applies_to: "Cut-offs and exclusions"
+      rule: "Do not apply an unlisted cut-off. Justify and document any exclusion and its potential significance; packaging and treatment of foreground wastes must not be silently omitted."
+      source_ids:
+        - eu-pef-2021-2279
+boundary_abstraction:
+  declared_starting_condition: "Fresh accepted material for the direct-acidulation route, or cured/fermented material for the cured route, at receipt by the preserving facility; species, prior treatment, moisture or packing condition, and supplier state are declared"
+  starting_condition_role: "Foreground gate for receiving and preparation; agricultural production, prior curing performed by a supplier, ingredient manufacture, and inbound transport are linked upstream datasets"
+  product_classification_scope: "The semantic scope is vegetables, pulses, and potatoes preserved by vinegar or acetic acid; CPC 3.0 code 21340 is classification context and does not broaden the Cucumbers UUID"
+  recursive_input_rule: "If an acid-preserved input already belongs to this same product category, record it once as a purchased product input and link its independently produced upstream dataset; do not recreate its preservation operations inside the consuming foreground package"
+  upstream_dataset_requirement: "Link representative datasets for cultivation or primary production, any supplier curing, vinegar or acetic acid, water, salt and other ingredients, energy carriers, packaging materials, treatment of wastes and wastewater, and inbound transport according to actual sourcing"
+  disclosure: "Declare product species, cucumber/non-cucumber status, selected route, supplier starting condition, process and storage geography, reference period, stabilization method, packaging, excluded operations, cut-offs, allocation, data gaps, and whether the selected product-flow UUID is semantically valid for the product"
+reference_flow_definition:
+  reference_amount: "1 kg net product mass"
+  product_flow_ref:
+    name: "Cucumbers"
+    uuid: "54b947e7-ab56-45c8-8210-9c91b85eb845"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "biological product identity"
+    - "cucumber versus non-cucumber status"
+    - "direct-acidulation or cured/fermented route"
+    - "fresh or cured starting condition"
+    - "whole or cut presentation"
+    - "vinegar or acetic-acid medium"
+    - "formulation and relevant salt or soluble-solids specification"
+    - "equilibrium pH test basis"
+    - "net mass"
+    - "drained mass where applicable"
+    - "package material and size"
+    - "stabilization method"
+    - "production geography"
+    - "reference period"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_product_mass
+    applies_to: "Reference product output"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Determine net edible product mass on a calibrated mass basis. Include edible packing medium sold with the product and exclude all packaging mass. Normalize the inventory to exactly 1 kg."
+  - id: batch_material_mass
+    applies_to: "Raw material, ingredients, packing medium, product, rejects, and wastes"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Record gross, tare, and net mass or a documented equivalent for each production lot; do not mix volume and mass without a measured lot-specific density and conversion record."
+  - id: equilibrium_ph
+    applies_to: "Stabilized product and packing medium"
+    required_property_ref:
+      name: "Dimensionless pH"
+      uuid: ""
+    required_unit: "pH units"
+    rule: "Measure equilibrium pH after the declared equilibration or stabilization condition using a calibrated method, identify the sampled phase and lot, and retain the test result and calibration evidence."
+  - id: utility_conversion
+    applies_to: "Electricity, fuels, steam, heat, refrigeration, and compressed air"
+    required_property_ref:
+      name: "Energy or metered service"
+      uuid: ""
+    required_unit: "kWh, MJ, kg steam, or declared service unit"
+    rule: "Preserve the metered unit and conversion factor; allocate shared utilities only under section 7 and report normalized energy in a consistent unit without treating energy conversion as a mass conversion."
+process_map:
+  - id: receiving_preparation
+    name: "Receiving and preparation"
+    inclusion: "required"
+    inclusion_condition: "Always"
+    role: "Receive, inspect, sort, wash, trim, cut, and prepare the declared product material"
+    quantitative_reference: "kg prepared material transferred"
+  - id: direct_acidulation
+    name: "Direct acidulation and formulation"
+    inclusion: "conditional"
+    inclusion_condition: "Include only when fresh or otherwise uncured prepared material is directly acidulated; exclude when the cured/fermented route is selected"
+    role: "Formulate prepared material with vinegar or acetic-acid medium and declared ingredients"
+    quantitative_reference: "kg acidulated lot transferred"
+  - id: curing_fermentation_acid_adjustment
+    name: "Curing or fermentation and acid adjustment"
+    inclusion: "conditional"
+    inclusion_condition: "Include only when curing or fermentation occurs within the foreground boundary; exclude when direct acidulation is selected, and treat supplier curing as upstream if received already cured"
+    role: "Cure or ferment material, then adjust with vinegar or acetic acid as declared"
+    quantitative_reference: "kg cured and acid-adjusted lot transferred"
+  - id: filling_sealing_stabilization
+    name: "Filling, sealing, and stabilization"
+    inclusion: "required"
+    inclusion_condition: "Always; use the output of the one selected preservation route"
+    role: "Fill product and medium, close the package, apply the declared heat or non-heat stabilization, cool if needed, and release the finished product"
+    quantitative_reference: "1 kg net preserved product"
+process_inventory:
+  - id: receiving_preparation
+    label: "Receiving and preparation"
+    inputs:
+      product:
+        - row_id: accepted_product_material
+          role: "Accepted vegetable, pulse, or potato material"
+          name: "Facility-specific vegetable, pulse, or potato material"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the actual biological material crossing the facility gate, including its species, fresh or cured state, supplier, lot, and prior treatment. Do not assign the Cucumbers UUID to non-cucumber material."
+          amount:
+            expression: "Net accepted mass issued to receiving and preparation"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg prepared material transferred"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_receiving_preparation_records
+              source_ids:
+                - unsd-cpc-3-0-21340
+                - codex-cxs-260-2007
+                - codex-cxs-115-1981
+            ranges:
+              - role: qa_guardrail
+                lower: "0.4"
+                upper: "5"
+                unit: "kg"
+                basis: "per kg prepared material transferred; candidate screening only"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: preparation_water
+          role: "Preparation water"
+          name: "Process water"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record metered or batch-derived water entering washing, rinsing, soaking, or preparation and keep recycled internal water from being double counted."
+          amount:
+            expression: "Net make-up water entering the preparation boundary"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg prepared material transferred"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_receiving_preparation_records
+              source_ids:
+                - eu-pef-2021-2279
+                - codex-cxs-260-2007
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "20"
+                unit: "kg"
+                basis: "per kg prepared material transferred; candidate screening only"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: preparation_energy
+          role: "Preparation energy"
+          name: "Facility-specific electricity and energy carriers"
+          flow_type: "product"
+          property_unit: "Energy / kWh or MJ by carrier"
+          description: "Record metered electricity and other energy services used for sorting, washing, trimming, cutting, pumping, and internal handling."
+          amount:
+            expression: "Metered process energy or documented share of a submetered total"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg prepared material transferred"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_receiving_preparation_records
+              source_ids:
+                - eu-pef-2021-2279
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "5"
+                unit: "kWh"
+                basis: "per kg prepared material transferred; candidate screening only after converting carriers consistently"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: prepared_product_material
+          role: "Prepared product material"
+          name: "Prepared vegetable, pulse, or potato material"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the net mass of inspected, washed, trimmed, and cut material transferred to the selected preservation route."
+          amount:
+            expression: "Net transfer mass accepted by the preservation process"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "process transfer mass"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_receiving_preparation_records
+              source_ids:
+                - codex-cxs-260-2007
+                - codex-cxs-115-1981
+            ranges:
+              - role: qa_guardrail
+                lower: "0.2"
+                upper: "1"
+                unit: "kg"
+                basis: "per kg accepted product material; candidate screening only"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        - row_id: preparation_rejects
+          role: "Preparation rejects and trimmings"
+          name: "Product-specific organic preparation waste"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record separately weighed rejected product, peel, stems, damaged units, and trimmings leaving the process, with destination and moisture condition."
+          amount:
+            expression: "Net waste mass leaving preparation"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg prepared material transferred"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_receiving_preparation_records
+              source_ids:
+                - eu-pef-2021-2279
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "3"
+                unit: "kg"
+                basis: "per kg prepared material transferred; candidate screening only"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: preparation_wastewater
+          role: "Preparation wastewater"
+          name: "Preparation wastewater"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record wastewater discharged from washing, rinsing, soaking, and cleaning, net of internally reused water, with destination and treatment route."
+          amount:
+            expression: "Metered discharge or documented water-balance result"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg prepared material transferred"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_receiving_preparation_records
+              source_ids:
+                - eu-pef-2021-2279
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "20"
+                unit: "kg"
+                basis: "per kg prepared material transferred; candidate screening only"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        []
+  - id: direct_acidulation
+    label: "Direct acidulation and formulation"
+    inputs:
+      product:
+        - row_id: direct_route_prepared_material
+          role: "Prepared material for direct acidulation"
+          name: "Prepared vegetable, pulse, or potato material"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Use only prepared material assigned to the direct-acidulation route and preserve its product and lot identity."
+          amount:
+            expression: "Net prepared mass charged to the direct-acidulation lot"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg acidulated lot transferred"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_direct_acidulation_records
+              source_ids:
+                - codex-cxs-260-2007
+                - codex-cxs-115-1981
+            ranges:
+              - role: qa_guardrail
+                lower: "0.2"
+                upper: "1.2"
+                unit: "kg"
+                basis: "per kg acidulated lot transferred; candidate screening only"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: direct_route_acid_medium
+          role: "Vinegar or acetic-acid medium"
+          name: "Product-specific vinegar or food-grade acetic-acid solution"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the actual vinegar or food-grade acetic-acid solution, concentration, supplier, and mass added; do not infer acid mass from final pH alone."
+          amount:
+            expression: "Net mass charged from batch formulation records"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg acidulated lot transferred"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_direct_acidulation_records
+              source_ids:
+                - codex-cxs-260-2007
+                - codex-cxs-115-1981
+            ranges:
+              - role: qa_guardrail
+                lower: "0.01"
+                upper: "2"
+                unit: "kg"
+                basis: "per kg acidulated lot transferred; candidate screening only and concentration-specific"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: direct_route_other_ingredients
+          role: "Formulation water, salt, and other ingredients"
+          name: "Product-specific formulation water, salt, sweetener, herbs, spices, and permitted ingredients"
+          flow_type: "product"
+          property_unit: "Mass / kg for each ingredient"
+          description: "Record each formulation input individually in the foreground dataset even though this compact PCR card groups their collection rule. Preserve ingredient identity, concentration, and mass."
+          amount:
+            expression: "Individual net ingredient mass from approved batch formulation and issue records"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg acidulated lot transferred"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_direct_acidulation_records
+              source_ids:
+                - codex-cxs-260-2007
+                - codex-cxs-115-1981
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "3"
+                unit: "kg"
+                basis: "sum per kg acidulated lot transferred; candidate screening only, while publication retains separate ingredient rows"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: direct_route_energy
+          role: "Direct-acidulation energy"
+          name: "Facility-specific electricity and energy carriers"
+          flow_type: "product"
+          property_unit: "Energy / kWh or MJ by carrier"
+          description: "Record mixing, pumping, heating, cooling, holding, and other route-specific energy without including the later filling and stabilization stage."
+          amount:
+            expression: "Metered route energy or documented share of submetered energy"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg acidulated lot transferred"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_direct_acidulation_records
+              source_ids:
+                - eu-pef-2021-2279
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "3"
+                unit: "kWh"
+                basis: "per kg acidulated lot transferred; candidate screening only after consistent carrier conversion"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: direct_acidulated_lot
+          role: "Directly acidulated lot"
+          name: "Directly acidulated vegetable, pulse, or potato lot"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the total product-and-medium mass transferred to filling and retain formulation, time, temperature, and equilibrium-pH links."
+          amount:
+            expression: "Net transfer mass to filling"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "process transfer mass"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_direct_acidulation_records
+              source_ids:
+                - codex-cxs-260-2007
+                - codex-cxs-115-1981
+            ranges:
+              - role: qa_guardrail
+                lower: "0.5"
+                upper: "1.5"
+                unit: "kg"
+                basis: "per kg total measured process inputs; candidate screening only"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        - row_id: direct_route_waste
+          role: "Direct-route effluent and off-specification product"
+          name: "Product-specific off-specification mixture and process effluent"
+          flow_type: "waste"
+          property_unit: "Mass / kg for each waste stream"
+          description: "Record off-specification mixture and discharged acid or brine separately in the foreground dataset, with treatment or recovery destination."
+          amount:
+            expression: "Measured or mass-balance-verified waste mass by destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg acidulated lot transferred"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_direct_acidulation_records
+              source_ids:
+                - eu-pef-2021-2279
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "5"
+                unit: "kg"
+                basis: "sum per kg acidulated lot transferred; candidate screening only, while publication retains separate waste rows"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        []
+  - id: curing_fermentation_acid_adjustment
+    label: "Curing or fermentation and acid adjustment"
+    inputs:
+      product:
+        - row_id: cured_route_prepared_material
+          role: "Prepared material for curing or fermentation"
+          name: "Prepared vegetable, pulse, or potato material"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Use only material assigned to the cured or fermented route. If curing occurred at a supplier, receive the cured input in receiving_preparation and link the supplier operation upstream instead of repeating it here."
+          amount:
+            expression: "Net prepared mass charged to the foreground curing or fermentation lot"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg cured and acid-adjusted lot transferred"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cured_route_records
+              source_ids:
+                - codex-cxs-115-1981
+            ranges:
+              - role: qa_guardrail
+                lower: "0.2"
+                upper: "2"
+                unit: "kg"
+                basis: "per kg cured and acid-adjusted lot transferred; candidate screening only"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: curing_brine_inputs
+          role: "Curing brine, salt, and process water"
+          name: "Product-specific curing brine, salt, and water"
+          flow_type: "product"
+          property_unit: "Mass / kg for each input"
+          description: "Record make-up water, salt, reused brine, and other curing-medium inputs separately, with concentration and reuse cycle documented."
+          amount:
+            expression: "Individual net charge from batch and tank records, excluding internal recirculation from repeated input counting"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg cured and acid-adjusted lot transferred"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cured_route_records
+              source_ids:
+                - codex-cxs-115-1981
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "10"
+                unit: "kg"
+                basis: "sum per kg cured and acid-adjusted lot transferred; candidate screening only, while publication retains separate input rows"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: cured_route_acid_and_ingredients
+          role: "Acid-adjustment medium and formulation ingredients"
+          name: "Product-specific vinegar or acetic-acid medium and formulation ingredients"
+          flow_type: "product"
+          property_unit: "Mass / kg for each input"
+          description: "Record vinegar or food-grade acetic-acid solution and each ingredient added after or during curing, including concentration and actual mass."
+          amount:
+            expression: "Individual net mass from approved formulation and issue records"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg cured and acid-adjusted lot transferred"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cured_route_records
+              source_ids:
+                - codex-cxs-115-1981
+                - codex-cxs-260-2007
+            ranges:
+              - role: qa_guardrail
+                lower: "0.01"
+                upper: "3"
+                unit: "kg"
+                basis: "sum per kg cured and acid-adjusted lot transferred; candidate screening only, while publication retains separate input rows"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: cured_route_energy
+          role: "Curing and fermentation energy"
+          name: "Facility-specific electricity and energy carriers"
+          flow_type: "product"
+          property_unit: "Energy / kWh or MJ by carrier"
+          description: "Record pumping, agitation, temperature control, refrigeration, heating, and holding energy attributable to the foreground curing or fermentation tanks and acid adjustment."
+          amount:
+            expression: "Metered route energy or documented share based on equipment use and holding time"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg cured and acid-adjusted lot transferred"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cured_route_records
+              source_ids:
+                - eu-pef-2021-2279
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "5"
+                unit: "kWh"
+                basis: "per kg cured and acid-adjusted lot transferred; candidate screening only after consistent carrier conversion"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: cured_acid_adjusted_lot
+          role: "Cured and acid-adjusted lot"
+          name: "Cured and acid-adjusted vegetable, pulse, or potato lot"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the total product-and-medium mass transferred to filling and retain links to tank, fermentation or curing duration, formulation, and equilibrium-pH records."
+          amount:
+            expression: "Net transfer mass to filling"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "process transfer mass"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cured_route_records
+              source_ids:
+                - codex-cxs-115-1981
+                - codex-cxs-260-2007
+            ranges:
+              - role: qa_guardrail
+                lower: "0.5"
+                upper: "1.5"
+                unit: "kg"
+                basis: "per kg total measured process inputs; candidate screening only"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        - row_id: cured_route_waste
+          role: "Spent brine, wastewater, and off-specification product"
+          name: "Product-specific spent brine, wastewater, residues, and off-specification product"
+          flow_type: "waste"
+          property_unit: "Mass / kg for each waste stream"
+          description: "Record spent brine, wash or desalting wastewater, tank residues, and off-specification product as separate streams in the foreground dataset, with recovery or treatment destination."
+          amount:
+            expression: "Measured or mass-balance-verified waste mass by destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg cured and acid-adjusted lot transferred"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cured_route_records
+              source_ids:
+                - eu-pef-2021-2279
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "15"
+                unit: "kg"
+                basis: "sum per kg cured and acid-adjusted lot transferred; candidate screening only, while publication retains separate waste rows"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        []
+  - id: filling_sealing_stabilization
+    label: "Filling, sealing, and stabilization"
+    inputs:
+      product:
+        - row_id: preserved_lot_to_filling
+          role: "Acid-preserved lot from selected route"
+          name: "Directly acidulated or cured and acid-adjusted product lot"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Receive output from exactly one route for each product lot and preserve the route identifier through filling and release."
+          amount:
+            expression: "Net product-and-medium mass issued to filling"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg final net product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_filling_stabilization_records
+              source_ids:
+                - codex-cxs-260-2007
+                - codex-cxs-115-1981
+            ranges:
+              - role: qa_guardrail
+                lower: "1"
+                upper: "2"
+                unit: "kg"
+                basis: "per kg final net product; candidate screening only"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: packaging_materials
+          role: "Packaging materials"
+          name: "Facility-specific packaging components by material"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record primary container, closure, seal, label, and attributable secondary and tertiary packaging separately by material and mass."
+          amount:
+            expression: "Issued packaging less verified returns, divided by conforming net product mass"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg final net product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_filling_stabilization_records
+              source_ids:
+                - eu-pef-2021-2279
+            ranges:
+              - role: qa_guardrail
+                lower: "0.01"
+                upper: "2"
+                unit: "kg"
+                basis: "per kg final net product; candidate screening only and package-format specific"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: filling_stabilization_energy
+          role: "Filling and stabilization energy"
+          name: "Facility-specific electricity and energy carriers"
+          flow_type: "product"
+          property_unit: "Energy / kWh or MJ by carrier"
+          description: "Record filling, closing, pasteurization or other stabilization, cooling, refrigeration, conveyors, and line-support energy by carrier."
+          amount:
+            expression: "Metered line energy or documented share of submetered equipment energy"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg final net product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_filling_stabilization_records
+              source_ids:
+                - eu-pef-2021-2279
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "5"
+                unit: "kWh"
+                basis: "per kg final net product; candidate screening only after consistent carrier conversion"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: filling_cleaning_water
+          role: "Filling and cleaning water"
+          name: "Process water"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record make-up water used for package rinsing, stabilization, cooling, and cleaning, net of documented internal recirculation."
+          amount:
+            expression: "Metered or water-balance-derived make-up water"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg final net product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_filling_stabilization_records
+              source_ids:
+                - eu-pef-2021-2279
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "15"
+                unit: "kg"
+                basis: "per kg final net product; candidate screening only"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: final_preserved_product
+          role: "Final preserved product"
+          name: "Cucumbers"
+          flow_type: "product"
+          flow_ref:
+            uuid: "54b947e7-ab56-45c8-8210-9c91b85eb845"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This is the quantitative reference. The net edible mass includes sold packing medium and excludes packaging."
+          amount:
+            expression: "exactly 1 kg reference product after batch normalization"
+            value_mode: "fixed_value"
+            specificity: "not_applicable"
+            basis:
+              text: "1 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "method_formula"
+              source_ids:
+                - eu-pef-2021-2279
+            ranges:
+              - role: allowed_range
+                lower: "1"
+                upper: "1"
+                unit: "kg"
+                basis: "per reference flow"
+                basis_kind: "reference_flow"
+                evidence_kind: "method_formula"
+                source_ids:
+                  - eu-pef-2021-2279
+      waste:
+        - row_id: packaging_scrap
+          role: "Packaging scrap and rejected packages"
+          name: "Packaging scrap by material"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record broken containers, closure and seal losses, label and film scrap, and rejected filled packages separately by material and destination."
+          amount:
+            expression: "Net measured packaging waste leaving the line"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg final net product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_filling_stabilization_records
+              source_ids:
+                - eu-pef-2021-2279
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.5"
+                unit: "kg"
+                basis: "per kg final net product; candidate screening only"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: filling_product_loss
+          role: "Product loss and off-specification packages"
+          name: "Product-specific filling and stabilization waste"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record spilled product, start-up and shutdown losses, samples not returned, and off-specification packages by recovery or treatment route."
+          amount:
+            expression: "Net measured product waste leaving the line"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg final net product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_filling_stabilization_records
+              source_ids:
+                - eu-pef-2021-2279
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.5"
+                unit: "kg"
+                basis: "per kg final net product; candidate screening only"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: filling_wastewater
+          role: "Filling and cleaning wastewater"
+          name: "Filling and cleaning wastewater"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record package-rinse, cooling, and cleaning wastewater leaving the process, net of recirculated water, with treatment destination."
+          amount:
+            expression: "Metered discharge or documented water-balance result"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg final net product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_filling_stabilization_records
+              source_ids:
+                - eu-pef-2021-2279
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "15"
+                unit: "kg"
+                basis: "per kg final net product; candidate screening only"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocation_avoid
+    applies_to: "Multi-output or shared operations"
+    rule: "Avoid allocation where possible by subdividing route-, line-, or product-specific records or by expanding the system when a justified substituted function is demonstrated."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: allocation_route_separation
+    applies_to: "Direct and cured/fermented routes"
+    rule: "Treat the two preservation routes as mutually exclusive at lot level. For a reporting period containing both, normalize each route separately and aggregate using measured conforming product mass; do not charge both route inventories to every kilogram."
+    source_ids:
+      - eu-pef-2021-2279
+      - codex-cxs-115-1981
+  - rule_id: allocation_residual
+    applies_to: "Inseparable co-products and shared utilities"
+    rule: "After subdivision and system expansion are demonstrably impracticable, use an underlying physical relationship when one can be established. Otherwise use a documented economic relationship with consistent prices and reference period, and report the method, factor, affected flows, and sensitivity. Waste treatment receives burdens and credits only according to the selected life-cycle method and documented destination."
+    source_ids:
+      - eu-pef-2021-2279
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_receiving_preparation_records
+      process_id: "receiving_preparation"
+      flow_role: "All received material, preparation water and energy, prepared output, rejects, and wastewater"
+      record_type: "Lot, scale, meter, issue, transfer, and waste records"
+      raw_fields: "product identity; supplier and lot; fresh or cured state; gross, tare, and net mass; water meter; energy meter and carrier; prepared transfer mass; reject mass; wastewater volume or mass; destination; timestamps"
+      collection_method: "Reconcile calibrated scale tickets, batch sheets, utility meters, and waste manifests to the same lot or declared allocation period"
+      unit: "kg; m3 with measured density conversion; kWh; MJ"
+      frequency: "Each lot for materials and outputs; meter interval aligned to production"
+      temporal_coverage: "Declared representative production period covering normal product and operating variation"
+      site_scope: "All facilities and lines included in the dataset"
+      aggregation_rule: "Sum lot records by product and route, subtract documented returns and internal reuse, then normalize through calc_reference_normalization"
+      quality_evidence: "Scale and meter calibration; signed batch record; supplier specification; reconciliation and exception log"
+    - protocol_id: cp_direct_acidulation_records
+      process_id: "direct_acidulation"
+      flow_role: "Prepared material, acid medium, every formulation ingredient, energy, transfer output, pH, and waste"
+      record_type: "Lot formulation, issue, meter, transfer, laboratory, and waste records"
+      raw_fields: "route id; product lot; ingredient id and concentration; individual charge mass; energy by carrier; transfer mass; equilibrium pH, sample phase and time; waste stream and destination"
+      collection_method: "Link approved formulation and actual issues to calibrated masses, submetered utilities, transfer records, and lot test results"
+      unit: "kg; kWh; MJ; pH units"
+      frequency: "Each lot; continuous or interval utility data allocated to documented equipment operation"
+      temporal_coverage: "Declared representative period for the direct route"
+      site_scope: "All direct-acidulation lines in scope"
+      aggregation_rule: "Keep ingredient rows separate, reconcile input and output mass, and normalize only direct-route output"
+      quality_evidence: "Approved formulation; calibration; laboratory method and calibration; batch release; mass-balance review"
+    - protocol_id: cp_cured_route_records
+      process_id: "curing_fermentation_acid_adjustment"
+      flow_role: "Prepared material, brine and salt, acid and ingredients, energy, tank output, duration, pH, spent brine, wastewater, and product waste"
+      record_type: "Lot, tank, formulation, issue, meter, laboratory, transfer, and waste records"
+      raw_fields: "route id; product lot; tank id; charge and discharge mass; brine concentration and reuse; ingredient concentration and mass; start and end time; temperature; energy by carrier; equilibrium pH; each waste stream and destination"
+      collection_method: "Reconcile tank logs, approved formulation, actual issues, calibrated masses, meters, laboratory results, and waste records"
+      unit: "kg; h; degrees C; kWh; MJ; pH units"
+      frequency: "Each lot or tank; interval utilities aligned to occupied tank time"
+      temporal_coverage: "Declared representative period for the cured or fermented route"
+      site_scope: "All curing or fermentation tanks and acid-adjustment lines in scope"
+      aggregation_rule: "Exclude internal brine recirculation from repeated inputs, keep waste streams separate, reconcile mass, and normalize route output"
+      quality_evidence: "Tank and batch record; calibration; laboratory method and calibration; release record; mass-balance and reuse log"
+    - protocol_id: cp_filling_stabilization_records
+      process_id: "filling_sealing_stabilization"
+      flow_role: "Preserved lot, packaging, water, energy, finished product, package scrap, product loss, wastewater, pH, and stabilization conditions"
+      record_type: "Lot, package bill, issue, meter, process-control, release, waste, and laboratory records"
+      raw_fields: "source route and lot; product-and-medium mass; package component and issue mass; conforming unit count; net mass; drained mass where applicable; time and temperature or other stabilization parameter; water and energy; equilibrium pH; each waste mass and destination"
+      collection_method: "Link route transfer to package issues, calibrated checkweigher or scale, process controls, utility meters, waste records, and release tests"
+      unit: "kg; count; kWh; MJ; degrees C and time; pH units"
+      frequency: "Each lot; utility and process-control intervals aligned to the filling campaign"
+      temporal_coverage: "Declared representative period covering package and stabilization variants"
+      site_scope: "All filling and stabilization lines in scope"
+      aggregation_rule: "Calculate conforming net product mass, separate packaging mass, reconcile product and package losses, and normalize to 1 kg"
+      quality_evidence: "Package specification; scale and meter calibration; process-control record; release record; laboratory evidence; reconciliation log"
+  calculation_rules:
+    - id: calc_reference_normalization
+      applies_to: "Every inventory amount"
+      rule: "q_normalized = q_attributable / conforming_net_product_mass_kg; report q_normalized per 1 kg reference product. Keep packaging mass outside the denominator and edible sold packing medium inside it."
+      inputs:
+        - "attributable flow amount"
+        - "conforming net product mass"
+        - "package tare"
+      output: "normalized amount per 1 kg reference product"
+      source_ids:
+        - eu-pef-2021-2279
+    - id: calc_route_exclusivity
+      applies_to: "Preservation-route inventories"
+      rule: "Assign each lot to exactly one route id. Aggregate route results only as sum(route-normalized amount × route conforming product mass) / total conforming product mass."
+      inputs:
+        - "lot route id"
+        - "route-specific flow totals"
+        - "route-specific conforming product mass"
+      output: "reporting-period route-weighted inventory"
+      source_ids:
+        - codex-cxs-115-1981
+        - codex-cxs-260-2007
+        - eu-pef-2021-2279
+    - id: calc_mass_reconciliation
+      applies_to: "Each process and production lot"
+      rule: "mass_balance_gap = total measured mass inputs − total measured product, waste, recovered material, retained inventory change, and measured discharges. Investigate and disclose material gaps; do not create an elementary emission solely to force closure."
+      inputs:
+        - "input masses"
+        - "product and waste masses"
+        - "inventory change"
+        - "discharge masses"
+      output: "process mass-balance gap and reconciliation status"
+      source_ids:
+        - eu-pef-2021-2279
+    - id: calc_shared_utility
+      applies_to: "Shared metered utilities"
+      rule: "Allocate only after attempted subdivision. Use measured equipment consumption or a causal driver such as operating time and rated load; document the driver and reconcile allocated shares to the meter total."
+      inputs:
+        - "meter total"
+        - "equipment measurement or causal driver"
+        - "production records"
+      output: "attributable utility amount by process and route"
+      source_ids:
+        - eu-pef-2021-2279
+  data_quality_requirements:
+    - id: dq_product_identity
+      applies_to: "Reference product and all product flows"
+      requirement: "Preserve biological product identity, preservation route, starting condition, presentation, and packing medium. The Cucumbers UUID is acceptable only for cucumber datasets; another vegetable, pulse, or potato requires a semantically appropriate flow before publication."
+      evidence: "Product specification, label, supplier record, batch record, and product-flow review"
+    - id: dq_primary_records
+      applies_to: "Foreground facility processes"
+      requirement: "Use facility-specific records for all known material, water, energy, product, waste, and direct-emission flows. Document proxies and the reason direct records were unavailable."
+      evidence: "Records required by the four collection protocols and eu-pef-2021-2279"
+    - id: dq_representativeness
+      applies_to: "Dataset reference period"
+      requirement: "Select and disclose a period that represents the declared product, route, technology, geography, package format, and normal operating variation; disclose abnormal campaigns and excluded downtime."
+      evidence: "Production schedule, route and product mix, facility scope, reference-period rationale, and PEF representativeness assessment"
+    - id: dq_completeness
+      applies_to: "Inventory and linked datasets"
+      requirement: "Reconcile known inputs and outputs, link upstream datasets for purchased inputs and waste treatment, and disclose cut-offs, data gaps, allocation, and mass-balance gaps."
+      evidence: "Mass and utility reconciliation, source list, exclusion register, and eu-pef-2021-2279"
+    - id: dq_provisional_ranges
+      applies_to: "All reasoned_estimate ranges"
+      requirement: "Treat ranges as temporary QA screens only. Before publication replace them with ranges from representative foreground batches or reviewed transferable evidence, record applicability, and revise the PCR when evidence materially changes a guardrail."
+      evidence: "Range replacement register, representative batch summary or reviewed source, approval record, and update log"
+    - id: dq_test_and_calibration
+      applies_to: "Mass, pH, temperature, time, concentration, and utility measurements"
+      requirement: "Retain instrument identity, method, calibration or verification status, sample timing, sampled phase, and corrective action for failed checks."
+      evidence: "Calibration certificates, laboratory method, quality-control results, process-control logs, and batch release record"
+validation_rules:
+  - rule_id: val_identity_and_flow
+    applies_to: "Reference product"
+    rule: "Verify the declared product is within the semantic category and that Cucumbers 54b947e7-ab56-45c8-8210-9c91b85eb845 is used only for cucumber datasets. Fail publication of another vegetable, pulse, or potato until a semantically appropriate product flow is selected."
+    source_ids:
+      - unsd-cpc-3-0-21340
+      - codex-cxs-115-1981
+      - codex-cxs-260-2007
+  - rule_id: val_route_exclusive
+    applies_to: "Process map and each lot"
+    rule: "Verify exactly one preservation route is active for each lot, that route-specific inputs and wastes remain in that route, and that any period aggregation uses measured conforming product mass shares."
+    source_ids:
+      - codex-cxs-115-1981
+      - codex-cxs-260-2007
+  - rule_id: val_reference_mass
+    applies_to: "Quantitative reference"
+    rule: "Verify the denominator is exactly 1 kg net edible product including sold packing medium and excluding packaging; check tare removal and lot normalization."
+    source_ids:
+      - eu-pef-2021-2279
+      - codex-cxs-260-2007
+  - rule_id: val_equilibrium_ph
+    applies_to: "Released acid-preserved product"
+    rule: "Verify a calibrated, lot-linked equilibrium-pH result of 4.6 or less for products modelled under the cited Codex product definitions, together with sample phase, timing, method, and release decision."
+    source_ids:
+      - codex-cxs-115-1981
+      - codex-cxs-260-2007
+  - rule_id: val_foreground_completeness
+    applies_to: "All four foreground processes"
+    rule: "Verify all known material, water, energy, product, waste, packaging, wastewater, and direct-emission records are represented or explicitly justified as absent; verify linked upstream datasets and waste destinations."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: val_mass_and_utility_reconciliation
+    applies_to: "Each process and reporting period"
+    rule: "Verify process mass-balance gaps are investigated and shared utilities reconcile to meters without double counting or arbitrary closure flows."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: val_provisional_range_replacement
+    applies_to: "Candidate quantitative guidance"
+    rule: "Fail publication while any reasoned_estimate range is being used as a default amount or lacks a documented replacement assessment based on representative batches or reviewed evidence. Values outside a provisional QA range require investigation and disclosure, not automatic substitution."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: val_allocation_and_exclusions
+    applies_to: "Allocation, cut-offs, and reporting"
+    rule: "Verify subdivision was attempted, the chosen residual allocation is documented and reproducible, packaging is included, exclusions are justified, and limitations prevent unsupported comparison or comparative assertion."
+    source_ids:
+      - eu-pef-2021-2279
+published_dataset_profile:
+  dataset_role: "Facility-specific foreground data package and factory-gate product dataset for the declared acid-preserved vegetable, pulse, or potato"
+  downstream_use: "secondary_dataset; background_dataset after methodology review and publication"
+  allowed_use: "Product-specific process and lifecycle-model construction for the declared species, route, formulation, geography, period, package, and stabilization technology; aggregation across routes only by the prescribed rule"
+  excluded_use: "Non-cucumber modelling with the Cucumbers UUID; unqualified generic modelling of all CPC 21340 products; direct comparison or comparative assertion without aligned function, product flow, route, system boundary, data quality, and review"
+  required_metadata: "Product species and common name; selected product-flow UUID; CPC context; cucumber/non-cucumber status; route; fresh or cured starting condition; presentation; packing medium and formulation; pH method and result; net and drained mass basis; package components; stabilization method; facility geography; technology; reference period; allocation; cut-offs; upstream dataset choices"
+  required_quality_disclosure: "Foreground coverage; route and product representativeness; calibration and release evidence; mass and utility reconciliation; shared-service allocation; waste and wastewater destinations; proxy and data-gap register; provisional-range replacement status; limitations of the narrower cucumber representative"
+  update_trigger: "A change in product-flow semantics or UUID; modelling of another vegetable, pulse, or potato; material formulation, route, stabilization, package, technology, geography, or supplier change; revised CPC, Codex, or PEF source; representative batch evidence that replaces or materially changes a provisional range; review finding affecting boundary, allocation, or validation"
+data_sources:
+  - id: "unsd-cpc-3-0-21340"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, Central Product Classification Version 3.0, subclass 21340, “Vegetables, pulses and potatoes, preserved by vinegar or acetic acid,” official structure file: https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Structure_30Jun2025.csv (retrieved 2026-08-11)"
+    used_for: "Product-category title and classification context; not quantitative process evidence"
+  - id: "codex-cxs-260-2007"
+    type: "standard"
+    reference: "FAO/WHO Codex Alimentarius, CXS 260-2007, Standard for Pickled Fruits and Vegetables, amended 2023: https://workspace.fao.org/sites/codex/Standards/CXS%20260-2007/CXS_260e.pdf (retrieved 2026-08-11)"
+    used_for: "Broad product definition, process decomposition, acidified packing medium, equilibrium pH, quality, filling, labelling, and hygiene context; excludes pickled cucumbers from its own scope"
+  - id: "codex-cxs-115-1981"
+    type: "standard"
+    reference: "FAO/WHO Codex Alimentarius, CXS 115-1981, Standard for Pickled Cucumbers (Cucumber Pickles), amended 2025: https://openknowledge.fao.org/handle/20.500.14283/cd8998en (retrieved 2026-08-11)"
+    used_for: "Cucumber-specific fresh-pack and cured/fermented routes, acidulation, equilibrium pH, ingredients, product quality, fill, and the narrower representative-product boundary"
+  - id: "eu-pef-2021-2279"
+    type: "official_guidance"
+    reference: "European Commission, Recommendation (EU) 2021/2279 of 15 December 2021 on the use of the Environmental Footprint methods, Annex I Product Environmental Footprint Method, consolidated text: https://eur-lex.europa.eu/eli/reco/2021/2279/2021-12-30/eng (retrieved 2026-08-11)"
+    used_for: "Functional-unit and reference-flow logic, life-cycle and foreground boundary, company-specific inventory, allocation hierarchy, exclusions, data quality, documentation, and validation"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:a3bd6352b3fd0ca4e16ba4e12ef9dee6427795099a4e7062082f4457ca00df92"
+  generated_content_sha256: "sha256:f4d6e63774ffcc3caab560a6ce9c76cd6c69a14bf94fd4e4d39ac792023c537c"

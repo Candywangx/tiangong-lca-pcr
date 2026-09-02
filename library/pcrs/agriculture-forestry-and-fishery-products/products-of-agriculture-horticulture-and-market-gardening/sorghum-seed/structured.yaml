@@ -1,10 +1,841 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "01141"
-  title: "Sorghum, seed"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.agriculture-forestry-and-fishery-products.products-of-agriculture-horticulture-and-market-gardening.sorghum-seed"
+  classification_refs: "CPC 3.0: 01141, Sorghum, seed (exact)"
+  covered_products: "*Sorghum* seed grown specifically for sowing; open-pollinated and hybrid seed; cleaned, conditioned, untreated, coated, or otherwise treated seed when treatment is declared"
+  excluded_products: "Sorghum not grown specifically for seed (CPC 01142); sweet sorghum (CPC 01809); grain, feed, biomass, and downstream crop products"
+  representative_product: "A lot-traceable, cleaned, sowing-quality sorghum seed product at the seed-producer gate"
+  production_route: "Parent or foundation seed input; seed-crop cultivation and harvest; drying and handling; cleaning and conditioning; conditional treatment, packaging, and storage"
+  market_state: "Net marketable seed mass, seed-grade and ready for sowing, with moisture, quality, class, treatment, and packaging state declared"
+functional_unit:
+  what: "Production of sowing-quality sorghum seed delivered at the seed-producer gate"
+  how_much: "1 kg net marketable seed, excluding packaging"
+  how_well: "Species and variety identified; hybrid/open-pollinated status, seed class, germination, analytical purity, varietal purity, moisture, treatment/coating, and certification scheme or no-claim status declared"
+  how_long_or_cycle: "One seed-production crop cycle plus post-harvest handling and storage through producer-gate dispatch"
+  reference_flow_link: "rf_sorghum_seed_mass"
+system_boundary:
+  rules:
+    - rule_id: boundary_foreground_chain
+      applies_to: "Foreground seed production"
+      rule: "Include cultivation and harvest, drying and handling, cleaning and conditioning, and all triggered treatment, packaging, and storage operations through producer-gate dispatch."
+      source_ids:
+        - fao-qds-2006
+        - oecd-seed-schemes-2026
+    - rule_id: boundary_inputs_outputs
+      applies_to: "Inventory completeness"
+      rule: "Record parent seed, nutrients, crop-protection products, irrigation, energy, treatment materials, packaging, marketable seed, rejects, residues, wastes, and direct emissions. Any exclusion must be quantified or supported by a documented screening."
+      source_ids:
+        - eu-pef-2021
+    - rule_id: boundary_managed_soils
+      applies_to: "Cultivation emissions"
+      rule: "Calculate direct and indirect managed-soil N2O from applicable synthetic and organic N, crop residues, volatilisation, and leaching/runoff pathways without double counting. Record lime and urea CO2 when applicable."
+      source_ids:
+        - ipcc-2019-managed-soils
+    - rule_id: boundary_downstream_exclusion
+      applies_to: "Downstream stages"
+      rule: "Exclude distribution after producer-gate dispatch, sowing, and production or use of the commercial crop; disclose any study-specific extension beyond this boundary."
+      source_ids: []
+boundary_abstraction:
+  declared_starting_condition: "A separately identified parent, foundation, or other eligible sorghum seed lot enters the seed-crop cultivation cycle; initial field location, prior crop, soil management state, and crop year are declared."
+  starting_condition_role: "Upstream seed input and disclosed field baseline for the foreground seed-production cycle."
+  product_classification_scope: "The output is restricted to sorghum grown specifically for seed under CPC 01141; grain sorghum, sweet sorghum, and downstream crop production are outside scope."
+  recursive_input_rule: "Sorghum seed used for planting is recorded as an input with its own upstream dataset. Do not recursively recreate the same seed-production foreground inside the current dataset."
+  upstream_dataset_requirement: "Use a geographically, temporally, technologically, and seed-class appropriate upstream dataset for parent seed, fertiliser, crop-protection products, energy, water supply, treatment materials, and packaging."
+  disclosure: "Declare field geography and crop year, seed class and lot, irrigation regime, fertiliser and crop-protection regime, harvest moisture, drying/conditioning route, treatment, packaging, storage, co-products, exclusions, and allocation."
+reference_flow_definition:
+  reference_amount: "1 kg"
+  product_flow_ref:
+    name: "Sorghum, seed"
+    uuid: "0ad65fec-228e-47cf-8d8d-6d00f56c18ed"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "species and variety/cultivar"
+    - "hybrid or open-pollinated status"
+    - "seed class/generation"
+    - "production geography and crop year"
+    - "certification or QDS scheme and claim status"
+    - "germination test result/method/date"
+    - "analytical and varietal purity result/method/date"
+    - "moisture content and measurement basis"
+    - "treatment/coating active substance and loading or untreated status"
+    - "packaging state"
+    - "storage duration and conditions"
+    - "net seed mass"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "Final marketable sorghum seed"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Use net seed mass excluding packaging. Record the lot moisture at weighing and do not substitute nominal bag mass for measured net mass."
+  - id: moisture_basis
+    applies_to: "Harvested, dried, conditioned, and final seed masses"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Preserve the as-measured moisture basis. Any dry-matter conversion must use the measured moisture fractions and disclose the formula; no default moisture is imposed."
+  - id: seed_count_conversion
+    applies_to: "Seed counts converted to mass"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Use a lot-specific measured thousand-seed mass or equivalent count-to-mass test and retain the sampling record."
+  - id: nutrient_basis
+    applies_to: "Fertiliser and organic amendment inputs"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg product and kg nutrient"
+    rule: "Record formulated product mass and nutrient N, P, and K separately; nitrogen activity data used in emissions calculations must be expressed as kg N."
+  - id: energy_basis
+    applies_to: "Electricity and fuels"
+    required_property_ref:
+      name: "Dataset-specific"
+      uuid: ""
+    required_unit: "kWh, MJ, or kg fuel"
+    rule: "Preserve metered electricity and purchased fuel units. Conversions must use disclosed meter factors, density, or net calorific value applicable to the actual carrier."
+process_map:
+  - id: seed_crop_cultivation
+    name: "Sorghum seed-crop cultivation and harvest"
+    inclusion: "required"
+    inclusion_condition: "Always included for seed grown in the represented production cycle"
+    role: "Foreground crop production and field emissions"
+    quantitative_reference: "Per kg harvested seed lot and normalized to 1 kg final marketable seed"
+  - id: postharvest_drying
+    name: "Post-harvest drying and handling"
+    inclusion: "required"
+    inclusion_condition: "Include measured handling; report zero drying energy only when no active drying occurs"
+    role: "Moisture adjustment and handling"
+    quantitative_reference: "Per kg dried uncleaned seed lot and normalized to 1 kg final marketable seed"
+  - id: seed_cleaning_conditioning
+    name: "Seed cleaning and conditioning"
+    inclusion: "required"
+    inclusion_condition: "Always included"
+    role: "Removal of foreign material, off-size seed, and nonconforming fractions"
+    quantitative_reference: "Per 1 kg conditioned seed output"
+  - id: treatment_packaging_storage
+    name: "Seed treatment, packaging, and storage"
+    inclusion: "conditional"
+    inclusion_condition: "Include every operation occurring before producer-gate dispatch; untreated, bulk, or no-storage cases must be declared"
+    role: "Final market state preparation"
+    quantitative_reference: "Per 1 kg final marketable seed"
+process_inventory:
+  - id: seed_crop_cultivation
+    label: "Sorghum seed-crop cultivation and harvest"
+    inputs:
+      product:
+        - row_id: parent_seed_input
+          role: "Parent or foundation sorghum seed"
+          name: "Sorghum, seed"
+          flow_type: "product"
+          flow_ref:
+            uuid: "0ad65fec-228e-47cf-8d8d-6d00f56c18ed"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record the identified sowing seed lot crossing into the represented crop cycle. Use the confirmed sorghum seed flow only when its seed-purpose scope and lot qualifiers match."
+          amount:
+            expression: "measured net seed mass sown"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg final marketable sorghum seed"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cultivation_records
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0.001"
+                upper: "0.2"
+                unit: "kg/kg final marketable seed"
+                basis: "broad plausibility screen pending reviewed crop-specific evidence"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: nutrient_inputs
+          role: "Nutrient and soil-amendment products"
+          name: "Dataset-specific nutrient or amendment product; resolve each Tiangong UUID before dataset publication"
+          flow_type: "product"
+          property_unit: "Mass / kg product and kg nutrient"
+          description: "Record each fertiliser, manure, compost, lime, urea, and other amendment as a separate dataset flow, including product mass and nutrient composition."
+          amount:
+            expression: "purchase, application, and nutrient-analysis records reconciled to the field"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg final marketable sorghum seed"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cultivation_records
+              source_ids:
+                - ipcc-2019-managed-soils
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "2"
+                unit: "kg product/kg final marketable seed"
+                basis: "broad plausibility screen; not a default inventory value or conformance limit"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: irrigation_water
+          role: "Irrigation water supplied"
+          name: "Site-specific irrigation water supply; resolve the Tiangong UUID for the actual source"
+          flow_type: "product"
+          property_unit: "Mass / kg water"
+          description: "Record withdrawn and delivered irrigation water separately when metering or the water-supply dataset distinguishes them."
+          amount:
+            expression: "metered volume converted with measured or documented water density, or mass meter record"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg final marketable sorghum seed"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cultivation_records
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "10000"
+                unit: "kg water/kg final marketable seed"
+                basis: "broad rainfed-to-irrigated plausibility screen; not a default inventory value or conformance limit"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: field_energy
+          role: "Field energy carriers"
+          name: "Dataset-specific fuel or electricity flow; no geography-free default is selected"
+          flow_type: "product"
+          property_unit: "Carrier-specific / kg fuel, MJ, or kWh"
+          description: "Record each diesel, other fuel, and electricity carrier separately with the geography and technology actually used."
+          amount:
+            expression: "reconciled fuel issue, invoice, and meter records"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg final marketable sorghum seed"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cultivation_records
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "5"
+                unit: "MJ/kg final marketable seed"
+                basis: "broad plausibility screen after converting actual carriers; not a default inventory value"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: cultivated_seed_lot
+          role: "Harvested sorghum seed lot before drying and cleaning"
+          name: "Unresolved seed-purpose intermediate; semantically exact Tiangong UUID required before separate-dataset publication"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record the wet harvested seed-purpose lot as an intermediate product. Do not substitute the CPC 01142 Sorghum, other flow merely because a process name resembles seed cultivation."
+          amount:
+            expression: "measured harvested lot mass with moisture and lot identity"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per crop cycle and normalized to 1 kg final marketable seed"
+              kind: "crop_cycle"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cultivation_records
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: removed_crop_residues
+          role: "Field residues removed from the field"
+          name: "Dataset-specific sorghum crop residue or waste flow"
+          flow_type: "waste"
+          property_unit: "Mass / kg dry matter"
+          description: "Record only residue mass that leaves the field boundary; residues retained on field are activity data for nutrient and emissions calculations."
+          amount:
+            expression: "measured removed residue mass and moisture/dry-matter fraction"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg final marketable sorghum seed"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cultivation_records
+              source_ids:
+                - ipcc-2019-managed-soils
+            ranges: []
+      elementary:
+        - row_id: direct_soil_n2o
+          role: "Direct nitrous oxide from managed soil"
+          name: "nitrous oxide"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "29061478-6556-11dd-ad8b-0800200c9a66"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Calculate direct managed-soil N2O using applicable nitrogen activity data and the selected IPCC tier or a documented higher-tier method."
+          amount:
+            expression: "calc_managed_soil_n2o"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg final marketable sorghum seed"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_cultivation_records
+              source_ids:
+                - ipcc-2019-managed-soils
+            ranges: []
+  - id: postharvest_drying
+    label: "Post-harvest drying and handling"
+    inputs:
+      product:
+        - row_id: harvested_seed_input
+          role: "Harvested seed lot received"
+          name: "Same unresolved seed-purpose intermediate as cultivated_seed_lot"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Preserve the cultivation lot identity, mass, and moisture at receipt."
+          amount:
+            expression: "measured received mass"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg dried seed lot output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_postharvest_records
+              source_ids: []
+            ranges: []
+        - row_id: drying_energy
+          role: "Drying and handling energy"
+          name: "Dataset-specific electricity or fuel flow; no geography-free default is selected"
+          flow_type: "product"
+          property_unit: "Carrier-specific / kWh, MJ, or kg fuel"
+          description: "Record electricity and each fuel carrier separately; a zero active-drying value requires a declared passive-drying route."
+          amount:
+            expression: "meter, invoice, or batch fuel record allocated to the lot"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg dried seed lot output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_postharvest_records
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "2"
+                unit: "kWh/kg dried seed output"
+                basis: "broad passive-to-active drying plausibility screen; not a default inventory value"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: dried_seed_lot
+          role: "Dried uncleaned sorghum seed lot"
+          name: "Unresolved dried seed-purpose intermediate; semantically exact Tiangong UUID required before separate-dataset publication"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record dried intermediate mass, moisture, drying route, and lot identity."
+          amount:
+            expression: "measured output mass and moisture"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg dried seed lot output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_postharvest_records
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        - row_id: drying_water_vapour
+          role: "Water removed during drying"
+          name: "water vapour"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "2905ed3f-6556-11dd-ad8b-0800200c9a66"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Calculate water removed by the wet-basis moisture mass balance and reconcile it with measured input and output masses."
+          amount:
+            expression: "calc_drying_water_balance"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg dried seed lot output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_postharvest_records
+              source_ids:
+                - mass-balance-identity
+            ranges: []
+  - id: seed_cleaning_conditioning
+    label: "Seed cleaning and conditioning"
+    inputs:
+      product:
+        - row_id: dried_seed_input
+          role: "Dried seed lot received for conditioning"
+          name: "Same unresolved seed-purpose intermediate as dried_seed_lot"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record the linked dried lot and preserve mass, moisture, and lot identity."
+          amount:
+            expression: "measured received mass"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg conditioned seed output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_conditioning_records
+              source_ids: []
+            ranges: []
+        - row_id: conditioning_electricity
+          role: "Conditioning electricity"
+          name: "Dataset-specific electricity flow; no geography-free default is selected"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record metered or batch-allocated electricity using a geography- and voltage-specific supply flow."
+          amount:
+            expression: "metered or batch-allocated electricity"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg conditioned seed output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_conditioning_records
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: conditioned_seed_output
+          role: "Conditioned sorghum seed"
+          name: "Sorghum, seed"
+          flow_type: "product"
+          flow_ref:
+            uuid: "0ad65fec-228e-47cf-8d8d-6d00f56c18ed"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Use the target flow only after the lot meets the declared market and quality state; retain actual test results rather than inferring quality from the flow name."
+          amount:
+            expression: "measured net conditioned seed mass"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg conditioned seed output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_conditioning_records
+              source_ids:
+                - fao-qds-2006
+                - oecd-seed-schemes-2026
+            ranges: []
+      waste:
+        - row_id: cleaning_rejects
+          role: "Cleaning rejects and foreign material"
+          name: "Dataset-specific reject, residue, or co-product flow according to actual fate"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Measure off-size seed, broken seed, foreign material, and dust fractions separately where their fate differs; classify saleable diverted material as a co-product rather than waste."
+          amount:
+            expression: "measured reject fractions by outlet and fate"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg conditioned seed output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_conditioning_records
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.5"
+                unit: "kg reject/kg dried seed input"
+                basis: "broad plausibility screen; not a default yield or conformance limit"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        []
+  - id: treatment_packaging_storage
+    label: "Seed treatment, packaging, and storage"
+    inputs:
+      product:
+        - row_id: conditioned_seed_input
+          role: "Conditioned seed received"
+          name: "Sorghum, seed"
+          flow_type: "product"
+          flow_ref:
+            uuid: "0ad65fec-228e-47cf-8d8d-6d00f56c18ed"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Preserve the conditioned lot identity and quality-test linkage."
+          amount:
+            expression: "measured received mass"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg final marketable seed"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_final_lot_records
+              source_ids: []
+            ranges: []
+        - row_id: treatment_packaging_inputs
+          role: "Seed-treatment and packaging materials"
+          name: "Dataset-specific treatment and packaging product flows; resolve each Tiangong UUID"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record each active substance, formulated treatment, coating, colorant, inoculant, bag, liner, pallet, and other packaging material separately when used."
+          amount:
+            expression: "batch formulation, purchase, and packaging issue records"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg final marketable seed"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_final_lot_records
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.2"
+                unit: "kg packaging/kg final marketable seed"
+                basis: "broad bulk-to-small-pack plausibility screen; not a default inventory value"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: storage_energy
+          role: "Storage and packing energy"
+          name: "Dataset-specific electricity or fuel flow"
+          flow_type: "product"
+          property_unit: "Carrier-specific / kWh, MJ, or kg fuel"
+          description: "Record metered or floor-area/time-allocated electricity and fuels for the declared storage duration and conditions."
+          amount:
+            expression: "metered or documented allocation to the seed lot"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg final marketable seed and declared storage duration"
+              kind: "storage_duration"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_final_lot_records
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: final_sorghum_seed
+          role: "Final marketable sorghum seed"
+          name: "Sorghum, seed"
+          flow_type: "product"
+          flow_ref:
+            uuid: "0ad65fec-228e-47cf-8d8d-6d00f56c18ed"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This is the reference product. Report 1 kg net seed mass and all required qualifiers; packaging mass is separate."
+          amount:
+            expression: "fixed reference amount of 1 kg net marketable seed"
+            value_mode: "fixed_value"
+            specificity: "product_specific"
+            basis:
+              text: "PCR reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "identity_reference"
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: final_lot_wastes
+          role: "Treatment and packaging losses"
+          name: "Dataset-specific waste flow according to actual material and treatment route"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record unused treatment mixtures, spills, rejected packaging, and damaged seed separately by fate."
+          amount:
+            expression: "measured waste log and mass reconciliation"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg final marketable seed"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_final_lot_records
+              source_ids: []
+            ranges: []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocation_avoid
+    applies_to: "All multifunctional operations"
+    rule: "First avoid allocation through process subdivision and direct measurement of seed, residues, rejects, and treatment/packaging operations."
+    source_ids:
+      - eu-pef-2021
+  - rule_id: allocation_residues
+    applies_to: "Crop residues retained on field"
+    rule: "Do not assign a separate product burden to retained residues; include their nutrient return and associated field emissions in the seed-crop system."
+    source_ids:
+      - ipcc-2019-managed-soils
+  - rule_id: allocation_saleable_coproducts
+    applies_to: "Removed residues or cleaning rejects with economic use"
+    rule: "Apply system expansion when a justified displaced function is documented; otherwise use a documented physical causal relation, and use economic allocation only when no defensible physical relation exists. Record masses, moisture, prices, period, geography, and allocation shares."
+    source_ids:
+      - eu-pef-2021
+  - rule_id: allocation_wastes
+    applies_to: "Materials legally and physically treated as waste"
+    rule: "Assign treatment burdens to the seed system until the documented waste boundary; do not create an avoided-product credit without a supported substitution case."
+    source_ids:
+      - eu-pef-2021
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_cultivation_records
+      process_id: "seed_crop_cultivation"
+      flow_role: "seed, nutrient, water, energy, yield, residues, emissions activity"
+      record_type: "field and lot records"
+      raw_fields: "field_id; lot_id; area; dates; seed_mass; fertiliser_product_mass; nutrient_N_P_K; amendment_mass; crop_protection_product_and_active; irrigation; fuel; electricity; harvested_mass; moisture; residue_mass_and_fate"
+      collection_method: "calibrated meters/scales, invoices, application logs, field logs, and laboratory analysis"
+      unit: "native unit plus kg, kg nutrient, kWh, MJ, ha"
+      frequency: "each application and harvest event"
+      temporal_coverage: "complete represented crop cycle"
+      site_scope: "each included field/site"
+      aggregation_rule: "reconcile purchases, applications, stocks, and harvested lots; normalize only after final marketable output is known"
+      quality_evidence: "calibration, invoice, batch, application, sampling, and lot-chain records"
+    - protocol_id: cp_postharvest_records
+      process_id: "postharvest_drying"
+      flow_role: "received seed, energy, dried seed, water removal, losses"
+      record_type: "batch records"
+      raw_fields: "lot_id; input_mass; input_moisture; output_mass; output_moisture; drying_route; electricity; fuel; losses; timestamps"
+      collection_method: "calibrated scales and moisture meter, energy meter, fuel records"
+      unit: "kg, moisture fraction, kWh, MJ, kg fuel"
+      frequency: "each batch"
+      temporal_coverage: "all batches represented"
+      site_scope: "each dryer/handling site"
+      aggregation_rule: "batch mass and dry-matter balance; aggregate by output mass"
+      quality_evidence: "calibration, meter, moisture-test, and batch records"
+    - protocol_id: cp_conditioning_records
+      process_id: "seed_cleaning_conditioning"
+      flow_role: "input, electricity, marketable seed, rejects"
+      record_type: "conditioning batch and quality records"
+      raw_fields: "lot_id; input_mass; output_mass; reject_mass_by_fate; electricity; germination; analytical_purity; varietal_purity; moisture; test_method; test_date"
+      collection_method: "scales, meter, cleaning logs, representative laboratory samples"
+      unit: "kg, kWh, percent or fraction"
+      frequency: "each lot/batch"
+      temporal_coverage: "all represented lots"
+      site_scope: "each conditioning line/site"
+      aggregation_rule: "reconcile mass by lot; aggregate by conditioned output mass"
+      quality_evidence: "calibration, batch, sampling, laboratory report, and lot-chain records"
+    - protocol_id: cp_final_lot_records
+      process_id: "treatment_packaging_storage"
+      flow_role: "treatment, packaging, energy, final product, wastes"
+      record_type: "formulation, packaging, storage, and dispatch records"
+      raw_fields: "lot_id; active_substance; formulation_mass; coating_mass; packaging_material_mass; electricity; fuel; storage_duration; temperature_humidity; final_net_mass; waste_mass_and_fate"
+      collection_method: "batch sheets, issue records, meters, scales, storage logs, dispatch records"
+      unit: "kg, kWh, MJ, day"
+      frequency: "each lot and storage period"
+      temporal_coverage: "from conditioning to producer-gate dispatch"
+      site_scope: "each treatment, packing, and storage site"
+      aggregation_rule: "aggregate by dispatched net seed mass and declared storage duration"
+      quality_evidence: "batch sign-off, calibration, inventory reconciliation, label, and dispatch record"
+  calculation_rules:
+    - id: calc_inventory_normalization
+      applies_to: "All foreground rows"
+      rule: "Divide the reconciled amount attributable to represented lots by final net marketable seed mass; preserve process-specific intermediate bases before final normalization."
+      inputs:
+        - "collected amounts"
+        - "lot links"
+        - "final net seed mass"
+      output: "amount per 1 kg reference flow"
+      source_ids:
+        - mass-balance-identity
+    - id: calc_drying_water_balance
+      applies_to: "drying_water_vapour"
+      rule: "Dry matter = wet mass × (1 − wet-basis moisture fraction); water removed = input water mass − output water mass. Investigate rather than force-close unexplained imbalance."
+      inputs:
+        - "input/output mass and moisture"
+      output: "kg water removed and mass-balance discrepancy"
+      source_ids:
+        - mass-balance-identity
+    - id: calc_managed_soil_n2o
+      applies_to: "Direct and indirect field N2O"
+      rule: "Apply the appropriate IPCC 2019 Chapter 11 Tier 1, Tier 2, or documented higher-tier equations to synthetic N, organic N, crop residues, volatilisation, and leaching/runoff; convert N2O-N to N2O consistently and prevent double counting."
+      inputs:
+        - "kg N by source"
+        - "residue N"
+        - "applicable factors"
+        - "climate/soil/management context"
+      output: "kg direct and indirect N2O per reference flow"
+      source_ids:
+        - ipcc-2019-managed-soils
+    - id: calc_coproduct_allocation
+      applies_to: "Saleable residues and rejects"
+      rule: "Implement the declared hierarchy and calculate shares from the recorded physical relation or contemporaneous economic values; shares across allocated outputs must sum to 1."
+      inputs:
+        - "output quantities"
+        - moisture
+        - functions
+        - prices
+        - "allocation choice"
+      output: "allocated inventory per output"
+      source_ids:
+        - eu-pef-2021
+  data_quality_requirements:
+    - id: dq_identity_traceability
+      applies_to: "Seed inputs, intermediates, and output"
+      requirement: "Preserve field, harvest, conditioning, treatment, package, and dispatch lot links plus species, variety, hybrid status, and seed class."
+      evidence: "lot ledger, labels, certificates, and chain-of-custody records; fao-qds-2006; oecd-seed-schemes-2026"
+    - id: dq_temporal_geographic
+      applies_to: "All foreground data"
+      requirement: "Cover a complete declared crop cycle and all represented post-harvest lots; report site geography, crop year, technology, irrigation, and storage duration."
+      evidence: "field and batch population with completeness reconciliation; eu-pef-2021"
+    - id: dq_measurement
+      applies_to: "Mass, moisture, energy, water, and quality tests"
+      requirement: "Use calibrated equipment and representative sampling; retain method, date, laboratory, uncertainty or resolution, and missing-data treatment."
+      evidence: "calibration certificates, sampling plans, laboratory reports, and meter records"
+    - id: dq_emission_factors
+      applies_to: "Calculated field emissions"
+      requirement: "Record method tier, equation, factor values and units, factor geography/climate/soil applicability, and all activity data."
+      evidence: "reproducible calculation and ipcc-2019-managed-soils"
+    - id: dq_reasoned_estimates
+      applies_to: "Provisional QA ranges"
+      requirement: "Treat every reasoned_estimate range only as a replaceable screening flag. It must not populate the final inventory or act as a conformance threshold."
+      evidence: "flagged QA report and replacement with measured or reviewed evidence before publication"
+    - id: dq_representativeness
+      applies_to: "Published dataset"
+      requirement: "Assess completeness, methodological consistency, technological, geographical, and time representativeness, and precision."
+      evidence: "data-quality assessment and limitations statement; eu-pef-2021"
+validation_rules:
+  - rule_id: validation_reference_identity
+    applies_to: "Reference flow"
+    rule: "Require amount 1 kg, Sorghum, seed UUID 0ad65fec-228e-47cf-8d8d-6d00f56c18ed, Mass UUID 93a60a56-a3c8-11da-a746-0800200b9a66, Units of mass UUID 93a60a57-a4c8-11da-a746-0800200c9a66, and unit kg."
+    source_ids: []
+  - rule_id: validation_product_scope
+    applies_to: "Product identity"
+    rule: "Reject default use for CPC 01142 sorghum grain, sweet sorghum, or a lot not demonstrated to have been grown specifically for seed."
+    source_ids:
+      - unsd-cpc3-2025
+  - rule_id: validation_qualifiers
+    applies_to: "Reference product"
+    rule: "Fail completeness when any required qualifier is absent or when certification/QDS/quality claims lack lot-specific evidence."
+    source_ids:
+      - fao-qds-2006
+      - oecd-seed-schemes-2026
+  - rule_id: validation_process_coverage
+    applies_to: "Foreground process map"
+    rule: "Require all required processes and every triggered conditional process; reconcile transfers between adjacent lot stages."
+    source_ids: []
+  - rule_id: validation_mass_moisture_balance
+    applies_to: "Cultivation through final lot"
+    rule: "Reconcile input, output, reject, residue, loss, and water-removal masses on their declared moisture bases; disclose measured discrepancy without forcing closure."
+    source_ids:
+      - mass-balance-identity
+  - rule_id: validation_n2o_method
+    applies_to: "Managed-soil emissions"
+    rule: "Require documented N activity data, selected IPCC tier/equations/factors, unit conversion, and separate direct/indirect pathways without double counting."
+    source_ids:
+      - ipcc-2019-managed-soils
+  - rule_id: validation_allocation
+    applies_to: "Multifunctional outputs"
+    rule: "Require the allocation hierarchy, data and rationale; all allocation shares must be nonnegative and sum to 1."
+    source_ids:
+      - eu-pef-2021
+  - rule_id: validation_reasoned_estimates
+    applies_to: "Inventory and QA"
+    rule: "Fail publication readiness if a reasoned-estimate QA range is used as a final inventory value, default, or conformance threshold."
+    source_ids: []
+  - rule_id: validation_data_quality
+    applies_to: "Published dataset"
+    rule: "Require completeness and methodological consistency plus technological, geographical, temporal, and precision disclosures."
+    source_ids:
+      - eu-pef-2021
+published_dataset_profile:
+  dataset_role: "secondary_dataset; background_dataset"
+  downstream_use: "Foreground data package for sorghum seed production, projected to LCA process datasets and connected lifecyclemodel systems"
+  allowed_use: "Modelling of sorghum seed production within the declared geography, crop year, route, seed class, treatment, packaging, storage, allocation, and quality state"
+  excluded_use: "Sorghum grain or sweet sorghum; downstream commercial-crop cultivation; seed-certification claims without evidence; geography-free substitution; using provisional QA ranges as inventory defaults or compliance thresholds"
+  required_metadata: "PCR id; CPC ref; reference UUIDs; geography; crop year; sites and technologies; lot and seed class; variety/hybrid status; quality tests; moisture basis; treatment; packaging; storage; process coverage; allocation; sources; data-quality assessment; limitations"
+  required_quality_disclosure: "Coverage and missing data; measurement and sampling methods; representativeness; factor tiers; unresolved UUIDs; exclusions; co-product treatment; uncertainty; any remaining reasoned-estimate QA screens"
+  update_trigger: "Change in variety/seed class, geography, crop year or route; material technology/input change; new seed-quality or regulatory requirement; revised emission factors; allocation change; source revision; or evidence that a QA screen is no longer appropriate"
+data_sources:
+  - id: "unsd-cpc3-2025"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, *Central Product Classification Version 3.0 Explanatory Notes*, updated 30 June 2025, https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Exp_Notes_30Jun2025.pdf (retrieved 2026-08-07)"
+    used_for: "CPC 01141 seed-purpose inclusion and exclusions"
+  - id: "fao-qds-2006"
+    type: "official_guidance"
+    reference: "FAO, *Quality Declared Seed System*, Plant Production and Protection Paper 185, 2006, https://www.fao.org/4/a0503e/a0503e00.pdf (retrieved 2026-08-07)"
+    used_for: "Sorghum seed identity, field/lot controls, sampling, germination, purity, moisture, and quality-record requirements"
+  - id: "oecd-seed-schemes-2026"
+    type: "standard"
+    reference: "OECD, *Seed Schemes Rules and Regulations 2026*, https://www.oecd.org/content/dam/oecd/en/topics/policy-sub-issues/seeds/rules-and-regulation-eng.pdf (retrieved 2026-08-07)"
+    used_for: "Varietal certification scheme context, lot identity, control plots, field inspection, and labelling disclosures"
+  - id: "ipcc-2019-managed-soils"
+    type: "method_factor"
+    reference: "IPCC, *2019 Refinement to the 2006 IPCC Guidelines, Volume 4, Chapter 11: N2O Emissions from Managed Soils, and CO2 Emissions from Lime and Urea Application*, https://www.ipcc-nggip.iges.or.jp/public/2019rf/pdf/4_Volume4/19R_V4_Ch11_Soils_N2O_CO2.pdf (retrieved 2026-08-07)"
+    used_for: "Direct and indirect N2O pathways, activity data, equations, and factor provenance"
+  - id: "eu-pef-2021"
+    type: "official_guidance"
+    reference: "European Commission, Recommendation (EU) 2021/2279 on Environmental Footprint methods, https://eur-lex.europa.eu/eli/reco/2021/2279/oj/eng (retrieved 2026-08-07)"
+    used_for: "Functional-unit framing, boundary completeness, allocation hierarchy, company-specific data, and data-quality dimensions"
+  - id: "mass-balance-identity"
+    type: "method_factor"
+    reference: "Conservation of mass and dry matter using measured mass and moisture fractions; PCR-authored physical identity"
+    used_for: "Lot normalization, drying-water calculation, and mass-balance validation"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:76678c26bf2a6c68242cc3fc384b8cd409515032d71c12c78abbb7cb227644a6"
+  generated_content_sha256: "sha256:a94b6316f9b236343c9c82a5fa37baaca68a32e0067d0bc9d8d48452ad85b37d"

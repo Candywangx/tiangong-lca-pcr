@@ -1,10 +1,1025 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "21492"
-  title: "Peaches, otherwise prepared or preserved"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.food-products-beverages-and-tobacco-textiles-apparel-and-leather-products.meat-fish-fruits-vegetables-oils-and-fats.peaches-otherwise-prepared-or-preserved"
+  classification_refs: "CPC 3.0: 21492, Peaches, otherwise prepared or preserved"
+  covered_products: "Prepared or preserved peach products, including a declared canned-stone-fruit route and other declared preservation routes that remain within this semantic category"
+  excluded_products: "Fresh, solely frozen, solely dried, sugar-preserved, jam, jelly, marmalade, beverage, or mixed-fruit products classified elsewhere"
+  representative_product: "Route-specific prepared or preserved peach product in its marketable form"
+  production_route: "Exactly one of canned_heat_preservation or other_declared_preservation; the routes shall not be combined in one reference product dataset"
+  market_state: "Finished, preserved, and packed product at the producing facility gate"
+functional_unit:
+  what: "Provision of a route-specific prepared or preserved peach product in its declared marketable form"
+  how_much: "1 kg net peach product on the declared mass basis, excluding primary and secondary packaging mass"
+  how_well: "Conforming to the producer's declared product specification; canned-route products additionally declare the applicable CXS 242-2003 form and packing medium"
+  how_long_or_cycle: "One completed production batch or campaign through release at the producing facility gate; no storage duration or shelf-life service is implied"
+  reference_flow_link: "The functional unit is realized by the single Tiangong product flow and mass reference object below"
+system_boundary:
+  rules:
+    - rule_id: system_boundary_rule_1
+      applies_to: "foreground_system_boundary"
+      rule: "The foreground boundary begins with peaches or a declared peach intermediate received at the processing facility and ends with the released prepared or preserved peach product at the producing facility gate. It includes directly controlled receiving, sorting, preparation, preservation, packing, finished-product handling, on-site utilities, wastes, wastewater, and direct emissions. Purchased peaches, ingredients, utilities, packaging, waste treatment, and transport outside direct control are linked as upstream or downstream datasets rather than silently omitted."
+      source_ids: []
+    - rule_id: boundary_foreground_operations
+      applies_to: "all foreground processes"
+      rule: "Include all directly controlled operations and utilities from declared facility receipt through release of the packed product, including measured rejects, wastewater, and direct emissions."
+      source_ids:
+        - eu-pef-2021-2279
+    - rule_id: boundary_upstream_links
+      applies_to: "purchased inputs and external treatment"
+      rule: "Represent material purchased inputs, packaging, energy carriers, water supply, transport in scope, and external waste treatment with traceable upstream or downstream datasets."
+      source_ids:
+        - eu-pef-2021-2279
+    - rule_id: boundary_route_exclusivity
+      applies_to: "preservation and packing"
+      rule: "Instantiate exactly one declared preservation route for the reference product. Treat canned_heat_preservation as a covered route and not as the default for all products in the category."
+      source_ids:
+        - unsd-cpc-3-0-21492
+        - codex-cxs-242-2003
+    - rule_id: boundary_exclusions
+      applies_to: "downstream life cycle and products classified elsewhere"
+      rule: "Keep distribution, retail, use, and end-of-life outside this facility-gate dataset, and do not use this PCR for the excluded product categories listed in section 1."
+      source_ids:
+        - unsd-cpc-3-0-21492
+        - eu-pef-2021-2279
+boundary_abstraction:
+  declared_starting_condition: "Peaches or a peach intermediate at facility receipt, with product state, supplier, origin, moisture or packing-medium condition where relevant, and measured received mass declared"
+  starting_condition_role: "Foreground entry condition and traceability anchor; agricultural cultivation or prior intermediate production remains upstream"
+  product_classification_scope: "Prepared or preserved peach products within the semantic scope corresponding to CPC 3.0 subclass 21492"
+  recursive_input_rule: "Record a purchased prepared or preserved peach input in the same category as a separate product input and link its supplier dataset; do not expand it again inside the receiving foreground process"
+  upstream_dataset_requirement: "Link datasets for peaches or peach intermediates, recipe ingredients, processing aids, energy carriers, water supply, packaging, inbound transport when in scope, and treatment of exported waste or wastewater"
+  disclosure: "Declare starting product condition, selected exclusive preservation route, product form, packing medium or formulation, mass basis, primary package, facility geography, reference period, and all excluded or externally treated operations"
+reference_flow_definition:
+  reference_amount: "1 kg"
+  product_flow_ref:
+    name: "Peaches, otherwise prepared or preserved"
+    uuid: "91d82100-aaec-459c-b815-abd64025b71e"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "preservation route"
+    - "peach form or particle form"
+    - "packing medium or formulation"
+    - "total-net-content or drained-solids mass basis for products in liquid medium"
+    - "primary packaging type"
+    - "feedstock condition at receipt"
+    - "production geography"
+    - "reference period"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass_basis
+    applies_to: "reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Report net product mass excluding packaging. For product in a liquid medium, declare whether the reference amount is total net contents or drained peach solids; do not convert between these bases without paired measured values."
+  - id: batch_mass_consistency
+    applies_to: "peach, ingredient, intermediate, product, co-product, and waste masses"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Preserve the recorded as-received or other declared moisture/state basis and use one consistent batch boundary before normalization to 1 kg reference product."
+  - id: energy_record_consistency
+    applies_to: "electricity, steam, heat, and fuel inputs"
+    required_property_ref:
+      name: "Energy or fuel-specific property"
+      uuid: ""
+    required_unit: "recorded unit plus MJ or kWh when converted"
+    rule: "Retain meter or invoice units, conversion factor, and conversion source; do not treat electricity, thermal energy, and fuel mass or volume as interchangeable."
+  - id: route_and_pack_separation
+    applies_to: "route and packaging observations"
+    required_property_ref:
+      name: "Route and packaging descriptors"
+      uuid: ""
+    required_unit: "not applicable"
+    rule: "Keep records separated by the declared preservation route, product form, packing medium or formulation, and primary package; allocate shared records only under section 7."
+process_map:
+  - id: receiving_sorting
+    name: "Peach receipt, sorting, and washing"
+    inclusion: "required"
+    inclusion_condition: "Include the actual receipt condition and washing practice; zero-use utility rows require documentary evidence"
+    role: "foreground entry and conditioning"
+    quantitative_reference: "kg received peaches or declared peach intermediate"
+  - id: peach_preparation
+    name: "Peach preparation"
+    inclusion: "required"
+    inclusion_condition: "Record only preparation steps actually performed, such as peeling, pitting, cutting, or size reduction"
+    role: "foreground preparation"
+    quantitative_reference: "kg prepared peach intermediate"
+  - id: preservation_packing
+    name: "Route-specific preservation and packing"
+    inclusion: "required"
+    inclusion_condition: "Instantiate exactly one of canned_heat_preservation or other_declared_preservation; never both for one reference product dataset"
+    role: "foreground preservation and packing"
+    quantitative_reference: "kg packed prepared or preserved peach product"
+  - id: finished_product_release
+    name: "Finished-product handling and release"
+    inclusion: "required"
+    inclusion_condition: "Include controlled cooling, holding, internal movement, inspection, and release actually performed"
+    role: "foreground finishing"
+    quantitative_reference: "kg reference product released at facility gate"
+process_inventory:
+  - id: receiving_sorting
+    label: "Peach receipt, sorting, and washing"
+    inputs:
+      product:
+        - row_id: received_peach_feedstock
+          role: "Peaches or declared peach intermediate received"
+          name: "Supplier-specific peach or peach-intermediate product flow"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "The measured peach-based feedstock crossing the facility gate anchors traceability and the foreground mass balance."
+          amount:
+            expression: "measured accepted delivery mass plus separately measured receipt rejects, on the declared condition basis"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg released reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_receiving_records
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: ""
+                upper: ""
+                unit: "kg/kg reference product"
+                basis: "bounds derived from available route- and product-specific receipt records; replace when the reference period covers a representative production campaign"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: receiving_wash_water
+          role: "Water supplied for washing"
+          name: "Facility-specific water-supply product flow"
+          flow_type: "product"
+          property_unit: "Mass or volume / kg or m3"
+          description: "Record supplied water only when washing occurs in this process; a documented dry-receipt route records zero use."
+          amount:
+            expression: "metered water supplied to the receiving and washing operation, less separately metered recirculated internal water"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg accepted peach output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_receiving_records
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: ""
+                upper: ""
+                unit: "kg or m3 per kg accepted peach output"
+                basis: "bounds derived from available meter and production records; replace after a representative campaign covers normal operating and cleaning conditions"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: accepted_peaches
+          role: "Accepted peaches transferred to preparation"
+          name: "Facility-specific accepted-peach intermediate flow"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "This intermediate output is calculated from measured transfer or batch mass and remains on the declared product-state basis."
+          amount:
+            expression: "measured transfer mass; use a documented batch mass balance only when direct transfer measurement is unavailable"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg released reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_receiving_records
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: ""
+                upper: ""
+                unit: "kg/kg reference product"
+                basis: "bounds derived from received, reject, and transfer mass records; replace when reconciled representative-campaign records are available"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        - row_id: receipt_rejects
+          role: "Receipt rejects and foreign material"
+          name: "Destination-specific organic or mixed waste flow"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record peach material and foreign matter removed before preparation according to its actual waste or recovered-product destination."
+          amount:
+            expression: "measured reject mass by destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg released reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_receiving_records
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: ""
+                upper: ""
+                unit: "kg/kg reference product"
+                basis: "bounds derived from available weigh tickets and batch records; replace when the reference period captures representative incoming quality"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: receiving_wastewater
+          role: "Receiving and washing wastewater"
+          name: "Destination-specific wastewater flow"
+          flow_type: "waste"
+          property_unit: "Mass or volume / kg or m3"
+          description: "Record wastewater leaving the foreground process, separated from internally recirculated water."
+          amount:
+            expression: "metered discharge or facility water balance attributed to this process"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted peach output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_receiving_records
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: ""
+                upper: ""
+                unit: "kg or m3 per kg accepted peach output"
+                basis: "bounds derived from supply, recirculation, and discharge records; replace after a representative water-balance period"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        []
+  - id: peach_preparation
+    label: "Peach preparation"
+    inputs:
+      product:
+        - row_id: preparation_peach_input
+          role: "Accepted peaches"
+          name: "Facility-specific accepted-peach intermediate flow"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the accepted-peach intermediate transferred from receiving without duplicating its upstream burdens."
+          amount:
+            expression: "measured transfer mass reconciled to the receiving output"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg prepared peach intermediate"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_preparation_records
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: ""
+                upper: ""
+                unit: "kg/kg prepared peach intermediate"
+                basis: "bounds derived from preparation batch records; replace when representative reconciled transfer and output records are available"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: preparation_water_aids
+          role: "Preparation water and processing aids"
+          name: "Supplier-specific water and processing-aid product flows recorded as separate exchanges in the dataset"
+          flow_type: "product"
+          property_unit: "Mass or volume / kg or m3"
+          description: "Record route-specific water and each processing aid actually consumed for peeling, pitting, cutting, rinsing, or stabilization; do not add unused generic inputs."
+          amount:
+            expression: "metered, weighed, or invoice-reconciled consumption by batch"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg prepared peach intermediate"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_preparation_records
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: ""
+                upper: ""
+                unit: "kg or m3 per kg prepared peach intermediate"
+                basis: "separate facility-specific bounds for each supplied input; replace when representative batch and inventory reconciliation is complete"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: prepared_peach_intermediate
+          role: "Prepared peach intermediate"
+          name: "Facility-specific prepared-peach intermediate flow"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the measured prepared peach output with its form and moisture or liquid-medium condition declared."
+          amount:
+            expression: "measured prepared output mass reconciled with preparation removals and discharges"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg released reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_preparation_records
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: ""
+                upper: ""
+                unit: "kg/kg reference product"
+                basis: "bounds derived from reconciled input, removal, discharge, and output records; replace after a representative campaign"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        - row_id: preparation_residues
+          role: "Pits, peels, trimmings, and off-specification material"
+          name: "Destination-specific organic residue, waste, or co-product flow"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record each separated residue by measured mass and actual destination; a marketed output is a co-product and follows section 7 rather than being labelled waste."
+          amount:
+            expression: "measured mass by material class and destination"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg prepared peach intermediate"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_preparation_records
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: ""
+                upper: ""
+                unit: "kg/kg prepared peach intermediate"
+                basis: "bounds derived from route- and product-form-specific weigh records; replace when representative batch records cover normal grading and preparation losses"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: preparation_wastewater
+          role: "Preparation wastewater"
+          name: "Destination-specific wastewater flow"
+          flow_type: "waste"
+          property_unit: "Mass or volume / kg or m3"
+          description: "Record preparation discharge by measured volume or a documented water balance and identify on-site or external treatment."
+          amount:
+            expression: "metered discharge or calculated supply less recirculation and retained water"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg prepared peach intermediate"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_preparation_records
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: ""
+                upper: ""
+                unit: "kg or m3 per kg prepared peach intermediate"
+                basis: "bounds derived from representative supply, recirculation, retention, and discharge records; replace when the process water balance is complete"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        []
+  - id: preservation_packing
+    label: "Route-specific preservation and packing"
+    inputs:
+      product:
+        - row_id: preservation_peach_input
+          role: "Prepared peach intermediate"
+          name: "Facility-specific prepared-peach intermediate flow"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the prepared peach transfer on the same state and mass basis as the preparation output."
+          amount:
+            expression: "measured transfer mass reconciled between processes"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg packed product output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_preservation_materials
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: ""
+                upper: ""
+                unit: "kg/kg packed product output"
+                basis: "bounds derived from route-specific transfer and finished-batch records; replace after a representative campaign"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: packing_medium_ingredients
+          role: "Route-specific packing medium and formulation ingredients"
+          name: "Supplier-specific ingredient product flows, separated by ingredient"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record each ingredient actually added under the selected route. For canned products, declare the packing medium and product form used under the applicable product specification."
+          amount:
+            expression: "weighed addition or reconciled batch formulation amount"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per 1 kg packed product output on the declared net-mass basis"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_preservation_materials
+              source_ids:
+                - codex-cxs-242-2003
+            ranges:
+              - role: qa_guardrail
+                lower: ""
+                upper: ""
+                unit: "kg/kg packed product output"
+                basis: "separate route- and formulation-specific bounds from available batch sheets; replace when representative formulation reconciliation is complete"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: preservation_energy
+          role: "Preservation energy and utilities"
+          name: "Supplier- and carrier-specific utility product flows, separated by carrier"
+          flow_type: "product"
+          property_unit: "Energy or carrier-specific property / recorded unit plus MJ or kWh when converted"
+          description: "Record electricity, thermal energy, fuel, compressed air, refrigeration, and other utilities separately when consumed by the selected preservation route."
+          amount:
+            expression: "submetered use or documented allocation of facility meter and invoice records"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg packed product output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_preservation_energy
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: ""
+                upper: ""
+                unit: "carrier-specific unit per kg packed product output"
+                basis: "separate bounds by energy carrier and exclusive preservation route; replace after representative submetered or allocation records are available"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: primary_packaging
+          role: "Primary packaging components"
+          name: "Supplier-specific packaging product flows, separated by component and material"
+          flow_type: "product"
+          property_unit: "Mass or count with measured mass conversion / kg or item"
+          description: "Record each container, closure, liner, label, and other primary packaging component used by the selected route without including its mass in the reference product mass."
+          amount:
+            expression: "issued quantity less returned unused quantity, reconciled to saleable packed units"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg packed product output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_preservation_materials
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: ""
+                upper: ""
+                unit: "kg or item per kg packed product output"
+                basis: "separate bounds by package format and component; replace when representative issue, return, and packed-unit records are reconciled"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: packed_peach_product
+          role: "Packed prepared or preserved peach product"
+          name: "Peaches, otherwise prepared or preserved"
+          flow_type: "product"
+          flow_ref:
+            uuid: "91d82100-aaec-459c-b815-abd64025b71e"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This is the route-specific product output before final inspection and release."
+          amount:
+            expression: "measured net product mass excluding packaging and stated on the declared total-net-content or drained-solids basis"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg packed product output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_preservation_outputs
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: ""
+                upper: ""
+                unit: "kg/kg packed product output"
+                basis: "bounds derived from the declared net-content basis and reconciled route-specific batch records; replace when representative finished-batch reconciliation is complete"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        - row_id: preservation_packing_waste
+          role: "Preservation, filling, and packaging residues"
+          name: "Destination-specific product-residue and packaging-waste flows"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record product loss, formulation residue, off-specification packs, and packaging scrap separately by material and destination."
+          amount:
+            expression: "weighed or inventory-reconciled mass by waste class and destination"
+            value_mode: "calculated_value"
+            specificity: "route_specific"
+            basis:
+              text: "per 1 kg packed product output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_preservation_outputs
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: ""
+                upper: ""
+                unit: "kg/kg packed product output"
+                basis: "separate bounds by route, packaging format, waste class, and destination; replace when representative records are reconciled"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: preservation_wastewater
+          role: "Preservation and packing wastewater"
+          name: "Destination-specific wastewater flow"
+          flow_type: "waste"
+          property_unit: "Mass or volume / kg or m3"
+          description: "Record route-specific discharge from formulation, container preparation, processing, and cleaning, net of internal recirculation."
+          amount:
+            expression: "metered discharge or documented process water balance"
+            value_mode: "calculated_value"
+            specificity: "route_specific"
+            basis:
+              text: "per 1 kg packed product output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_preservation_outputs
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: ""
+                upper: ""
+                unit: "kg or m3 per kg packed product output"
+                basis: "bounds derived from route-specific supply, recirculation, retention, and discharge records; replace after representative water-balance coverage"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        - row_id: preservation_direct_emissions
+          role: "Direct process and utility emissions"
+          name: "Substance-specific Tiangong elementary flows selected during dataset construction"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record measured or calculated elementary emissions only when fuel combustion, refrigerant loss, or another direct release occurs inside the foreground boundary; otherwise retain evidence for zero occurrence."
+          amount:
+            expression: "measured release or calculation from collected fuel, equipment, and emission-factor records"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg packed product output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_preservation_energy
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: ""
+                upper: ""
+                unit: "kg substance per kg packed product output"
+                basis: "separate bounds by substance and route using available operating records; replace when representative measurements or reviewed factor calculations are available"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+  - id: finished_product_release
+    label: "Finished-product handling and release"
+    inputs:
+      product:
+        - row_id: release_product_input
+          role: "Packed peach product awaiting release"
+          name: "Peaches, otherwise prepared or preserved"
+          flow_type: "product"
+          flow_ref:
+            uuid: "91d82100-aaec-459c-b815-abd64025b71e"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record the packed product transferred from preservation and packing without duplicating its production burdens."
+          amount:
+            expression: "measured net product mass transferred to controlled holding and release"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg released reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finished_goods
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: ""
+                upper: ""
+                unit: "kg/kg reference product"
+                basis: "bounds derived from transfer, hold, reject, and release records; replace after a representative campaign"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: release_energy
+          role: "Handling and controlled-storage energy"
+          name: "Supplier- and carrier-specific utility product flows"
+          flow_type: "product"
+          property_unit: "Energy or carrier-specific property / recorded unit plus MJ or kWh when converted"
+          description: "Record energy for controlled cooling, holding, internal movement, and inspection only when these activities occur before the facility-gate release point."
+          amount:
+            expression: "submetered use or documented allocation from facility records for the actual holding duration"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg released reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_finished_goods
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: ""
+                upper: ""
+                unit: "carrier-specific unit per kg reference product"
+                basis: "bounds separated by carrier and actual holding duration; replace after representative submetered or documented allocation records are available"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: released_reference_product
+          role: "Released reference product"
+          name: "Peaches, otherwise prepared or preserved"
+          flow_type: "product"
+          flow_ref:
+            uuid: "91d82100-aaec-459c-b815-abd64025b71e"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This flow realizes the functional unit after final inspection and release at the producing facility gate."
+          amount:
+            expression: "set the quantitative reference to 1 kg and scale the reconciled batch inventory by released net product mass on the declared basis"
+            value_mode: "fixed_value"
+            specificity: "product_specific"
+            basis:
+              text: "1 kg released reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_finished_goods
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: ""
+                upper: ""
+                unit: "kg/kg reference product"
+                basis: "the envelope shall collapse to the declared quantitative reference when reconciliation is complete; replace immediately after representative released-mass records are verified"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        - row_id: release_waste
+          role: "Held, damaged, or off-specification finished product and package"
+          name: "Destination-specific product and packaging waste flows"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record product and packaging removed before release, separated by material, recovery status, and destination."
+          amount:
+            expression: "measured mass or inventory-reconciled package count converted with measured component mass"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg released reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_finished_goods
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: ""
+                upper: ""
+                unit: "kg/kg reference product"
+                basis: "separate bounds for product and each package material by destination; replace when representative hold, reject, and release records are reconciled"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        - row_id: release_direct_emissions
+          role: "Direct refrigerant or fuel-related releases during finished-product handling"
+          name: "Substance-specific Tiangong elementary flows selected during dataset construction"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Include substance-specific direct releases only when controlled storage or on-site handling equipment produces them inside the foreground boundary."
+          amount:
+            expression: "measured release or calculation from collected equipment, fuel, and reviewed factor records"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg released reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_finished_goods
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: ""
+                upper: ""
+                unit: "kg substance per kg reference product"
+                basis: "separate bounds by substance and equipment using available operating records; replace when representative measurements or reviewed calculations are available"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+allocation_rules:
+  - rule_id: allocation_subdivision_first
+    applies_to: "independently measurable routes, products, and operations"
+    rule: "Avoid allocation by separating the exclusive preservation routes and by subdividing independently measured operations, batches, utilities, and waste handling."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: allocation_coproduct_status
+    applies_to: "pits, kernels, peels, pulp, recovered medium, or other marketed outputs"
+    rule: "Determine output status from documented destination. Treat an output with a market or productive use as a co-product; treat material sent for treatment without productive use as waste."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: allocation_residual_burdens
+    applies_to: "unavoidable shared burdens after subdivision"
+    rule: "Apply a documented causal physical relation where one can be demonstrated. If no defensible physical relation exists, use a documented economic relation consistent with the study method and disclose values, period, sensitivity, and assigned shares."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: allocation_recovery_claims
+    applies_to: "recovered material and exported energy"
+    rule: "Do not subtract avoided burdens or recovery credits unless the chosen study method explicitly requires them; report the method, substituted function, data source, and sensitivity separately."
+    source_ids:
+      - eu-pef-2021-2279
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_receiving_records
+      process_id: "receiving_sorting"
+      flow_role: "received peaches, water, accepted transfer, rejects, and discharge"
+      record_type: "weigh tickets, batch sheets, water meters, and discharge records"
+      raw_fields: "delivery_id; supplier; origin; feedstock_state; received_mass; reject_mass; accepted_mass; water_supply; recirculated_water; discharge; timestamp"
+      collection_method: "record each delivery and reconcile to production batch"
+      unit: "kg and m3"
+      frequency: "each delivery and batch"
+      temporal_coverage: "complete declared reference period including representative incoming quality"
+      site_scope: "all receiving and washing lines in dataset scope"
+      aggregation_rule: "sum by route and product specification, then normalize to accepted output and reference product as stated"
+      quality_evidence: "calibrated-scale and meter records; batch reconciliation; exception log"
+    - protocol_id: cp_preparation_records
+      process_id: "peach_preparation"
+      flow_role: "preparation inputs, output, residues, and wastewater"
+      record_type: "batch sheets, scales, issue records, meters, and destination tickets"
+      raw_fields: "batch_id; input_mass; water; aid_identity; aid_mass; prepared_output_mass; residue_mass_by_destination; discharge; product_state"
+      collection_method: "record each preparation batch and reconcile input, output, retained liquid, residues, and discharge"
+      unit: "kg and m3"
+      frequency: "each batch"
+      temporal_coverage: "complete declared reference period with normal and changeover operation"
+      site_scope: "all preparation lines in dataset scope"
+      aggregation_rule: "aggregate separately by product form and preparation technology before normalization"
+      quality_evidence: "calibration records; formulation or aid issue records; mass- and water-balance review"
+    - protocol_id: cp_preservation_materials
+      process_id: "preservation_packing"
+      flow_role: "peach transfer, formulation ingredients, and packaging components"
+      record_type: "batch formulations, scales, ingredient issues, packaging issues and returns"
+      raw_fields: "route; batch_id; peach_input_mass; ingredient_identity; ingredient_mass; package_component; component_mass_or_count; unused_return; packed_units"
+      collection_method: "collect each exclusive-route batch and reconcile issued and returned materials"
+      unit: "kg and item"
+      frequency: "each batch"
+      temporal_coverage: "complete declared reference period for the selected route and package format"
+      site_scope: "all preservation and packing lines in dataset scope"
+      aggregation_rule: "aggregate only within one route, formulation, and package format before normalization"
+      quality_evidence: "approved batch sheet; scale checks; inventory reconciliation; package specification"
+    - protocol_id: cp_preservation_energy
+      process_id: "preservation_packing"
+      flow_role: "energy, utilities, and direct releases"
+      record_type: "submeters, invoices, fuel logs, equipment logs, and reviewed factor calculations"
+      raw_fields: "route; batch_id; carrier; meter_start; meter_end; allocation_driver; fuel_quantity; equipment_charge; refill; recovered_charge; emission_factor_id"
+      collection_method: "meter by route where feasible; otherwise allocate documented facility records using a causal operating driver"
+      unit: "recorded carrier unit, MJ, kWh, and kg substance"
+      frequency: "each batch or meter interval"
+      temporal_coverage: "complete declared reference period including start-up, shutdown, and cleaning attributable to production"
+      site_scope: "all preservation utilities and direct-release equipment in dataset scope"
+      aggregation_rule: "aggregate by carrier and substance for the selected route; disclose all conversions and allocations"
+      quality_evidence: "meter calibration; invoices; equipment service records; factor identity and version"
+    - protocol_id: cp_preservation_outputs
+      process_id: "preservation_packing"
+      flow_role: "packed output, process loss, packaging scrap, and wastewater"
+      record_type: "net-content checks, batch release, waste weights, inventory reconciliation, and discharge records"
+      raw_fields: "route; batch_id; mass_basis; packed_net_mass; drained_mass_if_used; product_loss; waste_class; waste_destination; discharge"
+      collection_method: "record each batch and keep product, package, and discharge records separate"
+      unit: "kg and m3"
+      frequency: "each batch"
+      temporal_coverage: "complete declared reference period for the selected route"
+      site_scope: "all filling, preservation, packing, and cleaning operations in dataset scope"
+      aggregation_rule: "reconcile outputs to material and water inputs, then normalize to packed output"
+      quality_evidence: "net-content or drained-mass checks; waste tickets; discharge meters; balance review"
+    - protocol_id: cp_finished_goods
+      process_id: "finished_product_release"
+      flow_role: "transferred product, holding utilities, release mass, rejects, and direct releases"
+      record_type: "warehouse movements, release records, submeters, service logs, and reject records"
+      raw_fields: "batch_id; transfer_mass; hold_start; hold_end; storage_condition; energy_by_carrier; release_mass; reject_mass; package_count; component_mass; direct_release"
+      collection_method: "track each batch from packed transfer through release at the facility gate"
+      unit: "kg, item, h, carrier unit, MJ, kWh, and kg substance"
+      frequency: "each movement, release, and meter interval"
+      temporal_coverage: "complete declared reference period including representative holding conditions"
+      site_scope: "all controlled finished-goods areas before the facility gate"
+      aggregation_rule: "aggregate by product specification and holding condition; normalize to released net mass"
+      quality_evidence: "release authorization; inventory reconciliation; meter and service records; exception log"
+  calculation_rules:
+    - id: calc_reference_normalization
+      applies_to: "all inventory exchanges"
+      rule: "Divide the reconciled exchange total by released net product mass measured on the declared reference basis; keep packaging mass outside the denominator."
+      inputs:
+        - "exchange total"
+        - "released net mass"
+        - "mass-basis declaration"
+      output: "exchange per 1 kg reference product"
+      source_ids: []
+    - id: calc_route_separation
+      applies_to: "shared facility records"
+      rule: "Assign directly measured records first; allocate only the remaining shared amount to the selected route using a documented causal driver and retain a reconciliation to the facility total."
+      inputs:
+        - "route meters or batch records"
+        - "shared total"
+        - "driver values"
+      output: "route-specific exchange"
+      source_ids:
+        - eu-pef-2021-2279
+    - id: calc_process_mass_balance
+      applies_to: "each foreground process"
+      rule: "Reconcile measured inputs with product, co-product, waste, discharge, retained water, and documented stock change on consistent state and time boundaries; investigate rather than force-close material discrepancies."
+      inputs:
+        - "measured inputs"
+        - outputs
+        - "stock change"
+        - "state-basis records"
+      output: "documented mass-balance check"
+      source_ids: []
+    - id: calc_package_mass
+      applies_to: "count-based package records"
+      rule: "Multiply issued net component count by measured or supplier-declared component mass and retain the component-specific conversion evidence."
+      inputs:
+        - "issued count"
+        - "returned count"
+        - "component mass"
+      output: "kg packaging component per reference product"
+      source_ids: []
+    - id: calc_direct_release
+      applies_to: "direct emissions"
+      rule: "Calculate substance-specific release only from collected activity records and an identified reviewed factor or material balance; preserve factor identity and units."
+      inputs:
+        - "fuel or equipment activity"
+        - "factor or charge balance"
+        - "released product mass"
+      output: "kg substance per reference product"
+      source_ids:
+        - eu-pef-2021-2279
+  data_quality_requirements:
+    - id: dq_identity_traceability
+      applies_to: "reference product and peach inputs"
+      requirement: "Preserve the reference-flow UUID, supplier or internal flow identity, product form, selected exclusive route, packing medium or formulation, package format, mass basis, origin, and batch linkage."
+      evidence: "dataset metadata, approved specification, supplier record, and batch trace"
+    - id: dq_measurement
+      applies_to: "mass, water, energy, count, and direct-release records"
+      requirement: "Use calibrated or verified instruments where material; retain raw units, conversions, zero-use evidence, allocation drivers, and exception treatment."
+      evidence: "calibration or verification record, meter or scale log, invoice, conversion record, and exception log"
+    - id: dq_temporal
+      applies_to: "foreground reference period"
+      requirement: "Cover representative production, cleaning, start-up, shutdown, and holding conditions for the declared route; identify and justify excluded abnormal periods."
+      evidence: "production calendar, batch list, meter intervals, and exclusion rationale"
+    - id: dq_completeness
+      applies_to: "all four foreground processes"
+      requirement: "Reconcile received peach input through released reference product, co-products, wastes, wastewater, stock change, and direct releases; document missing records without substituting unstated zeros."
+      evidence: "process mass and water balances, completeness checklist, and missing-data register"
+    - id: dq_route_specificity
+      applies_to: "preservation and packing"
+      requirement: "Keep canned-route records separate from other preservation-route records and apply CXS 242-2003 only to the canned stone-fruit route."
+      evidence: "route code, line or batch identifier, approved recipe, and product specification"
+    - id: dq_provisional_replacement
+      applies_to: "every reasoned_estimate screening envelope"
+      requirement: "Treat the envelope as conditional and temporary, with no preset numeric constraint. Replace it when representative foreground records, reviewed empirical ranges, or source-backed quantitative evidence become available; record the replacement and affected batches."
+      evidence: "missing-data register, replacement decision, reviewed record coverage, and versioned calculation file"
+validation_rules:
+  - rule_id: validation_identity
+    applies_to: "manifest, reference flow, and dataset metadata"
+    rule: "Confirm the canonical PCR id, Tiangong product-flow UUID, Mass UUID, Units-of-mass UUID, kg unit, and all required qualifiers exactly match the declared reference object."
+    source_ids:
+      - unsd-cpc-3-0-21492
+  - rule_id: validation_mass_basis
+    applies_to: "reference amount and process balances"
+    rule: "Confirm the 1 kg quantitative reference excludes packaging mass and declares total net contents or drained peach solids for a product in liquid medium; reject an undocumented conversion between bases."
+    source_ids:
+      - codex-cxs-242-2003
+  - rule_id: validation_route_exclusivity
+    applies_to: "process map and inventory"
+    rule: "Confirm exactly one preservation route is instantiated. A dataset containing both canned_heat_preservation and other_declared_preservation as concurrent routes is nonconforming."
+    source_ids:
+      - unsd-cpc-3-0-21492
+      - codex-cxs-242-2003
+  - rule_id: validation_process_coverage
+    applies_to: "foreground inventory"
+    rule: "Confirm all four process ids are present, each conditionally occurring flow is supported by occurrence or zero-use evidence, and all inputs, outputs, wastes, wastewater, and direct releases within the foreground boundary are addressed."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: validation_record_linkage
+    applies_to: "collected and calculated values"
+    rule: "Confirm every collected_record or calculated_from_collection row links to a declared protocol and reconciles to raw records on the same route, product specification, period, and mass basis."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: validation_allocation
+    applies_to: "co-products and shared operations"
+    rule: "Confirm subdivision was attempted first and every residual allocation or recovery claim states method, driver, values, reference period, assigned shares, and sensitivity."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: validation_source_scope
+    applies_to: "use of external sources"
+    rule: "Confirm CPC supports only the category reference, CXS 242-2003 is used only for the canned-stone-fruit route, and PEF guidance is not treated as product-specific quantitative evidence."
+    source_ids:
+      - unsd-cpc-3-0-21492
+      - codex-cxs-242-2003
+      - eu-pef-2021-2279
+  - rule_id: validation_estimate_replacement
+    applies_to: "provisional screening envelopes"
+    rule: "Confirm every reasoned_estimate is explicitly conditional, contains no invented source id or mandatory numeric value, and is replaced once its stated representative-record or source-evidence trigger is met."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "Route-specific foreground production dataset suitable for review as a unit-process or aggregated facility-gate dataset"
+  downstream_use: "May support secondary_dataset and background_dataset use in process or lifecyclemodel projections after methodology and data review"
+  allowed_use: "Facility-gate modelling of the declared prepared or preserved peach product when route, form, packing medium or formulation, package, geography, period, mass basis, and data quality are compatible"
+  excluded_use: "Fresh, solely frozen or dried, sugar-preserved, jam, jelly, marmalade, beverage, or mixed-fruit products; an undeclared mix of preservation routes; comparison across incompatible net-content bases; reviewed or published use while material provisional evidence remains unresolved"
+  required_metadata: "canonical PCR id; reference-flow UUID and mass object; CPC context; exclusive preservation route; product and particle form; packing medium or formulation; net-content basis; package format; feedstock condition; facility geography; technology; reference period; allocation; cut-offs; upstream dataset identities"
+  required_quality_disclosure: "raw-record coverage; calibration and conversion evidence; mass and water reconciliation; route separation; missing-data treatment; provisional screening envelopes and replacement status; source versions; allocation sensitivity; data-quality limitations"
+  update_trigger: "Change in product scope, preservation route, formulation or packing medium, net-content basis, package format, feedstock condition, facility technology, energy or water system, allocation, or representative period; availability of representative records or reviewed source-backed quantitative evidence that triggers replacement of a provisional envelope"
+data_sources:
+  - id: "unsd-cpc-3-0-21492"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, Central Product Classification (CPC) Version 3.0, subclass 21492, “Peaches, otherwise prepared or preserved”"
+    used_for: "Classification reference and category label only"
+  - id: "codex-cxs-242-2003"
+    type: "standard"
+    reference: "Codex Alimentarius, CXS 242-2003, Standard for Canned Stone Fruits; current Codex standards listing checked by the batch coordinator in 2025"
+    used_for: "Canned-peach route product form, packing-medium, and mass-basis declarations only; not evidence for the whole category or quantitative inventory values"
+  - id: "eu-pef-2021-2279"
+    type: "official_guidance"
+    reference: "European Commission Recommendation (EU) 2021/2279 on the use of the Environmental Footprint methods"
+    used_for: "General life-cycle boundary, data-quality, allocation, calculation, and disclosure principles; not product-specific quantitative evidence"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:e2ef413bc1cbaa58e616333539eb19e2d5b59b3c6f43f3ff086e819a5583ac33"
+  generated_content_sha256: "sha256:e733753d6b811160993257801c0c020f3716fe49a59a19b0902b78203628a8f7"

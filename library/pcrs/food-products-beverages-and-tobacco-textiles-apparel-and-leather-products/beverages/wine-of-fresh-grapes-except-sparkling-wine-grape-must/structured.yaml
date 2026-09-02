@@ -1,10 +1,1737 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "24212"
-  title: "Wine of fresh grapes, except sparkling wine; grape must"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.food-products-beverages-and-tobacco-textiles-apparel-and-leather-products.beverages.wine-of-fresh-grapes-except-sparkling-wine-grape-must"
+  classification_refs: "CPC 3.0: 24212"
+  covered_products: "Grape must obtained from fresh grapes; still wine obtained by partial or complete alcoholic fermentation of fresh grapes or grape must, whether supplied in bulk or in declared packaging"
+  excluded_products: "Sparkling or carbonated wine; vermouth and aromatised wine; fruit wine; grape juice; wine vinegar; distilled wine products; products not made from fresh grapes or grape must"
+  representative_product: "Market-ready non-sparkling grape wine or grape must at the winery dispatch gate"
+  production_route: "Fresh-grape reception, sorting, crushing and/or pressing; route-dependent must handling; alcoholic fermentation for wine; conditional clarification, stabilisation and maturation; bulk dispatch or packaging"
+  market_state: "Bulk liquid or packaged liquid; product form, still-wine status, alcohol state, packaging configuration, vintage or production campaign, and quality designation declared"
+functional_unit:
+  what: "Provision of market-ready grape must or non-sparkling wine made from fresh grapes at the winery dispatch gate"
+  how_much: "1,000 kg of reference product"
+  how_well: "Conforms to the declared product form and applicable compositional, oenological, food-safety, and market specifications; wine is not sparkling or carbonated"
+  how_long_or_cycle: "One completed production batch or campaign through winery dispatch"
+  reference_flow_link: "Net saleable output after documented process losses and before any downstream distribution"
+system_boundary:
+  rules:
+    - rule_id: boundary_gate_to_gate
+      applies_to: "Foreground winery system"
+      rule: "Include all attributable winery operations from receipt of fresh grapes or disclosed recursive inputs through net saleable product dispatch; disclose that grape production, downstream distribution, retail, use, and end of life require linked datasets when a full life cycle is modelled."
+      source_ids:
+        - oiv-ghg-2025
+        - ferrara-de-feo-2018
+    - rule_id: boundary_route_selection
+      applies_to: "Grape-must and wine routes"
+      rule: "Include must preparation for both products; include alcoholic fermentation only for wine; include clarification, stabilisation, maturation, and packaging only when performed for the declared product."
+      source_ids:
+        - oiv-code-2025
+        - lbnl-best-winery-2005
+    - rule_id: boundary_complete_exchanges
+      applies_to: "Every included process"
+      rule: "Inventory energy, water, raw materials, additives, processing aids, packaging components, products, co-products, each waste, wastewater, refrigerant loss, and each direct emission as separate exchanges."
+      source_ids:
+        - oiv-ghg-2025
+        - oiv-viti-641-2020
+boundary_abstraction:
+  declared_starting_condition: "Fresh wine grapes received at the winery gate, or an explicitly disclosed same-category grape must or bulk wine input for recursive processing"
+  starting_condition_role: "Foreground entry point for winery operations"
+  product_classification_scope: "Grape must and non-sparkling wine made from fresh grapes; excludes sparkling, aromatised, distilled, vinegar, grape-juice, and non-grape products"
+  recursive_input_rule: "Record purchased grape must or bulk wine in this category once as an atomic product input with an upstream dataset; do not recursively reconstruct its winery production inside the receiving foreground process."
+  upstream_dataset_requirement: "Require representative upstream datasets for fresh grapes, same-category bulk inputs, electricity, steam, each fuel, water, additives, processing aids, packaging components, and offsite waste treatment."
+  disclosure: "Disclose included route, bulk or packaged dispatch, outsourced operations, excluded life-cycle stages, grape origin, vintage or campaign, product losses, wastewater route, waste and co-product destinations, and allocation choices."
+reference_flow_definition:
+  reference_amount: "1,000 kg"
+  product_flow_ref:
+    name: "Wine of fresh grapes, except sparkling wine, grape must"
+    uuid: "267f0e7f-b77b-4baf-8e0a-a4e4f180e3ec"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a3c8-11da-a746-0800200b9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "product_form=grape_must or non_sparkling_wine"
+    - bulk_or_packaged
+    - "grape variety or blend"
+    - "vintage or production campaign"
+    - "actual alcohol content for wine"
+    - "residual sugar class where relevant"
+    - "still-wine confirmation"
+    - "preservation or stabilisation route"
+    - "packaging configuration and fill quantity where packaged"
+    - geography
+    - "technology route"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "Reference product and all mass-normalised exchanges"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Report exactly 1,000 kg net saleable reference product and normalise every exchange to that mass."
+  - id: liquid_mass_conversion
+    applies_to: "Records measured by liquid volume"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Convert measured volume to mass with a product- and temperature-specific density record; retain raw volume, temperature, density, and conversion calculation."
+  - id: packaging_mass
+    applies_to: "Each packaging component"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Record the placed-on-market mass of each component separately; do not use a combined packaging mass without component records."
+  - id: energy_separation
+    applies_to: "Purchased electricity, purchased steam, and combusted fuels"
+    required_property_ref:
+      name: "Energy"
+      uuid: ""
+    required_unit: "kWh or MJ"
+    rule: "Keep electricity, steam, and each fuel as separate exchanges and document conversion factors and heating-value basis."
+  - id: wastewater_load
+    applies_to: "Direct discharge pollutant indicators"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Calculate each pollutant load separately as measured discharge volume multiplied by its matched concentration; retain sampling and flow records."
+process_map:
+  - id: must_preparation
+    name: "Fresh-grape reception and must preparation"
+    inclusion: "required"
+    inclusion_condition: "All declared products"
+    role: "Converts received fresh grapes into grape must and separated solids"
+    quantitative_reference: "1,000 kg reference product"
+  - id: alcoholic_fermentation
+    name: "Alcoholic fermentation"
+    inclusion: "conditional"
+    inclusion_condition: "product_form=non_sparkling_wine"
+    role: "Converts grape sugars into ethanol, carbon dioxide, and young wine"
+    quantitative_reference: "1,000 kg reference product"
+  - id: wine_finishing
+    name: "Clarification, stabilisation, maturation, and cellar handling"
+    inclusion: "conditional"
+    inclusion_condition: "Performed for the declared wine or treated/preserved must route"
+    role: "Produces finished bulk product and records cellar utilities, aids, residues, and losses"
+    quantitative_reference: "1,000 kg reference product"
+  - id: packaging_dispatch
+    name: "Packaging and dispatch preparation"
+    inclusion: "conditional"
+    inclusion_condition: "Reference product is packaged before the winery gate"
+    role: "Fills and assembles the declared primary, secondary, and tertiary packaging"
+    quantitative_reference: "1,000 kg reference product"
+  - id: wastewater_treatment
+    name: "Onsite winery wastewater treatment"
+    inclusion: "conditional"
+    inclusion_condition: "Winery wastewater is treated or discharged under foreground control"
+    role: "Treats wastewater and quantifies separate discharge indicators"
+    quantitative_reference: "1,000 kg reference product"
+process_inventory:
+  - id: must_preparation
+    label: "Fresh-grape reception and must preparation"
+    inputs:
+      product:
+        - row_id: fresh_wine_grapes
+          role: "Received fresh wine grapes"
+          name: "Fresh wine grapes"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Fresh grapes entering the winery are weighed by lot before sorting, crushing, destemming, draining, or pressing."
+          amount:
+            expression: "Net accepted grape mass from calibrated inbound scales after documented rejected-load adjustments"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_mass_balance
+              source_ids:
+                - oiv-code-2025
+                - lbnl-best-winery-2005
+            ranges: []
+        - row_id: must_preparation_electricity
+          role: "Electricity for grape handling"
+          name: "Electricity, medium voltage"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Metered electricity powers receiving, conveyors, crushers, destemmers, presses, pumps, and controls."
+          amount:
+            expression: "Metered or defensibly sub-metered electricity used by this process"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_records
+              source_ids:
+                - lbnl-best-winery-2005
+            ranges: []
+        - row_id: must_preparation_water
+          role: "Cleaning water for receiving and pressing"
+          name: "Process water"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "Water used to clean the crush pad, receiving equipment, presses, and associated lines is recorded separately from other cellar water."
+          amount:
+            expression: "Metered or batch-estimated water delivered to this process"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water_records
+              source_ids:
+                - lbnl-best-winery-2005
+                - oiv-viti-641-2020
+            ranges: []
+        - row_id: must_preparation_sulfur_dioxide
+          role: "Sulfur dioxide used before fermentation"
+          name: "Sulfur dioxide"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Sulfur dioxide is recorded when used to protect grapes or must; the pure active mass is derived from the actual formulation and concentration."
+          amount:
+            expression: "Active sulfur dioxide mass calculated from weighed formulation additions"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_additive_records
+              source_ids:
+                - oiv-code-2025
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: grape_must_output
+          role: "Grape must transferred or sold"
+          name: "Grape must"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Must leaving preparation is weighed or converted from calibrated volume and density; it is an intermediate for wine or the saleable reference product for the must route."
+          amount:
+            expression: "Measured transfer or dispatch mass net of retained solids and documented losses"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_material_mass_balance
+              source_ids:
+                - oiv-code-2025
+            ranges: []
+      waste:
+        - row_id: grape_stems
+          role: "Separated grape stems"
+          name: "Grape stems"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Stems removed during destemming are recorded by wet mass and destination."
+          amount:
+            expression: "Measured or container-weight-derived wet mass leaving the process"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_records
+              source_ids:
+                - oiv-viti-641-2020
+                - lbnl-best-winery-2005
+            ranges: []
+        - row_id: must_preparation_pomace
+          role: "White-wine or must-route grape pomace"
+          name: "Grape pomace"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Skins, seeds, and pulp separated before fermentation are recorded as grape pomace with destination and market status."
+          amount:
+            expression: "Measured wet mass leaving the process"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_records
+              source_ids:
+                - oiv-viti-641-2020
+                - ferrara-de-feo-2018
+            ranges: []
+        - row_id: must_preparation_wastewater
+          role: "Must-preparation winery wastewater"
+          name: "Winery wastewater from grape receiving and pressing"
+          flow_type: "waste"
+          property_unit: "Volume / m3"
+          description: "Wash water and product-bearing drainage leaving this process are recorded as one specific wastewater stream before treatment."
+          amount:
+            expression: "Measured wastewater volume attributable to this process"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wastewater_records
+              source_ids:
+                - oiv-viti-641-2020
+                - lbnl-best-winery-2005
+            ranges: []
+      elementary:
+        []
+  - id: alcoholic_fermentation
+    label: "Alcoholic fermentation"
+    inputs:
+      product:
+        - row_id: fermentation_grape_must
+          role: "Grape must to fermentation"
+          name: "Grape must"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Must charged to fermenters is recorded by mass for the wine route."
+          amount:
+            expression: "Measured fermenter charge mass"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_material_mass_balance
+              source_ids:
+                - oiv-code-2025
+            ranges: []
+        - row_id: wine_yeast
+          role: "Active dry wine yeast"
+          name: "Active dry wine yeast"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Purchased yeast is recorded only when inoculation occurs."
+          amount:
+            expression: "Weighed yeast addition from batch records"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_additive_records
+              source_ids:
+                - oiv-code-2025
+            ranges: []
+        - row_id: diammonium_phosphate
+          role: "Diammonium phosphate fermentation nutrient"
+          name: "Diammonium phosphate"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Diammonium phosphate is recorded as a separate chemical when added as a fermentation nutrient."
+          amount:
+            expression: "Weighed nutrient addition from batch records"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_additive_records
+              source_ids:
+                - oiv-code-2025
+            ranges: []
+        - row_id: fermentation_electricity
+          role: "Electricity for fermentation control"
+          name: "Electricity, medium voltage"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Electricity for pumping, agitation, controls, and cooling is recorded for the fermentation process."
+          amount:
+            expression: "Metered or defensibly sub-metered electricity used by fermentation"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_records
+              source_ids:
+                - lbnl-best-winery-2005
+            ranges: []
+        - row_id: fermentation_water
+          role: "Fermenter cleaning water"
+          name: "Process water"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "Water used for fermenter and transfer-line cleaning is separately recorded."
+          amount:
+            expression: "Metered or batch-estimated water delivered to fermentation cleaning"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water_records
+              source_ids:
+                - lbnl-best-winery-2005
+            ranges: []
+        - row_id: r134a_makeup
+          role: "Refrigerant R134a makeup"
+          name: "Refrigerant R134a"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "R134a purchased to replace losses from fermentation or cellar cooling is recorded when this refrigerant is used."
+          amount:
+            expression: "Verified R134a recharge mass assigned to winery production"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_refrigerant_records
+              source_ids:
+                - oiv-ghg-2025
+            ranges: []
+        - row_id: r404a_makeup
+          role: "Refrigerant R404A makeup"
+          name: "Refrigerant R404A"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "R404A purchased to replace losses from fermentation or cellar cooling is recorded when this refrigerant blend is used."
+          amount:
+            expression: "Verified R404A recharge mass assigned to winery production"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_refrigerant_records
+              source_ids:
+                - oiv-ghg-2025
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: young_wine
+          role: "Young wine after alcoholic fermentation"
+          name: "Young non-sparkling grape wine"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Young wine transferred from fermentation is recorded by mass before finishing."
+          amount:
+            expression: "Measured transfer mass net of retained solids and documented spills"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_material_mass_balance
+              source_ids:
+                - oiv-code-2025
+            ranges: []
+      waste:
+        - row_id: fermentation_pomace
+          role: "Red-wine grape pomace"
+          name: "Grape pomace"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Skins, seeds, and pulp separated after red-wine fermentation are recorded as grape pomace."
+          amount:
+            expression: "Measured wet mass leaving fermentation or pressing"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_records
+              source_ids:
+                - oiv-viti-641-2020
+                - ferrara-de-feo-2018
+            ranges: []
+        - row_id: fermentation_lees
+          role: "Gross fermentation lees"
+          name: "Wine lees"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Settled yeast and solids removed at the first wine transfer are recorded separately from pomace."
+          amount:
+            expression: "Measured wet lees mass leaving fermentation"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_records
+              source_ids:
+                - oiv-viti-641-2020
+                - lbnl-best-winery-2005
+            ranges: []
+        - row_id: fermentation_wastewater
+          role: "Fermentation winery wastewater"
+          name: "Winery wastewater from fermentation"
+          flow_type: "waste"
+          property_unit: "Volume / m3"
+          description: "Fermenter and transfer-line wash water leaving the process is recorded before treatment."
+          amount:
+            expression: "Measured wastewater volume attributable to fermentation"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wastewater_records
+              source_ids:
+                - oiv-viti-641-2020
+                - lbnl-best-winery-2005
+            ranges: []
+      elementary:
+        - row_id: fermentation_co2_biogenic
+          role: "Biogenic carbon dioxide from fermentation"
+          name: "Carbon dioxide, biogenic, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Carbon dioxide released by alcoholic fermentation is calculated from collected sugar-conversion or off-gas records and reported as biogenic."
+          amount:
+            expression: "Measured off-gas mass or stoichiometric calculation from fermentable sugar converted"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_direct_emission_records
+              source_ids:
+                - oiv-code-2025
+                - lbnl-best-winery-2005
+            ranges: []
+        - row_id: r134a_to_air
+          role: "R134a released to air"
+          name: "1,1,1,2-Tetrafluoroethane (HFC-134a), to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "R134a leakage is reported separately when systems containing R134a serve the foreground processes."
+          amount:
+            expression: "Calculated refrigerant inventory loss assigned to production"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_refrigerant_records
+              source_ids:
+                - oiv-ghg-2025
+            ranges: []
+        - row_id: r404a_to_air
+          role: "R404A released to air"
+          name: "Refrigerant R404A, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "R404A leakage is reported separately when systems containing R404A serve the foreground processes."
+          amount:
+            expression: "Calculated refrigerant inventory loss assigned to production"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_refrigerant_records
+              source_ids:
+                - oiv-ghg-2025
+            ranges: []
+  - id: wine_finishing
+    label: "Clarification, stabilisation, maturation, and cellar handling"
+    inputs:
+      product:
+        - row_id: finishing_young_wine
+          role: "Young wine to finishing"
+          name: "Young non-sparkling grape wine"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Young wine entering finishing is measured before clarification, stabilisation, maturation, or storage."
+          amount:
+            expression: "Measured process charge mass"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_material_mass_balance
+              source_ids:
+                - lbnl-best-winery-2005
+            ranges: []
+        - row_id: finishing_electricity
+          role: "Electricity for cellar operations"
+          name: "Electricity, medium voltage"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Electricity for pumping, filtration, refrigeration, stabilisation, and storage is recorded for the finishing process."
+          amount:
+            expression: "Metered or defensibly sub-metered electricity used by finishing"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_records
+              source_ids:
+                - lbnl-best-winery-2005
+            ranges: []
+        - row_id: finishing_water
+          role: "Cellar cleaning water"
+          name: "Process water"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "Water used to clean tanks, barrels, filters, floors, and transfer equipment is separately recorded."
+          amount:
+            expression: "Metered or batch-estimated water delivered to finishing and cellar cleaning"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water_records
+              source_ids:
+                - lbnl-best-winery-2005
+                - oiv-viti-641-2020
+            ranges: []
+        - row_id: finishing_steam
+          role: "Purchased steam for hot cleaning"
+          name: "Steam, at industrial facility"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Purchased steam is a separate exchange when used for barrel, tank, or equipment cleaning."
+          amount:
+            expression: "Metered purchased steam energy assigned to finishing"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_records
+              source_ids:
+                - lbnl-best-winery-2005
+            ranges: []
+        - row_id: finishing_natural_gas
+          role: "Natural gas for onsite heat"
+          name: "Natural gas"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Natural gas is recorded separately when combusted onsite for hot water or steam used by the winery."
+          amount:
+            expression: "Metered fuel consumption on a documented lower- or higher-heating-value basis"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_records
+              source_ids:
+                - lbnl-best-winery-2005
+                - oiv-ghg-2025
+            ranges: []
+        - row_id: finishing_sulfur_dioxide
+          role: "Sulfur dioxide used in finishing"
+          name: "Sulfur dioxide"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Sulfur dioxide added after fermentation is recorded separately from pre-fermentation additions."
+          amount:
+            expression: "Active sulfur dioxide mass calculated from weighed formulation additions"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_additive_records
+              source_ids:
+                - oiv-code-2025
+            ranges: []
+        - row_id: bentonite
+          role: "Bentonite fining agent"
+          name: "Bentonite"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Bentonite is recorded when used for fining or clarification."
+          amount:
+            expression: "Weighed dry bentonite charged to the batch"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_additive_records
+              source_ids:
+                - oiv-code-2025
+                - lbnl-best-winery-2005
+            ranges: []
+        - row_id: diatomaceous_earth
+          role: "Diatomaceous earth filter aid"
+          name: "Diatomaceous earth"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Diatomaceous earth is recorded when used in depth filtration."
+          amount:
+            expression: "Weighed dry filter aid charged to filtration"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_additive_records
+              source_ids:
+                - lbnl-best-winery-2005
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: finished_bulk_wine
+          role: "Finished bulk non-sparkling wine"
+          name: "Finished bulk non-sparkling grape wine"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Finished bulk wine is measured after finishing and before packaging or bulk dispatch."
+          amount:
+            expression: "Measured transfer or dispatch mass net of retained residues and documented cellar losses"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_material_mass_balance
+              source_ids:
+                - oiv-code-2025
+                - lbnl-best-winery-2005
+            ranges: []
+      waste:
+        - row_id: finishing_lees
+          role: "Finishing wine lees"
+          name: "Wine lees"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Lees removed during racking, clarification, stabilisation, or maturation are recorded separately."
+          amount:
+            expression: "Measured wet lees mass leaving finishing"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_records
+              source_ids:
+                - oiv-viti-641-2020
+                - ferrara-de-feo-2018
+            ranges: []
+        - row_id: spent_bentonite
+          role: "Spent bentonite"
+          name: "Spent bentonite from wine clarification"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Spent bentonite and entrained wine solids are recorded as a distinct waste stream."
+          amount:
+            expression: "Measured wet waste mass leaving clarification"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_records
+              source_ids:
+                - oiv-viti-641-2020
+            ranges: []
+        - row_id: spent_diatomaceous_earth
+          role: "Spent diatomaceous earth"
+          name: "Spent diatomaceous earth from wine filtration"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Used diatomaceous earth and retained solids are recorded separately from other clarification residues."
+          amount:
+            expression: "Measured wet waste mass leaving filtration"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_records
+              source_ids:
+                - oiv-viti-641-2020
+                - lbnl-best-winery-2005
+            ranges: []
+        - row_id: finishing_wastewater
+          role: "Finishing winery wastewater"
+          name: "Winery wastewater from finishing and cellar cleaning"
+          flow_type: "waste"
+          property_unit: "Volume / m3"
+          description: "Tank, barrel, filter, and cellar wash water leaving finishing is recorded before treatment."
+          amount:
+            expression: "Measured wastewater volume attributable to finishing"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wastewater_records
+              source_ids:
+                - oiv-viti-641-2020
+                - lbnl-best-winery-2005
+            ranges: []
+      elementary:
+        - row_id: natural_gas_co2_fossil
+          role: "Fossil carbon dioxide from onsite natural-gas combustion"
+          name: "Carbon dioxide, fossil, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Direct fossil carbon dioxide from the documented natural-gas use is calculated separately."
+          amount:
+            expression: "Natural-gas activity multiplied by the applicable documented carbon-dioxide emission factor"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_direct_emission_records
+              source_ids:
+                - oiv-ghg-2025
+            ranges: []
+        - row_id: natural_gas_ch4
+          role: "Methane from onsite natural-gas combustion"
+          name: "Methane, fossil, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Direct methane from onsite natural-gas combustion is calculated as its own exchange."
+          amount:
+            expression: "Natural-gas activity multiplied by the applicable documented methane emission factor"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_direct_emission_records
+              source_ids:
+                - oiv-ghg-2025
+            ranges: []
+        - row_id: natural_gas_n2o
+          role: "Nitrous oxide from onsite natural-gas combustion"
+          name: "Nitrous oxide, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Direct nitrous oxide from onsite natural-gas combustion is calculated as its own exchange."
+          amount:
+            expression: "Natural-gas activity multiplied by the applicable documented nitrous-oxide emission factor"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_direct_emission_records
+              source_ids:
+                - oiv-ghg-2025
+            ranges: []
+        - row_id: natural_gas_nox
+          role: "Nitrogen oxides from onsite natural-gas combustion"
+          name: "Nitrogen oxides, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Direct nitrogen oxides from onsite natural-gas combustion are reported separately from greenhouse gases."
+          amount:
+            expression: "Natural-gas activity multiplied by the applicable documented nitrogen-oxides emission factor"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_direct_emission_records
+              source_ids:
+                - oiv-ghg-2025
+            ranges: []
+  - id: packaging_dispatch
+    label: "Packaging and dispatch preparation"
+    inputs:
+      product:
+        - row_id: packaging_wine_input
+          role: "Finished wine sent to packaging"
+          name: "Finished bulk non-sparkling grape wine"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Finished wine entering packaging is measured separately from grape must."
+          amount:
+            expression: "Measured mass charged to the packaging line"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_material_mass_balance
+              source_ids:
+                - lbnl-best-winery-2005
+            ranges: []
+        - row_id: packaging_must_input
+          role: "Grape must sent to packaging"
+          name: "Grape must"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Grape must entering packaging is measured as a separate route-specific product input."
+          amount:
+            expression: "Measured mass charged to the packaging line"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_material_mass_balance
+              source_ids:
+                - oiv-code-2025
+            ranges: []
+        - row_id: packaging_electricity
+          role: "Electricity for packaging"
+          name: "Electricity, medium voltage"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Electricity for rinsing, filling, closing, labelling, conveying, and pallet preparation is recorded."
+          amount:
+            expression: "Metered or defensibly sub-metered electricity used by packaging"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_records
+              source_ids:
+                - lbnl-best-winery-2005
+            ranges: []
+        - row_id: packaging_water
+          role: "Packaging-line cleaning water"
+          name: "Process water"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "Water used for package rinsing and line cleaning is recorded separately."
+          amount:
+            expression: "Metered or batch-estimated water delivered to packaging"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water_records
+              source_ids:
+                - lbnl-best-winery-2005
+            ranges: []
+        - row_id: packaging_nitrogen
+          role: "Nitrogen for inerting"
+          name: "Nitrogen gas"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Nitrogen used for tank or package headspace inerting is recorded when applied."
+          amount:
+            expression: "Metered gas use or supplier-cylinder mass balance"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_additive_records
+              source_ids:
+                - lbnl-best-winery-2005
+            ranges: []
+        - row_id: glass_bottle
+          role: "Glass bottles"
+          name: "Glass bottle"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Glass bottle mass is recorded separately for the exact bottle specification used."
+          amount:
+            expression: "Issued bottle count multiplied by verified unit mass, less returned unused units"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_records
+              source_ids:
+                - ferrara-de-feo-2018
+                - oiv-viti-641-2020
+            ranges: []
+        - row_id: natural_cork_closure
+          role: "Natural cork closures"
+          name: "Natural cork closure"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Natural cork closures are recorded only for products using this closure."
+          amount:
+            expression: "Issued closure count multiplied by verified unit mass, less returned unused units"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_records
+              source_ids:
+                - ferrara-de-feo-2018
+            ranges: []
+        - row_id: aluminium_screw_cap
+          role: "Aluminium screw-cap closures"
+          name: "Aluminium screw-cap closure"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Aluminium screw caps are recorded only for products using this closure and never combined with cork mass."
+          amount:
+            expression: "Issued closure count multiplied by verified unit mass, less returned unused units"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_records
+              source_ids:
+                - oiv-viti-641-2020
+            ranges: []
+        - row_id: paper_label
+          role: "Paper labels"
+          name: "Coated paper label"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Paper labels are recorded as an individual packaging component."
+          amount:
+            expression: "Applied label count multiplied by verified unit mass"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_records
+              source_ids:
+                - ferrara-de-feo-2018
+            ranges: []
+        - row_id: corrugated_board_carton
+          role: "Corrugated board cartons"
+          name: "Corrugated board carton"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Corrugated board shipping cartons are recorded separately from labels and pallets."
+          amount:
+            expression: "Used carton count multiplied by verified unit mass"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_records
+              source_ids:
+                - oiv-viti-641-2020
+            ranges: []
+        - row_id: ldpe_stretch_film
+          role: "Low-density polyethylene stretch film"
+          name: "Low-density polyethylene stretch film"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Stretch film used to secure palletised product is recorded as its own polymer component."
+          amount:
+            expression: "Issued roll mass less verified remainder, assigned to packaged output"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_records
+              source_ids:
+                - oiv-viti-641-2020
+            ranges: []
+        - row_id: wood_pallet
+          role: "Wooden pallets"
+          name: "Wooden pallet"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "One-way or allocated reusable wooden pallet mass is recorded separately with reuse assumptions disclosed."
+          amount:
+            expression: "One-way pallet mass or verified lifetime allocation of reusable pallet mass assigned to output"
+            value_mode: "calculated_value"
+            specificity: "scenario_specific"
+            basis:
+              text: "per 1,000 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_records
+              source_ids:
+                - oiv-viti-641-2020
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: packaged_reference_product
+          role: "Market-ready packaged reference product"
+          name: "Wine of fresh grapes, except sparkling wine, grape must"
+          flow_type: "product"
+          flow_ref:
+            uuid: "267f0e7f-b77b-4baf-8e0a-a4e4f180e3ec"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Net saleable packaged wine or grape must is the reference output; product mass excludes packaging mass."
+          amount:
+            expression: "1,000 kg net saleable product, excluding packaging mass"
+            value_mode: "fixed_value"
+            specificity: "generic"
+            basis:
+              text: "per 1,000 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "identity_reference"
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: packaging_wastewater
+          role: "Packaging-line winery wastewater"
+          name: "Winery wastewater from packaging"
+          flow_type: "waste"
+          property_unit: "Volume / m3"
+          description: "Rinsing and line-cleaning water leaving packaging is recorded before treatment."
+          amount:
+            expression: "Measured wastewater volume attributable to packaging"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wastewater_records
+              source_ids:
+                - lbnl-best-winery-2005
+            ranges: []
+        - row_id: broken_glass
+          role: "Broken glass bottles"
+          name: "Waste glass from packaging"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Broken or rejected glass bottles are recorded separately from other packaging losses."
+          amount:
+            expression: "Measured mass or rejected bottle count multiplied by verified unit mass"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_records
+              source_ids:
+                - oiv-viti-641-2020
+            ranges: []
+      elementary:
+        []
+  - id: wastewater_treatment
+    label: "Onsite winery wastewater treatment"
+    inputs:
+      product:
+        - row_id: wastewater_treatment_electricity
+          role: "Electricity for wastewater treatment"
+          name: "Electricity, medium voltage"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Electricity used by pumps, aeration, mixing, and controls is recorded for onsite treatment."
+          amount:
+            expression: "Metered electricity used by wastewater treatment"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_records
+              source_ids:
+                - oiv-viti-641-2020
+            ranges: []
+      waste:
+        - row_id: winery_wastewater_treatment_input
+          role: "Combined winery wastewater to onsite treatment"
+          name: "Winery process wastewater"
+          flow_type: "waste"
+          property_unit: "Volume / m3"
+          description: "The combined winery wastewater entering onsite treatment is measured without combining it with sanitary wastewater unless that scope is explicitly disclosed."
+          amount:
+            expression: "Measured influent volume assigned to the declared product system"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wastewater_records
+              source_ids:
+                - oiv-viti-641-2020
+            ranges: []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: treated_winery_wastewater
+          role: "Treated winery wastewater"
+          name: "Treated winery wastewater"
+          flow_type: "waste"
+          property_unit: "Volume / m3"
+          description: "Treated effluent sent to reuse, sewer, or controlled discharge is recorded by volume and destination."
+          amount:
+            expression: "Measured treated-effluent volume by destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wastewater_records
+              source_ids:
+                - oiv-viti-641-2020
+            ranges: []
+        - row_id: wastewater_sludge
+          role: "Wastewater treatment sludge"
+          name: "Winery wastewater treatment sludge"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Sludge removed from winery wastewater treatment is recorded as a separate waste stream."
+          amount:
+            expression: "Measured wet mass with dry-matter content and destination retained"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_records
+              source_ids:
+                - oiv-viti-641-2020
+                - ferrara-de-feo-2018
+            ranges: []
+      elementary:
+        - row_id: cod_to_water
+          role: "Chemical oxygen demand discharged to water"
+          name: "Chemical oxygen demand, to water"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "COD load is reported as its own discharge indicator when treated effluent is released under foreground control."
+          amount:
+            expression: "Matched discharge volume multiplied by measured COD concentration"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_wastewater_monitoring
+              source_ids:
+                - oiv-viti-641-2020
+            ranges: []
+        - row_id: bod5_to_water
+          role: "Five-day biochemical oxygen demand discharged to water"
+          name: "Biochemical oxygen demand, 5 days, to water"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "BOD5 load is reported separately from COD."
+          amount:
+            expression: "Matched discharge volume multiplied by measured BOD5 concentration"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_wastewater_monitoring
+              source_ids:
+                - oiv-viti-641-2020
+            ranges: []
+        - row_id: tss_to_water
+          role: "Total suspended solids discharged to water"
+          name: "Total suspended solids, to water"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Suspended-solids load is reported as an individual water emission."
+          amount:
+            expression: "Matched discharge volume multiplied by measured total-suspended-solids concentration"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_wastewater_monitoring
+              source_ids:
+                - oiv-viti-641-2020
+            ranges: []
+        - row_id: total_nitrogen_to_water
+          role: "Total nitrogen discharged to water"
+          name: "Nitrogen, total, to water"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Total-nitrogen load is reported as an individual water emission when monitored or required by permit."
+          amount:
+            expression: "Matched discharge volume multiplied by measured total-nitrogen concentration"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_wastewater_monitoring
+              source_ids:
+                - oiv-viti-641-2020
+            ranges: []
+        - row_id: total_phosphorus_to_water
+          role: "Total phosphorus discharged to water"
+          name: "Phosphorus, total, to water"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Total-phosphorus load is reported as an individual water emission when monitored or required by permit."
+          amount:
+            expression: "Matched discharge volume multiplied by measured total-phosphorus concentration"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_wastewater_monitoring
+              source_ids:
+                - oiv-viti-641-2020
+            ranges: []
+allocation_rules:
+  - rule_id: allocation_avoidance
+    applies_to: "Multi-output winery processes"
+    rule: "Avoid allocation first by subdividing metered operations or expanding the system with separately modelled recovery processes where this is justified and consistently applied."
+    source_ids:
+      - oiv-ghg-2025
+  - rule_id: allocation_physical
+    applies_to: "Wine, grape must, pomace, lees, and other valuable co-products"
+    rule: "Where subdivision is not possible and a physical causal relationship exists, allocate the remaining shared inputs and outputs using that documented physical relationship; do not allocate solely because a residue has mass."
+    source_ids:
+      - oiv-ghg-2025
+  - rule_id: allocation_economic_fallback
+    applies_to: "Joint valuable outputs without a defensible physical relationship"
+    rule: "Use economic allocation only as a disclosed fallback based on contemporaneous values at the point where co-products leave the shared process; test sensitivity when the choice is material."
+    source_ids:
+      - oiv-ghg-2025
+      - eu-pef-2021
+  - rule_id: waste_no_credit
+    applies_to: "Outputs managed as waste"
+    rule: "Assign no avoided-product credit unless a documented consequential or substitution scenario is explicitly in scope; record transport and treatment in the selected waste route."
+    source_ids:
+      - oiv-viti-641-2020
+      - eu-pef-2021
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_material_mass_balance
+      process_id: "all"
+      flow_role: "Product and intermediate mass"
+      record_type: "Scale, tank, density, and batch records"
+      raw_fields: "batch_id; timestamp; gross_mass; tare_mass; volume; temperature; density; product_form; transfer_loss"
+      collection_method: "Calibrated scale or calibrated volume converted with matched density"
+      unit: "kg"
+      frequency: "Each lot, transfer, and dispatch"
+      temporal_coverage: "Complete declared campaign"
+      site_scope: "All foreground winery operations"
+      aggregation_rule: "Sum accepted or transferred mass by route; reconcile inputs, outputs, stocks, and documented losses before normalisation"
+      quality_evidence: "Calibration certificates; tank charts; batch reconciliation; signed dispatch records"
+    - protocol_id: cp_energy_records
+      process_id: "all"
+      flow_role: "Electricity, steam, and each fuel"
+      record_type: "Meter, invoice, and equipment allocation records"
+      raw_fields: "meter_id; timestamp; energy_quantity; unit; fuel_identity; heating_value_basis; process_assignment"
+      collection_method: "Direct sub-metering preferred; otherwise documented engineering allocation from facility meters"
+      unit: "kWh; MJ"
+      frequency: "Continuous or invoice period"
+      temporal_coverage: "At least one representative complete production campaign"
+      site_scope: "Foreground winery and onsite treatment"
+      aggregation_rule: "Aggregate each energy carrier separately and allocate shared meters using documented operating drivers"
+      quality_evidence: "Meter calibration; invoices; allocation worksheet; completeness check"
+    - protocol_id: cp_water_records
+      process_id: "all"
+      flow_role: "Process water"
+      record_type: "Water meter and batch records"
+      raw_fields: "meter_id; timestamp; volume; source; process_assignment; reuse_flag"
+      collection_method: "Direct meter or validated batch estimate"
+      unit: "m3"
+      frequency: "Continuous or each cleaning event"
+      temporal_coverage: "Complete declared campaign including peak vintage"
+      site_scope: "Foreground winery"
+      aggregation_rule: "Sum by process and water source; keep reused water separate from fresh intake"
+      quality_evidence: "Meter calibration; cleaning logs; water balance"
+    - protocol_id: cp_additive_records
+      process_id: "all"
+      flow_role: "Each additive, processing aid, yeast, nutrient, or inert gas"
+      record_type: "Weighing, formulation, issue, and batch records"
+      raw_fields: "material_identity; formulation; active_fraction; batch_id; issued_mass; returned_mass; gas_quantity"
+      collection_method: "Weighed issue-and-return balance or calibrated dosing record"
+      unit: "kg"
+      frequency: "Each addition"
+      temporal_coverage: "Complete declared campaign"
+      site_scope: "Foreground winery"
+      aggregation_rule: "Calculate active material where needed and aggregate by atomic material and product route"
+      quality_evidence: "Supplier specification; scale calibration; batch sheet; stock reconciliation"
+    - protocol_id: cp_refrigerant_records
+      process_id: "alcoholic_fermentation"
+      flow_role: "Each refrigerant and loss"
+      record_type: "Refrigeration asset register and service records"
+      raw_fields: "equipment_id; refrigerant_identity; opening_charge; added_mass; recovered_mass; closing_charge; service_date; process_assignment"
+      collection_method: "Annual or campaign inventory balance for each refrigerant"
+      unit: "kg"
+      frequency: "Each service and annual/campaign close"
+      temporal_coverage: "Period overlapping declared production"
+      site_scope: "Refrigeration systems serving foreground processes"
+      aggregation_rule: "Calculate losses separately by refrigerant and assign by documented service or cooling driver"
+      quality_evidence: "Technician records; purchase receipts; equipment register; inventory reconciliation"
+    - protocol_id: cp_packaging_records
+      process_id: "packaging_dispatch"
+      flow_role: "Each packaging component"
+      record_type: "Bill of materials, issue, count, unit-mass, and reject records"
+      raw_fields: "component_identity; supplier; specification; unit_mass; issued_count; returned_count; reject_count; reuse_cycles"
+      collection_method: "Count multiplied by verified unit mass, or direct mass issue balance"
+      unit: "kg"
+      frequency: "Each packaging run"
+      temporal_coverage: "Complete declared campaign"
+      site_scope: "Packaging operations under foreground control"
+      aggregation_rule: "Aggregate each component separately; disclose reusable-pallet lifetime allocation"
+      quality_evidence: "Supplier specification; sampled unit-mass check; line reconciliation"
+    - protocol_id: cp_waste_records
+      process_id: "all"
+      flow_role: "Each solid or semisolid waste and by-product"
+      record_type: "Container scale, collection, and destination records"
+      raw_fields: "waste_identity; wet_mass; dry_matter; batch_id; destination; market_status; haulier"
+      collection_method: "Calibrated scale or container count with verified net mass"
+      unit: "kg"
+      frequency: "Each removal"
+      temporal_coverage: "Complete declared campaign"
+      site_scope: "All foreground processes"
+      aggregation_rule: "Aggregate each waste identity and destination separately; do not net sold co-products against inputs"
+      quality_evidence: "Weigh tickets; manifests; dry-matter tests where relevant; destination evidence"
+    - protocol_id: cp_wastewater_records
+      process_id: "all"
+      flow_role: "Each winery wastewater stream"
+      record_type: "Flow meter, tank, sewer, and reuse records"
+      raw_fields: "source_process; timestamp; volume; destination; sanitary_inclusion; product_loss"
+      collection_method: "Metered flow or validated tank-volume balance"
+      unit: "m3"
+      frequency: "Continuous or each discharge batch"
+      temporal_coverage: "Complete declared campaign including peak vintage"
+      site_scope: "Winery wastewater under foreground control"
+      aggregation_rule: "Sum by source process and destination; reconcile treatment influent and effluent"
+      quality_evidence: "Meter calibration; sewer invoice; tank logs; water balance"
+    - protocol_id: cp_wastewater_monitoring
+      process_id: "wastewater_treatment"
+      flow_role: "Each wastewater pollutant indicator"
+      record_type: "Matched flow and laboratory sample records"
+      raw_fields: "sample_id; start_time; end_time; discharge_volume; cod; bod5; tss; total_nitrogen; total_phosphorus; method; detection_limit"
+      collection_method: "Representative composite sampling and accredited or documented laboratory analysis"
+      unit: "kg; mg/L; m3"
+      frequency: "Per permit and sufficient to represent vintage peaks"
+      temporal_coverage: "Complete declared campaign"
+      site_scope: "Direct discharge under foreground control"
+      aggregation_rule: "Pair concentration with the same discharge interval; compute each pollutant load separately"
+      quality_evidence: "Chain of custody; method; laboratory QA/QC; flow-meter calibration"
+    - protocol_id: cp_direct_emission_records
+      process_id: "all"
+      flow_role: "Fermentation and combustion emissions"
+      record_type: "Sugar balance, off-gas, fuel, and factor records"
+      raw_fields: "batch_id; sugar_before; sugar_after; offgas_mass; fuel_quantity; factor_id; factor_value; factor_unit"
+      collection_method: "Direct measurement where available, otherwise activity data multiplied by documented factor or stoichiometric relation"
+      unit: "kg"
+      frequency: "Each batch or fuel period"
+      temporal_coverage: "Complete declared campaign"
+      site_scope: "Direct foreground emission sources"
+      aggregation_rule: "Calculate each emitted substance separately and normalise to reference mass"
+      quality_evidence: "Analytical records; fuel invoices; factor provenance; calculation worksheet"
+  calculation_rules:
+    - id: calc_reference_normalisation
+      applies_to: "Every inventory exchange"
+      rule: "normalized_amount = campaign_amount / net_saleable_reference_product_mass × 1,000 kg"
+      inputs:
+        - "Campaign exchange amount"
+        - "net saleable product mass"
+      output: "Exchange per 1,000 kg reference product"
+      source_ids:
+        - oiv-ghg-2025
+    - id: calc_volume_to_mass
+      applies_to: "Wine and must volume records"
+      rule: "mass = calibrated_volume × density measured or justified for the product and temperature"
+      inputs:
+        - Volume
+        - temperature
+        - density
+      output: "Product mass"
+      source_ids:
+        - oiv-code-2025
+    - id: calc_active_sulfur_dioxide
+      applies_to: "Sulfiting additions"
+      rule: "active_SO2_mass = formulation_mass × verified_SO2_mass_fraction"
+      inputs:
+        - "Formulation mass"
+        - "supplier active fraction"
+      output: "Sulfur dioxide mass"
+      source_ids:
+        - oiv-code-2025
+    - id: calc_fermentation_co2
+      applies_to: "Alcoholic fermentation"
+      rule: "Use measured off-gas where reliable; otherwise CO2_mass = fermentable_hexose_equivalent_consumed × 88/180, with incomplete conversion and retained dissolved carbon disclosed"
+      inputs:
+        - "Sugar before and after fermentation"
+        - "batch mass"
+        - "off-gas or retention records"
+      output: "Biogenic carbon dioxide to air"
+      source_ids:
+        - oiv-code-2025
+        - lbnl-best-winery-2005
+    - id: calc_refrigerant_loss
+      applies_to: "Each refrigeration circuit"
+      rule: "loss = opening_charge + additions - recovered_mass - closing_charge; report each refrigerant separately"
+      inputs:
+        - "Asset-level refrigerant inventory"
+      output: "Refrigerant emission to air"
+      source_ids:
+        - oiv-ghg-2025
+    - id: calc_combustion_emissions
+      applies_to: "Each direct combustion emission"
+      rule: "emission_mass = fuel_activity × documented substance-specific emission_factor"
+      inputs:
+        - "Fuel quantity"
+        - "heating-value basis"
+        - "factor identity"
+      output: "Separate CO2, CH4, N2O, and NOx emissions"
+      source_ids:
+        - oiv-ghg-2025
+    - id: calc_wastewater_load
+      applies_to: "Each direct water-emission indicator"
+      rule: "load_kg = matched_discharge_volume_m3 × concentration_mg_per_L / 1,000"
+      inputs:
+        - "Discharge volume"
+        - "matched concentration"
+      output: "Separate COD, BOD5, TSS, total-N, or total-P load"
+      source_ids:
+        - oiv-viti-641-2020
+  data_quality_requirements:
+    - id: dq_identity
+      applies_to: "Product and every exchange"
+      requirement: "Retain product form, route, material identity, waste destination, packaging specification, and refrigerant identity at atomic-flow level."
+      evidence: "Batch sheets; supplier specifications; waste manifests; equipment register"
+    - id: dq_temporal
+      applies_to: "Foreground data"
+      requirement: "Cover one complete representative production campaign including peak vintage operations, finishing, storage, packaging, and wastewater treatment attributable to the product; disclose deviations."
+      evidence: "Dated meter exports; batch calendar; inventory opening and closing records"
+    - id: dq_measurement
+      applies_to: "Mass, volume, energy, water, and pollutant records"
+      requirement: "Use calibrated instruments or documented engineering estimates; retain units, conversion factors, detection limits, and allocation drivers."
+      evidence: "Calibration certificates; calculation worksheets; laboratory QA/QC"
+    - id: dq_completeness
+      applies_to: "All included processes"
+      requirement: "Reconcile product mass, utilities, additives, packaging components, each waste, wastewater destinations, refrigerants, and direct emissions; explain missing or excluded flows."
+      evidence: "Campaign balance and signed completeness checklist"
+    - id: dq_representativeness
+      applies_to: "Foreground and linked upstream data"
+      requirement: "Characterise time, geography, technology, precision, completeness, consistency, reproducibility, source, and uncertainty; prioritise site-specific data for controlled processes."
+      evidence: "Data-quality assessment and dataset metadata"
+    - id: dq_uncertainty
+      applies_to: "Material measured, calculated, or allocated values"
+      requirement: "Document measurement variability, estimation uncertainty, and sensitivity to allocation or secondary-data choices; do not convert one case value into an empirical range."
+      evidence: "Uncertainty register; sensitivity calculation; source comparison"
+validation_rules:
+  - rule_id: validate_reference_identity
+    applies_to: "Reference flow"
+    rule: "Confirm UUID, Product flow type, Mass reference property, kg unit, product_form qualifier, and explicit non-sparkling status."
+    source_ids:
+      - eu-regulation-1308-2013
+      - oiv-code-2025
+  - rule_id: validate_route
+    applies_to: "Process map"
+    rule: "Require must preparation for every dataset; prohibit fermentation for unfermented grape must unless the declared preservation route includes partial fermentation; require fermentation for wine and disclose every conditional finishing and packaging process."
+    source_ids:
+      - oiv-code-2025
+      - lbnl-best-winery-2005
+  - rule_id: validate_atomic_inventory
+    applies_to: "Inventory rows"
+    rule: "Reject any row that combines electricity with steam or fuel, multiple fuels, multiple refrigerants, multiple chemicals, multiple packaging components, multiple wastes, wastewater indicators, or air emissions."
+    source_ids:
+      - oiv-ghg-2025
+      - oiv-viti-641-2020
+  - rule_id: validate_mass_balance
+    applies_to: "Each process and campaign"
+    rule: "Check opening stocks plus inputs against outputs, closing stocks, measured emissions, moisture changes, and documented losses; investigate material imbalance before publication."
+    source_ids:
+      - oiv-ghg-2025
+  - rule_id: validate_wastewater
+    applies_to: "Wastewater treatment and discharge"
+    rule: "Require source-process volumes and destinations; when discharge is under foreground control, calculate COD, BOD5, TSS, total nitrogen, and total phosphorus separately where monitored or required."
+    source_ids:
+      - oiv-viti-641-2020
+  - rule_id: validate_packaging
+    applies_to: "Packaged product"
+    rule: "Reconcile fill count and net product mass; require separate masses for every component actually used and disclose reusable-component allocation."
+    source_ids:
+      - ferrara-de-feo-2018
+      - oiv-viti-641-2020
+  - rule_id: validate_sources_and_quality
+    applies_to: "Foreground package"
+    rule: "Require source ids for externally constrained rules, site-specific records for controlled processes, documented secondary data where primary data are impracticable, and complete data-quality disclosure."
+    source_ids:
+      - oiv-ghg-2025
+      - eu-pef-2021
+published_dataset_profile:
+  dataset_role: "Foreground production dataset for grape must or non-sparkling wine at the winery dispatch gate"
+  downstream_use: "secondary_dataset; background_dataset after review and publication"
+  allowed_use: "Product and process LCA, supply-chain inventory, environmental footprint studies, hotspot analysis, and scenario modelling consistent with the declared route, geography, vintage or campaign, product form, packaging, and boundary"
+  excluded_use: "Sparkling, carbonated, aromatised, distilled, vinegar, grape-juice, or non-grape products; undisclosed substitution between grape must and wine; consumer claims that imply cradle-to-grave coverage from this gate-to-gate dataset alone"
+  required_metadata: "PCR id and version; product form; grape variety or blend; vintage or campaign; actual alcohol content for wine; still-wine confirmation; geography; technology route; bulk or packaged state; package bill of materials; reference mass; data period; wastewater route; co-product and waste destinations; allocation method; upstream dataset identities"
+  required_quality_disclosure: "Primary-versus-secondary data share; measurement and conversion methods; calibration and laboratory evidence; temporal, geographical and technological representativeness; completeness; uncertainty; allocation sensitivity; missing UUIDs or flows; exclusions"
+  update_trigger: "Change in product form, grape source or variety mix, vintage representativeness, fermentation or stabilisation technology, energy system, refrigerant, packaging configuration, wastewater route, co-product treatment, allocation method, applicable regulation, or a material data-quality finding"
+data_sources:
+  - id: "eu-regulation-1308-2013"
+    type: "standard"
+    reference: "Regulation (EU) No 1308/2013, Annex VII Part II, consolidated text: https://eur-lex.europa.eu/eli/reg/2013/1308"
+    used_for: "Legal product definitions for wine and grape must and exclusion of sparkling product routes; accessed 2026-08-20"
+  - id: "oiv-code-2025"
+    type: "official_guidance"
+    reference: "OIV, International Code of Oenological Practices, 2025 issue, ISBN 978-2-85038-106-5: https://www.oiv.int/sites/default/files/publication/2025-04/CPO%202025%20EN.pdf"
+    used_for: "Product definitions and process decomposition for must preparation, fermentation, clarification, stabilisation, additives, and processing aids; accessed 2026-08-20"
+  - id: "oiv-ghg-2025"
+    type: "official_guidance"
+    reference: "OIV, Methodological recommendations for GHG balance accounting in the vitivinicultural sector, Volume 1, July 2025: https://www.oiv.int/sites/default/files/2025-07/OIV-Expertise_document_Methodological_recommendations_for_accounting_for_GHG_balance.pdf"
+    used_for: "Functional-unit interpretation, partial-life-cycle disclosure, process mapping, foreground data collection, refrigerants, direct and indirect energy, allocation hierarchy, data quality, and uncertainty; accessed 2026-08-20"
+  - id: "oiv-viti-641-2020"
+    type: "official_guidance"
+    reference: "OIV Resolution OIV-VITI 641-2020, Guide for the implementation of principles of sustainable vitiviniculture: https://www.oiv.int/standards/oiv-guide-for-the-implementation-of-principles-of-sustainable-vitiviculture-"
+    used_for: "Separate input and output management, waste and wastewater tracking, co-product treatment, packaging recyclability, and monitoring expectations; accessed 2026-08-20"
+  - id: "eu-pef-2021"
+    type: "official_guidance"
+    reference: "Commission Recommendation (EU) 2021/2279 on Environmental Footprint methods, OJ L 471, 30.12.2021: https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32021H2279"
+    used_for: "Life-cycle data quality, verification, category-rule use, and allocation fallback context; accessed 2026-08-20"
+  - id: "lbnl-best-winery-2005"
+    type: "handbook"
+    reference: "Galitsky, C., Worrell, E., Radspieler, A., Healy, P., and Zechiel, S. BEST Winery Guidebook, LBNL/PUB-3184, California Energy Commission, 2005, DOI 10.2172/862318: https://escholarship.org/content/qt7qb4h9g0/qt7qb4h9g0.pdf"
+    used_for: "Winery process sequence, refrigeration, pumping, hot water, cleaning, water use, clarification, storage, and bottling operations"
+  - id: "ferrara-de-feo-2018"
+    type: "literature"
+    reference: "Ferrara, C. and De Feo, G. Life Cycle Assessment Application to the Wine Sector: A Critical Review. Sustainability 10(2), 395. DOI: https://doi.org/10.3390/su10020395"
+    used_for: "Independent peer-reviewed support for system-boundary variability, site-specific inventory need, winery wastes, and separate packaging-component significance"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:d17a50e92dea345db28db73213b9d9d91ede16cd86fde5eb2022c942d115f40a"
+  generated_content_sha256: "sha256:9c8854a875b07930b9dd2d7dd9c7a54b88bbccf561ef1fbf9b59f7ac98a9c534"

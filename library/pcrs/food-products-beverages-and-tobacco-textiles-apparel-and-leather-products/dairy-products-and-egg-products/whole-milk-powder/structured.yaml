@@ -1,10 +1,1114 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "22211"
-  title: "Whole milk powder"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.food-products-beverages-and-tobacco-textiles-apparel-and-leather-products.dairy-products-and-egg-products.whole-milk-powder"
+  classification_refs: "CPC 3.0: 22211, Whole milk powder, exact scope candidate pending accepted mapping governance"
+  covered_products: "Whole milk powder containing at least 26% and less than 42% milk fat by mass, including regular and instantised or agglomerated forms, for direct consumption or further processing"
+  excluded_products: "Cream powder; partly skimmed milk powder; skim milk powder; whey powder; buttermilk powder; non-milk fat-filled powder; infant formula; formulated nutritional powder; dairy powder blends whose identity is not whole milk powder"
+  representative_product: "Spray-dried whole milk powder made from standardised and pasteurised whole milk"
+  production_route: "Raw milk reception and standardisation; heat treatment; evaporation; optional homogenisation; spray drying; powder recovery or optional agglomeration and lecithination; packaging"
+  market_state: "Finished dry powder at dairy factory gate; bulk or packaged state must be declared"
+functional_unit:
+  what: "Provision of whole milk powder at the dairy factory gate for direct consumption or further food processing"
+  how_much: "1 kg net whole milk powder"
+  how_well: "Conforms to the declared market specification and, at minimum for Codex identity, contains at least 26% and less than 42% milk fat, no more than 5% water, and at least 34% milk protein in milk solids-not-fat"
+  how_long_or_cycle: "One production batch at factory gate; no use duration is assigned; declared shelf-life and storage conditions are product metadata"
+  reference_flow_link: "Exactly 1 kg net output of the Tiangong Whole milk powder product flow after final quality release"
+system_boundary:
+  rules:
+    - rule_id: boundary_rule_1
+      applies_to: "default foreground system"
+      rule: "Include transport of raw milk from farm gate to dairy, reception and storage, standardisation, heat treatment, concentration, drying, powder recovery and finishing, packaging when supplied with the product, on-site utilities, cleaning, wastewater, direct air emissions, refrigerant losses, and waste handling through the dairy factory gate."
+      source_ids:
+        - idf-bulletin-445-2010
+        - fao-dairy-industry
+    - rule_id: boundary_rule_2
+      applies_to: "upstream inputs"
+      rule: "Represent raw-milk production and production of purchased ingredients, operating materials, packaging, electricity, fuels, heat, and water with upstream datasets rather than treating those inputs as burden-free."
+      source_ids:
+        - idf-bulletin-445-2010
+    - rule_id: boundary_rule_3
+      applies_to: "downstream stages"
+      rule: "Exclude post-factory-gate distribution, retail, storage, reconstitution, use, and end-of-life from the default foreground package; include them only in an explicitly extended lifecycle model and disclose the extension."
+      source_ids:
+        - idf-bulletin-445-2010
+    - rule_id: boundary_rule_4
+      applies_to: "completeness"
+      rule: "Do not omit known material, energy, water, refrigerant, wastewater, waste, or direct-emission streams merely because they are not separately metered. Estimate or bound them transparently, and disclose justified exclusions and their expected significance."
+      source_ids:
+        - idf-bulletin-445-2010
+    - rule_id: boundary_rule_5
+      applies_to: "product identity"
+      rule: "Keep fat-filled powders, skim or partly skimmed powders, cream powder, whey powder, and formulated nutritional powders outside this product system unless represented as separate co-products or upstream/downstream products."
+      source_ids:
+        - codex-cxs-207-1999
+boundary_abstraction:
+  declared_starting_condition: "Raw whole milk is available at the farm gate with measured mass, animal species, origin, collection period, fat, protein, and total-solids or water content; any cream, skim milk, retentate, permeate, or lactose used for composition adjustment is separately identified"
+  starting_condition_role: "Upstream product input to the foreground dairy-processing system"
+  product_classification_scope: "Whole milk powder only; classification references describe mapping context and do not broaden the PCR to other milk, whey, cream, or formulated powders"
+  recursive_input_rule: "Purchased whole milk powder used as an input must be represented by a separately sourced upstream whole-milk-powder dataset and its purpose and mass disclosed; do not recursively recreate its production inside the same foreground system"
+  upstream_dataset_requirement: "Use geographically, temporally, technologically, and species-representative datasets for raw milk, ingredients, packaging, electricity, fuels, heat, water supply, transport, waste treatment, and wastewater treatment"
+  disclosure: "Declare starting geography and time, raw-milk composition and mass, transport to dairy, included unit operations, packaging state, allocation choices, recycled fines and condensate treatment, exclusions, and any change from the default factory-gate boundary"
+reference_flow_definition:
+  reference_amount: "1 kg net product"
+  product_flow_ref:
+    name: "Whole milk powder"
+    uuid: "f268b0b6-9cf3-4bba-aaf7-7b57e4f3fac0"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "animal species and raw-milk origin"
+    - "milk-fat fraction"
+    - "water or moisture fraction"
+    - "milk protein in milk solids-not-fat"
+    - "regular or agglomerated/instantised form"
+    - "heat-treatment class or time-temperature record"
+    - "drying technology"
+    - "packaging state and packaging included/excluded"
+    - "production geography and period"
+    - "allocation method"
+    - "factory-gate release specification"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "released whole milk powder"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Use net product mass after subtracting packaging tare. Moisture present in the released powder remains part of the reference mass."
+  - id: composition_identity
+    applies_to: "released whole milk powder"
+    required_property_ref:
+      name: "mass fraction"
+      uuid: ""
+    required_unit: "% m/m"
+    rule: "Measure and report milk fat, water, and milk protein in milk solids-not-fat using the applicable product specification and test methods. The product must meet the whole-milk-powder identity limits in Codex CXS 207-1999."
+  - id: energy_reporting
+    applies_to: "electricity and thermal energy"
+    required_property_ref:
+      name: "energy"
+      uuid: ""
+    required_unit: "kWh for electricity; MJ for fuels, steam, and purchased heat"
+    rule: "Preserve metered carrier quantities and conversion factors. Do not combine electricity and thermal energy into one unqualified energy value."
+  - id: water_reporting
+    applies_to: "process water, cleaning water, condensate, and wastewater"
+    required_property_ref:
+      name: "volume or mass"
+      uuid: ""
+    required_unit: "m3 or kg"
+    rule: "Keep intake water, recovered evaporator condensate, reused water, and wastewater separate. State density or conversion assumptions when mass and volume are converted."
+  - id: mass_balance_basis
+    applies_to: "milk solids, product, recovered fines, rejects, and losses"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg dry matter and kg wet mass"
+    rule: "Report wet mass and dry matter consistently so retained milk solids, removed water, recovered fines, off-specification powder, and unexplained loss can be reconciled for the same batch period."
+  - id: packaging_basis
+    applies_to: "packaging materials"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg material/kg net product"
+    rule: "Report each packaging material separately and declare whether packaging is included in the factory-gate product system."
+process_map:
+  - id: milk_reception_standardisation
+    name: "Milk reception, storage, and composition standardisation"
+    inclusion: "required"
+    inclusion_condition: "Always; include separation or addition of permitted milk constituents when used"
+    role: "Establish accepted raw-milk quantity, quality, and target whole-milk composition"
+    quantitative_reference: "kg standardised milk sent to heat treatment"
+  - id: heat_treatment_evaporation
+    name: "Heat treatment and evaporation"
+    inclusion: "required"
+    inclusion_condition: "Always; record actual time-temperature and evaporator configuration"
+    role: "Product safety or functionality treatment and energy-efficient removal of bulk water"
+    quantitative_reference: "kg concentrate sent to drying"
+  - id: homogenisation_spray_drying
+    name: "Homogenisation and spray drying"
+    inclusion: "required"
+    inclusion_condition: "Homogenisation is conditional when not used; drying is always required and non-spray routes must be declared"
+    role: "Powder formation; Tiangong spray-drying process identity 311f94da-b94d-402e-ae4b-5e0b2389e07d is an identity reference only"
+    quantitative_reference: "kg powder leaving dryer and fluid-bed system"
+  - id: powder_finishing_packaging
+    name: "Powder finishing, optional instantisation, and packaging"
+    inclusion: "required"
+    inclusion_condition: "Agglomeration, lecithination, gas flushing, and retail packaging are included only when performed"
+    role: "Final quality release and factory-gate product preparation"
+    quantitative_reference: "kg net released whole milk powder"
+  - id: cleaning_wastewater_management
+    name: "Cleaning and on-site wastewater management"
+    inclusion: "required"
+    inclusion_condition: "Allocate shared cleaning and treatment records to the covered production period"
+    role: "Record water, cleaning chemicals, recovered condensate, wastewater, sludge, and treatment routing"
+    quantitative_reference: "production-period records allocated to 1 kg net product"
+process_inventory:
+  - id: milk_reception_standardisation
+    label: "Milk reception, storage, and composition standardisation"
+    inputs:
+      product:
+        - row_id: raw_whole_milk
+          role: "Raw whole milk at farm gate"
+          name: "Dataset-specific raw whole milk product flow matching the declared species and origin"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Raw milk enters the foreground system as the principal milk-solids and milk-fat input. Select a product flow matching animal species, origin, and market state."
+          amount:
+            expression: "measured accepted raw-milk mass for the production batch"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net released whole milk powder"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_raw_milk_receipt
+              source_ids:
+                - idf-bulletin-445-2010
+            ranges: []
+        - row_id: milk_constituent_adjustments
+          role: "Milk constituents for composition adjustment"
+          name: "Dataset-specific milk constituent product flow matching the actual adjustment material"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Cream, skim milk, milk retentate, milk permeate, or lactose is recorded separately when added or withdrawn to achieve the declared composition. Non-milk fat is not a permitted adjustment within this PCR."
+          amount:
+            expression: "measured mass added to or withdrawn from the standardisation balance"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net released whole milk powder"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_standardisation_balance
+              source_ids:
+                - codex-cxs-207-1999
+            ranges: []
+      waste:
+        - row_id: rejected_raw_milk
+          role: "Rejected or spilled raw milk"
+          name: "Dataset-specific waste milk flow and treatment route"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Rejected deliveries, reception spills, and milk sent to waste treatment are recorded as waste; material returned to the supplier is disclosed separately."
+          amount:
+            expression: "measured or mass-balance-derived rejected and spilled milk"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net released whole milk powder"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_losses
+              source_ids:
+                - fao-dairy-industry
+            ranges: []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: standardised_whole_milk
+          role: "Standardised whole milk"
+          name: "Internal standardised whole milk intermediate"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "The output carries the measured fat, protein, and total-solids composition used for downstream heat and mass balances."
+          amount:
+            expression: "measured transfer mass with laboratory composition record"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg standardised milk sent to heat treatment"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_standardisation_balance
+              source_ids:
+                - codex-cxs-207-1999
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+  - id: heat_treatment_evaporation
+    label: "Heat treatment and evaporation"
+    inputs:
+      product:
+        - row_id: standardised_milk_feed
+          role: "Standardised whole milk feed"
+          name: "Internal standardised whole milk intermediate"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Standardised milk enters the declared heat-treatment and evaporation train."
+          amount:
+            expression: "measured transfer mass from standardisation"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg concentrate output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_evaporation_mass_balance
+              source_ids:
+                - tetra-pak-milk-powder-handbook
+            ranges: []
+        - row_id: evaporation_thermal_energy
+          role: "Thermal energy for heat treatment and evaporation"
+          name: "Dataset-specific fuel, steam, or purchased heat product flow"
+          flow_type: "product"
+          property_unit: "Energy / MJ; steam may additionally be recorded in kg with enthalpy calculation"
+          description: "Record purchased heat, steam, or fuel by carrier. Where steam is generated on-site, record fuel and boiler inputs and avoid double counting purchased heat."
+          amount:
+            expression: "metered carrier quantity allocated to the batch and converted with documented net energy or enthalpy factors"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per kg concentrate output and per 1 kg net released whole milk powder"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_energy_and_utilities
+              source_ids:
+                - idf-bulletin-445-2010
+            ranges: []
+        - row_id: evaporation_electricity
+          role: "Electricity for pumps, separation, and evaporation"
+          name: "Geography- and period-specific electricity product flow"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record sub-metered electricity or allocate a complete meter balance using operating time and rated load only when sub-metering is unavailable."
+          amount:
+            expression: "metered or transparently allocated electricity consumption"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg concentrate output and per 1 kg net released whole milk powder"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_and_utilities
+              source_ids:
+                - idf-bulletin-445-2010
+            ranges: []
+      waste:
+        - row_id: evaporator_product_loss
+          role: "Evaporator cleaning waste and product losses"
+          name: "Dataset-specific dairy product loss or wastewater flow"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Milk solids discharged during start-up, shutdown, fouling removal, or cleaning are recorded with the actual recovery or treatment route."
+          amount:
+            expression: "measured discharge or dry-matter balance difference assigned to this process"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net released whole milk powder"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_material_losses
+              source_ids:
+                - fao-dairy-industry
+            ranges: []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: concentrated_whole_milk
+          role: "Concentrated whole milk"
+          name: "Internal concentrated whole milk intermediate"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Concentrate mass and total-solids fraction are measured at the dryer feed boundary."
+          amount:
+            expression: "measured concentrate mass and total-solids fraction"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg concentrate sent to drying"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_evaporation_mass_balance
+              source_ids:
+                - tetra-pak-milk-powder-handbook
+            ranges: []
+        - row_id: evaporator_condensate
+          role: "Recovered evaporator condensate"
+          name: "Internal recovered water or dataset-specific wastewater/product-water flow"
+          flow_type: "product"
+          property_unit: "Mass or volume / kg or m3"
+          description: "Condensate is tracked separately as an internal reuse stream, discharged water, or exported product according to actual quality and routing."
+          amount:
+            expression: "measured condensate quantity by destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg concentrate output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water_and_wastewater
+              source_ids:
+                - idf-bulletin-445-2010
+            ranges: []
+      waste:
+        []
+      elementary:
+        - row_id: evaporation_direct_emissions
+          role: "Direct combustion and refrigerant emissions"
+          name: "Pollutant-specific elementary flow to the measured environmental compartment"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record measured or source-factor-calculated emissions from on-site combustion and refrigerant leakage without duplicating emissions already embedded in purchased energy datasets."
+          amount:
+            expression: "continuous measurement, periodic test, refrigerant inventory balance, or documented factor multiplied by collected fuel activity"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net released whole milk powder"
+              kind: "fuel_inventory"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_direct_emissions
+              source_ids:
+                - idf-bulletin-445-2010
+            ranges: []
+  - id: homogenisation_spray_drying
+    label: "Homogenisation and spray drying"
+    inputs:
+      product:
+        - row_id: dryer_concentrate_feed
+          role: "Concentrated whole milk feed"
+          name: "Internal concentrated whole milk intermediate"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "The dryer feed includes concentrate and any declared permitted fortification or instantisation ingredients added before drying."
+          amount:
+            expression: "measured dryer-feed mass and total-solids fraction"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg powder leaving drying and fluid-bed stages"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_dryer_mass_balance
+              source_ids:
+                - tetra-pak-milk-powder-handbook
+            ranges: []
+        - row_id: dryer_thermal_energy
+          role: "Thermal energy for drying air"
+          name: "Dataset-specific fuel, steam, or purchased heat product flow"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Record fuel, steam, or purchased heat used to heat drying air and fluid beds by carrier and actual metering boundary."
+          amount:
+            expression: "metered or calculated energy allocated to dryer operation for the batch"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per kg powder leaving drying and per 1 kg net released whole milk powder"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_energy_and_utilities
+              source_ids:
+                - tetra-pak-milk-powder-handbook
+                - idf-bulletin-445-2010
+            ranges: []
+        - row_id: dryer_electricity
+          role: "Electricity for homogenisation, atomisation, fans, and powder handling"
+          name: "Geography- and period-specific electricity product flow"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record electricity for the homogeniser when used, feed pumps, atomiser, fans, cyclones or filters, fluid beds, cooling, and powder conveying."
+          amount:
+            expression: "sub-metered electricity or documented allocation from complete equipment records"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg powder leaving drying and per 1 kg net released whole milk powder"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_and_utilities
+              source_ids:
+                - tetra-pak-milk-powder-handbook
+                - idf-bulletin-445-2010
+            ranges: []
+      waste:
+        - row_id: dryer_powder_loss
+          role: "Off-specification powder and unrecovered fines"
+          name: "Dataset-specific off-specification dairy powder or waste flow by actual route"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Separate internally recycled fines from powder sold as a lower-grade co-product and powder sent to animal feed, rework, wastewater, or disposal."
+          amount:
+            expression: "measured collection and destination records reconciled with dryer mass balance"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net released whole milk powder"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_dryer_mass_balance
+              source_ids:
+                - tetra-pak-milk-powder-handbook
+            ranges: []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: dryer_powder_output
+          role: "Whole milk powder from dryer"
+          name: "Whole milk powder"
+          flow_type: "product"
+          flow_ref:
+            uuid: "f268b0b6-9cf3-4bba-aaf7-7b57e4f3fac0"
+          property_unit: "Mass / kg"
+          description: "Powder output is measured before final packaging and carries moisture, fat, protein, bulk-density, and route-specific quality results."
+          amount:
+            expression: "measured powder mass leaving the dryer and fluid-bed system, including recovered fines only once"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg powder leaving drying"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_dryer_mass_balance
+              source_ids:
+                - codex-cxs-207-1999
+                - tetra-pak-milk-powder-handbook
+            ranges: []
+      waste:
+        []
+      elementary:
+        - row_id: dryer_particulate_air
+          role: "Powder particulate released to air"
+          name: "Particulate matter elementary flow to air matching the reported size fraction and compartment"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record particulate that passes final control equipment as an elementary emission; do not treat internally recovered cyclone or filter powder as an emission."
+          amount:
+            expression: "stack measurement or site-specific emission factor multiplied by dryer throughput"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net released whole milk powder"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_direct_emissions
+              source_ids:
+                - tetra-pak-milk-powder-handbook
+            ranges: []
+  - id: powder_finishing_packaging
+    label: "Powder finishing, optional instantisation, and packaging"
+    inputs:
+      product:
+        - row_id: finishing_powder_feed
+          role: "Dryer powder"
+          name: "Whole milk powder"
+          flow_type: "product"
+          flow_ref:
+            uuid: "f268b0b6-9cf3-4bba-aaf7-7b57e4f3fac0"
+          property_unit: "Mass / kg"
+          description: "Dryer powder enters final blending, sieving, agglomeration or lecithination when used, quality release, and packaging."
+          amount:
+            expression: "measured transfer mass into finishing"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg net released whole milk powder"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_batch_output_quality
+              source_ids:
+                - tetra-pak-milk-powder-handbook
+            ranges: []
+        - row_id: finishing_ingredients
+          role: "Instantisation and fortification ingredients"
+          name: "Ingredient-specific product flow"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Lecithin, vitamins, minerals, or other declared ingredients are recorded individually. Material additions that change the product identity beyond whole milk powder require another PCR."
+          amount:
+            expression: "weighed batch addition"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg net released whole milk powder"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing_ingredients
+              source_ids:
+                - tetra-pak-milk-powder-handbook
+                - codex-cxs-207-1999
+            ranges: []
+        - row_id: packaging_materials
+          role: "Packaging materials and packaging gases"
+          name: "Material-specific packaging and gas product flows"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Primary, secondary, and tertiary packaging and any nitrogen or carbon dioxide used for gas flushing are recorded by material and packaging format."
+          amount:
+            expression: "purchased-and-issued packaging balance minus documented unused returns, divided by net released product mass"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net released whole milk powder"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_records
+              source_ids:
+                - idf-bulletin-445-2010
+            ranges: []
+        - row_id: finishing_electricity
+          role: "Finishing and packaging electricity"
+          name: "Geography- and period-specific electricity product flow"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record electricity for fluidisation or agglomeration, cooling, conveying, sieving, blending, compressed air, and packaging."
+          amount:
+            expression: "metered or documented equipment allocation"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net released whole milk powder"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_and_utilities
+              source_ids:
+                - idf-bulletin-445-2010
+            ranges: []
+      waste:
+        - row_id: finishing_waste
+          role: "Packaging scrap and rejected finished powder"
+          name: "Material-specific packaging waste or off-specification powder flow"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record packaging scrap, product retained for rework, and rejected powder separately by destination."
+          amount:
+            expression: "measured waste and rework destination records"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net released whole milk powder"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_losses
+              source_ids:
+                - idf-bulletin-445-2010
+            ranges: []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: reference_whole_milk_powder
+          role: "Released whole milk powder"
+          name: "Whole milk powder"
+          flow_type: "product"
+          flow_ref:
+            uuid: "f268b0b6-9cf3-4bba-aaf7-7b57e4f3fac0"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This is the quantitative reference. Net mass and composition are based on released lots only; packaging tare is excluded from the 1 kg product mass."
+          amount:
+            expression: "exactly 1 kg net released product after quality acceptance"
+            value_mode: "fixed_value"
+            specificity: "product_specific"
+            basis:
+              text: "1 kg net released whole milk powder"
+              kind: "reference_flow"
+            evidence:
+              kind: "identity_reference"
+              collection_protocol_id: cp_batch_output_quality
+              source_ids:
+                - codex-cxs-207-1999
+                - idf-bulletin-445-2010
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+  - id: cleaning_wastewater_management
+    label: "Cleaning and on-site wastewater management"
+    inputs:
+      product:
+        - row_id: cleaning_water
+          role: "Fresh water and recovered water for cleaning"
+          name: "Source-appropriate water supply product flow and internal recovered-water flow"
+          flow_type: "product"
+          property_unit: "Volume or mass / m3 or kg"
+          description: "Record fresh water and suitable recovered condensate separately so reuse is visible and water intake is not overstated."
+          amount:
+            expression: "metered water by source and use, allocated to the covered production period"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net released whole milk powder"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water_and_wastewater
+              source_ids:
+                - idf-bulletin-445-2010
+                - fao-dairy-industry
+            ranges: []
+        - row_id: cleaning_chemicals
+          role: "Cleaning and sanitation chemicals"
+          name: "Chemical-specific product flow"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record alkaline, acid, disinfectant, and other cleaning agents by active product and concentration."
+          amount:
+            expression: "measured issue or purchase balance corrected for inventory change"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net released whole milk powder"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cleaning_records
+              source_ids:
+                - idf-bulletin-445-2010
+                - fao-dairy-industry
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: dairy_wastewater
+          role: "Dairy wastewater to treatment"
+          name: "Dataset-specific dairy wastewater flow to the actual treatment route"
+          flow_type: "waste"
+          property_unit: "Volume / m3; pollutant loads additionally in kg"
+          description: "Wastewater quantity and treatment route are recorded together with representative load indicators. Product losses to drain remain in the dry-matter balance."
+          amount:
+            expression: "metered discharge volume with sampled or calculated COD, BOD, total nitrogen, total phosphorus, and milk-solids loads as available"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net released whole milk powder"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_water_and_wastewater
+              source_ids:
+                - idf-bulletin-445-2010
+                - fao-dairy-industry
+            ranges: []
+        - row_id: wastewater_sludge
+          role: "Wastewater-treatment sludge"
+          name: "Dataset-specific wastewater sludge waste flow"
+          flow_type: "waste"
+          property_unit: "Mass / kg wet mass and kg dry matter"
+          description: "Record wet and dry sludge mass and the actual recovery, land application, digestion, incineration, or disposal route."
+          amount:
+            expression: "measured sludge quantity and solids fraction allocated to the covered production period"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net released whole milk powder"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water_and_wastewater
+              source_ids:
+                - fao-dairy-industry
+            ranges: []
+      elementary:
+        - row_id: wastewater_treatment_emissions
+          role: "On-site wastewater-treatment emissions"
+          name: "Pollutant-specific elementary flow to the measured compartment"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record direct methane, nitrous oxide, or other measured emissions from on-site treatment when applicable; off-site treatment emissions belong to the selected treatment dataset."
+          amount:
+            expression: "measured emission or documented factor multiplied by collected treatment activity"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net released whole milk powder"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_direct_emissions
+              source_ids:
+                - idf-bulletin-445-2010
+            ranges: []
+allocation_rules:
+  - rule_id: allocation_rule_1
+    applies_to: "separately metered unit operations"
+    rule: "Avoid allocation by subdividing reception, standardisation, evaporation, drying, finishing, cleaning, and packaging wherever process meters and mass balances permit direct assignment."
+    source_ids:
+      - idf-bulletin-445-2010
+  - rule_id: allocation_rule_2
+    applies_to: "internal fines, condensate, heat recovery, and rework"
+    rule: "Treat material or energy returned to the same production system as an internal loop. Record gross generation and return where available, but do not create a co-product credit or double count the returned flow."
+    source_ids:
+      - idf-bulletin-445-2010
+  - rule_id: allocation_rule_3
+    applies_to: "cream, skim milk, or other saleable dairy co-products from standardisation"
+    rule: "When subdivision cannot assign shared burdens, use a documented physicochemical allocation reflecting milk-component and resource relationships. Apply factors to each shared input or emission category rather than assuming one mass-only factor for all resources."
+    source_ids:
+      - idf-bulletin-445-2010
+  - rule_id: allocation_rule_4
+    applies_to: "residual shared burdens without a defensible physicochemical relationship"
+    rule: "Use economic allocation only as a disclosed fallback or sensitivity case, based on representative multi-year prices where available. Report quantities, prices, period, geography, and resulting factors."
+    source_ids:
+      - idf-bulletin-445-2010
+  - rule_id: allocation_rule_5
+    applies_to: "off-specification powder and material sent to feed, rework, or disposal"
+    rule: "Classify the output according to its actual destination and market function. Do not assign avoided-burden credits unless an explicitly extended lifecycle model applies system expansion and reports the substituted product and sensitivity."
+    source_ids:
+      - idf-bulletin-445-2010
+  - rule_id: allocation_rule_6
+    applies_to: "shared site utilities and cleaning"
+    rule: "Allocate only the residual shared quantity after direct metering, using documented causal drivers such as operating time, clean-in-place circuit volume, heat duty, throughput, or wastewater load; disclose the driver and reconciliation to site totals."
+    source_ids:
+      - idf-bulletin-445-2010
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_raw_milk_receipt
+      process_id: "milk_reception_standardisation"
+      flow_role: "raw milk quantity, composition, origin, and transport"
+      record_type: "weighbridge or calibrated flowmeter plus intake laboratory record and delivery log"
+      raw_fields: "accepted mass; rejected mass; species; supplier/origin; collection date; fat; protein; total solids or water; transport distance and mode"
+      collection_method: "reconcile delivery tickets to intake meter and laboratory sample identifier"
+      unit: "kg; % m/m; km"
+      frequency: "each delivery and batch"
+      temporal_coverage: "representative continuous 12-month period or declared seasonal campaign"
+      site_scope: "all suppliers and receiving points serving the product"
+      aggregation_rule: "sum accepted mass and mass-weight composition by batch; retain supplier stratification"
+      quality_evidence: "calibration; sampling plan; laboratory method; delivery-ticket reconciliation"
+    - protocol_id: cp_standardisation_balance
+      process_id: "milk_reception_standardisation"
+      flow_role: "standardised milk and adjustment constituents"
+      record_type: "calibrated meters, tank levels, and laboratory composition results"
+      raw_fields: "input and output masses; fat; protein; total solids; cream/skim/retentate/permeate/lactose additions or withdrawals"
+      collection_method: "closed batch mass and milk-solids balance"
+      unit: "kg; % m/m"
+      frequency: "each batch"
+      temporal_coverage: "same period as product output"
+      site_scope: "all standardisation trains"
+      aggregation_rule: "reconcile inputs, outputs, inventory change, and losses"
+      quality_evidence: "meter calibration; sample chain; balance closure"
+    - protocol_id: cp_evaporation_mass_balance
+      process_id: "heat_treatment_evaporation"
+      flow_role: "heat treatment and concentrate production"
+      record_type: "batch records, time-temperature recorder, flowmeters, density and total-solids tests"
+      raw_fields: "feed mass; feed solids; time-temperature; concentrate mass; concentrate solids; condensate by destination; start-up/shutdown loss"
+      collection_method: "link control-system records to batch identifier"
+      unit: "kg; % m/m; °C; s or min"
+      frequency: "each batch"
+      temporal_coverage: "same period as product output"
+      site_scope: "all heat-treatment and evaporator lines"
+      aggregation_rule: "dry-matter and water balance by batch, then production-weight average"
+      quality_evidence: "sensor calibration; laboratory duplicates; condensate meter check"
+    - protocol_id: cp_dryer_mass_balance
+      process_id: "homogenisation_spray_drying"
+      flow_role: "dryer feed, powder, fines, rejects, and emissions activity"
+      record_type: "feed and powder meters, hopper or silo inventory, total-solids and moisture tests, filter or cyclone recovery logs"
+      raw_fields: "concentrate feed mass and solids; powder output and moisture; recovered fines; rework; rejects; inventory change; dryer hours"
+      collection_method: "reconcile milk-solids entering and leaving dryer system"
+      unit: "kg; % m/m; h"
+      frequency: "each batch or shift"
+      temporal_coverage: "same period as product output"
+      site_scope: "all dryers and powder recovery equipment"
+      aggregation_rule: "dry-matter balance with recycled fines counted once"
+      quality_evidence: "meter calibration; moisture method; inventory reconciliation; exception log"
+    - protocol_id: cp_batch_output_quality
+      process_id: "powder_finishing_packaging"
+      flow_role: "net released product and product identity"
+      record_type: "released-lot weights, packaging tare, and certificate of analysis"
+      raw_fields: "gross mass; tare; net mass; fat; water; protein in milk solids-not-fat; product form; heat class; lot status"
+      collection_method: "sum released net mass and link laboratory results to lots"
+      unit: "kg; % m/m"
+      frequency: "each released lot"
+      temporal_coverage: "same period as inventory"
+      site_scope: "all finished-product silos and packing lines"
+      aggregation_rule: "exclude rejected lots until release or rework; production-weight quality results"
+      quality_evidence: "scale calibration; laboratory accreditation or QA; release authorisation"
+    - protocol_id: cp_finishing_ingredients
+      process_id: "powder_finishing_packaging"
+      flow_role: "lecithin, vitamins, minerals, and other additions"
+      record_type: "batch dosing records and inventory balance"
+      raw_fields: "ingredient identity; supplier lot; mass added; concentration; destination batch"
+      collection_method: "reconcile weighed additions with stock issue and returns"
+      unit: "kg"
+      frequency: "each batch"
+      temporal_coverage: "same period as product output"
+      site_scope: "all finishing lines"
+      aggregation_rule: "sum by ingredient and divide by released product"
+      quality_evidence: "calibrated scales; formulation approval; lot traceability"
+    - protocol_id: cp_packaging_records
+      process_id: "powder_finishing_packaging"
+      flow_role: "primary, secondary, and tertiary packaging and gases"
+      record_type: "bill of materials, issue/return records, packaged-unit counts, and scrap logs"
+      raw_fields: "material; unit mass; units used; unused returns; scrap; gas mass; product format"
+      collection_method: "material balance by packaging format"
+      unit: "kg"
+      frequency: "each lot or shift"
+      temporal_coverage: "representative 12 months or declared campaign"
+      site_scope: "all packaging lines for the product"
+      aggregation_rule: "net issued material divided by released net product"
+      quality_evidence: "supplier specification; unit-mass check; inventory reconciliation"
+    - protocol_id: cp_energy_and_utilities
+      process_id: "all_foreground_processes"
+      flow_role: "electricity, fuels, steam, heat, compressed air, and refrigeration"
+      record_type: "calibrated sub-meters, utility invoices, fuel meters, and operating logs"
+      raw_fields: "carrier; meter start/end; fuel mass or volume; lower heating value; steam mass, pressure and enthalpy; operating hours; allocation driver"
+      collection_method: "direct assignment first; reconcile residual allocation to site totals"
+      unit: "kWh; MJ; kg; m3"
+      frequency: "continuous or each shift; invoice monthly"
+      temporal_coverage: "at least 12 representative months or full campaign"
+      site_scope: "all relevant equipment and shared utility systems"
+      aggregation_rule: "sum by carrier and process; normalize to released product after allocation"
+      quality_evidence: "meter calibration; invoice reconciliation; documented conversion factors"
+    - protocol_id: cp_water_and_wastewater
+      process_id: "cleaning_wastewater_management"
+      flow_role: "water intake, condensate reuse, wastewater, and sludge"
+      record_type: "source and discharge meters, sampling, treatment logs, and sludge tickets"
+      raw_fields: "water by source/use; condensate by destination; discharge volume; COD; BOD; total nitrogen; total phosphorus; sludge wet mass and solids; treatment route"
+      collection_method: "meter balance plus representative composite sampling"
+      unit: "m3; kg pollutant; kg sludge"
+      frequency: "continuous volume; representative samples by permit or operating plan"
+      temporal_coverage: "at least 12 representative months or full campaign"
+      site_scope: "all water sources, clean-in-place circuits, and treatment routes serving product"
+      aggregation_rule: "reconcile intake, reuse, evaporation, product water, discharge, and inventory"
+      quality_evidence: "meter calibration; sample chain; laboratory QA; permit reports"
+    - protocol_id: cp_cleaning_records
+      process_id: "cleaning_wastewater_management"
+      flow_role: "cleaning and sanitation chemicals"
+      record_type: "clean-in-place recipe, dosing meter, chemical issue record, and inventory balance"
+      raw_fields: "chemical identity; concentration; dose; cycle count; circuit; recovered or discarded solution"
+      collection_method: "sum active product by circuit and allocate residual shared cycles causally"
+      unit: "kg product and kg active substance"
+      frequency: "each cleaning cycle"
+      temporal_coverage: "same period as production"
+      site_scope: "all circuits used by covered processes"
+      aggregation_rule: "direct assignment by circuit; reconcile to purchases and inventory"
+      quality_evidence: "dosing calibration; concentration verification; cycle log"
+    - protocol_id: cp_material_losses
+      process_id: "all_foreground_processes"
+      flow_role: "spills, rejects, rework, waste, and co-products"
+      record_type: "incident, rework, waste transfer, and sales records"
+      raw_fields: "material identity; wet mass; solids; destination; recovered quantity; treatment; batch"
+      collection_method: "reconcile losses and destinations with process mass balances"
+      unit: "kg wet mass; kg dry matter"
+      frequency: "each event and batch"
+      temporal_coverage: "same period as production"
+      site_scope: "all covered lines and storage areas"
+      aggregation_rule: "sum by material and destination; count rework only at final destination"
+      quality_evidence: "weigh tickets; transfer records; mass-balance closure"
+    - protocol_id: cp_direct_emissions
+      process_id: "relevant_foreground_processes"
+      flow_role: "combustion, refrigerant, particulate, and treatment emissions"
+      record_type: "stack test or continuous monitor, fuel records, refrigerant inventory, maintenance logs, and treatment activity"
+      raw_fields: "pollutant; compartment; measured concentration and flow; test period; fuel activity; refrigerant charge and refill; emission factor and source"
+      collection_method: "use measurements where representative; otherwise multiply collected activity by disclosed factor"
+      unit: "kg pollutant; mg/Nm3; Nm3; kg refrigerant"
+      frequency: "continuous, periodic test, or annual inventory as applicable"
+      temporal_coverage: "representative operating states in the production period"
+      site_scope: "all direct emission points serving covered processes"
+      aggregation_rule: "aggregate by pollutant and compartment; prevent overlap between measurement and factor methods"
+      quality_evidence: "method, detection limit, calibration, operating-state evidence, factor reference"
+  calculation_rules:
+    - id: calc_reference_mass
+      applies_to: "released product"
+      rule: "Net released powder mass = gross packed mass - packaging tare; normalize all allocated foreground quantities by net released powder mass."
+      inputs:
+        - "gross mass"
+        - tare
+        - "released-lot status"
+      output: "kg input or output per 1 kg net released powder"
+      source_ids:
+        - idf-bulletin-445-2010
+    - id: calc_milk_solids_balance
+      applies_to: "standardisation through drying"
+      rule: "For the same batch period, dry matter in raw milk and added milk constituents = dry matter in released powder + saleable co-products + off-specification material + wastewater/product losses + inventory change + unexplained difference. Report the unexplained percentage."
+      inputs:
+        - "mass and solids fraction for all milk-bearing inputs and outputs"
+      output: "closed dry-matter balance and unexplained difference"
+      source_ids:
+        - codex-cxs-207-1999
+        - tetra-pak-milk-powder-handbook
+    - id: calc_water_balance
+      applies_to: "evaporation, drying, and cleaning"
+      rule: "Water input in milk, ingredients, and utility water = water in product and co-products + separately recovered condensate + wastewater + evaporated water + inventory change + unexplained difference. Keep internal reuse out of net intake."
+      inputs:
+        - "wet mass"
+        - "solids or moisture"
+        - "water meters"
+        - condensate
+        - wastewater
+      output: "water balance by destination per reference flow"
+      source_ids:
+        - idf-bulletin-445-2010
+        - fao-dairy-industry
+    - id: calc_energy_normalisation
+      applies_to: "each energy carrier"
+      rule: "Normalize collected carrier quantity after direct assignment and disclosed allocation. For fuels, retain quantity and lower-heating-value conversion; for steam, retain mass and enthalpy difference."
+      inputs:
+        - "meter records"
+        - "fuel properties"
+        - "steam state"
+        - "released product"
+      output: "kWh electricity or MJ thermal energy per reference flow"
+      source_ids:
+        - idf-bulletin-445-2010
+    - id: calc_physicochemical_allocation
+      applies_to: "multi-product dairy processing"
+      rule: "After subdivision, allocate each residual shared input or emission using the documented physicochemical or resource-use factor applicable to that stream; factor for product i = quantity_i × relation_factor_i divided by the sum over co-products."
+      inputs:
+        - "co-product quantities"
+        - "stream-specific relation factors"
+        - "shared burden"
+      output: "allocation factor by burden stream and product"
+      source_ids:
+        - idf-bulletin-445-2010
+    - id: calc_packaging_intensity
+      applies_to: "packaging"
+      rule: "Packaging intensity by material = net packaging material issued to released lots divided by net released whole milk powder."
+      inputs:
+        - "issued material"
+        - returns
+        - "scrap attribution"
+        - "released net product"
+      output: "kg packaging material per kg net product"
+      source_ids:
+        - idf-bulletin-445-2010
+  data_quality_requirements:
+    - id: dq_identity
+      applies_to: "product and reference flow"
+      requirement: "Demonstrate whole-milk-powder identity and exact Tiangong product-flow UUID; retain released-lot fat, water, and protein-in-milk-solids-not-fat results and all required qualifiers."
+      evidence: "certificate of analysis; specification; Tiangong identity reference; lot release record"
+    - id: dq_temporal
+      applies_to: "all foreground records"
+      requirement: "Use one coherent representative period, preferably 12 consecutive months for continuous plants or the complete declared campaign; explain shutdowns, abnormal production, seasonality, and substitutions."
+      evidence: "meter dates; production calendar; invoice period; exception log"
+    - id: dq_technological
+      applies_to: "process route"
+      requirement: "Identify evaporator, homogeniser, dryer stage configuration, powder recovery, agglomeration or lecithination, utility generation, emission controls, and packaging line represented by the data."
+      evidence: "equipment list; process flow diagram; operating records"
+    - id: dq_geographical
+      applies_to: "raw milk and upstream datasets"
+      requirement: "Match raw-milk origin, transport, electricity, fuel, heat, water, and treatment datasets to the declared geography or justify proxies."
+      evidence: "supplier origin; route records; dataset metadata; proxy rationale"
+    - id: dq_completeness
+      applies_to: "mass, energy, water, and emissions"
+      requirement: "Reconcile milk-solids, wet-mass, water, energy-carrier, packaging, wastewater, and waste records to site or line totals; quantify and explain unresolved differences and exclusions."
+      evidence: "signed balance sheets; meter and invoice reconciliation; exclusion register"
+    - id: dq_measurement
+      applies_to: "measured and calculated values"
+      requirement: "Record instrument identifier, calibration status, sampling method, laboratory method, detection limit where relevant, calculation formula, and responsible record owner."
+      evidence: "calibration certificates; laboratory QA; calculation workbook; audit trail"
+    - id: dq_allocation
+      applies_to: "shared processes and co-products"
+      requirement: "Preserve direct measurements, shared totals, co-product quantities, factors, prices when used, allocation period, formulas, and sensitivity results."
+      evidence: "allocation workbook; production and price records; reconciliation to site total"
+    - id: dq_source_age
+      applies_to: "external factors and secondary datasets"
+      requirement: "Use factors and secondary datasets current for the study period where available; record version, geography, technology, and replacement rationale for every proxy."
+      evidence: "dataset metadata; factor citation; update log"
+validation_rules:
+  - rule_id: validation_rule_1
+    applies_to: "PCR and reference identity"
+    rule: "The manifest id, Markdown canonical_pcr_id, and reference product flow must identify whole milk powder, and the reference amount must be exactly 1 kg net product using Mass and the Units of mass unit group."
+    source_ids:
+      - codex-cxs-207-1999
+  - rule_id: validation_rule_2
+    applies_to: "released product composition"
+    rule: "Reject the dataset as outside this PCR if released powder has milk fat below 26% or at or above 42% m/m, water above 5% m/m, or milk protein below 34% m/m of milk solids-not-fat."
+    source_ids:
+      - codex-cxs-207-1999
+  - rule_id: validation_rule_3
+    applies_to: "required qualifiers"
+    rule: "Fail completeness when species/origin, composition, product form, heat treatment, drying route, packaging state, geography/time, allocation method, or factory-gate release specification is missing."
+    source_ids:
+      - codex-cxs-207-1999
+      - idf-bulletin-445-2010
+  - rule_id: validation_rule_4
+    applies_to: "process coverage"
+    rule: "Require records for reception and standardisation, heat treatment and evaporation, drying, finishing and packaging, cleaning and wastewater, and all applicable transport, utilities, refrigerants, wastes, and direct emissions; mark a step not applicable only with evidence."
+    source_ids:
+      - idf-bulletin-445-2010
+      - fao-dairy-industry
+      - tetra-pak-milk-powder-handbook
+  - rule_id: validation_rule_5
+    applies_to: "mass and water balances"
+    rule: "Require a common batch or production period for milk-solids and water balances. Report unexplained differences and block review when balance scope, inventory change, or recycled fines could cause material double counting."
+    source_ids:
+      - idf-bulletin-445-2010
+      - tetra-pak-milk-powder-handbook
+  - rule_id: validation_rule_6
+    applies_to: "allocation"
+    rule: "Require subdivision before allocation, documented factors for every residual shared burden, factors summing to one for each shared burden, and reconciliation of allocated quantities to site totals."
+    source_ids:
+      - idf-bulletin-445-2010
+  - rule_id: validation_rule_7
+    applies_to: "data provenance"
+    rule: "Every foreground or calculated value must link to a collection protocol and period; every external factor or rule must link to a listed source id. Tiangong UUID lookup is identity evidence and is not listed as an external data source."
+    source_ids:
+      - idf-bulletin-445-2010
+  - rule_id: validation_rule_8
+    applies_to: "double counting"
+    rule: "Internal fines, condensate, heat recovery, rework, and shared-site utility allocation must be checked so generation and reuse are visible without counting the same burden or product twice."
+    source_ids:
+      - idf-bulletin-445-2010
+published_dataset_profile:
+  dataset_role: "Foreground whole-milk-powder production data package and factory-gate product dataset"
+  downstream_use: "May be published as a secondary_dataset or background_dataset after review and combined with representative upstream raw-milk, energy, material, transport, and treatment datasets"
+  allowed_use: "Attributional factory-gate modelling of whole milk powder with matching composition, species, geography, technology, packaging state, period, and allocation method; extended lifecycle models may add downstream stages explicitly"
+  excluded_use: "Skim, partly skimmed, whey, cream, fat-filled, infant-formula, or formulated powders; comparative claims when product identity, allocation, geography, technology, packaging, or data quality is not equivalent; use as a cradle-to-consumer dataset without added downstream stages"
+  required_metadata: "PCR id and version; product-flow UUID; facility geography; reference period; raw-milk species and origin; composition; product form and heat class; evaporation and drying technology; packaging state; included processes; upstream dataset identities; allocation method; data owner and review status"
+  required_quality_disclosure: "Metering and sampling coverage; laboratory methods; mass, dry-matter, and water balance closure; allocation factors and sensitivity; temporal, geographical, and technological representativeness; data gaps, proxies, exclusions, uncertainty, and unresolved identities"
+  update_trigger: "Material change in raw-milk sourcing or composition, product specification, evaporator or dryer technology, energy supply, packaging, emission control, water reuse, wastewater treatment, allocation method, facility geography, or reference period; replacement of a material proxy or source rule also triggers review"
+data_sources:
+  - id: "codex-cxs-207-1999"
+    type: "standard"
+    reference: "Codex Alimentarius, CXS 207-1999, Standard for Milk Powders and Cream Powder, official English text, https://www.fao.org/input/download/standards/333/CXS_207e.pdf, retrieved 2026-08-10"
+    used_for: "whole-milk-powder definition, permitted composition adjustment, identity limits, exclusions, product validation"
+  - id: "idf-bulletin-445-2010"
+    type: "official_guidance"
+    reference: "International Dairy Federation Bulletin 445/2010, A common carbon footprint approach for dairy: The IDF guide to standard lifecycle assessment methodology for the dairy sector, https://www.ukidf.org/documents/bulletin445.pdf, retrieved 2026-08-10"
+    used_for: "processing-gate functional unit, processing boundary, inventory data fields, allocation, completeness, reporting and data quality"
+  - id: "fao-dairy-industry"
+    type: "official_guidance"
+    reference: "Food and Agriculture Organization of the United Nations, Dairy Industry, https://www.fao.org/4/x6114e/x6114e06.htm, retrieved 2026-08-10"
+    used_for: "reception and milk-powder process context, evaporation, cleaning wastewater, product losses, treatment outputs"
+  - id: "tetra-pak-milk-powder-handbook"
+    type: "handbook"
+    reference: "Tetra Pak Dairy Processing Handbook, Milk and whey powdered ingredients, https://dairyprocessinghandbook.tetrapak.com/chapter/milk-and-whey-powdered-ingredients, retrieved 2026-08-10"
+    used_for: "whole-milk-powder route, standardisation, pasteurisation, evaporation, homogenisation, spray and multi-stage drying, fines recovery, agglomeration and product quality fields"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:a58ad2490eaed7e77299d1704a50c8c0c8bb873b934125b3b878ceeaa59887eb"
+  generated_content_sha256: "sha256:7201f1f1cc6734d42d8c548c31a8ea5868ad47d3e6f75a2e0104456c25309baf"

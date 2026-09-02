@@ -1,10 +1,2850 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "21136"
-  title: "Meat of goat, frozen"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.food-products-beverages-and-tobacco-textiles-apparel-and-leather-products.meat-fish-fruits-vegetables-oils-and-fats.meat-of-goat-frozen"
+  classification_refs: "CPC 3.0: 21136, exact"
+  covered_products: "Meat of goat in the frozen market state, released as conforming product at the slaughter or meat-processing facility gate"
+  excluded_products: "Fresh or chilled goat meat; edible goat offal; meat from species other than goat; retail or prepared meal products"
+  representative_product: "Net frozen goat-meat cuts from slaughtered goats, excluding packaging mass"
+  production_route: "Receiving; slaughter and dressing; carcass cutting; pre-chilling and freezing; cold-system operation; packaging and release; hygiene; conditional on-site wastewater treatment"
+  market_state: "Frozen"
+functional_unit:
+  what: "Net conforming frozen goat meat classified as CPC 21136"
+  how_much: "1 kg"
+  how_well: "Frozen and released to the applicable product specification; excludes edible offal and packaging mass"
+  how_long_or_cycle: "One production lot through facility-gate quality release"
+  reference_flow_link: "Exact public Tiangong Product flow at state 100 and version 01.01.000"
+system_boundary:
+  rules:
+    - rule_id: boundary_start
+      applies_to: "foreground system"
+      rule: "Start at accepted live goats entering facility receiving after the inbound transport service ends."
+      source_ids:
+        - un-cpc-3-0-structure-2025
+        - ec-jrc-2024-sa-bref-jrc135916
+    - rule_id: boundary_upstream
+      applies_to: "upstream activities"
+      rule: "Model goat farming and inbound transport in separate upstream datasets; do not place them in this foreground inventory."
+      source_ids:
+        - eu-2021-2279-environmental-footprint
+    - rule_id: boundary_core
+      applies_to: "foreground processes"
+      rule: "Include receiving, slaughter and dressing, carcass cutting, pre-chilling and freezing, cold-system operation, packaging, frozen holding, release, and cleaning."
+      source_ids:
+        - ec-jrc-2024-sa-bref-jrc135916
+    - rule_id: boundary_end
+      applies_to: "foreground system"
+      rule: "End at 1 kg net conforming CPC 21136 frozen goat meat released at the facility gate, with packaging mass excluded."
+      source_ids:
+        - un-cpc-3-0-structure-2025
+        - ec-jrc-2024-sa-bref-jrc135916
+    - rule_id: boundary_downstream
+      applies_to: "downstream activities"
+      rule: "Exclude distribution after the facility gate, retail, use, and end-of-life from this foreground inventory."
+      source_ids:
+        - eu-2021-2279-environmental-footprint
+    - rule_id: boundary_wwtp
+      applies_to: "on-site wastewater treatment"
+      rule: "Include on-site treatment only when operated inside the reporting facility boundary; otherwise record each wastewater transfer to the receiving system."
+      source_ids:
+        - ec-jrc-2024-sa-bref-jrc135916
+    - rule_id: boundary_cpc
+      applies_to: "product identity"
+      rule: "Exclude fresh or chilled goat meat and edible goat offal from the reference product; record any edible offal output separately."
+      source_ids:
+        - un-cpc-3-0-structure-2025
+    - rule_id: boundary_completeness
+      applies_to: "all foreground exchanges"
+      rule: "Do not apply a category cut-off to an exchange known to occur; record it atomically or disclose a verified absence."
+      source_ids:
+        - eu-2021-2279-environmental-footprint
+    - rule_id: boundary_recursive
+      applies_to: "same-category intermediate input"
+      rule: "If frozen goat meat from CPC 21136 is introduced as an intermediate input, declare its origin and prevent the same production from being counted recursively."
+      source_ids:
+        - eu-2021-2279-environmental-footprint
+boundary_abstraction:
+  declared_starting_condition: "Accepted live goats cross the receiving boundary after inbound transport ends"
+  starting_condition_role: "Foreground starting condition"
+  product_classification_scope: "Exact CPC 21136 frozen goat meat"
+  recursive_input_rule: "Declare any CPC 21136 intermediate input origin and prevent recursive counting of the same production"
+  upstream_dataset_requirement: "Model goat farming and inbound transport in separate upstream datasets with disclosed geography and period"
+  disclosure: "State the facility, lot period, slaughter and cutting configuration, freezing technology, storage duration, heat route, refrigerant species, packaging BoM, wastewater destination, and on-site treatment decision"
+reference_flow_definition:
+  reference_amount: "1 kg net product"
+  product_flow_ref:
+    name: "Meat of goat, frozen"
+    uuid: "cf1026b3-d517-4896-b54b-0ba4e919a40b"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "CPC 21136"
+    - "goat species"
+    - "frozen market state"
+    - "net product mass"
+    - "production site"
+    - "production period"
+    - "freezing technology"
+    - "frozen-storage duration"
+    - "packaging composition reported separately"
+reference_flows:
+  []
+measurement_rules:
+  - id: mu_reference_net_mass
+    applies_to: "Reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Determine released net conforming product mass on calibrated scales."
+  - id: mu_packaging_excluded
+    applies_to: "Reference product and packaging"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Exclude packaging mass from reference product mass and record each packaging component separately."
+  - id: mu_physical_mass
+    applies_to: "Live goats, carcasses, meat, co-products, and solid wastes"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Use measured wet or net mass as appropriate and declare moisture or dry-matter basis where it affects interpretation."
+  - id: mu_electricity
+    applies_to: "Electricity"
+    required_property_ref:
+      name: "Energy"
+      uuid: ""
+    required_unit: "kWh"
+    rule: "Use calibrated meter readings and retain the meter boundary and allocation driver."
+  - id: mu_thermal_energy
+    applies_to: "Purchased steam, purchased hot water, and each on-site fuel"
+    required_property_ref:
+      name: "Energy"
+      uuid: ""
+    required_unit: "MJ"
+    rule: "Convert measured carrier quantity with period-matched physical-property records and prevent duplicate heat accounting."
+  - id: mu_water_volume
+    applies_to: "Water and wastewater"
+    required_property_ref:
+      name: "Volume"
+      uuid: ""
+    required_unit: "m3"
+    rule: "Use metered volume and keep routine, high-organic-load, defrost, condensate, sewer, reuse, and direct-discharge streams distinct."
+  - id: mu_direct_release_mass
+    applies_to: "Direct releases to air or water"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Calculate substance or monitored-parameter mass from matched measured activity and concentration or a verified factor."
+  - id: mu_refrigerant_mass
+    applies_to: "Refrigerant make-up and loss"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Reconcile each refrigerant species and circuit independently."
+process_map:
+  - id: live_goat_receiving
+    name: "Live-goat receiving and acceptance"
+    inclusion: "required"
+    inclusion_condition: "Every facility-gate production lot"
+    role: "Starts foreground collection after inbound transport ends"
+    quantitative_reference: "per 1 kg net conforming frozen goat meat at the facility gate"
+  - id: slaughter_dressing
+    name: "Slaughter, exsanguination, skinning, and evisceration"
+    inclusion: "required"
+    inclusion_condition: "Every accepted production lot"
+    role: "Converts accepted live goats to dressed carcasses and separately identified outputs"
+    quantitative_reference: "per 1 kg net conforming frozen goat meat at the facility gate"
+  - id: carcass_cutting
+    name: "Carcass dressing and cutting"
+    inclusion: "required"
+    inclusion_condition: "Every production lot"
+    role: "Produces goat-meat cuts for freezing and separates cutting outputs"
+    quantitative_reference: "per 1 kg net conforming frozen goat meat at the facility gate"
+  - id: chilling_freezing
+    name: "Pre-chilling, freezing, and cold-system operation"
+    inclusion: "required"
+    inclusion_condition: "Every production lot"
+    role: "Freezes conforming goat meat and records the refrigeration circuit through frozen storage"
+    quantitative_reference: "per 1 kg net conforming frozen goat meat at the facility gate"
+  - id: packaging_release
+    name: "Packaging, frozen holding, and facility-gate release"
+    inclusion: "required"
+    inclusion_condition: "Every released production lot"
+    role: "Packages and releases the CPC 21136 reference product"
+    quantitative_reference: "per 1 kg net conforming frozen goat meat at the facility gate"
+  - id: cleaning_disinfection
+    name: "Cleaning, disinfection, and on-site thermal utility operation"
+    inclusion: "required"
+    inclusion_condition: "Every production lot and scheduled hygiene cycle"
+    role: "Records hygiene resources, cleaning wastewater, and direct combustion releases"
+    quantitative_reference: "per 1 kg net conforming frozen goat meat at the facility gate"
+  - id: onsite_wastewater_treatment
+    name: "On-site slaughterhouse wastewater treatment"
+    inclusion: "conditional"
+    inclusion_condition: "Only when the facility operates treatment inside the foreground boundary"
+    role: "Treats separately identified wastewater and records treatment outputs"
+    quantitative_reference: "per 1 kg net conforming frozen goat meat at the facility gate"
+process_inventory:
+  - id: live_goat_receiving
+    label: "Live-goat receiving and acceptance"
+    inputs:
+      product:
+        - row_id: receiving_live_goat
+          role: "Live goat entering receiving"
+          name: "Live goat"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "The animal input crosses the foreground boundary when the inbound transport service ends at facility receiving."
+          amount:
+            expression: "Record calibrated-scale live mass entering the receiving area for accepted and rejected animals."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net conforming frozen goat meat at the facility gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_receiving_records
+              source_ids:
+                - ec-jrc-2024-sa-bref-jrc135916
+                - eu-2021-2279-environmental-footprint
+            ranges: []
+        - row_id: receiving_electricity
+          role: "Receiving electricity"
+          name: "Electricity, grid supply"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Electricity operates receiving, inspection, lighting, gates, and directly associated equipment within this process."
+          amount:
+            expression: "Record the receiving-area electricity meter; calculate a lot share only from documented meter readings and an auditable allocation driver."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net conforming frozen goat meat at the facility gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_receiving_records
+              source_ids:
+                - ec-jrc-2024-sa-bref-jrc135916
+                - eu-2021-2279-environmental-footprint
+            ranges: []
+        - row_id: receiving_water
+          role: "Receiving water"
+          name: "Process water"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "Water crosses the process boundary for animal watering and receiving-area operations before slaughter."
+          amount:
+            expression: "Record metered water supplied to receiving and lairage for the production lot."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net conforming frozen goat meat at the facility gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_receiving_records
+              source_ids:
+                - ec-jrc-2024-sa-bref-jrc135916
+                - eu-2021-2279-environmental-footprint
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: receiving_accepted_live_goat
+          role: "Accepted live-goat transfer"
+          name: "Accepted live goat"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "This intermediate output transfers only accepted animals to the slaughter process and is not the CPC 21136 reference product."
+          amount:
+            expression: "Record calibrated-scale mass released from receiving to slaughter for the accepted lot."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net conforming frozen goat meat at the facility gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_receiving_records
+              source_ids:
+                - ec-jrc-2024-sa-bref-jrc135916
+                - eu-2021-2279-environmental-footprint
+            ranges: []
+      waste:
+        - row_id: receiving_goat_manure
+          role: "Lairage manure"
+          name: "Goat manure from lairage"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Manure removed from lairage is a specific solid waste stream and must not be hidden in wastewater."
+          amount:
+            expression: "Record separately collected wet mass dispatched from lairage, using weighed containers or container tare records."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net conforming frozen goat meat at the facility gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_receiving_records
+              source_ids:
+                - ec-jrc-2024-sa-bref-jrc135916
+                - eu-2021-2279-environmental-footprint
+            ranges: []
+        - row_id: receiving_lairage_wastewater
+          role: "Lairage wastewater"
+          name: "Lairage wash wastewater"
+          flow_type: "waste"
+          property_unit: "Volume / m3"
+          description: "Wash water leaving the receiving and lairage area is recorded as one specific wastewater stream."
+          amount:
+            expression: "Record the dedicated wastewater meter or calculate volume from metered wash water less documented retained water."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net conforming frozen goat meat at the facility gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_receiving_records
+              source_ids:
+                - ec-jrc-2024-sa-bref-jrc135916
+                - eu-2021-2279-environmental-footprint
+            ranges: []
+      elementary:
+        []
+  - id: slaughter_dressing
+    label: "Slaughter, exsanguination, skinning, and evisceration"
+    inputs:
+      product:
+        - row_id: slaughter_live_goat_input
+          role: "Accepted live-goat input"
+          name: "Accepted live goat"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "This intermediate input connects receiving to the slaughter line."
+          amount:
+            expression: "Use the measured accepted-live-goat transfer from receiving without adding inbound transport mass."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net conforming frozen goat meat at the facility gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_slaughter_inputs
+              source_ids:
+                - ec-jrc-2024-sa-bref-jrc135916
+                - eu-2021-2279-environmental-footprint
+            ranges: []
+        - row_id: slaughter_electricity
+          role: "Slaughter-line electricity"
+          name: "Electricity, grid supply"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Electricity serves stunning, hoisting, conveyors, pumps, ventilation, and line equipment in this process."
+          amount:
+            expression: "Record the slaughter-line submeter; if shared, calculate the lot share from metered consumption and documented equipment activity."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net conforming frozen goat meat at the facility gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_slaughter_inputs
+              source_ids:
+                - ec-jrc-2024-sa-bref-jrc135916
+                - eu-2021-2279-environmental-footprint
+            ranges: []
+        - row_id: slaughter_water
+          role: "Slaughter process water"
+          name: "Process water"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "This water input crosses the slaughter-process boundary and excludes cleaning water assigned to the separate cleaning process."
+          amount:
+            expression: "Record metered water supplied to exsanguination, skinning, evisceration, carcass washing, and directly associated line operations."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net conforming frozen goat meat at the facility gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_slaughter_inputs
+              source_ids:
+                - ec-jrc-2024-sa-bref-jrc135916
+                - eu-2021-2279-environmental-footprint
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: slaughter_dressed_carcass
+          role: "Dressed carcass transfer"
+          name: "Dressed goat carcass"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "The dressed carcass is the intermediate product transferred to carcass dressing and cutting."
+          amount:
+            expression: "Record hot dressed-carcass mass on calibrated rail or platform scales before cutting."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net conforming frozen goat meat at the facility gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_slaughter_outputs
+              source_ids:
+                - ec-jrc-2024-sa-bref-jrc135916
+                - eu-2021-2279-environmental-footprint
+            ranges: []
+        - row_id: slaughter_recovered_blood
+          role: "Recovered blood"
+          name: "Recovered goat blood"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Blood is a co-product only when collection quality and the receiving destination establish product status."
+          amount:
+            expression: "Record weighed blood collected hygienically for a documented productive destination."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net conforming frozen goat meat at the facility gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_slaughter_outputs
+              source_ids:
+                - ec-jrc-2024-sa-bref-jrc135916
+                - eu-2021-2279-environmental-footprint
+            ranges: []
+        - row_id: slaughter_recovered_hide
+          role: "Recovered hide"
+          name: "Goat hide for recovery"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "The hide is a co-product only when sale or transfer records establish productive use."
+          amount:
+            expression: "Record weighed hides accepted for a documented productive destination."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net conforming frozen goat meat at the facility gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_slaughter_outputs
+              source_ids:
+                - ec-jrc-2024-sa-bref-jrc135916
+                - eu-2021-2279-environmental-footprint
+            ranges: []
+        - row_id: slaughter_recovered_fat
+          role: "Recovered slaughter fat"
+          name: "Recovered goat slaughter fat"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Separately recovered fat is a co-product when destination records demonstrate use."
+          amount:
+            expression: "Record weighed slaughter fat accepted for a documented productive destination."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net conforming frozen goat meat at the facility gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_slaughter_outputs
+              source_ids:
+                - ec-jrc-2024-sa-bref-jrc135916
+                - eu-2021-2279-environmental-footprint
+            ranges: []
+        - row_id: slaughter_edible_liver
+          role: "Edible liver co-product"
+          name: "Goat liver for human consumption"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Edible liver is outside the CPC 21136 reference product and is recorded as a separate co-product."
+          amount:
+            expression: "Record weighed liver passed for human consumption and dispatched as edible offal."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net conforming frozen goat meat at the facility gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_slaughter_outputs
+              source_ids:
+                - ec-jrc-2024-sa-bref-jrc135916
+                - eu-2021-2279-environmental-footprint
+            ranges: []
+        - row_id: slaughter_edible_heart
+          role: "Edible heart co-product"
+          name: "Goat heart for human consumption"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Edible heart is outside the CPC 21136 reference product and is recorded as a separate co-product."
+          amount:
+            expression: "Record weighed heart passed for human consumption and dispatched as edible offal."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net conforming frozen goat meat at the facility gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_slaughter_outputs
+              source_ids:
+                - ec-jrc-2024-sa-bref-jrc135916
+                - eu-2021-2279-environmental-footprint
+            ranges: []
+        - row_id: slaughter_edible_kidneys
+          role: "Edible kidney co-product"
+          name: "Goat kidneys for human consumption"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Edible kidneys are outside the CPC 21136 reference product and are recorded as a separate co-product."
+          amount:
+            expression: "Record weighed kidneys passed for human consumption and dispatched as edible offal."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net conforming frozen goat meat at the facility gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_slaughter_outputs
+              source_ids:
+                - ec-jrc-2024-sa-bref-jrc135916
+                - eu-2021-2279-environmental-footprint
+            ranges: []
+      waste:
+        - row_id: slaughter_waste_blood
+          role: "Waste blood"
+          name: "Waste goat blood"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "This row is mutually exclusive with recovered goat blood for the same physical quantity."
+          amount:
+            expression: "Record weighed blood rejected from productive use or calculate it from the measured collection vessel balance."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net conforming frozen goat meat at the facility gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_slaughter_outputs
+              source_ids:
+                - ec-jrc-2024-sa-bref-jrc135916
+                - eu-2021-2279-environmental-footprint
+            ranges: []
+        - row_id: slaughter_rejected_hide
+          role: "Rejected hide waste"
+          name: "Rejected goat hide"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Rejected hide is kept separate from hide accepted for productive use."
+          amount:
+            expression: "Record weighed hides sent to waste treatment after rejection."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net conforming frozen goat meat at the facility gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_slaughter_outputs
+              source_ids:
+                - ec-jrc-2024-sa-bref-jrc135916
+                - eu-2021-2279-environmental-footprint
+            ranges: []
+        - row_id: slaughter_waste_fat
+          role: "Waste slaughter fat"
+          name: "Waste goat slaughter fat"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Waste fat is kept separate from fat accepted for productive use."
+          amount:
+            expression: "Record weighed slaughter fat sent to waste treatment."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net conforming frozen goat meat at the facility gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_slaughter_outputs
+              source_ids:
+                - ec-jrc-2024-sa-bref-jrc135916
+                - eu-2021-2279-environmental-footprint
+            ranges: []
+        - row_id: slaughter_condemned_liver
+          role: "Condemned liver"
+          name: "Condemned goat liver"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Condemned liver is a specific waste stream and must not be combined with edible liver."
+          amount:
+            expression: "Record weighed liver condemned and dispatched for waste treatment."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net conforming frozen goat meat at the facility gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_slaughter_outputs
+              source_ids:
+                - ec-jrc-2024-sa-bref-jrc135916
+                - eu-2021-2279-environmental-footprint
+            ranges: []
+        - row_id: slaughter_condemned_heart
+          role: "Condemned heart"
+          name: "Condemned goat heart"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Condemned heart is a specific waste stream and must not be combined with edible heart."
+          amount:
+            expression: "Record weighed heart condemned and dispatched for waste treatment."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net conforming frozen goat meat at the facility gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_slaughter_outputs
+              source_ids:
+                - ec-jrc-2024-sa-bref-jrc135916
+                - eu-2021-2279-environmental-footprint
+            ranges: []
+        - row_id: slaughter_condemned_kidneys
+          role: "Condemned kidneys"
+          name: "Condemned goat kidneys"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Condemned kidneys are a specific waste stream and must not be combined with edible kidneys."
+          amount:
+            expression: "Record weighed kidneys condemned and dispatched for waste treatment."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net conforming frozen goat meat at the facility gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_slaughter_outputs
+              source_ids:
+                - ec-jrc-2024-sa-bref-jrc135916
+                - eu-2021-2279-environmental-footprint
+            ranges: []
+        - row_id: slaughter_stomach_contents
+          role: "Stomach contents"
+          name: "Goat stomach contents"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Stomach contents are recorded separately from intestinal contents and wastewater."
+          amount:
+            expression: "Record separately collected wet mass from emptied stomachs."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net conforming frozen goat meat at the facility gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_slaughter_outputs
+              source_ids:
+                - ec-jrc-2024-sa-bref-jrc135916
+                - eu-2021-2279-environmental-footprint
+            ranges: []
+        - row_id: slaughter_intestinal_contents
+          role: "Intestinal contents"
+          name: "Goat intestinal contents"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Intestinal contents are recorded separately from stomach contents and wastewater."
+          amount:
+            expression: "Record separately collected wet mass from emptied intestines."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net conforming frozen goat meat at the facility gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_slaughter_outputs
+              source_ids:
+                - ec-jrc-2024-sa-bref-jrc135916
+                - eu-2021-2279-environmental-footprint
+            ranges: []
+        - row_id: slaughter_high_load_wastewater
+          role: "Slaughter wastewater"
+          name: "High-organic-load slaughter wastewater"
+          flow_type: "waste"
+          property_unit: "Volume / m3"
+          description: "This wastewater carries the concentrated aqueous load from bleeding, evisceration, and carcass washing."
+          amount:
+            expression: "Record a dedicated flow meter or calculate volume from metered slaughter water and documented retained water."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net conforming frozen goat meat at the facility gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_slaughter_outputs
+              source_ids:
+                - ec-jrc-2024-sa-bref-jrc135916
+                - eu-2021-2279-environmental-footprint
+            ranges: []
+      elementary:
+        - row_id: slaughter_ammonia_to_air
+          role: "Slaughter ammonia release"
+          name: "Ammonia to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Ammonia is recorded as one substance-specific direct air release from the slaughter area."
+          amount:
+            expression: "Calculate released mass from measured exhaust flow and measured ammonia concentration for the applicable operating period."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net conforming frozen goat meat at the facility gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_slaughter_air_releases
+              source_ids:
+                - ec-jrc-2024-sa-bref-jrc135916
+                - eu-2021-2279-environmental-footprint
+            ranges: []
+        - row_id: slaughter_hydrogen_sulfide_to_air
+          role: "Slaughter hydrogen sulfide release"
+          name: "Hydrogen sulfide to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Hydrogen sulfide is recorded separately from ammonia and odour observations."
+          amount:
+            expression: "Calculate released mass from measured exhaust flow and measured hydrogen sulfide concentration for the applicable operating period."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net conforming frozen goat meat at the facility gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_slaughter_air_releases
+              source_ids:
+                - ec-jrc-2024-sa-bref-jrc135916
+                - eu-2021-2279-environmental-footprint
+            ranges: []
+  - id: carcass_cutting
+    label: "Carcass dressing and cutting"
+    inputs:
+      product:
+        - row_id: cutting_dressed_carcass_input
+          role: "Dressed carcass input"
+          name: "Dressed goat carcass"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "This intermediate input connects slaughter to dressing and cutting."
+          amount:
+            expression: "Use the measured dressed-carcass transfer from slaughter."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net conforming frozen goat meat at the facility gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cutting_records
+              source_ids:
+                - ec-jrc-2024-sa-bref-jrc135916
+                - eu-2021-2279-environmental-footprint
+            ranges: []
+        - row_id: cutting_electricity
+          role: "Cutting electricity"
+          name: "Electricity, grid supply"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Electricity serves saws, conveyors, ventilation, and directly associated cutting equipment."
+          amount:
+            expression: "Record the cutting-area submeter; calculate a lot share only from metered consumption and documented equipment activity."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net conforming frozen goat meat at the facility gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_cutting_records
+              source_ids:
+                - ec-jrc-2024-sa-bref-jrc135916
+                - eu-2021-2279-environmental-footprint
+            ranges: []
+        - row_id: cutting_water
+          role: "Cutting process water"
+          name: "Process water"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "This water excludes the separate cleaning-process water inventory."
+          amount:
+            expression: "Record metered water supplied directly to carcass dressing and cutting."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net conforming frozen goat meat at the facility gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cutting_records
+              source_ids:
+                - ec-jrc-2024-sa-bref-jrc135916
+                - eu-2021-2279-environmental-footprint
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: cutting_goat_meat_for_freezing
+          role: "Goat meat for freezing"
+          name: "Goat meat cuts before freezing"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "This intermediate product excludes edible offal and packaging mass."
+          amount:
+            expression: "Record net mass of conforming goat-meat cuts released to pre-chilling and freezing."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net conforming frozen goat meat at the facility gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cutting_records
+              source_ids:
+                - ec-jrc-2024-sa-bref-jrc135916
+                - eu-2021-2279-environmental-footprint
+            ranges: []
+        - row_id: cutting_food_grade_bones
+          role: "Food-grade bones"
+          name: "Food-grade goat bones"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Food-grade bones are a separate co-product and are not included in the reference product mass."
+          amount:
+            expression: "Record weighed bones dispatched to a documented food-grade productive destination."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net conforming frozen goat meat at the facility gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cutting_records
+              source_ids:
+                - ec-jrc-2024-sa-bref-jrc135916
+                - eu-2021-2279-environmental-footprint
+            ranges: []
+        - row_id: cutting_recovered_fat
+          role: "Recovered trimming fat"
+          name: "Recovered goat trimming fat"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Recovered trimming fat is a separate co-product and is not included in the reference product mass."
+          amount:
+            expression: "Record weighed trimming fat dispatched to a documented productive destination."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net conforming frozen goat meat at the facility gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cutting_records
+              source_ids:
+                - ec-jrc-2024-sa-bref-jrc135916
+                - eu-2021-2279-environmental-footprint
+            ranges: []
+      waste:
+        - row_id: cutting_bone_waste
+          role: "Bone waste"
+          name: "Goat bone waste"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Bone waste is mutually exclusive with food-grade goat bones for the same physical quantity."
+          amount:
+            expression: "Record weighed cutting bones classified for waste treatment."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net conforming frozen goat meat at the facility gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cutting_records
+              source_ids:
+                - ec-jrc-2024-sa-bref-jrc135916
+                - eu-2021-2279-environmental-footprint
+            ranges: []
+        - row_id: cutting_fat_waste
+          role: "Trimming-fat waste"
+          name: "Goat trimming fat waste"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Fat waste is mutually exclusive with recovered trimming fat for the same physical quantity."
+          amount:
+            expression: "Record weighed trimming fat classified for waste treatment."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net conforming frozen goat meat at the facility gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cutting_records
+              source_ids:
+                - ec-jrc-2024-sa-bref-jrc135916
+                - eu-2021-2279-environmental-footprint
+            ranges: []
+        - row_id: cutting_meat_trim_waste
+          role: "Meat-trimming waste"
+          name: "Goat meat trimming waste"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Nonconforming meat trimmings are recorded separately from conforming meat for freezing."
+          amount:
+            expression: "Record weighed nonconforming meat trimmings sent to waste treatment."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net conforming frozen goat meat at the facility gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cutting_records
+              source_ids:
+                - ec-jrc-2024-sa-bref-jrc135916
+                - eu-2021-2279-environmental-footprint
+            ranges: []
+        - row_id: cutting_high_load_wastewater
+          role: "Cutting wastewater"
+          name: "High-organic-load cutting wastewater"
+          flow_type: "waste"
+          property_unit: "Volume / m3"
+          description: "This wastewater stream leaves carcass dressing and cutting for treatment."
+          amount:
+            expression: "Record a dedicated flow meter or calculate volume from metered cutting water and documented retained water."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net conforming frozen goat meat at the facility gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_cutting_records
+              source_ids:
+                - ec-jrc-2024-sa-bref-jrc135916
+                - eu-2021-2279-environmental-footprint
+            ranges: []
+      elementary:
+        []
+  - id: chilling_freezing
+    label: "Pre-chilling, freezing, and cold-system operation"
+    inputs:
+      product:
+        - row_id: freezing_goat_meat_input
+          role: "Goat meat entering cold system"
+          name: "Goat meat cuts before freezing"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "This intermediate input enters pre-chilling and freezing."
+          amount:
+            expression: "Use the measured conforming cut mass released from cutting."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net conforming frozen goat meat at the facility gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_freezing_records
+              source_ids:
+                - ec-jrc-2024-sa-bref-jrc135916
+                - eu-2021-2279-environmental-footprint
+            ranges: []
+        - row_id: freezing_electricity
+          role: "Freezing electricity"
+          name: "Electricity, grid supply"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "This electricity row covers pre-chilling and freezing equipment only."
+          amount:
+            expression: "Record the freezer and pre-chiller submeter; calculate the lot share from metered consumption and documented occupancy time."
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net conforming frozen goat meat at the facility gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_freezing_records
+              source_ids:
+                - ec-jrc-2024-sa-bref-jrc135916
+                - eu-2021-2279-environmental-footprint
+            ranges: []
+        - row_id: frozen_storage_electricity
+          role: "Frozen-storage electricity"
+          name: "Electricity, grid supply"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "This distinct electricity row covers the frozen-storage refrigeration load through facility-gate release."
+          amount:
+            expression: "Record the frozen-store refrigeration submeter and calculate the released-lot share from measured storage occupancy."
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net conforming frozen goat meat at the facility gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_freezing_records
+              source_ids:
+                - ec-jrc-2024-sa-bref-jrc135916
+                - eu-2021-2279-environmental-footprint
+            ranges: []
+        - row_id: freezing_process_water
+          role: "Cold-system process water"
+          name: "Process water"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "This water input is limited to direct cold-system operation such as documented defrost water."
+          amount:
+            expression: "Record metered process water used by the cold system, excluding water assigned to the separate cleaning process."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net conforming frozen goat meat at the facility gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_freezing_records
+              source_ids:
+                - ec-jrc-2024-sa-bref-jrc135916
+                - eu-2021-2279-environmental-footprint
+            ranges: []
+        - row_id: freezing_refrigerant_r717
+          role: "R717 refrigerant make-up"
+          name: "Ammonia, refrigerant grade R717"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "R717 make-up is recorded as a single refrigerant species for the cold system."
+          amount:
+            expression: "Calculate make-up mass from cylinder or bulk inventory receipts and refrigeration-system stock reconciliation."
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net conforming frozen goat meat at the facility gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_refrigerant_inventory
+              source_ids:
+                - ec-jrc-2024-sa-bref-jrc135916
+                - eu-2021-2279-environmental-footprint
+            ranges: []
+        - row_id: freezing_refrigerant_r744
+          role: "R744 refrigerant make-up"
+          name: "Carbon dioxide, refrigerant grade R744"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "R744 make-up is recorded as a single refrigerant species for the cold system."
+          amount:
+            expression: "Calculate make-up mass from cylinder or bulk inventory receipts and refrigeration-system stock reconciliation."
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net conforming frozen goat meat at the facility gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_refrigerant_inventory
+              source_ids:
+                - ec-jrc-2024-sa-bref-jrc135916
+                - eu-2021-2279-environmental-footprint
+            ranges: []
+        - row_id: freezing_refrigerant_r290
+          role: "R290 refrigerant make-up"
+          name: "Propane, refrigerant grade R290"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "R290 make-up is recorded as a single refrigerant species for the cold system."
+          amount:
+            expression: "Calculate make-up mass from cylinder inventory receipts and refrigeration-system stock reconciliation."
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net conforming frozen goat meat at the facility gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_refrigerant_inventory
+              source_ids:
+                - ec-jrc-2024-sa-bref-jrc135916
+                - eu-2021-2279-environmental-footprint
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: freezing_frozen_goat_meat
+          role: "Frozen goat-meat transfer"
+          name: "Frozen goat meat before packaging"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "This intermediate output has attained the frozen market state but is not yet the released reference product."
+          amount:
+            expression: "Record net conforming frozen-meat mass released from the cold system to packaging."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net conforming frozen goat meat at the facility gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_freezing_records
+              source_ids:
+                - ec-jrc-2024-sa-bref-jrc135916
+                - eu-2021-2279-environmental-footprint
+            ranges: []
+      waste:
+        - row_id: freezing_offspec_meat
+          role: "Off-specification frozen meat"
+          name: "Off-specification frozen goat meat"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Rejected frozen meat is recorded separately from conforming frozen meat."
+          amount:
+            expression: "Record weighed frozen meat rejected before packaging."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net conforming frozen goat meat at the facility gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_freezing_records
+              source_ids:
+                - ec-jrc-2024-sa-bref-jrc135916
+                - eu-2021-2279-environmental-footprint
+            ranges: []
+        - row_id: freezing_defrost_wastewater
+          role: "Defrost wastewater"
+          name: "Freezer defrost wastewater"
+          flow_type: "waste"
+          property_unit: "Volume / m3"
+          description: "Defrost wastewater is a specific aqueous waste stream from freezer operation."
+          amount:
+            expression: "Record the defrost drain meter or calculate volume from metered defrost water less documented evaporation."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net conforming frozen goat meat at the facility gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_freezing_records
+              source_ids:
+                - ec-jrc-2024-sa-bref-jrc135916
+                - eu-2021-2279-environmental-footprint
+            ranges: []
+        - row_id: freezing_condensate_wastewater
+          role: "Condensate wastewater"
+          name: "Refrigeration condensate wastewater"
+          flow_type: "waste"
+          property_unit: "Volume / m3"
+          description: "Condensate leaving the cold system is recorded separately from defrost wastewater."
+          amount:
+            expression: "Record the dedicated condensate drain meter."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net conforming frozen goat meat at the facility gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_freezing_records
+              source_ids:
+                - ec-jrc-2024-sa-bref-jrc135916
+                - eu-2021-2279-environmental-footprint
+            ranges: []
+      elementary:
+        - row_id: freezing_ammonia_to_air
+          role: "R717 release to air"
+          name: "Ammonia, R717 refrigerant, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "The direct release is the same chemical species as the R717 make-up flow."
+          amount:
+            expression: "Calculate loss from the reconciled R717 make-up and system inventory balance; reconcile with leak and service records."
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net conforming frozen goat meat at the facility gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_refrigerant_inventory
+              source_ids:
+                - ec-jrc-2024-sa-bref-jrc135916
+                - eu-2021-2279-environmental-footprint
+            ranges: []
+        - row_id: freezing_carbon_dioxide_to_air
+          role: "R744 release to air"
+          name: "Carbon dioxide, R744 refrigerant, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "The direct release is the same chemical species as the R744 make-up flow."
+          amount:
+            expression: "Calculate loss from the reconciled R744 make-up and system inventory balance; reconcile with leak and service records."
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net conforming frozen goat meat at the facility gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_refrigerant_inventory
+              source_ids:
+                - ec-jrc-2024-sa-bref-jrc135916
+                - eu-2021-2279-environmental-footprint
+            ranges: []
+        - row_id: freezing_propane_to_air
+          role: "R290 release to air"
+          name: "Propane, R290 refrigerant, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "The direct release is the same chemical species as the R290 make-up flow."
+          amount:
+            expression: "Calculate loss from the reconciled R290 make-up and system inventory balance; reconcile with leak and service records."
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net conforming frozen goat meat at the facility gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_refrigerant_inventory
+              source_ids:
+                - ec-jrc-2024-sa-bref-jrc135916
+                - eu-2021-2279-environmental-footprint
+            ranges: []
+  - id: packaging_release
+    label: "Packaging, frozen holding, and facility-gate release"
+    inputs:
+      product:
+        - row_id: packaging_frozen_meat_input
+          role: "Frozen meat entering packaging"
+          name: "Frozen goat meat before packaging"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "This intermediate input enters final packaging and release control."
+          amount:
+            expression: "Use the measured frozen-meat transfer released from the cold system."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net conforming frozen goat meat at the facility gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_release
+              source_ids:
+                - ec-jrc-2024-sa-bref-jrc135916
+                - eu-2021-2279-environmental-footprint
+            ranges: []
+        - row_id: packaging_electricity
+          role: "Packaging electricity"
+          name: "Electricity, grid supply"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "This electricity row covers packaging and release equipment, excluding cold-system electricity already recorded."
+          amount:
+            expression: "Record the packaging-line submeter; calculate the lot share only from metered operation time."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net conforming frozen goat meat at the facility gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_release
+              source_ids:
+                - ec-jrc-2024-sa-bref-jrc135916
+                - eu-2021-2279-environmental-footprint
+            ranges: []
+        - row_id: packaging_ldpe_film
+          role: "LDPE film packaging"
+          name: "Low-density polyethylene film"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "LDPE film is one specific packaging material and its mass is excluded from the 1 kg reference amount."
+          amount:
+            expression: "Calculate consumed film mass from product-specific BoM, issued-roll mass, and returned-roll mass."
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net conforming frozen goat meat at the facility gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_bom
+              source_ids:
+                - ec-jrc-2024-sa-bref-jrc135916
+                - eu-2021-2279-environmental-footprint
+            ranges: []
+        - row_id: packaging_fibreboard_box
+          role: "Fibreboard box packaging"
+          name: "Corrugated fibreboard box"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Corrugated fibreboard is recorded separately from polymer and wood packaging."
+          amount:
+            expression: "Calculate consumed box mass from product-specific BoM, box count, and verified unit mass."
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net conforming frozen goat meat at the facility gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_bom
+              source_ids:
+                - ec-jrc-2024-sa-bref-jrc135916
+                - eu-2021-2279-environmental-footprint
+            ranges: []
+        - row_id: packaging_wood_pallet
+          role: "Wood pallet packaging"
+          name: "Wood pallet"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Wood pallets are recorded as a distinct packaging component."
+          amount:
+            expression: "Calculate pallet mass assigned to released product from pallet count, verified unit mass, and documented reuse cycles."
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net conforming frozen goat meat at the facility gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_bom
+              source_ids:
+                - ec-jrc-2024-sa-bref-jrc135916
+                - eu-2021-2279-environmental-footprint
+            ranges: []
+        - row_id: packaging_paper_label
+          role: "Paper label packaging"
+          name: "Paper label"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Paper labels are recorded separately from fibreboard boxes."
+          amount:
+            expression: "Calculate label mass from applied label count and verified unit mass."
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net conforming frozen goat meat at the facility gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_bom
+              source_ids:
+                - ec-jrc-2024-sa-bref-jrc135916
+                - eu-2021-2279-environmental-footprint
+            ranges: []
+        - row_id: packaging_pp_strapping
+          role: "Polypropylene strapping"
+          name: "Polypropylene strapping"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Polypropylene strapping is one specific polymer packaging component."
+          amount:
+            expression: "Calculate consumed strapping mass from issued and returned roll mass or verified length and linear mass."
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net conforming frozen goat meat at the facility gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_bom
+              source_ids:
+                - ec-jrc-2024-sa-bref-jrc135916
+                - eu-2021-2279-environmental-footprint
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: frozen_goat_meat_reference_product
+          role: "Reference frozen goat meat"
+          name: "Meat of goat, frozen"
+          flow_type: "product"
+          flow_ref:
+            uuid: "cf1026b3-d517-4896-b54b-0ba4e919a40b"
+          property_unit: "Mass / kg"
+          description: "This is the CPC 21136 reference product after packaging, frozen holding, quality release, and net-mass determination."
+          amount:
+            expression: "Record 1 kg net conforming frozen goat meat released at the facility gate; exclude every packaging component from product mass."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net conforming frozen goat meat at the facility gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_release
+              source_ids:
+                - un-cpc-3-0-structure-2025
+                - ec-jrc-2024-sa-bref-jrc135916
+                - eu-2021-2279-environmental-footprint
+            ranges: []
+      waste:
+        - row_id: packaging_offspec_meat
+          role: "Off-specification packaged meat"
+          name: "Off-specification packaged frozen goat meat"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Rejected meat is kept separate from packaging waste and the reference product."
+          amount:
+            expression: "Record net frozen-meat mass rejected during final packaging or release; record removed packaging in its material-specific waste row."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net conforming frozen goat meat at the facility gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_waste
+              source_ids:
+                - ec-jrc-2024-sa-bref-jrc135916
+                - eu-2021-2279-environmental-footprint
+            ranges: []
+        - row_id: packaging_ldpe_film_waste
+          role: "LDPE film waste"
+          name: "Low-density polyethylene film offcut waste"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "LDPE waste is recorded separately from every non-LDPE packaging waste."
+          amount:
+            expression: "Record weighed LDPE film offcuts and rejected film from packaging."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net conforming frozen goat meat at the facility gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_waste
+              source_ids:
+                - ec-jrc-2024-sa-bref-jrc135916
+                - eu-2021-2279-environmental-footprint
+            ranges: []
+        - row_id: packaging_fibreboard_waste
+          role: "Fibreboard packaging waste"
+          name: "Corrugated fibreboard packaging waste"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Fibreboard waste is recorded separately from paper labels and polymer packaging waste."
+          amount:
+            expression: "Record weighed damaged boxes and fibreboard offcuts."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net conforming frozen goat meat at the facility gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_waste
+              source_ids:
+                - ec-jrc-2024-sa-bref-jrc135916
+                - eu-2021-2279-environmental-footprint
+            ranges: []
+        - row_id: packaging_wood_pallet_waste
+          role: "Wood pallet waste"
+          name: "Damaged wood pallet waste"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Damaged wood pallets are a distinct packaging waste stream."
+          amount:
+            expression: "Record weighed pallet mass retired from use and assigned to the production lot by documented pallet use."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net conforming frozen goat meat at the facility gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_waste
+              source_ids:
+                - ec-jrc-2024-sa-bref-jrc135916
+                - eu-2021-2279-environmental-footprint
+            ranges: []
+        - row_id: packaging_paper_label_waste
+          role: "Paper label waste"
+          name: "Paper label waste"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Paper label waste is recorded separately from fibreboard packaging waste."
+          amount:
+            expression: "Record label count rejected or removed and calculate mass from verified unit mass."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net conforming frozen goat meat at the facility gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_waste
+              source_ids:
+                - ec-jrc-2024-sa-bref-jrc135916
+                - eu-2021-2279-environmental-footprint
+            ranges: []
+        - row_id: packaging_pp_strapping_waste
+          role: "Polypropylene strapping waste"
+          name: "Polypropylene strapping waste"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Polypropylene strapping waste is a distinct polymer waste stream."
+          amount:
+            expression: "Record weighed discarded strapping or calculate mass from measured discarded length and verified linear mass."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net conforming frozen goat meat at the facility gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_waste
+              source_ids:
+                - ec-jrc-2024-sa-bref-jrc135916
+                - eu-2021-2279-environmental-footprint
+            ranges: []
+      elementary:
+        []
+  - id: cleaning_disinfection
+    label: "Cleaning, disinfection, and on-site thermal utility operation"
+    inputs:
+      product:
+        - row_id: cleaning_electricity
+          role: "Cleaning electricity"
+          name: "Electricity, grid supply"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Electricity operates pumps, pressure washers, dosing equipment, and ventilation assigned to cleaning."
+          amount:
+            expression: "Record the cleaning-system submeter; calculate the production-lot share from metered hygiene-cycle operation."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net conforming frozen goat meat at the facility gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_cleaning_inputs
+              source_ids:
+                - ec-jrc-2024-sa-bref-jrc135916
+                - eu-2021-2279-environmental-footprint
+            ranges: []
+        - row_id: cleaning_water
+          role: "Cleaning water"
+          name: "Process water"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "Cleaning water is kept separate from process water recorded in production stages."
+          amount:
+            expression: "Record the cleaning-water meter for the hygiene cycles assigned to the production lot."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net conforming frozen goat meat at the facility gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cleaning_inputs
+              source_ids:
+                - ec-jrc-2024-sa-bref-jrc135916
+                - eu-2021-2279-environmental-footprint
+            ranges: []
+        - row_id: cleaning_purchased_steam
+          role: "Purchased steam"
+          name: "Purchased steam"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Purchased steam is a distinct imported heat carrier and is not combined with on-site boiler fuel."
+          amount:
+            expression: "Calculate delivered steam energy from supplier meter data and documented steam condition for the assigned hygiene cycles."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net conforming frozen goat meat at the facility gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_thermal_utility
+              source_ids:
+                - ec-jrc-2024-sa-bref-jrc135916
+                - eu-2021-2279-environmental-footprint
+            ranges: []
+        - row_id: cleaning_purchased_hot_water
+          role: "Purchased hot water"
+          name: "Purchased hot water"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Purchased hot water is recorded separately from purchased steam and on-site fuel."
+          amount:
+            expression: "Calculate delivered hot-water energy from metered mass or volume and measured inlet and outlet temperatures."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net conforming frozen goat meat at the facility gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_thermal_utility
+              source_ids:
+                - ec-jrc-2024-sa-bref-jrc135916
+                - eu-2021-2279-environmental-footprint
+            ranges: []
+        - row_id: cleaning_natural_gas
+          role: "Natural-gas input"
+          name: "Natural gas"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Natural gas is one on-site fuel route and must not duplicate purchased heat."
+          amount:
+            expression: "Calculate lower-heating-value energy from the calibrated fuel meter and supplier quality data for on-site heat generation."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net conforming frozen goat meat at the facility gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_thermal_utility
+              source_ids:
+                - ec-jrc-2024-sa-bref-jrc135916
+                - eu-2021-2279-environmental-footprint
+            ranges: []
+        - row_id: cleaning_diesel
+          role: "Diesel-fuel input"
+          name: "Diesel fuel"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Diesel is one on-site fuel route and must not duplicate purchased heat."
+          amount:
+            expression: "Calculate fuel energy from calibrated tank or purchase records and a documented fuel-property record."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net conforming frozen goat meat at the facility gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_thermal_utility
+              source_ids:
+                - ec-jrc-2024-sa-bref-jrc135916
+                - eu-2021-2279-environmental-footprint
+            ranges: []
+        - row_id: cleaning_lpg
+          role: "LPG input"
+          name: "Liquefied petroleum gas"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Liquefied petroleum gas is one on-site fuel route and must not duplicate purchased heat."
+          amount:
+            expression: "Calculate fuel energy from calibrated tank or purchase records and a documented fuel-property record."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net conforming frozen goat meat at the facility gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_thermal_utility
+              source_ids:
+                - ec-jrc-2024-sa-bref-jrc135916
+                - eu-2021-2279-environmental-footprint
+            ranges: []
+        - row_id: cleaning_sodium_hydroxide
+          role: "Sodium hydroxide cleaning agent"
+          name: "Sodium hydroxide"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Sodium hydroxide is recorded as one chemical species."
+          amount:
+            expression: "Record issued mass from chemical stock and dosing records for assigned hygiene cycles."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net conforming frozen goat meat at the facility gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cleaning_inputs
+              source_ids:
+                - ec-jrc-2024-sa-bref-jrc135916
+                - eu-2021-2279-environmental-footprint
+            ranges: []
+        - row_id: cleaning_sodium_hypochlorite
+          role: "Sodium hypochlorite disinfectant"
+          name: "Sodium hypochlorite"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Sodium hypochlorite is recorded separately from sodium hydroxide."
+          amount:
+            expression: "Record issued mass from chemical stock and dosing records for assigned hygiene cycles."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net conforming frozen goat meat at the facility gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cleaning_inputs
+              source_ids:
+                - ec-jrc-2024-sa-bref-jrc135916
+                - eu-2021-2279-environmental-footprint
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: cleaning_routine_wastewater
+          role: "Routine cleaning wastewater"
+          name: "Routine slaughterhouse cleaning wastewater"
+          flow_type: "waste"
+          property_unit: "Volume / m3"
+          description: "This routine wastewater is a distinct stream sent to treatment or an off-site receiver."
+          amount:
+            expression: "Record the routine cleaning-drain meter for water not classified as high-organic-load wastewater."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net conforming frozen goat meat at the facility gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cleaning_wastewater
+              source_ids:
+                - ec-jrc-2024-sa-bref-jrc135916
+                - eu-2021-2279-environmental-footprint
+            ranges: []
+        - row_id: cleaning_high_load_wastewater
+          role: "High-load cleaning wastewater"
+          name: "High-organic-load cleaning wastewater"
+          flow_type: "waste"
+          property_unit: "Volume / m3"
+          description: "This stream is segregated because it carries concentrated blood, fat, or tissue residues."
+          amount:
+            expression: "Record the dedicated high-load drain meter or calculate volume from metered wash water and documented retained water."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net conforming frozen goat meat at the facility gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_cleaning_wastewater
+              source_ids:
+                - ec-jrc-2024-sa-bref-jrc135916
+                - eu-2021-2279-environmental-footprint
+            ranges: []
+      elementary:
+        - row_id: cleaning_co2_fossil_to_air
+          role: "Fossil carbon dioxide release"
+          name: "Carbon dioxide, fossil, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Fossil carbon dioxide is one substance-specific direct release from on-site combustion."
+          amount:
+            expression: "Calculate mass from each measured on-site fuel quantity and a documented fuel-specific carbon balance; exclude purchased steam and hot-water production."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net conforming frozen goat meat at the facility gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_combustion_releases
+              source_ids:
+                - ec-jrc-2024-sa-bref-jrc135916
+                - eu-2021-2279-environmental-footprint
+            ranges: []
+        - row_id: cleaning_nitrogen_monoxide_to_air
+          role: "Nitrogen monoxide release"
+          name: "Nitrogen monoxide to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Nitrogen monoxide is recorded separately from nitrogen dioxide."
+          amount:
+            expression: "Calculate mass from measured on-site fuel use and a verified equipment-specific factor or direct measurement."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net conforming frozen goat meat at the facility gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_combustion_releases
+              source_ids:
+                - ec-jrc-2024-sa-bref-jrc135916
+                - eu-2021-2279-environmental-footprint
+            ranges: []
+        - row_id: cleaning_nitrogen_dioxide_to_air
+          role: "Nitrogen dioxide release"
+          name: "Nitrogen dioxide to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Nitrogen dioxide is recorded separately from nitrogen monoxide."
+          amount:
+            expression: "Calculate mass from measured on-site fuel use and a verified equipment-specific factor or direct measurement."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net conforming frozen goat meat at the facility gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_combustion_releases
+              source_ids:
+                - ec-jrc-2024-sa-bref-jrc135916
+                - eu-2021-2279-environmental-footprint
+            ranges: []
+        - row_id: cleaning_sulfur_dioxide_to_air
+          role: "Sulfur dioxide release"
+          name: "Sulfur dioxide to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Sulfur dioxide is recorded as one substance-specific direct release."
+          amount:
+            expression: "Calculate mass from measured fuel use and documented sulfur content or direct measurement."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net conforming frozen goat meat at the facility gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_combustion_releases
+              source_ids:
+                - ec-jrc-2024-sa-bref-jrc135916
+                - eu-2021-2279-environmental-footprint
+            ranges: []
+        - row_id: cleaning_pm25_to_air
+          role: "Fine particulate release"
+          name: "Particulate matter below 2.5 micrometres to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Fine particulate matter is recorded in its stated aerodynamic size fraction."
+          amount:
+            expression: "Calculate mass from direct measurement or a verified equipment-specific factor applied to measured fuel use."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net conforming frozen goat meat at the facility gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_combustion_releases
+              source_ids:
+                - ec-jrc-2024-sa-bref-jrc135916
+                - eu-2021-2279-environmental-footprint
+            ranges: []
+        - row_id: cleaning_pm_coarse_to_air
+          role: "Coarse particulate release"
+          name: "Particulate matter from 2.5 to 10 micrometres to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Coarse particulate matter is recorded separately from the below-2.5-micrometre fraction."
+          amount:
+            expression: "Calculate mass from direct measurement or a verified equipment-specific factor applied to measured fuel use."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net conforming frozen goat meat at the facility gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_combustion_releases
+              source_ids:
+                - ec-jrc-2024-sa-bref-jrc135916
+                - eu-2021-2279-environmental-footprint
+            ranges: []
+  - id: onsite_wastewater_treatment
+    label: "On-site slaughterhouse wastewater treatment"
+    inputs:
+      product:
+        - row_id: wwtp_electricity
+          role: "Wastewater-treatment electricity"
+          name: "Electricity, grid supply"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Electricity operates pumps, aeration, separation, and sludge handling within on-site treatment."
+          amount:
+            expression: "Record the treatment-plant submeter and calculate the lot share from metered treated volume or measured pollutant load."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net conforming frozen goat meat at the facility gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_wwtp_inputs
+              source_ids:
+                - ec-jrc-2024-sa-bref-jrc135916
+                - eu-2021-2279-environmental-footprint
+            ranges: []
+        - row_id: wwtp_process_water
+          role: "Wastewater-treatment process water"
+          name: "Process water"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "This input excludes wastewater being treated and reclaimed-water recirculation."
+          amount:
+            expression: "Record metered clean water used for reagent preparation or equipment operation in on-site treatment."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net conforming frozen goat meat at the facility gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wwtp_inputs
+              source_ids:
+                - ec-jrc-2024-sa-bref-jrc135916
+                - eu-2021-2279-environmental-footprint
+            ranges: []
+        - row_id: wwtp_calcium_hydroxide
+          role: "Calcium hydroxide reagent"
+          name: "Calcium hydroxide"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Calcium hydroxide is a single precipitation or pH-control reagent."
+          amount:
+            expression: "Record issued mass from treatment-chemical stock and dosing records."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net conforming frozen goat meat at the facility gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wwtp_inputs
+              source_ids:
+                - ec-jrc-2024-sa-bref-jrc135916
+                - eu-2021-2279-environmental-footprint
+            ranges: []
+        - row_id: wwtp_aluminium_sulfate
+          role: "Aluminium sulfate reagent"
+          name: "Aluminium sulfate"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Aluminium sulfate is a single phosphorus-precipitation reagent."
+          amount:
+            expression: "Record issued mass from treatment-chemical stock and dosing records."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net conforming frozen goat meat at the facility gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wwtp_inputs
+              source_ids:
+                - ec-jrc-2024-sa-bref-jrc135916
+                - eu-2021-2279-environmental-footprint
+            ranges: []
+        - row_id: wwtp_ferric_chloride
+          role: "Ferric chloride reagent"
+          name: "Ferric chloride"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Ferric chloride is a single phosphorus-precipitation reagent."
+          amount:
+            expression: "Record issued mass from treatment-chemical stock and dosing records."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net conforming frozen goat meat at the facility gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wwtp_inputs
+              source_ids:
+                - ec-jrc-2024-sa-bref-jrc135916
+                - eu-2021-2279-environmental-footprint
+            ranges: []
+      waste:
+        - row_id: wwtp_routine_wastewater_input
+          role: "Routine wastewater input"
+          name: "Routine slaughterhouse wastewater"
+          flow_type: "waste"
+          property_unit: "Volume / m3"
+          description: "Routine wastewater is one treatment input and remains separate from high-organic-load wastewater."
+          amount:
+            expression: "Sum metered routine wastewater transfers entering on-site treatment without including high-organic-load flow."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net conforming frozen goat meat at the facility gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_wwtp_inputs
+              source_ids:
+                - ec-jrc-2024-sa-bref-jrc135916
+                - eu-2021-2279-environmental-footprint
+            ranges: []
+        - row_id: wwtp_high_load_wastewater_input
+          role: "High-load wastewater input"
+          name: "High-organic-load slaughterhouse wastewater"
+          flow_type: "waste"
+          property_unit: "Volume / m3"
+          description: "High-organic-load wastewater is a distinct treatment input."
+          amount:
+            expression: "Sum metered high-organic-load wastewater transfers entering on-site treatment without including routine flow."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net conforming frozen goat meat at the facility gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_wwtp_inputs
+              source_ids:
+                - ec-jrc-2024-sa-bref-jrc135916
+                - eu-2021-2279-environmental-footprint
+            ranges: []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: wwtp_reclaimed_water
+          role: "Reclaimed water"
+          name: "Reclaimed process water"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "Treated water is a product output only when quality and destination records demonstrate productive reuse."
+          amount:
+            expression: "Record the reclaimed-water meter at the point of transfer to an approved productive use."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net conforming frozen goat meat at the facility gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wwtp_outputs
+              source_ids:
+                - ec-jrc-2024-sa-bref-jrc135916
+                - eu-2021-2279-environmental-footprint
+            ranges: []
+      waste:
+        - row_id: wwtp_treated_wastewater_to_sewer
+          role: "Treated wastewater to sewer"
+          name: "Treated slaughterhouse wastewater to sewer"
+          flow_type: "waste"
+          property_unit: "Volume / m3"
+          description: "This waste flow applies to transfer to a sewer or off-site treatment and is not a direct surface-water release."
+          amount:
+            expression: "Record the final sewer-discharge meter after on-site treatment."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net conforming frozen goat meat at the facility gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wwtp_outputs
+              source_ids:
+                - ec-jrc-2024-sa-bref-jrc135916
+                - eu-2021-2279-environmental-footprint
+            ranges: []
+        - row_id: wwtp_screening_solids
+          role: "Screening solids"
+          name: "Slaughterhouse wastewater screening solids"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Screening solids are recorded separately from sludge and grease skim."
+          amount:
+            expression: "Record wet mass removed by screens and dispatched to waste treatment."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net conforming frozen goat meat at the facility gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wwtp_outputs
+              source_ids:
+                - ec-jrc-2024-sa-bref-jrc135916
+                - eu-2021-2279-environmental-footprint
+            ranges: []
+        - row_id: wwtp_grease_skim
+          role: "Grease skim"
+          name: "Slaughterhouse wastewater grease skim"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Grease skim is recorded separately from biological and chemical sludge."
+          amount:
+            expression: "Record wet mass removed by grease separation or flotation and dispatched to waste treatment."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net conforming frozen goat meat at the facility gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wwtp_outputs
+              source_ids:
+                - ec-jrc-2024-sa-bref-jrc135916
+                - eu-2021-2279-environmental-footprint
+            ranges: []
+        - row_id: wwtp_biological_sludge
+          role: "Biological sludge"
+          name: "Slaughterhouse biological wastewater sludge"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Biological sludge is a distinct treatment residue."
+          amount:
+            expression: "Record wet mass and measured dry-matter fraction of biological sludge leaving treatment."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net conforming frozen goat meat at the facility gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wwtp_outputs
+              source_ids:
+                - ec-jrc-2024-sa-bref-jrc135916
+                - eu-2021-2279-environmental-footprint
+            ranges: []
+        - row_id: wwtp_chemical_sludge
+          role: "Chemical precipitation sludge"
+          name: "Slaughterhouse chemical precipitation sludge"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Chemical precipitation sludge is kept separate from biological sludge."
+          amount:
+            expression: "Record wet mass and measured dry-matter fraction of sludge produced by chemical precipitation."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net conforming frozen goat meat at the facility gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wwtp_outputs
+              source_ids:
+                - ec-jrc-2024-sa-bref-jrc135916
+                - eu-2021-2279-environmental-footprint
+            ranges: []
+      elementary:
+        - row_id: wwtp_cod_to_water
+          role: "Chemical oxygen demand release"
+          name: "Chemical oxygen demand to surface water"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "COD is recorded as one monitored water-release parameter for direct discharge."
+          amount:
+            expression: "Calculate discharged load from measured effluent volume and temporally matched COD concentration."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net conforming frozen goat meat at the facility gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_water_discharge
+              source_ids:
+                - ec-jrc-2024-sa-bref-jrc135916
+                - eu-2021-2279-environmental-footprint
+            ranges: []
+        - row_id: wwtp_bod5_to_water
+          role: "Five-day biochemical oxygen demand release"
+          name: "Five-day biochemical oxygen demand to surface water"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "BOD5 is recorded separately from COD."
+          amount:
+            expression: "Calculate discharged load from measured effluent volume and temporally matched BOD5 concentration."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net conforming frozen goat meat at the facility gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_water_discharge
+              source_ids:
+                - ec-jrc-2024-sa-bref-jrc135916
+                - eu-2021-2279-environmental-footprint
+            ranges: []
+        - row_id: wwtp_total_nitrogen_to_water
+          role: "Total nitrogen release"
+          name: "Total nitrogen to surface water"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Total nitrogen is one monitored water-release parameter."
+          amount:
+            expression: "Calculate discharged load from measured effluent volume and temporally matched total-nitrogen concentration."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net conforming frozen goat meat at the facility gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_water_discharge
+              source_ids:
+                - ec-jrc-2024-sa-bref-jrc135916
+                - eu-2021-2279-environmental-footprint
+            ranges: []
+        - row_id: wwtp_total_phosphorus_to_water
+          role: "Total phosphorus release"
+          name: "Total phosphorus to surface water"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Total phosphorus is one monitored water-release parameter."
+          amount:
+            expression: "Calculate discharged load from measured effluent volume and temporally matched total-phosphorus concentration."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net conforming frozen goat meat at the facility gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_water_discharge
+              source_ids:
+                - ec-jrc-2024-sa-bref-jrc135916
+                - eu-2021-2279-environmental-footprint
+            ranges: []
+        - row_id: wwtp_tss_to_water
+          role: "Suspended-solids release"
+          name: "Total suspended solids to surface water"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Total suspended solids are recorded separately from oxygen-demand and nutrient parameters."
+          amount:
+            expression: "Calculate discharged load from measured effluent volume and temporally matched total-suspended-solids concentration."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net conforming frozen goat meat at the facility gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_water_discharge
+              source_ids:
+                - ec-jrc-2024-sa-bref-jrc135916
+                - eu-2021-2279-environmental-footprint
+            ranges: []
+        - row_id: wwtp_ammonia_to_air
+          role: "Treatment ammonia release"
+          name: "Ammonia to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Ammonia is recorded as one substance-specific direct air release from wastewater treatment."
+          amount:
+            expression: "Calculate released mass from measured exhaust flow and measured ammonia concentration for the treatment operating period."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net conforming frozen goat meat at the facility gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_wwtp_air_releases
+              source_ids:
+                - ec-jrc-2024-sa-bref-jrc135916
+                - eu-2021-2279-environmental-footprint
+            ranges: []
+        - row_id: wwtp_hydrogen_sulfide_to_air
+          role: "Treatment hydrogen sulfide release"
+          name: "Hydrogen sulfide to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Hydrogen sulfide is recorded separately from ammonia."
+          amount:
+            expression: "Calculate released mass from measured exhaust flow and measured hydrogen sulfide concentration for the treatment operating period."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net conforming frozen goat meat at the facility gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_wwtp_air_releases
+              source_ids:
+                - ec-jrc-2024-sa-bref-jrc135916
+                - eu-2021-2279-environmental-footprint
+            ranges: []
+allocation_rules:
+  - rule_id: allocation_avoid
+    applies_to: "multi-output processes"
+    rule: "First avoid allocation by process subdivision and direct metering of slaughter, cutting, freezing, packaging, cleaning, and treatment activities."
+    source_ids:
+      - eu-2021-2279-environmental-footprint
+  - rule_id: allocation_expand
+    applies_to: "co-products with additional functions"
+    rule: "If subdivision cannot resolve a co-product function, investigate transparent system expansion before partitioning burdens."
+    source_ids:
+      - eu-2021-2279-environmental-footprint
+  - rule_id: allocation_physical
+    applies_to: "remaining multi-output process"
+    rule: "When allocation remains necessary, use a documented physical relationship that reflects the causal use of inputs and generation of outputs."
+    source_ids:
+      - eu-2021-2279-environmental-footprint
+  - rule_id: allocation_economic
+    applies_to: "remaining unresolved relationship"
+    rule: "Use economic allocation only when neither subdivision, system expansion, nor a relevant physical relationship is defensible; use period-matched facility records and disclose sensitivity."
+    source_ids:
+      - eu-2021-2279-environmental-footprint
+  - rule_id: allocation_status
+    applies_to: "each blood, hide, fat, organ, bone, water, and residue row"
+    rule: "Establish product or waste status from quality, legal status, and destination evidence before allocation; do not assign the same physical quantity to both statuses."
+    source_ids:
+      - ec-jrc-2024-sa-bref-jrc135916
+      - eu-2021-2279-environmental-footprint
+  - rule_id: allocation_waste
+    applies_to: "waste treatment"
+    rule: "Do not credit a waste destination unless the selected LCA method and documented receiving function require it; disclose the modelling choice."
+    source_ids:
+      - eu-2021-2279-environmental-footprint
+  - rule_id: allocation_consistency
+    applies_to: "all process links"
+    rule: "Do not double count an intermediate transfer, purchased heat and its upstream fuel, a refrigerant make-up and an unrelated loss, or a wastewater output and the same treatment input."
+    source_ids:
+      - eu-2021-2279-environmental-footprint
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_receiving_records
+      process_id: "live_goat_receiving"
+      flow_role: "live-goat, electricity, water, accepted transfer, manure, and lairage wastewater"
+      record_type: "weighbridge ticket; animal acceptance log; utility meter; waste dispatch record"
+      raw_fields: "timestamp; lot_id; meter_or_scale_id; opening_reading; closing_reading; gross_mass; tare_mass; destination"
+      collection_method: "Reconcile calibrated measurements and dispatch records to the production lot."
+      unit: "kg; m3; kWh"
+      frequency: "each lot"
+      temporal_coverage: "full study period"
+      site_scope: "receiving area"
+      aggregation_rule: "sum lot records once; allocate shared electricity by documented equipment activity"
+      quality_evidence: "calibration certificates; signed acceptance and dispatch records; meter reconciliation"
+    - protocol_id: cp_slaughter_inputs
+      process_id: "slaughter_dressing"
+      flow_role: "accepted live-goat input, line electricity, and process water"
+      record_type: "transfer record; electricity meter; water meter"
+      raw_fields: "timestamp; lot_id; source_process; meter_id; opening_reading; closing_reading"
+      collection_method: "Link receiving transfer and calibrated utility meters to the slaughter lot."
+      unit: "kg; kWh; m3"
+      frequency: "each lot"
+      temporal_coverage: "full study period"
+      site_scope: "slaughter line"
+      aggregation_rule: "sum direct records; allocate shared meters with documented equipment activity"
+      quality_evidence: "transfer reconciliation; calibration; meter logs"
+    - protocol_id: cp_slaughter_outputs
+      process_id: "slaughter_dressing"
+      flow_role: "carcass, co-product, condemned stream, contents, and wastewater output"
+      record_type: "scale record; condemnation log; destination record; wastewater meter"
+      raw_fields: "timestamp; lot_id; row_id; gross_mass; tare_mass; destination; legal_status; flow_reading"
+      collection_method: "Weigh each physical output separately and document product or waste status before aggregation."
+      unit: "kg; m3"
+      frequency: "each lot"
+      temporal_coverage: "full study period"
+      site_scope: "slaughter line"
+      aggregation_rule: "sum each row_id once; prohibit overlap between productive and condemned destinations"
+      quality_evidence: "scale calibration; inspection record; destination evidence; mass balance"
+    - protocol_id: cp_slaughter_air_releases
+      process_id: "slaughter_dressing"
+      flow_role: "ammonia and hydrogen sulfide direct releases"
+      record_type: "stack or capture-flow monitoring record"
+      raw_fields: "timestamp; operating_state; exhaust_flow; substance; concentration; method; detection_limit"
+      collection_method: "Match substance-specific concentration measurements to exhaust flow and slaughter operation."
+      unit: "kg"
+      frequency: "monitoring campaign and each material change"
+      temporal_coverage: "representative operating period within study period"
+      site_scope: "slaughter air-release points"
+      aggregation_rule: "integrate measured mass flow over applicable operating time"
+      quality_evidence: "laboratory report; monitoring method; instrument calibration"
+    - protocol_id: cp_cutting_records
+      process_id: "carcass_cutting"
+      flow_role: "carcass input, utilities, meat output, bone, fat, trimming waste, and wastewater"
+      record_type: "scale record; submeter; destination record; wastewater meter"
+      raw_fields: "timestamp; lot_id; row_id; mass; meter_reading; destination; legal_status"
+      collection_method: "Link calibrated cutting records and each separated output to the lot."
+      unit: "kg; kWh; m3"
+      frequency: "each lot"
+      temporal_coverage: "full study period"
+      site_scope: "cutting area"
+      aggregation_rule: "sum each row_id once and reconcile input-output mass"
+      quality_evidence: "scale and meter calibration; destination record; mass balance"
+    - protocol_id: cp_freezing_records
+      process_id: "chilling_freezing"
+      flow_role: "meat transfer, cold-system electricity, water, frozen output, off-spec meat, and aqueous wastes"
+      record_type: "scale record; refrigeration submeter; water meter; storage occupancy log; drain meter"
+      raw_fields: "timestamp; lot_id; mass; meter_id; opening_reading; closing_reading; storage_duration; drain_volume"
+      collection_method: "Link measured cold-system activity and frozen-meat transfers to each released lot."
+      unit: "kg; kWh; m3"
+      frequency: "each lot"
+      temporal_coverage: "full study period"
+      site_scope: "pre-chiller; freezer; frozen store"
+      aggregation_rule: "sum direct records; allocate frozen-store electricity by measured occupancy"
+      quality_evidence: "scale and meter calibration; temperature and occupancy logs; release record"
+    - protocol_id: cp_refrigerant_inventory
+      process_id: "chilling_freezing"
+      flow_role: "R717, R744, and R290 make-up and direct releases"
+      record_type: "refrigerant purchase; cylinder stock; service log; leak record; system charge inventory"
+      raw_fields: "date; circuit_id; refrigerant_code; opening_stock; receipts; closing_stock; recovered_mass; transferred_mass; leak_event"
+      collection_method: "Reconcile each refrigerant species and circuit independently; never substitute a combined refrigerant total."
+      unit: "kg"
+      frequency: "each service event and annual closure"
+      temporal_coverage: "full study period"
+      site_scope: "all cold-system circuits inside boundary"
+      aggregation_rule: "opening stock plus receipts minus closing stock, recovery, and documented transfers"
+      quality_evidence: "purchase invoice; cylinder weights; service certification; leak-detector log"
+    - protocol_id: cp_packaging_bom
+      process_id: "packaging_release"
+      flow_role: "each packaging component input"
+      record_type: "product-specific BoM; issue-return record; component count"
+      raw_fields: "lot_id; component_identity; issued_mass; returned_mass; count; unit_mass; reuse_cycles"
+      collection_method: "Calculate each named packaging component from product-specific BoM and verified stock records."
+      unit: "kg"
+      frequency: "each lot"
+      temporal_coverage: "full study period"
+      site_scope: "packaging line"
+      aggregation_rule: "sum each component separately; allocate reusable pallets by documented use cycles"
+      quality_evidence: "approved BoM; stock ledger; unit-mass test; pallet ledger"
+    - protocol_id: cp_packaging_release
+      process_id: "packaging_release"
+      flow_role: "frozen-meat input, packaging electricity, and reference-product output"
+      record_type: "transfer scale; electricity submeter; release scale; quality-release record"
+      raw_fields: "timestamp; lot_id; input_net_mass; output_net_mass; meter_reading; release_status; temperature"
+      collection_method: "Determine net conforming product mass and packaging-line electricity for the released lot."
+      unit: "kg; kWh"
+      frequency: "each lot"
+      temporal_coverage: "full study period"
+      site_scope: "packaging and release area"
+      aggregation_rule: "sum released net product once; exclude packaging mass"
+      quality_evidence: "scale and meter calibration; signed release; temperature record"
+    - protocol_id: cp_packaging_waste
+      process_id: "packaging_release"
+      flow_role: "off-spec meat and each packaging waste"
+      record_type: "waste scale; reject log; component count"
+      raw_fields: "timestamp; lot_id; row_id; gross_mass; tare_mass; count; destination"
+      collection_method: "Measure each material-specific packaging waste and rejected meat separately."
+      unit: "kg"
+      frequency: "each lot"
+      temporal_coverage: "full study period"
+      site_scope: "packaging area"
+      aggregation_rule: "sum each row_id once; prohibit transfer of packaging mass into reference product"
+      quality_evidence: "waste tickets; reject records; scale calibration"
+    - protocol_id: cp_cleaning_inputs
+      process_id: "cleaning_disinfection"
+      flow_role: "electricity, water, sodium hydroxide, and sodium hypochlorite"
+      record_type: "submeter; chemical issue and dosing log; hygiene-cycle record"
+      raw_fields: "timestamp; lot_id; cycle_id; substance; concentration; issued_mass; meter_reading"
+      collection_method: "Assign measured hygiene-cycle resources to the production lot and retain chemical identity."
+      unit: "kg; m3; kWh"
+      frequency: "each hygiene cycle"
+      temporal_coverage: "full study period"
+      site_scope: "foreground hygiene systems"
+      aggregation_rule: "sum each substance separately; allocate shared cycles by cleaned area or documented cycle time"
+      quality_evidence: "meter calibration; chemical stock reconciliation; dosing log; sanitation record"
+    - protocol_id: cp_thermal_utility
+      process_id: "cleaning_disinfection"
+      flow_role: "purchased steam, purchased hot water, natural gas, diesel, and liquefied petroleum gas"
+      record_type: "supplier meter; boiler meter; fuel tank and purchase ledger"
+      raw_fields: "timestamp; lot_id; carrier_identity; quantity; temperature; pressure; heating_value; meter_id"
+      collection_method: "Record each imported heat carrier or on-site fuel separately and reconcile alternative heat routes."
+      unit: "MJ"
+      frequency: "each hygiene cycle and monthly closure"
+      temporal_coverage: "full study period"
+      site_scope: "thermal systems serving foreground hygiene"
+      aggregation_rule: "convert measured carrier quantity to delivered energy with documented properties; prohibit double counting"
+      quality_evidence: "supplier invoice; calibrated meter; fuel-quality record; boiler log"
+    - protocol_id: cp_cleaning_wastewater
+      process_id: "cleaning_disinfection"
+      flow_role: "routine and high-organic-load cleaning wastewater"
+      record_type: "segregated drain meter; hygiene-cycle log"
+      raw_fields: "timestamp; lot_id; stream_identity; opening_reading; closing_reading; destination"
+      collection_method: "Measure routine and high-load cleaning streams independently."
+      unit: "m3"
+      frequency: "each hygiene cycle"
+      temporal_coverage: "full study period"
+      site_scope: "cleaning drains"
+      aggregation_rule: "sum each stream once by destination"
+      quality_evidence: "drain-meter calibration; flow diagram; dispatch or treatment record"
+    - protocol_id: cp_combustion_releases
+      process_id: "cleaning_disinfection"
+      flow_role: "each named on-site combustion release"
+      record_type: "fuel meter; direct monitoring; verified equipment-specific factor record"
+      raw_fields: "timestamp; equipment_id; fuel_identity; fuel_quantity; substance; concentration_or_factor; factor_source"
+      collection_method: "Determine each substance-specific release from direct measurement or a verified factor applied to measured fuel."
+      unit: "kg"
+      frequency: "each monitoring campaign and reporting period"
+      temporal_coverage: "full study period"
+      site_scope: "on-site combustion equipment inside boundary"
+      aggregation_rule: "calculate each substance separately; exclude upstream purchased heat production"
+      quality_evidence: "monitoring report; fuel record; factor provenance; calculation review"
+    - protocol_id: cp_wwtp_inputs
+      process_id: "onsite_wastewater_treatment"
+      flow_role: "wastewater inputs, electricity, water, and each treatment reagent"
+      record_type: "influent meters; submeter; chemical dosing and stock logs"
+      raw_fields: "timestamp; lot_id; stream_or_substance; meter_reading; issued_mass; concentration; treated_volume"
+      collection_method: "Measure each wastewater stream and reagent independently at the on-site treatment boundary."
+      unit: "kg; m3; kWh"
+      frequency: "daily and each lot allocation"
+      temporal_coverage: "full study period"
+      site_scope: "on-site wastewater-treatment plant"
+      aggregation_rule: "sum each row_id separately; allocate shared treatment by measured volume or pollutant load"
+      quality_evidence: "meter calibration; chemical stock reconciliation; treatment log"
+    - protocol_id: cp_wwtp_outputs
+      process_id: "onsite_wastewater_treatment"
+      flow_role: "reclaimed water, sewer wastewater, screening solids, grease skim, and each sludge"
+      record_type: "outlet meter; waste scale; destination and quality record"
+      raw_fields: "timestamp; row_id; volume; wet_mass; dry_matter; quality_result; destination"
+      collection_method: "Measure each treatment output separately and establish product or waste status from quality and destination."
+      unit: "kg; m3"
+      frequency: "daily and each dispatch"
+      temporal_coverage: "full study period"
+      site_scope: "on-site wastewater-treatment plant"
+      aggregation_rule: "sum each row_id once; keep reuse, sewer transfer, and residue destinations distinct"
+      quality_evidence: "meter and scale calibration; laboratory result; dispatch record"
+    - protocol_id: cp_water_discharge
+      process_id: "onsite_wastewater_treatment"
+      flow_role: "COD, BOD5, total nitrogen, total phosphorus, and total suspended solids direct releases"
+      record_type: "final-effluent flow meter and accredited laboratory analysis"
+      raw_fields: "timestamp; sample_id; effluent_volume; parameter; concentration; method; detection_limit"
+      collection_method: "Match each parameter concentration to the same discharge period and calculate its mass load."
+      unit: "kg"
+      frequency: "permit monitoring frequency and each material change"
+      temporal_coverage: "full study period"
+      site_scope: "final direct-discharge point"
+      aggregation_rule: "effluent volume multiplied by temporally matched concentration for each parameter"
+      quality_evidence: "laboratory accreditation; chain of custody; meter calibration; calculation review"
+    - protocol_id: cp_wwtp_air_releases
+      process_id: "onsite_wastewater_treatment"
+      flow_role: "ammonia and hydrogen sulfide direct releases"
+      record_type: "airflow and concentration monitoring record"
+      raw_fields: "timestamp; operating_state; exhaust_flow; substance; concentration; method; detection_limit"
+      collection_method: "Match each substance concentration to treatment airflow and operating time."
+      unit: "kg"
+      frequency: "monitoring campaign and each material change"
+      temporal_coverage: "representative treatment operation within study period"
+      site_scope: "wastewater-treatment air-release points"
+      aggregation_rule: "integrate measured substance mass flow over applicable operating time"
+      quality_evidence: "laboratory report; method; instrument calibration"
+  calculation_rules:
+    - id: calc_reference_normalization
+      applies_to: "all inventory rows"
+      rule: "Divide the lot-attributed exchange by released net conforming frozen goat meat mass."
+      inputs:
+        - "lot-attributed exchange"
+        - "released net reference-product mass"
+      output: "exchange per 1 kg reference product"
+      source_ids:
+        - eu-2021-2279-environmental-footprint
+    - id: calc_stage_electricity
+      applies_to: "each stage electricity row"
+      rule: "Use a direct stage submeter; when a meter is shared, multiply the metered period total by an auditable equipment-activity or occupancy share."
+      inputs:
+        - "meter total"
+        - "equipment activity or storage occupancy"
+        - "lot release mass"
+      output: "stage electricity per reference flow"
+      source_ids:
+        - eu-2021-2279-environmental-footprint
+    - id: calc_mass_balance
+      applies_to: "animal, carcass, meat, co-product, and waste mass rows"
+      rule: "Reconcile measured mass entering each process with its separately recorded product and waste outputs; investigate rather than distribute unexplained imbalance."
+      inputs:
+        - "measured input masses"
+        - "measured output masses"
+        - "moisture or stock change records"
+      output: "documented process mass balance"
+      source_ids:
+        - ec-jrc-2024-sa-bref-jrc135916
+    - id: calc_refrigerant_loss
+      applies_to: "each refrigerant species"
+      rule: "For each circuit and species, reconcile opening stock plus receipts against closing stock, recovered mass, and documented transfers; record the residual only when supported by service and leak evidence."
+      inputs:
+        - "opening stock"
+        - receipts
+        - "closing stock"
+        - "recovered mass"
+        - transfers
+        - "service records"
+      output: "species-specific refrigerant loss"
+      source_ids:
+        - ec-jrc-2024-sa-bref-jrc135916
+    - id: calc_packaging_mass
+      applies_to: "each packaging component"
+      rule: "Calculate component use from issued mass less returned mass, or component count multiplied by verified unit mass; apply documented reuse cycles only to reusable pallets."
+      inputs:
+        - "issued mass"
+        - "returned mass"
+        - "component count"
+        - "unit mass"
+        - "reuse ledger"
+      output: "component mass per reference flow"
+      source_ids:
+        - eu-2021-2279-environmental-footprint
+    - id: calc_thermal_energy
+      applies_to: "each purchased heat carrier and on-site fuel"
+      rule: "Convert measured carrier quantity to delivered energy using documented temperature, pressure, density, or heating-value records that match the reporting period."
+      inputs:
+        - "measured carrier quantity"
+        - "carrier property records"
+      output: "MJ per reference flow"
+      source_ids:
+        - eu-2021-2279-environmental-footprint
+    - id: calc_combustion_release
+      applies_to: "each direct combustion substance"
+      rule: "Use direct measured mass flow where available; otherwise apply a verified equipment-specific factor to measured fuel use and preserve the factor provenance."
+      inputs:
+        - "measured fuel"
+        - "direct concentration and flow or verified factor"
+      output: "substance mass to air per reference flow"
+      source_ids:
+        - eu-2021-2279-environmental-footprint
+    - id: calc_wastewater_volume
+      applies_to: "each wastewater stream"
+      rule: "Use a dedicated flow meter; when calculated, subtract only documented retained, product-bound, recovered, or evaporated water from the matched metered supply."
+      inputs:
+        - "stream meter or matched water balance records"
+      output: "m3 wastewater per reference flow"
+      source_ids:
+        - ec-jrc-2024-sa-bref-jrc135916
+    - id: calc_water_release
+      applies_to: "each direct water-release parameter"
+      rule: "Multiply measured final-effluent volume by a temporally matched measured concentration and convert units without substituting a concentration limit for a measured result."
+      inputs:
+        - "effluent volume"
+        - "parameter concentration"
+        - "unit conversion"
+      output: "parameter mass to surface water per reference flow"
+      source_ids:
+        - ec-jrc-2024-sa-bref-jrc135916
+  data_quality_requirements:
+    - id: dq_product_specific
+      applies_to: "reference product and packaging"
+      requirement: "Use product-specific net mass, BoM, release, and packaging records for the frozen-goat-meat product."
+      evidence: "approved product specification; BoM; signed lot release"
+    - id: dq_site_specific
+      applies_to: "foreground manufacturing"
+      requirement: "Use company-specific activity data and direct releases for processes operated by the reporting facility."
+      evidence: "meter, scale, ledger, laboratory, and service records"
+    - id: dq_temporal
+      applies_to: "all foreground rows"
+      requirement: "Cover a representative production period and disclose shutdowns, maintenance, seasonal storage, and missing intervals."
+      evidence: "coverage statement; gap register; operating calendar"
+    - id: dq_technology
+      applies_to: "freezing, storage, thermal utility, and wastewater treatment"
+      requirement: "Identify actual equipment, refrigerant species, heat route, and treatment configuration used during the study period."
+      evidence: "equipment register; piping diagram; service log; process-flow diagram"
+    - id: dq_mass_balance
+      applies_to: "animal and meat conversion"
+      requirement: "Reconcile live-animal, carcass, meat, co-product, waste, and stock-change masses at lot or representative-period level."
+      evidence: "signed mass-balance worksheet and investigated residuals"
+    - id: dq_meter_reconciliation
+      applies_to: "utilities and wastewater"
+      requirement: "Reconcile submeter totals to facility meters and document every allocation driver used."
+      evidence: "meter hierarchy; calibration record; allocation worksheet"
+    - id: dq_destination
+      applies_to: "co-products and wastes"
+      requirement: "Retain destination, legal status, and acceptance evidence so the same physical stream is not both a product and a waste."
+      evidence: "contract; dispatch ticket; inspection or acceptance record"
+    - id: dq_uuid
+      applies_to: "all inventory identities"
+      requirement: "Use a Tiangong UUID only after exact semantic hybrid search and public state=100 direct-read verification; keep the UUID absent while unresolved."
+      evidence: "dual-verification evidence or manifest unresolved entry"
+    - id: dq_uncertainty
+      applies_to: "all inventory rows"
+      requirement: "Document measurement resolution, calibration, missing-data treatment, factor provenance, and allocation uncertainty without inventing a category range."
+      evidence: "uncertainty register and calculation review"
+    - id: dq_completeness
+      applies_to: "full inventory"
+      requirement: "Demonstrate coverage of material, energy, waste, and direct air and water exchanges inside the boundary."
+      evidence: "process-flow diagram; row checklist; input-output reconciliation"
+validation_rules:
+  - rule_id: validate_reference_uuid
+    applies_to: "reference flow"
+    rule: "Require Product flow cf1026b3-d517-4896-b54b-0ba4e919a40b, Mass 93a60a56-a3c8-11da-a746-0800200b9a66, Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66, and kg."
+    source_ids:
+      - un-cpc-3-0-structure-2025
+  - rule_id: validate_reference_amount
+    applies_to: "reference output"
+    rule: "Require exactly 1 kg net conforming frozen goat meat and exclude packaging mass."
+    source_ids:
+      - un-cpc-3-0-structure-2025
+  - rule_id: validate_scope
+    applies_to: "product identity"
+    rule: "Reject fresh or chilled goat meat, edible offal as the reference product, and any non-goat meat."
+    source_ids:
+      - un-cpc-3-0-structure-2025
+  - rule_id: validate_boundary
+    applies_to: "process coverage"
+    rule: "Require every mandatory process and require a documented inclusion decision for on-site wastewater treatment."
+    source_ids:
+      - ec-jrc-2024-sa-bref-jrc135916
+  - rule_id: validate_atomic
+    applies_to: "inventory rows"
+    rule: "Require one specific physical or chemical exchange per row_id and a nonempty description, amount rule, protocol, uncertainty statement, applicability statement, and source list."
+    source_ids:
+      - ec-jrc-2024-sa-bref-jrc135916
+      - eu-2021-2279-environmental-footprint
+  - rule_id: validate_selector_free
+    applies_to: "selected flows"
+    rule: "Reject collection labels or instructions in Selected flow; utilities, fuels, refrigerants, chemicals, packaging components, wastes, and releases must remain separate."
+    source_ids:
+      - eu-2021-2279-environmental-footprint
+  - rule_id: validate_uuid
+    applies_to: "inventory UUIDs"
+    rule: "Accept a non-reference UUID only after exact semantic flow-hybrid-search and public state=100 direct-read verification; otherwise require no UUID."
+    source_ids:
+      - eu-2021-2279-environmental-footprint
+  - rule_id: validate_manifest_closure
+    applies_to: "unresolved UUIDs"
+    rule: "Require every UUID-free row_id to appear once in manifest review_metadata with its candidate identity and rejection reason."
+    source_ids:
+      - eu-2021-2279-environmental-footprint
+  - rule_id: validate_value_mode
+    applies_to: "inventory amounts"
+    rule: "Allow foreground_record or calculated_value supported by collected records; reject unsupported authored quantities and category default ranges."
+    source_ids:
+      - eu-2021-2279-environmental-footprint
+  - rule_id: validate_mass_balance
+    applies_to: "physical outputs"
+    rule: "Reconcile accepted live mass, carcass, meat, co-products, condemned streams, contents, wastewater-associated solids, and stock change without forced balancing."
+    source_ids:
+      - ec-jrc-2024-sa-bref-jrc135916
+      - eu-2021-2279-environmental-footprint
+  - rule_id: validate_heat_routes
+    applies_to: "thermal inputs"
+    rule: "Prevent duplicate recording of purchased steam, purchased hot water, and on-site fuel used to generate the same heat."
+    source_ids:
+      - eu-2021-2279-environmental-footprint
+  - rule_id: validate_refrigerants
+    applies_to: "cold system"
+    rule: "Identify each actual refrigerant by species and circuit; require its own make-up and direct-release row when a loss occurs."
+    source_ids:
+      - ec-jrc-2024-sa-bref-jrc135916
+  - rule_id: validate_cleaning_agents
+    applies_to: "cleaning"
+    rule: "Identify each cleaning or disinfection substance separately from stock and dosing records; add a new atomic row for every additional substance used."
+    source_ids:
+      - ec-jrc-2024-sa-bref-jrc135916
+  - rule_id: validate_packaging
+    applies_to: "packaging"
+    rule: "Match each actual packaging component and its material-specific waste to the product BoM and exclude packaging mass from the reference product."
+    source_ids:
+      - eu-2021-2279-environmental-footprint
+  - rule_id: validate_destinations
+    applies_to: "co-products and wastes"
+    rule: "Require destination and status evidence and prohibit assigning one physical quantity to both a co-product row and a waste row."
+    source_ids:
+      - ec-jrc-2024-sa-bref-jrc135916
+      - eu-2021-2279-environmental-footprint
+  - rule_id: validate_wastewater
+    applies_to: "wastewater"
+    rule: "Keep routine and high-organic-load wastewater separate; distinguish sewer transfer from direct surface-water discharge and on-site treatment."
+    source_ids:
+      - ec-jrc-2024-sa-bref-jrc135916
+  - rule_id: validate_air_releases
+    applies_to: "direct air releases"
+    rule: "Require substance-specific measured or calculated releases and factor provenance; do not report an aggregate combustion or refrigerant release row."
+    source_ids:
+      - ec-jrc-2024-sa-bref-jrc135916
+      - eu-2021-2279-environmental-footprint
+  - rule_id: validate_water_releases
+    applies_to: "direct water releases"
+    rule: "For direct discharge, require temporally matched effluent volume and parameter concentration for each release row."
+    source_ids:
+      - ec-jrc-2024-sa-bref-jrc135916
+  - rule_id: validate_sources
+    applies_to: "evidence"
+    rule: "Use only the listed UN CPC, EC JRC SA BREF, and Commission Recommendation sources for this PCR; do not treat UUID lookup as amount evidence."
+    source_ids:
+      - un-cpc-3-0-structure-2025
+      - ec-jrc-2024-sa-bref-jrc135916
+      - eu-2021-2279-environmental-footprint
+  - rule_id: validate_bilingual
+    applies_to: "bilingual record"
+    rule: "Require identical ordered process_id, direction, flow_type, row_id, UUID, controlled tokens, protocol ids, and source-id sequences in en-US and zh-CN."
+    source_ids:
+      - eu-2021-2279-environmental-footprint
+published_dataset_profile:
+  dataset_role: "Facility-specific foreground data package for CPC 21136 frozen goat meat"
+  downstream_use: "Construction and validation of TianGong flow, process, lifecyclemodel, and dataset projections"
+  allowed_use: "Product-specific modelling when the facility boundary, reference qualifiers, actual technology, and collection period are disclosed"
+  excluded_use: "Category-default inventory; fresh or chilled goat meat; edible-offal reference product; retail or meal modelling"
+  required_metadata: "Facility geography; reporting period; production volume; lot definition; net-mass method; slaughter and cutting configuration; freezing technology; frozen-storage duration; heat route; refrigerant species; packaging BoM; co-product and waste destinations; wastewater route"
+  required_quality_disclosure: "Meter and scale calibration; temporal coverage; missing data; calculation inputs; allocation decisions; mass balance; uncertainty; UUID status"
+  update_trigger: "Change in product scope, slaughter or cutting configuration, freezing or storage technology, energy route, refrigerant species, packaging BoM, co-product destination, wastewater route, or evidence source"
+data_sources:
+  - id: "un-cpc-3-0-structure-2025"
+    type: "dataset"
+    reference: "United Nations Statistics Division, CPC Ver. 3.0 official page, https://unstats.un.org/unsd/classifications/Econ/CPC; retained raw structure classifications/systems/cpc/3.0/raw/CPC_Ver_3.0_Structure_30Jun2025.csv"
+    used_for: "Exact CPC 21136 identity and frozen-state boundary; exclusion of CPC 21116 fresh or chilled goat meat and CPC 21156 edible goat offal"
+  - id: "ec-jrc-2024-sa-bref-jrc135916"
+    type: "official_guidance"
+    reference: "European Commission Joint Research Centre, Best Available Techniques Reference Document for the Slaughterhouses, Animal By-products and/or Edible Co-products Industries, JRC135916, 2024, DOI 10.2760/18199, https://publications.jrc.ec.europa.eu/repository/handle/JRC135916"
+    used_for: "Slaughter boundary through standard cuts; process decomposition; cooling and freezing; cleaning; utilities; refrigerants; separately managed animal outputs; wastewater; sludge; direct air and water releases"
+  - id: "eu-2021-2279-environmental-footprint"
+    type: "official_guidance"
+    reference: "Commission Recommendation (EU) 2021/2279, consolidated 30 December 2021, https://eur-lex.europa.eu/eli/reco/2021/2279/2021-12-30/eng"
+    used_for: "Product-specific BoM and manufacturing data; complete LCI of material, energy, product, waste, and direct releases; allocation hierarchy; completeness, transparency, data quality, and verification"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:d64282fb5233865a663c4c3ae121f3a09f553d02c554d0ca86280cb502b5e29b"
+  generated_content_sha256: "sha256:40eaf6f8ab8ad45bb4d3665156a3ad53ea44e56f7d376d89c1dd703b83921528"

@@ -1,10 +1,1244 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "26840"
-  title: "Terry towelling and similar woven terry fabrics (other than narrow fabrics) of cotton"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.food-products-beverages-and-tobacco-textiles-apparel-and-leather-products.yarn-and-thread-woven-and-tufted-textile-fabrics.terry-towelling-and-similar-woven-terry-fabrics-other-than-narrow-fabrics-of-cotton"
+  classification_refs: "CPC 3.0 26840, exact"
+  covered_products: "finished cotton terry towelling and similar woven terry fabrics other than narrow fabrics"
+  excluded_products: "narrow fabrics; non-cotton terry fabrics; woven pile or chenille fabrics outside CPC 26840; cut, sewn, or made-up towel articles"
+  representative_product: "finished woven cotton terry fabric in the declared bleached, dyed, or otherwise finished state"
+  production_route: "cotton yarn preparation and sizing; terry weaving; desizing and scouring; conditional bleaching or dyeing; drying and finishing"
+  market_state: "finished product, production mix at plant gate"
+functional_unit:
+  what: "finished woven cotton terry fabric providing an absorbent loop-pile textile surface"
+  how_much: "1 kg of finished fabric at the plant gate"
+  how_well: "conforming to the declared cotton composition, terry construction, width class, colour state, finish, areal mass, and moisture basis"
+  how_long_or_cycle: "one production lot at the plant gate; no use-stage service life is represented"
+  reference_flow_link: "finished cotton terry fabric output of finishing_and_drying"
+system_boundary:
+  rules:
+    - rule_id: system_boundary_rule_1
+      applies_to: "foreground_system_boundary"
+      rule: "Include yarn preparation and sizing, terry weaving, wet pretreatment, all route-applicable dyeing, drying, and finishing operations under the producer's control."
+      source_ids: []
+    - rule_id: system_boundary_rule_2
+      applies_to: "foreground_system_boundary"
+      rule: "Keep purchased cotton yarn, electricity, steam, fuel, water, and each process chemical as explicit upstream-linked product inputs rather than absorbing them into an undocumented aggregate."
+      source_ids: []
+    - rule_id: system_boundary_rule_3
+      applies_to: "foreground_system_boundary"
+      rule: "Record each wastewater stream, cotton scrap or reject, and any measured direct elementary emission at the process where it leaves the foreground boundary."
+      source_ids: []
+    - rule_id: system_boundary_rule_4
+      applies_to: "foreground_system_boundary"
+      rule: "Exclude cultivation, ginning, spinning, article making, packaging, distribution, use, laundering, and end-of-life unless the study adds them as separately identified processes."
+      source_ids: []
+boundary_abstraction:
+  declared_starting_condition: "cotton_yarn_received_at_plant"
+  starting_condition_role: "purchased_upstream_product"
+  product_classification_scope: "CPC 3.0 26840 finished cotton terry towelling and similar woven terry fabrics other than narrow fabrics"
+  recursive_input_rule: "purchased fabric already within CPC 26840 remains a separately quantified same-category input and is not relabelled as internally produced fabric"
+  upstream_dataset_requirement: "link cotton yarn, utilities, water services, fuels, and each chemical to geographically and technologically representative upstream datasets"
+  disclosure: "declare yarn composition and count, yarn origin, sizing system, weaving technology, wet-processing route, colour and finish recipe, plant location, reporting period, and any omitted stage"
+reference_flow_definition:
+  reference_amount: "1 kg"
+  product_flow_ref:
+    name: "Terry towelling and similar woven terry fabrics (other than narrow fabrics) of cotton"
+    uuid: "61be29ff-288e-4570-8335-4e03760c9255"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "cotton composition"
+    - "terry pile construction"
+    - "fabric width and confirmation that it is not narrow fabric"
+    - "declared colour state (greige / bleached / dyed / other)"
+    - "finishing treatment"
+    - "areal mass"
+    - "moisture basis"
+    - "production geography"
+    - "production technology"
+    - "plant gate"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "reference product and intermediate fabric mass"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Normalize the finished product and every mass-based intermediate to 1 kg of finished fabric at the declared moisture basis."
+  - id: moisture_basis
+    applies_to: "cotton yarn, intermediate fabric, and finished fabric"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Record whether each measured mass is as-received or dry; convert only with a measured lot-specific moisture fraction and retain the original record."
+  - id: area_to_mass_conversion
+    applies_to: "area-metered fabric records"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Area data may be converted to mass only with the measured areal mass and width for the same product lot."
+  - id: utility_energy
+    applies_to: "electricity, steam, and natural gas"
+    required_property_ref:
+      name: "energy"
+      uuid: ""
+    required_unit: "kWh or MJ"
+    rule: "Preserve the metered utility unit and document every conversion factor used to express energy per reference output."
+process_map:
+  - id: yarn_preparation_and_sizing
+    name: "Yarn preparation and sizing"
+    inclusion: "required"
+    inclusion_condition: ""
+    role: "foreground preparation"
+    quantitative_reference: "kg sized cotton yarn"
+  - id: terry_weaving
+    name: "Terry weaving"
+    inclusion: "required"
+    inclusion_condition: ""
+    role: "foreground fabric production"
+    quantitative_reference: "kg greige terry fabric"
+  - id: wet_pretreatment
+    name: "Wet pretreatment"
+    inclusion: "required"
+    inclusion_condition: ""
+    role: "foreground desizing, scouring, and route-applicable bleaching"
+    quantitative_reference: "kg pretreated terry fabric"
+  - id: reactive_dyeing
+    name: "Reactive dyeing"
+    inclusion: "conditional"
+    inclusion_condition: "include only when the declared product is reactive-dyed"
+    role: "foreground coloration"
+    quantitative_reference: "kg dyed terry fabric"
+  - id: finishing_and_drying
+    name: "Finishing and drying"
+    inclusion: "required"
+    inclusion_condition: ""
+    role: "foreground final conditioning and plant-gate production"
+    quantitative_reference: "1 kg finished cotton terry fabric"
+process_inventory:
+  - id: yarn_preparation_and_sizing
+    label: "Yarn preparation and sizing"
+    inputs:
+      product:
+        - row_id: cotton_yarn_input
+          role: "Cotton yarn received for warp, pile, and weft preparation"
+          name: "Cotton yarn"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Purchased cotton yarn crosses the foreground boundary as the fibre-forming material for the terry construction."
+          amount:
+            expression: "measured lot mass consumed by the sizing campaign"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg finished cotton terry fabric"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_yarn_material_records
+              source_ids:
+                - ec-jrc-textiles-bref-2023
+            ranges: []
+        - row_id: sizing_starch_input
+          role: "Starch sizing agent applied to cotton yarn"
+          name: "Starch sizing agent"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Starch sizing agent is recorded as one chemical product input when used to protect and lubricate warp or pile yarn during weaving."
+          amount:
+            expression: "measured mass of supplied starch sizing agent consumed"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg finished cotton terry fabric"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_sizing_chemical_records
+              source_ids:
+                - eu-bat-textiles-2022
+            ranges: []
+        - row_id: sizing_water_input
+          role: "Water supplied to sizing preparation"
+          name: "Process water"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Water entering the sizing preparation is recorded separately from later wet-processing water."
+          amount:
+            expression: "measured water supplied to sizing solution preparation"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg finished cotton terry fabric"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_sizing_utility_records
+              source_ids:
+                - eu-bat-textiles-2022
+            ranges: []
+        - row_id: sizing_electricity_input
+          role: "Electricity supplied to yarn preparation and sizing"
+          name: "Electricity"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Metered electricity for winding, warping, sizing, and associated drives is recorded as one utility exchange."
+          amount:
+            expression: "metered or allocated electricity consumption for the sizing campaign"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg sized cotton yarn output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_sizing_utility_records
+              source_ids:
+                - ec-jrc-textiles-bref-2023
+            ranges: []
+        - row_id: sizing_steam_input
+          role: "Steam supplied to yarn sizing"
+          name: "Steam"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Purchased or on-site steam used to heat or dry sized yarn is recorded separately from electricity."
+          amount:
+            expression: "metered steam energy supplied to the sizing campaign"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg sized cotton yarn output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_sizing_utility_records
+              source_ids:
+                - ec-jrc-textiles-bref-2023
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: sized_cotton_yarn_output
+          role: "Sized cotton yarn delivered to terry weaving"
+          name: "Sized cotton yarn"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Sized cotton yarn is the measured intermediate product leaving yarn preparation."
+          amount:
+            expression: "measured mass of sized yarn issued to weaving"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg finished cotton terry fabric"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_sized_yarn_output_records
+              source_ids:
+                - ec-jrc-textiles-bref-2023
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+  - id: terry_weaving
+    label: "Terry weaving"
+    inputs:
+      product:
+        - row_id: sized_yarn_for_weaving_input
+          role: "Sized cotton yarn entering the terry loom"
+          name: "Sized cotton yarn"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "The sized warp, pile, and weft yarn mass issued to the terry loom is recorded as the fabric-forming input."
+          amount:
+            expression: "measured mass of sized yarn charged to the terry weaving lot"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg greige terry fabric output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_weaving_material_records
+              source_ids:
+                - ec-jrc-textiles-bref-2023
+            ranges: []
+        - row_id: weaving_electricity_input
+          role: "Electricity supplied to terry weaving"
+          name: "Electricity"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Electricity for terry looms and directly associated material handling is recorded from the weaving meter or a documented allocation of a shared meter."
+          amount:
+            expression: "metered or allocated electricity consumption for the weaving lot"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg greige terry fabric output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_weaving_utility_records
+              source_ids:
+                - ec-jrc-textiles-bref-2023
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: greige_terry_fabric_output
+          role: "Greige woven cotton terry fabric"
+          name: "Greige woven cotton terry fabric"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Greige woven cotton terry fabric is the measured intermediate output before wet pretreatment."
+          amount:
+            expression: "measured greige fabric mass transferred to wet pretreatment"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg finished cotton terry fabric"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_weaving_output_records
+              source_ids:
+                - ec-jrc-textiles-bref-2023
+            ranges: []
+      waste:
+        - row_id: cotton_weaving_scrap_output
+          role: "Cotton yarn and fabric scrap from terry weaving"
+          name: "Cotton textile scrap"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Offcuts, broken yarn, and rejected greige fabric are combined only when they share the same cotton textile waste identity and destination; otherwise the foreground package shall split them into separate atomic rows."
+          amount:
+            expression: "measured cotton textile scrap leaving the weaving process"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg greige terry fabric output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_weaving_scrap_records
+              source_ids:
+                - ec-jrc-textiles-bref-2023
+            ranges: []
+      elementary:
+        []
+  - id: wet_pretreatment
+    label: "Wet pretreatment"
+    inputs:
+      product:
+        - row_id: greige_terry_fabric_input
+          role: "Greige woven cotton terry fabric entering pretreatment"
+          name: "Greige woven cotton terry fabric"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "The greige fabric input links weaving to desizing, scouring, and route-applicable bleaching."
+          amount:
+            expression: "measured greige fabric mass charged to pretreatment"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg pretreated terry fabric output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_pretreatment_material_records
+              source_ids:
+                - eu-bat-textiles-2022
+            ranges: []
+        - row_id: pretreatment_water_input
+          role: "Water supplied to wet pretreatment"
+          name: "Process water"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Water used for desizing, scouring, bleaching when applicable, and rinsing is recorded at the pretreatment process boundary."
+          amount:
+            expression: "measured water supplied to the pretreatment campaign"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg pretreated terry fabric output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_pretreatment_utility_records
+              source_ids:
+                - eu-bat-textiles-2022
+            ranges: []
+        - row_id: sodium_hydroxide_input
+          role: "Sodium hydroxide supplied for cotton scouring or mercerising"
+          name: "Sodium hydroxide"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Sodium hydroxide is recorded when consumed by the declared scouring or mercerising route."
+          amount:
+            expression: "measured mass of sodium hydroxide product consumed"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg pretreated terry fabric output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_pretreatment_chemical_records
+              source_ids:
+                - eu-bat-textiles-2022
+            ranges: []
+        - row_id: alpha_amylase_input
+          role: "Alpha-amylase supplied for starch desizing"
+          name: "Alpha-amylase enzyme product"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Alpha-amylase is recorded when enzymatic removal of starch sizing is used."
+          amount:
+            expression: "measured mass of alpha-amylase product consumed"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg pretreated terry fabric output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_pretreatment_chemical_records
+              source_ids:
+                - ec-jrc-textiles-bref-2023
+            ranges: []
+        - row_id: hydrogen_peroxide_input
+          role: "Hydrogen peroxide supplied for bleaching"
+          name: "Hydrogen peroxide"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Hydrogen peroxide is recorded only when the declared product route includes peroxide bleaching."
+          amount:
+            expression: "measured mass of hydrogen peroxide product consumed"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg pretreated terry fabric output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_pretreatment_chemical_records
+              source_ids:
+                - eu-bat-textiles-2022
+            ranges: []
+        - row_id: pretreatment_steam_input
+          role: "Steam supplied to wet pretreatment"
+          name: "Steam"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Steam supplied for heating pretreatment baths and fabric is recorded independently of electricity."
+          amount:
+            expression: "metered steam energy supplied to the pretreatment campaign"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg pretreated terry fabric output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_pretreatment_utility_records
+              source_ids:
+                - ec-jrc-textiles-bref-2023
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: pretreated_terry_fabric_output
+          role: "Pretreated woven cotton terry fabric"
+          name: "Pretreated woven cotton terry fabric"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Pretreated terry fabric is the measured output after desizing, scouring, and route-applicable bleaching."
+          amount:
+            expression: "measured pretreated fabric mass leaving the campaign"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg finished cotton terry fabric"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_pretreatment_output_records
+              source_ids:
+                - eu-bat-textiles-2022
+            ranges: []
+      waste:
+        - row_id: pretreatment_wastewater_output
+          role: "Wastewater discharged from wet pretreatment"
+          name: "Textile pretreatment wastewater"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Pretreatment wastewater is recorded at the point it leaves the process for on-site or off-site treatment."
+          amount:
+            expression: "measured wastewater mass or volume converted with measured density"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg pretreated terry fabric output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_pretreatment_wastewater_records
+              source_ids:
+                - eu-bat-textiles-2022
+            ranges: []
+      elementary:
+        []
+  - id: reactive_dyeing
+    label: "Reactive dyeing"
+    inputs:
+      product:
+        - row_id: pretreated_fabric_for_dyeing_input
+          role: "Pretreated cotton terry fabric entering reactive dyeing"
+          name: "Pretreated woven cotton terry fabric"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "This input is present only for a declared reactive-dyed product route."
+          amount:
+            expression: "measured pretreated fabric mass charged to dyeing"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg dyed terry fabric output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_dyeing_material_records
+              source_ids:
+                - peer-reviewed-cotton-mercerisation-dyeing-2022
+            ranges: []
+        - row_id: reactive_red_195_input
+          role: "C.I. Reactive Red 195 supplied to the declared dye recipe"
+          name: "C.I. Reactive Red 195"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "C.I. Reactive Red 195 is one concrete dye exchange and is recorded only when it appears in the declared recipe; another dye requires its own separately identified atomic row in the foreground package."
+          amount:
+            expression: "measured mass of C.I. Reactive Red 195 product consumed"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg dyed terry fabric output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_dyeing_chemical_records
+              source_ids:
+                - peer-reviewed-cotton-mercerisation-dyeing-2022
+            ranges: []
+        - row_id: sodium_chloride_input
+          role: "Sodium chloride supplied to reactive dyeing"
+          name: "Sodium chloride"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Sodium chloride is recorded as a separate recipe chemical when used to promote dye exhaustion."
+          amount:
+            expression: "measured mass of sodium chloride consumed"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg dyed terry fabric output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_dyeing_chemical_records
+              source_ids:
+                - peer-reviewed-cotton-mercerisation-dyeing-2022
+            ranges: []
+        - row_id: sodium_carbonate_input
+          role: "Sodium carbonate supplied to reactive dyeing"
+          name: "Sodium carbonate"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Sodium carbonate is recorded as a separate recipe chemical when used to establish the dye-bath alkalinity."
+          amount:
+            expression: "measured mass of sodium carbonate consumed"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg dyed terry fabric output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_dyeing_chemical_records
+              source_ids:
+                - peer-reviewed-cotton-mercerisation-dyeing-2022
+            ranges: []
+        - row_id: dyeing_water_input
+          role: "Water supplied to reactive dyeing and after-washing"
+          name: "Process water"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Water used for the dye bath, rinsing, soaping, and after-washing is recorded at the dyeing process boundary."
+          amount:
+            expression: "measured water supplied to the dyeing campaign"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg dyed terry fabric output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_dyeing_utility_records
+              source_ids:
+                - eu-bat-textiles-2022
+            ranges: []
+        - row_id: dyeing_steam_input
+          role: "Steam supplied to reactive dyeing"
+          name: "Steam"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Steam used to heat dye baths or after-washing is recorded independently of electricity."
+          amount:
+            expression: "metered steam energy supplied to the dyeing campaign"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg dyed terry fabric output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_dyeing_utility_records
+              source_ids:
+                - eu-bat-textiles-2022
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: dyed_terry_fabric_output
+          role: "Reactive-dyed woven cotton terry fabric"
+          name: "Reactive-dyed woven cotton terry fabric"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "The dyed fabric output is measured after required after-washing and before final finishing."
+          amount:
+            expression: "measured dyed fabric mass leaving the dyeing campaign"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg finished cotton terry fabric"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_dyeing_output_records
+              source_ids:
+                - peer-reviewed-cotton-mercerisation-dyeing-2022
+            ranges: []
+      waste:
+        - row_id: dyeing_wastewater_output
+          role: "Wastewater discharged from reactive dyeing"
+          name: "Reactive dyeing wastewater"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Dye-bath discharge and after-wash wastewater are recorded at the point they leave dyeing for treatment."
+          amount:
+            expression: "measured wastewater mass or volume converted with measured density"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg dyed terry fabric output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_dyeing_wastewater_records
+              source_ids:
+                - eu-bat-textiles-2022
+            ranges: []
+      elementary:
+        []
+  - id: finishing_and_drying
+    label: "Finishing and drying"
+    inputs:
+      product:
+        - row_id: dyed_terry_fabric_for_finishing_input
+          role: "Dyed cotton terry fabric entering finishing"
+          name: "Reactive-dyed woven cotton terry fabric"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Dyed terry fabric is recorded only for a route that includes the reactive_dyeing process."
+          amount:
+            expression: "measured dyed fabric mass charged to finishing"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg finished cotton terry fabric"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing_material_records
+              source_ids:
+                - eu-bat-textiles-2022
+            ranges: []
+        - row_id: undyed_pretreated_terry_fabric_for_finishing_input
+          role: "Undyed pretreated cotton terry fabric entering finishing"
+          name: "Pretreated woven cotton terry fabric"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Pretreated fabric is recorded for an undyed route; this row and the dyed-fabric input are mutually exclusive for a single production lot."
+          amount:
+            expression: "measured pretreated fabric mass charged to finishing"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg finished cotton terry fabric"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing_material_records
+              source_ids:
+                - eu-bat-textiles-2022
+            ranges: []
+        - row_id: finishing_electricity_input
+          role: "Electricity supplied to finishing and drying"
+          name: "Electricity"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Electricity for finishing machines, fans, pumps, and material handling is recorded from a dedicated meter or a documented shared-meter allocation."
+          amount:
+            expression: "metered or allocated electricity consumption for the finishing lot"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg finished cotton terry fabric"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing_utility_records
+              source_ids:
+                - ec-jrc-textiles-bref-2023
+            ranges: []
+        - row_id: finishing_steam_input
+          role: "Steam supplied to finishing and drying"
+          name: "Steam"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Purchased or on-site steam supplied to finishing and indirect drying is recorded as one energy exchange."
+          amount:
+            expression: "metered steam energy supplied to the finishing lot"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg finished cotton terry fabric"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing_utility_records
+              source_ids:
+                - ec-jrc-textiles-bref-2023
+            ranges: []
+        - row_id: natural_gas_input
+          role: "Natural gas supplied to direct-heated drying"
+          name: "Natural gas"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Natural gas is recorded only when gaseous combustion products directly contact the textile or provide heat to the dryer at the foreground site."
+          amount:
+            expression: "metered natural-gas energy supplied to direct-heated drying"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg finished cotton terry fabric"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing_utility_records
+              source_ids:
+                - eu-bat-textiles-2022
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: finished_terry_fabric_output
+          role: "Finished cotton terry towelling fabric at plant gate"
+          name: "Terry towelling and similar woven terry fabrics (other than narrow fabrics) of cotton"
+          flow_type: "product"
+          flow_ref:
+            uuid: "61be29ff-288e-4570-8335-4e03760c9255"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This is the exact CPC 26840 reference product output accepted by state-100 Tiangong direct readback."
+          amount:
+            expression: "1 kg finished fabric at the declared moisture basis"
+            value_mode: "fixed_value"
+            specificity: "product_specific"
+            basis:
+              text: "reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "identity_reference"
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: finished_fabric_reject_output
+          role: "Finished cotton terry fabric rejected at inspection"
+          name: "Rejected cotton terry fabric"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Rejected finished fabric is recorded separately from accepted reference product output and linked to its actual treatment destination."
+          amount:
+            expression: "measured rejected finished fabric mass"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg accepted finished cotton terry fabric"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_finishing_output_records
+              source_ids:
+                - jrc-ilcd-process-format-1-1
+            ranges: []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: avoid_allocation_by_subdivision
+    applies_to: "production lots and separately metered operations"
+    rule: "Subdivide and directly assign yarn, chemicals, utilities, wastewater, scrap, and rejects to the production lot before applying any allocation."
+    source_ids:
+      - iso-14044-2006
+      - jrc-ilcd-lca-detailed-2010
+  - rule_id: classify_cotton_scrap_before_allocation
+    applies_to: "cotton yarn, selvage, and fabric scrap"
+    rule: "Record the actual destination and classify the output as waste or co-product before modelling any burden or credit."
+    source_ids:
+      - jrc-ilcd-lca-detailed-2010
+  - rule_id: physical_allocation_if_unavoidable
+    applies_to: "inseparable fabric co-products with a common physical function"
+    rule: "If subdivision is impossible and allocation remains necessary, use measured dry mass and disclose the allocation fraction and sensitivity; do not allocate wastewater or emissions away from the generating process."
+    source_ids:
+      - iso-14044-2006
+      - jrc-ilcd-lca-detailed-2010
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_yarn_material_records
+      process_id: "yarn_preparation_and_sizing"
+      flow_role: "cotton yarn input"
+      record_type: "receiving and issue records"
+      raw_fields: "lot id; yarn count; cotton composition; gross and tare mass; moisture basis; issued mass"
+      collection_method: "calibrated scale and inventory issue record"
+      unit: "kg"
+      frequency: "per lot"
+      temporal_coverage: "reporting period"
+      site_scope: "sizing line"
+      aggregation_rule: "sum accepted issued mass and normalize to sized-yarn or finished-fabric output"
+      quality_evidence: "calibration record; supplier lot record; stock reconciliation"
+    - protocol_id: cp_sizing_chemical_records
+      process_id: "yarn_preparation_and_sizing"
+      flow_role: "starch sizing agent"
+      record_type: "recipe and batch records"
+      raw_fields: "chemical identity; supplier product; batch id; concentration; issued mass; return mass"
+      collection_method: "calibrated batch scale and recipe log"
+      unit: "kg"
+      frequency: "per batch"
+      temporal_coverage: "reporting period"
+      site_scope: "sizing line"
+      aggregation_rule: "net consumed mass by chemical identity"
+      quality_evidence: "scale calibration; purchase record; recipe sign-off"
+    - protocol_id: cp_sizing_utility_records
+      process_id: "yarn_preparation_and_sizing"
+      flow_role: "sizing water, electricity, and steam"
+      record_type: "meter records"
+      raw_fields: "meter id; opening and closing readings; unit; timestamp; production lot"
+      collection_method: "dedicated meter or documented shared-meter allocation"
+      unit: "kg; kWh; MJ"
+      frequency: "per batch or shift"
+      temporal_coverage: "reporting period"
+      site_scope: "sizing line"
+      aggregation_rule: "subtract readings and allocate only with documented operating time or submeter basis"
+      quality_evidence: "meter calibration; allocation worksheet"
+    - protocol_id: cp_sized_yarn_output_records
+      process_id: "yarn_preparation_and_sizing"
+      flow_role: "sized cotton yarn output"
+      record_type: "production records"
+      raw_fields: "lot id; gross and tare mass; moisture basis; destination"
+      collection_method: "calibrated scale and transfer record"
+      unit: "kg"
+      frequency: "per lot"
+      temporal_coverage: "reporting period"
+      site_scope: "sizing line"
+      aggregation_rule: "sum transferred sized-yarn mass"
+      quality_evidence: "calibration record; transfer reconciliation"
+    - protocol_id: cp_weaving_material_records
+      process_id: "terry_weaving"
+      flow_role: "sized yarn input"
+      record_type: "loom issue records"
+      raw_fields: "lot id; yarn issue mass; returns; product code; loom id"
+      collection_method: "calibrated scale and material issue log"
+      unit: "kg"
+      frequency: "per lot"
+      temporal_coverage: "reporting period"
+      site_scope: "terry weaving area"
+      aggregation_rule: "net issued mass by fabric lot"
+      quality_evidence: "stock reconciliation; loom ticket"
+    - protocol_id: cp_weaving_utility_records
+      process_id: "terry_weaving"
+      flow_role: "weaving electricity"
+      record_type: "electricity meter records"
+      raw_fields: "meter id; readings; operating time; lot id"
+      collection_method: "submeter or documented shared-meter allocation"
+      unit: "kWh"
+      frequency: "per shift"
+      temporal_coverage: "reporting period"
+      site_scope: "terry weaving area"
+      aggregation_rule: "subtract readings and allocate by verified loom operating time when not submetered"
+      quality_evidence: "meter calibration; production log"
+    - protocol_id: cp_weaving_output_records
+      process_id: "terry_weaving"
+      flow_role: "greige terry fabric output"
+      record_type: "loom and inspection records"
+      raw_fields: "roll id; gross and tare mass; width; areal mass; moisture basis"
+      collection_method: "calibrated roll scale and inspection system"
+      unit: "kg"
+      frequency: "per roll"
+      temporal_coverage: "reporting period"
+      site_scope: "terry weaving area"
+      aggregation_rule: "sum accepted greige roll mass"
+      quality_evidence: "calibration record; roll inspection record"
+    - protocol_id: cp_weaving_scrap_records
+      process_id: "terry_weaving"
+      flow_role: "cotton textile scrap"
+      record_type: "waste transfer records"
+      raw_fields: "waste identity; container tare; gross mass; destination; date"
+      collection_method: "calibrated waste scale and transfer note"
+      unit: "kg"
+      frequency: "per container"
+      temporal_coverage: "reporting period"
+      site_scope: "terry weaving area"
+      aggregation_rule: "net scrap mass by identity and destination"
+      quality_evidence: "calibration record; waste transfer note"
+    - protocol_id: cp_pretreatment_material_records
+      process_id: "wet_pretreatment"
+      flow_role: "greige fabric input"
+      record_type: "batch records"
+      raw_fields: "roll id; incoming mass; moisture basis; recipe id"
+      collection_method: "calibrated scale and batch ticket"
+      unit: "kg"
+      frequency: "per batch"
+      temporal_coverage: "reporting period"
+      site_scope: "pretreatment line"
+      aggregation_rule: "sum charged fabric mass"
+      quality_evidence: "calibration record; batch ticket"
+    - protocol_id: cp_pretreatment_chemical_records
+      process_id: "wet_pretreatment"
+      flow_role: "sodium hydroxide, alpha-amylase, and hydrogen peroxide"
+      record_type: "recipe and dosing records"
+      raw_fields: "chemical identity; concentration; batch id; issued mass; residual return"
+      collection_method: "calibrated dosing system and recipe log"
+      unit: "kg"
+      frequency: "per batch"
+      temporal_coverage: "reporting period"
+      site_scope: "pretreatment line"
+      aggregation_rule: "net consumed mass separately for each chemical"
+      quality_evidence: "dosing calibration; supplier record; recipe approval"
+    - protocol_id: cp_pretreatment_utility_records
+      process_id: "wet_pretreatment"
+      flow_role: "pretreatment water and steam"
+      record_type: "meter records"
+      raw_fields: "meter id; readings; unit; batch id; timestamp"
+      collection_method: "submeter or documented shared-meter allocation"
+      unit: "kg; MJ"
+      frequency: "per batch"
+      temporal_coverage: "reporting period"
+      site_scope: "pretreatment line"
+      aggregation_rule: "subtract readings and normalize to pretreated output"
+      quality_evidence: "meter calibration; batch log"
+    - protocol_id: cp_pretreatment_output_records
+      process_id: "wet_pretreatment"
+      flow_role: "pretreated fabric output"
+      record_type: "batch and inspection records"
+      raw_fields: "roll or batch id; gross and tare mass; moisture basis; treatment route"
+      collection_method: "calibrated scale and transfer record"
+      unit: "kg"
+      frequency: "per batch"
+      temporal_coverage: "reporting period"
+      site_scope: "pretreatment line"
+      aggregation_rule: "sum accepted output mass"
+      quality_evidence: "calibration record; treatment record"
+    - protocol_id: cp_pretreatment_wastewater_records
+      process_id: "wet_pretreatment"
+      flow_role: "pretreatment wastewater"
+      record_type: "discharge records"
+      raw_fields: "flowmeter readings; discharge time; density if mass conversion is used; treatment destination"
+      collection_method: "calibrated flowmeter and discharge log"
+      unit: "kg or m3"
+      frequency: "per batch or continuous"
+      temporal_coverage: "reporting period"
+      site_scope: "pretreatment line discharge"
+      aggregation_rule: "sum measured discharge and keep density conversion traceable"
+      quality_evidence: "flowmeter calibration; sampling and transfer records"
+    - protocol_id: cp_dyeing_material_records
+      process_id: "reactive_dyeing"
+      flow_role: "pretreated fabric input"
+      record_type: "dye-batch records"
+      raw_fields: "batch id; incoming fabric mass; colour code; recipe id"
+      collection_method: "calibrated scale and batch ticket"
+      unit: "kg"
+      frequency: "per batch"
+      temporal_coverage: "reporting period"
+      site_scope: "dyeing line"
+      aggregation_rule: "sum charged fabric mass"
+      quality_evidence: "calibration record; batch ticket"
+    - protocol_id: cp_dyeing_chemical_records
+      process_id: "reactive_dyeing"
+      flow_role: "C.I. Reactive Red 195, sodium chloride, and sodium carbonate"
+      record_type: "recipe and dosing records"
+      raw_fields: "chemical identity; supplier product; concentration; issued mass; return mass; batch id"
+      collection_method: "calibrated dosing equipment and recipe log"
+      unit: "kg"
+      frequency: "per batch"
+      temporal_coverage: "reporting period"
+      site_scope: "dyeing line"
+      aggregation_rule: "net consumed mass separately for each chemical identity"
+      quality_evidence: "dosing calibration; supplier record; signed recipe"
+    - protocol_id: cp_dyeing_utility_records
+      process_id: "reactive_dyeing"
+      flow_role: "dyeing water and steam"
+      record_type: "meter records"
+      raw_fields: "meter id; readings; unit; batch id; timestamp"
+      collection_method: "submeter or documented shared-meter allocation"
+      unit: "kg; MJ"
+      frequency: "per batch"
+      temporal_coverage: "reporting period"
+      site_scope: "dyeing line"
+      aggregation_rule: "subtract readings and normalize to dyed output"
+      quality_evidence: "meter calibration; batch log"
+    - protocol_id: cp_dyeing_output_records
+      process_id: "reactive_dyeing"
+      flow_role: "dyed fabric output"
+      record_type: "batch and inspection records"
+      raw_fields: "batch id; output mass; moisture basis; shade; wash status"
+      collection_method: "calibrated scale and inspection record"
+      unit: "kg"
+      frequency: "per batch"
+      temporal_coverage: "reporting period"
+      site_scope: "dyeing line"
+      aggregation_rule: "sum accepted dyed output mass"
+      quality_evidence: "calibration record; shade and wash inspection"
+    - protocol_id: cp_dyeing_wastewater_records
+      process_id: "reactive_dyeing"
+      flow_role: "reactive dyeing wastewater"
+      record_type: "discharge records"
+      raw_fields: "flowmeter readings; discharge time; density if used; treatment destination"
+      collection_method: "calibrated flowmeter and discharge log"
+      unit: "kg or m3"
+      frequency: "per batch or continuous"
+      temporal_coverage: "reporting period"
+      site_scope: "dyeing line discharge"
+      aggregation_rule: "sum measured discharge and keep bath and after-wash streams separate when destinations differ"
+      quality_evidence: "flowmeter calibration; sampling and transfer records"
+    - protocol_id: cp_finishing_material_records
+      process_id: "finishing_and_drying"
+      flow_role: "dyed or undyed fabric input"
+      record_type: "finishing batch records"
+      raw_fields: "route id; input roll id; input mass; moisture basis; finish recipe"
+      collection_method: "calibrated scale and batch ticket"
+      unit: "kg"
+      frequency: "per lot"
+      temporal_coverage: "reporting period"
+      site_scope: "finishing line"
+      aggregation_rule: "sum the one applicable input route per lot"
+      quality_evidence: "calibration record; route reconciliation"
+    - protocol_id: cp_finishing_utility_records
+      process_id: "finishing_and_drying"
+      flow_role: "finishing electricity, steam, and natural gas"
+      record_type: "meter and fuel records"
+      raw_fields: "meter id; readings; fuel quantity; heating value source; lot id; operating time"
+      collection_method: "submeter, calibrated fuel meter, or documented shared-meter allocation"
+      unit: "kWh; MJ"
+      frequency: "per shift or lot"
+      temporal_coverage: "reporting period"
+      site_scope: "finishing and drying line"
+      aggregation_rule: "subtract readings and convert fuel to energy with a documented lot or supplier heating value"
+      quality_evidence: "meter calibration; invoice; conversion worksheet"
+    - protocol_id: cp_finishing_output_records
+      process_id: "finishing_and_drying"
+      flow_role: "accepted finished fabric and rejected fabric"
+      record_type: "final inspection records"
+      raw_fields: "roll id; accepted mass; rejected mass; moisture basis; width; areal mass; colour; finish; destination"
+      collection_method: "calibrated roll scale and final inspection system"
+      unit: "kg"
+      frequency: "per roll"
+      temporal_coverage: "reporting period"
+      site_scope: "finishing line"
+      aggregation_rule: "sum accepted reference output and rejected output separately"
+      quality_evidence: "calibration record; inspection record; mass reconciliation"
+  calculation_rules:
+    - id: normalize_exchange_to_reference_mass
+      applies_to: "every foreground exchange"
+      rule: "measured exchange amount divided by accepted finished fabric mass for the same reconciled production lots"
+      inputs:
+        - "protocol-specific exchange record"
+        - cp_finishing_output_records
+      output: "exchange amount per 1 kg finished fabric"
+      source_ids:
+        - iso-14044-2006
+        - jrc-ilcd-lca-detailed-2010
+    - id: convert_area_record_to_mass
+      applies_to: "area-metered fabric"
+      rule: "measured area multiplied by lot-specific measured areal mass; retain both measurements and the moisture basis"
+      inputs:
+        - "area record"
+        - "areal-mass test"
+        - "width record"
+      output: "kg fabric"
+      source_ids:
+        - jrc-ilcd-flow-format-1-1
+    - id: reconcile_fabric_mass
+      applies_to: "each production stage"
+      rule: "opening work in progress plus measured inputs minus closing work in progress equals accepted output plus rejected output plus measured losses; disclose any residual"
+      inputs:
+        - "material issue"
+        - transfer
+        - output
+        - scrap
+        - "inventory records"
+      output: "stage mass-balance reconciliation"
+      source_ids:
+        - jrc-ilcd-lca-detailed-2010
+  data_quality_requirements:
+    - id: dq_identity
+      applies_to: "reference product and intermediates"
+      requirement: "Preserve product code, cotton composition, terry construction, width class, colour state, finish, lot id, and moisture basis across process transfers."
+      evidence: "linked lot, roll, recipe, and inspection records"
+    - id: dq_temporal
+      applies_to: "foreground records"
+      requirement: "Use one declared reporting period and document shutdowns, trial lots, rework, and changes in recipe or technology."
+      evidence: "production calendar and batch logs"
+    - id: dq_measurement
+      applies_to: "meters and scales"
+      requirement: "Record instrument id, unit, calibration status, reading interval, and any shared-meter allocation basis."
+      evidence: "calibration certificates and meter logs"
+    - id: dq_completeness
+      applies_to: "materials, utilities, wastewater, scrap, and rejects"
+      requirement: "Reconcile every listed process and disclose absent or unmeasured exchanges; a missing UUID does not permit omission of a measured exchange."
+      evidence: "stage mass balance, purchase reconciliation, waste and discharge records"
+    - id: dq_representativeness
+      applies_to: "upstream links"
+      requirement: "Match geography, technology, energy carrier, water service, chemical formulation, and reference year to the foreground route or disclose the mismatch."
+      evidence: "upstream dataset metadata and gap assessment"
+validation_rules:
+  - rule_id: validation_rule_1
+    applies_to: "foreground_dataset_conformance"
+    rule: "the reference output uses UUID 61be29ff-288e-4570-8335-4e03760c9255, Mass UUID 93a60a56-a3c8-11da-a746-0800200b9a66, Units of mass UUID 93a60a57-a4c8-11da-a746-0800200c9a66, and kg, and is exactly classified as CPC 3.0 26840;"
+    source_ids: []
+  - rule_id: validation_rule_2
+    applies_to: "foreground_dataset_conformance"
+    rule: "all required qualifiers and the plant-gate boundary are declared, including cotton composition, terry construction, width class, colour state, finish, moisture basis, geography, and technology;"
+    source_ids: []
+  - rule_id: validation_rule_3
+    applies_to: "foreground_dataset_conformance"
+    rule: "every required process is present and reactive_dyeing is present if and only if the declared route uses reactive dyeing;"
+    source_ids: []
+  - rule_id: validation_rule_4
+    applies_to: "foreground_dataset_conformance"
+    rule: "every inventory card represents one concrete exchange, each alternative dye or chemical is a separate row, and no collection label substitutes for a flow identity;"
+    source_ids: []
+  - rule_id: validation_rule_5
+    applies_to: "foreground_dataset_conformance"
+    rule: "all empirical quantities come from linked foreground records and no AI-authored or unsupported numeric range is used;"
+    source_ids: []
+  - rule_id: validation_rule_6
+    applies_to: "foreground_dataset_conformance"
+    rule: "every unresolved Tiangong UUID remains absent and is reported by row_id; a UUID may be added only after hybrid discovery and state-100 direct readback of flow type, semantic identity, property, and unit;"
+    source_ids: []
+  - rule_id: validation_rule_7
+    applies_to: "foreground_dataset_conformance"
+    rule: "mass transfers, accepted output, scrap, rejects, and work in progress reconcile for each production stage or the residual is quantified and explained;"
+    source_ids: []
+  - rule_id: validation_rule_8
+    applies_to: "foreground_dataset_conformance"
+    rule: "wastewater destinations, on-site treatment, direct-heating fuel use, measured direct emissions, rework, and excluded stages are disclosed;"
+    source_ids: []
+  - rule_id: validation_rule_9
+    applies_to: "foreground_dataset_conformance"
+    rule: "allocation is avoided by subdivision where possible, and any remaining allocation follows the declared rule and includes its fraction and sensitivity;"
+    source_ids: []
+  - rule_id: validation_rule_10
+    applies_to: "foreground_dataset_conformance"
+    rule: "source ids, collection protocols, calculation rules, and quality evidence resolve to the records declared in this PCR."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "unit_process"
+  downstream_use: "secondary_dataset; background_dataset"
+  allowed_use: "finished cotton terry towelling fabric datasets matching CPC 26840, the declared plant gate, and all required qualifiers"
+  excluded_use: "narrow fabrics; non-cotton terry; towel articles; routes omitting applicable wet processing; use-stage laundering or cradle-to-grave claims without added processes"
+  required_metadata: "reference UUID and Mass UUID; CPC code; cotton composition; yarn count; terry construction; width; areal mass; colour state; finish; moisture basis; geography; technology; reporting period; route; allocation; upstream links"
+  required_quality_disclosure: "foreground coverage; instrument calibration; shared-meter allocations; mass-balance residuals; unresolved UUIDs and ranges; upstream representativeness; wastewater and waste destinations"
+  update_trigger: "material change in reference identity, CPC scope, yarn source, sizing system, weaving technology, wet-processing recipe, colour or finish route, energy system, wastewater treatment, geography, reporting period, or data quality"
+data_sources:
+  - id: "un-cpc-3-26840"
+    type: "official_guidance"
+    reference: "https://unstats.un.org/unsd/classifications/Econ/Structure/Detail/EN/2100/26840"
+    used_for: "exact product-category scope and exclusions"
+  - id: "jrc-ilcd-flow-format-1-1"
+    type: "official_guidance"
+    reference: "https://eplca.jrc.ec.europa.eu/LCDN/downloads/ILCD_Format_1.1_Documentation/ILCD_FlowDataSet.html"
+    used_for: "flow name, route qualifiers, reference property, and unit documentation"
+  - id: "jrc-ilcd-process-format-1-1"
+    type: "official_guidance"
+    reference: "https://eplca.jrc.ec.europa.eu/LCDN/downloads/ILCD_Format_1.1_Documentation/ILCD_ProcessDataSet.html"
+    used_for: "exchange direction, process documentation, review, and waste-output requirements"
+  - id: "jrc-ilcd-lca-detailed-2010"
+    type: "official_guidance"
+    reference: "https://eplca.jrc.ec.europa.eu/uploads/ILCD-Handbook-General-guide-for-LCA-DETAILED-GUIDANCE-12March2010-ISBN-fin-v1.0-EN.pdf"
+    used_for: "goal and scope, reference flow, system boundary, allocation, data quality, and interpretation"
+  - id: "ec-jrc-textiles-bref-2023"
+    type: "official_guidance"
+    reference: "https://bureau-industrial-transformation.jrc.ec.europa.eu/sites/default/files/2023-01/TXT_BREF_2023_for_publishing%20ISSN%201831-9424_final_1_revised.pdf"
+    used_for: "textile process decomposition, sizing, fabric production, pretreatment, dyeing, finishing, utilities, emissions, and waste streams"
+  - id: "eu-bat-textiles-2022"
+    type: "official_guidance"
+    reference: "https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32022D2508"
+    used_for: "official BAT scope and definitions for sizing, weaving, desizing, scouring, bleaching, dyeing, finishing, water, energy, chemicals, emissions, and wastewater"
+  - id: "iso-14040-2006"
+    type: "standard"
+    reference: "ISO 14040:2006; https://www.iso.org/standard/37456.html"
+    used_for: "LCA principles, goal and scope, inventory, interpretation, reporting, and critical review"
+  - id: "iso-14044-2006"
+    type: "standard"
+    reference: "ISO 14044:2006; https://www.iso.org/standard/38498.html"
+    used_for: "LCI requirements, allocation hierarchy, data quality, reporting, and review"
+  - id: "blackburn-payne-cotton-towels-2004"
+    type: "literature"
+    reference: "https://doi.org/10.1039/B407628A"
+    used_for: "peer-reviewed cotton towel life-cycle evidence supporting explicit exclusion or separate modelling of laundering and use"
+  - id: "peer-reviewed-cotton-mercerisation-dyeing-2022"
+    type: "literature"
+    reference: "https://doi.org/10.3390/ma15062092"
+    used_for: "peer-reviewed full-text evidence for cotton mercerisation, reactive dyeing, recipe-specific chemicals, washing, and measured batch records"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:2dc44e7f344ccdfaa5032f32ae704febc8e2acd486d60f3377a5cd109ee8b5a5"
+  generated_content_sha256: "sha256:9dc67e68f6e1580adcb5d49bf25d1b46cd6255a7a5a70fa93517019195648717"

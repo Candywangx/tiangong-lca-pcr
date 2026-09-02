@@ -1,10 +1,867 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "21251"
-  title: "Crabs, frozen, dried, salted or in brine"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.food-products-beverages-and-tobacco-textiles-apparel-and-leather-products.meat-fish-fruits-vegetables-oils-and-fats.crabs-frozen-dried-salted-or-in-brine"
+  classification_refs: "CPC 3.0: 21251, Crabs, frozen, dried, salted or in brine (unsd-cpc-3-0)"
+  covered_products: "Uncooked crabs, whether in shell or not, preserved by freezing, drying, dry-salting, or brine"
+  excluded_products: "Live, fresh, or chilled crabs; cooked, smoked, canned, seasoned, or otherwise processed crab products; lobsters, shrimps, prawns, and other non-crab crustaceans"
+  representative_product: "Packaged uncooked crab preserved by one declared route and ready to leave the preserving facility"
+  production_route: "Raw-crab receipt and preparation; one declared preservation route; route-appropriate storage; packaging and factory-gate dispatch"
+  market_state: "Frozen, dried, dry-salted, or in brine; shell state and preservation route declared"
+functional_unit:
+  what: "Supply of preserved uncooked crab at the preserving facility gate"
+  how_much: "1 kg net mass of the declared crab product"
+  how_well: "Conforms to the declared preservation route, shell state, product specification, and applicable food-safety controls"
+  how_long_or_cycle: "One production lot through factory-gate release; storage duration declared"
+  reference_flow_link: "The reference product flow below realizes the functional unit"
+system_boundary:
+  rules:
+    - rule_id: system_boundary_rule_1
+      applies_to: "foreground_system_boundary"
+      rule: "The foreground begins when raw or previously chilled/frozen crab and auxiliary materials are accepted by the preserving facility. It ends when the declared preserved crab is packaged and released at the factory gate. Include preparation, the actual preservation route, route-appropriate storage, packaging, water and ice, salt or brine ingredients, electricity and thermal energy, refrigerant losses, product loss, residues, wastewater, and on-site treatment directly attributable to the lot. Upstream production and transport of crab and other product inputs require linked datasets. Distribution, retail, use, and end-of-life after the factory gate are outside this foreground."
+      source_ids: []
+    - rule_id: sb_facility_gate
+      applies_to: "All datasets"
+      rule: "Include all attributable foreground operations from receipt through packaged factory-gate release and link upstream datasets for crab and other product inputs."
+      source_ids:
+        - codex-cxc-52-2003
+        - eu-pef-2021-2279
+    - rule_id: sb_route_exclusivity
+      applies_to: "Preservation route"
+      rule: "Include only the actual declared route steps; do not combine mutually exclusive freezing, drying, dry-salting, and brining inventories without a documented sequential route."
+      source_ids:
+        - codex-cxc-52-2003
+    - rule_id: sb_losses_and_controls
+      applies_to: "All included processes"
+      rule: "Include product losses, residues, wastewater, on-site treatment, route-control energy, and measured refrigerant losses when they occur."
+      source_ids:
+        - codex-cxc-52-2003
+        - eu-pef-2021-2279
+    - rule_id: sb_food_safety_records
+      applies_to: "Preservation and storage"
+      rule: "Retain route-specific time, temperature, salt/brine concentration, drying, hygiene, and corrective-action records required by the facility HACCP or equivalent food-safety plan."
+      source_ids:
+        - codex-cxc-52-2003
+boundary_abstraction:
+  declared_starting_condition: "Crab received at the preserving facility, with species/grouping, shell state, raw or previously frozen/chilled condition, supplier/landing origin, receipt mass, receipt temperature, and upstream dataset reference declared"
+  starting_condition_role: "Foreground entry condition for preservation; upstream capture/aquaculture, landing, and inbound transport remain represented by linked upstream datasets"
+  product_classification_scope: "Uncooked crabs in CPC 3.0 subclass 21251 and the semantic scope stated in this PCR"
+  recursive_input_rule: "If a received input is already a product in this PCR category, record it once as an upstream product input with its preservation state and upstream dataset; do not recreate its prior preservation inventory in the current foreground"
+  upstream_dataset_requirement: "Require traceable upstream datasets for crab and material or energy inputs; disclose substitutions, geography, time period, technology, and unresolved gaps"
+  disclosure: "Declare actual route sequence, shell state, incoming and final product states, yield, glaze/brine treatment, storage conditions and duration, packaging, excluded operations, allocation, data gaps, and provisional estimates"
+reference_flow_definition:
+  reference_amount: "1 kg net mass"
+  product_flow_ref:
+    name: "Crabs, frozen, dried, salted or in brine"
+    uuid: "43cd42a0-2692-4f75-b26d-223ae1ddc8f3"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "preservation route"
+    - "crab species or commercial grouping"
+    - "shell state"
+    - "raw/uncooked state"
+    - "origin and upstream dataset reference"
+    - "incoming state"
+    - "glaze applied and glaze mass if any"
+    - "brine present and brine formulation/mass if any"
+    - "legal net-mass convention"
+    - "product moisture or salt specification where relevant"
+    - "storage temperature and duration"
+    - "packaging format"
+    - facility
+    - geography
+    - "and reference period"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "Reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Normalize all results to 1 kg measured net mass of the declared crab product at factory-gate release. Exclude packaging. Record glaze and free covering brine separately and disclose whether either is included in the legally declared net quantity."
+  - id: route_mass_accounting
+    applies_to: "Crab and preservation media"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Record incoming crab, route product, glaze, salt, added water or brine, residuals, and wastewater as separate measured or calculated masses; do not infer crab mass from gross packaged mass."
+  - id: energy_units
+    applies_to: "Electricity and thermal energy"
+    required_property_ref:
+      name: "Energy"
+      uuid: ""
+    required_unit: "kWh and MJ"
+    rule: "Keep metered electricity and fuel or thermal energy distinct. Document conversions and lower/higher heating-value basis where fuels are converted to MJ."
+  - id: refrigerant_balance
+    applies_to: "Refrigeration systems"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Calculate refrigerant loss from documented charge, top-up, recovery, and closing inventory records; do not equate electricity use with refrigerant emissions."
+process_map:
+  - id: receipt_preparation
+    name: "Raw-crab receipt and preparation"
+    inclusion: "required"
+    inclusion_condition: "Always; include only preparation actually performed"
+    role: "Establish accepted input, removal of non-product material, washing and chilling records"
+    quantitative_reference: "kg prepared crab output"
+  - id: route_preservation
+    name: "Declared preservation route"
+    inclusion: "required"
+    inclusion_condition: "Exactly one principal route: freezing, drying, dry-salting, or brining; add sequential steps only when actually used"
+    role: "Produce the declared preserved state"
+    quantitative_reference: "kg preserved crab output"
+  - id: route_storage
+    name: "Route-appropriate product storage"
+    inclusion: "required"
+    inclusion_condition: "Frozen storage for frozen product; controlled dry or chilled storage as required by the declared dried, salted, or brined product"
+    role: "Maintain declared state until packaging/release"
+    quantitative_reference: "kg stored preserved crab output and storage duration"
+  - id: packaging_dispatch
+    name: "Packaging and factory-gate release"
+    inclusion: "required"
+    inclusion_condition: "Always"
+    role: "Package, label, weigh, and release reference product"
+    quantitative_reference: "1 kg net reference product"
+process_inventory:
+  - id: receipt_preparation
+    label: "Raw-crab receipt and preparation"
+    inputs:
+      product:
+        - row_id: received_crab
+          role: "Received crab"
+          name: "Crabs, raw or previously chilled/frozen"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record supplier or landing mass and the declared incoming state as the upstream product input."
+          amount:
+            expression: "measured accepted lot mass"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg prepared crab output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_batch_mass
+              source_ids:
+                - unsd-cpc-3-0
+            ranges: []
+        - row_id: preparation_water
+          role: "Preparation water"
+          name: "Process water"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record potable water crossing the process boundary for washing or preparation."
+          amount:
+            expression: "measured or allocated meter volume converted using documented density"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg prepared crab output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_utilities
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "30"
+                unit: "kg/kg prepared crab output"
+                basis: "per kg prepared crab output"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: preparation_ice
+          role: "Preparation ice"
+          name: "Ice"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record purchased or on-site produced ice used to hold product condition."
+          amount:
+            expression: "measured issue or production mass"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg prepared crab output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_utilities
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "10"
+                unit: "kg/kg prepared crab output"
+                basis: "per kg prepared crab output"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: prepared_crab
+          role: "Prepared crab"
+          name: "Prepared uncooked crab"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Calculate prepared crab mass from measured batch outputs before preservation."
+          amount:
+            expression: "measured output mass"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "process output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_batch_mass
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: preparation_residuals
+          role: "Preparation residuals"
+          name: "Crab preparation residuals"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record shells, damaged product, rejected material, and other residuals separately by destination and waste/co-product status."
+          amount:
+            expression: "measured residual mass by destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg prepared crab output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_residuals_wastewater
+              source_ids: []
+            ranges: []
+        - row_id: preparation_wastewater
+          role: "Preparation wastewater"
+          name: "Wastewater from seafood preparation"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record discharged water and its treatment destination; characterize relevant load where monitored."
+          amount:
+            expression: "measured discharge or documented water-balance calculation"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per kg prepared crab output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_residuals_wastewater
+              source_ids: []
+            ranges: []
+      elementary:
+        []
+  - id: route_preservation
+    label: "Declared preservation route"
+    inputs:
+      product:
+        - row_id: preservation_crab_input
+          role: "Prepared crab input"
+          name: "Prepared uncooked crab"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Carry the measured prepared crab into the declared route without duplicating upstream preparation."
+          amount:
+            expression: "transferred batch mass"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg preserved crab output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_batch_mass
+              source_ids: []
+            ranges: []
+        - row_id: preservation_salt
+          role: "Salt input"
+          name: "Sodium chloride, food grade"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record food-grade salt only for dry-salted or brined routes, including salt used to prepare brine."
+          amount:
+            expression: "measured salt issued minus documented recovered unused salt; zero for routes without salt"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per kg preserved crab output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_route_materials_controls
+              source_ids:
+                - codex-cxc-52-2003
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "2"
+                unit: "kg/kg preserved crab output"
+                basis: "per kg preserved crab output"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: preservation_water
+          role: "Preservation water"
+          name: "Process water"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record water used for brine, glazing, or route cleaning separately by purpose; zero where absent."
+          amount:
+            expression: "measured or calculated from batch recipe and meters"
+            value_mode: "calculated_value"
+            specificity: "route_specific"
+            basis:
+              text: "per kg preserved crab output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_route_materials_controls
+              source_ids:
+                - codex-cxc-52-2003
+            ranges: []
+        - row_id: preservation_electricity
+          role: "Preservation electricity"
+          name: "Electricity"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record route equipment electricity, including freezing or drying auxiliaries actually used."
+          amount:
+            expression: "submetered or documented equipment allocation"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg preserved crab output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_utilities
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "25"
+                unit: "kWh/kg preserved crab output"
+                basis: "per kg preserved crab output"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: preservation_thermal_energy
+          role: "Preservation thermal energy"
+          name: "Thermal energy"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Record fuel or supplied heat for drying or other actual route heating; zero when absent."
+          amount:
+            expression: "metered heat or fuel quantity converted with documented heating value"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg preserved crab output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_utilities
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "100"
+                unit: "MJ/kg preserved crab output"
+                basis: "per kg preserved crab output"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: preserved_crab
+          role: "Preserved crab"
+          name: "Crabs, frozen, dried, salted or in brine"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record output after the declared route and keep glaze, free brine, moisture, and salt accounting explicit."
+          amount:
+            expression: "measured preserved-product mass before storage"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "process output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_batch_mass
+              source_ids:
+                - codex-cxc-52-2003
+            ranges: []
+      waste:
+        - row_id: preservation_residuals_wastewater
+          role: "Preservation residuals and wastewater"
+          name: "Preservation residuals and wastewater"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record rejected crab, spent brine or salt, cleaning wastewater, and route residues separately by material and destination in the foreground records."
+          amount:
+            expression: "measured discharge and residual mass, disaggregated in source records"
+            value_mode: "foreground_record"
+            specificity: "route_specific"
+            basis:
+              text: "per kg preserved crab output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_residuals_wastewater
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "40"
+                unit: "kg/kg preserved crab output"
+                basis: "per kg preserved crab output"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        []
+  - id: route_storage
+    label: "Route-appropriate product storage"
+    inputs:
+      product:
+        - row_id: storage_crab_input
+          role: "Preserved crab entering storage"
+          name: "Crabs, frozen, dried, salted or in brine"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record preserved crab transferred to route-appropriate storage."
+          amount:
+            expression: "measured transfer mass"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg stored preserved crab output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_batch_mass
+              source_ids: []
+            ranges: []
+        - row_id: storage_electricity
+          role: "Storage electricity"
+          name: "Electricity"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record electricity allocated from metered storage energy using occupancy, mass-time, or another disclosed causal driver."
+          amount:
+            expression: "metered storage electricity allocated by documented mass-time or causal driver"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per kg stored product and declared storage duration"
+              kind: "storage_duration"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_storage_refrigeration
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: stored_preserved_crab
+          role: "Stored preserved crab"
+          name: "Crabs, frozen, dried, salted or in brine"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record release mass after route-appropriate storage and separately record storage losses."
+          amount:
+            expression: "measured storage-release mass"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "process output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_batch_mass
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        - row_id: refrigerant_loss
+          role: "Refrigerant loss"
+          name: "Refrigerant emission, species-specific"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record refrigerant species and calculated loss only for equipment serving the included route or storage."
+          amount:
+            expression: "documented refrigerant balance allocated by disclosed causal driver"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per kg stored product and declared storage duration"
+              kind: "storage_duration"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_storage_refrigeration
+              source_ids: []
+            ranges: []
+  - id: packaging_dispatch
+    label: "Packaging and factory-gate release"
+    inputs:
+      product:
+        - row_id: packaging_crab_input
+          role: "Stored crab input"
+          name: "Crabs, frozen, dried, salted or in brine"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the preserved product transferred into final packaging."
+          amount:
+            expression: "measured transfer mass"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_batch_mass
+              source_ids: []
+            ranges: []
+        - row_id: packaging_materials
+          role: "Packaging materials"
+          name: "Packaging material, material-specific"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record each primary, secondary, and tertiary packaging material separately in source records."
+          amount:
+            expression: "measured issue minus returned unused material, disaggregated by material"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "1"
+                unit: "kg/kg net reference product"
+                basis: "per kg net reference product"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: reference_product_output
+          role: "Factory-gate reference product"
+          name: "Crabs, frozen, dried, salted or in brine"
+          flow_type: "product"
+          flow_ref:
+            uuid: "43cd42a0-2692-4f75-b26d-223ae1ddc8f3"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This is the sole quantitative reference output; packaging is excluded from its net mass."
+          amount:
+            expression: "fixed reference amount of 1 kg measured net product mass"
+            value_mode: "fixed_value"
+            specificity: "not_applicable"
+            basis:
+              text: "1 kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "identity_reference"
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: packaging_waste
+          role: "Packaging waste"
+          name: "Packaging waste, material-specific"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record trim, rejects, and damaged packaging separately by material and destination."
+          amount:
+            expression: "measured packaging waste"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg net reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging
+              source_ids: []
+            ranges: []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: alloc_subdivision_first
+    applies_to: "Shared processes and mutually exclusive routes"
+    rule: "Prefer process subdivision and route-specific metering. Do not allocate a blended facility inventory while separable route records are available."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: alloc_residual_status
+    applies_to: "Shells, rejected crab, spent salt/brine, and other outputs"
+    rule: "Classify each output as product, co-product, recyclable material, or waste using documented ownership, intended use, treatment, and economic value. Waste treatment burdens remain with the process that generates the waste."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: alloc_fallback
+    applies_to: "Unavoidable multi-output process"
+    rule: "After subdivision and other justified avoidance are exhausted, use a documented physical causal relation; if none can be justified, use economic allocation with contemporaneous prices and sensitivity analysis."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: alloc_disclosure
+    applies_to: "All allocated inventories"
+    rule: "Report allocation driver, quantities, prices or physical parameters, period, resulting factors, treatment of zero-value outputs, and sensitivity result."
+    source_ids:
+      - eu-pef-2021-2279
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_batch_mass
+      process_id: "receipt_preparation_route_preservation_route_storage_packaging_dispatch"
+      flow_role: "Crab inputs, transfers, outputs, glaze/free-brine mass, and losses"
+      record_type: "Scale tickets and batch records"
+      raw_fields: "batch_id; route; species/grouping; shell_state; incoming_state; gross_mass; tare; net_crab_mass; glaze_mass; free_brine_mass; output_mass; timestamp; scale_id"
+      collection_method: "Calibrated scales and reconciled batch records"
+      unit: "kg"
+      frequency: "Each lot and transfer"
+      temporal_coverage: "Representative continuous 12-month period or complete seasonal campaign"
+      site_scope: "All facilities and lines in scope"
+      aggregation_rule: "Sum by homogeneous route and normalize to released net reference-product mass"
+      quality_evidence: "Calibration certificates, signed batch records, and reconciliation"
+    - protocol_id: cp_utilities
+      process_id: "receipt_preparation_route_preservation"
+      flow_role: "Water, ice, electricity, fuel, and supplied heat"
+      record_type: "Meter, invoice, and equipment log"
+      raw_fields: "meter_id; opening; closing; unit; period; batch_id; equipment; runtime; allocation_driver; heating_value_basis"
+      collection_method: "Submeter first; otherwise documented causal allocation from facility meters"
+      unit: "kg; m3; kWh; MJ; fuel unit"
+      frequency: "Per batch where metered, otherwise at least monthly"
+      temporal_coverage: "Same representative period as production"
+      site_scope: "All included equipment"
+      aggregation_rule: "Convert units explicitly, allocate by causal driver, and normalize to process output"
+      quality_evidence: "Meter calibration, invoices, runtime logs, and allocation workbook"
+    - protocol_id: cp_route_materials_controls
+      process_id: "route_preservation"
+      flow_role: "Salt, brine, glaze, route time/temperature, drying, and concentration controls"
+      record_type: "Recipe, issue, sensor, and HACCP records"
+      raw_fields: "route; salt_mass; water_mass; brine_mass; concentration; glaze_mass; start_time; end_time; temperature_series; drying_condition; corrective_action"
+      collection_method: "Weigh ingredients and retain validated control records for the actual route"
+      unit: "kg; concentration unit; °C; h"
+      frequency: "Each batch"
+      temporal_coverage: "Complete study period"
+      site_scope: "Each route and line"
+      aggregation_rule: "Keep routes separate; calculate recipe inputs and summarize validated controls by batch"
+      quality_evidence: "Calibrated instruments, approved recipe, HACCP verification, and corrective-action log"
+    - protocol_id: cp_residuals_wastewater
+      process_id: "receipt_preparation_route_preservation"
+      flow_role: "Residuals, rejects, spent brine/salt, wastewater, and treatment"
+      record_type: "Weights, discharge meter, manifests, and analyses"
+      raw_fields: "stream_id; material; mass_or_volume; destination; waste_or_coproduct_status; treatment; water_quality_parameter; result; period"
+      collection_method: "Direct weighing/metering; documented water balance only where direct measurement is unavailable"
+      unit: "kg; m3; parameter-specific"
+      frequency: "Each batch or shipment; wastewater at least monthly"
+      temporal_coverage: "Same representative period as production"
+      site_scope: "All included discharge points"
+      aggregation_rule: "Sum by stream and destination; normalize to process output"
+      quality_evidence: "Waste manifests, meter checks, laboratory reports, and balance reconciliation"
+    - protocol_id: cp_storage_refrigeration
+      process_id: "route_storage"
+      flow_role: "Storage energy, duration, conditions, refrigerant charge/top-up/recovery/loss"
+      record_type: "Meter, warehouse, temperature, and maintenance records"
+      raw_fields: "storage_zone; product_mass; entry_time; exit_time; temperature_series; electricity; refrigerant_species; opening_charge; top_up; recovered; closing_charge; service_event"
+      collection_method: "Meter storage energy; calculate mass-time; reconcile refrigerant balance"
+      unit: "kWh; kg; kg·day; °C"
+      frequency: "Continuous temperature; monthly energy; every service event"
+      temporal_coverage: "Same representative period as production"
+      site_scope: "Every included storage zone and refrigeration system"
+      aggregation_rule: "Allocate energy and refrigerant balance by disclosed causal driver, preferably mass-time and equipment service"
+      quality_evidence: "Meter checks, temperature logs, inventory records, and service certificates"
+    - protocol_id: cp_packaging
+      process_id: "packaging_dispatch"
+      flow_role: "Packaging inputs and packaging waste"
+      record_type: "Bill of materials, issue, return, and waste records"
+      raw_fields: "material_id; material_type; issued_mass; returned_mass; packed_units; net_product_mass; waste_mass; recycled_content"
+      collection_method: "Reconcile material issues and returns by packaging format"
+      unit: "kg"
+      frequency: "Each format and production period"
+      temporal_coverage: "Same representative period as production"
+      site_scope: "All packaging lines in scope"
+      aggregation_rule: "Net used packaging and waste by material per kg net reference product"
+      quality_evidence: "Supplier specification, inventory reconciliation, and scale checks"
+  calculation_rules:
+    - id: calc_normalize_reference
+      applies_to: "Every inventory row"
+      rule: "normalized amount = attributable row amount / released net reference-product mass"
+      inputs:
+        - "Attributable row quantity"
+        - "released net product kg"
+      output: "Row amount per 1 kg reference product"
+      source_ids: []
+    - id: calc_route_yield
+      applies_to: "Each declared route"
+      rule: "route yield = released net reference-product mass / accepted crab input mass; also report intermediate preparation and preservation yields"
+      inputs:
+        - "Accepted crab"
+        - "prepared crab"
+        - "preserved crab"
+        - "stored crab"
+        - "released net product"
+      output: "Route and stage yields"
+      source_ids:
+        - codex-cxc-52-2003
+    - id: calc_water_balance
+      applies_to: "Preparation and preservation"
+      rule: "wastewater estimate = metered water and ice inputs + water in materials - water retained in product - measured evaporation - other documented outputs; use only when discharge is not directly metered"
+      inputs:
+        - Water
+        - ice
+        - brine
+        - "product moisture"
+        - evaporation
+        - outputs
+      output: "Calculated wastewater mass"
+      source_ids: []
+    - id: calc_refrigerant_balance
+      applies_to: "Included refrigeration"
+      rule: "loss = opening charge + top-ups - recovered refrigerant - closing charge, bounded at zero and reconciled to service records before allocation"
+      inputs:
+        - "Species-specific charge"
+        - top-up
+        - recovery
+        - "closing inventory"
+      output: "Species-specific refrigerant loss"
+      source_ids: []
+    - id: calc_allocation
+      applies_to: "Unavoidable shared or multi-output inventory"
+      rule: "Apply alloc_subdivision_first, then the documented physical causal factor, or economic factor only when physical causality is not justified; factors shall sum to one"
+      inputs:
+        - "Shared inventory"
+        - "output quantities"
+        - "causal parameter or prices"
+      output: "Allocated inventory and factors"
+      source_ids:
+        - eu-pef-2021-2279
+  data_quality_requirements:
+    - id: dq_identity
+      applies_to: "Product and route"
+      requirement: "Preserve lot, species/grouping, shell state, actual route, incoming state, origin, and upstream dataset links."
+      evidence: "Traceability and supplier records; unsd-cpc-3-0"
+    - id: dq_measurement
+      applies_to: "Mass, utilities, temperature, concentration, and refrigerant"
+      requirement: "Use calibrated or verified instruments; retain units, conversion factors, missing-data treatment, and meter allocation."
+      evidence: "Calibration, meter, recipe, laboratory, and maintenance records"
+    - id: dq_temporal
+      applies_to: "Foreground activity"
+      requirement: "Cover a representative continuous 12 months or a complete seasonal campaign and disclose abnormal or excluded periods."
+      evidence: "Production calendar and completeness report; eu-pef-2021-2279"
+    - id: dq_completeness
+      applies_to: "All included processes"
+      requirement: "Reconcile crab mass and account for water, ice, salt/brine, energy, packaging, residuals, wastewater, storage, and refrigerant losses where applicable."
+      evidence: "Mass/utility balances and gap register; eu-pef-2021-2279"
+    - id: dq_route_separation
+      applies_to: "Multi-route facilities"
+      requirement: "Keep route and technology records separate or document causal allocation; never use an unexplained blended average."
+      evidence: "Route production records and allocation workbook"
+    - id: dq_estimate_replacement
+      applies_to: "Provisional QA ranges"
+      requirement: "Treat every reasoned_estimate range only as a screening flag, not a default inventory value; replace or justify it with reviewed route/site evidence before activation."
+      evidence: "Review record and replacement evidence"
+validation_rules:
+  - rule_id: val_identity
+    applies_to: "Reference product"
+    rule: "Confirm CPC scope, uncooked crab identity, shell state, actual preservation route, and all required qualifiers; reject excluded cooked, smoked, canned, or merely fresh/chilled products."
+    source_ids:
+      - unsd-cpc-3-0
+  - rule_id: val_reference_mass
+    applies_to: "Reference flow"
+    rule: "Confirm exactly one quantitative reference output of 1 kg net product mass using the specified product-flow, Mass-property, and unit-group UUIDs; packaging shall be excluded and glaze/free-brine treatment disclosed."
+    source_ids: []
+  - rule_id: val_route
+    applies_to: "Process map and inventory"
+    rule: "Confirm the actual route is declared and only applicable route operations, materials, controls, storage, and emissions are included."
+    source_ids:
+      - codex-cxc-52-2003
+  - rule_id: val_mass_balance
+    applies_to: "Each process and lot"
+    rule: "Reconcile input, product output, retained water/salt, residual, wastewater, evaporation, and storage loss; investigate material imbalance rather than forcing closure."
+    source_ids: []
+  - rule_id: val_inventory_completeness
+    applies_to: "Foreground boundary"
+    rule: "Confirm all four process roles are represented and applicable water, ice, salt/brine, energy, packaging, wastewater, residual, on-site treatment, and refrigerant records are present or explicitly zero/not applicable."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: val_food_safety_controls
+    applies_to: "Preservation and storage"
+    rule: "Confirm route-specific time, temperature, concentration, drying, hygiene, monitoring, and corrective-action evidence is retained; this PCR does not replace a facility-specific HACCP plan."
+    source_ids:
+      - codex-cxc-52-2003
+  - rule_id: val_allocation
+    applies_to: "Shared and multi-output processes"
+    rule: "Confirm subdivision was attempted first and any remaining physical or economic allocation is documented with factors summing to one and sensitivity where required."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: val_provisional_ranges
+    applies_to: "All reasoned estimates"
+    rule: "Flag values outside provisional QA ranges and all uses of a provisional range as a default; a flag requires review and does not by itself prove non-conformance."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "Foreground production dataset for preserved uncooked crab at the preserving facility gate"
+  downstream_use: "secondary_dataset; background_dataset after review and publication"
+  allowed_use: "Route-, geography-, technology-, and time-representative process or lifecycle models that preserve the declared qualifiers and boundary"
+  excluded_use: "Live/fresh/chilled, cooked, smoked, canned, or other crab products; another preservation route; undisclosed route blends; geographies or technologies without representativeness review"
+  required_metadata: "PCR id/version; product and route qualifiers; facility/geography; reference period; upstream dataset links; process map; storage duration/conditions; packaging; allocation; data-quality assessment"
+  required_quality_disclosure: "Primary-data coverage; mass and utility reconciliation; missing data; provisional estimates; instrument quality; allocation and sensitivity; excluded operations; route and seasonal representativeness"
+  update_trigger: "Material change in route, recipe, equipment, energy supply, refrigerant, yield, packaging, supplier/origin, allocation, regulation, evidence, or data older than the declared representativeness period"
+data_sources:
+  - id: "unsd-cpc-3-0"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, Central Product Classification Version 3.0, subclass 21251 explanatory note, https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Exp_Notes_30Jun2025.pdf (retrieved 2026-08-11)"
+    used_for: "Product-category scope, inclusions, and exclusions"
+  - id: "codex-cxc-52-2003"
+    type: "standard"
+    reference: "Codex Alimentarius, CXC 52-2003, Code of Practice for Fish and Fishery Products, https://www.fao.org/4/a1553e/a1553e00.pdf (retrieved 2026-08-11)"
+    used_for: "Facility process decomposition; freezing, salting/brining, drying, storage, packaging, hygiene, monitoring, and food-safety control records"
+  - id: "eu-pef-2021-2279"
+    type: "official_guidance"
+    reference: "European Commission Recommendation (EU) 2021/2279 on the use of the Environmental Footprint methods, CELEX 32021H2279, https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32021H2279 (retrieved 2026-08-11)"
+    used_for: "Boundary completeness, company-specific data quality, multifunctionality hierarchy, allocation disclosure, and review requirements"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:8568408f61f0aaec841dc32e11daf583efcb78344cfd6eb979780c4206fef330"
+  generated_content_sha256: "sha256:066a4255c5cc9d255ac2a45f6860e6269db22958ffb9b45b81efc53c7195987f"

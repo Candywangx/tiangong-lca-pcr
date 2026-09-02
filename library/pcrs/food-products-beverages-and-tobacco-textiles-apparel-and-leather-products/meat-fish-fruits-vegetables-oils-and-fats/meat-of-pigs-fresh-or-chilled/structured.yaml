@@ -1,10 +1,956 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "21113"
-  title: "Meat of pigs, fresh or chilled"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.food-products-beverages-and-tobacco-textiles-apparel-and-leather-products.meat-fish-fruits-vegetables-oils-and-fats.meat-of-pigs-fresh-or-chilled"
+  classification_refs: "CPC 3.0: 21113, Meat of pigs, fresh or chilled (exact scope reference)"
+  covered_products: "Raw edible pig carcasses, sides and meat cuts supplied fresh or chilled; bone-in or boneless; unpackaged or packaged at the declared plant gate"
+  excluded_products: "Live pigs; edible offal as a separate product; pig skin as a separate product; rendered fat; frozen pork; salted, dried, smoked, cured, fermented, cooked or canned pork; retail or food-service preparation"
+  representative_product: "Chilled dressed pig carcass at slaughterhouse gate"
+  production_route: "Live-pig receipt and lairage; slaughter, bleeding, scalding/dehairing, evisceration, inspection and dressing; chilling and cold storage; conditional cutting, deboning, trimming and packaging"
+  market_state: "Raw and fresh or chilled, with declared product form, bone status, packaging state, gate and product temperature"
+functional_unit:
+  what: "Provision of raw edible pig meat in the declared carcass, side or cut form at a slaughterhouse or cutting-plant gate"
+  how_much: "1,000 kg net product mass, excluding transport and secondary packaging"
+  how_well: "Food-grade, passed applicable inspection, not frozen or further preserved, and meeting the declared fresh/chilled temperature specification"
+  how_long_or_cycle: "One production lot at dispatch; no service duration is assigned"
+  reference_flow_link: "1,000 kg of the declared fresh or chilled pig-meat product"
+system_boundary:
+  rules:
+    - rule_id: system_boundary_rule_1
+      applies_to: "foreground_system_boundary"
+      rule: "The foreground boundary starts when live pigs cross the slaughterhouse gate and ends when the declared fresh or chilled carcass, side or meat cut is ready for dispatch at the declared slaughterhouse or cutting-plant gate. It includes on-site utilities, cleaning and sanitation, chilling, cold storage before dispatch, wastewater handling and treatment attributable to the included operations, and management of slaughter co-products and wastes. Upstream pig rearing, feed production and inbound transport are represented by linked upstream datasets. Downstream distribution, retail, cooking, consumption and end-of-life of packaging are excluded unless the study goal explicitly extends the boundary and reports them separately."
+      source_ids: []
+    - rule_id: sb_required_operations
+      applies_to: "slaughter_dress_chill"
+      rule: "Include receiving/lairage activities attributable to the lot, slaughter, bleeding, scalding and dehairing, evisceration, inspection, dressing/splitting, washing, chilling, pre-dispatch cold storage, cleaning, utilities and attributable wastewater management."
+      source_ids:
+        - codex-cxc-58-2005
+        - eu-853-2004
+        - eu-bat-sa-2023
+    - rule_id: sb_conditional_cutting
+      applies_to: "cut_pack"
+      rule: "Include cutting, deboning, trimming, product handling, primary packaging and their utilities and wastes when the declared reference product is a cut or packaged product."
+      source_ids:
+        - unece-porcine-meat-2018
+        - eu-853-2004
+    - rule_id: sb_upstream_live_pig
+      applies_to: "live_pig_supply"
+      rule: "Keep pig rearing, feed production and inbound transport outside the foreground slaughter process and link representative upstream datasets rather than omitting their burdens."
+      source_ids:
+        - fao-leap-pig-2018
+    - rule_id: sb_same_category_recursion
+      applies_to: "purchased_fresh_chilled_pork"
+      rule: "Stop recursion at a purchased same-category product and link its upstream dataset; disclose the purchased product form and gate."
+      source_ids:
+        - fao-leap-pig-2018
+    - rule_id: sb_downstream_exclusions
+      applies_to: "post_gate_activities"
+      rule: "Exclude downstream transport, retail, cooking and consumption from this plant-gate PCR unless the study explicitly adds and reports them as separate processes."
+      source_ids:
+        - fao-leap-pig-2018
+boundary_abstraction:
+  declared_starting_condition: "Live pigs received at the slaughterhouse gate, with supplier, origin, live mass, animal count, transport handover and receipt time declared"
+  starting_condition_role: "Upstream product input that anchors the foreground slaughter and primary-processing dataset"
+  product_classification_scope: "Raw edible meat of domesticated pigs in fresh or chilled carcass, side or cut form; CPC 3.0 code 21113 is an exact classification reference"
+  recursive_input_rule: "If fresh or chilled pig carcasses, sides or cuts are purchased for further cutting or packing, record them as linked upstream product inputs and do not recreate their slaughter burden inside the cutting process"
+  upstream_dataset_requirement: "Use a geographically and temporally representative live-pig or fresh/chilled pig-meat supplier dataset with declared gate, production system, mass basis and allocation method"
+  disclosure: "Declare the starting product, gate, included processes, product form, temperature state, cold-storage duration, packaging, treatment of purchased same-category inputs, and any excluded on-site operation"
+reference_flow_definition:
+  reference_amount: "1,000 kg"
+  product_flow_ref:
+    name: "Pig carcass, chilled"
+    uuid: "452e40cd-9178-4f2e-b248-18c81dd83f43"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "product form (carcass"
+    - "side or named cut)"
+    - "bone-in or boneless"
+    - "fresh or chilled condition"
+    - "product temperature and measurement point"
+    - "slaughterhouse or cutting-plant gate"
+    - "packaging state and included packaging"
+    - geography
+    - "production route"
+    - "cold-storage duration"
+    - "production period"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Record net meat or carcass mass at the declared gate. Exclude transport and secondary packaging; state whether immediate primary packaging is excluded or separately inventoried."
+  - id: cold_carcass_basis
+    applies_to: "pig carcass output"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "When the declared product is a carcass, disclose the cold-carcass definition and excluded body parts; do not silently substitute live weight or hot carcass weight."
+  - id: temperature_state
+    applies_to: "reference product condition"
+    required_property_ref:
+      name: "Temperature"
+      uuid: ""
+    required_unit: "degrees Celsius"
+    rule: "Record fresh/chilled status, measured product temperature, measurement location and time. A concrete dataset must apply its governing legal or customer specification; for EU-context datasets, other meat is chilled to no more than 7 degrees Celsius unless an applicable authorised exception is documented."
+  - id: energy_conversion
+    applies_to: "purchased electricity and thermal energy"
+    required_property_ref:
+      name: "Energy"
+      uuid: ""
+    required_unit: "kWh or MJ"
+    rule: "Preserve the measured energy unit and conversion trace. Use 1 kWh = 3.6 MJ when conversion is required; do not combine electricity and thermal energy without retaining their separate carrier identities."
+  - id: water_volume
+    applies_to: "process water and wastewater"
+    required_property_ref:
+      name: "Volume"
+      uuid: ""
+    required_unit: "m3"
+    rule: "Prefer metered volume. If mass is converted to volume, disclose density, temperature and conversion formula."
+process_map:
+  - id: slaughter_dress_chill
+    name: "Pig slaughter, dressing and chilling"
+    inclusion: "required"
+    inclusion_condition: "Always included for live-pig receipt to chilled carcass production"
+    role: "Foreground primary processing"
+    quantitative_reference: "1,000 kg chilled dressed carcass output before conditional further cutting"
+  - id: cut_pack
+    name: "Carcass cutting, deboning and packaging"
+    inclusion: "conditional"
+    inclusion_condition: "Include when the declared product is a side, named cut, boneless meat or packaged product rather than an unpackaged carcass"
+    role: "Foreground product-form conversion"
+    quantitative_reference: "1,000 kg declared fresh or chilled meat output"
+process_inventory:
+  - id: slaughter_dress_chill
+    label: "Pig slaughter, dressing and chilling"
+    inputs:
+      product:
+        - row_id: live_pigs
+          role: "Live pigs received"
+          name: "Live pigs"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Live pigs cross the foreground boundary at slaughterhouse receipt. Use weighbridge, scale and animal-count records and link a representative upstream pig-production dataset."
+          amount:
+            expression: "measured live mass accepted for the production lot"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg chilled dressed carcass output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_live_pig_receipt
+              source_ids:
+                - fao-leap-pig-2018
+            ranges:
+              - role: qa_guardrail
+                lower: "1000"
+                upper: "2000"
+                unit: "kg"
+                basis: "per 1,000 kg chilled dressed carcass output"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: slaughter_water
+          role: "Process water supplied"
+          name: "Process water"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "Record metered water used for animal washing, scalding, carcass washing, cleaning and sanitation attributable to slaughter, dressing and chilling."
+          amount:
+            expression: "metered attributable process-water use"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg chilled dressed carcass output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_slaughter_water
+              source_ids:
+                - eu-bat-sa-2023
+            ranges:
+              - role: qa_guardrail
+                lower: "0.70"
+                upper: "3.50"
+                unit: "m3"
+                basis: "per 1,000 kg pig carcass output, yearly-average exclusive-slaughtering basis"
+                basis_kind: "process_output"
+                evidence_kind: "external_source"
+                source_ids:
+                  - eu-bat-sa-2023
+        - row_id: slaughter_electricity
+          role: "Purchased electricity"
+          name: "Purchased electricity"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record electricity used by slaughter equipment, pumps, ventilation, refrigeration, cold storage, cleaning and attributable wastewater handling."
+          amount:
+            expression: "metered or invoice-reconciled electricity allocated to the included process"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg chilled dressed carcass output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_slaughter_energy
+              source_ids:
+                - eu-bat-sa-2023
+            ranges:
+              - role: qa_guardrail
+                lower: "65"
+                upper: "370"
+                unit: "kWh"
+                basis: "per 1,000 kg pig carcass output, yearly-average exclusive-slaughtering basis; compare combined net energy rather than electricity alone"
+                basis_kind: "process_output"
+                evidence_kind: "external_source"
+                source_ids:
+                  - eu-bat-sa-2023
+        - row_id: slaughter_thermal_energy
+          role: "Fuels and purchased thermal energy"
+          name: "Site-specific fuel or purchased thermal energy"
+          flow_type: "product"
+          property_unit: "Energy / kWh or MJ"
+          description: "Record each fuel and purchased heat carrier separately for hot water, scalding, sanitation and other included uses."
+          amount:
+            expression: "measured fuel quantity converted with a documented factor, or metered purchased heat"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg chilled dressed carcass output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_slaughter_energy
+              source_ids:
+                - eu-bat-sa-2023
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "1200"
+                unit: "kWh"
+                basis: "per 1,000 kg chilled dressed carcass output; broad authoring screen before site evidence"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: slaughter_cleaning_materials
+          role: "Cleaning and sanitation materials"
+          name: "Site-specific cleaning or sanitation product"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record detergents, disinfectants and other process chemicals that cross the process boundary, preserving product identity and concentration."
+          amount:
+            expression: "stock issue, purchase and dosing records reconciled to the production period"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg chilled dressed carcass output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_slaughter_materials
+              source_ids:
+                - codex-cxc-58-2005
+                - eu-bat-sa-2023
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: chilled_carcass
+          role: "Chilled dressed pig carcass"
+          name: "Pig carcass, chilled"
+          flow_type: "product"
+          flow_ref:
+            uuid: "452e40cd-9178-4f2e-b248-18c81dd83f43"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This is the representative reference product from slaughter and dressing. Measure dispatch or cold-carcass mass and retain the declared carcass definition and temperature state."
+          amount:
+            expression: "normalize measured qualifying output to exactly 1,000 kg"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "1,000 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_slaughter_product_output
+              source_ids:
+                - unece-porcine-meat-2018
+                - eu-853-2004
+                - mass-balance-identity
+            ranges:
+              - role: allowed_range
+                lower: "1000"
+                upper: "1000"
+                unit: "kg"
+                basis: "per 1,000 kg declared reference flow"
+                basis_kind: "reference_flow"
+                evidence_kind: "method_formula"
+                source_ids:
+                  - mass-balance-identity
+        - row_id: slaughter_coproducts
+          role: "Separated slaughter co-products"
+          name: "Site-specific separated pig slaughter co-product"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record each saleable or internally used co-product separately, including edible offal, blood, fat, bones and skin where applicable; do not aggregate products with wastes."
+          amount:
+            expression: "measured mass by co-product and destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg chilled dressed carcass output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_slaughter_coproducts
+              source_ids:
+                - fao-leap-pig-2018
+                - eu-bat-sa-2023
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "1000"
+                unit: "kg"
+                basis: "total separated co-products per 1,000 kg chilled dressed carcass output"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        - row_id: slaughter_residues
+          role: "Slaughter residues sent to waste treatment"
+          name: "Site-specific slaughter residue"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record non-product animal material and other solid residues by treatment route. A material sold or used as a co-product must instead be recorded in the product-flow group."
+          amount:
+            expression: "measured mass by residue class and treatment destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg chilled dressed carcass output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_slaughter_coproducts
+              source_ids:
+                - eu-bat-sa-2023
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "500"
+                unit: "kg"
+                basis: "per 1,000 kg chilled dressed carcass output"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: slaughter_wastewater
+          role: "Slaughterhouse wastewater"
+          name: "Slaughterhouse wastewater"
+          flow_type: "waste"
+          property_unit: "Volume / m3"
+          description: "Record wastewater leaving the included operations before or after on-site treatment as declared, without duplicating the same water stream at two boundary points."
+          amount:
+            expression: "metered discharge attributable to the included process, with treatment boundary declared"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg chilled dressed carcass output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_slaughter_wastewater
+              source_ids:
+                - eu-bat-sa-2023
+            ranges:
+              - role: qa_guardrail
+                lower: "0.70"
+                upper: "3.50"
+                unit: "m3"
+                basis: "per 1,000 kg pig carcass output, yearly-average exclusive-slaughtering basis"
+                basis_kind: "process_output"
+                evidence_kind: "external_source"
+                source_ids:
+                  - eu-bat-sa-2023
+      elementary:
+        - row_id: refrigerant_loss
+          role: "Refrigerant loss to air"
+          name: "Refrigerant-specific emission to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record refrigerant make-up attributable to leakage from chilling and cold-storage systems by refrigerant identity. Use direct service records or a documented stock-balance calculation."
+          amount:
+            expression: "measured make-up or calculated annual refrigerant stock loss attributable to the included production"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg chilled dressed carcass output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_refrigerant_records
+              source_ids:
+                - eu-bat-sa-2023
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "10"
+                unit: "kg"
+                basis: "per 1,000 kg chilled dressed carcass output; broad screen pending equipment-specific records"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+  - id: cut_pack
+    label: "Carcass cutting, deboning and packaging"
+    inputs:
+      product:
+        - row_id: cutting_meat_input
+          role: "Chilled carcass or side input"
+          name: "Chilled pig carcass, side or cut input"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the chilled pig carcass, side or primal input when further cutting or packaging is included. Link its upstream slaughter dataset and do not recreate slaughter burdens."
+          amount:
+            expression: "measured input mass by product form"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg declared fresh or chilled meat output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cutting_input_output
+              source_ids:
+                - unece-porcine-meat-2018
+            ranges:
+              - role: qa_guardrail
+                lower: "1000"
+                upper: "2000"
+                unit: "kg"
+                basis: "chilled carcass or side input per 1,000 kg declared meat output"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: cutting_electricity
+          role: "Cutting and refrigeration electricity"
+          name: "Purchased electricity"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record electricity attributable to cutting, deboning, ventilation, refrigeration and cold storage after the slaughter-stage output."
+          amount:
+            expression: "metered or defensibly allocated electricity for the included cutting period"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg declared fresh or chilled meat output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cutting_energy_water
+              source_ids:
+                - eu-bat-sa-2023
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "300"
+                unit: "kWh"
+                basis: "per 1,000 kg declared fresh or chilled meat output"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: cutting_water
+          role: "Cutting and cleaning water"
+          name: "Process water"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "Record metered water used by included cutting, equipment washing and sanitation activities."
+          amount:
+            expression: "metered attributable water use"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg declared fresh or chilled meat output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cutting_energy_water
+              source_ids:
+                - codex-cxc-58-2005
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "10"
+                unit: "m3"
+                basis: "per 1,000 kg declared fresh or chilled meat output"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: primary_packaging
+          role: "Primary packaging materials"
+          name: "Packaging material by material and format"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record trays, films, bags, pads, labels and other primary packaging when the declared product is packaged at the plant gate."
+          amount:
+            expression: "bill-of-materials quantity reconciled to packaged product output"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg packaged fresh or chilled meat output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_primary_packaging
+              source_ids:
+                - unece-porcine-meat-2018
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "150"
+                unit: "kg"
+                basis: "per 1,000 kg packaged fresh or chilled meat output"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: fresh_chilled_pork_output
+          role: "Declared fresh or chilled pork product"
+          name: "Product-specific fresh or chilled pig-meat flow"
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record the specified carcass side, named cut or boneless meat output and its temperature, bone status and packaging state."
+          amount:
+            expression: "normalize measured qualifying output to exactly 1,000 kg"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "1,000 kg reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_cutting_input_output
+              source_ids:
+                - unece-porcine-meat-2018
+                - mass-balance-identity
+            ranges:
+              - role: allowed_range
+                lower: "1000"
+                upper: "1000"
+                unit: "kg"
+                basis: "per 1,000 kg declared reference flow"
+                basis_kind: "reference_flow"
+                evidence_kind: "method_formula"
+                source_ids:
+                  - mass-balance-identity
+        - row_id: cutting_coproducts
+          role: "Cutting co-products"
+          name: "Site-specific cutting co-product"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record bones, fat, trimmings and other saleable outputs separately by product identity and destination."
+          amount:
+            expression: "measured mass by co-product and destination"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg declared fresh or chilled meat output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cutting_input_output
+              source_ids:
+                - fao-leap-pig-2018
+                - unece-porcine-meat-2018
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "1000"
+                unit: "kg"
+                basis: "per 1,000 kg declared fresh or chilled meat output"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        - row_id: cutting_packaging_waste
+          role: "Cutting and packaging waste"
+          name: "Site-specific cutting or packaging waste"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record non-product trimmings and discarded packaging by material and treatment route; do not classify saleable co-products as waste."
+          amount:
+            expression: "measured waste mass by material and destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg declared fresh or chilled meat output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cutting_input_output
+              source_ids:
+                - eu-bat-sa-2023
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "300"
+                unit: "kg"
+                basis: "per 1,000 kg declared fresh or chilled meat output"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: alloc_avoid
+    applies_to: "all_multifunctional_operations"
+    rule: "First avoid allocation by separately metering and subdividing independently operated activities; use system expansion only when a direct, demonstrable substitution can be represented consistently with the study goal."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: alloc_physical
+    applies_to: "inseparable_slaughter_and_cutting_burdens"
+    rule: "When subdivision or justified system expansion is not possible, allocate shared burdens using a documented relevant physical relationship that reflects how the process burdens relate to the co-products; do not assume that mass is automatically the relevant relationship."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: alloc_other_relationship
+    applies_to: "residual_multifunctionality"
+    rule: "If no relevant physical relationship can be demonstrated, use another documented relationship, such as economic value, and retain product quantities, prices, price period, currency and calculation factors for review."
+    source_ids:
+      - eu-pef-2021-2279
+      - fao-leap-pig-2018
+  - rule_id: alloc_waste_boundary
+    applies_to: "wastes_and_coproducts"
+    rule: "Assign no co-product credit to a material classified as waste unless a documented downstream use and the chosen allocation or substitution method justify it; record treatment burdens through the declared waste boundary."
+    source_ids:
+      - eu-pef-2021-2279
+      - eu-bat-sa-2023
+  - rule_id: alloc_disclosure
+    applies_to: "dataset_reporting"
+    rule: "Report the hierarchy step used, factors for every product and co-product, excluded outputs, price or physical data periods, treatment of edible and inedible outputs, and a sensitivity result when the choice materially affects the reference product."
+    source_ids:
+      - eu-pef-2021-2279
+      - fao-leap-pig-2018
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_live_pig_receipt
+      process_id: "slaughter_dress_chill"
+      flow_role: "live pigs"
+      record_type: "weighbridge and livestock receipt records"
+      raw_fields: "supplier; origin; lot id; animal count; gross, tare and net live mass; receipt time"
+      collection_method: "calibrated scale or weighbridge reconciled to receipt records"
+      unit: "kg; head"
+      frequency: "each lot"
+      temporal_coverage: "representative 12-month period or declared campaign"
+      site_scope: "all pigs feeding the included line"
+      aggregation_rule: "sum accepted live mass by lot, excluding rejected animals not processed"
+      quality_evidence: "calibration records; receipt reconciliation; rejection log"
+    - protocol_id: cp_slaughter_water
+      process_id: "slaughter_dress_chill"
+      flow_role: "process water"
+      record_type: "water-meter and utility records"
+      raw_fields: "meter id; opening and closing readings; submeter boundary; operating days; shared-use allocation"
+      collection_method: "direct meter preferred; documented allocation from facility meter if no submeter"
+      unit: "m3"
+      frequency: "daily or shift readings, aggregated monthly"
+      temporal_coverage: "representative 12-month period"
+      site_scope: "included slaughter, cleaning and chilling operations"
+      aggregation_rule: "subtract unrelated uses and normalize attributable volume to product output"
+      quality_evidence: "meter calibration; utility invoice reconciliation; allocation worksheet"
+    - protocol_id: cp_slaughter_energy
+      process_id: "slaughter_dress_chill"
+      flow_role: "electricity, fuels and heat"
+      record_type: "meters, invoices and fuel stock records"
+      raw_fields: "carrier; meter or invoice quantity; conversion factor; opening and closing fuel stock; included equipment"
+      collection_method: "direct metering or invoice/stock-balance reconciliation by carrier"
+      unit: "kWh; MJ; carrier unit"
+      frequency: "monthly, with production-period matching"
+      temporal_coverage: "representative 12-month period"
+      site_scope: "included slaughter, chilling, cold storage and attributable treatment"
+      aggregation_rule: "calculate net purchased energy by carrier, retain recovered energy separately, then normalize"
+      quality_evidence: "meter checks; invoices; conversion-factor source; reconciliation"
+    - protocol_id: cp_slaughter_materials
+      process_id: "slaughter_dress_chill"
+      flow_role: "cleaning and sanitation materials"
+      record_type: "purchase, stock and dosing records"
+      raw_fields: "product id; concentration; opening and closing stock; purchased and issued mass; dosing log"
+      collection_method: "stock balance reconciled to dosing records"
+      unit: "kg"
+      frequency: "monthly"
+      temporal_coverage: "representative 12-month period"
+      site_scope: "included slaughter and sanitation areas"
+      aggregation_rule: "net issue = opening + purchases - closing - unrelated uses"
+      quality_evidence: "stock count; invoices; dosing calibration"
+    - protocol_id: cp_slaughter_product_output
+      process_id: "slaughter_dress_chill"
+      flow_role: "chilled carcass output"
+      record_type: "scale, inspection and dispatch records"
+      raw_fields: "lot id; hot or cold mass flag; cold carcass definition; output mass; temperature; inspection status; dispatch time"
+      collection_method: "calibrated carcass or dispatch scale with temperature record"
+      unit: "kg; degrees Celsius"
+      frequency: "each lot"
+      temporal_coverage: "same period as inputs"
+      site_scope: "included slaughter line and pre-dispatch cold store"
+      aggregation_rule: "sum conforming output only and normalize all flows to 1,000 kg"
+      quality_evidence: "scale calibration; inspection release; temperature log; mass reconciliation"
+    - protocol_id: cp_slaughter_coproducts
+      process_id: "slaughter_dress_chill"
+      flow_role: "co-products and solid residues"
+      record_type: "scales, containers, sales and waste transfer records"
+      raw_fields: "material id; product/waste status; mass; destination; price and currency if sold; treatment route"
+      collection_method: "direct weighing preferred; container count times verified unit mass only when weighing is unavailable"
+      unit: "kg; currency/kg"
+      frequency: "each lot or dispatch"
+      temporal_coverage: "same period as reference output"
+      site_scope: "all co-products and solid residues from the included slaughter line"
+      aggregation_rule: "aggregate separately by material and destination; never net products against wastes"
+      quality_evidence: "scale calibration; sales invoice; waste transfer note; destination evidence"
+    - protocol_id: cp_slaughter_wastewater
+      process_id: "slaughter_dress_chill"
+      flow_role: "wastewater"
+      record_type: "effluent meter and treatment records"
+      raw_fields: "flow; boundary point; treatment status; pH; temperature; monitored pollutant parameters"
+      collection_method: "continuous or periodic metering at the declared boundary"
+      unit: "m3; parameter-specific units"
+      frequency: "continuous where available, aggregated monthly"
+      temporal_coverage: "representative 12-month period"
+      site_scope: "included slaughter line and declared wastewater-treatment boundary"
+      aggregation_rule: "avoid double counting pre-treatment and post-treatment volume; normalize declared discharge"
+      quality_evidence: "meter checks; sampling plan; laboratory reports; treatment logs"
+    - protocol_id: cp_refrigerant_records
+      process_id: "slaughter_dress_chill"
+      flow_role: "refrigerant loss"
+      record_type: "refrigerant inventory and maintenance records"
+      raw_fields: "refrigerant id; system id; opening stock; purchases; recoveries; closing stock; recharge; disposal"
+      collection_method: "annual stock balance supported by service records"
+      unit: "kg"
+      frequency: "each service event and annual reconciliation"
+      temporal_coverage: "representative 12-month period"
+      site_scope: "refrigeration systems serving the included chilling and cold storage"
+      aggregation_rule: "loss = opening + purchases - closing - recovered - disposed, allocated to included cooling load"
+      quality_evidence: "service certificates; cylinder records; stock reconciliation"
+    - protocol_id: cp_cutting_input_output
+      process_id: "cut_pack"
+      flow_role: "meat input, product, co-products and wastes"
+      record_type: "line scales, yield sheets, packaging and dispatch records"
+      raw_fields: "input product id and mass; output cut id and mass; bone status; temperature; co-product mass; waste mass; destination"
+      collection_method: "calibrated line and dispatch scales reconciled by production batch"
+      unit: "kg; degrees Celsius"
+      frequency: "each batch"
+      temporal_coverage: "representative 12-month period or declared campaign"
+      site_scope: "all included cutting, deboning and packaging lines"
+      aggregation_rule: "mass-balance each batch, then aggregate like product specifications and normalize to 1,000 kg output"
+      quality_evidence: "scale calibration; batch yield report; release record; mass-balance review"
+    - protocol_id: cp_cutting_energy_water
+      process_id: "cut_pack"
+      flow_role: "cutting electricity and water"
+      record_type: "submeter, invoice and operating-hour records"
+      raw_fields: "meter readings; line hours; production mass; shared-service driver"
+      collection_method: "direct submeter preferred; documented engineering allocation if shared"
+      unit: "kWh; m3"
+      frequency: "daily or monthly"
+      temporal_coverage: "same period as cutting output"
+      site_scope: "included cutting, refrigeration, cleaning and packaging operations"
+      aggregation_rule: "subtract unrelated uses and normalize attributable quantities to output"
+      quality_evidence: "meter checks; invoice reconciliation; allocation worksheet"
+    - protocol_id: cp_primary_packaging
+      process_id: "cut_pack"
+      flow_role: "primary packaging"
+      record_type: "bill of materials and stock records"
+      raw_fields: "packaging material; unit mass; units issued; rejects; returned stock"
+      collection_method: "bill-of-materials quantity reconciled to stock issue and packaged units"
+      unit: "kg; item"
+      frequency: "each packaging run"
+      temporal_coverage: "same period as packaged output"
+      site_scope: "all packaged product specifications in the declared output"
+      aggregation_rule: "packaging mass = verified unit mass times net units used, by material"
+      quality_evidence: "supplier specification; unit-mass check; stock reconciliation"
+  calculation_rules:
+    - id: calc_normalize_1000kg
+      applies_to: "all inventory rows"
+      rule: "normalized amount = period-attributable amount / qualifying reference-product mass x 1,000 kg"
+      inputs:
+        - "attributable flow amount"
+        - "qualifying product output mass"
+      output: "amount per 1,000 kg reference product"
+      source_ids:
+        - mass-balance-identity
+    - id: calc_energy_total
+      applies_to: "slaughter energy QA"
+      rule: "convert each carrier to kWh using documented factors, sum purchased heat and electricity, subtract only measured recovered energy, and compare the result with the BAT-AEPL on its stated yearly-average basis"
+      inputs:
+        - electricity
+        - fuels
+        - "purchased heat"
+        - "recovered energy"
+        - "carcass output"
+      output: "net kWh per 1,000 kg carcass output"
+      source_ids:
+        - eu-bat-sa-2023
+    - id: calc_refrigerant_loss
+      applies_to: "refrigerant loss"
+      rule: "annual loss = opening stock + purchases - closing stock - recovered quantity - documented disposal; allocate only the share serving included refrigeration"
+      inputs:
+        - "inventory and service-event fields"
+      output: "kg refrigerant loss per 1,000 kg product"
+      source_ids:
+        - eu-bat-sa-2023
+    - id: calc_mass_balance
+      applies_to: "slaughter and cutting batches"
+      rule: "compare measured animal or meat inputs with reference product, co-products, wastes, wastewater-borne solids when measured, stock change and documented losses; investigate unexplained imbalance rather than forcing closure"
+      inputs:
+        - "all measured mass inputs and outputs"
+        - "stock change"
+      output: "mass-balance residual and explanation"
+      source_ids:
+        - mass-balance-identity
+    - id: calc_allocation_factors
+      applies_to: "shared burdens"
+      rule: "derive factors only after applying the allocation hierarchy; factors across included products must sum to 1 for each shared burden pool"
+      inputs:
+        - "subdivision data"
+        - "physical relationship data"
+        - quantities
+        - "prices and price period where used"
+      output: "allocation factor by output and burden pool"
+      source_ids:
+        - eu-pef-2021-2279
+  data_quality_requirements:
+    - id: dq_identity
+      applies_to: "reference product and same-category inputs"
+      requirement: "Product form, bone status, fresh/chilled state, temperature, gate, packaging and Tiangong flow identity must match the declared dataset; a carcass flow must not silently represent a processed or frozen product."
+      evidence: "product specification; dispatch record; temperature log; flow UUID check"
+    - id: dq_temporal
+      applies_to: "foreground inventory"
+      requirement: "Use a representative continuous 12-month period where seasonal operation permits; otherwise disclose the campaign dates, production share and reason it is representative."
+      evidence: "dated meter, production and dispatch records"
+    - id: dq_measurement
+      applies_to: "mass, water and energy"
+      requirement: "Use calibrated direct measurement where available and retain any shared-service allocation driver and conversion factor."
+      evidence: "calibration certificates; meter logs; invoices; allocation worksheet"
+    - id: dq_completeness
+      applies_to: "included operations"
+      requirement: "Cover live-pig input, qualifying product, all material co-products and wastes, water, wastewater, electricity, thermal energy, cleaning materials and refrigerant losses; justify any omitted relevant flow."
+      evidence: "signed completeness checklist; process flow diagram; mass and utility reconciliation"
+    - id: dq_mass_balance
+      applies_to: "each production stage"
+      requirement: "Investigate and disclose material residuals; do not use an allocation factor or an invented loss to hide an unexplained imbalance."
+      evidence: "batch and period mass-balance worksheet; corrective-action record"
+    - id: dq_allocation
+      applies_to: "multifunctional outputs"
+      requirement: "Retain the evidence for the selected hierarchy step and all factor inputs; price data must state currency, geography, time period and averaging method."
+      evidence: "allocation workbook; quantity records; price evidence; sensitivity result"
+    - id: dq_temperature
+      applies_to: "fresh/chilled claim"
+      requirement: "Retain product-temperature measurements and the applicable legal or customer limit at the declared measurement point."
+      evidence: "calibrated temperature log; specification; release record"
+validation_rules:
+  - rule_id: val_reference_identity
+    applies_to: "reference flow"
+    rule: "Fail if the product UUID, mass property, unit group, reference unit or required product qualifiers are missing or inconsistent with fresh or chilled pig meat."
+    source_ids:
+      - unstats-cpc-3-0-2025
+      - unece-porcine-meat-2018
+  - rule_id: val_boundary
+    applies_to: "process coverage"
+    rule: "Fail if slaughter/dressing/chilling is omitted for a live-pig starting condition, or if cutting/packaging burdens are omitted when the declared product form requires them."
+    source_ids:
+      - codex-cxc-58-2005
+      - eu-853-2004
+  - rule_id: val_upstream
+    applies_to: "upstream supply"
+    rule: "Fail if live-pig or purchased same-category input burdens are neither linked to a representative upstream dataset nor explicitly reported as an unresolved coverage gap."
+    source_ids:
+      - fao-leap-pig-2018
+  - rule_id: val_temperature
+    applies_to: "market state"
+    rule: "Fail if a chilled product lacks its temperature specification and measurement evidence; flag values outside the applicable specification for review."
+    source_ids:
+      - eu-853-2004
+  - rule_id: val_mass_balance
+    applies_to: "slaughter and cutting inventory"
+    rule: "Fail if reference output, co-products and wastes are not separately quantified; flag an unexplained material imbalance for correction."
+    source_ids:
+      - mass-balance-identity
+      - fao-leap-pig-2018
+  - rule_id: val_energy_water
+    applies_to: "utility QA"
+    rule: "Compare annualized net energy and wastewater discharge with the source-backed pig-slaughter BAT-AEPL ranges only on a comparable exclusive-slaughtering basis; an outlier is a review finding, not automatic replacement by a default."
+    source_ids:
+      - eu-bat-sa-2023
+  - rule_id: val_allocation
+    applies_to: "co-product handling"
+    rule: "Fail if shared burdens are allocated without the hierarchy step, factor basis and factors being disclosed, or if factors for a burden pool do not sum to 1."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: val_reasoned_estimates
+    applies_to: "provisional ranges"
+    rule: "Treat every reasoned_estimate range as a temporary, replaceable QA screen; fail publication readiness if it is used as a mandatory allowed range or as a substitute for collected foreground data."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "Foreground product and unit-process data package for fresh or chilled pig meat at a declared slaughterhouse or cutting-plant gate"
+  downstream_use: "secondary_dataset; background_dataset after review of representativeness, allocation, completeness and source coverage"
+  allowed_use: "Product LCAs and supply-chain models whose product form, fresh/chilled state, geography, technology, gate and time period are compatible with the dataset"
+  excluded_use: "Frozen or further processed pork; edible offal as reference product; live-pig production alone; comparative public claims without method and representativeness review; direct use of provisional reasoned estimates as site data"
+  required_metadata: "PCR id and version when published; product form and bone status; flow UUID; gate; geography; reference period; temperature state; packaging; included processes; upstream dataset links; allocation method and factors; data ownership and review status"
+  required_quality_disclosure: "Metering and estimation shares; temporal and geographic representativeness; mass-balance residual; omitted flows; co-product treatment; BAT-AEPL comparison basis; provisional ranges still present; uncertainty and review findings"
+  update_trigger: "Material change in product form, slaughter or cutting technology, chilling system, utility mix, co-product markets or allocation, legal temperature specification, supplier system, geography, or foreground data older than the programme's accepted representativeness period"
+data_sources:
+  - id: "unstats-cpc-3-0-2025"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, Central Product Classification Version 3.0 structure and explanatory notes, 30 June 2025, https://unstats.un.org/unsd/classifications/Econ/CPC (retrieved 2026-08-10)"
+    used_for: "Classification identity and fresh/chilled pig-meat scope"
+  - id: "unece-porcine-meat-2018"
+    type: "standard"
+    reference: "UNECE, ECE/TRADE/369/Rev.3, UNECE Standard: Porcine Meat - Carcases and Cuts, 2018, https://unece.org/trade/documents/2024/02/session-documents/unece-standard-porcine-meat-carcases-and-cuts (retrieved 2026-08-10)"
+    used_for: "Raw pork carcass/cut identity, handling state, product-form and packaging qualifiers"
+  - id: "fao-leap-pig-2018"
+    type: "official_guidance"
+    reference: "FAO LEAP Partnership, Environmental performance of pig supply chains: Guidelines for assessment, Version 1, 2018, https://openknowledge.fao.org/handle/20.500.14283/i8686en (retrieved 2026-08-10)"
+    used_for: "Cradle-to-primary-processing boundary, pig supply-chain data requirements and slaughter co-products"
+  - id: "codex-cxc-58-2005"
+    type: "standard"
+    reference: "Codex Alimentarius, CXC 58-2005, Code of Hygienic Practice for Meat, 2005, https://www.fao.org/fao-who-codexalimentarius/codex-texts/codes-of-practice/ (retrieved 2026-08-10)"
+    used_for: "Slaughter, dressing, hygienic handling, cooling and sanitation process requirements"
+  - id: "eu-853-2004"
+    type: "standard"
+    reference: "Regulation (EC) No 853/2004 laying down specific hygiene rules for food of animal origin, consolidated text, https://eur-lex.europa.eu/eli/reg/2004/853/oj/eng (retrieved 2026-08-10)"
+    used_for: "Pig slaughter/dressing hygiene, chilling, cutting and product-temperature rules"
+  - id: "eu-bat-sa-2023"
+    type: "official_guidance"
+    reference: "Commission Implementing Decision (EU) 2023/2749 establishing BAT conclusions for slaughterhouses, animal by-products and/or edible co-products industries, https://eur-lex.europa.eu/eli/dec_impl/2023/2749/2023-12-18/eng (retrieved 2026-08-10)"
+    used_for: "Annual water, energy, wastewater and refrigerant monitoring; pig-slaughter energy and wastewater QA ranges; process and waste controls"
+  - id: "eu-pef-2021-2279"
+    type: "official_guidance"
+    reference: "Commission Recommendation (EU) 2021/2279 on the use of Environmental Footprint methods, https://eur-lex.europa.eu/eli/reco/2021/2279/oj/eng (retrieved 2026-08-10)"
+    used_for: "Multifunctionality hierarchy, physical allocation, other-relationship allocation and disclosure"
+  - id: "mass-balance-identity"
+    type: "method_factor"
+    reference: "Conservation-of-mass and reference-flow normalization identity defined in this PCR"
+    used_for: "1,000 kg normalization, product-output identity and mass-balance validation"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:37dda2a338f0b0e6ae7b8bd1574ee875b5d5a81dc00a7f60edd3fca2ef4011b4"
+  generated_content_sha256: "sha256:89e6928219ef16d602d9d74d1915fdec2a2824ae3626d1e51b0d378e67f9b879"

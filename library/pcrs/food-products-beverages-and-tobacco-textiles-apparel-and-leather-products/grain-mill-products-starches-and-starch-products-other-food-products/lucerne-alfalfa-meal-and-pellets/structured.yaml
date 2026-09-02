@@ -1,10 +1,2567 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "23320"
-  title: "Lucerne (alfalfa) meal and pellets"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.food-products-beverages-and-tobacco-textiles-apparel-and-leather-products.grain-mill-products-starches-and-starch-products-other-food-products.lucerne-alfalfa-meal-and-pellets"
+  classification_refs: "CPC 3.0: 23320, exact"
+  covered_products: "Single-ingredient lucerne (alfalfa) meal and lucerne (alfalfa) pellets made from a declared lucerne raw-material state"
+  excluded_products: "Unprocessed forage or hay; mixed or compound feed; pet food; cereal meal or pellets; leaf-protein concentrate; bakery products"
+  representative_product: "Net saleable lucerne (alfalfa) meal or pellets at the producing facility gate"
+  production_route: "Declared receipt state; conditional artificial drying; grinding and sieving; meal release or conditional water/steam conditioning, pelleting, cooling, screening, and release"
+  market_state: "Bulk or packaged feed material, as sold, with declared final form, moisture, grade, packaging configuration, site, and production period"
+functional_unit:
+  what: "Production of saleable lucerne (alfalfa) meal or pellets with the declared feed-material specification"
+  how_much: "1 kg net conforming product as released at the producing facility gate"
+  how_well: "Meets the declared final-form, moisture, particle-size or pellet-dimension, feed-grade, and quality-release specification"
+  how_long_or_cycle: "One production lot or a declared representative production period with route-specific records"
+  reference_flow_link: "All foreground exchanges are normalized to the net mass of the declared meal or pellet product released from the same route and period"
+system_boundary:
+  rules:
+    - rule_id: boundary_identity
+      applies_to: "Product category"
+      rule: "Include only the exact CPC 23320 product; reject any bakery interpretation and do not broaden the category to mixed feed preparations."
+      source_ids:
+        - un-cpc-3-2025
+    - rule_id: boundary_foreground_start
+      applies_to: "Raw-material supply"
+      rule: "Begin foreground collection at facility receipt; cultivation, harvest, field wilting/chopping, and inbound transport remain upstream but require disclosed background datasets."
+      source_ids:
+        - us-epa-ap42-alfalfa-1996
+        - eu-pef-2021-2279
+    - rule_id: boundary_route_lock
+      applies_to: "Foreground route"
+      rule: "Lock one received material state, artificial-drying technology or none, grinding/sieving configuration, pelleting route or none, and final form; report materially different routes separately."
+      source_ids:
+        - us-epa-ap42-alfalfa-1996
+        - eu-fdm-bat-2019
+        - eu-pef-2021-2279
+    - rule_id: boundary_factory_operations
+      applies_to: "Manufacturing"
+      rule: "Include all on-site operations from receipt through release, including utilities, dust recovery, cleaning, wastes, direct emissions, and conditional on-site wastewater treatment."
+      source_ids:
+        - eu-jrc-fdm-bref-2019
+        - eu-fdm-bat-2019
+        - fefac-pefcr-feed-data-2021
+    - rule_id: boundary_downstream_exclusion
+      applies_to: "Downstream stages"
+      rule: "Exclude outbound distribution, animal feeding and digestion, manure management, retail, use, and packaging end-of-life from the foreground result and disclose the exclusions."
+      source_ids:
+        - fefac-pefcr-feed-data-2021
+        - eu-pef-2021-2279
+    - rule_id: boundary_no_cutoff_by_label
+      applies_to: "Inventory completeness"
+      rule: "Do not omit an actual exchange because it lacks a Tiangong UUID or is small; retain one exact semantic flow, leave its UUID blank, and document the unresolved identity."
+      source_ids:
+        - eu-pef-2021-2279
+boundary_abstraction:
+  declared_starting_condition: "Facility-gate receipt of fresh wilted chopped lucerne, field-dried lucerne, or purchased dehydrated lucerne, with state, moisture, origin, supplier, and lot identity recorded"
+  starting_condition_role: "Foreground entry point for a route-specific meal or pellet production data package"
+  product_classification_scope: "CPC 23320 lucerne (alfalfa) meal and pellets only"
+  recursive_input_rule: "Purchased lucerne meal or pellets that already meet CPC 23320 shall not be hidden inside the same foreground route; disclose the quantity and supplier dataset and model it as an upstream input or create a separately bounded toll-processing package"
+  upstream_dataset_requirement: "Use traceable upstream datasets for lucerne cultivation and field operations, purchased predried or dehydrated lucerne, fuels, utilities, exact additives, and packaging materials"
+  disclosure: "Declare received lucerne state, artificial-drying technology and heat source, grinding/screen settings, meal or pellet form, conditioning medium, every actual binder substance or none, internal recycles, bulk or package configuration, site, period, and all boundary exclusions"
+reference_flow_definition:
+  reference_amount: "1 kg net product; packaging mass excluded"
+  product_flow_ref:
+    name: "Lucerne (alfalfa) meal and pellets"
+    uuid: "f984b084-e66e-4d11-8365-354ae0ad5a74"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - final_product_form
+    - raw_alfalfa_state_at_receipt
+    - drying_technology_or_none
+    - dryer_heat_source_or_none
+    - grinding_and_screen_specification
+    - pelleting_route_or_none
+    - conditioning_medium_or_none
+    - binder_substance_and_mass_or_none
+    - moisture_content_at_release
+    - declared_feed_grade
+    - bulk_or_packaged
+    - packaging_configuration_or_none
+    - production_site
+    - production_period
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_net_mass
+    applies_to: "Reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Use verified net conforming product mass at release. Exclude sack, liner, film, and pallet mass."
+  - id: as_sold_moisture_basis
+    applies_to: "Reference product and intermediate lucerne materials"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Report the reference product on an as-sold mass basis and separately record moisture content and test method; do not silently convert to dry matter."
+  - id: route_separated_normalization
+    applies_to: "All inventory rows"
+    required_property_ref:
+      name: "Row-specific property"
+      uuid: ""
+    required_unit: "Row-specific unit"
+    rule: "Normalize each exchange to the net output of the same raw-state, drying, grinding, final-form, and packaging route; do not average distinct technologies or meal and pellet routes."
+  - id: stage_energy_preservation
+    applies_to: "Electricity, heat, steam, and fuels"
+    required_property_ref:
+      name: "Energy or mass as metered"
+      uuid: ""
+    required_unit: "kWh, MJ, or kg"
+    rule: "Preserve stage-level meter or invoice units, conversion factors, lower or higher heating-value convention, and allocation basis before conversion to the reference kilogram."
+  - id: water_steam_separation
+    applies_to: "Conditioning water, purchased steam, purchased hot water, and cleaning water"
+    required_property_ref:
+      name: "Mass or energy"
+      uuid: ""
+    required_unit: "kg or MJ"
+    rule: "Record liquid water, steam, and hot water as separate exchanges; condensate or recycled water is recorded separately when it crosses a process boundary."
+  - id: internal_recycle_identity
+    applies_to: "Recovered dust, coarse screenings, and pellet fines"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Measure each recovered fraction before return; an internal return is not a saleable co-product and shall not be counted twice as both waste and product."
+  - id: pollutant_load_calculation
+    applies_to: "Air and water emissions"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Calculate pollutant mass from measured mass flow and concentration, or from a documented site-specific activity record and applicable factor; retain the measurement/factor identity and compartment."
+  - id: mass_balance_check
+    applies_to: "Each process and complete foreground route"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Reconcile measured material input, product and internal-transfer output, moisture change, recovered material, waste, and releases for the declared period without forcing an unexplained residual to zero."
+process_map:
+  - id: raw_material_receiving
+    name: "Raw-material receiving and inspection"
+    inclusion: "required"
+    inclusion_condition: "Always included; activate only the card matching each received lucerne state"
+    role: "Foreground material receipt and lot identity"
+    quantitative_reference: "Mass received by state and lot"
+  - id: thermal_drying
+    name: "Artificial thermal drying and primary dust recovery"
+    inclusion: "conditional"
+    inclusion_condition: "Include when the site artificially dries fresh, wilted, field-dried, or partly dried lucerne"
+    role: "Foreground moisture removal and dryer emissions"
+    quantitative_reference: "Mass of dried lucerne chops leaving the dryer system"
+  - id: grinding_and_sieving
+    name: "Grinding, pneumatic transfer, and sieving"
+    inclusion: "required"
+    inclusion_condition: "Always included for meal and pellet routes"
+    role: "Foreground particle-size reduction and separation"
+    quantitative_reference: "Mass of lucerne meal produced"
+  - id: steam_conditioning_and_pelleting
+    name: "Conditioning and pelleting"
+    inclusion: "conditional"
+    inclusion_condition: "Include only for a pellet route; add exact binder cards only for substances actually used"
+    role: "Foreground pellet formation"
+    quantitative_reference: "Mass of hot pellets leaving the pellet mill"
+  - id: pellet_cooling_and_screening
+    name: "Pellet cooling and final screening"
+    inclusion: "conditional"
+    inclusion_condition: "Include only when pellets are cooled or screened before release"
+    role: "Foreground pellet stabilization and fines separation"
+    quantitative_reference: "Mass of cooled screened pellets"
+  - id: packaging_storage_and_release
+    name: "Packaging or bulk load-out, storage, and release"
+    inclusion: "required"
+    inclusion_condition: "Always included; activate only actual packaging-component cards"
+    role: "Foreground final-product release"
+    quantitative_reference: "1 kg net conforming meal or pellets"
+  - id: cleaning_and_maintenance
+    name: "Equipment cleaning and filter maintenance"
+    inclusion: "required"
+    inclusion_condition: "Always include dry-cleaning and maintenance records; wet-cleaning cards apply only when liquids are used"
+    role: "Foreground housekeeping and residue collection"
+    quantitative_reference: "Same route and production period as reference output"
+  - id: onsite_wastewater_treatment
+    name: "On-site process-wastewater treatment"
+    inclusion: "conditional"
+    inclusion_condition: "Include when alfalfa-process wastewater is treated on site before discharge or transfer"
+    role: "Foreground effluent treatment and releases"
+    quantitative_reference: "Volume of wastewater treated"
+process_inventory:
+  - id: thermal_drying
+    label: "Artificial thermal drying and primary dust recovery"
+    inputs:
+      product:
+        - row_id: drying_electricity
+          role: "Drying-stage grid electricity"
+          name: "Electricity, grid"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record electricity used by the dryer feed system, drum or alternative dryer drives, fans, cyclones, controls, and product transfer assigned to the declared drying technology."
+          amount:
+            expression: "Drying-stage submeter record or documented equipment-time allocation from a site meter"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "Per 1 kg dried lucerne chops from the declared dryer"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_drying_records
+              source_ids:
+                - us-epa-ap42-alfalfa-1996
+                - eu-fdm-bat-2019
+                - fefac-pefcr-feed-data-2021
+            ranges: []
+        - row_id: drying_purchased_steam
+          role: "Purchased steam for indirect drying"
+          name: "Purchased steam"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Record purchased steam only when it supplies heat to the declared indirect or hybrid drying technology; keep it separate from steam used in pellet conditioning."
+          amount:
+            expression: "Metered delivered steam energy using recorded mass, pressure, enthalpy, and condensate return"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "Per 1 kg dried lucerne chops from the declared dryer"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_drying_records
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+                - eu-pef-2021-2279
+            ranges: []
+        - row_id: drying_purchased_hot_water
+          role: "Purchased hot water for indirect drying"
+          name: "Purchased hot water"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Record purchased hot water as its own heat carrier only when it crosses the drying-process boundary."
+          amount:
+            expression: "Metered hot-water mass flow multiplied by the documented inlet-to-return enthalpy difference"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "Per 1 kg dried lucerne chops from the declared dryer"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_drying_records
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+                - eu-pef-2021-2279
+            ranges: []
+        - row_id: drying_natural_gas
+          role: "Natural gas used by the dryer"
+          name: "Natural gas"
+          flow_type: "product"
+          property_unit: "Net calorific energy / MJ"
+          description: "Record natural gas consumed by the declared dryer burner without combining it with any other fuel."
+          amount:
+            expression: "Metered gas volume converted with the supplier composition, pressure, temperature, and declared net-calorific-value convention"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "Per 1 kg dried lucerne chops from the declared dryer"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_drying_records
+              source_ids:
+                - us-epa-ap42-alfalfa-1996
+                - eu-pef-2021-2279
+            ranges: []
+        - row_id: drying_diesel
+          role: "Diesel used by the dryer"
+          name: "Diesel fuel"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record diesel delivered to the dryer heat system only when this exact fuel is used; do not merge it with receiving-stage diesel."
+          amount:
+            expression: "Burner fuel meter, calibrated tank balance, or purchase-and-stock record assigned to the drying period"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "Per 1 kg dried lucerne chops from the declared dryer"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_drying_records
+              source_ids:
+                - eu-pef-2021-2279
+            ranges: []
+        - row_id: drying_lpg
+          role: "Liquefied petroleum gas used by the dryer"
+          name: "Liquefied petroleum gas"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record liquefied petroleum gas only for a dryer burner using this fuel and retain its supplier composition."
+          amount:
+            expression: "Calibrated delivery or tank-mass record assigned to the declared dryer and period"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "Per 1 kg dried lucerne chops from the declared dryer"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_drying_records
+              source_ids:
+                - eu-pef-2021-2279
+            ranges: []
+        - row_id: drying_hard_coal
+          role: "Hard coal used by the dryer"
+          name: "Hard coal"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record hard coal only when the declared dryer is coal-fired; retain grade, moisture, ash, sulfur, and calorific-value records."
+          amount:
+            expression: "Weighed coal delivered from the dryer fuel store, corrected only with documented stock changes"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "Per 1 kg dried lucerne chops from the declared dryer"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_drying_records
+              source_ids:
+                - us-epa-ap42-alfalfa-1996
+                - eu-pef-2021-2279
+            ranges: []
+        - row_id: drying_wood_chips
+          role: "Wood chips used by the dryer"
+          name: "Wood chips"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record wood chips only when this exact biomass fuel supplies the dryer; retain species or source class, moisture, ash, and calorific-value records."
+          amount:
+            expression: "Weighed wood-chip consumption from delivery and stock records for the dryer period"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "Per 1 kg dried lucerne chops from the declared dryer"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_drying_records
+              source_ids:
+                - us-epa-ap42-alfalfa-1996
+                - eu-pef-2021-2279
+            ranges: []
+        - row_id: drying_recovered_exhaust_heat
+          role: "Recovered alfalfa-dryer exhaust heat"
+          name: "Recovered alfalfa-dryer exhaust heat"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Record heat recovered from the alfalfa dryer exhaust and returned for predrying only when measured across the recovery boundary; do not treat avoided purchased heat as a negative input."
+          amount:
+            expression: "Calculated recovered heat from measured gas or secondary-fluid flow, inlet and outlet state, and documented heat capacity"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "Per 1 kg dried lucerne chops from the declared dryer"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_drying_records
+              source_ids:
+                - eu-fdm-bat-2019
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: drying_dried_alfalfa_chops
+          role: "Dried lucerne chops"
+          name: "Dried lucerne (alfalfa) chops"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the dried chopped lucerne leaving the dryer and primary product-recovery system before grinding, with moisture measured for the same production lot."
+          amount:
+            expression: "Measured discharge mass reconciled with inlet mass, moisture removed, recovered dust, wastes, and releases"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "Per 1 kg dried lucerne chops from the declared dryer"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_drying_records
+              source_ids:
+                - us-epa-ap42-alfalfa-1996
+            ranges: []
+        - row_id: drying_recovered_alfalfa_dust
+          role: "Recovered lucerne dryer dust"
+          name: "Recovered lucerne (alfalfa) dryer dust"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record lucerne solids recovered by the primary cyclone or equivalent device when they are returned to production or transferred as a separately tracked material."
+          amount:
+            expression: "Measured recovered dry mass by collection device and destination before any internal return"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "Per 1 kg dried lucerne chops from the declared dryer"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_drying_records
+              source_ids:
+                - us-epa-ap42-alfalfa-1996
+                - eu-fdm-bat-2019
+            ranges: []
+      waste:
+        - row_id: drying_discarded_alfalfa_dust
+          role: "Discarded lucerne dryer dust"
+          name: "Discarded lucerne (alfalfa) dryer dust"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record recovered alfalfa dryer dust sent to waste management rather than returned as product material."
+          amount:
+            expression: "Measured dry mass removed from the dust-control system, with destination and moisture recorded"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "Per 1 kg dried lucerne chops from the declared dryer"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_drying_records
+              source_ids:
+                - us-epa-ap42-alfalfa-1996
+                - eu-pef-2021-2279
+            ranges: []
+        - row_id: drying_coal_ash
+          role: "Coal combustion ash"
+          name: "Coal combustion ash"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record ash generated only by hard-coal combustion in the dryer and keep it separate from biomass ash."
+          amount:
+            expression: "Measured ash removed from the coal-fired dryer furnace and air-pollution-control system"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "Per 1 kg dried lucerne chops from the declared dryer"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_drying_records
+              source_ids:
+                - us-epa-ap42-alfalfa-1996
+                - eu-pef-2021-2279
+            ranges: []
+        - row_id: drying_wood_ash
+          role: "Wood combustion ash"
+          name: "Wood combustion ash"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record ash generated only by wood-chip combustion in the dryer and keep it separate from coal ash and product dust."
+          amount:
+            expression: "Measured ash removed from the wood-fired dryer furnace and air-pollution-control system"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "Per 1 kg dried lucerne chops from the declared dryer"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_drying_records
+              source_ids:
+                - us-epa-ap42-alfalfa-1996
+                - eu-pef-2021-2279
+            ranges: []
+      elementary:
+        - row_id: drying_fossil_co2
+          role: "Fossil carbon dioxide from dryer combustion"
+          name: "Carbon dioxide, fossil, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record fossil carbon dioxide released by the dryer burner from natural gas, diesel, LPG, or hard coal separately from biogenic carbon dioxide."
+          amount:
+            expression: "Calculated from measured fossil-fuel consumption, supplier carbon content or a documented applicable factor, and oxidation evidence"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "Per 1 kg dried lucerne chops from the declared dryer"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_drying_records
+              source_ids:
+                - eu-pef-2021-2279
+            ranges: []
+        - row_id: drying_biogenic_co2
+          role: "Biogenic carbon dioxide from wood-chip combustion"
+          name: "Carbon dioxide, biogenic, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record carbon dioxide from wood-chip combustion separately and do not include fossil carbon from auxiliary fuels in this card."
+          amount:
+            expression: "Calculated from measured wood-chip consumption, documented dry-matter carbon content, and oxidation evidence"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "Per 1 kg dried lucerne chops from the declared dryer"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_drying_records
+              source_ids:
+                - eu-pef-2021-2279
+            ranges: []
+        - row_id: drying_fossil_methane
+          role: "Fossil methane from dryer combustion"
+          name: "Methane, fossil, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record unburned fossil methane only for fossil-fuel dryer combustion and keep any biogenic wastewater methane in its own card."
+          amount:
+            expression: "Measured stack load or calculation from fuel-specific site activity and a documented applicable emission factor"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "Per 1 kg dried lucerne chops from the declared dryer"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_drying_records
+              source_ids:
+                - eu-pef-2021-2279
+            ranges: []
+        - row_id: drying_nitrous_oxide
+          role: "Nitrous oxide from dryer combustion"
+          name: "Dinitrogen monoxide, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record nitrous oxide from dryer fuel combustion as one chemical emission distinct from nitric oxide and nitrogen dioxide."
+          amount:
+            expression: "Measured stack load or calculation from measured fuel consumption and a documented fuel- and technology-specific factor"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "Per 1 kg dried lucerne chops from the declared dryer"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_drying_records
+              source_ids:
+                - eu-pef-2021-2279
+            ranges: []
+        - row_id: drying_carbon_monoxide
+          role: "Carbon monoxide from dryer combustion"
+          name: "Carbon monoxide, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record carbon monoxide released by the declared dryer burner from measured stack data or a documented fuel-specific calculation."
+          amount:
+            expression: "Measured stack load or calculation from measured fuel consumption and a documented applicable factor"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "Per 1 kg dried lucerne chops from the declared dryer"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_drying_records
+              source_ids:
+                - eu-fdm-bat-2019
+                - eu-pef-2021-2279
+            ranges: []
+        - row_id: drying_nitric_oxide
+          role: "Nitric oxide from dryer combustion"
+          name: "Nitric oxide, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record nitric oxide as its own measured or calculated chemical emission; do not use a combined nitrogen-oxides selector."
+          amount:
+            expression: "Measured species-resolved stack load or calculation from measured fuel use and a documented species-resolved factor"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "Per 1 kg dried lucerne chops from the declared dryer"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_drying_records
+              source_ids:
+                - eu-fdm-bat-2019
+                - eu-pef-2021-2279
+            ranges: []
+        - row_id: drying_nitrogen_dioxide
+          role: "Nitrogen dioxide from dryer combustion"
+          name: "Nitrogen dioxide, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record nitrogen dioxide as its own measured or calculated chemical emission, separate from nitric oxide."
+          amount:
+            expression: "Measured species-resolved stack load or calculation from measured fuel use and a documented species-resolved factor"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "Per 1 kg dried lucerne chops from the declared dryer"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_drying_records
+              source_ids:
+                - eu-fdm-bat-2019
+                - eu-pef-2021-2279
+            ranges: []
+        - row_id: drying_sulfur_dioxide
+          role: "Sulfur dioxide from dryer combustion"
+          name: "Sulfur dioxide, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record sulfur dioxide from sulfur-bearing dryer fuel using the measured fuel sulfur balance or stack measurement; do not use a combined sulfur-oxides selector."
+          amount:
+            expression: "Measured stack load or calculation from measured fuel mass, sulfur content, retention, and documented oxidation convention"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "Per 1 kg dried lucerne chops from the declared dryer"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_drying_records
+              source_ids:
+                - eu-fdm-bat-2019
+                - eu-pef-2021-2279
+            ranges: []
+        - row_id: drying_pm25
+          role: "Fine dryer particulate to air"
+          name: "Particulate matter, diameter below 2.5 µm, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record the post-control dryer particulate fraction below 2.5 µm from the declared dryer and dust-control configuration."
+          amount:
+            expression: "Measured stack load or size-resolved calculation from documented dryer tests and actual operating data"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "Per 1 kg dried lucerne chops from the declared dryer"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_drying_records
+              source_ids:
+                - us-epa-ap42-alfalfa-1996
+                - eu-fdm-bat-2019
+            ranges: []
+        - row_id: drying_pm_coarse
+          role: "Coarse dryer particulate to air"
+          name: "Particulate matter, diameter 2.5–10 µm, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record the non-overlapping post-control dryer particulate fraction from 2.5 µm through 10 µm and do not duplicate the fine fraction."
+          amount:
+            expression: "Measured stack load or size-resolved calculation from documented dryer tests and actual operating data"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "Per 1 kg dried lucerne chops from the declared dryer"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_drying_records
+              source_ids:
+                - us-epa-ap42-alfalfa-1996
+                - eu-fdm-bat-2019
+            ranges: []
+  - id: grinding_and_sieving
+    label: "Grinding, pneumatic transfer, and sieving"
+    inputs:
+      product:
+        - row_id: grinding_electricity
+          role: "Grinding-stage grid electricity"
+          name: "Electricity, grid"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record electricity used by the hammermill or declared mill, pneumatic transfer, meal cyclone, bag filter, and sieving equipment."
+          amount:
+            expression: "Grinding-stage submeter record or documented equipment-time allocation from a site meter"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "Per 1 kg lucerne meal leaving grinding and sieving"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_grinding_records
+              source_ids:
+                - us-epa-ap42-alfalfa-1996
+                - eu-fdm-bat-2019
+                - fefac-pefcr-feed-data-2021
+            ranges: []
+        - row_id: grinding_compressed_air
+          role: "Compressed air for grinding transfer"
+          name: "Compressed air"
+          flow_type: "product"
+          property_unit: "Volume / Nm3"
+          description: "Record purchased or centrally generated compressed air only when its quantity is metered or calculated for pneumatic meal transfer or filter cleaning."
+          amount:
+            expression: "Metered standard volume or calculated volume from logged compressor output and grinding-stage demand"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "Per 1 kg lucerne meal leaving grinding and sieving"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_grinding_records
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+                - eu-pef-2021-2279
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: grinding_alfalfa_meal
+          role: "Lucerne meal leaving grinding"
+          name: "Lucerne (alfalfa) meal"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record meal after the declared grinding and sieving configuration before final meal release or pellet conditioning."
+          amount:
+            expression: "Measured meal mass reconciled with dried lucerne input, coarse screenings, recovered dust, discarded dust, and moisture change"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "Per 1 kg lucerne meal leaving grinding and sieving"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_grinding_records
+              source_ids:
+                - us-epa-ap42-alfalfa-1996
+            ranges: []
+        - row_id: grinding_coarse_screenings
+          role: "Coarse lucerne screenings"
+          name: "Coarse lucerne (alfalfa) screenings"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the coarse lucerne fraction separated by the declared screen before any return to the mill or external transfer."
+          amount:
+            expression: "Measured mass collected from the coarse screen outlet by destination and moisture"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "Per 1 kg lucerne meal leaving grinding and sieving"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_grinding_records
+              source_ids:
+                - us-epa-ap42-alfalfa-1996
+                - fao-feed-milling
+            ranges: []
+        - row_id: grinding_recovered_dust
+          role: "Recovered lucerne grinding dust"
+          name: "Recovered lucerne (alfalfa) grinding dust"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record dust collected by the meal cyclone or bag filter when it is returned to the meal or pelleting route."
+          amount:
+            expression: "Measured recovered dry mass by collection device before internal return"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "Per 1 kg lucerne meal leaving grinding and sieving"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_grinding_records
+              source_ids:
+                - us-epa-ap42-alfalfa-1996
+                - eu-fdm-bat-2019
+            ranges: []
+      waste:
+        - row_id: grinding_discarded_dust
+          role: "Discarded lucerne grinding dust"
+          name: "Discarded lucerne (alfalfa) grinding dust"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record collected grinding dust removed from production for waste management, separately from dust returned as product material."
+          amount:
+            expression: "Measured dry mass removed from each dust collector with destination recorded"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "Per 1 kg lucerne meal leaving grinding and sieving"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_grinding_records
+              source_ids:
+                - us-epa-ap42-alfalfa-1996
+                - eu-pef-2021-2279
+            ranges: []
+      elementary:
+        - row_id: grinding_pm25
+          role: "Fine grinding particulate to air"
+          name: "Particulate matter, diameter below 2.5 µm, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record the post-control grinding and meal-transfer particulate fraction below 2.5 µm."
+          amount:
+            expression: "Pollutant mass from measured channelled and documented fugitive releases for grinding and sieving"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "Per 1 kg lucerne meal leaving grinding and sieving"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_grinding_records
+              source_ids:
+                - us-epa-ap42-alfalfa-1996
+                - eu-fdm-bat-2019
+            ranges: []
+        - row_id: grinding_pm_coarse
+          role: "Coarse grinding particulate to air"
+          name: "Particulate matter, diameter 2.5–10 µm, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record the non-overlapping post-control grinding and meal-transfer particulate fraction from 2.5 µm through 10 µm."
+          amount:
+            expression: "Pollutant mass from measured channelled and documented fugitive releases for grinding and sieving"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "Per 1 kg lucerne meal leaving grinding and sieving"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_grinding_records
+              source_ids:
+                - us-epa-ap42-alfalfa-1996
+                - eu-fdm-bat-2019
+            ranges: []
+  - id: raw_material_receiving
+    label: "Raw-material receiving and inspection"
+    inputs:
+      product:
+        - row_id: receiving_fresh_wilted_alfalfa
+          role: "Fresh wilted chopped lucerne received"
+          name: "Fresh wilted lucerne (alfalfa), chopped"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Use this card only for fresh or field-wilted lucerne delivered as wet chops; record cultivar or commercial grade, field-wilting condition, chopping state, origin, supplier lot, and measured receipt moisture."
+          amount:
+            expression: "Net accepted mass from calibrated receiving scales, separately by lot and moisture test"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "Per 1 kg net reference product from the same raw-state route and period"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_receiving_records
+              source_ids:
+                - us-epa-ap42-alfalfa-1996
+                - eu-pef-2021-2279
+            ranges: []
+        - row_id: receiving_field_dried_alfalfa
+          role: "Field-dried lucerne received"
+          name: "Field-dried lucerne (alfalfa)"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Use this card only for lucerne dried primarily in the field before facility receipt; keep it separate from fresh-wilted and artificially dehydrated material."
+          amount:
+            expression: "Net accepted mass from calibrated receiving scales, separately by lot, field-drying declaration, and moisture test"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "Per 1 kg net reference product from the same raw-state route and period"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_receiving_records
+              source_ids:
+                - eu-fdm-bat-2019
+                - eu-pef-2021-2279
+            ranges: []
+        - row_id: receiving_dehydrated_alfalfa
+          role: "Purchased dehydrated lucerne received"
+          name: "Purchased dehydrated lucerne (alfalfa)"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Use this card for purchased artificially dehydrated lucerne that enters the foreground facility for grinding or pelleting; disclose the supplier drying technology and upstream dataset."
+          amount:
+            expression: "Net accepted mass from calibrated receiving scales, separately by supplier lot, upstream drying declaration, and moisture test"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "Per 1 kg net reference product from the same purchased-dehydrated route and period"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_receiving_records
+              source_ids:
+                - us-epa-ap42-alfalfa-1996
+                - eu-pef-2021-2279
+            ranges: []
+        - row_id: receiving_electricity
+          role: "Receiving-stage grid electricity"
+          name: "Electricity, grid"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record only electricity used by unloading, conveying, inspection, sampling, and receiving controls before the material enters the next process."
+          amount:
+            expression: "Submetered receiving-stage consumption or calculated allocation from a documented equipment-time meter record"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "Per 1 kg net reference product from the same route and period"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_receiving_records
+              source_ids:
+                - fefac-pefcr-feed-data-2021
+                - eu-pef-2021-2279
+            ranges: []
+        - row_id: receiving_diesel
+          role: "Receiving-stage diesel"
+          name: "Diesel fuel"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record diesel crossing the foreground boundary for receiving-stage mobile equipment only; do not combine it with other fuels or inbound transport."
+          amount:
+            expression: "Fuel issue, tank balance, or equipment fuel-meter record attributable to receiving operations"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "Per 1 kg net reference product from the same route and period"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_receiving_records
+              source_ids:
+                - eu-pef-2021-2279
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: receiving_rejected_fresh_alfalfa
+          role: "Rejected fresh lucerne"
+          name: "Rejected fresh lucerne (alfalfa)"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record fresh or wilted lucerne rejected at receiving because it does not meet the declared acceptance specification."
+          amount:
+            expression: "Measured rejected wet mass by lot, reason, destination, and moisture content"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "Per 1 kg net reference product from the same raw-state route and period"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_receiving_records
+              source_ids:
+                - eu-pef-2021-2279
+            ranges: []
+        - row_id: receiving_rejected_dried_alfalfa
+          role: "Rejected dried lucerne"
+          name: "Rejected dried lucerne (alfalfa)"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record field-dried or purchased dehydrated lucerne rejected at receiving, keeping the rejected dried material separate from fresh rejects."
+          amount:
+            expression: "Measured rejected dry-material mass by lot, reason, destination, and moisture content"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "Per 1 kg net reference product from the same raw-state route and period"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_receiving_records
+              source_ids:
+                - eu-pef-2021-2279
+            ranges: []
+        - row_id: receiving_removed_soil
+          role: "Soil removed during receiving"
+          name: "Soil removed from received lucerne (alfalfa)"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record soil separated from the received lucerne before drying or grinding; do not combine it with stones or plant rejects."
+          amount:
+            expression: "Measured mass of separated soil by collection container and destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "Per 1 kg net reference product from the same route and period"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_receiving_records
+              source_ids:
+                - eu-pef-2021-2279
+            ranges: []
+        - row_id: receiving_removed_stones
+          role: "Stones removed during receiving"
+          name: "Stones removed from received lucerne (alfalfa)"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record stones separated from received lucerne as one physical waste flow distinct from soil and plant rejects."
+          amount:
+            expression: "Measured mass of separated stones by collection container and destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "Per 1 kg net reference product from the same route and period"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_receiving_records
+              source_ids:
+                - eu-pef-2021-2279
+            ranges: []
+      elementary:
+        - row_id: receiving_pm25_to_air
+          role: "Fine receiving dust to air"
+          name: "Particulate matter, diameter below 2.5 µm, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record the measured or calculated fine particulate release from unloading and conveying dried lucerne after documented dust recovery."
+          amount:
+            expression: "Pollutant mass from measured exhaust or fugitive-dust data for the receiving stage"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "Per 1 kg net reference product from the same route and period"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_receiving_records
+              source_ids:
+                - us-epa-ap42-alfalfa-1996
+                - eu-pef-2021-2279
+            ranges: []
+        - row_id: receiving_pm_coarse_to_air
+          role: "Coarse receiving dust to air"
+          name: "Particulate matter, diameter 2.5–10 µm, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record the non-overlapping 2.5–10 µm particulate release from unloading and conveying dried lucerne after control; do not duplicate it in the fine fraction."
+          amount:
+            expression: "Pollutant mass from measured exhaust or fugitive-dust data for the receiving stage"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "Per 1 kg net reference product from the same route and period"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_receiving_records
+              source_ids:
+                - us-epa-ap42-alfalfa-1996
+                - eu-pef-2021-2279
+            ranges: []
+  - id: steam_conditioning_and_pelleting
+    label: "Conditioning and pelleting"
+    inputs:
+      product:
+        - row_id: pelleting_alfalfa_meal
+          role: "Lucerne meal supplied to the pellet mill"
+          name: "Lucerne (alfalfa) meal"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record only lucerne meal entering the declared pellet route and reconcile it to the grinding output and any stored meal inventory change."
+          amount:
+            expression: "Measured pellet-mill feed mass by production lot and moisture"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "Per 1 kg hot lucerne pellets leaving the pellet mill"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_pelleting_records
+              source_ids:
+                - us-epa-ap42-alfalfa-1996
+                - fao-feed-milling
+            ranges: []
+        - row_id: pelleting_conditioning_water
+          role: "Liquid conditioning water"
+          name: "Conditioning water"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record liquid water deliberately added in the pellet-conditioning chamber separately from steam condensate and cleaning water."
+          amount:
+            expression: "Metered liquid-water mass added to the declared pellet lot"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "Per 1 kg hot lucerne pellets leaving the pellet mill"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_pelleting_records
+              source_ids:
+                - fao-feed-milling
+                - eu-pef-2021-2279
+            ranges: []
+        - row_id: pelleting_purchased_steam
+          role: "Purchased steam for pellet conditioning"
+          name: "Purchased steam"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Record steam introduced to the pellet conditioner separately from drying steam and liquid conditioning water."
+          amount:
+            expression: "Calculated delivered steam energy from measured steam mass, pressure, temperature, and condensate condition"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "Per 1 kg hot lucerne pellets leaving the pellet mill"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_pelleting_records
+              source_ids:
+                - us-epa-ap42-alfalfa-1996
+                - fao-feed-milling
+            ranges: []
+        - row_id: pelleting_electricity
+          role: "Pelleting-stage grid electricity"
+          name: "Electricity, grid"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record electricity used by the conditioner, feeders, pellet mill, cutting equipment, and local extraction assigned to the pellet-forming stage. If a binder is actually added, insert a separate product-input card named for that exact substance and record its mass and legal feed identity. Do not use binder, additive, or a list of possible substances as the Selected flow; when no binder is used, declare binder_substance_and_mass_or_none: none in the data package."
+          amount:
+            expression: "Pelleting-stage submeter record or documented equipment-time allocation from a site meter"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "Per 1 kg hot lucerne pellets leaving the pellet mill"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_pelleting_records
+              source_ids:
+                - fao-feed-milling
+                - fefac-pefcr-feed-data-2021
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: pelleting_hot_alfalfa_pellets
+          role: "Hot lucerne pellets"
+          name: "Hot lucerne (alfalfa) pellets"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record pellets at pellet-mill discharge before cooling and final screening."
+          amount:
+            expression: "Measured pellet-mill discharge mass reconciled with meal, water, steam condensate, start-up reject, dust, and inventory change"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "Per 1 kg hot lucerne pellets leaving the pellet mill"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_pelleting_records
+              source_ids:
+                - us-epa-ap42-alfalfa-1996
+                - fao-feed-milling
+            ranges: []
+      waste:
+        - row_id: pelleting_startup_reject
+          role: "Pellet-mill start-up reject"
+          name: "Lucerne (alfalfa) pellet-mill start-up reject"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record lucerne material discharged during pellet-mill start-up or upset that is not returned to production."
+          amount:
+            expression: "Measured mass by event, cause, moisture, and waste destination"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "Per 1 kg hot lucerne pellets leaving the pellet mill"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_pelleting_records
+              source_ids:
+                - eu-pef-2021-2279
+            ranges: []
+      elementary:
+        - row_id: pelleting_pm25
+          role: "Fine pelleting particulate to air"
+          name: "Particulate matter, diameter below 2.5 µm, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record the post-control particulate fraction below 2.5 µm from pellet-mill feeding, extrusion, cutting, and transfer."
+          amount:
+            expression: "Pollutant mass from measured channelled and documented fugitive releases for pelleting"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "Per 1 kg hot lucerne pellets leaving the pellet mill"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_pelleting_records
+              source_ids:
+                - us-epa-ap42-alfalfa-1996
+                - eu-fdm-bat-2019
+            ranges: []
+        - row_id: pelleting_pm_coarse
+          role: "Coarse pelleting particulate to air"
+          name: "Particulate matter, diameter 2.5–10 µm, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record the non-overlapping post-control particulate fraction from 2.5 µm through 10 µm from pelleting operations."
+          amount:
+            expression: "Pollutant mass from measured channelled and documented fugitive releases for pelleting"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "Per 1 kg hot lucerne pellets leaving the pellet mill"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_pelleting_records
+              source_ids:
+                - us-epa-ap42-alfalfa-1996
+                - eu-fdm-bat-2019
+            ranges: []
+  - id: pellet_cooling_and_screening
+    label: "Pellet cooling and final screening"
+    inputs:
+      product:
+        - row_id: cooling_hot_alfalfa_pellets
+          role: "Hot pellets supplied to cooling"
+          name: "Hot lucerne (alfalfa) pellets"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record hot lucerne pellets entering the cooler and screen, reconciled to the pellet-mill discharge."
+          amount:
+            expression: "Measured transfer mass or reconciled pellet-mill output for the same lot"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "Per 1 kg cooled screened lucerne pellets"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_cooling_records
+              source_ids:
+                - us-epa-ap42-alfalfa-1996
+                - fao-feed-milling
+            ranges: []
+        - row_id: cooling_electricity
+          role: "Cooling-stage grid electricity"
+          name: "Electricity, grid"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record electricity used by cooler fans, conveyors, screens, cyclones, and local dust controls."
+          amount:
+            expression: "Cooling-stage submeter record or documented equipment-time allocation from a site meter"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "Per 1 kg cooled screened lucerne pellets"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cooling_records
+              source_ids:
+                - us-epa-ap42-alfalfa-1996
+                - eu-fdm-bat-2019
+                - fefac-pefcr-feed-data-2021
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: cooling_screened_alfalfa_pellets
+          role: "Cooled screened lucerne pellets"
+          name: "Cooled screened lucerne (alfalfa) pellets"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record pellets after the declared cooling and screen specification and before packaging or bulk storage."
+          amount:
+            expression: "Measured accepted pellet mass reconciled with hot pellets, recovered fines, discarded fines, dust, and inventory change"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "Per 1 kg cooled screened lucerne pellets"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_cooling_records
+              source_ids:
+                - us-epa-ap42-alfalfa-1996
+                - fao-feed-milling
+            ranges: []
+        - row_id: cooling_recovered_pellet_fines
+          role: "Recovered lucerne pellet fines"
+          name: "Recovered lucerne (alfalfa) pellet fines"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record fines separated by the pellet screen before they are returned to the meal bin or pellet mill."
+          amount:
+            expression: "Measured fines mass by screen outlet and documented internal-return destination"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "Per 1 kg cooled screened lucerne pellets"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cooling_records
+              source_ids:
+                - us-epa-ap42-alfalfa-1996
+                - fao-feed-milling
+            ranges: []
+      waste:
+        - row_id: cooling_discarded_pellet_fines
+          role: "Discarded lucerne pellet fines"
+          name: "Discarded lucerne (alfalfa) pellet fines"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record pellet fines sent to waste management instead of being returned to production or sold as feed material."
+          amount:
+            expression: "Measured discarded fines mass with destination and moisture recorded"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "Per 1 kg cooled screened lucerne pellets"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cooling_records
+              source_ids:
+                - us-epa-ap42-alfalfa-1996
+                - eu-pef-2021-2279
+            ranges: []
+      elementary:
+        - row_id: cooling_pm25
+          role: "Fine pellet-cooling particulate to air"
+          name: "Particulate matter, diameter below 2.5 µm, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record the post-control particulate fraction below 2.5 µm from pellet cooling, screening, and transfer."
+          amount:
+            expression: "Pollutant mass from measured channelled and documented fugitive releases for cooling and screening"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "Per 1 kg cooled screened lucerne pellets"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_cooling_records
+              source_ids:
+                - us-epa-ap42-alfalfa-1996
+                - eu-fdm-bat-2019
+            ranges: []
+        - row_id: cooling_pm_coarse
+          role: "Coarse pellet-cooling particulate to air"
+          name: "Particulate matter, diameter 2.5–10 µm, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record the non-overlapping post-control particulate fraction from 2.5 µm through 10 µm from cooling and screening."
+          amount:
+            expression: "Pollutant mass from measured channelled and documented fugitive releases for cooling and screening"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "Per 1 kg cooled screened lucerne pellets"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_cooling_records
+              source_ids:
+                - us-epa-ap42-alfalfa-1996
+                - eu-fdm-bat-2019
+            ranges: []
+  - id: packaging_storage_and_release
+    label: "Packaging or bulk load-out, storage, and release"
+    inputs:
+      product:
+        - row_id: packaging_alfalfa_meal
+          role: "Lucerne meal supplied for release"
+          name: "Lucerne (alfalfa) meal"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Use this card only for a meal-form route and reconcile it to accepted meal from grinding after any storage change."
+          amount:
+            expression: "Measured meal mass entering bulk load-out or packaging by lot and moisture"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "Per 1 kg net reference product released"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_release_records
+              source_ids:
+                - un-cpc-3-2025
+                - eu-pef-2021-2279
+            ranges: []
+        - row_id: packaging_alfalfa_pellets
+          role: "Lucerne pellets supplied for release"
+          name: "Cooled screened lucerne (alfalfa) pellets"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Use this card only for a pellet-form route and reconcile it to accepted cooled screened pellets after any storage change."
+          amount:
+            expression: "Measured pellet mass entering bulk load-out or packaging by lot and moisture"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "Per 1 kg net reference product released"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_release_records
+              source_ids:
+                - un-cpc-3-2025
+                - eu-pef-2021-2279
+            ranges: []
+        - row_id: packaging_electricity
+          role: "Packaging and storage grid electricity"
+          name: "Electricity, grid"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record electricity for bagging or bulk load-out, conveyors, warehouse ventilation, and route-attributable storage over the declared period."
+          amount:
+            expression: "Submeter record or documented equipment-time and storage allocation for the declared product form"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "Per 1 kg net reference product released"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_release_records
+              source_ids:
+                - fefac-pefcr-feed-data-2021
+                - eu-pef-2021-2279
+            ranges: []
+        - row_id: packaging_polypropylene_sack
+          role: "Polypropylene woven sack"
+          name: "Polypropylene woven sack"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the mass of polypropylene woven sacks incorporated in the declared sales configuration; omit the card for a bulk route."
+          amount:
+            expression: "Count of used sacks multiplied by verified empty-sack mass, reconciled with packaging inventory"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "Per 1 kg net packaged reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_release_records
+              source_ids:
+                - fefac-pefcr-feed-data-2021
+                - eu-pef-2021-2279
+            ranges: []
+        - row_id: packaging_kraft_paper_sack
+          role: "Kraft paper sack"
+          name: "Kraft paper sack"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record kraft paper sacks as a separate packaging component only when they are used in the declared configuration."
+          amount:
+            expression: "Count of used sacks multiplied by verified empty-sack mass, reconciled with packaging inventory"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "Per 1 kg net packaged reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_release_records
+              source_ids:
+                - fefac-pefcr-feed-data-2021
+                - eu-pef-2021-2279
+            ranges: []
+        - row_id: packaging_ldpe_liner
+          role: "Low-density polyethylene sack liner"
+          name: "Low-density polyethylene sack liner"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record an LDPE liner separately from the outer sack and stretch film when this exact liner is used."
+          amount:
+            expression: "Count of used liners multiplied by verified liner mass, reconciled with packaging inventory"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "Per 1 kg net packaged reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_release_records
+              source_ids:
+                - fefac-pefcr-feed-data-2021
+                - eu-pef-2021-2279
+            ranges: []
+        - row_id: packaging_polyethylene_stretch_film
+          role: "Polyethylene stretch film"
+          name: "Polyethylene stretch film"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record stretch film used to secure released pallet loads, separately from sack liners and sacks."
+          amount:
+            expression: "Measured film roll consumption corrected for opening and closing stock for the declared product loads"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "Per 1 kg net packaged reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_release_records
+              source_ids:
+                - fefac-pefcr-feed-data-2021
+                - eu-pef-2021-2279
+            ranges: []
+        - row_id: packaging_wood_pallet
+          role: "Wood pallet"
+          name: "Wood pallet"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record wood pallet mass allocated to the declared released product, with reuse count and ownership boundary documented. Any additional primary packaging, closure, label, bulk-loading consumable, or pallet material actually used requires its own card with one exact material identity; do not place it under a collective packaging card."
+          amount:
+            expression: "Pallet count multiplied by verified pallet mass and divided only by documented foreground reuse cycles assigned to released loads"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "Per 1 kg net palletized reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_release_records
+              source_ids:
+                - fefac-pefcr-feed-data-2021
+                - eu-pef-2021-2279
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: reference_product_output
+          role: "CPC 23320 reference product output"
+          name: "Lucerne (alfalfa) meal and pellets"
+          flow_type: "product"
+          flow_ref:
+            uuid: "f984b084-e66e-4d11-8365-354ae0ad5a74"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "This is the sole UUID-bearing reference exchange and represents the declared meal or pellet form after conformity release."
+          amount:
+            expression: "Exactly 1 kg net conforming released product; packaging mass excluded"
+            value_mode: "fixed_value"
+            specificity: "product_specific"
+            basis:
+              text: "1 kg net reference product at the producing facility gate"
+              kind: "reference_flow"
+            evidence:
+              kind: "identity_reference"
+              collection_protocol_id: cp_packaging_release_records
+              source_ids:
+                - un-cpc-3-2025
+            ranges: []
+      waste:
+        - row_id: packaging_offspec_alfalfa_meal
+          role: "Off-specification lucerne meal"
+          name: "Off-specification lucerne (alfalfa) meal"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record meal rejected during storage, load-out, or release and not returned to production; keep it separate from pellet rejects."
+          amount:
+            expression: "Measured rejected meal mass by lot, reason, moisture, and destination"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "Per 1 kg net reference product released"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_release_records
+              source_ids:
+                - eu-pef-2021-2279
+            ranges: []
+        - row_id: packaging_offspec_alfalfa_pellets
+          role: "Off-specification lucerne pellets"
+          name: "Off-specification lucerne (alfalfa) pellets"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record pellets rejected during storage, load-out, or release and not returned to production; keep them separate from meal rejects."
+          amount:
+            expression: "Measured rejected pellet mass by lot, reason, moisture, and destination"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "Per 1 kg net reference product released"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_release_records
+              source_ids:
+                - eu-pef-2021-2279
+            ranges: []
+        - row_id: packaging_waste_polypropylene
+          role: "Waste polypropylene sack"
+          name: "Waste polypropylene woven sack"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record damaged or unused polypropylene woven sacks discarded on site, separate from LDPE liner and stretch-film waste."
+          amount:
+            expression: "Measured discarded polypropylene sack mass by destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "Per 1 kg net reference product released"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_release_records
+              source_ids:
+                - fefac-pefcr-feed-data-2021
+                - eu-pef-2021-2279
+            ranges: []
+        - row_id: packaging_waste_kraft_paper
+          role: "Waste kraft paper sack"
+          name: "Waste kraft paper sack"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record damaged or unused kraft paper sacks discarded on site as their own waste flow."
+          amount:
+            expression: "Measured discarded kraft paper sack mass by destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "Per 1 kg net reference product released"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_release_records
+              source_ids:
+                - fefac-pefcr-feed-data-2021
+                - eu-pef-2021-2279
+            ranges: []
+        - row_id: packaging_waste_ldpe
+          role: "Waste LDPE liner"
+          name: "Waste low-density polyethylene sack liner"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record discarded low-density polyethylene liners separately from other plastic packaging waste."
+          amount:
+            expression: "Measured discarded LDPE liner mass by destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "Per 1 kg net reference product released"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_release_records
+              source_ids:
+                - fefac-pefcr-feed-data-2021
+                - eu-pef-2021-2279
+            ranges: []
+        - row_id: packaging_waste_stretch_film
+          role: "Waste polyethylene stretch film"
+          name: "Waste polyethylene stretch film"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record discarded polyethylene stretch film separately from sacks and liners."
+          amount:
+            expression: "Measured discarded stretch-film mass by destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "Per 1 kg net reference product released"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_release_records
+              source_ids:
+                - fefac-pefcr-feed-data-2021
+                - eu-pef-2021-2279
+            ranges: []
+        - row_id: packaging_waste_wood
+          role: "Waste wood pallet"
+          name: "Waste wood pallet"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record wood pallets discarded within the foreground ownership boundary after documented reuse, separately from other wood waste."
+          amount:
+            expression: "Measured discarded pallet mass assigned to the declared route using documented pallet tracking"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "Per 1 kg net reference product released"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_release_records
+              source_ids:
+                - fefac-pefcr-feed-data-2021
+                - eu-pef-2021-2279
+            ranges: []
+      elementary:
+        - row_id: packaging_pm25
+          role: "Fine packaging and load-out particulate to air"
+          name: "Particulate matter, diameter below 2.5 µm, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record the post-control particulate fraction below 2.5 µm from bagging, bulk loading, and storage transfer."
+          amount:
+            expression: "Pollutant mass from measured channelled and documented fugitive releases for packaging and load-out"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "Per 1 kg net reference product released"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_release_records
+              source_ids:
+                - us-epa-ap42-alfalfa-1996
+                - eu-pef-2021-2279
+            ranges: []
+        - row_id: packaging_pm_coarse
+          role: "Coarse packaging and load-out particulate to air"
+          name: "Particulate matter, diameter 2.5–10 µm, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record the non-overlapping post-control particulate fraction from 2.5 µm through 10 µm from bagging, bulk loading, and storage transfer."
+          amount:
+            expression: "Pollutant mass from measured channelled and documented fugitive releases for packaging and load-out"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "Per 1 kg net reference product released"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_release_records
+              source_ids:
+                - us-epa-ap42-alfalfa-1996
+                - eu-pef-2021-2279
+            ranges: []
+  - id: cleaning_and_maintenance
+    label: "Equipment cleaning and filter maintenance"
+    inputs:
+      product:
+        - row_id: cleaning_electricity
+          role: "Cleaning-stage grid electricity"
+          name: "Electricity, grid"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record electricity used by vacuum cleaning, local extraction, filter maintenance, and any wet-cleaning equipment attributable to the declared route."
+          amount:
+            expression: "Cleaning-stage submeter record or documented equipment-time allocation from a site meter"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "Per 1 kg net reference product from the cleaned route and period"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cleaning_records
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+                - eu-fdm-bat-2019
+                - eu-pef-2021-2279
+            ranges: []
+        - row_id: cleaning_compressed_air
+          role: "Compressed air for dry cleaning"
+          name: "Compressed air"
+          flow_type: "product"
+          property_unit: "Volume / Nm3"
+          description: "Record compressed air used for dry cleaning only when its use is permitted and quantified; keep it separate from grinding pneumatic transfer."
+          amount:
+            expression: "Metered standard volume or calculated volume from logged compressor output and cleaning demand"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "Per 1 kg net reference product from the cleaned route and period"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_cleaning_records
+              source_ids:
+                - eu-fdm-bat-2019
+                - eu-pef-2021-2279
+            ranges: []
+        - row_id: cleaning_process_water
+          role: "Process water for wet cleaning"
+          name: "Process water"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record liquid water used to wash alfalfa-contact equipment only when wet cleaning occurs; keep it separate from conditioning water and hot water. Every cleaning detergent, disinfectant, or maintenance chemical actually consumed requires its own card naming one exact substance and formulation basis. This PCR intentionally contains no unnamed chemical card."
+          amount:
+            expression: "Metered wet-cleaning water mass by cleaning event and equipment train"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "Per 1 kg net reference product from the cleaned route and period"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cleaning_records
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+                - eu-fdm-bat-2019
+                - eu-pef-2021-2279
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: cleaning_dry_alfalfa_sweepings
+          role: "Dry lucerne sweepings"
+          name: "Dry lucerne (alfalfa) sweepings"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record dry lucerne material removed from floors and equipment by sweeping or vacuum before liquid cleaning."
+          amount:
+            expression: "Measured dry mass by cleaning event and waste destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "Per 1 kg net reference product from the cleaned route and period"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cleaning_records
+              source_ids:
+                - eu-fdm-bat-2019
+                - eu-pef-2021-2279
+            ranges: []
+        - row_id: cleaning_wash_wastewater
+          role: "Alfalfa equipment-wash wastewater"
+          name: "Lucerne (alfalfa) equipment-wash wastewater"
+          flow_type: "waste"
+          property_unit: "Volume / m3"
+          description: "Record wastewater generated by washing alfalfa-contact equipment before any on-site treatment or off-site transfer."
+          amount:
+            expression: "Metered or tank-calibrated wastewater volume by cleaning event, with destination recorded"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "Per 1 kg net reference product from the cleaned route and period"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cleaning_records
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+                - eu-fdm-bat-2019
+                - eu-pef-2021-2279
+            ranges: []
+        - row_id: cleaning_used_filter_fabric
+          role: "Used baghouse filter fabric"
+          name: "Used baghouse filter fabric"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record spent filter fabric removed from alfalfa dust-control equipment as one material-specific maintenance waste."
+          amount:
+            expression: "Measured removed fabric mass assigned to the route by documented service period and dust-control equipment"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "Per 1 kg net reference product over the filter service period"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_cleaning_records
+              source_ids:
+                - us-epa-ap42-alfalfa-1996
+                - eu-fdm-bat-2019
+                - eu-pef-2021-2279
+            ranges: []
+      elementary:
+        []
+  - id: onsite_wastewater_treatment
+    label: "On-site process-wastewater treatment"
+    inputs:
+      product:
+        - row_id: wwt_electricity
+          role: "Wastewater-treatment grid electricity"
+          name: "Electricity, grid"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record electricity used by screening, pumping, aeration, mixing, settling, filtration, or sludge handling for alfalfa-process wastewater. Every coagulant, neutralizing agent, nutrient, antifoam, or other treatment chemical actually consumed requires its own product-input card naming one exact substance; no generic treatment-chemical card is permitted."
+          amount:
+            expression: "Treatment-system submeter record or documented equipment-time allocation to alfalfa-process wastewater"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "Per 1 m3 alfalfa-process wastewater treated"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wastewater_treatment_records
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+                - eu-fdm-bat-2019
+                - eu-pef-2021-2279
+            ranges: []
+      waste:
+        - row_id: wwt_wash_wastewater
+          role: "Equipment-wash wastewater supplied to treatment"
+          name: "Lucerne (alfalfa) equipment-wash wastewater"
+          flow_type: "waste"
+          property_unit: "Volume / m3"
+          description: "Record only the alfalfa equipment-wash wastewater entering the on-site treatment train and reconcile it to the cleaning-process output and buffer-storage change."
+          amount:
+            expression: "Influent flow-meter or calibrated-tank volume for the declared treatment period"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "Per 1 m3 alfalfa-process wastewater treated"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wastewater_treatment_records
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+                - eu-fdm-bat-2019
+            ranges: []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: wwt_treated_effluent
+          role: "Treated alfalfa-process effluent"
+          name: "Treated lucerne (alfalfa) process effluent"
+          flow_type: "waste"
+          property_unit: "Volume / m3"
+          description: "Record the treated wastewater volume leaving the on-site treatment boundary before direct discharge, sewer transfer, or another declared destination."
+          amount:
+            expression: "Effluent flow-meter volume reconciled with influent, recycled water, evaporation, sludge water, and storage change"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "Per 1 m3 alfalfa-process wastewater treated"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_wastewater_treatment_records
+              source_ids:
+                - eu-jrc-fdm-bref-2019
+                - eu-fdm-bat-2019
+            ranges: []
+        - row_id: wwt_screenings
+          role: "Wastewater-treatment screenings"
+          name: "Lucerne (alfalfa) wastewater-treatment screenings"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record gross alfalfa solids removed by screens or sieves before biological or physicochemical treatment."
+          amount:
+            expression: "Measured wet mass with moisture or dry-solids test and destination recorded"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "Per 1 m3 alfalfa-process wastewater treated"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wastewater_treatment_records
+              source_ids:
+                - eu-fdm-bat-2019
+                - eu-pef-2021-2279
+            ranges: []
+        - row_id: wwt_sludge
+          role: "Alfalfa wastewater-treatment sludge"
+          name: "Lucerne (alfalfa) wastewater-treatment sludge"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record sludge removed from the treatment process with wet mass, dry solids, treatment route, and destination."
+          amount:
+            expression: "Measured wet sludge mass multiplied by measured dry-solids fraction when a dry-mass result is required"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "Per 1 m3 alfalfa-process wastewater treated"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_wastewater_treatment_records
+              source_ids:
+                - eu-fdm-bat-2019
+                - eu-pef-2021-2279
+            ranges: []
+      elementary:
+        - row_id: wwt_cod_to_water
+          role: "Chemical oxygen demand to water"
+          name: "Chemical oxygen demand, to water"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record the chemical oxygen demand load in the treated effluent as the official aggregate water-quality parameter, without combining it with BOD5 or suspended solids."
+          amount:
+            expression: "Effluent volume multiplied by paired flow-weighted COD concentration for the same discharge period"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "Per 1 m3 alfalfa-process wastewater treated"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_wastewater_treatment_records
+              source_ids:
+                - eu-fdm-bat-2019
+                - eu-pef-2021-2279
+            ranges: []
+        - row_id: wwt_bod5_to_water
+          role: "Five-day biochemical oxygen demand to water"
+          name: "Biochemical oxygen demand, 5 days, to water"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record five-day biochemical oxygen demand as a separate effluent parameter with the test duration retained."
+          amount:
+            expression: "Effluent volume multiplied by paired flow-weighted BOD5 concentration for the same discharge period"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "Per 1 m3 alfalfa-process wastewater treated"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_wastewater_treatment_records
+              source_ids:
+                - eu-fdm-bat-2019
+                - eu-pef-2021-2279
+            ranges: []
+        - row_id: wwt_tss_to_water
+          role: "Total suspended solids to water"
+          name: "Total suspended solids, to water"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record total suspended solids in the treated effluent separately from COD, BOD5, nitrogen, and phosphorus."
+          amount:
+            expression: "Effluent volume multiplied by paired flow-weighted TSS concentration for the same discharge period"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "Per 1 m3 alfalfa-process wastewater treated"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_wastewater_treatment_records
+              source_ids:
+                - eu-fdm-bat-2019
+                - eu-pef-2021-2279
+            ranges: []
+        - row_id: wwt_total_nitrogen_to_water
+          role: "Total nitrogen to water"
+          name: "Total nitrogen, to water"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record total nitrogen in treated effluent as the official water-quality parameter and retain the analytical method; do not merge it with total phosphorus."
+          amount:
+            expression: "Effluent volume multiplied by paired flow-weighted total-nitrogen concentration for the same discharge period"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "Per 1 m3 alfalfa-process wastewater treated"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_wastewater_treatment_records
+              source_ids:
+                - eu-fdm-bat-2019
+                - eu-pef-2021-2279
+            ranges: []
+        - row_id: wwt_total_phosphorus_to_water
+          role: "Total phosphorus to water"
+          name: "Total phosphorus, to water"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record total phosphorus in treated effluent as its own official water-quality parameter."
+          amount:
+            expression: "Effluent volume multiplied by paired flow-weighted total-phosphorus concentration for the same discharge period"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "Per 1 m3 alfalfa-process wastewater treated"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_wastewater_treatment_records
+              source_ids:
+                - eu-fdm-bat-2019
+                - eu-pef-2021-2279
+            ranges: []
+        - row_id: wwt_biogenic_methane_to_air
+          role: "Biogenic methane from wastewater treatment"
+          name: "Methane, biogenic, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record biogenic methane released by an anaerobic or mixed treatment stage, excluding captured methane transferred as biogas."
+          amount:
+            expression: "Measured uncaptured methane load or calculation from measured degradable load, treatment performance, capture, and oxidation records"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "Per 1 m3 alfalfa-process wastewater treated"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_wastewater_treatment_records
+              source_ids:
+                - eu-fdm-bat-2019
+                - eu-pef-2021-2279
+            ranges: []
+        - row_id: wwt_nitrous_oxide_to_air
+          role: "Nitrous oxide from wastewater treatment"
+          name: "Dinitrogen monoxide, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record nitrous oxide released by a nitrogen-removal treatment stage as one chemical emission when that stage operates."
+          amount:
+            expression: "Measured emission load or calculation from measured nitrogen throughput and a documented treatment-specific factor"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "Per 1 m3 alfalfa-process wastewater treated"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_wastewater_treatment_records
+              source_ids:
+                - eu-fdm-bat-2019
+                - eu-pef-2021-2279
+            ranges: []
+allocation_rules:
+  - rule_id: allocation_route_separation
+    applies_to: "Distinct raw states and manufacturing technologies"
+    rule: "Prefer subdivision. Keep fresh-wilted, field-dried, and purchased-dehydrated inputs; each dryer technology and fuel; meal and pellet forms; and bulk and packaged release routes separately metered or calculated. Do not allocate by averaging unlike routes."
+    source_ids:
+      - eu-pef-2021-2279
+      - us-epa-ap42-alfalfa-1996
+  - rule_id: allocation_internal_recycle
+    applies_to: "Recovered dryer or grinding dust, coarse screenings, and pellet fines"
+    rule: "Measure each fraction before return. An internal return carries the originating process burden and is neither a co-product nor an avoided waste credit; prevent double counting at the sending and receiving processes."
+    source_ids:
+      - us-epa-ap42-alfalfa-1996
+      - fao-feed-milling
+  - rule_id: allocation_saleable_lucerne_fraction
+    applies_to: "A separately saleable lucerne screening, meal fraction, dust fraction, or pellet-fines product"
+    rule: "First subdivide the process where records allow. If subdivision is not possible, use a documented physical relation that reflects the causal production process; use economic allocation only when no defensible physical relation exists, and disclose quantities, prices, period, and sensitivity."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: allocation_energy_and_utilities
+    applies_to: "Shared electricity, steam, hot water, fuel, compressed air, and treatment services"
+    rule: "Allocate shared utilities using stage submeters; otherwise use documented equipment time, rated demand corrected by measured load, processed mass, or wastewater volume. Do not use revenue to allocate a shared utility."
+    source_ids:
+      - fefac-pefcr-feed-data-2021
+      - eu-pef-2021-2279
+  - rule_id: allocation_waste_and_disposal
+    applies_to: "Rejects, discarded dust, ash, packaging waste, screenings, sludge, and wastewater"
+    rule: "Assign generation to the process and product route that caused it. Model treatment or disposal transparently; do not create an avoided-product credit in the foreground inventory unless a separately reviewed downstream substitution model is declared."
+    source_ids:
+      - eu-fdm-bat-2019
+      - eu-pef-2021-2279
+  - rule_id: allocation_packaging_reuse
+    applies_to: "Reusable wood pallets"
+    rule: "Allocate pallet manufacture only over documented foreground reuse cycles within the declared ownership and return system; do not assume a reuse count."
+    source_ids:
+      - fefac-pefcr-feed-data-2021
+      - eu-pef-2021-2279
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_receiving_records
+      process_id: "raw_material_receiving"
+      flow_role: "Received lucerne by state; receiving utilities; rejects; removed soil and stones; receiving dust"
+      record_type: "Scale, meter, inspection, moisture, waste, and emission records"
+      raw_fields: "lot_id; received_state; supplier; origin; gross_mass; tare_mass; accepted_mass; rejected_mass; moisture; electricity; diesel; separated_soil; separated_stones; dust_measurement"
+      collection_method: "Calibrated weighbridge or hopper scale, moisture method, utility records, waste-container weights, and stage emission measurement or calculation"
+      unit: "kg; % moisture; kWh; kg fuel; kg emission"
+      frequency: "Each lot and each receiving operating shift"
+      temporal_coverage: "Representative contiguous production period, normally at least 12 months or all campaigns if seasonal"
+      site_scope: "One identified production site"
+      aggregation_rule: "Sum state-specific accepted and rejected masses and utilities; normalize only to output from the linked route"
+      quality_evidence: "Scale and meter calibration; lot tickets; moisture reports; fuel records; waste manifests; emission method and calculation workbook"
+    - protocol_id: cp_drying_records
+      process_id: "thermal_drying"
+      flow_role: "Dryer utilities, fuels, recovered heat, dried chops, recovered dust, ash, and individual air emissions"
+      record_type: "Stage meters, fuel stocks, mass and moisture balance, control-device records, and stack measurements"
+      raw_fields: "dryer_id; dryer_type; fuel_identity; fuel_quantity; fuel_quality; electricity; steam_state; hot_water_state; recovered_heat_states; inlet_mass_and_moisture; outlet_mass_and_moisture; dust_mass; ash_mass; stack_flow; pollutant_concentrations; operating_hours"
+      collection_method: "Read calibrated meters and scales; retain fuel analyses and emission-test data; calculate heat and species-resolved loads using declared equations"
+      unit: "kWh; MJ; kg; % moisture; Nm3; kg pollutant"
+      frequency: "Per batch or shift for activity data and at the legally or technically applicable emission-monitoring frequency"
+      temporal_coverage: "Complete declared drying campaign or representative annual period"
+      site_scope: "One identified dryer system at one site"
+      aggregation_rule: "Aggregate only one dryer technology and fuel configuration; calculate mass, heat, and pollutant totals before normalization"
+      quality_evidence: "Meter and scale calibration; supplier certificates; moisture tests; stack-test reports; control-device logs; calculation workbook"
+    - protocol_id: cp_grinding_records
+      process_id: "grinding_and_sieving"
+      flow_role: "Grinding utilities, meal, screenings, recovered and discarded dust, and individual particulate fractions"
+      record_type: "Stage meters, scales, screen records, dust-collector records, and emission measurements"
+      raw_fields: "mill_id; screen_specification; feed_mass; feed_moisture; electricity; compressed_air; meal_mass; screenings_mass; recovered_dust_mass; discarded_dust_mass; stack_flow; pm25; pm_coarse"
+      collection_method: "Submeter and calibrated mass records linked to mill and screen settings; size-resolved emission measurement or documented calculation"
+      unit: "kWh; Nm3; kg; % moisture; kg pollutant"
+      frequency: "Each production lot or shift"
+      temporal_coverage: "Complete declared route period"
+      site_scope: "One identified grinding and sieving train"
+      aggregation_rule: "Reconcile inputs, internal returns, meal, screenings, discarded dust, and releases before normalization"
+      quality_evidence: "Meter and scale calibration; screen specification; filter and cyclone logs; emission reports; mass-balance workbook"
+    - protocol_id: cp_pelleting_records
+      process_id: "steam_conditioning_and_pelleting"
+      flow_role: "Meal, exact binder cards if any, conditioning water, steam, electricity, hot pellets, reject, and particulate"
+      record_type: "Batch formulation, meters, scales, pellet-mill operating and emission records"
+      raw_fields: "lot_id; meal_mass_and_moisture; binder_substance_and_mass_or_none; water_mass; steam_mass_pressure_temperature; electricity; hot_pellet_mass_and_moisture; reject_mass; stack_flow; pm25; pm_coarse"
+      collection_method: "Link product-specific formulation and mill settings to calibrated feed, water, steam, power, output, reject, and emission records"
+      unit: "kg; % moisture; MJ; kWh; kg pollutant"
+      frequency: "Each pellet lot or shift"
+      temporal_coverage: "Complete declared pellet route period"
+      site_scope: "One identified conditioner and pellet mill"
+      aggregation_rule: "Keep every exact binder separate; reconcile meal, added water, steam condensate, product, reject, dust, and inventory change"
+      quality_evidence: "Formulation and legal identity; meter and scale calibration; pellet-mill logs; release tests; emission reports"
+    - protocol_id: cp_cooling_records
+      process_id: "pellet_cooling_and_screening"
+      flow_role: "Hot pellets, cooling electricity, accepted pellets, recovered and discarded fines, and particulate"
+      record_type: "Stage meters, scales, screen and cooler records, and emission measurements"
+      raw_fields: "lot_id; cooler_id; screen_specification; hot_pellet_mass; electricity; accepted_pellet_mass; recovered_fines_mass; discarded_fines_mass; inlet_and_outlet_temperature; moisture; stack_flow; pm25; pm_coarse"
+      collection_method: "Calibrated mass and power measurements linked to cooler and screen settings, with size-resolved release measurement or calculation"
+      unit: "kg; kWh; °C; % moisture; kg pollutant"
+      frequency: "Each pellet lot or shift"
+      temporal_coverage: "Complete declared pellet route period"
+      site_scope: "One identified cooler and screen train"
+      aggregation_rule: "Reconcile hot pellets, accepted pellets, internal fines, discarded fines, dust, and inventory change before normalization"
+      quality_evidence: "Meter and scale calibration; screen specification; cooler logs; moisture tests; emission reports"
+    - protocol_id: cp_packaging_release_records
+      process_id: "packaging_storage_and_release"
+      flow_role: "Meal or pellets, electricity, each packaging component, net reference output, off-spec product, packaging waste, and load-out dust"
+      record_type: "Packaging issue, scale, warehouse, release, waste, and emission records"
+      raw_fields: "final_form; lot_id; product_input_mass; moisture; grade; packaging_component_identity_and_mass; pallet_tracking; electricity; net_released_mass; offspec_mass; each_packaging_waste_mass; stack_flow; pm25; pm_coarse"
+      collection_method: "Calibrated product scales, packaging stock reconciliation, pallet records, quality release, warehouse meters, waste weights, and emission measurement or calculation"
+      unit: "kg; kWh; % moisture; kg pollutant"
+      frequency: "Each released lot and monthly inventory reconciliation"
+      temporal_coverage: "Complete declared release period"
+      site_scope: "One identified site and packaging or bulk line"
+      aggregation_rule: "Keep meal and pellet routes and each packaging material separate; use net released mass as denominator"
+      quality_evidence: "Scale and meter calibration; packaging specifications and invoices; stock records; quality certificates; waste manifests; emission reports"
+    - protocol_id: cp_cleaning_records
+      process_id: "cleaning_and_maintenance"
+      flow_role: "Electricity, compressed air, wet-cleaning water, exact chemicals if any, sweepings, wash wastewater, and filter fabric"
+      record_type: "Cleaning event, utility, chemical issue, waste, wastewater, and maintenance records"
+      raw_fields: "event_id; equipment_train; dry_or_wet_method; electricity; compressed_air; water_mass; exact_chemical_identity_and_mass; sweepings_mass; wastewater_volume; used_filter_mass; destination"
+      collection_method: "Event-level log linked to calibrated utility meters, material issues, waste weights, wastewater meters or tanks, and maintenance work orders"
+      unit: "kWh; Nm3; kg; m3"
+      frequency: "Each cleaning or maintenance event"
+      temporal_coverage: "Same period as linked production routes"
+      site_scope: "One identified site and equipment train"
+      aggregation_rule: "Assign each event to the cleaned route by equipment time or processed mass and keep each chemical and waste separate"
+      quality_evidence: "Cleaning logs; meter calibration; safety and product specifications; chemical issue records; waste manifests; maintenance orders"
+    - protocol_id: cp_wastewater_treatment_records
+      process_id: "onsite_wastewater_treatment"
+      flow_role: "Wastewater, electricity, exact reagents if any, effluent, screenings, sludge, five water parameters, methane, and nitrous oxide"
+      record_type: "Flow, laboratory, treatment-operation, chemical, waste, and gas records"
+      raw_fields: "influent_volume; effluent_volume; recycle_and_storage; electricity; exact_reagent_identity_and_mass; screenings_mass_and_solids; sludge_mass_and_solids; cod; bod5; tss; total_nitrogen; total_phosphorus; methane; nitrous_oxide; sampling_times"
+      collection_method: "Calibrated flow and power meters, representative paired samples, accredited or documented analytical methods, waste weights, and gas measurement or calculation"
+      unit: "m3; kWh; kg; mg/L; kg pollutant"
+      frequency: "Continuous or daily flow totals; sampling at applicable permit or BAT frequency"
+      temporal_coverage: "Complete declared treatment and discharge period"
+      site_scope: "One identified on-site treatment train"
+      aggregation_rule: "Use flow-weighted pollutant loads; reconcile water balance and assign shared treatment by actual influent volume and pollutant load"
+      quality_evidence: "Meter calibration; chain of custody; laboratory reports; treatment logs; reagent records; waste manifests; emissions calculation workbook"
+  calculation_rules:
+    - id: calc_reference_normalization
+      applies_to: "All foreground exchanges"
+      rule: "Normalized amount = route-period exchange quantity divided by net conforming reference-product mass released from the same route and period."
+      inputs:
+        - "route-period exchange quantity"
+        - "net released mass"
+      output: "Exchange per 1 kg reference product"
+      source_ids:
+        - eu-pef-2021-2279
+    - id: calc_net_received_material
+      applies_to: "Received lucerne"
+      rule: "Accepted received mass = gross vehicle or container mass minus tare minus separately weighed rejected material; preserve state and moisture by lot."
+      inputs:
+        - "gross mass"
+        - tare
+        - "rejected mass"
+        - "received state"
+        - moisture
+      output: "Accepted lucerne mass by exact state"
+      source_ids:
+        - eu-pef-2021-2279
+    - id: calc_drying_water_balance
+      applies_to: "Thermal drying"
+      rule: "Water removed = inlet wet mass × inlet moisture fraction minus outlet mass × outlet moisture fraction, with recovered and discarded solids reconciled separately."
+      inputs:
+        - "inlet mass and moisture"
+        - "outlet mass and moisture"
+        - dust
+        - ash
+        - "inventory change"
+      output: "Water removed and dryer material-balance residual"
+      source_ids:
+        - us-epa-ap42-alfalfa-1996
+    - id: calc_delivered_heat
+      applies_to: "Steam, hot water, and recovered heat"
+      rule: "Heat = measured mass or volume flow multiplied by the documented inlet-to-outlet specific-enthalpy difference; report steam, hot water, and recovered heat separately."
+      inputs:
+        - flow
+        - pressure
+        - temperature
+        - "return state"
+        - "fluid properties"
+      output: "MJ of one named heat carrier"
+      source_ids:
+        - eu-jrc-fdm-bref-2019
+        - eu-pef-2021-2279
+    - id: calc_shared_stage_electricity
+      applies_to: "Stage electricity without a dedicated submeter"
+      rule: "Stage electricity = site-meter electricity multiplied by the documented ratio of route equipment measured load-hours to total included equipment load-hours; disclose uncertainty."
+      inputs:
+        - "site electricity"
+        - "equipment load"
+        - "operating time"
+      output: "kWh assigned to one process and route"
+      source_ids:
+        - fefac-pefcr-feed-data-2021
+        - eu-pef-2021-2279
+    - id: calc_combustion_species
+      applies_to: "Each dryer combustion emission"
+      rule: "Species mass = measured fuel quantity multiplied by the documented fuel- and technology-specific species factor, adjusted only for measured control and oxidation parameters; use stack measurement instead when representative."
+      inputs:
+        - "exact fuel"
+        - quantity
+        - quality
+        - "species factor"
+        - control
+        - "operating state"
+      output: "kg of one named chemical or particulate fraction to air"
+      source_ids:
+        - eu-fdm-bat-2019
+        - eu-pef-2021-2279
+    - id: calc_particulate_load
+      applies_to: "Each process particulate fraction"
+      rule: "Pollutant load = flow-weighted concentration multiplied by dry or wet exhaust volume on the same reference condition; size fractions shall be non-overlapping."
+      inputs:
+        - "exhaust flow"
+        - concentration
+        - duration
+        - "reference condition"
+        - "size fraction"
+      output: "kg of one particulate fraction to air"
+      source_ids:
+        - us-epa-ap42-alfalfa-1996
+        - eu-fdm-bat-2019
+    - id: calc_packaging_mass
+      applies_to: "Each packaging component"
+      rule: "Component mass = verified unit mass multiplied by units consumed, corrected with opening and closing stock and documented pallet reuse where applicable."
+      inputs:
+        - "unit mass"
+        - count
+        - "opening stock"
+        - receipts
+        - "closing stock"
+        - "reuse cycles"
+      output: "kg of one named packaging material"
+      source_ids:
+        - fefac-pefcr-feed-data-2021
+        - eu-pef-2021-2279
+    - id: calc_effluent_pollutant_load
+      applies_to: "COD, BOD5, TSS, total nitrogen, or total phosphorus"
+      rule: "Pollutant load = paired flow-weighted effluent concentration multiplied by discharged effluent volume with unit conversion documented."
+      inputs:
+        - "effluent volume"
+        - "one pollutant concentration"
+        - "sample coverage"
+      output: "kg of one named water parameter to water"
+      source_ids:
+        - eu-fdm-bat-2019
+        - eu-pef-2021-2279
+    - id: calc_route_mass_balance
+      applies_to: "Each process and complete route"
+      rule: "Residual = measured inputs minus measured products, internal transfers, wastes, releases, measured inventory change, and documented moisture change; investigate rather than force-close material residuals."
+      inputs:
+        - "all measured mass terms"
+        - moisture
+        - "inventory change"
+      output: "Disclosed mass-balance residual and reconciliation result"
+      source_ids:
+        - eu-pef-2021-2279
+  data_quality_requirements:
+    - id: dq_product_identity
+      applies_to: "Reference product"
+      requirement: "Confirm final form, single-lucerne identity, CPC 23320 scope, moisture, declared grade, packaging state, site, and period; retain the bakery-comment rejection in the audit trail."
+      evidence: "Product specification, release certificate, classification check, and reference-flow verification record"
+    - id: dq_route_identity
+      applies_to: "All foreground processes"
+      requirement: "Record raw-material state, dryer technology and heat source, grinding/screen settings, pelleting and conditioning configuration, binder identity or none, cooler/screen settings, and packaging configuration without averaging unlike routes."
+      evidence: "Route diagram, equipment list, lot genealogy, formulation record, and process logs"
+    - id: dq_measurement
+      applies_to: "Meters, scales, and laboratory data"
+      requirement: "Use calibrated instruments and documented methods appropriate to the measured quantity; retain calibration validity, detection limits, sampling conditions, and missing-data treatment."
+      evidence: "Calibration certificates, laboratory reports, sampling plans, and instrument logs"
+    - id: dq_temporal
+      applies_to: "Foreground activity data"
+      requirement: "Cover a representative production period, normally at least 12 consecutive months or every campaign in a seasonal year; disclose shutdowns, abnormal operation, and incomplete coverage."
+      evidence: "Dated production, utility, maintenance, waste, and release records"
+    - id: dq_completeness
+      applies_to: "Inventory"
+      requirement: "Include all known product, waste, and elementary exchanges, with each electricity, heat carrier, fuel, chemical, packaging component, waste, water parameter, and air emission in its own card."
+      evidence: "Inventory reconciliation, supplier and utility records, emission registers, waste manifests, and unresolved-UUID register"
+    - id: dq_mass_balance
+      applies_to: "Material processes"
+      requirement: "Report process and route mass-balance residuals and investigate material discrepancies using moisture, dust recovery, internal recycle, reject, and storage records."
+      evidence: "Signed mass-balance workbook and corrective-action note for unexplained residuals"
+    - id: dq_emissions
+      applies_to: "Air and water releases"
+      requirement: "Match emission measurements or factors to the actual technology, fuel, control device, compartment, operating state, and period; do not report overlapping particulate fractions or combine chemical species."
+      evidence: "Stack or wastewater reports, permit records, factor source, control logs, and calculation workbook"
+    - id: dq_verifiability
+      applies_to: "Published package"
+      requirement: "Preserve the product-specific BoM, company-specific manufacturing activity data, calculation files, secondary-dataset identities, allocation decisions, data-quality assessment, and reviewer access to underlying records."
+      evidence: "PEF-style data inventory, source register, model archive, and verification statement"
+validation_rules:
+  - rule_id: validate_reference_identity
+    applies_to: "Reference flow"
+    rule: "Require UUID f984b084-e66e-4d11-8365-354ae0ad5a74, Product flow type, exact CPC 23320, Mass property 93a60a56-a3c8-11da-a746-0800200b9a66, unit group 93a60a57-a4c8-11da-a746-0800200c9a66, and kg. Reject the conflicting remote bakery generalComment."
+    source_ids:
+      - un-cpc-3-2025
+  - rule_id: validate_reference_amount
+    applies_to: "Reference output"
+    rule: "Require exactly 1 kg net conforming as-sold meal or pellets and exclude all packaging mass."
+    source_ids:
+      - un-cpc-3-2025
+      - eu-fdm-bat-2019
+  - rule_id: validate_route_lock
+    applies_to: "Data package identity"
+    rule: "Fail when final form, received lucerne state, drying technology and heat source or none, grinding/screen configuration, pelleting and conditioning route or none, binder identity or none, release moisture, packaging, site, or period is missing; fail when unlike routes are averaged."
+    source_ids:
+      - us-epa-ap42-alfalfa-1996
+      - eu-fdm-bat-2019
+      - eu-pef-2021-2279
+  - rule_id: validate_process_coverage
+    applies_to: "Process map"
+    rule: "Require receiving, grinding/sieving, packaging or bulk release, and cleaning; require drying, pelleting, cooling/screening, and on-site wastewater treatment exactly when their inclusion conditions apply."
+    source_ids:
+      - us-epa-ap42-alfalfa-1996
+      - fao-feed-milling
+      - eu-fdm-bat-2019
+  - rule_id: validate_atomic_selected_flow
+    applies_to: "Inventory cards"
+    rule: "Require every Selected flow to be one exact exchange. Reject collective or selector labels for feed, materials, energy, fuels, packaging, chemicals, additives, by-products, wastes, pollutants, or emissions."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: validate_unlisted_actual_flow
+    applies_to: "Actual binders, chemicals, fuels, packaging, wastes, and emissions"
+    rule: "If an actual legal flow is not listed, require a newly authored exact card with its own row_id, property/unit, rule, protocol, sources, and unresolved UUID entry; fail any generic placeholder."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: validate_uuid_policy
+    applies_to: "Tiangong references"
+    rule: "Allow only the verified reference product, Mass property, and unit-group UUIDs in this candidate. Require every other UUID cell to remain blank until exact hybrid search and direct public state100 read both verify the same semantic flow."
+    source_ids: []
+  - rule_id: validate_uuid_closure
+    applies_to: "Manifest review metadata"
+    rule: "Require every inventory card without a UUID, except the UUID-bearing reference output, to have exactly one matching unresolved entry by row_id; reject missing, duplicate, or stale entries."
+    source_ids: []
+  - rule_id: validate_amount_provenance
+    applies_to: "Non-reference inventory quantities"
+    rule: "Require foreground_record or calculated_value tied to a collection protocol and calculation rule where applicable; reject fabricated defaults, unsupported intervals, and undocumented estimates."
+    source_ids:
+      - fefac-pefcr-feed-data-2021
+      - eu-pef-2021-2279
+  - rule_id: validate_material_balance
+    applies_to: "Each route"
+    rule: "Require reconciled input, output, moisture, internal recycle, waste, emission, and inventory-change terms and a disclosed investigated residual."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: validate_emission_separation
+    applies_to: "Direct emissions"
+    rule: "Require separate chemical cards for fossil CO2, biogenic CO2, fossil methane, nitrous oxide, carbon monoxide, nitric oxide, nitrogen dioxide, and sulfur dioxide when present; require non-overlapping particulate-size cards and separate COD, BOD5, TSS, total nitrogen, and total phosphorus loads."
+    source_ids:
+      - eu-fdm-bat-2019
+      - eu-pef-2021-2279
+  - rule_id: validate_data_quality
+    applies_to: "Package evidence"
+    rule: "Require calibration, product-specific composition, site activity data, source and factor identity, allocation records, route representativeness, quality assessment, and evidence available for review."
+    source_ids:
+      - eu-pef-2021-2279
+      - fefac-pefcr-feed-data-2021
+published_dataset_profile:
+  dataset_role: "Candidate company-specific foreground production dataset that may become a secondary_dataset or background_dataset after methodology and data review"
+  downstream_use: "Route-specific modelling of lucerne (alfalfa) meal or pellet supply at the producing facility gate"
+  allowed_use: "Use only for the declared raw-material state, artificial-drying technology and fuel or no-drying route, grinding/screen configuration, meal or pellet form, conditioning and binder state, packaging, geography, site technology, and production period"
+  excluded_use: "Mixed feed, pet food, other forage species, unprocessed hay, leaf-protein concentrate, bakery products, a different dryer or fuel mix, combined meal/pellet average, animal feeding or digestion, manure management, distribution, or packaging end-of-life without additional modelling"
+  required_metadata: "PCR id and candidate status; exact reference UUID and unit support; CPC 23320; final form; raw-material state; drying technology and heat source; grinding and screen settings; pelleting and conditioning route; exact binder or none; moisture and grade; bulk or each packaging component; site and period; process inclusion; upstream dataset identities; allocation; unresolved UUIDs; exclusions"
+  required_quality_disclosure: "Primary-data coverage; meter and scale calibration; sampling and analytical methods; route and technology representativeness; mass and water balances; internal recycle; direct emissions; wastewater; allocation; missing data; uncertainty; unresolved identities; source versions; verification status"
+  update_trigger: "Change in received lucerne state or supplier mix, dryer technology or fuel, grinding/screen specification, pelleting/conditioning or binder, cooler/screen, packaging configuration, product moisture or grade, emission control, wastewater treatment, allocation, background datasets, reference UUID status, or representative period"
+data_sources:
+  - id: "un-cpc-3-2025"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, *Central Product Classification (CPC) Version 3.0, structure and explanatory notes*, 30 June 2025. https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Exp_Notes_30Jun2025.pdf"
+    used_for: "Exact CPC 23320 identity and separation from CPC 2331 feed preparations and division 234 bakery products"
+  - id: "us-epa-ap42-alfalfa-1996"
+    type: "official_guidance"
+    reference: "U.S. Environmental Protection Agency, *AP-42, Section 9.9.4: Alfalfa Dehydrating*, September 1996. https://www.epa.gov/sites/default/files/2020-10/documents/c9s09-4.pdf"
+    used_for: "Alfalfa receipt state, direct-fired rotary drying, cyclone recovery, hammermilling, steam conditioning, pelleting, cooling, screening, storage, and particulate-source structure; no AP-42 example factor is adopted as a default amount"
+  - id: "eu-jrc-fdm-bref-2019"
+    type: "official_guidance"
+    reference: "European Commission Joint Research Centre, *Best Available Techniques Reference Document for the Food, Drink and Milk Industries*, JRC118627, EUR 29978 EN, 2019, DOI 10.2760/243911. https://publications.jrc.ec.europa.eu/repository/handle/JRC118627"
+    used_for: "FDM and animal-feed process scope, company operations, utility, cleaning, wastewater, waste-gas, monitoring, and environmental-management structure; no sector value is copied as a default"
+  - id: "eu-fdm-bat-2019"
+    type: "standard"
+    reference: "Commission Implementing Decision (EU) 2019/2031 establishing BAT conclusions for the food, drink and milk industries. https://eur-lex.europa.eu/eli/dec_impl/2019/2031/oj"
+    used_for: "Green-fodder predrying and heat recovery; grinding and pellet-cooling dust; energy, water, dry cleaning, treatment, COD, BOD, TSS, nitrogen, phosphorus, and monitoring structure; BAT levels are not PCR default quantities"
+  - id: "fao-feed-milling"
+    type: "handbook"
+    reference: "Food and Agriculture Organization of the United Nations, *Feed Milling Processes*, Chapter 18, Section 4, pelleting, cooling, and screening. https://www.fao.org/4/x5738e/x5738e0j.htm"
+    used_for: "Liquid-water or steam conditioning, die pelleting, cooler operation, screening, and pellet-fines return; example operating values are not adopted as defaults"
+  - id: "fefac-pefcr-feed-data-2021"
+    type: "official_guidance"
+    reference: "European Feed Manufacturers’ Federation, *Key elements in data collection for PEFCR Feed*, 2021. https://fefac.eu/wp-content/uploads/2021/10/SR_Factsheet-key-elements-data-collection.pdf"
+    used_for: "Exact feed-ingredient bill of materials and company primary data for manufacturing energy, water, packaging, origin, and downstream boundary"
+  - id: "eu-pef-2021-2279"
+    type: "official_guidance"
+    reference: "Commission Recommendation (EU) 2021/2279 on Environmental Footprint methods, consolidated English text. https://eur-lex.europa.eu/eli/reco/2021/2279/2021-12-30/eng"
+    used_for: "Product-specific BoM, company-specific manufacturing data, complete inputs and outputs, allocation, reference-flow normalization, data quality, transparency, and verification"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:b183386e8049f43bc433e10f366eeb9530b6bb26e178046cdab2147dcee236d3"
+  generated_content_sha256: "sha256:deb2071d9eb6bc6364831bae20bbefd62e718da80aead12ed92b8aae74a3d5f3"

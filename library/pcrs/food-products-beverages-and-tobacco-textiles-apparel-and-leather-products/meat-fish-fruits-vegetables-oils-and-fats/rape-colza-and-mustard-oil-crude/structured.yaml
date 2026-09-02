@@ -1,10 +1,686 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "21641"
-  title: "Rape, colza and mustard oil, crude"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.food-products-beverages-and-tobacco-textiles-apparel-and-leather-products.meat-fish-fruits-vegetables-oils-and-fats.rape-colza-and-mustard-oil-crude"
+  classification_refs: "CPC 3.0: 21641, Rape, colza and mustard oil, crude (exact mapping context)"
+  covered_products: "Bulk crude oil obtained from rape/rapeseed, colza, or mustard seed by mechanical pressing, pre-press plus solvent extraction, direct solvent extraction, or another declared oil-mill route that stops before refining"
+  excluded_products: "Refined rape/colza/mustard oil; finished bottled cooking oil; biodiesel and other chemically converted products; oilseed meal or press cake as the reference product; seed cultivation datasets"
+  representative_product: "One kilogram of crude rape/colza/mustard oil at the extraction-plant gate, as received and before refining"
+  production_route: "Seed receiving and preparation followed by mechanical and/or solvent extraction, crude-oil recovery, route-relevant clarification or degumming, and bulk storage"
+  market_state: "Bulk crude oil at oil-mill or extraction-plant gate; species/feedstock, low-erucic or canola status when claimed, extraction route, conditioning state, moisture/volatile matter basis, and any degumming or clarification must be declared"
+functional_unit:
+  what: "Crude rape, colza, or mustard oil delivered as a bulk product before refining"
+  how_much: "1 kg"
+  how_well: "Product identity, seed species/type, low-erucic or canola claim when applicable, extraction route, crude-oil conditioning state, mass basis, and plant-gate state are declared; refined oil is excluded"
+  how_long_or_cycle: "One production batch or a documented reporting-period production mix normalized to 1 kg of qualifying crude oil output"
+  reference_flow_link: "The functional unit is realized by the declared 1 kg reference product flow at the oil-mill or extraction-plant gate"
+system_boundary:
+  rules:
+    - rule_id: boundary_crude_oil_gate
+      applies_to: "All conforming datasets"
+      rule: "Include foreground operations from seed receipt through qualifying bulk crude-oil storage or dispatch; exclude downstream refining, filling, distribution, use, and end-of-life."
+      source_ids:
+        - us-epa-ap42-9-11-1-vegetable-oil-processing
+        - codex-cxs-210-named-vegetable-oils
+    - rule_id: boundary_route_condition
+      applies_to: "Mechanical and solvent routes"
+      rule: "Include only route steps that actually occur. Solvent extraction requires extraction, oil and meal desolventizing, solvent recovery, and relevant emission/wastewater records; a mechanical-only route must not inherit solvent operations."
+      source_ids:
+        - us-epa-ap42-9-11-1-vegetable-oil-processing
+    - rule_id: boundary_upstream_seed
+      applies_to: "Seed supply"
+      rule: "Represent seed cultivation and inbound transport with compatible upstream datasets and prevent double counting when site records already aggregate an upstream stage."
+      source_ids:
+        - eu-pef-2021-2279
+boundary_abstraction:
+  declared_starting_condition: "Oil-bearing rape/rapeseed, colza, or mustard seed received at the oil-mill gate, with species/type, supplier origin, moisture, foreign matter, and mass basis declared"
+  starting_condition_role: "Upstream product input to the foreground oil-mill processes"
+  product_classification_scope: "Crude rape, colza, and mustard oil only; the boundary ends before refining to CPC 21642 or another refined-oil product"
+  recursive_input_rule: "If qualifying crude oil of the same category is purchased as an intermediate input, record it once as a separate upstream product dataset and exclude the corresponding extraction operations from the foreground package; disclose the amount, origin, conditioning state, and aggregation rule"
+  upstream_dataset_requirement: "Use separate upstream datasets for seed cultivation and transport to the oil mill. Their geography, technology, temporal coverage, and mass basis must be compatible with the declared seed supply"
+  disclosure: "Declare seed types and shares, extraction and solvent route, included preparation/clarification steps, allocation method, co-products, cut-offs, reporting period, site coverage, purchased intermediate crude oil, and departures from this boundary"
+reference_flow_definition:
+  reference_amount: "1 kg"
+  product_flow_ref:
+    name: "Rape, colza and mustard oil, crude"
+    uuid: "092932e3-7b6d-430d-b6e5-722b8f4e1c6d"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "seed species/type"
+    - "low-erucic or canola status when claimed"
+    - "extraction route"
+    - "solvent used when applicable"
+    - "crude-oil clarification/degumming state"
+    - "as-received or dry-matter basis"
+    - "moisture and volatile matter basis"
+    - "plant and geography"
+    - "reporting period"
+    - "allocation method and co-products"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "Reference crude-oil output"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Normalize the foreground package to exactly 1 kg of qualifying crude oil at the declared plant gate. Do not convert an oil-volume record to mass without a measured batch density or a declared product-specific density source."
+  - id: mass_basis_consistency
+    applies_to: "Seed, crude oil, meal/cake, hulls, foots, sludge, and other mass flows"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "State whether each mass is as received or dry matter. Use measured moisture or volatile-matter data for any conversion and retain the original measurements."
+  - id: energy_conversion
+    applies_to: "Purchased electricity and thermal energy"
+    required_property_ref:
+      name: "Energy property selected for the site carrier"
+      uuid: ""
+    required_unit: "kWh or MJ"
+    rule: "Retain invoice or meter units. Convert electricity only with 1 kWh = 3.6 MJ; do not convert fuel mass or volume to energy without a recorded net calorific value and source."
+  - id: solvent_balance_unit
+    applies_to: "Solvent-extraction route"
+    required_property_ref:
+      name: "Property of the actual solvent flow"
+      uuid: ""
+    required_unit: "kg or L"
+    rule: "Use one consistent property and unit across purchase, recovery, stock, product/meal carryover, wastewater, and air-loss records. Any mass-volume conversion requires measured or supplier-specific density."
+process_map:
+  - id: seed_receiving_preparation
+    name: "Seed receiving and preparation"
+    inclusion: "required"
+    inclusion_condition: "Always include operations performed after the seed crosses the oil-mill gate; disclose outsourced or omitted preparation"
+    role: "Prepare declared oilseed for the selected extraction route"
+    quantitative_reference: "kg prepared seed delivered to extraction"
+  - id: oil_extraction_recovery
+    name: "Oil extraction and crude-oil recovery"
+    inclusion: "required"
+    inclusion_condition: "Include the actual mechanical, pre-press, direct-solvent, or combined route"
+    role: "Separate crude oil from prepared seed and recover route-specific solvent where applicable"
+    quantitative_reference: "kg crude-oil intermediate recovered"
+  - id: crude_oil_clarification_storage
+    name: "Crude-oil clarification and bulk storage"
+    inclusion: "required"
+    inclusion_condition: "Include filtration, settling, centrifugation, route-relevant degumming, transfer, and storage operations that occur before the declared plant gate"
+    role: "Deliver qualifying crude oil in the declared market state"
+    quantitative_reference: "1 kg qualifying crude-oil output"
+process_inventory:
+  - id: seed_receiving_preparation
+    label: "Seed receiving and preparation"
+    inputs:
+      product:
+        - row_id: seed_input
+          role: "Oil-bearing seed received at the mill"
+          name: "Rape or colza seed for qualifying rape/colza seed; resolve a matching public mustard-seed product flow for mustard routes"
+          flow_type: "product"
+          flow_ref:
+            uuid: "be87e81e-303f-4607-a1f5-0cb5ef2d8f74"
+          property_unit: "Mass / kg"
+          description: "Record each rape/rapeseed, colza, or mustard seed stream that crosses the oil-mill boundary. Preserve species/type, supplier, origin, moisture, foreign matter, and mass basis rather than merging unlike seed streams before quality checks."
+          amount:
+            expression: "Measured inbound accepted seed mass, adjusted only by documented weighbridge corrections and reported on the declared mass basis"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "Per kg prepared seed delivered to extraction and subsequently normalized to 1 kg reference crude oil"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_seed_receipts
+              source_ids:
+                - codex-cxs-210-named-vegetable-oils
+                - us-epa-ap42-9-11-1-vegetable-oil-processing
+            ranges: []
+        - row_id: preparation_energy
+          role: "Preparation electricity and thermal energy"
+          name: "Site-specific purchased electricity and thermal-energy carrier matching invoices and meters"
+          flow_type: "product"
+          property_unit: "Energy / kWh or MJ"
+          description: "Record metered or allocated electricity and each thermal-energy carrier used for conveying, cleaning, drying, cracking, conditioning, dehulling, flaking, or pressing preparation."
+          amount:
+            expression: "Metered use, or an explicitly documented allocation from a shared meter to this process"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "Per kg prepared seed delivered to extraction"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_utilities
+              source_ids:
+                - us-epa-ap42-9-11-1-vegetable-oil-processing
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: prepared_seed_output
+          role: "Prepared seed transferred to extraction"
+          name: "Internal prepared rape/colza/mustard seed intermediate"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the prepared seed mass after removal of foreign matter and route-specific hull fractions. This is an internal foreground transfer and must reconcile with seed input, removed material, moisture change, and recorded losses."
+          amount:
+            expression: "Measured transfer mass or calculated mass balance from accepted seed, removed material, and measured moisture change"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "Per kg prepared seed delivered to extraction"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_seed_receipts
+              source_ids:
+                - us-epa-ap42-9-11-1-vegetable-oil-processing
+            ranges: []
+      waste:
+        - row_id: seed_preparation_residue
+          role: "Foreign matter and rejected seed material"
+          name: "Site-specific seed-cleaning residue or rejected-seed waste flow"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record foreign material, rejected seed, and route-specific separated material according to its actual destination. A material sold or used as a co-product must be a product flow rather than waste."
+          amount:
+            expression: "Weighed or otherwise measured outbound quantity by destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "Per kg prepared seed delivered to extraction"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_outputs
+              source_ids:
+                - us-epa-ap42-9-11-1-vegetable-oil-processing
+            ranges: []
+      elementary:
+        - row_id: preparation_particulate_air
+          role: "Preparation particulate emissions to air"
+          name: "Site-specific particulate matter emission flow with compartment declared"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record measured or permitted particulate emissions from receiving, conveying, cleaning, drying, cracking, dehulling, and flaking when these emissions cross the environment boundary. Do not use AP-42 factors as facility measurements when site records are available."
+          amount:
+            expression: "Stack or fugitive-emission measurement, permit inventory, or disclosed site model; report the method and control device"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "Per kg prepared seed delivered to extraction"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emissions_wastewater
+              source_ids:
+                - us-epa-ap42-9-11-1-vegetable-oil-processing
+            ranges: []
+  - id: oil_extraction_recovery
+    label: "Oil extraction and crude-oil recovery"
+    inputs:
+      product:
+        - row_id: prepared_seed_input
+          role: "Prepared oilseed transferred from preparation"
+          name: "Internal prepared rape/colza/mustard seed intermediate"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the internal prepared-seed transfer using the same batch identity, mass basis, and amount as the upstream prepared-seed output."
+          amount:
+            expression: "Equal to prepared_seed_output for the linked batch or reporting-period balance"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "Per kg crude-oil intermediate recovered"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_seed_receipts
+              source_ids:
+                - us-epa-ap42-9-11-1-vegetable-oil-processing
+            ranges: []
+        - row_id: extraction_energy
+          role: "Extraction electricity and thermal energy"
+          name: "Site-specific purchased electricity and thermal-energy carrier matching invoices and meters"
+          flow_type: "product"
+          property_unit: "Energy / kWh or MJ"
+          description: "Record electricity and every fuel, steam, or heat carrier used by presses, extractors, evaporators, desolventizers, condensers, pumps, dryers, and solvent recovery equipment."
+          amount:
+            expression: "Metered use or documented shared-utility allocation to the extraction process"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "Per kg crude-oil intermediate recovered"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_utilities
+              source_ids:
+                - us-epa-ap42-9-11-1-vegetable-oil-processing
+                - eu-pef-2021-2279
+            ranges: []
+        - row_id: extraction_solvent_makeup
+          role: "Extraction solvent make-up"
+          name: "Site-specific extraction solvent product flow, normally hexane where facility records identify hexane"
+          flow_type: "product"
+          property_unit: "Mass / kg or Volume / L, consistently with the solvent balance"
+          description: "Include this row only for a solvent-extraction route. Select the actual solvent product flow; do not substitute a generic organic-solvent UUID when the purchased material is known."
+          amount:
+            expression: "Purchases plus opening stock minus closing stock, corrected for transfers and recovered solvent returned from outside the balance boundary"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "Per kg crude-oil intermediate recovered"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_solvent_balance
+              source_ids:
+                - us-epa-ap42-9-11-1-vegetable-oil-processing
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: crude_oil_intermediate
+          role: "Crude-oil intermediate recovered"
+          name: "Rape, colza and mustard oil, crude"
+          flow_type: "product"
+          flow_ref:
+            uuid: "092932e3-7b6d-430d-b6e5-722b8f4e1c6d"
+          property_unit: "Mass / kg"
+          description: "Record crude oil after pressing and/or solvent removal and before final plant-gate clarification or bulk-storage adjustments."
+          amount:
+            expression: "Measured transfer mass to crude-oil clarification or storage"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "Per kg crude-oil intermediate recovered"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_outputs
+              source_ids:
+                - codex-cxs-210-named-vegetable-oils
+                - us-epa-ap42-9-11-1-vegetable-oil-processing
+            ranges: []
+        - row_id: oilseed_coproducts
+          role: "Meal, press cake, and recoverable hull co-products"
+          name: "Route- and feedstock-specific meal, press-cake, or hull product flow resolved from foreground output identity"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record each marketable meal, press cake, hull, or other co-product separately with its actual identity, composition basis, mass, and destination. Do not use a soybean-meal flow for rape/colza/mustard meal."
+          amount:
+            expression: "Weighed outbound or internal-transfer mass by co-product and destination"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "Per kg crude-oil intermediate recovered"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_outputs
+              source_ids:
+                - us-epa-ap42-9-11-1-vegetable-oil-processing
+                - eu-pef-2021-2279
+            ranges: []
+      waste:
+        - row_id: extraction_waste
+          role: "Extraction residues and spent materials"
+          name: "Site-specific waste flow by composition and treatment route"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record spent filters, unrecovered sludge, contaminated absorbents, off-spec material, and other wastes by treatment destination. Materials recovered as products or recycled solvent are not waste flows."
+          amount:
+            expression: "Weighed shipment, waste manifest, or inventory-change balance"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "Per kg crude-oil intermediate recovered"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_outputs
+              source_ids:
+                - us-epa-ap42-9-11-1-vegetable-oil-processing
+            ranges: []
+      elementary:
+        - row_id: solvent_emission_air
+          role: "Solvent emissions to air"
+          name: "Actual solvent emitted to air with compartment declared"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Include this row only when solvent is used. Calculate the loss from a closed solvent balance and reconcile it with available measured or permitted air emissions, wastewater carryover, and solvent retained in products or co-products."
+          amount:
+            expression: "Closed solvent balance, with measured emissions preferred and all non-air destinations separately recorded"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "Per kg crude-oil intermediate recovered"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_solvent_balance
+              source_ids:
+                - us-epa-ap42-9-11-1-vegetable-oil-processing
+            ranges: []
+  - id: crude_oil_clarification_storage
+    label: "Crude-oil clarification and bulk storage"
+    inputs:
+      product:
+        - row_id: crude_oil_intermediate_input
+          role: "Crude-oil intermediate received"
+          name: "Rape, colza and mustard oil, crude"
+          flow_type: "product"
+          flow_ref:
+            uuid: "092932e3-7b6d-430d-b6e5-722b8f4e1c6d"
+          property_unit: "Mass / kg"
+          description: "Link the intermediate input to the extraction output without changing product identity or mass basis. If purchased crude oil enters this process, apply the recursive input rule and keep it separate from site-produced oil."
+          amount:
+            expression: "Measured linked transfer plus separately measured qualifying purchased crude oil"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "Per 1 kg qualifying crude-oil output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_outputs
+              source_ids:
+                - codex-cxs-210-named-vegetable-oils
+            ranges: []
+        - row_id: clarification_utilities
+          role: "Clarification, transfer, and storage utilities"
+          name: "Site-specific utility or processing-aid product flow matching foreground records"
+          flow_type: "product"
+          property_unit: "Property and unit of the selected flow"
+          description: "Record electricity, heat, water, inert gas, filter aid, and other processing aids only when used to achieve the declared crude-oil state."
+          amount:
+            expression: "Metered, purchased, or inventory-balanced quantity by utility or aid"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "Per 1 kg qualifying crude-oil output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_utilities
+              source_ids:
+                - codex-cxs-210-named-vegetable-oils
+                - us-epa-ap42-9-11-1-vegetable-oil-processing
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: reference_crude_oil_output
+          role: "Qualifying crude oil at plant gate"
+          name: "Rape, colza and mustard oil, crude"
+          flow_type: "product"
+          flow_ref:
+            uuid: "092932e3-7b6d-430d-b6e5-722b8f4e1c6d"
+          property_unit: "Mass / kg"
+          description: "This is the reference output. It must remain crude oil and must not include alkali refining, bleaching, deodorisation, or other downstream refining operations."
+          amount:
+            expression: "Exactly 1 kg after normalization; retain the measured unnormalized output and declared mass basis"
+            value_mode: "fixed_value"
+            specificity: "product_specific"
+            basis:
+              text: "PCR reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "identity_reference"
+              collection_protocol_id: cp_material_outputs
+              source_ids:
+                - codex-cxs-210-named-vegetable-oils
+            ranges: []
+      waste:
+        - row_id: clarification_waste
+          role: "Foots, sludge, spent filter aid, and wastewater"
+          name: "Site-specific waste flow by composition and treatment route"
+          flow_type: "waste"
+          property_unit: "Mass / kg or Volume / m3 as measured"
+          description: "Record each waste stream from settling, centrifugation, filtration, degumming when included, tank cleaning, and spill control. If a stream is sold or beneficially used, classify it as a product co-output and include it in allocation review."
+          amount:
+            expression: "Weighed shipment, wastewater meter, manifest, or documented balance"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "Per 1 kg qualifying crude-oil output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_emissions_wastewater
+              source_ids:
+                - us-epa-ap42-9-11-1-vegetable-oil-processing
+            ranges: []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocation_avoid_first
+    applies_to: "Multi-output preparation and extraction processes"
+    rule: "First subdivide directly attributable operations or expand the system when justified by the study goal. Do not allocate burdens that can be assigned from separate meters, batches, or process records."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: allocation_physical_then_other
+    applies_to: "Remaining shared burdens among crude oil, meal/cake, hulls, and other co-products"
+    rule: "If allocation cannot be avoided, use a documented relevant physical relationship. If no relevant physical relationship can be demonstrated, use another justified relationship such as economic value with a representative price period. Apply one internally consistent method and disclose the rationale."
+    source_ids:
+      - eu-pef-2021-2279
+      - ilcd-format-1-1-process
+  - rule_id: allocation_fraction_check
+    applies_to: "Every allocated multi-output process"
+    rule: "Allocation fractions must cover all co-products, use the same reporting period and basis, and sum to 1.000 within rounding tolerance. Report unallocated wastes separately and perform a sensitivity result when allocation choice materially changes the crude-oil result."
+    source_ids:
+      - ilcd-format-1-1-process
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_seed_receipts
+      process_id: "seed_receiving_preparation"
+      flow_role: "Seed input and prepared-seed transfer"
+      record_type: "Weighbridge, intake inspection, moisture test, and batch record"
+      raw_fields: "date; batch_id; supplier; origin; seed species/type; low-erucic/canola claim; gross_mass; tare_mass; accepted_mass; moisture; foreign_matter; rejected_mass; mass_basis"
+      collection_method: "Calibrated weighbridge and documented sampling/test method"
+      unit: "kg; %"
+      frequency: "Each delivery or batch"
+      temporal_coverage: "Complete reporting period, normally 12 consecutive months or the full seasonal campaign"
+      site_scope: "Every facility and included intake line"
+      aggregation_rule: "Sum accepted mass by seed type and batch; keep moisture-basis conversions separate"
+      quality_evidence: "Calibration records; laboratory method; reconciliation to supplier invoice and stock movement"
+    - protocol_id: cp_energy_utilities
+      process_id: "all"
+      flow_role: "Electricity, fuel, steam, heat, water, inert gas, and processing aids"
+      record_type: "Meter, invoice, tank dip, or inventory record"
+      raw_fields: "timestamp; meter_id; opening; closing; purchases; stock_change; carrier; unit; process_assignment; allocation_key"
+      collection_method: "Calibrated submeter preferred; otherwise documented allocation from facility total"
+      unit: "kWh; MJ; kg; L; m3"
+      frequency: "Meter interval and monthly close"
+      temporal_coverage: "Same period as product output"
+      site_scope: "Each facility and utility system"
+      aggregation_rule: "Sum direct meters; allocate only shared use with documented causal key"
+      quality_evidence: "Meter calibration; invoices; stock reconciliation; allocation worksheet"
+    - protocol_id: cp_material_outputs
+      process_id: "all"
+      flow_role: "Crude oil, prepared seed, meal/cake, hulls, residues, and other outputs"
+      record_type: "Scale ticket, production log, tank gauge, shipment, or inventory record"
+      raw_fields: "date; batch_id; material_identity; product_or_waste; gross_mass; tare_mass; moisture_or_volatiles; destination; opening_stock; closing_stock"
+      collection_method: "Calibrated scale or tank measurement with documented density where volume is converted"
+      unit: "kg; L; m3; %"
+      frequency: "Each batch or transfer and monthly close"
+      temporal_coverage: "Complete reporting period"
+      site_scope: "Every included process and storage location"
+      aggregation_rule: "Sum by identity and destination; reconcile transfers and stock change; normalize only after period closure"
+      quality_evidence: "Calibration; delivery/manifest records; stock reconciliation; product test certificate"
+    - protocol_id: cp_solvent_balance
+      process_id: "oil_extraction_recovery"
+      flow_role: "Solvent make-up, recovery, stock, carryover, wastewater, and air loss"
+      record_type: "Purchase, tank, recovery meter, laboratory, emission, and wastewater records"
+      raw_fields: "solvent_identity; purchases; opening_stock; closing_stock; recovered_internal; offsite_transfer; oil_carryover; meal_carryover; wastewater_load; measured_air_release; density; unit"
+      collection_method: "Closed mass balance using consistent unit; reconcile with measured emissions and discharge data"
+      unit: "kg or L"
+      frequency: "Daily or batch record with monthly closure"
+      temporal_coverage: "Entire solvent-route reporting period"
+      site_scope: "Complete solvent system including tanks and recovery"
+      aggregation_rule: "Inputs minus stocks, outputs, recovered transfers, and non-air destinations equals residual loss; explain imbalance"
+      quality_evidence: "Tank calibration; invoices; laboratory tests; emission and discharge reports; signed balance review"
+    - protocol_id: cp_emissions_wastewater
+      process_id: "all"
+      flow_role: "Particulate, solvent, wastewater, and treatment residues"
+      record_type: "Stack/fugitive test, permit inventory, wastewater meter/sample, and waste manifest"
+      raw_fields: "source; substance; compartment; concentration; flow_rate; duration; volume; treatment; destination; method; detection_limit"
+      collection_method: "Site measurement or disclosed regulatory calculation"
+      unit: "kg; m3"
+      frequency: "By monitoring plan and each shipment"
+      temporal_coverage: "Same period as production"
+      site_scope: "Every included emission point and discharge"
+      aggregation_rule: "Integrate measured load over operating time; subtract neither treatment nor recovery without records"
+      quality_evidence: "Accredited test or method reference; permit report; manifest; detection-limit handling"
+  calculation_rules:
+    - id: calc_net_seed_mass
+      applies_to: "Seed receipts"
+      rule: "accepted_seed_mass = gross_mass - tare_mass - separately weighed rejected material; any dry-matter conversion uses measured moisture for the same batch"
+      inputs:
+        - gross_mass
+        - tare_mass
+        - rejected_mass
+        - measured_moisture
+        - "declared mass basis"
+      output: "accepted seed mass by type and basis"
+      source_ids:
+        - us-epa-ap42-9-11-1-vegetable-oil-processing
+    - id: calc_period_normalization
+      applies_to: "All inventory rows"
+      rule: "normalized_amount = reporting_period_amount / qualifying_crude_oil_output_mass"
+      inputs:
+        - "closed-period flow amount"
+        - "qualifying crude-oil mass on the same basis"
+      output: "amount per 1 kg reference crude oil"
+      source_ids:
+        - eu-pef-2021-2279
+    - id: calc_stock_change
+      applies_to: "Stored seed, solvent, crude oil, co-products, and wastes"
+      rule: "consumed_or_produced = measured transfers adjusted by opening stock minus closing stock using one cut-off time"
+      inputs:
+        - "purchases/transfers"
+        - "opening stock"
+        - "closing stock"
+        - "measurement basis"
+      output: "closed-period material amount"
+      source_ids:
+        - eu-pef-2021-2279
+    - id: calc_solvent_loss
+      applies_to: "Solvent route"
+      rule: "residual solvent loss = solvent inputs + opening stock - closing stock - recovered/offsite solvent - quantified carryover to oil, meal, wastewater, and other destinations; compare the residual with measured air release and disclose imbalance"
+      inputs:
+        - "all cp_solvent_balance fields"
+      output: "solvent loss and reconciliation gap per kg crude oil"
+      source_ids:
+        - us-epa-ap42-9-11-1-vegetable-oil-processing
+    - id: calc_allocation_fraction
+      applies_to: "Multi-output process"
+      rule: "allocation_fraction_i = selected allocation basis for co-product i / sum of the same basis across all co-products"
+      inputs:
+        - "co-product outputs"
+        - "physical relationship data or representative values/prices"
+      output: "allocation fraction for each co-product; total = 1.000"
+      source_ids:
+        - eu-pef-2021-2279
+        - ilcd-format-1-1-process
+  data_quality_requirements:
+    - id: dq_identity
+      applies_to: "Reference product and seed inputs"
+      requirement: "Retain seed type/species, crude versus refined state, extraction route, conditioning/degumming state, low-erucic or canola claim when applicable, and matching Tiangong flow identity."
+      evidence: "Product specification; batch record; flow UUID; Codex identity test or supplier certificate when used"
+    - id: dq_temporal
+      applies_to: "All foreground data"
+      requirement: "Use one closed, representative reporting period shared by inputs and outputs; normally 12 consecutive months or a complete seasonal campaign. Explain outages, abnormal campaigns, and extrapolation."
+      evidence: "Dated meter, production, stock, and shipment records; period reconciliation"
+    - id: dq_measurement
+      applies_to: "Mass, utilities, solvent, emissions, and wastewater"
+      requirement: "Use calibrated instruments or traceable invoices. Preserve raw units, conversion factors, detection limits, shared-meter allocation, and stock adjustments."
+      evidence: "Calibration certificates; invoices; laboratory/permit reports; calculation workbook"
+    - id: dq_completeness
+      applies_to: "Each included process"
+      requirement: "Reconcile seed, oil, co-products, wastes, solvent, and stocks. List excluded flows and demonstrate that route-conditional solvent and emission rows were not silently omitted."
+      evidence: "Signed mass/solvent balance; completeness checklist; exception log"
+    - id: dq_representativeness
+      applies_to: "Aggregated production mix"
+      requirement: "Report site coverage, geography, seed shares, technology shares, capacity/utilisation, and reasons the period represents the published dataset."
+      evidence: "Facility roster; production summary; supplier and technology records"
+validation_rules:
+  - rule_id: validate_reference_identity
+    applies_to: "Reference flow"
+    rule: "The reference product UUID must be 092932e3-7b6d-430d-b6e5-722b8f4e1c6d, the property must be Mass 93a60a56-a3c8-11da-a746-0800200b9a66, the unit group must be Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66, and normalized amount must equal 1 kg."
+    source_ids:
+      - codex-cxs-210-named-vegetable-oils
+  - rule_id: validate_crude_state
+    applies_to: "Product identity and boundary"
+    rule: "Reject a package that includes alkali neutralisation, bleaching, deodorisation, or another refining step in the reference-product process without separating it into a downstream refined-oil dataset. Require the declared clarification/degumming state."
+    source_ids:
+      - codex-cxs-210-named-vegetable-oils
+      - us-epa-ap42-9-11-1-vegetable-oil-processing
+  - rule_id: validate_route_completeness
+    applies_to: "Mechanical and solvent routes"
+    rule: "The process map and inventory must match the declared route. If solvent is used, require solvent identity, make-up, recovery, stock, carryover, wastewater, and air-loss reconciliation; if not used, mark those checks not applicable."
+    source_ids:
+      - us-epa-ap42-9-11-1-vegetable-oil-processing
+  - rule_id: validate_mass_balance
+    applies_to: "Seed preparation, extraction, and storage"
+    rule: "Require linked internal transfers and a disclosed mass balance across seed, crude oil, co-products, wastes, moisture change, and stocks. Unexplained imbalance must be reported and reviewed."
+    source_ids:
+      - eu-pef-2021-2279
+  - rule_id: validate_allocation
+    applies_to: "Multi-output processes"
+    rule: "Require allocation hierarchy, basis, period, fractions, co-product list, and fractions summing to 1.000 within rounding tolerance; reject soybean-meal or other semantically mismatched proxy identities."
+    source_ids:
+      - eu-pef-2021-2279
+      - ilcd-format-1-1-process
+  - rule_id: validate_qualifiers
+    applies_to: "Dataset metadata"
+    rule: "Require all reference-flow qualifiers, site/geography, reporting period, source ids, measurement basis, and unresolved UUID declarations before publication."
+    source_ids:
+      - ilcd-format-1-1-process
+published_dataset_profile:
+  dataset_role: "Foreground data package for crude rape/colza/mustard oil production, publishable after review as a secondary_dataset and, when representative, as a background_dataset"
+  downstream_use: "Process and lifecyclemodel construction for products consuming qualifying crude oil before downstream refining or conversion"
+  allowed_use: "Site-specific or declared production-mix cradle-to-plant-gate modelling when product identity, route, boundary, allocation, geography, and period match the study"
+  excluded_use: "Refined-oil reference product; retail cooking oil; biodiesel or chemical conversion; comparative assertion without compatible reviewed scope; extrapolation to an undeclared seed type or extraction route"
+  required_metadata: "PCR id; product flow UUID; seed types and shares; extraction route; solvent identity when applicable; clarification/degumming state; mass basis; geography; sites; reporting period; allocation method; co-products; upstream seed datasets; data sources"
+  required_quality_disclosure: "Measurement coverage; meter and scale calibration; stock reconciliation; seed and oil mass balance; solvent balance where applicable; shared-utility allocation; missing flows; cut-offs; uncertainty; representativeness; unresolved UUIDs"
+  update_trigger: "Material change in product identity, flow UUID, feedstock mix, extraction technology, solvent, boundary, allocation method, site coverage, reporting period, quality specification, or external method/source requirements"
+data_sources:
+  - id: "codex-cxs-210-named-vegetable-oils"
+    type: "standard"
+    reference: "Codex Alimentarius Commission, CXS 210-1999, Standard for Named Vegetable Oils, amended 2024 and published with 2026 correction, https://www.fao.org/fao-who-codexalimentarius/sh-proxy/tr/?lnk=1&url=https%3A%2F%2Fworkspace.fao.org%2Fsites%2Fcodex%2FStandards%2FCXS+210-1999%2FCXS_210e.pdf (retrieved 2026-08-10)"
+    used_for: "Rapeseed and mustard-seed oil identity; crude-oil composition/quality context; distinction of virgin and cold-pressed processing claims"
+  - id: "us-epa-ap42-9-11-1-vegetable-oil-processing"
+    type: "official_guidance"
+    reference: "U.S. Environmental Protection Agency, AP-42 Section 9.11.1 Vegetable Oil Processing, November 1995, https://www.epa.gov/sites/default/files/2020-10/documents/c9s11-1.pdf (retrieved 2026-08-10)"
+    used_for: "Generic oilseed handling and preparation; route-conditional solvent extraction, desolventizing, solvent recovery, crude-oil storage, particulate and solvent inventory requirements; no soybean-specific amount is adopted as a rapeseed/mustard default"
+  - id: "eu-pef-2021-2279"
+    type: "official_guidance"
+    reference: "European Commission, Commission Recommendation (EU) 2021/2279 on Environmental Footprint methods, https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32021H2279 (retrieved 2026-08-10)"
+    used_for: "Company-specific manufacturing data, inventory consistency, allocation decision hierarchy, and representative reporting"
+  - id: "ilcd-format-1-1-process"
+    type: "official_guidance"
+    reference: "European Commission Joint Research Centre, ILCD Format 1.1 Documentation — Process data set, https://eplca.jrc.ec.europa.eu/LCDN/downloads/ILCD_Format_1.1_Documentation/ILCD_ProcessDataSet.html (retrieved 2026-08-10)"
+    used_for: "Allocation fraction documentation, modelling and validation metadata, completeness, review, and data-quality disclosure"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:bfbe55ede5b748bd4db1018d133a1d72f6a734fd6bcc4838b8a886fd1622a36d"
+  generated_content_sha256: "sha256:2247d1f04123106a8ccbc939a369c38862cad30839f288f19cfc355d710ca5e2"

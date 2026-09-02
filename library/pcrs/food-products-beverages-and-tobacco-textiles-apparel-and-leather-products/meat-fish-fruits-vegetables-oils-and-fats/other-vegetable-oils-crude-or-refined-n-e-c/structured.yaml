@@ -1,10 +1,2042 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "21691"
-  title: "Other vegetable oils, crude or refined, n.e.c."
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.food-products-beverages-and-tobacco-textiles-apparel-and-leather-products.meat-fish-fruits-vegetables-oils-and-fats.other-vegetable-oils-crude-or-refined-n-e-c"
+  classification_refs: "CPC 3.0: 21691, Other vegetable oils, crude or refined, n.e.c."
+  covered_products: "One botanically identified crude, virgin, cold-pressed or refined vegetable oil within the residual CPC 21691 scope, including the examples named in the official explanatory note"
+  excluded_products: "Soya-bean, groundnut, sunflower/safflower, rape/colza/mustard, palm, coconut, olive and cottonseed oils classified separately; hydrogenated, inter-esterified, re-esterified or elaidinised oils; essential oils; blends and preparations"
+  representative_product: "Sesame oil at factory gate, with the actual data package locked to its declared botanical oil and crude, virgin, cold-pressed or refined state"
+  production_route: "Integrated feedstock preparation and mechanical or solvent extraction followed by crude-oil finishing; or received crude oil followed by declared chemical or physical refining; storage, packaging and release as applicable"
+  market_state: "Net saleable oil at factory gate; bulk or packaged; liquid, semi-solid or solid at declared temperature; food or technical grade; crude, virgin, cold-pressed or refined"
+functional_unit:
+  what: "Provision of one botanically identified other vegetable oil in the declared crude, virgin, cold-pressed or refined factory-gate state"
+  how_much: "1 kg net conforming oil, excluding packaging mass"
+  how_well: "Botanical identity, extraction and refining route, grade/specification, additive status, moisture and impurity basis, physical state and packaging status declared"
+  how_long_or_cycle: "One released lot or a declared representative production period; no service life is assigned to this intermediate product"
+  reference_flow_link: "release_reference_product in storage_packaging_release"
+system_boundary:
+  rules:
+    - rule_id: boundary_route_complete
+      applies_to: "foreground manufacture"
+      rule: "Include every controlled operation from the declared receiving condition through release; a crude route stops after crude-oil finishing, while a refined route includes the actual degumming, neutralization when used, bleaching and deodorization steps."
+      source_ids:
+        - fao-oil-processing-1994
+        - fao-cxc-79-2019
+        - sun-rice-bran-oil-2022
+        - gonzalez-sesame-biorefinery-2025
+    - rule_id: boundary_atomic_exchanges
+      applies_to: "inventory"
+      rule: "Keep each botanical feedstock, electricity, steam, fuel, refrigerant, water, solvent, chemical, package, waste stream and emitted substance as a separate exchange."
+      source_ids:
+        - eu-fdm-bat-2019
+        - eu-pef-method-2021
+    - rule_id: boundary_route_conditionals
+      applies_to: "conditional processes"
+      rule: "Include only the feedstock, extraction, refining, winterization, storage, packaging and treatment operations actually performed; document bypassed or outsourced operations and link their datasets."
+      source_ids:
+        - fao-oil-processing-1994
+        - fao-cxc-79-2019
+    - rule_id: boundary_direct_releases
+      applies_to: "emissions and wastes"
+      rule: "Include measured or calculated direct releases after control equipment, wastewater transfers, spent media, residues, off-spec oil and packaging waste with medium and destination."
+      source_ids:
+        - eu-fdm-bat-2019
+        - eu-pef-method-2021
+    - rule_id: boundary_upstream_downstream
+      applies_to: "linked life-cycle stages"
+      rule: "Link purchased inputs upstream; exclude distribution, downstream formulation, use and end of life from this factory-gate foreground dataset unless separately added."
+      source_ids:
+        - iso-14044-2006
+        - eu-pef-method-2021
+boundary_abstraction:
+  declared_starting_condition: "Received botanically identified oil-bearing material for an integrated extraction route, or received botanically identified crude oil for a refining-only route"
+  starting_condition_role: "Foreground manufacturing entry point; cultivation and external inbound transport remain in linked upstream datasets unless the study explicitly expands the boundary"
+  product_classification_scope: "One crude or refined vegetable oil in residual CPC 21691; the classification reference does not permit mixing botanical identities or route states"
+  recursive_input_rule: "Purchased oil from this same category is a distinct product input with its own upstream dataset and botanical/state qualifiers; it is not absorbed into the foreground reference output"
+  upstream_dataset_requirement: "Link each feedstock, crude oil, electricity supply, steam or heat supply, fuel, water, chemical, processing aid, refrigerant and packaging material to a representative upstream dataset"
+  disclosure: "Declare botanical identity, starting material, process map, mechanical/solvent route, refining route, product state, utility system, water and solvent loops, co-products, wastes, allocation, packaging, site, geography, period and exclusions"
+reference_flow_definition:
+  reference_amount: "1 kg"
+  product_flow_ref:
+    name: "Other vegetable oil, crude or refined, n.e.c."
+    uuid: ""
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "botanical common and scientific name"
+    - "oil-bearing material"
+    - crude
+    - virgin
+    - "cold-pressed or refined state"
+    - mechanical
+    - solvent
+    - "chemical-refining or physical-refining route"
+    - "edible or technical grade"
+    - "applicable specification"
+    - "physical state and dispatch temperature"
+    - "bulk or packaging bill of materials"
+    - site
+    - "geography and data period"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "released reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Normalize to 1 kg net conforming oil and exclude container and transport-packaging mass."
+  - id: botanical_route_lock
+    applies_to: "feedstock, crude oil, intermediates and released oil"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Preserve one botanical identity and one route/state on every product row; do not aggregate different botanical oils or crude and refined states."
+  - id: wet_dry_basis
+    applies_to: "seeds, kernels, bran, germ, cake and residue"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Record as-received mass and the moisture or dry-matter basis used in every yield or balance calculation."
+  - id: energy_carrier_separation
+    applies_to: "electricity, steam, heat and fuels"
+    required_property_ref:
+      name: "Energy or carrier-specific property"
+      uuid: ""
+    required_unit: "kWh, MJ, kg or m3"
+    rule: "Meter electricity and steam separately and record every fuel as its own carrier; prevent double counting fuel with generated steam or electricity."
+  - id: water_balance
+    applies_to: "fresh water, recirculated water, evaporated water and wastewater"
+    required_property_ref:
+      name: "Mass or volume"
+      uuid: ""
+    required_unit: "kg or m3"
+    rule: "Keep external withdrawal, internal recirculation and discharge separate and state density where mass-volume conversion is used."
+  - id: solvent_balance
+    applies_to: "solvent extraction"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Reconcile solvent make-up, recovered solvent, solvent in product or cake, waste solvent and direct release for the same period."
+process_map:
+  - id: oil_material_preparation
+    name: "Oil-bearing material receiving and preparation"
+    inclusion: "conditional"
+    inclusion_condition: "Include when seed, kernel, bran, germ or fruit preparation is controlled by the reporting facility"
+    role: "foreground feed preparation"
+    quantitative_reference: "kg prepared botanical feed"
+  - id: oil_extraction_crude_finishing
+    name: "Oil extraction and crude-oil finishing"
+    inclusion: "conditional"
+    inclusion_condition: "Include when the facility produces crude oil from botanical material"
+    role: "foreground extraction and separation"
+    quantitative_reference: "kg crude botanical oil"
+  - id: oil_refining
+    name: "Chemical or physical oil refining"
+    inclusion: "conditional"
+    inclusion_condition: "Include for refined reference product or when any refining step is controlled on site"
+    role: "foreground refining"
+    quantitative_reference: "kg refined botanical oil"
+  - id: storage_packaging_release
+    name: "Storage, packaging and factory-gate release"
+    inclusion: "required"
+    inclusion_condition: "Always; packaging cards apply only to packaged product"
+    role: "reference-product release"
+    quantitative_reference: "1 kg net released oil"
+  - id: onsite_utilities_wastewater
+    name: "On-site utilities and wastewater treatment"
+    inclusion: "conditional"
+    inclusion_condition: "Include controlled fuel conversion, steam generation, refrigeration or wastewater treatment"
+    role: "supporting foreground process"
+    quantitative_reference: "metered utility output or treated flow"
+process_inventory:
+  - id: oil_material_preparation
+    label: "Oil-bearing material receiving and preparation"
+    inputs:
+      product:
+        - row_id: prep_sesame_seed
+          role: "Sesame seed"
+          name: "Sesame seed"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Include only for a sesame route."
+          amount:
+            expression: "Net accepted sesame-seed mass by lot."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg released oil"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_receipts
+              source_ids:
+                - gonzalez-sesame-biorefinery-2025
+                - fao-oil-processing-1994
+            ranges: []
+        - row_id: prep_shea_kernel
+          role: "Shea kernel"
+          name: "Shea kernel"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Include only for a shea route."
+          amount:
+            expression: "Net accepted dry shea-kernel mass by lot."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg released oil"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_receipts
+              source_ids:
+                - jasaw-shea-resource-use-2015
+                - naangmenyele-shea-input-output-2023
+            ranges: []
+        - row_id: prep_rice_bran
+          role: "Rice bran"
+          name: "Rice bran"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Include only for a rice-bran-oil route."
+          amount:
+            expression: "Net accepted stabilized or unstabilized rice-bran mass by lot."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg released oil"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_receipts
+              source_ids:
+                - sun-rice-bran-oil-2022
+                - fao-oil-processing-1994
+            ranges: []
+        - row_id: prep_corn_germ
+          role: "Corn germ"
+          name: "Corn germ"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Include only for a corn-oil route."
+          amount:
+            expression: "Net accepted corn-germ mass by lot."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg released oil"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_receipts
+              source_ids:
+                - fao-oil-processing-1994
+            ranges: []
+        - row_id: prep_palm_kernel
+          role: "Oil palm kernel"
+          name: "Oil palm kernel"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Include only for a palm-kernel-oil route."
+          amount:
+            expression: "Net accepted palm-kernel mass by lot."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg released oil"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_receipts
+              source_ids:
+                - fao-oil-processing-1994
+            ranges: []
+        - row_id: prep_linseed
+          role: "Linseed"
+          name: "Linseed"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Include only for a linseed-oil route."
+          amount:
+            expression: "Net accepted linseed mass by lot."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg released oil"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_receipts
+              source_ids:
+                - fao-oil-processing-1994
+            ranges: []
+        - row_id: prep_electricity
+          role: "Electricity"
+          name: "Electricity, facility supply"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Electricity crosses this process boundary as one atomic exchange; its quantity is obtained under the rule below."
+          amount:
+            expression: "Submetered preparation electricity or documented causal share."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg released oil"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_records
+              source_ids:
+                - eu-fdm-bat-2019
+                - jasaw-shea-resource-use-2015
+            ranges: []
+        - row_id: prep_steam
+          role: "Steam"
+          name: "Steam"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Steam crosses this process boundary as one atomic exchange; its quantity is obtained under the rule below."
+          amount:
+            expression: "Metered steam enthalpy used for conditioning or heat treatment."
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg released oil"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_records
+              source_ids:
+                - fao-oil-processing-1994
+                - eu-fdm-bat-2019
+            ranges: []
+        - row_id: prep_natural_gas
+          role: "Natural gas"
+          name: "Natural gas"
+          flow_type: "product"
+          property_unit: "Net calorific value / MJ"
+          description: "Natural gas crosses this process boundary as one atomic exchange; its quantity is obtained under the rule below."
+          amount:
+            expression: "Metered natural gas consumed by direct-fired preparation equipment only."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg released oil"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_fuel_records
+              source_ids:
+                - eu-fdm-bat-2019
+            ranges: []
+        - row_id: prep_process_water
+          role: "Process water"
+          name: "Process water"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "Process water crosses this process boundary as one atomic exchange; its quantity is obtained under the rule below."
+          amount:
+            expression: "Metered external water used for washing or conditioning; exclude recirculation."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg released oil"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water_records
+              source_ids:
+                - jasaw-shea-resource-use-2015
+                - naangmenyele-shea-input-output-2023
+                - eu-fdm-bat-2019
+            ranges: []
+        - row_id: prep_ammonia_refrigerant
+          role: "Ammonia refrigerant"
+          name: "Ammonia refrigerant"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Ammonia refrigerant crosses this process boundary as one atomic exchange; its quantity is obtained under the rule below."
+          amount:
+            expression: "Stock-balance make-up attributable to chilled feed storage when used."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg released oil"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_refrigerant_records
+              source_ids:
+                - eu-fdm-bat-2019
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: prep_prepared_sesame_seed
+          role: "Prepared sesame seed"
+          name: "Prepared sesame seed"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Prepared sesame seed crosses this process boundary as one atomic exchange; its quantity is obtained under the rule below."
+          amount:
+            expression: "Measured transfer after cleaning, conditioning, roasting and size reduction for the sesame route."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg released oil"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_process_outputs
+              source_ids:
+                - gonzalez-sesame-biorefinery-2025
+            ranges: []
+      waste:
+        - row_id: prep_foreign_material_waste
+          role: "Foreign material from feed preparation"
+          name: "Foreign material from oil-bearing feed preparation"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Foreign material from feed preparation crosses this process boundary as one atomic exchange; its quantity is obtained under the rule below."
+          amount:
+            expression: "Weighed removed foreign material by destination."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg released oil"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_records
+              source_ids:
+                - fao-oil-processing-1994
+            ranges: []
+      elementary:
+        - row_id: prep_particulate_air
+          role: "Particulate matter to air"
+          name: "Particulate matter to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Particulate matter to air crosses this process boundary as one atomic exchange; its quantity is obtained under the rule below."
+          amount:
+            expression: "Measured release or validated calculation after dust control."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg released oil"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_emission_records
+              source_ids:
+                - eu-fdm-bat-2019
+            ranges: []
+  - id: oil_extraction_crude_finishing
+    label: "Oil extraction and crude-oil finishing"
+    inputs:
+      product:
+        - row_id: extraction_prepared_sesame_seed
+          role: "Prepared sesame seed"
+          name: "Prepared sesame seed"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Prepared sesame seed crosses this process boundary as one atomic exchange; its quantity is obtained under the rule below."
+          amount:
+            expression: "Measured sesame feed entering pressing or extraction; another botanical route adds its own exact atomic feed row."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg crude botanical oil"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_receipts
+              source_ids:
+                - gonzalez-sesame-biorefinery-2025
+            ranges: []
+        - row_id: extraction_electricity
+          role: "Electricity"
+          name: "Electricity, facility supply"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Electricity crosses this process boundary as one atomic exchange; its quantity is obtained under the rule below."
+          amount:
+            expression: "Submetered drives, presses, pumps, filtration and solvent-recovery electricity."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg crude botanical oil"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_records
+              source_ids:
+                - sun-rice-bran-oil-2022
+                - eu-fdm-bat-2019
+            ranges: []
+        - row_id: extraction_steam
+          role: "Steam"
+          name: "Steam"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Steam crosses this process boundary as one atomic exchange; its quantity is obtained under the rule below."
+          amount:
+            expression: "Metered steam enthalpy used in cooking, desolventizing or solvent recovery."
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg crude botanical oil"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_records
+              source_ids:
+                - fao-oil-processing-1994
+                - sun-rice-bran-oil-2022
+            ranges: []
+        - row_id: extraction_natural_gas
+          role: "Natural gas"
+          name: "Natural gas"
+          flow_type: "product"
+          property_unit: "Net calorific value / MJ"
+          description: "Natural gas crosses this process boundary as one atomic exchange; its quantity is obtained under the rule below."
+          amount:
+            expression: "Metered gas used directly in extraction equipment; omit when only purchased steam crosses the boundary."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg crude botanical oil"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_fuel_records
+              source_ids:
+                - eu-fdm-bat-2019
+            ranges: []
+        - row_id: extraction_hexane
+          role: "n-Hexane"
+          name: "n-Hexane"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "n-Hexane crosses this process boundary as one atomic exchange; its quantity is obtained under the rule below."
+          amount:
+            expression: "Solvent make-up from purchase and stock balance; include only for the declared solvent route."
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg crude botanical oil"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_solvent_balance
+              source_ids:
+                - fao-oil-processing-1994
+                - sun-rice-bran-oil-2022
+                - eu-fdm-bat-2019
+            ranges: []
+        - row_id: extraction_process_water
+          role: "Process water"
+          name: "Process water"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "Process water crosses this process boundary as one atomic exchange; its quantity is obtained under the rule below."
+          amount:
+            expression: "Metered external water used for extraction, separation or cleaning."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg crude botanical oil"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water_records
+              source_ids:
+                - jasaw-shea-resource-use-2015
+                - naangmenyele-shea-input-output-2023
+                - eu-fdm-bat-2019
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: extraction_crude_sesame_oil
+          role: "Crude sesame oil"
+          name: "Crude sesame oil"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Crude sesame oil crosses this process boundary as one atomic exchange; its quantity is obtained under the rule below."
+          amount:
+            expression: "Measured clarified crude sesame oil; another botanical route adds its own exact crude-oil row."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg crude botanical oil"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_process_outputs
+              source_ids:
+                - gonzalez-sesame-biorefinery-2025
+                - fao-cxc-79-2019
+            ranges: []
+        - row_id: extraction_sesame_cake
+          role: "Sesame press cake"
+          name: "Sesame press cake"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Sesame press cake crosses this process boundary as one atomic exchange; its quantity is obtained under the rule below."
+          amount:
+            expression: "Weighed cake by moisture, residual-oil basis and destination."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg crude sesame oil"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_coproduct_records
+              source_ids:
+                - gonzalez-sesame-biorefinery-2025
+                - fao-oil-processing-1994
+            ranges: []
+      waste:
+        - row_id: extraction_spent_filter_medium
+          role: "Spent filter medium"
+          name: "Spent oil filter medium"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Spent filter medium crosses this process boundary as one atomic exchange; its quantity is obtained under the rule below."
+          amount:
+            expression: "Weighed spent medium including retained oil, by treatment destination."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg crude botanical oil"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_records
+              source_ids:
+                - eu-fdm-bat-2019
+            ranges: []
+        - row_id: extraction_wastewater
+          role: "Extraction wastewater"
+          name: "Vegetable-oil extraction wastewater"
+          flow_type: "waste"
+          property_unit: "Volume / m3"
+          description: "Extraction wastewater crosses this process boundary as one atomic exchange; its quantity is obtained under the rule below."
+          amount:
+            expression: "Metered transfer to treatment or off-site destination."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg crude botanical oil"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wastewater_records
+              source_ids:
+                - naangmenyele-shea-input-output-2023
+                - sun-rice-bran-oil-2022
+                - eu-fdm-bat-2019
+            ranges: []
+      elementary:
+        - row_id: extraction_hexane_air
+          role: "n-Hexane to air"
+          name: "n-Hexane to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "n-Hexane to air crosses this process boundary as one atomic exchange; its quantity is obtained under the rule below."
+          amount:
+            expression: "Measured release or solvent-balance loss assigned to air after control; solvent route only."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg crude botanical oil"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_solvent_balance
+              source_ids:
+                - sun-rice-bran-oil-2022
+                - eu-fdm-bat-2019
+            ranges: []
+        - row_id: extraction_particulate_air
+          role: "Particulate matter to air"
+          name: "Particulate matter to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Particulate matter to air crosses this process boundary as one atomic exchange; its quantity is obtained under the rule below."
+          amount:
+            expression: "Measured release or validated calculation after control equipment."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg crude botanical oil"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_emission_records
+              source_ids:
+                - eu-fdm-bat-2019
+            ranges: []
+  - id: oil_refining
+    label: "Chemical or physical oil refining"
+    inputs:
+      product:
+        - row_id: refining_crude_sesame_oil
+          role: "Crude sesame oil"
+          name: "Crude sesame oil"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Crude sesame oil crosses this process boundary as one atomic exchange; its quantity is obtained under the rule below."
+          amount:
+            expression: "Measured crude sesame oil entering refining; another botanical route adds its own exact crude-oil row."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg refined botanical oil"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_receipts
+              source_ids:
+                - fao-cxc-79-2019
+                - gonzalez-sesame-biorefinery-2025
+            ranges: []
+        - row_id: refining_process_water
+          role: "Process water"
+          name: "Process water"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "Process water crosses this process boundary as one atomic exchange; its quantity is obtained under the rule below."
+          amount:
+            expression: "Metered external degumming, washing, vacuum-system and cleaning water; exclude recirculation."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg refined botanical oil"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water_records
+              source_ids:
+                - fao-cxc-79-2019
+                - eu-fdm-bat-2019
+            ranges: []
+        - row_id: refining_phosphoric_acid
+          role: "Phosphoric acid"
+          name: "Phosphoric acid"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Phosphoric acid crosses this process boundary as one atomic exchange; its quantity is obtained under the rule below."
+          amount:
+            expression: "Recipe issue adjusted for concentration; include only when used."
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg refined botanical oil"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_chemical_records
+              source_ids:
+                - fao-cxc-79-2019
+                - fao-oil-processing-1994
+            ranges: []
+        - row_id: refining_citric_acid
+          role: "Citric acid"
+          name: "Citric acid"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Citric acid crosses this process boundary as one atomic exchange; its quantity is obtained under the rule below."
+          amount:
+            expression: "Recipe issue adjusted for concentration; include only when used."
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg refined botanical oil"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_chemical_records
+              source_ids:
+                - fao-cxc-79-2019
+                - fao-oil-processing-1994
+            ranges: []
+        - row_id: refining_sodium_hydroxide
+          role: "Sodium hydroxide"
+          name: "Sodium hydroxide"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Sodium hydroxide crosses this process boundary as one atomic exchange; its quantity is obtained under the rule below."
+          amount:
+            expression: "Active NaOH mass from solution concentration and issue records; chemical-neutralization route only."
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg refined botanical oil"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_chemical_records
+              source_ids:
+                - fao-cxc-79-2019
+                - fao-oil-processing-1994
+            ranges: []
+        - row_id: refining_bleaching_earth
+          role: "Bleaching earth"
+          name: "Bleaching earth"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Bleaching earth crosses this process boundary as one atomic exchange; its quantity is obtained under the rule below."
+          amount:
+            expression: "Weighed dry clay charged to the represented batch."
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg refined botanical oil"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_chemical_records
+              source_ids:
+                - fao-cxc-79-2019
+                - fao-oil-processing-1994
+            ranges: []
+        - row_id: refining_activated_carbon
+          role: "Activated carbon"
+          name: "Activated carbon"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Activated carbon crosses this process boundary as one atomic exchange; its quantity is obtained under the rule below."
+          amount:
+            expression: "Weighed dry carbon charged; include only when used for contaminant removal."
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg refined botanical oil"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_chemical_records
+              source_ids:
+                - fao-oil-processing-1994
+            ranges: []
+        - row_id: refining_steam
+          role: "Steam"
+          name: "Steam"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Steam crosses this process boundary as one atomic exchange; its quantity is obtained under the rule below."
+          amount:
+            expression: "Metered steam enthalpy for heating, stripping and deodorization."
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg refined botanical oil"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_records
+              source_ids:
+                - fao-cxc-79-2019
+                - fao-oil-processing-1994
+                - sun-rice-bran-oil-2022
+            ranges: []
+        - row_id: refining_electricity
+          role: "Electricity"
+          name: "Electricity, facility supply"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Electricity crosses this process boundary as one atomic exchange; its quantity is obtained under the rule below."
+          amount:
+            expression: "Submetered refining, vacuum, pumping, filtration and cooling electricity."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg refined botanical oil"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_records
+              source_ids:
+                - sun-rice-bran-oil-2022
+                - eu-fdm-bat-2019
+            ranges: []
+        - row_id: refining_natural_gas
+          role: "Natural gas"
+          name: "Natural gas"
+          flow_type: "product"
+          property_unit: "Net calorific value / MJ"
+          description: "Natural gas crosses this process boundary as one atomic exchange; its quantity is obtained under the rule below."
+          amount:
+            expression: "Metered gas used directly in refinery equipment; omit when only purchased steam crosses the boundary."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg refined botanical oil"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_fuel_records
+              source_ids:
+                - sun-rice-bran-oil-2022
+                - eu-fdm-bat-2019
+            ranges: []
+        - row_id: refining_nitrogen
+          role: "Nitrogen gas"
+          name: "Nitrogen gas"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Nitrogen gas crosses this process boundary as one atomic exchange; its quantity is obtained under the rule below."
+          amount:
+            expression: "Metered or supplier-recorded nitrogen used for blanketing or stripping, when used."
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg refined botanical oil"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_chemical_records
+              source_ids:
+                - eu-fdm-bat-2019
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: refining_refined_sesame_oil
+          role: "Refined sesame oil"
+          name: "Refined sesame oil"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Refined sesame oil crosses this process boundary as one atomic exchange; its quantity is obtained under the rule below."
+          amount:
+            expression: "Measured conforming refined oil transferred to storage; another botanical route adds its own exact refined-oil row."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg refined botanical oil"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_process_outputs
+              source_ids:
+                - fao-cxc-79-2019
+                - gonzalez-sesame-biorefinery-2025
+            ranges: []
+        - row_id: refining_wet_gums
+          role: "Wet gums"
+          name: "Wet vegetable-oil gums"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Wet gums crosses this process boundary as one atomic exchange; its quantity is obtained under the rule below."
+          amount:
+            expression: "Weighed gums with moisture and destination declared."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg refined botanical oil"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_coproduct_records
+              source_ids:
+                - fao-cxc-79-2019
+                - fao-oil-processing-1994
+            ranges: []
+        - row_id: refining_soapstock
+          role: "Soapstock"
+          name: "Vegetable-oil soapstock"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Soapstock crosses this process boundary as one atomic exchange; its quantity is obtained under the rule below."
+          amount:
+            expression: "Weighed soapstock by moisture and destination; chemical-neutralization route only."
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg refined botanical oil"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_coproduct_records
+              source_ids:
+                - fao-cxc-79-2019
+                - fao-oil-processing-1994
+            ranges: []
+      waste:
+        - row_id: refining_spent_bleaching_earth
+          role: "Spent bleaching earth"
+          name: "Spent bleaching earth"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Spent bleaching earth crosses this process boundary as one atomic exchange; its quantity is obtained under the rule below."
+          amount:
+            expression: "Weighed spent clay including retained oil, by destination."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg refined botanical oil"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_records
+              source_ids:
+                - fao-cxc-79-2019
+                - eu-fdm-bat-2019
+            ranges: []
+        - row_id: refining_deodorizer_distillate
+          role: "Deodorizer distillate"
+          name: "Vegetable-oil deodorizer distillate"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Deodorizer distillate crosses this process boundary as one atomic exchange; its quantity is obtained under the rule below."
+          amount:
+            expression: "Weighed distillate by batch and destination; physical-refining or deodorization route only."
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg refined botanical oil"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_coproduct_records
+              source_ids:
+                - fao-cxc-79-2019
+                - fao-oil-processing-1994
+            ranges: []
+        - row_id: refining_wastewater
+          role: "Refinery wastewater"
+          name: "Vegetable-oil refinery wastewater"
+          flow_type: "waste"
+          property_unit: "Volume / m3"
+          description: "Refinery wastewater crosses this process boundary as one atomic exchange; its quantity is obtained under the rule below."
+          amount:
+            expression: "Metered transfer to on-site treatment or off-site destination."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg refined botanical oil"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wastewater_records
+              source_ids:
+                - fao-oil-processing-1994
+                - sun-rice-bran-oil-2022
+                - eu-fdm-bat-2019
+            ranges: []
+      elementary:
+        []
+  - id: storage_packaging_release
+    label: "Storage, packaging and factory-gate release"
+    inputs:
+      product:
+        - row_id: release_crude_sesame_oil
+          role: "Crude sesame oil"
+          name: "Crude sesame oil"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Crude sesame oil crosses this process boundary as one atomic exchange; its quantity is obtained under the rule below."
+          amount:
+            expression: "Measured crude oil entering final storage; crude sesame route only."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg released oil"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_process_outputs
+              source_ids:
+                - fao-oil-processing-1994
+            ranges: []
+        - row_id: release_refined_sesame_oil
+          role: "Refined sesame oil"
+          name: "Refined sesame oil"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Refined sesame oil crosses this process boundary as one atomic exchange; its quantity is obtained under the rule below."
+          amount:
+            expression: "Measured refined oil entering final storage; refined sesame route only."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg released oil"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_process_outputs
+              source_ids:
+                - fao-cxs-19-1981
+                - fao-cxc-79-2019
+            ranges: []
+        - row_id: release_electricity
+          role: "Electricity"
+          name: "Electricity, facility supply"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Electricity crosses this process boundary as one atomic exchange; its quantity is obtained under the rule below."
+          amount:
+            expression: "Submetered storage, pumping, filling, cooling and loadout electricity."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg released oil"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_records
+              source_ids:
+                - sun-rice-bran-oil-2022
+                - eu-fdm-bat-2019
+            ranges: []
+        - row_id: release_natural_gas
+          role: "Natural gas"
+          name: "Natural gas"
+          flow_type: "product"
+          property_unit: "Net calorific value / MJ"
+          description: "Natural gas crosses this process boundary as one atomic exchange; its quantity is obtained under the rule below."
+          amount:
+            expression: "Metered gas for direct heated storage or filling; omit when absent."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg released oil"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_fuel_records
+              source_ids:
+                - eu-fdm-bat-2019
+            ranges: []
+        - row_id: release_ammonia_refrigerant
+          role: "Ammonia refrigerant"
+          name: "Ammonia refrigerant"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Ammonia refrigerant crosses this process boundary as one atomic exchange; its quantity is obtained under the rule below."
+          amount:
+            expression: "Stock-balance make-up assigned to cooled oil storage, when used."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg released oil"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_refrigerant_records
+              source_ids:
+                - eu-fdm-bat-2019
+            ranges: []
+        - row_id: release_steel_drum
+          role: "Steel drum"
+          name: "Steel drum"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Steel drum crosses this process boundary as one atomic exchange; its quantity is obtained under the rule below."
+          amount:
+            expression: "Drum count multiplied by verified net packaging mass and allocated to released oil."
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg released oil"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_records
+              source_ids:
+                - eu-pef-method-2021
+            ranges: []
+        - row_id: release_hdpe_container
+          role: "High-density polyethylene container"
+          name: "High-density polyethylene container"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "High-density polyethylene container crosses this process boundary as one atomic exchange; its quantity is obtained under the rule below."
+          amount:
+            expression: "Container count multiplied by verified net container mass and allocated to released oil."
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg released oil"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_records
+              source_ids:
+                - eu-pef-method-2021
+            ranges: []
+        - row_id: release_corrugated_fibreboard
+          role: "Corrugated fibreboard box"
+          name: "Corrugated fibreboard box"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Corrugated fibreboard box crosses this process boundary as one atomic exchange; its quantity is obtained under the rule below."
+          amount:
+            expression: "Box count multiplied by verified net box mass and allocated to released oil."
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg released oil"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_records
+              source_ids:
+                - eu-pef-method-2021
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: release_reference_product
+          role: "Reference other vegetable oil"
+          name: "Other vegetable oil, crude or refined, n.e.c."
+          flow_type: "product"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Reference other vegetable oil crosses this process boundary as one atomic exchange; its quantity is obtained under the rule below."
+          amount:
+            expression: "Exactly 1 kg net conforming oil after release losses and before packaging tare."
+            value_mode: "fixed_value"
+            specificity: "product_specific"
+            basis:
+              text: "1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "method_formula"
+              source_ids:
+                - unsd-cpc-3-2025
+                - eu-pef-method-2021
+            ranges: []
+      waste:
+        - row_id: release_off_spec_oil
+          role: "Off-spec vegetable oil"
+          name: "Off-spec vegetable oil"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Off-spec vegetable oil crosses this process boundary as one atomic exchange; its quantity is obtained under the rule below."
+          amount:
+            expression: "Weighed non-reworked oil by botanical identity and destination."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg released oil"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_records
+              source_ids:
+                - eu-fdm-bat-2019
+            ranges: []
+        - row_id: release_waste_hdpe
+          role: "Waste high-density polyethylene"
+          name: "Waste high-density polyethylene"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Waste high-density polyethylene crosses this process boundary as one atomic exchange; its quantity is obtained under the rule below."
+          amount:
+            expression: "Weighed discarded HDPE packaging by destination."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg released oil"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_records
+              source_ids:
+                - eu-fdm-bat-2019
+            ranges: []
+        - row_id: release_waste_fibreboard
+          role: "Waste corrugated fibreboard"
+          name: "Waste corrugated fibreboard"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Waste corrugated fibreboard crosses this process boundary as one atomic exchange; its quantity is obtained under the rule below."
+          amount:
+            expression: "Weighed discarded fibreboard by destination."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg released oil"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_records
+              source_ids:
+                - eu-fdm-bat-2019
+            ranges: []
+      elementary:
+        - row_id: release_ammonia_air
+          role: "Ammonia to air"
+          name: "Ammonia to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Ammonia to air crosses this process boundary as one atomic exchange; its quantity is obtained under the rule below."
+          amount:
+            expression: "Refrigerant stock-balance loss assigned to air unless recovery or another destination is documented."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg released oil"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_refrigerant_records
+              source_ids:
+                - eu-fdm-bat-2019
+            ranges: []
+  - id: onsite_utilities_wastewater
+    label: "On-site utilities and wastewater treatment"
+    inputs:
+      product:
+        - row_id: utility_natural_gas
+          role: "Natural gas"
+          name: "Natural gas"
+          flow_type: "product"
+          property_unit: "Net calorific value / MJ"
+          description: "Natural gas crosses this process boundary as one atomic exchange; its quantity is obtained under the rule below."
+          amount:
+            expression: "Metered boiler or thermal-utility gas consumption."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per metered utility output and per 1 kg released oil"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_fuel_records
+              source_ids:
+                - eu-fdm-bat-2019
+                - sun-rice-bran-oil-2022
+            ranges: []
+        - row_id: utility_fuel_oil
+          role: "Fuel oil"
+          name: "Fuel oil"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Fuel oil crosses this process boundary as one atomic exchange; its quantity is obtained under the rule below."
+          amount:
+            expression: "Metered or tank-reconciled boiler fuel-oil consumption."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per metered utility output and per 1 kg released oil"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_fuel_records
+              source_ids:
+                - eu-fdm-bat-2019
+            ranges: []
+        - row_id: utility_shea_residue_fuel
+          role: "Shea kernel residue fuel"
+          name: "Shea kernel residue"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Shea kernel residue fuel crosses this process boundary as one atomic exchange; its quantity is obtained under the rule below."
+          amount:
+            expression: "Weighed dry shea residue combusted on site; shea route only."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per metered utility output and per 1 kg released oil"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_fuel_records
+              source_ids:
+                - jasaw-shea-resource-use-2015
+                - naangmenyele-shea-input-output-2023
+            ranges: []
+        - row_id: utility_treatment_electricity
+          role: "Wastewater-treatment electricity"
+          name: "Electricity, facility supply"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Wastewater-treatment electricity crosses this process boundary as one atomic exchange; its quantity is obtained under the rule below."
+          amount:
+            expression: "Submetered electricity for pumps, aeration, dewatering and controls."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per m3 wastewater treated and per 1 kg released oil"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_records
+              source_ids:
+                - eu-fdm-bat-2019
+            ranges: []
+        - row_id: utility_sodium_hydroxide
+          role: "Sodium hydroxide"
+          name: "Sodium hydroxide"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Sodium hydroxide crosses this process boundary as one atomic exchange; its quantity is obtained under the rule below."
+          amount:
+            expression: "Active NaOH mass used in wastewater treatment, from issue and concentration records."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per m3 wastewater treated and per 1 kg released oil"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_treatment_chemical_records
+              source_ids:
+                - eu-fdm-bat-2019
+            ranges: []
+        - row_id: utility_ferric_chloride
+          role: "Ferric chloride"
+          name: "Ferric chloride"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Ferric chloride crosses this process boundary as one atomic exchange; its quantity is obtained under the rule below."
+          amount:
+            expression: "Active ferric-chloride mass used in treatment, from issue and concentration records."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per m3 wastewater treated and per 1 kg released oil"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_treatment_chemical_records
+              source_ids:
+                - eu-fdm-bat-2019
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: utility_steam
+          role: "Steam"
+          name: "Steam"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Steam crosses this process boundary as one atomic exchange; its quantity is obtained under the rule below."
+          amount:
+            expression: "Metered useful steam enthalpy delivered to foreground processes."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg released oil"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_records
+              source_ids:
+                - eu-fdm-bat-2019
+            ranges: []
+        - row_id: utility_treated_water
+          role: "Treated process water"
+          name: "Treated process water"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "Treated process water crosses this process boundary as one atomic exchange; its quantity is obtained under the rule below."
+          amount:
+            expression: "Metered treated water transferred for reuse; do not also count it as fresh withdrawal."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg released oil"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wastewater_records
+              source_ids:
+                - eu-fdm-bat-2019
+            ranges: []
+      waste:
+        - row_id: utility_wastewater_sludge
+          role: "Wastewater-treatment sludge"
+          name: "Vegetable-oil wastewater-treatment sludge"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Wastewater-treatment sludge crosses this process boundary as one atomic exchange; its quantity is obtained under the rule below."
+          amount:
+            expression: "Weighed wet sludge with dry matter and destination declared."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg released oil"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_records
+              source_ids:
+                - eu-fdm-bat-2019
+            ranges: []
+      elementary:
+        - row_id: utility_fossil_carbon_dioxide_air
+          role: "Fossil carbon dioxide to air"
+          name: "Carbon dioxide, fossil, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Fossil carbon dioxide to air crosses this process boundary as one atomic exchange; its quantity is obtained under the rule below."
+          amount:
+            expression: "Calculate from each fossil fuel separately using measured consumption and a reviewed factor."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg released oil"
+              kind: "fuel_inventory"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_emission_records
+              source_ids:
+                - eu-fdm-bat-2019
+            ranges: []
+        - row_id: utility_biogenic_carbon_dioxide_air
+          role: "Biogenic carbon dioxide to air"
+          name: "Carbon dioxide, biogenic, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Biogenic carbon dioxide to air crosses this process boundary as one atomic exchange; its quantity is obtained under the rule below."
+          amount:
+            expression: "Calculate from biogenic fuel separately; do not merge with fossil carbon dioxide."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg released oil"
+              kind: "fuel_inventory"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_emission_records
+              source_ids:
+                - eu-pef-method-2021
+            ranges: []
+        - row_id: utility_methane_air
+          role: "Methane to air"
+          name: "Methane to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Methane to air crosses this process boundary as one atomic exchange; its quantity is obtained under the rule below."
+          amount:
+            expression: "Measured or calculated separately for each combustion or treatment source."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg released oil"
+              kind: "fuel_inventory"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_emission_records
+              source_ids:
+                - eu-fdm-bat-2019
+            ranges: []
+        - row_id: utility_nitrous_oxide_air
+          role: "Nitrous oxide to air"
+          name: "Nitrous oxide to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Nitrous oxide to air crosses this process boundary as one atomic exchange; its quantity is obtained under the rule below."
+          amount:
+            expression: "Measured or calculated separately for each combustion or treatment source."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg released oil"
+              kind: "fuel_inventory"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_emission_records
+              source_ids:
+                - eu-fdm-bat-2019
+            ranges: []
+        - row_id: utility_nitrogen_monoxide_air
+          role: "Nitrogen monoxide to air"
+          name: "Nitrogen monoxide to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Nitrogen monoxide to air crosses this process boundary as one atomic exchange; its quantity is obtained under the rule below."
+          amount:
+            expression: "Measured release after control or calculation from measured fuel and operating data."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg released oil"
+              kind: "fuel_inventory"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_emission_records
+              source_ids:
+                - eu-fdm-bat-2019
+            ranges: []
+        - row_id: utility_sulfur_dioxide_air
+          role: "Sulfur dioxide to air"
+          name: "Sulfur dioxide to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Sulfur dioxide to air crosses this process boundary as one atomic exchange; its quantity is obtained under the rule below."
+          amount:
+            expression: "Measured release or calculation from fuel sulfur content and control efficiency."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg released oil"
+              kind: "fuel_inventory"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_emission_records
+              source_ids:
+                - eu-fdm-bat-2019
+            ranges: []
+        - row_id: utility_cod_water
+          role: "Chemical oxygen demand to water"
+          name: "Chemical oxygen demand to water"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Chemical oxygen demand to water crosses this process boundary as one atomic exchange; its quantity is obtained under the rule below."
+          amount:
+            expression: "Discharge volume multiplied by flow-proportional COD concentration after treatment."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg released oil"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_wastewater_records
+              source_ids:
+                - eu-fdm-bat-2019
+            ranges: []
+        - row_id: utility_total_phosphorus_water
+          role: "Total phosphorus to water"
+          name: "Total phosphorus to water"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Total phosphorus to water crosses this process boundary as one atomic exchange; its quantity is obtained under the rule below."
+          amount:
+            expression: "Discharge volume multiplied by flow-proportional total-phosphorus concentration after treatment."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg released oil"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_wastewater_records
+              source_ids:
+                - eu-fdm-bat-2019
+            ranges: []
+allocation_rules:
+  - rule_id: allocation_subdivide_first
+    applies_to: "extraction, refining, utilities and packaging"
+    rule: "Avoid allocation through process subdivision, submetering and direct assignment; assign botanical-oil-specific preparation and finishing directly to that oil."
+    source_ids:
+      - iso-14044-2006
+      - eu-pef-method-2021
+  - rule_id: allocation_causal_physical
+    applies_to: "inseparable oil and cake, meal, gums, soapstock or distillate"
+    rule: "When subdivision is not feasible, use a physical relationship only when it reflects the causal relationship between inputs and outputs and document the parameter and moisture basis."
+    source_ids:
+      - iso-14044-2006
+      - eu-pef-method-2021
+  - rule_id: allocation_economic_fallback
+    applies_to: "remaining multi-output burden"
+    rule: "If no defensible physical relationship exists, use economic allocation with consistent prices at the common process exit and report price period, currency and sensitivity."
+    source_ids:
+      - eu-pef-method-2021
+  - rule_id: allocation_waste_status
+    applies_to: "residues and off-spec outputs"
+    rule: "Treat an output as a co-product when it has a documented market or beneficial use; otherwise record it as waste with treatment destination and do not apply an avoided-burden credit inside this unit process."
+    source_ids:
+      - eu-pef-method-2021
+      - jasaw-shea-resource-use-2015
+  - rule_id: allocation_internal_loops
+    applies_to: "recovered oil, solvent, water, heat and rework"
+    rule: "Record internal transfers once and prevent simultaneous external input, product credit or waste burden for the same quantity."
+    source_ids:
+      - eu-pef-method-2021
+      - eu-fdm-bat-2019
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_material_receipts
+      process_id: "oil_material_preparation_oil_extraction_crude_finishing_oil_refining"
+      flow_role: "botanical feed and crude oil"
+      record_type: "weighbridge, scale, tank gauge, supplier certificate, batch ticket"
+      raw_fields: "botanical name; material state; lot; gross mass; tare; net mass; moisture; oil content when measured; origin; timestamp"
+      collection_method: "reconcile accepted receipts, batch issues and stock"
+      unit: "kg; % m/m"
+      frequency: "each lot or batch"
+      temporal_coverage: "same representative period as output"
+      site_scope: "all represented sites and lines"
+      aggregation_rule: "sum by exact botanical material and state; never aggregate different oils"
+      quality_evidence: "calibration; supplier certificate; rejection record; stock reconciliation"
+    - protocol_id: cp_process_outputs
+      process_id: "all_production_processes"
+      flow_role: "prepared feed, crude oil, refined oil and reference product"
+      record_type: "scale, tank gauge, meter, batch and release record"
+      raw_fields: "identity; route/state; mass; moisture; quality result; destination; opening/closing stock; timestamp"
+      collection_method: "measure each transfer and reconcile tank or packaged stock"
+      unit: "kg"
+      frequency: "each batch; period reconciliation"
+      temporal_coverage: "same period as inputs"
+      site_scope: "every represented line"
+      aggregation_rule: "sum conforming output by exact botanical identity and state"
+      quality_evidence: "calibration; batch reconciliation; laboratory release"
+    - protocol_id: cp_energy_records
+      process_id: "all_included_processes"
+      flow_role: "electricity and steam"
+      record_type: "meter, submeter, invoice, steam flow and condition record"
+      raw_fields: "meter readings; carrier; pressure; temperature; condensate return; equipment; batch assignment"
+      collection_method: "direct metering preferred; otherwise documented causal allocation"
+      unit: "kWh; MJ"
+      frequency: "continuous or each batch; monthly reconciliation"
+      temporal_coverage: "same period as output"
+      site_scope: "all relevant meters and utility systems"
+      aggregation_rule: "subtract non-production loads; prevent double counting fuel-generated energy"
+      quality_evidence: "calibration; invoice; meter map; allocation worksheet"
+    - protocol_id: cp_fuel_records
+      process_id: "preparation_extraction_refining_release_and_utilities"
+      flow_role: "each individual fuel"
+      record_type: "flow meter, tank gauge, purchase, stock and fuel specification"
+      raw_fields: "fuel identity; quantity; unit; density; heating value; sulfur; biomass moisture; equipment; period"
+      collection_method: "reconcile purchase, stock and metering for each carrier"
+      unit: "kg; m3; MJ"
+      frequency: "continuous or each delivery; monthly reconciliation"
+      temporal_coverage: "same period as output"
+      site_scope: "every combustion unit"
+      aggregation_rule: "convert with documented carrier-specific factors; no generic fuel total"
+      quality_evidence: "meter calibration; invoice; fuel certificate; stock balance"
+    - protocol_id: cp_water_records
+      process_id: "preparation_extraction_and_refining"
+      flow_role: "fresh and recirculated water"
+      record_type: "supply meter, submeter, cleaning log"
+      raw_fields: "source; readings; use; recirculation; evaporation estimate; destination"
+      collection_method: "meter external make-up and internal loops separately"
+      unit: "m3"
+      frequency: "continuous or each event; monthly reconciliation"
+      temporal_coverage: "same period as output"
+      site_scope: "all represented water systems"
+      aggregation_rule: "external withdrawal minus documented export; do not count recirculation as repeated input"
+      quality_evidence: "calibration; utility bill; loop diagram; balance closure"
+    - protocol_id: cp_solvent_balance
+      process_id: "oil_extraction_crude_finishing"
+      flow_role: "n-hexane"
+      record_type: "purchase, stock, recovery meter, product/cake test, waste and emission record"
+      raw_fields: "opening stock; purchase; closing stock; recovered solvent; product residue; cake residue; waste; release"
+      collection_method: "complete period solvent mass balance"
+      unit: "kg"
+      frequency: "each batch plus period reconciliation"
+      temporal_coverage: "same period as solvent route output"
+      site_scope: "every solvent-using line"
+      aggregation_rule: "input equals recovery, stock, residues, waste and releases within disclosed closure"
+      quality_evidence: "stock count; recovery calibration; test report; waste manifest"
+    - protocol_id: cp_chemical_records
+      process_id: "oil_refining"
+      flow_role: "each refining chemical or processing aid"
+      record_type: "purchase, issue, recipe, return and stock record"
+      raw_fields: "chemical identity; concentration; lot; opening; receipt; issue; return; closing; batch"
+      collection_method: "calculate active substance separately for each chemical"
+      unit: "kg active substance"
+      frequency: "each batch; monthly reconciliation"
+      temporal_coverage: "same period as output"
+      site_scope: "all refining lines"
+      aggregation_rule: "opening plus receipts minus closing and returns; assign by actual recipe"
+      quality_evidence: "invoice; certificate; recipe authorization; stock count"
+    - protocol_id: cp_refrigerant_records
+      process_id: "preparation_and_release"
+      flow_role: "ammonia refrigerant"
+      record_type: "cylinder, service and recovery log"
+      raw_fields: "refrigerant identity; opening stock; added; recovered; transferred; closing; incident"
+      collection_method: "annual or campaign mass balance with event attribution"
+      unit: "kg"
+      frequency: "each service event; annual reconciliation"
+      temporal_coverage: "same period as output"
+      site_scope: "all included refrigeration systems"
+      aggregation_rule: "make-up minus recovery and stock change equals loss by documented destination"
+      quality_evidence: "service certificate; leak test; cylinder record"
+    - protocol_id: cp_packaging_records
+      process_id: "storage_packaging_release"
+      flow_role: "each packaging component"
+      record_type: "bill of materials, count, sample mass, purchase and scrap record"
+      raw_fields: "material; component; units; sample mass; oil filled; return; scrap"
+      collection_method: "count and verify component mass"
+      unit: "kg; item"
+      frequency: "each packaging format; monthly reconciliation"
+      temporal_coverage: "same period as packaged output"
+      site_scope: "all represented lines"
+      aggregation_rule: "component mass divided by net conforming oil; bulk product records zero packaging"
+      quality_evidence: "BOM; calibrated scale; purchase and scrap reconciliation"
+    - protocol_id: cp_coproduct_records
+      process_id: "extraction_and_refining"
+      flow_role: "cake, gums, soapstock and distillate"
+      record_type: "scale, tank gauge, sales and destination record"
+      raw_fields: "identity; wet mass; dry matter; residual oil; quality; destination; price where allocated"
+      collection_method: "measure each output and preserve product/waste decision"
+      unit: "kg"
+      frequency: "each batch or dispatch"
+      temporal_coverage: "same period as output"
+      site_scope: "every co-product outlet"
+      aggregation_rule: "sum by identity and destination; retain allocation inputs"
+      quality_evidence: "calibration; sale record; destination evidence; laboratory result"
+    - protocol_id: cp_waste_records
+      process_id: "all_included_processes"
+      flow_role: "each waste stream"
+      record_type: "scale, manifest, collection and treatment record"
+      raw_fields: "waste identity; mass; moisture; hazardous status; destination; treatment; date"
+      collection_method: "weigh each shipment or reconcile container counts"
+      unit: "kg"
+      frequency: "each shipment"
+      temporal_coverage: "same period as output"
+      site_scope: "all waste generation points"
+      aggregation_rule: "sum by exact waste and destination"
+      quality_evidence: "scale calibration; manifest; contractor receipt"
+    - protocol_id: cp_wastewater_records
+      process_id: "extraction_refining_and_treatment"
+      flow_role: "wastewater and water emissions"
+      record_type: "influent/discharge meter, flow-proportional sample, laboratory report"
+      raw_fields: "volume; sampling time; COD; phosphorus; other substance concentrations; treatment; destination"
+      collection_method: "meter flow and use representative composite sampling"
+      unit: "m3; mg/L; kg"
+      frequency: "continuous flow; sampling by permit or justified plan"
+      temporal_coverage: "same period as output"
+      site_scope: "all included discharge points"
+      aggregation_rule: "concentration × volume; sum by substance and destination"
+      quality_evidence: "meter calibration; chain of custody; accredited laboratory report"
+    - protocol_id: cp_emission_records
+      process_id: "all_included_processes"
+      flow_role: "each direct air emission"
+      record_type: "stack test, continuous monitor, fuel and operating record"
+      raw_fields: "substance; concentration; flow; duration; fuel; control efficiency; uncertainty"
+      collection_method: "direct measurement preferred; calculations retain formula and measured inputs"
+      unit: "kg; mg/Nm3"
+      frequency: "continuous or representative campaign"
+      temporal_coverage: "same period as output"
+      site_scope: "every included source"
+      aggregation_rule: "calculate and sum separately by substance and medium"
+      quality_evidence: "monitor calibration; stack report; factor review; control log"
+    - protocol_id: cp_treatment_chemical_records
+      process_id: "onsite_utilities_wastewater"
+      flow_role: "each treatment chemical"
+      record_type: "purchase, issue, concentration and stock record"
+      raw_fields: "chemical; concentration; issue; return; opening/closing stock; treated volume"
+      collection_method: "calculate active substance from solution records"
+      unit: "kg active substance"
+      frequency: "each batch; monthly reconciliation"
+      temporal_coverage: "same period as wastewater"
+      site_scope: "all treatment units"
+      aggregation_rule: "assign to treated volume and normalize to released oil"
+      quality_evidence: "invoice; certificate; stock reconciliation; operator log"
+  calculation_rules:
+    - id: calc_reference_normalization
+      applies_to: "all inventory rows"
+      rule: "normalized amount = period amount × documented allocation share ÷ net released oil mass"
+      inputs:
+        - "measured amount"
+        - "allocation share"
+        - "released oil mass"
+      output: "amount per 1 kg reference product"
+      source_ids:
+        - eu-pef-method-2021
+    - id: calc_mass_balance
+      applies_to: "each production process"
+      rule: "opening stock + product inputs = closing stock + product outputs + co-products + wastes + direct mass releases + unexplained difference"
+      inputs:
+        - "all mass and stock records"
+      output: "balance closure and unexplained difference"
+      source_ids:
+        - eu-pef-method-2021
+        - jasaw-shea-resource-use-2015
+        - naangmenyele-shea-input-output-2023
+    - id: calc_oil_yield
+      applies_to: "extraction and refining"
+      rule: "net conforming oil output ÷ as-received botanical feed or crude-oil input; report moisture, oil-content and route basis"
+      inputs:
+        - "input and output mass"
+        - moisture
+        - route
+      output: "route-specific yield, not a category default"
+      source_ids:
+        - sun-rice-bran-oil-2022
+        - gonzalez-sesame-biorefinery-2025
+    - id: calc_solvent_closure
+      applies_to: "solvent route"
+      rule: "opening stock + purchases = closing stock + recovered solvent + product/cake residues + wastes + releases + unexplained difference"
+      inputs:
+        - "complete solvent records"
+      output: "solvent closure and loss by destination"
+      source_ids:
+        - eu-fdm-bat-2019
+        - sun-rice-bran-oil-2022
+    - id: calc_water_emission
+      applies_to: "treated discharge"
+      rule: "emitted substance mass = discharge volume × flow-proportional concentration with unit conversion"
+      inputs:
+        - "discharge volume"
+        - concentration
+        - "sampling coverage"
+      output: "kg substance per reference product"
+      source_ids:
+        - eu-fdm-bat-2019
+    - id: calc_allocation_share
+      applies_to: "multi-output processes"
+      rule: "apply the declared subdivision and allocation hierarchy; shares across co-products at one common process shall sum to one"
+      inputs:
+        - "direct assignments"
+        - "physical parameters or consistent prices"
+      output: "reproducible allocation share"
+      source_ids:
+        - iso-14044-2006
+        - eu-pef-method-2021
+  data_quality_requirements:
+    - id: dq_identity
+      applies_to: "every product row"
+      requirement: "Preserve one botanical identity, material state, process route and grade from receipt through release; do not substitute a generic vegetable-oil identity for missing facts."
+      evidence: "supplier certificate; lot genealogy; process map; release specification"
+    - id: dq_measurement
+      applies_to: "mass, energy, water, solvent, chemical and emissions"
+      requirement: "Use calibrated or verified systems and retain units, conversion factors, analytical methods, detection limits and uncertainty or limitations."
+      evidence: "calibration register; laboratory report; conversion worksheet; meter map"
+    - id: dq_temporal
+      applies_to: "foreground period"
+      requirement: "Use a representative production year where available; justify a campaign and cover start-up, shutdown, cleaning and route changes that materially affect results."
+      evidence: "production calendar; downtime log; representativeness statement"
+    - id: dq_completeness
+      applies_to: "process and exchange coverage"
+      requirement: "Reconcile material, solvent, water and energy records; disclose every missing measurement, proxy, exclusion and unresolved UUID; absence of a measurement is not evidence of zero."
+      evidence: "balance worksheets; gap register; source-to-row trace"
+    - id: dq_route_geography
+      applies_to: "foreground and upstream datasets"
+      requirement: "Match botanical origin, extraction/refining technology, site geography, electricity and fuel supply, water source and period, or document the proxy and bias."
+      evidence: "dataset metadata; supplier record; proxy justification"
+    - id: dq_allocation
+      applies_to: "multi-output operations"
+      requirement: "Retain subdivision evidence, quantities, physical parameters, prices, price period, currency and sensitivity needed to reproduce allocation."
+      evidence: "allocation workbook; meter map; sales records; sensitivity result"
+    - id: dq_range_status
+      applies_to: "all important inventory rows"
+      requirement: "Treat the absence of a range as an explicit evidence gap; do not create a range from one case or from equal lower and upper values."
+      evidence: "manifest unresolved-range record; literature review; review decision"
+validation_rules:
+  - rule_id: validate_reference_flow
+    applies_to: "reference product"
+    rule: "Confirm exactly 1 kg net released oil, Mass property and mass unit group UUIDs, one botanical identity, one crude/virgin/cold-pressed/refined state and every required qualifier; fail if the unresolved product-flow UUID is represented as resolved."
+    source_ids:
+      - unsd-cpc-3-2025
+      - eu-pef-method-2021
+  - rule_id: validate_scope_route
+    applies_to: "process map and boundary"
+    rule: "Confirm that the starting condition and route match the included processes and that every bypassed, outsourced or non-applicable operation is disclosed and linked where needed."
+    source_ids:
+      - fao-oil-processing-1994
+      - fao-cxc-79-2019
+  - rule_id: validate_atomic_inventory
+    applies_to: "all inventory rows"
+    rule: "Reject any combined electricity/steam/fuel, chemical collection, packaging collection, waste collection or multi-substance emission row; each selected flow shall be one physical exchange."
+    source_ids:
+      - eu-fdm-bat-2019
+      - eu-pef-method-2021
+  - rule_id: validate_balances
+    applies_to: "material, solvent, water and energy"
+    rule: "Recalculate closures from raw records, investigate unexplained differences and prevent double counting internal recovery, recirculation and utility conversion."
+    source_ids:
+      - eu-fdm-bat-2019
+      - eu-pef-method-2021
+  - rule_id: validate_refining_route
+    applies_to: "refined oil"
+    rule: "Verify whether the route is chemical or physical and whether degumming, neutralization, bleaching and deodorization inputs, residues, wastewater and operating conditions match the declared route."
+    source_ids:
+      - fao-cxc-79-2019
+      - fao-oil-processing-1994
+  - rule_id: validate_coproduct_allocation
+    applies_to: "cake, meal, gums, soapstock and distillate"
+    rule: "Confirm product-versus-waste status, avoid allocation where feasible, apply the hierarchy consistently and require all shares at a common process to sum to one."
+    source_ids:
+      - iso-14044-2006
+      - eu-pef-method-2021
+  - rule_id: validate_data_quality
+    applies_to: "foreground package"
+    rule: "Check identity, calibration, temporal coverage, site and route representativeness, source traceability, missing UUIDs, range gaps, proxies, cut-offs and update triggers."
+    source_ids:
+      - eu-pef-method-2021
+      - eu-fdm-bat-2019
+published_dataset_profile:
+  dataset_role: "Foreground gate-to-gate unit-process dataset for one botanically identified other vegetable oil in one declared factory-gate state"
+  downstream_use: "secondary_dataset; background_dataset"
+  allowed_use: "LCA models whose botanical oil, crude/refined state, route, grade, technology, geography, period and packaging match the dataset and whose upstream boundary is linked at the declared starting condition"
+  excluded_use: "Unspecified average vegetable oil; substitution for separately classified named oils; comparison of botanical oils or crude/refined states without aligned functions and qualifiers; chemically modified oil; cradle-to-gate claim when cultivation or received crude-oil production is absent"
+  required_metadata: "PCR id and lifecycle state; botanical common and scientific name; oil-bearing material; product state; route; grade/specification; site and geography; period; process map; energy, water and solvent systems; co-products and allocation; packaging; source ids; unresolved UUIDs and range evidence"
+  required_quality_disclosure: "Measurement and calibration coverage; material, solvent, water and energy closure; temporal, technological and geographical representativeness; missing data and proxies; cut-offs; allocation sensitivity; unresolved flow identities; absence of source-backed ranges; limitations"
+  update_trigger: "Change in botanical input, extraction or refining route, grade/specification, energy or water supply, solvent system, co-product destination or price, allocation, packaging, treatment, site coverage or data period; resolution of a UUID or range evidence gap"
+data_sources:
+  - id: "unsd-cpc-3-2025"
+    type: "dataset"
+    reference: "United Nations Statistics Division, *Central Product Classification (CPC) Version 3.0*, code 21691, 2025, https://unstats.un.org/unsd/classifications/Econ/CPC (retrieved 2026-08-23)"
+    used_for: "Residual product scope, included botanical oil examples, crude/refined coverage and exclusion of chemically modified oils"
+  - id: "fao-cxs-19-1981"
+    type: "standard"
+    reference: "FAO/WHO, CXS 19-1981, *Standard for Edible Fats and Oils Not Covered by Individual Standards*, amended 2024, https://workspace.fao.org/sites/codex/Standards/CXS%2019-1981/CXS_019e.pdf (retrieved 2026-08-23)"
+    used_for: "Edible oil, virgin oil and cold-pressed oil definitions; grade and release-specification context; applicability limits"
+  - id: "fao-cxc-79-2019"
+    type: "official_guidance"
+    reference: "FAO/WHO, CXC 79-2019, *Code of Practice for the Reduction of 3-MCPDEs and GEs in Refined Oils and Food Products Made with Refined Oils*, 2019, https://workspace.fao.org/sites/codex/Standards/CXC%2079-2019/CXC_079e.pdf (retrieved 2026-08-23)"
+    used_for: "Oilseed cleaning, grinding and heating; crude-oil treatment; chemical and physical refining; degumming, neutralization, bleaching, deodorization and route-dependent monitoring"
+  - id: "fao-oil-processing-1994"
+    type: "official_guidance"
+    reference: "FAO, *Fats and Oils in Human Nutrition*, Chapter 5, Processing and refining edible oils, 1994, https://www.fao.org/4/v4700e/v4700e0a.htm (retrieved 2026-08-23)"
+    used_for: "Small- and large-scale feed preparation, pressing and solvent extraction; oil-cake handling; alkaline and physical refining; process chemicals, effluent, filtration and deodorization"
+  - id: "eu-fdm-bat-2019"
+    type: "official_guidance"
+    reference: "European Commission, Commission Implementing Decision (EU) 2019/2031 establishing BAT conclusions for the food, drink and milk industries, 2019, https://eur-lex.europa.eu/eli/dec_impl/2019/2031/oj (retrieved 2026-08-23)"
+    used_for: "Process-flow and inventory requirements for water, energy, raw materials, wastewater, waste gas and residues; measurement and monitoring; hexane, wastewater and emission accounting"
+  - id: "iso-14044-2006"
+    type: "standard"
+    reference: "ISO 14044:2006, *Environmental management — Life cycle assessment — Requirements and guidelines*, confirmed 2022, https://www.iso.org/standard/38498.html (retrieved 2026-08-23)"
+    used_for: "LCA/LCI goal, scope, inventory, interpretation, reporting and review framework; allocation and consistency context"
+  - id: "eu-pef-method-2021"
+    type: "official_guidance"
+    reference: "European Commission, Recommendation (EU) 2021/2279, Annex I, *Product Environmental Footprint Method*, consolidated 2021 text, https://eur-lex.europa.eu/eli/reco/2021/2279/2021-12-30/eng (retrieved 2026-08-23)"
+    used_for: "Functional unit and reference flow; system boundary; company-specific manufacturing data; completeness, allocation, data quality, validation and disclosure"
+  - id: "jasaw-shea-resource-use-2015"
+    type: "literature"
+    reference: "Jasaw, G. S., Saito, O., and Takeuchi, K. (2015), *Shea (Vitellaria paradoxa) Butter Production and Resource Use by Urban and Rural Processors in Northern Ghana*, Sustainability 7, 3592–3614, https://doi.org/10.3390/su7043592 (full text verified 2026-08-23)"
+    used_for: "Field-measured shea process sequence and material-flow boundary; kernels, water, fuelwood, electricity, residue and wastewater; no category range adopted"
+  - id: "naangmenyele-shea-input-output-2023"
+    type: "literature"
+    reference: "Naangmenyele, Z. et al. (2023), *Fundamentals of shea butter production; input-output analyses and profit maximization in Northern Ghana*, Research in Globalization 6, 100113, https://doi.org/10.1016/j.resglo.2023.100113 (open full text verified 2026-08-23)"
+    used_for: "Independent field input-output evidence for shea-kernel washing, crushing, roasting, milling, kneading, boiling, filtering, cooling, packaging, water, fuel, residue and wastewater; no category range adopted"
+  - id: "sun-rice-bran-oil-2022"
+    type: "literature"
+    reference: "Sun, L.-H., Wang, Y.-Y., and Gong, Y.-Q. (2022), *Life cycle assessment of rice bran oil production: a case study in China*, Environmental Science and Pollution Research 29, 39847–39859, https://doi.org/10.1007/s11356-021-18172-0 (author manuscript/full text verified 2026-08-23)"
+    used_for: "Rice-bran transport, crude-oil extraction, refining and storage process decomposition; electricity, fuel, wastewater and n-hexane relevance; case values not adopted as ranges"
+  - id: "gonzalez-sesame-biorefinery-2025"
+    type: "literature"
+    reference: "Gonzalez, J. M. et al. (2025), *Techno-economic and Environmental Assessment of a Biorefinery for the Valorisation of Sesame Crop*, Chemical Engineering Transactions 117, 97–102, https://doi.org/10.3303/CET25117017 (publisher full text verified 2026-08-23)"
+    used_for: "Sesame drying/roasting, grinding, cold pressing, filtration, cake and refining route decomposition; simulation values not adopted as ranges"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:b716fadd11692832584d428f5e9ad790f881dec3468d088e4e5224569db77e79"
+  generated_content_sha256: "sha256:80c6423ff64548e19f6ff129ffcbd9d890f9588469f66b0e1862f4bec13ee756"

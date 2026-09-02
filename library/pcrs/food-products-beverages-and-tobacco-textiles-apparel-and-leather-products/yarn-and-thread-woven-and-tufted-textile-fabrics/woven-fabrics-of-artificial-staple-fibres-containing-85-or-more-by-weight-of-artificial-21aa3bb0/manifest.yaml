@@ -2,10 +2,10 @@ schema_version: 1
 id: pcr.food-products-beverages-and-tobacco-textiles-apparel-and-leather-products.yarn-and-thread-woven-and-tufted-textile-fabrics.woven-fabrics-of-artificial-staple-fibres-containing-85-or-more-by-weight-of-artificial-21aa3bb0
 title:
   en-US: "Woven fabrics of artificial staple fibres, containing 85% or more by weight of artificial staple fibres"
-  zh-CN: null
-status: scaffold
+  zh-CN: "含人造短纤维重量达85%或以上的机织织物"
+status: candidate
 pcr_kind: product_category_rule
-content_maturity: empty_scaffold
+content_maturity: authored_methodology
 domains:
   - "food-products-beverages-and-tobacco-textiles-apparel-and-leather-products"
 modules:
@@ -22,16 +22,128 @@ target_entities:
   - flow
   - process
   - lifecyclemodel
+  - dataset
 languages:
   canonical: en-US
   available:
     - en-US
     - zh-CN
 translation_status:
-  zh-CN: scaffold_pending_translation
+  zh-CN: aligned
 classification_refs:
   - system: CPC
     version: "3.0"
     code: "26750"
     title: "Woven fabrics of artificial staple fibres, containing 85% or more by weight of artificial staple fibres"
     mapping_type: exact
+review_metadata:
+  inventory_contract:
+    atomic_flows: v1
+  unresolved:
+    - "Each production dataset must add one atomic row for every actually used minor-fibre yarn, chemical formulation, dye, auxiliary, packaging component, waste stream, and elementary emission not already represented by an exact card."
+    - "UUID review rejections below must be resolved against the actual site geography, supplied grade, concentration, compartment, and waste status before active use where the corresponding row applies."
+  uuid_review:
+    accepted:
+      - row_ids: [reference_product, greige_fabric_output, finished_fabric_output]
+        uuid: 7037e578-630a-4ba2-8768-7858df8a46aa
+        decision: "Exact Product flow for CPC 26750 with Mass reference property; confirmed by hybrid search and state-code 100 direct read."
+      - row_ids: [incoming_yarn, weaving_yarn_input]
+        uuid: b2fccf4f-e4c4-4723-9e9b-ef0956abd0fc
+        decision: "Exact Product flow for non-retail yarn containing at least 85% artificial staple fibres, with Mass property; confirmed by hybrid search and direct read."
+      - row_ids: [polyvinyl_alcohol_size]
+        uuid: cea707dd-98a3-451d-bc43-2dcc145091e9
+        decision: "Exact Polyvinyl alcohol Product flow with Mass property; use only when the purchased size component is PVA."
+      - row_ids: [sizing_steam, finishing_steam]
+        uuid: 293f9fd9-5182-4d35-8aa5-ce73d4f322b7
+        decision: "Exact Steam Product flow with Mass property; confirmed by hybrid search and direct read."
+      - row_ids: [sizing_natural_gas, finishing_natural_gas]
+        uuid: 4f19ca0e-7b3b-11dd-ad8b-0800200c9a66
+        decision: "Exact natural gas in the gaseous state Product flow with Mass property; confirmed by hybrid search and direct read."
+      - row_ids: [sizing_wastewater]
+        uuid: 33617934-f2c0-4016-bb14-264de8396a2c
+        decision: "Exact Warp sizing wastewater Waste flow with Mass property; confirmed by hybrid search and direct read."
+      - row_ids: [sizing_nmvoc_to_air, finishing_nmvoc_to_air]
+        uuid: 08a91e70-3ddc-11dd-a302-0050c2490048
+        decision: "Exact non-methane volatile organic compounds Elementary flow, emissions to air unspecified, with Mass property; confirmed by hybrid search and direct read."
+      - row_ids: [sodium_hydroxide]
+        uuid: e0abcced-0611-4c24-9290-5a2c5a0c4169
+        decision: "Exact industrial-grade Sodium hydroxide Product flow with Mass property; use only when the supplied grade matches the direct-read record."
+      - row_ids: [sodium_chloride]
+        uuid: a413ea86-0887-42c8-be77-3bee86d5863b
+        decision: "Exact Sodium chloride Product flow with Mass property; confirmed by hybrid search and direct read."
+    rejected:
+      - row_id: preparation_electricity
+        selected_flow: "Electricity, medium voltage, declared grid"
+        reason: "Hybrid candidates did not preserve an exact voltage, geography, and kWh reference-unit identity."
+      - row_id: warping_lubricant
+        selected_flow: "Textile yarn lubricating oil, declared formulation"
+        reason: "POY/FDY oil candidates were not semantically exact for woven staple-yarn preparation."
+      - row_id: preparation_yarn_waste
+        selected_flow: "Waste artificial staple-fibre yarn"
+        reason: "Hybrid candidates were Product flows or composition-mismatched, not the exact Waste flow."
+      - row_id: preparation_paper_core_waste
+        selected_flow: "Waste paperboard yarn core"
+        reason: "The closest candidate was a Product flow rather than the discarded Waste flow."
+      - row_id: preparation_plastic_film_waste
+        selected_flow: "Waste polyethylene packaging film"
+        reason: "The closest candidates were Product flows rather than the discarded Waste flow."
+      - row_id: preparation_dust_to_air
+        selected_flow: "Particles (PM10) to air, site emission compartment"
+        reason: "The exact-name candidate was limited to an urban high-stack compartment, which is not universally valid for yarn preparation."
+      - row_id: starch_size
+        selected_flow: "Modified starch sizing agent, declared grade"
+        reason: "Hybrid candidates did not establish one exact textile-sizing grade for all routes."
+      - row_id: sizing_water
+        selected_flow: "Process water"
+        reason: "The candidate used Mass while the foreground card collects water volume; no exact Volume/m3 identity was confirmed."
+      - row_id: sizing_electricity
+        selected_flow: "Electricity, medium voltage, declared grid"
+        reason: "Hybrid candidates did not preserve an exact voltage, geography, and kWh reference-unit identity."
+      - row_id: spent_sizing_liquor
+        selected_flow: "Spent polyvinyl-alcohol sizing liquor"
+        reason: "Only a broader warp-sizing-wastewater candidate was returned; it was not exact for concentrated spent liquor."
+      - row_id: prepared_yarn_output
+        selected_flow: "Prepared artificial staple-fibre yarn"
+        reason: "No exact internal intermediate state was confirmed; the CPC yarn flow does not encode this preparation state."
+      - row_id: sized_warp_output
+        selected_flow: "Sized artificial staple-fibre warp yarn"
+        reason: "No exact internal intermediate state was confirmed."
+      - row_id: weaving_electricity
+        selected_flow: "Electricity, medium voltage, declared grid"
+        reason: "Hybrid candidates did not preserve an exact voltage, geography, and kWh reference-unit identity."
+      - row_id: loom_lubricant
+        selected_flow: "Textile loom lubricating oil, declared formulation"
+        reason: "The returned wool-oil candidate was not semantically exact for loom lubrication."
+      - row_id: weaving_yarn_waste
+        selected_flow: "Waste artificial staple-fibre yarn"
+        reason: "No exact Waste flow with the required artificial-staple composition was confirmed."
+      - row_id: weaving_fabric_waste
+        selected_flow: "Waste woven artificial staple-fibre fabric"
+        reason: "No exact Waste flow with the required fabric composition and state was confirmed."
+      - row_id: weaving_dust_to_air
+        selected_flow: "Particles (PM10) to air, site emission compartment"
+        reason: "The exact-name candidate was limited to an urban high-stack compartment, which is not universally valid for weaving."
+      - row_id: finishing_fabric_input
+        selected_flow: "Greige woven artificial staple-fibre fabric"
+        reason: "The CPC 26750 Product flow does not encode greige state and was therefore not reused for this internal input."
+      - row_id: finishing_water
+        selected_flow: "Process water"
+        reason: "The candidate used Mass while the foreground card collects water volume; no exact Volume/m3 identity was confirmed."
+      - row_id: hydrogen_peroxide_solution
+        selected_flow: "Hydrogen peroxide solution, declared concentration"
+        reason: "Hybrid results were concentration-specific and no single concentration is valid for every finishing recipe."
+      - row_id: reactive_dye
+        selected_flow: "Reactive dye formulation, declared Colour Index identity"
+        reason: "No exact formulation and Colour Index identity was confirmed."
+      - row_id: finishing_electricity
+        selected_flow: "Electricity, medium voltage, declared grid"
+        reason: "Hybrid candidates did not preserve an exact voltage, geography, and kWh reference-unit identity."
+      - row_id: finishing_wastewater
+        selected_flow: "Textile finishing wastewater"
+        reason: "No exact Waste flow for the declared combined wet-finishing route was confirmed."
+      - row_id: finishing_sludge
+        selected_flow: "Textile wastewater-treatment sludge"
+        reason: "No exact Waste flow with matching treatment state was confirmed."
+      - row_id: offgrade_finished_fabric
+        selected_flow: "Off-grade woven artificial staple-fibre fabric"
+        reason: "No exact Waste flow with the required composition and finished state was confirmed."

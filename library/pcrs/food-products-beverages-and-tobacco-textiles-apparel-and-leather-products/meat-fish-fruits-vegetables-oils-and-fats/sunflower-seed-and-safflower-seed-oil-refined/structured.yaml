@@ -1,10 +1,574 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "21632"
-  title: "Sunflower-seed and safflower-seed oil, refined"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.food-products-beverages-and-tobacco-textiles-apparel-and-leather-products.meat-fish-fruits-vegetables-oils-and-fats.sunflower-seed-and-safflower-seed-oil-refined"
+  classification_refs: "CPC 3.0:21632 (exact)"
+  covered_products: "Bulk refined sunflower-seed oil; bulk refined safflower-seed oil; declared blends consisting only of refined sunflower-seed and safflower-seed oils"
+  excluded_products: "Crude oil; virgin or cold-pressed oil; unrefined oil; oil from other botanical sources; formulated blends containing other oils; packaged retail products; used cooking oil; biodiesel and other chemically transformed derivatives"
+  representative_product: "Refined edible sunflower-seed or safflower-seed oil, bulk at refinery plant gate"
+  production_route: "Receipt of crude sunflower/safflower oil; degumming; chemical neutralisation and washing or a declared physical-refining route; bleaching and filtration; deodorisation; cooling or polishing filtration; bulk storage"
+  market_state: "Finished, refined, food-grade oil in bulk at the refinery plant gate, before retail packaging and distribution"
+functional_unit:
+  what: "Bulk refined edible oil derived from sunflower seed, safflower seed, or their declared blend"
+  how_much: "1 kg net mass of refined oil"
+  how_well: "Meets the declared applicable food-grade specification and the declared sunflower/safflower identity; free of packaging mass"
+  how_long_or_cycle: "One production lot or campaign at refinery plant-gate release; no service duration applies"
+  reference_flow_link: "refined_sunflower_safflower_oil"
+system_boundary:
+  rules:
+    - rule_id: boundary_gate_to_gate
+      applies_to: "foreground refinery"
+      rule: "Include operations from measured crude-oil receipt through release of bulk refined oil from plant storage, together with onsite utilities, refining aids, residues, wastewater, and direct releases attributable to that route."
+      source_ids:
+        - ec-jrc-fdm-bref-2019
+        - nucci-et-al-2014-sunflower-oil-lca
+    - rule_id: boundary_route_disclosure
+      applies_to: "chemical, physical, or combined refining"
+      rule: "Include only operations actually used and explicitly disclose omitted or substituted steps; chemical neutralisation and washing are conditional when physical refining is used."
+      source_ids:
+        - nucci-et-al-2014-sunflower-oil-lca
+    - rule_id: boundary_upstream_handoff
+      applies_to: "purchased crude oil and other technosphere inputs"
+      rule: "Keep upstream production outside the foreground refinery but require linked upstream datasets and disclose any proxy, cut-off, or missing transport."
+      source_ids:
+        - ghg-protocol-product-standard-2011
+    - rule_id: boundary_quality_state
+      applies_to: "reference product"
+      rule: "The output shall be released as refined oil in the declared food-market state; virgin, cold-pressed, crude, and packaged retail products are outside scope."
+      source_ids:
+        - codex-cxs-210-1999
+boundary_abstraction:
+  declared_starting_condition: "Crude sunflower-seed oil, crude safflower-seed oil, or their declared blend received at the refinery gate, with mass, botanical source, quality state, supplier or upstream dataset, and receipt period recorded"
+  starting_condition_role: "Foreground refining feed and boundary hand-off from upstream oil extraction and transport"
+  product_classification_scope: "Refined sunflower-seed and safflower-seed oils only; CPC 3.0:21632 is classification context rather than canonical identity"
+  recursive_input_rule: "Any purchased refined sunflower/safflower oil entering the same category shall be recorded as a technosphere input with supplier dataset and shall not cause recursive reapplication of this foreground refining PCR"
+  upstream_dataset_requirement: "Link each crude-oil feed, utility, chemical, and other technosphere input to a geographically and temporally appropriate upstream dataset; disclose proxy use and any omitted transport"
+  disclosure: "Declare refining route, included unit operations, facility geography, production period, crude-oil botanical shares, co-products and residues, wastewater treatment hand-off, direct-emission coverage, and packaging exclusion"
+reference_flow_definition:
+  reference_amount: "1 kg"
+  product_flow_ref:
+    name: "Sunflower-seed and safflower-seed oil, refined"
+    uuid: "1b88e515-861e-4552-b494-67bb3d645aa7"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "botanical source: sunflower"
+    - safflower
+    - "or declared blend ratio"
+    - "refining route: chemical"
+    - physical
+    - "or combined"
+    - "oleic grade where claimed"
+    - "food-grade specification and release criteria"
+    - "production geography"
+    - "production period"
+    - "bulk plant-gate state"
+    - "packaging exclusion"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "reference product and all mass-normalised inventory rows"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Report the reference product as 1 kg net oil mass. Exclude packaging, pallets, containers, and retained tank heel from the reference amount."
+  - id: wet_dry_basis
+    applies_to: "crude oil, refining aids, residues, and wastewater"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "State whether each mass is as-received, dry, or active-substance basis. Do not convert between bases without measured moisture or concentration and a documented formula."
+  - id: energy_conversion
+    applies_to: "purchased electricity, fuels, and steam"
+    required_property_ref:
+      name: "declared energy or mass property"
+      uuid: ""
+    required_unit: "kWh, MJ, or kg as applicable"
+    rule: "Preserve the metered or invoiced unit in raw records; document conversion factors and avoid treating steam mass as an energy quantity without measured steam conditions or an explicit enthalpy method."
+  - id: blend_accounting
+    applies_to: "sunflower/safflower blends"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Record sunflower and safflower crude-oil inputs separately and disclose their mass shares; the shares shall reconcile to the total crude-oil feed after any separately measured non-oil additions."
+process_map:
+  - id: oil_refining
+    name: "Crude sunflower/safflower oil refining"
+    inclusion: "required"
+    inclusion_condition: "Always required; record the actual chemical, physical, or combined route"
+    role: "Foreground conversion of received crude oil to bulk refined edible oil"
+    quantitative_reference: "1 kg net refined oil at plant gate"
+process_inventory:
+  - id: oil_refining
+    label: "Crude sunflower/safflower oil refining"
+    inputs:
+      product:
+        - row_id: crude_oil_feed
+          role: "Crude sunflower/safflower oil feed"
+          name: "Sunflower-seed and safflower-seed oil, crude"
+          flow_type: "product"
+          flow_ref:
+            uuid: "e48ecaca-7bfe-427a-a117-7eeeb8253565"
+          property_unit: "Mass / kg"
+          description: "Measure each botanical crude-oil feed received into the refining route. Keep sunflower, safflower, and blend components distinguishable in raw records."
+          amount:
+            expression: "measured net mass of crude oil charged to the refining route"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg net refined oil output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_mass_inputs
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "1.0"
+                upper: "1.2"
+                unit: "kg/kg refined oil"
+                basis: "per 1 kg net refined oil output"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: process_water
+          role: "Process water"
+          name: "Process water"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record water supplied for degumming, washing, cleaning, vacuum systems, and other refining uses that crosses the foreground boundary; keep non-contact cooling water separately identifiable."
+          amount:
+            expression: "metered or reconciled water use allocated to the refining campaign"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net refined oil output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_mass_inputs
+              source_ids:
+                - nucci-et-al-2014-sunflower-oil-lca
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.5"
+                unit: "kg/kg refined oil"
+                basis: "per 1 kg net refined oil output; replace with route-specific evidence or foreground records"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: bleaching_aids
+          role: "Bleaching earth and filter aids"
+          name: "Bleaching earth and filter aids"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record fresh adsorbents and filter aids consumed in bleaching and polishing filtration, with material type and moisture basis declared."
+          amount:
+            expression: "stock issue or purchase mass minus verified returns, normalised to refined oil output"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net refined oil output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_mass_inputs
+              source_ids:
+                - nucci-et-al-2014-sunflower-oil-lca
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.05"
+                unit: "kg/kg refined oil"
+                basis: "per 1 kg net refined oil output; replace with route-specific evidence or foreground records"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: refining_chemicals
+          role: "Neutralisation and degumming chemicals"
+          name: "Refining chemicals, route-specific"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record caustic, acid, and other refining chemicals by commercial product mass and active concentration. This row is conditional on the declared route and actual chemical use."
+          amount:
+            expression: "measured or invoiced chemical product mass, with active concentration recorded"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg net refined oil output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_mass_inputs
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.05"
+                unit: "kg commercial product/kg refined oil"
+                basis: "per 1 kg net refined oil output; replace with route-specific evidence or foreground records"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: thermal_energy
+          role: "Purchased steam or thermal utility"
+          name: "Steam or thermal energy, route-specific"
+          flow_type: "product"
+          property_unit: "Mass / kg steam, or Energy / MJ, as metered"
+          description: "Record purchased steam mass and conditions, or the separately metered fuel and boiler system used to generate onsite steam. Do not count both purchased steam and its upstream fuel."
+          amount:
+            expression: "measured purchased steam or calculated useful thermal energy from reconciled foreground records"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net refined oil output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_inputs
+              source_ids:
+                - nucci-et-al-2014-sunflower-oil-lca
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "1.0"
+                unit: "kg steam/kg refined oil"
+                basis: "per 1 kg net refined oil output; applicable only when steam mass is the recorded quantity"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: electricity_input
+          role: "Purchased electricity"
+          name: "Electricity, location-specific supply mix"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record metered or invoiced electricity attributable to refining, pumping, vacuum, filtration, cooling, and bulk storage within the foreground boundary."
+          amount:
+            expression: "metered electricity or a documented allocation of a complete facility meter balance"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net refined oil output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_inputs
+              source_ids:
+                - nucci-et-al-2014-sunflower-oil-lca
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "1.0"
+                unit: "kWh/kg refined oil"
+                basis: "per 1 kg net refined oil output; replace with site or technology evidence"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: refined_sunflower_safflower_oil
+          role: "Bulk refined sunflower/safflower oil"
+          name: "Sunflower-seed and safflower-seed oil, refined"
+          flow_type: "product"
+          flow_ref:
+            uuid: "1b88e515-861e-4552-b494-67bb3d645aa7"
+          property_unit: "Mass / kg"
+          description: "The quantitative reference is the net mass of conforming bulk refined oil released from the foreground refinery."
+          amount:
+            expression: "fixed quantitative reference of 1 kg net refined oil"
+            value_mode: "fixed_value"
+            specificity: "not_applicable"
+            basis:
+              text: "1 kg reference product"
+              kind: "reference_flow"
+            evidence:
+              kind: "identity_reference"
+              source_ids: []
+            ranges: []
+        - row_id: refining_coproducts
+          role: "Saleable soapstock, acid oil, or recovered oil"
+          name: "Route-specific saleable refining co-product"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record each output separately when it has a documented destination and economic value; otherwise classify it as waste and document the treatment hand-off."
+          amount:
+            expression: "measured dispatch mass or tank reconciliation by co-product type"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net refined oil output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_outputs_and_wastes
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.15"
+                unit: "kg/kg refined oil"
+                basis: "per 1 kg net refined oil output; replace with route-specific evidence or foreground records"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        - row_id: spent_bleaching_residue
+          role: "Spent bleaching earth and filter residue"
+          name: "Spent bleaching earth and filter residue"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record wet as-dispatched mass, retained oil where measured, waste classification, and treatment destination."
+          amount:
+            expression: "measured dispatch mass with moisture and retained-oil basis disclosed"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net refined oil output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_outputs_and_wastes
+              source_ids:
+                - nucci-et-al-2014-sunflower-oil-lca
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.1"
+                unit: "kg/kg refined oil"
+                basis: "per 1 kg net refined oil output; replace with route-specific evidence or foreground records"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: refinery_wastewater
+          role: "Refinery wastewater"
+          name: "Refinery wastewater"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record wastewater leaving refining operations before onsite or offsite treatment; keep reused water and non-contact cooling water distinguishable."
+          amount:
+            expression: "measured discharge or documented water balance, before treatment hand-off"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg net refined oil output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_outputs_and_wastes
+              source_ids:
+                - nucci-et-al-2014-sunflower-oil-lca
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "1.0"
+                unit: "kg/kg refined oil"
+                basis: "per 1 kg net refined oil output; replace with route-specific evidence or foreground records"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocation_avoid
+    applies_to: "shared refinery operations and utilities"
+    rule: "Avoid allocation where separately metered or otherwise separable operations can be subdivided. Do not allocate upstream crude-oil production to the foreground refinery."
+    source_ids:
+      - ghg-protocol-product-standard-2011
+  - rule_id: allocation_physical_first
+    applies_to: "inseparable multi-output refining operations"
+    rule: "If subdivision is not practicable, use a documented physical relationship that reflects the causation of inputs, energy use, residues, and emissions. Mass allocation shall not be used automatically when it does not reflect the physical relationship."
+    source_ids:
+      - ghg-protocol-product-standard-2011
+  - rule_id: allocation_economic_fallback
+    applies_to: "saleable co-products lacking a defensible physical relationship"
+    rule: "Economic allocation may be used only after documenting why subdivision, system expansion, and physical allocation are not practicable; use contemporaneous plant-gate values and disclose the price period and sensitivity."
+    source_ids:
+      - ghg-protocol-product-standard-2011
+  - rule_id: allocation_waste_status
+    applies_to: "soapstock, acid oil, spent bleaching earth, filter residue, and wastewater"
+    rule: "Classify an output as product or waste from its documented destination and economic status. Do not assign co-product credit to a waste output without a verified recovery function and receiving dataset."
+    source_ids:
+      - ghg-protocol-product-standard-2011
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_mass_inputs
+      process_id: "oil_refining"
+      flow_role: "crude oil, process water, bleaching aids, and refining chemicals"
+      record_type: "weighbridge ticket, tank dip or calibrated meter, stock ledger, purchase record, laboratory concentration record"
+      raw_fields: "date; batch; material identity; botanical source; gross and tare mass or meter reading; moisture or active concentration; returns; meter id"
+      collection_method: "reconcile batch records to inventory movement and production output"
+      unit: "kg; concentration as mass fraction where applicable"
+      frequency: "per delivery or batch, aggregated monthly"
+      temporal_coverage: "representative continuous 12-month period or complete declared campaign"
+      site_scope: "all refining lines and storage feeding the reported output"
+      aggregation_rule: "sum net inputs by material and divide by conforming net refined-oil output; avoid double counting transfers"
+      quality_evidence: "calibration record; inventory reconciliation; supplier specification; laboratory result; exception log"
+    - protocol_id: cp_energy_inputs
+      process_id: "oil_refining"
+      flow_role: "electricity, steam, and fuel"
+      record_type: "utility meter, invoice, boiler log, steam flow and condition record"
+      raw_fields: "timestamp; meter id; opening and closing reading; fuel quantity; steam pressure and temperature where used; allocation driver; downtime"
+      collection_method: "direct submetering preferred; otherwise reconcile the complete facility balance and document allocation"
+      unit: "kWh; MJ; kg steam; fuel-specific unit"
+      frequency: "continuous or per shift, aggregated monthly"
+      temporal_coverage: "same period as production output"
+      site_scope: "all utilities serving the reported refining route"
+      aggregation_rule: "subtract verified non-production use, convert with documented factors, and normalise to net refined-oil output"
+      quality_evidence: "meter calibration; invoice reconciliation; conversion-factor source; allocation worksheet"
+    - protocol_id: cp_outputs_and_wastes
+      process_id: "oil_refining"
+      flow_role: "refined oil, co-products, spent residue, and wastewater"
+      record_type: "certified production mass, dispatch ticket, tank reconciliation, waste manifest, wastewater meter and test"
+      raw_fields: "date; batch; output identity; net mass; moisture; retained oil; destination; economic status; wastewater volume or mass; treatment route"
+      collection_method: "reconcile certified output, tank change, dispatch, and waste records"
+      unit: "kg; m3 only when density and conversion are documented"
+      frequency: "per batch or dispatch, aggregated monthly"
+      temporal_coverage: "same period as inputs"
+      site_scope: "all reported refining lines, storage, and waste hand-offs"
+      aggregation_rule: "sum each distinct output; convert volumes only with measured or justified density; normalise to reference output"
+      quality_evidence: "product release certificate; weighbridge record; waste manifest; treatment receipt; meter calibration; mass-balance review"
+  calculation_rules:
+    - id: calc_normalise_reference
+      applies_to: "every inventory amount"
+      rule: "Normalised amount = period amount / conforming net refined-oil output for the same period. The reference product is then set to exactly 1 kg."
+      inputs:
+        - "reconciled period amount"
+        - "conforming net refined-oil output"
+      output: "amount per kg refined oil"
+      source_ids: []
+    - id: calc_active_chemical
+      applies_to: "chemicals reported as solutions or commercial products"
+      rule: "Active amount = commercial product mass × measured active mass fraction. Retain both commercial-product and active-substance values."
+      inputs:
+        - "product mass"
+        - "certificate or test concentration"
+      output: "kg active substance and kg commercial product per kg refined oil"
+      source_ids: []
+    - id: calc_volume_to_mass
+      applies_to: "oil, water, steam condensate, and wastewater recorded by volume"
+      rule: "Mass = measured volume × density at the declared temperature. Do not apply an assumed density without marking the result as modelled and disclosing the assumption."
+      inputs:
+        - volume
+        - density
+        - temperature
+      output: "kg per kg refined oil"
+      source_ids:
+        - codex-cxs-210-1999
+    - id: calc_mass_balance
+      applies_to: "refinery mass-bearing inputs and outputs"
+      rule: "Mass-balance residual = total mass inputs − total measured product, co-product, waste, wastewater, and direct mass outputs. Investigate and disclose the residual rather than forcing it to zero."
+      inputs:
+        - "all mass-bearing rows on a consistent wet/dry basis"
+      output: "residual kg and residual share per kg refined oil"
+      source_ids: []
+  data_quality_requirements:
+    - id: dq_identity
+      applies_to: "crude and refined oils"
+      requirement: "Preserve botanical source, blend share, refining route, oleic grade where claimed, product specification, batch or campaign, and the selected Tiangong flow identity."
+      evidence: "supplier specification; batch record; product release certificate; flow UUID verification"
+    - id: dq_measurement
+      applies_to: "all foreground amounts"
+      requirement: "Use calibrated meters, scales, tank reconciliations, invoices, or laboratory tests; disclose conversions, allocation drivers, missing records, and estimates."
+      evidence: "calibration certificate; meter and invoice reconciliation; calculation worksheet; exception log"
+    - id: dq_temporal
+      applies_to: "foreground dataset"
+      requirement: "Cover a representative continuous 12-month period or the complete declared production campaign and disclose shutdowns, abnormal batches, and seasonality."
+      evidence: "production calendar; maintenance and downtime logs; monthly completeness table"
+    - id: dq_completeness
+      applies_to: "process inventory"
+      requirement: "Account for reference output, crude feed, major aids, water, energy, co-products, waste, wastewater, and direct releases; document each excluded flow and demonstrate that it is immaterial to the intended use."
+      evidence: "mass and energy balance; flow register; omission log; treatment receipts"
+    - id: dq_representativeness
+      applies_to: "foreground and linked upstream data"
+      requirement: "Report technological, geographical, and time-related representativeness and disclose all proxy datasets and mismatches."
+      evidence: "dataset metadata; supplier and facility records; proxy and limitation statement; ilcd-data-network-compliance-2010"
+validation_rules:
+  - rule_id: validate_reference_identity
+    applies_to: "reference flow"
+    rule: "Verify exact flow UUID, Mass property UUID, Units of mass UUID, kg unit, botanical-source qualifier, refining route, and bulk plant-gate state."
+    source_ids:
+      - codex-cxs-210-1999
+  - rule_id: validate_reference_amount
+    applies_to: "quantitative reference"
+    rule: "Require exactly 1 kg net refined oil and exclude packaging or container mass."
+    source_ids: []
+  - rule_id: validate_route_coverage
+    applies_to: "process boundary"
+    rule: "Confirm that every operated refining step, onsite utility, material aid, residue, wastewater hand-off, and direct release is included or explicitly justified as excluded."
+    source_ids:
+      - ec-jrc-fdm-bref-2019
+      - nucci-et-al-2014-sunflower-oil-lca
+  - rule_id: validate_mass_balance
+    applies_to: "mass-bearing inventory"
+    rule: "Recalculate the period mass balance on consistent wet/dry and concentration bases; any unexplained residual or forced closure is a finding requiring disclosure and correction."
+    source_ids: []
+  - rule_id: validate_no_double_counting
+    applies_to: "utilities and upstream links"
+    rule: "Reject simultaneous counting of purchased steam and the fuel used by an upstream steam dataset, or purchased crude oil and duplicated upstream extraction within the same foreground process."
+    source_ids:
+      - ghg-protocol-product-standard-2011
+  - rule_id: validate_allocation
+    applies_to: "co-products and wastes"
+    rule: "Confirm the allocation hierarchy, output economic status, factor period, and sensitivity disclosure; reject undocumented mass or economic allocation."
+    source_ids:
+      - ghg-protocol-product-standard-2011
+  - rule_id: validate_quality_state
+    applies_to: "released reference product"
+    rule: "Confirm the product is refined and meets the declared applicable food-grade identity and quality specification; reject crude, virgin, cold-pressed, off-spec, or packaged output as the reference product."
+    source_ids:
+      - codex-cxs-210-1999
+  - rule_id: validate_provisional_ranges
+    applies_to: "reasoned-estimate ranges"
+    rule: "Treat every reasoned_estimate range as a non-conformance screen only; do not substitute it for foreground data, and flag it for replacement before publication-critical use."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "Foreground gate-to-gate refinery dataset for bulk refined sunflower-seed and/or safflower-seed oil"
+  downstream_use: "secondary_dataset; background_dataset after methodology and translation review and with complete representativeness disclosure"
+  allowed_use: "Attributional product systems requiring bulk refined sunflower/safflower oil at plant gate; supplier or regional modelling when geography, route, period, blend share, and upstream links match"
+  excluded_use: "Agricultural seed production; crude-oil extraction; virgin or cold-pressed oil; packaged retail oil; unspecified generic vegetable oil; consequential substitution without a separate method; food-safety certification"
+  required_metadata: "facility geography; production period; botanical source and blend share; refining route; oleic grade where claimed; product specification; plant-gate bulk state; technology; allocation method; upstream dataset references; packaging exclusion"
+  required_quality_disclosure: "meter and scale coverage; temporal completeness; mass-balance residual; energy accounting method; wastewater and direct-emission coverage; co-product/waste classification; proxies; exclusions; provisional reasoned estimates; technological, geographical, and temporal representativeness"
+  update_trigger: "change in botanical blend, refining route, oleic grade, specification, facility or utility system, allocation basis, wastewater treatment, upstream crude-oil source, production period, or evidence sufficient to replace a provisional range"
+data_sources:
+  - id: "codex-cxs-210-1999"
+    type: "standard"
+    reference: "FAO/WHO Codex Alimentarius, *Standard for Named Vegetable Oils*, CXS 210-1999, amended 2024 and republished with 2026 correction, https://www.fao.org/fao-who-codexalimentarius/sh-proxy/tr/?lnk=1&url=https%3A%2F%2Fworkspace.fao.org%2Fsites%2Fcodex%2FStandards%2FCXS+210-1999%2FCXS_210e.pdf (retrieved 2026-08-10)"
+    used_for: "sunflower and safflower oil identity; human-consumption state; refined-oil quality and measurement context"
+  - id: "ec-jrc-fdm-bref-2019"
+    type: "official_guidance"
+    reference: "European Commission Joint Research Centre, *Best Available Techniques Reference Document in the Food, Drink and Milk Industries*, adopted December 2019, https://bureau-industrial-transformation.jrc.ec.europa.eu/reference/food-drink-and-milk-industries (retrieved 2026-08-10)"
+    used_for: "official industrial food-processing scope for vegetable raw materials and the range of activities at installations"
+  - id: "nucci-et-al-2014-sunflower-oil-lca"
+    type: "literature"
+    reference: "Nucci, B.; Puccini, M.; Pelagagge, L.; Vitolo, S.; Nicolella, C. (2014), *Improving the environmental performance of vegetable oil processing through LCA*, Journal of Cleaner Production 64, 310–322, https://doi.org/10.1016/j.jclepro.2013.07.049; repository record https://hdl.handle.net/11568/236328 (retrieved 2026-08-10)"
+    used_for: "sunflower-oil processing and packaging scope; bleaching, steam production, wastewater treatment, water, energy, and bleaching-earth hotspot coverage"
+  - id: "ghg-protocol-product-standard-2011"
+    type: "standard"
+    reference: "WRI/WBCSD, *Product Life Cycle Accounting and Reporting Standard*, 2011, https://ghgprotocol.org/sites/default/files/ghgp/standards/Product-Life-Cycle-Accounting-Reporting-Standard-EReader_041613_0.pdf (retrieved 2026-08-10)"
+    used_for: "boundary completeness; allocation avoidance, physical allocation, and economic fallback hierarchy"
+  - id: "ilcd-data-network-compliance-2010"
+    type: "official_guidance"
+    reference: "European Commission Joint Research Centre, *ILCD Data Network: Compliance rules and entry-level requirements*, Version 1, 2010, https://publications.jrc.ec.europa.eu/repository/bitstream/JRC58193/ilcd-data-network_compliance-entry-level_version1_march2010_f_isbn_fin.pdf (retrieved 2026-08-10)"
+    used_for: "technological, geographical, and temporal representativeness; modelling and allocation disclosure"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:0ecf94db80c7b69d983cfa961b40a0c2bd4e5f393f50327e06c29fcfd8dcd4d3"
+  generated_content_sha256: "sha256:5398f8f223975d1f52eb3a78b7ebdbb2919f74d71ce2ddd4626c84effa1c6329"

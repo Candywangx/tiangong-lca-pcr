@@ -1,10 +1,1218 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "26750"
-  title: "Woven fabrics of artificial staple fibres, containing 85% or more by weight of artificial staple fibres"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.food-products-beverages-and-tobacco-textiles-apparel-and-leather-products.yarn-and-thread-woven-and-tufted-textile-fabrics.woven-fabrics-of-artificial-staple-fibres-containing-85-or-more-by-weight-of-artificial-21aa3bb0"
+  classification_refs: "CPC 3.0: 26750, exact mapping context"
+  covered_products: "Woven fabrics containing at least 85% artificial staple fibres by total fibre mass, supplied as greige, dyed, printed, coated, or otherwise finished fabric when the declared production route includes those operations"
+  excluded_products: "Knitted and non-woven textiles; carpets and tufted fabrics; special fabrics; garments and made-up articles; fabrics below the 85% threshold; fabrics dominated by synthetic staple fibres"
+  representative_product: "Factory-gate woven fabric made primarily from artificial staple-fibre yarn"
+  production_route: "Incoming yarn acceptance, winding or preparation, warping, conditional sizing, weaving, inspection, and conditional wet pretreatment or finishing"
+  market_state: "Declared greige or finished fabric at the producing facility gate, dry and saleable, before garment conversion"
+functional_unit:
+  what: "Production of woven fabric containing at least 85% artificial staple fibres by fibre mass"
+  how_much: "1 kg of saleable fabric at the factory gate"
+  how_well: "Meets the declared fibre composition, weave, width, mass per unit area, colour or finish, quality grade, and moisture condition"
+  how_long_or_cycle: "Not applicable to a mass-based intermediate product; one declared production lot is the reporting cycle"
+  reference_flow_link: "The saleable fabric output of the last included foreground process, normalized to 1 kg"
+system_boundary:
+  rules:
+    - rule_id: boundary_starting_condition
+      applies_to: "Foreground start"
+      rule: "Begin at documented receipt of spun yarn; model fibre and yarn manufacture as upstream datasets rather than silently omitting them."
+      source_ids:
+        - eu-pef-method-2021
+    - rule_id: boundary_process_completeness
+      applies_to: "Foreground operations"
+      rule: "Include yarn preparation, warping, weaving, inspection, and every conditional sizing or finishing operation actually required to reach the declared saleable fabric state."
+      source_ids:
+        - eu-jrc-textiles-bref-2023
+        - zhang-et-al-2023-wet-processing
+    - rule_id: boundary_recursive_input
+      applies_to: "Same-category intermediate fabric"
+      rule: "Stop recursive foreground expansion at a purchased same-category fabric input and require a distinct upstream dataset and supplier-state disclosure."
+      source_ids:
+        - eu-pef-method-2021
+    - rule_id: boundary_environmental_flows
+      applies_to: "Inputs and outputs"
+      rule: "Inventory material, water, energy, chemical, wastewater, waste-gas, and solid-waste flows at process level where relevant; disclose any excluded flow and its justification."
+      source_ids:
+        - eu-jrc-textiles-bref-2023
+        - eu-textiles-bat-conclusions-2022
+        - eu-pef-method-2021
+boundary_abstraction:
+  declared_starting_condition: "Accepted artificial staple-fibre yarn and any minor-fibre yarns at the weaving facility gate, with composition, mass, moisture condition, and supplier identity documented"
+  starting_condition_role: "Upstream product input to the foreground weaving route"
+  product_classification_scope: "Woven fabric with at least 85% artificial staple fibres by total fibre mass; classification is a scope check and not the canonical PCR identity"
+  recursive_input_rule: "Purchased greige or partly finished fabric within the same category is recorded once as an upstream product input with a separate upstream dataset; its earlier production is not recursively rebuilt inside the receiving process"
+  upstream_dataset_requirement: "Link representative upstream datasets for fibre, yarn, sizing chemicals, water, electricity, fuels, other process chemicals, packaging, transport where included, and waste treatment"
+  disclosure: "Declare fibre type and composition, yarn origin, included unit operations, greige or finished state, wet-processing route, allocation choices, excluded operations, cut-offs, recycled-content claims, and whether utilities or treatment are on-site or supplied externally"
+reference_flow_definition:
+  reference_amount: "1 kg"
+  product_flow_ref:
+    name: "Woven fabrics of artificial staple fibres, containing 85% or more by weight of artificial staple fibres"
+    uuid: "7037e578-630a-4ba2-8768-7858df8a46aa"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "artificial fibre type and supplier composition certificate"
+    - "total fibre composition by mass"
+    - "greige or finished state"
+    - "weave or construction"
+    - "fabric width"
+    - "mass per unit area"
+    - colour
+    - coating
+    - "or functional finish when present"
+    - "moisture or conditioning state"
+    - "quality grade"
+    - "production geography"
+    - "reporting period"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "Reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Determine net saleable fabric mass after conditioning to the declared moisture state; exclude pallets, cores, and external packaging."
+  - id: composition_threshold
+    applies_to: "Product category membership"
+    required_property_ref:
+      name: "Fibre mass fraction"
+      uuid: ""
+    required_unit: "% by mass"
+    rule: "Verify that artificial staple fibres are at least 85% of total fibre mass using a supplier certificate, bill of materials, or a quantitative fibre-analysis result under the applicable ISO 1833 method; remove non-fibrous matter as required by the test method and do not use coatings or packaging in the fibre denominator."
+  - id: area_to_mass_conversion
+    applies_to: "Area-based production records"
+    required_property_ref:
+      name: "Mass and area"
+      uuid: ""
+    required_unit: "kg and m2"
+    rule: "Convert area records to mass only with the lot-specific measured mass per unit area and finished width; retain both raw measurements and the conversion formula."
+  - id: water_volume_conversion
+    applies_to: "Metered process water and wastewater"
+    required_property_ref:
+      name: "Volume"
+      uuid: ""
+    required_unit: "m3"
+    rule: "Preserve measured volume; if a mass representation is required, apply a documented density and temperature basis rather than assuming an undocumented conversion."
+  - id: energy_carrier_separation
+    applies_to: "Electricity, steam, and fuels"
+    required_property_ref:
+      name: "Energy"
+      uuid: ""
+    required_unit: "kWh or MJ"
+    rule: "Record electricity, purchased steam, and fuels separately and preserve their original metered units before any conversion to a common energy unit."
+process_map:
+  - id: yarn_preparation_and_warping
+    name: "Yarn acceptance, preparation, and warping"
+    inclusion: "required"
+    inclusion_condition: "Always included from incoming yarn receipt through production of warp beams and prepared weft yarn"
+    role: "Foreground material preparation"
+    quantitative_reference: "kg prepared yarn delivered to weaving"
+  - id: sizing
+    name: "Warp sizing and drying"
+    inclusion: "conditional"
+    inclusion_condition: "Include when size is applied to warp yarn at the reporting facility"
+    role: "Foreground yarn protection for weaving"
+    quantitative_reference: "kg sized warp yarn"
+  - id: weaving
+    name: "Loom weaving and fabric inspection"
+    inclusion: "required"
+    inclusion_condition: "Always included"
+    role: "Foreground fabric formation"
+    quantitative_reference: "kg inspected greige woven fabric"
+  - id: wet_pretreatment_and_finishing
+    name: "Desizing, washing, dyeing, printing, coating, or functional finishing"
+    inclusion: "conditional"
+    inclusion_condition: "Include each operation performed on-site or under operational control to reach the declared market state"
+    role: "Foreground finishing"
+    quantitative_reference: "kg saleable finished fabric"
+process_inventory:
+  - id: yarn_preparation_and_warping
+    label: "Yarn acceptance, preparation, and warping"
+    inputs:
+      product:
+        - row_id: incoming_yarn
+          role: "Artificial staple-fibre yarn"
+          name: "Yarn (other than sewing thread) of artificial staple fibres, containing 85% or more by weight of such fibres, not put up for retail sale"
+          flow_type: "product"
+          flow_ref:
+            uuid: "b2fccf4f-e4c4-4723-9e9b-ef0956abd0fc"
+          property_unit: "Mass / kg"
+          description: "Record the accepted non-retail artificial staple-fibre yarn entering the foreground. Any minor-fibre yarn must be added as its own atomic card with its actual identity."
+          amount:
+            expression: "measured conditioned mass of accepted yarn consumed by the declared production lot"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg saleable reference fabric"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_mass_balance
+              source_ids: []
+            ranges: []
+        - row_id: preparation_electricity
+          role: "Electricity for winding and warping"
+          name: "Electricity, medium voltage, declared grid; exact Tiangong UUID unresolved"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record submetered electricity or an allocated facility-meter value for yarn handling, winding, and warping equipment."
+          amount:
+            expression: "measured or meter-allocated electricity used during the production lot"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg prepared yarn output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_records
+              source_ids: []
+            ranges: []
+        - row_id: warping_lubricant
+          role: "Textile yarn lubricating oil"
+          name: "Textile yarn lubricating oil, declared formulation; exact Tiangong UUID unresolved"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the actual lubricating-oil formulation deliberately applied during yarn preparation or warping. Add any antistatic formulation as a separate atomic card."
+          amount:
+            expression: "measured issue quantity less documented return quantity"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg prepared yarn output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_chemical_records
+              source_ids:
+                - eu-jrc-textiles-bref-2023
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: prepared_yarn_output
+          role: "Prepared warp beams and weft yarn"
+          name: "Prepared artificial staple-fibre yarn; exact Tiangong UUID unresolved"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the mass of prepared yarn transferred to sizing or directly to weaving; reconcile the output with incoming yarn, retained work-in-progress, and losses."
+          amount:
+            expression: "calculated from measured transfer mass and lot-level work-in-progress change"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg prepared yarn output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_material_mass_balance
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: preparation_yarn_waste
+          role: "Waste artificial staple-fibre yarn"
+          name: "Waste artificial staple-fibre yarn; exact Tiangong UUID unresolved"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Measure artificial staple-fibre yarn ends and damaged yarn packages that leave the process as waste."
+          amount:
+            expression: "measured waste leaving the process, net of documented internal reuse"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg prepared yarn output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_records
+              source_ids: []
+            ranges: []
+        - row_id: preparation_paper_core_waste
+          role: "Waste paperboard yarn core"
+          name: "Waste paperboard yarn core; exact Tiangong UUID unresolved"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Measure discarded paperboard yarn cores separately from yarn and plastic waste."
+          amount:
+            expression: "measured net mass dispatched as waste"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg prepared yarn output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_records
+              source_ids: []
+            ranges: []
+        - row_id: preparation_plastic_film_waste
+          role: "Waste polyethylene packaging film"
+          name: "Waste polyethylene packaging film; exact Tiangong UUID unresolved"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Measure discarded polyethylene film separately from paperboard and yarn waste."
+          amount:
+            expression: "measured net mass dispatched as waste"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg prepared yarn output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_records
+              source_ids: []
+            ranges: []
+      elementary:
+        - row_id: preparation_dust_to_air
+          role: "Uncaptured fibre dust to air"
+          name: "Particles (PM10) to air, site emission compartment; exact Tiangong UUID unresolved"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record direct dust emissions only when they cross the site boundary to air; captured dust remains a waste flow."
+          amount:
+            expression: "measured emission or calculated value from a documented control-device mass balance or approved factor"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg prepared yarn output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_direct_emissions
+              source_ids:
+                - eu-jrc-textiles-bref-2023
+            ranges: []
+  - id: sizing
+    label: "Warp sizing and drying"
+    inputs:
+      product:
+        - row_id: prepared_warp_input
+          role: "Prepared warp yarn"
+          name: "Prepared artificial staple-fibre warp yarn; exact Tiangong UUID unresolved"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the measured mass of warp yarn entering sizing and retain the link to its preparation lot."
+          amount:
+            expression: "measured transfer mass entering sizing"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg sized warp output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_mass_balance
+              source_ids: []
+            ranges: []
+        - row_id: polyvinyl_alcohol_size
+          role: "Polyvinyl alcohol sizing agent"
+          name: "Polyvinyl alcohol"
+          flow_type: "product"
+          flow_ref:
+            uuid: "cea707dd-98a3-451d-bc43-2dcc145091e9"
+          property_unit: "Mass / kg"
+          description: "Record polyvinyl alcohol only when it is an actual component of the warp-size recipe. Each other size component or auxiliary requires a separate atomic card."
+          amount:
+            expression: "measured recipe issue less recovered and returned quantity"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg sized warp output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_chemical_records
+              source_ids:
+                - eu-jrc-textiles-bref-2023
+            ranges: []
+        - row_id: sizing_water
+          role: "Process water for sizing"
+          name: "Process water; exact Tiangong UUID unresolved"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "Record metered fresh, reused, and recycled water separately and avoid double counting recovered size liquor."
+          amount:
+            expression: "metered water delivered to sizing solution preparation, machine cleaning, and associated operations"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg sized warp output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water_and_wastewater
+              source_ids:
+                - eu-jrc-textiles-bref-2023
+            ranges: []
+        - row_id: sizing_electricity
+          role: "Electricity for sizing"
+          name: "Electricity, medium voltage, declared grid; exact Tiangong UUID unresolved"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record electricity for size preparation, pumps, sizing machines, and electrically heated or driven equipment."
+          amount:
+            expression: "submetered consumption or documented allocation from electricity meters"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg sized warp output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_records
+              source_ids: []
+            ranges: []
+        - row_id: sizing_steam
+          role: "Steam for sizing and drying"
+          name: "Steam"
+          flow_type: "product"
+          flow_ref:
+            uuid: "293f9fd9-5182-4d35-8aa5-ce73d4f322b7"
+          property_unit: "Mass / kg"
+          description: "Record purchased or internally transferred steam delivered to the sizing process."
+          amount:
+            expression: "metered steam mass or calculated mass from calibrated condensate and documented losses"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg sized warp output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_records
+              source_ids: []
+            ranges: []
+        - row_id: sizing_natural_gas
+          role: "Natural gas for direct sizing heat"
+          name: "Natural gas in the gaseous state"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f19ca0e-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Mass / kg"
+          description: "Record natural gas only when it is combusted for heat used by sizing or drying; do not combine it with steam."
+          amount:
+            expression: "measured fuel volume converted to mass using documented gas conditions and density, or direct fuel-mass records"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg sized warp output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_energy_records
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: sized_warp_output
+          role: "Sized warp yarn"
+          name: "Sized artificial staple-fibre warp yarn; exact Tiangong UUID unresolved"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the conditioned mass transferred to weaving and calculate size add-on from dry yarn and sized-yarn records."
+          amount:
+            expression: "calculated conditioned mass transferred to weaving"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg sized warp output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_material_mass_balance
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: sizing_wastewater
+          role: "Warp sizing wastewater"
+          name: "Warp sizing wastewater"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "33617934-f2c0-4016-bb14-264de8396a2c"
+          property_unit: "Mass / kg"
+          description: "Record sizing wastewater sent to treatment after subtracting documented internal reuse. Concentrated spent liquor is a separate card."
+          amount:
+            expression: "metered discharge volume multiplied by measured or documented density"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg sized warp output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_water_and_wastewater
+              source_ids:
+                - eu-jrc-textiles-bref-2023
+            ranges: []
+        - row_id: spent_sizing_liquor
+          role: "Spent polyvinyl-alcohol sizing liquor"
+          name: "Spent polyvinyl-alcohol sizing liquor; exact Tiangong UUID unresolved"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record a separately collected concentrated PVA sizing liquor only when it leaves the process independently from wastewater."
+          amount:
+            expression: "measured net mass sent to recovery or treatment"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg sized warp output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_records
+              source_ids:
+                - eu-jrc-textiles-bref-2023
+            ranges: []
+      elementary:
+        - row_id: sizing_nmvoc_to_air
+          role: "Non-methane volatile organic compounds to air"
+          name: "Non-methane volatile organic compounds to air, unspecified"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-a302-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Record NMVOC emitted from sizing and drying when measured or calculated from collected activity data. Other emitted substances require separate atomic cards."
+          amount:
+            expression: "measured emission or calculated value from fuel use and a documented factor"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg sized warp output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_direct_emissions
+              source_ids:
+                - eu-jrc-textiles-bref-2023
+            ranges: []
+  - id: weaving
+    label: "Loom weaving and fabric inspection"
+    inputs:
+      product:
+        - row_id: weaving_yarn_input
+          role: "Artificial staple-fibre weaving yarn"
+          name: "Yarn (other than sewing thread) of artificial staple fibres, containing 85% or more by weight of such fibres, not put up for retail sale"
+          flow_type: "product"
+          flow_ref:
+            uuid: "b2fccf4f-e4c4-4723-9e9b-ef0956abd0fc"
+          property_unit: "Mass / kg"
+          description: "Record the aggregate mass of the same exact artificial staple-fibre yarn flow issued as warp and weft. Different yarn compositions require separate cards."
+          amount:
+            expression: "measured yarn issued to looms adjusted for work-in-progress change"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg inspected greige fabric output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_mass_balance
+              source_ids: []
+            ranges: []
+        - row_id: weaving_electricity
+          role: "Loom electricity"
+          name: "Electricity, medium voltage, declared grid; exact Tiangong UUID unresolved"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record loom, compressed-air, local ventilation, and inspection electricity by submeter where possible."
+          amount:
+            expression: "submetered or documented meter-allocated electricity for the weaving lot"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg inspected greige fabric output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_records
+              source_ids:
+                - eu-jrc-textiles-bref-2023
+            ranges: []
+        - row_id: loom_lubricant
+          role: "Loom lubricant"
+          name: "Textile loom lubricating oil, declared formulation; exact Tiangong UUID unresolved"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record lubricants deliberately consumed by loom and compressed-air systems and distinguish recovered waste oil."
+          amount:
+            expression: "purchased or issued quantity less returned stock, allocated to the production lot"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg inspected greige fabric output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_chemical_records
+              source_ids:
+                - eu-jrc-textiles-bref-2023
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: greige_fabric_output
+          role: "Inspected greige woven fabric"
+          name: "Woven fabrics of artificial staple fibres, containing 85% or more by weight of artificial staple fibres"
+          flow_type: "product"
+          flow_ref:
+            uuid: "7037e578-630a-4ba2-8768-7858df8a46aa"
+          property_unit: "Mass / kg"
+          description: "Record conditioned saleable greige mass after inspection. This row is the reference output only when no later finishing process is included."
+          amount:
+            expression: "measured net saleable greige fabric mass"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "1 kg reference fabric when weaving is the last included process"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_product_output
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: weaving_yarn_waste
+          role: "Waste artificial staple-fibre yarn"
+          name: "Waste artificial staple-fibre yarn; exact Tiangong UUID unresolved"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record yarn ends that leave weaving as waste, excluding material returned internally to the same process."
+          amount:
+            expression: "measured mass leaving the weaving process, net of documented internal reuse"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg inspected greige fabric output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_records
+              source_ids: []
+            ranges: []
+        - row_id: weaving_fabric_waste
+          role: "Waste woven artificial staple-fibre fabric"
+          name: "Waste woven artificial staple-fibre fabric; exact Tiangong UUID unresolved"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record selvedge and off-grade greige fabric that leave weaving as waste separately from yarn waste."
+          amount:
+            expression: "measured mass leaving the weaving process, net of documented internal reuse"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg inspected greige fabric output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_records
+              source_ids: []
+            ranges: []
+      elementary:
+        - row_id: weaving_dust_to_air
+          role: "Uncaptured weaving dust to air"
+          name: "Particles (PM10) to air, site emission compartment; exact Tiangong UUID unresolved"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record direct particulate emissions only when relevant and measured or calculable from site evidence."
+          amount:
+            expression: "measured emission or calculated value from a documented collection-system mass balance"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg inspected greige fabric output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_direct_emissions
+              source_ids: []
+            ranges: []
+  - id: wet_pretreatment_and_finishing
+    label: "Desizing, washing, dyeing, printing, coating, or functional finishing"
+    inputs:
+      product:
+        - row_id: finishing_fabric_input
+          role: "Greige woven fabric"
+          name: "Greige woven fabric of artificial staple fibres; exact Tiangong UUID unresolved"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the conditioned greige mass and link it to the weaving lot or supplier dataset."
+          amount:
+            expression: "measured mass entering the included finishing route"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg saleable finished fabric output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_mass_balance
+              source_ids: []
+            ranges: []
+        - row_id: finishing_water
+          role: "Wet-processing water"
+          name: "Process water; exact Tiangong UUID unresolved"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "Record fresh, reused, and recycled water separately for desizing, washing, dyeing, printing, coating preparation, and cleaning."
+          amount:
+            expression: "metered gross water input by included wet process"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg saleable finished fabric output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water_and_wastewater
+              source_ids:
+                - eu-jrc-textiles-bref-2023
+            ranges: []
+        - row_id: sodium_hydroxide
+          role: "Sodium hydroxide"
+          name: "Sodium hydroxide"
+          flow_type: "product"
+          flow_ref:
+            uuid: "e0abcced-0611-4c24-9290-5a2c5a0c4169"
+          property_unit: "Mass / kg"
+          description: "Record industrial-grade sodium hydroxide only when it is actually used in pretreatment or finishing; disclose supplied purity."
+          amount:
+            expression: "measured recipe issue less recovered and returned quantity"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg saleable finished fabric output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_chemical_records
+              source_ids:
+                - eu-jrc-textiles-bref-2023
+            ranges: []
+        - row_id: hydrogen_peroxide_solution
+          role: "Hydrogen peroxide solution"
+          name: "Hydrogen peroxide solution, declared concentration; exact Tiangong UUID unresolved"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record one supplied hydrogen peroxide solution and its actual concentration when it is used; do not aggregate different concentrations."
+          amount:
+            expression: "measured recipe issue less recovered and returned quantity"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg saleable finished fabric output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_chemical_records
+              source_ids:
+                - eu-jrc-textiles-bref-2023
+            ranges: []
+        - row_id: reactive_dye
+          role: "Reactive dye formulation"
+          name: "Reactive dye formulation, declared Colour Index identity; exact Tiangong UUID unresolved"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record one reactive-dye formulation per card with trade name, Colour Index identity, concentration, and recipe function."
+          amount:
+            expression: "measured recipe issue less recovered and returned quantity"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg saleable finished fabric output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_chemical_records
+              source_ids:
+                - eu-jrc-textiles-bref-2023
+            ranges: []
+        - row_id: sodium_chloride
+          role: "Sodium chloride"
+          name: "Sodium chloride"
+          flow_type: "product"
+          flow_ref:
+            uuid: "a413ea86-0887-42c8-be77-3bee86d5863b"
+          property_unit: "Mass / kg"
+          description: "Record sodium chloride separately when used as dyeing electrolyte."
+          amount:
+            expression: "measured recipe issue less recovered and returned quantity"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg saleable finished fabric output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_chemical_records
+              source_ids:
+                - eu-jrc-textiles-bref-2023
+            ranges: []
+        - row_id: finishing_electricity
+          role: "Electricity for wet processing and finishing"
+          name: "Electricity, medium voltage, declared grid; exact Tiangong UUID unresolved"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Record electricity for baths, pumps, dryers, stenters, curing, and abatement equipment."
+          amount:
+            expression: "submetered use or documented electricity-meter allocation by included finishing process"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg saleable finished fabric output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_records
+              source_ids:
+                - eu-jrc-textiles-bref-2023
+            ranges: []
+        - row_id: finishing_steam
+          role: "Steam for wet processing and finishing"
+          name: "Steam"
+          flow_type: "product"
+          flow_ref:
+            uuid: "293f9fd9-5182-4d35-8aa5-ce73d4f322b7"
+          property_unit: "Mass / kg"
+          description: "Record purchased or internally transferred steam separately from electricity and fuels."
+          amount:
+            expression: "metered steam mass or calculated mass from calibrated condensate and documented losses"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg saleable finished fabric output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_records
+              source_ids:
+                - eu-jrc-textiles-bref-2023
+            ranges: []
+        - row_id: finishing_natural_gas
+          role: "Natural gas for direct finishing heat"
+          name: "Natural gas in the gaseous state"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f19ca0e-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Mass / kg"
+          description: "Record natural gas only when it is combusted for direct heating, drying, stentering, curing, or abatement."
+          amount:
+            expression: "measured fuel volume converted to mass using documented gas conditions and density, or direct fuel-mass records"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg saleable finished fabric output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_energy_records
+              source_ids:
+                - eu-jrc-textiles-bref-2023
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: finished_fabric_output
+          role: "Saleable finished woven fabric"
+          name: "Woven fabrics of artificial staple fibres, containing 85% or more by weight of artificial staple fibres"
+          flow_type: "product"
+          flow_ref:
+            uuid: "7037e578-630a-4ba2-8768-7858df8a46aa"
+          property_unit: "Mass / kg"
+          description: "Record conditioned net saleable mass after all included finishing and inspection. This row is the reference output when any finishing process is included."
+          amount:
+            expression: "measured net saleable finished fabric mass"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "1 kg reference fabric"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_product_output
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: finishing_wastewater
+          role: "Finishing wastewater"
+          name: "Textile finishing wastewater; exact Tiangong UUID unresolved"
+          flow_type: "waste"
+          property_unit: "Volume / m3"
+          description: "Record wastewater volume by stream, process origin, direct or indirect discharge route, reuse, and relevant measured pollutant parameters."
+          amount:
+            expression: "metered discharge after subtracting documented reuse and recycled water"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg saleable finished fabric output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water_and_wastewater
+              source_ids:
+                - eu-jrc-textiles-bref-2023
+            ranges: []
+        - row_id: finishing_sludge
+          role: "Textile wastewater-treatment sludge"
+          name: "Textile wastewater-treatment sludge; exact Tiangong UUID unresolved"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Measure dewatered sludge arising from treatment of the included textile wastewater and retain dry-matter and hazardous-status evidence."
+          amount:
+            expression: "measured waste leaving the included finishing operations, net of documented recovery"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg saleable finished fabric output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_records
+              source_ids:
+                - eu-jrc-textiles-bref-2023
+            ranges: []
+        - row_id: offgrade_finished_fabric
+          role: "Off-grade woven artificial staple-fibre fabric"
+          name: "Off-grade woven artificial staple-fibre fabric; exact Tiangong UUID unresolved"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Measure off-grade finished fabric sent to recovery or treatment separately from sludge and wastewater."
+          amount:
+            expression: "measured net mass leaving the included finishing operations"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg saleable finished fabric output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_records
+              source_ids:
+                - eu-jrc-textiles-bref-2023
+            ranges: []
+      elementary:
+        - row_id: finishing_nmvoc_to_air
+          role: "Non-methane volatile organic compounds to air"
+          name: "Non-methane volatile organic compounds to air, unspecified"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "08a91e70-3ddc-11dd-a302-0050c2490048"
+          property_unit: "Mass / kg"
+          description: "Record NMVOC emitted from drying, stentering, curing, or other finishing steps when measured or calculated from collected activity data. Other emitted substances require separate atomic cards. Every additional site-relevant fuel, chemical formulation, packaging component, waste stream, or elementary emission must be represented by its own card with a unique row_id, one selected flow, and the actual foreground collection protocol. Do not reuse a listed UUID when the direct-read identity, grade, concentration, geography, state, or compartment does not match."
+          amount:
+            expression: "measured concentration times measured flow, or calculated value from collected fuel or chemical use and a documented factor"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg saleable finished fabric output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_direct_emissions
+              source_ids:
+                - eu-jrc-textiles-bref-2023
+            ranges: []
+allocation_rules:
+  - rule_id: allocation_subdivision_first
+    applies_to: "Shared processes and utilities"
+    rule: "Avoid allocation where possible by submetering, lot tracking, temporal subdivision, or physical separation of processes and utility systems."
+    source_ids:
+      - eu-pef-method-2021
+      - iso-14044-2006
+  - rule_id: allocation_physical_relation
+    applies_to: "Unavoidable multifunctionality"
+    rule: "When subdivision or system expansion is not practicable, allocate inputs and outputs using a documented causal physical relationship, such as machine time, metered energy, bath volume, or mass throughput, that represents resource use."
+    source_ids:
+      - eu-pef-method-2021
+      - iso-14044-2006
+  - rule_id: allocation_other_relation
+    applies_to: "No defensible physical relation"
+    rule: "Use another documented relationship, including economic allocation only as a last resort, and report the factor, prices, period, currency, and sensitivity to the choice."
+    source_ids:
+      - eu-pef-method-2021
+      - iso-14044-2006
+  - rule_id: allocation_recycling_and_waste
+    applies_to: "Internal reuse and saleable textile residues"
+    rule: "Do not double count internally reused yarn, size, water, or fabric. Record recovered material once, disclose whether it remains waste or becomes a co-product, and link any off-site recycling or treatment dataset."
+    source_ids:
+      - eu-jrc-textiles-bref-2023
+      - eu-pef-method-2021
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_material_mass_balance
+      process_id: "yarn_preparation_and_warping_sizing_weaving_wet_pretreatment_and_finishing"
+      flow_role: "Yarn, intermediate fabric, work-in-progress, and losses"
+      record_type: "Scale records, material issue and return records, production reports"
+      raw_fields: "lot_id, material_id, fibre_composition, warp_or_weft, opening_mass, issued_mass, returned_mass, transfer_mass, closing_wip_mass, moisture_state"
+      collection_method: "Calibrated scales reconciled to stores and lot production records"
+      unit: "kg"
+      frequency: "Each lot with monthly reconciliation"
+      temporal_coverage: "At least 12 representative months or the full campaign when shorter"
+      site_scope: "All facilities and outsourced operations under operational control"
+      aggregation_rule: "Sum by lot and process; normalize to net saleable reference output; retain work-in-progress adjustments"
+      quality_evidence: "Scale calibration, supplier composition certificate, signed stock reconciliation, anomaly log"
+    - protocol_id: cp_product_output
+      process_id: "weaving_wet_pretreatment_and_finishing"
+      flow_role: "Saleable reference fabric"
+      record_type: "Final scale and inspection records"
+      raw_fields: "lot_id, gross_mass, excluded_packaging_mass, net_mass, width, area, mass_per_area, moisture_state, quality_grade, rejection_mass"
+      collection_method: "Calibrated final weighing after declared conditioning and inspection"
+      unit: "kg"
+      frequency: "Each roll or lot"
+      temporal_coverage: "Full reporting period"
+      site_scope: "Every producing site"
+      aggregation_rule: "Sum net saleable output; select only one final process as quantitative reference"
+      quality_evidence: "Scale calibration, inspection release, roll register, moisture or conditioning record"
+    - protocol_id: cp_energy_records
+      process_id: "all_included_processes"
+      flow_role: "Electricity, steam, and fuel"
+      record_type: "Submeters, utility invoices, boiler and fuel logs"
+      raw_fields: "meter_id, carrier, opening_reading, closing_reading, conversion_factor, allocation_driver, process_id, operating_hours"
+      collection_method: "Direct metering preferred; otherwise documented allocation from a complete facility balance"
+      unit: "kWh, MJ, kg fuel, or m3 fuel"
+      frequency: "Continuous or per batch; reconcile monthly"
+      temporal_coverage: "At least 12 representative months or full campaign"
+      site_scope: "All included production and utility systems"
+      aggregation_rule: "Difference meter readings; subtract exported energy; allocate shared use only under section 7"
+      quality_evidence: "Meter calibration, invoices, fuel lower-heating-value source, reconciliation"
+    - protocol_id: cp_chemical_records
+      process_id: "yarn_preparation_and_warping_sizing_weaving_wet_pretreatment_and_finishing"
+      flow_role: "Lubricants, sizing agents, dyes, and auxiliaries"
+      record_type: "Recipes, issue and return logs, stock records, safety and technical data sheets"
+      raw_fields: "chemical_id, trade_name, function, formulation_mass, concentration, issue_mass, return_mass, recovered_mass, batch_id"
+      collection_method: "Weighed automatic dosing or reconciled stores issue"
+      unit: "kg formulated product and kg active substance when known"
+      frequency: "Each batch with monthly stock reconciliation"
+      temporal_coverage: "Full reporting period"
+      site_scope: "All included processes and contractors"
+      aggregation_rule: "Net use equals issued plus opening stock minus returned, recovered, and closing stock; retain formulation and active-substance views"
+      quality_evidence: "Calibrated dosing record, recipe authorization, SDS/TDS, stock reconciliation"
+    - protocol_id: cp_water_and_wastewater
+      process_id: "sizing_wet_pretreatment_and_finishing"
+      flow_role: "Fresh, reused, recycled water and wastewater"
+      record_type: "Water meters, bath logs, discharge meters, laboratory results"
+      raw_fields: "source_or_stream, meter_id, volume, reuse_volume, temperature, process_id, discharge_route, sampling_time, concentration_by_parameter"
+      collection_method: "Direct flow metering and representative compliant sampling at relevant stream locations"
+      unit: "m3 and parameter-specific concentration units"
+      frequency: "Continuous or each batch; pollutant sampling at permit or method frequency"
+      temporal_coverage: "At least 12 representative months or full campaign"
+      site_scope: "All included wet processes and treatment interfaces"
+      aggregation_rule: "Build process-level water balance; report gross intake, internal reuse, discharge, and pollutant mass separately"
+      quality_evidence: "Meter calibration, sampling chain of custody, laboratory accreditation, water-balance closure"
+    - protocol_id: cp_waste_records
+      process_id: "all_included_processes"
+      flow_role: "Yarn, fabric, packaging, spent liquor, sludge, and waste oil"
+      record_type: "Weighbridge tickets, container weights, transfer notes"
+      raw_fields: "waste_id, material, process_origin, gross_mass, tare_mass, net_mass, hazardous_status, internal_reuse, treatment_route, destination"
+      collection_method: "Direct weighing at generation or dispatch"
+      unit: "kg"
+      frequency: "Each movement with monthly reconciliation"
+      temporal_coverage: "Full reporting period"
+      site_scope: "All included processes"
+      aggregation_rule: "Sum net mass by type and route; subtract internal reuse only once"
+      quality_evidence: "Calibrated scale, licensed transfer documentation, receiver evidence, stock reconciliation"
+    - protocol_id: cp_direct_emissions
+      process_id: "all_included_processes"
+      flow_role: "Direct air and water elementary flows"
+      record_type: "Stack tests, continuous monitors, flow meters, laboratory data, fuel and chemical records"
+      raw_fields: "substance, compartment, concentration, flow_rate, duration, control_status, method, detection_limit, factor_source"
+      collection_method: "Measured concentration and flow preferred; otherwise calculation from collected activity data and a documented factor"
+      unit: "kg substance and source measurement units"
+      frequency: "At applicable monitoring frequency and whenever recipes or controls materially change"
+      temporal_coverage: "Representative normal operation and disclosed abnormal periods"
+      site_scope: "Every relevant emission point"
+      aggregation_rule: "Emission mass equals concentration times flow and time, or collected activity times documented factor; avoid duplication with waste-to-treatment flows"
+      quality_evidence: "Accredited method, calibration, detection-limit treatment, operating-state record, factor reference"
+  calculation_rules:
+    - id: calc_reference_normalization
+      applies_to: "All foreground rows"
+      rule: "normalized amount = reporting-period amount divided by net kg of saleable reference fabric from the selected final process"
+      inputs:
+        - "Collected flow amount"
+        - "cp_product_output net saleable mass"
+      output: "Amount per 1 kg reference fabric"
+      source_ids:
+        - eu-pef-method-2021
+    - id: calc_fibre_composition
+      applies_to: "Product category membership"
+      rule: "artificial staple fibre percentage = artificial staple-fibre mass divided by total fibre mass times 100; use the applicable ISO 1833 preparation and calculation basis for analytical results and exclude non-fibrous matter as that method requires"
+      inputs:
+        - "Supplier certificates"
+        - "bill of materials"
+        - "ISO 1833 test result"
+      output: "Verified fibre composition percentage"
+      source_ids:
+        - un-cpc-3-0-2025
+        - iso-1833-1-2020
+    - id: calc_material_balance
+      applies_to: "Each process and production lot"
+      rule: "opening inventory plus inputs equals outputs plus closing inventory plus recorded losses; investigate unexplained residuals rather than assigning them automatically"
+      inputs:
+        - cp_material_mass_balance
+        - cp_waste_records
+        - cp_product_output
+      output: "Process mass-balance report and residual"
+      source_ids:
+        - eu-jrc-textiles-bref-2023
+        - eu-textiles-bat-conclusions-2022
+    - id: calc_area_mass
+      applies_to: "Area-only roll records"
+      rule: "fabric mass = measured area times lot-specific mass per unit area; use measured net mass when available"
+      inputs:
+        - Area
+        - "width and length"
+        - "measured mass per unit area"
+      output: "kg fabric"
+      source_ids: []
+    - id: calc_water_pollutant_mass
+      applies_to: "Wastewater pollutants"
+      rule: "pollutant mass = measured wastewater volume times representative concentration, with unit conversion and sampling coverage disclosed"
+      inputs:
+        - "cp_water_and_wastewater volume and concentration"
+      output: "kg pollutant per reporting period and per kg reference fabric"
+      source_ids:
+        - eu-jrc-textiles-bref-2023
+    - id: calc_shared_utility_allocation
+      applies_to: "Shared utilities"
+      rule: "allocate only the unmetered residual using the documented physical driver most closely related to consumption; reconcile allocated totals to the facility meter"
+      inputs:
+        - "Facility meter"
+        - submeters
+        - "operating hours"
+        - "machine load"
+        - throughput
+      output: "Process-level utility amount"
+      source_ids:
+        - eu-pef-method-2021
+  data_quality_requirements:
+    - id: dq_identity
+      applies_to: "Reference product and yarn inputs"
+      requirement: "Retain exact flow identities where resolved, fibre type, composition, lot, supplier, and production-route qualifiers; unresolved inventory UUID candidates must be reviewed before activation."
+      evidence: "Tiangong exact reference-flow readback, supplier certificates, lot records"
+    - id: dq_temporal
+      applies_to: "Foreground activity data"
+      requirement: "Use a representative continuous 12-month period where production is ongoing, or the full campaign for shorter production; disclose shutdowns, abnormal batches, and seasonality."
+      evidence: "Reporting-period coverage table and production log"
+    - id: dq_technology
+      applies_to: "Process and energy data"
+      requirement: "Match loom type, sizing system, wet-processing route, drying or curing equipment, abatement, and recycled-water configuration to the represented product."
+      evidence: "Equipment register, process flow sheet, recipe and control records"
+    - id: dq_geography
+      applies_to: "Utilities and upstream datasets"
+      requirement: "Use the actual production geography and representative electricity, fuel, water, yarn, chemical, transport, and treatment datasets; document proxies."
+      evidence: "Site address, supplier location, dataset metadata and proxy log"
+    - id: dq_completeness
+      applies_to: "Process inventory"
+      requirement: "Reconcile material, water, energy, chemical, wastewater, direct-emission, and waste records at process level; disclose exclusions and missing measurements."
+      evidence: "Input-output inventory and reconciliation reports consistent with JRC BAT 2 and BAT 6 and the ISO 14044 inventory-analysis requirements"
+    - id: dq_precision
+      applies_to: "Measurements and calculations"
+      requirement: "Preserve meter resolution, calibration, sampling frequency, detection limits, formula inputs, allocation factors, and uncertainty or variability across lots."
+      evidence: "Calibration records, laboratory reports, calculation workbook and anomaly log"
+    - id: dq_consistency
+      applies_to: "Multi-site or multi-product datasets"
+      requirement: "Apply identical reference state, units, process boundaries, allocation hierarchy, and calculation rules across sites and periods; document any deviation."
+      evidence: "Method statement and cross-site consistency review"
+validation_rules:
+  - rule_id: validate_reference_identity
+    applies_to: "Reference flow"
+    rule: "Require product flow UUID 7037e578-630a-4ba2-8768-7858df8a46aa, Mass flow property UUID 93a60a56-a3c8-11da-a746-0800200b9a66, mass unit-group UUID 93a60a57-a4c8-11da-a746-0800200c9a66, and unit kg."
+    source_ids: []
+  - rule_id: validate_composition_threshold
+    applies_to: "Category scope"
+    rule: "Fail category conformance when artificial staple fibres are less than 85% of total fibre mass or the fibre denominator and applicable ISO 1833 test basis are not documented."
+    source_ids:
+      - un-cpc-3-0-2025
+      - iso-1833-1-2020
+  - rule_id: validate_required_qualifiers
+    applies_to: "Dataset metadata"
+    rule: "Require all section 3 qualifiers, including fibre type, composition, construction, finished state, mass per unit area, moisture state, geography, and period."
+    source_ids: []
+  - rule_id: validate_mass_balance
+    applies_to: "Foreground processes"
+    rule: "Require a documented mass balance for every included process and investigate any unexplained residual before accepting the dataset."
+    source_ids:
+      - eu-jrc-textiles-bref-2023
+  - rule_id: validate_process_coverage
+    applies_to: "Process map"
+    rule: "Require both required processes and every conditional process actually used to reach the declared market state; reject a finished-fabric claim that omits performed finishing operations."
+    source_ids:
+      - eu-jrc-textiles-bref-2023
+  - rule_id: validate_inventory_and_quality
+    applies_to: "Foreground inventory"
+    rule: "Require process-level water, energy, material, chemical, wastewater, waste-gas, and solid-waste coverage where relevant, with temporal, technological, geographical, completeness, and precision evidence."
+    source_ids:
+      - eu-jrc-textiles-bref-2023
+      - eu-pef-method-2021
+  - rule_id: validate_quantitative_reference
+    applies_to: "Final output"
+    rule: "Exactly one output row, greige_fabric_output or finished_fabric_output, must be selected as the 1 kg quantitative reference according to the declared final market state."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "Foreground production dataset for a declared woven artificial staple-fibre fabric and route"
+  downstream_use: "secondary_dataset; background_dataset after methodology and translation review"
+  allowed_use: "Cradle-to-gate or broader LCA models requiring representative factory-gate woven fabric with at least 85% artificial staple fibres, when geography, technology, composition, construction, and finish match"
+  excluded_use: "Synthetic-staple-fibre fabrics; fabrics below the 85% threshold; knitted, non-woven, tufted, special, or made-up textiles; use as a generic garment dataset; use without matching the declared finish and production route"
+  required_metadata: "PCR id and version when published; product-flow UUID; fibre type and composition; yarn origin; weave, width and mass per unit area; greige or finished state; included operations; geography; period; technology; allocation; upstream datasets; data owners; review status"
+  required_quality_disclosure: "Primary-data share; meter and sampling coverage; mass-, water-, and energy-balance closure; temporal, technological, and geographical representativeness; completeness; precision; proxies; allocation factors; cut-offs; unresolved UUIDs"
+  update_trigger: "Change in dominant artificial fibre type, fibre composition crossing the 85% threshold, yarn source, loom or sizing technology, finish recipe, water or energy system, production geography, allocation method, emission controls, or material evidence and UUID resolution"
+data_sources:
+  - id: "un-cpc-3-0-2025"
+    type: "dataset"
+    reference: "United Nations Statistics Division, Central Product Classification Version 3.0 structure, code 26750, 30 June 2025, https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Structure_30Jun2025.csv (retrieved 2026-08-11)"
+    used_for: "Official category label and the 85% artificial-staple-fibre scope threshold"
+  - id: "eu-jrc-textiles-bref-2023"
+    type: "official_guidance"
+    reference: "European Commission Joint Research Centre, Best Available Techniques Reference Document for the Textiles Industry, 2023, https://bureau-industrial-transformation.jrc.ec.europa.eu/reference/textiles-industry (retrieved 2026-08-11)"
+    used_for: "Warping, sizing, weaving, and finishing process decomposition; input-output inventories; water, energy, chemical, wastewater, air-emission, and waste collection requirements"
+  - id: "eu-pef-method-2021"
+    type: "official_guidance"
+    reference: "European Commission Recommendation (EU) 2021/2279 on the use of the Environmental Footprint methods, https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32021H2279 (retrieved 2026-08-11)"
+    used_for: "Functional-unit and foreground-data framing, allocation hierarchy, normalization, and technological, geographical, temporal, completeness, and precision requirements"
+  - id: "eu-textiles-bat-conclusions-2022"
+    type: "official_guidance"
+    reference: "European Commission Implementing Decision (EU) 2022/2508 establishing BAT conclusions for the textiles industry, CELEX 32022D2508, https://eur-lex.europa.eu/eli/dec_impl/2022/2508/oj/eng (retrieved 2026-08-12)"
+    used_for: "BAT 2 input-output inventory and BAT 6 annual, preferably direct, process-level monitoring of water, energy, materials, wastewater, recovered materials, and wastes"
+  - id: "iso-14044-2006"
+    type: "standard"
+    reference: "ISO 14044:2006, Environmental management — Life cycle assessment — Requirements and guidelines, including Amendments 1:2017 and 2:2020, https://www.iso.org/standard/38498.html (retrieved 2026-08-12)"
+    used_for: "Goal and scope, life-cycle inventory analysis, allocation, interpretation, reporting, and critical-review framing"
+  - id: "iso-1833-1-2020"
+    type: "standard"
+    reference: "ISO 1833-1:2020, Textiles — Quantitative chemical analysis — Part 1: General principles of testing, https://www.iso.org/standard/74881.html (retrieved 2026-08-12)"
+    used_for: "Common preparation and calculation basis for quantitative fibre-composition analysis; use the applicable mixture-specific ISO 1833 part for the declared blend"
+  - id: "zhang-et-al-2023-wet-processing"
+    type: "literature"
+    reference: "Zhang, S. et al., Environmental assessment of fabric wet processing from gate-to-gate perspective: Comparative study of weaving and materials, Science of the Total Environment 857 (2023) 159495, https://doi.org/10.1016/j.scitotenv.2022.159495"
+    used_for: "Peer-reviewed full-text evidence for treating pretreatment, dyeing, washing, and finishing as distinct wet-processing contributors and for collecting primary energy, water, chemical, wastewater, and direct-emission inventories"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:88d3b15596228003605881dc5a376cf2af6e62638f7e0ff7c75bf7b7d682e328"
+  generated_content_sha256: "sha256:44f00844af830944e72d311270c8219955c93ab7864511a46db1b8ab275f042d"

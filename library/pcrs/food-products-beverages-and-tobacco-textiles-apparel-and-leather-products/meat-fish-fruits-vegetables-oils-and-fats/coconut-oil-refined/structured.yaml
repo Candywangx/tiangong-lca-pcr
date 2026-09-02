@@ -1,10 +1,930 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "21662"
-  title: "Coconut oil, refined"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.food-products-beverages-and-tobacco-textiles-apparel-and-leather-products.meat-fish-fruits-vegetables-oils-and-fats.coconut-oil-refined"
+  classification_refs: "CPC 3.0: 21662, Coconut oil, refined (exact mapping context)"
+  covered_products: "Bulk refined coconut oil produced by declared chemical or physical refining; edible-grade or declared technical-grade material meeting its stated specification"
+  excluded_products: "Crude, virgin, cold-pressed, hydrogenated, interesterified, fractionated, blended, formulated, or retail-packaged coconut-oil products; isolated medium-chain triglyceride preparations"
+  representative_product: "Bulk refined coconut oil at the refinery gate"
+  production_route: "Received crude coconut oil; route-specific pretreatment and degumming or neutralization; bleaching and filtration; deodorization; polishing, cooling, and bulk storage/loading"
+  market_state: "Finished refined oil in bulk at the refinery gate, with edible or technical grade and packaging state declared"
+functional_unit:
+  what: "Provision of bulk refined coconut oil at the refinery gate"
+  how_much: "1 kg net mass of refined coconut oil"
+  how_well: "Refined coconut oil derived from coconut kernel, meeting the declared edible-grade or technical-grade specification and the declared contaminant-control requirements"
+  how_long_or_cycle: "One production batch delivered at the refinery gate; no service duration applies"
+  reference_flow_link: "One kilogram of the declared finished refined coconut oil output from deodorization_finishing"
+system_boundary:
+  rules:
+    - rule_id: boundary_refinery_gate
+      applies_to: "Foreground refinery system"
+      rule: "Include all material and energy flows from crude-oil receipt through route-applicable degumming or neutralization, bleaching, deodorization, polishing, cooling, and bulk storage/loading; packaging and downstream distribution are excluded unless separately declared."
+      source_ids:
+        - codex-cxc-79-2019
+        - eu-fdm-bat-2019
+    - rule_id: boundary_route_disclosure
+      applies_to: "Chemical and physical refining routes"
+      rule: "Model the actual route: chemical refining includes neutralization when performed, while physical refining omits neutralization and relies on degumming, bleaching, and deodorization; do not combine route inventories without a production-weighted calculation."
+      source_ids:
+        - codex-cxc-79-2019
+    - rule_id: boundary_environmental_streams
+      applies_to: "Resource and emission inventory"
+      rule: "Include water, energy, raw materials, wastewater, waste gas, residues, recovered materials, and treatment operations at the most appropriate process or installation level."
+      source_ids:
+        - eu-fdm-bat-2019
+    - rule_id: boundary_contaminant_control
+      applies_to: "Degumming, bleaching, deodorization, and any post-refining treatment"
+      rule: "Record process conditions and additional treatment that materially control 3-MCPDE and GE formation; the selected mitigation shall not be assumed identical across oil types or equipment."
+      source_ids:
+        - codex-cxc-79-2019
+boundary_abstraction:
+  declared_starting_condition: "Crude coconut oil received at the refinery inlet, with origin, supplier, water/moisture, free-fatty-acid and relevant precursor information declared where available"
+  starting_condition_role: "Upstream product input to the refinery foreground system"
+  product_classification_scope: "Refined coconut oil only; intermediates remain process-linked product flows and do not create separate refined-coconut-oil reference products"
+  recursive_input_rule: "If refined coconut oil is reworked within the refinery, record it as a separately identified rework input and exclude its earlier burdens from duplicate counting; purchased refined coconut oil must use an upstream dataset and must not be represented as crude coconut oil."
+  upstream_dataset_requirement: "Use a geographically, temporally, and technologically representative upstream dataset for crude coconut oil and disclose whether cultivation, copra preparation, extraction, transport, and storage are included."
+  disclosure: "Declare refinery route, batch or averaging period, site geography, crude-oil origin and quality, product grade/specification, co-product and waste destinations, treatment systems, allocation choices, recycled loops, and any excluded process."
+reference_flow_definition:
+  reference_amount: "1 kg"
+  product_flow_ref:
+    name: "Coconut oil, refined"
+    uuid: "570397b9-62ae-4576-b584-56691c7fed08"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "coconut origin"
+    - "refined state"
+    - "chemical or physical refining route"
+    - "edible or technical grade"
+    - "applicable product specification"
+    - "production site and geography"
+    - "batch or averaging period"
+    - "bulk or packaged state"
+    - "allocation treatment for recovered oil"
+    - soapstock
+    - "spent bleaching earth"
+    - "and deodorizer distillate"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "Finished refined coconut oil reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Report net product mass excluding containers and normalize all inventory results to exactly 1 kg of conforming refined coconut oil at the refinery gate."
+  - id: wet_mass_and_dry_matter
+    applies_to: "Crude oil, bleaching earth, soapstock, spent earth, and other moisture-bearing material streams"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Record as-received mass and, when moisture materially affects balance or allocation, retain moisture or dry-matter fraction and the sampling method; do not mix wet and dry bases."
+  - id: energy_carrier_units
+    applies_to: "Purchased electricity, fuels, and steam"
+    required_property_ref:
+      name: "Energy or carrier-specific property"
+      uuid: ""
+    required_unit: "kWh, MJ, or kg steam as collected"
+    rule: "Preserve the invoiced or metered unit, document lower/higher heating-value conventions for fuels, and convert only with an explicit factor and source."
+  - id: water_accounting
+    applies_to: "Process, wash, cooling, and boiler-feed water"
+    required_property_ref:
+      name: "Volume or Mass"
+      uuid: ""
+    required_unit: "m3 or kg"
+    rule: "Distinguish withdrawal, recirculation, evaporation, and discharged wastewater; do not count recirculated water as a new withdrawal on every pass."
+process_map:
+  - id: receipt_pretreatment
+    name: "Crude oil receipt and pretreatment"
+    inclusion: "required"
+    inclusion_condition: "Always"
+    role: "Foreground receipt, storage, heating, washing or conditioning before refining"
+    quantitative_reference: "kg conditioned crude oil transferred"
+  - id: degumming_neutralization
+    name: "Degumming and chemical neutralization"
+    inclusion: "conditional"
+    inclusion_condition: "Include each operation actually performed; neutralization is normally absent from a physical-refining route"
+    role: "Foreground removal of phospholipids, free fatty acids, soaps, and precursor compounds"
+    quantitative_reference: "kg treated oil transferred"
+  - id: bleaching_filtration
+    name: "Bleaching and filtration"
+    inclusion: "required"
+    inclusion_condition: "Always; declare clay type and any activated post-refining earth separately"
+    role: "Foreground adsorption and solids separation"
+    quantitative_reference: "kg bleached oil transferred"
+  - id: deodorization_finishing
+    name: "Deodorization and finishing"
+    inclusion: "required"
+    inclusion_condition: "Always; include additional deodorization or post-treatment when performed"
+    role: "Foreground steam stripping, vacuum operation, polishing, cooling, and finished-oil output"
+    quantitative_reference: "1 kg refined coconut oil"
+process_inventory:
+  - id: receipt_pretreatment
+    label: "Crude oil receipt and pretreatment"
+    inputs:
+      product:
+        - row_id: crude_coconut_oil_input
+          role: "Crude coconut oil at refinery inlet"
+          name: "Crude coconut oil"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the supplier-delivered crude coconut oil crossing the refinery foreground boundary, including tank inventory changes and recovered oil returned from an external operator."
+          amount:
+            expression: "measured net crude coconut oil consumed by the batch or reporting period"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg refined coconut oil output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_mass_records
+              source_ids:
+                - codex-cxs-210-1999
+            ranges:
+              - role: qa_guardrail
+                lower: "1.00"
+                upper: "1.30"
+                unit: "kg"
+                basis: "per 1 kg refined coconut oil output"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: pretreatment_materials
+          role: "Pretreatment water and additives"
+          name: "Process water and declared pretreatment additives"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record water and any citric acid, phosphoric acid, or other declared conditioning material actually consumed before degumming or bleaching; keep each material as a separate dataset exchange in implementation."
+          amount:
+            expression: "metered water plus weighed or invoiced additive consumption, disaggregated by material"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg refined coconut oil output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_mass_records
+              source_ids:
+                - codex-cxc-79-2019
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.25"
+                unit: "kg"
+                basis: "per 1 kg refined coconut oil output"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: conditioned_oil_output
+          role: "Conditioned crude coconut oil"
+          name: "Conditioned crude coconut oil intermediate"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Calculate the oil transferred to the next route-specific operation from tank, transfer, and loss records."
+          amount:
+            expression: "opening inventory plus crude input minus closing inventory, separated residues, wastewater oil, and measured losses"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg refined coconut oil output"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_intermediate_transfer_balance
+              source_ids:
+                - eu-fdm-bat-2019
+            ranges: []
+      waste:
+        - row_id: pretreatment_residues
+          role: "Pretreatment residues and wastewater"
+          name: "Pretreatment residues and wastewater"
+          flow_type: "waste"
+          property_unit: "Mass or Volume / kg or m3"
+          description: "Record separated solids, tank bottoms, wash water, and oil recovered or lost with each stream; classify a stream as product, waste, or wastewater according to its actual destination."
+          amount:
+            expression: "measured discharge, removal ticket, tank transfer, or mass-balance residual, disaggregated by destination"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg refined coconut oil output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_residue_wastewater_records
+              source_ids:
+                - eu-fdm-bat-2019
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.30"
+                unit: "kg or m3, reported separately"
+                basis: "per 1 kg refined coconut oil output"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        []
+  - id: degumming_neutralization
+    label: "Degumming and chemical neutralization"
+    inputs:
+      product:
+        - row_id: conditioned_oil_input
+          role: "Conditioned oil feed"
+          name: "Conditioned crude coconut oil intermediate"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the conditioned oil entering each route-applicable degumming or neutralization operation."
+          amount:
+            expression: "measured transfer into the operation"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg treated oil output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_intermediate_transfer_balance
+              source_ids:
+                - codex-cxc-79-2019
+            ranges: []
+        - row_id: degumming_neutralization_materials
+          role: "Degumming and neutralization materials"
+          name: "Water, degumming acid, alkali, and declared processing aids"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record water, acid, alkali, and other processing aids separately and only for operations actually performed."
+          amount:
+            expression: "metered, weighed, or invoiced consumption by material"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg treated oil output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_mass_records
+              source_ids:
+                - codex-cxc-79-2019
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.20"
+                unit: "kg"
+                basis: "per kg treated oil output"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: treated_oil_output
+          role: "Degummed or neutralized oil"
+          name: "Degummed or neutralized coconut oil intermediate"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Calculate treated oil delivered to bleaching after route-specific separation losses."
+          amount:
+            expression: "collected feed less measured gums, soapstock, wastewater oil, and other losses, reconciled to transfer meters"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg treated oil output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_intermediate_transfer_balance
+              source_ids:
+                - codex-cxc-79-2019
+            ranges: []
+      waste:
+        - row_id: gums_soapstock_wastewater
+          role: "Gums, soapstock, and neutralization wastewater"
+          name: "Gums, soapstock, acid oil, and wastewater"
+          flow_type: "waste"
+          property_unit: "Mass or Volume / kg or m3"
+          description: "Record gums, soapstock, acid oil, wastewater, and recovered oil separately, including destination and whether economic value is realized."
+          amount:
+            expression: "measured separated mass, wastewater flow, and destination records"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg treated oil output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_residue_wastewater_records
+              source_ids:
+                - codex-cxc-79-2019
+                - eu-fdm-bat-2019
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.25"
+                unit: "kg or m3, reported separately"
+                basis: "per kg treated oil output"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        []
+  - id: bleaching_filtration
+    label: "Bleaching and filtration"
+    inputs:
+      product:
+        - row_id: oil_feed_bleaching
+          role: "Oil feed to bleaching"
+          name: "Degummed, neutralized, or otherwise conditioned coconut oil intermediate"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the actual route-specific oil entering the bleaching vessel."
+          amount:
+            expression: "measured transfer into bleaching"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg bleached oil output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_intermediate_transfer_balance
+              source_ids:
+                - codex-cxc-79-2019
+            ranges: []
+        - row_id: bleaching_media_input
+          role: "Bleaching earth and filter aids"
+          name: "Bleaching earth and filter aids"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record bleaching clay, activated carbon, and filter aids by material; declare chlorine-related specifications when relevant to contaminant control."
+          amount:
+            expression: "weighed or invoiced material consumed, corrected for inventory change"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg bleached oil output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_material_mass_records
+              source_ids:
+                - codex-cxc-79-2019
+            ranges:
+              - role: qa_guardrail
+                lower: "0.001"
+                upper: "0.10"
+                unit: "kg"
+                basis: "per kg bleached oil output"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: bleaching_energy
+          role: "Bleaching energy"
+          name: "Purchased electricity, steam, and fuels"
+          flow_type: "product"
+          property_unit: "Energy or carrier-specific property / kWh, MJ, or kg"
+          description: "Record electricity, steam, or fuel used for heating, vacuum, agitation, pumping, and filtration, disaggregated by carrier."
+          amount:
+            expression: "process-metered use or allocated site utility records"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg bleached oil output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_utility_records
+              source_ids:
+                - eu-fdm-bat-2019
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "5"
+                unit: "MJ"
+                basis: "per kg bleached oil output, all carriers converted and reported with factors"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: bleached_oil_output
+          role: "Bleached oil"
+          name: "Bleached coconut oil intermediate"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Calculate filtered bleached oil transferred to deodorization."
+          amount:
+            expression: "measured transfer reconciled with feed, media, spent earth, recovered oil, and other losses"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg bleached oil output"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_intermediate_transfer_balance
+              source_ids:
+                - codex-cxc-79-2019
+            ranges: []
+      waste:
+        - row_id: spent_bleaching_media
+          role: "Spent bleaching earth and filtration residues"
+          name: "Spent bleaching earth and filtration residues"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record wet spent earth, filter residues, recovered oil, and destination; avoid double counting recovered oil returned to the process."
+          amount:
+            expression: "measured removal mass and recovered-oil transfer records"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg bleached oil output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_residue_wastewater_records
+              source_ids:
+                - codex-cxc-79-2019
+                - eu-fdm-bat-2019
+            ranges:
+              - role: qa_guardrail
+                lower: "0.001"
+                upper: "0.20"
+                unit: "kg"
+                basis: "per kg bleached oil output"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        []
+  - id: deodorization_finishing
+    label: "Deodorization and finishing"
+    inputs:
+      product:
+        - row_id: bleached_oil_input
+          role: "Bleached oil feed"
+          name: "Bleached coconut oil intermediate"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record bleached oil entering the deodorizer and any internal rework separately."
+          amount:
+            expression: "measured fresh feed plus separately measured rework feed"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg refined coconut oil output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_intermediate_transfer_balance
+              source_ids:
+                - codex-cxc-79-2019
+            ranges:
+              - role: qa_guardrail
+                lower: "1.00"
+                upper: "1.15"
+                unit: "kg"
+                basis: "per 1 kg refined coconut oil output"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: deodorization_utilities
+          role: "Stripping steam and deodorization energy"
+          name: "Stripping steam, electricity, and heating utilities"
+          flow_type: "product"
+          property_unit: "Energy or carrier-specific property / kg steam, kWh, or MJ"
+          description: "Record stripping steam, vacuum-system electricity, heating fuel or steam, pumping, polishing, and cooling energy separately by carrier."
+          amount:
+            expression: "process-metered use or allocated site utility records with documented factors"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg refined coconut oil output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_utility_records
+              source_ids:
+                - codex-cxc-79-2019
+                - eu-fdm-bat-2019
+            ranges:
+              - role: qa_guardrail
+                lower: "0.05"
+                upper: "10"
+                unit: "MJ"
+                basis: "per 1 kg refined coconut oil output, all carriers converted and reported with factors"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: deodorization_water
+          role: "Cooling and process water"
+          name: "Cooling and process water"
+          flow_type: "product"
+          property_unit: "Volume / m3"
+          description: "Record freshwater withdrawal, recirculated cooling water, boiler-feed water, condensate return, and makeup water as separate quantities."
+          amount:
+            expression: "metered withdrawal and loop makeup, excluding recirculated passes from repeated withdrawal counting"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg refined coconut oil output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water_wastewater_records
+              source_ids:
+                - eu-fdm-bat-2019
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.05"
+                unit: "m3"
+                basis: "per 1 kg refined coconut oil output"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: refined_coconut_oil_output
+          role: "Refined coconut oil reference product"
+          name: "Coconut oil, refined"
+          flow_type: "product"
+          flow_ref:
+            uuid: "570397b9-62ae-4576-b584-56691c7fed08"
+          property_unit: "Mass 93a60a56-a3c8-11da-a746-0800200b9a66 / kg"
+          description: "Record only conforming finished refined coconut oil at the refinery gate as the quantitative reference output."
+          amount:
+            expression: "exactly 1 kg net conforming product after normalization"
+            value_mode: "fixed_value"
+            specificity: "generic"
+            basis:
+              text: "PCR reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "identity_reference"
+              source_ids:
+                - codex-cxs-210-1999
+            ranges: []
+        - row_id: deodorizer_distillate
+          role: "Deodorizer distillate or recovered fatty material"
+          name: "Coconut-oil deodorizer distillate or recovered fatty material"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record condensable free fatty acids and volatile fatty material separately from uncontrolled air emissions, and declare whether it is a co-product, recovered material, or waste according to destination."
+          amount:
+            expression: "measured receiver mass corrected for inventory change"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1 kg refined coconut oil output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_residue_wastewater_records
+              source_ids:
+                - codex-cxc-79-2019
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.10"
+                unit: "kg"
+                basis: "per 1 kg refined coconut oil output"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        - row_id: refinery_wastewater
+          role: "Refinery wastewater"
+          name: "Refinery wastewater"
+          flow_type: "waste"
+          property_unit: "Volume / m3"
+          description: "Record net wastewater discharged after excluding recirculated water; characterize treatment route and relevant oil, organic, nutrient, chloride, conductivity, pH, temperature, and solids parameters when applicable."
+          amount:
+            expression: "metered discharge from the refinery system boundary"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg refined coconut oil output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water_wastewater_records
+              source_ids:
+                - eu-fdm-bat-2019
+            ranges:
+              - role: qa_guardrail
+                lower: "0.00015"
+                upper: "0.0009"
+                unit: "m3"
+                basis: "per 1 kg oil produced, converted from 0.15-0.9 m3 per tonne oil produced"
+                basis_kind: "reference_flow"
+                evidence_kind: "external_source"
+                source_ids:
+                  - eu-fdm-bat-2019
+      elementary:
+        - row_id: direct_air_releases
+          role: "Direct volatile releases from deodorization and storage"
+          name: "Relevant direct emissions to air, reported as elementary flows"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record measured or calculated uncaptured volatile organic compounds and other direct releases to air; do not duplicate material captured as distillate or routed to treatment."
+          amount:
+            expression: "stack or vent measurement, validated engineering calculation, or pollutant-specific mass balance"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg refined coconut oil output"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_emission_monitoring_records
+              source_ids:
+                - eu-fdm-bat-2019
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.01"
+                unit: "kg"
+                basis: "per 1 kg refined coconut oil output, summed only after pollutant identities remain distinguishable"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+allocation_rules:
+  - rule_id: allocation_avoid
+    applies_to: "Multi-output refinery processes"
+    rule: "First avoid allocation through process subdivision and separately metered inventories; use system expansion only when the added function and substituted product are demonstrable and consistent with the study goal."
+    source_ids:
+      - eu-pef-method-2021
+  - rule_id: allocation_physical
+    applies_to: "Unavoidable co-product allocation"
+    rule: "When subdivision or system expansion is not feasible, use a documented physical relationship that reflects causation; simple mass allocation is allowed only when mass is the relevant physical relationship."
+    source_ids:
+      - eu-pef-method-2021
+  - rule_id: allocation_other_relation
+    applies_to: "Cases without a defensible physical relationship"
+    rule: "Use another documented relationship, such as economic value, only after the prior options fail; use a representative price period and disclose price source, currency, geography, and sensitivity."
+    source_ids:
+      - eu-pef-method-2021
+  - rule_id: allocation_waste_recovery
+    applies_to: "Soapstock, acid oil, recovered oil, spent bleaching earth, distillate, and other residues"
+    rule: "Classify each output from its actual destination and economic function. Do not assign co-product credit to a waste stream without evidence of a substituted function, and do not double count internally recovered oil."
+    source_ids:
+      - eu-pef-method-2021
+      - eu-fdm-bat-2019
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_material_mass_records
+      process_id: "receipt_pretreatment_degumming_neutralization_bleaching_filtration"
+      flow_role: "Raw oils, water, acids, alkali, bleaching media, and filter aids"
+      record_type: "Weighbridge, calibrated tank, batch sheet, purchase, and inventory record"
+      raw_fields: "material_id; supplier; batch_id; opening_stock; receipts; returns; closing_stock; measured_mass; moisture_or_concentration; timestamp"
+      collection_method: "Reconcile calibrated measurements and stock movements by material and batch or reporting period"
+      unit: "kg; concentration fraction"
+      frequency: "Each batch, aggregated monthly"
+      temporal_coverage: "Representative production period, normally 12 consecutive months"
+      site_scope: "All foreground refinery units and storage tanks"
+      aggregation_rule: "Consumption = opening stock + receipts - returns - closing stock; normalize only after the conforming product mass is known"
+      quality_evidence: "Calibration record; stock reconciliation; supplier specification; batch authorization"
+    - protocol_id: cp_intermediate_transfer_balance
+      process_id: "all_foreground_processes"
+      flow_role: "Intermediate oil feed and output"
+      record_type: "Tank gauge, mass-flow meter, batch transfer, and loss record"
+      raw_fields: "process_id; batch_id; opening_inventory; input_transfer; output_transfer; closing_inventory; recovered_oil; residue_oil; timestamp"
+      collection_method: "Reconcile each transfer across adjacent processes and investigate unmatched transfers"
+      unit: "kg"
+      frequency: "Each batch"
+      temporal_coverage: "Same period as the represented production"
+      site_scope: "All intermediate oil tanks and transfer points"
+      aggregation_rule: "Intermediate output = opening + inputs - closing - separated outputs - documented losses"
+      quality_evidence: "Meter calibration; tank strapping table; signed batch reconciliation"
+    - protocol_id: cp_utility_records
+      process_id: "all_foreground_processes"
+      flow_role: "Electricity, fuel, steam, and process heat"
+      record_type: "Submeter, boiler record, invoice, and operating-hour allocation"
+      raw_fields: "carrier; meter_start; meter_end; import; export; steam_mass; pressure; temperature; fuel_mass_or_volume; heating_value_basis; process_hours"
+      collection_method: "Prefer process meters; allocate common utilities using a causal driver and disclose the allocation"
+      unit: "kWh; MJ; kg steam; carrier unit"
+      frequency: "Continuous or per batch, aggregated monthly"
+      temporal_coverage: "Same period as the represented production"
+      site_scope: "Foreground refinery and shared utilities used by it"
+      aggregation_rule: "Net use by carrier; convert with documented factors; no summation across unlike units before conversion"
+      quality_evidence: "Meter calibration; invoice reconciliation; boiler efficiency and conversion-factor record"
+    - protocol_id: cp_water_wastewater_records
+      process_id: "all_foreground_processes"
+      flow_role: "Water withdrawal, recirculation, condensate, and wastewater"
+      record_type: "Water meter, loop balance, effluent meter, and laboratory analysis"
+      raw_fields: "source; withdrawal; recirculation; makeup; condensate_return; discharge; pH; temperature; COD_or_TOC; TSS; chloride; conductivity; sample_time"
+      collection_method: "Measure net withdrawal and discharge and retain route-specific water balance and sampling results"
+      unit: "m3; parameter-specific units"
+      frequency: "Continuous flow where available; quality sampling at the applicable regulatory or management frequency"
+      temporal_coverage: "Same period as the represented production, with sampling dates retained"
+      site_scope: "Refinery water system and discharge points"
+      aggregation_rule: "Net withdrawal excludes recirculated passes; discharge is normalized to conforming product"
+      quality_evidence: "Meter calibration; laboratory method; chain of custody; water-balance closure"
+    - protocol_id: cp_residue_wastewater_records
+      process_id: "all_foreground_processes"
+      flow_role: "Residues, co-products, recovered materials, and wastes"
+      record_type: "Receiver weight, removal ticket, laboratory result, and destination record"
+      raw_fields: "stream_id; mass_or_volume; moisture; oil_content; destination; economic_value; waste_code_if_applicable; timestamp"
+      collection_method: "Record each destination separately and reconcile recovered oil to internal returns"
+      unit: "kg or m3"
+      frequency: "Each batch or shipment"
+      temporal_coverage: "Same period as the represented production"
+      site_scope: "All foreground separation and waste handling points"
+      aggregation_rule: "Sum by stream identity and destination; do not net saleable and disposed fractions"
+      quality_evidence: "Calibrated scale; transporter receipt; treatment or sale record; laboratory result"
+    - protocol_id: cp_emission_monitoring_records
+      process_id: "deodorization_finishing"
+      flow_role: "Direct air releases"
+      record_type: "Stack/vent measurement or engineering calculation based on collected operating data"
+      raw_fields: "pollutant; concentration; gas_flow; operating_time; capture_efficiency; calculation_inputs; method; timestamp"
+      collection_method: "Apply relevant monitoring method at identified emission points and retain raw results"
+      unit: "kg pollutant; concentration and flow units"
+      frequency: "Campaign-specific or applicable monitoring frequency"
+      temporal_coverage: "Representative operating campaigns within the production period"
+      site_scope: "Deodorizer, vacuum, storage, and treatment vents within the boundary"
+      aggregation_rule: "Emission = measured concentration x flow x time or validated mass-balance result; subtract captured material only once"
+      quality_evidence: "Sampling report; instrument calibration; calculation review; treatment performance record"
+    - protocol_id: cp_product_quality_records
+      process_id: "deodorization_finishing"
+      flow_role: "Conforming refined coconut oil"
+      record_type: "Certificate of analysis, batch release, and specification record"
+      raw_fields: "batch_id; origin; grade; specification; fatty_acid_profile; acidity; peroxide_value; moisture_and_volatiles; contaminants_if_required; release_status"
+      collection_method: "Test or verify against the declared market specification using applicable methods"
+      unit: "parameter-specific units"
+      frequency: "Each released batch or justified lot grouping"
+      temporal_coverage: "All released batches represented by the production period"
+      site_scope: "Finished product tanks and loading points"
+      aggregation_rule: "Only released conforming mass enters the reference output"
+      quality_evidence: "Laboratory accreditation or method record; signed certificate of analysis; release decision"
+  calculation_rules:
+    - id: calc_reference_normalization
+      applies_to: "Every inventory row"
+      rule: "normalized quantity = period or batch quantity / net conforming refined coconut oil output in kg"
+      inputs:
+        - "collected row quantity"
+        - "conforming product mass"
+      output: "quantity per 1 kg reference product"
+      source_ids:
+        - eu-fdm-bat-2019
+    - id: calc_oil_mass_balance
+      applies_to: "Each oil-processing stage and the combined refinery"
+      rule: "opening oil inventory + oil-bearing inputs = closing oil inventory + intermediate/final oil outputs + measured oil in residues/wastewater + documented losses; report unresolved residual separately"
+      inputs:
+        - transfer
+        - stock
+        - "residue oil"
+        - "recovered oil"
+        - "and product records"
+      output: "stage and refinery mass-balance closure"
+      source_ids:
+        - eu-fdm-bat-2019
+    - id: calc_water_balance
+      applies_to: "Refinery water system"
+      rule: "net withdrawal = gross withdrawal - returned water received from outside the reporting system; report recirculation, evaporation, condensate return, and discharge separately"
+      inputs:
+        - "water meter and loop records"
+      output: "water inventory per reference flow"
+      source_ids:
+        - eu-fdm-bat-2019
+    - id: calc_allocation_factor
+      applies_to: "Unavoidable burden allocation"
+      rule: "selected allocation factor for output i = documented physical or other relationship value for output i / sum of the same relationship values for all co-products; apply consistently to shared inputs and emissions"
+      inputs:
+        - "subdivision result"
+        - "co-product quantities"
+        - "physical relation or economic values"
+      output: "disclosed allocation factors and allocated inventory"
+      source_ids:
+        - eu-pef-method-2021
+  data_quality_requirements:
+    - id: dq_identity
+      applies_to: "Reference product and upstream crude oil"
+      requirement: "Verify coconut origin, refined/crude state, route, grade, specification, and Tiangong reference-flow identity; prevent substitution with palm-kernel oil, virgin coconut oil, or generic vegetable oil."
+      evidence: "Product specification; supplier record; batch certificate; flow UUID verification"
+    - id: dq_temporal
+      applies_to: "Foreground data"
+      requirement: "Use a continuous representative period, normally at least 12 months where operations are not campaign-limited; disclose shutdowns, abnormal events, and shorter periods."
+      evidence: "Dated meter, batch, invoice, and production records"
+    - id: dq_technology
+      applies_to: "Refinery route"
+      requirement: "Keep chemical and physical refining data separate unless production-weighted from documented output; identify degumming chemistry, neutralization status, bleaching media, deodorizer configuration, temperature, pressure/vacuum, residence time, and post-treatment."
+      evidence: "Process flow sheet; operating log; production-weight calculation; codex-cxc-79-2019"
+    - id: dq_geography
+      applies_to: "Site and upstream datasets"
+      requirement: "Use site geography for foreground operations and representative geographies for crude oil, electricity, fuels, water, treatment, and transport."
+      evidence: "Site metadata; supplier origin; background dataset metadata"
+    - id: dq_precision_completeness
+      applies_to: "Material, utility, residue, wastewater, and air inventories"
+      requirement: "Reconcile oil and water balances; quantify data gaps; document measurement uncertainty, allocation, and important exclusions; evaluate technological, geographical and time representativeness plus precision."
+      evidence: "Balance reports; calibration; gap register; DQR record; eu-pef-method-2021; eu-fdm-bat-2019"
+    - id: dq_product_conformance
+      applies_to: "Finished refined coconut oil"
+      requirement: "Retain a batch release or certificate showing conformity with the declared product specification; when marketed for food, apply the relevant Codex or jurisdictional composition, contaminant, hygiene, and analysis requirements."
+      evidence: "Certificate of analysis; declared standard; codex-cxs-210-1999"
+validation_rules:
+  - rule_id: validate_reference_identity
+    applies_to: "Reference flow"
+    rule: "The dataset shall contain exactly one quantitative-reference output using Coconut oil, refined 570397b9-62ae-4576-b584-56691c7fed08, Mass 93a60a56-a3c8-11da-a746-0800200b9a66, Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66, and 1 kg after normalization."
+    source_ids:
+      - codex-cxs-210-1999
+  - rule_id: validate_required_qualifiers
+    applies_to: "Dataset metadata"
+    rule: "All required qualifiers shall be present and mutually consistent; crude, virgin, cold-pressed, hydrogenated, interesterified, fractionated, blended, or isolated MCT products fail category identity."
+    source_ids:
+      - codex-cxs-210-1999
+  - rule_id: validate_route_processes
+    applies_to: "Process map and inventory"
+    rule: "Receipt/pretreatment, bleaching/filtration, and deodorization/finishing shall be represented; degumming and neutralization shall match the declared route, and all exclusions or combined operations shall be justified."
+    source_ids:
+      - codex-cxc-79-2019
+  - rule_id: validate_inventory_coverage
+    applies_to: "Foreground exchanges"
+    rule: "The dataset shall account for crude oil, route-specific processing materials, electricity and thermal utilities, water, refined oil, intermediate transfers, residues/co-products, wastewater, direct emissions, and treatment destinations, or explicitly justify a non-applicable stream."
+    source_ids:
+      - eu-fdm-bat-2019
+  - rule_id: validate_mass_balance
+    applies_to: "Oil-bearing streams"
+    rule: "Oil mass balances shall close within the declared measurement uncertainty; residual imbalance shall be quantified, investigated, and not hidden by allocation or normalization."
+    source_ids:
+      - eu-fdm-bat-2019
+  - rule_id: validate_water_range
+    applies_to: "Net refinery wastewater"
+    rule: "Compare net discharge with the 0.00015-0.0009 m3/kg indicative stand-alone refining range; values outside it trigger review but do not automatically invalidate a site-specific dataset."
+    source_ids:
+      - eu-fdm-bat-2019
+  - rule_id: validate_contaminant_controls
+    applies_to: "Refining conditions and product release"
+    rule: "Record route-specific precursor assessment and deodorization conditions relevant to 3-MCPDE and GE control, and retain evidence that mitigation remains compatible with the declared product quality."
+    source_ids:
+      - codex-cxc-79-2019
+      - codex-cxs-210-1999
+  - rule_id: validate_allocation
+    applies_to: "Multi-output operations"
+    rule: "Confirm the hierarchy of subdivision/system expansion, relevant physical relationship, then other relationship; all factors, values, destinations, and sensitivities shall be reproducible and internally recovered oil shall not receive duplicate credit."
+    source_ids:
+      - eu-pef-method-2021
+  - rule_id: validate_data_quality
+    applies_to: "Foreground and linked background data"
+    rule: "Confirm temporal, technological, geographical, and precision evidence, source traceability, calibration, batch/product conformance, and disclosure of gaps and provisional ranges."
+    source_ids:
+      - eu-pef-method-2021
+      - eu-fdm-bat-2019
+published_dataset_profile:
+  dataset_role: "Foreground refinery-gate production dataset for bulk refined coconut oil"
+  downstream_use: "secondary_dataset; background_dataset after review and publication"
+  allowed_use: "Attributional LCA of products using refined coconut oil; supplier or site comparisons with harmonized route, boundary, allocation, product grade, geography, and data quality; linkage into broader cradle-to-gate models"
+  excluded_use: "Virgin/cold-pressed oil, palm-kernel oil, fractionated or isolated MCT products, retail packaged oil without added packaging/distribution, consequential claims without an appropriate market model, or public comparative claims without review"
+  required_metadata: "PCR id/version; flow UUID; product and grade; applicable specification; chemical/physical route; site/geography; reference period; technology; crude-oil origin and upstream boundary; allocation; co-product/waste destinations; product quality release; data sources"
+  required_quality_disclosure: "Foreground coverage; meter/calibration status; oil and water balance; route weighting; data gaps; provisional estimates; uncertainty; background dataset representativeness; allocation sensitivity; deviations from this PCR"
+  update_trigger: "Change in feed origin or quality, refining route, degumming/neutralization practice, bleaching media, deodorizer conditions, energy or water system, contaminant controls, co-product destination, allocation basis, product specification, site geography, or evidence that makes a provisional range obsolete"
+data_sources:
+  - id: "codex-cxs-210-1999"
+    type: "standard"
+    reference: "FAO and WHO, Codex Alimentarius, *Standard for Named Vegetable Oils*, CXS 210-1999, amended 2024 with 2026 correction, https://www.fao.org/fao-who-codexalimentarius/sh-proxy/en/?lnk=1&url=https%3A%2F%2Fworkspace.fao.org%2Fsites%2Fcodex%2FStandards%2FCXS%2B210-1999%2FCXS_210e.pdf (retrieved 2026-08-10)"
+    used_for: "Coconut-oil identity, edible-market specification, composition and quality conformity, contaminants, hygiene, labelling, and analysis"
+  - id: "codex-cxc-79-2019"
+    type: "official_guidance"
+    reference: "FAO and WHO, Codex Alimentarius, *Code of Practice for the Reduction of 3-MCPDEs and GEs in Refined Oils and Food Products Made with Refined Oils*, CXC 79-2019, https://www.fao.org/fao-who-codexalimentarius/sh-proxy/en/?lnk=1&url=https%3A%2F%2Fworkspace.fao.org%2Fsites%2Fcodex%2FStandards%2FCXC%2B79-2019%2FCXC_079e.pdf (retrieved 2026-08-10)"
+    used_for: "Chemical and physical refining decomposition; degumming, neutralization, bleaching and deodorization rules; precursor assessment and contaminant mitigation"
+  - id: "eu-fdm-bat-2019"
+    type: "official_guidance"
+    reference: "European Commission, Commission Implementing Decision (EU) 2019/2031 establishing BAT conclusions for the food, drink and milk industries, https://eur-lex.europa.eu/eli/dec_impl/2019/2031/oj (retrieved 2026-08-10)"
+    used_for: "Inventory of water, energy, raw materials, wastewater, waste gas and residues; monitoring and resource-efficiency rules; indicative stand-alone refining wastewater range"
+  - id: "eu-pef-method-2021"
+    type: "official_guidance"
+    reference: "European Commission, Commission Recommendation (EU) 2021/2279 on Environmental Footprint methods, consolidated and corrected text, https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX%3A02021H2279-20211230 (retrieved 2026-08-10)"
+    used_for: "Multifunctionality hierarchy, allocation disclosure, life-cycle data quality, representativeness, precision, and verification"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:b627256d4e367569b969aacda0d1c199d1ffe26b8750078d8150c64540b4d6a9"
+  generated_content_sha256: "sha256:5175ffac4fd950c6aa0f61017fcb588be429a9f77c78fcce8db96a233dc48fea"

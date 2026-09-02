@@ -1,10 +1,2122 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "23928"
-  title: "Vanilla, processed"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.food-products-beverages-and-tobacco-textiles-apparel-and-leather-products.grain-mill-products-starches-and-starch-products-other-food-products.vanilla-processed"
+  classification_refs: "CPC:3.0:23928 (exact)"
+  covered_products: "Cured and dried vanilla as whole or naturally split pods; cut vanilla; ground or powdered vanilla obtained only by mechanical size reduction of cured pods; vanilla pulp and seeds mechanically separated from cured pods."
+  excluded_products: "Fresh or otherwise unprocessed vanilla (CPC 01658); ethanol or other solvent extracts; oleoresins; isolated or synthetic vanillin; formulated vanilla flavourings; downstream foods; lots lacking a declared species and selected product form."
+  representative_product: "Cured and dried *Vanilla planifolia* whole pods, declared class/grade and moisture, packaged at the curing/processing plant gate."
+  production_route: "Mature fresh pods → receiving and sorting → hot-water killing → sweating/curing → staged drying → conditioning/equilibration → grading and form selection → conditional cutting, grinding, or pod opening → packaging."
+  market_state: "Food-grade processed vanilla at plant gate; selected form, species, class/grade, moisture, origin, lot, and package configuration declared."
+functional_unit:
+  what: "Processed vanilla providing the characteristic vanilla ingredient in the declared physical form."
+  how_much: "1,000 kg net processed vanilla, excluding packaging."
+  how_well: "Declared species, selected_product_form, class/grade, moisture on wet basis, vanillin specification when claimed, absence of live insects, package configuration, and conformance basis."
+  how_long_or_cycle: "One completed production lot at the plant gate; no use duration is assigned."
+  reference_flow_link: "rf_processed_vanilla"
+system_boundary:
+  rules:
+    - rule_id: boundary_fresh_pod_start
+      applies_to: "Covered route"
+      rule: "Start at accepted mature fresh pods and include every curing and finishing process through packaged plant-gate product."
+      source_ids:
+        - fao-vanilla-postharvest
+        - uf-ifas-vanilla-production
+        - sanchez-2008-vanilla-killing
+    - rule_id: boundary_complete_curing_chain
+      applies_to: "Covered route"
+      rule: "Killing, sweating/curing, staged drying, and conditioning/equilibration are distinct required foreground processes; none may be hidden in an aggregate processing row."
+      source_ids:
+        - fao-vanilla-postharvest
+        - sanchez-2008-vanilla-killing
+        - budiastra-2025-vanilla-curing
+    - rule_id: boundary_selected_form
+      applies_to: "Product form"
+      rule: "Include only the conditional mechanical conversion matching selected_product_form; report each form as a separate lot or model."
+      source_ids:
+        - codex-rep25-sch-vanilla
+        - iso-5565-1-1999
+    - rule_id: boundary_extract_exclusion
+      applies_to: "Extraction"
+      rule: "Exclude solvent extraction, maceration, oleoresin production, and isolated vanillin; a separate PCR or explicitly extended model is required."
+      source_ids:
+        - iso-5565-1-1999
+        - uf-ifas-vanilla-production
+    - rule_id: boundary_used_inputs
+      applies_to: "Utilities and materials"
+      rule: "Include every actually used utility, fuel, refrigerant, ingredient, cleaning chemical, and packaging component as its own atomic exchange. If the representative cards below do not cover an actually used item, add one chemically or physically specific card rather than a collection label."
+      source_ids:
+        - iso-14044-2006
+    - rule_id: boundary_waste_emissions
+      applies_to: "Direct outputs"
+      rule: "Include each measured solid waste, wastewater stream, and direct elementary emission separately; do not hide a direct discharge in a treatment-service input."
+      source_ids:
+        - iso-14044-2006
+boundary_abstraction:
+  declared_starting_condition: "Mature fresh vanilla pods delivered to and accepted by the curing facility, with species, origin, harvest lot, received mass, maturity/condition, and upstream dataset reference declared."
+  starting_condition_role: "Foreground gate input; cultivation and inbound transport remain upstream linked systems."
+  product_classification_scope: "Processed vanilla represented by CPC 3.0 code 23928 and restricted to the covered forms and curing route in this PCR."
+  recursive_input_rule: "Purchased or transferred cured vanilla already in this product category must be recorded as a distinct input with its own upstream dataset; do not recursively re-run the fresh-pod curing inventory or relabel it as fresh pods."
+  upstream_dataset_requirement: "Link agricultural production and inbound transport for fresh pods; link upstream datasets for purchased hot water, electricity, packaging components, cleaning chemicals, and any other product input actually used."
+  disclosure: "Declare facility and geography, species, harvest origin/period, incoming condition, killing schedule, sweating schedule, drying technology, conditioning duration, selected form, package configuration, allocation, exclusions, data gaps, and all zero/not-applicable route decisions."
+reference_flow_definition:
+  reference_amount: "1,000 kg net product"
+  product_flow_ref:
+    name: "Vanilla, processed"
+    uuid: "34e7961c-4ef0-42f4-a62c-6231e257cd65"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - species
+    - "cultivar or trade name when known"
+    - "country of origin"
+    - "country and year of harvest when available"
+    - selected_product_form
+    - "class/grade"
+    - "measured moisture wet basis"
+    - "vanillin specification and method when claimed"
+    - "killing method"
+    - "sweating regime"
+    - "drying technology"
+    - "conditioning duration"
+    - "package configuration"
+    - "net product mass"
+    - "production lot"
+    - "temporal coverage"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "Reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Normalize all inventory to 1,000 kg net processed vanilla at the plant gate."
+  - id: net_product_mass
+    applies_to: "Packaged output"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Exclude primary, secondary, and tertiary packaging from the reference amount; retain gross packed mass and each packaging-component mass as separate raw fields."
+  - id: fresh_to_processed_mass_ratio
+    applies_to: "Fresh-pod input and packaged product"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg/kg"
+    rule: "Calculate the lot-specific ratio from measured accepted fresh-pod mass and measured net processed-vanilla mass. Use 4.5:1 to 6:1 only as an external typical QA interval, never as a substitute for foreground mass records."
+  - id: killing_time_temperature
+    applies_to: "Hot-water killing"
+    required_property_ref:
+      name: "Temperature and elapsed time"
+      uuid: ""
+    required_unit: "°C; min"
+    rule: "Record time-weighted water temperature and immersion time for each batch. The 60–70 °C and 1.5–5 min evidence envelope is a route QA comparator, not a universal fixed recipe; do not average distinct treatment schedules."
+  - id: product_moisture
+    applies_to: "Final processed vanilla"
+    required_property_ref:
+      name: "Moisture on wet basis"
+      uuid: ""
+    required_unit: "% w/w"
+    rule: "Measure by the declared method and apply the species/form/class cell of the adopted Codex vanilla standard. For the representative *V. planifolia* whole Class I form, the cited interval is 30–36% w/w. Do not average moisture specifications across species, forms, or grades."
+  - id: energy_conversion
+    applies_to: "Metered electricity"
+    required_property_ref:
+      name: "Energy"
+      uuid: ""
+    required_unit: "kWh"
+    rule: "Preserve metered kWh. If source records use MJ, convert with 1 kWh = 3.6 MJ and retain the original reading and conversion."
+  - id: form_route_gate
+    applies_to: "Conditional form conversion"
+    required_property_ref:
+      name: "Mass"
+      uuid: ""
+    required_unit: "kg"
+    rule: "Activate exactly the process matching selected_product_form; naturally split pods do not activate cutting, and extraction never activates any process in this PCR."
+process_map:
+  - id: fresh_pod_receiving
+    name: "Fresh-pod receiving and sorting"
+    inclusion: "required"
+    inclusion_condition: "Every covered lot."
+    role: "Foreground receipt, identity control, and removal of unacceptable pods and plant debris."
+    quantitative_reference: "kg accepted fresh pods"
+  - id: hot_water_killing
+    name: "Hot-water killing/blanching"
+    inclusion: "required"
+    inclusion_condition: "The selected reference route uses hot-water killing; another killing technology requires a separately reviewed route, not averaging."
+    role: "Stop pod development and initiate curing reactions."
+    quantitative_reference: "kg killed pods"
+  - id: sweating_curing
+    name: "Sweating/curing"
+    inclusion: "required"
+    inclusion_condition: "Every covered lot after killing."
+    role: "Controlled warm, humid curing and aroma/color development."
+    quantitative_reference: "kg sweated pods"
+  - id: staged_drying
+    name: "Staged drying"
+    inclusion: "required"
+    inclusion_condition: "Every covered lot; the declared passive, solar-assisted, or controlled-air technology determines electricity use."
+    role: "Reduce moisture while preserving declared quality."
+    quantitative_reference: "kg dried pods"
+  - id: conditioning_equilibration
+    name: "Conditioning and moisture equilibration"
+    inclusion: "required"
+    inclusion_condition: "Every covered lot after drying."
+    role: "Stabilize aroma and moisture before grading."
+    quantitative_reference: "kg conditioned pods"
+  - id: grading_form_selection
+    name: "Final sorting, grading, and form selection"
+    inclusion: "required"
+    inclusion_condition: "Every conditioned lot."
+    role: "Separate conforming product, declared saleable grades, rejects, and the selected finishing route."
+    quantitative_reference: "kg conforming conditioned vanilla"
+  - id: cutting
+    name: "Cutting cured vanilla"
+    inclusion: "conditional"
+    inclusion_condition: "Include only when selected_product_form = cut."
+    role: "Mechanical size reduction to cut form."
+    quantitative_reference: "kg cut vanilla"
+  - id: grinding
+    name: "Grinding cured vanilla"
+    inclusion: "conditional"
+    inclusion_condition: "Include only when selected_product_form = ground_or_powdered."
+    role: "Mechanical size reduction to ground/powdered form."
+    quantitative_reference: "kg ground or powdered vanilla"
+  - id: pod_opening
+    name: "Pod opening and pulp/seed separation"
+    inclusion: "conditional"
+    inclusion_condition: "Include only when selected_product_form = pulp_and_seeds."
+    role: "Mechanically recover pulp and seeds without solvent extraction."
+    quantitative_reference: "kg vanilla pulp and seeds"
+  - id: packaging
+    name: "Packaging and labelling"
+    inclusion: "required"
+    inclusion_condition: "Every selected product form; activate only the actual package-component cards."
+    role: "Deliver declared net product at plant gate."
+    quantitative_reference: "1,000 kg net packaged product"
+  - id: lot_sanitation
+    name: "Lot-attributable equipment and surface sanitation"
+    inclusion: "required"
+    inclusion_condition: "Include direct records or an explicit allocation of shared sanitation for every lot; chemical cards apply only when that chemical was used."
+    role: "Food-hygiene support allocated to the covered lot."
+    quantitative_reference: "1,000 kg net packaged product"
+process_inventory:
+  - id: fresh_pod_receiving
+    label: "Fresh-pod receiving and sorting"
+    inputs:
+      product:
+        - row_id: received_fresh_vanilla_pods
+          role: "Mature fresh vanilla pods received"
+          name: "Mature fresh vanilla pods"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "The mass at the facility gate includes only the traceable harvested vanilla-pod lot before curing."
+          amount:
+            expression: "Weigh each received lot before sorting and normalize to net packaged product."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net processed vanilla"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_receiving_records
+              source_ids:
+                - fao-vanilla-postharvest
+                - uf-ifas-vanilla-production
+            ranges:
+              - role: typical_range
+                lower: "4500"
+                upper: "6000"
+                unit: "kg"
+                basis: "per 1,000 kg net processed vanilla"
+                basis_kind: "reference_flow"
+                evidence_kind: "external_source"
+                source_ids:
+                  - fao-vanilla-postharvest
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: accepted_fresh_vanilla_pods
+          role: "Accepted fresh vanilla pods"
+          name: "Accepted fresh vanilla pods"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Accepted pods are the measured fresh-pod output transferred to hot-water killing."
+          amount:
+            expression: "Received fresh-pod mass minus rejected-pod mass and plant-debris mass."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net processed vanilla"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_receiving_records
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: rejected_fresh_vanilla_pods
+          role: "Rejected fresh vanilla pods"
+          name: "Rejected fresh vanilla pods"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Pods rejected for immaturity, decay, severe splitting, pest damage, or other documented nonconformity are weighed separately."
+          amount:
+            expression: "Weigh rejects by lot and record the disposition."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net processed vanilla"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_receiving_records
+              source_ids:
+                - uf-ifas-vanilla-production
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "1000"
+                unit: "kg"
+                basis: "per 1,000 kg net processed vanilla"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: vanilla_plant_debris
+          role: "Vanilla plant debris removed at receiving"
+          name: "Vanilla plant debris"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Stems, leaves, and other vanilla-plant matter removed from the pod lot are one solid-waste stream and are not combined with rejected pods."
+          amount:
+            expression: "Weigh collected plant debris by lot."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net processed vanilla"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_receiving_records
+              source_ids:
+                - codex-rep25-sch-vanilla
+            ranges: []
+      elementary:
+        []
+  - id: hot_water_killing
+    label: "Hot-water killing/blanching"
+    inputs:
+      product:
+        - row_id: killing_fresh_pod_input
+          role: "Accepted fresh pods for killing"
+          name: "Accepted fresh vanilla pods"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "The accepted fresh pods enter the documented hot-water treatment batch."
+          amount:
+            expression: "Measure batch charge mass."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net processed vanilla"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_killing_records
+              source_ids:
+                - fao-vanilla-postharvest
+                - sanchez-2008-vanilla-killing
+                - budiastra-2025-vanilla-curing
+            ranges: []
+        - row_id: killing_hot_water
+          role: "Hot water supplied to killing bath"
+          name: "Hot water, 60–70 °C"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Hot water crossing the process boundary is recorded separately from electricity; recirculated water is counted once at make-up and its reuse is documented."
+          amount:
+            expression: "Meter or weigh make-up hot water supplied to killing batches."
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg net processed vanilla"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_killing_records
+              source_ids:
+                - fao-vanilla-postharvest
+                - sanchez-2008-vanilla-killing
+                - budiastra-2025-vanilla-curing
+            ranges:
+              - role: default_estimate
+                lower: "500"
+                upper: "15000"
+                unit: "kg"
+                basis: "per 1,000 kg net processed vanilla"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: killing_electricity
+          role: "Electricity used by killing equipment"
+          name: "Electricity, low voltage"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Electricity for pumps, controls, and directly metered electric heating is recorded as one electricity exchange; purchased hot-water energy is not double counted here."
+          amount:
+            expression: "Meter killing-equipment electricity and subtract documented non-route loads."
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg net processed vanilla"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_killing_records
+              source_ids: []
+            ranges:
+              - role: default_estimate
+                lower: "0"
+                upper: "500"
+                unit: "kWh"
+                basis: "per 1,000 kg net processed vanilla"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: killed_vanilla_pods
+          role: "Hot-water-killed vanilla pods"
+          name: "Hot-water-killed vanilla pods"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Killed pods are weighed or calculated from a closed batch mass balance before sweating."
+          amount:
+            expression: "Measure batch output mass; where immediate weighing is infeasible, calculate from input pods and measured water retained/lost and flag the method."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net processed vanilla"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_killing_records
+              source_ids:
+                - sanchez-2008-vanilla-killing
+            ranges: []
+      waste:
+        - row_id: killing_wastewater
+          role: "Spent killing-bath wastewater"
+          name: "Wastewater from vanilla hot-water killing"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Spent killing water sent to treatment or discharge is a distinct aqueous waste stream."
+          amount:
+            expression: "Meter discharged bath water and record destination and treatment."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net processed vanilla"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_killing_records
+              source_ids: []
+            ranges: []
+      elementary:
+        - row_id: killing_water_to_air
+          role: "Water evaporated during killing"
+          name: "Water, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Water lost from the open hot-water bath to indoor or outdoor air is calculated separately from wastewater."
+          amount:
+            expression: "Calculate by water-and-pod mass balance after subtracting wastewater and water retained in pods."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net processed vanilla"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_killing_records
+              source_ids: []
+            ranges: []
+  - id: sweating_curing
+    label: "Sweating/curing"
+    inputs:
+      product:
+        - row_id: sweating_killed_pod_input
+          role: "Killed pods for sweating"
+          name: "Hot-water-killed vanilla pods"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Killed pods are charged to the warm, humid sweating stage as a separate measured intermediate."
+          amount:
+            expression: "Measure lot mass entering sweating."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net processed vanilla"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_sweating_records
+              source_ids:
+                - fao-vanilla-postharvest
+                - uf-ifas-vanilla-production
+                - sanchez-2008-vanilla-killing
+            ranges: []
+        - row_id: sweating_electricity
+          role: "Electricity used during sweating"
+          name: "Electricity, low voltage"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Electricity for a controlled chamber, fans, sensors, or humidification is recorded only when used; a documented passive sweating route records zero."
+          amount:
+            expression: "Meter electricity attributable to sweating equipment."
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg net processed vanilla"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_sweating_records
+              source_ids:
+                - uf-ifas-vanilla-production
+                - budiastra-2025-vanilla-curing
+            ranges:
+              - role: default_estimate
+                lower: "0"
+                upper: "1000"
+                unit: "kWh"
+                basis: "per 1,000 kg net processed vanilla"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: sweated_vanilla_pods
+          role: "Sweated vanilla pods"
+          name: "Sweated vanilla pods"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Pods completing the declared sweating schedule are weighed before staged drying."
+          amount:
+            expression: "Measure lot output mass after sweating."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net processed vanilla"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_sweating_records
+              source_ids:
+                - fao-vanilla-postharvest
+                - sanchez-2008-vanilla-killing
+            ranges: []
+      waste:
+        - row_id: sweating_spoiled_pods
+          role: "Spoiled pods removed during sweating"
+          name: "Spoiled vanilla pods from sweating"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Mouldy, rotten, or otherwise nonconforming pods removed during sweating are weighed separately and isolated from conforming pods."
+          amount:
+            expression: "Weigh removals and record disposition and reason."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net processed vanilla"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_sweating_records
+              source_ids:
+                - fao-vanilla-postharvest
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "200"
+                unit: "kg"
+                basis: "per 1,000 kg net processed vanilla"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        - row_id: sweating_water_to_air
+          role: "Water released during sweating"
+          name: "Water, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Moisture leaving pods during sweating and venting to air is calculated by stage mass balance."
+          amount:
+            expression: "Input killed-pod mass minus sweated-pod mass minus solid rejects and collected liquid loss."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net processed vanilla"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_sweating_records
+              source_ids: []
+            ranges: []
+  - id: staged_drying
+    label: "Staged drying"
+    inputs:
+      product:
+        - row_id: drying_sweated_pod_input
+          role: "Sweated pods for drying"
+          name: "Sweated vanilla pods"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Sweated pods enter the declared sun, solar-assisted, ambient, or controlled-air drying sequence."
+          amount:
+            expression: "Measure lot mass entering staged drying."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net processed vanilla"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_drying_records
+              source_ids:
+                - fao-vanilla-postharvest
+                - uf-ifas-vanilla-production
+                - budiastra-2025-vanilla-curing
+            ranges: []
+        - row_id: drying_electricity
+          role: "Electricity used during drying"
+          name: "Electricity, low voltage"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Electricity for fans, tray dryers, controls, and dehumidification is recorded only when used; passive solar and ambient periods record zero rather than being averaged with controlled drying."
+          amount:
+            expression: "Meter drying-equipment electricity by lot or allocate from submetered operating hours and rated load."
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg net processed vanilla"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_drying_records
+              source_ids:
+                - budiastra-2025-vanilla-curing
+            ranges:
+              - role: default_estimate
+                lower: "0"
+                upper: "5000"
+                unit: "kWh"
+                basis: "per 1,000 kg net processed vanilla"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: dried_vanilla_pods
+          role: "Dried vanilla pods"
+          name: "Dried vanilla pods"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Pods completing staged drying are weighed with moisture and flexibility/condition observations retained."
+          amount:
+            expression: "Measure lot output mass at the drying endpoint."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg net processed vanilla"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_drying_records
+              source_ids:
+                - fao-vanilla-postharvest
+                - codex-rep25-sch-vanilla
+                - budiastra-2025-vanilla-curing
+            ranges: []
+      waste:
+        - row_id: drying_rejected_pods
+          role: "Rejected pods removed during drying"
+          name: "Rejected vanilla pods from drying"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Mouldy, burnt, brittle, or otherwise rejected pods removed during drying are weighed separately."
+          amount:
+            expression: "Weigh drying rejects and record reason and disposition."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net processed vanilla"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_drying_records
+              source_ids:
+                - fao-vanilla-postharvest
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "200"
+                unit: "kg"
+                basis: "per 1,000 kg net processed vanilla"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        - row_id: drying_water_to_air
+          role: "Water released during drying"
+          name: "Water, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Water removed from pods and vented during drying is calculated as a distinct elementary output."
+          amount:
+            expression: "Sweated-pod input mass minus dried-pod output mass minus solid rejects and any collected condensate."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net processed vanilla"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_drying_records
+              source_ids: []
+            ranges: []
+  - id: conditioning_equilibration
+    label: "Conditioning and moisture equilibration"
+    inputs:
+      product:
+        - row_id: conditioning_dried_pod_input
+          role: "Dried pods for conditioning"
+          name: "Dried vanilla pods"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Dried pods are charged to the declared conditioning containers or room."
+          amount:
+            expression: "Measure mass entering conditioning."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net processed vanilla"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_conditioning_records
+              source_ids:
+                - fao-vanilla-postharvest
+                - uf-ifas-vanilla-production
+            ranges: []
+        - row_id: conditioning_electricity
+          role: "Electricity used during conditioning"
+          name: "Electricity, low voltage"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Electricity for ventilation, temperature/humidity control, and monitoring is recorded when used; ambient conditioning records zero."
+          amount:
+            expression: "Meter or allocate conditioning-equipment electricity over the recorded residence time."
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg net processed vanilla"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_conditioning_records
+              source_ids:
+                - uf-ifas-vanilla-production
+            ranges:
+              - role: default_estimate
+                lower: "0"
+                upper: "1500"
+                unit: "kWh"
+                basis: "per 1,000 kg net processed vanilla"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: conditioned_vanilla_pods
+          role: "Conditioned vanilla pods"
+          name: "Conditioned vanilla pods"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Conditioned pods are weighed after the declared residence period and moisture equilibration."
+          amount:
+            expression: "Measure lot output mass and associated moisture result."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg net processed vanilla"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_conditioning_records
+              source_ids:
+                - fao-vanilla-postharvest
+                - codex-rep25-sch-vanilla
+            ranges: []
+      waste:
+        - row_id: conditioning_rejected_pods
+          role: "Rejected pods removed during conditioning"
+          name: "Rejected vanilla pods from conditioning"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Mouldy or otherwise nonconforming conditioned pods are isolated and weighed."
+          amount:
+            expression: "Weigh removals and record reason and disposition."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net processed vanilla"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_conditioning_records
+              source_ids:
+                - fao-vanilla-postharvest
+                - codex-rep25-sch-vanilla
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "100"
+                unit: "kg"
+                basis: "per 1,000 kg net processed vanilla"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        - row_id: conditioning_water_to_air
+          role: "Water released during conditioning"
+          name: "Water, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Net moisture loss during conditioning is calculated separately from rejected-pod mass."
+          amount:
+            expression: "Dried-pod input mass minus conditioned-pod output mass minus solid rejects and collected condensate."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net processed vanilla"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_conditioning_records
+              source_ids: []
+            ranges: []
+  - id: grading_form_selection
+    label: "Final sorting, grading, and form selection"
+    inputs:
+      product:
+        - row_id: grading_conditioned_pod_input
+          role: "Conditioned pods for grading"
+          name: "Conditioned vanilla pods"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Conditioned pods enter final inspection with lot identity preserved."
+          amount:
+            expression: "Measure mass entering grading."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net processed vanilla"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_grading_records
+              source_ids:
+                - fao-vanilla-postharvest
+                - codex-rep25-sch-vanilla
+            ranges: []
+        - row_id: grading_electricity
+          role: "Electricity used by grading equipment"
+          name: "Electricity, low voltage"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Electricity for lighting, conveyors, scales, or optical sorting is recorded when attributable to the lot."
+          amount:
+            expression: "Meter or allocate equipment electricity by operating time."
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg net processed vanilla"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_grading_records
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: graded_vanilla_pods
+          role: "Conforming graded vanilla pods"
+          name: "Conforming graded vanilla pods"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Pods meeting the declared species, form, grade, moisture, and quality specification proceed to the selected form route or packaging."
+          amount:
+            expression: "Weigh each conforming grade separately; do not merge grades before allocation and disclosure."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg net processed vanilla"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_grading_records
+              source_ids:
+                - codex-rep25-sch-vanilla
+                - iso-5565-1-1999
+            ranges: []
+        - row_id: saleable_offgrade_vanilla_pods
+          role: "Saleable off-grade cured vanilla pods"
+          name: "Saleable off-grade cured vanilla pods"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Off-grade pods sold for a declared downstream vanilla use are recorded as a separate product output, not as waste."
+          amount:
+            expression: "Weigh saleable off-grade output and retain grade, destination, and revenue records."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg net processed vanilla"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_grading_records
+              source_ids:
+                - fao-vanilla-postharvest
+                - codex-rep25-sch-vanilla
+            ranges: []
+      waste:
+        - row_id: grading_extraneous_matter
+          role: "Extraneous vanilla-plant matter removed at grading"
+          name: "Extraneous vanilla-plant matter"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Vegetative matter not accepted as final vanilla is weighed separately from off-grade saleable product."
+          amount:
+            expression: "Weigh matter removed during final inspection."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net processed vanilla"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_grading_records
+              source_ids:
+                - codex-rep25-sch-vanilla
+            ranges: []
+      elementary:
+        []
+  - id: cutting
+    label: "Cutting cured vanilla"
+    inputs:
+      product:
+        - row_id: cutting_pod_input
+          role: "Graded pods for cutting"
+          name: "Conforming graded vanilla pods"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "This input is present only for a lot declared as selected_product_form = cut."
+          amount:
+            expression: "Measure pod mass charged to the cutter."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg net processed vanilla"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cutting_records
+              source_ids:
+                - codex-rep25-sch-vanilla
+                - iso-5565-1-1999
+            ranges: []
+        - row_id: cutting_electricity
+          role: "Electricity used for cutting"
+          name: "Electricity, low voltage"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Electricity attributable to the cutting equipment is recorded separately."
+          amount:
+            expression: "Meter or calculate from verified equipment load and operating time."
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg net processed vanilla"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cutting_records
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: cut_vanilla_output
+          role: "Cut vanilla"
+          name: "Cut cured vanilla"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Cut vanilla is the measured principal output of this conditional route."
+          amount:
+            expression: "Weigh conforming cut product."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg net processed vanilla"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cutting_records
+              source_ids:
+                - codex-rep25-sch-vanilla
+                - iso-5565-1-1999
+            ranges: []
+        - row_id: cutting_recovered_fines
+          role: "Recovered vanilla fines from cutting"
+          name: "Recovered vanilla fines"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Captured edible fines sold or internally used as vanilla are recorded as a distinct product output."
+          amount:
+            expression: "Weigh captured saleable fines and record disposition."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg net processed vanilla"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cutting_records
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: discarded_cutting_fines
+          role: "Discarded vanilla fines from cutting"
+          name: "Discarded vanilla fines"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Captured fines that are not saleable or internally reused are recorded as a distinct solid waste; do not duplicate mass reported as recovered product."
+          amount:
+            expression: "Weigh discarded fines and record treatment or disposal destination."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net processed vanilla"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cutting_records
+              source_ids: []
+            ranges: []
+      elementary:
+        []
+  - id: grinding
+    label: "Grinding cured vanilla"
+    inputs:
+      product:
+        - row_id: grinding_vanilla_input
+          role: "Cured vanilla feed for grinding"
+          name: "Cured vanilla pods for grinding"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "This feed is present only for a lot declared as selected_product_form = ground_or_powdered."
+          amount:
+            expression: "Measure cured vanilla mass charged to the grinder."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg net processed vanilla"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_grinding_records
+              source_ids:
+                - codex-rep25-sch-vanilla
+                - iso-5565-1-1999
+            ranges: []
+        - row_id: grinding_electricity
+          role: "Electricity used for grinding"
+          name: "Electricity, low voltage"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Grinder, sieve, and dust-control electricity is recorded as one metered electricity exchange."
+          amount:
+            expression: "Meter or calculate from verified equipment load and operating time."
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg net processed vanilla"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_grinding_records
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: ground_vanilla_output
+          role: "Ground or powdered vanilla"
+          name: "Ground or powdered cured vanilla"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Ground or powdered vanilla is weighed after the declared particle-size control."
+          amount:
+            expression: "Weigh conforming ground/powdered output."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg net processed vanilla"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_grinding_records
+              source_ids:
+                - codex-rep25-sch-vanilla
+                - iso-5565-1-1999
+            ranges: []
+        - row_id: grinding_captured_dust
+          role: "Captured vanilla powder dust"
+          name: "Captured vanilla powder dust"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Vanilla powder recovered in a dust collector and returned or sold is measured separately as a product output."
+          amount:
+            expression: "Weigh collected edible dust and record reuse or sale."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net processed vanilla"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_grinding_records
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: discarded_grinding_dust
+          role: "Discarded captured vanilla powder dust"
+          name: "Discarded captured vanilla powder dust"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Captured powder that is not returned or sold is recorded as a separate solid waste and is not combined with the fugitive air emission."
+          amount:
+            expression: "Weigh discarded captured powder and record treatment or disposal destination."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net processed vanilla"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_grinding_records
+              source_ids: []
+            ranges: []
+      elementary:
+        - row_id: grinding_particulate_to_air
+          role: "Fugitive particulate matter from grinding"
+          name: "Particulate matter, >10 µm, to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Only uncaptured airborne particulate crossing the facility boundary is reported here; captured dust is not double counted."
+          amount:
+            expression: "Measure at the exhaust or calculate from a documented dust-control mass balance."
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg net processed vanilla"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_grinding_records
+              source_ids: []
+            ranges: []
+  - id: pod_opening
+    label: "Pod opening and pulp/seed separation"
+    inputs:
+      product:
+        - row_id: pod_opening_input
+          role: "Cured pods for opening"
+          name: "Conditioned cured vanilla pods for opening"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "This input is present only for a lot declared as selected_product_form = pulp_and_seeds."
+          amount:
+            expression: "Measure cured pod mass charged to opening/separation."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg net processed vanilla"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_pod_opening_records
+              source_ids:
+                - codex-rep25-sch-vanilla
+            ranges: []
+        - row_id: pod_opening_electricity
+          role: "Electricity used for pod opening"
+          name: "Electricity, low voltage"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Electricity for mechanical opening and separation is recorded when equipment is used."
+          amount:
+            expression: "Meter or calculate from verified equipment load and operating time."
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg net processed vanilla"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_pod_opening_records
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: vanilla_pulp_seeds_output
+          role: "Vanilla pulp and seeds"
+          name: "Vanilla pulp and seeds"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Pulp and seeds are mechanically recovered without solvent and weighed as the principal conditional product."
+          amount:
+            expression: "Weigh conforming pulp-and-seed output."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg net processed vanilla"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_pod_opening_records
+              source_ids:
+                - codex-rep25-sch-vanilla
+            ranges: []
+        - row_id: emptied_vanilla_pod_skins
+          role: "Emptied cured vanilla pod skins"
+          name: "Emptied cured vanilla pod skins"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Emptied cured pod skins retained for sale or internal vanilla use are a separate product output."
+          amount:
+            expression: "Weigh only saleable or internally reused emptied pod skins and document disposition."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg net processed vanilla"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_pod_opening_records
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: discarded_emptied_pod_skins
+          role: "Discarded emptied vanilla pod skins"
+          name: "Discarded emptied vanilla pod skins"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Emptied pod skins not sold or internally reused are recorded as a distinct solid waste; do not duplicate mass reported as a product output."
+          amount:
+            expression: "Weigh discarded emptied pod skins and record treatment or disposal destination."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net processed vanilla"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_pod_opening_records
+              source_ids: []
+            ranges: []
+      elementary:
+        []
+  - id: packaging
+    label: "Packaging and labelling"
+    inputs:
+      product:
+        - row_id: packaging_whole_pod_input
+          role: "Whole cured vanilla pods for packaging"
+          name: "Whole cured vanilla pods"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "This input is present only when selected_product_form = whole."
+          amount:
+            expression: "Weigh unpackaged conforming whole pods entering the packaging line."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg net processed vanilla"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_records
+              source_ids:
+                - codex-rep25-sch-vanilla
+            ranges: []
+        - row_id: packaging_split_pod_input
+          role: "Naturally split cured vanilla pods for packaging"
+          name: "Naturally split cured vanilla pods"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "This input is present only when selected_product_form = split; naturally split pods do not pass through the cutting process."
+          amount:
+            expression: "Weigh unpackaged conforming naturally split pods entering the packaging line."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg net processed vanilla"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_records
+              source_ids:
+                - codex-rep25-sch-vanilla
+            ranges: []
+        - row_id: packaging_cut_vanilla_input
+          role: "Cut cured vanilla for packaging"
+          name: "Cut cured vanilla"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "This input is present only when selected_product_form = cut and is the output of cutting."
+          amount:
+            expression: "Weigh unpackaged conforming cut vanilla entering the packaging line."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg net processed vanilla"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_records
+              source_ids:
+                - codex-rep25-sch-vanilla
+            ranges: []
+        - row_id: packaging_ground_vanilla_input
+          role: "Ground vanilla powder for packaging"
+          name: "Ground vanilla powder"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "This input is present only when selected_product_form = ground_or_powdered and is the output of grinding."
+          amount:
+            expression: "Weigh unpackaged conforming ground vanilla powder entering the packaging line."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg net processed vanilla"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_records
+              source_ids:
+                - codex-rep25-sch-vanilla
+            ranges: []
+        - row_id: packaging_pulp_seeds_input
+          role: "Vanilla pulp and seeds for packaging"
+          name: "Vanilla pulp and seeds"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "This input is present only when selected_product_form = pulp_and_seeds and is the output of pod_opening."
+          amount:
+            expression: "Weigh unpackaged conforming vanilla pulp and seeds entering the packaging line."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg net processed vanilla"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_records
+              source_ids:
+                - codex-rep25-sch-vanilla
+            ranges: []
+        - row_id: packaging_electricity
+          role: "Electricity used for packaging"
+          name: "Electricity, low voltage"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Electricity for filling, sealing, weighing, and labelling is recorded separately."
+          amount:
+            expression: "Meter or allocate packaging-line electricity by operating time and throughput."
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg net processed vanilla"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_records
+              source_ids: []
+            ranges: []
+        - row_id: packaging_waxed_paper
+          role: "Waxed paper liner"
+          name: "Waxed paper packaging liner"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Waxed paper is recorded only when it is an actual liner or pod wrap in the declared package configuration."
+          amount:
+            expression: "Weigh issued liner material minus returned unused material."
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg net processed vanilla"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_records
+              source_ids:
+                - fao-vanilla-postharvest
+            ranges:
+              - role: default_estimate
+                lower: "0"
+                upper: "20"
+                unit: "kg"
+                basis: "per 1,000 kg net processed vanilla"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: packaging_tinplate_container
+          role: "Tinplate packaging container"
+          name: "Tinplate packaging container"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Tinplate container mass is recorded only for the actual bulk or retail configuration using metal containers."
+          amount:
+            expression: "Sum container tare mass from bill of materials or verified unit mass times count."
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg net processed vanilla"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_records
+              source_ids:
+                - fao-vanilla-postharvest
+            ranges:
+              - role: default_estimate
+                lower: "0"
+                upper: "300"
+                unit: "kg"
+                basis: "per 1,000 kg net processed vanilla"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: packaging_paperboard_box
+          role: "Corrugated paperboard box"
+          name: "Corrugated paperboard packaging box"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Paperboard is recorded only when an actual outer or direct-contact box is used."
+          amount:
+            expression: "Sum verified unit mass times box count."
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg net processed vanilla"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_records
+              source_ids:
+                - fao-vanilla-postharvest
+            ranges:
+              - role: default_estimate
+                lower: "0"
+                upper: "200"
+                unit: "kg"
+                basis: "per 1,000 kg net processed vanilla"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: packaging_polyethylene_pouch
+          role: "Polyethylene packaging pouch"
+          name: "Polyethylene packaging pouch"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Polyethylene film or preformed pouch mass is recorded only when used in the declared configuration."
+          amount:
+            expression: "Sum verified pouch mass times used count plus measured film trim."
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg net processed vanilla"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_records
+              source_ids:
+                - fao-vanilla-postharvest
+            ranges:
+              - role: default_estimate
+                lower: "0"
+                upper: "100"
+                unit: "kg"
+                basis: "per 1,000 kg net processed vanilla"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: packaging_paper_label
+          role: "Paper package label"
+          name: "Paper package label"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Paper labels are recorded as a separate packaging component when used."
+          amount:
+            expression: "Sum verified label mass times applied count."
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg net processed vanilla"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_records
+              source_ids:
+                - codex-rep25-sch-vanilla
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: packaged_processed_vanilla
+          role: "Packaged processed vanilla"
+          name: "Packaged processed vanilla, net product"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "This is the net processed-vanilla output at the plant gate; packaging mass is excluded from the reference amount."
+          amount:
+            expression: "Set normalized net product to 1,000 kg from measured gross packed mass minus all packaging-component masses."
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "1,000 kg net processed vanilla"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_records
+              source_ids:
+                - codex-rep25-sch-vanilla
+            ranges: []
+      waste:
+        - row_id: waste_waxed_paper_offcuts
+          role: "Waste waxed-paper offcuts"
+          name: "Waste waxed-paper packaging offcuts"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Waxed-paper trim and damaged liner material not entering a package are weighed separately."
+          amount:
+            expression: "Weigh offcuts and record recovery or disposal route."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net processed vanilla"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_records
+              source_ids: []
+            ranges: []
+        - row_id: waste_paperboard_offcuts
+          role: "Waste paperboard offcuts"
+          name: "Waste corrugated paperboard offcuts"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Paperboard trim and damaged boxes are recorded separately from waxed paper and plastic waste."
+          amount:
+            expression: "Weigh paperboard waste and record recovery or disposal route."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net processed vanilla"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_records
+              source_ids: []
+            ranges: []
+        - row_id: waste_polyethylene_film
+          role: "Waste polyethylene film"
+          name: "Waste polyethylene packaging film"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Polyethylene trim and rejected pouches are recorded as a distinct plastic-waste flow."
+          amount:
+            expression: "Weigh polyethylene waste and record recovery or disposal route."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net processed vanilla"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_records
+              source_ids: []
+            ranges: []
+      elementary:
+        []
+  - id: lot_sanitation
+    label: "Lot-attributable equipment and surface sanitation"
+    inputs:
+      product:
+        - row_id: sanitation_process_water
+          role: "Process water used for sanitation"
+          name: "Potable process water"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Water used to clean food-contact equipment and surfaces is recorded independently from the hot-water killing bath."
+          amount:
+            expression: "Meter direct sanitation water or allocate a shared meter by documented cleaning event and equipment area."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net processed vanilla"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_sanitation_records
+              source_ids:
+                - codex-rep25-sch-vanilla
+            ranges:
+              - role: default_estimate
+                lower: "0"
+                upper: "5000"
+                unit: "kg"
+                basis: "per 1,000 kg net processed vanilla"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: sanitation_sodium_hydroxide
+          role: "Sodium hydroxide used for sanitation"
+          name: "Sodium hydroxide, 100% active substance"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record sodium hydroxide only when present in the actual cleaning formulation, converted to 100% active NaOH mass."
+          amount:
+            expression: "Purchased formulation mass × supplier-declared NaOH mass fraction, allocated to the lot."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net processed vanilla"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_sanitation_records
+              source_ids: []
+            ranges: []
+        - row_id: sanitation_peracetic_acid
+          role: "Peracetic acid used for sanitation"
+          name: "Peracetic acid, 100% active substance"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record peracetic acid only when present in the actual sanitizer, converted to 100% active peracetic-acid mass."
+          amount:
+            expression: "Purchased formulation mass × supplier-declared peracetic-acid mass fraction, allocated to the lot."
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net processed vanilla"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_sanitation_records
+              source_ids: []
+            ranges: []
+        - row_id: sanitation_electricity
+          role: "Electricity used for sanitation"
+          name: "Electricity, low voltage"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Electricity for pressure washing, cleaning-in-place pumps, or drying is recorded only when used."
+          amount:
+            expression: "Meter or allocate sanitation-equipment electricity by documented operating time."
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg net processed vanilla"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_sanitation_records
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: sanitation_wastewater
+          role: "Wastewater from sanitation"
+          name: "Wastewater from vanilla-processing sanitation"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Cleaning wastewater is measured separately from the spent killing bath and linked to its treatment or discharge destination."
+          amount:
+            expression: "Meter wastewater or calculate sanitation-water input minus documented evaporation and retained water."
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg net processed vanilla"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_sanitation_records
+              source_ids:
+                - codex-rep25-sch-vanilla
+            ranges: []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocation_avoid_by_separation
+    applies_to: "All lots and selected forms"
+    rule: "First avoid allocation by keeping species, grades, selected forms, process routes, and production lots physically or temporally separate. Never average whole, cut, powder, pulp-and-seeds, or extract production."
+    source_ids:
+      - iso-14044-2006
+  - rule_id: allocation_common_curing_mass
+    applies_to: "Common curing before grade separation"
+    rule: "If multiple saleable cured grades are jointly produced and separate measurement cannot divide the common burden, allocate common burdens by measured conditioned-product dry mass; disclose moisture conversion."
+    source_ids:
+      - iso-14044-2006
+  - rule_id: allocation_value_sensitivity
+    applies_to: "Saleable grades or pod-skin/fines co-products"
+    rule: "When products have materially different commercial functions or values, report an economic-allocation sensitivity using contemporaneous lot-level revenue while retaining dry-mass allocation as the base case."
+    source_ids:
+      - iso-14044-2006
+  - rule_id: allocation_waste_no_credit
+    applies_to: "Rejected pods, debris, wastewater, packaging waste"
+    rule: "Assign waste handling to the generating process. Do not award avoided-product credit unless a documented recovery system and substitutable product are explicitly modelled."
+    source_ids:
+      - iso-14044-2006
+  - rule_id: allocation_shared_sanitation
+    applies_to: "Shared cleaning events"
+    rule: "Allocate shared sanitation by documented equipment cleaning time, food-contact area, or processed throughput; state the selected driver and test alternatives when material."
+    source_ids:
+      - iso-14044-2006
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_receiving_records
+      process_id: "fresh_pod_receiving"
+      flow_role: "received_fresh_vanilla_pods; accepted_fresh_vanilla_pods; rejected_fresh_vanilla_pods; vanilla_plant_debris"
+      record_type: "weighbridge/scale and inspection log"
+      raw_fields: "lot_id; species; origin; harvest_date; received_kg; rejected_kg; debris_kg; rejection_reason; disposition"
+      collection_method: "Calibrated scale and lot inspection"
+      unit: "kg"
+      frequency: "Every received lot"
+      temporal_coverage: "At least 12 consecutive months or all lots for a shorter campaign"
+      site_scope: "Every facility in scope"
+      aggregation_rule: "Sum masses by lot; calculate accepted mass; normalize by net packaged output"
+      quality_evidence: "Calibration certificate; signed inspection log; lot photos; disposition record"
+    - protocol_id: cp_killing_records
+      process_id: "hot_water_killing"
+      flow_role: "killing_fresh_pod_input; killing_hot_water; killing_electricity; killed_vanilla_pods; killing_wastewater; killing_water_to_air"
+      record_type: "batch sheet, meter, and mass balance"
+      raw_fields: "batch_id; pod_input_kg; water_makeup_kg; water_temperature_C_time_series; immersion_min; electricity_kWh; pod_output_kg; wastewater_kg; retained_water_kg"
+      collection_method: "Calibrated scale, water meter, temperature logger, timer, electricity submeter"
+      unit: "kg; °C; min; kWh"
+      frequency: "Every killing batch"
+      temporal_coverage: "Same period as reference product"
+      site_scope: "Every killing unit in scope"
+      aggregation_rule: "Sum batch records; calculate water-to-air by closed mass balance; reject negative residuals"
+      quality_evidence: "Meter calibration; logger file; operator sign-off; mass-balance closure"
+    - protocol_id: cp_sweating_records
+      process_id: "sweating_curing"
+      flow_role: "sweating_killed_pod_input; sweating_electricity; sweated_vanilla_pods; sweating_spoiled_pods; sweating_water_to_air"
+      record_type: "lot sheet and environmental logger"
+      raw_fields: "lot_id; input_kg; output_kg; reject_kg; electricity_kWh; temperature_C; relative_humidity_percent; duration_h; rejection_reason"
+      collection_method: "Calibrated scales, submeter, temperature/RH logger"
+      unit: "kg; kWh; °C; %; h"
+      frequency: "Every lot and sweating cycle"
+      temporal_coverage: "Same period as reference product"
+      site_scope: "Every sweating room/chamber in scope"
+      aggregation_rule: "Sum energy and masses; time-weight conditions; calculate water loss by mass balance"
+      quality_evidence: "Calibration; raw logger export; reject log; mass-balance closure"
+    - protocol_id: cp_drying_records
+      process_id: "staged_drying"
+      flow_role: "drying_sweated_pod_input; drying_electricity; dried_vanilla_pods; drying_rejected_pods; drying_water_to_air"
+      record_type: "lot sheet, meter, and moisture record"
+      raw_fields: "lot_id; technology; input_kg; output_kg; reject_kg; electricity_kWh; drying_hours; temperature_C; relative_humidity_percent; moisture_percent; condensate_kg"
+      collection_method: "Calibrated scales, electricity submeter, environmental logger, declared moisture method"
+      unit: "kg; kWh; h; °C; %"
+      frequency: "Every lot and drying stage"
+      temporal_coverage: "Same period as reference product"
+      site_scope: "Every dryer/rack system in scope"
+      aggregation_rule: "Keep passive and controlled stages separate; sum only within declared route; calculate water loss"
+      quality_evidence: "Calibration; logger export; moisture test; mass-balance closure"
+    - protocol_id: cp_conditioning_records
+      process_id: "conditioning_equilibration"
+      flow_role: "conditioning_dried_pod_input; conditioning_electricity; conditioned_vanilla_pods; conditioning_rejected_pods; conditioning_water_to_air"
+      record_type: "conditioning lot sheet"
+      raw_fields: "lot_id; input_kg; output_kg; reject_kg; electricity_kWh; start_time; end_time; temperature_C; relative_humidity_percent; moisture_percent"
+      collection_method: "Calibrated scales, submeter, environmental logger, moisture test"
+      unit: "kg; kWh; h; °C; %"
+      frequency: "Every conditioning lot"
+      temporal_coverage: "Same period as reference product"
+      site_scope: "Every conditioning room/container in scope"
+      aggregation_rule: "Residence-time weighted conditions; calculate water loss by mass balance"
+      quality_evidence: "Calibration; logger export; moisture result; inspection record"
+    - protocol_id: cp_grading_records
+      process_id: "grading_form_selection"
+      flow_role: "grading_conditioned_pod_input; grading_electricity; graded_vanilla_pods; saleable_offgrade_vanilla_pods; grading_extraneous_matter"
+      record_type: "grade and yield record"
+      raw_fields: "lot_id; species; form; grade; input_kg; conforming_kg_by_grade; offgrade_kg; extraneous_matter_kg; electricity_kWh; disposition; revenue"
+      collection_method: "Calibrated scale and documented grade inspection"
+      unit: "kg; kWh; currency"
+      frequency: "Every lot"
+      temporal_coverage: "Same period as reference product"
+      site_scope: "Every grading line in scope"
+      aggregation_rule: "Preserve each grade; reconcile input to all outputs"
+      quality_evidence: "Calibration; test certificates; grade sheet; sales/disposition evidence"
+    - protocol_id: cp_cutting_records
+      process_id: "cutting"
+      flow_role: "cutting_pod_input; cutting_electricity; cut_vanilla_output; cutting_recovered_fines; discarded_cutting_fines"
+      record_type: "production and equipment log"
+      raw_fields: "lot_id; input_kg; output_kg; recovered_fines_kg; discarded_fines_kg; electricity_kWh; particle_or_length_specification; disposition"
+      collection_method: "Calibrated scales and submeter"
+      unit: "kg; kWh"
+      frequency: "Every cut-form lot"
+      temporal_coverage: "Same period as reference product"
+      site_scope: "Every cutter in scope"
+      aggregation_rule: "Reconcile input, cut output, recovered fines, discarded fines, and measured losses"
+      quality_evidence: "Calibration; batch sheet; product specification; disposition record"
+    - protocol_id: cp_grinding_records
+      process_id: "grinding"
+      flow_role: "grinding_vanilla_input; grinding_electricity; ground_vanilla_output; grinding_captured_dust; discarded_grinding_dust; grinding_particulate_to_air"
+      record_type: "production, meter, and dust-control log"
+      raw_fields: "lot_id; input_kg; product_kg; recovered_dust_kg; discarded_dust_kg; exhaust_dust_kg; electricity_kWh; particle_size; disposition"
+      collection_method: "Calibrated scales, submeter, and exhaust measurement or documented dust mass balance"
+      unit: "kg; kWh"
+      frequency: "Every ground/powdered lot"
+      temporal_coverage: "Same period as reference product"
+      site_scope: "Every grinder and dust-control unit in scope"
+      aggregation_rule: "Reconcile product, recovered dust, discarded dust, and air emissions to input"
+      quality_evidence: "Calibration; batch record; sieve result; dust-control and disposition evidence"
+    - protocol_id: cp_pod_opening_records
+      process_id: "pod_opening"
+      flow_role: "pod_opening_input; pod_opening_electricity; vanilla_pulp_seeds_output; emptied_vanilla_pod_skins; discarded_emptied_pod_skins"
+      record_type: "production and equipment log"
+      raw_fields: "lot_id; input_kg; pulp_seeds_kg; saleable_pod_skins_kg; discarded_pod_skins_kg; electricity_kWh; pod_skin_disposition"
+      collection_method: "Calibrated scales and submeter"
+      unit: "kg; kWh"
+      frequency: "Every pulp-and-seeds lot"
+      temporal_coverage: "Same period as reference product"
+      site_scope: "Every opening/separation unit in scope"
+      aggregation_rule: "Reconcile input to pulp/seeds, saleable pod skins, discarded pod skins, and measured losses"
+      quality_evidence: "Calibration; batch sheet; disposition record"
+    - protocol_id: cp_packaging_records
+      process_id: "packaging"
+      flow_role: "packaging_whole_pod_input; packaging_split_pod_input; packaging_cut_vanilla_input; packaging_ground_vanilla_input; packaging_pulp_seeds_input; packaging_electricity; packaging_waxed_paper; packaging_tinplate_container; packaging_paperboard_box; packaging_polyethylene_pouch; packaging_paper_label; packaged_processed_vanilla; waste_waxed_paper_offcuts; waste_paperboard_offcuts; waste_polyethylene_film"
+      record_type: "packaging BOM, count, scale, and meter"
+      raw_fields: "lot_id; selected_product_form; unpackaged_product_kg; gross_packed_kg; component_id; component_unit_mass_kg; component_count; trim_kg; electricity_kWh; net_product_kg"
+      collection_method: "Verified bill of materials, calibrated scale, count, submeter"
+      unit: "kg; count; kWh"
+      frequency: "Every packaging lot"
+      temporal_coverage: "Same period as reference product"
+      site_scope: "Every packaging line and storage area in scope"
+      aggregation_rule: "Activate exactly one form input and actual components only; sum by material; calculate net product separately"
+      quality_evidence: "Supplier specification; tare check; calibration; reconciliation"
+    - protocol_id: cp_sanitation_records
+      process_id: "lot_sanitation"
+      flow_role: "sanitation_process_water; sanitation_sodium_hydroxide; sanitation_peracetic_acid; sanitation_electricity; sanitation_wastewater"
+      record_type: "cleaning event, purchase, formulation, meter, and allocation log"
+      raw_fields: "event_id; affected_equipment; water_kg; formulation_name; formulation_kg; active_mass_fraction; electricity_kWh; wastewater_kg; allocation_driver; allocated_share"
+      collection_method: "Meters, issue records, supplier formulation certificate, documented allocation"
+      unit: "kg; kWh; fraction"
+      frequency: "Every cleaning event attributable to covered production"
+      temporal_coverage: "Same period as reference product"
+      site_scope: "All equipment and surfaces used by the covered lot"
+      aggregation_rule: "Convert formulations to active mass; allocate shared events once; reconcile water"
+      quality_evidence: "Meter calibration; supplier certificate; cleaning sign-off; allocation worksheet"
+    - protocol_id: cp_quality_records
+      process_id: "grading_form_selection"
+      flow_role: "final product identity and conformance"
+      record_type: "laboratory and inspection record"
+      raw_fields: "lot_id; species; selected_product_form; class_grade; moisture_percent_wet_basis; vanillin_g_per_100g_when_claimed; extraneous_matter_percent; live_insect_count; method; laboratory"
+      collection_method: "Representative sampling and cited/declared analytical method"
+      unit: "% w/w; g/100 g; count"
+      frequency: "Every finished lot or justified sampling plan"
+      temporal_coverage: "Same period as reference product"
+      site_scope: "Every finished-product lot and laboratory in scope"
+      aggregation_rule: "No averaging across species/form/grade cells; link result to packaged lot"
+      quality_evidence: "Laboratory report; chain of custody; method version; sample plan"
+  calculation_rules:
+    - id: calc_normalize_reference
+      applies_to: "Every inventory row"
+      rule: "normalized_amount = lot_amount / net_packaged_processed_vanilla_kg × 1000"
+      inputs:
+        - lot_amount
+        - net_packaged_processed_vanilla_kg
+      output: "amount per 1,000 kg reference flow"
+      source_ids:
+        - "—"
+    - id: calc_accepted_fresh_pods
+      applies_to: "Receiving"
+      rule: "accepted_fresh_pods_kg = received_fresh_pods_kg - rejected_fresh_pods_kg - vanilla_plant_debris_kg"
+      inputs:
+        - received_fresh_pods_kg
+        - rejected_fresh_pods_kg
+        - vanilla_plant_debris_kg
+      output: "accepted_fresh_pods_kg"
+      source_ids:
+        - "—"
+    - id: calc_stage_water_loss
+      applies_to: "Killing, sweating, drying, conditioning"
+      rule: "water_to_air_kg = input_mass_kg + water_input_kg - product_output_kg - solid_waste_kg - wastewater_or_condensate_kg; investigate and do not publish a negative residual."
+      inputs:
+        - "stage input/output masses"
+        - "water input"
+        - "solid wastes"
+        - "wastewater/condensate"
+      output: "water_to_air_kg"
+      source_ids:
+        - "—"
+    - id: calc_net_packaged_product
+      applies_to: "Packaging"
+      rule: "net_packaged_processed_vanilla_kg = gross_packed_lot_kg - sum(packaging_component_mass_kg)"
+      inputs:
+        - "gross packed mass"
+        - "each packaging-component mass"
+      output: "net packaged processed vanilla mass"
+      source_ids:
+        - codex-rep25-sch-vanilla
+    - id: calc_fresh_to_product_ratio
+      applies_to: "Whole route"
+      rule: "fresh_to_product_ratio = accepted_fresh_pods_kg / net_packaged_processed_vanilla_kg"
+      inputs:
+        - "accepted fresh pods"
+        - "net packaged product"
+      output: "kg/kg ratio"
+      source_ids:
+        - fao-vanilla-postharvest
+    - id: calc_active_cleaning_chemical
+      applies_to: "Sanitation chemicals"
+      rule: "active_chemical_kg = formulation_kg × supplier_declared_active_mass_fraction"
+      inputs:
+        - "formulation mass"
+        - "active mass fraction"
+      output: "active NaOH or peracetic-acid mass"
+      source_ids:
+        - "—"
+    - id: calc_dry_mass_allocation
+      applies_to: "Joint saleable cured products"
+      rule: "allocation_share_i = product_i_kg × (1 - moisture_fraction_i) / sum(product_j_kg × (1 - moisture_fraction_j))"
+      inputs:
+        - "product masses"
+        - "moisture fractions"
+      output: "dry-mass allocation shares"
+      source_ids:
+        - iso-14044-2006
+  data_quality_requirements:
+    - id: dq_identity
+      applies_to: "Reference product and intermediates"
+      requirement: "Preserve lot linkage from fresh pods to packaged product and declare species, origin, selected form, grade, moisture, and package configuration."
+      evidence: "Receiving, process, laboratory, and packaging lot records"
+    - id: dq_temporal
+      applies_to: "Foreground inventory"
+      requirement: "Cover at least 12 consecutive months when production is year-round; for a shorter campaign, cover every lot and disclose campaign dates."
+      evidence: "Dated raw records and production calendar"
+    - id: dq_technology
+      applies_to: "Killing, sweating, drying, conditioning, finishing"
+      requirement: "Report actual equipment and schedules; do not mix passive and controlled routes or mutually exclusive form processes into one unqualified average."
+      evidence: "Equipment list, route gate, logger exports, batch sheets"
+    - id: dq_mass_balance
+      applies_to: "Every mass-transforming process"
+      requirement: "Reconcile measured inputs to product, waste, wastewater/condensate, and calculated water loss; investigate material residuals and disclose corrections."
+      evidence: "Signed mass-balance worksheet and calibration evidence"
+    - id: dq_energy
+      applies_to: "Electricity"
+      requirement: "Prefer submeters; otherwise use verified equipment power × operating time and disclose allocation. Do not use a combined thermal-energy amount."
+      evidence: "Meter export or equipment calculation worksheet"
+    - id: dq_atomicity
+      applies_to: "All inventory"
+      requirement: "One card equals one physical or chemical exchange. Any actually used fuel, steam, hot water, refrigerant, chemical, packaging component, waste, or emission absent from these representative cards must be added as a specific atomic exchange with blank UUID until verified."
+      evidence: "Atomic-flow audit and purchase/emission records"
+    - id: dq_quality_test
+      applies_to: "Finished product"
+      requirement: "Use the declared method and species/form/class specification; preserve sample identity, result, wet/dry basis, method version, and laboratory."
+      evidence: "Laboratory report and sampling chain of custody"
+    - id: dq_sources
+      applies_to: "External constraints"
+      requirement: "Preserve source id and retrieved reference; never use a search snippet as quantitative evidence."
+      evidence: "Source register matching Section 11"
+    - id: dq_reasoned_estimate
+      applies_to: "Provisional ranges"
+      requirement: "Replace each reasoned_estimate with foreground or reviewed external evidence before using it as a publication-critical conformance interval; test both bounds when material."
+      evidence: "Sensitivity worksheet and replacement status"
+validation_rules:
+  - rule_id: validate_identity
+    applies_to: "Foreground package"
+    rule: "Fail if PCR id, reference-flow UUID, species, selected product form, net reference mass, or production lot is missing or inconsistent."
+    source_ids:
+      - unsd-cpc3-23928
+      - codex-rep25-sch-vanilla
+  - rule_id: validate_route_chain
+    applies_to: "Process coverage"
+    rule: "Fail unless receiving, hot-water killing, sweating, staged drying, conditioning, grading/form selection, packaging, and sanitation are represented for the lot."
+    source_ids:
+      - fao-vanilla-postharvest
+      - sanchez-2008-vanilla-killing
+  - rule_id: validate_form_gate
+    applies_to: "Conditional processes"
+    rule: "Fail if more than one of cutting, grinding, or pod opening is active for the same reference output, or if the active process does not match selected_product_form."
+    source_ids:
+      - codex-rep25-sch-vanilla
+      - iso-5565-1-1999
+  - rule_id: validate_extraction_excluded
+    applies_to: "Boundary"
+    rule: "Fail if ethanol, another extraction solvent, extract, oleoresin, isolated vanillin, or extraction residue is included as part of the reference route."
+    source_ids:
+      - iso-5565-1-1999
+      - uf-ifas-vanilla-production
+  - rule_id: validate_atomic_flows
+    applies_to: "Inventory"
+    rule: "Fail any card whose selected flow combines more than one utility, fuel, refrigerant, material, chemical, packaging component, waste, wastewater, or emission."
+    source_ids:
+      - "—"
+  - rule_id: validate_uuid_policy
+    applies_to: "UUID references"
+    rule: "Fail if an inventory flow other than the Section 3 reference identity carries an unverified UUID; unresolved atomic flow names remain UUID-blank until exact Tiangong verification."
+    source_ids:
+      - "—"
+  - rule_id: validate_mass_balance
+    applies_to: "Each process"
+    rule: "Fail negative masses or unexplained duplicate counting; flag any material mass residual outside the facility's documented scale uncertainty."
+    source_ids:
+      - "—"
+  - rule_id: validate_moisture_quality
+    applies_to: "Finished product"
+    rule: "Fail if the declared moisture result is absent or checked against an averaged or wrong species/form/class requirement; for representative *V. planifolia* whole Class I, require 30–36% w/w."
+    source_ids:
+      - codex-rep25-sch-vanilla
+  - rule_id: validate_pest_extraneous
+    applies_to: "Finished product"
+    rule: "Require live-insect count and applicable extraneous-matter result; the cited Codex table sets live insects to zero for covered forms."
+    source_ids:
+      - codex-rep25-sch-vanilla
+  - rule_id: validate_packaging
+    applies_to: "Packaging"
+    rule: "Fail if gross and net product mass are conflated or if the active package configuration lacks component-level masses."
+    source_ids:
+      - fao-vanilla-postharvest
+      - codex-rep25-sch-vanilla
+  - rule_id: validate_used_utility_coverage
+    applies_to: "Utilities and direct emissions"
+    rule: "Fail when operating or purchase records show a fuel, steam, refrigerant, cleaning chemical, or direct emission that has no specific atomic row and collection method."
+    source_ids:
+      - iso-14044-2006
+  - rule_id: validate_source_closure
+    applies_to: "Evidence"
+    rule: "Fail if a non-empty source id in a rule or card is absent from Section 11, or if a quantitative external range lacks its cited source."
+    source_ids:
+      - "—"
+  - rule_id: validate_protocol_coverage
+    applies_to: "Collected/calculated rows"
+    rule: "Fail if a collected_record or calculated_from_collection card lacks a matching collection protocol and required raw fields."
+    source_ids:
+      - "—"
+published_dataset_profile:
+  dataset_role: "Foreground production data package for processed vanilla and its process/lifecyclemodel projections."
+  downstream_use: "secondary_dataset; background_dataset after review and publication controls."
+  allowed_use: "LCA of cured and mechanically finished vanilla in the declared species, form, grade, moisture, route, geography, period, and package configuration."
+  excluded_use: "Vanilla extract, oleoresin, isolated or synthetic vanillin, unprocessed vanilla, an undeclared mixture of forms/routes, or comparative claims beyond the represented technology and geography."
+  required_metadata: "PCR id/version; reference-flow UUID; species; origin and harvest facts; lot; selected form; grade; moisture/method; killing/sweating/drying/conditioning schedules; package BOM; allocation; geography; period; source ids; data gaps."
+  required_quality_disclosure: "Foreground coverage; mass-balance closure; meter and scale calibration; laboratory methods; route-specific zero/not-applicable decisions; unresolved UUIDs; reasoned-estimate sensitivity; allocation sensitivity; exclusions."
+  update_trigger: "New reviewed process/yield evidence; change in Codex or ISO vanilla specification; new killing/drying/form technology; package redesign; material change in energy, water, loss, moisture, or allocation; resolution of inventory UUIDs."
+data_sources:
+  - id: "unsd-cpc3-23928"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, Draft CPC Version 3.0 Explanatory Notes, code 23928, pp. 109–110. https://unstats.un.org/unsd/classifications/Meetings/UNCEISC2024_2nd/Session7_Bk2_CPC3_Exp_Notes_1Nov2024.pdf (retrieved 2026-08-13)"
+    used_for: "Classification scope: processed forms included; unprocessed vanilla excluded."
+  - id: "codex-rep25-sch-vanilla"
+    type: "standard"
+    reference: "Codex Alimentarius Commission, REP25/SCH, Appendix III, Standard for spices derived from dried or dehydrated fruits and berries—requirements for vanilla, pp. 24–29. https://www.fao.org/fao-who-codexalimentarius/sh-proxy/fr/?lnk=1&url=https%253A%252F%252Fworkspace.fao.org%252Fsites%252Fcodex%252FMeetings%252FCX-736-08%252F%25E2%2598%2585Final%252520report%252FREP25_SCHe.pdf (retrieved 2026-08-13)"
+    used_for: "Species and product styles; moisture/vanillin cells; extraneous matter and live insects; hygiene; package and label facts; analytical methods."
+  - id: "codex-cac49-vanilla-adoption"
+    type: "official_guidance"
+    reference: "Codex Alimentarius, “CAC49 / New and revised science-based standards now added to the Codex Alimentarius,” 12 July 2026. https://www.fao.org/fao-who-codexalimentarius/news-and-events/news-details/en/c/1760016/ (retrieved 2026-08-13)"
+    used_for: "Confirms CAC49 adoption of the vanilla standard text."
+  - id: "iso-5565-1-1999"
+    type: "standard"
+    reference: "ISO 5565-1:1999, Vanilla—Part 1: Specification. https://www.iso.org/standard/22116.html (retrieved 2026-08-13)"
+    used_for: "Covered pod/bulk/cut/powder forms and explicit exclusion of vanilla extracts."
+  - id: "fao-vanilla-postharvest"
+    type: "official_guidance"
+    reference: "Food and Agriculture Organization of the United Nations, *Vanilla: Post-harvest Operations*. https://www.fao.org/fileadmin/user_upload/inpho/docs/Post_Harvest_Compendium_-_Vanilla.pdf (retrieved 2026-08-13)"
+    used_for: "Receiving, killing, sweating, sun/slow drying, conditioning, grading, packaging, monitoring, and 4.5:1–6:1 green-to-conditioned mass ratio."
+  - id: "uf-ifas-vanilla-production"
+    type: "extension_guidance"
+    reference: "University of Florida IFAS Extension, *Natural Vanilla Extract Production*, EP656. https://ask.ifas.ufl.edu/publication/EP656 (retrieved 2026-08-13)"
+    used_for: "Curing-stage decomposition, representative conditions, grading/moisture context, conditioning/storage, and separation of later ethanol extraction."
+  - id: "sanchez-2008-vanilla-killing"
+    type: "literature"
+    reference: "Sánchez, H. A. Zavaleta, K. N. Waliszewski, and V. Sánchez (2008), “The effect of killing conditions on the structural changes in vanilla pods during the curing process,” *International Journal of Food Science & Technology* 43(8):1452–1457. https://doi.org/10.1111/j.1365-2621.2007.01691.x"
+    used_for: "Four-phase curing chain, purpose of killing, hot-water schedules, and separation of killing from sweating/drying/conditioning."
+  - id: "budiastra-2025-vanilla-curing"
+    type: "literature"
+    reference: "Budiastra, Nelwan, and Distriani (2025), “Improvement of cured vanilla pod qualities with a combination of advanced sweating and drying methods,” *Jurnal Keteknikan Pertanian* 13(1):147–161. https://doi.org/10.19028/jtep.013.1.147-161"
+    used_for: "Hot-water withering, sweating/drying route decomposition, moisture endpoint context, and technology-specific duration evidence."
+  - id: "iso-14044-2006"
+    type: "standard"
+    reference: "ISO 14044:2006, Environmental management—Life cycle assessment—Requirements and guidelines (confirmed current in 2022; Amendments 1 and 2 noted by ISO). https://www.iso.org/standard/38498.html (retrieved 2026-08-13)"
+    used_for: "Goal/scope, inventory, allocation, data quality, reporting, and review framework."
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:3c0c093876be2e4c8fe1ba297709cbc4e9f997ccbb740e41ffdc92224a4c94ef"
+  generated_content_sha256: "sha256:4af10729a11fdea059a571d56745432387d98690d0e0274da9550cfd68d29228"

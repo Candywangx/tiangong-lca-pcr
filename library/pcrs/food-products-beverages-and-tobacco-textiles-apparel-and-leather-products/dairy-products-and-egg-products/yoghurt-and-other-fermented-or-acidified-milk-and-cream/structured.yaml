@@ -1,10 +1,864 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "22230"
-  title: "Yoghurt and other fermented or acidified milk and cream"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.food-products-beverages-and-tobacco-textiles-apparel-and-leather-products.dairy-products-and-egg-products.yoghurt-and-other-fermented-or-acidified-milk-and-cream"
+  classification_refs: "CPC 3.0: 22230 (exact mapping context; acceptance is governed separately)"
+  covered_products: "Yoghurt; alternate-culture yoghurt; fermented milk; concentrated fermented milk; fermented-milk drinks; flavoured or fruited fermented milk; heat-treated fermented milk; fermented cream; acidified milk; acidified cream"
+  excluded_products: "Unfermented liquid milk; cheese; butter and anhydrous milk fat; dried whey products; ice cream and frozen dairy desserts; non-dairy analogues; farm-gate raw milk"
+  representative_product: "Refrigerated spoonable fermented milk or yoghurt, standardized, cultured, plain or flavoured, at the dairy dispatch gate"
+  production_route: "Chilled dairy ingredient receipt; standardization and optional homogenization; heat treatment; inoculation and fermentation or controlled direct acidification; optional concentration, blending, or post-fermentation heat treatment; cooling; filling or bulk dispatch; cold storage"
+  market_state: "Chilled liquid, semi-liquid, gelled, or concentrated dairy product; packaged or bulk as declared"
+functional_unit:
+  what: "Fermented or acidified milk or cream fit for its declared food use"
+  how_much: "1 kg net product, excluding packaging"
+  how_well: "Conforming to the declared product identity, formulation, fat and dry-matter content, treatment route, applicable food-safety requirements, and shelf-life specification"
+  how_long_or_cycle: "One production batch through release at the manufacturing facility cold-storage or dispatch gate; declared shelf-life and storage temperature are metadata qualifiers"
+  reference_flow_link: "fermented_dairy_product_output"
+system_boundary:
+  rules:
+    - rule_id: boundary_factory_gate
+      applies_to: "core foreground package"
+      rule: "Include receipt and storage, standardization, heat treatment and homogenization when used, fermentation or direct acidification, concentration or blending when used, cooling, filling or bulk dispatch, on-site cold storage, sanitation, direct emissions, product losses, waste, and wastewater up to the manufacturing dispatch gate."
+      source_ids:
+        - ifc-dairy-processing-ehs-2007
+        - dairy-pefcr-2025
+    - rule_id: boundary_upstream_links
+      applies_to: "purchased inputs"
+      rule: "Keep farming, raw-milk collection, inbound transport, ingredient manufacture, energy supply, packaging manufacture, and chemical manufacture outside the foreground operation but link them through explicit upstream datasets when included in study scope."
+      source_ids:
+        - ifc-dairy-processing-ehs-2007
+        - dairy-pefcr-2025
+    - rule_id: boundary_route_disclosure
+      applies_to: "product identity"
+      rule: "Distinguish microbial fermentation, direct acidification, combined routes, and post-fermentation heat treatment because these routes change required inputs, product claims, and storage conditions."
+      source_ids:
+        - codex-fermented-milks-243
+        - codex-cream-288
+        - ecfr-acidified-milk-131-111
+    - rule_id: boundary_optional_downstream
+      applies_to: "expanded studies"
+      rule: "Distribution, retail, consumer refrigeration and use, food loss, and packaging end-of-life may be appended only as separately declared downstream modules and shall not be folded into the factory-gate foreground result."
+      source_ids:
+        - dairy-pefcr-2025
+boundary_abstraction:
+  declared_starting_condition: "Chilled dairy ingredients and other formulation inputs accepted at the manufacturing facility, with supplier identity, quantity, composition, temperature, and upstream dataset links declared"
+  starting_condition_role: "factory-gate foreground input"
+  product_classification_scope: "Fermented or acidified milk and cream products defined by product identity and route; CPC 3.0 code 22230 is classification context only"
+  recursive_input_rule: "A purchased fermented or acidified milk or cream input remains a visible product input with quantity and upstream dataset reference; do not recursively re-model it as if produced by the receiving facility"
+  upstream_dataset_requirement: "Link raw milk, cream, milk powders, other dairy ingredients, non-dairy ingredients, energy carriers, water supply, packaging, chemicals, and transport added by the declared scope to geographically and temporally appropriate upstream datasets"
+  disclosure: "Declare species, formulation, starting ingredient state, fermentation or acidification route, heat treatments, concentration, packaging inclusion, cold-storage endpoint, geography, reference period, excluded stages, and any proxy datasets"
+reference_flow_definition:
+  reference_amount: "1 kg"
+  product_flow_ref:
+    name: "Fermented Dairy Products"
+    uuid: "62cf4ac0-49ff-484a-9d1e-73e6df7f7743"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "product designation"
+    - "animal species"
+    - "plain/flavoured/fruited"
+    - "milk-fat and dry-matter content"
+    - "spoonable/liquid/concentrated state"
+    - "fermentation culture or acidification route"
+    - "heat treatment before and after acidification"
+    - "packaging status"
+    - "storage temperature"
+    - geography
+    - "reference period"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_net_mass
+    applies_to: "reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Normalize all foreground inventory to 1 kg net fermented or acidified dairy product. Packaging mass is excluded from the reference amount and recorded separately."
+  - id: wet_and_dry_matter
+    applies_to: "dairy inputs, product, and dairy co-products"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg wet mass and kg dry matter"
+    rule: "Record wet mass and measured dry-matter fraction separately; never substitute volume for mass without a product- and temperature-specific density record."
+  - id: energy_carriers_separate
+    applies_to: "facility energy"
+    required_property_ref:
+      name: "Energy"
+      uuid: ""
+    required_unit: "kWh and MJ"
+    rule: "Preserve electricity in kWh and fuels or purchased thermal energy in MJ by carrier; document conversion factors and do not add them before conversion to a common energy unit."
+  - id: water_volume_consistent
+    applies_to: "process and cleaning water"
+    required_property_ref:
+      name: "Volume"
+      uuid: ""
+    required_unit: "L or m3"
+    rule: "Record metered water volume and use 1 m3 = 1,000 L. Do not infer wastewater volume from water input when evaporation, product incorporation, or reuse is material."
+process_map:
+  - id: dairy_preparation
+    name: "Dairy receipt, standardization, and heat preparation"
+    inclusion: "required"
+    inclusion_condition: "Always included"
+    role: "foreground production"
+    quantitative_reference: "kg prepared dairy mix"
+  - id: fermentation_or_acidification
+    name: "Fermentation or controlled acidification"
+    inclusion: "required"
+    inclusion_condition: "At least one declared route must be active"
+    role: "foreground transformation"
+    quantitative_reference: "kg treated bulk product"
+  - id: finishing_and_cold_storage
+    name: "Conditioning, filling, and cold storage"
+    inclusion: "required"
+    inclusion_condition: "Always included; packaging rows apply only when packaging is in scope"
+    role: "foreground finishing and storage"
+    quantitative_reference: "1 kg released net product"
+  - id: sanitation_and_wastewater
+    name: "Cleaning, product-loss control, and wastewater handling"
+    inclusion: "required"
+    inclusion_condition: "Always included"
+    role: "foreground support and emissions control"
+    quantitative_reference: "allocated activity per 1 kg released net product"
+process_inventory:
+  - id: dairy_preparation
+    label: "Dairy receipt, standardization, and heat preparation"
+    inputs:
+      product:
+        - row_id: dairy_base_ingredients
+          role: "Dairy base ingredients"
+          name: "Declared dairy ingredient"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record milk, cream, skimmed milk, milk powder, whey-derived dairy ingredients, and other dairy materials that physically enter the product formulation. Keep each supplier ingredient separately identifiable."
+          amount:
+            expression: "measured accepted wet mass by ingredient and batch"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg released net product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_batch_materials
+              source_ids:
+                - codex-fermented-milks-243
+                - codex-cream-288
+                - dairy-pefcr-2025
+            ranges: []
+        - row_id: non_dairy_ingredients
+          role: "Non-dairy formulation ingredients"
+          name: "Declared non-dairy ingredient"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record sugar, fruit preparations, flavours, stabilizers, salts, potable formulation water, and other permitted non-dairy ingredients separately when used."
+          amount:
+            expression: "measured batch issue or dosing record by ingredient"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg released net product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_batch_materials
+              source_ids:
+                - codex-fermented-milks-243
+                - dairy-pefcr-2025
+            ranges:
+              - role: allowed_range
+                lower: "0"
+                upper: "0.50"
+                unit: "kg/kg product"
+                basis: "non-dairy ingredient mass fraction of flavoured fermented milk"
+                basis_kind: "reference_flow"
+                evidence_kind: "external_source"
+                source_ids:
+                  - codex-fermented-milks-243
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: prepared_dairy_mix
+          role: "Prepared dairy mix"
+          name: "Prepared dairy mix"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "The prepared mix is the measured intermediate after standardization, optional homogenization, and the declared heat treatment."
+          amount:
+            expression: "calculated from measured ingredient inputs, transfers, and preparation losses"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg released net product"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_batch_materials
+              source_ids:
+                - dairy-pefcr-2025
+            ranges:
+              - role: qa_guardrail
+                lower: "0.80"
+                upper: "1.10"
+                unit: "kg/kg released net product"
+                basis: "transferred prepared mix before fermentation or direct acidification"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+  - id: fermentation_or_acidification
+    label: "Fermentation or controlled acidification"
+    inputs:
+      product:
+        - row_id: prepared_mix_input
+          role: "Prepared dairy mix input"
+          name: "Prepared dairy mix"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the transferred prepared dairy mix entering the fermentation or acidification vessel."
+          amount:
+            expression: "measured transfer mass or calculated mass from calibrated vessel volume and product-specific density"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg released net product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_route_operation
+              source_ids:
+                - codex-fermented-milks-243
+                - ecfr-acidified-milk-131-111
+            ranges: []
+        - row_id: starter_culture
+          role: "Starter culture"
+          name: "Declared starter culture"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the identity and amount of each starter or other microorganism when microbial fermentation is used. Do not create this row for a direct-acidification-only product without culture."
+          amount:
+            expression: "measured or supplier-certified culture dose"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg released net product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_route_operation
+              source_ids:
+                - codex-fermented-milks-243
+                - codex-cream-288
+            ranges: []
+        - row_id: acidifying_ingredient
+          role: "Acidifying ingredient"
+          name: "Declared food-grade acidifying ingredient"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record acid or acidity regulator identity and dose when direct acidification is used. Do not infer a chemical acid input for products acidified solely by microbial fermentation."
+          amount:
+            expression: "measured dosing record by substance"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg released net product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_route_operation
+              source_ids:
+                - codex-cream-288
+                - ecfr-acidified-milk-131-111
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: treated_bulk_product
+          role: "Fermented or acidified bulk product"
+          name: "Fermented or acidified bulk dairy product"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the mass transferred after the declared endpoint pH or acidity, including any concentration, post-fermentation heat treatment, or blending that occurs before filling."
+          amount:
+            expression: "measured transfer mass reconciled to vessel and batch records"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg released net product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_route_operation
+              source_ids:
+                - codex-fermented-milks-243
+                - codex-cream-288
+                - ecfr-acidified-milk-131-111
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+  - id: finishing_and_cold_storage
+    label: "Conditioning, filling, and cold storage"
+    inputs:
+      product:
+        - row_id: treated_bulk_input
+          role: "Treated bulk product input"
+          name: "Fermented or acidified bulk dairy product"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record bulk product received from fermentation or acidification and reconcile it to filling or bulk dispatch."
+          amount:
+            expression: "measured transfer mass"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg released net product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_output_and_losses
+              source_ids:
+                - dairy-pefcr-2025
+            ranges: []
+        - row_id: packaging_materials
+          role: "Primary and secondary packaging"
+          name: "Declared packaging material"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record packaging by material and component when packaging is within the declared scope. For the canonical unpackaged reference, report packaging separately and do not add it to the 1 kg product amount."
+          amount:
+            expression: "purchased or issued packaging mass minus verified stock change, normalized by packed net product"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "per 1 kg packaged net product"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_records
+              source_ids:
+                - dairy-pefcr-2025
+            ranges: []
+        - row_id: facility_electricity
+          role: "Facility electricity"
+          name: "Electricity, declared supply mix"
+          flow_type: "product"
+          property_unit: "Energy / kWh"
+          description: "Collect metered electricity for preparation, fermentation or acidification, pumping, filling, refrigeration, storage, sanitation, and allocated support operations without double counting submetered loads."
+          amount:
+            expression: "metered purchased plus on-site electricity consumed, net of exported electricity"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg released net product after allocation"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_facility_utilities
+              source_ids:
+                - dairy-pefcr-2025
+                - ifc-dairy-processing-ehs-2007
+            ranges: []
+        - row_id: facility_thermal_energy
+          role: "Facility thermal energy"
+          name: "Declared fuel or purchased thermal energy"
+          flow_type: "product"
+          property_unit: "Energy / MJ"
+          description: "Collect fuel and purchased heat by carrier for heat treatment, hot water, sanitation, and allocated support operations."
+          amount:
+            expression: "metered or invoiced lower-heating-value energy by carrier, with conversion documented"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg released net product after allocation"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_facility_utilities
+              source_ids:
+                - dairy-pefcr-2025
+                - ifc-dairy-processing-ehs-2007
+            ranges: []
+      waste:
+        - row_id: packaging_scrap
+          role: "Packaging scrap"
+          name: "Packaging waste, declared material"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record rejected containers, lids, labels, cartons, and films by material and treatment route."
+          amount:
+            expression: "measured scrap or packaging mass balance"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg packaged net product"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_records
+              source_ids:
+                - dairy-pefcr-2025
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.10"
+                unit: "kg/kg packaging issued"
+                basis: "packaging scrap fraction before dispatch"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        - row_id: refrigerant_loss_air
+          role: "Refrigerant losses to air"
+          name: "Declared refrigerant emission to air"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "Record refrigerant substance and annual leakage from systems serving the foreground facility."
+          amount:
+            expression: "annual refrigerant additions plus opening charge minus closing charge and recovered quantity, allocated to product"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg released net product after allocation"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_facility_utilities
+              source_ids:
+                - dairy-pefcr-2025
+            ranges: []
+    outputs:
+      product:
+        - row_id: fermented_dairy_product_output
+          role: "Released fermented dairy product"
+          name: "Fermented Dairy Products"
+          flow_type: "product"
+          flow_ref:
+            uuid: "62cf4ac0-49ff-484a-9d1e-73e6df7f7743"
+          property_unit: "Mass / kg"
+          description: "This is the declared reference product after quality release at the facility cold-storage or dispatch gate."
+          amount:
+            expression: "fixed reference amount of released net product"
+            value_mode: "fixed_value"
+            specificity: "product_specific"
+            basis:
+              text: "1 kg released net product"
+              kind: "reference_flow"
+            evidence:
+              kind: "identity_reference"
+              source_ids:
+                - dairy-pefcr-2025
+            ranges: []
+      waste:
+        - row_id: off_spec_product
+          role: "Off-specification product and process losses"
+          name: "Off-specification fermented dairy product"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record spills, start-up and changeover losses, rejected product, and expired on-site stock separately from wastewater whenever they can be recovered or treated as a material stream."
+          amount:
+            expression: "measured loss, reject, and recovery records"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg released net product"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_output_and_losses
+              source_ids:
+                - ifc-dairy-processing-ehs-2007
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "0.10"
+                unit: "kg/kg released net product"
+                basis: "all foreground product losses before dispatch"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        []
+  - id: sanitation_and_wastewater
+    label: "Cleaning, product-loss control, and wastewater handling"
+    inputs:
+      product:
+        - row_id: process_cleaning_water
+          role: "Process and cleaning water"
+          name: "Process water, regionalized supply"
+          flow_type: "product"
+          property_unit: "Volume / L"
+          description: "Record make-up water for formulation, rinsing, cleaning-in-place, manual cleaning, cooling systems, and other foreground uses, net of internally reused water where measured."
+          amount:
+            expression: "metered withdrawal minus separately metered internal reuse, with formulation water identified"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg released net product after allocation"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_sanitation_records
+              source_ids:
+                - dairy-pefcr-2025
+                - ifc-dairy-processing-ehs-2007
+            ranges: []
+        - row_id: acid_cleaning_agents
+          role: "Acid cleaning agents"
+          name: "Declared acid cleaning agent"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record each acid cleaning agent as supplied and retain active concentration when available."
+          amount:
+            expression: "purchased or issued mass minus stock change, allocated to product"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg released net product after allocation"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_sanitation_records
+              source_ids:
+                - dairy-pefcr-2025
+                - ifc-dairy-processing-ehs-2007
+            ranges: []
+        - row_id: alkaline_cleaning_agents
+          role: "Alkaline cleaning agents"
+          name: "Declared alkaline cleaning agent"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record each alkaline cleaning agent as supplied and retain active concentration when available."
+          amount:
+            expression: "purchased or issued mass minus stock change, allocated to product"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg released net product after allocation"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_sanitation_records
+              source_ids:
+                - dairy-pefcr-2025
+                - ifc-dairy-processing-ehs-2007
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: dairy_wastewater
+          role: "Dairy-processing wastewater to treatment"
+          name: "Dairy-processing wastewater"
+          flow_type: "waste"
+          property_unit: "Volume / L"
+          description: "Record wastewater volume and measured COD or other locally material load before off-site or on-site treatment. Keep recovered product and separately collected high-strength streams out of this row."
+          amount:
+            expression: "metered wastewater sent to treatment; do not assume equality with water input"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1 kg released net product after allocation"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_wastewater_records
+              source_ids:
+                - dairy-pefcr-2025
+                - ifc-dairy-processing-ehs-2007
+            ranges: []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocation_avoid_first
+    applies_to: "multi-output foreground operations"
+    rule: "First use separate metering, subdivision, or batch-specific records to assign inputs, utilities, emissions, wastes, and packaging directly to the product that caused them."
+    source_ids:
+      - dairy-pefcr-2025
+  - rule_id: allocation_dry_matter
+    applies_to: "inseparable dairy co-products and shared dairy-processing burdens"
+    rule: "When direct assignment is impossible, allocate raw-milk upstream burdens, shared energy, water, chemicals, and wastewater by each dairy output's measured dry-matter mass: allocation factor i = dry-matter fraction i x wet output mass i / sum of that product over all dairy outputs."
+    source_ids:
+      - dairy-pefcr-2025
+  - rule_id: allocation_direct_materials
+    applies_to: "product-specific ingredients and packaging"
+    rule: "Assign formulation ingredients and packaging directly to the product using batch and bill-of-material records; do not distribute them across unrelated products."
+    source_ids:
+      - dairy-pefcr-2025
+  - rule_id: allocation_losses
+    applies_to: "waste and product loss"
+    rule: "Assign a loss directly when its originating product or batch is known; otherwise apply the same documented shared-process allocation basis used for the operation that generated it."
+    source_ids:
+      - ifc-dairy-processing-ehs-2007
+      - dairy-pefcr-2025
+  - rule_id: allocation_disclosure
+    applies_to: "all allocated inventory"
+    rule: "Report the allocation level, data period, outputs, wet masses, dry-matter fractions, formula, resulting factors, and any deviation from direct assignment."
+    source_ids:
+      - dairy-pefcr-2025
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_batch_materials
+      process_id: "dairy_preparation"
+      flow_role: "dairy and non-dairy inputs; prepared mix"
+      record_type: "batch production records"
+      raw_fields: "ingredient_id; supplier; lot_id; accepted_mass; dry_matter_fraction; dosing_mass; prepared_mix_mass; transfer_loss"
+      collection_method: "calibrated scales, tank load cells, or volume plus measured density; reconcile to recipe and stock movement"
+      unit: "kg wet mass; kg dry matter"
+      frequency: "each batch"
+      temporal_coverage: "representative continuous 12-month period"
+      site_scope: "all lines producing the declared product"
+      aggregation_rule: "sum accepted inputs and outputs, then normalize to released net product"
+      quality_evidence: "calibration certificates; supplier specifications; batch reconciliation; stock records"
+    - protocol_id: cp_route_operation
+      process_id: "fermentation_or_acidification"
+      flow_role: "culture, acidifier, treated bulk product, and route qualifiers"
+      record_type: "batch log and quality record"
+      raw_fields: "batch_id; culture_id; culture_dose; acidifier_id; acidifier_dose; starting_mass; endpoint_mass; pH; titratable_acidity; time; temperature; heat_treatment"
+      collection_method: "dosing records, calibrated pH or acidity measurement, time-temperature historian, and vessel mass or volume record"
+      unit: "kg; pH; acidity; deg C; h"
+      frequency: "each batch"
+      temporal_coverage: "same period as production output"
+      site_scope: "every included route and product family"
+      aggregation_rule: "aggregate mass by route; keep route qualifiers separate before normalization"
+      quality_evidence: "instrument calibration; culture or acidifier certificate; batch release record"
+    - protocol_id: cp_facility_utilities
+      process_id: "finishing_and_cold_storage"
+      flow_role: "electricity, thermal energy, and refrigerant loss"
+      record_type: "meter, invoice, and refrigerant service record"
+      raw_fields: "electricity_import; onsite_generation; electricity_export; fuel_quantity; fuel_LHV; purchased_heat; opening_charge; additions; recovered_refrigerant; closing_charge; allocation_driver"
+      collection_method: "utility meters and invoices; documented lower-heating-value conversion; refrigerant mass balance"
+      unit: "kWh; MJ; kg"
+      frequency: "monthly, with annual reconciliation"
+      temporal_coverage: "representative continuous 12-month period"
+      site_scope: "complete facility plus disclosed submeter coverage"
+      aggregation_rule: "subtract exports; avoid double counting; directly assign submetered use and allocate remainder by section 7"
+      quality_evidence: "meter identifiers; invoices; conversion factors; service logs; production totals"
+    - protocol_id: cp_packaging_records
+      process_id: "finishing_and_cold_storage"
+      flow_role: "packaging inputs and scrap"
+      record_type: "bill of materials, issue, stock, and scrap records"
+      raw_fields: "material_id; component; issued_mass; opening_stock; closing_stock; scrap_mass; packed_product_mass"
+      collection_method: "weighed components or supplier mass specifications reconciled to stock and filled units"
+      unit: "kg"
+      frequency: "each packaging campaign; monthly aggregation"
+      temporal_coverage: "same period as product output"
+      site_scope: "all packaging used for the declared product"
+      aggregation_rule: "consumed mass = issues plus opening stock minus closing stock; normalize to packed net product"
+      quality_evidence: "supplier specification; inventory reconciliation; scrap tickets"
+    - protocol_id: cp_output_and_losses
+      process_id: "finishing_and_cold_storage"
+      flow_role: "released product and product losses"
+      record_type: "batch release, filling, stock, and waste records"
+      raw_fields: "batch_id; filled_net_mass; bulk_dispatch_mass; released_mass; reject_mass; spill_mass; recovered_mass; destination"
+      collection_method: "calibrated filler checks, dispatch scales, tank measurements, and waste records"
+      unit: "kg"
+      frequency: "each batch"
+      temporal_coverage: "same period as input and utility data"
+      site_scope: "all batches and routes in the dataset"
+      aggregation_rule: "sum released product; classify and reconcile each loss; normalize inventory to released mass"
+      quality_evidence: "calibration records; release certificate; dispatch record; waste transfer evidence"
+    - protocol_id: cp_sanitation_records
+      process_id: "sanitation_and_wastewater"
+      flow_role: "water and cleaning agents"
+      record_type: "meter, CIP recipe, purchase, issue, and stock records"
+      raw_fields: "water_withdrawal; reused_water; formulation_water; cleaner_id; supplied_concentration; cleaner_mass; opening_stock; closing_stock; allocation_driver"
+      collection_method: "water meters; CIP control logs; chemical issue and stock reconciliation"
+      unit: "L or m3; kg"
+      frequency: "each cleaning cycle where available; monthly minimum"
+      temporal_coverage: "representative continuous 12-month period"
+      site_scope: "all included process lines and shared sanitation systems"
+      aggregation_rule: "directly assign line records; allocate shared remainder by section 7; do not subtract reuse twice"
+      quality_evidence: "meter calibration; CIP historian; chemical specifications; inventory reconciliation"
+    - protocol_id: cp_wastewater_records
+      process_id: "sanitation_and_wastewater"
+      flow_role: "wastewater volume and load"
+      record_type: "effluent meter, sampling, and treatment record"
+      raw_fields: "discharge_volume; treatment_destination; COD_concentration; sampling_time; sample_method; recovered_high_strength_streams"
+      collection_method: "calibrated flow meter and representative composite sampling before treatment"
+      unit: "m3; mg/L COD"
+      frequency: "continuous volume; representative sampling by permit or site plan"
+      temporal_coverage: "same period as production and water records"
+      site_scope: "all foreground drains with exclusions disclosed"
+      aggregation_rule: "volume-weight concentration to annual load; allocate by direct line record or section 7"
+      quality_evidence: "meter calibration; laboratory report; chain of custody; treatment receipt"
+  calculation_rules:
+    - id: normalize_to_reference_mass
+      applies_to: "all inventory rows"
+      rule: "normalized amount = attributed foreground amount / released net product mass"
+      inputs:
+        - "attributed amount"
+        - "released net product mass"
+      output: "amount per 1 kg released net product"
+      source_ids:
+        - dairy-pefcr-2025
+    - id: calculate_dry_matter_allocation
+      applies_to: "shared dairy-processing burdens"
+      rule: "factor_i = dry_matter_fraction_i x wet_output_mass_i / sum(dry_matter_fraction_j x wet_output_mass_j); attributed amount_i = shared amount x factor_i"
+      inputs:
+        - "wet output masses"
+        - "dry-matter fractions"
+        - "shared amount"
+      output: "allocation factor and attributed amount by output"
+      source_ids:
+        - dairy-pefcr-2025
+    - id: calculate_refrigerant_loss
+      applies_to: "refrigeration systems"
+      rule: "emitted refrigerant = opening charge + additions - closing charge - recovered quantity; negative results require reconciliation and are not accepted"
+      inputs:
+        - "opening charge"
+        - additions
+        - "closing charge"
+        - "recovered quantity"
+      output: "kg refrigerant emitted before allocation"
+      source_ids:
+        - dairy-pefcr-2025
+    - id: calculate_cod_load
+      applies_to: "wastewater"
+      rule: "COD load = wastewater volume x measured COD concentration with consistent L and mass units"
+      inputs:
+        - "discharge volume"
+        - "COD concentration"
+      output: "kg COD before allocation"
+      source_ids:
+        - dairy-pefcr-2025
+        - ifc-dairy-processing-ehs-2007
+    - id: reconcile_product_mass
+      applies_to: "each batch and annual dataset"
+      rule: "inputs = released product + separately recovered product + material waste + wastewater-borne product solids + inventory change, within a disclosed reconciliation tolerance"
+      inputs:
+        - "input masses"
+        - outputs
+        - losses
+        - "stock change"
+      output: "mass-balance residual and relative difference"
+      source_ids:
+        - ifc-dairy-processing-ehs-2007
+  data_quality_requirements:
+    - id: dq_identity
+      applies_to: "product and route"
+      requirement: "Identify product designation, species, formulation family, fat and dry-matter content, fermentation culture or acidifier, heat treatments, concentration, packaging status, and storage condition."
+      evidence: "specification; recipe; batch release and label records"
+    - id: dq_measurement
+      applies_to: "mass, utilities, chemicals, and wastewater"
+      requirement: "Use calibrated measurement where available; disclose volume-to-mass densities, energy conversions, sampling methods, missing submeter coverage, and allocation drivers."
+      evidence: "calibration certificates; meter list; conversion worksheet; laboratory methods"
+    - id: dq_temporal
+      applies_to: "foreground dataset"
+      requirement: "Use a continuous 12-month period representative of normal operation, or document shorter coverage, seasonality, start-up, shutdown, and product-mix effects."
+      evidence: "dated source records; production calendar; representativeness statement"
+    - id: dq_completeness
+      applies_to: "all foreground processes"
+      requirement: "Reconcile material inputs to product, recovered material, waste, wastewater-borne solids, and stock change; account for all included process lines and shared utilities."
+      evidence: "mass-balance worksheet; site and line coverage map; excluded-flow log"
+    - id: dq_source_alignment
+      applies_to: "upstream datasets"
+      requirement: "Match ingredient, energy, packaging, chemical, and treatment datasets to geography, technology, and reference period; disclose proxies and data gaps."
+      evidence: "dataset references; selection rationale; proxy register"
+    - id: dq_default_replacement
+      applies_to: "source-backed default values"
+      requirement: "Treat Dairy PEFCR example/default quantities only as replaceable screening values. A shareable foreground dataset must replace them with collected or calculated site-specific values and disclose any remaining default."
+      evidence: "field-level provenance and default-replacement log"
+validation_rules:
+  - rule_id: validate_reference_flow
+    applies_to: "reference product"
+    rule: "The output flow UUID, Mass property UUID, Units of mass UUID, and normalized amount shall equal the declared reference-flow object and 1 kg net product."
+    source_ids: []
+  - rule_id: validate_required_qualifiers
+    applies_to: "product identity"
+    rule: "Reject a data package missing any required qualifier or failing to distinguish microbial fermentation, direct acidification, combined treatment, and post-fermentation heat treatment."
+    source_ids:
+      - codex-fermented-milks-243
+      - codex-cream-288
+      - ecfr-acidified-milk-131-111
+  - rule_id: validate_route_inputs
+    applies_to: "fermentation or acidification process"
+    rule: "A microbial route shall identify culture and dose; a direct-acidification route shall identify acidifying substances and doses; absent route inputs shall not be invented."
+    source_ids:
+      - codex-fermented-milks-243
+      - codex-cream-288
+      - ecfr-acidified-milk-131-111
+  - rule_id: validate_no_double_count
+    applies_to: "utilities, cleaning, and losses"
+    rule: "Reject duplicated utility, cleaning, product-loss, wastewater, or packaging quantities across unit-process records and shared facility totals."
+    source_ids:
+      - dairy-pefcr-2025
+  - rule_id: validate_allocation
+    applies_to: "multi-product facility data"
+    rule: "Reject shared burdens without direct assignment evidence or a disclosed dry-matter allocation calculation whose factors sum to 1 within rounding tolerance."
+    source_ids:
+      - dairy-pefcr-2025
+  - rule_id: validate_mass_balance
+    applies_to: "batch and annual foreground inventory"
+    rule: "Require a disclosed mass-balance residual; investigate and explain material imbalance rather than forcing the reference output to close."
+    source_ids:
+      - ifc-dairy-processing-ehs-2007
+  - rule_id: validate_wastewater
+    applies_to: "sanitation and wastewater"
+    rule: "Require wastewater volume and treatment destination; when COD is material or required by the site plan, require representative measured concentration and calculated load."
+    source_ids:
+      - dairy-pefcr-2025
+      - ifc-dairy-processing-ehs-2007
+  - rule_id: validate_defaults
+    applies_to: "all source-backed defaults"
+    rule: "Fail publication-quality completeness if any Dairy PEFCR default remains without explicit justification, uncertainty disclosure, and a replacement plan."
+    source_ids:
+      - dairy-pefcr-2025
+published_dataset_profile:
+  dataset_role: "foreground data package for dairy manufacturing, suitable for publication as a secondary or background dataset after review"
+  downstream_use: "secondary_dataset; background_dataset; input to process and lifecyclemodel projections"
+  allowed_use: "Product-specific factory-gate modelling of fermented or acidified milk and cream; extension to broader life-cycle models through explicit upstream and downstream links"
+  excluded_use: "Unqualified comparison between different dairy subcategories; direct use for non-dairy analogues; farm production; undisclosed consumer-stage or cradle-to-grave claims; compliance claims against an expired external PEFCR"
+  required_metadata: "PCR id and version state; product designation and required qualifiers; facility geography; technology and route; reference period; boundary; data sources; upstream dataset links; allocation; default use; data quality"
+  required_quality_disclosure: "Primary-data share and coverage; meter and sampling coverage; mass-balance residual; allocation factors; default or proxy values; geographic, temporal, and technological representativeness; exclusions and uncertainty"
+  update_trigger: "Material formulation or route change; new heat treatment or concentration step; packaging or refrigerant change; facility or supplier change; allocation shift; reference data update; new reviewed category rule; data older than the declared representativeness window"
+data_sources:
+  - id: "codex-fermented-milks-243"
+    type: "standard"
+    reference: "FAO/WHO Codex Alimentarius, CXS 243-2003, Standard for Fermented Milks, amended 2024, https://www.fao.org/fao-who-codexalimentarius/sh-proxy/es/?lnk=1&url=https%3A%2F%2Fworkspace.fao.org%2Fsites%2Fcodex%2FStandards%2FCXS+243-2003%2FCXS_243e.pdf (retrieved 2026-08-10)"
+    used_for: "Fermented-milk scope, microbial routes, permitted ingredients, product qualifiers, composition ceiling, and heat-treatment distinction"
+  - id: "codex-cream-288"
+    type: "standard"
+    reference: "FAO/WHO Codex Alimentarius, CXS 288-1976, Standard for Cream and Prepared Creams, https://www.fao.org/input/download/standards/180/CXS_288e.pdf (retrieved 2026-08-10)"
+    used_for: "Fermented-cream and acidified-cream definitions, ingredients, and route distinction"
+  - id: "ecfr-acidified-milk-131-111"
+    type: "standard"
+    reference: "U.S. Electronic Code of Federal Regulations, 21 CFR 131.111, Acidified milk, https://www.ecfr.gov/current/title-21/chapter-I/subchapter-B/part-131/subpart-B/section-131.111 (retrieved 2026-08-10)"
+    used_for: "Official direct-acidification product definition and acidifying-input route evidence"
+  - id: "dairy-pefcr-2025"
+    type: "official_guidance"
+    reference: "European Dairy Association Technical Secretariat, Product Environmental Footprint Category Rules for Dairy Products, Final PEFCR, February 2025, https://eda.euromilk.org/wp-content/uploads/2025/02/PEFCR-DairyProducts_update_final.pdf (retrieved 2026-08-10; stated validity ended December 2025, used as technical evidence rather than a current compliance claim)"
+    used_for: "Foreground process decomposition, reference mass context, company-specific data fields, dry-matter allocation, packaging examples, and replaceable facility defaults"
+  - id: "ifc-dairy-processing-ehs-2007"
+    type: "official_guidance"
+    reference: "World Bank Group / IFC, Environmental, Health, and Safety Guidelines for Dairy Processing, 30 April 2007, https://www.ifc.org/content/dam/ifc/doc/2000/2007-dairy-processing-ehs-guidelines-en.pdf (retrieved 2026-08-10)"
+    used_for: "Factory-gate processing boundary, receipt and storage, heat treatment, cleaning-in-place, product-loss prevention, wastewater, energy, and monitoring rules"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:8b104087b21342890cf6187dc385ae06c50a1b094e2dfeed299f589d09d0d6a7"
+  generated_content_sha256: "sha256:3adde6103e1d530e5c80331a3c2670288f9dc9f4cb4ef5ca26a8a9d9efeacaea"

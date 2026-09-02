@@ -1,10 +1,1237 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "23319"
-  title: "Preparations used in animal feeding n.e.c."
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.food-products-beverages-and-tobacco-textiles-apparel-and-leather-products.grain-mill-products-starches-and-starch-products-other-food-products.preparations-used-in-animal-feeding-n-e-c"
+  classification_refs: "CPC 3.0: 23319, Preparations used in animal feeding n.e.c. (exact)"
+  covered_products: "Complete and complementary compound feeds for livestock, poultry, aquaculture and other non-pet animals, in mash, meal, pellet, crumble, or extruded form, manufactured industrially from two or more feed materials with or without feed additives"
+  excluded_products: "Retail dog or cat food; lucerne (alfalfa) meal and pellets; single feed materials; stand-alone feed additives and premixtures; medicated feed; silage and forage; on-farm home-mixed feed; feed use by animals"
+  representative_product: "Dry complete compound feed for a declared food-producing animal class, as-fed"
+  production_route: "Ingredient reception and storage; conditional size reduction; batching and mixing; conditional steam conditioning, pelleting or extrusion; conditional cooling and screening; packaging and dispatch"
+  market_state: "Conforming, labelled compound feed on an as-fed basis, released in bulk or in bags at the feed-mill dispatch gate"
+functional_unit:
+  what: "Industrial manufacture of compound animal feed n.e.c. from reception of feed materials to dispatch of conforming feed"
+  how_much: "1,000 kg of compound feed on an as-fed basis"
+  how_well: "Feed conforms to its declared formulation and nutrient specification, to declared moisture content, and to applicable feed-safety and labelling rules"
+  how_long_or_cycle: "Continuous mill operation averaged over a 12-month production period"
+  reference_flow_link: "Process packaging_dispatch, Outputs, Product flows, row reference_product_output"
+system_boundary:
+  rules:
+    - rule_id: system_boundary_rule_1
+      applies_to: "foreground_system_boundary"
+      rule: "The foreground boundary contains the feed-mill operations from ingredient reception to dispatch: reception, weighing and storage of feed materials and additives; conditional grinding; batching and mixing; conditional conditioning, pelleting or extrusion; conditional cooling and screening; and packaging or bulk loading. Included foreground flows are ingredient and additive inputs, electricity, boiler fuel, process and boiler-feed water, internal-logistics fuel, packaging materials, direct dust emissions to air, and waste outputs leaving the mill boundary."
+      source_ids: []
+    - rule_id: bound_start
+      applies_to: "foreground_system_boundary"
+      rule: "The foreground starts at the feed-mill receiving gate; every feed material, additive, and packaging item is recorded as it crosses that gate, with quantity and formulation linkage."
+      source_ids: []
+    - rule_id: bound_upstream
+      applies_to: "foreground_system_boundary"
+      rule: "Ingredient cultivation and processing, inbound transport, energy and water supply, and packaging production are included only through linked upstream datasets whose identity and version are declared; no upstream burden may be approximated inside the foreground inventory."
+      source_ids: []
+    - rule_id: bound_recycle
+      applies_to: "foreground_system_boundary"
+      rule: "Internal rework, fines, and start-up or off-spec material returned to the same mill line are closed-loop internal recycles and are not counted as new inputs or as waste; only material actually leaving the mill boundary is recorded as a waste output."
+      source_ids: []
+    - rule_id: bound_exclusions
+      applies_to: "foreground_system_boundary"
+      rule: "Capital goods, mill maintenance materials, personnel-related flows, and delivery transport beyond the dispatch gate are excluded from the foreground and must be listed in the disclosure when a study includes them."
+      source_ids: []
+boundary_abstraction:
+  declared_starting_condition: "Feed materials, feed additives, and packaging materials of a declared formulation are received at the feed-mill gate and released for production"
+  starting_condition_role: "Declared foreground starting point for first-dataset production"
+  product_classification_scope: "CPC 3.0 leaf 23319 compound feed n.e.c.; sibling leaves 23311 and 23312 are out of scope"
+  recursive_input_rule: "When a mill output or rework stream of the same product category re-enters the same foreground system, it is recorded as internal recycle with no new upstream burden; purchased compound feed used as an ingredient is recorded as a product input with its own declared upstream dataset"
+  upstream_dataset_requirement: "Every product input crossing the receiving gate must be paired with a declared upstream dataset identity; feed ingredient datasets should follow the FAO LEAP feed guidelines or PEFCR-conformant sources such as the GFLI database"
+  disclosure: "The data package discloses formulation classes, inclusion rates by class, moisture basis, dispatch form, and every exclusion from the foreground boundary"
+reference_flow_definition:
+  reference_amount: "1,000 kg"
+  product_flow_ref:
+    name: "Assorted Feed"
+    uuid: "cb2b142b-0ed1-4d6f-9283-cfef94451a75"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "feed form (mash"
+    - meal
+    - pellet
+    - crumble
+    - "extruded)"
+    - "target animal class"
+    - "formulation identifier"
+    - "moisture content as-fed"
+    - "dispatch form (bulk or bagged"
+    - "with bag size)"
+    - "production country and site"
+    - "12-month production period"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Reference flow and all ingredient inputs are recorded on an as-fed mass basis in kg; volumes or counts must be converted with declared, calibrated mass conversion records."
+  - id: moisture_declaration
+    applies_to: "reference product and feed materials"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Moisture content of the dispatched feed and of each major feed material must be declared; dry-matter corrections, when applied, must be reported as separate calculated values and never silently substituted for as-fed amounts."
+  - id: electricity_measure
+    applies_to: "all electricity inputs"
+    required_property_ref:
+      name: "Net calorific value"
+      uuid: "93a60a56-a3c8-11da-a746-0800200c9a66"
+    required_unit: "kWh"
+    rule: "Electricity is recorded in kWh from metered supplies; conversion to MJ, when required by a study, uses 1 kWh = 3.6 MJ and is reported as a calculated value."
+  - id: natural_gas_measure
+    applies_to: "natural gas boiler fuel"
+    required_property_ref:
+      name: "Volume"
+      uuid: "93a60a56-a3c8-22da-a746-0800200c9a66"
+    required_unit: "m3"
+    rule: "Natural gas is recorded in m3 at the supply meter conditions stated by the utility; conversion to mass or energy units requires a declared conversion record."
+  - id: bag_count
+    applies_to: "woven polypropylene bag input"
+    required_property_ref:
+      name: "Number of items"
+      uuid: "01846770-4cfe-4a25-8ad9-919d8d378345"
+    required_unit: "items"
+    rule: "Packaging is recorded as counted bags together with the nominal fill mass per bag; bulk dispatch records zero bags."
+process_map:
+  - id: ingredient_reception_storage
+    name: "Ingredient reception, weighing and storage"
+    inclusion: "required"
+    inclusion_condition: ""
+    role: "upstream handling"
+    quantitative_reference: "no"
+  - id: size_reduction
+    name: "Size reduction (grinding)"
+    inclusion: "conditional"
+    inclusion_condition: "applies when any feed material requires particle-size reduction before mixing"
+    role: "intermediate"
+    quantitative_reference: "no"
+  - id: batching_mixing
+    name: "Batching and mixing"
+    inclusion: "required"
+    inclusion_condition: ""
+    role: "core conversion"
+    quantitative_reference: "no"
+  - id: conditioning_pelleting
+    name: "Steam conditioning, pelleting or extrusion"
+    inclusion: "conditional"
+    inclusion_condition: "applies to pelleted, crumbled, or extruded feed"
+    role: "forming"
+    quantitative_reference: "no"
+  - id: cooling_screening
+    name: "Cooling, crumbling and screening"
+    inclusion: "conditional"
+    inclusion_condition: "applies when conditioning_pelleting is included"
+    role: "finishing"
+    quantitative_reference: "no"
+  - id: packaging_dispatch
+    name: "Packaging and dispatch"
+    inclusion: "required"
+    inclusion_condition: ""
+    role: "dispatch"
+    quantitative_reference: "yes"
+process_inventory:
+  - id: ingredient_reception_storage
+    label: "Ingredient reception, weighing and storage"
+    inputs:
+      product:
+        - row_id: feed_grains
+          role: "Cereal grain ingredients such as maize"
+          name: "Corn"
+          flow_type: "product"
+          flow_ref:
+            uuid: "f6cb6f61-5681-4f57-a44a-785ff0336a9b"
+          property_unit: "Mass / kg"
+          description: "Cereal grains form the energy base of most formulations and cross the boundary at the receiving weighbridge. The row records the representative cereal class flow; the concrete dataset substitutes the actual grains of the declared formulation."
+          amount:
+            expression: "weighbridge or receiving-scale mass per formulation, as-received"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg compound feed output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_ingredient_receipts
+              source_ids:
+                - fao-leap-2016-feed-supply-chains
+            ranges:
+              - role: qa_guardrail
+                lower: "300"
+                upper: "700"
+                unit: "kg"
+                basis: "per 1,000 kg compound feed output; formulation-dependent cereal share, provisional screen pending formulation records"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: protein_meals
+          role: "Protein meal ingredients such as soybean meal"
+          name: "Soybean Meal"
+          flow_type: "product"
+          flow_ref:
+            uuid: "69147c54-6d24-41d0-a1bd-fd0f6ae5e7e5"
+          property_unit: "Mass / kg"
+          description: "Protein meals supply the protein fraction of the formulation and are recorded per received consignment. The representative class flow is substituted by the actual protein meals of the formulation in a concrete dataset."
+          amount:
+            expression: "weighbridge or receiving-scale mass per formulation, as-received"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg compound feed output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_ingredient_receipts
+              source_ids:
+                - fao-leap-2016-feed-supply-chains
+            ranges:
+              - role: qa_guardrail
+                lower: "50"
+                upper: "350"
+                unit: "kg"
+                basis: "per 1,000 kg compound feed output; formulation-dependent protein share, provisional screen pending formulation records"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: fibre_coproducts
+          role: "Fibrous milling co-products such as wheat bran"
+          name: "Wheat bran"
+          flow_type: "product"
+          flow_ref:
+            uuid: "671bf2d3-9ac9-4cc3-b48a-8676cd42b2cc"
+          property_unit: "Mass / kg"
+          description: "Fibrous co-products of grain milling are common formulation components. The representative class flow is substituted by the actual fibrous ingredients of the formulation."
+          amount:
+            expression: "weighbridge or receiving-scale mass per formulation, as-received"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg compound feed output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_ingredient_receipts
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "300"
+                unit: "kg"
+                basis: "per 1,000 kg compound feed output; formulation-dependent share, provisional screen pending formulation records"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: fats_oils
+          role: "Added fats and oils"
+          name: "Soya bean oil, crude"
+          flow_type: "product"
+          flow_ref:
+            uuid: "6464d0d3-fb5d-4e46-bfb3-01327a3ddbd3"
+          property_unit: "Mass / kg"
+          description: "Fats and oils are added for energy density and as pelleting aids. The representative flow is crude vegetable oil; the concrete dataset substitutes the actual fat source."
+          amount:
+            expression: "metered or weighed addition per formulation"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg compound feed output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_ingredient_receipts
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "80"
+                unit: "kg"
+                basis: "per 1,000 kg compound feed output; formulation-dependent inclusion, provisional screen pending formulation records"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: mineral_ingredients
+          role: "Mineral ingredients such as limestone powder"
+          name: "limestone powder"
+          flow_type: "product"
+          flow_ref:
+            uuid: "a3317ee0-aae8-4d22-b720-fe24bc73d3c4"
+          property_unit: "Mass / kg"
+          description: "Mineral ingredients supply calcium and other macro minerals. The representative flow is substituted by the actual mineral sources of the formulation."
+          amount:
+            expression: "weighed addition per formulation"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg compound feed output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_ingredient_receipts
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "5"
+                upper: "30"
+                unit: "kg"
+                basis: "per 1,000 kg compound feed output; formulation-dependent share, provisional screen pending formulation records"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: feed_salt
+          role: "Feed salt"
+          name: "Mineral salt, animal feed supplement"
+          flow_type: "product"
+          flow_ref:
+            uuid: "158e4fa8-8175-4436-8cb4-c2e2fc45c33d"
+          property_unit: "Mass / kg"
+          description: "Salt is added as a mineral carrier and palatability component of the formulation."
+          amount:
+            expression: "weighed addition per formulation"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg compound feed output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_ingredient_receipts
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "1"
+                upper: "8"
+                unit: "kg"
+                basis: "per 1,000 kg compound feed output; formulation-dependent share, provisional screen pending formulation records"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: premix_input
+          role: "Vitamin and mineral premix"
+          name: "Vitamin and mineral premix, for feed"
+          flow_type: "product"
+          flow_ref:
+            uuid: "d5514f47-d1d0-470f-a04e-89e521c62841"
+          property_unit: "Mass / kg"
+          description: "Premixes carry vitamins, trace minerals, and other micro-ingredients into the formulation and are dosed per batch."
+          amount:
+            expression: "weighed addition per batch from dosing records"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg compound feed output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_micro_ingredient_dosing
+              source_ids:
+                - ec-pefcr-feed-food-producing-animals
+            ranges:
+              - role: qa_guardrail
+                lower: "5"
+                upper: "50"
+                unit: "kg"
+                basis: "per 1,000 kg compound feed output; formulation-dependent share, provisional screen pending formulation records"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: amino_acids
+          role: "Synthetic amino acids such as L-lysine"
+          name: "L-Lysine"
+          flow_type: "product"
+          flow_ref:
+            uuid: "c919f32a-3feb-4129-88d0-244862f8efca"
+          property_unit: "Mass / kg"
+          description: "Synthetic amino acids balance the protein fraction and are dosed per batch. The representative flow is substituted by the actual amino acids of the formulation."
+          amount:
+            expression: "weighed addition per batch from dosing records"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg compound feed output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_micro_ingredient_dosing
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "10"
+                unit: "kg"
+                basis: "per 1,000 kg compound feed output; formulation-dependent share, provisional screen pending formulation records"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: electricity_handling
+          role: "Electricity for reception and internal conveying"
+          name: "Electricity, medium voltage"
+          flow_type: "product"
+          flow_ref:
+            uuid: "2eb3b2fd-6511-4a22-9018-768024a5b5a6"
+          property_unit: "Net calorific value / kWh"
+          description: "Electricity powers unloaders, conveyors, elevators, and silo auxiliaries; it is metered at mill level and allocated to processes from sub-meters or operating records."
+          amount:
+            expression: "metered electricity assigned to reception and conveying duty"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg compound feed output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_electricity_meters
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "2"
+                upper: "6"
+                unit: "kWh"
+                basis: "per 1,000 kg compound feed output; provisional screen pending sub-meter records"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: diesel_internal_logistics
+          role: "Diesel for internal logistics"
+          name: "Diesel"
+          flow_type: "product"
+          flow_ref:
+            uuid: "9fc9d30c-0229-459c-a7f5-8f55d6533225"
+          property_unit: "Mass / kg"
+          description: "Diesel powers yard loaders and forklifts moving ingredients and packaging inside the mill boundary."
+          amount:
+            expression: "fuel-issue or tank records assigned to internal logistics"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg compound feed output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_fuel_logs
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0.1"
+                upper: "1.0"
+                unit: "kg"
+                basis: "per 1,000 kg compound feed output; provisional screen pending fuel records"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        - row_id: ingredient_packaging_waste
+          role: "Ingredient packaging waste"
+          name: "Plastic Waste"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "3fd9ff2b-455a-4ed6-a52d-e2cb5a1484f3"
+          property_unit: "Mass / kg"
+          description: "Bags, liners, and wrapping from received ingredients leave the boundary as packaging waste for declared downstream treatment."
+          amount:
+            expression: "weighed or counted packaging waste per production period"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg compound feed output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_records
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "10"
+                unit: "kg"
+                basis: "per 1,000 kg compound feed output; provisional screen pending site records"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: screenings_rejects
+          role: "Screenings and rejected material"
+          name: "Food Debris"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "55feef47-26fa-48d1-bcf5-1eb581143bd7"
+          property_unit: "Mass / kg"
+          description: "Screenings, foreign material, and non-recyclable rejects removed at reception leave the boundary as organic waste."
+          amount:
+            expression: "weighed waste per production period"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg compound feed output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_records
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "30"
+                unit: "kg"
+                basis: "per 1,000 kg compound feed output; provisional screen pending site records"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        - row_id: reception_dust
+          role: "Reception and transfer dust"
+          name: "Particulate matter"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "0418b561-ecf8-33c8-9c81-225789f15bd3"
+          property_unit: "Mass / kg"
+          description: "Grain dust escapes to air at tipping pits, conveyors, and silo vents when dust collection does not return it to the process."
+          amount:
+            expression: "measured or declared estimate from dust-control records"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg compound feed output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_dust_records
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0.001"
+                upper: "0.2"
+                unit: "kg"
+                basis: "per 1,000 kg compound feed output; provisional screen pending dust measurement"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+  - id: size_reduction
+    label: "Size reduction (grinding)"
+    inputs:
+      product:
+        - row_id: electricity_grinding
+          role: "Electricity for grinding"
+          name: "Electricity, medium voltage"
+          flow_type: "product"
+          flow_ref:
+            uuid: "2eb3b2fd-6511-4a22-9018-768024a5b5a6"
+          property_unit: "Net calorific value / kWh"
+          description: "Grinding is one of the dominant electrical duties of the mill and is metered or assigned from operating records."
+          amount:
+            expression: "metered or assigned grinding electricity per tonne ground"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg compound feed output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_electricity_meters
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "6"
+                upper: "10"
+                unit: "kWh"
+                basis: "per 1,000 kg ground material; specific grinding energy reported for cereal grinding duty"
+                basis_kind: "process_output"
+                evidence_kind: "external_source"
+                source_ids:
+                  - yemmak-feed-mill-energy-2021
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        []
+      elementary:
+        - row_id: grinding_dust
+          role: "Grinding dust"
+          name: "Particulate matter"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "0418b561-ecf8-33c8-9c81-225789f15bd3"
+          property_unit: "Mass / kg"
+          description: "Dust escaping grinding and aspiration systems is emitted to air."
+          amount:
+            expression: "measured or declared estimate from dust-control records"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg compound feed output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_dust_records
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0.001"
+                upper: "0.2"
+                unit: "kg"
+                basis: "per 1,000 kg compound feed output; provisional screen pending dust measurement"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+  - id: batching_mixing
+    label: "Batching and mixing"
+    inputs:
+      product:
+        - row_id: electricity_mixing
+          role: "Electricity for batching and mixing"
+          name: "Electricity, medium voltage"
+          flow_type: "product"
+          flow_ref:
+            uuid: "2eb3b2fd-6511-4a22-9018-768024a5b5a6"
+          property_unit: "Net calorific value / kWh"
+          description: "Batching scales, dosing augers, and mixers consume electricity metered or assigned from operating records."
+          amount:
+            expression: "metered or assigned batching and mixing electricity"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg compound feed output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_electricity_meters
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "1"
+                upper: "6"
+                unit: "kWh"
+                basis: "per 1,000 kg compound feed output; provisional screen pending sub-meter records"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        []
+      elementary:
+        - row_id: mixing_dust
+          role: "Mixing and dosing dust"
+          name: "Particulate matter"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "0418b561-ecf8-33c8-9c81-225789f15bd3"
+          property_unit: "Mass / kg"
+          description: "Dust from micro-ingredient dosing and mixer vents escapes to air."
+          amount:
+            expression: "measured or declared estimate from dust-control records"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg compound feed output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_dust_records
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0.001"
+                upper: "0.2"
+                unit: "kg"
+                basis: "per 1,000 kg compound feed output; provisional screen pending dust measurement"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+  - id: conditioning_pelleting
+    label: "Steam conditioning, pelleting or extrusion"
+    inputs:
+      product:
+        - row_id: natural_gas_boiler
+          role: "Natural gas for the steam boiler"
+          name: "natural gas in the gaseous state"
+          flow_type: "product"
+          flow_ref:
+            uuid: "4f19ca0e-7b3b-11dd-ad8b-0800200c9a66"
+          property_unit: "Volume / m3"
+          description: "Boiler fuel generates conditioning steam; combustion burdens belong to the linked upstream gas dataset, not to the foreground."
+          amount:
+            expression: "metered boiler fuel per tonne of conditioned feed"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg conditioned feed"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_fuel_logs
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "1.5"
+                upper: "4.0"
+                unit: "m3"
+                basis: "per 1,000 kg conditioned feed; derived from about 26 kWh/t steam-conditioning duty and provisional pending boiler records"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: electricity_pelleting
+          role: "Electricity for pelleting or extrusion"
+          name: "Electricity, medium voltage"
+          flow_type: "product"
+          flow_ref:
+            uuid: "2eb3b2fd-6511-4a22-9018-768024a5b5a6"
+          property_unit: "Net calorific value / kWh"
+          description: "The pellet press or extruder drive is the single largest electrical load of a pelleting line."
+          amount:
+            expression: "metered or assigned press electricity per tonne pelleted"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per 1,000 kg pelleted or extruded feed"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_electricity_meters
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "4"
+                upper: "40"
+                unit: "kWh"
+                basis: "per 1,000 kg pelleted feed; formulation-dependent specific press energy"
+                basis_kind: "process_output"
+                evidence_kind: "external_source"
+                source_ids:
+                  - yemmak-feed-mill-energy-2021
+        - row_id: boiler_water
+          role: "Boiler feed water"
+          name: "Tap water"
+          flow_type: "product"
+          flow_ref:
+            uuid: "3a8411b6-e476-4f98-9d77-0d492661a07f"
+          property_unit: "Mass / kg"
+          description: "Make-up water feeds the steam boiler; condensate return is declared where operated."
+          amount:
+            expression: "metered boiler make-up water"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg conditioned feed"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water_meters
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "10"
+                upper: "60"
+                unit: "kg"
+                basis: "per 1,000 kg conditioned feed; derived from conditioning steam demand, provisional pending meter records"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        []
+      elementary:
+        []
+  - id: cooling_screening
+    label: "Cooling, crumbling and screening"
+    inputs:
+      product:
+        - row_id: electricity_cooling
+          role: "Electricity for cooling and screening"
+          name: "Electricity, medium voltage"
+          flow_type: "product"
+          flow_ref:
+            uuid: "2eb3b2fd-6511-4a22-9018-768024a5b5a6"
+          property_unit: "Net calorific value / kWh"
+          description: "Cooler fans, crumblers, and screens consume electricity; fines are returned to the line as internal recycle."
+          amount:
+            expression: "metered or assigned cooling and screening electricity"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg cooled feed"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_electricity_meters
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "2"
+                upper: "8"
+                unit: "kWh"
+                basis: "per 1,000 kg cooled feed; provisional screen pending sub-meter records"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        []
+      waste:
+        []
+      elementary:
+        - row_id: cooling_dust
+          role: "Cooling and screening dust"
+          name: "Particulate matter"
+          flow_type: "elementary"
+          flow_ref:
+            uuid: "0418b561-ecf8-33c8-9c81-225789f15bd3"
+          property_unit: "Mass / kg"
+          description: "Fines escaping the cooler cyclone and screening vents are emitted to air."
+          amount:
+            expression: "measured or declared estimate from dust-control records"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg cooled feed"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_dust_records
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0.001"
+                upper: "0.2"
+                unit: "kg"
+                basis: "per 1,000 kg cooled feed; provisional screen pending dust measurement"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+  - id: packaging_dispatch
+    label: "Packaging and dispatch"
+    inputs:
+      product:
+        - row_id: pp_woven_bags
+          role: "Woven polypropylene bags"
+          name: "Woven polypropylene bag"
+          flow_type: "product"
+          flow_ref:
+            uuid: "9bfaad07-355e-467a-9bab-f95094e7c869"
+          property_unit: "Number of items / items"
+          description: "Bagged feed is packed in woven polypropylene bags counted with their nominal fill mass; bulk dispatch records zero bags."
+          amount:
+            expression: "counted bags with declared nominal fill mass per bag"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per 1,000 kg bagged feed output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_packaging_records
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "20"
+                upper: "50"
+                unit: "items"
+                basis: "per 1,000 kg bagged feed, corresponding to nominal fill masses of 50 kg down to 20 kg per bag"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: electricity_packaging
+          role: "Electricity for packaging and loading"
+          name: "Electricity, medium voltage"
+          flow_type: "product"
+          flow_ref:
+            uuid: "2eb3b2fd-6511-4a22-9018-768024a5b5a6"
+          property_unit: "Net calorific value / kWh"
+          description: "Bagging lines, palletisers, and bulk out-loading consume metered or assigned electricity."
+          amount:
+            expression: "metered or assigned packaging and loading electricity"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg compound feed output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_electricity_meters
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "1"
+                upper: "5"
+                unit: "kWh"
+                basis: "per 1,000 kg compound feed output; provisional screen pending sub-meter records"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: reference_product_output
+          role: "Compound feed released at the dispatch gate"
+          name: "Assorted Feed"
+          flow_type: "product"
+          flow_ref:
+            uuid: "cb2b142b-0ed1-4d6f-9283-cfef94451a75"
+          property_unit: "Mass / kg"
+          description: "Conforming compound feed leaves the foreground boundary here; this row is the PCR reference flow."
+          amount:
+            expression: "reference amount 1,000 kg as-fed, from dispatch weighbridge or packing records"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "reference flow of this PCR"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_production_output
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "980"
+                upper: "1020"
+                unit: "kg"
+                basis: "dispatched mass equivalent per 1,000 kg reference amount, consistent with the calc_mass_closure closure band"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      waste:
+        - row_id: packaging_rejects
+          role: "Packaging line rejects"
+          name: "Plastic Waste"
+          flow_type: "waste"
+          flow_ref:
+            uuid: "3fd9ff2b-455a-4ed6-a52d-e2cb5a1484f3"
+          property_unit: "Mass / kg"
+          description: "Damaged bags and wrapping rejected at the packing line leave the boundary as packaging waste."
+          amount:
+            expression: "weighed or counted rejects per production period"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per 1,000 kg compound feed output"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_waste_records
+              source_ids: []
+            ranges:
+              - role: qa_guardrail
+                lower: "0"
+                upper: "2"
+                unit: "kg"
+                basis: "per 1,000 kg compound feed output; provisional screen pending site records"
+                basis_kind: "reference_flow"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocation_rule_1
+    applies_to: "foreground_burden_allocation"
+    rule: "The feed-mill foreground is a single-product-per-batch operation; co-production inside the mill boundary is limited to internal recycle and waste streams. Allocation of ingredient co-production burdens, such as soybean meal versus soybean oil, is resolved inside the linked upstream datasets and is not re-allocated in the foreground."
+    source_ids: []
+  - rule_id: alloc_line_split
+    applies_to: "foreground_burden_allocation"
+    rule: "When a mill produces several formulations in the same period, shared electricity, fuel, water, and overhead flows are split between formulations in proportion to produced mass per formulation, using production-run or sub-meter records where available."
+    source_ids: []
+  - rule_id: alloc_rework
+    applies_to: "foreground_burden_allocation"
+    rule: "Fines, rework, and off-spec material returned to the same line carry no additional upstream burden; only net material leaving the boundary is inventoried."
+    source_ids: []
+  - rule_id: alloc_waste_cutoff
+    applies_to: "foreground_burden_allocation"
+    rule: "Waste outputs carry foreground burden up to the mill boundary only; treatment or valorisation burdens and credits belong to the declared downstream dataset."
+    source_ids: []
+  - rule_id: alloc_upstream_coproducts
+    applies_to: "foreground_burden_allocation"
+    rule: "Co-product allocation for feed materials, including oilseed meals and milling fractions, follows the upstream dataset and should be consistent with the FAO LEAP feed guidelines and the PEFCR feed rules; the foreground dataset must declare which allocation its ingredient datasets apply."
+    source_ids: []
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_ingredient_receipts
+      process_id: "ingredient_reception_storage"
+      flow_role: "feed material inputs"
+      record_type: "weighbridge and goods-receipt records"
+      raw_fields: "ingredient class, supplier, received mass, moisture on receipt, linked formulation"
+      collection_method: "calibrated weighbridge and receipt system"
+      unit: "kg"
+      frequency: "per consignment"
+      temporal_coverage: "12 months"
+      site_scope: "feed mill site"
+      aggregation_rule: "sum per ingredient class per formulation, normalized per 1,000 kg output"
+      quality_evidence: "weighbridge calibration certificate, supplier delivery notes"
+    - protocol_id: cp_micro_ingredient_dosing
+      process_id: "batching_mixing"
+      flow_role: "micro-ingredient and additive inputs"
+      record_type: "batch dosing records"
+      raw_fields: "premix, amino acid, salt, mineral dose per batch, batch count"
+      collection_method: "batch control system or manual dosing log"
+      unit: "kg"
+      frequency: "per batch"
+      temporal_coverage: "12 months"
+      site_scope: "feed mill site"
+      aggregation_rule: "sum per formulation, normalized per 1,000 kg output"
+      quality_evidence: "batch reports, dosing scale calibration"
+    - protocol_id: cp_electricity_meters
+      process_id: "all_processes"
+      flow_role: "electricity inputs"
+      record_type: "utility meter and sub-meter records"
+      raw_fields: "kWh per meter and period, duty assignment rules"
+      collection_method: "utility invoices plus sub-meter or operating-hour assignment"
+      unit: "kWh"
+      frequency: "monthly"
+      temporal_coverage: "12 months"
+      site_scope: "feed mill site"
+      aggregation_rule: "mill total split by duty per process map"
+      quality_evidence: "meter certificates, utility invoices"
+    - protocol_id: cp_fuel_logs
+      process_id: "conditioning_pelleting_ingredient_reception_storage"
+      flow_role: "boiler fuel and internal diesel"
+      record_type: "fuel meter and issue records"
+      raw_fields: "gas volume per period, diesel issued per vehicle or duty"
+      collection_method: "gas utility meter, fuel-issue log"
+      unit: "m3; kg"
+      frequency: "monthly"
+      temporal_coverage: "12 months"
+      site_scope: "feed mill site"
+      aggregation_rule: "per duty, normalized per process output basis"
+      quality_evidence: "meter certificates, fuel invoices"
+    - protocol_id: cp_water_meters
+      process_id: "conditioning_pelleting"
+      flow_role: "boiler feed water"
+      record_type: "water meter records"
+      raw_fields: "make-up water volume per period"
+      collection_method: "site or line water meter"
+      unit: "kg"
+      frequency: "monthly"
+      temporal_coverage: "12 months"
+      site_scope: "feed mill site"
+      aggregation_rule: "per 1,000 kg conditioned feed"
+      quality_evidence: "meter records, water invoices"
+    - protocol_id: cp_packaging_records
+      process_id: "packaging_dispatch"
+      flow_role: "packaging inputs"
+      record_type: "packaging stock and usage records"
+      raw_fields: "bag type, bags used, nominal fill mass"
+      collection_method: "stores issue records and packing-line counters"
+      unit: "items"
+      frequency: "monthly"
+      temporal_coverage: "12 months"
+      site_scope: "feed mill site"
+      aggregation_rule: "items per 1,000 kg bagged output"
+      quality_evidence: "supplier specifications, stock reconciliation"
+    - protocol_id: cp_production_output
+      process_id: "packaging_dispatch"
+      flow_role: "reference product output"
+      record_type: "dispatch and packing records"
+      raw_fields: "formulation, dispatched mass, form, bag count or bulk volume"
+      collection_method: "dispatch weighbridge and packing records"
+      unit: "kg"
+      frequency: "per batch or daily"
+      temporal_coverage: "12 months"
+      site_scope: "feed mill site"
+      aggregation_rule: "sum per formulation per period"
+      quality_evidence: "calibrated scale records, sales dispatch notes"
+    - protocol_id: cp_waste_records
+      process_id: "ingredient_reception_storage_packaging_dispatch"
+      flow_role: "waste outputs"
+      record_type: "waste transfer records"
+      raw_fields: "waste stream, mass, destination contractor"
+      collection_method: "waste transfer notes or site weighings"
+      unit: "kg"
+      frequency: "per collection"
+      temporal_coverage: "12 months"
+      site_scope: "feed mill site"
+      aggregation_rule: "per waste stream, normalized per 1,000 kg output"
+      quality_evidence: "contractor receipts, transfer notes"
+    - protocol_id: cp_dust_records
+      process_id: "size_reduction_batching_mixing_conditioning_pelleting_cooling_screening_ingredient_reception_storage"
+      flow_role: "dust emissions to air"
+      record_type: "stack or fugitive dust records"
+      raw_fields: "measured concentration or declared estimate, control device type"
+      collection_method: "periodic measurement or declared engineering estimate"
+      unit: "kg"
+      frequency: "annual"
+      temporal_coverage: "12 months"
+      site_scope: "feed mill site"
+      aggregation_rule: "per emission point, normalized per process output basis"
+      quality_evidence: "measurement reports or declared estimate note"
+    - protocol_id: cp_moisture_tests
+      process_id: "ingredient_reception_storage_packaging_dispatch"
+      flow_role: "moisture qualifiers"
+      record_type: "laboratory moisture tests"
+      raw_fields: "moisture percent per ingredient lot and per product lot"
+      collection_method: "oven or rapid moisture analyser per in-house method"
+      unit: "%"
+      frequency: "per lot"
+      temporal_coverage: "12 months"
+      site_scope: "feed mill site"
+      aggregation_rule: "lot average per formulation"
+      quality_evidence: "laboratory records"
+  calculation_rules:
+    - id: calc_output_mass
+      applies_to: "reference product"
+      rule: "dispatched formulation mass = sum of dispatch weighbridge records per formulation over the 12-month period"
+      inputs:
+        - cp_production_output
+      output: "kg output per formulation"
+      source_ids: []
+    - id: calc_ingredient_intensity
+      applies_to: "feed material inputs"
+      rule: "ingredient intensity = annual consignment mass per ingredient class divided by annual formulation output"
+      inputs:
+        - cp_ingredient_receipts
+        - calc_output_mass
+      output: "kg ingredient per 1,000 kg output"
+      source_ids: []
+    - id: calc_mass_closure
+      applies_to: "foreground balance"
+      rule: "mass closure = (sum of ingredient, additive, and packaging inputs) minus (dispatched product plus waste outputs plus declared dust), reported as percent of input mass"
+      inputs:
+        - cp_ingredient_receipts
+        - cp_micro_ingredient_dosing
+        - cp_production_output
+        - cp_waste_records
+        - cp_dust_records
+      output: "closure percent"
+      source_ids: []
+    - id: calc_specific_electricity
+      applies_to: "electricity inputs"
+      rule: "process electricity intensity = assigned kWh per process divided by process output over the period"
+      inputs:
+        - cp_electricity_meters
+      output: "kWh per 1,000 kg process output"
+      source_ids:
+        - lpelc-feed-processing-energy
+    - id: calc_specific_gas
+      applies_to: "natural gas input"
+      rule: "boiler gas intensity = metered gas volume divided by conditioned feed mass over the period"
+      inputs:
+        - cp_fuel_logs
+      output: "m3 per 1,000 kg conditioned feed"
+      source_ids: []
+    - id: calc_dry_matter
+      applies_to: "reference product and feed materials"
+      rule: "dry matter = as-fed mass multiplied by (1 minus moisture fraction); reported alongside, never instead of, as-fed amounts"
+      inputs:
+        - cp_moisture_tests
+      output: "kg dry matter"
+      source_ids: []
+  data_quality_requirements:
+    - id: dq_identity
+      applies_to: "whole dataset"
+      requirement: "Formulation classes, inclusion rates by class, target animal class, and feed form are declared for every produced formulation"
+      evidence: "formulation register linked to production runs"
+    - id: dq_measurement
+      applies_to: "meters and scales"
+      requirement: "Weighbridges, dosing scales, and utility meters are calibrated; calibration status is documented for the collection period"
+      evidence: "calibration certificates or maintenance log"
+    - id: dq_temporal
+      applies_to: "all foreground records"
+      requirement: "Records cover a continuous 12-month period not older than five years at dataset publication"
+      evidence: "dated records per protocol"
+    - id: dq_completeness
+      applies_to: "inventory"
+      requirement: "All formulation inputs are recorded; mass closure per calc_mass_closure stays within 98 to 102 percent of input mass"
+      evidence: "closure calculation per campaign"
+    - id: dq_disclosure
+      applies_to: "data package"
+      requirement: "Required qualifiers, exclusions, upstream dataset identities, and allocation declarations are complete"
+      evidence: "disclosure section of the data package"
+validation_rules:
+  - rule_id: val_mass_balance
+    applies_to: "foreground_dataset_conformance"
+    rule: "A foreground data package is rejected when mass closure per calc_mass_closure falls outside 98 to 102 percent of input mass without a documented explanation."
+    source_ids: []
+  - rule_id: val_energy_guardrail
+    applies_to: "foreground_dataset_conformance"
+    rule: "Grinding and pelleting electricity outside their QA guardrail ranges, or combined mill energy outside 40 to 60 kWh per 1,000 kg feed, must be justified by meter evidence or corrected before acceptance."
+    source_ids: []
+  - rule_id: val_identity_refs
+    applies_to: "foreground_dataset_conformance"
+    rule: "Every inventory row marked with a Tiangong UUID must carry that UUID in the data package; rows with substituted ingredient flows must declare the substitute flow identity."
+    source_ids: []
+  - rule_id: val_qualifiers
+    applies_to: "foreground_dataset_conformance"
+    rule: "A data package missing any required qualifier of section 3 is incomplete and fails validation."
+    source_ids: []
+  - rule_id: val_conditional_processes
+    applies_to: "foreground_dataset_conformance"
+    rule: "Conditional processes omitted from the inventory must be justified by the declared feed form; pelleted, crumbled, or extruded feed may not omit conditioning_pelleting and cooling_screening."
+    source_ids: []
+published_dataset_profile:
+  dataset_role: "Foreground production dataset for industrial compound feed manufacture"
+  downstream_use: "secondary_dataset; background_dataset"
+  allowed_use: "Linked as the foreground mill dataset in feed, livestock, aquaculture, and food LCA models; usable as background dataset for compound feed supply"
+  excluded_use: "Not valid for pet food, lucerne meal, single feed materials, medicated feed, or farm-level feeding; not valid when required qualifiers or validation rules fail"
+  required_metadata: "Required qualifiers of section 3, upstream dataset identities, allocation declarations, temporal coverage, site and country"
+  required_quality_disclosure: "Mass closure result, guardrail checks of section 9, measurement and calibration evidence summary, provisional ranges actually used"
+  update_trigger: "Reformulation beyond declared classes, process-line change, energy carrier switch, or records older than five years"
+data_sources:
+  - id: "fao-leap-2016-feed-supply-chains"
+    type: "official_guidance"
+    reference: "FAO LEAP Partnership (2016), Environmental performance of animal feeds supply chains: Guidelines for assessment, http://www.fao.org/partnerships/leap/publications/en/ (retrieved 2026-07-25)"
+    used_for: "method rule; process decomposition; boundary decisions; upstream dataset requirement"
+  - id: "ec-pefcr-feed-food-producing-animals"
+    type: "standard"
+    reference: "European Commission (2018, updated 2025), Product Environmental Footprint Category Rules (PEFCR) for feed for food-producing animals, https://www.fefac.eu/priorities/sustainability/pefcr-feed/ (retrieved 2026-07-25)"
+    used_for: "method rule; data collection rules; allocation decisions"
+  - id: "eu-reg-767-2009-feed-marketing"
+    type: "standard"
+    reference: "Regulation (EC) No 767/2009 on the placing on the market and use of feed, https://eur-lex.europa.eu/eli/reg/2009/767/oj (retrieved 2026-07-25)"
+    used_for: "official product specification; category boundary"
+  - id: "gfli-database"
+    type: "dataset"
+    reference: "Global Feed LCA Institute (GFLI) database, https://globalfeedlca.org/ (retrieved 2026-07-25)"
+    used_for: "upstream ingredient dataset requirement; quality requirement"
+  - id: "lpelc-feed-processing-energy"
+    type: "extension_guidance"
+    reference: "Livestock and Poultry Environmental Learning Community, Feed processing energy use summary citing Redecker and Thoben (2012): 40-60 kWh per tonne of feed, https://lpelc.org/wp-content/uploads/2026/02/Navales_Feed-processing.pdf (retrieved 2026-07-25)"
+    used_for: "range evidence for combined mill energy validation"
+  - id: "yemmak-feed-mill-energy-2021"
+    type: "literature"
+    reference: "Feed and Additive magazine (2021), Energy saving in compound feed mills: grinding 6-10 kWh/t, pelleting 4-40 kWh/t, https://www.feedandadditive.com/energy-saving-in-compound-feed-mills/ (retrieved 2026-07-25)"
+    used_for: "range evidence for grinding and pelleting electricity guardrails"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:28561742edf6b5090eb119f893219820f681778f28c018d278fa7d7affc7a4bd"
+  generated_content_sha256: "sha256:42ed4992a096138397644163b1787c4f8b62f74411de7b2726b8d35005a94338"

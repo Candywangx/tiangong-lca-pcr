@@ -1,10 +1,994 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "21514"
-  title: "Sheep fat, unrendered"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.food-products-beverages-and-tobacco-textiles-apparel-and-leather-products.meat-fish-fruits-vegetables-oils-and-fats.sheep-fat-unrendered"
+  classification_refs: "CPC 3.0: 21514, Sheep fat, unrendered (exact classification reference)"
+  covered_products: "Actual fatty tissue or fat raw material from sheep, separated after slaughter and/or cutting, dispatched without rendering; uncooled, chilled, or frozen state when declared"
+  excluded_products: "Rendered or melted sheep fat; tallow and other rendered fats under CPC 21521-21529; refined, fractionated, hydrogenated, interesterified, formulated, or extracted fats; fat from cattle, buffalo, goats, pigs, poultry, fish, or other species; mixed-species fat without sheep-only mass segregation; oils from bone, marrow, or feet; hides and wool"
+  representative_product: "One dispatch lot of physically segregated, unrendered sheep fatty tissue after required trimming and conditioning"
+  production_route: "Recovery during sheep slaughter/dressing or cutting; separation and trimming; conditional washing; conditional chilling/freezing and storage; conditional packaging; dispatch handover; no rendering or refining"
+  market_state: "Bulk or packaged actual tissue/raw fat; uncooled, chilled, or frozen as declared; edible suitability or other disposition explicitly declared"
+functional_unit:
+  what: "Provision of actual sheep fatty tissue or fat raw material, recovered after slaughter and/or cutting and not rendered or refined, at the declared dispatch handover"
+  how_much: "1 kg net mass of the represented unrendered sheep fat as delivered, excluding reusable transport equipment and separately declared packaging tare"
+  how_well: "Sheep-only identity and actual tissue state are preserved; slaughter/cutting route, anatomical tissue origin, disposition, unrendered state, temperature state, packaging, and handover are declared; rendered fat and other species are excluded"
+  how_long_or_cycle: "One dispatch lot at the handover point; storage duration and cold-chain history up to handover are declared; no use duration is implied"
+  reference_flow_link: "rf_sheep_fat_unrendered"
+system_boundary:
+  rules:
+    - rule_id: boundary_sheep_unrendered_only
+      applies_to: "Product identity and every represented lot"
+      rule: "Include only segregated actual sheep fatty tissue/raw fat that has not undergone rendering or refining. Exclude and separately model rendered tallow or other products in CPC 21521-21529."
+      source_ids:
+        - unsd-cpc-3-0-21514
+        - codex-cxs-211-1999
+    - rule_id: boundary_slaughter_cutting_trace
+      applies_to: "Slaughter, dressing, cutting, separation, and trimming"
+      rule: "Identify the operation where fat becomes a separately measured output and retain post-mortem disposition and species traceability through trimming and packaging."
+      source_ids:
+        - codex-cxc-58-2005
+    - rule_id: boundary_cold_chain
+      applies_to: "Chilling, freezing, cold storage, and temperature-controlled handling"
+      rule: "Include actual conditioning energy, refrigerant make-up or measured loss, storage duration, and product losses when these operations occur before handover; retain temperature records and excursions without importing a generic threshold."
+      source_ids:
+        - codex-cxc-58-2005
+        - eu-2019-2031-fdm-bat
+    - rule_id: boundary_packaging_and_handover
+      applies_to: "Packaging, loading, and transport interface"
+      rule: "Include packaging and on-site handling consumed before the declared handover. Exclude transport after handover by default; if delivery to a customer gate is claimed, add route-specific transport and move the reference handover accordingly."
+      source_ids:
+        - codex-cxc-58-2005
+        - eu-2021-2279-pef
+    - rule_id: boundary_recursive_input
+      applies_to: "Purchased unrendered sheep fat used as an input"
+      rule: "Link the purchased material to a verified upstream dataset and report only the incremental consolidation, trimming, conditioning, packaging, and losses in the current foreground."
+      source_ids:
+        - eu-2021-2279-pef
+    - rule_id: boundary_resource_emission_inventory
+      applies_to: "Represented food-processing operations where the FDM BAT scope is relevant"
+      rule: "Collect process-level water, energy, raw-material, residue, wastewater, and direct-emission records for inventory completeness. Apply this as a data-collection completeness rule only when relevant; do not import legal capacity thresholds, emission limits, or performance levels into this PCR."
+      source_ids:
+        - eu-2019-2031-fdm-bat
+boundary_abstraction:
+  declared_starting_condition: "Either sheep entering a represented slaughter/dressing joint process, or a documented sheep carcass/cut entering a separate cutting facility; the selected route and receipt condition shall be declared"
+  starting_condition_role: "Upstream product input to a joint slaughter/cutting system from which unrendered sheep fat is recovered"
+  product_classification_scope: "Sheep-only unrendered fatty tissue or raw fat corresponding to CPC 3.0 code 21514; no rendered fat and no other animal species"
+  recursive_input_rule: "Purchased unrendered sheep fat of the same category that is consolidated, re-trimmed, conditioned, or repacked remains a technosphere product input with its own upstream dataset; it shall not be assigned zero burden or silently merged into foreground recovery"
+  upstream_dataset_requirement: "A slaughter route requires an upstream sheep-production and live-animal transport dataset through the declared slaughter input; a cutting route requires an upstream carcass/cut dataset that includes sheep production, transport, slaughter, and prior joint-product allocation. Avoid gaps and double counting between the upstream dataset and this foreground"
+  disclosure: "Declare route, facility, geography, period, lot, anatomical tissue origin, edible/other disposition, actual tissue convention, state before and after conditioning, cold-storage duration, packaging, inbound and outbound handovers, and whether downstream transport starts before or after the reference-flow handover"
+reference_flow_definition:
+  reference_amount: "1 kg"
+  product_flow_ref:
+    name: "Sheep fat, unrendered"
+    uuid: "508545ee-d8e4-4705-a676-7ae2062635ae"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "sheep-only species identity"
+    - "actual anatomical tissue origin or source cut"
+    - "slaughterhouse recovery or cutting route"
+    - "edible suitability or other disposition"
+    - "unrendered/no-refining confirmation"
+    - "declared physical temperature state (uncooled versus chilled versus frozen)"
+    - "product temperature specification and measured handover temperature where controlled"
+    - "inherent tissue/moisture convention"
+    - "packaging form and tare treatment"
+    - "facility and geography"
+    - "production period and lot"
+    - "dispatch handover point"
+    - "ownership of transport before and after handover"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_net_mass
+    applies_to: "Reference product at dispatch handover"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Determine net product mass from a calibrated scale or verified gross-minus-tare records. Include actual tissue, inherent moisture, connective tissue, and adhering lean as delivered; exclude separately declared packaging tare and reusable transport equipment."
+  - id: lot_state_mass_alignment
+    applies_to: "Input, intermediate, co-product, waste, and reference-product mass records"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Use masses from the same represented lot or a documented allocation period. Record whether each mass is measured before or after trimming, washing, chilling/freezing, drainage, and packaging so mass changes are not hidden."
+  - id: temperature_state_declaration
+    applies_to: "Uncooled, chilled, or frozen product and storage records"
+    required_property_ref:
+      name: "Temperature and time, with mass normalization to kg"
+      uuid: ""
+    required_unit: "Site-recorded temperature unit and h or day"
+    rule: "Record the written temperature specification, measured handover temperature where temperature is controlled, conditioning start/end times, storage duration, and excursions. Do not impose a generic temperature threshold from this PCR."
+  - id: packaging_tare
+    applies_to: "Packaged reference product"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Measure or verify packaging tare separately and do not count it in the 1 kg reference product. Allocate packaging actually consumed to the represented lot."
+process_map:
+  - id: joint_recovery
+    name: "Joint slaughter/dressing or cutting recovery"
+    inclusion: "required"
+    inclusion_condition: "Represent the actual joint operation where sheep fat tissue becomes a separately identified output; if outside the foreground, represent it in the required upstream dataset"
+    role: "Establish sheep-only identity, joint-product point, gross fat recovery, and co-product/waste disposition"
+    quantitative_reference: "Measured gross sheep fat output and all joint outputs over the same lot or allocation period"
+  - id: fat_trimming
+    name: "Separation, trimming, and conditional washing"
+    inclusion: "required"
+    inclusion_condition: "Always represent final separation/trimming; include washing only when performed"
+    role: "Produce saleable unrendered sheep fat while preserving tissue-state and loss records"
+    quantitative_reference: "Net unrendered sheep fat output before cold conditioning/packaging"
+  - id: cold_conditioning
+    name: "Chilling, freezing, and storage"
+    inclusion: "conditional"
+    inclusion_condition: "Include when active cooling, freezing, controlled-temperature storage, or refrigerant use occurs before handover"
+    role: "Establish declared market temperature state and record cold-chain resources and losses"
+    quantitative_reference: "Conditioned unrendered sheep fat output and storage duration"
+  - id: packaging_dispatch
+    name: "Packaging, on-site handling, and dispatch handover"
+    inclusion: "required"
+    inclusion_condition: "Packaging may be zero for bulk transfer, but tare treatment and the handover shall always be recorded"
+    role: "Produce the reference flow at the declared ownership and transport handover"
+    quantitative_reference: "1 kg net unrendered sheep fat at handover"
+  - id: rendering_refining
+    name: "Rendering, melting, extraction, or refining"
+    inclusion: "excluded_by_default"
+    inclusion_condition: "Never part of the default foreground for this PCR"
+    role: "Converts the material to a different rendered/refined product category"
+    quantitative_reference: "Not applicable"
+process_inventory:
+  - id: joint_recovery
+    label: "Joint slaughter/dressing or cutting recovery"
+    inputs:
+      product:
+        - row_id: route_sheep_input
+          role: "Route-specific sheep, carcass, or cut input"
+          name: "Sheep, sheep carcass, or sheep cut appropriate to the declared route; Tiangong UUID unresolved pending route-specific identity review"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the actual route-specific input that carries upstream sheep production, transport, and any earlier slaughter/cutting burdens. Do not substitute another ruminant or an aggregated mixed-species input."
+          amount:
+            expression: "Measured received mass for the same lot or joint-production period"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "Per measured joint slaughter/cutting operation that produces the represented gross sheep fat output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_joint_mass_and_identity
+              source_ids:
+                - codex-cxc-58-2005
+            ranges: []
+        - row_id: joint_process_water
+          role: "Water used in joint recovery"
+          name: "Process or potable water, site-specific candidate; Tiangong UUID unresolved"
+          flow_type: "product"
+          property_unit: "Volume / m3 or Mass / kg with documented conversion"
+          description: "Record metered or allocated water used in slaughter/cutting recovery only when that operation is in the represented foreground."
+          amount:
+            expression: "Metered use, or allocation from a submetered facility total using a documented causal driver"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "Per measured joint-production period and normalized through the allocation rule"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water_records
+              source_ids:
+                - eu-2019-2031-fdm-bat
+            ranges: []
+        - row_id: joint_process_energy
+          role: "Energy used in joint recovery"
+          name: "Site-specific electricity and fuel products; Tiangong UUIDs unresolved"
+          flow_type: "product"
+          property_unit: "Energy / kWh or MJ, by carrier"
+          description: "Record metered electricity and fuels for in-scope joint recovery operations; do not apply a sheep, cattle, or generic slaughter default."
+          amount:
+            expression: "Metered use, or allocation from a submetered facility total using a documented causal driver"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "Per measured joint-production period and normalized through the allocation rule"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_energy_records
+              source_ids:
+                - eu-2019-2031-fdm-bat
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: gross_sheep_fat
+          role: "Gross sheep fatty tissue recovered for trimming"
+          name: "Sheep fat, unrendered"
+          flow_type: "product"
+          flow_ref:
+            uuid: "508545ee-d8e4-4705-a676-7ae2062635ae"
+          property_unit: "Mass / kg"
+          description: "Record the mass of sheep-only fatty tissue at the first separately measured recovery point, before final trimming and conditioning."
+          amount:
+            expression: "Measured gross recovered mass for the represented lot"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "Per measured joint-production period"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_joint_mass_and_identity
+              source_ids:
+                - unsd-cpc-3-0-21514
+                - codex-cxc-58-2005
+            ranges: []
+        - row_id: joint_co_products
+          role: "Other edible or usable joint outputs"
+          name: "Site-specific sheep meat, offal, hide, or other joint product candidates; Tiangong UUIDs unresolved"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record all non-fat joint outputs that remain products or co-products, segregated by identity and disposition, so the joint allocation denominator is complete."
+          amount:
+            expression: "Measured output mass by product identity for the same allocation period"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "Per measured joint-production period"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_joint_mass_and_identity
+              source_ids:
+                - eu-2021-2279-pef
+            ranges: []
+      waste:
+        - row_id: joint_rejected_tissue
+          role: "Condemned or otherwise discarded tissue"
+          name: "Sheep tissue waste, disposition-specific candidate; Tiangong UUID unresolved"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record tissue judged unsafe, unsuitable, or otherwise discarded as waste only when it crosses the waste boundary. If it is sold or transferred for a productive use, record it instead as a co-product with its actual disposition."
+          amount:
+            expression: "Weighed or container-count-derived rejected mass by disposition"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "Per measured joint-production period"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_joint_waste_and_disposition
+              source_ids:
+                - codex-cxc-58-2005
+            ranges: []
+        - row_id: joint_wastewater
+          role: "Joint-process wastewater"
+          name: "Wastewater, site-specific candidate; Tiangong UUID unresolved"
+          flow_type: "waste"
+          property_unit: "Volume / m3"
+          description: "Record wastewater generated by in-scope joint recovery, with allocation and measured characteristics at the most specific practicable level."
+          amount:
+            expression: "Metered discharge or documented water balance for the represented period"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "Per measured joint-production period and normalized through the allocation rule"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_water_records
+              source_ids:
+                - eu-2019-2031-fdm-bat
+            ranges: []
+      elementary:
+        []
+  - id: fat_trimming
+    label: "Separation, trimming, and conditional washing"
+    inputs:
+      product:
+        - row_id: gross_fat_input
+          role: "Gross sheep fatty tissue input"
+          name: "Sheep fat, unrendered"
+          flow_type: "product"
+          flow_ref:
+            uuid: "508545ee-d8e4-4705-a676-7ae2062635ae"
+          property_unit: "Mass / kg"
+          description: "Record the actual gross sheep fatty tissue entering final trimming. The QA range below is a provisional author reasoned estimate, not a default yield and not a value to use when measured data are absent."
+          amount:
+            expression: "Measured gross sheep fatty tissue input"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "Per 1 kg net unrendered sheep fat output from trimming"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_trimming_mass_balance
+              source_ids:
+                - unsd-cpc-3-0-21514
+            ranges:
+              - role: qa_guardrail
+                lower: "1.00"
+                upper: "2.00"
+                unit: "kg"
+                basis: "Per 1 kg net unrendered sheep fat output from trimming; lower bound enforces conservation and the deliberately broad upper bound flags major trimming/downgrading for review without asserting a typical sheep-fat yield"
+                basis_kind: "process_output"
+                evidence_kind: "reasoned_estimate"
+                source_ids: []
+        - row_id: trimming_wash_water
+          role: "Washing water, when used"
+          name: "Process or potable water, site-specific candidate; Tiangong UUID unresolved"
+          flow_type: "product"
+          property_unit: "Volume / m3 or Mass / kg with documented conversion"
+          description: "Record only water that actually crosses the trimming-process boundary; dry trimming has zero water input and shall be declared as such."
+          amount:
+            expression: "Metered or batch-recorded water used for the represented lot"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "Per kg net unrendered sheep fat output from trimming"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_trimming_water_records
+              source_ids:
+                - codex-cxc-58-2005
+                - eu-2019-2031-fdm-bat
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: trimmed_unrendered_fat
+          role: "Net unrendered sheep fat after trimming"
+          name: "Sheep fat, unrendered"
+          flow_type: "product"
+          flow_ref:
+            uuid: "508545ee-d8e4-4705-a676-7ae2062635ae"
+          property_unit: "Mass / kg"
+          description: "Record the actual tissue output before cold conditioning and packaging, preserving anatomical origin and edible/other disposition."
+          amount:
+            expression: "Measured net output after trimming and any declared drainage"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "Per represented trimming lot"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_trimming_mass_balance
+              source_ids:
+                - unsd-cpc-3-0-21514
+                - codex-cxc-58-2005
+            ranges: []
+      waste:
+        - row_id: trimming_residuals
+          role: "Trim, downgraded tissue, and wash loss"
+          name: "Tissue residual or wastewater, disposition-specific candidate; Tiangong UUID unresolved"
+          flow_type: "waste"
+          property_unit: "Mass / kg or Volume / m3, separately by flow"
+          description: "Record each residual by mass and actual disposition. Productive transfers are co-products, not waste; drain losses shall not be hidden in yield."
+          amount:
+            expression: "Measured residual mass and wastewater volume for the represented lot"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "Per kg net unrendered sheep fat output from trimming"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_trimming_mass_balance
+              source_ids:
+                - codex-cxc-58-2005
+                - eu-2019-2031-fdm-bat
+            ranges: []
+      elementary:
+        []
+  - id: cold_conditioning
+    label: "Chilling, freezing, and storage"
+    inputs:
+      product:
+        - row_id: cold_stage_fat_input
+          role: "Unrendered sheep fat entering cold conditioning"
+          name: "Sheep fat, unrendered"
+          flow_type: "product"
+          flow_ref:
+            uuid: "508545ee-d8e4-4705-a676-7ae2062635ae"
+          property_unit: "Mass / kg"
+          description: "Record the measured tissue mass and temperature state at the cold-stage entrance."
+          amount:
+            expression: "Measured lot mass entering conditioning/storage"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "Per represented cold-conditioning lot"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cold_chain_records
+              source_ids:
+                - codex-cxc-58-2005
+            ranges: []
+        - row_id: cold_stage_energy
+          role: "Cold-stage electricity and fuels"
+          name: "Site-specific electricity and fuel products; Tiangong UUIDs unresolved"
+          flow_type: "product"
+          property_unit: "Energy / kWh or MJ, by carrier"
+          description: "Record actual energy for chilling, freezing, controlled-temperature storage, defrost, and in-scope cold-room auxiliaries. Do not borrow energy intensity from another animal species or facility."
+          amount:
+            expression: "Submetered use or calculated share from metered equipment energy, operating time, load, and documented allocation driver"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "Per kg conditioned unrendered sheep fat output and declared storage duration"
+              kind: "storage_duration"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_cold_energy_records
+              source_ids:
+                - codex-cxc-58-2005
+                - eu-2019-2031-fdm-bat
+            ranges: []
+        - row_id: cold_stage_refrigerant_makeup
+          role: "Refrigerant make-up"
+          name: "Refrigerant by actual chemical identity; Tiangong UUID unresolved"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record refrigerant make-up attributable to in-scope equipment when a defensible facility allocation is available; otherwise disclose the data gap."
+          amount:
+            expression: "Maintenance-record make-up mass allocated by equipment, operating period, and documented causal driver"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "Per kg conditioned unrendered sheep fat output over the represented period"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_refrigerant_records
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: conditioned_unrendered_fat
+          role: "Conditioned unrendered sheep fat"
+          name: "Sheep fat, unrendered"
+          flow_type: "product"
+          flow_ref:
+            uuid: "508545ee-d8e4-4705-a676-7ae2062635ae"
+          property_unit: "Mass / kg"
+          description: "Record net mass, declared chilled/frozen state, handover specification, actual measured temperature where controlled, and storage time."
+          amount:
+            expression: "Measured net lot mass after conditioning and storage"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "Per represented cold-conditioning lot"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cold_chain_records
+              source_ids:
+                - codex-cxc-58-2005
+            ranges: []
+      waste:
+        - row_id: cold_stage_product_loss
+          role: "Cold-stage product loss"
+          name: "Sheep-fat loss, disposition-specific candidate; Tiangong UUID unresolved"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record purge, rejected tissue, damaged product, and other measured losses by actual disposition."
+          amount:
+            expression: "Difference supported by weighed loss records; do not use an assumed shrink factor"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "Per kg conditioned unrendered sheep fat output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_cold_chain_records
+              source_ids: []
+            ranges: []
+      elementary:
+        - row_id: cold_stage_refrigerant_loss
+          role: "Refrigerant released to air"
+          name: "Refrigerant emission to air by actual chemical identity; Tiangong UUID unresolved"
+          flow_type: "elementary"
+          property_unit: "Mass / kg"
+          description: "When maintenance and charge records support a mass balance, record calculated release by actual refrigerant identity; otherwise report the check as inconclusive rather than assuming zero."
+          amount:
+            expression: "Refrigerant mass balance under calc_refrigerant_loss"
+            value_mode: "calculated_value"
+            specificity: "technology_specific"
+            basis:
+              text: "Per kg conditioned unrendered sheep fat output over the represented period"
+              kind: "process_output"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_refrigerant_records
+              source_ids: []
+            ranges: []
+  - id: packaging_dispatch
+    label: "Packaging, on-site handling, and dispatch handover"
+    inputs:
+      product:
+        - row_id: dispatch_fat_input
+          role: "Unrendered sheep fat entering dispatch preparation"
+          name: "Sheep fat, unrendered"
+          flow_type: "product"
+          flow_ref:
+            uuid: "508545ee-d8e4-4705-a676-7ae2062635ae"
+          property_unit: "Mass / kg"
+          description: "Record the net mass and state entering packaging or bulk dispatch preparation."
+          amount:
+            expression: "Measured lot mass before packaging/loading"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "Per dispatch lot"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_dispatch_records
+              source_ids: []
+            ranges: []
+        - row_id: dispatch_packaging
+          role: "Packaging materials consumed"
+          name: "Packaging material by actual material and format; Tiangong UUIDs unresolved"
+          flow_type: "product"
+          property_unit: "Mass / kg or item count converted with verified item mass"
+          description: "Record actual primary, secondary, and non-reusable transport packaging consumed before handover. For bulk transfer, record zero packaging and identify reusable equipment separately."
+          amount:
+            expression: "Purchase/issue records reconciled to the represented dispatch lots, net of reusable equipment"
+            value_mode: "calculated_value"
+            specificity: "product_specific"
+            basis:
+              text: "Per kg net reference product at handover"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_packaging_records
+              source_ids:
+                - eu-2021-2279-pef
+            ranges: []
+        - row_id: dispatch_energy
+          role: "On-site handling energy"
+          name: "Site-specific electricity or fuel product; Tiangong UUID unresolved"
+          flow_type: "product"
+          property_unit: "Energy / kWh or MJ"
+          description: "Record metered or equipment-record-based energy for in-scope packaging, internal movement, and loading before handover."
+          amount:
+            expression: "Metered use or calculated from equipment records and operating time"
+            value_mode: "calculated_value"
+            specificity: "site_specific"
+            basis:
+              text: "Per kg net reference product at handover"
+              kind: "reference_flow"
+            evidence:
+              kind: "calculated_from_collection"
+              collection_protocol_id: cp_dispatch_records
+              source_ids:
+                - eu-2019-2031-fdm-bat
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: reference_unrendered_sheep_fat
+          role: "Reference unrendered sheep fat at handover"
+          name: "Sheep fat, unrendered"
+          flow_type: "product"
+          flow_ref:
+            uuid: "508545ee-d8e4-4705-a676-7ae2062635ae"
+          property_unit: "Mass / kg"
+          description: "This is the reference product after all in-scope operations and before downstream transport owned by the next operator."
+          amount:
+            expression: "1 kg net product mass at the declared handover"
+            value_mode: "fixed_value"
+            specificity: "product_specific"
+            basis:
+              text: "PCR reference flow"
+              kind: "reference_flow"
+            evidence:
+              kind: "identity_reference"
+              source_ids:
+                - unsd-cpc-3-0-21514
+            ranges: []
+      waste:
+        - row_id: dispatch_waste
+          role: "Packaging and dispatch losses"
+          name: "Product or packaging waste by actual material; Tiangong UUIDs unresolved"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record rejected product, damaged packaging, and other dispatch-stage waste separately by material and disposition."
+          amount:
+            expression: "Weighed or verified count-based mass for the represented dispatch lots"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "Per kg net reference product at handover"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_dispatch_waste_and_disposition
+              source_ids: []
+            ranges: []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocation_subdivide_first
+    applies_to: "Joint slaughter/dressing, cutting, utilities, cold storage, and packaging"
+    rule: "First subdivide and directly assign separately metered material, energy, packaging, waste, and emission flows to the process and product that cause them. Document meters, equipment boundaries, and allocation periods."
+    source_ids:
+      - eu-2021-2279-pef
+  - rule_id: allocation_joint_hierarchy
+    applies_to: "Remaining multifunctional slaughter or cutting burdens"
+    rule: "After subdivision, follow the PEF allocation hierarchy: avoid allocation through subdivision or other justified modelling where possible; where unavoidable, use a documented relevant physical causal relationship; if no defensible physical relationship exists, use another justified relationship such as economic value. Do not prescribe a sheep-fat allocation share in this PCR."
+    source_ids:
+      - eu-2021-2279-pef
+  - rule_id: allocation_complete_denominator
+    applies_to: "Joint-product denominator"
+    rule: "Include every saleable or otherwise productive joint output from the same lot or allocation period. Record measured masses, product identities, disposition, prices and price period when economic allocation is used, and reconcile the allocation factors to one."
+    source_ids:
+      - eu-2021-2279-pef
+  - rule_id: allocation_waste_and_credits
+    applies_to: "Rejected tissue, wastewater, packaging waste, and productive residuals"
+    rule: "Treat a flow as waste when the holder discards or is required to discard it. Do not award an avoided-product credit merely because a residual may have value; any substitution or recycling credit requires an explicitly documented downstream function and method consistent with the study goal."
+    source_ids:
+      - eu-2021-2279-pef
+      - codex-cxc-58-2005
+  - rule_id: allocation_no_cross_species_default
+    applies_to: "All allocation factors"
+    rule: "Do not import mass yields, price ratios, physical relationships, or allocation shares from cattle, buffalo, goats, other ruminants, or mixed-species operations as a sheep-fat default. Use represented sheep-route records or report the result as unresolved."
+    source_ids:
+      - unsd-cpc-3-0-21514
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_joint_mass_and_identity
+      process_id: "joint_recovery"
+      flow_role: "Route input, gross sheep fat, and all joint products"
+      record_type: "Scale tickets, production/lot records, species and disposition records"
+      raw_fields: "lot_id; species; route; input_identity; input_mass_kg; gross_fat_mass_kg; co_product_id; co_product_mass_kg; anatomical_origin; disposition; scale_id; timestamp"
+      collection_method: "Calibrated weighing linked to lot and species-segregation records"
+      unit: "kg"
+      frequency: "Each lot or production batch"
+      temporal_coverage: "All represented lots; allocation period disclosed"
+      site_scope: "Every represented slaughter/cutting site"
+      aggregation_rule: "Sum by product and disposition over one consistent allocation period; retain lot-level linkage"
+      quality_evidence: "Calibration/verification records; post-mortem disposition; species traceability; reconciliation report"
+    - protocol_id: cp_trimming_mass_balance
+      process_id: "fat_trimming"
+      flow_role: "Gross fat input, net output, trims, downgrade, and drainage"
+      record_type: "Batch sheets and scale records"
+      raw_fields: "lot_id; gross_input_kg; net_output_kg; trim_kg; downgraded_product_kg; waste_kg; drain_loss_kg; pre_post_state; scale_id"
+      collection_method: "Calibrated weighing before and after trimming and any washing/drainage"
+      unit: "kg"
+      frequency: "Each batch"
+      temporal_coverage: "All represented batches"
+      site_scope: "Every trimming site"
+      aggregation_rule: "Reconcile input to net output plus all residual destinations before normalization"
+      quality_evidence: "Scale verification; signed batch balance; disposition records"
+    - protocol_id: cp_water_records
+      process_id: "joint_recovery"
+      flow_role: "Joint-recovery process water and wastewater"
+      record_type: "Meter readings, invoices, batch logs, and wastewater records"
+      raw_fields: "meter_id; start_reading; end_reading; unit; batch_or_period; operation; wastewater_volume; measurement_point; allocation_driver"
+      collection_method: "Prefer process submeter; otherwise documented water balance or causal allocation"
+      unit: "m3 or kg"
+      frequency: "Each batch or at least each operating day, matched to production"
+      temporal_coverage: "Full represented period including cleaning"
+      site_scope: "Every represented joint-recovery facility; process level where practicable"
+      aggregation_rule: "Subtract verified out-of-scope use and normalize by process output or allocation factor"
+      quality_evidence: "Meter calibration; invoice reconciliation; water-balance closure; documented measurement point"
+    - protocol_id: cp_trimming_water_records
+      process_id: "fat_trimming"
+      flow_role: "Trimming wash water, when used"
+      record_type: "Meter readings, batch logs, and wastewater records"
+      raw_fields: "meter_id; start_reading; end_reading; unit; lot_id; operation; wastewater_volume; measurement_point"
+      collection_method: "Prefer batch or process submeter; otherwise documented water balance"
+      unit: "m3 or kg"
+      frequency: "Each trimming batch using water"
+      temporal_coverage: "All represented wet-trimming batches"
+      site_scope: "Every represented trimming site"
+      aggregation_rule: "Subtract verified out-of-scope use and normalize by net trimmed output"
+      quality_evidence: "Meter calibration; batch record; water-balance closure; documented measurement point"
+    - protocol_id: cp_energy_records
+      process_id: "joint_recovery"
+      flow_role: "Electricity and fuel for joint recovery"
+      record_type: "Meter readings, invoices, equipment logs"
+      raw_fields: "carrier; meter_id; start_reading; end_reading; unit; operating_time; equipment; process; allocation_driver"
+      collection_method: "Process submeter or documented equipment calculation reconciled to facility totals"
+      unit: "kWh or MJ"
+      frequency: "Each batch/day for variable loads; monthly reconciliation"
+      temporal_coverage: "Full represented joint-recovery period"
+      site_scope: "Every represented joint-recovery facility; process/equipment level where practicable"
+      aggregation_rule: "Sum by carrier and process; normalize using direct measurement or documented causal driver"
+      quality_evidence: "Meter calibration; invoice reconciliation; equipment specification and operating log"
+    - protocol_id: cp_cold_chain_records
+      process_id: "cold_conditioning"
+      flow_role: "Product mass, temperature state, storage, and loss"
+      record_type: "Temperature logger, warehouse, batch, and scale records"
+      raw_fields: "lot_id; entry_mass_kg; exit_mass_kg; entry_temperature; exit_temperature; temperature_unit; specification; start_time; end_time; excursion; loss_mass_kg; disposition"
+      collection_method: "Calibrated temperature monitoring and calibrated weighing linked to inventory movements"
+      unit: "kg; temperature unit; h or day"
+      frequency: "Each lot; continuous or facility-defined monitoring where appropriate"
+      temporal_coverage: "Entire conditioning and storage interval"
+      site_scope: "Every in-scope cold room/freezer and represented lot"
+      aggregation_rule: "Time-weighted storage duration; sum lot mass and losses; no generic shrink factor"
+      quality_evidence: "Logger calibration; alarm/excursion log; inventory reconciliation; written specification"
+    - protocol_id: cp_cold_energy_records
+      process_id: "cold_conditioning"
+      flow_role: "Cold-stage electricity and fuels"
+      record_type: "Meter readings, invoices, equipment and operating-time logs"
+      raw_fields: "carrier; meter_id; start_reading; end_reading; unit; equipment_id; operating_time; load_record; storage_zone; allocation_driver"
+      collection_method: "Cold-stage submeter or documented equipment calculation reconciled to the relevant meter"
+      unit: "kWh or MJ"
+      frequency: "Each batch/day for variable loads; monthly reconciliation"
+      temporal_coverage: "Entire represented conditioning and storage interval"
+      site_scope: "Every in-scope cold room/freezer"
+      aggregation_rule: "Sum by carrier and equipment; normalize by conditioned output mass and disclose storage duration"
+      quality_evidence: "Meter calibration; invoice reconciliation; equipment specification; operating/load log"
+    - protocol_id: cp_refrigerant_records
+      process_id: "cold_conditioning"
+      flow_role: "Refrigerant make-up and release"
+      record_type: "Charge, purchase, recovery, and maintenance records"
+      raw_fields: "equipment_id; refrigerant_identity; opening_charge_kg; added_kg; recovered_kg; closing_charge_kg; service_date; operating_period; allocation_driver"
+      collection_method: "Equipment-level refrigerant mass balance"
+      unit: "kg"
+      frequency: "Each service event with annual or represented-period reconciliation"
+      temporal_coverage: "Full represented operating period"
+      site_scope: "In-scope refrigeration equipment"
+      aggregation_rule: "Calculate loss by refrigerant identity and allocate only with a documented causal driver"
+      quality_evidence: "Certified service record; purchase/recovery record; mass-balance reconciliation"
+    - protocol_id: cp_packaging_records
+      process_id: "packaging_dispatch"
+      flow_role: "Packaging consumed and tare"
+      record_type: "Purchase/issue records, bill of materials, item mass checks"
+      raw_fields: "packaging_id; material; item_count; measured_item_mass_kg; purchased_mass_kg; returned_mass_kg; reusable_flag; lot_id"
+      collection_method: "Reconcile issued packaging to lots; verify count-to-mass factors by weighing"
+      unit: "kg and item"
+      frequency: "Each packaging lot; period reconciliation"
+      temporal_coverage: "Full represented period"
+      site_scope: "Every represented packing line/site"
+      aggregation_rule: "Net non-reusable packaging consumed divided by net reference-product mass"
+      quality_evidence: "Supplier specification; weigh check; inventory reconciliation; reusable-equipment register"
+    - protocol_id: cp_dispatch_records
+      process_id: "packaging_dispatch"
+      flow_role: "Reference product, on-site handling, and handover"
+      record_type: "Dispatch scale ticket, loading record, equipment log, delivery terms"
+      raw_fields: "lot_id; gross_mass_kg; tare_mass_kg; net_mass_kg; product_state; handover_temperature; packaging; loading_energy; handover_location; handover_time; transport_owner"
+      collection_method: "Calibrated gross/tare weighing and signed transfer record"
+      unit: "kg; temperature unit; kWh or MJ"
+      frequency: "Each dispatch lot"
+      temporal_coverage: "All represented dispatches"
+      site_scope: "Every represented dispatch site"
+      aggregation_rule: "Sum net product and in-scope handling resources; normalize to 1 kg net product"
+      quality_evidence: "Scale verification; transfer document; temperature record; equipment log"
+    - protocol_id: cp_joint_waste_and_disposition
+      process_id: "joint_recovery"
+      flow_role: "Joint-recovery waste and productive residual destinations"
+      record_type: "Weigh tickets, container records, manifests, transfer and revenue records"
+      raw_fields: "lot_or_period; flow_identity; mass_kg; container_count; count_to_mass_factor; destination; waste_or_product_status; treatment; revenue; currency; price_period"
+      collection_method: "Direct weighing preferred; verified count conversion otherwise"
+      unit: "kg; currency/kg when relevant"
+      frequency: "Each removal or transfer"
+      temporal_coverage: "Full represented joint-recovery period"
+      site_scope: "Every represented joint-recovery site and residual stream"
+      aggregation_rule: "Sum separately by identity, status, and destination; do not net against product mass"
+      quality_evidence: "Scale/check records; transfer manifest; invoice; legal/operational disposition record"
+    - protocol_id: cp_dispatch_waste_and_disposition
+      process_id: "packaging_dispatch"
+      flow_role: "Dispatch waste and productive residual destinations"
+      record_type: "Weigh tickets, container records, manifests, transfer and revenue records"
+      raw_fields: "lot_or_period; flow_identity; mass_kg; container_count; count_to_mass_factor; destination; waste_or_product_status; treatment; revenue; currency; price_period"
+      collection_method: "Direct weighing preferred; verified count conversion otherwise"
+      unit: "kg; currency/kg when relevant"
+      frequency: "Each removal or transfer"
+      temporal_coverage: "Full represented dispatch period"
+      site_scope: "Every represented dispatch site and residual stream"
+      aggregation_rule: "Sum separately by identity, status, and destination; do not net against product mass"
+      quality_evidence: "Scale/check records; transfer manifest; invoice; legal/operational disposition record"
+  calculation_rules:
+    - id: calc_normalize_reference_mass
+      applies_to: "Every inventory amount"
+      rule: "normalized amount = represented-period amount / net reference-product mass at dispatch; retain the original unit and conversion record"
+      inputs:
+        - "Collected process amount"
+        - "dispatch net mass"
+      output: "Amount per 1 kg net unrendered sheep fat"
+      source_ids:
+        - eu-2021-2279-pef
+    - id: calc_mass_balance
+      applies_to: "joint_recovery; fat_trimming; cold_conditioning; packaging_dispatch"
+      rule: "mass balance closure = accounted output mass / measured input mass; list product, co-product, waste, drainage, and measured storage losses separately and investigate unexplained differences"
+      inputs:
+        - "Matched input and output mass records"
+      output: "Process mass-balance closure and unresolved difference"
+      source_ids:
+        - eu-2021-2279-pef
+        - eu-2019-2031-fdm-bat
+    - id: calc_joint_allocation
+      applies_to: "Unsubdivided joint slaughter/cutting burdens"
+      rule: "allocated burden to unrendered sheep fat = remaining joint burden × documented allocation factor; allocation factors across all joint outputs shall sum to 1; physical or economic driver and period shall be disclosed"
+      inputs:
+        - "Remaining joint burden"
+        - "complete co-product denominator"
+        - "causal data or masses and prices"
+      output: "Allocated joint burden and audit trail"
+      source_ids:
+        - eu-2021-2279-pef
+    - id: calc_cold_energy
+      applies_to: "cold_conditioning"
+      rule: "cold-stage energy = directly metered energy, or equipment power × measured operating time adjusted by documented load data and reconciled to the relevant meter; divide by conditioned output mass and disclose storage duration"
+      inputs:
+        - "Meter/equipment readings"
+        - "operating time"
+        - "conditioned output mass"
+        - "storage duration"
+      output: "Energy by carrier per kg conditioned product, with duration"
+      source_ids:
+        - eu-2019-2031-fdm-bat
+    - id: calc_refrigerant_loss
+      applies_to: "cold_conditioning"
+      rule: "release by refrigerant = opening charge + additions - recovered amount - closing charge, adjusted only for documented transfers; negative or incomplete balances are inconclusive"
+      inputs:
+        - "Refrigerant charge"
+        - addition
+        - recovery
+        - "and closing records"
+      output: "kg refrigerant release by identity and represented period"
+      source_ids:
+        - eu-2019-2031-fdm-bat
+    - id: calc_packaging_mass
+      applies_to: "packaging_dispatch"
+      rule: "non-reusable packaging mass = issued mass - returned unused mass; for count records, multiply verified item count by verified item mass; exclude reusable equipment and report it separately"
+      inputs:
+        - "Packaging issue/return"
+        - count
+        - "item mass"
+        - "reusable flag"
+      output: "kg packaging per kg net reference product"
+      source_ids:
+        - eu-2021-2279-pef
+  data_quality_requirements:
+    - id: dq_identity_and_scope
+      applies_to: "Product and all upstream/intermediate tissue flows"
+      requirement: "Demonstrate sheep-only segregation, actual anatomical tissue/source-cut description, route, disposition, and unrendered/no-refining status. Mixed or unidentified animal fat is nonconforming."
+      evidence: "Lot traceability, production records, post-mortem/disposition records, product specification"
+    - id: dq_mass_metrology
+      applies_to: "Reference mass and all material balances"
+      requirement: "Use calibrated or verified weighing; disclose gross/tare method, moisture/tissue convention, measurement stage, unexplained balance differences, and count-to-mass conversions."
+      evidence: "Calibration/verification certificates, scale tickets, batch balance, weigh checks"
+    - id: dq_temporal_representativeness
+      applies_to: "All foreground records"
+      requirement: "Cover the declared production period and relevant seasonal/operating states, including chilled/frozen storage. Explain exclusions, downtime, and abnormal lots."
+      evidence: "Coverage table, production calendar, meter and batch record completeness"
+    - id: dq_cold_chain
+      applies_to: "Chilled or frozen routes"
+      requirement: "Provide written temperature specification, measurement points, logger calibration, actual handover temperature where controlled, storage duration, and excursions; do not report a generic threshold as if source-backed."
+      evidence: "Temperature logs, alarm records, calibration, warehouse records"
+    - id: dq_allocation
+      applies_to: "Joint slaughter/cutting and shared utilities"
+      requirement: "Document subdivision attempts, reason for the chosen remaining allocation relationship, complete denominator, source period for masses/prices, factor reconciliation, and sensitivity where allocation is material."
+      evidence: "Process diagram, meters, product ledger, prices, allocation workbook, sensitivity result"
+    - id: dq_inventory_completeness
+      applies_to: "In-scope operations"
+      requirement: "Account for relevant water, energy, raw materials, packaging, wastewater, residues, direct emissions, and losses at process or site level as appropriate. State checks skipped and data gaps."
+      evidence: "Resource/emission inventory, meters, invoices, waste manifests, reconciliation"
+    - id: dq_reasoned_estimate_replacement
+      applies_to: "Provisional gross-fat-input QA guardrail"
+      requirement: "Treat 1.00-2.00 kg input per kg output only as a reasoned QA screen. Replace or retire it when reviewed sheep-fat-specific batch mass balances and metrology uncertainty are available for the represented route and tissue state; never convert it into a default yield or allocation factor."
+      evidence: "Review record linking replacement evidence to gross_fat_input_mass_guardrail"
+    - id: dq_source_applicability
+      applies_to: "Use of external standards and guidance"
+      requirement: "Apply CXC 58-2005 only to applicable meat-hygiene/process-control context; use CXS 211-1999 only to distinguish rendered named fats; use FDM BAT only for relevant inventory/monitoring completeness; do not import legal thresholds, composition values, or unrelated sector performance values."
+      evidence: "Source applicability statement and reviewer sign-off"
+validation_rules:
+  - rule_id: validate_reference_identity
+    applies_to: "Reference flow and product metadata"
+    rule: "Fail if the product-flow UUID, Mass property UUID, Units of mass UUID, kg unit, CPC reference, or sheep-only unrendered identity does not exactly match this PCR."
+    source_ids:
+      - unsd-cpc-3-0-21514
+  - rule_id: validate_required_qualifiers
+    applies_to: "Foreground data package"
+    rule: "Fail if route, anatomical tissue origin/source cut, disposition, unrendered status, temperature state, tissue/moisture convention, packaging/tare, facility/period/lot, handover, or transport ownership is missing."
+    source_ids:
+      - unsd-cpc-3-0-21514
+      - codex-cxc-58-2005
+  - rule_id: validate_rendering_excluded
+    applies_to: "Process map and inventory"
+    rule: "Fail if rendering, melting, extraction, refining, or production of tallow/rendered fat is included in the default foreground or if a CPC 21521-21529 product is used as the reference flow."
+    source_ids:
+      - unsd-cpc-3-0-21514
+      - codex-cxs-211-1999
+  - rule_id: validate_species_and_route
+    applies_to: "Input and output identities"
+    rule: "Fail if another species, a mixed-species fat stream, or a borrowed other-ruminant yield/allocation parameter is used without explicit exclusion from the reference product and separate scenario treatment."
+    source_ids:
+      - unsd-cpc-3-0-21514
+  - rule_id: validate_mass_and_tare
+    applies_to: "Mass balance and reference amount"
+    rule: "Fail if net reference mass is not measured or verified, packaging tare is included in the 1 kg product, or material outputs and residuals are not reconciled; flag the provisional 1.00-2.00 QA interval only for review, never automatic substitution."
+    source_ids:
+      - eu-2021-2279-pef
+  - rule_id: validate_allocation
+    applies_to: "Joint slaughter/cutting burdens"
+    rule: "Fail if direct subdivision was not considered, the allocation relationship is undocumented, joint outputs are omitted, factors do not sum to 1, or a default sheep-fat allocation share is asserted without represented evidence."
+    source_ids:
+      - eu-2021-2279-pef
+  - rule_id: validate_cold_chain
+    applies_to: "Chilled or frozen routes"
+    rule: "Fail if conditioning/storage energy and product losses are omitted; fail if state, duration, measurement points, or excursions are undisclosed. Mark refrigerant emissions inconclusive when charge records are insufficient rather than assuming zero."
+    source_ids:
+      - codex-cxc-58-2005
+      - eu-2019-2031-fdm-bat
+  - rule_id: validate_transport_handover
+    applies_to: "Dispatch and transport"
+    rule: "Fail if the handover point or transport ownership is ambiguous. If delivery transport is included, require mode, distance, load, route, temperature-control energy where applicable, and a reference flow located at the delivery handover."
+    source_ids:
+      - codex-cxc-58-2005
+      - eu-2021-2279-pef
+  - rule_id: validate_source_limits
+    applies_to: "Quantitative and legal claims"
+    rule: "Fail if CXS 211-1999 composition/quality values are applied to unrendered fat, if CXC 58-2005 is used as LCA quantity evidence, or if EU 2019/2031 thresholds/performance values are generalized beyond their legal and sector scope."
+    source_ids:
+      - codex-cxs-211-1999
+      - codex-cxc-58-2005
+      - eu-2019-2031-fdm-bat
+published_dataset_profile:
+  dataset_role: "Foreground production dataset for unrendered sheep fat at a declared dispatch handover"
+  downstream_use: "secondary_dataset; background_dataset after methodology and data-quality review"
+  allowed_use: "LCA process or lifecyclemodel construction for sheep-only unrendered fat matching the declared route, anatomical tissue state, disposition, temperature state, packaging, geography, period, allocation method, and handover"
+  excluded_use: "Rendered/refined fats or tallow; other or mixed animal species; substitution for meat, live-sheep, hide, offal, or rendering datasets; use of provisional QA bounds as default yields; public comparative assertions without applicable review/verification"
+  required_metadata: "PCR id and version context; reference UUID/property/unit-group/unit; CPC reference; species; anatomical tissue/source cut; slaughter/cutting route; disposition; actual tissue/moisture convention; unrendered confirmation; temperature state/specification and handover temperature where controlled; storage duration; packaging/tare; facility/geography; period/lot; upstream dataset; process map; handovers; transport ownership; allocation method/factors/denominator; data sources"
+  required_quality_disclosure: "Foreground versus calculated records; mass-balance closure; meter/scale coverage and calibration; temporal/site coverage; cold-chain coverage and excursions; refrigerant-data completeness; allocation sensitivity; missing UUIDs; reasoned-estimate use and replacement status; checks performed/skipped; unresolved findings"
+  update_trigger: "Reviewed sheep-fat-specific mass-balance evidence; change in Tiangong reference identities; change in product scope or CPC classification; new applicable category-specific PCR/PEFCR; changed slaughter/cutting/cold-chain route; revised Codex hygiene or named-fat texts; revised PEF method; new applicable BAT conclusions; material foreground evidence that replaces the provisional QA guardrail"
+data_sources:
+  - id: "unsd-cpc-3-0-21514"
+    type: "official_guidance"
+    reference: "United Nations Statistics Division, Central Product Classification (CPC) Version 3.0, code 21514, “Sheep fat, unrendered”, official structure CSV: https://unstats.un.org/unsd/classifications/Econ/Download/In%20Text/CPC_Ver_3.0_Structure_30Jun2025.csv (retrieved 2026-08-11)"
+    used_for: "Product name, sheep-only classification scope, and separation from the rendered-fat class. Limitation: classification evidence does not define production processes, tissue composition, yields, allocation shares, or LCA quantities."
+  - id: "codex-cxc-58-2005"
+    type: "standard"
+    reference: "Codex Alimentarius, Code of Hygienic Practice for Meat, CXC 58-2005: https://www.fao.org/fao-who-codexalimentarius/sh-proxy/en/?lnk=1&url=https%253A%252F%252Fworkspace.fao.org%252Fsites%252Fcodex%252FStandards%252FCXC%2B58-2005%252FCXC_058e.pdf (retrieved 2026-08-11)"
+    used_for: "Applicable slaughter/dressing and post-mortem process-control context; segregation of unsafe/unsuitable parts; cooling/freezing, storage, packaging, transport protection, and temperature-monitoring completeness. Limitation: no sheep-fat LCA amounts, yields, allocation factors, or universal temperature threshold are inferred."
+  - id: "codex-cxs-211-1999"
+    type: "standard"
+    reference: "Codex Alimentarius, Standard for Named Animal Fats, CXS 211-1999, amended 2024: https://www.fao.org/fao-who-codexalimentarius/sh-proxy/pl/?lnk=1&url=https%253A%252F%252Fworkspace.fao.org%252Fsites%252Fcodex%252FStandards%252FCXS%2B211-1999%252FCXS_211e.pdf (retrieved 2026-08-11)"
+    used_for: "Naming/exclusion evidence that edible tallow involving sheep is obtained by rendering. Limitation: the standard concerns named fats presented for human consumption, chiefly rendered products; its composition, quality, additive, and analytical values are not applied to unrendered sheep fat."
+  - id: "eu-2021-2279-pef"
+    type: "official_guidance"
+    reference: "European Commission, Recommendation (EU) 2021/2279 on the use of the Environmental Footprint methods, including Annex I Product Environmental Footprint Method, CELEX 32021H2279: https://eur-lex.europa.eu/eli/reco/2021/2279/oj (retrieved 2026-08-11)"
+    used_for: "Functional unit/reference flow framing, system boundary, foreground normalization, data quality, multifunctionality hierarchy, subdivision, physical/economic allocation documentation, and verification context. Limitation: this is a general method, not a sheep-fat-specific PEFCR and not product-specific numerical evidence."
+  - id: "eu-2019-2031-fdm-bat"
+    type: "official_guidance"
+    reference: "Commission Implementing Decision (EU) 2019/2031 establishing BAT conclusions for the food, drink and milk industries, CELEX 32019D2031: https://eur-lex.europa.eu/eli/dec_impl/2019/2031/oj (retrieved 2026-08-11)"
+    used_for: "Conditional process-inventory and monitoring completeness for water, energy, raw materials, wastewater, waste gas, residues, and process-level monitoring where the represented installation falls within or appropriately uses the FDM context. Limitation: scope and applicability remain those of the Decision; no legal capacity threshold, BAT-AEL, monitoring frequency, or sector performance value is generalized to this PCR or to all slaughter/cutting facilities."
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:89b7be1ef359a31d226e885f32b2a5e394da425a3d67ccedc1083e0d9318c73c"
+  generated_content_sha256: "sha256:41ddc0403d456f1499bd45f5bc18bbebe9e34731286e5b1cbfd2202d6da9209e"

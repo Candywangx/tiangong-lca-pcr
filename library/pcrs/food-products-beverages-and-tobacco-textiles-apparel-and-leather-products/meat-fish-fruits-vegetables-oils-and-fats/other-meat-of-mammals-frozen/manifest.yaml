@@ -2,10 +2,11 @@ schema_version: 1
 id: pcr.food-products-beverages-and-tobacco-textiles-apparel-and-leather-products.meat-fish-fruits-vegetables-oils-and-fats.other-meat-of-mammals-frozen
 title:
   en-US: "Other meat of mammals, frozen"
-  zh-CN: null
-status: scaffold
+  zh-CN: "其他哺乳动物肉，冷冻"
+status: candidate
 pcr_kind: product_category_rule
-content_maturity: empty_scaffold
+content_maturity: authored_methodology
+updated_at_utc: "2026-08-20T05:04:43Z"
 domains:
   - "food-products-beverages-and-tobacco-textiles-apparel-and-leather-products"
 modules:
@@ -22,16 +23,97 @@ target_entities:
   - flow
   - process
   - lifecyclemodel
+  - dataset
 languages:
   canonical: en-US
   available:
     - en-US
     - zh-CN
 translation_status:
-  zh-CN: scaffold_pending_translation
+  zh-CN: aligned
 classification_refs:
   - system: CPC
     version: "3.0"
     code: "21139"
     title: "Other meat of mammals, frozen"
-    mapping_type: exact
+    mapping_type: narrower
+review_metadata:
+  authoring_contract: "atomic_flows:v1"
+  instance_gate:
+    status: required
+    species: "Cervus elaphus"
+    source_animal: "farmed red deer"
+    incoming_cut: "UNECE 9237 inner part of the leg, long-cut"
+    bone_state: "boneless"
+    freezing_technology: "forced-air blast quick freezing"
+    refrigeration_system: "R717 ammonia"
+    packaging: "polyamide/polyethylene vacuum pouch in corrugated cardboard carton with polypropylene label"
+    sanitation_chemistry: "sodium hydroxide detergent followed by peracetic acid sanitizer"
+    wastewater_route: "on-site aerobic treatment and direct discharge"
+    freezer_defrost: "R717 hot-gas defrost; internal recirculating refrigerant is not a boundary flow"
+    delivery_temperature: "thermal-centre product temperature <= -18 deg C"
+    no_default_species_share: true
+    rule: "A foreground package must use this one configuration; another species, cut, bone state, freezing technology, refrigerant system, or delivery-temperature specification requires a separately reviewed instance and must not be averaged with this configuration."
+  uuid_review:
+    reference_product:
+      row_id: dispatched_frozen_red_deer_inner_leg
+      flow_uuid: "1fc83e3b-ac93-4d3b-899e-eed337072097"
+      state_code: 100
+      base_name: "Other meat of mammals, frozen"
+      cpc_code: "21139"
+      flow_type: "Product flow"
+      reference_property: "Mass"
+      evidence: "tiangong-lca flow get plus flow_hybrid_search"
+      status: resolved
+    non_reference_rows:
+      scope: "all inventory row_id values except dispatched_frozen_red_deer_inner_leg"
+      flow_uuid: null
+      status: intentionally_blank
+      reason: "Commissioning constraint: only the reference product flow carries a Tiangong UUID."
+    flow_property_uuid: null
+    unit_group_uuid: null
+  source_review:
+    status: official_and_peer_reviewed_sources_verified
+    source_ids:
+      - unstats-cpc-3-2025
+      - unece-deer-meat-2013
+      - dinz-farmed-venison
+      - wiklund-et-al-2014-venison
+      - fao-who-cxc-58-2005
+      - fao-who-cxc-8-1976
+      - fao-meat-cold-store-manual
+      - mass-balance-identity
+    openalex_gate:
+      queries:
+        - "venison red deer meat processing life cycle assessment energy water waste emissions freezing cold storage"
+        - "red deer venison meat processing forced-air blast freezing frozen storage life cycle assessment energy water wastewater waste refrigerant emissions"
+      central_executed_queries:
+        - "red deer venison meat processing forced-air blast freezing frozen storage life cycle assessment energy water wastewater waste refrigerant emissions"
+        - "venison life cycle assessment"
+        - "red deer meat environmental impact slaughter processing freezing"
+      adapter: "paper-search search -s openalex"
+      attempts: 6
+      status: completed
+      candidates_found: 16
+      full_text_verified: 1
+      sources_adopted: 1
+      candidate_rejection_rule: "Reject broad frozen-food, unrelated-species, post-cooking, nutrition-only, or metadata-only hits; adopt a paper only after full-text verification of a passage directly supporting this red-deer processing route."
+      use: "Central OpenAlex screening rejected unrelated LCA, food-safety, nutrition and non-red-deer hits. Wiklund et al. (2014) was adopted only after direct verification of the publisher PDF for farmed red deer identity, deer-specific slaughter/boning/processing facilities, and value-added boneless cut preparation; it supplies no quantitative LCI default."
+  evidence_gaps:
+    - gap_id: species-market-share
+      affected_rule_ids:
+        - val_instance_identity
+      status: open
+      resolution: "No authoritative CPC-wide species share was found; red deer is an explicit data-package instance gate, not a default market mix."
+    - gap_id: foreground-quantity-priors
+      affected_row_scope: "all non-reference inventory row_id values"
+      status: open
+      resolution: "Amounts must come from foreground records or declared calculations; no unsupported default quantities are authored."
+    - gap_id: non-reference-flow-identities
+      affected_row_scope: "all inventory row_id values except dispatched_frozen_red_deer_inner_leg"
+      status: open_by_instruction
+      resolution: "Resolve only in a later authorized UUID-alignment task; keep blank in this candidate."
+    - gap_id: peer-reviewed-literature-discovery
+      affected_rule_scope: "all product-route quantitative defaults and route-specific emission factors"
+      status: resolved_for_route_identity_only
+      resolution: "Central OpenAlex discovery screened 16 results and directly verified the publisher PDF for Wiklund et al. (2014), adopted only for red-deer route identity and boneless processing support. No candidate supplied verified route-specific LCI defaults or emission factors, so all quantities remain foreground records or declared calculations."

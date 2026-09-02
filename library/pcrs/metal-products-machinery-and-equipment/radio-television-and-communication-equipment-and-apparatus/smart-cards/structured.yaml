@@ -1,10 +1,977 @@
 schema_version: 1
-status: scaffold
-classification_seed:
-  system: CPC
-  version: "3.0"
-  code: "47920"
-  title: "Smart cards"
-reference_flows: []
-inventory_patterns: []
-qa_rules: []
+generated_from: markdown
+source_markdown: pcr.en-US.md
+product_category_identity:
+  canonical_pcr_id: "pcr.metal-products-machinery-and-equipment.radio-television-and-communication-equipment-and-apparatus.smart-cards"
+  classification_refs: "CPC 3.0: 47920, Smart cards, exact mapping context"
+  covered_products: "Physical contact, contactless, and dual-interface smart cards; finished or explicitly declared unpersonalized smart-card carriers for payment, identity, telecommunications, access, transit, and IoT applications"
+  excluded_products: "Bare chips and wafers; standalone IC modules; magnetic-stripe-only cards; card readers and terminals; embedded or integrated eUICC hardware outside a card product; eSIM profiles, subscriptions, remote-provisioning platforms, and other services"
+  representative_product: "A finished smart card at the manufacturing plant gate with a declared interface, card-body material system, chip/module configuration, antenna configuration where applicable, dimensions, mass, personalization state, and application class"
+  production_route: "Declared combination of card-body preparation, antenna/inlay integration when applicable, chip/module attachment, layer assembly and lamination, printing and cutting, testing, personalization when in scope, and packaging"
+  market_state: "Finished or explicitly declared unpersonalized physical smart cards at the stated plant gate; not an averaged service or a bare electronic component"
+functional_unit:
+  what: "Finished smart cards conforming to one declared product profile at the stated plant gate"
+  how_much: "1 kg of accepted smart cards, excluding packaging unless packaging is explicitly included and separately reported"
+  how_well: "Meets the declared physical, interface, electrical, visual, personalization, and quality-acceptance specification"
+  how_long_or_cycle: "One production lot or reporting campaign; service life is disclosed separately and is not the normalization basis"
+  reference_flow_link: "Accepted reference-product output from p_final_test_packaging, or from p_lamination_print_cut when personalization and separate final packaging are outside the declared boundary"
+system_boundary:
+  rules:
+    - rule_id: boundary_physical_card_only
+      applies_to: "product and service boundary"
+      rule: "Include the physical smart-card product and its declared manufacturing operations; exclude card-use services, transaction processing, subscriptions, remote SIM provisioning, and downloadable profiles unless a separate service study is explicitly linked."
+      source_ids:
+        - gsma-sgp22-v3-1
+    - rule_id: boundary_interface_specific
+      applies_to: "interface-specific manufacturing"
+      rule: "Include antenna/inlay formation and connection for contactless or dual-interface cards and contact-pad/module operations for contact or dual-interface cards only when those operations are inside the declared foreground boundary."
+      source_ids:
+        - iso-iec-14443-1-2018
+        - emvco-contact-chip
+        - nist-fips-201-3-front-end
+    - rule_id: boundary_personalization
+      applies_to: "personalization and issuance"
+      rule: "State whether logical loading, key injection, encoding, visual printing, embossing, laser engraving, and issuance-specific testing are included. Do not treat an unpersonalized output as a personalized card."
+      source_ids:
+        - nist-fips-201-3-front-end
+    - rule_id: boundary_material_and_construction
+      applies_to: "card body and finished dimensions"
+      rule: "Include and disclose the material and construction steps needed to achieve the declared card form, dimensions, and physical performance; link purchased materials to upstream datasets."
+      source_ids:
+        - iso-iec-7810-2019
+    - rule_id: boundary_no_narrow_extrapolation
+      applies_to: "category synthesis"
+      rule: "Use debit-card evidence only to identify plausible component and manufacturing data fields. Do not apply its material quantities, mass, lifetime, or reject observations to other smart-card profiles without profile-specific evidence."
+      source_ids:
+        - lindgreen-debit-card-lca-2017
+boundary_abstraction:
+  declared_starting_condition: "Purchased card-body materials or prepared sheets, chip/module or die, antenna/inlay materials where applicable, adhesives, inks, overlays, auxiliaries, and packaging received at the foreground plant gate; included upstream component manufacture must be explicitly identified"
+  starting_condition_role: "Physical and electronic inputs before the first foreground card-manufacturing operation"
+  product_classification_scope: "One declared physical smart-card profile within CPC 3.0:47920, not a category-average payment, identity, telecommunications, or IoT service"
+  recursive_input_rule: "A same-category unpersonalized or partially finished smart card entering a downstream personalization, testing, or packaging process remains an explicit upstream product input. Use its upstream dataset and do not recursively rebuild or double count the same card-manufacturing stages."
+  upstream_dataset_requirement: "Upstream datasets must match material, chip/module, antenna/inlay, interface, geography, technology, and personalization state or document justified substitutions and their consequences."
+  disclosure: "Declare included/excluded component manufacture, contact/contactless/dual-interface design, card-body construction, antenna route, lamination and printing route, personalization boundary, dimensions, unit mass, quality yield, scrap/rework treatment, packaging, and waste destinations."
+reference_flow_definition:
+  reference_amount: "1 kg"
+  product_flow_ref:
+    name: "Smart cards"
+    uuid: "da4b294a-b663-486c-8e61-05dc1a40ad40"
+  flow_property_ref:
+    uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+  unit_group_ref:
+    uuid: "93a60a57-a4c8-11da-a746-0800200c9a66"
+  reference_unit: "kg"
+  required_qualifiers:
+    - "interface: contact/contactless/dual-interface"
+    - "card-body material and layer construction"
+    - "chip/module type and whether supplied as die"
+    - module
+    - "or inlay"
+    - "antenna conductor"
+    - substrate
+    - "and integration route when applicable"
+    - "single-chip or multi-chip implementation"
+    - "dimensions and thickness"
+    - "measured unit mass"
+    - "personalization state and included personalization operations"
+    - "application class"
+    - "accepted-card count and mass"
+    - scrap
+    - reject
+    - "and rework count and mass"
+    - "packaging inclusion"
+    - "manufacturing geography and reporting period"
+reference_flows:
+  []
+measurement_rules:
+  - id: reference_mass
+    applies_to: "accepted reference-product output"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Normalize all foreground inventories to 1 kg of accepted smart cards. Derive mass from calibrated lot weighing or accepted-card count multiplied by a statistically representative measured unit mass."
+  - id: card_dimensions
+    applies_to: "physical reference-product specification"
+    required_property_ref:
+      name: "Dimension"
+      uuid: ""
+    required_unit: "mm"
+    rule: "Report length, width, and thickness for the declared card form and the applicable specification or drawing. Do not assume ID-1 dimensions for SIM plug-ins, tokens, or other form factors."
+  - id: unit_mass_and_count
+    applies_to: "production and quality records"
+    required_property_ref:
+      name: "Mass and count"
+      uuid: ""
+    required_unit: "kg and card"
+    rule: "Record accepted, rejected, scrapped, and reworked card counts together with measured or sampled unit mass so count-to-mass conversion is reproducible."
+  - id: component_mass
+    applies_to: "card-body, chip/module, antenna/inlay, overlay, adhesive, ink, and other material inputs"
+    required_property_ref:
+      name: "Mass"
+      uuid: "93a60a56-a3c8-11da-a746-0800200b9a66"
+    required_unit: "kg"
+    rule: "Report issued, returned, and incorporated mass by component or material family; do not infer all smart-card compositions from a debit card or a contact-only card."
+  - id: scrap_rate
+    applies_to: "each foreground manufacturing process"
+    required_property_ref:
+      name: "Mass and count"
+      uuid: ""
+    required_unit: "kg and %"
+    rule: "Calculate scrap and reject rates from process-specific accepted, rejected, scrapped, and reworked records. State denominator and whether rework is ultimately accepted or scrapped."
+process_map:
+  - id: p_card_body
+    name: "Card-body material preparation and sheet or blank formation"
+    inclusion: "required"
+    inclusion_condition: "Required for every physical card; purchased finished card bodies may enter as an upstream product and shorten this foreground process"
+    role: "Prepare the declared card-body material and layer system"
+    quantitative_reference: "kg prepared card-body material or blanks"
+  - id: p_antenna_inlay
+    name: "Contactless antenna or inlay manufacture and integration"
+    inclusion: "conditional"
+    inclusion_condition: "Include for contactless and dual-interface profiles when not fully represented by a purchased inlay dataset"
+    role: "Form and connect the declared antenna/inlay system"
+    quantitative_reference: "kg conforming inlay or antenna-equipped body"
+  - id: p_module_embedding
+    name: "Chip or module attachment and electrical interconnection"
+    inclusion: "required"
+    inclusion_condition: "Include the route matching contact, contactless, or dual-interface construction; purchased finished inlays/modules remain upstream inputs"
+    role: "Attach the secure IC/module and make contact-pad or antenna connections"
+    quantitative_reference: "kg module-equipped card construction"
+  - id: p_lamination_print_cut
+    name: "Layer assembly, lamination, printing, finishing, and cutting"
+    inclusion: "required"
+    inclusion_condition: "Split or combine unit operations only when foreground records preserve their burdens and yields"
+    role: "Convert layered constructions into dimensionally conforming unpersonalized cards"
+    quantitative_reference: "kg conforming unpersonalized cards"
+  - id: p_personalization
+    name: "Logical and visual personalization"
+    inclusion: "conditional"
+    inclusion_condition: "Include only when the reference product is pre-personalized or fully personalized and the operations occur inside the plant boundary"
+    role: "Load or encode data and apply product-specific visual features"
+    quantitative_reference: "kg accepted personalized cards"
+  - id: p_final_test_packaging
+    name: "Final electrical/visual test, quality release, and packaging"
+    inclusion: "required"
+    inclusion_condition: "Packaging may be outside the reference mass but must be separately inventoried when supplied with the product"
+    role: "Release accepted reference cards and segregate rejects, rework, and packaging"
+    quantitative_reference: "kg accepted reference cards"
+process_inventory:
+  - id: p_card_body
+    label: "Card-body material preparation and sheet or blank formation"
+    inputs:
+      product:
+        - row_id: card_body_materials
+          role: "Declared card-body materials and layers"
+          name: "Route-specific card-body material or prepared sheet; exact Tiangong UUID selected by declared material profile"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record each resin, polymer sheet, paper/fibre layer, coating, overlay, recycled-content feedstock, or other declared card-body material that crosses the foreground boundary. Material family, grade, recycled or biobased content, supplier dataset, and issued/returned mass must remain distinguishable."
+          amount:
+            expression: "measured issued mass minus documented unused returns, normalized to prepared card-body output"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg prepared card-body output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_card_body_records
+              source_ids:
+                - iso-iec-7810-2019
+            ranges: []
+        - row_id: card_body_energy
+          role: "Card-body process energy"
+          name: "Site- and carrier-specific energy flow"
+          flow_type: "product"
+          property_unit: "Energy / MJ or kWh as metered"
+          description: "Record metered electricity, heat, compressed air, and other energy carriers used for compounding, sheet preparation, printing preparation, forming, or blank preparation within this process."
+          amount:
+            expression: "metered process energy allocated to the declared production lot"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg prepared card-body output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_card_body_records
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: prepared_card_body
+          role: "Prepared card-body sheets or blanks"
+          name: "Prepared smart-card body sheet or blank; exact Tiangong UUID selected if a matching published row exists"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the conforming intermediate output transferred to antenna/inlay, module, or lamination operations, with material construction and dimensions preserved."
+          amount:
+            expression: "measured conforming output mass"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg prepared card-body output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_card_body_records
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: card_body_scrap
+          role: "Card-body trim, off-specification material, and rejects"
+          name: "Route- and material-specific production waste"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record trim, start-up losses, off-specification sheets, and rejected blanks separately by material family and destination. Recycled internal returns must not be counted both as waste output and new external input."
+          amount:
+            expression: "measured waste leaving the process, separated from internally reworked or recycled material"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg prepared card-body output"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_card_body_records
+              source_ids: []
+            ranges: []
+      elementary:
+        []
+  - id: p_antenna_inlay
+    label: "Contactless antenna or inlay manufacture and integration"
+    inputs:
+      product:
+        - row_id: antenna_materials
+          role: "Antenna conductor, substrate, and connection materials"
+          name: "Route-specific antenna conductor, substrate, and connection materials; exact Tiangong UUIDs selected by declared design"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "For contactless or dual-interface cards, record conductor material and geometry route, inlay substrate, conductive adhesive or connection material, and purchased antenna/inlay inputs. Omit this row for contact-only products and state that it is not applicable."
+          amount:
+            expression: "measured material issues minus documented returns for accepted inlay output"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg conforming inlay or antenna-equipped body"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_antenna_inlay_records
+              source_ids:
+                - iso-iec-14443-1-2018
+                - nist-fips-201-3-front-end
+                - lindgreen-debit-card-lca-2017
+            ranges: []
+        - row_id: antenna_process_energy
+          role: "Antenna/inlay process energy"
+          name: "Site- and carrier-specific energy flow"
+          flow_type: "product"
+          property_unit: "Energy / MJ or kWh as metered"
+          description: "Record metered energy for wire embedding, etching, printing, bonding, testing, and other included antenna or inlay operations."
+          amount:
+            expression: "metered process energy assigned to the declared lot"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg conforming inlay or antenna-equipped body"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_antenna_inlay_records
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: conforming_antenna_inlay
+          role: "Conforming antenna inlay or antenna-equipped body"
+          name: "Product-specific contactless antenna inlay or antenna-equipped card body"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record output mass and count after continuity, resonance, or other declared electrical acceptance tests."
+          amount:
+            expression: "measured conforming output mass and accepted count"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg conforming inlay or antenna-equipped body"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_antenna_inlay_records
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: antenna_inlay_rejects
+          role: "Antenna and inlay rejects"
+          name: "Route-specific antenna/inlay production waste"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record conductor, substrate, connection, and electrical-test rejects by material and destination."
+          amount:
+            expression: "measured rejected mass leaving the process, net of successful rework"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg conforming inlay or antenna-equipped body"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_antenna_inlay_records
+              source_ids: []
+            ranges: []
+      elementary:
+        []
+  - id: p_module_embedding
+    label: "Chip or module attachment and electrical interconnection"
+    inputs:
+      product:
+        - row_id: chip_module_input
+          role: "Declared chip, module, or purchased inlay"
+          name: "Product- and interface-specific chip/module/inlay; exact Tiangong UUID selected after profile matching"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record the exact secure IC form and interface configuration: bare die, contact module, contactless module/inlay, or dual-interface module/inlay. Do not substitute the verified contact-module flow for contactless-only or dual-interface products."
+          amount:
+            expression: "measured received and issued mass, reconciled with module count and sampled unit mass"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg conforming module-equipped card construction"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_module_embedding_records
+              source_ids:
+                - emvco-contact-chip
+                - iso-iec-14443-1-2018
+                - nist-fips-201-3-front-end
+                - lindgreen-debit-card-lca-2017
+            ranges: []
+        - row_id: module_attachment_inputs
+          role: "Module attachment materials and energy"
+          name: "Route-specific attachment material and energy flows"
+          flow_type: "product"
+          property_unit: "Mass / kg for materials; energy / MJ or kWh for carriers"
+          description: "Record cavity preparation, adhesives, conductive connections, encapsulants, solder or bonding materials, and metered energy used in the declared attachment route."
+          amount:
+            expression: "measured material issues and metered energy assigned to the declared lot"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg conforming module-equipped card construction"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_module_embedding_records
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: module_equipped_cards
+          role: "Conforming module-equipped card construction"
+          name: "Product-specific module-equipped smart-card construction"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record conforming output mass and count after connection and basic electrical checks."
+          amount:
+            expression: "measured conforming output mass and accepted count"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg conforming module-equipped card construction"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_module_embedding_records
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: module_embedding_rejects
+          role: "Chip/module and attachment rejects"
+          name: "Route-specific electronic and card-body production wastes"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record damaged chips/modules, failed connections, rejected bodies, and recovered components separately, with final destinations."
+          amount:
+            expression: "measured rejected mass leaving the process, net of documented recovery and successful rework"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg conforming module-equipped card construction"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_module_embedding_records
+              source_ids: []
+            ranges: []
+      elementary:
+        []
+  - id: p_lamination_print_cut
+    label: "Layer assembly, lamination, printing, finishing, and cutting"
+    inputs:
+      product:
+        - row_id: lamination_print_inputs
+          role: "Prepared constructions, overlays, inks, adhesives, and finishes"
+          name: "Product-specific prepared constructions and route-specific materials"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record prepared bodies, antenna/inlays where applicable, module-equipped constructions, overlays, inks, coatings, adhesives, and security or surface features entering the declared operations."
+          amount:
+            expression: "measured transferred intermediate mass plus net issued auxiliary material mass"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg conforming unpersonalized cards"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_lamination_print_cut_records
+              source_ids:
+                - iso-iec-7810-2019
+                - nist-fips-201-3-front-end
+                - lindgreen-debit-card-lca-2017
+            ranges: []
+        - row_id: lamination_print_cut_energy
+          role: "Lamination, printing, and cutting energy"
+          name: "Site- and carrier-specific energy flow"
+          flow_type: "product"
+          property_unit: "Energy / MJ or kWh as metered"
+          description: "Record metered electricity, heat, compressed air, and other energy used for layer assembly, lamination/pressing, printing, curing, finishing, punching, and cutting."
+          amount:
+            expression: "metered process energy assigned to the declared lot"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg conforming unpersonalized cards"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_lamination_print_cut_records
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: unpersonalized_cards
+          role: "Conforming unpersonalized smart cards"
+          name: "Smart card, unpersonalized (embedded module, laminated/finished) only when the product and boundary match this narrower identity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "d0e27754-4f25-412f-b693-80d41310168e"
+          property_unit: "Mass / kg"
+          description: "Record dimensionally, visually, and electrically conforming cards before product-specific personalization. When this is the reference product, link it to the declared reference flow and state that personalization is excluded."
+          amount:
+            expression: "measured conforming output mass and accepted count"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg conforming unpersonalized cards"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_lamination_print_cut_records
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: lamination_print_cut_scrap
+          role: "Lamination, printing, and cutting scrap"
+          name: "Route-specific composite or electronic-containing production waste"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record trim, delamination, print rejects, dimension rejects, and damaged electronic constructions separately by material/electronic content and destination."
+          amount:
+            expression: "measured rejected mass leaving the process, net of successful rework"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg conforming unpersonalized cards"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_lamination_print_cut_records
+              source_ids: []
+            ranges: []
+      elementary:
+        []
+  - id: p_personalization
+    label: "Logical and visual personalization"
+    inputs:
+      product:
+        - row_id: cards_for_personalization
+          role: "Unpersonalized or pre-personalized cards"
+          name: "Smart card, unpersonalized (embedded module, laminated/finished) only when the incoming card matches this narrower identity"
+          flow_type: "product"
+          flow_ref:
+            uuid: "d0e27754-4f25-412f-b693-80d41310168e"
+          property_unit: "Mass / kg"
+          description: "Record the incoming physical cards by mass, count, interface, material construction, chip/module, antenna configuration, dimensions, and prior personalization state. The upstream card dataset must not be reconstructed inside this process."
+          amount:
+            expression: "measured incoming lot mass reconciled with card count and unit mass"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg accepted personalized cards"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_personalization_records
+              source_ids:
+                - nist-fips-201-3-front-end
+                - lindgreen-debit-card-lca-2017
+            ranges: []
+        - row_id: personalization_inputs
+          role: "Personalization materials and energy"
+          name: "Route-specific personalization material and energy flows"
+          flow_type: "product"
+          property_unit: "Mass / kg for materials; energy / MJ or kWh for carriers"
+          description: "Record overlays, ribbons, inks, laser consumables, labels, carriers, key-injection or encoding equipment energy, and other physical inputs. Digital profiles or subscription services are not mass inputs to the physical card and must not be modelled as smart-card products."
+          amount:
+            expression: "measured material issues and metered energy assigned to the declared lot"
+            value_mode: "foreground_record"
+            specificity: "technology_specific"
+            basis:
+              text: "per kg accepted personalized cards"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_personalization_records
+              source_ids:
+                - nist-fips-201-3-front-end
+                - gsma-sgp22-v3-1
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: personalized_cards
+          role: "Accepted personalized smart cards"
+          name: "Smart cards"
+          flow_type: "product"
+          flow_ref:
+            uuid: "da4b294a-b663-486c-8e61-05dc1a40ad40"
+          property_unit: "Mass / kg"
+          description: "Record mass and count after required logical, visual, and interface tests, with personalization state and application class declared."
+          amount:
+            expression: "measured accepted output mass or accepted count multiplied by representative measured unit mass"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg accepted personalized cards"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_personalization_records
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: personalization_rejects
+          role: "Personalization rejects and secure destruction"
+          name: "Route-specific electronic-containing reject card waste"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record incorrect orders, encoding failures, visual defects, security rejects, successful rework, and secure destruction by count, mass, reason, and destination."
+          amount:
+            expression: "measured rejected mass leaving the process after subtracting successfully reworked cards"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg accepted personalized cards"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_personalization_records
+              source_ids:
+                - lindgreen-debit-card-lca-2017
+            ranges: []
+      elementary:
+        []
+  - id: p_final_test_packaging
+    label: "Final electrical/visual test, quality release, and packaging"
+    inputs:
+      product:
+        - row_id: cards_for_final_release
+          role: "Cards awaiting final release"
+          name: "Product-specific unpersonalized, pre-personalized, or personalized smart cards"
+          flow_type: "product"
+          property_unit: "Mass / kg"
+          description: "Record incoming cards by prior personalization state and reconcile mass and count with released, reworked, and rejected outputs."
+          amount:
+            expression: "measured incoming mass reconciled with card count and representative unit mass"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg accepted reference cards"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_final_release_records
+              source_ids: []
+            ranges: []
+        - row_id: final_test_packaging_inputs
+          role: "Packaging and final-test energy"
+          name: "Packaging material and site-specific energy flows"
+          flow_type: "product"
+          property_unit: "Mass / kg for packaging; energy / MJ or kWh for carriers"
+          description: "Record trays, carriers, envelopes, cartons, labels, protective materials, and metered testing/packaging energy. Packaging mass remains outside the smart-card reference mass unless explicitly declared otherwise."
+          amount:
+            expression: "measured packaging issues and metered energy assigned to the released lot"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "per kg accepted reference cards"
+              kind: "process_output"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_final_release_records
+              source_ids: []
+            ranges: []
+      waste:
+        []
+      elementary:
+        []
+    outputs:
+      product:
+        - row_id: reference_smart_cards
+          role: "Accepted reference smart cards"
+          name: "Smart cards"
+          flow_type: "product"
+          flow_ref:
+            uuid: "da4b294a-b663-486c-8e61-05dc1a40ad40"
+          property_unit: "Mass / kg"
+          description: "This is the reference output. Record accepted mass, count, measured unit-mass basis, interface, material construction, chip/module, antenna where applicable, dimensions, personalization state, and packaging inclusion."
+          amount:
+            expression: "measured accepted lot mass; count-derived mass is allowed only under calc_reference_mass"
+            value_mode: "foreground_record"
+            specificity: "product_specific"
+            basis:
+              text: "1 kg accepted reference smart cards"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_final_release_records
+              source_ids: []
+            ranges: []
+      waste:
+        - row_id: final_release_waste
+          role: "Final-test rejects, rework losses, and packaging waste"
+          name: "Route-specific electronic-containing reject and packaging waste flows"
+          flow_type: "waste"
+          property_unit: "Mass / kg"
+          description: "Record failed cards, cards routed to rework, cards destroyed after failed rework, and packaging waste separately. Preserve defect reason, electronic content, security handling, and final destination."
+          amount:
+            expression: "measured waste mass leaving final release, excluding cards still in open rework and avoiding double counting with upstream reject rows"
+            value_mode: "foreground_record"
+            specificity: "site_specific"
+            basis:
+              text: "per kg accepted reference cards"
+              kind: "reference_flow"
+            evidence:
+              kind: "collected_record"
+              collection_protocol_id: cp_final_release_records
+              source_ids: []
+            ranges: []
+      elementary:
+        []
+allocation_rules:
+  - rule_id: allocation_subdivision_first
+    applies_to: "multi-product card manufacturing"
+    rule: "Subdivide records by product profile, interface, material construction, line, lot, and process wherever separate measurements exist before allocating shared burdens."
+    source_ids: []
+  - rule_id: allocation_shared_operations
+    applies_to: "shared lamination, printing, personalization, testing, and utilities"
+    rule: "Allocate shared measured burdens using a documented causal physical driver such as machine time, meter interval, processed sheet area, card count adjusted by measured unit mass, or batch time. Use economic allocation only when physical causality cannot be established and disclose the sensitivity."
+    source_ids: []
+  - rule_id: allocation_rework
+    applies_to: "rework loops"
+    rule: "Assign rework inputs and losses to the lot that generated the rework. Count successfully reworked cards once as accepted output and do not also count them as scrap."
+    source_ids: []
+  - rule_id: allocation_scrap_recycling
+    applies_to: "scrap sent to recycling or recovery"
+    rule: "Report scrap leaving the foreground as waste. Apply recycling, recovery, or substitution credits only in a separately declared downstream model with documented method and destination; no avoided-burden credit is applied by default."
+    source_ids: []
+  - rule_id: allocation_no_service_coproduct
+    applies_to: "digital profiles and services"
+    rule: "Do not allocate physical card-manufacturing burdens to eSIM profiles, subscriptions, transaction processing, or other services unless a separate service model defines the relationship and prevents double counting."
+    source_ids:
+      - gsma-sgp22-v3-1
+dataset_production:
+  collection_protocols:
+    - protocol_id: cp_card_body_records
+      process_id: "p_card_body"
+      flow_role: "materials, energy, conforming output, trim and rejects"
+      record_type: "purchase/issue/return logs; meters; production and waste tickets"
+      raw_fields: "material_id; material_family; grade; recycled_or_biobased_content; issued_mass; returned_mass; energy_by_carrier; accepted_mass; accepted_count; trim_mass; reject_mass; destination"
+      collection_method: "Reconcile stores records, calibrated meters, line counters, and waste tickets by lot"
+      unit: "kg; card; kWh; MJ"
+      frequency: "per lot and monthly reconciliation"
+      temporal_coverage: "representative reporting campaign, normally at least 12 months or all campaigns for seasonal/short production"
+      site_scope: "all foreground card-body lines in scope"
+      aggregation_rule: "sum net material and energy by lot; keep internal recycle separate; normalize to conforming output"
+      quality_evidence: "calibration records; material specifications; supplier records; lot reconciliation; waste transfer evidence"
+    - protocol_id: cp_antenna_inlay_records
+      process_id: "p_antenna_inlay"
+      flow_role: "conductor/substrate/connection inputs, energy, conforming inlay, rejects"
+      record_type: "bill of materials; issue/return logs; meters; electrical-test and reject logs"
+      raw_fields: "interface; antenna_route; conductor; substrate; connection_material; issued_mass; returned_mass; energy; processed_count; accepted_count; reject_count; reject_mass; test_result; destination"
+      collection_method: "Reconcile material issues with inlay counts and mass; retain continuity/resonance or declared acceptance results"
+      unit: "kg; item; kWh; MJ"
+      frequency: "per lot"
+      temporal_coverage: "representative reporting campaign"
+      site_scope: "all contactless/dual-interface inlay lines in scope"
+      aggregation_rule: "net issues and energy divided by conforming output; successful rework retained separately"
+      quality_evidence: "material certificates; meter calibration; electrical-test records; waste tickets"
+    - protocol_id: cp_module_embedding_records
+      process_id: "p_module_embedding"
+      flow_role: "chip/module/inlay inputs, attachment materials, energy, conforming output, rejects"
+      record_type: "receiving, issue, placement/bonding, electrical-test, rework and reject records"
+      raw_fields: "interface; module_id; chip_form; chip_count; module_count; sampled_unit_mass; issued_mass; attachment_material; energy; accepted_count; reject_count; reject_mass; recovered_count; destination"
+      collection_method: "Reconcile secure-component serial/count records with material mass, line output, and defect disposition"
+      unit: "kg; item; kWh; MJ"
+      frequency: "per lot"
+      temporal_coverage: "representative reporting campaign"
+      site_scope: "all module-attachment lines in scope"
+      aggregation_rule: "calculate mass from measured lot mass or statistically supported unit mass; normalize net inputs to conforming output"
+      quality_evidence: "supplier specification; count reconciliation; sampling plan; test and destruction records"
+    - protocol_id: cp_lamination_print_cut_records
+      process_id: "p_lamination_print_cut"
+      flow_role: "layered inputs, auxiliaries, energy, dimensions, conforming cards, trim and defects"
+      record_type: "batch recipes; issue/return logs; meters; dimension/visual/electrical QC; waste tickets"
+      raw_fields: "layer_construction; input_mass; overlay_ink_adhesive_mass; energy; sheet_count; card_count; length_mm; width_mm; thickness_mm; unit_mass; accepted_count; accepted_mass; trim_mass; defect_mass; rework_count; destination"
+      collection_method: "Reconcile batch records with calibrated dimension and mass sampling, counters, and waste records"
+      unit: "kg; card; mm; kWh; MJ"
+      frequency: "per lot"
+      temporal_coverage: "representative reporting campaign"
+      site_scope: "all lamination/printing/cutting lines in scope"
+      aggregation_rule: "sum accepted and rejected outputs; normalize net materials and energy to accepted unpersonalized mass"
+      quality_evidence: "recipe approval; instrument calibration; QC sampling plan; waste transfer evidence"
+    - protocol_id: cp_personalization_records
+      process_id: "p_personalization"
+      flow_role: "incoming cards, personalization materials/energy, accepted cards, rework and rejects"
+      record_type: "secure inventory, job, encoding/key-injection, visual personalization, test, rework and destruction records"
+      raw_fields: "application_class; incoming_state; target_state; interface; incoming_count; incoming_mass; material_issue; energy; accepted_count; accepted_mass; rework_count; reject_count; reject_mass; defect_reason; destruction_destination"
+      collection_method: "Reconcile secure card custody with job completion and destruction evidence without storing secret credentials in the LCA dataset"
+      unit: "kg; card; kWh; MJ"
+      frequency: "per personalization job/lot"
+      temporal_coverage: "representative reporting campaign"
+      site_scope: "all personalization facilities in scope"
+      aggregation_rule: "incoming = accepted + open rework + rejected, adjusted only for documented transfers; normalize to accepted mass"
+      quality_evidence: "custody reconciliation; equipment logs; acceptance tests; secure destruction certificate"
+    - protocol_id: cp_final_release_records
+      process_id: "p_final_test_packaging"
+      flow_role: "final-test input, accepted reference output, packaging, rework, reject and waste"
+      record_type: "final QC; calibrated lot weights; card counts; packaging issues; rework and waste records"
+      raw_fields: "interface; material_system; module; antenna; dimensions; personalization_state; input_count; accepted_count; accepted_mass; sampled_unit_mass; sample_size; packaging_mass; energy; rework_count; reject_count; reject_mass; destination"
+      collection_method: "Weigh released lots net of packaging or use an approved representative unit-mass sampling plan; reconcile all dispositions"
+      unit: "kg; card; mm; kWh; MJ"
+      frequency: "per released lot"
+      temporal_coverage: "representative reporting campaign"
+      site_scope: "all final release and packaging lines in scope"
+      aggregation_rule: "accepted reference mass plus separately reported packaging; reconcile input and all output dispositions"
+      quality_evidence: "scale calibration; sampling plan; release certificate; packaging specification; waste/destruction evidence"
+  calculation_rules:
+    - id: calc_reference_mass
+      applies_to: "accepted reference smart cards"
+      rule: "Prefer net calibrated accepted-lot mass. If count conversion is used: accepted_mass_kg = accepted_count x representative_unit_mass_g / 1000; report sampling design and uncertainty."
+      inputs:
+        - accepted_count
+        - accepted_lot_mass
+        - representative_unit_mass_g
+        - sample_size
+      output: "accepted reference mass in kg"
+      source_ids: []
+    - id: calc_net_material_input
+      applies_to: "each material or component"
+      rule: "net_input_kg = issued_mass_kg - documented_unused_return_kg - documented_internal_recycle_return_kg; internal recycle is tracked but not counted as new external input."
+      inputs:
+        - issued_mass
+        - unused_return_mass
+        - internal_recycle_return_mass
+      output: "net external material input in kg"
+      source_ids: []
+    - id: calc_scrap_rate_mass
+      applies_to: "each process and total foreground"
+      rule: "scrap_rate_mass_percent = 100 x final_scrap_mass / (accepted_output_mass + final_scrap_mass); exclude open rework and report any recovered component mass separately."
+      inputs:
+        - accepted_output_mass
+        - final_scrap_mass
+        - open_rework_mass
+        - recovered_component_mass
+      output: "process-specific and total mass scrap rate"
+      source_ids: []
+    - id: calc_rework_rate_count
+      applies_to: "each process"
+      rule: "rework_rate_count_percent = 100 x cards_entering_rework / processed_card_count; report the fraction later accepted and the fraction later scrapped."
+      inputs:
+        - processed_card_count
+        - rework_entry_count
+        - rework_accepted_count
+        - rework_scrapped_count
+      output: "rework rate and disposition shares"
+      source_ids: []
+    - id: calc_normalized_inventory
+      applies_to: "all foreground rows"
+      rule: "normalized_amount = reconciled lot amount / accepted reference mass_kg, after applying documented allocation for shared operations."
+      inputs:
+        - "reconciled lot amount"
+        - "accepted reference mass"
+        - "allocation driver"
+      output: "amount per 1 kg accepted smart cards"
+      source_ids: []
+    - id: calc_mass_reconciliation
+      applies_to: "each process"
+      rule: "Compare net mass inputs with conforming output, scrap/reject output, recovered components, emissions if measured, and inventory change. Investigate and disclose unexplained imbalance; do not force balance by inventing flows."
+      inputs:
+        - "net mass inputs"
+        - "conforming outputs"
+        - wastes
+        - recoveries
+        - "measured releases"
+        - "opening/closing inventory"
+      output: "mass-reconciliation result and unexplained difference"
+      source_ids: []
+  data_quality_requirements:
+    - id: dq_product_profile
+      applies_to: "reference product"
+      requirement: "Preserve interface, application class, card-body material/layers, chip/module, antenna/inlay where applicable, single/multi-chip design, dimensions, mass, personalization state, and packaging inclusion."
+      evidence: "approved product specification and bill of materials"
+    - id: dq_identity
+      applies_to: "UUID-bearing references"
+      requirement: "Confirm the current public Tiangong identity and reference property before use; do not use a component, unpersonalized-card, wrong-CPC, or wrong-state row as the generic reference product."
+      evidence: "Tiangong public-row readback and product-profile match"
+    - id: dq_temporal
+      applies_to: "foreground activity data"
+      requirement: "Use one representative reporting campaign, normally at least 12 months, or all campaigns for short/seasonal products; disclose deviations and major process changes."
+      evidence: "dated production, meter, purchasing, and waste records"
+    - id: dq_completeness
+      applies_to: "foreground inventory"
+      requirement: "Reconcile accepted, rejected, scrapped, reworked, recovered, and transferred counts/masses at every process; include all material and energy carriers that cross the declared boundary."
+      evidence: "lot reconciliation and mass-balance report"
+    - id: dq_measurement
+      applies_to: "mass, dimensions, counts, and energy"
+      requirement: "Retain calibration status, sampling plan, sample size, conversion factors, and uncertainty for count-to-mass and dimension measurements."
+      evidence: "calibration certificates, sampling records, and meter logs"
+    - id: dq_security_and_privacy
+      applies_to: "personalization records"
+      requirement: "Retain auditable counts, mass, process status, and destruction evidence without publishing secret keys, personal data, credentials, or cardholder information in the LCA dataset."
+      evidence: "redacted custody and destruction records; data-governance approval"
+    - id: dq_no_extrapolation
+      applies_to: "secondary evidence"
+      requirement: "Treat payment-card, identity-card, SIM, and IoT-card evidence as profile-specific. Any transfer to another profile requires a documented representativeness argument and sensitivity assessment."
+      evidence: "evidence-to-field mapping and substitution log"
+validation_rules:
+  - rule_id: validate_reference_identity
+    applies_to: "reference flow"
+    rule: "The reference product flow must be Smart cards da4b294a-b663-486c-8e61-05dc1a40ad40, state-code-100 identity verified at authoring, with Mass 93a60a56-a3c8-11da-a746-0800200b9a66, Units of mass 93a60a57-a4c8-11da-a746-0800200c9a66, and kg."
+    source_ids: []
+  - rule_id: validate_interface
+    applies_to: "product profile and process applicability"
+    rule: "Declare exactly one interface profile: contact, contactless, or dual-interface. Contactless and dual-interface profiles must disclose antenna/inlay material and integration; contact and dual-interface profiles must disclose contact module/pad construction."
+    source_ids:
+      - iso-iec-14443-1-2018
+      - emvco-contact-chip
+      - nist-fips-201-3-front-end
+  - rule_id: validate_card_body
+    applies_to: "card-body construction"
+    rule: "Declare material family, layer construction, recycled or biobased content where applicable, and upstream dataset for every material layer."
+    source_ids:
+      - iso-iec-7810-2019
+  - rule_id: validate_dimensions_mass
+    applies_to: "physical product"
+    rule: "Report length, width, thickness, specification/drawing, measured unit mass, sampling basis, accepted count, and accepted mass. Reject datasets that assume a single card form for the entire category."
+    source_ids:
+      - iso-iec-7810-2019
+  - rule_id: validate_chip_module
+    applies_to: "electronic component boundary"
+    rule: "Declare chip/module form, interface compatibility, single/multi-chip implementation, supplier or component identity, unit count/mass basis, and whether chip/module manufacture is upstream or foreground. Bare-chip or contact-module evidence must not represent the whole category."
+    source_ids:
+      - emvco-contact-chip
+      - nist-fips-201-3-front-end
+      - lindgreen-debit-card-lca-2017
+  - rule_id: validate_personalization_boundary
+    applies_to: "product state and foreground boundary"
+    rule: "Declare unpersonalized, pre-personalized, or fully personalized output and list logical loading, encoding, key injection, visual printing/engraving, testing, and secure destruction operations included or excluded."
+    source_ids:
+      - nist-fips-201-3-front-end
+      - gsma-sgp22-v3-1
+  - rule_id: validate_scrap_rework
+    applies_to: "yield and waste inventory"
+    rule: "Report process-specific accepted, rejected, scrapped, and reworked counts and masses, denominator definitions, final destinations, and prevention of double counting. A debit-card reject observation is not a category default."
+    source_ids:
+      - lindgreen-debit-card-lca-2017
+  - rule_id: validate_mass_reconciliation
+    applies_to: "each foreground process"
+    rule: "Provide a reconciled mass balance or a documented investigation of unexplained differences without invented flows."
+    source_ids: []
+  - rule_id: validate_service_exclusion
+    applies_to: "eSIM and other services"
+    rule: "Exclude eSIM profile download, subscription management, remote provisioning, transaction processing, and other services from the physical smart-card product dataset unless separately modelled and linked without double counting."
+    source_ids:
+      - gsma-sgp22-v3-1
+  - rule_id: validate_no_narrow_extrapolation
+    applies_to: "evidence representativeness"
+    rule: "Do not extrapolate a contact-only module, unpersonalized-card route, debit-card composition, identity-card construction, removable SIM, or one form factor to all smart cards without explicit profile matching and evidence."
+    source_ids:
+      - lindgreen-debit-card-lca-2017
+      - nist-fips-201-3-front-end
+      - gsma-sgp22-v3-1
+published_dataset_profile:
+  dataset_role: "Foreground smart-card manufacturing data package suitable for publication as a secondary_dataset or background_dataset after review"
+  downstream_use: "Product LCAs and lifecycle models requiring a physical smart-card manufacturing inventory for a declared contact, contactless, or dual-interface profile"
+  allowed_use: "Use for the declared card material system, interface, chip/module and antenna configuration, dimensions, personalization state, geography, technology, and reporting period; documented scenario substitution is allowed with sensitivity analysis"
+  excluded_use: "Generic representation of bare chips/modules, card readers, eUICC hardware outside a physical card, eSIM/telecommunications/payment/identity services, transaction processing, or all smart cards without profile matching"
+  required_metadata: "canonical PCR id; CPC mapping context; application class; interface; card-body material/layers; chip/module; antenna/inlay when applicable; dimensions/thickness; measured unit mass; personalization state/boundary; process route; geography; period; allocation; accepted/reject/scrap/rework data; packaging inclusion; UUID verification"
+  required_quality_disclosure: "source coverage; meter and scale calibration; count-to-mass sampling; mass reconciliation; temporal and site coverage; substitutions; missing flows; waste destinations; security/privacy redaction; reason narrow-profile evidence was or was not transferred"
+  update_trigger: "Change in card form, material/layer construction, recycled/biobased content, interface, chip/module, antenna/inlay, lamination or personalization technology, dimensions/mass, plant/geography, allocation, scrap/rework treatment, packaging, or evidence/UUID identity"
+data_sources:
+  - id: "iso-iec-7810-2019"
+    type: "standard"
+    reference: "ISO/IEC 7810:2019, Identification cards - Physical characteristics, confirmed current in 2025, https://www.iso.org/standard/70483.html (retrieved 2026-08-09)"
+    used_for: "Card materials, construction, physical characteristics, dimensions, and test-linked disclosure requirements"
+  - id: "iso-iec-14443-1-2018"
+    type: "standard"
+    reference: "ISO/IEC 14443-1:2018, Cards and security devices for personal identification - Contactless proximity objects - Part 1: Physical characteristics, https://www.iso.org/standard/73596.html (retrieved 2026-08-09)"
+    used_for: "Contactless-interface scope and antenna/inlay applicability"
+  - id: "emvco-contact-chip"
+    type: "official_guidance"
+    reference: "EMVCo, EMV Contact Chip and supporting ISO standards, https://www.emvco.com/emv-technologies/emv-contact-chip/ (retrieved 2026-08-09)"
+    used_for: "Contact-interface definition and distinction from contactless payment interfaces; not category-wide composition evidence"
+  - id: "nist-fips-201-3-front-end"
+    type: "official_guidance"
+    reference: "NIST, FIPS 201-3 PIV Front-End Subsystem, https://pages.nist.gov/FIPS201/frontend/ (retrieved 2026-08-09)"
+    used_for: "Dual-interface identity-card example; card-body, embedded antenna, lamination, printed/electronic information, personalization, and testing boundaries; not category-wide quantities"
+  - id: "gsma-sgp22-v3-1"
+    type: "standard"
+    reference: "GSMA SGP.22 v3.1, RSP Technical Specification, https://www.gsma.com/esim/wp-content/uploads/2023/12/SGP.22-v3.1.pdf (retrieved 2026-08-09)"
+    used_for: "Distinguishing eUICC/profile/remote-provisioning systems and services from a physical smart-card manufacturing dataset"
+  - id: "lindgreen-debit-card-lca-2017"
+    type: "literature"
+    reference: "Lindgreen, E.R. et al., Evaluating the environmental impact of debit card payments, DOI: 10.1007/s11367-017-1408-6; DNB Working Paper 574, https://www.dnb.nl/media/a3sk2oob/574-evaluating-the-environmental-impact-of-debit-card-payments.pdf (retrieved 2026-08-09)"
+    used_for: "Narrow debit-card evidence for separating card body, chip module, NFC antenna, lamination/manufacturing, personalization, rejects, and waste fields; no category-wide numeric extrapolation"
+projection_metadata:
+  contract_version: "1"
+  generator: "tiangong-pcr-builder/markdown-projection"
+  canonical_markdown:
+    path: "pcr.en-US.md"
+    normalization: "utf8-lf-v1"
+    hash_algorithm: "sha256"
+    sha256: "sha256:02f8c964dc535abc7d8c81ecb0b3ad802ac79fba7a0c30970fd88368fa4dbc21"
+  generated_content_sha256: "sha256:cfec99356e5ba9735006684d0406bb08093847fc8d43b5a744ef3b4a129a44bf"

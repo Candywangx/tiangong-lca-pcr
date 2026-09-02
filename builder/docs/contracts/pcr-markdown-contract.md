@@ -24,7 +24,13 @@ sync_with: pcr.zh-CN.md
 ---
 ```
 
-Chinese Markdown should translate human-facing headings, table labels, process names, explanatory notes, and ordinary prose. Stable machine-facing identifiers and controlled vocabulary values, such as `process_id`, `row_id`, `direction`, `flow_type`, `value_mode`, `specificity`, `basis_kind`, `evidence_kind`, `source_ids`, Tiangong UUIDs, and source ids, should remain unchanged unless the parser and vocabulary contract explicitly support a localized equivalent.
+Chinese Markdown should translate human-facing headings, table labels, process names, explanatory notes, ordinary
+prose, and flow display names. For a UUID-bearing Tiangong flow, use the exact official Chinese `baseName` returned by
+a direct read when available and preserve the same UUID; do not invent a localized official name when Tiangong has
+none. Stable machine-facing identifiers and controlled vocabulary values, such as `process_id`, `row_id`,
+`direction`, `flow_type`, `value_mode`, `specificity`, `basis_kind`, `evidence_kind`, `source_ids`, Tiangong UUIDs,
+and source ids, should remain unchanged unless the parser and vocabulary contract explicitly support a localized
+equivalent.
 
 Material Chinese Markdown must contain authored content after its YAML frontmatter. Its frontmatter must declare the
 same PCR identity and the exact language relationship:
@@ -166,6 +172,30 @@ Process inventory must be organized as:
 
 Inventory flow rows are authored as flow cards under their process, direction, and flow-type headings. Each card heading uses a human-readable role followed by a stable `row_id` in backticks. Direction and flow type are inherited from the surrounding headings, so they should not be repeated inside the card.
 
+Each flow card is one atomic exchange: its `Selected flow` must name exactly one physically or chemically specific
+product, waste, or elementary flow that can resolve to one Tiangong flow record. Split electricity, steam or
+purchased heat, each fuel, each refrigerant, water, every chemical or ingredient, every packaging material, each
+waste stream, and each elementary emission into separate cards, even when their amounts share one meter or
+collection protocol. Collection or selector labels such as `energy carriers`, `electricity, steam, or fuel`,
+`packaging materials`, `wastewater and residues`, or `actual Tiangong utility flows` are instructions, not flows, and
+must not appear as `Selected flow`. Put route applicability on the individual card and use `not_applicable` only when
+that atomic exchange is demonstrably absent. If its Tiangong UUID is unresolved, keep the atomic name, omit the UUID,
+and track the identity gap in manifest review metadata; never replace it with a plural category.
+
+An authored or remediated material PCR declares the enforced contract in `manifest.yaml`:
+
+```yaml
+review_metadata:
+  inventory_contract:
+    atomic_flows: v1
+    localized_flow_names: tiangong_zh_v1
+```
+
+With these declarations, a collection-label `Selected flow` and an untranslated human-facing English flow display in
+Chinese Markdown are lint errors. Older material PCRs without the relevant declaration remain in the migration queue
+and emit warnings until their bilingual inventory is split, localized, resynced, and audited; new authoring must not
+omit either declaration.
+
 ```markdown
 ###### Washing or de-salting water supplied as product input (`washing_water`)
 
@@ -192,7 +222,7 @@ Chinese Markdown should localize human-facing flow card labels:
 
 清洗或脱盐水作为产品输入跨越前景过程边界时记录。
 
-- 选定流：Process water `<uuid>`
+- 选定流：过程水 `<uuid>`
 - 流属性/单位：Mass / kg
 - 数量规则：计量用水量
 - 数值来源模式：前景记录（`foreground_record`）
