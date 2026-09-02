@@ -58,7 +58,7 @@ test("UUID audit accepts explicit no-product-classification and annotated proper
     base_name_en: "carbon dioxide (fossil)",
     base_name_zh: "二氧化碳（化石源）",
     flow_type: "elementary",
-    classification: "No product classification; elementary-flow compartment Emissions to air / unspecified.",
+    classification: "Emissions to air / unspecified",
     property: "Mass; flow property UUID 93a60a56-a3c8-11da-a746-0800200b9a66",
     unit_group: "Units of mass; reference unit kg",
     semantic_review: "Exact elementary flow and compartment audited.",
@@ -70,6 +70,11 @@ test("UUID audit accepts explicit no-product-classification and annotated proper
         dataSetInformation: {
           "common:UUID": uuid,
           name: { baseName: [{ "@xml:lang": "en", "#text": "carbon dioxide (fossil)" }, { "@xml:lang": "zh", "#text": "二氧化碳（化石源）" }] },
+          classificationInformation: { "common:elementaryFlowCategorization": { "common:category": [
+            { "@catId": "1", "#text": "Emissions" },
+            { "@catId": "1.3", "#text": "Emissions to air" },
+            { "@catId": "1.3.4", "#text": "Emissions to air, unspecified" },
+          ] } },
         },
         quantitativeReference: { referenceToReferenceFlowProperty: "0" },
       },

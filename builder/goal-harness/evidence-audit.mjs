@@ -35,7 +35,10 @@ export function auditReportedUuids({ report, tiangongCliRoot, runner = runTiango
       base_name_en: names.en ?? names["en-US"] ?? "",
       base_name_zh: names.zh ?? names["zh-CN"] ?? "",
       flow_type: normalizeFlowType(flow?.modellingAndValidation?.LCIMethod?.typeOfDataSet),
-      classifications: classificationValues(info?.classificationInformation?.["common:classification"]?.["common:class"]),
+      classifications: [
+        ...classificationValues(info?.classificationInformation?.["common:classification"]?.["common:class"]),
+        ...elementaryCategoryValues(info?.classificationInformation?.["common:elementaryFlowCategorization"]?.["common:category"]),
+      ],
       property: localizedTexts(referenceProperty?.referenceToFlowPropertyDataSet?.["common:shortDescription"]).en ?? "",
       flow_property_uuid: String(referenceProperty?.referenceToFlowPropertyDataSet?.["@refObjectId"] ?? "").toLowerCase(),
       unit_group_uuid: String(support?.unit_group?.id ?? "").toLowerCase(),
@@ -202,6 +205,11 @@ function classificationValues(value) {
   return entries.map((entry) => ({ id: String(entry?.["@classId"] ?? ""), label: String(entry?.["#text"] ?? "") })).filter((entry) => entry.id || entry.label);
 }
 
+function elementaryCategoryValues(value) {
+  const entries = Array.isArray(value) ? value : value ? [value] : [];
+  return entries.map((entry) => ({ id: String(entry?.["@catId"] ?? ""), label: String(entry?.["#text"] ?? "") })).filter((entry) => entry.id || entry.label);
+}
+
 function referenceFlowProperty(flow) {
   const value = flow?.flowProperties?.flowProperty;
   const entries = Array.isArray(value) ? value : value ? [value] : [];
@@ -222,10 +230,17 @@ function unitGroupClaimMatches(claim, actual) {
 function classificationClaimMatches(claim, classifications, flowType) {
   const text = String(claim ?? "").trim();
   if (classifications.length > 0) {
-    return Boolean(text) && classifications.some((value) => text.includes(value.id) || text.includes(value.label));
+    const normalized = normalizeComparableText(text);
+    return Boolean(text) && classifications.some((value) =>
+      text.includes(value.id) || (value.label && normalized.includes(normalizeComparableText(value.label))),
+    );
   }
   if (flowType !== "elementary") return false;
   return !text || /no (?:product )?classification|not applicable|elementary[- ]flow compartment/iu.test(text);
+}
+
+function normalizeComparableText(value) {
+  return String(value).toLowerCase().replace(/[^\p{L}\p{N}]+/gu, " ").trim();
 }
 
 function propertyClaimMatches(claim, property) {
