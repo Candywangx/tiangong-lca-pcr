@@ -15,6 +15,7 @@ import {
   validateRevision,
   validateStructured,
 } from "./schema-contracts.mjs";
+import { ContractSchemaError } from "../../packages/pcr-core/src/schema-validation.mjs";
 
 const validCpcProductChain = {
   schema_version: 1,
@@ -152,6 +153,7 @@ test("CPC product-chain contract keeps official source records distinct and date
     "https://example.com/%ZZ",
     "https://exa[mple.com/path",
     "https://example.com/#first#second",
+    "https://example.com:65536/source",
     "example.com/path",
     "https://example.com/white space",
   ];
@@ -160,6 +162,18 @@ test("CPC product-chain contract keeps official source records distinct and date
   assert.equal(validateCpcProductChain(missingAccessDate).valid, false);
   assert.equal(validateCpcProductChain(malformedAccessDate).valid, false);
   assert.equal(validateCpcProductChain(validOfficialSource).valid, true);
+  for (const url of [
+    "urn:isbn:9780141036144",
+    "https://[2001:db8::1]/source",
+  ]) {
+    const validAbsoluteUri = structuredClone(validOfficialSource);
+    validAbsoluteUri.official_sources[0].url = url;
+    assert.equal(
+      validateCpcProductChain(validAbsoluteUri).valid,
+      true,
+      `${url} must be accepted as an absolute official source URI`,
+    );
+  }
   for (const url of malformedOfficialSourceUrls) {
     const malformedOfficialSourceUrl = structuredClone(validCpcProductChain);
     malformedOfficialSourceUrl.official_sources = [{ ...source, url }];
@@ -169,6 +183,29 @@ test("CPC product-chain contract keeps official source records distinct and date
       `${url} must be rejected as an official source URL`,
     );
   }
+
+  const invalidPort = structuredClone(validOfficialSource);
+  invalidPort.official_sources[0].url = "https://example.com:65536/source";
+  const invalidPortResult = validateCpcProductChain(invalidPort);
+  assert.equal(invalidPortResult.valid, false);
+  assert.ok(
+    invalidPortResult.errors.some(
+      (issue) =>
+        issue.code === "semantic.absolute_uri" &&
+        issue.instance_path === "/official_sources/0/url",
+    ),
+  );
+  assert.throws(
+    () => assertCpcProductChain(invalidPort, { source: "pilot.yaml" }),
+    (error) =>
+      error instanceof ContractSchemaError &&
+      error.source === "pilot.yaml" &&
+      error.errors.some(
+        (issue) =>
+          issue.code === "semantic.absolute_uri" &&
+          issue.instance_path === "/official_sources/0/url",
+      ),
+  );
 });
 
 test("CPC product-chain authored shapes reject derived read-model properties", () => {

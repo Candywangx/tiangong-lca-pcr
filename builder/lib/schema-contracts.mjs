@@ -127,11 +127,65 @@ export const validateReleaseHistory = (value) =>
   validateBuilderContract("pcr-release-history.schema.json", value);
 export const assertReleaseHistory = (value, options = {}) =>
   assertBuilderContract("pcr-release-history.schema.json", value, options);
-export const validateCpcProductChain = (value) =>
-  validateBuilderContract("cpc-product-chain.schema.json", value);
-export const assertCpcProductChain = (value, options = {}) =>
-  assertBuilderContract("cpc-product-chain.schema.json", value, options);
+export function validateCpcProductChain(value) {
+  const result = validateBuilderContract("cpc-product-chain.schema.json", value);
+  if (!result.valid) {
+    return result;
+  }
+  const errors = value.official_sources.flatMap((source, index) =>
+    isValidAbsoluteUri(source.url)
+      ? []
+      : [{
+          code: "semantic.absolute_uri",
+          instance_path: `/official_sources/${index}/url`,
+          schema_path: "#/$defs/officialSource/properties/url",
+          keyword: "format",
+          message: "must be a valid absolute URI",
+          params: { format: "uri" },
+        }]);
+  return errors.length === 0
+    ? result
+    : {
+        ...result,
+        valid: false,
+        code: "PCR_SCHEMA_INVALID",
+        errors,
+        issues: errors,
+      };
+}
+
+export function assertCpcProductChain(value, options = {}) {
+  const result = validateCpcProductChain(value);
+  if (result.valid) {
+    return value;
+  }
+  const contract = resolveContractId("cpc-product-chain.schema.json");
+  throw new ContractSchemaError({
+    code: options.code,
+    contract,
+    entityKind: options.entityKind ?? "CPC product-chain pilot",
+    source: options.source,
+    issues: result.errors,
+  });
+}
 
 function resolveContractId(contract) {
   return contractIds.get(contract) ?? contract;
+}
+
+function isValidAbsoluteUri(value) {
+  if (
+    !/^[A-Za-z][A-Za-z0-9+.-]*:/u.test(value) ||
+    /\s/u.test(value) ||
+    /%(?![0-9A-Fa-f]{2})/u.test(value) ||
+    value.indexOf("#") !== value.lastIndexOf("#")
+  ) {
+    return false;
+  }
+  try {
+    new URL(value);
+    return true;
+  } catch {
+    return false;
+  }
 }
