@@ -49,6 +49,47 @@ test("UUID audit compares public direct-read identity to the author report", () 
   );
 });
 
+test("UUID audit accepts explicit no-product-classification and annotated property evidence for elementary flows", () => {
+  const uuid = "22222222-2222-4222-8222-222222222222";
+  const report = { uuid_audits: [{
+    uuid,
+    hybrid_search: true,
+    state_code: 100,
+    base_name_en: "carbon dioxide (fossil)",
+    base_name_zh: "二氧化碳（化石源）",
+    flow_type: "elementary",
+    classification: "No product classification; elementary-flow compartment Emissions to air / unspecified.",
+    property: "Mass; flow property UUID 93a60a56-a3c8-11da-a746-0800200b9a66",
+    unit_group: "Units of mass; reference unit kg",
+    semantic_review: "Exact elementary flow and compartment audited.",
+  }] };
+  const direct = {
+    state_code: 100,
+    flow: { flowDataSet: {
+      flowInformation: {
+        dataSetInformation: {
+          "common:UUID": uuid,
+          name: { baseName: [{ "@xml:lang": "en", "#text": "carbon dioxide (fossil)" }, { "@xml:lang": "zh", "#text": "二氧化碳（化石源）" }] },
+        },
+        quantitativeReference: { referenceToReferenceFlowProperty: "0" },
+      },
+      modellingAndValidation: { LCIMethod: { typeOfDataSet: "Elementary flow" } },
+      flowProperties: { flowProperty: [{
+        "@dataSetInternalID": "0",
+        referenceToFlowPropertyDataSet: {
+          "@refObjectId": "93a60a56-a3c8-11da-a746-0800200b9a66",
+          "common:shortDescription": [{ "@xml:lang": "en", "#text": "Mass" }],
+        },
+      }] },
+    } },
+  };
+  const supportRunner = () => ({
+    flow_property: { id: "93a60a56-a3c8-11da-a746-0800200b9a66", state_code: 100, name_en: "Mass" },
+    unit_group: { id: "93a60a57-a4c8-11da-a746-0800200c9a66", state_code: 100, name_en: "Units of mass", name_zh: "质量", reference_unit: "kg" },
+  });
+  assert.doesNotThrow(() => auditReportedUuids({ report, tiangongCliRoot: "/unused", runner: () => direct, supportRunner }));
+});
+
 test("source audit performs original locator reads and rejects discovery pages as final evidence", async () => {
   const fetchImpl = async (url) => ({
     ok: true, status: 200, url, headers: new Map([["content-type", "application/pdf"]]),

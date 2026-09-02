@@ -49,8 +49,8 @@ export function auditReportedUuids({ report, tiangongCliRoot, runner = runTiango
     if (actual.base_name_en !== claimed.base_name_en) mismatches.push("base_name_en");
     if (actual.base_name_zh !== claimed.base_name_zh) mismatches.push("base_name_zh");
     if (actual.flow_type !== normalizeFlowType(claimed.flow_type)) mismatches.push("flow_type");
-    if (claimed.classification && !actual.classifications.some((value) => claimed.classification.includes(value.id) || claimed.classification.includes(value.label))) mismatches.push("classification");
-    if (claimed.property && claimed.property !== actual.property) mismatches.push("property");
+    if (!classificationClaimMatches(claimed.classification, actual.classifications, actual.flow_type)) mismatches.push("classification");
+    if (!propertyClaimMatches(claimed.property, actual.property)) mismatches.push("property");
     if (support?.flow_property?.state_code !== 100 || String(support?.flow_property?.id ?? "").toLowerCase() !== actual.flow_property_uuid) mismatches.push("flow_property_state");
     if (support?.flow_property?.name_en !== actual.property) mismatches.push("flow_property_name");
     if (support?.unit_group?.state_code !== 100 || !actual.unit_group_uuid) mismatches.push("unit_group_state");
@@ -217,6 +217,22 @@ function unitGroupClaimMatches(claim, actual) {
     .flatMap((value) => String(value ?? "").toLowerCase().match(/[a-z][a-z0-9]*/gu) ?? [])
     .filter((token) => !["of", "unit", "units", "group"].includes(token));
   return candidates.some((token) => normalizedClaim.includes(token));
+}
+
+function classificationClaimMatches(claim, classifications, flowType) {
+  const text = String(claim ?? "").trim();
+  if (classifications.length > 0) {
+    return Boolean(text) && classifications.some((value) => text.includes(value.id) || text.includes(value.label));
+  }
+  if (flowType !== "elementary") return false;
+  return !text || /no (?:product )?classification|not applicable|elementary[- ]flow compartment/iu.test(text);
+}
+
+function propertyClaimMatches(claim, property) {
+  const text = String(claim ?? "").trim().toLowerCase();
+  const expected = String(property ?? "").trim().toLowerCase();
+  if (!text || !expected) return false;
+  return text === expected || text.startsWith(`${expected};`) || text.startsWith(`${expected},`) || text.startsWith(`${expected} (`) || text.includes(`property ${expected}`) || text.includes(`property: ${expected}`);
 }
 
 function normalizeFlowType(value) {
