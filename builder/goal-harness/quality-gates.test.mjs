@@ -133,6 +133,35 @@ test("bilingual gate rejects row order, UUID, and official Chinese name mismatch
   );
 });
 
+test("bilingual gate rejects English localizable inventory text in the Chinese rendering", () => {
+  const inventoryRows = rows();
+  inventoryRows.zh[1].role = "Metallurgical coke input";
+  inventoryRows.zh[1].description = "Record the measured mass.";
+  inventoryRows.zh[1].amount = { expression: "Measured mass per reference flow", ranges: [] };
+  assert.throws(
+    () => assertAuthorQuality({ report: report(), authorizedFiles: files, changedFiles: files, inventoryRows }),
+    (error) => error.details.findings.some((finding) => finding.code === "ZH_INVENTORY_TEXT_NOT_LOCALIZED"),
+  );
+});
+
+test("common UUID-empty flows require an auditable hybrid/direct-read query explanation", () => {
+  const inventoryRows = rows();
+  inventoryRows.en[1].name = "Electricity";
+  inventoryRows.zh[1].name = "电力";
+  const invalid = report({
+    inventory: {
+      total_rows: 2,
+      matched_rows: 1,
+      unresolved_rows: 1,
+      unresolved: [{ row_id: "input_coke", reason_code: "manual_review_required", explanation: "Needs later manual review." }],
+    },
+  });
+  assert.throws(
+    () => assertAuthorQuality({ report: invalid, authorizedFiles: files, changedFiles: files, inventoryRows }),
+    (error) => error.details.findings.some((finding) => finding.code === "COMMON_FLOW_UUID_AUDIT_MISSING"),
+  );
+});
+
 test("range gate rejects one-source external ranges and lower equals upper", () => {
   const oneSource = report({ ranges: [{ range_id: "coke_rate", evidence_kind: "external_source", source_ids: ["paper-a"], original_text_verified: true, independent_source_count: 1, provisional: false, lower: 1, upper: 2, synthesis: "Compared compatible values." }] });
   assert.throws(

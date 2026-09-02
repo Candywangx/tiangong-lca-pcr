@@ -34,6 +34,23 @@ const SET_FLOW_PATTERNS = [
   /其他废物/u,
 ];
 
+const COMMON_FLOW_PATTERNS = [
+  /\belectricity\b/iu,
+  /\b(process|drinking|makeup|cooling|hot)?\s*water\b/iu,
+  /\bnatural gas\b/iu,
+  /\bLPG\b/iu,
+  /\bdiesel\b/iu,
+  /\bsteam\b/iu,
+  /\boxygen\b/iu,
+  /\bnitrogen\b/iu,
+  /\bcarbon dioxide\b/iu,
+  /\bmethane\b/iu,
+  /\bnitrous oxide\b/iu,
+  /电力|水|天然气|液化石油气|柴油|蒸汽|氧气|氮气|二氧化碳|甲烷|氧化亚氮/u,
+];
+
+const DIRECT_QUERY_EVIDENCE_PATTERN = /hybrid|state[_ -]?code\s*[=:]?\s*100|direct(?:ly)? (?:read|quer)|直接(?:读取|查询)|候选.*(?:拒绝|核验)|candidate.*(?:read|reject|audit)|queried|searched/iu;
+
 export function validateAuthorReport(report) {
   const valid = validateSchema(report);
   return {
@@ -64,6 +81,7 @@ export function assertAuthorQuality({ report, authorizedFiles, changedFiles, inv
   const matched = enRows.filter((row) => Boolean(row.uuid)).length;
   const unresolvedRows = enRows.filter((row) => !row.uuid);
   const unresolvedIds = new Set((report.inventory?.unresolved ?? []).map((entry) => entry.row_id));
+  const unresolvedById = new Map((report.inventory?.unresolved ?? []).map((entry) => [entry.row_id, entry]));
   const duplicateUnresolved = duplicateValues((report.inventory?.unresolved ?? []).map((entry) => entry.row_id));
   if (
     report.inventory?.total_rows !== report.inventory?.matched_rows + report.inventory?.unresolved_rows ||
@@ -108,6 +126,22 @@ export function assertAuthorQuality({ report, authorizedFiles, changedFiles, inv
       }
     } else if (translated && !/\p{Script=Han}/u.test(translated.name ?? "")) {
       findings.push({ code: "ZH_FLOW_NAME_NOT_LOCALIZED", row_id: row.row_id, message: "An unresolved concrete flow needs a clear professional Chinese name." });
+    }
+    for (const [field, value] of [
+      ["role", translated?.role],
+      ["description", translated?.description],
+      ["amount.expression", translated?.amount?.expression],
+    ]) {
+      if (typeof value === "string" && value.trim() && !/\p{Script=Han}/u.test(value)) {
+        findings.push({ code: "ZH_INVENTORY_TEXT_NOT_LOCALIZED", row_id: row.row_id, field, message: `Chinese inventory ${field} must be professionally localized.` });
+      }
+    }
+    if (!row.uuid && COMMON_FLOW_PATTERNS.some((pattern) => pattern.test(row.name ?? "") || pattern.test(translated?.name ?? ""))) {
+      const unresolved = unresolvedById.get(row.row_id);
+      const toolUnavailable = ["tiangong_lookup_rate_limited", "tiangong_cli_unavailable"].includes(unresolved?.reason_code);
+      if (!toolUnavailable && !DIRECT_QUERY_EVIDENCE_PATTERN.test(unresolved?.explanation ?? "")) {
+        findings.push({ code: "COMMON_FLOW_UUID_AUDIT_MISSING", row_id: row.row_id, message: "A common UUID-empty flow needs an auditable hybrid-search/direct-read query explanation." });
+      }
     }
   }
 
