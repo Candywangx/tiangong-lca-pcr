@@ -30,12 +30,13 @@ export async function dispatchGoalAuthors({ config, stateDir, slots = config.aut
     }
     if (resumeStopped) {
       for (const failed of state.tasks.filter((task) => task.state === "retryable_failure" && (task.attempt ?? 0) < (config.retry_policy?.max_attempts ?? 3))) {
+        const repairInPlace = Boolean(failed.thread_id && failed.worktree_path && (failed.repair_count ?? 0) < (config.retry_policy?.max_repairs ?? 2));
         let task = applyTaskTransition(failed, {
-          transition_id: `${authorIdentity(config.goal_id, failed.cpc_code, failed.attempt ?? 1, failed.uuid_enrichment_generation)}-requeue-${(failed.dispatch_cycle ?? 1) + 1}`,
-          to: "queued",
+          transition_id: `${authorIdentity(config.goal_id, failed.cpc_code, failed.attempt ?? 1, failed.uuid_enrichment_generation)}-${repairInPlace ? "repair" : "requeue"}-${(failed.dispatch_cycle ?? 1) + 1}`,
+          to: repairInPlace ? "repair_requested" : "queued",
           at: new Date().toISOString(),
         });
-        if (failed.thread_id) {
+        if (!repairInPlace && failed.thread_id) {
           task = { ...task, worktree_path: null, author_branch: null, thread_id: null, turn_id: null };
         }
         store.append({ event_id: `${task.id}-requeued-${task.transition_ids.length}`, type: "task_replaced", payload: { task } });
@@ -252,7 +253,7 @@ export async function harvestGoalAuthors({
       try {
         const unavailableRows = (report.inventory?.unresolved ?? []).filter((entry) => entry.reason_code === "tiangong_cli_unavailable");
         if (unavailableRows.length > 0) {
-          throw new GoalHarnessError("GOAL_UUID_INFRASTRUCTURE_UNAVAILABLE", "tiangong_cli_unavailable is an infrastructure-level retryable failure, not valid unresolved PCR coverage.", { retryable: true, row_ids: unavailableRows.map((entry) => entry.row_id) });
+          throw new GoalHarnessError("GOAL_REPORTED_UUID_INFRASTRUCTURE_UNAVAILABLE", "tiangong_cli_unavailable cannot be accepted as unresolved PCR coverage; repair it now that Goal infrastructure preflight is healthy.", { retryable: true, row_ids: unavailableRows.map((entry) => entry.row_id) });
         }
         const reportSchema = validateReportFn(report);
         if (!reportSchema.valid) {
