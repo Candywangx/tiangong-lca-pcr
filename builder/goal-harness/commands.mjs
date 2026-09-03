@@ -2,6 +2,7 @@ import { execFileSync } from "node:child_process";
 import { existsSync, mkdtempSync, readFileSync, rmSync, statSync } from "node:fs";
 import { tmpdir } from "node:os";
 import path from "node:path";
+import { fileURLToPath } from "node:url";
 
 import { CodexAppServerAdapter } from "./app-server.mjs";
 import { ensureGoalAppServerDaemon } from "./app-server-daemon.mjs";
@@ -16,6 +17,9 @@ import { planGoal } from "./planner.mjs";
 import { createSyntheticBaseline } from "./synthetic-baseline.mjs";
 import { authenticatedHybridSearchDryRunCheck, ensureCorepackToolPath } from "./tooling.mjs";
 import { auditGoalUuidResults } from "./uuid-enrichment-audit.mjs";
+import { ensureGoalRuntimeBaseline } from "./runtime-baseline.mjs";
+
+const HARNESS_SOURCE_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../..");
 
 export async function runGoalCommand(command, options) {
   if (command === "doctor") return doctorCommand(options);
@@ -182,6 +186,12 @@ export async function startCommand({ configPath, slots = null, dryRun = false, r
   }
   const runtime = ensureCorepackToolPath(stateDir);
   if (!dryRun) assertAuthorDispatchInfrastructure(config);
+  const runtimeBaseline = dryRun ? null : ensureGoalRuntimeBaseline({
+    projectRoot: config.project_root,
+    sourceRoot: HARNESS_SOURCE_ROOT,
+    stateDir,
+    goalId: config.goal_id,
+  });
   const daemon = dryRun ? null : await ensureGoalAppServerDaemon({
     stateDir,
     command: config.tools.codex,
@@ -214,7 +224,7 @@ export async function startCommand({ configPath, slots = null, dryRun = false, r
       resumeStopped: resume,
       dryRun,
     });
-    return { ...result, harvest, codex_project_id: effectiveConfig.codex?.project_id ?? null, app_server: daemon ? { endpoint: daemon.endpoint, pid: daemon.pid, reused: daemon.reused } : null };
+    return { ...result, harvest, runtime_baseline: runtimeBaseline, codex_project_id: effectiveConfig.codex?.project_id ?? null, app_server: daemon ? { endpoint: daemon.endpoint, pid: daemon.pid, reused: daemon.reused } : null };
   } finally {
     await adapter.close();
   }

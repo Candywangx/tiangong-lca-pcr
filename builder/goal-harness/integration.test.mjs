@@ -93,6 +93,10 @@ test("integration selects the latest landed snapshot commit as its cumulative ba
   };
   assert.equal(selectIntegrationBaseCommit(state), "d".repeat(40));
   assert.equal(selectIntegrationBaseCommit({ baseline: state.baseline, snapshots: [] }), "a".repeat(40));
+  assert.equal(selectIntegrationBaseCommit({
+    ...state,
+    runtime_baseline: { commit: "e".repeat(40), base_commit: "d".repeat(40) },
+  }), "e".repeat(40));
 });
 
 test("integration materializes the complete author tree for a retry commit chain", () => {

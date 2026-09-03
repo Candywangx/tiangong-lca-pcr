@@ -10,6 +10,7 @@ import { buildIntegrationSnapshot } from "./scheduler.mjs";
 import { applyTaskTransition } from "./state-machine.mjs";
 import { ensureGoalWorktree } from "./worktrees.mjs";
 import { runCachedViewerBuild } from "./derived-cache.mjs";
+import { selectGoalRuntimeBaseCommit } from "./runtime-baseline.mjs";
 
 const MAPPING_RELATIONS = new Set(["exact", "broader", "narrower", "proxy"]);
 
@@ -55,11 +56,8 @@ export function mergeAcceptedMappings(document, additions, { materialPcrIds }) {
   return merged;
 }
 
-export function selectIntegrationBaseCommit(state) {
-  const landed = (state.snapshots ?? [])
-    .filter((snapshot) => snapshot.state === "landed" && snapshot.integration_commit)
-    .sort((left, right) => String(left.landed_at ?? left.created_at ?? "").localeCompare(String(right.landed_at ?? right.created_at ?? "")));
-  return landed.at(-1)?.integration_commit ?? state.baseline.commit;
+export function selectIntegrationBaseCommit(state, { projectRoot = null } = {}) {
+  return selectGoalRuntimeBaseCommit(state, { projectRoot });
 }
 
 export function materializeAuthorCommitTree({ worktreePath, authorCommit, allowedFiles }) {
@@ -149,7 +147,7 @@ export function integrateGoalSnapshot({ config, stateDir, snapshotId = null, all
       throw new GoalHarnessError("GOAL_MAPPING_DECIDER_REQUIRED", "integration.decided_by is required before accepted mapping publication.");
     }
 
-    const baseCommit = selectIntegrationBaseCommit(state);
+    const baseCommit = selectIntegrationBaseCommit(state, { projectRoot: config.project_root });
     const workspace = prepareIntegrationWorkspace({ config, snapshot, baseCommit });
     const { worktreePath, branch, integrationAttempt } = workspace;
 

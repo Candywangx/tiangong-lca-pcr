@@ -14,6 +14,7 @@ import { ensureGoalWorktree } from "./worktrees.mjs";
 import { extractCompletedTurnReport, reviewAuthorWorktree } from "./author-review.mjs";
 import { appendGoalCacheReceipt, listGoalCacheReceipts } from "./goal-cache.mjs";
 import { validateAuthorReport } from "./author-gates.mjs";
+import { selectGoalRuntimeBaseCommit } from "./runtime-baseline.mjs";
 
 export async function dispatchGoalAuthors({ config, stateDir, slots = config.author_slots, adapter, resumeStopped = false, dryRun = false }) {
   if (!Number.isInteger(slots) || slots < 1 || slots > 6) {
@@ -140,7 +141,8 @@ export async function dispatchGoalAuthors({ config, stateDir, slots = config.aut
       const transitionIdentity = `${identity}-c${dispatchCycle}`;
       const worktreePath = task.worktree_path ?? path.join(config.project_root, ".worktrees", "goals", config.goal_id, "authors", identity);
       const branch = task.author_branch ?? `codex/${identity}`;
-      ensureGoalWorktree({ projectRoot: config.project_root, worktreePath, commit: task.author_base_commit ?? state.baseline.commit, branch });
+      const authorBaseCommit = task.author_base_commit ?? selectGoalRuntimeBaseCommit(state, { projectRoot: config.project_root });
+      ensureGoalWorktree({ projectRoot: config.project_root, worktreePath, commit: authorBaseCommit, branch });
       const compiled = compileAuthorPrompt({
         task: {
           ...task,
@@ -161,7 +163,7 @@ export async function dispatchGoalAuthors({ config, stateDir, slots = config.aut
         task_id: task.id,
         attempt,
         uuid_search_contract_version: 1,
-        author_base_commit: task.author_base_commit ?? state.baseline.commit,
+        author_base_commit: authorBaseCommit,
         worktree_path: worktreePath,
         branch,
         policy_sha256: compiled.policy_sha256,
@@ -176,7 +178,7 @@ export async function dispatchGoalAuthors({ config, stateDir, slots = config.aut
           at: new Date().toISOString(),
         });
       }
-      task = { ...task, attempt, dispatch_cycle: dispatchCycle, worktree_path: worktreePath, author_branch: branch, allowed_files: compiled.allowed_files, policy_sha256: compiled.policy_sha256, uuid_search_contract_version: 1 };
+      task = { ...task, attempt, dispatch_cycle: dispatchCycle, author_base_commit: authorBaseCommit, worktree_path: worktreePath, author_branch: branch, allowed_files: compiled.allowed_files, policy_sha256: compiled.policy_sha256, uuid_search_contract_version: 1 };
       store.append({ event_id: `${transitionIdentity}-prepared`, type: "task_replaced", payload: { task } });
 
       try {
@@ -331,7 +333,7 @@ export async function harvestGoalAuthors({
         };
         const review = reviewFn({
           projectRoot: config.project_root,
-          baselineCommit: state.baseline.commit,
+          baselineCommit: task.author_base_commit ?? state.baseline.commit,
           worktreePath: task.worktree_path,
           task: { ...task, goal_id: config.goal_id },
           report,

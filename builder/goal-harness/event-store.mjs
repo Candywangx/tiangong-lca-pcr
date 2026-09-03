@@ -125,6 +125,8 @@ function reduceEvent(state, event) {
     next.tasks = (next.tasks ?? []).map((task) => task.id === event.payload.task.id ? event.payload.task : task);
   } else if (event.type === "verified_common_uuids_updated") {
     next.verified_common_uuids = event.payload.verified_common_uuids;
+  } else if (event.type === "runtime_baseline_updated") {
+    next.runtime_baseline = event.payload.runtime_baseline;
   } else if (event.type === "landing_completed") {
     next.landed_path_fingerprints = {
       ...(next.landed_path_fingerprints ?? {}),

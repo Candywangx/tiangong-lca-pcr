@@ -105,6 +105,14 @@ bytes. It updates a private `refs/tiangong-goals/<goal-id>/baseline` ref and nev
 branch, or dirty working tree. Authors and integrations run in `.worktrees/goals/<goal-id>/` from that synthetic
 commit.
 
+On resume, a clean, committed Harness development tree is projected through another temporary Git index onto the
+latest landed integration commit. Only the reviewed Goal Harness/CLI/schema/docs, package-script, and viewer-test
+paths are eligible. This immutable runtime baseline is recorded in Goal state and a private ref. Existing authors
+retain their original `author_base_commit`; new authors and the next integration use the runtime baseline, and later
+landed descendants become the cumulative base. Diverged histories or dirty runtime source paths fail closed. This
+keeps the validated viewer/test optimization active without rewriting the original synthetic baseline or touching the
+dirty primary working tree.
+
 Landing is staged and journaled. Every destination path is compared with the baseline or the last successfully landed
 snapshot. Any byte mismatch produces `GOAL_LAND_CAS_CONFLICT` with exact paths and does not overwrite newer user
 content. Author worktrees are retained after stop and successful landing for audit.
@@ -161,7 +169,9 @@ finalized receipt ids. The reviewer recomputes result hashes and candidate proje
 whole author result an infrastructure-level retryable failure.
 
 Goal caches are append-only and hash-bound to normalized input, tool version, query/source conditions, and response
-fingerprint. Damaged or schema-stale entries are misses and are rebuilt; a damaged event hash chain fails closed.
+fingerprint. Writes use a separate bounded cross-process lock so six authors cannot fork the event chain. Schema-stale
+or damaged entries are misses. A damaged event log is preserved byte-for-byte in a recovery directory and is rebuilt
+only from receipt/blob pairs whose hashes and in-cache paths verify; invalid receipts remain quarantined evidence.
 Cached common UUIDs remain candidates whose row-specific semantic, geography, technology, state, property, and unit
 fit must be checked. Source blobs can be reused only at the same verified content hash and still need PCR-specific
 applicability. Prompt compilation injects only a bounded relevant subset, never the whole Goal history.

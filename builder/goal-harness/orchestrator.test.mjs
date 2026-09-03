@@ -100,6 +100,31 @@ test("dispatch fills every open slot when another author is already active", asy
   }
 });
 
+test("new authors start from the verified runtime base while existing task baselines remain explicit", async () => {
+  const { root, stateDir, config } = fixture({ taskCount: 2 });
+  const store = new GoalEventStore({ stateDir });
+  writeFileSync(path.join(root, "runtime.txt"), "verified runtime\n");
+  git(root, ["add", "."]);
+  git(root, ["commit", "-qm", "runtime"]);
+  const runtimeCommit = git(root, ["rev-parse", "HEAD"]);
+  store.append({
+    event_id: "fixture-runtime",
+    type: "runtime_baseline_updated",
+    payload: { runtime_baseline: { commit: runtimeCommit, base_commit: store.rebuild().baseline.commit, source_commit: runtimeCommit } },
+  });
+  const calls = [];
+  const adapter = {
+    async createAuthorTask(input) { calls.push(input); return { thread_id: `thread-${calls.length}`, turn_id: `turn-${calls.length}` }; },
+  };
+  try {
+    const result = await dispatchGoalAuthors({ config, stateDir, slots: 1, adapter });
+    assert.equal(git(result.dispatched[0].worktree_path, ["rev-parse", "HEAD"]), runtimeCommit);
+    assert.equal(result.dispatched[0].author_base_commit, runtimeCommit);
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+  }
+});
+
 test("visible app-server failure preserves prepared worktree and stops scheduling without fallback", async () => {
   const { root, stateDir, config } = fixture();
   const adapter = {
