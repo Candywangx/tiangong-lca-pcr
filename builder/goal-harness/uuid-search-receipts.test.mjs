@@ -172,7 +172,7 @@ test("hybrid query writes an immutable result receipt and final candidate decisi
     const reusableReport = {
       hybrid_search_receipt_ids: ["receipt-1"],
       uuid_audits: [{ uuid: UUID_A, hybrid_search_receipt_id: "receipt-1" }],
-      rejected_uuid_candidates: [],
+      rejected_uuid_candidates: [{ uuid: UUID_B, receipt_id: "receipt-1", reason_code: "semantic_mismatch", reason: "Candidate represents alloy steel rather than pig iron." }],
       inventory: { unresolved: [] },
     };
     assert.throws(

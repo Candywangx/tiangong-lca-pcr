@@ -244,7 +244,6 @@ export function auditHybridSearchReceipts({ report, stateDir, task, verifiedUuid
     if (!ids.includes(id)) throw receiptMissing(`Referenced receipt ${id} is absent from hybrid_search_receipt_ids.`);
   }
   const taskBoundReceiptIds = new Set([
-    ...(report.rejected_uuid_candidates ?? []).map((entry) => entry.receipt_id).filter(Boolean),
     ...(report.inventory?.unresolved ?? []).flatMap((entry) => entry.hybrid_search_receipt_ids ?? []),
   ]);
   const adoptedByReceipt = new Map();
