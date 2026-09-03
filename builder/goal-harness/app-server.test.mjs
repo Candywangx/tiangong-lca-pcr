@@ -1,5 +1,9 @@
 import assert from "node:assert/strict";
+import { execFileSync } from "node:child_process";
 import { EventEmitter } from "node:events";
+import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from "node:fs";
+import { tmpdir } from "node:os";
+import path from "node:path";
 import { PassThrough } from "node:stream";
 import test from "node:test";
 
@@ -118,6 +122,45 @@ test("app-server adapter creates one durable visible thread bound to the author 
     });
   } finally {
     await adapter.close();
+  }
+});
+
+test("author sandbox permits only linked-worktree Git metadata needed for commits", async () => {
+  const root = mkdtempSync(path.join(tmpdir(), "tiangong-author-git-sandbox-"));
+  const worktreePath = path.join(root, "author");
+  const repository = path.join(root, "repo");
+  mkdirSync(repository);
+  execFileSync("git", ["init", "-q"], { cwd: repository });
+  execFileSync("git", ["config", "user.name", "Goal Test"], { cwd: repository });
+  execFileSync("git", ["config", "user.email", "goal@example.invalid"], { cwd: repository });
+  writeFileSync(path.join(repository, "fixture.txt"), "fixture\n");
+  execFileSync("git", ["add", "fixture.txt"], { cwd: repository });
+  execFileSync("git", ["commit", "-qm", "base"], { cwd: repository });
+  execFileSync("git", ["worktree", "add", "-q", "-b", "codex/test-author", worktreePath, "HEAD"], { cwd: repository });
+  const mock = mockSpawn();
+  const adapter = new CodexAppServerAdapter({ spawnFactory: () => mock.child, requestTimeoutMs: 1000 });
+  try {
+    await adapter.createAuthorTask({
+      worktreePath,
+      title: "PCR fixture",
+      prompt: "commit fixture",
+      outputSchema: { type: "object" },
+      receiptStateDir: path.join(root, "goal-state"),
+    });
+    const turn = mock.requests.find((request) => request.method === "turn/start");
+    const roots = turn.params.sandboxPolicy.writableRoots;
+    const commonGit = path.join(repository, ".git");
+    assert.equal(roots.includes(worktreePath), true);
+    assert.equal(roots.includes(path.join(root, "goal-state")), true);
+    assert.equal(roots.includes(path.join(commonGit, "objects")), true);
+    assert.equal(roots.includes(path.join(commonGit, "refs/heads/codex")), true);
+    assert.equal(roots.includes(path.join(commonGit, "logs/refs/heads/codex")), true);
+    assert.equal(roots.includes(commonGit), false);
+    assert.equal(roots.includes(path.join(commonGit, "index")), false);
+    assert.equal(roots.some((entry) => entry.startsWith(path.join(commonGit, "worktrees") + path.sep)), true);
+  } finally {
+    await adapter.close();
+    rmSync(root, { recursive: true, force: true });
   }
 });
 

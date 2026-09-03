@@ -1,4 +1,6 @@
 import { spawn } from "node:child_process";
+import { readFileSync, realpathSync } from "node:fs";
+import path from "node:path";
 import { StringDecoder } from "node:string_decoder";
 
 import { GoalHarnessError } from "./errors.mjs";
@@ -312,9 +314,37 @@ export class CodexAppServerAdapter {
 function authorSandboxPolicy(worktreePath, receiptStateDir) {
   return {
     type: "workspaceWrite",
-    writableRoots: [...new Set([worktreePath, receiptStateDir].filter(Boolean))],
+    writableRoots: [...new Set([
+      worktreePath,
+      receiptStateDir,
+      ...linkedWorktreeGitWritableRoots(worktreePath),
+    ].filter(Boolean))],
     networkAccess: true,
   };
+}
+
+function linkedWorktreeGitWritableRoots(worktreePath) {
+  try {
+    const dotGit = readFileSync(path.join(worktreePath, ".git"), "utf8").trim();
+    const match = /^gitdir:\s*(.+)$/u.exec(dotGit);
+    if (!match) return [];
+    const worktreeGitDir = realpathSync(path.resolve(worktreePath, match[1]));
+    const commonRelative = readFileSync(path.join(worktreeGitDir, "commondir"), "utf8").trim();
+    const commonGitDir = realpathSync(path.resolve(worktreeGitDir, commonRelative));
+    const worktreesRoot = path.join(commonGitDir, "worktrees");
+    const relativeMetadata = path.relative(worktreesRoot, worktreeGitDir);
+    if (!relativeMetadata || relativeMetadata.startsWith("..") || path.isAbsolute(relativeMetadata)) return [];
+    const head = readFileSync(path.join(worktreeGitDir, "HEAD"), "utf8").trim();
+    if (!/^ref:\s+refs\/heads\/codex\/[A-Za-z0-9._/-]+$/u.test(head)) return [];
+    return [
+      worktreeGitDir,
+      path.join(commonGitDir, "objects"),
+      path.join(commonGitDir, "refs", "heads", "codex"),
+      path.join(commonGitDir, "logs", "refs", "heads", "codex"),
+    ];
+  } catch {
+    return [];
+  }
 }
 
 function visibleTaskError(operation, error, stderr) {
