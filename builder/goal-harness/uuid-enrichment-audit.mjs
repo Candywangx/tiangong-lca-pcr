@@ -110,6 +110,7 @@ export function auditGoalUuidResults({ stateDir, apply = false }) {
         uuid_enrichment_generation: generation,
         uuid_enrichment_reasons: finding.reasons,
         uuid_enrichment_history: [...(current.uuid_enrichment_history ?? []), history],
+        author_content_base_commit: current.author_content_base_commit ?? current.author_base_commit ?? state.baseline.commit,
         author_base_commit: current.author_commit ?? current.author_base_commit ?? state.baseline.commit,
         worktree_path: canRepairInPlace ? current.worktree_path : null,
         author_branch: canRepairInPlace ? current.author_branch : null,

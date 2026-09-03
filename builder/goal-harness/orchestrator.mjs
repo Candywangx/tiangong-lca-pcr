@@ -15,6 +15,7 @@ import { extractCompletedTurnReport, reviewAuthorWorktree } from "./author-revie
 import { appendGoalCacheReceipt, listGoalCacheReceipts } from "./goal-cache.mjs";
 import { validateAuthorReport } from "./author-gates.mjs";
 import { selectGoalRuntimeBaseCommit } from "./runtime-baseline.mjs";
+import { resolveAuthorContentBaseCommit } from "./author-baseline.mjs";
 
 export async function dispatchGoalAuthors({ config, stateDir, slots = config.author_slots, adapter, resumeStopped = false, dryRun = false }) {
   if (!Number.isInteger(slots) || slots < 1 || slots > 6) {
@@ -41,6 +42,11 @@ export async function dispatchGoalAuthors({ config, stateDir, slots = config.aut
           at: new Date().toISOString(),
         });
         if (replaceThreadInPlace) {
+          const authorContentBaseCommit = resolveAuthorContentBaseCommit({
+            projectRoot: config.project_root,
+            task: failed,
+            fallbackCommit: state.baseline.commit,
+          });
           task = {
             ...task,
             previous_thread_ids: [...new Set([...(failed.previous_thread_ids ?? []), failed.thread_id])],
@@ -49,6 +55,7 @@ export async function dispatchGoalAuthors({ config, stateDir, slots = config.aut
             repair_resume_pending: false,
             continuing_repair_after_thread_replacement: true,
             author_base_commit: failed.last_author_commit ?? failed.author_commit ?? failed.author_base_commit ?? state.baseline.commit,
+            author_content_base_commit: authorContentBaseCommit,
             reason: "Continue the preserved repair worktree after the original visible thread and its one continuation both became unrecoverable.",
           };
         } else if (!repairInPlace && failed.thread_id) {
@@ -142,6 +149,11 @@ export async function dispatchGoalAuthors({ config, stateDir, slots = config.aut
       const worktreePath = task.worktree_path ?? path.join(config.project_root, ".worktrees", "goals", config.goal_id, "authors", identity);
       const branch = task.author_branch ?? `codex/${identity}`;
       const authorBaseCommit = task.author_base_commit ?? selectGoalRuntimeBaseCommit(state, { projectRoot: config.project_root });
+      const authorContentBaseCommit = resolveAuthorContentBaseCommit({
+        projectRoot: config.project_root,
+        task,
+        fallbackCommit: authorBaseCommit,
+      });
       ensureGoalWorktree({ projectRoot: config.project_root, worktreePath, commit: authorBaseCommit, branch });
       const compiled = compileAuthorPrompt({
         task: {
@@ -164,6 +176,7 @@ export async function dispatchGoalAuthors({ config, stateDir, slots = config.aut
         attempt,
         uuid_search_contract_version: 1,
         author_base_commit: authorBaseCommit,
+        author_content_base_commit: authorContentBaseCommit,
         worktree_path: worktreePath,
         branch,
         policy_sha256: compiled.policy_sha256,
@@ -178,7 +191,7 @@ export async function dispatchGoalAuthors({ config, stateDir, slots = config.aut
           at: new Date().toISOString(),
         });
       }
-      task = { ...task, attempt, dispatch_cycle: dispatchCycle, author_base_commit: authorBaseCommit, worktree_path: worktreePath, author_branch: branch, allowed_files: compiled.allowed_files, policy_sha256: compiled.policy_sha256, uuid_search_contract_version: 1 };
+      task = { ...task, attempt, dispatch_cycle: dispatchCycle, author_base_commit: authorBaseCommit, author_content_base_commit: authorContentBaseCommit, worktree_path: worktreePath, author_branch: branch, allowed_files: compiled.allowed_files, policy_sha256: compiled.policy_sha256, uuid_search_contract_version: 1 };
       store.append({ event_id: `${transitionIdentity}-prepared`, type: "task_replaced", payload: { task } });
 
       try {
@@ -331,9 +344,14 @@ export async function harvestGoalAuthors({
           hybrid_search_receipts: auditHybridSearchFn({ report, stateDir, task, verifiedUuidReads: uuidReads }),
           source_reads: await verifySourcesFn({ report, stateDir }),
         };
+        const authorContentBaseCommit = resolveAuthorContentBaseCommit({
+          projectRoot: config.project_root,
+          task,
+          fallbackCommit: task.author_base_commit ?? state.baseline.commit,
+        });
         const review = reviewFn({
           projectRoot: config.project_root,
-          baselineCommit: task.author_base_commit ?? state.baseline.commit,
+          baselineCommit: authorContentBaseCommit,
           worktreePath: task.worktree_path,
           task: { ...task, goal_id: config.goal_id },
           report,
@@ -342,6 +360,7 @@ export async function harvestGoalAuthors({
         task = applyTaskTransition(task, { transition_id: `${task.id}-turn-${task.turn_id}-valid`, to: "valid_result", at: new Date().toISOString() });
         task = {
           ...task,
+          author_content_base_commit: authorContentBaseCommit,
           author_commit: report.commit_sha,
           pcr_id: review.pcr_id ?? task.pcr_id,
           valid_at: new Date().toISOString(),

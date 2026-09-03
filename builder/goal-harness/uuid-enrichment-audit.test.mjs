@@ -101,6 +101,7 @@ test("historical enrichment keeps a recoverable original thread and worktree for
     assert.equal(result.state.tasks[0].state, "repair_requested");
     assert.equal(result.state.tasks[0].thread_id, "thread-1");
     assert.equal(result.state.tasks[0].worktree_path, worktreePath);
+    assert.equal(result.state.tasks[0].author_content_base_commit, "b".repeat(40));
   } finally {
     rmSync(stateDir, { recursive: true, force: true });
   }

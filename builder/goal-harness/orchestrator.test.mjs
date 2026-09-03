@@ -601,8 +601,15 @@ test("repair-limit replacement reuses a worktree only when its dirty paths remai
     adapter: { async createAuthorTask() { return { thread_id: "thread-old", turn_id: "turn-old" }; } },
   });
   const worktreePath = first.dispatched[0].worktree_path;
+  const originalContentBase = first.dispatched[0].author_base_commit;
+  assert.equal(first.dispatched[0].author_content_base_commit, originalContentBase);
   const allowedPath = path.join(worktreePath, "library/pcrs/category/item/manifest.yaml");
-  writeFileSync(allowedPath, "preserved authorized repair bytes\n");
+  for (const file of first.dispatched[0].allowed_files) {
+    writeFileSync(path.join(worktreePath, file), `authored ${path.basename(file)}\n`);
+  }
+  git(worktreePath, ["add", ...first.dispatched[0].allowed_files]);
+  git(worktreePath, ["commit", "-qm", "author fixture"]);
+  const authoredCommit = git(worktreePath, ["rev-parse", "HEAD"]);
   const store = new GoalEventStore({ stateDir });
   const active = store.rebuild().tasks[0];
   store.append({
@@ -613,6 +620,11 @@ test("repair-limit replacement reuses a worktree only when its dirty paths remai
       state: "retryable_failure",
       failure_code: "GOAL_REPAIR_LIMIT_REACHED",
       repair_count: 2,
+      author_commit: authoredCommit,
+      last_author_commit: authoredCommit,
+      author_base_commit: authoredCommit,
+      author_content_base_commit: undefined,
+      repair_history: [{ repair_count: 1, original_commit: authoredCommit, new_commit: authoredCommit }],
       transition_ids: [...active.transition_ids, "repair-limit"],
     } },
   });
@@ -632,7 +644,9 @@ test("repair-limit replacement reuses a worktree only when its dirty paths remai
     });
     assert.equal(starts[0].worktreePath, worktreePath);
     assert.equal(result.state.tasks[0].worktree_path, worktreePath);
-    assert.equal(readFileSync(allowedPath, "utf8"), "preserved authorized repair bytes\n");
+    assert.equal(readFileSync(allowedPath, "utf8"), "authored manifest.yaml\n");
+    assert.equal(result.state.tasks[0].author_content_base_commit, originalContentBase);
+    assert.equal(result.state.tasks[0].author_base_commit, authoredCommit);
 
     const firstReplacement = result.state.tasks[0];
     store.append({
@@ -661,6 +675,7 @@ test("repair-limit replacement reuses a worktree only when its dirty paths remai
     assert.equal(second.state.tasks[0].state, "authoring");
     assert.equal(second.state.tasks[0].thread_id, "thread-new-2");
     assert.deepEqual(second.state.tasks[0].previous_thread_ids, ["thread-old", "thread-new"]);
+    assert.equal(second.state.tasks[0].author_content_base_commit, originalContentBase);
   } finally {
     rmSync(root, { recursive: true, force: true });
   }
