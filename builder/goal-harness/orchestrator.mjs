@@ -1,4 +1,5 @@
-import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import { execFileSync } from "node:child_process";
+import { mkdirSync, readFileSync, realpathSync, writeFileSync } from "node:fs";
 import path from "node:path";
 
 import { GoalEventStore } from "./event-store.mjs";
@@ -30,8 +31,8 @@ export async function dispatchGoalAuthors({ config, stateDir, slots = config.aut
     }
     if (resumeStopped) {
       for (const failed of state.tasks.filter((task) => task.state === "retryable_failure" && (task.attempt ?? 0) < (config.retry_policy?.max_attempts ?? 3))) {
-        const replaceThreadInPlace = failed.failure_code === "GOAL_REPAIR_RESUME_FAILED"
-          && Boolean(failed.thread_id && failed.worktree_path && failed.author_branch);
+        const replaceThreadInPlace = new Set(["GOAL_REPAIR_RESUME_FAILED", "GOAL_REPAIR_LIMIT_REACHED"]).has(failed.failure_code)
+          && canReuseAuthorizedAuthorWorktree({ config, task: failed, baselineCommit: state.baseline.commit });
         const repairInPlace = Boolean(failed.thread_id && failed.worktree_path && (failed.repair_count ?? 0) < (config.retry_policy?.max_repairs ?? 2));
         let task = applyTaskTransition(failed, {
           transition_id: `${authorIdentity(config.goal_id, failed.cpc_code, failed.attempt ?? 1, failed.uuid_enrichment_generation)}-${replaceThreadInPlace ? "replace-thread" : (repairInPlace ? "repair" : "requeue")}-${(failed.dispatch_cycle ?? 1) + 1}`,
@@ -492,4 +493,32 @@ function authorTimedOut(task, timeoutSeconds, at) {
   if (!Number.isFinite(timeoutSeconds) || timeoutSeconds <= 0 || !task.dispatched_at) return false;
   const started = Date.parse(task.dispatched_at);
   return Number.isFinite(started) && at.getTime() - started >= timeoutSeconds * 1000;
+}
+
+function canReuseAuthorizedAuthorWorktree({ config, task, baselineCommit }) {
+  if (!task.thread_id || !task.worktree_path || !task.author_branch || !Array.isArray(task.allowed_files)) return false;
+  try {
+    const projectRoot = realpathSync(config.project_root);
+    const worktreePath = realpathSync(task.worktree_path);
+    const relative = path.relative(projectRoot, worktreePath);
+    const requiredPrefix = path.join(".worktrees", "goals", config.goal_id, "authors") + path.sep;
+    if (!relative.startsWith(requiredPrefix) || relative.includes(`..${path.sep}`)) return false;
+    const head = execFileSync("git", ["rev-parse", "HEAD"], { cwd: worktreePath, encoding: "utf8", stdio: ["ignore", "pipe", "pipe"] }).trim();
+    const branch = execFileSync("git", ["branch", "--show-current"], { cwd: worktreePath, encoding: "utf8", stdio: ["ignore", "pipe", "pipe"] }).trim();
+    const expectedHead = task.last_author_commit ?? task.author_commit ?? task.author_base_commit ?? baselineCommit;
+    if (head !== expectedHead || branch !== task.author_branch) return false;
+    const dirty = new Set();
+    for (const args of [
+      ["diff", "--name-only", "-z"],
+      ["diff", "--cached", "--name-only", "-z"],
+      ["ls-files", "--others", "--exclude-standard", "-z"],
+    ]) {
+      const output = execFileSync("git", args, { cwd: worktreePath, encoding: "buffer", stdio: ["ignore", "pipe", "pipe"] });
+      for (const entry of output.toString("utf8").split("\0").filter(Boolean)) dirty.add(entry);
+    }
+    const allowed = new Set(task.allowed_files);
+    return [...dirty].every((entry) => allowed.has(entry));
+  } catch {
+    return false;
+  }
 }

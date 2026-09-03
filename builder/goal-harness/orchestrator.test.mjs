@@ -521,3 +521,91 @@ test("failed repair continuation replaces only the thread and preserves the safe
     rmSync(root, { recursive: true, force: true });
   }
 });
+
+test("repair-limit replacement reuses a worktree only when its dirty paths remain authorized", async () => {
+  const { root, stateDir, config } = fixture();
+  config.retry_policy = { max_attempts: 3, max_repairs: 2 };
+  const first = await dispatchGoalAuthors({
+    config,
+    stateDir,
+    slots: 1,
+    adapter: { async createAuthorTask() { return { thread_id: "thread-old", turn_id: "turn-old" }; } },
+  });
+  const worktreePath = first.dispatched[0].worktree_path;
+  const allowedPath = path.join(worktreePath, "library/pcrs/category/item/manifest.yaml");
+  writeFileSync(allowedPath, "preserved authorized repair bytes\n");
+  const store = new GoalEventStore({ stateDir });
+  const active = store.rebuild().tasks[0];
+  store.append({
+    event_id: "fixture-repair-limit-safe-worktree",
+    type: "task_replaced",
+    payload: { task: {
+      ...active,
+      state: "retryable_failure",
+      failure_code: "GOAL_REPAIR_LIMIT_REACHED",
+      repair_count: 2,
+      transition_ids: [...active.transition_ids, "repair-limit"],
+    } },
+  });
+  const starts = [];
+  try {
+    const result = await dispatchGoalAuthors({
+      config,
+      stateDir,
+      slots: 1,
+      resumeStopped: true,
+      adapter: {
+        async createAuthorTask(input) {
+          starts.push(input);
+          return { thread_id: "thread-new", turn_id: "turn-new" };
+        },
+      },
+    });
+    assert.equal(starts[0].worktreePath, worktreePath);
+    assert.equal(result.state.tasks[0].worktree_path, worktreePath);
+    assert.equal(readFileSync(allowedPath, "utf8"), "preserved authorized repair bytes\n");
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+  }
+});
+
+test("repair-limit replacement preserves but does not reuse an unauthorized dirty worktree", async () => {
+  const { root, stateDir, config } = fixture();
+  config.retry_policy = { max_attempts: 3, max_repairs: 2 };
+  const first = await dispatchGoalAuthors({
+    config,
+    stateDir,
+    slots: 1,
+    adapter: { async createAuthorTask() { return { thread_id: "thread-old", turn_id: "turn-old" }; } },
+  });
+  const oldWorktree = first.dispatched[0].worktree_path;
+  const unauthorized = path.join(oldWorktree, "unauthorized.txt");
+  writeFileSync(unauthorized, "must remain preserved\n");
+  const store = new GoalEventStore({ stateDir });
+  const active = store.rebuild().tasks[0];
+  store.append({
+    event_id: "fixture-repair-limit-unsafe-worktree",
+    type: "task_replaced",
+    payload: { task: {
+      ...active,
+      state: "retryable_failure",
+      failure_code: "GOAL_REPAIR_LIMIT_REACHED",
+      repair_count: 2,
+      transition_ids: [...active.transition_ids, "repair-limit"],
+    } },
+  });
+  try {
+    const result = await dispatchGoalAuthors({
+      config,
+      stateDir,
+      slots: 1,
+      resumeStopped: true,
+      adapter: { async createAuthorTask() { return { thread_id: "thread-new", turn_id: "turn-new" }; } },
+    });
+    assert.notEqual(result.state.tasks[0].worktree_path, oldWorktree);
+    assert.equal(readFileSync(unauthorized, "utf8"), "must remain preserved\n");
+    assert.equal(result.state.tasks[0].attempt, 2);
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+  }
+});
