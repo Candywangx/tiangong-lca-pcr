@@ -12,6 +12,7 @@ import { applyTaskTransition } from "./state-machine.mjs";
 import { ensureGoalWorktree } from "./worktrees.mjs";
 import { extractCompletedTurnReport, reviewAuthorWorktree } from "./author-review.mjs";
 import { appendGoalCacheReceipt, listGoalCacheReceipts } from "./goal-cache.mjs";
+import { validateAuthorReport } from "./author-gates.mjs";
 
 export async function dispatchGoalAuthors({ config, stateDir, slots = config.author_slots, adapter, resumeStopped = false, dryRun = false }) {
   if (!Number.isInteger(slots) || slots < 1 || slots > 6) {
@@ -191,6 +192,7 @@ export async function harvestGoalAuthors({
   auditUuidsFn = auditReportedUuids,
   verifySourcesFn = verifySourceLocators,
   auditHybridSearchFn = auditHybridSearchReceipts,
+  validateReportFn = validateAuthorReport,
   now = () => new Date(),
 }) {
   return withGoalLockAsync(stateDir, "harvest", async () => {
@@ -248,6 +250,14 @@ export async function harvestGoalAuthors({
         report = JSON.parse(readFileSync(task.report_path, "utf8"));
       }
       try {
+        const unavailableRows = (report.inventory?.unresolved ?? []).filter((entry) => entry.reason_code === "tiangong_cli_unavailable");
+        if (unavailableRows.length > 0) {
+          throw new GoalHarnessError("GOAL_UUID_INFRASTRUCTURE_UNAVAILABLE", "tiangong_cli_unavailable is an infrastructure-level retryable failure, not valid unresolved PCR coverage.", { retryable: true, row_ids: unavailableRows.map((entry) => entry.row_id) });
+        }
+        const reportSchema = validateReportFn(report);
+        if (!reportSchema.valid) {
+          throw new GoalHarnessError("GOAL_AUTHOR_RESULT_INVALID", `Author report failed ${reportSchema.errors.length} Schema check(s).`, { findings: reportSchema.errors.map((detail) => ({ code: "AUTHOR_REPORT_SCHEMA_INVALID", message: detail.message, detail })) });
+        }
         if ((report.uuid_audits?.length ?? 0) > 0 && !config.tools?.tiangong_cli_root) {
           throw new GoalHarnessError("GOAL_UUID_DIRECT_READ_FAILED", "tools.tiangong_cli_root is required to independently audit final UUIDs.");
         }

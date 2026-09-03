@@ -159,6 +159,7 @@ test("harvest records a completed machine report and promotes a reviewed task ex
         classifications: [{ id: "17100", label: "Electrical energy" }],
       }],
       verifySourcesFn: async () => [],
+      validateReportFn: () => ({ valid: true, errors: [] }),
       reviewFn: () => { reviewCount += 1; return { valid: true, counts: { total: 2, matched: 1, unresolved: 1 } }; },
     });
     assert.equal(first.valid_results.length, 1);
@@ -249,6 +250,7 @@ test("a review failure requests repair in the original visible thread and worktr
       auditHybridSearchFn: () => [],
       auditUuidsFn: () => [],
       verifySourcesFn: async () => [],
+      validateReportFn: () => ({ valid: true, errors: [] }),
       reviewFn: () => {
         const error = new Error("four-file gate failed");
         error.code = "GOAL_AUTHOR_RESULT_INVALID";
@@ -323,6 +325,7 @@ test("repair limit is the point where a result becomes retryable for replacement
       auditHybridSearchFn: () => [],
       auditUuidsFn: () => [],
       verifySourcesFn: async () => [],
+      validateReportFn: () => ({ valid: true, errors: [] }),
       reviewFn: () => { const error = new Error("still invalid"); error.code = "GOAL_AUTHOR_RESULT_INVALID"; error.details = { findings: [{ code: "bad" }] }; throw error; },
     });
     assert.equal(result.state.tasks[0].state, "retryable_failure");
