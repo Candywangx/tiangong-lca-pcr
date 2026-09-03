@@ -14,6 +14,16 @@ export function extractCompletedTurnReport(response, turnId) {
     throw new GoalHarnessError("GOAL_AUTHOR_TURN_MISSING", `Codex thread does not contain turn ${turnId}`);
   }
   if (turn.status !== "completed") {
+    if (turn.status === "interrupted") {
+      const lastMaterial = [...(turn.items ?? [])].reverse().find((item) => item.type !== "reasoning");
+      if (lastMaterial?.type === "agentMessage" && lastMaterial.text?.trim()) {
+        return {
+          status: "completed",
+          report: parseStrictReport(lastMaterial.text, turnId),
+          recovered_from: "interrupted_after_final_report",
+        };
+      }
+    }
     return turn.error
       ? { status: turn.status, report: null, error: turn.error }
       : { status: turn.status, report: null };
@@ -22,8 +32,12 @@ export function extractCompletedTurnReport(response, turnId) {
   if (!message) {
     throw new GoalHarnessError("GOAL_AUTHOR_REPORT_PARSE_FAILED", `Completed turn ${turnId} has no final agent JSON message`);
   }
+  return { status: "completed", report: parseStrictReport(message.text, turnId) };
+}
+
+function parseStrictReport(text, turnId) {
   try {
-    return { status: "completed", report: JSON.parse(message.text) };
+    return JSON.parse(text);
   } catch (error) {
     throw new GoalHarnessError("GOAL_AUTHOR_REPORT_PARSE_FAILED", `Completed turn ${turnId} final message is not strict JSON`, { cause: error.message });
   }

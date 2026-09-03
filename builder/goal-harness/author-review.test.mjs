@@ -35,6 +35,34 @@ test("turn report extraction requires the completed target turn and strict JSON 
   );
 });
 
+test("an interrupted turn recovers only a strict final report with no later material action", () => {
+  const report = { schema_version: 1, commit_sha: "b".repeat(40) };
+  const recovered = extractCompletedTurnReport({
+    thread: { turns: [{
+      id: "turn-1",
+      status: "interrupted",
+      items: [
+        { type: "agentMessage", text: JSON.stringify(report) },
+        { type: "reasoning", summary: [] },
+      ],
+    }] },
+  }, "turn-1");
+  assert.deepEqual(recovered, { status: "completed", report, recovered_from: "interrupted_after_final_report" });
+  assert.deepEqual(
+    extractCompletedTurnReport({
+      thread: { turns: [{
+        id: "turn-1",
+        status: "interrupted",
+        items: [
+          { type: "agentMessage", text: JSON.stringify(report) },
+          { type: "commandExecution", status: "completed", command: "git status" },
+        ],
+      }] },
+    }, "turn-1"),
+    { status: "interrupted", report: null },
+  );
+});
+
 test("author commit inspection derives the tree diff and rejects non-descendants", () => {
   const { root, baseline, allowed } = repoFixture();
   try {
