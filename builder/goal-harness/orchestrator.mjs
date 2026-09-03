@@ -67,7 +67,7 @@ export async function dispatchGoalAuthors({ config, stateDir, slots = config.aut
             official_source_seeds: state.official_source_seeds?.[task.cpc_code] ?? state.default_official_source_seeds ?? [],
           },
           policyPromptPath: config.policy_prompt_path,
-          verifiedCommonUuids: selectRelevantCommonUuids(task, state.verified_common_uuids ?? []),
+          verifiedCommonUuids: selectRelevantCommonUuids({ stateDir, task }),
           verifiedSourceReceipts: selectRelevantSourceReceipts({ stateDir, task, state }),
           tools: { ...config.tools, project_root: config.project_root, config_path: path.resolve(state.config_path ?? config.config_path ?? "") },
         });
@@ -121,7 +121,7 @@ export async function dispatchGoalAuthors({ config, stateDir, slots = config.aut
           official_source_seeds: state.official_source_seeds?.[task.cpc_code] ?? state.default_official_source_seeds ?? [],
         },
         policyPromptPath: config.policy_prompt_path,
-        verifiedCommonUuids: selectRelevantCommonUuids(task, state.verified_common_uuids ?? []),
+        verifiedCommonUuids: selectRelevantCommonUuids({ stateDir, task }),
         verifiedSourceReceipts: selectRelevantSourceReceipts({ stateDir, task, state }),
         tools: { ...config.tools, project_root: config.project_root, config_path: path.resolve(state.config_path ?? config.config_path ?? "") },
       });
@@ -297,8 +297,10 @@ export async function harvestGoalAuthors({
         state = store.rebuild();
         const verifiedCommonUuids = mergeVerifiedCommonUuids(state.verified_common_uuids, evidenceAudit.uuid_reads);
         if (JSON.stringify(verifiedCommonUuids) !== JSON.stringify(state.verified_common_uuids ?? [])) {
-          const previous = new Set((state.verified_common_uuids ?? []).map((entry) => entry.uuid));
-          for (const entry of verifiedCommonUuids.filter((candidate) => !previous.has(candidate.uuid))) {
+          const previous = new Set((state.verified_common_uuids ?? [])
+            .filter((entry) => entry?.hybrid_search_receipt_id)
+            .map((entry) => `${entry.uuid}:${entry.hybrid_search_receipt_id}`));
+          for (const entry of verifiedCommonUuids.filter((candidate) => !previous.has(`${candidate.uuid}:${candidate.hybrid_search_receipt_id}`))) {
             appendGoalCacheReceipt({
               stateDir,
               namespace: "verified_common_uuids",
@@ -392,10 +394,16 @@ function isRepairableReviewFailure(error) {
   ]).has(error.code);
 }
 
-function selectRelevantCommonUuids(task, entries) {
+function selectRelevantCommonUuids({ stateDir, task }) {
   const terms = `${task.product_name_en ?? ""} ${task.product_name_zh ?? ""}`.toLowerCase();
   const universal = /electric|water|natural gas|diesel|steam|oxygen|nitrogen|carbon dioxide|methane|sodium|refrigerant/iu;
-  return entries.filter((entry) => universal.test(String(entry.base_name_en ?? "")) || terms.includes(String(entry.base_name_en ?? "").toLowerCase())).slice(0, 24);
+  const entries = listGoalCacheReceipts({ stateDir, namespace: "verified_common_uuids" })
+    .map((receipt) => receipt.value)
+    .filter((entry) => entry?.hybrid_search_receipt_id);
+  const latestByUuid = new Map(entries.map((entry) => [entry.uuid, entry]));
+  return [...latestByUuid.values()]
+    .filter((entry) => universal.test(String(entry.base_name_en ?? "")) || terms.includes(String(entry.base_name_en ?? "").toLowerCase()))
+    .slice(0, 24);
 }
 
 function selectRelevantSourceReceipts({ stateDir, task, state }) {

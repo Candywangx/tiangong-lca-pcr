@@ -8,9 +8,11 @@ import { appendGoalCacheReceipt } from "./goal-cache.mjs";
 const REUSABLE_COMMON_UUID_PATTERN = /^(?:alternating current|electricity(?:,.*)?|natural gas(?: .*)?|liquefied petroleum gas|lpg|diesel(?: fuel)?|steam(?:,.*)?|hot water|process water|drinking water|industrial oxygen|industrial nitrogen|carbon dioxide(?: \(fossil\))?|methane|nitrous oxide|sodium hydroxide|sodium hypochlorite|peracetic acid|(?:refrigerant|polyethylene film|pet tray|corrugated paperboard)(?:,.*)?)$/iu;
 
 export function mergeVerifiedCommonUuids(existing = [], audited = []) {
-  const merged = new Map(existing.map((entry) => [String(entry.uuid).toLowerCase(), entry]));
+  const merged = new Map(existing
+    .filter((entry) => entry?.hybrid_search_receipt_id)
+    .map((entry) => [String(entry.uuid).toLowerCase(), entry]));
   for (const entry of audited) {
-    if (!REUSABLE_COMMON_UUID_PATTERN.test(String(entry.base_name_en ?? "").trim())) continue;
+    if (!entry?.hybrid_search_receipt_id || !REUSABLE_COMMON_UUID_PATTERN.test(String(entry.base_name_en ?? "").trim())) continue;
     merged.set(String(entry.uuid).toLowerCase(), entry);
   }
   return [...merged.values()].sort((left, right) => String(left.uuid).localeCompare(String(right.uuid)));

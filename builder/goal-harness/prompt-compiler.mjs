@@ -18,6 +18,7 @@ export function compileAuthorPrompt({ task, policyPromptPath, verifiedCommonUuid
   const hybridSearchRoot = tools.flow_hybrid_search_root ?? "<ABSOLUTE_FLOW_HYBRID_SEARCH_ROOT>";
   const credentialsEnvFile = tools.credentials_env_file ?? `${tiangongCliRoot}/.env`;
   const receiptCli = tools.receipt_cli ?? fileURLToPath(new URL("../cli/goal-uuid-search.mjs", import.meta.url));
+  const receiptBackedCommonUuids = verifiedCommonUuids.filter((entry) => entry?.hybrid_search_receipt_id);
   const prompt = `You are one independent TianGong PCR author. Work only on the single PCR below in the Git worktree already assigned to this visible Codex task.
 
 Assignment
@@ -29,7 +30,7 @@ Assignment
 - Goal policy fingerprint: ${policySha256}
 - Classification precheck: ${formatItems(task.precheck_results)}
 - Official source seeds: ${formatJson(task.official_source_seeds ?? [])}
-- Directly verified reusable UUID audits: ${formatJson(verifiedCommonUuids)}
+- Receipt-backed reusable UUID audits: ${formatJson(receiptBackedCommonUuids)}
 - Hash-verified original-source cache receipts relevant to these seeds: ${formatJson(verifiedSourceReceipts)}
 
 Exact write boundary

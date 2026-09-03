@@ -157,6 +157,8 @@ test("harvest records a completed machine report and promotes a reviewed task ex
         base_name_zh: "交流电",
         flow_type: "product",
         classifications: [{ id: "17100", label: "Electrical energy" }],
+        hybrid_search_receipt_id: "receipt-1",
+        response_sha256: "sha256:fixture",
       }],
       verifySourcesFn: async () => [],
       validateReportFn: () => ({ valid: true, errors: [] }),

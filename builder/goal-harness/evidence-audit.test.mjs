@@ -1,7 +1,13 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 
-import { auditReportedUuids, verifySourceLocators } from "./evidence-audit.mjs";
+import { auditReportedUuids, mergeVerifiedCommonUuids, verifySourceLocators } from "./evidence-audit.mjs";
+
+test("legacy hybrid_search booleans never enter the verified common UUID cache", () => {
+  const legacy = { uuid: "11111111-1111-4111-8111-111111111111", base_name_en: "Alternating current", hybrid_search: true };
+  const receiptBacked = { ...legacy, uuid: "22222222-2222-4222-8222-222222222222", hybrid_search_receipt_id: "receipt-2" };
+  assert.deepEqual(mergeVerifiedCommonUuids([legacy], [receiptBacked]), [receiptBacked]);
+});
 
 test("UUID audit compares public direct-read identity to the author report", () => {
   const uuid = "11111111-1111-4111-8111-111111111111";
