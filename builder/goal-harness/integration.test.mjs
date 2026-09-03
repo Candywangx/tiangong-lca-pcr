@@ -59,6 +59,25 @@ test("mapping merge is sorted, idempotent, and refuses a competing positive edge
   );
 });
 
+test("correction snapshots retain an existing semantically identical accepted edge", () => {
+  const existing = {
+    code: "41112", label: "Ferro-manganese", pcr_id: "pcr.metal.ferro-manganese", mapping_type: "exact", confidence: "reviewed",
+    acceptance: { status: "accepted", decided_by: "maintainer", decided_at_utc: "2026-09-02T00:00:00Z", decision_ref: "docs/adr/0083.md" },
+  };
+  const correctionProposal = {
+    ...existing,
+    acceptance: { ...existing.acceptance, decided_at_utc: "2026-09-03T00:00:00Z", decision_ref: "docs/adr/0087.md" },
+  };
+
+  const merged = mergeAcceptedMappings(
+    { schema_version: 2, classification_system: "CPC", classification_version: "3.0", status: "current", mappings: [existing] },
+    [correctionProposal],
+    { materialPcrIds: new Set([existing.pcr_id]) },
+  );
+
+  assert.deepEqual(merged.mappings, [existing]);
+});
+
 test("integration dry-run exposes the serial Builder and consumer checks without mutation", () => {
   const root = mkdtempSync(path.join(tmpdir(), "tiangong-integration-plan-"));
   const stateDir = path.join(root, "state");

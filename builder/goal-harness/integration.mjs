@@ -45,7 +45,8 @@ export function mergeAcceptedMappings(document, additions, { materialPcrIds }) {
     assertAcceptedMappingDecision(addition, { materialPcrIds });
     const existing = merged.mappings.find((entry) => String(entry.code) === String(addition.code));
     if (existing) {
-      if (stableJson(existing) !== stableJson(addition)) {
+      assertAcceptedMappingDecision(existing, { materialPcrIds: new Set([...materialPcrIds, existing.pcr_id]) });
+      if (stableJson(mappingEdgeIdentity(existing)) !== stableJson(mappingEdgeIdentity(addition))) {
         throw new GoalHarnessError("GOAL_MAPPING_EDGE_CONFLICT", `Classification code ${addition.code} already has a different positive edge.`, { existing, proposed: addition });
       }
       continue;
@@ -54,6 +55,16 @@ export function mergeAcceptedMappings(document, additions, { materialPcrIds }) {
   }
   merged.mappings.sort((left, right) => String(left.code).localeCompare(String(right.code)) || String(left.pcr_id).localeCompare(String(right.pcr_id)));
   return merged;
+}
+
+function mappingEdgeIdentity(entry) {
+  return {
+    code: String(entry.code),
+    label: entry.label,
+    pcr_id: entry.pcr_id,
+    mapping_type: entry.mapping_type,
+    confidence: entry.confidence,
+  };
 }
 
 export function selectIntegrationBaseCommit(state, { projectRoot = null } = {}) {
