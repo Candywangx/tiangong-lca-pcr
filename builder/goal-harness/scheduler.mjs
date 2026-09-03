@@ -1,6 +1,6 @@
 import { createHash } from "node:crypto";
 
-const ACTIVE_AUTHOR_STATES = new Set(["preflight", "authoring", "author_review"]);
+const ACTIVE_AUTHOR_STATES = new Set(["preflight", "authoring", "authoring_repair", "author_review"]);
 
 export function activeAuthorCount(tasks) {
   return tasks.filter((task) => ACTIVE_AUTHOR_STATES.has(task.state)).length;
@@ -15,9 +15,11 @@ export function dispatchCandidates(tasks, { slots }) {
 }
 
 export function buildIntegrationSnapshot({ goalId, tasks, batchSize, snapshots, allowPartial = false }) {
-  const assigned = new Set(snapshots.flatMap((snapshot) => snapshot.task_ids));
+  const assigned = new Set(snapshots.flatMap((snapshot) => snapshot.task_ids.map((taskId, index) =>
+    `${taskId}:${snapshot.author_commits?.[index] ?? ""}`,
+  )));
   const eligible = tasks
-    .filter((task) => task.state === "valid_result" && !assigned.has(task.id))
+    .filter((task) => task.state === "valid_result" && !assigned.has(`${task.id}:${task.author_commit ?? ""}`))
     .sort((left, right) => String(left.valid_at).localeCompare(String(right.valid_at)) || compareQueueOrder(left, right));
   if (eligible.length < batchSize && !allowPartial) {
     return null;

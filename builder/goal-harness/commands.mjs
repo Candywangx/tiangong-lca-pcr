@@ -14,7 +14,8 @@ import { withGoalLock } from "./lock.mjs";
 import { dispatchGoalAuthors, harvestGoalAuthors } from "./orchestrator.mjs";
 import { planGoal } from "./planner.mjs";
 import { createSyntheticBaseline } from "./synthetic-baseline.mjs";
-import { ensureCorepackToolPath } from "./tooling.mjs";
+import { authenticatedHybridSearchDryRunCheck, ensureCorepackToolPath } from "./tooling.mjs";
+import { auditGoalUuidResults } from "./uuid-enrichment-audit.mjs";
 
 export async function runGoalCommand(command, options) {
   if (command === "doctor") return doctorCommand(options);
@@ -25,6 +26,7 @@ export async function runGoalCommand(command, options) {
   if (command === "resume") return startCommand({ ...options, resume: true });
   if (command === "integrate") return integrateCommand(options);
   if (command === "land") return landCommand(options);
+  if (command === "uuid-audit") return uuidAuditCommand(options);
   throw new GoalHarnessError("GOAL_COMMAND_UNKNOWN", `Unknown Goal command: ${command ?? "<missing>"}`);
 }
 
@@ -58,6 +60,11 @@ export async function doctorCommand({ configPath }) {
     } finally {
       rmSync(temporaryToolState, { recursive: true, force: true });
     }
+    checks.push(authenticatedHybridSearchDryRunCheck({
+      tiangongCliRoot: config.tools.tiangong_cli_root,
+      flowHybridSearchRoot: config.tools.flow_hybrid_search_root,
+      credentialsEnvFile: config.tools.credentials_env_file,
+    }));
   }
   const packageDocument = JSON.parse(readFileSync(path.join(config.project_root, "package.json"), "utf8"));
   for (const script of ["validate", "pcr:sync-structured", "aliases:build", "aliases:check", "catalog:build", "catalog:check", "viewer:build", "tiangong-pcr"]) {
@@ -174,6 +181,7 @@ export async function startCommand({ configPath, slots = null, dryRun = false, r
     planCommand({ configPath, dryRun: false });
   }
   const runtime = ensureCorepackToolPath(stateDir);
+  if (!dryRun) assertAuthorDispatchInfrastructure(config);
   const daemon = dryRun ? null : await ensureGoalAppServerDaemon({
     stateDir,
     command: config.tools.codex,
@@ -212,6 +220,18 @@ export async function startCommand({ configPath, slots = null, dryRun = false, r
   }
 }
 
+export function assertAuthorDispatchInfrastructure(config, checker = authenticatedHybridSearchDryRunCheck) {
+  const check = checker({
+    tiangongCliRoot: config.tools?.tiangong_cli_root,
+    flowHybridSearchRoot: config.tools?.flow_hybrid_search_root,
+    credentialsEnvFile: config.tools?.credentials_env_file,
+  });
+  if (!check.ok) {
+    throw new GoalHarnessError("GOAL_HYBRID_AUTHENTICATED_PREFLIGHT_FAILED", "Authenticated hybrid search and public state_code=100 read must pass before author dispatch.", check.detail);
+  }
+  return check;
+}
+
 export function integrateCommand({ configPath, snapshotId = null, allowPartial = false, dryRun = false }) {
   const config = requireConfig(configPath);
   const stateDir = goalStateDir(config);
@@ -224,6 +244,19 @@ export function landCommand({ configPath, snapshotId = null, dryRun = false }) {
   const stateDir = goalStateDir(config);
   if (!existsSync(path.join(stateDir, "initial-state.json"))) throw new GoalHarnessError("GOAL_NOT_PLANNED", `Goal state does not exist: ${config.goal_id}`);
   return landGoalSnapshot({ config, stateDir, snapshotId, dryRun });
+}
+
+export function uuidAuditCommand({ configPath, apply = false }) {
+  const config = requireConfig(configPath);
+  const stateDir = goalStateDir(config);
+  if (!existsSync(path.join(stateDir, "initial-state.json"))) throw new GoalHarnessError("GOAL_NOT_PLANNED", `Goal state does not exist: ${config.goal_id}`);
+  const result = auditGoalUuidResults({ stateDir, apply });
+  return {
+    ...result,
+    next_action: apply
+      ? "Run goal:doctor and validation; resume only after every UUID-chain gate passes."
+      : `Review ${result.affected.length} affected task(s), then repeat goal:uuid-audit with --apply while scheduling remains stopped.`,
+  };
 }
 
 export function goalStateDir(config) {

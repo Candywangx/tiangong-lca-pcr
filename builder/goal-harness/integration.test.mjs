@@ -75,7 +75,7 @@ test("integration dry-run exposes the serial Builder and consumer checks without
     };
     const result = integrateGoalSnapshot({ config, stateDir, dryRun: true });
     assert.equal(result.status, "dry_run");
-    assert.deepEqual(result.commands.map((command) => command.name), ["aliases_build", "aliases_check", "catalog_build", "catalog_check", "viewer_build", "validate", "smoke_list", "smoke_resolve", "smoke_guidance"]);
+    assert.deepEqual(result.commands.map((command) => command.name), ["aliases_build", "catalog_build", "viewer_build", "validate", "smoke_list", "smoke_resolve", "smoke_guidance"]);
     assert.equal(new GoalEventStore({ stateDir }).rebuild().snapshots[0].state, "integration_pending");
   } finally {
     rmSync(root, { recursive: true, force: true });

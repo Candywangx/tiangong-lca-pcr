@@ -96,6 +96,9 @@ test("plan persists state once, resume-safe status reads it, and stop preserves 
     const status = JSON.parse(run(["status", "--config", configPath, "--format", "json"], root));
     assert.equal(status.result.state.goal_id, "cli-fixture");
     assert.equal(status.result.state.tasks.length, 1);
+    const uuidAudit = JSON.parse(run(["uuid-audit", "--config", configPath, "--format", "json"], root));
+    assert.equal(uuidAudit.result.applied, false);
+    assert.deepEqual(uuidAudit.result.affected, []);
   } finally {
     rmSync(root, { recursive: true, force: true });
   }
@@ -104,6 +107,7 @@ test("plan persists state once, resume-safe status reads it, and stop preserves 
 test("CLI provides help and stable JSON failures with clean stdout", () => {
   const help = run(["--help"], path.resolve("."));
   assert.match(help, /goal\.mjs doctor|goal:doctor/u);
+  assert.match(help, /uuid-audit/u);
   const failure = spawnSync(process.execPath, [cliPath, "unknown", "--format", "json"], { encoding: "utf8" });
   assert.notEqual(failure.status, 0);
   assert.equal(failure.stdout, "");

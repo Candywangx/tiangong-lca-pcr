@@ -20,7 +20,17 @@ test("prompt compiler emits one-PCR context and the two-independent-source range
       precheck_results: ["unmapped CPC leaf", "empty semantic scaffold"],
       official_source_seeds: [{ name: "UNSD CPC 3.0", locator: "https://example.invalid/cpc.pdf" }],
     };
-    const result = compileAuthorPrompt({ task, policyPromptPath: policyPath, verifiedCommonUuids: [] });
+    const result = compileAuthorPrompt({
+      task: { ...task, id: "task-41111", attempt: 1 },
+      policyPromptPath: policyPath,
+      verifiedCommonUuids: [],
+      tools: {
+        project_root: "/repo",
+        config_path: "/goal.yaml",
+        tiangong_cli_root: "/tools/tiangong-cli",
+        flow_hybrid_search_root: "/tools/flow-hybrid-search",
+      },
+    });
     assert.match(result.prompt, /CPC: 41111/u);
     assert.match(result.prompt, /Pig iron/u);
     assert.match(result.prompt, /生铁/u);
@@ -28,6 +38,11 @@ test("prompt compiler emits one-PCR context and the two-independent-source range
     assert.match(result.prompt, /same paper.*not independent/iu);
     assert.match(result.prompt, /review_metadata\.unresolved\.inventory_flow_uuids/u);
     assert.match(result.prompt, /review_metadata\.unresolved\.range_evidence_needs/u);
+    assert.match(result.prompt, /\/tools\/tiangong-cli/u);
+    assert.match(result.prompt, /\/tools\/flow-hybrid-search/u);
+    assert.match(result.prompt, /goal-uuid-search\.mjs query/u);
+    assert.match(result.prompt, /--env-file-if-exists/u);
+    assert.match(result.prompt, /receipt/iu);
     assert.equal(result.prompt.includes("GLOBAL POLICY"), false);
     assert.ok(result.prompt.length < 18_000);
     assert.match(result.policy_sha256, /^sha256:[a-f0-9]{64}$/u);

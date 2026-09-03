@@ -92,6 +92,31 @@ export class CodexAppServerAdapter {
     }
   }
 
+  async startRepairTurn({
+    threadId,
+    worktreePath,
+    prompt,
+    outputSchema,
+    clientUserMessageId = null,
+  }) {
+    try {
+      await this.resumeThread({ threadId });
+      const turn = await this.request("turn/start", compact({
+        threadId,
+        cwd: worktreePath,
+        runtimeWorkspaceRoots: [worktreePath],
+        input: [{ type: "text", text: prompt }],
+        outputSchema,
+        clientUserMessageId,
+      }));
+      const turnId = turn?.turn?.id;
+      if (!turnId) throw new Error("turn/start returned no turn.id");
+      return { thread_id: threadId, turn_id: turnId };
+    } catch (error) {
+      throw visibleTaskError("repair turn/start", error, this.stderr);
+    }
+  }
+
   async findProjectByRoot(projectRoot) {
     try {
       await this.connect();

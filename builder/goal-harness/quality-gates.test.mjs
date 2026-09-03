@@ -40,9 +40,10 @@ function report(overrides = {}) {
     queue_action: "promote_legacy",
     files,
     sources: [{ source_id: "unsd-cpc-3", name: "UNSD CPC 3.0", locator: "https://example.invalid/cpc.pdf", original_text_verified: true, supports: ["product identity"], independence_key: "unsd", discovery_only: false }],
+    hybrid_search_receipt_ids: ["receipt-1"],
     uuid_audits: [{
       uuid: "11111111-1111-4111-8111-111111111111",
-      hybrid_search: true,
+      hybrid_search_receipt_id: "receipt-1",
       state_code: 100,
       base_name_en: "Pig iron",
       base_name_zh: "生铁",
@@ -57,7 +58,7 @@ function report(overrides = {}) {
       total_rows: 2,
       matched_rows: 1,
       unresolved_rows: 1,
-      unresolved: [{ row_id: "input_coke", reason_code: "no_exact_candidate", explanation: "No public exact candidate after direct reads." }],
+      unresolved: [{ row_id: "input_coke", reason_code: "no_exact_candidate", explanation: "No public exact candidate after direct reads.", hybrid_search_receipt_ids: ["receipt-1"] }],
     },
     reference_product_uuid_confirmed: true,
     ranges: [],
@@ -94,10 +95,25 @@ test("author report schema and semantic accounting accept a complete report", ()
 });
 
 test("report rejects total rows that do not equal matched plus unresolved", () => {
-  const invalid = report({ inventory: { total_rows: 3, matched_rows: 1, unresolved_rows: 1, unresolved: [{ row_id: "input_coke", reason_code: "no_exact_candidate", explanation: "none" }] } });
+  const invalid = report({ inventory: { total_rows: 3, matched_rows: 1, unresolved_rows: 1, unresolved: [{ row_id: "input_coke", reason_code: "no_exact_candidate", explanation: "none", hybrid_search_receipt_ids: ["receipt-1"] }] } });
   assert.throws(
     () => assertAuthorQuality({ report: invalid, authorizedFiles: files, changedFiles: files, inventoryRows: rows() }),
     (error) => error.code === "GOAL_AUTHOR_RESULT_INVALID" && error.details.findings.some((finding) => finding.code === "INVENTORY_ACCOUNTING_MISMATCH"),
+  );
+});
+
+test("tiangong_cli_unavailable is an infrastructure retryable failure, never valid unresolved coverage", () => {
+  const invalid = report({
+    inventory: {
+      total_rows: 2,
+      matched_rows: 1,
+      unresolved_rows: 1,
+      unresolved: [{ row_id: "input_coke", reason_code: "tiangong_cli_unavailable", explanation: "CLI could not start.", hybrid_search_receipt_ids: [] }],
+    },
+  });
+  assert.throws(
+    () => assertAuthorQuality({ report: invalid, authorizedFiles: files, changedFiles: files, inventoryRows: rows() }),
+    (error) => error.code === "GOAL_UUID_INFRASTRUCTURE_UNAVAILABLE",
   );
 });
 
@@ -153,7 +169,7 @@ test("common UUID-empty flows require an auditable hybrid/direct-read query expl
       total_rows: 2,
       matched_rows: 1,
       unresolved_rows: 1,
-      unresolved: [{ row_id: "input_coke", reason_code: "manual_review_required", explanation: "Needs later manual review." }],
+      unresolved: [{ row_id: "input_coke", reason_code: "manual_review_required", explanation: "Needs later manual review.", hybrid_search_receipt_ids: [] }],
     },
   });
   assert.throws(
@@ -171,7 +187,7 @@ test("common-flow audit does not misclassify nitrogen oxides, wastewater, or oxy
       total_rows: 2,
       matched_rows: 1,
       unresolved_rows: 1,
-      unresolved: [{ row_id: "input_coke", reason_code: "manual_review_required", explanation: "Specific elementary-flow identity requires manual review." }],
+      unresolved: [{ row_id: "input_coke", reason_code: "manual_review_required", explanation: "Specific elementary-flow identity requires manual review.", hybrid_search_receipt_ids: ["receipt-1"] }],
     },
   });
   assert.doesNotThrow(
@@ -210,7 +226,7 @@ test("row thresholds require auditable complexity and reject severe expansion", 
     manyRows.en.push({ row_id: `row_${index}`, name: `Material ${index}`, uuid: "", flow_type: "product", amount: { ranges: [] } });
     manyRows.zh.push({ row_id: `row_${index}`, name: `材料 ${index}`, uuid: "", flow_type: "product", amount: { ranges: [] } });
   }
-  const unresolved = manyRows.en.map((row) => ({ row_id: row.row_id, reason_code: "no_exact_candidate", explanation: "No exact public flow." }));
+  const unresolved = manyRows.en.map((row) => ({ row_id: row.row_id, reason_code: "no_exact_candidate", explanation: "No exact public flow.", hybrid_search_receipt_ids: ["receipt-1"] }));
   const largeReport = report({ inventory: { total_rows: 181, matched_rows: 0, unresolved_rows: 181, unresolved }, uuid_audits: [], bilingual: { aligned: true, en_inventory_rows: 181, zh_inventory_rows: 181 } });
   assert.throws(
     () => assertAuthorQuality({ report: largeReport, authorizedFiles: files, changedFiles: files, inventoryRows: manyRows }),

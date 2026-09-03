@@ -26,6 +26,10 @@ tools:
   tiangong_cli_root: /absolute/path/to/tiangong-cli
   flow_hybrid_search_root: /absolute/path/to/flow-hybrid-search
   paper_search: /absolute/path/to/paper-search
+  credentials_env_file: /absolute/path/to/tiangong-cli/.env # path only; contents are never persisted
+retry_policy:
+  max_attempts: 3
+  max_repairs: 2
 integration:
   decided_by: tiangong-lca-pcr-maintainers
 ```
@@ -46,6 +50,7 @@ npm run goal:resume -- --config <goal.yaml>
 npm run goal:integrate -- --config <goal.yaml> [--snapshot <id>] [--allow-partial] [--dry-run]
 npm run goal:land -- --config <goal.yaml> [--snapshot <id>] [--dry-run]
 npm run goal:stop -- --config <goal.yaml>
+npm run goal:uuid-audit -- --config <goal.yaml> [--apply] [--format json]
 ```
 
 Start with one slot. `--allow-partial` is an explicit pilot/final-tail integration override; normal rolling operation
@@ -64,6 +69,10 @@ library/.pcr-builder-state/goals/<goal-id>/
   goal.lock
   baseline-*.index
   authors/<task-attempt>/
+  cache/events.jsonl
+  cache/{verified_common_uuids,uuid_query_receipts,source_original_text_receipts,source_locator_checks}/
+  derived-cache/viewer/<input-sha256>/
+  uuid-search-receipts/<task-id>/attempt-<n>/
   integrations/<snapshot-id>/
   landings/<snapshot-id>/
 ```
@@ -76,6 +85,18 @@ thread/turn, author commit, baseline, validation, unresolved, snapshot, and land
 After an interruption, inspect `goal:status`, fix the reported external condition if any, and repeat the same command.
 An incomplete landing journal fails closed and must be inspected before recovery; never delete transaction state to
 bypass it.
+
+Run `goal:uuid-audit` while scheduling is stopped after a UUID evidence-contract change. The default is read-only. With
+`--apply`, an affected result with a recoverable thread and worktree moves to `repair_requested` in place. Otherwise it
+moves to infrastructure-level `retryable_failure` and retains its prior worktree, thread, report, and commit pointers
+in `uuid_enrichment_history`; no prior artifact is deleted. A replacement enrichment-generation worktree is created
+only when the original thread/worktree cannot be safely recovered.
+
+Review failures normally follow `author_review -> repair_requested -> authoring_repair -> author_review`. The repair
+turn is sent to the original durable thread and worktree with structured gate findings. Repair count, deterministic
+client message id, turn id, timestamps, old/new commits, and findings are persisted; repeated resume cannot create a
+second turn for the same repair. A replacement task is allowed only after the configured repair limit or a recorded
+thread/worktree/commit recovery failure.
 
 ## Dirty baseline and landing
 
@@ -103,10 +124,53 @@ Worktree setup creates an ignored real `node_modules/` directory whose direct en
 already-installed dependency tree. This gives Builder and copied-path viewer tests the same dependency baseline without
 changing package metadata, installing versions, or adding a commit-tree path outside the assigned PCR files.
 
+## Authenticated UUID search receipts
+
+`goal:doctor` performs a live redacted `auth doctor-auth` check, a minimal authenticated hybrid query, and a public
+`state_code=100` direct read of its returned candidate. It reports only stage booleans and never returns child-process stderr, tokens, session paths, or
+`.env` contents. The author Prompt receives the exact TianGong CLI, hybrid-search, Goal config, and receipt-CLI paths.
+It uses Node's `--env-file-if-exists=<tiangong-cli>/.env` option so authors never source or print credential files.
+
+Every real candidate query must run from the assigned worktree through:
+
+```bash
+node --env-file-if-exists=<tiangong-cli>/.env <project>/builder/cli/goal-uuid-search.mjs query \
+  --config <goal.yaml> --task <task-id> --query "<one concrete flow>" --flow-type product --limit 20
+```
+
+The command stores an immutable request/result receipt under
+`uuid-search-receipts/<task-id>/attempt-<n>/`, including the exact query, top-level candidate flow UUIDs, exact-result
+SHA-256, byte length, authenticated status, and task binding. After state-code and semantic review, finalize it with a
+JSON decision for every candidate:
+
+```bash
+node --env-file-if-exists=<tiangong-cli>/.env <project>/builder/cli/goal-uuid-search.mjs direct-read \
+  --config <goal.yaml> --task <task-id> --receipt <receipt-id> --uuid <candidate-uuid>
+```
+
+```bash
+node --env-file-if-exists=<tiangong-cli>/.env <project>/builder/cli/goal-uuid-search.mjs finalize \
+  --config <goal.yaml> --task <task-id> --receipt <receipt-id> --decisions /tmp/<decisions>.json
+```
+
+The finalized receipt includes ranked candidate match metadata, tool version/hash, non-sensitive endpoint identity,
+public bilingual names, type, classification, property, unit group, general-comment review, decision and response
+hash. The author report links adopted UUIDs, rejected candidates, and `no_exact_candidate`/`manual_review_required` rows to
+finalized receipt ids. The reviewer recomputes result hashes and candidate projections. A self-reported
+`hybrid_search: true` is not evidence. `tiangong_cli_unavailable` is never valid unresolved coverage; it makes the
+whole author result an infrastructure-level retryable failure.
+
+Goal caches are append-only and hash-bound to normalized input, tool version, query/source conditions, and response
+fingerprint. Damaged or schema-stale entries are misses and are rebuilt; a damaged event hash chain fails closed.
+Cached common UUIDs remain candidates whose row-specific semantic, geography, technology, state, property, and unit
+fit must be checked. Source blobs can be reused only at the same verified content hash and still need PCR-specific
+applicability. Prompt compilation injects only a bounded relevant subset, never the whole Goal history.
+
 ## Gates
 
 The author report Schema and commit-tree review enforce the exact four files, PCR path, material Builder contracts,
 bilingual inventory order/row/UUID/source alignment, official Tiangong Chinese names, UUID direct-read audit,
+authenticated hybrid-search receipts and candidate rejection decisions,
 `total = matched + unresolved`, atomic flows, source-original verification, two-independent-source external ranges,
 strict range bounds, reasoned-estimate labeling, anti-Cartesian-expansion thresholds, deterministic structured sync,
 and author validation. Search/OpenAlex summaries are discovery-only evidence.
@@ -114,3 +178,7 @@ and author validation. Search/OpenAlex summaries are discovery-only evidence.
 Integration is serial. It accepts only reviewed `exact`, `broader`, `narrower`, or `proxy` edges to material PCRs with
 accepted status, decision maker, UTC time, and a durable generated ADR. It then runs aliases, catalog, coverage/viewer,
 full validation, and public list/resolve/guidance checks before CAS landing is permitted.
+The viewer derivation may be restored only from a same-input cache whose PCR, mapping, alias, catalog, coverage,
+viewer-code, and core-code SHA-256 fingerprint and output-tree hash both match. Corruption rebuilds safely. Full
+`npm run validate` still runs once for every six-result snapshot; its lint phase performs the authoritative
+aliases/catalog checks, so integration does not repeat those identical checks immediately before validate.

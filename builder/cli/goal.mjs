@@ -15,9 +15,10 @@ Usage:
   node builder/cli/goal.mjs integrate --config <goal.yaml> [--snapshot <id>] [--allow-partial] [--dry-run]
   node builder/cli/goal.mjs land --config <goal.yaml> [--snapshot <id>] [--dry-run]
   node builder/cli/goal.mjs stop --config <goal.yaml>
+  node builder/cli/goal.mjs uuid-audit --config <goal.yaml> [--apply] [--format human|json]
 
 Package aliases: goal:doctor, goal:plan, goal:start, goal:status, goal:resume,
-goal:integrate, goal:land, goal:stop.
+goal:integrate, goal:land, goal:stop, goal:uuid-audit.
 
 Commands are idempotent. JSON failures keep stdout empty and emit a stable error code on stderr.
 `;
@@ -52,7 +53,7 @@ export async function main(argv = process.argv.slice(2), io = process) {
 function parseArgs(argv) {
   if (argv.length === 0 || argv.includes("--help") || argv.includes("-h")) return { help: true, format: "human", dryRun: false };
   const command = argv[0];
-  const options = { command, configPath: null, format: "human", dryRun: false, slots: null, snapshotId: null, allowPartial: false, help: false };
+  const options = { command, configPath: null, format: "human", dryRun: false, slots: null, snapshotId: null, allowPartial: false, apply: false, help: false };
   for (let index = 1; index < argv.length; index += 1) {
     const token = argv[index];
     if (token === "--dry-run") options.dryRun = true;
@@ -61,6 +62,7 @@ function parseArgs(argv) {
     else if (token === "--slots") options.slots = Number(requiredValue(argv, ++index, token));
     else if (token === "--snapshot") options.snapshotId = requiredValue(argv, ++index, token);
     else if (token === "--allow-partial") options.allowPartial = true;
+    else if (token === "--apply") options.apply = true;
     else throw new GoalHarnessError("GOAL_OPTION_UNKNOWN", `Unknown option: ${token}`);
   }
   if (!["human", "json"].includes(options.format)) throw new GoalHarnessError("GOAL_FORMAT_INVALID", `Invalid format: ${options.format}`);
@@ -87,6 +89,9 @@ function renderHuman(envelope) {
   }
   if (envelope.command === "doctor") {
     return `${result.ok ? "PASS" : "FAIL"} Goal doctor (${result.checks.filter((entry) => entry.ok).length}/${result.checks.length} checks)\n${result.checks.map((entry) => `${entry.ok ? "PASS" : "FAIL"} ${entry.name}: ${typeof entry.detail === "string" ? entry.detail : JSON.stringify(entry.detail)}`).join("\n")}\nNext: ${envelope.next_action}\n`;
+  }
+  if (envelope.command === "uuid-audit") {
+    return `Goal UUID audit: ${result.affected.length} affected; ${result.requeued.length} requeued${result.applied ? " (applied)" : " (dry run)"}.\nNext: ${envelope.next_action}\n`;
   }
   return `${JSON.stringify(result, null, 2)}\nNext: ${envelope.next_action}\n`;
 }

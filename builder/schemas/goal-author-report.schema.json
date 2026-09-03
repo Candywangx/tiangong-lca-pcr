@@ -6,7 +6,7 @@
   "additionalProperties": false,
   "required": [
     "schema_version", "cpc_code", "product_name_en", "product_name_zh", "pcr_path", "queue_action",
-    "files", "sources", "uuid_audits", "rejected_uuid_candidates", "inventory", "reference_product_uuid_confirmed",
+    "files", "sources", "hybrid_search_receipt_ids", "uuid_audits", "rejected_uuid_candidates", "inventory", "reference_product_uuid_confirmed",
     "ranges", "bilingual", "structured_sync", "validate", "complexity_justification",
     "cartesian_expansion_review", "methodology_necessity_approved", "commit_sha", "unresolved_issues"
   ],
@@ -19,6 +19,7 @@
     "queue_action": { "type": "string", "enum": ["create_new", "promote_legacy"] },
     "files": { "type": "array", "minItems": 4, "maxItems": 4, "items": { "$ref": "#/$defs/repoPath" } },
     "sources": { "type": "array", "items": { "$ref": "#/$defs/source" } },
+    "hybrid_search_receipt_ids": { "type": "array", "items": { "type": "string", "minLength": 1 } },
     "uuid_audits": { "type": "array", "items": { "$ref": "#/$defs/uuidAudit" } },
     "rejected_uuid_candidates": { "type": "array", "items": { "$ref": "#/$defs/rejectedUuid" } },
     "inventory": {
@@ -85,10 +86,10 @@
     },
     "uuidAudit": {
       "type": "object", "additionalProperties": false,
-      "required": ["uuid", "hybrid_search", "state_code", "base_name_en", "base_name_zh", "flow_type", "classification", "property", "unit_group", "semantic_review"],
+      "required": ["uuid", "hybrid_search_receipt_id", "state_code", "base_name_en", "base_name_zh", "flow_type", "classification", "property", "unit_group", "semantic_review"],
       "properties": {
         "uuid": { "type": "string", "format": "uuid" },
-        "hybrid_search": { "type": "boolean" },
+        "hybrid_search_receipt_id": { "type": "string", "minLength": 1 },
         "state_code": { "type": "integer", "const": 100 },
         "base_name_en": { "type": "string", "minLength": 1 },
         "base_name_zh": { "type": "string", "minLength": 1 },
@@ -101,16 +102,22 @@
     },
     "rejectedUuid": {
       "type": "object", "additionalProperties": false,
-      "required": ["uuid", "reason"],
-      "properties": { "uuid": { "type": "string", "format": "uuid" }, "reason": { "type": "string", "minLength": 1 } }
+      "required": ["uuid", "receipt_id", "reason_code", "reason"],
+      "properties": {
+        "uuid": { "type": "string", "format": "uuid" },
+        "receipt_id": { "type": "string", "minLength": 1 },
+        "reason_code": { "type": "string", "enum": ["semantic_mismatch", "classification_mismatch", "product_state_mismatch", "flow_type_mismatch", "property_or_unit_mismatch", "state_not_public", "not_exact_candidate", "manual_review_required"] },
+        "reason": { "type": "string", "minLength": 1 }
+      }
     },
     "unresolved": {
       "type": "object", "additionalProperties": false,
-      "required": ["row_id", "reason_code", "explanation"],
+      "required": ["row_id", "reason_code", "explanation", "hybrid_search_receipt_ids"],
       "properties": {
         "row_id": { "type": "string", "minLength": 1 },
         "reason_code": { "type": "string", "enum": ["no_exact_candidate", "semantic_mismatch", "classification_mismatch", "product_state_mismatch", "flow_type_mismatch", "property_or_unit_mismatch", "state_not_public", "internal_intermediate_needs_new_flow", "tiangong_lookup_rate_limited", "tiangong_cli_unavailable", "manual_review_required"] },
-        "explanation": { "type": "string", "minLength": 1 }
+        "explanation": { "type": "string", "minLength": 1 },
+        "hybrid_search_receipt_ids": { "type": "array", "items": { "type": "string", "minLength": 1 } }
       }
     },
     "range": {

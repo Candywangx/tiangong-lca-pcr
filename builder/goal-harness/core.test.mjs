@@ -148,4 +148,9 @@ test("scheduler rolls slots, replaces blocked tasks, and snapshots earliest six 
     batchSize: 6,
     snapshots: [snapshot],
   }), null);
+
+  const enriched = [{ ...valid[0], author_commit: "f".repeat(40), valid_at: "2026-01-02T00:00:00Z" }];
+  const enrichmentSnapshot = buildIntegrationSnapshot({ goalId: "fixture", tasks: enriched, batchSize: 1, snapshots: [snapshot] });
+  assert.deepEqual(enrichmentSnapshot.task_ids, [valid[0].id]);
+  assert.deepEqual(enrichmentSnapshot.author_commits, ["f".repeat(40)]);
 });

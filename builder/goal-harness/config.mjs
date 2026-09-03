@@ -17,7 +17,7 @@ const DEFAULTS = Object.freeze({
   integration_batch_size: 6,
   skip_cpc_list: [],
   author_timeout_seconds: 7200,
-  retry_policy: { max_attempts: 3, backoff_seconds: 30 },
+  retry_policy: { max_attempts: 3, max_repairs: 2, backoff_seconds: 30 },
   tools: { codex: "codex" },
   baseline: {
     tracked_roots: ["AGENTS.md", "README.md", ".docpact", ".github", "builder", "classifications", "docs", "library", "packages", "skills", "package.json", "package-lock.json"],

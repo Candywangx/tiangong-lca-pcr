@@ -59,6 +59,10 @@ npm run goal:resume -- --config <goal.yaml>
 npm run goal:integrate -- --config <goal.yaml>
 npm run goal:land -- --config <goal.yaml>
 npm run goal:stop -- --config <goal.yaml>
+npm run goal:uuid-audit -- --config <goal.yaml> [--apply]
+npm run goal:uuid-search -- query --config <goal.yaml> --task <task-id> --query "<flow>" --flow-type product
+npm run goal:uuid-search -- direct-read --config <goal.yaml> --task <task-id> --receipt <id> --uuid <candidate-uuid>
+npm run goal:uuid-search -- finalize --config <goal.yaml> --task <task-id> --receipt <id> --decisions <absolute-json-file>
 npm run pcr:import:cpc -- --source <cpc-structure.csv> --classification-version 3.0
 npm run pcr:import:cpc -- --source <cpc-structure.csv> --classification-version 3.0 --legacy-scaffolds  # migration compatibility only
 npm run pcr:scaffold:cpc -- --source <cpc-structure.csv> --classification-version 3.0 --legacy-scaffolds  # protected legacy alias

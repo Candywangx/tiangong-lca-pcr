@@ -35,23 +35,18 @@ import {
 } from "./static/viewer-core.js";
 
 const repoRoot = path.resolve(".");
-const cpcCoverageIndex = JSON.parse(
-  readFileSync(
-    path.join(repoRoot, "classifications/indexes/cpc-3.0-coverage.json"),
-    "utf8",
-  ),
-);
-const abalonePcrId =
-  "pcr.agriculture-forestry-and-fishery-products.fish-crustaceans-molluscs-and-other-aquatic-invertebrates-products.farmed-abalone-live-fresh-or-chilled";
 const wheatPcrId =
   "pcr.agriculture-forestry-and-fishery-products.products-of-agriculture-horticulture-and-market-gardening.wheat-seed";
 const wheatPcrPath =
   "library/pcrs/agriculture-forestry-and-fishery-products/products-of-agriculture-horticulture-and-market-gardening/wheat-seed";
+const scaffoldPcrPath =
+  "library/pcrs/community-social-and-personal-services/education-services/primary-education-services";
 
 test("buildViewer writes viewer data and static assets", () => {
+  const root = createViewerFixture();
   const outDir = mkdtempSync(path.join(tmpdir(), "tiangong-pcr-viewer-"));
   try {
-    const data = buildViewer({ root: repoRoot, outDir });
+    const data = buildViewer({ root, outDir });
     const dataPath = path.join(outDir, "data", "pcr-viewer-data.json");
 
     assert.equal(data.schema_version, 3);
@@ -67,10 +62,10 @@ test("buildViewer writes viewer data and static assets", () => {
     assert.ok(existsSync(path.join(outDir, VIEWER_BUILD_MARKER)));
 
     const parsed = JSON.parse(readFileSync(dataPath, "utf8"));
-    const abalone = parsed.pcrs.find((entry) => entry.id === abalonePcrId);
+    const wheat = parsed.pcrs.find((entry) => entry.id === wheatPcrId);
     const scaffold = parsed.pcrs.find((entry) => entry.content_maturity === "empty_scaffold");
 
-    assert.ok(abalone);
+    assert.ok(wheat);
     assert.equal(scaffold, undefined);
     assert.equal(parsed.pcrs.every((entry) => entry.record_kind === "methodology"), true);
     assert.equal(parsed.catalog_scope, "material");
@@ -83,31 +78,40 @@ test("buildViewer writes viewer data and static assets", () => {
       "classifications/indexes/cpc-3.0-coverage.json",
     );
     assert.equal(cpcCoverage.entries_inlined, false);
-    assert.deepEqual(cpcCoverage.summary, cpcCoverageIndex.summary);
+    assert.deepEqual(cpcCoverage.summary, {
+      total: 1,
+      mapped: 1,
+      unmapped: 0,
+      candidate_suggestion: 0,
+      manual_review: 0,
+      unknown: 0,
+    });
     assert.equal(Object.hasOwn(cpcCoverage, "entries"), false);
     assert.equal(Object.hasOwn(parsed, "classification_coverage"), false);
     assert.ok(
       readFileSync(dataPath).byteLength < data.pcr_count * 300_000,
       "Expected material viewer data below 300 KB per PCR",
     );
-    assert.equal(abalone.title["en-US"], "Farmed abalone, live, fresh or chilled");
-    assert.equal(abalone.markdown["en-US"].includes("# Farmed abalone"), true);
-    assert.equal(abalone.markdown["zh-CN"].includes("# 养殖鲍鱼"), true);
-    assert.deepEqual(abalone.guidance, buildGuidance({ root: repoRoot, pcrId: abalonePcrId }));
-    assert.equal(abalone.guidance.reference_flow.reference_unit, "kg");
-    assert.ok(abalone.guidance.data_sources.length > 0);
-    assert.match(abalone.search_text, /abalone/i);
-    assert.match(abalone.search_text, /04412/);
+    assert.equal(wheat.title["en-US"], "Wheat seed for sowing");
+    assert.equal(wheat.markdown["en-US"].includes("# Wheat Seed for Sowing"), true);
+    assert.equal(wheat.markdown["zh-CN"].includes("# 小麦播种种子"), true);
+    assert.deepEqual(wheat.guidance, buildGuidance({ root, pcrId: wheatPcrId }));
+    assert.equal(wheat.guidance.reference_flow.reference_unit, "kg");
+    assert.ok(wheat.guidance.data_sources.length > 0);
+    assert.match(wheat.search_text, /wheat/i);
+    assert.match(wheat.search_text, /01111/);
   } finally {
+    rmSync(root, { recursive: true, force: true });
     rmSync(outDir, { recursive: true, force: true });
   }
 });
 
 test("buildViewer scope all preserves catalog compatibility without inlining empty scaffolds", () => {
+  const root = createViewerFixture({ includeScaffold: true });
   const outDir = mkdtempSync(path.join(tmpdir(), "tiangong-pcr-viewer-all-"));
   try {
-    const materialData = buildViewerData({ root: repoRoot });
-    const data = buildViewer({ root: repoRoot, outDir, scope: "all" });
+    const materialData = buildViewerData({ root });
+    const data = buildViewer({ root, outDir, scope: "all" });
     const scaffolds = data.pcrs.filter(
       (entry) => entry.record_kind === "legacy_scaffold_reference",
     );
@@ -126,6 +130,7 @@ test("buildViewer scope all preserves catalog compatibility without inlining emp
     }
     assert.ok(existsSync(path.join(outDir, VIEWER_BUILD_MARKER)));
   } finally {
+    rmSync(root, { recursive: true, force: true });
     rmSync(outDir, { recursive: true, force: true });
   }
 });
@@ -363,6 +368,7 @@ test("buildViewer resolves parent symlinks before checking protected paths", () 
 });
 
 test("buildViewer allows a safe new path through a parent symlink and can replace its marked build", () => {
+  const root = createViewerFixture();
   const parentDir = mkdtempSync(path.join(tmpdir(), "tiangong-pcr-viewer-repeat-"));
   const realParentDir = path.join(parentDir, "real-parent");
   const parentAlias = path.join(parentDir, "parent-alias");
@@ -370,14 +376,15 @@ test("buildViewer allows a safe new path through a parent symlink and can replac
   try {
     mkdirSync(realParentDir);
     symlinkSync(realParentDir, parentAlias, "dir");
-    buildViewer({ root: repoRoot, outDir });
+    buildViewer({ root, outDir });
     writeFileSync(path.join(outDir, "stale-generated-file.txt"), "stale\n");
 
-    buildViewer({ root: repoRoot, outDir });
+    buildViewer({ root, outDir });
 
     assert.equal(existsSync(path.join(outDir, "stale-generated-file.txt")), false);
     assert.equal(existsSync(path.join(outDir, VIEWER_BUILD_MARKER)), true);
   } finally {
+    rmSync(root, { recursive: true, force: true });
     rmSync(parentDir, { recursive: true, force: true });
   }
 });
@@ -619,17 +626,25 @@ test("viewer scripts can run from paths containing spaces and non-ASCII characte
       path.join(fixtureRoot, "node_modules"),
       process.platform === "win32" ? "junction" : "dir",
     );
+    copyFixturePcr({ root: fixtureRoot, relativePath: wheatPcrPath });
+    const coverageIndex = writeFixtureCoverageIndex({
+      root: fixtureRoot,
+      system: "cpc",
+      version: "3.0",
+      mappedPcrIds: [wheatPcrId],
+    });
+    writeFixtureCatalog({ root: fixtureRoot, coverageIndexes: [coverageIndex] });
 
     const buildOutput = execFileSync(process.execPath, [
       path.join(fixtureViewerRoot, "scripts", "build-viewer-data.mjs"),
       "--root",
-      repoRoot,
+      fixtureRoot,
       "--out-dir",
       outDir,
       "--scope",
       "material",
     ], {
-      cwd: repoRoot,
+      cwd: fixtureRoot,
       encoding: "utf8",
     });
 
@@ -699,6 +714,22 @@ function copyFixturePcr({ root, relativePath }) {
   const target = path.join(root, relativePath);
   mkdirSync(path.dirname(target), { recursive: true });
   cpSync(path.join(repoRoot, relativePath), target, { recursive: true });
+}
+
+function createViewerFixture({ includeScaffold = false } = {}) {
+  const root = mkdtempSync(path.join(tmpdir(), "tiangong-pcr-viewer-fixture-"));
+  copyFixturePcr({ root, relativePath: wheatPcrPath });
+  if (includeScaffold) {
+    copyFixturePcr({ root, relativePath: scaffoldPcrPath });
+  }
+  const coverageIndex = writeFixtureCoverageIndex({
+    root,
+    system: "cpc",
+    version: "3.0",
+    mappedPcrIds: [wheatPcrId],
+  });
+  writeFixtureCatalog({ root, coverageIndexes: [coverageIndex] });
+  return root;
 }
 
 function writeFixtureCatalog({ root, coverageIndexes }) {

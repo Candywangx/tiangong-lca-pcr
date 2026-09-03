@@ -6,7 +6,7 @@ import { auditReportedUuids, verifySourceLocators } from "./evidence-audit.mjs";
 test("UUID audit compares public direct-read identity to the author report", () => {
   const uuid = "11111111-1111-4111-8111-111111111111";
   const report = { uuid_audits: [{
-    uuid, hybrid_search: true, state_code: 100, base_name_en: "Pig iron", base_name_zh: "生铁",
+    uuid, hybrid_search_receipt_id: "receipt-1", state_code: 100, base_name_en: "Pig iron", base_name_zh: "生铁",
     flow_type: "product", classification: "CPC 41111", property: "Mass", unit_group: "Units of mass", semantic_review: "exact",
   }] };
   const direct = {
@@ -53,7 +53,7 @@ test("UUID audit accepts explicit no-product-classification and annotated proper
   const uuid = "22222222-2222-4222-8222-222222222222";
   const report = { uuid_audits: [{
     uuid,
-    hybrid_search: true,
+    hybrid_search_receipt_id: "receipt-1",
     state_code: 100,
     base_name_en: "carbon dioxide (fossil)",
     base_name_zh: "二氧化碳（化石源）",
@@ -96,16 +96,19 @@ test("UUID audit accepts explicit no-product-classification and annotated proper
 });
 
 test("source audit performs original locator reads and rejects discovery pages as final evidence", async () => {
-  const fetchImpl = async (url) => ({
-    ok: true, status: 200, url, headers: new Map([["content-type", "application/pdf"]]),
-    body: { getReader: () => ({ read: async () => ({ done: false, value: new TextEncoder().encode("original text") }), cancel: async () => {} }) },
-  });
+  const fetchImpl = async (url) => {
+    let consumed = false;
+    return {
+      ok: true, status: 200, url, headers: new Map([["content-type", "application/pdf"]]),
+      body: { getReader: () => ({ read: async () => consumed ? { done: true } : (consumed = true, { done: false, value: new TextEncoder().encode("original text") }), cancel: async () => {} }) },
+    };
+  };
   const result = await verifySourceLocators({
     report: { sources: [{ source_id: "standard-a", name: "Standard A", locator: "https://standards.example/a.pdf", original_text_verified: true, supports: ["boundary"] }] },
     fetchImpl,
   });
   assert.equal(result[0].http_status, 200);
-  assert.match(result[0].sample_sha256, /^sha256:/u);
+  assert.match(result[0].content_sha256, /^sha256:/u);
   await assert.rejects(
     () => verifySourceLocators({ report: { sources: [{ source_id: "openalex", name: "OpenAlex", locator: "https://openalex.org/W1", original_text_verified: true, supports: ["range"] }] }, fetchImpl }),
     (error) => error.code === "GOAL_SOURCE_DISCOVERY_ONLY",

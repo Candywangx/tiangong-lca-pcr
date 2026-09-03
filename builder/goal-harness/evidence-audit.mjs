@@ -3,6 +3,7 @@ import { createHash } from "node:crypto";
 import path from "node:path";
 
 import { GoalHarnessError } from "./errors.mjs";
+import { appendGoalCacheReceipt } from "./goal-cache.mjs";
 
 const REUSABLE_COMMON_UUID_PATTERN = /^(?:alternating current|electricity(?:,.*)?|natural gas(?: .*)?|liquefied petroleum gas|lpg|diesel(?: fuel)?|steam(?:,.*)?|hot water|process water|drinking water|industrial oxygen|industrial nitrogen|carbon dioxide(?: \(fossil\))?|methane|nitrous oxide|sodium hydroxide|sodium hypochlorite|peracetic acid|(?:refrigerant|polyethylene film|pet tray|corrugated paperboard)(?:,.*)?)$/iu;
 
@@ -18,7 +19,36 @@ export function mergeVerifiedCommonUuids(existing = [], audited = []) {
 export function auditReportedUuids({ report, tiangongCliRoot, runner = runTiangongFlowGet, supportRunner = runTiangongReferenceSupport }) {
   const results = [];
   for (const claimed of report.uuid_audits ?? []) {
-    const direct = runner({ uuid: claimed.uuid, tiangongCliRoot });
+    const actual = readPublicUuidAudit({ uuid: claimed.uuid, tiangongCliRoot, runner, supportRunner });
+    const mismatches = [];
+    if (actual.uuid !== claimed.uuid.toLowerCase()) mismatches.push("uuid");
+    if (actual.state_code !== 100 || claimed.state_code !== 100) mismatches.push("state_code");
+    if (actual.base_name_en !== claimed.base_name_en) mismatches.push("base_name_en");
+    if (actual.base_name_zh !== claimed.base_name_zh) mismatches.push("base_name_zh");
+    if (actual.flow_type !== normalizeFlowType(claimed.flow_type)) mismatches.push("flow_type");
+    if (!classificationClaimMatches(claimed.classification, actual.classifications, actual.flow_type)) mismatches.push("classification");
+    if (!propertyClaimMatches(claimed.property, actual.property)) mismatches.push("property");
+    if (actual.flow_property_state_code !== 100) mismatches.push("flow_property_state");
+    if (actual.flow_property_name_en !== actual.property) mismatches.push("flow_property_name");
+    if (actual.unit_group_state_code !== 100 || !actual.unit_group_uuid) mismatches.push("unit_group_state");
+    if (!unitGroupClaimMatches(claimed.unit_group, actual)) mismatches.push("unit_group");
+    if (!claimed.hybrid_search_receipt_id) mismatches.push("hybrid_search_receipt_id");
+    if (mismatches.length > 0) {
+      throw new GoalHarnessError("GOAL_UUID_DIRECT_AUDIT_MISMATCH", `Direct state_code=100 audit disagrees with the author report for ${claimed.uuid}: ${mismatches.join(", ")}`, { uuid: claimed.uuid, mismatches, claimed, actual });
+    }
+    results.push({
+      ...actual,
+      unit_group_claim: claimed.unit_group,
+      semantic_review: claimed.semantic_review,
+      hybrid_search_receipt_id: claimed.hybrid_search_receipt_id,
+      checked_at: new Date().toISOString(),
+    });
+  }
+  return results;
+}
+
+export function readPublicUuidAudit({ uuid, tiangongCliRoot, runner = runTiangongFlowGet, supportRunner = runTiangongReferenceSupport }) {
+    const direct = runner({ uuid, tiangongCliRoot });
     const flow = direct?.flow?.flowDataSet;
     const info = flow?.flowInformation?.dataSetInformation;
     const names = localizedTexts(info?.name?.baseName);
@@ -29,7 +59,7 @@ export function auditReportedUuids({ report, tiangongCliRoot, runner = runTiango
       flowPropertyVersion: String(flowPropertyReference?.["@version"] ?? ""),
       tiangongCliRoot,
     });
-    const actual = {
+    return {
       uuid: String(info?.["common:UUID"] ?? "").toLowerCase(),
       state_code: direct?.state_code,
       base_name_en: names.en ?? names["en-US"] ?? "",
@@ -45,36 +75,15 @@ export function auditReportedUuids({ report, tiangongCliRoot, runner = runTiango
       unit_group_name_en: String(support?.unit_group?.name_en ?? ""),
       unit_group_name_zh: String(support?.unit_group?.name_zh ?? ""),
       reference_unit: String(support?.unit_group?.reference_unit ?? ""),
-    };
-    const mismatches = [];
-    if (actual.uuid !== claimed.uuid.toLowerCase()) mismatches.push("uuid");
-    if (actual.state_code !== 100 || claimed.state_code !== 100) mismatches.push("state_code");
-    if (actual.base_name_en !== claimed.base_name_en) mismatches.push("base_name_en");
-    if (actual.base_name_zh !== claimed.base_name_zh) mismatches.push("base_name_zh");
-    if (actual.flow_type !== normalizeFlowType(claimed.flow_type)) mismatches.push("flow_type");
-    if (!classificationClaimMatches(claimed.classification, actual.classifications, actual.flow_type)) mismatches.push("classification");
-    if (!propertyClaimMatches(claimed.property, actual.property)) mismatches.push("property");
-    if (support?.flow_property?.state_code !== 100 || String(support?.flow_property?.id ?? "").toLowerCase() !== actual.flow_property_uuid) mismatches.push("flow_property_state");
-    if (support?.flow_property?.name_en !== actual.property) mismatches.push("flow_property_name");
-    if (support?.unit_group?.state_code !== 100 || !actual.unit_group_uuid) mismatches.push("unit_group_state");
-    if (!unitGroupClaimMatches(claimed.unit_group, actual)) mismatches.push("unit_group");
-    if (claimed.hybrid_search !== true) mismatches.push("hybrid_search");
-    if (mismatches.length > 0) {
-      throw new GoalHarnessError("GOAL_UUID_DIRECT_AUDIT_MISMATCH", `Direct state_code=100 audit disagrees with the author report for ${claimed.uuid}: ${mismatches.join(", ")}`, { uuid: claimed.uuid, mismatches, claimed, actual });
-    }
-    results.push({
-      ...actual,
-      unit_group_claim: claimed.unit_group,
-      semantic_review: claimed.semantic_review,
-      hybrid_search: true,
-      checked_at: new Date().toISOString(),
+      flow_property_state_code: String(support?.flow_property?.id ?? "").toLowerCase() === String(flowPropertyReference?.["@refObjectId"] ?? "").toLowerCase() ? (support?.flow_property?.state_code ?? null) : null,
+      flow_property_name_en: String(support?.flow_property?.name_en ?? ""),
+      unit_group_state_code: support?.unit_group?.state_code ?? null,
+      general_comment: localizedTexts(info?.generalComment).en ?? localizedTexts(info?.generalComment).zh ?? "",
       response_sha256: `sha256:${createHash("sha256").update(stableJson({ direct, support })).digest("hex")}`,
-    });
-  }
-  return results;
+    };
 }
 
-export async function verifySourceLocators({ report, fetchImpl = globalThis.fetch, timeoutMs = 30_000 }) {
+export async function verifySourceLocators({ report, stateDir = null, fetchImpl = globalThis.fetch, timeoutMs = 30_000 }) {
   const audits = [];
   for (const source of report.sources ?? []) {
     if (source.discovery_only === true) continue;
@@ -89,8 +98,9 @@ export async function verifySourceLocators({ report, fetchImpl = globalThis.fetc
       if (!response.ok) {
         throw new GoalHarnessError("GOAL_SOURCE_LOCATOR_UNREADABLE", `Source locator returned HTTP ${response.status}: ${source.source_id}`, { source_id: source.source_id, locator, status: response.status });
       }
-      const sample = await readResponseSample(response, 65_536);
-      audits.push({
+      const content = await readResponseBytes(response, 64 * 1024 * 1024);
+      const contentSha256 = `sha256:${createHash("sha256").update(content).digest("hex")}`;
+      const audit = {
         source_id: source.source_id,
         locator,
         resolved_url: response.url ?? locator,
@@ -98,8 +108,18 @@ export async function verifySourceLocators({ report, fetchImpl = globalThis.fetc
         content_type: response.headers?.get?.("content-type") ?? null,
         original_text_claimed_verified: source.original_text_verified === true,
         checked_at: new Date().toISOString(),
-        sample_sha256: `sha256:${createHash("sha256").update(sample).digest("hex")}`,
-      });
+        content_sha256: contentSha256,
+        content_byte_length: content.byteLength,
+      };
+      audits.push(audit);
+      if (stateDir) {
+        const keyInput = { source_id: source.source_id, locator };
+        const tool = { name: "http-original-text-fetch", version: "1" };
+        appendGoalCacheReceipt({ stateDir, namespace: "source_locator_checks", keyInput, tool, sourceFingerprint: contentSha256, value: audit });
+        if (source.original_text_verified === true) {
+          appendGoalCacheReceipt({ stateDir, namespace: "source_original_text_receipts", keyInput, tool, sourceFingerprint: contentSha256, value: audit, blob: content });
+        }
+      }
     } catch (error) {
       if (error instanceof GoalHarnessError) throw error;
       throw new GoalHarnessError("GOAL_SOURCE_LOCATOR_UNREADABLE", `Cannot read source locator for ${source.source_id}: ${error.message}`, { source_id: source.source_id, locator });
@@ -112,14 +132,14 @@ export async function verifySourceLocators({ report, fetchImpl = globalThis.fetc
 
 function runTiangongFlowGet({ uuid, tiangongCliRoot }) {
   const cliPath = path.join(tiangongCliRoot, "bin", "tiangong-lca.js");
-  const result = spawnSync(process.execPath, [cliPath, "flow", "get", "--id", uuid, "--state-code", "100", "--json"], {
+  const result = spawnSync(process.execPath, [`--env-file-if-exists=${path.join(tiangongCliRoot, ".env")}`, cliPath, "flow", "get", "--id", uuid, "--state-code", "100", "--json"], {
     cwd: tiangongCliRoot,
     encoding: "utf8",
     stdio: ["ignore", "pipe", "pipe"],
     maxBuffer: 64 * 1024 * 1024,
   });
   if (result.status !== 0) {
-    throw new GoalHarnessError("GOAL_UUID_DIRECT_READ_FAILED", `TianGong state_code=100 direct read failed for ${uuid}`, { uuid, exit_code: result.status, stderr_tail: String(result.stderr ?? "").slice(-4000) });
+    throw new GoalHarnessError("GOAL_UUID_DIRECT_READ_FAILED", `TianGong state_code=100 direct read failed for ${uuid}`, { uuid, exit_code: result.status, credentials_redacted: true });
   }
   try {
     return JSON.parse(result.stdout);
@@ -146,7 +166,7 @@ function runTiangongReferenceSupport({ flowPropertyId, flowPropertyVersion, tian
     maxBuffer: 16 * 1024 * 1024,
   });
   if (result.status !== 0) {
-    throw new GoalHarnessError("GOAL_UUID_DIRECT_READ_FAILED", `TianGong public flow-property/unit-group audit failed for ${flowPropertyId}`, { flow_property_uuid: flowPropertyId, exit_code: result.status, stderr_tail: String(result.stderr ?? "").slice(-4000) });
+    throw new GoalHarnessError("GOAL_UUID_DIRECT_READ_FAILED", `TianGong public flow-property/unit-group audit failed for ${flowPropertyId}`, { flow_property_uuid: flowPropertyId, exit_code: result.status, credentials_redacted: true });
   }
   try {
     return JSON.parse(result.stdout);
@@ -266,7 +286,7 @@ function normalizeLocator(value) {
   }
 }
 
-async function readResponseSample(response, limit) {
+async function readResponseBytes(response, limit) {
   const reader = response.body?.getReader?.();
   if (!reader) return Buffer.alloc(0);
   const chunks = [];
@@ -275,9 +295,12 @@ async function readResponseSample(response, limit) {
     const { done, value } = await reader.read();
     if (done) break;
     const chunk = Buffer.from(value);
-    chunks.push(chunk.subarray(0, limit - length));
-    length += Math.min(chunk.length, limit - length);
-    if (length >= limit) break;
+    if (length + chunk.length > limit) {
+      await reader.cancel?.();
+      throw new GoalHarnessError("GOAL_SOURCE_ORIGINAL_TEXT_TOO_LARGE", `Source original text exceeds the ${limit}-byte cache limit.`);
+    }
+    chunks.push(chunk);
+    length += chunk.length;
   }
   await reader.cancel?.();
   return Buffer.concat(chunks);

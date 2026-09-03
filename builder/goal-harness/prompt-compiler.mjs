@@ -8,11 +8,17 @@ export function readAuthorReportSchema() {
   return JSON.parse(readFileSync(reportSchemaPath, "utf8"));
 }
 
-export function compileAuthorPrompt({ task, policyPromptPath, verifiedCommonUuids = [], tools = {} }) {
+export function compileAuthorPrompt({ task, policyPromptPath, verifiedCommonUuids = [], verifiedSourceReceipts = [], tools = {} }) {
   const policyBytes = readFileSync(policyPromptPath);
   const policySha256 = `sha256:${createHash("sha256").update(policyBytes).digest("hex")}`;
   const allowedFiles = ["manifest.yaml", "pcr.en-US.md", "pcr.zh-CN.md", "structured.yaml"]
     .map((name) => `${task.pcr_path}/${name}`);
+  const harnessRoot = tools.project_root ?? process.cwd();
+  const goalConfigPath = tools.config_path ?? "<ABSOLUTE_GOAL_CONFIG_PATH>";
+  const tiangongCliRoot = tools.tiangong_cli_root ?? "<ABSOLUTE_TIANGONG_CLI_ROOT>";
+  const hybridSearchRoot = tools.flow_hybrid_search_root ?? "<ABSOLUTE_FLOW_HYBRID_SEARCH_ROOT>";
+  const credentialsEnvFile = tools.credentials_env_file ?? `${tiangongCliRoot}/.env`;
+  const receiptCli = `${harnessRoot}/builder/cli/goal-uuid-search.mjs`;
   const prompt = `You are one independent TianGong PCR author. Work only on the single PCR below in the Git worktree already assigned to this visible Codex task.
 
 Assignment
@@ -25,6 +31,7 @@ Assignment
 - Classification precheck: ${formatItems(task.precheck_results)}
 - Official source seeds: ${formatJson(task.official_source_seeds ?? [])}
 - Directly verified reusable UUID audits: ${formatJson(verifiedCommonUuids)}
+- Hash-verified original-source cache receipts relevant to these seeds: ${formatJson(verifiedSourceReceipts)}
 
 Exact write boundary
 You may modify and commit exactly these four files, and nothing else:
@@ -43,6 +50,22 @@ Method and evidence
 - Avoid species × tissue × state × route, variant × packaging × energy, or other Cartesian expansions. Above 120 rows provide an auditable complexity justification; above 180 redesign/compress by default; above 250 is unacceptable without separately approved methodology necessity.
 
 UUID audit
+Tool roots (exact):
+- TianGong CLI: ${tiangongCliRoot}
+- Flow hybrid search: ${hybridSearchRoot}
+- Goal receipt CLI: ${receiptCli}
+
+Never source, print, inspect, copy, or include .env content. The safe launcher loads it only inside Node with --env-file-if-exists. Run every candidate-discovery query from this assigned worktree through the receipt CLI:
+node --env-file-if-exists=${credentialsEnvFile} ${receiptCli} query --config ${goalConfigPath} --task ${task.id} --query "<ONE CONCRETE FLOW QUERY>" --flow-type <product|waste|elementary> --limit 20
+
+The query command performs authenticated hybrid search and returns a receipt id plus candidate UUIDs. Capture the public state_code=100 direct read for every candidate in that receipt using:
+node --env-file-if-exists=${credentialsEnvFile} ${receiptCli} direct-read --config ${goalConfigPath} --task ${task.id} --receipt <RECEIPT_ID> --uuid <CANDIDATE_UUID>
+
+After the direct read, put one adopted/rejected decision for every candidate in a JSON file outside the repository (for example under /tmp), and finalize the immutable search receipt:
+node --env-file-if-exists=${credentialsEnvFile} ${receiptCli} finalize --config ${goalConfigPath} --task ${task.id} --receipt <RECEIPT_ID> --decisions <ABSOLUTE_DECISIONS_JSON>
+
+Each decision must include a non-empty general_comment_review. Each finalized receipt binds the exact query, ranked candidate UUIDs/match metadata, tool version, non-sensitive endpoint id, raw-result SHA-256, every state_code=100 direct-read identity/property/unit-group/response hash, and candidate rejection reasons. Include every receipt id in hybrid_search_receipt_ids; link each adopted UUID with hybrid_search_receipt_id, each rejected candidate with receipt_id plus the same reason_code/reason, and each no_exact_candidate/manual_review_required unresolved row with hybrid_search_receipt_ids. A hybrid_search: true boolean is never evidence and is rejected. tiangong_cli_unavailable is an infrastructure-level retryable failure: stop UUID authoring and report the tool failure; never use it to bulk-mark unresolved rows.
+
 Use hybrid search for candidate discovery, then directly read every adopted candidate with public state_code=100. Audit English and Chinese baseName, flow type, classification, property, unit group, product state, geography, technology, and generalComment. Never promote a proxy or unverified UUID to final. If no exact reference product or inventory flow exists, keep UUID empty and record the row as unresolved with an allowed reason code; this does not block the PCR. For every PCR, inventory total must equal UUID-matched rows plus explicitly unresolved rows. Use the directly read TianGong Chinese baseName for UUID-bearing Chinese rows.
 - Record every UUID-empty inventory row, including an unresolved reference product row, under manifest review_metadata.unresolved.inventory_flow_uuids as { row_id, reason_code, explanation }. The same row ids and reasons must appear in the author report inventory.unresolved array. Do not substitute a differently named manifest field; the Harness reads this exact path.
 

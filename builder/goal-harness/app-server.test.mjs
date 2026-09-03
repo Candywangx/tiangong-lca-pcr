@@ -135,6 +135,28 @@ test("app-server failure is a stable fail-closed error with no hidden fallback",
   }
 });
 
+test("repair starts a new turn in the original durable thread and original worktree", async () => {
+  const mock = mockSpawn();
+  const adapter = new CodexAppServerAdapter({ spawnFactory: () => mock.child, requestTimeoutMs: 1000 });
+  try {
+    const result = await adapter.startRepairTurn({
+      threadId: "thread-visible-1",
+      worktreePath: "/tmp/visible-author-worktree",
+      prompt: "repair structured findings",
+      outputSchema: { type: "object" },
+      clientUserMessageId: "task-repair-1",
+    });
+    assert.equal(result.thread_id, "thread-visible-1");
+    assert.equal(mock.requests.some((request) => request.method === "thread/resume" && request.params.threadId === "thread-visible-1"), true);
+    const turn = mock.requests.find((request) => request.method === "turn/start");
+    assert.equal(turn.params.threadId, "thread-visible-1");
+    assert.equal(turn.params.cwd, "/tmp/visible-author-worktree");
+    assert.equal(turn.params.clientUserMessageId, "task-repair-1");
+  } finally {
+    await adapter.close();
+  }
+});
+
 test("websocket adapter closes only its client connection so a persistent Goal daemon can survive", async () => {
   const mock = mockWebSocket();
   const adapter = new CodexAppServerAdapter({

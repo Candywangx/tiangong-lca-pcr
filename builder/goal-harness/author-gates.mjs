@@ -50,8 +50,6 @@ const COMMON_FLOW_PATTERNS = [
   /电力|(?:工艺|过程|饮用|补充|冷却|热|洗涤|粒化)水|天然气|液化石油气|柴油|蒸汽|氮气|二氧化碳|甲烷|氧化亚氮/u,
 ];
 
-const DIRECT_QUERY_EVIDENCE_PATTERN = /hybrid|state[_ -]?code\s*[=:]?\s*100|direct(?:ly)? (?:read|quer)|直接(?:读取|查询)|候选.*(?:拒绝|核验)|candidate.*(?:read|reject|audit)|queried|searched/iu;
-
 export function validateAuthorReport(report) {
   const valid = validateSchema(report);
   return {
@@ -61,6 +59,14 @@ export function validateAuthorReport(report) {
 }
 
 export function assertAuthorQuality({ report, authorizedFiles, changedFiles, inventoryRows, manifestUnresolved = null }) {
+  const infrastructureRows = (report.inventory?.unresolved ?? []).filter((entry) => entry.reason_code === "tiangong_cli_unavailable");
+  if (infrastructureRows.length > 0) {
+    throw new GoalHarnessError(
+      "GOAL_UUID_INFRASTRUCTURE_UNAVAILABLE",
+      "tiangong_cli_unavailable is an infrastructure-level retryable failure, not valid unresolved PCR coverage.",
+      { retryable: true, row_ids: infrastructureRows.map((entry) => entry.row_id) },
+    );
+  }
   const findings = [];
   const schemaResult = validateAuthorReport(report);
   if (!schemaResult.valid) {
@@ -120,7 +126,7 @@ export function assertAuthorQuality({ report, authorizedFiles, changedFiles, inv
     }
     if (row.uuid) {
       const audit = audits.get(row.uuid.toLowerCase());
-      if (!audit || audit.hybrid_search !== true || audit.state_code !== 100) {
+      if (!audit || !audit.hybrid_search_receipt_id || audit.state_code !== 100) {
         findings.push({ code: "UUID_NOT_DIRECTLY_VERIFIED", row_id: row.row_id, uuid: row.uuid, message: "Every final UUID needs hybrid discovery and public state_code=100 direct read audit." });
       } else if (translated?.name !== audit.base_name_zh) {
         findings.push({ code: "ZH_FLOW_NAME_NOT_OFFICIAL", row_id: row.row_id, expected: audit.base_name_zh, actual: translated?.name ?? null, message: "A UUID-bearing Chinese flow name must equal the directly read TianGong Chinese baseName." });
@@ -139,8 +145,7 @@ export function assertAuthorQuality({ report, authorizedFiles, changedFiles, inv
     }
     if (!row.uuid && COMMON_FLOW_PATTERNS.some((pattern) => pattern.test(row.name ?? "") || pattern.test(translated?.name ?? ""))) {
       const unresolved = unresolvedById.get(row.row_id);
-      const toolUnavailable = ["tiangong_lookup_rate_limited", "tiangong_cli_unavailable"].includes(unresolved?.reason_code);
-      if (!toolUnavailable && !DIRECT_QUERY_EVIDENCE_PATTERN.test(unresolved?.explanation ?? "")) {
+      if ((unresolved?.hybrid_search_receipt_ids?.length ?? 0) === 0) {
         findings.push({ code: "COMMON_FLOW_UUID_AUDIT_MISSING", row_id: row.row_id, message: "A common UUID-empty flow needs an auditable hybrid-search/direct-read query explanation." });
       }
     }

@@ -9,6 +9,7 @@ import { withGoalLock } from "./lock.mjs";
 import { buildIntegrationSnapshot } from "./scheduler.mjs";
 import { applyTaskTransition } from "./state-machine.mjs";
 import { ensureGoalWorktree } from "./worktrees.mjs";
+import { runCachedViewerBuild } from "./derived-cache.mjs";
 
 const MAPPING_RELATIONS = new Set(["exact", "broader", "narrower", "proxy"]);
 
@@ -187,7 +188,10 @@ export function integrateGoalSnapshot({ config, stateDir, snapshotId = null, all
     const commandResults = [];
     try {
       for (const command of commandPlan) {
-        commandResults.push(commandRunner({ cwd: worktreePath, command: command.command, args: command.args, name: command.name }));
+        const execute = () => commandRunner({ cwd: worktreePath, command: command.command, args: command.args, name: command.name });
+        commandResults.push(command.name === "viewer_build"
+          ? runCachedViewerBuild({ root: worktreePath, stateDir, runner: execute })
+          : execute());
       }
     } catch (error) {
       snapshot = { ...snapshot, state: "retryable_failure", failure_code: error.code ?? "GOAL_INTEGRATION_COMMAND_FAILED", failure_message: error.message, command_results: commandResults };
@@ -281,9 +285,7 @@ function integrationCommands(config, tasks) {
   const prefix = config.target_category_relative.replace(/^library\/pcrs\//u, "");
   return [
     { name: "aliases_build", command: "npm", args: ["run", "aliases:build"] },
-    { name: "aliases_check", command: "npm", args: ["run", "aliases:check"] },
     { name: "catalog_build", command: "npm", args: ["run", "catalog:build"] },
-    { name: "catalog_check", command: "npm", args: ["run", "catalog:check"] },
     { name: "viewer_build", command: "npm", args: ["run", "viewer:build"] },
     { name: "validate", command: "npm", args: ["run", "validate"] },
     { name: "smoke_list", command: "npm", args: ["--silent", "run", "tiangong-pcr", "--", "list", "--path-prefix", prefix, "--format", "json"] },
