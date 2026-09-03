@@ -468,3 +468,55 @@ test("repair limit is the point where a result becomes retryable for replacement
     rmSync(root, { recursive: true, force: true });
   }
 });
+
+test("failed repair continuation replaces only the thread and preserves the safe worktree", async () => {
+  const { root, stateDir, config } = fixture();
+  config.retry_policy = { max_attempts: 3, max_repairs: 2 };
+  const first = await dispatchGoalAuthors({
+    config,
+    stateDir,
+    slots: 1,
+    adapter: { async createAuthorTask() { return { thread_id: "thread-old", turn_id: "turn-old" }; } },
+  });
+  const worktreePath = first.dispatched[0].worktree_path;
+  const markerPath = path.join(worktreePath, "library/pcrs/category/item/manifest.yaml");
+  writeFileSync(markerPath, "preserved repair bytes\n");
+  const store = new GoalEventStore({ stateDir });
+  const active = store.rebuild().tasks[0];
+  store.append({
+    event_id: "fixture-resume-failed",
+    type: "task_replaced",
+    payload: { task: {
+      ...active,
+      state: "retryable_failure",
+      failure_code: "GOAL_REPAIR_RESUME_FAILED",
+      repair_count: 2,
+      repair_resume_count: 1,
+      transition_ids: [...active.transition_ids, "repair-resume-failed"],
+    } },
+  });
+  const starts = [];
+  try {
+    const result = await dispatchGoalAuthors({
+      config,
+      stateDir,
+      slots: 1,
+      resumeStopped: true,
+      adapter: {
+        async createAuthorTask(input) {
+          starts.push(input);
+          return { thread_id: "thread-new", turn_id: "turn-new" };
+        },
+      },
+    });
+    const replacement = result.state.tasks[0];
+    assert.equal(starts.length, 1);
+    assert.equal(starts[0].worktreePath, worktreePath);
+    assert.equal(replacement.worktree_path, worktreePath);
+    assert.equal(readFileSync(markerPath, "utf8"), "preserved repair bytes\n");
+    assert.equal(replacement.thread_id, "thread-new");
+    assert.deepEqual(replacement.previous_thread_ids, ["thread-old"]);
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+  }
+});

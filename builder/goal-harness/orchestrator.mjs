@@ -30,13 +30,25 @@ export async function dispatchGoalAuthors({ config, stateDir, slots = config.aut
     }
     if (resumeStopped) {
       for (const failed of state.tasks.filter((task) => task.state === "retryable_failure" && (task.attempt ?? 0) < (config.retry_policy?.max_attempts ?? 3))) {
+        const replaceThreadInPlace = failed.failure_code === "GOAL_REPAIR_RESUME_FAILED"
+          && Boolean(failed.thread_id && failed.worktree_path && failed.author_branch);
         const repairInPlace = Boolean(failed.thread_id && failed.worktree_path && (failed.repair_count ?? 0) < (config.retry_policy?.max_repairs ?? 2));
         let task = applyTaskTransition(failed, {
-          transition_id: `${authorIdentity(config.goal_id, failed.cpc_code, failed.attempt ?? 1, failed.uuid_enrichment_generation)}-${repairInPlace ? "repair" : "requeue"}-${(failed.dispatch_cycle ?? 1) + 1}`,
-          to: repairInPlace ? "repair_requested" : "queued",
+          transition_id: `${authorIdentity(config.goal_id, failed.cpc_code, failed.attempt ?? 1, failed.uuid_enrichment_generation)}-${replaceThreadInPlace ? "replace-thread" : (repairInPlace ? "repair" : "requeue")}-${(failed.dispatch_cycle ?? 1) + 1}`,
+          to: replaceThreadInPlace ? "preflight" : (repairInPlace ? "repair_requested" : "queued"),
           at: new Date().toISOString(),
         });
-        if (!repairInPlace && failed.thread_id) {
+        if (replaceThreadInPlace) {
+          task = {
+            ...task,
+            previous_thread_ids: [...new Set([...(failed.previous_thread_ids ?? []), failed.thread_id])],
+            thread_id: null,
+            turn_id: null,
+            repair_resume_pending: false,
+            author_base_commit: failed.last_author_commit ?? failed.author_commit ?? failed.author_base_commit ?? state.baseline.commit,
+            reason: "Continue the preserved repair worktree after the original visible thread and its one continuation both became unrecoverable.",
+          };
+        } else if (!repairInPlace && failed.thread_id) {
           task = { ...task, worktree_path: null, author_branch: null, thread_id: null, turn_id: null };
         }
         store.append({ event_id: `${task.id}-requeued-${task.transition_ids.length}`, type: "task_replaced", payload: { task } });
@@ -235,18 +247,23 @@ export async function harvestGoalAuthors({
           if (!authorTimedOut(task, config.author_timeout_seconds, now())) continue;
           await adapter.interruptTurn({ threadId: task.thread_id, turnId: task.turn_id });
           const canResumeRepair = wasRepair && (task.repair_resume_count ?? 0) < 1;
+          const repairResumeFailed = wasRepair && (task.repair_resume_count ?? 0) >= 1;
           const canRepairTimeout = canResumeRepair || (task.repair_count ?? 0) < (config.retry_policy?.max_repairs ?? 2);
           task = applyTaskTransition(task, { transition_id: `${task.id}-turn-${task.turn_id}-timeout`, to: canRepairTimeout ? "repair_requested" : "retryable_failure", at: now().toISOString() });
           task = {
             ...task,
             repair_resume_pending: canResumeRepair,
-            failure_code: canResumeRepair ? "GOAL_REPAIR_TIMEOUT_RESUME_REQUIRED" : (canRepairTimeout ? "GOAL_AUTHOR_TIMEOUT_REPAIR_REQUIRED" : "GOAL_REPAIR_LIMIT_REACHED"),
+            failure_code: canResumeRepair
+              ? "GOAL_REPAIR_TIMEOUT_RESUME_REQUIRED"
+              : (repairResumeFailed ? "GOAL_REPAIR_RESUME_FAILED" : (canRepairTimeout ? "GOAL_AUTHOR_TIMEOUT_REPAIR_REQUIRED" : "GOAL_REPAIR_LIMIT_REACHED")),
             failure_message: `Visible author exceeded ${config.author_timeout_seconds} seconds; its worktree and partial result were preserved.`,
             pending_gate_findings: [{
-              code: canResumeRepair ? "repair_timeout" : "author_timeout",
+              code: canResumeRepair ? "repair_timeout" : (repairResumeFailed ? "repair_resume_failed" : "author_timeout"),
               remediation: canResumeRepair
                 ? "Continue the interrupted repair from the preserved worktree in one idempotent continuation turn; do not consume a new content-repair attempt."
-                : "Continue from the preserved worktree in the same visible thread and finish the machine report.",
+                : (repairResumeFailed
+                  ? "Create a replacement visible thread bound to this preserved worktree; do not restart from the synthetic baseline."
+                  : "Continue from the preserved worktree in the same visible thread and finish the machine report."),
             }],
           };
           store.append({ event_id: `${task.id}-turn-${task.turn_id}-timeout-recorded`, type: "task_replaced", payload: { task } });
@@ -255,18 +272,23 @@ export async function harvestGoalAuthors({
         }
         if (extracted.status !== "completed") {
           const canResumeRepair = wasRepair && (task.repair_resume_count ?? 0) < 1;
+          const repairResumeFailed = wasRepair && (task.repair_resume_count ?? 0) >= 1;
           const canRepairTurn = canResumeRepair || (task.repair_count ?? 0) < (config.retry_policy?.max_repairs ?? 2);
           task = applyTaskTransition(task, { transition_id: `${task.id}-turn-${task.turn_id}-failed`, to: canRepairTurn ? "repair_requested" : "retryable_failure", at: new Date().toISOString() });
           task = {
             ...task,
             repair_resume_pending: canResumeRepair,
-            failure_code: canResumeRepair ? "GOAL_REPAIR_TURN_RESUME_REQUIRED" : (canRepairTurn ? "GOAL_AUTHOR_TURN_REPAIR_REQUIRED" : "GOAL_REPAIR_LIMIT_REACHED"),
+            failure_code: canResumeRepair
+              ? "GOAL_REPAIR_TURN_RESUME_REQUIRED"
+              : (repairResumeFailed ? "GOAL_REPAIR_RESUME_FAILED" : (canRepairTurn ? "GOAL_AUTHOR_TURN_REPAIR_REQUIRED" : "GOAL_REPAIR_LIMIT_REACHED")),
             failure_message: JSON.stringify(extracted.error ?? extracted.status),
             pending_gate_findings: [{
-              code: canResumeRepair ? "repair_turn_interrupted" : "author_turn_failed",
+              code: canResumeRepair ? "repair_turn_interrupted" : (repairResumeFailed ? "repair_resume_failed" : "author_turn_failed"),
               remediation: canResumeRepair
                 ? "Continue the current repair from the preserved worktree in one idempotent continuation turn; do not consume a new content-repair attempt."
-                : "Resume in the same visible thread and preserved worktree.",
+                : (repairResumeFailed
+                  ? "Create a replacement visible thread bound to this preserved worktree; do not restart from the synthetic baseline."
+                  : "Resume in the same visible thread and preserved worktree."),
             }],
           };
           store.append({ event_id: `${task.id}-turn-${task.turn_id}-failure-recorded`, type: "task_replaced", payload: { task } });
