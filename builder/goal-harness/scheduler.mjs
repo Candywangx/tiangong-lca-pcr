@@ -15,11 +15,9 @@ export function dispatchCandidates(tasks, { slots }) {
 }
 
 export function buildIntegrationSnapshot({ goalId, tasks, batchSize, snapshots, allowPartial = false }) {
-  const assigned = new Set(snapshots.flatMap((snapshot) => snapshot.task_ids.map((taskId, index) =>
-    `${taskId}:${snapshot.author_commits?.[index] ?? ""}`,
-  )));
+  const assigned = new Set(snapshots.flatMap(snapshotResultKeys));
   const eligible = tasks
-    .filter((task) => task.state === "valid_result" && !assigned.has(`${task.id}:${task.author_commit ?? ""}`))
+    .filter((task) => task.state === "valid_result" && !assigned.has(taskResultKey(task)))
     .sort((left, right) => String(left.valid_at).localeCompare(String(right.valid_at)) || compareQueueOrder(left, right));
   if (eligible.length < batchSize && !allowPartial) {
     return null;
@@ -28,8 +26,9 @@ export function buildIntegrationSnapshot({ goalId, tasks, batchSize, snapshots, 
     return null;
   }
   const selected = eligible.slice(0, batchSize);
+  const resultKeys = selected.map(taskResultKey);
   const digest = createHash("sha256")
-    .update(JSON.stringify({ goalId, results: selected.map(({ id, author_commit: commit }) => ({ id, commit })) }))
+    .update(JSON.stringify({ goalId, resultKeys }))
     .digest("hex")
     .slice(0, 16);
   return {
@@ -37,7 +36,21 @@ export function buildIntegrationSnapshot({ goalId, tasks, batchSize, snapshots, 
     goal_id: goalId,
     task_ids: selected.map((task) => task.id),
     author_commits: selected.map((task) => task.author_commit),
+    result_keys: resultKeys,
   };
+}
+
+function snapshotResultKeys(snapshot) {
+  if (Array.isArray(snapshot.result_keys) && snapshot.result_keys.length === snapshot.task_ids.length) {
+    return snapshot.result_keys;
+  }
+  return snapshot.task_ids.map((taskId, index) =>
+    `${taskId}:${snapshot.author_commits?.[index] ?? ""}:uuid-enrichment:0`,
+  );
+}
+
+function taskResultKey(task) {
+  return `${task.id}:${task.author_commit ?? ""}:uuid-enrichment:${task.uuid_enrichment_generation ?? 0}`;
 }
 
 function compareQueueOrder(left, right) {
