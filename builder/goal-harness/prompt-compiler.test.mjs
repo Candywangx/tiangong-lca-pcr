@@ -3,6 +3,7 @@ import { mkdtempSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import path from "node:path";
 import test from "node:test";
+import { fileURLToPath } from "node:url";
 
 import { compileAuthorPrompt, readAuthorReportSchema } from "./prompt-compiler.mjs";
 
@@ -41,6 +42,9 @@ test("prompt compiler emits one-PCR context and the two-independent-source range
     assert.match(result.prompt, /\/tools\/tiangong-cli/u);
     assert.match(result.prompt, /\/tools\/flow-hybrid-search/u);
     assert.match(result.prompt, /goal-uuid-search\.mjs query/u);
+    const runtimeReceiptCli = fileURLToPath(new URL("../cli/goal-uuid-search.mjs", import.meta.url));
+    assert.match(result.prompt, new RegExp(escapeRegExp(runtimeReceiptCli), "u"));
+    assert.equal(result.prompt.includes("/repo/builder/cli/goal-uuid-search.mjs"), false);
     assert.match(result.prompt, /--env-file-if-exists/u);
     assert.match(result.prompt, /receipt/iu);
     assert.equal(result.prompt.includes("GLOBAL POLICY"), false);
@@ -51,3 +55,7 @@ test("prompt compiler emits one-PCR context and the two-independent-source range
     rmSync(root, { recursive: true, force: true });
   }
 });
+
+function escapeRegExp(value) {
+  return value.replace(/[.*+?^${}()|[\]\\]/gu, "\\$&");
+}

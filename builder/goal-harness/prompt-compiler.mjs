@@ -13,12 +13,11 @@ export function compileAuthorPrompt({ task, policyPromptPath, verifiedCommonUuid
   const policySha256 = `sha256:${createHash("sha256").update(policyBytes).digest("hex")}`;
   const allowedFiles = ["manifest.yaml", "pcr.en-US.md", "pcr.zh-CN.md", "structured.yaml"]
     .map((name) => `${task.pcr_path}/${name}`);
-  const harnessRoot = tools.project_root ?? process.cwd();
   const goalConfigPath = tools.config_path ?? "<ABSOLUTE_GOAL_CONFIG_PATH>";
   const tiangongCliRoot = tools.tiangong_cli_root ?? "<ABSOLUTE_TIANGONG_CLI_ROOT>";
   const hybridSearchRoot = tools.flow_hybrid_search_root ?? "<ABSOLUTE_FLOW_HYBRID_SEARCH_ROOT>";
   const credentialsEnvFile = tools.credentials_env_file ?? `${tiangongCliRoot}/.env`;
-  const receiptCli = `${harnessRoot}/builder/cli/goal-uuid-search.mjs`;
+  const receiptCli = tools.receipt_cli ?? fileURLToPath(new URL("../cli/goal-uuid-search.mjs", import.meta.url));
   const prompt = `You are one independent TianGong PCR author. Work only on the single PCR below in the Git worktree already assigned to this visible Codex task.
 
 Assignment
