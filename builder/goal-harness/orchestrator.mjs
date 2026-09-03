@@ -1,4 +1,4 @@
-import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import path from "node:path";
 
 import { GoalEventStore } from "./event-store.mjs";
@@ -60,16 +60,23 @@ export async function dispatchGoalAuthors({ config, stateDir, slots = config.aut
       if (task?.state === "repair_requested") {
         const repairNumber = (task.repair_count ?? 0) + 1;
         const repairIdentity = `${task.id}-repair-${repairNumber}`;
-        const prompt = compileRepairPrompt(task);
-        const schemaPath = path.join(stateDir, "authors", authorIdentity(config.goal_id, task.cpc_code, task.attempt ?? 1, task.uuid_enrichment_generation), "output-schema.json");
-        const outputSchema = existsSync(schemaPath)
-          ? JSON.parse(readFileSync(schemaPath, "utf8"))
-          : compileAuthorPrompt({
-              task,
-              policyPromptPath: config.policy_prompt_path,
-              verifiedCommonUuids: [],
-              tools: { ...config.tools, project_root: config.project_root, config_path: path.resolve(state.config_path ?? config.config_path ?? "") },
-            }).output_schema;
+        const compiled = compileAuthorPrompt({
+          task: {
+            ...task,
+            precheck_results: [task.reason ?? "no precheck reason recorded", `coverage status: ${task.coverage_status ?? "unknown"}`],
+            official_source_seeds: state.official_source_seeds?.[task.cpc_code] ?? state.default_official_source_seeds ?? [],
+          },
+          policyPromptPath: config.policy_prompt_path,
+          verifiedCommonUuids: selectRelevantCommonUuids(task, state.verified_common_uuids ?? []),
+          verifiedSourceReceipts: selectRelevantSourceReceipts({ stateDir, task, state }),
+          tools: { ...config.tools, project_root: config.project_root, config_path: path.resolve(state.config_path ?? config.config_path ?? "") },
+        });
+        const prompt = compileRepairPrompt(task, compiled.prompt);
+        const outputSchema = compiled.output_schema;
+        const taskStateDir = path.join(stateDir, "authors", authorIdentity(config.goal_id, task.cpc_code, task.attempt ?? 1, task.uuid_enrichment_generation));
+        mkdirSync(taskStateDir, { recursive: true });
+        writeFileSync(path.join(taskStateDir, `repair-${repairNumber}-prompt.txt`), prompt);
+        writeFileSync(path.join(taskStateDir, `repair-${repairNumber}-output-schema.json`), `${JSON.stringify(outputSchema, null, 2)}\n`);
         const visible = await adapter.startRepairTurn({
           threadId: task.thread_id,
           worktreePath: task.worktree_path,
@@ -354,11 +361,13 @@ export async function harvestGoalAuthors({
   });
 }
 
-function compileRepairPrompt(task) {
+function compileRepairPrompt(task, currentAuthorPrompt) {
   return [
     "Continue the same PCR in this same visible thread and the same worktree.",
     "Do not restart the PCR and do not modify files outside the original four-file allowlist.",
-    "Fix every structured gate finding below, rerun structured sync twice, validate, commit only the allowed files, and return a complete JSON report matching the original output schema.",
+    "The complete current author contract follows. It supersedes the original turn's UUID receipt and output-report instructions.",
+    currentAuthorPrompt,
+    "Fix every structured gate finding below, rerun structured sync twice, validate, commit only the allowed files, and return a complete JSON report matching the output schema supplied to this repair turn.",
     JSON.stringify({
       repair_count: (task.repair_count ?? 0) + 1,
       original_commit: task.last_author_commit ?? task.author_commit ?? null,

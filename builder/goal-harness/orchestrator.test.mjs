@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { execFileSync } from "node:child_process";
-import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from "node:fs";
+import { existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import path from "node:path";
 import test from "node:test";
@@ -281,6 +281,15 @@ test("a review failure requests repair in the original visible thread and worktr
     assert.equal(starts[0].threadId, "thread-same");
     assert.equal(starts[0].worktreePath, root);
     assert.match(starts[0].prompt, /unauthorized_file/u);
+    assert.match(starts[0].prompt, /goal-uuid-search\.mjs query/u);
+    assert.match(starts[0].prompt, /goal-uuid-search\.mjs direct-read/u);
+    assert.ok(starts[0].outputSchema.required.includes("hybrid_search_receipt_ids"));
+    const repairDir = path.join(stateDir, "authors", "goal-fixture-41111-a1");
+    assert.equal(existsSync(path.join(repairDir, "repair-1-prompt.txt")), true);
+    assert.deepEqual(
+      JSON.parse(readFileSync(path.join(repairDir, "repair-1-output-schema.json"), "utf8")),
+      starts[0].outputSchema,
+    );
     assert.equal(dispatched.state.tasks[0].state, "authoring_repair");
     assert.equal(dispatched.state.tasks[0].repair_count, 1);
     assert.equal(dispatched.state.tasks[0].repair_history[0].original_commit, report.commit_sha);
