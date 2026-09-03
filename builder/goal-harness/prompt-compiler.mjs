@@ -56,9 +56,9 @@ Tool roots (exact):
 - Goal receipt CLI: ${receiptCli}
 
 Never source, print, inspect, copy, or include .env content. The safe launcher loads it only inside Node with --env-file-if-exists. Run every candidate-discovery query from this assigned worktree through the receipt CLI:
-node --env-file-if-exists=${credentialsEnvFile} ${receiptCli} query --config ${goalConfigPath} --task ${task.id} --query "<ONE CONCRETE FLOW QUERY>" --flow-type <product|waste|elementary> --limit 20
+node --env-file-if-exists=${credentialsEnvFile} ${receiptCli} query --config ${goalConfigPath} --task ${task.id} --query "<ONE CONCRETE FLOW QUERY>" --flow-type <product|waste|elementary> --limit 5
 
-The query command performs authenticated hybrid search and returns a receipt id plus candidate UUIDs. Capture the public state_code=100 direct read for every candidate in that receipt using:
+Start with five ranked candidates to keep direct audit bounded; increase the limit only when those candidates do not establish a defensible exact/no-exact conclusion. The query command performs authenticated hybrid search and returns a receipt id plus candidate UUIDs. Capture the public state_code=100 direct read for every candidate in that receipt using:
 node --env-file-if-exists=${credentialsEnvFile} ${receiptCli} direct-read --config ${goalConfigPath} --task ${task.id} --receipt <RECEIPT_ID> --uuid <CANDIDATE_UUID>
 
 After the direct read, put one adopted/rejected decision for every candidate in a top-level JSON array outside the repository (for example under /tmp). Each array item has uuid, decision, reason_code (null when adopted), reason, and general_comment_review. Then finalize the immutable search receipt:
