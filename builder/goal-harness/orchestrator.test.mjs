@@ -343,6 +343,50 @@ test("a timed-out repair is interrupted then offered one same-thread continuatio
   }
 });
 
+test("an active repair timeout is measured from the current repair turn, not the original author dispatch", async () => {
+  const { root, stateDir, config } = fixture();
+  config.author_timeout_seconds = 60;
+  config.retry_policy = { max_repairs: 2 };
+  const store = new GoalEventStore({ stateDir });
+  const original = store.rebuild().tasks[0];
+  store.append({
+    event_id: "fixture-recent-repair-with-old-dispatch",
+    type: "task_replaced",
+    payload: { task: {
+      ...original,
+      state: "authoring_repair",
+      thread_id: "thread-same",
+      turn_id: "turn-repair-current",
+      worktree_path: root,
+      repair_count: 1,
+      repair_started_at: "2026-09-02T00:01:30.000Z",
+      repair_history: [{ repair_count: 1, turn_id: "turn-repair-current", started_at: "2026-09-02T00:01:30.000Z" }],
+      dispatched_at: "2026-09-02T00:00:00.000Z",
+      transition_ids: ["authoring_repair"],
+    } },
+  });
+  const interrupts = [];
+  try {
+    const harvested = await harvestGoalAuthors({
+      config,
+      stateDir,
+      adapter: {
+        async readThread() {
+          return { thread: { turns: [{ id: "turn-repair-current", status: "inProgress", items: [] }] } };
+        },
+        async interruptTurn(input) { interrupts.push(input); },
+      },
+      now: () => new Date("2026-09-02T00:02:00.000Z"),
+    });
+    assert.deepEqual(interrupts, []);
+    assert.equal(harvested.failures.length, 0);
+    assert.equal(harvested.state.tasks[0].state, "authoring_repair");
+    assert.equal(harvested.state.tasks[0].turn_id, "turn-repair-current");
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+  }
+});
+
 test("a review failure requests repair in the original visible thread and worktree", async () => {
   const { root, stateDir, config } = fixture();
   config.retry_policy = { max_repairs: 2 };

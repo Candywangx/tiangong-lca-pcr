@@ -490,8 +490,14 @@ function authorIdentity(goalId, cpcCode, attempt, enrichmentGeneration = 0) {
 }
 
 function authorTimedOut(task, timeoutSeconds, at) {
-  if (!Number.isFinite(timeoutSeconds) || timeoutSeconds <= 0 || !task.dispatched_at) return false;
-  const started = Date.parse(task.dispatched_at);
+  const currentRepair = task.repair_history?.at(-1);
+  const activeTurnStartedAt = task.state === "authoring_repair"
+    ? ((task.repair_resume_count ?? 0) > 0
+      ? task.updated_at ?? task.repair_started_at ?? currentRepair?.started_at ?? task.dispatched_at
+      : task.repair_started_at ?? currentRepair?.started_at ?? task.updated_at ?? task.dispatched_at)
+    : task.dispatched_at;
+  if (!Number.isFinite(timeoutSeconds) || timeoutSeconds <= 0 || !activeTurnStartedAt) return false;
+  const started = Date.parse(activeTurnStartedAt);
   return Number.isFinite(started) && at.getTime() - started >= timeoutSeconds * 1000;
 }
 
