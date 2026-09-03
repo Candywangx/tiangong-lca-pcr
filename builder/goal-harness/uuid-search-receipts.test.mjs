@@ -12,6 +12,7 @@ import {
 } from "./uuid-search-receipts.mjs";
 import { authenticatedHybridSearchDryRunCheck } from "./tooling.mjs";
 import { assertAuthorDispatchInfrastructure } from "./commands.mjs";
+import { appendGoalCacheReceipt } from "./goal-cache.mjs";
 
 const UUID_A = "11111111-1111-4111-8111-111111111111";
 const UUID_B = "22222222-2222-4222-8222-222222222222";
@@ -141,30 +142,66 @@ test("hybrid query writes an immutable result receipt and final candidate decisi
       rejected_uuid_candidates: [{ uuid: UUID_B, receipt_id: "receipt-1", reason_code: "semantic_mismatch", reason: "Candidate represents alloy steel rather than pig iron." }],
       inventory: { unresolved: [] },
     };
+    const verifiedUuidRead = {
+      uuid: UUID_A,
+      state_code: 100,
+      base_name_en: "Pig iron",
+      base_name_zh: "生铁",
+      flow_type: "product",
+      classifications: [{ id: "41210", label: "Basic iron and steel" }],
+      property: "Mass",
+      flow_property_uuid: "33333333-3333-4333-8333-333333333333",
+      unit_group_uuid: "44444444-4444-4444-8444-444444444444",
+      unit_group_name_en: "Units of mass",
+      unit_group_name_zh: "质量单位",
+      reference_unit: "kg",
+      general_comment: "Public reference flow.",
+      response_sha256: `sha256:${"b".repeat(64)}`,
+      hybrid_search_receipt_id: "receipt-1",
+    };
     const audit = auditHybridSearchReceipts({
       report,
       stateDir,
       task: { id: "task-1", cpc_code: "41111", attempt: 1 },
-      verifiedUuidReads: [{
-        uuid: UUID_A,
-        state_code: 100,
-        base_name_en: "Pig iron",
-        base_name_zh: "生铁",
-        flow_type: "product",
-        classifications: [{ id: "41210", label: "Basic iron and steel" }],
-        property: "Mass",
-        flow_property_uuid: "33333333-3333-4333-8333-333333333333",
-        unit_group_uuid: "44444444-4444-4444-8444-444444444444",
-        unit_group_name_en: "Units of mass",
-        unit_group_name_zh: "质量单位",
-        reference_unit: "kg",
-        general_comment: "Public reference flow.",
-        response_sha256: `sha256:${"b".repeat(64)}`,
-      }],
+      verifiedUuidReads: [verifiedUuidRead],
     });
     assert.equal(audit.length, 1);
     assert.equal(audit[0].result_sha256, query.receipt.result_sha256);
     assert.equal(audit[0].candidate_decisions[0].direct_read.state_code, 100);
+
+    const reusableReport = {
+      hybrid_search_receipt_ids: ["receipt-1"],
+      uuid_audits: [{ uuid: UUID_A, hybrid_search_receipt_id: "receipt-1" }],
+      rejected_uuid_candidates: [],
+      inventory: { unresolved: [] },
+    };
+    assert.throws(
+      () => auditHybridSearchReceipts({
+        report: reusableReport,
+        stateDir,
+        task: { id: "task-2", cpc_code: "41112", attempt: 1 },
+        verifiedUuidReads: [verifiedUuidRead],
+      }),
+      (error) => error.code === "GOAL_HYBRID_SEARCH_RECEIPT_MISSING",
+    );
+    appendGoalCacheReceipt({
+      stateDir,
+      namespace: "verified_common_uuids",
+      keyInput: { uuid: UUID_A, semantic_scope: "common pig iron fixture" },
+      tool: { name: "tiangong-cli-public-direct-read", version: "state-code-100-v1" },
+      sourceFingerprint: verifiedUuidRead.response_sha256,
+      value: verifiedUuidRead,
+      receiptId: "common-uuid-1",
+    });
+    const reused = auditHybridSearchReceipts({
+      report: reusableReport,
+      stateDir,
+      task: { id: "task-2", cpc_code: "41112", attempt: 1 },
+      verifiedUuidReads: [verifiedUuidRead],
+    });
+    assert.equal(reused[0].scope, "goal_cache_reuse");
+    assert.equal(reused[0].source_task_id, "task-1");
+
     assert.throws(
       () => auditHybridSearchReceipts({
         report,

@@ -3,6 +3,7 @@ import { createHash, randomUUID } from "node:crypto";
 import {
   existsSync,
   mkdirSync,
+  readdirSync,
   readFileSync,
   realpathSync,
   rmSync,
@@ -242,7 +243,32 @@ export function auditHybridSearchReceipts({ report, stateDir, task, verifiedUuid
   for (const id of referenced) {
     if (!ids.includes(id)) throw receiptMissing(`Referenced receipt ${id} is absent from hybrid_search_receipt_ids.`);
   }
-  const audits = ids.map((receiptId) => auditOneReceipt({ stateDir, task, receiptId }));
+  const taskBoundReceiptIds = new Set([
+    ...(report.rejected_uuid_candidates ?? []).map((entry) => entry.receipt_id).filter(Boolean),
+    ...(report.inventory?.unresolved ?? []).flatMap((entry) => entry.hybrid_search_receipt_ids ?? []),
+  ]);
+  const adoptedByReceipt = new Map();
+  for (const claimed of report.uuid_audits ?? []) {
+    const entries = adoptedByReceipt.get(claimed.hybrid_search_receipt_id) ?? [];
+    entries.push(claimed);
+    adoptedByReceipt.set(claimed.hybrid_search_receipt_id, entries);
+  }
+  const audits = ids.map((receiptId) => {
+    try {
+      return auditOneReceipt({ stateDir, task, receiptId });
+    } catch (error) {
+      const adopted = adoptedByReceipt.get(receiptId) ?? [];
+      if (error.code !== "GOAL_HYBRID_SEARCH_RECEIPT_MISSING" || taskBoundReceiptIds.has(receiptId) || adopted.length === 0) throw error;
+      const reusable = adopted.every((entry) => isReusableCommonUuidAudit({
+        stateDir,
+        entry: { uuid: entry.uuid, hybrid_search_receipt_id: receiptId },
+      }));
+      if (!reusable) throw error;
+      const paths = findCompleteReceiptPaths({ stateDir, receiptId });
+      const audited = auditOneReceipt({ stateDir, task, receiptId, paths, allowGoalCacheReuse: true });
+      return { ...audited, scope: "goal_cache_reuse", source_task_id: audited.task_id };
+    }
+  });
   const byId = new Map(audits.map((entry) => [entry.receipt_id, entry]));
   for (const claimed of report.uuid_audits ?? []) {
     const receipt = byId.get(claimed.hybrid_search_receipt_id);
@@ -263,15 +289,39 @@ export function auditHybridSearchReceipts({ report, stateDir, task, verifiedUuid
   return audits;
 }
 
-function auditOneReceipt({ stateDir, task, receiptId }) {
-  const paths = receiptPaths(stateDir, task, receiptId);
-  if (!existsSync(paths.search) || !existsSync(paths.result) || !existsSync(paths.decisions)) {
+export function isReusableCommonUuidAudit({ stateDir, entry }) {
+  try {
+    const receiptId = String(entry?.hybrid_search_receipt_id ?? "");
+    const uuid = String(entry?.uuid ?? "").toLowerCase();
+    if (!UUID_PATTERN.test(uuid) || !receiptId) return false;
+    const attestations = listGoalCacheReceipts({ stateDir, namespace: "verified_common_uuids" }).filter((receipt) =>
+      String(receipt.value?.uuid ?? "").toLowerCase() === uuid
+      && receipt.value?.hybrid_search_receipt_id === receiptId
+      && receipt.source_fingerprint === receipt.value?.response_sha256,
+    );
+    if (attestations.length === 0) return false;
+    const paths = findCompleteReceiptPaths({ stateDir, receiptId });
+    const audited = auditOneReceipt({ stateDir, task: null, receiptId, paths, allowGoalCacheReuse: true });
+    const adopted = audited.candidate_decisions.find((decision) => decision.uuid === uuid && decision.decision === "adopted");
+    return Boolean(adopted && attestations.some((receipt) => directReadMatches(adopted.direct_read, receipt.value)));
+  } catch {
+    return false;
+  }
+}
+
+function auditOneReceipt({ stateDir, task, receiptId, paths = null, allowGoalCacheReuse = false }) {
+  const resolvedPaths = paths ?? receiptPaths(stateDir, task, receiptId);
+  if (!existsSync(resolvedPaths.search) || !existsSync(resolvedPaths.result) || !existsSync(resolvedPaths.decisions)) {
     throw receiptMissing(`Receipt ${receiptId} is incomplete.`);
   }
-  const receipt = JSON.parse(readFileSync(paths.search, "utf8"));
-  const raw = readFileSync(paths.result, "utf8");
-  const decisions = JSON.parse(readFileSync(paths.decisions, "utf8"));
-  if (receipt.task_id !== task.id || receipt.cpc_code !== task.cpc_code || receipt.status !== "succeeded" || receipt.authenticated !== true) {
+  const receipt = JSON.parse(readFileSync(resolvedPaths.search, "utf8"));
+  const raw = readFileSync(resolvedPaths.result, "utf8");
+  const decisions = JSON.parse(readFileSync(resolvedPaths.decisions, "utf8"));
+  const currentGoalId = readState(stateDir).goal_id;
+  const bindingMatches = allowGoalCacheReuse
+    ? receipt.goal_id === currentGoalId
+    : receipt.task_id === task.id && receipt.cpc_code === task.cpc_code;
+  if (!bindingMatches || receipt.status !== "succeeded" || receipt.authenticated !== true) {
     throw new GoalHarnessError("GOAL_HYBRID_SEARCH_RECEIPT_MISMATCH", `Receipt ${receiptId} is not bound to this task.`);
   }
   if (receipt.result_sha256 !== sha256(raw) || receipt.result_byte_length !== Buffer.byteLength(raw)) {
@@ -285,7 +335,7 @@ function auditOneReceipt({ stateDir, task, receiptId }) {
   }
   validateCandidateDecisions(candidates, decisions.candidate_decisions ?? []);
   for (const decision of decisions.candidate_decisions ?? []) {
-    const directPath = directReadPath(paths.directory, receiptId, decision.uuid);
+    const directPath = directReadPath(resolvedPaths.directory, receiptId, decision.uuid);
     if (!existsSync(directPath)) throw receiptMissing(`Receipt ${receiptId} direct read for ${decision.uuid} is missing.`);
     const direct = JSON.parse(readFileSync(directPath, "utf8"));
     if (stableJson(direct) !== stableJson(decision.direct_read)) {
@@ -294,6 +344,7 @@ function auditOneReceipt({ stateDir, task, receiptId }) {
   }
   return {
     receipt_id: receiptId,
+    task_id: receipt.task_id,
     query: receipt.query,
     candidate_uuids: candidates,
     result_sha256: receipt.result_sha256,
@@ -301,6 +352,30 @@ function auditOneReceipt({ stateDir, task, receiptId }) {
     authenticated: true,
     finalized_at: decisions.finalized_at,
   };
+}
+
+function findCompleteReceiptPaths({ stateDir, receiptId }) {
+  if (!/^[a-z0-9][a-z0-9._-]{0,127}$/iu.test(receiptId)) throw receiptMissing("Receipt id is unsafe.");
+  const root = path.join(stateDir, "uuid-search-receipts");
+  if (!existsSync(root)) throw receiptMissing(`Receipt ${receiptId} is incomplete.`);
+  const matches = [];
+  for (const taskEntry of readdirSync(root, { withFileTypes: true })) {
+    if (!taskEntry.isDirectory() || taskEntry.isSymbolicLink()) continue;
+    const taskDir = path.join(root, taskEntry.name);
+    for (const attemptEntry of readdirSync(taskDir, { withFileTypes: true })) {
+      if (!attemptEntry.isDirectory() || attemptEntry.isSymbolicLink()) continue;
+      const directory = path.join(taskDir, attemptEntry.name);
+      const candidate = {
+        directory,
+        search: path.join(directory, `${receiptId}.search.json`),
+        result: path.join(directory, `${receiptId}.result.json`),
+        decisions: path.join(directory, `${receiptId}.decisions.json`),
+      };
+      if (existsSync(candidate.search) && existsSync(candidate.result) && existsSync(candidate.decisions)) matches.push(candidate);
+    }
+  }
+  if (matches.length !== 1) throw receiptMissing(`Receipt ${receiptId} is not uniquely complete in the Goal cache.`);
+  return matches[0];
 }
 
 function defaultHybridSearchRunner({ requestPath, toolConfig }) {

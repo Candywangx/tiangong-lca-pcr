@@ -7,7 +7,7 @@ import { GoalHarnessError } from "./errors.mjs";
 import { auditReportedUuids, mergeVerifiedCommonUuids, verifySourceLocators } from "./evidence-audit.mjs";
 import { withGoalLockAsync } from "./lock.mjs";
 import { compileAuthorPrompt } from "./prompt-compiler.mjs";
-import { auditHybridSearchReceipts } from "./uuid-search-receipts.mjs";
+import { auditHybridSearchReceipts, isReusableCommonUuidAudit } from "./uuid-search-receipts.mjs";
 import { activeAuthorCount, buildIntegrationSnapshot, dispatchCandidates } from "./scheduler.mjs";
 import { applyTaskTransition } from "./state-machine.mjs";
 import { ensureGoalWorktree } from "./worktrees.mjs";
@@ -466,6 +466,7 @@ function selectRelevantCommonUuids({ stateDir, task }) {
   const terms = `${task.product_name_en ?? ""} ${task.product_name_zh ?? ""}`.toLowerCase();
   const universal = /electric|water|natural gas|diesel|steam|oxygen|nitrogen|carbon dioxide|methane|sodium|refrigerant/iu;
   const entries = listGoalCacheReceipts({ stateDir, namespace: "verified_common_uuids" })
+    .filter((receipt) => isReusableCommonUuidAudit({ stateDir, entry: receipt.value }))
     .map((receipt) => receipt.value)
     .filter((entry) => entry?.hybrid_search_receipt_id);
   const latestByUuid = new Map(entries.map((entry) => [entry.uuid, entry]));
