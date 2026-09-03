@@ -175,9 +175,9 @@ export async function dispatchGoalAuthors({ config, stateDir, slots = config.aut
           to: "preflight",
           at: new Date().toISOString(),
         });
-        task = { ...task, attempt, dispatch_cycle: dispatchCycle, worktree_path: worktreePath, author_branch: branch, allowed_files: compiled.allowed_files, policy_sha256: compiled.policy_sha256, uuid_search_contract_version: 1 };
-        store.append({ event_id: `${transitionIdentity}-prepared`, type: "task_replaced", payload: { task } });
       }
+      task = { ...task, attempt, dispatch_cycle: dispatchCycle, worktree_path: worktreePath, author_branch: branch, allowed_files: compiled.allowed_files, policy_sha256: compiled.policy_sha256, uuid_search_contract_version: 1 };
+      store.append({ event_id: `${transitionIdentity}-prepared`, type: "task_replaced", payload: { task } });
 
       try {
         const visible = await adapter.createAuthorTask({

@@ -505,7 +505,7 @@ test("failed repair continuation replaces only the thread and preserves the safe
       adapter: {
         async createAuthorTask(input) {
           starts.push(input);
-          return { thread_id: "thread-new", turn_id: "turn-new" };
+          return { thread_id: `thread-new-${starts.length}`, turn_id: `turn-new-${starts.length}` };
         },
       },
     });
@@ -514,7 +514,7 @@ test("failed repair continuation replaces only the thread and preserves the safe
     assert.equal(starts[0].worktreePath, worktreePath);
     assert.equal(replacement.worktree_path, worktreePath);
     assert.equal(readFileSync(markerPath, "utf8"), "preserved repair bytes\n");
-    assert.equal(replacement.thread_id, "thread-new");
+    assert.equal(replacement.thread_id, "thread-new-1");
     assert.deepEqual(replacement.previous_thread_ids, ["thread-old"]);
     assert.equal(replacement.continuing_repair_after_thread_replacement, true);
   } finally {
@@ -564,6 +564,34 @@ test("repair-limit replacement reuses a worktree only when its dirty paths remai
     assert.equal(starts[0].worktreePath, worktreePath);
     assert.equal(result.state.tasks[0].worktree_path, worktreePath);
     assert.equal(readFileSync(allowedPath, "utf8"), "preserved authorized repair bytes\n");
+
+    const firstReplacement = result.state.tasks[0];
+    store.append({
+      event_id: "fixture-repair-limit-safe-worktree-again",
+      type: "task_replaced",
+      payload: { task: {
+        ...firstReplacement,
+        state: "retryable_failure",
+        failure_code: "GOAL_REPAIR_LIMIT_REACHED",
+        transition_ids: [...firstReplacement.transition_ids, "repair-limit-again"],
+      } },
+    });
+    const second = await dispatchGoalAuthors({
+      config,
+      stateDir,
+      slots: 1,
+      resumeStopped: true,
+      adapter: {
+        async createAuthorTask(input) {
+          starts.push(input);
+          return { thread_id: `thread-new-${starts.length}`, turn_id: `turn-new-${starts.length}` };
+        },
+      },
+    });
+    assert.equal(starts.length, 2);
+    assert.equal(second.state.tasks[0].state, "authoring");
+    assert.equal(second.state.tasks[0].thread_id, "thread-new-2");
+    assert.deepEqual(second.state.tasks[0].previous_thread_ids, ["thread-old", "thread-new"]);
   } finally {
     rmSync(root, { recursive: true, force: true });
   }
