@@ -51,6 +51,7 @@ test("prompt compiler emits one-PCR context and the two-independent-source range
     assert.equal(result.prompt.includes("/repo/builder/cli/goal-uuid-search.mjs"), false);
     assert.match(result.prompt, /--env-file-if-exists/u);
     assert.match(result.prompt, /receipt/iu);
+    assert.match(result.prompt, /top-level JSON array/u);
     assert.equal(result.prompt.includes("11111111-1111-4111-8111-111111111111"), false);
     assert.equal(result.prompt.includes("GLOBAL POLICY"), false);
     assert.ok(result.prompt.length < 18_000);
