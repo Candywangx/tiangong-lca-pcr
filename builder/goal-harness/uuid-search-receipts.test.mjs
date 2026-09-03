@@ -145,11 +145,50 @@ test("hybrid query writes an immutable result receipt and final candidate decisi
       report,
       stateDir,
       task: { id: "task-1", cpc_code: "41111", attempt: 1 },
-      verifiedUuidReads: [{ uuid: UUID_A, state_code: 100, base_name_en: "Pig iron", base_name_zh: "生铁", flow_type: "product", property: "Mass", unit_group_uuid: "44444444-4444-4444-8444-444444444444", response_sha256: `sha256:${"a".repeat(64)}` }],
+      verifiedUuidReads: [{
+        uuid: UUID_A,
+        state_code: 100,
+        base_name_en: "Pig iron",
+        base_name_zh: "生铁",
+        flow_type: "product",
+        classifications: [{ id: "41210", label: "Basic iron and steel" }],
+        property: "Mass",
+        flow_property_uuid: "33333333-3333-4333-8333-333333333333",
+        unit_group_uuid: "44444444-4444-4444-8444-444444444444",
+        unit_group_name_en: "Units of mass",
+        unit_group_name_zh: "质量单位",
+        reference_unit: "kg",
+        general_comment: "Public reference flow.",
+        response_sha256: `sha256:${"b".repeat(64)}`,
+      }],
     });
     assert.equal(audit.length, 1);
     assert.equal(audit[0].result_sha256, query.receipt.result_sha256);
     assert.equal(audit[0].candidate_decisions[0].direct_read.state_code, 100);
+    assert.throws(
+      () => auditHybridSearchReceipts({
+        report,
+        stateDir,
+        task: { id: "task-1", cpc_code: "41111", attempt: 1 },
+        verifiedUuidReads: [{
+          uuid: UUID_A,
+          state_code: 100,
+          base_name_en: "A different product",
+          base_name_zh: "生铁",
+          flow_type: "product",
+          classifications: [{ id: "41210", label: "Basic iron and steel" }],
+          property: "Mass",
+          flow_property_uuid: "33333333-3333-4333-8333-333333333333",
+          unit_group_uuid: "44444444-4444-4444-8444-444444444444",
+          unit_group_name_en: "Units of mass",
+          unit_group_name_zh: "质量单位",
+          reference_unit: "kg",
+          general_comment: "Public reference flow.",
+          response_sha256: `sha256:${"b".repeat(64)}`,
+        }],
+      }),
+      (error) => error.code === "GOAL_HYBRID_SEARCH_RECEIPT_MISMATCH",
+    );
   } finally {
     rmSync(root, { recursive: true, force: true });
   }

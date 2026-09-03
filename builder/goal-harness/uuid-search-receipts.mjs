@@ -447,7 +447,24 @@ function tiangongToolIdentity(rootValue) {
 }
 function directReadPath(directory, receiptId, uuid) { return path.join(directory, `${receiptId}.${uuid}.direct.json`); }
 function directReadMatches(left, right) {
-  return ["uuid", "state_code", "base_name_en", "base_name_zh", "flow_type", "property", "unit_group_uuid", "response_sha256"]
+  return [
+    "uuid",
+    "state_code",
+    "base_name_en",
+    "base_name_zh",
+    "flow_type",
+    "classifications",
+    "property",
+    "flow_property_uuid",
+    "flow_property_state_code",
+    "flow_property_name_en",
+    "unit_group_uuid",
+    "unit_group_name_en",
+    "unit_group_name_zh",
+    "unit_group_state_code",
+    "reference_unit",
+    "general_comment",
+  ]
     .every((key) => stableJson(left?.[key]) === stableJson(right?.[key]));
 }
 function stableJson(value) {
