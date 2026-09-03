@@ -48,6 +48,7 @@ export class CodexAppServerAdapter {
     model = null,
     clientUserMessageId = null,
     projectId = null,
+    receiptStateDir = null,
   }) {
     try {
       await this.connect();
@@ -72,6 +73,7 @@ export class CodexAppServerAdapter {
         input: [{ type: "text", text: prompt }],
         outputSchema,
         clientUserMessageId,
+        sandboxPolicy: authorSandboxPolicy(worktreePath, receiptStateDir),
       }));
       const turnId = turn?.turn?.id;
       if (!turnId) {
@@ -98,6 +100,7 @@ export class CodexAppServerAdapter {
     prompt,
     outputSchema,
     clientUserMessageId = null,
+    receiptStateDir = null,
   }) {
     try {
       await this.resumeThread({ threadId });
@@ -108,6 +111,7 @@ export class CodexAppServerAdapter {
         input: [{ type: "text", text: prompt }],
         outputSchema,
         clientUserMessageId,
+        sandboxPolicy: authorSandboxPolicy(worktreePath, receiptStateDir),
       }));
       const turnId = turn?.turn?.id;
       if (!turnId) throw new Error("turn/start returned no turn.id");
@@ -303,6 +307,14 @@ export class CodexAppServerAdapter {
     }
     this.child.stdin.write(`${JSON.stringify(message)}\n`);
   }
+}
+
+function authorSandboxPolicy(worktreePath, receiptStateDir) {
+  return {
+    type: "workspaceWrite",
+    writableRoots: [...new Set([worktreePath, receiptStateDir].filter(Boolean))],
+    networkAccess: true,
+  };
 }
 
 function visibleTaskError(operation, error, stderr) {

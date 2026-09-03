@@ -98,6 +98,7 @@ test("app-server adapter creates one durable visible thread bound to the author 
       sandbox: "danger-full-access",
       approvalPolicy: "never",
       clientUserMessageId: "goal-task-41111-attempt-1",
+      receiptStateDir: "/tmp/goal-state",
     });
     assert.deepEqual(task, { thread_id: "thread-visible-1", turn_id: "turn-1" });
     assert.deepEqual(starts[0], { command: "codex", args: ["app-server", "--stdio"] });
@@ -110,6 +111,11 @@ test("app-server adapter creates one durable visible thread bound to the author 
     assert.equal(turn.params.threadId, "thread-visible-1");
     assert.equal(turn.params.input[0].type, "text");
     assert.equal(turn.params.outputSchema.type, "object");
+    assert.deepEqual(turn.params.sandboxPolicy, {
+      type: "workspaceWrite",
+      writableRoots: ["/tmp/visible-author-worktree", "/tmp/goal-state"],
+      networkAccess: true,
+    });
   } finally {
     await adapter.close();
   }
@@ -145,6 +151,7 @@ test("repair starts a new turn in the original durable thread and original workt
       prompt: "repair structured findings",
       outputSchema: { type: "object" },
       clientUserMessageId: "task-repair-1",
+      receiptStateDir: "/tmp/goal-state",
     });
     assert.equal(result.thread_id, "thread-visible-1");
     assert.equal(mock.requests.some((request) => request.method === "thread/resume" && request.params.threadId === "thread-visible-1"), true);
@@ -152,6 +159,11 @@ test("repair starts a new turn in the original durable thread and original workt
     assert.equal(turn.params.threadId, "thread-visible-1");
     assert.equal(turn.params.cwd, "/tmp/visible-author-worktree");
     assert.equal(turn.params.clientUserMessageId, "task-repair-1");
+    assert.deepEqual(turn.params.sandboxPolicy, {
+      type: "workspaceWrite",
+      writableRoots: ["/tmp/visible-author-worktree", "/tmp/goal-state"],
+      networkAccess: true,
+    });
   } finally {
     await adapter.close();
   }

@@ -83,6 +83,7 @@ export async function dispatchGoalAuthors({ config, stateDir, slots = config.aut
           prompt,
           outputSchema,
           clientUserMessageId: repairIdentity,
+          receiptStateDir: stateDir,
         });
         const startedAt = new Date().toISOString();
         task = applyTaskTransition(task, { transition_id: `${repairIdentity}-authoring`, to: "authoring_repair", at: startedAt });
@@ -163,6 +164,7 @@ export async function dispatchGoalAuthors({ config, stateDir, slots = config.aut
           model: config.codex?.model ?? null,
           clientUserMessageId: `${config.goal_id}-${task.cpc_code}-attempt-${attempt}`,
           projectId: config.codex?.project_id ?? null,
+          receiptStateDir: stateDir,
         });
         task = applyTaskTransition(task, {
           transition_id: `${transitionIdentity}-authoring`,
