@@ -45,6 +45,7 @@ export async function dispatchGoalAuthors({ config, stateDir, slots = config.aut
             thread_id: null,
             turn_id: null,
             repair_resume_pending: false,
+            continuing_repair_after_thread_replacement: true,
             author_base_commit: failed.last_author_commit ?? failed.author_commit ?? failed.author_base_commit ?? state.baseline.commit,
             reason: "Continue the preserved repair worktree after the original visible thread and its one continuation both became unrecoverable.",
           };
@@ -240,7 +241,9 @@ export async function harvestGoalAuthors({
       let task = state.tasks.find((entry) => entry.id === selected.id);
       let report;
       if (task.state === "authoring" || task.state === "authoring_repair") {
-        const wasRepair = task.state === "authoring_repair";
+        const wasRepair = task.state === "authoring_repair"
+          || task.continuing_repair_after_thread_replacement === true
+          || (Boolean(task.previous_thread_ids?.length) && task.repair_history?.at(-1)?.ended_at == null);
         const response = await adapter.readThread({ threadId: task.thread_id, includeTurns: true });
         const extracted = extractCompletedTurnReport(response, task.turn_id);
         if (extracted.status === "inProgress" || extracted.status === "pending") {
@@ -302,7 +305,7 @@ export async function harvestGoalAuthors({
         writeFileSync(reportPath, `${JSON.stringify(report, null, 2)}\n`);
         task = applyTaskTransition(task, { transition_id: `${task.id}-turn-${task.turn_id}-review`, to: "author_review", at: new Date().toISOString() });
         task = { ...task, report_path: reportPath, last_author_commit: report.commit_sha };
-        if (wasRepair) task = finishLatestRepair(task, report.commit_sha, now().toISOString());
+        if (wasRepair) task = { ...finishLatestRepair(task, report.commit_sha, now().toISOString()), continuing_repair_after_thread_replacement: false };
         store.append({ event_id: `${task.id}-turn-${task.turn_id}-report`, type: "task_replaced", payload: { task } });
       } else {
         report = JSON.parse(readFileSync(task.report_path, "utf8"));

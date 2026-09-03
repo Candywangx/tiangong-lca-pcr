@@ -516,6 +516,7 @@ test("failed repair continuation replaces only the thread and preserves the safe
     assert.equal(readFileSync(markerPath, "utf8"), "preserved repair bytes\n");
     assert.equal(replacement.thread_id, "thread-new");
     assert.deepEqual(replacement.previous_thread_ids, ["thread-old"]);
+    assert.equal(replacement.continuing_repair_after_thread_replacement, true);
   } finally {
     rmSync(root, { recursive: true, force: true });
   }
