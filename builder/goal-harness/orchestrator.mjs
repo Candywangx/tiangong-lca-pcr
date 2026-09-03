@@ -58,8 +58,12 @@ export async function dispatchGoalAuthors({ config, stateDir, slots = config.aut
       state = store.rebuild();
       let task = state.tasks.find((entry) => entry.id === selectedTask.id);
       if (task?.state === "repair_requested") {
-        const repairNumber = (task.repair_count ?? 0) + 1;
-        const repairIdentity = `${task.id}-repair-${repairNumber}`;
+        const resumeExistingRepair = task.repair_resume_pending === true;
+        const repairNumber = resumeExistingRepair ? (task.repair_count ?? 1) : (task.repair_count ?? 0) + 1;
+        const repairResumeNumber = resumeExistingRepair ? (task.repair_resume_count ?? 0) + 1 : 0;
+        const repairIdentity = resumeExistingRepair
+          ? `${task.id}-repair-${repairNumber}-resume-${repairResumeNumber}`
+          : `${task.id}-repair-${repairNumber}`;
         const compiled = compileAuthorPrompt({
           task: {
             ...task,
@@ -71,12 +75,15 @@ export async function dispatchGoalAuthors({ config, stateDir, slots = config.aut
           verifiedSourceReceipts: selectRelevantSourceReceipts({ stateDir, task, state }),
           tools: { ...config.tools, project_root: config.project_root, config_path: path.resolve(state.config_path ?? config.config_path ?? "") },
         });
-        const prompt = compileRepairPrompt(task, compiled.prompt);
+        const prompt = compileRepairPrompt(task, compiled.prompt, { resumeExistingRepair });
         const outputSchema = compiled.output_schema;
         const taskStateDir = path.join(stateDir, "authors", authorIdentity(config.goal_id, task.cpc_code, task.attempt ?? 1, task.uuid_enrichment_generation));
         mkdirSync(taskStateDir, { recursive: true });
-        writeFileSync(path.join(taskStateDir, `repair-${repairNumber}-prompt.txt`), prompt);
-        writeFileSync(path.join(taskStateDir, `repair-${repairNumber}-output-schema.json`), `${JSON.stringify(outputSchema, null, 2)}\n`);
+        const repairArtifactStem = resumeExistingRepair
+          ? `repair-${repairNumber}-resume-${repairResumeNumber}`
+          : `repair-${repairNumber}`;
+        writeFileSync(path.join(taskStateDir, `${repairArtifactStem}-prompt.txt`), prompt);
+        writeFileSync(path.join(taskStateDir, `${repairArtifactStem}-output-schema.json`), `${JSON.stringify(outputSchema, null, 2)}\n`);
         const visible = await adapter.startRepairTurn({
           threadId: task.thread_id,
           worktreePath: task.worktree_path,
@@ -91,16 +98,21 @@ export async function dispatchGoalAuthors({ config, stateDir, slots = config.aut
           ...task,
           ...visible,
           repair_count: repairNumber,
-          repair_started_at: startedAt,
-          repair_history: [...(task.repair_history ?? []), {
-            repair_count: repairNumber,
-            turn_id: visible.turn_id,
-            started_at: startedAt,
-            ended_at: null,
-            original_commit: task.last_author_commit ?? task.author_commit ?? null,
-            new_commit: null,
-            gate_findings: task.pending_gate_findings ?? [],
-          }],
+          repair_resume_count: repairResumeNumber,
+          repair_resume_pending: false,
+          repair_started_at: resumeExistingRepair ? task.repair_started_at : startedAt,
+          repair_history: resumeExistingRepair
+            ? appendRepairResumeTurn(task.repair_history, visible.turn_id)
+            : [...(task.repair_history ?? []), {
+              repair_count: repairNumber,
+              turn_id: visible.turn_id,
+              resume_turn_ids: [],
+              started_at: startedAt,
+              ended_at: null,
+              original_commit: task.last_author_commit ?? task.author_commit ?? null,
+              new_commit: null,
+              gate_findings: task.pending_gate_findings ?? [],
+            }],
         };
         store.append({ event_id: `${repairIdentity}-started`, type: "task_replaced", payload: { task } });
         dispatched.push(task);
@@ -222,26 +234,40 @@ export async function harvestGoalAuthors({
         if (extracted.status === "inProgress" || extracted.status === "pending") {
           if (!authorTimedOut(task, config.author_timeout_seconds, now())) continue;
           await adapter.interruptTurn({ threadId: task.thread_id, turnId: task.turn_id });
-          const canRepairTimeout = (task.repair_count ?? 0) < (config.retry_policy?.max_repairs ?? 2);
+          const canResumeRepair = wasRepair && (task.repair_resume_count ?? 0) < 1;
+          const canRepairTimeout = canResumeRepair || (task.repair_count ?? 0) < (config.retry_policy?.max_repairs ?? 2);
           task = applyTaskTransition(task, { transition_id: `${task.id}-turn-${task.turn_id}-timeout`, to: canRepairTimeout ? "repair_requested" : "retryable_failure", at: now().toISOString() });
           task = {
             ...task,
-            failure_code: canRepairTimeout ? "GOAL_AUTHOR_TIMEOUT_REPAIR_REQUIRED" : "GOAL_REPAIR_LIMIT_REACHED",
+            repair_resume_pending: canResumeRepair,
+            failure_code: canResumeRepair ? "GOAL_REPAIR_TIMEOUT_RESUME_REQUIRED" : (canRepairTimeout ? "GOAL_AUTHOR_TIMEOUT_REPAIR_REQUIRED" : "GOAL_REPAIR_LIMIT_REACHED"),
             failure_message: `Visible author exceeded ${config.author_timeout_seconds} seconds; its worktree and partial result were preserved.`,
-            pending_gate_findings: [{ code: "author_timeout", remediation: "Continue from the preserved worktree in the same visible thread and finish the machine report." }],
+            pending_gate_findings: [{
+              code: canResumeRepair ? "repair_timeout" : "author_timeout",
+              remediation: canResumeRepair
+                ? "Continue the interrupted repair from the preserved worktree in one idempotent continuation turn; do not consume a new content-repair attempt."
+                : "Continue from the preserved worktree in the same visible thread and finish the machine report.",
+            }],
           };
           store.append({ event_id: `${task.id}-turn-${task.turn_id}-timeout-recorded`, type: "task_replaced", payload: { task } });
           failures.push(task);
           continue;
         }
         if (extracted.status !== "completed") {
-          const canRepairTurn = (task.repair_count ?? 0) < (config.retry_policy?.max_repairs ?? 2);
+          const canResumeRepair = wasRepair && (task.repair_resume_count ?? 0) < 1;
+          const canRepairTurn = canResumeRepair || (task.repair_count ?? 0) < (config.retry_policy?.max_repairs ?? 2);
           task = applyTaskTransition(task, { transition_id: `${task.id}-turn-${task.turn_id}-failed`, to: canRepairTurn ? "repair_requested" : "retryable_failure", at: new Date().toISOString() });
           task = {
             ...task,
-            failure_code: canRepairTurn ? "GOAL_AUTHOR_TURN_REPAIR_REQUIRED" : "GOAL_REPAIR_LIMIT_REACHED",
+            repair_resume_pending: canResumeRepair,
+            failure_code: canResumeRepair ? "GOAL_REPAIR_TURN_RESUME_REQUIRED" : (canRepairTurn ? "GOAL_AUTHOR_TURN_REPAIR_REQUIRED" : "GOAL_REPAIR_LIMIT_REACHED"),
             failure_message: JSON.stringify(extracted.error ?? extracted.status),
-            pending_gate_findings: [{ code: "author_turn_failed", remediation: "Resume in the same visible thread and preserved worktree." }],
+            pending_gate_findings: [{
+              code: canResumeRepair ? "repair_turn_interrupted" : "author_turn_failed",
+              remediation: canResumeRepair
+                ? "Continue the current repair from the preserved worktree in one idempotent continuation turn; do not consume a new content-repair attempt."
+                : "Resume in the same visible thread and preserved worktree.",
+            }],
           };
           store.append({ event_id: `${task.id}-turn-${task.turn_id}-failure-recorded`, type: "task_replaced", payload: { task } });
           failures.push(task);
@@ -365,7 +391,7 @@ export async function harvestGoalAuthors({
   });
 }
 
-function compileRepairPrompt(task, currentAuthorPrompt) {
+function compileRepairPrompt(task, currentAuthorPrompt, { resumeExistingRepair = false } = {}) {
   return [
     "Continue the same PCR in this same visible thread and the same worktree.",
     "Do not restart the PCR and do not modify files outside the original four-file allowlist.",
@@ -373,12 +399,24 @@ function compileRepairPrompt(task, currentAuthorPrompt) {
     currentAuthorPrompt,
     "Fix every structured gate finding below, rerun structured sync twice, validate, commit only the allowed files, and return a complete JSON report matching the output schema supplied to this repair turn.",
     JSON.stringify({
-      repair_count: (task.repair_count ?? 0) + 1,
+      repair_count: resumeExistingRepair ? (task.repair_count ?? 1) : (task.repair_count ?? 0) + 1,
+      continuation_of_interrupted_repair: resumeExistingRepair,
       original_commit: task.last_author_commit ?? task.author_commit ?? null,
       allowed_files: task.allowed_files ?? [],
       gate_findings: task.pending_gate_findings ?? [],
     }, null, 2),
   ].join("\n\n");
+}
+
+function appendRepairResumeTurn(repairHistory, turnId) {
+  const history = [...(repairHistory ?? [])];
+  if (history.length === 0) return history;
+  const latest = history.at(-1);
+  history[history.length - 1] = {
+    ...latest,
+    resume_turn_ids: [...(latest.resume_turn_ids ?? []), turnId],
+  };
+  return history;
 }
 
 function finishLatestRepair(task, commit, endedAt) {

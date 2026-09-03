@@ -221,6 +221,128 @@ test("harvest interrupts an expired visible author and requests recovery in the 
   }
 });
 
+test("an interrupted repair resumes once in the same thread without consuming another repair", async () => {
+  const { root, stateDir, config } = fixture();
+  config.retry_policy = { max_repairs: 2 };
+  const store = new GoalEventStore({ stateDir });
+  const original = store.rebuild().tasks[0];
+  store.append({
+    event_id: "fixture-interrupted-repair",
+    type: "task_replaced",
+    payload: { task: {
+      ...original,
+      state: "authoring_repair",
+      thread_id: "thread-same",
+      turn_id: "turn-repair-2",
+      worktree_path: root,
+      repair_count: 2,
+      repair_history: [{
+        repair_count: 2,
+        turn_id: "turn-repair-2",
+        started_at: "2026-09-02T00:00:00.000Z",
+        ended_at: null,
+        original_commit: "a".repeat(40),
+        new_commit: null,
+        gate_findings: [{ code: "missing_receipt" }],
+      }],
+      transition_ids: ["authoring_repair"],
+    } },
+  });
+  const adapter = {
+    async readThread() {
+      return { thread: { turns: [{ id: "turn-repair-2", status: "interrupted", items: [] }] } };
+    },
+  };
+  try {
+    const harvested = await harvestGoalAuthors({ config, stateDir, adapter });
+    const pending = harvested.state.tasks[0];
+    assert.equal(pending.state, "repair_requested");
+    assert.equal(pending.repair_count, 2);
+    assert.equal(pending.repair_resume_pending, true);
+    assert.equal(pending.thread_id, "thread-same");
+    assert.equal(pending.worktree_path, root);
+
+    const starts = [];
+    const resumed = await dispatchGoalAuthors({
+      config,
+      stateDir,
+      slots: 1,
+      adapter: {
+        async startRepairTurn(input) {
+          starts.push(input);
+          return { thread_id: input.threadId, turn_id: "turn-repair-2-resume-1" };
+        },
+      },
+    });
+    const active = resumed.state.tasks[0];
+    assert.equal(starts.length, 1);
+    assert.equal(active.state, "authoring_repair");
+    assert.equal(active.repair_count, 2);
+    assert.equal(active.repair_resume_count, 1);
+    assert.equal(active.repair_resume_pending, false);
+    assert.equal(active.repair_history[0].turn_id, "turn-repair-2");
+    assert.deepEqual(active.repair_history[0].resume_turn_ids, ["turn-repair-2-resume-1"]);
+    const repairDir = path.join(stateDir, "authors", "goal-fixture-41111-a1");
+    assert.equal(existsSync(path.join(repairDir, "repair-2-resume-1-prompt.txt")), true);
+    assert.equal(existsSync(path.join(repairDir, "repair-2-resume-1-output-schema.json")), true);
+
+    const repeated = await dispatchGoalAuthors({
+      config,
+      stateDir,
+      slots: 1,
+      adapter: { async startRepairTurn() { throw new Error("must not duplicate repair continuation"); } },
+    });
+    assert.equal(repeated.dispatched.length, 0);
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+  }
+});
+
+test("a timed-out repair is interrupted then offered one same-thread continuation", async () => {
+  const { root, stateDir, config } = fixture();
+  config.author_timeout_seconds = 60;
+  config.retry_policy = { max_repairs: 2 };
+  const store = new GoalEventStore({ stateDir });
+  const original = store.rebuild().tasks[0];
+  store.append({
+    event_id: "fixture-timed-out-repair",
+    type: "task_replaced",
+    payload: { task: {
+      ...original,
+      state: "authoring_repair",
+      thread_id: "thread-same",
+      turn_id: "turn-repair-2",
+      worktree_path: root,
+      repair_count: 2,
+      repair_history: [{ repair_count: 2, turn_id: "turn-repair-2", started_at: "2026-09-02T00:00:00.000Z" }],
+      dispatched_at: "2026-09-02T00:00:00.000Z",
+      transition_ids: ["authoring_repair"],
+    } },
+  });
+  const interrupts = [];
+  try {
+    const harvested = await harvestGoalAuthors({
+      config,
+      stateDir,
+      adapter: {
+        async readThread() {
+          return { thread: { turns: [{ id: "turn-repair-2", status: "inProgress", items: [] }] } };
+        },
+        async interruptTurn(input) { interrupts.push(input); },
+      },
+      now: () => new Date("2026-09-02T00:02:00.000Z"),
+    });
+    const pending = harvested.state.tasks[0];
+    assert.deepEqual(interrupts, [{ threadId: "thread-same", turnId: "turn-repair-2" }]);
+    assert.equal(pending.state, "repair_requested");
+    assert.equal(pending.repair_count, 2);
+    assert.equal(pending.repair_resume_pending, true);
+    assert.equal(pending.failure_code, "GOAL_REPAIR_TIMEOUT_RESUME_REQUIRED");
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+  }
+});
+
 test("a review failure requests repair in the original visible thread and worktree", async () => {
   const { root, stateDir, config } = fixture();
   config.retry_policy = { max_repairs: 2 };
