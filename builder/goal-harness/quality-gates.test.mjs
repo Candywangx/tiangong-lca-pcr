@@ -94,6 +94,29 @@ test("author report schema and semantic accounting accept a complete report", ()
   assert.equal(result.counts.total, 2);
 });
 
+test("author report schema rejects malformed receipt ids in every reference location", () => {
+  const malformed = "receipt-1 后续使用这个值";
+  const cases = [
+    (candidate) => { candidate.hybrid_search_receipt_ids[0] = malformed; },
+    (candidate) => { candidate.uuid_audits[0].hybrid_search_receipt_id = malformed; },
+    (candidate) => {
+      candidate.rejected_uuid_candidates = [{
+        uuid: "22222222-2222-4222-8222-222222222222",
+        receipt_id: malformed,
+        reason_code: "not_exact_candidate",
+        reason: "The candidate is not an exact semantic match.",
+      }];
+    },
+    (candidate) => { candidate.inventory.unresolved[0].hybrid_search_receipt_ids[0] = malformed; },
+  ];
+
+  for (const mutate of cases) {
+    const candidate = structuredClone(report());
+    mutate(candidate);
+    assert.equal(validateAuthorReport(candidate).valid, false);
+  }
+});
+
 test("report rejects total rows that do not equal matched plus unresolved", () => {
   const invalid = report({ inventory: { total_rows: 3, matched_rows: 1, unresolved_rows: 1, unresolved: [{ row_id: "input_coke", reason_code: "no_exact_candidate", explanation: "none", hybrid_search_receipt_ids: ["receipt-1"] }] } });
   assert.throws(
