@@ -21,6 +21,9 @@ import { buildGuidance } from "../pcr-core/src/index.mjs";
 import {
   buildViewer,
   buildViewerData,
+  checkViewerSnapshot,
+  publishViewerSnapshot,
+  recoverViewerSnapshot,
   validateViewerScope,
   VIEWER_BUILD_MARKER,
 } from "./scripts/build-viewer-data.mjs";
@@ -41,6 +44,10 @@ const wheatPcrPath =
   "library/pcrs/agriculture-forestry-and-fishery-products/products-of-agriculture-horticulture-and-market-gardening/wheat-seed";
 const scaffoldPcrPath =
   "library/pcrs/community-social-and-personal-services/education-services/primary-education-services";
+const coralPcrId =
+  "pcr.agriculture-forestry-and-fishery-products.fish-crustaceans-molluscs-and-other-aquatic-invertebrates-products.coral-and-similar-products-shells-of-molluscs-crustaceans-or-echinoderms-and-cuttle-bone";
+const coralPcrPath =
+  "library/pcrs/agriculture-forestry-and-fishery-products/fish-crustaceans-molluscs-and-other-aquatic-invertebrates-products/coral-and-similar-products-shells-of-molluscs-crustaceans-or-echinoderms-and-cuttle-bone";
 
 test("buildViewer writes viewer data and static assets", () => {
   const root = createViewerFixture();
@@ -145,6 +152,260 @@ test("viewer build CLI validates its material, all, and legacy scopes", () => {
   assert.equal(result.status, 1);
   assert.equal(result.stdout, "");
   assert.match(result.stderr, /Invalid viewer scope: everything/u);
+});
+
+test("incremental Viewer snapshots require opt-in bootstrap and reuse unchanged PCR details", () => {
+  const root = createViewerFixture();
+  const artifactStore = mkdtempSync(path.join(tmpdir(), "tiangong-pcr-viewer-store-"));
+  try {
+    const first = snapshotPublishOptions({ root, artifactStore, sequence: 1 });
+    assert.throws(
+      () => publishViewerSnapshot(first),
+      (error) => error?.code === "VIEWER_BOOTSTRAP_REQUIRED",
+    );
+
+    const bootstrapped = publishViewerSnapshot({ ...first, bootstrap: true });
+    const firstManifest = bootstrapped.store.readManifest(bootstrapped.manifestRef);
+    assert.equal(firstManifest.counts.pcr, 1);
+    assert.equal(firstManifest.counts.coverage, 1);
+    const retried = publishViewerSnapshot({ ...first, bootstrap: true });
+    assert.equal(retried.manifestRef, bootstrapped.manifestRef);
+    assert.equal(retried.reused, 1);
+
+    const second = publishViewerSnapshot({
+      ...snapshotPublishOptions({ root, artifactStore, sequence: 2 }),
+      changedPcrIds: [],
+    });
+    const secondManifest = second.store.readManifest(second.manifestRef);
+    assert.equal(secondManifest.refs.pcr_entries[wheatPcrId], firstManifest.refs.pcr_entries[wheatPcrId]);
+    assert.equal(secondManifest.refs.alias_root, firstManifest.refs.alias_root);
+    assert.deepEqual(secondManifest.refs.catalog_shards, firstManifest.refs.catalog_shards);
+    assert.equal(secondManifest.refs.coverage_root, firstManifest.refs.coverage_root);
+    assert.equal(second.reused, 1);
+
+    const check = checkViewerSnapshot({ root, artifactStore, sourceVerifier: () => true });
+    assert.deepEqual(check.drift, []);
+    assert.equal(check.ok, true);
+    mkdirSync(path.join(root, wheatPcrPath, "revision"));
+    writeFileSync(path.join(root, wheatPcrPath, "revision", "revision.yaml"), "revision: opened\n");
+    const drifted = checkViewerSnapshot({ root, artifactStore, sourceVerifier: () => true });
+    assert.equal(drifted.ok, false);
+    assert.ok(drifted.drift.includes("pcr_input_markers"));
+    assert.deepEqual(recoverViewerSnapshot({ artifactStore, sourceVerifier: () => true }), {
+      recovered: false,
+    });
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+    rmSync(artifactStore, { recursive: true, force: true });
+  }
+});
+
+test("incremental Viewer rebuilds only hinted PCR bodies while membership still detects removals", () => {
+  const root = createViewerFixture();
+  const artifactStore = mkdtempSync(path.join(tmpdir(), "tiangong-pcr-viewer-delta-"));
+  const reads = [];
+  try {
+    const first = publishViewerSnapshot({
+      ...snapshotPublishOptions({ root, artifactStore, sequence: 1 }),
+      bootstrap: true,
+    });
+    const firstManifest = first.store.readManifest(first.manifestRef);
+
+    mkdirSync(path.join(root, wheatPcrPath, "revision"));
+    writeFileSync(path.join(root, wheatPcrPath, "revision", "revision.yaml"), "revision: 2\n");
+    const second = publishViewerSnapshot({
+      ...snapshotPublishOptions({ root, artifactStore, sequence: 2 }),
+      changedPcrIds: [wheatPcrId],
+      onPcrBodyRead: (event) => reads.push(event),
+    });
+    const secondManifest = second.store.readManifest(second.manifestRef);
+    assert.notEqual(secondManifest.refs.pcr_entries[wheatPcrId], firstManifest.refs.pcr_entries[wheatPcrId]);
+    assert.deepEqual(secondManifest.refs.catalog_shards, firstManifest.refs.catalog_shards);
+    assert.equal(secondManifest.refs.coverage_root, firstManifest.refs.coverage_root);
+    assert.deepEqual(new Set(reads.map((event) => event.pcr_id)), new Set([wheatPcrId]));
+    assert.equal(reads.filter((event) => event.kind === "markdown").length, 2);
+    assert.equal(reads.filter((event) => event.kind === "guidance").length, 1);
+
+    rmSync(path.join(root, wheatPcrPath), { recursive: true });
+    writeFixtureMaterialIndex({ root, pcrs: [] });
+    writeFixtureCoverageIndex({ root, system: "cpc", version: "3.0", mappedPcrIds: [] });
+    const third = publishViewerSnapshot({
+      ...snapshotPublishOptions({ root, artifactStore, sequence: 3 }),
+      changedPcrIds: [],
+    });
+    const thirdManifest = third.store.readManifest(third.manifestRef);
+    assert.deepEqual(thirdManifest.refs.pcr_entries, {});
+    assert.notDeepEqual(thirdManifest.refs.catalog_shards, secondManifest.refs.catalog_shards);
+    assert.notDeepEqual(thirdManifest.refs.coverage_shards, secondManifest.refs.coverage_shards);
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+    rmSync(artifactStore, { recursive: true, force: true });
+  }
+});
+
+test("one-PCR incremental update never reads unrelated PCR bodies and runs the alias gate once", () => {
+  const root = createViewerFixture({ includeCoral: true });
+  const artifactStore = mkdtempSync(path.join(tmpdir(), "tiangong-pcr-viewer-bounded-"));
+  try {
+    const generatorV1 = sha256("viewer-generator-v1\n");
+    const first = publishViewerSnapshot({
+      ...snapshotPublishOptions({ root, artifactStore, sequence: 1 }),
+      generatorContractSha256: generatorV1,
+      bootstrap: true,
+    });
+    const firstManifest = first.store.readManifest(first.manifestRef);
+    const reads = [];
+    let aliasGates = 0;
+    mkdirSync(path.join(root, wheatPcrPath, "revision"));
+    writeFileSync(path.join(root, wheatPcrPath, "revision", "revision.yaml"), "revision: 2\n");
+    const second = publishViewerSnapshot({
+      ...snapshotPublishOptions({ root, artifactStore, sequence: 2 }),
+      generatorContractSha256: generatorV1,
+      changedPcrIds: [wheatPcrId],
+      onPcrBodyRead: (event) => reads.push(event),
+      onAliasValidation: () => { aliasGates += 1; },
+    });
+    const secondManifest = second.store.readManifest(second.manifestRef);
+    assert.deepEqual(second.rebuiltPcrIds, [wheatPcrId]);
+    assert.deepEqual([...new Set(reads.map((event) => event.pcr_id))], [wheatPcrId]);
+    assert.equal(aliasGates, 1);
+    assert.equal(secondManifest.refs.pcr_entries[coralPcrId], firstManifest.refs.pcr_entries[coralPcrId]);
+
+    const generatorV2 = sha256("viewer-generator-v2\n");
+    const third = publishViewerSnapshot({
+      ...snapshotPublishOptions({ root, artifactStore, sequence: 3 }),
+      generatorContractSha256: generatorV2,
+      changedPcrIds: [],
+    });
+    const thirdManifest = third.store.readManifest(third.manifestRef);
+    assert.deepEqual(third.rebuiltPcrIds, [coralPcrId, wheatPcrId].sort());
+    assert.notEqual(thirdManifest.refs.pcr_entries[coralPcrId], secondManifest.refs.pcr_entries[coralPcrId]);
+    assert.notEqual(thirdManifest.refs.pcr_entries[wheatPcrId], secondManifest.refs.pcr_entries[wheatPcrId]);
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+    rmSync(artifactStore, { recursive: true, force: true });
+  }
+});
+
+test("an alias change rewrites one alias entry shard without rebuilding PCR details", () => {
+  const root = createViewerFixture();
+  const artifactStore = mkdtempSync(path.join(tmpdir(), "tiangong-pcr-viewer-alias-"));
+  const legacyId = "pcr.legacy-products.example-products.old-wheat";
+  try {
+    const first = publishViewerSnapshot({
+      ...snapshotPublishOptions({ root, artifactStore, sequence: 1 }),
+      bootstrap: true,
+    });
+    const firstManifest = first.store.readManifest(first.manifestRef);
+    writeFixtureFile({ root, relativePath: "docs/adr/viewer-alias.md", contents: "# Viewer alias decision\n" });
+    writeFixtureCatalog({
+      root,
+      coverageIndexes: ["classifications/indexes/cpc-3.0-coverage.json"],
+      aliases: [{
+        source_pcr_id: legacyId,
+        source_pcr_path: "library/pcrs/legacy-products/example-products/old-wheat",
+        target: {
+          kind: "classification_coverage",
+          classification_system: "cpc",
+          classification_version: "3.0",
+          code: "CPC-001",
+        },
+        reason: "empty_scaffold_migration",
+        decision_ref: "docs/adr/viewer-alias.md",
+      }],
+    });
+    const second = publishViewerSnapshot({
+      ...snapshotPublishOptions({ root, artifactStore, sequence: 2 }),
+      changedPcrIds: [],
+    });
+    const secondManifest = second.store.readManifest(second.manifestRef);
+    assert.equal(secondManifest.refs.pcr_entries[wheatPcrId], firstManifest.refs.pcr_entries[wheatPcrId]);
+    assert.equal(Object.keys(firstManifest.refs.alias_shards).length, 0);
+    assert.equal(Object.keys(secondManifest.refs.alias_shards).length, 1);
+    assert.equal(second.store.readObject(secondManifest.refs.alias_entries[legacyId]).entry.locator, "cpc:3.0:CPC-001");
+
+    const third = publishViewerSnapshot({
+      ...snapshotPublishOptions({ root, artifactStore, sequence: 3 }),
+      changedPcrIds: [],
+    });
+    const thirdManifest = third.store.readManifest(third.manifestRef);
+    assert.equal(thirdManifest.refs.alias_entries[legacyId], secondManifest.refs.alias_entries[legacyId]);
+    assert.deepEqual(thirdManifest.refs.alias_shards, secondManifest.refs.alias_shards);
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+    rmSync(artifactStore, { recursive: true, force: true });
+  }
+});
+
+test("incremental membership records a validated canonical-id rename as remove plus add", () => {
+  const root = createViewerFixture();
+  const artifactStore = mkdtempSync(path.join(tmpdir(), "tiangong-pcr-viewer-rename-"));
+  try {
+    publishViewerSnapshot({
+      ...snapshotPublishOptions({ root, artifactStore, sequence: 1 }),
+      bootstrap: true,
+    });
+    rmSync(path.join(root, wheatPcrPath), { recursive: true });
+    copyFixturePcr({ root, relativePath: coralPcrPath });
+    writeFixtureCoverageIndex({ root, system: "cpc", version: "3.0", mappedPcrIds: [coralPcrId] });
+    writeFixtureMaterialIndex({
+      root,
+      pcrs: [{
+        id: coralPcrId,
+        path: coralPcrPath,
+        title: {
+          "en-US": "Coral and similar products, shells of molluscs, crustaceans or echinoderms and cuttle-bone",
+          "zh-CN": "珊瑚及类似产品、软体动物、甲壳动物或棘皮动物外壳和乌贼骨",
+        },
+        status: "candidate",
+        content_maturity: "authored_methodology",
+      }],
+    });
+    writeFixtureFile({ root, relativePath: "docs/adr/viewer-rename.md", contents: "# Viewer rename decision\n" });
+    writeFixtureCatalog({
+      root,
+      coverageIndexes: ["classifications/indexes/cpc-3.0-coverage.json"],
+      aliases: [{
+        source_pcr_id: wheatPcrId,
+        source_pcr_path: wheatPcrPath,
+        target: { kind: "canonical_pcr", pcr_id: coralPcrId },
+        reason: "canonical_pcr_replacement",
+        decision_ref: "docs/adr/viewer-rename.md",
+      }],
+    });
+    const renamed = publishViewerSnapshot({
+      ...snapshotPublishOptions({ root, artifactStore, sequence: 2 }),
+      changedPcrIds: [coralPcrId],
+    });
+    const manifest = renamed.store.readManifest(renamed.manifestRef);
+    assert.deepEqual(renamed.removedPcrIds, [wheatPcrId]);
+    assert.deepEqual(Object.keys(manifest.refs.pcr_entries), [coralPcrId]);
+    assert.deepEqual(manifest.lineage.renames, { [coralPcrId]: wheatPcrId });
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+    rmSync(artifactStore, { recursive: true, force: true });
+  }
+});
+
+test("Viewer snapshot CLI exposes stable JSON failures and exact package scripts", () => {
+  const scriptPath = path.join(repoRoot, "packages/pcr-viewer/scripts/build-viewer-data.mjs");
+  const failure = spawnSync(process.execPath, [scriptPath, "check", "--format", "json"], {
+    encoding: "utf8",
+  });
+  assert.equal(failure.status, 1);
+  assert.equal(failure.stdout, "");
+  assert.deepEqual(JSON.parse(failure.stderr), {
+    ok: false,
+    error: {
+      code: "VIEWER_ARTIFACT_STORE_REQUIRED",
+      message: "Missing required option: --artifact-store <path>.",
+    },
+  });
+
+  const scripts = JSON.parse(readFileSync(path.join(repoRoot, "package.json"), "utf8")).scripts;
+  assert.equal(scripts["viewer:update"], "node packages/pcr-viewer/scripts/build-viewer-data.mjs update");
+  assert.equal(scripts["viewer:check"], "node packages/pcr-viewer/scripts/build-viewer-data.mjs check");
+  assert.equal(scripts["viewer:recover"], "node packages/pcr-viewer/scripts/build-viewer-data.mjs recover");
 });
 
 test("viewer coverage counts classification leaves independently from PCR catalog size", () => {
@@ -713,9 +974,12 @@ function copyFixturePcr({ root, relativePath }) {
   cpSync(path.join(repoRoot, relativePath), target, { recursive: true });
 }
 
-function createViewerFixture({ includeScaffold = false } = {}) {
+function createViewerFixture({ includeScaffold = false, includeCoral = false } = {}) {
   const root = mkdtempSync(path.join(tmpdir(), "tiangong-pcr-viewer-fixture-"));
   copyFixturePcr({ root, relativePath: wheatPcrPath });
+  if (includeCoral) {
+    copyFixturePcr({ root, relativePath: coralPcrPath });
+  }
   if (includeScaffold) {
     copyFixturePcr({ root, relativePath: scaffoldPcrPath });
   }
@@ -723,18 +987,108 @@ function createViewerFixture({ includeScaffold = false } = {}) {
     root,
     system: "cpc",
     version: "3.0",
-    mappedPcrIds: [wheatPcrId],
+    mappedPcrIds: includeCoral ? [wheatPcrId, coralPcrId] : [wheatPcrId],
   });
   writeFixtureCatalog({ root, coverageIndexes: [coverageIndex] });
+  writeFixtureMaterialIndex({
+    root,
+    pcrs: [
+      ...(includeCoral ? [{
+        id: coralPcrId,
+        path: coralPcrPath,
+        title: {
+          "en-US": "Coral and similar products, shells of molluscs, crustaceans or echinoderms and cuttle-bone",
+          "zh-CN": "珊瑚及类似产品、软体动物、甲壳动物或棘皮动物外壳和乌贼骨",
+        },
+        status: "candidate",
+        content_maturity: "authored_methodology",
+      }] : []),
+      {
+        id: wheatPcrId,
+        path: wheatPcrPath,
+        title: { "en-US": "Wheat seed for sowing", "zh-CN": "小麦播种种子" },
+        status: "candidate",
+        content_maturity: "authored_methodology",
+      },
+    ],
+  });
   return root;
 }
 
-function writeFixtureCatalog({ root, coverageIndexes }) {
+function writeFixtureMaterialIndex({ root, pcrs }) {
+  const lines = [
+    "schema_version: 1",
+    'index_kind: "tiangong-pcr-material-catalog"',
+    "status: current",
+    "summary:",
+    `  total: ${pcrs.length}`,
+    ...(pcrs.length === 0
+      ? ["pcrs: []"]
+      : [
+          "pcrs:",
+          ...pcrs.flatMap((pcr) => [
+            `  - id: ${JSON.stringify(pcr.id)}`,
+            `    path: ${JSON.stringify(pcr.path)}`,
+            "    title:",
+            `      en-US: ${JSON.stringify(pcr.title["en-US"])}`,
+            `      zh-CN: ${JSON.stringify(pcr.title["zh-CN"])}`,
+            `    status: ${JSON.stringify(pcr.status)}`,
+            `    content_maturity: ${JSON.stringify(pcr.content_maturity)}`,
+          ]),
+        ]),
+    "",
+  ];
+  writeFixtureFile({
+    root,
+    relativePath: "library/indexes/pcr-index.yaml",
+    contents: lines.join("\n"),
+  });
+}
+
+function snapshotPublishOptions({ root, artifactStore, sequence }) {
+  return {
+    root,
+    artifactStore,
+    snapshotId: `viewer-${sequence}`,
+    goalId: "goal-viewer-test",
+    harnessSnapshotId: `harness-${sequence}`,
+    sequence,
+    sourceRef: "refs/tiangong-viewer-sources/goal-viewer-test/harness-test",
+    integrationCommit: String(sequence).repeat(40).slice(0, 40),
+    baseCommit: "b".repeat(40),
+    treeHash: "c".repeat(40),
+    capturedAt: `2026-09-05T00:0${sequence}:00Z`,
+    validatedAt: `2026-09-05T00:0${sequence}:30Z`,
+    validationSummary: { status: "passed", checks: 3 },
+    sourceVerifier: () => true,
+  };
+}
+
+function writeFixtureCatalog({ root, coverageIndexes, aliases = [] }) {
   const aliasRegistry = [
     "schema_version: 1",
     "registry_kind: legacy-pcr-id-aliases",
     "status: current",
-    "aliases: []",
+    ...(aliases.length === 0
+      ? ["aliases: []"]
+      : [
+          "aliases:",
+          ...aliases.flatMap((alias) => [
+            `  - source_pcr_id: ${JSON.stringify(alias.source_pcr_id)}`,
+            `    source_pcr_path: ${JSON.stringify(alias.source_pcr_path)}`,
+            "    target:",
+            `      kind: ${JSON.stringify(alias.target.kind)}`,
+            ...(alias.target.kind === "classification_coverage"
+              ? [
+                  `      classification_system: ${JSON.stringify(alias.target.classification_system)}`,
+                  `      classification_version: ${JSON.stringify(alias.target.classification_version)}`,
+                  `      code: ${JSON.stringify(alias.target.code)}`,
+                ]
+              : [`      pcr_id: ${JSON.stringify(alias.target.pcr_id)}`]),
+            `    reason: ${JSON.stringify(alias.reason)}`,
+            `    decision_ref: ${JSON.stringify(alias.decision_ref)}`,
+          ]),
+        ]),
     "",
   ].join("\n");
   const aliasPath = path.join(root, "classifications/aliases/pcr-id-aliases.yaml");
@@ -753,7 +1107,7 @@ function writeFixtureCatalog({ root, coverageIndexes }) {
       '  path: "classifications/aliases/pcr-id-aliases.yaml"',
       '  hash_mode: "exact_bytes"',
       `  sha256: ${JSON.stringify(aliasSha256)}`,
-      "  entry_count: 0",
+      `  entry_count: ${aliases.length}`,
       "classification_mappings: []",
       "classification_coverage_indexes:",
       ...coverageIndexes.map((indexPath) => `  - ${JSON.stringify(indexPath)}`),
