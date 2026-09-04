@@ -6,7 +6,7 @@ import {
   escapeHtml,
   filterPcrs,
   renderMarkdown,
-  stableSnapshotUrl,
+  snapshotRouteUrl,
   summarizeGuidance,
   VIEWER_SNAPSHOT_SCHEMA_VERSION,
 } from "./viewer-core.js";
@@ -40,43 +40,31 @@ async function boot() {
     const requestedManifest = params.get("manifest");
     if (requestedManifest) {
       const metadata = await client.loadSnapshotByManifest(requestedManifest, { withCatalog: false });
-      const uiBundle = await client.loadUiBundle(metadata.manifest);
-      const compatibleUrl = stableSnapshotUrl({
-        baseUrl: artifactRoot,
-        manifestRef: requestedManifest,
-        manifest: metadata.manifest,
-        uiBundle,
-      });
-      const requestedUi = params.get("ui");
-      const requestedSnapshot = params.get("snapshot");
-      if (
-        metadata.manifest.schema_version !== VIEWER_SNAPSHOT_SCHEMA_VERSION ||
-        requestedSnapshot !== metadata.manifest.snapshot_id ||
-        requestedUi !== uiBundle.entry.id
-      ) {
-        window.location.replace(compatibleUrl);
+      if (metadata.manifest.schema_version !== VIEWER_SNAPSHOT_SCHEMA_VERSION) {
+        const route = await client.loadSnapshotRoute(requestedManifest);
+        window.location.replace(snapshotRouteUrl({ baseUrl: artifactRoot, route }));
         return;
       }
       state.snapshot = await client.loadSnapshotByManifest(requestedManifest);
-      state.stableUrl = compatibleUrl;
     } else {
       const metadata = await client.loadInitialSnapshot({ withCatalog: false });
-      const uiBundle = await client.loadUiBundle(metadata.manifest);
-      const compatibleUrl = stableSnapshotUrl({
-        baseUrl: artifactRoot,
-        manifestRef: metadata.manifestRef,
-        manifest: metadata.manifest,
-        uiBundle,
-      });
       if (metadata.manifest.schema_version !== VIEWER_SNAPSHOT_SCHEMA_VERSION) {
-        window.location.replace(compatibleUrl);
+        const route = await client.loadSnapshotRoute(metadata.manifestRef);
+        window.location.replace(snapshotRouteUrl({ baseUrl: artifactRoot, route }));
         return;
       }
       state.snapshot = await client.loadSnapshotByManifest(metadata.manifestRef);
-      state.stableUrl = compatibleUrl;
     }
     state.catalog = state.snapshot.catalog;
     render();
+    const route = await client.loadSnapshotRoute(state.snapshot.manifestRef);
+    const requestedUi = params.get("ui");
+    const requestedSnapshot = params.get("snapshot");
+    state.stableUrl = snapshotRouteUrl({ baseUrl: artifactRoot, route });
+    if (requestedManifest && (requestedUi !== route.ui_bundle_id || requestedSnapshot !== route.snapshot_id)) {
+      window.location.replace(state.stableUrl);
+      return;
+    }
     state.provenance = await client.loadProvenance(state.snapshot.manifest.snapshot_id);
     render();
   } catch (error) {
@@ -325,14 +313,8 @@ function bindEvents() {
   document.querySelector("#snapshot-history")?.addEventListener("change", async (event) => {
     const entry = state.history?.find(({ manifest_ref: ref }) => ref === event.target.value);
     if (!entry || entry.manifest_ref === state.snapshot.manifestRef) return;
-    const selected = await client.loadSnapshotByManifest(entry.manifest_ref, { withCatalog: false });
-    const uiBundle = await client.loadUiBundle(selected.manifest);
-    window.location.assign(stableSnapshotUrl({
-      baseUrl: artifactRoot,
-      manifestRef: entry.manifest_ref,
-      manifest: selected.manifest,
-      uiBundle,
-    }));
+    const route = await client.loadSnapshotRoute(entry.manifest_ref);
+    window.location.assign(snapshotRouteUrl({ baseUrl: artifactRoot, route }));
   });
   const tabs = [...document.querySelectorAll("[role=\"tab\"][data-tab]")];
   for (const tab of tabs) {

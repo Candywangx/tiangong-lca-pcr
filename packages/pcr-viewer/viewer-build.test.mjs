@@ -25,6 +25,7 @@ import {
   computeViewerGeneratorContractSha256,
   mirrorViewerArtifactStore,
   publishViewerSnapshot,
+  recoverViewerDeployment,
   recoverViewerSnapshot,
   validateViewerScope,
   VIEWER_BUILD_MARKER,
@@ -39,6 +40,7 @@ import {
   filterPcrs,
   formatCoverageSummary,
   renderMarkdown,
+  snapshotRouteUrl,
   stableSnapshotUrl,
   summarizeGuidance,
 } from "./static/viewer-core.js";
@@ -84,6 +86,7 @@ test("split viewer build writes an accepted integration snapshot and retained UI
     assert.equal(manifest.capture.validation_state, "validated");
     assert.equal(manifest.counts.pcr, 1);
     assert.ok(existsSync(path.join(outDir, "history-head.json")));
+    assert.ok(existsSync(path.join(outDir, "routes", `${active.manifest_ref.slice(7)}.json`)));
     assert.ok(existsSync(path.join(outDir, "objects", `${manifest.refs.catalog_root.slice(7)}.json`)));
     assert.ok(existsSync(path.join(outDir, "index.html")));
     assert.ok(existsSync(path.join(outDir, "styles.css")));
@@ -95,6 +98,53 @@ test("split viewer build writes an accepted integration snapshot and retained UI
   } finally {
     rmSync(root, { recursive: true, force: true });
     rmSync(outDir, { recursive: true, force: true });
+  }
+});
+
+test("split bootstrap fails closed without explicit accepted validation evidence", () => {
+  const root = createViewerFixture();
+  const outDir = path.join(mkdtempSync(path.join(tmpdir(), "tiangong-viewer-explicit-head-")), "dist");
+  try {
+    assert.throws(
+      () => buildViewer({ root, outDir, sourceVerifier: () => true }),
+      (error) => error?.code === "VIEWER_ACCEPTED_INTEGRATION_HEAD_REQUIRED",
+    );
+    assert.throws(
+      () => buildViewer({
+        root,
+        outDir,
+        acceptedIntegrationHead: {
+          ...acceptedIntegrationHead(),
+          validationSummary: { status: "passed", checks: 0 },
+        },
+        sourceVerifier: () => true,
+      }),
+      (error) => error?.code === "VIEWER_VALIDATION_EVIDENCE_REQUIRED",
+    );
+    assert.throws(
+      () => publishViewerSnapshot({
+        ...snapshotPublishOptions({ root, artifactStore: outDir, sequence: 1 }),
+        validationSummary: undefined,
+        bootstrap: true,
+      }),
+      (error) => error?.code === "VIEWER_VALIDATION_EVIDENCE_REQUIRED",
+    );
+    const cli = spawnSync(process.execPath, [
+      path.join(repoRoot, "packages/pcr-viewer/scripts/build-viewer-data.mjs"),
+      "build",
+      "--root",
+      root,
+      "--out-dir",
+      outDir,
+      "--format",
+      "json",
+    ], { encoding: "utf8" });
+    assert.equal(cli.status, 1);
+    assert.equal(cli.stdout, "");
+    assert.equal(JSON.parse(cli.stderr).error.code, "VIEWER_ACCEPTED_INTEGRATION_HEAD_REQUIRED");
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+    rmSync(path.dirname(outDir), { recursive: true, force: true });
   }
 });
 
@@ -140,6 +190,12 @@ test("viewer build CLI validates its material, all, and legacy scopes", () => {
   assert.equal(result.status, 1);
   assert.equal(result.stdout, "");
   assert.match(result.stderr, /Invalid viewer scope: everything/u);
+
+  const help = spawnSync(process.execPath, [scriptPath, "build", "--help"], { encoding: "utf8" });
+  assert.equal(help.status, 0, help.stderr);
+  assert.match(help.stdout, /accepted validated integration snapshot/u);
+  assert.match(help.stdout, /--integration-commit/u);
+  assert.match(help.stdout, /--checks/u);
 });
 
 test("lazy snapshot client boots from catalog metadata and fetches one cached PCR detail on selection", async () => {
@@ -182,6 +238,9 @@ test("lazy snapshot client boots from catalog metadata and fetches one cached PC
     );
     assert.equal(requests[0].relative, "active.json");
     assert.equal(requests[0].cache, "no-cache");
+    assert.match(requests[1].relative, /^manifests\/[a-f0-9]{64}\.json$/u);
+    assert.equal(requests[2].relative, `objects/${snapshot.manifest.refs.catalog_root.slice(7)}.json`);
+    assert.equal(requests.some(({ relative }) => relative.startsWith("routes/")), false);
     assert.equal(requests.slice(1).every(({ cache }) => cache === "force-cache"), true);
   } finally {
     rmSync(root, { recursive: true, force: true });
@@ -246,6 +305,50 @@ test("history traversal yields stable snapshot and compatible retained-UI URLs",
     rmSync(root, { recursive: true, force: true });
     rmSync(artifactStore, { recursive: true, force: true });
   }
+});
+
+test("an older manifest schema routes through a minimal retained-UI envelope without current-schema parsing", async () => {
+  const oldManifestRef = `sha256:${"1".repeat(64)}`;
+  const oldUiId = `sha256:${"2".repeat(64)}`;
+  const route = {
+    routing_schema_version: 1,
+    kind: "viewer-snapshot-route",
+    snapshot_id: "viewer-old-schema",
+    manifest_ref: oldManifestRef,
+    manifest_schema_version: 0,
+    ui_bundle_ref: `sha256:${"3".repeat(64)}`,
+    ui_bundle_id: oldUiId,
+    ui_bundle_url: `ui/${"2".repeat(64)}/`,
+  };
+  const oldManifest = {
+    schema_version: 0,
+    kind: "viewer-snapshot-manifest",
+    snapshot_id: "viewer-old-schema",
+    legacy_payload: { deliberately: "not-current-schema" },
+  };
+  const requests = [];
+  const client = createViewerSnapshotClient({
+    baseUrl: "https://viewer.example/library/",
+    fetchJson: async (url) => {
+      const pathname = new URL(url).pathname;
+      requests.push(pathname);
+      return pathname.includes("/manifests/") ? oldManifest : route;
+    },
+  });
+
+  const metadata = await client.loadSnapshotByManifest(oldManifestRef, { withCatalog: false });
+  const loaded = await client.loadSnapshotRoute(oldManifestRef);
+  const url = snapshotRouteUrl({ baseUrl: "https://viewer.example/library/", route: loaded });
+  assert.deepEqual(loaded, route);
+  assert.equal(metadata.manifest.schema_version, 0);
+  assert.deepEqual(requests, [
+    `/library/manifests/${oldManifestRef.slice(7)}.json`,
+    `/library/routes/${oldManifestRef.slice(7)}.json`,
+  ]);
+  assert.equal(new URL(url).searchParams.get("snapshot"), "viewer-old-schema");
+  assert.equal(new URL(url).searchParams.get("manifest"), oldManifestRef);
+  assert.equal(new URL(url).searchParams.get("ui"), oldUiId);
+  assert.match(url, new RegExp(`/ui/${"2".repeat(64)}/index\\.html`, "u"));
 });
 
 test("split viewer labels validation capture separately from mutable landing provenance", () => {
@@ -1363,7 +1466,7 @@ test("artifact mirroring retains split history and installs the active compatibl
       sourceVerifier: () => true,
     });
     const activeBefore = readFileSync(path.join(artifactStore, "active.json"));
-    const mirrored = mirrorViewerArtifactStore({ artifactStore, outDir });
+    const mirrored = mirrorViewerArtifactStore({ artifactStore, outDir, sourceVerifier: () => true });
 
     assert.deepEqual(readFileSync(path.join(outDir, "active.json")), activeBefore);
     assert.equal(mirrored.sequence, 1);
@@ -1374,6 +1477,79 @@ test("artifact mirroring retains split history and installs the active compatibl
     rmSync(root, { recursive: true, force: true });
     rmSync(artifactStore, { recursive: true, force: true });
     rmSync(path.dirname(outDir), { recursive: true, force: true });
+  }
+});
+
+test("split deployment replacement recovers every whole-directory transaction phase", () => {
+  const root = createViewerFixture();
+  const parent = mkdtempSync(path.join(tmpdir(), "tiangong-viewer-deployment-recovery-"));
+  const outDir = path.join(parent, "dist");
+  try {
+    buildViewer({
+      root,
+      outDir,
+      acceptedIntegrationHead: acceptedIntegrationHead(),
+      sourceVerifier: () => true,
+    });
+    for (const phase of [
+      "deployment_prepared",
+      "old_move_prepared",
+      "old_moved",
+      "new_commit_prepared",
+      "new_committed",
+    ]) {
+      assert.throws(
+        () => buildViewer({
+          root,
+          outDir,
+          acceptedIntegrationHead: acceptedIntegrationHead({ snapshotId: `replacement-${phase}` }),
+          sourceVerifier: () => true,
+          deploymentFailurePhase: phase,
+        }),
+        (error) => error?.code === "VIEWER_DEPLOYMENT_INTERRUPTED",
+      );
+      const recovered = recoverViewerDeployment({ outDir });
+      assert.equal(recovered.recovered, true);
+      assert.ok(existsSync(path.join(outDir, "index.html")));
+      assert.ok(existsSync(path.join(outDir, "active.json")));
+      assert.equal(recoverViewerDeployment({ outDir }).recovered, false);
+    }
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+    rmSync(parent, { recursive: true, force: true });
+  }
+});
+
+test("artifact mirror validates active history and exact retained UI bytes before replacement", () => {
+  const root = createViewerFixture();
+  const artifactStore = mkdtempSync(path.join(tmpdir(), "tiangong-viewer-mirror-validation-"));
+  const parent = mkdtempSync(path.join(tmpdir(), "tiangong-viewer-mirror-target-"));
+  const outDir = path.join(parent, "dist");
+  try {
+    buildViewer({ root, outDir: artifactStore, acceptedIntegrationHead: acceptedIntegrationHead(), sourceVerifier: () => true });
+    mirrorViewerArtifactStore({ artifactStore, outDir, sourceVerifier: () => true });
+    const priorActive = readFileSync(path.join(outDir, "active.json"));
+    const validHistory = readFileSync(path.join(artifactStore, "history-head.json"));
+    writeFileSync(path.join(artifactStore, "history-head.json"), "{}\n");
+    assert.throws(
+      () => mirrorViewerArtifactStore({ artifactStore, outDir, sourceVerifier: () => true }),
+      /schema validation failed|history/iu,
+    );
+    assert.deepEqual(readFileSync(path.join(outDir, "active.json")), priorActive);
+    writeFileSync(path.join(artifactStore, "history-head.json"), validHistory);
+
+    const active = JSON.parse(readFileSync(path.join(artifactStore, "active.json"), "utf8"));
+    const uiObject = JSON.parse(readFileSync(path.join(artifactStore, "objects", `${active.ui_bundle_ref.slice(7)}.json`), "utf8"));
+    writeFileSync(path.join(artifactStore, uiObject.entry.asset_url, "app.js"), "substituted\n");
+    assert.throws(
+      () => mirrorViewerArtifactStore({ artifactStore, outDir, sourceVerifier: () => true }),
+      (error) => error?.code === "VIEWER_UI_BUNDLE_MISSING",
+    );
+    assert.deepEqual(readFileSync(path.join(outDir, "active.json")), priorActive);
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+    rmSync(artifactStore, { recursive: true, force: true });
+    rmSync(parent, { recursive: true, force: true });
   }
 });
 
@@ -1432,16 +1608,50 @@ test("serveViewer sends revalidation headers for mutable pointers and immutable 
     for (const immutablePath of [
       `/manifests/${active.manifest_ref.slice(7)}.json`,
       `/objects/${manifest.refs.catalog_root.slice(7)}.json`,
+      `/routes/${active.manifest_ref.slice(7)}.json`,
       `/${uiObject.entry.asset_url}app.js`,
     ]) {
       const response = await fetch(`${baseUrl}${immutablePath}`);
       assert.equal(response.status, 200);
       assert.equal(response.headers.get("cache-control"), "public, max-age=31536000, immutable");
     }
+    mkdirSync(path.join(root, "locks"), { recursive: true });
+    writeFileSync(path.join(root, "locks", "publisher.lock"), "internal\n");
+    assert.equal((await fetch(`${baseUrl}/locks/publisher.lock`)).status, 404);
   } finally {
     if (server?.listening) await new Promise((resolve) => server.close(resolve));
     rmSync(sourceRoot, { recursive: true, force: true });
     rmSync(root, { recursive: true, force: true });
+  }
+});
+
+test("serveViewer performs deployment recovery before opening the served directory", async () => {
+  const sourceRoot = createViewerFixture();
+  const parent = mkdtempSync(path.join(tmpdir(), "tiangong-viewer-serve-recovery-"));
+  const root = path.join(parent, "dist");
+  let server;
+  try {
+    buildViewer({ root: sourceRoot, outDir: root, acceptedIntegrationHead: acceptedIntegrationHead(), sourceVerifier: () => true });
+    assert.throws(
+      () => buildViewer({
+        root: sourceRoot,
+        outDir: root,
+        acceptedIntegrationHead: acceptedIntegrationHead({ snapshotId: "replacement-for-server" }),
+        sourceVerifier: () => true,
+        deploymentFailurePhase: "old_moved",
+      }),
+      (error) => error?.code === "VIEWER_DEPLOYMENT_INTERRUPTED",
+    );
+    assert.equal(existsSync(root), false);
+    server = serveViewer({ root, port: 0 });
+    if (!server.listening) await new Promise((resolve) => server.once("listening", resolve));
+    const response = await fetch(`http://127.0.0.1:${server.address().port}/active.json`);
+    assert.equal(response.status, 200);
+    assert.equal(JSON.parse(await response.text()).kind, "viewer-active");
+  } finally {
+    if (server?.listening) await new Promise((resolve) => server.close(resolve));
+    rmSync(sourceRoot, { recursive: true, force: true });
+    rmSync(parent, { recursive: true, force: true });
   }
 });
 
@@ -1509,6 +1719,8 @@ test("viewer scripts can run from paths containing spaces and non-ASCII characte
     execFileSync("git", ["-C", fixtureRoot, "config", "user.name", "Viewer Test"]);
     execFileSync("git", ["-C", fixtureRoot, "add", "."]);
     execFileSync("git", ["-C", fixtureRoot, "commit", "-m", "viewer fixture"], { stdio: "ignore" });
+    const fixtureCommit = gitFixtureOutput(fixtureRoot, ["rev-parse", "HEAD"]);
+    const fixtureTree = gitFixtureOutput(fixtureRoot, ["rev-parse", "HEAD^{tree}"]);
 
     const buildOutput = execFileSync(process.execPath, [
       path.join(fixtureViewerRoot, "scripts", "build-viewer-data.mjs"),
@@ -1518,6 +1730,17 @@ test("viewer scripts can run from paths containing spaces and non-ASCII characte
       outDir,
       "--scope",
       "material",
+      "--snapshot-id", "viewer-unicode-fixture",
+      "--goal-id", "goal-unicode-fixture",
+      "--harness-snapshot-id", "harness-unicode-fixture",
+      "--sequence", "1",
+      "--source-ref", "refs/heads/main",
+      "--integration-commit", fixtureCommit,
+      "--base-commit", fixtureCommit,
+      "--tree-hash", fixtureTree,
+      "--captured-at", "2026-09-05T00:00:00Z",
+      "--validated-at", "2026-09-05T00:01:00Z",
+      "--checks", "3",
     ], {
       cwd: fixtureRoot,
       encoding: "utf8",

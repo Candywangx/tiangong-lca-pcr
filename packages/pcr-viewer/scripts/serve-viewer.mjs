@@ -2,6 +2,7 @@ import { createServer } from "node:http";
 import { createReadStream, existsSync, realpathSync, statSync } from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import { recoverViewerDeployment } from "./viewer-deployment.mjs";
 
 const packageRoot = path.resolve(fileURLToPath(new URL("..", import.meta.url)));
 const defaultRoot = path.join(packageRoot, "dist");
@@ -30,6 +31,7 @@ function cliOptions(argv) {
 
 export function serveViewer({ root = defaultRoot, port = 4173, host = "127.0.0.1" } = {}) {
   const requestedRoot = path.resolve(root);
+  recoverViewerDeployment({ outDir: requestedRoot });
   const resolvedRoot = existsSync(requestedRoot) ? realpathSync(requestedRoot) : requestedRoot;
   const resolvedPort = validPort(port);
   const indexPath = path.join(resolvedRoot, "index.html");
@@ -49,6 +51,11 @@ export function serveViewer({ root = defaultRoot, port = 4173, host = "127.0.0.1
         return;
       }
       throw error;
+    }
+    if (/^(?:locks|staging)(?:\/|$)|^journal\.json$/u.test(relativePath.replaceAll("\\", "/"))) {
+      response.writeHead(404);
+      response.end("Not found");
+      return;
     }
     const filePath = path.resolve(resolvedRoot, relativePath);
 
@@ -162,6 +169,7 @@ function cacheControl(relativePath) {
   if (
     /^manifests\/[a-f0-9]{64}\.json$/u.test(normalized) ||
     /^objects\/[a-f0-9]{64}\.json$/u.test(normalized) ||
+    /^routes\/[a-f0-9]{64}\.json$/u.test(normalized) ||
     /^history\/[a-f0-9]{64}\.json$/u.test(normalized) ||
     /^ui\/[a-f0-9]{64}\//u.test(normalized)
   ) {

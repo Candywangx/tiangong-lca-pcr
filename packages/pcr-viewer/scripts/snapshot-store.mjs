@@ -85,7 +85,7 @@ export class ViewerSnapshotStore {
       }
     }
     ensureSafeDirectory(this.root, "artifact store");
-    for (const part of ["objects", "manifests", "history", "staging", "locks"]) {
+    for (const part of ["objects", "manifests", "routes", "history", "staging", "locks"]) {
       ensureSafeDirectory(path.join(this.root, part), `artifact store ${part}`);
     }
     for (const leaf of ["active.json", "history-head.json", "journal.json"]) {
@@ -142,6 +142,14 @@ export class ViewerSnapshotStore {
     return this.#readManifest(ref, this.#readCache(), true);
   }
 
+  readRoute(manifestRef) {
+    assertSha256Ref(manifestRef, "route manifest reference");
+    const target = this.path("routes", `${refDigest(manifestRef)}.json`);
+    const route = parseCanonicalJson(readSafeFile(target, "viewer snapshot route"), "viewer snapshot route");
+    validateRoute(route, manifestRef);
+    return route;
+  }
+
   #readManifest(ref, cache, validatePredecessor) {
     if (cache.manifests.has(ref)) return cache.manifests.get(ref);
     const bytes = this.#readImmutable(this.path("manifests", `${refDigest(ref)}.json`), ref, "manifest");
@@ -157,8 +165,19 @@ export class ViewerSnapshotStore {
       cache.manifests.delete(ref);
       throw error;
     }
-    if (this.#readObject(manifest.capture.ui_bundle_ref, cache).object_kind !== "ui_bundle") {
+    const uiBundle = this.#readObject(manifest.capture.ui_bundle_ref, cache);
+    if (uiBundle.object_kind !== "ui_bundle") {
       throw new ViewerSnapshotStoreError("VIEWER_UI_BUNDLE_MISSING", "Manifest references an unavailable retained UI bundle.");
+    }
+    const route = this.readRoute(ref);
+    if (
+      route.snapshot_id !== manifest.snapshot_id ||
+      route.manifest_schema_version !== manifest.schema_version ||
+      route.ui_bundle_ref !== manifest.capture.ui_bundle_ref ||
+      route.ui_bundle_id !== uiBundle.entry.id ||
+      route.ui_bundle_url !== uiBundle.entry.asset_url
+    ) {
+      throw new ViewerSnapshotStoreError("VIEWER_ROUTE_CORRUPT", "Snapshot routing envelope does not match its manifest.");
     }
     return manifest;
   }
@@ -298,7 +317,8 @@ export class ViewerSnapshotStore {
     const catalogRoot = this.#writeObject({ schema_version: 1, object_kind: "catalog_root", identity: catalogRootIdentity, entry: { shards: catalogShards, details: pcrEntries } });
     const aliasRoot = this.#writeObject({ schema_version: 1, object_kind: "alias_root", identity: aliasRootIdentity, entry: { shards: aliasShards, entries: aliasEntries } });
     const coverageRoot = this.#writeObject({ schema_version: 1, object_kind: "coverage_root", identity: coverageRootIdentity, entry: { shards: coverageShards, entries: coverageEntries } });
-    const uiBundleRef = this.#writeObject({ schema_version: 1, object_kind: "ui_bundle", identity: uiIdentity, entry: { id: normalized.capture.ui_bundle_ref, asset_url: normalized.uiBundleUrl } });
+    const uiBundleId = normalized.capture.ui_bundle_ref;
+    const uiBundleRef = this.#writeObject({ schema_version: 1, object_kind: "ui_bundle", identity: uiIdentity, entry: { id: uiBundleId, asset_url: normalized.uiBundleUrl } });
     normalized.capture.ui_bundle_ref = uiBundleRef;
     const manifest = {
       schema_version: 1,
@@ -344,6 +364,16 @@ export class ViewerSnapshotStore {
     const manifestBytes = canonicalBytes(manifest);
     const manifestRef = sha256Ref(manifestBytes);
     this.#writeImmutable(this.path("manifests", `${refDigest(manifestRef)}.json`), manifestBytes, "manifest");
+    this.#writeRoute(manifestRef, {
+      routing_schema_version: 1,
+      kind: "viewer-snapshot-route",
+      snapshot_id: normalized.snapshotId,
+      manifest_ref: manifestRef,
+      manifest_schema_version: manifest.schema_version,
+      ui_bundle_ref: uiBundleRef,
+      ui_bundle_id: uiBundleId,
+      ui_bundle_url: normalized.uiBundleUrl,
+    });
 
     const history = this.#nextHistory(previous.history, { sequence: normalized.sequence, manifest_ref: manifestRef }, historyIdentity);
     const active = { schema_version: 1, kind: "viewer-active", snapshot_id: normalized.snapshotId, snapshot_url: `snapshots/${normalized.snapshotId}`, snapshot_hash: manifestRef, manifest_ref: manifestRef, sequence: normalized.sequence, cache_version: 1, ui_bundle_ref: normalized.capture.ui_bundle_ref, validation_state: "validated" };
@@ -461,7 +491,9 @@ export class ViewerSnapshotStore {
         validation_state: "validated",
         ui_bundle_ref: source.ui_bundle_ref === undefined ? sha256Ref("viewer-ui-bundle:unconfigured\n") : assertSha256Ref(source.ui_bundle_ref, "UI bundle reference"),
       },
-      uiBundleUrl: typeof input.uiBundleUrl === "string" ? input.uiBundleUrl : "",
+      uiBundleUrl: typeof input.uiBundleUrl === "string"
+        ? input.uiBundleUrl
+        : `ui/${refDigest(source.ui_bundle_ref === undefined ? sha256Ref("viewer-ui-bundle:unconfigured\n") : source.ui_bundle_ref)}/`,
       pcrEntries: requireEntries(input.pcrEntries, "PCR"),
       aliasEntries: requireEntries(input.aliasEntries, "alias"),
       coverageEntries: requireCoverageEntries(input.coverageEntries),
@@ -635,6 +667,33 @@ export class ViewerSnapshotStore {
     const ref = sha256Ref(bytes);
     this.#writeImmutable(this.path("objects", `${refDigest(ref)}.json`), bytes, "object");
     return ref;
+  }
+
+  #writeRoute(manifestRef, route) {
+    validateRoute(route, manifestRef);
+    const destination = this.path("routes", `${refDigest(manifestRef)}.json`);
+    assertRegularOrMissing(destination, "immutable Viewer snapshot route");
+    const bytes = canonicalBytes(route);
+    if (existsRegular(destination, "immutable Viewer snapshot route")) {
+      if (!readSafeFile(destination, "immutable Viewer snapshot route").equals(bytes)) {
+        throw new ViewerSnapshotStoreError("VIEWER_IMMUTABLE_BYTE_CONFLICT", "Immutable Viewer snapshot route byte conflict.");
+      }
+      return;
+    }
+    const stage = this.#stage(bytes);
+    try {
+      try {
+        linkSync(stage, destination);
+        fsyncDirectory(path.dirname(destination));
+      } catch (error) {
+        if (error?.code !== "EEXIST") throw error;
+        if (!readSafeFile(destination, "immutable Viewer snapshot route").equals(bytes)) {
+          throw new ViewerSnapshotStoreError("VIEWER_IMMUTABLE_BYTE_CONFLICT", "Immutable Viewer snapshot route byte conflict.");
+        }
+      }
+    } finally {
+      try { unlinkSync(stage); } catch (error) { if (error?.code !== "ENOENT") throw error; }
+    }
   }
 
   #assertObjectSemantics(value) {
@@ -1033,6 +1092,28 @@ function normalizeCoordinate(value) {
     throw new ViewerSnapshotStoreError("VIEWER_COORDINATE_INVALID", "Invalid coverage coordinate.");
   }
   return { system: value.system, version: value.version };
+}
+
+function validateRoute(route, manifestRef) {
+  if (!route || typeof route !== "object" || Array.isArray(route)) {
+    throw new ViewerSnapshotStoreError("VIEWER_ROUTE_CORRUPT", "Viewer snapshot route must be an object.");
+  }
+  assertExactKeys(route, [
+    "routing_schema_version", "kind", "snapshot_id", "manifest_ref",
+    "manifest_schema_version", "ui_bundle_ref", "ui_bundle_id", "ui_bundle_url",
+  ], "viewer snapshot route");
+  if (
+    route.routing_schema_version !== 1 ||
+    route.kind !== "viewer-snapshot-route" ||
+    route.manifest_ref !== manifestRef ||
+    typeof route.snapshot_id !== "string" || !route.snapshot_id ||
+    !Number.isSafeInteger(route.manifest_schema_version) || route.manifest_schema_version < 0 ||
+    !/^sha256:[a-f0-9]{64}$/u.test(route.ui_bundle_ref) ||
+    !/^sha256:[a-f0-9]{64}$/u.test(route.ui_bundle_id) ||
+    route.ui_bundle_url !== `ui/${route.ui_bundle_id.slice(7)}/`
+  ) {
+    throw new ViewerSnapshotStoreError("VIEWER_ROUTE_CORRUPT", "Viewer snapshot route is invalid.");
+  }
 }
 
 function requireEntries(entries, label) {

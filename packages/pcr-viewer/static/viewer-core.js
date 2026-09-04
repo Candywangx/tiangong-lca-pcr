@@ -49,6 +49,7 @@ export function createViewerSnapshotClient({ baseUrl, fetchJson = defaultFetchJs
   };
 
   const loadCatalog = async (manifest) => {
+    assertCurrentViewerManifest(manifest);
     const catalogRoot = await readObject(manifest.refs.catalog_root);
     if (catalogRoot.object_kind !== "catalog_root") {
       throw new Error("Invalid Viewer snapshot: catalog_root does not reference a catalog root object.");
@@ -86,16 +87,24 @@ export function createViewerSnapshotClient({ baseUrl, fetchJson = defaultFetchJs
         { cache: "no-cache" },
       ));
       const snapshot = await loadSnapshotByManifest(active.manifest_ref, { withCatalog });
-      if (
-        snapshot.manifest.snapshot_id !== active.snapshot_id ||
-        snapshot.manifest.sequence !== active.sequence ||
-        snapshot.manifest.capture.ui_bundle_ref !== active.ui_bundle_ref
-      ) {
+      if (snapshot.manifest.snapshot_id !== active.snapshot_id) {
         throw new Error("Invalid Viewer snapshot: active pointer does not match its manifest.");
       }
+      if (
+        snapshot.manifest.schema_version === VIEWER_SNAPSHOT_SCHEMA_VERSION &&
+        (snapshot.manifest.sequence !== active.sequence ||
+          snapshot.manifest.capture?.ui_bundle_ref !== active.ui_bundle_ref)
+      ) throw new Error("Invalid Viewer snapshot: active pointer does not match its manifest.");
       return { ...snapshot, active };
     },
     loadSnapshotByManifest,
+    async loadSnapshotRoute(manifestRef) {
+      assertSha256Ref(manifestRef, "Viewer route manifest reference");
+      return assertSnapshotRoute(await fetchJson(
+        new URL(`routes/${manifestRef.slice(7)}.json`, root).href,
+        { cache: "force-cache" },
+      ), manifestRef);
+    },
     async loadPcrDetail(snapshot, pcrId) {
       const ref = snapshot?.manifest?.refs?.pcr_entries?.[pcrId];
       if (!ref) throw new Error(`PCR is not present in this Viewer snapshot: ${pcrId}.`);
@@ -173,6 +182,15 @@ export function stableSnapshotUrl({ baseUrl, manifestRef, manifest, uiBundle }) 
   return url.href;
 }
 
+export function snapshotRouteUrl({ baseUrl, route }) {
+  const checked = assertSnapshotRoute(route, route?.manifest_ref);
+  const url = new URL(`${checked.ui_bundle_url}index.html`, new URL(ensureTrailingSlash(baseUrl)));
+  url.searchParams.set("snapshot", checked.snapshot_id);
+  url.searchParams.set("manifest", checked.manifest_ref);
+  url.searchParams.set("ui", checked.ui_bundle_id);
+  return url.href;
+}
+
 export function describeSnapshotCapture(manifest = {}, provenance = null) {
   const capture = manifest.capture?.validation_state === "validated"
     ? "Captured after validation"
@@ -200,12 +218,23 @@ function assertViewerActive(active) {
 function assertViewerManifest(manifest) {
   if (
     manifest?.kind !== "viewer-snapshot-manifest" ||
+    !Number.isSafeInteger(manifest.schema_version) ||
+    manifest.schema_version < 0 ||
+    typeof manifest.snapshot_id !== "string"
+  ) {
+    throw new Error("Invalid Viewer snapshot routing metadata.");
+  }
+  return manifest;
+}
+
+function assertCurrentViewerManifest(manifest) {
+  if (
+    manifest.schema_version !== VIEWER_SNAPSHOT_SCHEMA_VERSION ||
     !Number.isSafeInteger(manifest.sequence) ||
-    typeof manifest.snapshot_id !== "string" ||
     !manifest.refs ||
     !manifest.capture
   ) {
-    throw new Error("Invalid Viewer snapshot manifest.");
+    throw new Error("Invalid current Viewer snapshot manifest.");
   }
   return manifest;
 }
@@ -215,6 +244,28 @@ function assertViewerObject(value, ref) {
     throw new Error(`Invalid Viewer object at ${ref}.`);
   }
   return value;
+}
+
+function assertSnapshotRoute(route, manifestRef) {
+  const keys = Object.keys(route ?? {}).sort();
+  const expected = [
+    "routing_schema_version", "kind", "snapshot_id", "manifest_ref",
+    "manifest_schema_version", "ui_bundle_ref", "ui_bundle_id", "ui_bundle_url",
+  ].sort();
+  if (
+    JSON.stringify(keys) !== JSON.stringify(expected) ||
+    route.routing_schema_version !== 1 ||
+    route.kind !== "viewer-snapshot-route" ||
+    route.manifest_ref !== manifestRef ||
+    typeof route.snapshot_id !== "string" || !route.snapshot_id ||
+    !Number.isSafeInteger(route.manifest_schema_version) || route.manifest_schema_version < 0 ||
+    !SHA256_REF.test(route.ui_bundle_ref) ||
+    !SHA256_REF.test(route.ui_bundle_id) ||
+    route.ui_bundle_url !== `ui/${route.ui_bundle_id.slice(7)}/`
+  ) {
+    throw new Error("Invalid Viewer snapshot routing envelope.");
+  }
+  return route;
 }
 
 function assertSha256Ref(ref, label) {
