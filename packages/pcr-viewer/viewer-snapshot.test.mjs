@@ -47,7 +47,7 @@ function snapshotInput(overrides = {}) {
       coverage: [
         { coordinate: { system: "cpc", version: "3.0" }, ref: sha256Ref("coverage-v1\n") },
       ],
-      releaseRevisionMarker: null,
+      releaseRevisionMarkers: {},
       source_ref: "refs/heads/integration",
       integration_commit: "a".repeat(40),
       base_commit: "b".repeat(40),
@@ -340,7 +340,7 @@ test("generator and release marker fingerprints invalidate content-addressed obj
     const markerChanged = store.publish(snapshotInput({
       snapshotId: "snapshot-003", sequence: 3,
       generatorContractSha256: sha256Ref("generator-contract-v2\n"),
-      source: { ...snapshotInput().source, releaseRevisionMarker: sha256Ref("revision-marker-v2\n") },
+      source: { ...snapshotInput().source, releaseRevisionMarkers: { "pcr.agriculture.wheat-seed": sha256Ref("revision-marker-v2\n") } },
     }));
     const markerManifest = store.readManifest(markerChanged.manifestRef);
     assert.notEqual(markerManifest.refs.pcr_entries["pcr.agriculture.wheat-seed"], generatorManifest.refs.pcr_entries["pcr.agriculture.wheat-seed"]);
@@ -525,4 +525,38 @@ test("a tampered recovery journal cannot mutate active or history", () => {
   } finally {
     rmSync(root, { recursive: true, force: true });
   }
+});
+
+test("a journal with a recomputed active URL digest still cannot recover", () => {
+  const { root, store } = fixtureStore();
+  try {
+    store.publish(snapshotInput());
+    const priorActive = readFileSync(path.join(root, "active.json"));
+    const priorHistory = readFileSync(path.join(root, "history-head.json"));
+    assert.throws(() => store.publish(snapshotInput({ snapshotId: "snapshot-002", sequence: 2, failurePhase: "prepared" })), /interrupted/u);
+    const journalPath = path.join(root, "journal.json");
+    const journal = JSON.parse(readFileSync(journalPath, "utf8"));
+    journal.active.snapshot_url = "snapshots/forged";
+    journal.cas.active.new_ref = sha256Ref(canonicalJson(journal.active));
+    writeFileSync(journalPath, canonicalJson(journal));
+    assert.throws(() => store.recover(), /identities are not exactly bound/u);
+    assert.deepEqual(readFileSync(path.join(root, "active.json")), priorActive);
+    assert.deepEqual(readFileSync(path.join(root, "history-head.json")), priorHistory);
+  } finally { rmSync(root, { recursive: true, force: true }); }
+});
+
+test("a per-PCR revision marker invalidates only its detail object", () => {
+  const { root, store } = fixtureStore();
+  try {
+    const first = store.publish(snapshotInput());
+    const before = store.readManifest(first.manifestRef);
+    const second = store.publish(snapshotInput({
+      snapshotId: "snapshot-002", sequence: 2,
+      source: { ...snapshotInput().source, releaseRevisionMarkers: { "pcr.agriculture.wheat-seed": sha256Ref("wheat-marker-v2\n") } },
+    }));
+    const after = store.readManifest(second.manifestRef);
+    assert.notEqual(after.refs.pcr_entries["pcr.agriculture.wheat-seed"], before.refs.pcr_entries["pcr.agriculture.wheat-seed"]);
+    assert.equal(after.refs.pcr_entries["pcr.industrial.cement"], before.refs.pcr_entries["pcr.industrial.cement"]);
+    assert.deepEqual(after.refs.alias_entries, before.refs.alias_entries);
+  } finally { rmSync(root, { recursive: true, force: true }); }
 });

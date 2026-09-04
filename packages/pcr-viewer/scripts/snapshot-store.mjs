@@ -125,6 +125,7 @@ export class ViewerSnapshotStore {
     const bytes = this.#readImmutable(this.path("objects", `${refDigest(ref)}.json`), ref, "object");
     const value = parseCanonicalJson(bytes, "viewer object");
     this.schemas.assert("viewer-object", value);
+    this.#assertObjectSemantics(value);
     return value;
   }
 
@@ -160,6 +161,8 @@ export class ViewerSnapshotStore {
     }
     const entries = pages.reverse().flatMap((page) => page.entries);
     let previousSequence = 0;
+    let previousManifest = null;
+    let previousManifestRef = null;
     for (const entry of entries) {
       if (entry.sequence !== previousSequence + 1) {
         throw new ViewerSnapshotStoreError("VIEWER_HISTORY_CORRUPT", "Viewer history sequences must be contiguous and ordered.");
@@ -168,11 +171,29 @@ export class ViewerSnapshotStore {
       if (manifest.sequence !== entry.sequence) {
         throw new ViewerSnapshotStoreError("VIEWER_HISTORY_CORRUPT", `History sequence ${entry.sequence} does not match its manifest.`);
       }
+      if (entry.sequence === 1) {
+        if (manifest.predecessor !== null || manifest.previous_manifest_ref !== null || manifest.previous_snapshot_id !== null) throw new ViewerSnapshotStoreError("VIEWER_HISTORY_CORRUPT", "Initial retained manifest has a predecessor.");
+      } else if (manifest.predecessor !== previousManifestRef || manifest.previous_manifest_ref !== previousManifestRef || manifest.previous_snapshot_id !== previousManifest.snapshot_id) {
+        throw new ViewerSnapshotStoreError("VIEWER_HISTORY_CORRUPT", "Retained manifest predecessor does not equal the immediately preceding history entry.");
+      }
+      this.#validateRetainedRenames(manifest, previousManifest);
       this.#verifySource({ source: manifest.source, capture: manifest.capture }, "retained");
       previousSequence = entry.sequence;
+      previousManifest = manifest;
+      previousManifestRef = entry.manifest_ref;
     }
     if (head.latest_sequence !== previousSequence) throw new ViewerSnapshotStoreError("VIEWER_HISTORY_CORRUPT", "Viewer history head sequence does not match retained pages.");
     return { head, entries };
+  }
+
+  #validateRetainedRenames(manifest, predecessor) {
+    const values = new Set();
+    for (const [successor, oldId] of Object.entries(manifest.lineage.renames)) {
+      if (values.has(oldId) || Object.hasOwn(manifest.refs.pcr_entries, oldId) || !Object.hasOwn(manifest.refs.pcr_entries, successor) || !predecessor || !Object.hasOwn(predecessor.refs.pcr_entries, oldId)) {
+        throw new ViewerSnapshotStoreError("VIEWER_HISTORY_CORRUPT", "Retained rename lineage is invalid.");
+      }
+      values.add(oldId);
+    }
   }
 
   readActive() {
@@ -225,12 +246,15 @@ export class ViewerSnapshotStore {
     if (normalized.sequence !== previous.sequence + 1) {
       throw new ViewerSnapshotStoreError("VIEWER_SEQUENCE_CONFLICT", `Snapshot sequence ${normalized.sequence} must follow ${previous.sequence}.`);
     }
+    for (const pcrId of Object.keys(normalized.source.release_revision_markers)) {
+      if (!normalized.pcrEntries.some((entry) => entry.id === pcrId)) throw new ViewerSnapshotStoreError("VIEWER_PCR_MARKER_UNKNOWN", `PCR release/revision marker has no matching current PCR entry: ${pcrId}.`);
+    }
 
-    const identity = this.#objectIdentity(normalized, {}, true);
+    const identity = this.#objectIdentity(normalized);
     const catalogIdentity = this.#objectIdentity(normalized);
     const aliasIdentity = this.#objectIdentity(normalized);
     const coverageIdentity = this.#objectIdentity(normalized);
-    const pcrEntries = this.#writeEntries(normalized.pcrEntries, "pcr_detail", identity);
+    const pcrEntries = this.#writeEntries(normalized.pcrEntries, "pcr_detail", identity, normalized.source.release_revision_markers);
     const catalogEntries = this.#writeCatalogEntries(normalized.pcrEntries, catalogIdentity);
     const aliasEntries = this.#writeEntries(normalized.aliasEntries, "alias_entry", aliasIdentity);
     const coverageEntries = this.#writeCoverageEntries(normalized.coverageEntries, coverageIdentity);
@@ -395,7 +419,7 @@ export class ViewerSnapshotStore {
         catalog: assertSha256Ref(source.catalog, "catalog source reference"),
         aliases: assertSha256Ref(source.aliases, "alias source reference"),
         coverage,
-        release_revision_marker: source.releaseRevisionMarker === null || source.releaseRevisionMarker === undefined ? null : assertSha256Ref(source.releaseRevisionMarker, "release/revision marker reference"),
+        release_revision_markers: normalizeMarkerMap(source.releaseRevisionMarkers),
       },
       capture: {
         source_ref: requireText(source.source_ref, "source ref"),
@@ -417,10 +441,11 @@ export class ViewerSnapshotStore {
     return normalized;
   }
 
-  #writeEntries(entries, kind, identity) {
+  #writeEntries(entries, kind, identity, markerMap = null) {
     const refs = {};
     for (const entry of entries) {
-      refs[entry.id] = this.#writeObject({ schema_version: 1, object_kind: kind, identity, entry });
+      const entryIdentity = markerMap === null ? identity : { ...identity, release_revision_marker: markerMap[entry.id] ?? null };
+      refs[entry.id] = this.#writeObject({ schema_version: 1, object_kind: kind, identity: entryIdentity, entry });
     }
     return sortedObject(refs);
   }
@@ -501,13 +526,13 @@ export class ViewerSnapshotStore {
     return { renames: sortedObject(renames) };
   }
 
-  #objectIdentity(normalized, relevantSources = {}, includeReleaseMarker = false) {
+  #objectIdentity(normalized, relevantSources = {}) {
     return {
       generator_contract_sha256: normalized.generatorContractSha256,
       schema_contract_sha256: this.schemaContractSha256,
       // Commit/tree capture is snapshot provenance, never an entry-object input.
       source_fingerprint: sha256Ref(canonicalBytes(relevantSources)),
-      release_revision_marker: includeReleaseMarker ? normalized.source.release_revision_marker : null,
+      release_revision_marker: null,
     };
   }
 
@@ -531,6 +556,8 @@ export class ViewerSnapshotStore {
   }
 
   #assertJournalMatchesManifest(journal, manifest) {
+    this.schemas.assert("viewer-active", journal.active);
+    this.schemas.assert("viewer-history", journal.history_head);
     if (
       canonicalJson(journal.source) !== canonicalJson(manifest.source) ||
       canonicalJson(journal.capture) !== canonicalJson(manifest.capture) ||
@@ -541,6 +568,7 @@ export class ViewerSnapshotStore {
       journal.active.sequence !== manifest.sequence ||
       journal.active.ui_bundle_ref !== manifest.capture.ui_bundle_ref ||
       journal.active.snapshot_hash !== journal.manifest_ref ||
+      journal.active.snapshot_url !== `snapshots/${manifest.snapshot_id}` ||
       journal.history_head.latest_sequence !== manifest.sequence
     ) {
       throw new ViewerSnapshotStoreError("VIEWER_JOURNAL_CORRUPT", "Journal identities are not exactly bound to the referenced manifest.");
@@ -579,6 +607,16 @@ export class ViewerSnapshotStore {
     } else if (value.object_kind === "ui_bundle") {
       requiredText("id");
       if (typeof entry.asset_url !== "string") throw new ViewerSnapshotStoreError("VIEWER_OBJECT_SEMANTIC_INVALID", "ui_bundle.asset_url must be a string.");
+    } else if (["catalog_shard", "alias_shard"].includes(value.object_kind)) {
+      requiredText("prefix");
+      if (!Array.isArray(entry.entries) || entry.entries.some((item) => !item || typeof item.id !== "string" || !/^sha256:[a-f0-9]{64}$/u.test(item.object_ref))) throw new ViewerSnapshotStoreError("VIEWER_OBJECT_SEMANTIC_INVALID", `${value.object_kind} entries are invalid.`);
+    } else if (value.object_kind === "coverage_shard") {
+      normalizeCoordinate(entry.coordinate); requiredText("prefix");
+      if (!Array.isArray(entry.entries) || entry.entries.some((item) => typeof item?.code !== "string" || !/^sha256:[a-f0-9]{64}$/u.test(item.coverage_entry_ref))) throw new ViewerSnapshotStoreError("VIEWER_OBJECT_SEMANTIC_INVALID", "coverage_shard entries are invalid.");
+    } else if (["catalog_root", "alias_root", "coverage_root"].includes(value.object_kind)) {
+      if (!entry || typeof entry !== "object" || Object.values(entry).some((map) => !map || typeof map !== "object")) throw new ViewerSnapshotStoreError("VIEWER_OBJECT_SEMANTIC_INVALID", `${value.object_kind} relationships are invalid.`);
+    } else if (value.object_kind === "history_page") {
+      if (!Array.isArray(entry.entries) || entry.entries.length === 0 || entry.entries.some((item) => !Number.isSafeInteger(item?.sequence) || item.sequence < 1 || !/^sha256:[a-f0-9]{64}$/u.test(item.manifest_ref)) || (entry.previous_page_ref !== null && !/^sha256:[a-f0-9]{64}$/u.test(entry.previous_page_ref))) throw new ViewerSnapshotStoreError("VIEWER_OBJECT_SEMANTIC_INVALID", "history_page entries are invalid.");
     }
   }
 
@@ -967,6 +1005,11 @@ function requireValidationSummary(value) {
 function requireCatalogScope(value) {
   if (!["material", "all", "legacy"].includes(value)) throw new ViewerSnapshotStoreError("VIEWER_SNAPSHOT_INVALID", "Invalid catalog scope.");
   return value;
+}
+
+function normalizeMarkerMap(value) {
+  if (!value || typeof value !== "object" || Array.isArray(value)) throw new ViewerSnapshotStoreError("VIEWER_SNAPSHOT_INVALID", "releaseRevisionMarkers must be an object keyed by PCR id.");
+  return sortedObject(Object.fromEntries(Object.entries(value).map(([id, ref]) => [requireText(id, "PCR marker id"), assertSha256Ref(ref, "PCR release/revision marker reference")])));
 }
 
 function requireGitHash(value, label) {
