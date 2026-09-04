@@ -53,24 +53,20 @@ export function serveViewer({ root = defaultRoot, port = 4173, host = "127.0.0.1
       response.end("Viewer deployment unavailable");
       return;
     }
-    const requestUrl = new URL(request.url ?? "/", "http://localhost");
     let relativePath;
     try {
-      relativePath = requestUrl.pathname === "/" ? "index.html" : decodeURIComponent(requestUrl.pathname.slice(1));
+      relativePath = canonicalRequestPath(request.url ?? "/");
     } catch (error) {
-      if (error instanceof URIError) {
-        response.writeHead(400);
-        response.end("Bad request");
-        return;
-      }
-      throw error;
+      response.writeHead(error?.statusCode === 403 ? 403 : 400);
+      response.end(error?.statusCode === 403 ? "Forbidden" : "Bad request");
+      return;
     }
-    if (/^(?:locks|staging)(?:\/|$)|^journal\.json$/u.test(relativePath.replaceAll("\\", "/"))) {
+    if (/^(?:locks|staging)(?:\/|$)|^journal\.json$/u.test(relativePath)) {
       response.writeHead(404);
       response.end("Not found");
       return;
     }
-    const filePath = path.resolve(resolvedRoot, relativePath);
+    const filePath = path.resolve(resolvedRoot, ...relativePath.split("/"));
 
     if (!isInsideOrEqual(resolvedRoot, filePath)) {
       response.writeHead(403);
@@ -84,7 +80,7 @@ export function serveViewer({ root = defaultRoot, port = 4173, host = "127.0.0.1
     }
 
     const canonicalFilePath = realpathSync(filePath);
-    if (!isInsideOrEqual(resolvedRoot, canonicalFilePath)) {
+    if (!isInsideOrEqual(resolvedRoot, canonicalFilePath) || canonicalFilePath !== filePath) {
       response.writeHead(403);
       response.end("Forbidden");
       return;
@@ -109,6 +105,33 @@ export function serveViewer({ root = defaultRoot, port = 4173, host = "127.0.0.1
   });
 
   return server;
+}
+
+function canonicalRequestPath(requestTarget) {
+  const rawTarget = String(requestTarget);
+  const queryIndex = rawTarget.indexOf("?");
+  const rawPath = queryIndex === -1 ? rawTarget : rawTarget.slice(0, queryIndex);
+  if (!rawPath.startsWith("/") || rawPath.includes("#")) throw requestPathError(400);
+  if (rawPath === "/") return "index.html";
+  if (/\\|%(?:2f|5c)/iu.test(rawPath)) throw requestPathError(403);
+  let decoded;
+  try {
+    decoded = decodeURIComponent(rawPath);
+  } catch {
+    throw requestPathError(400);
+  }
+  if (decoded.includes("\0")) throw requestPathError(400);
+  const segments = decoded.slice(1).split("/");
+  if (segments.some((segment) => segment === "" || segment === "." || segment === "..")) {
+    throw requestPathError(403);
+  }
+  const canonicalEncodedPath = `/${segments.map((segment) => encodeURIComponent(segment)).join("/")}`;
+  if (rawPath !== canonicalEncodedPath) throw requestPathError(403);
+  return segments.join("/");
+}
+
+function requestPathError(statusCode) {
+  return Object.assign(new Error("Viewer request path is not canonical."), { statusCode });
 }
 
 function requiredOptionValue(argv, index, option) {

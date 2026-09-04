@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import { execFileSync, spawn, spawnSync } from "node:child_process";
 import { createHash } from "node:crypto";
+import { request as httpRequest } from "node:http";
 import {
   cpSync,
   existsSync,
@@ -33,6 +34,8 @@ import {
   VIEWER_BUILD_MARKER,
 } from "./scripts/build-viewer-data.mjs";
 import { serveViewer } from "./scripts/serve-viewer.mjs";
+import { commitViewerDeployment } from "./scripts/viewer-deployment.mjs";
+import * as viewerCore from "./static/viewer-core.js";
 import {
   artifactRootFromModuleUrl,
   assertViewerDataContract,
@@ -201,6 +204,7 @@ test("viewer build CLI validates its material, all, and legacy scopes", () => {
   assert.match(help.stdout, /accepted validated integration snapshot/u);
   assert.match(help.stdout, /--integration-commit/u);
   assert.match(help.stdout, /--checks/u);
+  assert.match(help.stdout, /--force-stale-deployment-lock/u);
 });
 
 test("lazy snapshot client boots from catalog metadata and fetches one cached PCR detail on selection", async () => {
@@ -257,6 +261,94 @@ test("lazy snapshot client boots from catalog metadata and fetches one cached PC
     rmSync(root, { recursive: true, force: true });
     rmSync(outDir, { recursive: true, force: true });
   }
+});
+
+test("catalog loading uses bounded concurrency and keeps deterministic output", async () => {
+  const manifestRef = sha256("catalog-concurrency-manifest");
+  const catalogRootRef = sha256("catalog-concurrency-root");
+  const shardRefs = Array.from({ length: 18 }, (_, index) => sha256(`catalog-shard-${index}`));
+  const entryRefs = Array.from({ length: 18 }, (_, index) => sha256(`catalog-entry-${index}`));
+  const responses = new Map([
+    [`manifests/${manifestRef.slice(7)}.json`, {
+      schema_version: 1,
+      kind: "viewer-snapshot-manifest",
+      snapshot_id: "catalog-concurrency",
+      sequence: 1,
+      capture: { ui_bundle_ref: sha256("ui") },
+      refs: { catalog_root: catalogRootRef, pcr_entries: {} },
+    }],
+    [`objects/${catalogRootRef.slice(7)}.json`, {
+      schema_version: 1,
+      object_kind: "catalog_root",
+      entry: { shards: Object.fromEntries(shardRefs.map((ref, index) => [`${index}`.padStart(2, "0"), ref])) },
+    }],
+  ]);
+  for (let index = 0; index < shardRefs.length; index += 1) {
+    const prefix = `${index}`.padStart(2, "0");
+    responses.set(`objects/${shardRefs[index].slice(7)}.json`, {
+      schema_version: 1,
+      object_kind: "catalog_shard",
+      entry: { prefix, entries: [{ id: `pcr.${String(99 - index).padStart(2, "0")}`, object_ref: entryRefs[index] }] },
+    });
+    responses.set(`objects/${entryRefs[index].slice(7)}.json`, {
+      schema_version: 1,
+      object_kind: "catalog_entry",
+      entry: { id: `pcr.${String(99 - index).padStart(2, "0")}` },
+    });
+  }
+  let inFlight = 0;
+  let maxInFlight = 0;
+  const requests = [];
+  const client = createViewerSnapshotClient({
+    baseUrl: "https://viewer.example/",
+    fetchJson: async (url) => {
+      const relative = new URL(url).pathname.slice(1);
+      requests.push(relative);
+      if (!responses.has(relative)) throw new Error(`unexpected fetch: ${relative}`);
+      if (relative.startsWith("objects/") && relative !== `objects/${catalogRootRef.slice(7)}.json`) {
+        inFlight += 1;
+        maxInFlight = Math.max(maxInFlight, inFlight);
+        await new Promise((resolve) => setTimeout(resolve, 5));
+        inFlight -= 1;
+      }
+      return responses.get(relative);
+    },
+  });
+
+  const snapshot = await client.loadSnapshotByManifest(manifestRef);
+
+  assert.ok(maxInFlight > 1, `expected concurrent catalog fetches, observed ${maxInFlight}`);
+  assert.ok(maxInFlight <= 8, `catalog concurrency exceeded bound: ${maxInFlight}`);
+  assert.deepEqual(snapshot.catalog.map((entry) => entry.id), [...snapshot.catalog.map((entry) => entry.id)].sort());
+  assert.deepEqual(requests.slice(0, 2), [
+    `manifests/${manifestRef.slice(7)}.json`,
+    `objects/${catalogRootRef.slice(7)}.json`,
+  ]);
+});
+
+test("PCR selection ignores stale completion and stale finally callbacks", async () => {
+  const deferred = new Map();
+  const events = [];
+  const select = viewerCore.createPcrSelectionLoader({
+    loadDetail: (_snapshot, pcrId) => new Promise((resolve, reject) => deferred.set(pcrId, { resolve, reject })),
+    onBegin: (pcrId) => events.push(["begin", pcrId]),
+    onSuccess: (pcrId) => events.push(["success", pcrId]),
+    onError: (pcrId) => events.push(["error", pcrId]),
+    onSettled: (pcrId) => events.push(["settled", pcrId]),
+  });
+  const first = select({}, "pcr.first");
+  const second = select({}, "pcr.second");
+  deferred.get("pcr.first").resolve({ entry: { id: "pcr.first" } });
+  await first;
+  assert.deepEqual(events, [["begin", "pcr.first"], ["begin", "pcr.second"]]);
+  deferred.get("pcr.second").resolve({ entry: { id: "pcr.second" } });
+  await second;
+  assert.deepEqual(events, [
+    ["begin", "pcr.first"],
+    ["begin", "pcr.second"],
+    ["success", "pcr.second"],
+    ["settled", "pcr.second"],
+  ]);
 });
 
 test("history traversal yields stable snapshot and compatible retained-UI URLs", async () => {
@@ -1490,6 +1582,40 @@ test("artifact mirroring retains split history and installs the active compatibl
   }
 });
 
+test("artifact mirror rechecks its exact pointer baseline before activating a concurrent publication", () => {
+  const root = createViewerFixture();
+  const artifactStore = mkdtempSync(path.join(tmpdir(), "tiangong-viewer-mirror-race-store-"));
+  const outDir = path.join(mkdtempSync(path.join(tmpdir(), "tiangong-viewer-mirror-race-out-")), "dist");
+  try {
+    publishViewerSnapshot({ ...snapshotPublishOptions({ root, artifactStore, sequence: 1 }), bootstrap: true });
+    mirrorViewerArtifactStore({ artifactStore, outDir, sourceVerifier: () => true });
+    const priorGeneration = currentDeploymentDir(outDir);
+    const priorActive = readFileSync(path.join(priorGeneration, "active.json"));
+    let retainedChecks = 0;
+    assert.throws(
+      () => mirrorViewerArtifactStore({
+        artifactStore,
+        outDir,
+        sourceVerifier: ({ phase }) => {
+          // The fourth retained check validates the copied store, after the
+          // source tree has already been copied but before deployment commits.
+          if (phase === "retained" && ++retainedChecks === 4) {
+            publishViewerSnapshot({ ...snapshotPublishOptions({ root, artifactStore, sequence: 2 }) });
+          }
+          return true;
+        },
+      }),
+      (error) => error?.code === "VIEWER_MIRROR_SOURCE_CHANGED",
+    );
+    assert.equal(currentDeploymentDir(outDir), priorGeneration);
+    assert.deepEqual(readFileSync(path.join(currentDeploymentDir(outDir), "active.json")), priorActive);
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+    rmSync(artifactStore, { recursive: true, force: true });
+    rmSync(path.dirname(outDir), { recursive: true, force: true });
+  }
+});
+
 test("split deployment keeps the old generation live until an atomic current-pointer commit", async () => {
   const root = createViewerFixture();
   const parent = mkdtempSync(path.join(tmpdir(), "tiangong-viewer-deployment-recovery-"));
@@ -1542,6 +1668,98 @@ test("split deployment keeps the old generation live until an atomic current-poi
   } finally {
     if (server?.listening) await new Promise((resolve) => server.close(resolve));
     rmSync(root, { recursive: true, force: true });
+    rmSync(parent, { recursive: true, force: true });
+  }
+});
+
+test("deployment lock excludes another process, requires explicit stale recovery, and verifies owner tokens", async () => {
+  const parent = mkdtempSync(path.join(tmpdir(), "tiangong-viewer-deployment-lock-"));
+  const outDir = path.join(parent, "dist");
+  const lockPath = path.join(parent, ".dist-deployment.lock.json");
+  const stage = createDeploymentStage(parent, ".dist-build-live-lock", "locked-version");
+  const child = spawn(process.execPath, ["-e", "setInterval(() => {}, 1000)"], { stdio: "ignore" });
+  try {
+    writeFileSync(lockPath, `${JSON.stringify({
+      schema_version: 1,
+      kind: "viewer-deployment-lock",
+      pid: child.pid,
+      created_at: "2000-01-01T00:00:00.000Z",
+      owner_token: "other-process-owner",
+    })}\n`, { flag: "wx" });
+    for (const forceStaleLock of [false, true]) {
+      assert.throws(
+        () => commitViewerDeployment({ stageDir: stage, outDir, forceStaleLock, staleLockMs: 0 }),
+        (error) => error?.code === "VIEWER_DEPLOYMENT_LOCKED",
+      );
+    }
+    child.kill("SIGTERM");
+    await new Promise((resolve) => child.once("exit", resolve));
+    assert.throws(
+      () => commitViewerDeployment({ stageDir: stage, outDir, staleLockMs: 0 }),
+      (error) => error?.code === "VIEWER_DEPLOYMENT_LOCKED",
+    );
+    commitViewerDeployment({ stageDir: stage, outDir, forceStaleLock: true, staleLockMs: 0 });
+
+    const ownerStage = createDeploymentStage(parent, ".dist-build-owner-token", "owner-version");
+    assert.throws(
+      () => commitViewerDeployment({
+        stageDir: ownerStage,
+        outDir,
+        onPhase: (phase) => {
+          if (phase !== "generation_prepared") return;
+          writeFileSync(lockPath, `${JSON.stringify({
+            schema_version: 1,
+            kind: "viewer-deployment-lock",
+            pid: 99999999,
+            created_at: "2000-01-01T00:00:00.000Z",
+            owner_token: "substituted-owner",
+          })}\n`);
+        },
+      }),
+      (error) => error?.code === "VIEWER_DEPLOYMENT_LOCK_OWNERSHIP_LOST",
+    );
+  } finally {
+    if (child.exitCode === null) child.kill("SIGKILL");
+    rmSync(parent, { recursive: true, force: true });
+  }
+});
+
+test("serveViewer never recovers a deployment journal owned by a live publisher", async () => {
+  const parent = mkdtempSync(path.join(tmpdir(), "tiangong-viewer-serve-live-publisher-"));
+  const outDir = path.join(parent, "dist");
+  const lockPath = path.join(parent, ".dist-deployment.lock.json");
+  const seed = createDeploymentStage(parent, ".dist-build-seed", "seed");
+  const pending = createDeploymentStage(parent, ".dist-build-pending", "pending");
+  const child = spawn(process.execPath, ["-e", "setInterval(() => {}, 1000)"], { stdio: "ignore" });
+  let unexpectedServer;
+  try {
+    commitViewerDeployment({ stageDir: seed, outDir });
+    assert.throws(
+      () => commitViewerDeployment({ stageDir: pending, outDir, failurePhase: "generation_prepared" }),
+      (error) => error?.code === "VIEWER_DEPLOYMENT_INTERRUPTED",
+    );
+    writeFileSync(lockPath, `${JSON.stringify({
+      schema_version: 1,
+      kind: "viewer-deployment-lock",
+      pid: child.pid,
+      created_at: new Date().toISOString(),
+      owner_token: "live-publisher",
+    })}\n`, { flag: "wx" });
+    let serveError;
+    try {
+      unexpectedServer = serveViewer({ root: outDir, port: 0 });
+    } catch (error) {
+      serveError = error;
+    }
+    await closeTestServer(unexpectedServer);
+    unexpectedServer = null;
+    assert.equal(serveError?.code, "VIEWER_DEPLOYMENT_LOCKED");
+  } finally {
+    await closeTestServer(unexpectedServer);
+    if (child.exitCode === null) {
+      child.kill("SIGTERM");
+      await new Promise((resolve) => child.once("exit", resolve));
+    }
     rmSync(parent, { recursive: true, force: true });
   }
 });
@@ -1712,6 +1930,42 @@ test("serveViewer sends revalidation headers for mutable pointers and immutable 
     mkdirSync(path.join(deployed, "locks"), { recursive: true });
     writeFileSync(path.join(deployed, "locks", "publisher.lock"), "internal\n");
     assert.equal((await fetch(`${baseUrl}/locks/publisher.lock`)).status, 404);
+  } finally {
+    if (server?.listening) await new Promise((resolve) => server.close(resolve));
+    rmSync(sourceRoot, { recursive: true, force: true });
+    rmSync(root, { recursive: true, force: true });
+  }
+});
+
+test("serveViewer rejects noncanonical, encoded-separator, traversal, NUL, backslash, and symlink-alias paths", async () => {
+  const sourceRoot = createViewerFixture();
+  const root = mkdtempSync(path.join(tmpdir(), "tiangong-viewer-path-security-"));
+  let server;
+  try {
+    buildViewer({ root: sourceRoot, outDir: root, acceptedIntegrationHead: acceptedIntegrationHead(), sourceVerifier: () => true });
+    const deployed = currentDeploymentDir(root);
+    mkdirSync(path.join(deployed, "objects"), { recursive: true });
+    symlinkSync("../active.json", path.join(deployed, "objects", `${"a".repeat(64)}.json`));
+    server = serveViewer({ root, port: 0 });
+    if (!server.listening) await new Promise((resolve) => server.once("listening", resolve));
+    const port = server.address().port;
+    for (const requestPath of [
+      "/%2e%2e%2fpackage.json",
+      "/objects%2factive.json",
+      "/objects%5cactive.json",
+      "/active.json%00",
+      "/objects/../active.json",
+      "/%61ctive.json",
+      "//active.json",
+      "/active\\.json",
+    ]) {
+      const response = await rawHttpGet({ port, path: requestPath });
+      assert.notEqual(response.status, 200, `unsafe alias was served: ${requestPath}`);
+      assert.notEqual(response.headers["cache-control"], "public, max-age=31536000, immutable");
+    }
+    const activeAlias = await rawHttpGet({ port, path: `/objects/${"a".repeat(64)}.json` });
+    assert.notEqual(activeAlias.status, 200);
+    assert.notEqual(activeAlias.headers["cache-control"], "public, max-age=31536000, immutable");
   } finally {
     if (server?.listening) await new Promise((resolve) => server.close(resolve));
     rmSync(sourceRoot, { recursive: true, force: true });
@@ -2232,6 +2486,37 @@ function hashFixtureUiBundle(directory) {
     hash.update("\0");
   }
   return hash.digest("hex");
+}
+
+function createDeploymentStage(parent, name, snapshotId) {
+  const stage = path.join(parent, name);
+  mkdirSync(stage);
+  writeFileSync(path.join(stage, VIEWER_BUILD_MARKER), "Viewer deployment test stage.\n");
+  writeFileSync(path.join(stage, "index.html"), `<h1>${snapshotId}</h1>\n`);
+  writeFileSync(path.join(stage, "active.json"), `${JSON.stringify({ snapshot_id: snapshotId })}\n`);
+  return stage;
+}
+
+function rawHttpGet({ port, path: requestPath }) {
+  return new Promise((resolve, reject) => {
+    const request = httpRequest({ host: "127.0.0.1", port, path: requestPath, method: "GET" }, (response) => {
+      const chunks = [];
+      response.on("data", (chunk) => chunks.push(chunk));
+      response.on("end", () => resolve({
+        status: response.statusCode,
+        headers: response.headers,
+        body: Buffer.concat(chunks).toString("utf8"),
+      }));
+    });
+    request.once("error", reject);
+    request.end();
+  });
+}
+
+async function closeTestServer(server) {
+  if (!server) return;
+  if (!server.listening) await new Promise((resolve) => server.once("listening", resolve));
+  await new Promise((resolve) => server.close(resolve));
 }
 
 async function assertResponse(baseUrl, route, status, contentTypePattern) {

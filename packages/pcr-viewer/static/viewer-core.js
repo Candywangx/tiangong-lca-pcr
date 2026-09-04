@@ -4,6 +4,7 @@
 export const VIEWER_DATA_SCHEMA_VERSION = 3;
 export const VIEWER_SNAPSHOT_SCHEMA_VERSION = 1;
 const SHA256_REF = /^sha256:[a-f0-9]{64}$/u;
+const CATALOG_FETCH_CONCURRENCY = 8;
 
 export function artifactRootFromModuleUrl(moduleUrl) {
   const url = new URL(moduleUrl);
@@ -54,20 +55,22 @@ export function createViewerSnapshotClient({ baseUrl, fetchJson = defaultFetchJs
     if (catalogRoot.object_kind !== "catalog_root") {
       throw new Error("Invalid Viewer snapshot: catalog_root does not reference a catalog root object.");
     }
-    const entries = [];
-    for (const [prefix, shardRef] of Object.entries(catalogRoot.entry.shards).sort()) {
+    const shardRefs = Object.entries(catalogRoot.entry.shards).sort();
+    const shards = await mapWithConcurrency(shardRefs, CATALOG_FETCH_CONCURRENCY, async ([prefix, shardRef]) => {
       const shard = await readObject(shardRef);
       if (shard.object_kind !== "catalog_shard" || shard.entry.prefix !== prefix) {
         throw new Error(`Invalid Viewer snapshot: catalog shard ${prefix} is inconsistent.`);
       }
-      for (const item of shard.entry.entries) {
-        const catalogEntry = await readObject(item.object_ref);
-        if (catalogEntry.object_kind !== "catalog_entry" || catalogEntry.entry.id !== item.id) {
-          throw new Error(`Invalid Viewer snapshot: catalog entry ${item.id} is inconsistent.`);
-        }
-        entries.push(catalogEntry.entry);
+      return shard.entry.entries;
+    });
+    const indexedEntries = shards.flat();
+    const entries = await mapWithConcurrency(indexedEntries, CATALOG_FETCH_CONCURRENCY, async (item) => {
+      const catalogEntry = await readObject(item.object_ref);
+      if (catalogEntry.object_kind !== "catalog_entry" || catalogEntry.entry.id !== item.id) {
+        throw new Error(`Invalid Viewer snapshot: catalog entry ${item.id} is inconsistent.`);
       }
-    }
+      return catalogEntry.entry;
+    });
     return entries.sort((left, right) => left.id.localeCompare(right.id));
   };
 
@@ -167,6 +170,46 @@ export function createViewerSnapshotClient({ baseUrl, fetchJson = defaultFetchJs
       }
     },
   });
+}
+
+export function createPcrSelectionLoader({
+  loadDetail,
+  onBegin,
+  onSuccess,
+  onError,
+  onSettled,
+} = {}) {
+  for (const [name, callback] of Object.entries({ loadDetail, onBegin, onSuccess, onError, onSettled })) {
+    if (typeof callback !== "function") throw new TypeError(`${name} must be a function.`);
+  }
+  let latestToken = 0;
+  return async (snapshot, pcrId) => {
+    const token = ++latestToken;
+    onBegin(pcrId);
+    try {
+      const detail = await loadDetail(snapshot, pcrId);
+      if (token === latestToken) onSuccess(pcrId, detail);
+    } catch (error) {
+      if (token === latestToken) onError(pcrId, error);
+    } finally {
+      if (token === latestToken) onSettled(pcrId);
+    }
+  };
+}
+
+async function mapWithConcurrency(items, limit, mapper) {
+  if (items.length === 0) return [];
+  const results = new Array(items.length);
+  let nextIndex = 0;
+  const worker = async () => {
+    while (nextIndex < items.length) {
+      const index = nextIndex;
+      nextIndex += 1;
+      results[index] = await mapper(items[index], index);
+    }
+  };
+  await Promise.all(Array.from({ length: Math.min(limit, items.length) }, () => worker()));
+  return results;
 }
 
 export function stableSnapshotUrl({ baseUrl, manifestRef, manifest, uiBundle }) {

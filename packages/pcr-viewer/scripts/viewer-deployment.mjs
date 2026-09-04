@@ -23,6 +23,7 @@ export const VIEWER_DEPLOYMENT_MARKER = ".tiangong-pcr-viewer-build";
 const GENERATIONS_DIRECTORY = ".generations";
 const CURRENT_POINTER = "current";
 const GENERATION_NAME = /^[a-f0-9]{64}$/u;
+const DEFAULT_STALE_LOCK_MS = 5 * 60 * 1000;
 
 export class ViewerDeploymentError extends Error {
   constructor(code, message, options = {}) {
@@ -33,64 +34,111 @@ export class ViewerDeploymentError extends Error {
 }
 
 /** Install an immutable generation, then expose it by replacing one small symlink. */
-export function commitViewerDeployment({ stageDir, outDir, failurePhase = null } = {}) {
+export function commitViewerDeployment({
+  stageDir,
+  outDir,
+  failurePhase = null,
+  forceStaleLock = false,
+  staleLockMs = DEFAULT_STALE_LOCK_MS,
+  onPhase = null,
+  beforePointerCommit = null,
+} = {}) {
   const target = path.resolve(requiredPath(outDir, "deployment output"));
   const stage = path.resolve(requiredPath(stageDir, "deployment stage"));
   const parent = path.dirname(target);
   if (path.dirname(stage) !== parent || stage === target) {
     throw new ViewerDeploymentError("VIEWER_DEPLOYMENT_STAGE_INVALID", "Viewer deployment stage must be a distinct sibling of the output directory.");
   }
-  recoverViewerDeployment({ outDir: target });
   assertOwnedDirectory(stage, "Viewer deployment stage");
   assertSafeTree(stage, "Viewer deployment stage");
-  ensureStableRoot(target);
-
-  const generationName = directoryDigest(stage);
-  const generation = path.join(target, GENERATIONS_DIRECTORY, generationName);
-  const pointerTempName = `.current-${process.pid}-${Date.now()}`;
-  const journalPath = deploymentJournalPath(target);
-  let journal = {
-    schema_version: 2,
-    kind: "viewer-deployment-journal",
-    phase: "generation_prepared",
-    output_name: path.basename(target),
-    stage_name: path.basename(stage),
-    generation_name: generationName,
-    pointer_temp_name: pointerTempName,
-  };
-  writeJournal(journalPath, journal);
-  interrupt(failurePhase, journal.phase);
-
+  const lease = acquireDeploymentLock({ target, forceStaleLock, staleLockMs });
   try {
-    installGeneration({ stage, generation, generationName });
-    journal = { ...journal, phase: "generation_installed" };
+    recoverViewerDeploymentLocked({ target, lease });
+    ensureStableRoot(target);
+    const generationName = directoryDigest(stage);
+    const generation = path.join(target, GENERATIONS_DIRECTORY, generationName);
+    const pointerTempName = `.current-${process.pid}-${Date.now()}`;
+    const journalPath = deploymentJournalPath(target);
+    let journal = {
+      schema_version: 2,
+      kind: "viewer-deployment-journal",
+      phase: "generation_prepared",
+      output_name: path.basename(target),
+      stage_name: path.basename(stage),
+      generation_name: generationName,
+      pointer_temp_name: pointerTempName,
+    };
+    assertDeploymentLockOwned(target, lease);
     writeJournal(journalPath, journal);
     interrupt(failurePhase, journal.phase);
+    notifyPhase(onPhase, journal.phase);
+    assertDeploymentLockOwned(target, lease);
+
+    installGeneration({ stage, generation, generationName });
+    journal = { ...journal, phase: "generation_installed" };
+    assertDeploymentLockOwned(target, lease);
+    writeJournal(journalPath, journal);
+    interrupt(failurePhase, journal.phase);
+    notifyPhase(onPhase, journal.phase);
+    assertDeploymentLockOwned(target, lease);
 
     preparePointer({ target, pointerTempName, generationName });
     journal = { ...journal, phase: "pointer_prepared" };
+    assertDeploymentLockOwned(target, lease);
     writeJournal(journalPath, journal);
     interrupt(failurePhase, journal.phase);
+    notifyPhase(onPhase, journal.phase);
+    assertDeploymentLockOwned(target, lease);
+    if (beforePointerCommit) {
+      try {
+        beforePointerCommit();
+      } catch (error) {
+        abortBeforePointerCommit({ target, journalPath, pointerTempName, lease });
+        throw error;
+      }
+    }
+    assertDeploymentLockOwned(target, lease);
 
     commitPointer({ target, pointerTempName, generationName });
     journal = { ...journal, phase: "pointer_committed" };
+    assertDeploymentLockOwned(target, lease);
     writeJournal(journalPath, journal);
     interrupt(failurePhase, journal.phase);
+    notifyPhase(onPhase, journal.phase);
+    assertDeploymentLockOwned(target, lease);
 
     finishDeployment({ target, journalPath, pointerTempName, generationName });
     return Object.freeze({ committed: true, recovered: false, generation: generationName });
   } catch (error) {
     if (error?.code !== "VIEWER_DEPLOYMENT_INTERRUPTED") {
-      try { recoverViewerDeployment({ outDir: target }); } catch { /* keep the original error and journal */ }
+      try { recoverViewerDeploymentLocked({ target, lease }); } catch { /* keep the original error and journal */ }
     }
     throw error;
+  } finally {
+    releaseDeploymentLock(target, lease);
   }
 }
 
-export function recoverViewerDeployment({ outDir } = {}) {
+export function recoverViewerDeployment({
+  outDir,
+  forceStaleLock = false,
+  staleLockMs = DEFAULT_STALE_LOCK_MS,
+} = {}) {
   const target = path.resolve(requiredPath(outDir, "deployment output"));
   const journalPath = deploymentJournalPath(target);
   if (!existsSync(journalPath)) return Object.freeze({ recovered: false });
+  const lease = acquireDeploymentLock({ target, forceStaleLock, staleLockMs });
+  try {
+    return recoverViewerDeploymentLocked({ target, lease });
+  } finally {
+    releaseDeploymentLock(target, lease);
+  }
+}
+
+function recoverViewerDeploymentLocked({ target, lease }) {
+  const journalPath = deploymentJournalPath(target);
+  if (!existsSync(journalPath)) return Object.freeze({ recovered: false });
+  assertDeploymentLockOwned(target, lease);
   assertRegularFile(journalPath, "Viewer deployment journal");
   const journal = JSON.parse(readFileSync(journalPath, "utf8"));
   validateJournal(journal, target);
@@ -99,13 +147,17 @@ export function recoverViewerDeployment({ outDir } = {}) {
   const stage = path.join(path.dirname(target), journal.stage_name);
   const generation = path.join(target, GENERATIONS_DIRECTORY, journal.generation_name);
   if (journal.phase === "generation_prepared") {
+    assertDeploymentLockOwned(target, lease);
     installGeneration({ stage, generation, generationName: journal.generation_name });
   } else {
     assertGeneration(generation, journal.generation_name);
     if (existsSync(stage)) removeMatchingStage(stage, generation);
   }
+  assertDeploymentLockOwned(target, lease);
   preparePointer({ target, pointerTempName: journal.pointer_temp_name, generationName: journal.generation_name });
+  assertDeploymentLockOwned(target, lease);
   commitPointer({ target, pointerTempName: journal.pointer_temp_name, generationName: journal.generation_name });
+  assertDeploymentLockOwned(target, lease);
   finishDeployment({ target, journalPath, pointerTempName: journal.pointer_temp_name, generationName: journal.generation_name });
   return Object.freeze({ recovered: true, phase: journal.phase, generation: journal.generation_name });
 }
@@ -304,6 +356,121 @@ function writeJournal(journalPath, journal) {
 
 function deploymentJournalPath(outDir) {
   return path.join(path.dirname(outDir), `.${path.basename(outDir)}-deployment-journal.json`);
+}
+
+function deploymentLockPath(outDir) {
+  return path.join(path.dirname(outDir), `.${path.basename(outDir)}-deployment.lock.json`);
+}
+
+function acquireDeploymentLock({ target, forceStaleLock, staleLockMs }) {
+  if (!Number.isFinite(staleLockMs) || staleLockMs < 0) {
+    throw new ViewerDeploymentError("VIEWER_DEPLOYMENT_LOCK_OPTION_INVALID", "Viewer deployment stale-lock age must be a non-negative finite number.");
+  }
+  const lockPath = deploymentLockPath(target);
+  const parent = path.dirname(lockPath);
+  mkdirSync(parent, { recursive: true });
+  const payload = Buffer.from(`${JSON.stringify({
+    schema_version: 1,
+    kind: "viewer-deployment-lock",
+    pid: process.pid,
+    created_at: new Date().toISOString(),
+    owner_token: `${process.pid}-${Date.now()}-${Math.random().toString(16).slice(2)}`,
+  })}\n`, "utf8");
+  try {
+    const descriptor = openSync(lockPath, fsConstants.O_WRONLY | fsConstants.O_CREAT | fsConstants.O_EXCL | fsConstants.O_NOFOLLOW, 0o600);
+    try {
+      writeSync(descriptor, payload);
+      fsyncSync(descriptor);
+    } finally {
+      closeSync(descriptor);
+    }
+    fsyncDirectory(parent);
+    return payload;
+  } catch (error) {
+    if (error?.code !== "EEXIST") throw error;
+  }
+
+  assertRegularFile(lockPath, "Viewer deployment lock");
+  const existingBytes = readFileSync(lockPath);
+  let existing;
+  try {
+    existing = JSON.parse(existingBytes.toString("utf8"));
+  } catch (error) {
+    throw new ViewerDeploymentError("VIEWER_DEPLOYMENT_LOCK_INVALID", "Viewer deployment lock is not trusted JSON.", { cause: error });
+  }
+  const keys = Object.keys(existing ?? {}).sort();
+  if (
+    JSON.stringify(keys) !== JSON.stringify(["created_at", "kind", "owner_token", "pid", "schema_version"].sort()) ||
+    existing.schema_version !== 1 ||
+    existing.kind !== "viewer-deployment-lock" ||
+    !Number.isInteger(existing.pid) || existing.pid < 1 ||
+    typeof existing.owner_token !== "string" || !existing.owner_token ||
+    typeof existing.created_at !== "string"
+  ) {
+    throw new ViewerDeploymentError("VIEWER_DEPLOYMENT_LOCK_INVALID", "Viewer deployment lock has an untrusted owner record.");
+  }
+  const age = Date.now() - Date.parse(existing.created_at);
+  if (
+    !forceStaleLock ||
+    processAlive(existing.pid) ||
+    !Number.isFinite(age) ||
+    age < staleLockMs
+  ) {
+    throw new ViewerDeploymentError("VIEWER_DEPLOYMENT_LOCKED", "Viewer deployment lock is owned by another live or unconfirmed writer.");
+  }
+  if (!readFileSync(lockPath).equals(existingBytes)) {
+    throw new ViewerDeploymentError("VIEWER_DEPLOYMENT_LOCK_OWNERSHIP_LOST", "Viewer deployment lock changed during stale-owner recovery.");
+  }
+  rmSync(lockPath);
+  fsyncDirectory(parent);
+  return acquireDeploymentLock({ target, forceStaleLock: false, staleLockMs });
+}
+
+function assertDeploymentLockOwned(target, lease) {
+  const lockPath = deploymentLockPath(target);
+  let actual;
+  try {
+    assertRegularFile(lockPath, "Viewer deployment lock");
+    actual = readFileSync(lockPath);
+  } catch (error) {
+    throw new ViewerDeploymentError("VIEWER_DEPLOYMENT_LOCK_OWNERSHIP_LOST", "Viewer deployment lock disappeared or became unsafe.", { cause: error });
+  }
+  if (!actual.equals(lease)) {
+    throw new ViewerDeploymentError("VIEWER_DEPLOYMENT_LOCK_OWNERSHIP_LOST", "Viewer deployment lock owner token was substituted.");
+  }
+}
+
+function releaseDeploymentLock(target, lease) {
+  assertDeploymentLockOwned(target, lease);
+  const lockPath = deploymentLockPath(target);
+  rmSync(lockPath);
+  fsyncDirectory(path.dirname(lockPath));
+}
+
+function abortBeforePointerCommit({ target, journalPath, pointerTempName, lease }) {
+  assertDeploymentLockOwned(target, lease);
+  const pointerTemp = path.join(target, pointerTempName);
+  if (existsSync(pointerTemp)) rmSync(pointerTemp);
+  rmSync(journalPath);
+  fsyncDirectory(target);
+  fsyncDirectory(path.dirname(journalPath));
+}
+
+function processAlive(pid) {
+  try {
+    process.kill(pid, 0);
+    return true;
+  } catch (error) {
+    return error?.code === "EPERM";
+  }
+}
+
+function notifyPhase(onPhase, phase) {
+  if (onPhase === null || onPhase === undefined) return;
+  if (typeof onPhase !== "function") {
+    throw new ViewerDeploymentError("VIEWER_DEPLOYMENT_HOOK_INVALID", "Viewer deployment phase observer must be a function.");
+  }
+  onPhase(phase);
 }
 
 function assertOwnedDirectory(directory, label) {

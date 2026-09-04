@@ -1,5 +1,6 @@
 import {
   artifactRootFromModuleUrl,
+  createPcrSelectionLoader,
   createViewerSnapshotClient,
   describeReadiness,
   describeSnapshotCapture,
@@ -33,6 +34,25 @@ const state = {
 const app = document.querySelector("#app");
 const artifactRoot = artifactRootFromModuleUrl(import.meta.url);
 const client = createViewerSnapshotClient({ baseUrl: artifactRoot });
+const loadSelectedPcr = createPcrSelectionLoader({
+  loadDetail: (snapshot, pcrId) => client.loadPcrDetail(snapshot, pcrId),
+  onBegin: (pcrId) => {
+    state.selectedId = pcrId;
+    state.detail = null;
+    state.detailLoading = true;
+    render();
+  },
+  onSuccess: (_pcrId, detail) => {
+    state.detail = detail;
+  },
+  onError: (pcrId, error) => {
+    state.detail = { entry: { id: pcrId, markdown: {}, guidance: { guidance_error: error.message } } };
+  },
+  onSettled: () => {
+    state.detailLoading = false;
+    render();
+  },
+});
 
 async function boot() {
   try {
@@ -336,18 +356,7 @@ function bindEvents() {
 }
 
 async function selectPcr(pcrId) {
-  state.selectedId = pcrId;
-  state.detail = null;
-  state.detailLoading = true;
-  render();
-  try {
-    state.detail = await client.loadPcrDetail(state.snapshot, pcrId);
-  } catch (error) {
-    state.detail = { entry: { id: pcrId, markdown: {}, guidance: { guidance_error: error.message } } };
-  } finally {
-    state.detailLoading = false;
-    render();
-  }
+  await loadSelectedPcr(state.snapshot, pcrId);
 }
 
 async function loadHistory() {
