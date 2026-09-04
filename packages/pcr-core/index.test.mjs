@@ -1297,6 +1297,26 @@ test("read context never lets an injected alias loader bypass retired-id routing
   }
 });
 
+test("read context rejects added or removed supplemental alias registry YAML", () => {
+  const root = createReadContextFixture("tiangong-pcr-read-context-alias-directory-", { withAlias: true });
+  const extraRegistryPath = path.join(root, "classifications/aliases/extra.yaml");
+  try {
+    const context = createPcrReadContext({ root });
+    writeFileSync(extraRegistryPath, "schema_version: 1\naliases: []\n");
+    assert.throws(
+      () => findPcrIdAlias({ root, pcrId: scaffoldPcrId, context }),
+      (error) => error.code === "PCR_READ_CONTEXT_STALE",
+    );
+    rmSync(extraRegistryPath);
+    assert.equal(
+      findPcrIdAlias({ root, pcrId: scaffoldPcrId, context }).target.code,
+      "92200",
+    );
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+  }
+});
+
 test("read context bulk sessions bind once and reuse one catalog snapshot across multiple PCR reads", () => {
   const root = createReadContextFixture("tiangong-pcr-read-context-session-");
   const abaloneDir = path.join(root, abaloneRelativePcrPath);

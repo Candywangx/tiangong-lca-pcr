@@ -138,10 +138,10 @@ export function pcrIdAliasValidationDependencies({ root }) {
     throw invalidAliases(PCR_ID_ALIAS_REGISTRY_PATH, error);
   }
   const aliases = Array.isArray(document?.aliases) ? document.aliases : [];
+  const dependencies = new Set(aliasRegistryPaths(normalizedRoot));
   if (aliases.length === 0) {
-    return [];
+    return [...dependencies].sort(compareText);
   }
-  const dependencies = new Set([PCR_ID_ALIAS_REGISTRY_PATH]);
   for (const alias of aliases) {
     if (typeof alias?.decision_ref === "string") {
       dependencies.add(alias.decision_ref.split("#", 1)[0]);
