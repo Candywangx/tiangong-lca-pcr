@@ -36,8 +36,9 @@ export async function dispatchGoalAuthors({ config, stateDir, slots = config.aut
         const replaceThreadInPlace = new Set(["GOAL_REPAIR_RESUME_FAILED", "GOAL_REPAIR_LIMIT_REACHED"]).has(failed.failure_code)
           && canReuseAuthorizedAuthorWorktree({ config, task: failed, baselineCommit: state.baseline.commit });
         const repairInPlace = Boolean(failed.thread_id && failed.worktree_path && (failed.repair_count ?? 0) < (config.retry_policy?.max_repairs ?? 2));
+        const nextCycle = nextDispatchCycle(failed);
         let task = applyTaskTransition(failed, {
-          transition_id: `${authorIdentity(config.goal_id, failed.cpc_code, failed.attempt ?? 1, failed.uuid_enrichment_generation)}-${replaceThreadInPlace ? "replace-thread" : (repairInPlace ? "repair" : "requeue")}-${(failed.dispatch_cycle ?? 1) + 1}`,
+          transition_id: `${authorIdentity(config.goal_id, failed.cpc_code, failed.attempt ?? 1, failed.uuid_enrichment_generation)}-${replaceThreadInPlace ? "replace-thread" : (repairInPlace ? "repair" : "requeue")}-${nextCycle}`,
           to: replaceThreadInPlace ? "preflight" : (repairInPlace ? "repair_requested" : "queued"),
           at: new Date().toISOString(),
         });
@@ -143,7 +144,7 @@ export async function dispatchGoalAuthors({ config, stateDir, slots = config.aut
       if (!task || task.thread_id || task.state === "authoring") continue;
       const reusePrepared = Boolean(task.worktree_path && !task.thread_id);
       const attempt = task.state === "preflight" || reusePrepared ? (task.attempt ?? 1) : (task.attempt ?? 0) + 1;
-      const dispatchCycle = (task.dispatch_cycle ?? 0) + 1;
+      const dispatchCycle = nextDispatchCycle(task);
       const identity = authorIdentity(config.goal_id, task.cpc_code, attempt, task.uuid_enrichment_generation);
       const transitionIdentity = `${identity}-c${dispatchCycle}`;
       const worktreePath = task.worktree_path ?? path.join(config.project_root, ".worktrees", "goals", config.goal_id, "authors", identity);
@@ -509,6 +510,15 @@ function authorIdentity(goalId, cpcCode, attempt, enrichmentGeneration = 0) {
   const safeCode = String(cpcCode).replace(/[^0-9a-z]+/giu, "-");
   const enrichment = enrichmentGeneration > 0 ? `-u${enrichmentGeneration}` : "";
   return `goal-${safeGoal}-${safeCode}${enrichment}-a${attempt}`;
+}
+
+function nextDispatchCycle(task) {
+  let highest = Number.isInteger(task.dispatch_cycle) ? task.dispatch_cycle : 0;
+  for (const transitionId of task.transition_ids ?? []) {
+    const match = String(transitionId).match(/-c(\d+)-(?:preflight|authoring|dispatch-failed)$/u);
+    if (match) highest = Math.max(highest, Number(match[1]));
+  }
+  return highest + 1;
 }
 
 function authorTimedOut(task, timeoutSeconds, at) {

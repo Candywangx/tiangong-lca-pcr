@@ -74,6 +74,63 @@ test("dispatch creates one worktree-visible task and repeated resume does not du
   }
 });
 
+test("dispatch advances past a legacy transition cycle whose persisted counter is stale", async () => {
+  const { root, stateDir, config } = fixture();
+  const store = new GoalEventStore({ stateDir });
+  const original = store.rebuild().tasks[0];
+  const transitionIdentity = "goal-fixture-41111-u1-a5-c6";
+  const legacyAuthoring = {
+    ...original,
+    state: "authoring",
+    attempt: 5,
+    dispatch_cycle: 5,
+    uuid_enrichment_generation: 1,
+    author_base_commit: store.rebuild().baseline.commit,
+    worktree_path: root,
+    author_branch: git(root, ["branch", "--show-current"]),
+    thread_id: "thread-legacy",
+    turn_id: "turn-legacy",
+    transition_ids: [`${transitionIdentity}-authoring`],
+  };
+  store.append({
+    event_id: `${transitionIdentity}-dispatched`,
+    type: "task_replaced",
+    payload: { task: legacyAuthoring },
+  });
+  store.append({
+    event_id: "fixture-legacy-cycle-requeued",
+    type: "task_replaced",
+    payload: { task: {
+      ...legacyAuthoring,
+      state: "queued",
+      thread_id: null,
+      turn_id: null,
+      transition_ids: [...legacyAuthoring.transition_ids, "legacy-requeue"],
+    } },
+  });
+  const calls = [];
+  try {
+    const result = await dispatchGoalAuthors({
+      config,
+      stateDir,
+      slots: 1,
+      adapter: {
+        async createAuthorTask(input) {
+          calls.push(input);
+          return { thread_id: "thread-current", turn_id: "turn-current" };
+        },
+      },
+    });
+    assert.equal(calls.length, 1);
+    assert.equal(result.state.tasks[0].state, "authoring");
+    assert.equal(result.state.tasks[0].dispatch_cycle, 7);
+    assert.equal(result.state.tasks[0].thread_id, "thread-current");
+    assert.ok(result.state.tasks[0].transition_ids.includes("goal-fixture-41111-u1-a5-c7-authoring"));
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+  }
+});
+
 test("dispatch fills every open slot when another author is already active", async () => {
   const { root, stateDir, config } = fixture({ taskCount: 7 });
   const store = new GoalEventStore({ stateDir });
