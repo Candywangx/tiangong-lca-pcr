@@ -596,26 +596,35 @@ export class ViewerSnapshotStore {
     const entry = value.entry;
     const requiredText = (field) => requireText(entry[field], `${value.object_kind}.${field}`);
     if (value.object_kind === "pcr_detail") {
+      assertExactKeys(entry, ["id", "title", "lifecycle_status", "renamed_from", "markdown", "guidance", "search_text", "reference_flow"], "pcr_detail");
       requiredText("id");
       if (Object.keys(entry).length < 2) throw new ViewerSnapshotStoreError("VIEWER_OBJECT_SEMANTIC_INVALID", "pcr_detail requires non-empty detail content.");
     } else if (value.object_kind === "catalog_entry") {
+      assertExactKeys(entry, ["id", "title", "search_text", "lifecycle_status"], "catalog_entry");
       for (const field of ["id", "title", "search_text", "lifecycle_status"]) requiredText(field);
     } else if (value.object_kind === "alias_entry") {
+      assertExactKeys(entry, ["id", "locator"], "alias_entry");
       requiredText("id"); requiredText("locator");
     } else if (value.object_kind === "coverage_entry") {
+      assertExactKeys(entry, ["coordinate", "code", "pcr_id"], "coverage_entry");
       normalizeCoordinate(entry.coordinate); requiredText("code");
     } else if (value.object_kind === "ui_bundle") {
+      assertExactKeys(entry, ["id", "asset_url"], "ui_bundle");
       requiredText("id");
       if (typeof entry.asset_url !== "string") throw new ViewerSnapshotStoreError("VIEWER_OBJECT_SEMANTIC_INVALID", "ui_bundle.asset_url must be a string.");
     } else if (["catalog_shard", "alias_shard"].includes(value.object_kind)) {
+      assertExactKeys(entry, ["prefix", "entries"], value.object_kind);
       requiredText("prefix");
       if (!Array.isArray(entry.entries) || entry.entries.some((item) => !item || typeof item.id !== "string" || !/^sha256:[a-f0-9]{64}$/u.test(item.object_ref))) throw new ViewerSnapshotStoreError("VIEWER_OBJECT_SEMANTIC_INVALID", `${value.object_kind} entries are invalid.`);
     } else if (value.object_kind === "coverage_shard") {
+      assertExactKeys(entry, ["coordinate", "prefix", "entries"], "coverage_shard");
       normalizeCoordinate(entry.coordinate); requiredText("prefix");
       if (!Array.isArray(entry.entries) || entry.entries.some((item) => typeof item?.code !== "string" || !/^sha256:[a-f0-9]{64}$/u.test(item.coverage_entry_ref))) throw new ViewerSnapshotStoreError("VIEWER_OBJECT_SEMANTIC_INVALID", "coverage_shard entries are invalid.");
     } else if (["catalog_root", "alias_root", "coverage_root"].includes(value.object_kind)) {
+      assertExactKeys(entry, value.object_kind === "catalog_root" ? ["shards", "details"] : ["shards", "entries"], value.object_kind);
       if (!entry || typeof entry !== "object" || Object.values(entry).some((map) => !map || typeof map !== "object")) throw new ViewerSnapshotStoreError("VIEWER_OBJECT_SEMANTIC_INVALID", `${value.object_kind} relationships are invalid.`);
     } else if (value.object_kind === "history_page") {
+      assertExactKeys(entry, ["entries", "previous_page_ref"], "history_page");
       if (!Array.isArray(entry.entries) || entry.entries.length === 0 || entry.entries.some((item) => !Number.isSafeInteger(item?.sequence) || item.sequence < 1 || !/^sha256:[a-f0-9]{64}$/u.test(item.manifest_ref)) || (entry.previous_page_ref !== null && !/^sha256:[a-f0-9]{64}$/u.test(entry.previous_page_ref))) throw new ViewerSnapshotStoreError("VIEWER_OBJECT_SEMANTIC_INVALID", "history_page entries are invalid.");
     }
   }
@@ -985,6 +994,11 @@ function requireCoverageEntries(entries) {
 function requireText(value, label) {
   if (typeof value !== "string" || !value || value !== value.trim()) throw new ViewerSnapshotStoreError("VIEWER_SNAPSHOT_INVALID", `Invalid ${label}.`);
   return value;
+}
+
+function assertExactKeys(value, allowed, label) {
+  const unknown = Object.keys(value).filter((key) => !allowed.includes(key));
+  if (unknown.length) throw new ViewerSnapshotStoreError("VIEWER_OBJECT_SEMANTIC_INVALID", `${label} contains undeclared field(s): ${unknown.sort().join(", ")}.`);
 }
 
 function requireSequence(value) {

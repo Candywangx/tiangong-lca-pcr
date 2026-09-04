@@ -560,3 +560,18 @@ test("a per-PCR revision marker invalidates only its detail object", () => {
     assert.deepEqual(after.refs.alias_entries, before.refs.alias_entries);
   } finally { rmSync(root, { recursive: true, force: true }); }
 });
+
+test("object-kind contracts reject undeclared generated metadata", () => {
+  const { root, store } = fixtureStore();
+  try {
+    const identity = objectIdentity();
+    assert.throws(() => store.writeObject({
+      schema_version: 1, object_kind: "catalog_shard", identity,
+      entry: { prefix: "aa", entries: [], generated_at: "2026-09-05T00:00:00Z" },
+    }), /undeclared field/u);
+    assert.throws(() => store.writeObject({
+      schema_version: 1, object_kind: "coverage_entry", identity,
+      entry: { coordinate: { system: "cpc", version: "3.0" }, code: "01111", pcr_id: "pcr.a", generated_at: "now" },
+    }), /undeclared field/u);
+  } finally { rmSync(root, { recursive: true, force: true }); }
+});
