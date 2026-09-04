@@ -240,8 +240,19 @@ export function auditHybridSearchReceipts({ report, stateDir, task, verifiedUuid
     for (const receiptId of receiptIds) referenced.add(receiptId);
   }
   if (referenced.size > 0 && ids.length === 0) throw receiptMissing("Author report does not list its hybrid-search receipt ids.");
-  for (const id of referenced) {
-    if (!ids.includes(id)) throw receiptMissing(`Referenced receipt ${id} is absent from hybrid_search_receipt_ids.`);
+  const missingMemberships = [...referenced].filter((id) => !ids.includes(id));
+  if (missingMemberships.length > 0) {
+    const findings = missingMemberships.map((receiptId) => ({
+      code: "GOAL_HYBRID_SEARCH_RECEIPT_MISSING",
+      message: `Referenced receipt ${receiptId} is absent from hybrid_search_receipt_ids.`,
+      receipt_id: receiptId,
+      remediation: `Add ${receiptId} to hybrid_search_receipt_ids without altering the immutable receipt.`,
+    }));
+    throw new GoalHarnessError(
+      "GOAL_HYBRID_SEARCH_RECEIPT_MISSING",
+      `${missingMemberships.length} referenced receipt id(s) are absent from hybrid_search_receipt_ids: ${missingMemberships.join(", ")}.`,
+      { findings },
+    );
   }
   const taskBoundReceiptIds = new Set([
     ...(report.inventory?.unresolved ?? []).flatMap((entry) => entry.hybrid_search_receipt_ids ?? []),

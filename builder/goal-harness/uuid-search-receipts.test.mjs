@@ -276,6 +276,29 @@ test("a self-reported hybrid_search boolean cannot substitute for a receipt", ()
   }
 });
 
+test("receipt membership gate reports every missing top-level receipt id in one repair", () => {
+  const { root, stateDir } = fixture();
+  try {
+    assert.throws(
+      () => auditHybridSearchReceipts({
+        report: {
+          hybrid_search_receipt_ids: ["receipt-listed"],
+          uuid_audits: [],
+          rejected_uuid_candidates: [{ uuid: UUID_A, receipt_id: "receipt-rejected", reason_code: "semantic_mismatch", reason: "Not exact." }],
+          inventory: { unresolved: [{ row_id: "input_x", reason_code: "no_exact_candidate", explanation: "No exact public flow.", hybrid_search_receipt_ids: ["receipt-unresolved"] }] },
+        },
+        stateDir,
+        task: { id: "task-1", cpc_code: "41111", attempt: 1 },
+      }),
+      (error) => error.code === "GOAL_HYBRID_SEARCH_RECEIPT_MISSING"
+        && error.details.findings.length === 2
+        && error.details.findings.map((finding) => finding.receipt_id).sort().join(",") === "receipt-rejected,receipt-unresolved",
+    );
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+  }
+});
+
 test("no_exact_candidate and manual_review_required need a finalized receipt", () => {
   const { root, stateDir } = fixture();
   try {
