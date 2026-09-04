@@ -79,13 +79,14 @@ function retireDeadLock({ stateDir, lockPath, existing, faultInjector }) {
     throw new GoalHarnessError("GOAL_LOCKED", "Stale-lock retirement claim has an untrusted filesystem type.", { lock_path: lockPath });
   }
   const entries = readdirSync(retiredDir);
-  if (entries.some((entry) => entry !== "owner.json")) {
+  if (entries.some((entry) => entry !== "owner.json" && entry !== "recovery.lock" && !/^recovery-dead-[a-f0-9]{64}\.json$/u.test(entry))) {
     throw new GoalHarnessError("GOAL_LOCKED", "Stale-lock retirement claim has an untrusted shape.", { lock_path: lockPath });
   }
   if (createdDirectory) {
     fsyncDirectory(historyDir);
     faultInjector("after_retirement_directory_created", { lock_path: lockPath, retired_dir: retiredDir });
   }
+  const recoveryLease = acquireRetirementRecoveryClaim(retiredDir);
   const retiredOwner = path.join(retiredDir, "owner.json");
   let capturedOwner = false;
   try {
@@ -93,6 +94,7 @@ function retireDeadLock({ stateDir, lockPath, existing, faultInjector }) {
       linkSync(lockPath, retiredOwner);
       capturedOwner = true;
       fsyncDirectory(retiredDir);
+      faultInjector("after_stale_owner_captured", { lock_path: lockPath, retired_dir: retiredDir });
     } catch (error) {
       if (error?.code !== "EEXIST") throw error;
     }
@@ -100,9 +102,6 @@ function retireDeadLock({ stateDir, lockPath, existing, faultInjector }) {
     if (!moved.equals(existing.bytes)) {
       if (capturedOwner) unlinkSync(retiredOwner);
       throw new GoalHarnessError("GOAL_LOCKED", "Goal lock owner changed while stale-lock retirement was in progress.", { lock_path: lockPath });
-    }
-    if (!capturedOwner) {
-      throw new GoalHarnessError("GOAL_LOCKED", "Another operation already captured this stale Goal lock for retirement.", { lock_path: lockPath });
     }
     const current = readGoalLock(lockPath);
     const currentStat = lstatSync(lockPath);
@@ -120,7 +119,76 @@ function retireDeadLock({ stateDir, lockPath, existing, faultInjector }) {
       throw new GoalHarnessError("GOAL_LOCKED", "Goal lock changed while stale-lock retirement was in progress.", { lock_path: lockPath });
     }
     throw error;
+  } finally {
+    releaseRetirementRecoveryClaim(retiredDir, recoveryLease);
   }
+}
+
+function acquireRetirementRecoveryClaim(retiredDir) {
+  const claimPath = path.join(retiredDir, "recovery.lock");
+  const lease = Buffer.from(`${JSON.stringify({ schema_version: 1, pid: process.pid, token: randomUUID(), acquired_at: new Date().toISOString() })}\n`, "utf8");
+  for (let attempt = 0; attempt < 2; attempt += 1) {
+    let descriptor;
+    try {
+      descriptor = openSync(claimPath, fsConstants.O_WRONLY | fsConstants.O_CREAT | fsConstants.O_EXCL | fsConstants.O_NOFOLLOW, 0o600);
+      writeSync(descriptor, lease);
+      fsyncSync(descriptor);
+      fsyncDirectory(retiredDir);
+      return lease;
+    } catch (error) {
+      if (error?.code !== "EEXIST") throw error;
+      const existing = readRetirementRecoveryClaim(claimPath);
+      if (!processIsDefinitelyGone(existing.holder.pid)) {
+        throw new GoalHarnessError("GOAL_LOCKED", "Another operation is completing stale-lock retirement.", { claim_path: claimPath });
+      }
+      const archive = path.join(retiredDir, `recovery-dead-${createHash("sha256").update(existing.bytes).digest("hex")}.json`);
+      try {
+        linkSync(claimPath, archive);
+      } catch (linkError) {
+        if (linkError?.code === "EEXIST") {
+          throw new GoalHarnessError("GOAL_LOCKED", "Another operation is recovering the stale retirement claim.", { claim_path: claimPath });
+        }
+        throw linkError;
+      }
+      const current = readFileSync(claimPath);
+      if (!current.equals(existing.bytes)) {
+        unlinkSync(archive);
+        throw new GoalHarnessError("GOAL_LOCKED", "Stale retirement claim changed during recovery.", { claim_path: claimPath });
+      }
+      unlinkSync(claimPath);
+      fsyncDirectory(retiredDir);
+    } finally {
+      if (descriptor !== undefined) closeSync(descriptor);
+    }
+  }
+  throw new GoalHarnessError("GOAL_LOCKED", "Could not acquire stale-lock retirement recovery claim.", { claim_path: claimPath });
+}
+
+function readRetirementRecoveryClaim(claimPath) {
+  const stat = lstatSync(claimPath);
+  if (!stat.isFile() || stat.isSymbolicLink()) {
+    throw new GoalHarnessError("GOAL_LOCKED", "Stale-lock retirement claim has an untrusted filesystem type.", { claim_path: claimPath });
+  }
+  const bytes = readFileSync(claimPath);
+  let holder;
+  try { holder = JSON.parse(bytes.toString("utf8")); } catch {
+    throw new GoalHarnessError("GOAL_LOCKED", "Stale-lock retirement claim is incomplete or invalid.", { claim_path: claimPath });
+  }
+  if (holder?.schema_version !== 1 || !Number.isSafeInteger(holder.pid) || holder.pid < 1 || typeof holder.token !== "string") {
+    throw new GoalHarnessError("GOAL_LOCKED", "Stale-lock retirement claim is not trusted.", { claim_path: claimPath });
+  }
+  return { holder, bytes };
+}
+
+function releaseRetirementRecoveryClaim(retiredDir, lease) {
+  const claimPath = path.join(retiredDir, "recovery.lock");
+  if (!existsSync(claimPath)) return;
+  try {
+    const current = readFileSync(claimPath);
+    if (!current.equals(lease)) return;
+    unlinkSync(claimPath);
+    fsyncDirectory(retiredDir);
+  } catch { /* fail closed; a later confirmed-dead reclaimer can recover the claim */ }
 }
 
 function readGoalLock(filePath) {

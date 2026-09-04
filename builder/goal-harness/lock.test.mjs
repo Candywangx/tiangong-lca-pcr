@@ -129,3 +129,45 @@ test("retirement never removes a replacement live lease", () => {
     rmSync(stateDir, { recursive: true, force: true });
   }
 });
+
+test("concurrent reclaimers recover a process death after stale owner capture", async () => {
+  const stateDir = mkdtempSync(path.join(tmpdir(), "goal-stale-lock-owner-capture-"));
+  const lockPath = path.join(stateDir, "goal.lock");
+  const stale = { schema_version: 1, token: "stale-token", pid: 2147483647, operation: "integrate", acquired_at: "2026-09-04T00:00:00.000Z" };
+  const moduleUrl = pathToFileURL(path.join(process.cwd(), "builder/goal-harness/lock.mjs")).href;
+  const spawnRun = (source) => new Promise((resolve) => {
+    const child = spawn(process.execPath, ["--input-type=module", "-e", source], { stdio: ["ignore", "pipe", "pipe"] });
+    let stdout = "";
+    child.stdout.on("data", (chunk) => { stdout += chunk; });
+    child.on("close", (code) => resolve({ code, stdout }));
+  });
+  try {
+    writeFileSync(lockPath, `${JSON.stringify(stale)}\n`);
+    const crashing = await spawnRun(`import { withGoalLock } from ${JSON.stringify(moduleUrl)};
+withGoalLock(${JSON.stringify(stateDir)}, "capture-crash", () => "must not run", {
+  faultInjector(phase) {
+    if (phase === "after_stale_owner_captured") process.exit(86);
+  },
+});`);
+    assert.equal(crashing.code, 86);
+    const [retired] = readdirSync(path.join(stateDir, "lock-history"));
+    const retiredDir = path.join(stateDir, "lock-history", retired);
+    assert.deepEqual(JSON.parse(readFileSync(path.join(retiredDir, "owner.json"), "utf8")), stale);
+    assert.deepEqual(JSON.parse(readFileSync(lockPath, "utf8")), stale);
+
+    const run = () => spawnRun(`import { withGoalLock } from ${JSON.stringify(moduleUrl)};
+try {
+  const value = withGoalLock(${JSON.stringify(stateDir)}, "race", () => { Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, 500); return "entered"; });
+  process.stdout.write(JSON.stringify({ ok: true, value }));
+} catch (error) {
+  process.stdout.write(JSON.stringify({ ok: false, code: error.code }));
+  process.exitCode = 1;
+}`).then(({ stdout }) => JSON.parse(stdout));
+    const results = await Promise.all(Array.from({ length: 8 }, () => run()));
+    assert.equal(results.filter((entry) => entry.ok).length, 1);
+    assert.ok(results.filter((entry) => !entry.ok).every((entry) => entry.code === "GOAL_LOCKED"));
+    assert.equal(existsSync(lockPath), false);
+  } finally {
+    rmSync(stateDir, { recursive: true, force: true });
+  }
+});
