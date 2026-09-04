@@ -97,6 +97,9 @@ test("integration dry-run exposes the serial Builder and consumer checks without
     const result = integrateGoalSnapshot({ config, stateDir, dryRun: true });
     assert.equal(result.status, "dry_run");
     assert.deepEqual(result.commands.map((command) => command.name), ["aliases_build", "catalog_build", "viewer_candidate_check", "validate", "smoke_list", "smoke_resolve", "smoke_guidance"]);
+    const viewerCandidate = result.commands.find((command) => command.name === "viewer_candidate_check");
+    assert.equal(viewerCandidate.args.filter((token) => token === "--pcr").length, 6);
+    assert.ok(tasks.every((task) => viewerCandidate.args.includes(task.pcr_id)));
     assert.equal(new GoalEventStore({ stateDir }).rebuild().snapshots[0].state, "integration_pending");
   } finally {
     rmSync(root, { recursive: true, force: true });

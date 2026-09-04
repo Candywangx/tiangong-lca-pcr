@@ -186,7 +186,7 @@ export function selectRepositoryIntegrationHead({ projectRoot, fallbackHead }) {
   return readAcceptedHead({ projectRoot, stateDir });
 }
 
-export function listCommittedRepositoryValidations({ projectRoot }) {
+export function listCommittedRepositoryValidations({ projectRoot, sourceVerificationFromSequence = 1 }) {
   const stateDir = repositoryCoordinatorStateDir(projectRoot);
   const directory = path.join(stateDir, "validations");
   const records = [];
@@ -242,7 +242,7 @@ export function listCommittedRepositoryValidations({ projectRoot }) {
       });
     }
     const actualSource = readRef(projectRoot, record.source_ref);
-    if (actualSource !== record.integration_commit) {
+    if (record.repository_sequence >= sourceVerificationFromSequence && actualSource !== record.integration_commit) {
       throw new GoalHarnessError("GOAL_REPOSITORY_SOURCE_REF_CONFLICT", "Pinned Viewer source ref differs from its committed validation record.", {
         repository_sequence: record.repository_sequence,
         source_ref: record.source_ref,
@@ -251,7 +251,7 @@ export function listCommittedRepositoryValidations({ projectRoot }) {
       });
     }
     const actualTree = git(projectRoot, ["rev-parse", `${record.integration_commit}^{tree}`]);
-    if (actualTree !== record.tree_hash) {
+    if (record.repository_sequence >= sourceVerificationFromSequence && actualTree !== record.tree_hash) {
       throw new GoalHarnessError("GOAL_REPOSITORY_SOURCE_TREE_CONFLICT", "Pinned integration commit tree differs from its committed validation record.", {
         repository_sequence: record.repository_sequence,
         expected_tree: record.tree_hash,

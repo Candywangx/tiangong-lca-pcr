@@ -4,8 +4,8 @@ import { createHash, randomUUID } from "node:crypto";
 
 import { GoalHarnessError } from "./errors.mjs";
 
-export function withGoalLock(stateDir, operation, callback, { faultInjector = () => {} } = {}) {
-  const { lockPath, lease } = acquireGoalLock(stateDir, operation, { faultInjector });
+export function withGoalLock(stateDir, operation, callback, { faultInjector = () => {}, allowDeadLockRecovery = true } = {}) {
+  const { lockPath, lease } = acquireGoalLock(stateDir, operation, { faultInjector, allowDeadLockRecovery });
   try {
     return callback();
   } finally {
@@ -13,8 +13,8 @@ export function withGoalLock(stateDir, operation, callback, { faultInjector = ()
   }
 }
 
-export async function withGoalLockAsync(stateDir, operation, callback, { faultInjector = () => {} } = {}) {
-  const { lockPath, lease } = acquireGoalLock(stateDir, operation, { faultInjector });
+export async function withGoalLockAsync(stateDir, operation, callback, { faultInjector = () => {}, allowDeadLockRecovery = true } = {}) {
+  const { lockPath, lease } = acquireGoalLock(stateDir, operation, { faultInjector, allowDeadLockRecovery });
   try {
     return await callback();
   } finally {
@@ -22,14 +22,14 @@ export async function withGoalLockAsync(stateDir, operation, callback, { faultIn
   }
 }
 
-function acquireGoalLock(stateDir, operation, { faultInjector }) {
+function acquireGoalLock(stateDir, operation, { faultInjector, allowDeadLockRecovery }) {
   mkdirSync(stateDir, { recursive: true });
   const lockPath = path.join(stateDir, "goal.lock");
   const token = randomUUID();
   const owner = { schema_version: 1, token, pid: process.pid, operation, acquired_at: new Date().toISOString() };
   const lease = Buffer.from(`${JSON.stringify(owner)}\n`, "utf8");
   for (let attempt = 0; attempt < 16; attempt += 1) {
-    recoverIncompleteRetirements({ stateDir, faultInjector });
+    recoverIncompleteRetirements({ stateDir, faultInjector, allowDeadLockRecovery });
     let published;
     try {
       published = publishGoalLock({ stateDir, lockPath, lease, faultInjector });
@@ -40,6 +40,9 @@ function acquireGoalLock(stateDir, operation, { faultInjector }) {
     if (!published) {
       const existing = readGoalLock(lockPath);
       if (processIsDefinitelyGone(existing.holder.pid)) {
+        if (!allowDeadLockRecovery) {
+          throw new GoalHarnessError("GOAL_STALE_LOCK_FORCE_REQUIRED", "A confirmed dead Goal lock requires explicit stale-lock recovery authorization.", { lock_path: lockPath, holder: existing.holder });
+        }
         retireDeadLock({ stateDir, lockPath, existing, faultInjector });
         continue;
       }
@@ -267,7 +270,7 @@ function isTrustedRecoveryHolder(holder) {
     typeof holder.token === "string" && holder.token.length > 0 && Number.isFinite(Date.parse(holder.acquired_at ?? ""));
 }
 
-function recoverIncompleteRetirements({ stateDir, faultInjector }) {
+function recoverIncompleteRetirements({ stateDir, faultInjector, allowDeadLockRecovery = true }) {
   const historyDir = path.join(stateDir, "lock-history");
   if (!existsSync(historyDir)) return;
   let names;
@@ -285,6 +288,9 @@ function recoverIncompleteRetirements({ stateDir, faultInjector }) {
       if (owner === null) throw new GoalHarnessError("GOAL_LOCKED", "Completed stale-lock retirement is missing its immutable owner.", { retired_dir: retiredDir });
       verifyRetirementComplete(completePath, owner.bytes);
       continue;
+    }
+    if (!allowDeadLockRecovery) {
+      throw new GoalHarnessError("GOAL_STALE_LOCK_FORCE_REQUIRED", "An incomplete stale-lock retirement requires explicit recovery authorization.", { retired_dir: retiredDir });
     }
 
     const lockPath = path.join(stateDir, "goal.lock");

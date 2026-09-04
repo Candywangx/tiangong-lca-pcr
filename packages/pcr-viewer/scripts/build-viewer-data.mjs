@@ -34,7 +34,7 @@ import {
 } from "../../pcr-core/src/index.mjs";
 import { parseYaml } from "../../pcr-core/src/yaml-lite.mjs";
 import { VIEWER_DATA_SCHEMA_VERSION } from "../static/viewer-core.js";
-import { canonicalBytes, sha256Ref, viewerSchemaContractSha256 } from "./snapshot-format.mjs";
+import { canonicalBytes, createViewerSnapshotSchemaRegistry, sha256Ref, viewerSchemaContractSha256 } from "./snapshot-format.mjs";
 import { ViewerSnapshotStore } from "./snapshot-store.mjs";
 import {
   commitViewerDeployment,
@@ -398,6 +398,7 @@ export function publishViewerSnapshot({
   onAliasValidation = null,
   forceStaleLock = false,
   failurePhase = null,
+  onPublicationPhase = null,
   uiBundleRef = null,
   uiBundleUrl = null,
 } = {}) {
@@ -500,12 +501,44 @@ export function publishViewerSnapshot({
     uiBundleUrl: installedUiBundle.url,
     forceStaleLock,
     failurePhase,
+    onPhase: onPublicationPhase,
   });
   return Object.freeze({
     ...result,
     rebuiltPcrIds: Object.freeze([...sourceModel.rebuiltPcrIds]),
     removedPcrIds: Object.freeze([...sourceModel.removedPcrIds]),
     store,
+  });
+}
+
+export function checkViewerCandidates({ root = repoRoot, pcrIds = [] } = {}) {
+  const ids = [...new Set(pcrIds.map(String))].sort();
+  if (ids.length === 0) throw new ViewerBuilderError("VIEWER_CANDIDATE_REQUIRED", "At least one --pcr id is required for a bounded Viewer candidate check.");
+  const resolvedRoot = realpathSync(path.resolve(root));
+  const context = createPcrReadContext({ root: resolvedRoot });
+  const schemas = createViewerSnapshotSchemaRegistry();
+  const identity = {
+    generator_contract_sha256: sha256Ref("viewer-candidate-generator\n"),
+    schema_contract_sha256: viewerSchemaContractSha256(),
+    source_fingerprint: sha256Ref("viewer-candidate-source\n"),
+    release_revision_marker: null,
+  };
+  return withPcrReadContextSession({
+    context,
+    root: resolvedRoot,
+    read: () => {
+      for (const pcrId of ids) {
+        const guidance = buildGuidance({ root: resolvedRoot, pcrId, context });
+        const markdown = Object.fromEntries(languages.map((language) => [language, readPcrMarkdown({ root: resolvedRoot, pcrId, language, context })]));
+        schemas.assert("viewer-object", {
+          schema_version: 1,
+          object_kind: "pcr_detail",
+          identity,
+          entry: { id: pcrId, markdown, guidance },
+        });
+      }
+      return Object.freeze({ ok: true, checked_pcr_ids: Object.freeze(ids), checked: ids.length });
+    },
   });
 }
 
@@ -1677,6 +1710,8 @@ function runCli(argv) {
           { details: { snapshot_id: output.snapshot_id, sequence: output.sequence, drift: output.drift } },
         );
       }
+    } else if (command === "candidate") {
+      output = checkViewerCandidates({ root: options.root, pcrIds: options.changedPcrIds });
     } else if (command === "recover") {
       requireArtifactStore(options.artifactStore);
       output = { ok: true, ...recoverViewerSnapshot(options) };

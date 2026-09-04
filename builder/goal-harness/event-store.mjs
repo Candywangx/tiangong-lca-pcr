@@ -134,8 +134,17 @@ function reduceEvent(state, event) {
           viewer_publication: "published",
           viewer_manifest_ref: event.payload.manifest_ref,
           viewer_snapshot_id: event.payload.viewer_snapshot_id,
-          viewer_sequence: event.payload.repository_sequence,
+          viewer_sequence: event.payload.viewer_sequence,
           viewer_published_at: event.payload.published_at,
+        }
+      : snapshot);
+  } else if (event.type === "viewer_snapshot_unavailable") {
+    next.snapshots = (next.snapshots ?? []).map((snapshot) => snapshot.id === event.payload.harness_snapshot_id
+      ? {
+          ...snapshot,
+          viewer_publication: "pre_activation_unavailable",
+          viewer_unavailable_reason: event.payload.reason,
+          viewer_source_status: event.payload.source_status,
         }
       : snapshot);
   } else if (event.type === "task_replaced") {

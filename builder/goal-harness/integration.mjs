@@ -363,7 +363,7 @@ function integrationCommands(config, tasks) {
   return [
     { name: "aliases_build", command: "npm", args: ["run", "aliases:build"] },
     { name: "catalog_build", command: "npm", args: ["run", "catalog:build"] },
-    { name: "viewer_candidate_check", command: "npm", args: ["--silent", "run", "tiangong-pcr", "--", "guidance", "--pcr", selected.pcr_id, "--format", "json"] },
+    { name: "viewer_candidate_check", command: "node", args: ["packages/pcr-viewer/scripts/build-viewer-data.mjs", "candidate", ...tasks.flatMap((task) => ["--pcr", task.pcr_id]), "--format", "json"] },
     { name: "validate", command: "npm", args: ["run", "validate"] },
     { name: "smoke_list", command: "npm", args: ["--silent", "run", "tiangong-pcr", "--", "list", "--path-prefix", prefix, "--format", "json"] },
     { name: "smoke_resolve", command: "npm", args: ["--silent", "run", "tiangong-pcr", "--", "resolve", "--classification", `${config.classification_system}:${config.classification_version}:${selected.cpc_code}`, "--format", "json"] },
