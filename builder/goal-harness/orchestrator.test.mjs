@@ -433,6 +433,82 @@ test("an interrupted repair resumes once in the same thread without consuming an
   }
 });
 
+test("a missing repair continuation replaces only the thread and preserves its safe worktree", async () => {
+  const { root, stateDir, config } = fixture();
+  config.retry_policy = { max_attempts: 3, max_repairs: 2 };
+  const first = await dispatchGoalAuthors({
+    config,
+    stateDir,
+    slots: 1,
+    adapter: { async createAuthorTask() { return { thread_id: "thread-old", turn_id: "turn-original" }; } },
+  });
+  const original = first.dispatched[0];
+  const store = new GoalEventStore({ stateDir });
+  store.append({
+    event_id: "fixture-missing-repair-continuation",
+    type: "task_replaced",
+    payload: { task: {
+      ...original,
+      state: "authoring_repair",
+      turn_id: "turn-repair-resume-missing",
+      repair_count: 1,
+      repair_resume_count: 1,
+      repair_history: [{
+        repair_count: 1,
+        turn_id: "turn-repair",
+        resume_turn_ids: ["turn-repair-resume-missing"],
+        started_at: "2026-09-02T00:00:00.000Z",
+        ended_at: null,
+        original_commit: original.author_base_commit,
+        new_commit: null,
+        gate_findings: [{ code: "missing_receipt" }],
+      }],
+      transition_ids: [...original.transition_ids, "authoring_repair", "repair-resume-1"],
+    } },
+  });
+  try {
+    const harvested = await harvestGoalAuthors({
+      config,
+      stateDir,
+      adapter: {
+        async readThread() {
+          return { thread: { turns: [{ id: "turn-original", status: "interrupted", items: [] }] } };
+        },
+      },
+    });
+    const failed = harvested.state.tasks[0];
+    assert.equal(failed.state, "retryable_failure");
+    assert.equal(failed.failure_code, "GOAL_REPAIR_RESUME_FAILED");
+    assert.equal(failed.thread_id, "thread-old");
+    assert.equal(failed.worktree_path, original.worktree_path);
+
+    let repairStarts = 0;
+    let replacements = 0;
+    const resumed = await dispatchGoalAuthors({
+      config,
+      stateDir,
+      slots: 1,
+      resumeStopped: true,
+      adapter: {
+        async startRepairTurn() { repairStarts += 1; throw new Error("same thread must not be resumed again"); },
+        async createAuthorTask() {
+          replacements += 1;
+          return { thread_id: "thread-replacement", turn_id: "turn-replacement" };
+        },
+      },
+    });
+    const replacement = resumed.state.tasks[0];
+    assert.equal(repairStarts, 0);
+    assert.equal(replacements, 1);
+    assert.equal(replacement.state, "authoring");
+    assert.equal(replacement.worktree_path, original.worktree_path);
+    assert.equal(replacement.thread_id, "thread-replacement");
+    assert.deepEqual(replacement.previous_thread_ids, ["thread-old"]);
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+  }
+});
+
 test("a timed-out repair is interrupted then offered one same-thread continuation", async () => {
   const { root, stateDir, config } = fixture();
   config.author_timeout_seconds = 60;

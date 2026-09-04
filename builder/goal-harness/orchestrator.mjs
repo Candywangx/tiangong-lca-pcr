@@ -281,13 +281,19 @@ export async function harvestGoalAuthors({
           || task.continuing_repair_after_thread_replacement === true
           || (Boolean(task.previous_thread_ids?.length) && task.repair_history?.at(-1)?.ended_at == null);
         const response = await adapter.readThread({ threadId: task.thread_id, includeTurns: true });
-        const extracted = extractCompletedTurnReport(response, task.turn_id);
+        let extracted;
+        try {
+          extracted = extractCompletedTurnReport(response, task.turn_id);
+        } catch (error) {
+          if (error.code !== "GOAL_AUTHOR_TURN_MISSING") throw error;
+          extracted = { status: "missing", report: null, error: { code: error.code, message: error.message } };
+        }
         if (extracted.status === "inProgress" || extracted.status === "pending") {
           if (!authorTimedOut(task, config.author_timeout_seconds, now())) continue;
           await adapter.interruptTurn({ threadId: task.thread_id, turnId: task.turn_id });
           const canResumeRepair = wasRepair && (task.repair_resume_count ?? 0) < 1;
           const repairResumeFailed = wasRepair && (task.repair_resume_count ?? 0) >= 1;
-          const canRepairTimeout = canResumeRepair || (task.repair_count ?? 0) < (config.retry_policy?.max_repairs ?? 2);
+          const canRepairTimeout = canResumeRepair || (!repairResumeFailed && (task.repair_count ?? 0) < (config.retry_policy?.max_repairs ?? 2));
           task = applyTaskTransition(task, { transition_id: `${task.id}-turn-${task.turn_id}-timeout`, to: canRepairTimeout ? "repair_requested" : "retryable_failure", at: now().toISOString() });
           task = {
             ...task,
@@ -312,7 +318,7 @@ export async function harvestGoalAuthors({
         if (extracted.status !== "completed") {
           const canResumeRepair = wasRepair && (task.repair_resume_count ?? 0) < 1;
           const repairResumeFailed = wasRepair && (task.repair_resume_count ?? 0) >= 1;
-          const canRepairTurn = canResumeRepair || (task.repair_count ?? 0) < (config.retry_policy?.max_repairs ?? 2);
+          const canRepairTurn = canResumeRepair || (!repairResumeFailed && (task.repair_count ?? 0) < (config.retry_policy?.max_repairs ?? 2));
           task = applyTaskTransition(task, { transition_id: `${task.id}-turn-${task.turn_id}-failed`, to: canRepairTurn ? "repair_requested" : "retryable_failure", at: new Date().toISOString() });
           task = {
             ...task,
