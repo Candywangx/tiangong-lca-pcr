@@ -270,6 +270,9 @@ test("harvest records a completed machine report and promotes a reviewed task ex
     turn_id: "turn-1",
     worktree_path: root,
     allowed_files: ["a", "b", "c", "d"],
+    failure_code: "GOAL_AUTHOR_REPAIR_REQUIRED",
+    failure_message: "stale repair finding",
+    pending_gate_findings: [{ code: "stale_finding" }],
     transition_ids: ["prepared", "authoring"],
   };
   store.append({ event_id: "fixture-authoring", type: "task_replaced", payload: { task } });
@@ -302,6 +305,9 @@ test("harvest records a completed machine report and promotes a reviewed task ex
     assert.equal(first.valid_results.length, 1);
     assert.equal(first.state.tasks[0].state, "valid_result");
     assert.equal(first.state.tasks[0].author_commit, report.commit_sha);
+    assert.equal(first.state.tasks[0].failure_code, null);
+    assert.equal(first.state.tasks[0].failure_message, null);
+    assert.deepEqual(first.state.tasks[0].pending_gate_findings, []);
     assert.deepEqual(first.state.verified_common_uuids.map((entry) => entry.uuid), ["11111111-1111-4111-8111-111111111111"]);
     assert.equal(reviewCount, 1);
     const second = await harvestGoalAuthors({ config, stateDir, adapter, reviewFn: () => { reviewCount += 1; } });

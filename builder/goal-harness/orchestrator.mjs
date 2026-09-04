@@ -405,6 +405,9 @@ export async function harvestGoalAuthors({
           validation_result: review,
           evidence_audit: evidenceAudit,
           unresolved_count: report.inventory?.unresolved_rows ?? review.counts?.unresolved ?? 0,
+          failure_code: null,
+          failure_message: null,
+          pending_gate_findings: [],
         };
         store.append({ event_id: `${task.id}-turn-${task.turn_id}-valid-result`, type: "task_replaced", payload: { task } });
         state = store.rebuild();
