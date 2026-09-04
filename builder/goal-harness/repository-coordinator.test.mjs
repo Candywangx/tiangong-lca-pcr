@@ -1,8 +1,9 @@
 import assert from "node:assert/strict";
-import { execFileSync } from "node:child_process";
-import { mkdtempSync, mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import { execFileSync, spawn } from "node:child_process";
+import { existsSync, mkdtempSync, mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import path from "node:path";
+import { pathToFileURL } from "node:url";
 import test from "node:test";
 
 import { GoalEventStore } from "./event-store.mjs";
@@ -11,6 +12,7 @@ import {
   commitRepositoryValidation,
   listCommittedRepositoryValidations,
   recoverRepositoryCoordinator,
+  repositoryCoordinatorStateDir,
   reserveRepositoryCandidate,
   selectRepositoryIntegrationHead,
 } from "./repository-coordinator.mjs";
@@ -161,6 +163,153 @@ test("recovery commits an exact prepared validation after refs advanced and repa
     const eventsBefore = new GoalEventStore({ stateDir }).readEvents().length;
     recoverRepositoryCoordinator({ projectRoot: root, repairGoalProjections: true });
     assert.equal(new GoalEventStore({ stateDir }).readEvents().length, eventsBefore);
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+  }
+});
+
+test("a merely prepared journal stays invisible and recovery retries its unchanged refs", () => {
+  const { root, baseline } = createRepository();
+  try {
+    const candidate = reserveRepositoryCandidate({ projectRoot: root, goalId: "goal-a", snapshotId: "snapshot-a", fallbackHead: baseline });
+    const integrationCommit = childCommit(root, baseline, "integration");
+    assert.throws(
+      () => commitRepositoryValidation({
+        projectRoot: root,
+        candidateToken: candidate.candidate_token,
+        integrationCommit,
+        faultInjector(phase) {
+          if (phase === "after_prepare") throw Object.assign(new Error("simulated crash"), { code: "TEST_CRASH" });
+        },
+      }),
+      (error) => error.code === "TEST_CRASH",
+    );
+    assert.deepEqual(listCommittedRepositoryValidations({ projectRoot: root }), []);
+    assert.throws(() => git(root, ["rev-parse", REPOSITORY_INTEGRATION_HEAD_REF]));
+
+    const recovered = recoverRepositoryCoordinator({ projectRoot: root });
+    assert.equal(recovered.recovered.phase, "validation_committed");
+    assert.equal(git(root, ["rev-parse", REPOSITORY_INTEGRATION_HEAD_REF]), integrationCommit);
+    assert.equal(git(root, ["rev-parse", recovered.recovered.source_ref]), integrationCommit);
+    assert.equal(listCommittedRepositoryValidations({ projectRoot: root }).length, 1);
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+  }
+});
+
+test("validation_committed journal is authoritative before the retained record is materialized", () => {
+  const { root, baseline } = createRepository();
+  const stateDir = initializeGoal(root, "goal-a", "snapshot-a");
+  try {
+    const candidate = reserveRepositoryCandidate({ projectRoot: root, goalId: "goal-a", snapshotId: "snapshot-a", fallbackHead: baseline });
+    const integrationCommit = childCommit(root, baseline, "integration");
+    assert.throws(
+      () => commitRepositoryValidation({
+        projectRoot: root,
+        candidateToken: candidate.candidate_token,
+        integrationCommit,
+        snapshotProjection: { task_ids: ["task-a"], changed_files: ["tracked.txt"] },
+        faultInjector(phase) {
+          if (phase === "after_validation_committed") throw Object.assign(new Error("simulated crash"), { code: "TEST_CRASH" });
+        },
+      }),
+      (error) => error.code === "TEST_CRASH",
+    );
+
+    const coordinatorDir = repositoryCoordinatorStateDir(root);
+    const journal = JSON.parse(readFileSync(path.join(coordinatorDir, "validation-journal.json"), "utf8"));
+    assert.equal(journal.phase, "validation_committed");
+    assert.equal(existsSync(path.join(coordinatorDir, "validations", "000000000001.json")), false);
+    assert.deepEqual(listCommittedRepositoryValidations({ projectRoot: root }), [journal]);
+
+    const recovered = recoverRepositoryCoordinator({ projectRoot: root, repairGoalProjections: true });
+    assert.equal(recovered.recovered.phase, "validation_committed");
+    assert.equal(existsSync(path.join(coordinatorDir, "validations", "000000000001.json")), true);
+    assert.equal(new GoalEventStore({ stateDir }).rebuild().snapshots[0].viewer_publication, "pending");
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+  }
+});
+
+test("crash after authoritative commit but before Goal projection is repaired idempotently", () => {
+  const { root, baseline } = createRepository();
+  const stateDir = initializeGoal(root, "goal-a", "snapshot-a");
+  try {
+    const candidate = reserveRepositoryCandidate({ projectRoot: root, goalId: "goal-a", snapshotId: "snapshot-a", fallbackHead: baseline });
+    const integrationCommit = childCommit(root, baseline, "integration");
+    assert.throws(
+      () => commitRepositoryValidation({
+        projectRoot: root,
+        candidateToken: candidate.candidate_token,
+        integrationCommit,
+        snapshotProjection: { task_ids: ["task-a"] },
+        faultInjector(phase) {
+          if (phase === "after_record_persisted") throw Object.assign(new Error("crash before Goal append"), { code: "TEST_CRASH" });
+        },
+      }),
+      (error) => error.code === "TEST_CRASH",
+    );
+    assert.equal(new GoalEventStore({ stateDir }).rebuild().snapshots[0].state, "integrating");
+
+    recoverRepositoryCoordinator({ projectRoot: root });
+    const recovered = new GoalEventStore({ stateDir });
+    assert.equal(recovered.rebuild().snapshots[0].state, "validated");
+    const eventCount = recovered.readEvents().length;
+    recoverRepositoryCoordinator({ projectRoot: root });
+    assert.equal(recovered.readEvents().length, eventCount);
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+  }
+});
+
+test("concurrent repository validation commits expose one atomic winner and one stale loser", async () => {
+  const { root, baseline } = createRepository();
+  try {
+    const first = reserveRepositoryCandidate({ projectRoot: root, goalId: "goal-a", snapshotId: "snapshot-a", fallbackHead: baseline });
+    const second = reserveRepositoryCandidate({ projectRoot: root, goalId: "goal-b", snapshotId: "snapshot-b", fallbackHead: baseline });
+    const firstCommit = childCommit(root, baseline, "first integration");
+    const secondCommit = childCommit(root, baseline, "second integration");
+    const moduleUrl = pathToFileURL(path.join(process.cwd(), "builder/goal-harness/repository-coordinator.mjs")).href;
+    const runCommit = (candidateToken, integrationCommit) => new Promise((resolve) => {
+      const source = `import { commitRepositoryValidation } from ${JSON.stringify(moduleUrl)};
+try {
+  const value = commitRepositoryValidation({ projectRoot: ${JSON.stringify(root)}, candidateToken: ${JSON.stringify(candidateToken)}, integrationCommit: ${JSON.stringify(integrationCommit)} });
+  process.stdout.write(JSON.stringify({ ok: true, value }));
+} catch (error) {
+  process.stdout.write(JSON.stringify({ ok: false, code: error.code }));
+  process.exitCode = 1;
+}`;
+      const child = spawn(process.execPath, ["--input-type=module", "-e", source], { stdio: ["ignore", "pipe", "pipe"] });
+      let stdout = "";
+      let stderr = "";
+      child.stdout.on("data", (chunk) => { stdout += chunk; });
+      child.stderr.on("data", (chunk) => { stderr += chunk; });
+      child.on("close", (code) => resolve({ code, stdout, stderr, result: JSON.parse(stdout) }));
+    });
+
+    const attempts = await Promise.all([
+      runCommit(first.candidate_token, firstCommit),
+      runCommit(second.candidate_token, secondCommit),
+    ]);
+    const winner = attempts.find((entry) => entry.result.ok);
+    const loser = attempts.find((entry) => !entry.result.ok);
+    assert.ok(winner);
+    assert.ok(loser);
+    assert.match(loser.result.code, /^GOAL_(?:LOCKED|REPOSITORY_CANDIDATE_STALE)$/u);
+
+    const records = listCommittedRepositoryValidations({ projectRoot: root });
+    assert.equal(records.length, 1);
+    assert.equal(records[0].repository_sequence, 1);
+    assert.equal(git(root, ["rev-parse", REPOSITORY_INTEGRATION_HEAD_REF]), records[0].integration_commit);
+    assert.equal(git(root, ["rev-parse", records[0].source_ref]), records[0].integration_commit);
+
+    const losingCandidate = records[0].candidate_token === first.candidate_token ? second : first;
+    const losingCommit = records[0].candidate_token === first.candidate_token ? secondCommit : firstCommit;
+    assert.throws(
+      () => commitRepositoryValidation({ projectRoot: root, candidateToken: losingCandidate.candidate_token, integrationCommit: losingCommit }),
+      (error) => error.code === "GOAL_REPOSITORY_CANDIDATE_STALE",
+    );
+    assert.equal(listCommittedRepositoryValidations({ projectRoot: root }).length, 1);
   } finally {
     rmSync(root, { recursive: true, force: true });
   }

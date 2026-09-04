@@ -143,7 +143,7 @@ export function commitRepositoryValidation({
     faultInjector("after_prepare", prepared);
     updateValidationRefs({ projectRoot, prepared });
     faultInjector("after_refs", prepared);
-    return finalizePreparedValidation({ stateDir, prepared, now });
+    return finalizePreparedValidation({ stateDir, prepared, faultInjector });
   });
 
   if (goalStateDir) projectRepositoryValidation({ goalStateDir, record });
@@ -187,12 +187,40 @@ export function selectRepositoryIntegrationHead({ projectRoot, fallbackHead }) {
 export function listCommittedRepositoryValidations({ projectRoot }) {
   const stateDir = repositoryCoordinatorStateDir(projectRoot);
   const directory = path.join(stateDir, "validations");
-  if (!existsSync(directory)) return [];
-  assertDirectory(directory, "GOAL_REPOSITORY_STATE_INVALID");
-  const records = readdirSync(directory)
-    .filter((name) => /^\d{12}\.json$/u.test(name))
-    .sort()
-    .map((name) => readJsonFile(path.join(directory, name), "GOAL_REPOSITORY_STATE_INVALID"));
+  const records = [];
+  if (existsSync(directory)) {
+    assertDirectory(directory, "GOAL_REPOSITORY_STATE_INVALID");
+    records.push(...readdirSync(directory)
+      .filter((name) => /^\d{12}\.json$/u.test(name))
+      .sort()
+      .map((name) => readJsonFile(path.join(directory, name), "GOAL_REPOSITORY_STATE_INVALID")));
+  }
+  const coordinatorJournalPath = journalPath(stateDir);
+  let journal = null;
+  if (existsSync(coordinatorJournalPath)) {
+    journal = readJsonFile(coordinatorJournalPath, "GOAL_REPOSITORY_JOURNAL_INVALID");
+    if (journal.phase === "validation_committed") {
+      validateCommittedRecord(journal);
+      const retained = records.find((entry) => entry.repository_sequence === journal.repository_sequence);
+      if (retained && stableJson(retained) !== stableJson(journal)) {
+        throw new GoalHarnessError("GOAL_REPOSITORY_JOURNAL_CONFLICT", "Committed coordinator journal differs from its retained validation record.");
+      }
+      if (!retained) records.push(journal);
+    } else {
+      validatePreparedRecord(journal);
+      if (records.some((entry) => entry.repository_sequence >= journal.repository_sequence)) {
+        throw new GoalHarnessError("GOAL_REPOSITORY_JOURNAL_CONFLICT", "Prepared coordinator journal conflicts with a visible validation record.");
+      }
+    }
+  }
+  if (records.length === 0) return [];
+  if (!journal) {
+    throw new GoalHarnessError("GOAL_REPOSITORY_JOURNAL_MISSING", "Repository validation records exist without an authoritative coordinator journal.");
+  }
+  if (journal.phase === "validation_committed" && records.some((entry) => entry.repository_sequence > journal.repository_sequence)) {
+    throw new GoalHarnessError("GOAL_REPOSITORY_JOURNAL_CONFLICT", "Repository validation records advance beyond the authoritative coordinator journal.");
+  }
+  records.sort((left, right) => left.repository_sequence - right.repository_sequence);
   const metadata = readJsonFile(path.join(stateDir, "metadata.json"), "GOAL_REPOSITORY_STATE_INVALID");
   let priorHead = resolveCommit(projectRoot, metadata.initial_head, "coordinator initial head");
   for (const [index, record] of records.entries()) {
@@ -309,10 +337,16 @@ function recoverPreparedValidation({ projectRoot, stateDir, now }) {
   const journal = readJsonFile(file, "GOAL_REPOSITORY_JOURNAL_INVALID");
   if (journal.phase === "validation_committed") {
     validateCommittedRecord(journal);
-    const retained = readValidationRecord(stateDir, journal.repository_sequence);
-    if (stableJson(retained) !== stableJson(journal)) {
-      throw new GoalHarnessError("GOAL_REPOSITORY_JOURNAL_CONFLICT", "Committed coordinator journal differs from its retained validation record.");
+    const actualHead = readRef(projectRoot, REPOSITORY_INTEGRATION_HEAD_REF);
+    const actualSource = readRef(projectRoot, journal.source_ref);
+    if (actualHead !== journal.integration_commit || actualSource !== journal.integration_commit) {
+      throw new GoalHarnessError("GOAL_REPOSITORY_RECOVERY_CONFLICT", "Committed coordinator validation refs no longer match its authoritative journal.", {
+        integration_ref: actualHead,
+        source_ref: actualSource,
+        journal,
+      });
     }
+    materializeCommittedRecord({ stateDir, committed: journal });
     return journal;
   }
   validatePreparedRecord(journal);
@@ -330,11 +364,19 @@ function recoverPreparedValidation({ projectRoot, stateDir, now }) {
       prepared: journal,
     });
   }
-  return finalizePreparedValidation({ stateDir, prepared: journal, now });
+  return finalizePreparedValidation({ stateDir, prepared: journal });
 }
 
-function finalizePreparedValidation({ stateDir, prepared }) {
+function finalizePreparedValidation({ stateDir, prepared, faultInjector = () => {} }) {
   const committed = { ...prepared, phase: "validation_committed" };
+  writeJsonAtomic(journalPath(stateDir), committed);
+  faultInjector("after_validation_committed", committed);
+  materializeCommittedRecord({ stateDir, committed });
+  faultInjector("after_record_persisted", committed);
+  return committed;
+}
+
+function materializeCommittedRecord({ stateDir, committed }) {
   const retainedPath = validationPath(stateDir, committed.repository_sequence);
   if (existsSync(retainedPath)) {
     const retained = readJsonFile(retainedPath, "GOAL_REPOSITORY_STATE_INVALID");
@@ -346,8 +388,6 @@ function finalizePreparedValidation({ stateDir, prepared }) {
   } else {
     writeJsonCreate(retainedPath, committed);
   }
-  writeJsonAtomic(journalPath(stateDir), committed);
-  return committed;
 }
 
 function updateValidationRefs({ projectRoot, prepared }) {
@@ -487,10 +527,6 @@ function candidatePath(stateDir, token) {
 
 function validationPath(stateDir, sequence) {
   return path.join(stateDir, "validations", `${String(sequence).padStart(12, "0")}.json`);
-}
-
-function readValidationRecord(stateDir, sequence) {
-  return readJsonFile(validationPath(stateDir, sequence), "GOAL_REPOSITORY_STATE_INVALID");
 }
 
 function readJsonFile(filePath, code) {

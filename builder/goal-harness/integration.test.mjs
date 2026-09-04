@@ -14,7 +14,7 @@ import {
   prepareIntegrationWorkspace,
   selectIntegrationBaseCommit,
 } from "./integration.mjs";
-import { commitRepositoryValidation, reserveRepositoryCandidate } from "./repository-coordinator.mjs";
+import { commitRepositoryValidation, listCommittedRepositoryValidations, reserveRepositoryCandidate } from "./repository-coordinator.mjs";
 
 function git(root, args) {
   return execFileSync("git", args, { cwd: root, encoding: "utf8", stdio: ["ignore", "pipe", "pipe"] }).trim();
@@ -218,6 +218,105 @@ test("integration recovery preserves a dirty failed worktree and starts a clean 
     assert.equal(readFileSync(path.join(defaultPath, "tracked.txt"), "utf8"), "failed partial integration\n");
     assert.equal(readFileSync(path.join(recovered.worktreePath, "tracked.txt"), "utf8"), "baseline\n");
     assert.equal(git(recovered.worktreePath, ["status", "--porcelain"]), "");
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+  }
+});
+
+test("a Goal made stale during gates rematerializes on the accepted head and reruns every gate", () => {
+  const root = mkdtempSync(path.join(tmpdir(), "tiangong-integration-stale-e2e-"));
+  const pcrPath = "library/pcrs/metal/test-product";
+  const allowedFiles = ["manifest.yaml", "pcr.en-US.md", "pcr.zh-CN.md", "structured.yaml"].map((name) => `${pcrPath}/${name}`);
+  try {
+    git(root, ["init", "-q"]);
+    git(root, ["config", "user.name", "Goal Test"]);
+    git(root, ["config", "user.email", "goal@example.invalid"]);
+    mkdirSync(path.join(root, pcrPath), { recursive: true });
+    mkdirSync(path.join(root, "classifications/mappings"), { recursive: true });
+    writeFileSync(path.join(root, ".gitignore"), ".worktrees/\nlibrary/.pcr-builder-state/\npackages/pcr-viewer/dist/\n");
+    for (const file of allowedFiles) writeFileSync(path.join(root, file), `scaffold ${path.basename(file)}\n`);
+    writeFileSync(path.join(root, "classifications/mappings/cpc-3.0-to-pcr.yaml"), "schema_version: 2\nclassification_system: cpc\nclassification_version: '3.0'\nstatus: current\nmappings: []\n");
+    git(root, ["add", "."]);
+    git(root, ["commit", "-qm", "baseline"]);
+    const baseline = git(root, ["rev-parse", "HEAD"]);
+
+    writeFileSync(path.join(root, pcrPath, "manifest.yaml"), "id: pcr.metal.test-product\ncontent_maturity: authored_methodology\nclassification_refs:\n  - system: cpc\n    version: '3.0'\n    code: '41111'\n    mapping_type: exact\n");
+    writeFileSync(path.join(root, pcrPath, "pcr.en-US.md"), "# Test product\n");
+    writeFileSync(path.join(root, pcrPath, "pcr.zh-CN.md"), "# 测试产品\n");
+    writeFileSync(path.join(root, pcrPath, "structured.yaml"), "schema_version: 1\n");
+    git(root, ["add", "--", ...allowedFiles]);
+    git(root, ["commit", "-qm", "author PCR"]);
+    const authorCommit = git(root, ["rev-parse", "HEAD"]);
+
+    const goalId = "goal-stale";
+    const snapshotId = "snapshot-stale";
+    const stateDir = path.join(root, "library/.pcr-builder-state/goals", goalId);
+    const task = {
+      id: "task-41111",
+      cpc_code: "41111",
+      product_name_en: "Test product",
+      pcr_id: "pcr.metal.test-product",
+      pcr_path: pcrPath,
+      author_commit: authorCommit,
+      allowed_files: allowedFiles,
+      state: "integration_pending",
+      transition_ids: [],
+    };
+    const snapshot = { id: snapshotId, goal_id: goalId, task_ids: [task.id], author_commits: [authorCommit], state: "integration_pending", created_at: "2026-09-05T00:00:00.000Z" };
+    new GoalEventStore({ stateDir }).initialize({ goal_id: goalId, baseline: { commit: baseline }, tasks: [task], snapshots: [snapshot] });
+    const config = {
+      goal_id: goalId,
+      project_root: root,
+      target_category_relative: "library/pcrs/metal",
+      classification_system: "cpc",
+      classification_version: "3.0",
+      integration_batch_size: 1,
+      integration: { decided_by: "maintainer" },
+    };
+
+    const gateRuns = new Map();
+    let competingCommit = null;
+    const runner = ({ cwd, name }) => {
+      gateRuns.set(name, (gateRuns.get(name) ?? 0) + 1);
+      if (!competingCommit) {
+        const competing = reserveRepositoryCandidate({ projectRoot: root, goalId: "goal-other", snapshotId: "snapshot-other", fallbackHead: baseline });
+        const competingWorktree = path.join(root, ".worktrees", "other-integration");
+        mkdirSync(path.dirname(competingWorktree), { recursive: true });
+        git(root, ["worktree", "add", "--detach", competingWorktree, baseline]);
+        writeFileSync(path.join(competingWorktree, "classifications/mappings/other-goal.txt"), "other accepted input\n");
+        git(competingWorktree, ["add", "."]);
+        git(competingWorktree, ["commit", "-qm", "other Goal"]);
+        competingCommit = git(competingWorktree, ["rev-parse", "HEAD"]);
+        commitRepositoryValidation({ projectRoot: root, candidateToken: competing.candidate_token, integrationCommit: competingCommit });
+      }
+      if (name === "viewer_build") {
+        const dist = path.join(cwd, "packages/pcr-viewer/dist");
+        mkdirSync(dist, { recursive: true });
+        writeFileSync(path.join(dist, ".tiangong-pcr-viewer-build"), "owned\n");
+      }
+      return { name, exit_code: 0 };
+    };
+
+    assert.throws(
+      () => integrateGoalSnapshot({ config, stateDir, commandRunner: runner }),
+      (error) => error.code === "GOAL_REPOSITORY_CANDIDATE_STALE",
+    );
+    const stale = new GoalEventStore({ stateDir }).rebuild().snapshots[0];
+    assert.equal(stale.state, "retryable_failure");
+    assert.equal(stale.base_commit, baseline);
+
+    const result = integrateGoalSnapshot({ config, stateDir, commandRunner: runner });
+    assert.equal(result.status, "validated");
+    assert.equal(result.snapshot.base_commit, competingCommit);
+    assert.equal(result.snapshot.integration_attempt, 2);
+    assert.equal(result.snapshot.repository_sequence, 2);
+    assert.equal(result.snapshot.viewer_publication, "pending");
+    assert.notEqual(result.snapshot.worktree_path, stale.worktree_path);
+    for (const count of gateRuns.values()) assert.equal(count, 2);
+    assert.equal(gateRuns.size, 7);
+    const records = listCommittedRepositoryValidations({ projectRoot: root });
+    assert.deepEqual(records.map((entry) => entry.repository_sequence), [1, 2]);
+    assert.equal(records[1].expected_old_head, competingCommit);
   } finally {
     rmSync(root, { recursive: true, force: true });
   }
