@@ -117,8 +117,25 @@ npm run pcr:publish -- --pcr <library/pcrs/...> --workspace current --version <s
 npm run pcr:revise -- --pcr <library/pcrs/...> --version <target-semver>
 npm run pcr:publish -- --pcr <library/pcrs/...> --workspace revision
 npm run pcr:recover -- --pcr <library/pcrs/...> [--force-stale-lock]
+npm run goal:doctor -- --config <goal.yaml>
+npm run goal:plan -- --config <goal.yaml> --dry-run
+npm run goal:start -- --config <goal.yaml> --slots 1
+npm run goal:status -- --config <goal.yaml>
+npm run goal:resume -- --config <goal.yaml>
+npm run goal:integrate -- --config <goal.yaml>
+npm run goal:land -- --config <goal.yaml>
+npm run goal:stop -- --config <goal.yaml>
 npm run validate
 ```
+
+The local `goal:*` Harness turns a bounded classification/category objective into a persistent, hash-chained queue.
+It captures an allowlisted synthetic commit without changing the user's index or branch, gives each author a durable
+Codex-visible task in its own Git worktree through one Goal-owned loopback app-server daemon, verifies the exact four-file
+author commit, and serializes accepted mapping,
+catalog, coverage, viewer, validation, and consumer checks in integration snapshots. Landing uses exact-byte
+compare-and-swap and keeps author/integration worktrees after `stop` or a failed recovery. See
+`builder/docs/tools/goal-harness.md` for the configuration schema, state paths, recovery behavior, JSON output, and
+stable error codes.
 
 `pcr:import:cpc` is the canonical CPC import entry point, and every invocation must pass `--source` explicitly. It
 stores the raw source and metadata and regenerates the normalized hierarchy, leaves, and paths. The default mode
