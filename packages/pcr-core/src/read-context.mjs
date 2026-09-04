@@ -37,21 +37,20 @@ export function createPcrReadContext({ root, aliasLoader = readPcrIdAliases }) {
   const catalogSource = readRepositoryFile({ root: rootPath, relativePath: CATALOG_PATH });
   const catalog = parseCatalog(catalogSource.text, rootPath);
   const dependencyPaths = catalogDependencyPaths(catalog, rootPath);
+  const boundPaths = [CATALOG_PATH, ...dependencyPaths];
+  const bindingsBefore = captureBindings({ root: rootPath, relativePaths: boundPaths });
   const aliases = aliasLoader({ root: rootPath });
   if (!Array.isArray(aliases)) {
     throw new TypeError("PCR read context aliasLoader must return an array");
   }
+  const bindingsAfter = captureBindings({ root: rootPath, relativePaths: boundPaths });
+  assertBindingSnapshotsMatch({ root: rootPath, before: bindingsBefore, after: bindingsAfter });
 
   const aliasByPcrId = new Map();
   for (const alias of aliases) {
     aliasByPcrId.set(String(alias?.source_pcr_id), deepFreeze(structuredClone(alias)));
   }
   const immutableAliases = deepFreeze([...aliasByPcrId.values()].map((alias) => structuredClone(alias)));
-  const bindings = new Map([[CATALOG_PATH, catalogSource.sha256]]);
-  for (const relativePath of dependencyPaths) {
-    bindings.set(relativePath, readRepositoryFile({ root: rootPath, relativePath }).sha256);
-  }
-
   const context = {
     root: rootPath,
     aliases: immutableAliases,
@@ -62,7 +61,7 @@ export function createPcrReadContext({ root, aliasLoader = readPcrIdAliases }) {
     },
   };
   Object.defineProperty(context, "_pcrReadContext", { value: true });
-  contextBindings.set(context, bindings);
+  contextBindings.set(context, bindingsAfter);
   return Object.freeze(context);
 }
 
@@ -181,6 +180,27 @@ function declaredPath(value, name, root) {
     throw new PcrReadContextStaleError({ root, source: CATALOG_PATH, reason: `${name} escapes the repository root` });
   }
   return normalized;
+}
+
+function captureBindings({ root, relativePaths }) {
+  return new Map(
+    relativePaths.map((relativePath) => [
+      relativePath,
+      readRepositoryFile({ root, relativePath }).sha256,
+    ]),
+  );
+}
+
+function assertBindingSnapshotsMatch({ root, before, after }) {
+  for (const [relativePath, beforeSha256] of before) {
+    if (after.get(relativePath) !== beforeSha256) {
+      throw new PcrReadContextStaleError({
+        root,
+        source: relativePath,
+        reason: "bound source changed while aliases were validated",
+      });
+    }
+  }
 }
 
 function readRepositoryFile({ root, relativePath }) {

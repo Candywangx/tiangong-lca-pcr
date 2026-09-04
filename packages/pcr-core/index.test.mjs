@@ -31,7 +31,7 @@ import {
   validateDatasetAgainstGuidance,
   validateModelAgainstGuidance,
 } from "./src/index.mjs";
-import { readPcrIdAliases } from "./src/pcr-id-aliases.mjs";
+import { findPcrIdAlias, readPcrIdAliases } from "./src/pcr-id-aliases.mjs";
 import { sha256Fingerprint, splitProjectionDocument } from "./src/projection-integrity.mjs";
 import { parseYaml, renderYaml } from "./src/yaml-lite.mjs";
 
@@ -1171,7 +1171,7 @@ test("buildGuidance redirects retired scaffold ids before attempting content acc
 });
 
 test("read context reuses aliases, isolates cache, freezes exposed data, and fails closed when its bindings drift", () => {
-  const root = createReadContextFixture("tiangong-pcr-read-context-");
+  const root = createReadContextFixture("tiangong-pcr-read-context-", { withAlias: true });
   const otherRoot = createReadContextFixture("tiangong-pcr-read-context-other-");
   let aliasLoads = 0;
   try {
@@ -1186,7 +1186,17 @@ test("read context reuses aliases, isolates cache, freezes exposed data, and fai
     assert.equal(aliasLoads, 1);
     assert.equal(Object.isFrozen(context.aliases), true);
     assert.throws(() => context.aliases.push({}), TypeError);
-    assert.equal(context.findPcrIdAlias(wheatSeedPcrId), null);
+    assert.equal(Object.isFrozen(context.aliases[0].target), true);
+    assert.throws(() => {
+      context.aliases[0].target.code = "mutated";
+    }, TypeError);
+    const alias = findPcrIdAlias({ root, pcrId: scaffoldPcrId, context });
+    assert.equal(alias.target.code, "92200");
+    alias.target.code = "mutated";
+    assert.equal(
+      findPcrIdAlias({ root, pcrId: scaffoldPcrId, context }).target.code,
+      "92200",
+    );
 
     // Prime the process-global catalog cache for another repository. Contextual
     // reads must use their own bound root instead of that cache entry.
@@ -1198,6 +1208,10 @@ test("read context reuses aliases, isolates cache, freezes exposed data, and fai
       readPcrMarkdown({ root, pcrId: wheatSeedPcrId, context }),
       /Wheat Seed/u,
     );
+    assert.match(
+      readPcrMarkdown({ root, pcrId: wheatSeedPcrId, language: "zh-CN", context }),
+      /小麦播种/u,
+    );
     assert.equal(buildGuidance({ root, pcrId: wheatSeedPcrId, context }).pcr.id, wheatSeedPcrId);
     assert.equal(readPcrMarkdown({ pcrId: wheatSeedPcrId, context }).includes("Wheat Seed"), true);
     assert.equal(aliasLoads, 1);
@@ -1206,18 +1220,37 @@ test("read context reuses aliases, isolates cache, freezes exposed data, and fai
       (error) => error.code === "PCR_READ_CONTEXT_STALE",
     );
 
+    // The cache already holds the old identity for this same root. A contextual
+    // lookup must rediscover it and therefore cannot be fooled by that cache.
+    listPcrs({ root, refresh: true });
+    const manifestPath = path.join(root, wheatRelativePcrPath, "manifest.yaml");
+    const originalManifest = readFileSync(manifestPath, "utf8");
+    const mutatedManifest = parseYaml(originalManifest);
+    mutatedManifest.id = "pcr.read-context-cache-probe";
+    writeFileSync(manifestPath, renderYaml(mutatedManifest));
+    assert.throws(
+      () => readPcrMarkdown({ root, pcrId: wheatSeedPcrId, context }),
+      /PCR not found/u,
+    );
+    writeFileSync(manifestPath, originalManifest);
+    assert.match(readPcrMarkdown({ root, pcrId: wheatSeedPcrId, context }), /Wheat Seed/u);
+
     const registryPath = path.join(root, "classifications/aliases/pcr-id-aliases.yaml");
     const catalogPath = path.join(root, "library/catalog.yaml");
     const indexPath = path.join(root, "library/indexes/pcr-index.yaml");
     const mappingPath = path.join(root, "classifications/mappings/cpc-3.0-to-pcr.yaml");
     const coveragePath = path.join(root, "classifications/indexes/cpc-3.0-coverage.json");
+    const secondMappingPath = path.join(root, "classifications/mappings/cpc-2.1-to-pcr.yaml");
+    const secondCoveragePath = path.join(root, "classifications/indexes/cpc-2.1-coverage.json");
     for (const [label, filePath, mutate] of [
       ["catalog", catalogPath, (text) => `${text}\n`],
       ["material index", indexPath, (text) => `${text}\n`],
-      ["alias binding", catalogPath, (text) => text.replace("entry_count: 0", "entry_count: 1")],
+      ["alias binding", catalogPath, (text) => text.replace("entry_count: 1", "entry_count: 2")],
       ["alias registry", registryPath, (text) => `${text}\n`],
-      ["classification mapping", mappingPath, (text) => `${text}\n`],
-      ["classification coverage", coveragePath, (text) => `${text}\n`],
+      ["first classification mapping", mappingPath, (text) => `${text}\n`],
+      ["first classification coverage", coveragePath, (text) => `${text}\n`],
+      ["second classification mapping", secondMappingPath, (text) => `${text}\n`],
+      ["second classification coverage", secondCoveragePath, (text) => `${text}\n`],
     ]) {
       const original = readFileSync(filePath, "utf8");
       const freshContext = createPcrReadContext({ root });
@@ -1234,6 +1267,26 @@ test("read context reuses aliases, isolates cache, freezes exposed data, and fai
   } finally {
     rmSync(root, { recursive: true, force: true });
     rmSync(otherRoot, { recursive: true, force: true });
+  }
+});
+
+test("read context rejects alias-loader mutation between its bound fingerprints", () => {
+  const root = createReadContextFixture("tiangong-pcr-read-context-toctou-");
+  const registryPath = path.join(root, "classifications/aliases/pcr-id-aliases.yaml");
+  try {
+    assert.throws(
+      () => createPcrReadContext({
+        root,
+        aliasLoader: ({ root: aliasRoot }) => {
+          const aliases = readPcrIdAliases({ root: aliasRoot });
+          writeFileSync(registryPath, `${readFileSync(registryPath, "utf8")}\n`);
+          return aliases;
+        },
+      }),
+      (error) => error.code === "PCR_READ_CONTEXT_STALE",
+    );
+  } finally {
+    rmSync(root, { recursive: true, force: true });
   }
 });
 
@@ -1570,17 +1623,27 @@ function createBoundRepositoryFixture(prefix) {
   return root;
 }
 
-function createReadContextFixture(prefix) {
+function createReadContextFixture(prefix, { withAlias = false } = {}) {
   const root = createBoundRepositoryFixture(prefix);
-  const pcrDir = path.join(root, wheatRelativePcrPath);
-  mkdirSync(path.dirname(pcrDir), { recursive: true });
-  cpSync(path.join(repoRoot, wheatRelativePcrPath), pcrDir, { recursive: true });
+  if (withAlias) {
+    writePcrAliasFixture(root);
+  } else {
+    const pcrDir = path.join(root, wheatRelativePcrPath);
+    mkdirSync(path.dirname(pcrDir), { recursive: true });
+    cpSync(path.join(repoRoot, wheatRelativePcrPath), pcrDir, { recursive: true });
+  }
 
   const catalogPath = path.join(root, "library/catalog.yaml");
   const catalog = parseYaml(readFileSync(catalogPath, "utf8"));
   catalog.pcr_index = "library/indexes/pcr-index.yaml";
-  catalog.classification_mappings = ["classifications/mappings/cpc-3.0-to-pcr.yaml"];
-  catalog.classification_coverage_indexes = ["classifications/indexes/cpc-3.0-coverage.json"];
+  catalog.classification_mappings = [
+    "classifications/mappings/cpc-3.0-to-pcr.yaml",
+    "classifications/mappings/cpc-2.1-to-pcr.yaml",
+  ];
+  catalog.classification_coverage_indexes = [
+    "classifications/indexes/cpc-3.0-coverage.json",
+    "classifications/indexes/cpc-2.1-coverage.json",
+  ];
   writeFileSync(catalogPath, renderYaml(catalog));
 
   const indexPath = path.join(root, "library/indexes/pcr-index.yaml");
@@ -1590,10 +1653,18 @@ function createReadContextFixture(prefix) {
   const mappingPath = path.join(root, "classifications/mappings/cpc-3.0-to-pcr.yaml");
   mkdirSync(path.dirname(mappingPath), { recursive: true });
   writeFileSync(mappingPath, "schema_version: 2\nstatus: current\n");
+  writeFileSync(
+    path.join(root, "classifications/mappings/cpc-2.1-to-pcr.yaml"),
+    "schema_version: 2\nstatus: current\n",
+  );
 
   const coveragePath = path.join(root, "classifications/indexes/cpc-3.0-coverage.json");
   mkdirSync(path.dirname(coveragePath), { recursive: true });
   writeFileSync(coveragePath, "{\"schema_version\":1}\n");
+  writeFileSync(
+    path.join(root, "classifications/indexes/cpc-2.1-coverage.json"),
+    "{\"schema_version\":1}\n",
+  );
   return root;
 }
 
