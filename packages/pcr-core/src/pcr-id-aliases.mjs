@@ -223,12 +223,15 @@ function declaredAliasRegistryPaths(root, binding) {
  * scaffold still exists; consumers can therefore switch to redirect-first
  * behavior before deleting the old directory.
  */
-export function findPcrIdAlias({ root, pcrId }) {
+export function findPcrIdAlias({ root, pcrId, context = null }) {
   const normalizedPcrId = String(pcrId);
   if (!PCR_ID_PATTERN.test(normalizedPcrId)) {
     throw new PcrIdAliasRegistryError({
       issues: [`invalid PCR id lookup token ${normalizedPcrId}`],
     });
+  }
+  if (context) {
+    return context.findPcrIdAlias(normalizedPcrId, { root });
   }
   return readPcrIdAliases({ root }).find(
     (alias) => alias.source_pcr_id === normalizedPcrId,
