@@ -1,4 +1,7 @@
 import assert from "node:assert/strict";
+import { mkdtempSync, rmSync } from "node:fs";
+import { tmpdir } from "node:os";
+import path from "node:path";
 import test from "node:test";
 
 import { auditReportedUuids, mergeVerifiedCommonUuids, verifySourceLocators } from "./evidence-audit.mjs";
@@ -119,4 +122,38 @@ test("source audit performs original locator reads and rejects discovery pages a
     () => verifySourceLocators({ report: { sources: [{ source_id: "openalex", name: "OpenAlex", locator: "https://openalex.org/W1", original_text_verified: true, supports: ["range"] }] }, fetchImpl }),
     (error) => error.code === "GOAL_SOURCE_DISCOVERY_ONLY",
   );
+});
+
+test("source audit reuses an exact hash-verified original-text receipt after a transient fetch failure", async () => {
+  const stateDir = mkdtempSync(path.join(tmpdir(), "goal-source-cache-reuse-"));
+  const source = { source_id: "standard-a", name: "Standard A", locator: "https://standards.example/a.pdf", original_text_verified: true, supports: ["boundary"] };
+  let consumed = false;
+  const successfulFetch = async (url) => ({
+    ok: true, status: 200, url, headers: new Map([["content-type", "application/pdf"]]),
+    body: { getReader: () => ({ read: async () => consumed ? { done: true } : (consumed = true, { done: false, value: new TextEncoder().encode("original text") }), cancel: async () => {} }) },
+  });
+  try {
+    const first = await verifySourceLocators({ report: { sources: [source] }, stateDir, fetchImpl: successfulFetch });
+    const second = await verifySourceLocators({
+      report: { sources: [source] },
+      stateDir,
+      fetchImpl: async () => { throw new Error("temporary network failure"); },
+    });
+    assert.equal(second[0].cache_hit, true);
+    assert.match(second[0].cache_receipt_id, /.+/u);
+    assert.equal(second[0].content_sha256, first[0].content_sha256);
+    let changedConsumed = false;
+    const changed = await verifySourceLocators({
+      report: { sources: [source] },
+      stateDir,
+      fetchImpl: async (url) => ({
+        ok: true, status: 200, url, headers: new Map([["content-type", "application/pdf"]]),
+        body: { getReader: () => ({ read: async () => changedConsumed ? { done: true } : (changedConsumed = true, { done: false, value: new TextEncoder().encode("changed original text") }), cancel: async () => {} }) },
+      }),
+    });
+    assert.equal(changed[0].cache_hit, undefined);
+    assert.notEqual(changed[0].content_sha256, first[0].content_sha256);
+  } finally {
+    rmSync(stateDir, { recursive: true, force: true });
+  }
 });

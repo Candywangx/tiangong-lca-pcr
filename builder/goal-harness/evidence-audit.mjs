@@ -3,7 +3,7 @@ import { createHash } from "node:crypto";
 import path from "node:path";
 
 import { GoalHarnessError } from "./errors.mjs";
-import { appendGoalCacheReceipt } from "./goal-cache.mjs";
+import { appendGoalCacheReceipt, listGoalCacheReceipts } from "./goal-cache.mjs";
 
 const REUSABLE_COMMON_UUID_PATTERN = /^(?:alternating current|electricity(?:,.*)?|natural gas(?: .*)?|liquefied petroleum gas|lpg|diesel(?: fuel)?|steam(?:,.*)?|hot water|process water|drinking water|industrial oxygen|industrial nitrogen|carbon dioxide(?: \(fossil\))?|methane|nitrous oxide|sodium hydroxide|sodium hypochlorite|peracetic acid|(?:refrigerant|polyethylene film|pet tray|corrugated paperboard)(?:,.*)?)$/iu;
 
@@ -124,12 +124,32 @@ export async function verifySourceLocators({ report, stateDir = null, fetchImpl 
       }
     } catch (error) {
       if (error instanceof GoalHarnessError) throw error;
+      const cached = source.original_text_verified === true && stateDir
+        ? findCachedOriginalSource({ stateDir, sourceId: source.source_id, locator })
+        : null;
+      if (cached) {
+        audits.push({
+          ...cached.value,
+          cache_hit: true,
+          cache_receipt_id: cached.receipt_id,
+          cache_reused_at: new Date().toISOString(),
+        });
+        continue;
+      }
       throw new GoalHarnessError("GOAL_SOURCE_LOCATOR_UNREADABLE", `Cannot read source locator for ${source.source_id}: ${error.message}`, { source_id: source.source_id, locator });
     } finally {
       clearTimeout(timeout);
     }
   }
   return audits;
+}
+
+function findCachedOriginalSource({ stateDir, sourceId, locator }) {
+  return listGoalCacheReceipts({ stateDir, namespace: "source_original_text_receipts" })
+    .filter((receipt) => receipt.tool?.name === "http-original-text-fetch" && receipt.tool?.version === "1")
+    .filter((receipt) => receipt.key_input?.source_id === sourceId && receipt.key_input?.locator === locator)
+    .filter((receipt) => receipt.source_fingerprint === receipt.value?.content_sha256)
+    .at(-1) ?? null;
 }
 
 function runTiangongFlowGet({ uuid, tiangongCliRoot }) {
