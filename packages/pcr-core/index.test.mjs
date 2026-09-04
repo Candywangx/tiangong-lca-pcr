@@ -1290,6 +1290,24 @@ test("read context rejects alias-loader mutation between its bound fingerprints"
   }
 });
 
+test("read context rejects catalog drift between parsing declarations and capturing bindings", () => {
+  const root = createReadContextFixture("tiangong-pcr-read-context-catalog-race-");
+  const catalogPath = path.join(root, "library/catalog.yaml");
+  try {
+    assert.throws(
+      () => createPcrReadContext({
+        root,
+        beforeAliasValidation: () => {
+          writeFileSync(catalogPath, `${readFileSync(catalogPath, "utf8")}\n`);
+        },
+      }),
+      (error) => error.code === "PCR_READ_CONTEXT_STALE",
+    );
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+  }
+});
+
 test("validation redirects retired scaffold ids before attempting content access", () => {
   assert.throws(
     () => validateDatasetAgainstGuidance({ root: repoRoot, pcrId: scaffoldPcrId, dataset: {} }),

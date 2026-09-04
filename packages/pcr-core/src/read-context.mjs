@@ -32,13 +32,25 @@ export class PcrReadContextStaleError extends Error {
  * deliberately independent from the process-global catalog cache: callers
  * may retain it only while all catalog-declared inputs remain byte-identical.
  */
-export function createPcrReadContext({ root, aliasLoader = readPcrIdAliases }) {
+export function createPcrReadContext({
+  root,
+  aliasLoader = readPcrIdAliases,
+  beforeAliasValidation = null,
+}) {
   const rootPath = canonicalRoot(root);
   const catalogSource = readRepositoryFile({ root: rootPath, relativePath: CATALOG_PATH });
   const catalog = parseCatalog(catalogSource.text, rootPath);
   const dependencyPaths = catalogDependencyPaths(catalog, rootPath);
   const boundPaths = [CATALOG_PATH, ...dependencyPaths];
+  beforeAliasValidation?.({ root: rootPath });
   const bindingsBefore = captureBindings({ root: rootPath, relativePaths: boundPaths });
+  if (bindingsBefore.get(CATALOG_PATH) !== catalogSource.sha256) {
+    throw new PcrReadContextStaleError({
+      root: rootPath,
+      source: CATALOG_PATH,
+      reason: "catalog changed after its dependency declarations were read",
+    });
+  }
   const aliases = aliasLoader({ root: rootPath });
   if (!Array.isArray(aliases)) {
     throw new TypeError("PCR read context aliasLoader must return an array");
