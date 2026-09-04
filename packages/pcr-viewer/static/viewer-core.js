@@ -2,6 +2,240 @@
 // coordinate-keyed classification_coverage_summaries. Older generated data must be
 // rebuilt together with the static assets instead of being guessed into the new shape.
 export const VIEWER_DATA_SCHEMA_VERSION = 3;
+export const VIEWER_SNAPSHOT_SCHEMA_VERSION = 1;
+const SHA256_REF = /^sha256:[a-f0-9]{64}$/u;
+
+export function artifactRootFromModuleUrl(moduleUrl) {
+  const url = new URL(moduleUrl);
+  const marker = "/ui/";
+  const markerIndex = url.pathname.lastIndexOf(marker);
+  if (markerIndex !== -1) {
+    const suffix = url.pathname.slice(markerIndex + marker.length).split("/");
+    if (suffix.length >= 2 && /^[a-f0-9]{64}$/u.test(suffix[0])) {
+      url.pathname = `${url.pathname.slice(0, markerIndex + 1)}`;
+      url.search = "";
+      url.hash = "";
+      return url.href;
+    }
+  }
+  return new URL("./", url).href;
+}
+
+export function createViewerSnapshotClient({ baseUrl, fetchJson = defaultFetchJson } = {}) {
+  const root = new URL(ensureTrailingSlash(baseUrl ?? globalThis.location?.href ?? "http://localhost/"));
+  const objectCache = new Map();
+  const manifestCache = new Map();
+
+  const readObject = async (ref) => {
+    assertSha256Ref(ref, "Viewer object reference");
+    if (!objectCache.has(ref)) {
+      objectCache.set(ref, Promise.resolve(fetchJson(
+        new URL(`objects/${ref.slice(7)}.json`, root).href,
+        { cache: "force-cache" },
+      )).then((value) => assertViewerObject(value, ref)));
+    }
+    return objectCache.get(ref);
+  };
+
+  const readManifest = async (ref) => {
+    assertSha256Ref(ref, "Viewer manifest reference");
+    if (!manifestCache.has(ref)) {
+      manifestCache.set(ref, Promise.resolve(fetchJson(
+        new URL(`manifests/${ref.slice(7)}.json`, root).href,
+        { cache: "force-cache" },
+      )).then(assertViewerManifest));
+    }
+    return manifestCache.get(ref);
+  };
+
+  const loadCatalog = async (manifest) => {
+    const catalogRoot = await readObject(manifest.refs.catalog_root);
+    if (catalogRoot.object_kind !== "catalog_root") {
+      throw new Error("Invalid Viewer snapshot: catalog_root does not reference a catalog root object.");
+    }
+    const entries = [];
+    for (const [prefix, shardRef] of Object.entries(catalogRoot.entry.shards).sort()) {
+      const shard = await readObject(shardRef);
+      if (shard.object_kind !== "catalog_shard" || shard.entry.prefix !== prefix) {
+        throw new Error(`Invalid Viewer snapshot: catalog shard ${prefix} is inconsistent.`);
+      }
+      for (const item of shard.entry.entries) {
+        const catalogEntry = await readObject(item.object_ref);
+        if (catalogEntry.object_kind !== "catalog_entry" || catalogEntry.entry.id !== item.id) {
+          throw new Error(`Invalid Viewer snapshot: catalog entry ${item.id} is inconsistent.`);
+        }
+        entries.push(catalogEntry.entry);
+      }
+    }
+    return entries.sort((left, right) => left.id.localeCompare(right.id));
+  };
+
+  const loadSnapshotByManifest = async (manifestRef, { withCatalog = true } = {}) => {
+    const manifest = await readManifest(manifestRef);
+    return {
+      manifestRef,
+      manifest,
+      catalog: withCatalog ? await loadCatalog(manifest) : null,
+    };
+  };
+
+  return Object.freeze({
+    async loadInitialSnapshot({ withCatalog = true } = {}) {
+      const active = assertViewerActive(await fetchJson(
+        new URL("active.json", root).href,
+        { cache: "no-cache" },
+      ));
+      const snapshot = await loadSnapshotByManifest(active.manifest_ref, { withCatalog });
+      if (
+        snapshot.manifest.snapshot_id !== active.snapshot_id ||
+        snapshot.manifest.sequence !== active.sequence ||
+        snapshot.manifest.capture.ui_bundle_ref !== active.ui_bundle_ref
+      ) {
+        throw new Error("Invalid Viewer snapshot: active pointer does not match its manifest.");
+      }
+      return { ...snapshot, active };
+    },
+    loadSnapshotByManifest,
+    async loadPcrDetail(snapshot, pcrId) {
+      const ref = snapshot?.manifest?.refs?.pcr_entries?.[pcrId];
+      if (!ref) throw new Error(`PCR is not present in this Viewer snapshot: ${pcrId}.`);
+      const detail = await readObject(ref);
+      if (detail.object_kind !== "pcr_detail" || detail.entry.id !== pcrId) {
+        throw new Error(`Invalid Viewer snapshot: PCR detail ${pcrId} is inconsistent.`);
+      }
+      return detail;
+    },
+    async loadUiBundle(manifest) {
+      const bundle = await readObject(manifest?.capture?.ui_bundle_ref);
+      if (bundle.object_kind !== "ui_bundle") {
+        throw new Error("Invalid Viewer snapshot: compatible UI reference is not a UI bundle.");
+      }
+      return bundle;
+    },
+    async loadHistory() {
+      const head = await fetchJson(new URL("history-head.json", root).href, { cache: "no-cache" });
+      if (head?.kind !== "viewer-history-head" || !Number.isSafeInteger(head.latest_sequence)) {
+        throw new Error("Invalid Viewer history head.");
+      }
+      const entries = [];
+      const seen = new Set();
+      let pageRef = head.page_ref;
+      while (pageRef) {
+        if (seen.has(pageRef)) throw new Error("Invalid Viewer history: page cycle detected.");
+        seen.add(pageRef);
+        const page = await readObject(pageRef);
+        if (page.object_kind !== "history_page" || !Array.isArray(page.entry.entries)) {
+          throw new Error("Invalid Viewer history page.");
+        }
+        for (const entry of page.entry.entries.toReversed()) {
+          if (!Number.isSafeInteger(entry?.sequence) || !SHA256_REF.test(String(entry?.manifest_ref))) {
+            throw new Error("Invalid Viewer history entry.");
+          }
+          entries.push(entry);
+        }
+        pageRef = page.entry.previous_page_ref;
+      }
+      if (
+        entries[0]?.sequence !== head.latest_sequence ||
+        entries.some((entry, index) => entry.sequence !== head.latest_sequence - index)
+      ) {
+        throw new Error("Invalid Viewer history sequence.");
+      }
+      return entries;
+    },
+    async loadProvenance(snapshotId) {
+      try {
+        return await fetchJson(
+          new URL(`provenance/${encodeURIComponent(snapshotId)}.json`, root).href,
+          { cache: "no-cache", optional: true },
+        );
+      } catch (error) {
+        if (error?.status === 404) return null;
+        throw error;
+      }
+    },
+  });
+}
+
+export function stableSnapshotUrl({ baseUrl, manifestRef, manifest, uiBundle }) {
+  assertSha256Ref(manifestRef, "Viewer manifest reference");
+  if (uiBundle?.object_kind !== "ui_bundle" || !SHA256_REF.test(uiBundle.entry?.id ?? "")) {
+    throw new Error("Invalid Viewer compatible UI bundle.");
+  }
+  const assetUrl = String(uiBundle.entry.asset_url ?? "");
+  if (!/^ui\/[a-f0-9]{64}\/$/u.test(assetUrl)) {
+    throw new Error("Invalid Viewer compatible UI asset URL.");
+  }
+  const url = new URL(`${assetUrl}index.html`, new URL(ensureTrailingSlash(baseUrl)));
+  url.searchParams.set("snapshot", manifest.snapshot_id);
+  url.searchParams.set("manifest", manifestRef);
+  url.searchParams.set("ui", uiBundle.entry.id);
+  return url.href;
+}
+
+export function describeSnapshotCapture(manifest = {}, provenance = null) {
+  const capture = manifest.capture?.validation_state === "validated"
+    ? "Captured after validation"
+    : "Capture state unknown";
+  if (provenance?.landing_state === "landed" && typeof provenance.landed_at === "string") {
+    return `${capture} · landed ${provenance.landed_at}`;
+  }
+  return `${capture} · landing unknown`;
+}
+
+function assertViewerActive(active) {
+  if (
+    active?.kind !== "viewer-active" ||
+    active.schema_version !== 1 ||
+    typeof active.snapshot_id !== "string" ||
+    !Number.isSafeInteger(active.sequence)
+  ) {
+    throw new Error("Invalid Viewer active pointer.");
+  }
+  assertSha256Ref(active.manifest_ref, "Viewer active manifest reference");
+  assertSha256Ref(active.ui_bundle_ref, "Viewer active UI bundle reference");
+  return active;
+}
+
+function assertViewerManifest(manifest) {
+  if (
+    manifest?.kind !== "viewer-snapshot-manifest" ||
+    !Number.isSafeInteger(manifest.sequence) ||
+    typeof manifest.snapshot_id !== "string" ||
+    !manifest.refs ||
+    !manifest.capture
+  ) {
+    throw new Error("Invalid Viewer snapshot manifest.");
+  }
+  return manifest;
+}
+
+function assertViewerObject(value, ref) {
+  if (value?.schema_version !== 1 || typeof value.object_kind !== "string" || !value.entry) {
+    throw new Error(`Invalid Viewer object at ${ref}.`);
+  }
+  return value;
+}
+
+function assertSha256Ref(ref, label) {
+  if (!SHA256_REF.test(String(ref))) throw new Error(`${label} is invalid.`);
+}
+
+function ensureTrailingSlash(value) {
+  const url = new URL(value);
+  if (!url.pathname.endsWith("/")) url.pathname = `${url.pathname}/`;
+  return url.href;
+}
+
+async function defaultFetchJson(url, options) {
+  const response = await fetch(url, { cache: options?.cache });
+  if (!response.ok) {
+    const error = new Error(`Unable to load Viewer artifact: HTTP ${response.status}.`);
+    error.status = response.status;
+    throw error;
+  }
+  return response.json();
+}
 
 export function assertViewerDataContract(data) {
   if (data?.schema_version !== VIEWER_DATA_SCHEMA_VERSION) {

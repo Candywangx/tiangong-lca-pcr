@@ -1,17 +1,27 @@
 import {
-  assertViewerDataContract,
+  artifactRootFromModuleUrl,
+  createViewerSnapshotClient,
   describeReadiness,
+  describeSnapshotCapture,
   escapeHtml,
   filterPcrs,
-  formatCoverageSummary,
   renderMarkdown,
+  stableSnapshotUrl,
   summarizeGuidance,
+  VIEWER_SNAPSHOT_SCHEMA_VERSION,
 } from "./viewer-core.js";
 
 const TABS = ["markdown", "guidance", "sources"];
 
 const state = {
-  data: null,
+  snapshot: null,
+  catalog: [],
+  detail: null,
+  detailLoading: false,
+  history: null,
+  historyLoading: false,
+  provenance: null,
+  stableUrl: "",
   selectedId: "",
   query: "",
   status: "",
@@ -21,15 +31,53 @@ const state = {
 };
 
 const app = document.querySelector("#app");
+const artifactRoot = artifactRootFromModuleUrl(import.meta.url);
+const client = createViewerSnapshotClient({ baseUrl: artifactRoot });
 
 async function boot() {
   try {
-    const response = await fetch("./data/pcr-viewer-data.json");
-    if (!response.ok) {
-      throw new Error(`Unable to load viewer data: HTTP ${response.status}`);
+    const params = new URL(window.location.href).searchParams;
+    const requestedManifest = params.get("manifest");
+    if (requestedManifest) {
+      const metadata = await client.loadSnapshotByManifest(requestedManifest, { withCatalog: false });
+      const uiBundle = await client.loadUiBundle(metadata.manifest);
+      const compatibleUrl = stableSnapshotUrl({
+        baseUrl: artifactRoot,
+        manifestRef: requestedManifest,
+        manifest: metadata.manifest,
+        uiBundle,
+      });
+      const requestedUi = params.get("ui");
+      const requestedSnapshot = params.get("snapshot");
+      if (
+        metadata.manifest.schema_version !== VIEWER_SNAPSHOT_SCHEMA_VERSION ||
+        requestedSnapshot !== metadata.manifest.snapshot_id ||
+        requestedUi !== uiBundle.entry.id
+      ) {
+        window.location.replace(compatibleUrl);
+        return;
+      }
+      state.snapshot = await client.loadSnapshotByManifest(requestedManifest);
+      state.stableUrl = compatibleUrl;
+    } else {
+      const metadata = await client.loadInitialSnapshot({ withCatalog: false });
+      const uiBundle = await client.loadUiBundle(metadata.manifest);
+      const compatibleUrl = stableSnapshotUrl({
+        baseUrl: artifactRoot,
+        manifestRef: metadata.manifestRef,
+        manifest: metadata.manifest,
+        uiBundle,
+      });
+      if (metadata.manifest.schema_version !== VIEWER_SNAPSHOT_SCHEMA_VERSION) {
+        window.location.replace(compatibleUrl);
+        return;
+      }
+      state.snapshot = await client.loadSnapshotByManifest(metadata.manifestRef);
+      state.stableUrl = compatibleUrl;
     }
-    state.data = assertViewerDataContract(await response.json());
-    state.selectedId = state.data.pcrs[0]?.id ?? "";
+    state.catalog = state.snapshot.catalog;
+    render();
+    state.provenance = await client.loadProvenance(state.snapshot.manifest.snapshot_id);
     render();
   } catch (error) {
     app.innerHTML = `<section class="empty-state"><h1>PCR viewer data is unavailable</h1><p>${escapeHtml(error.message)}</p><p>Build viewer data before serving this directory over HTTP.</p></section>`;
@@ -38,12 +86,12 @@ async function boot() {
 
 function render() {
   const searchFocus = captureSearchFocus();
-  const pcrs = state.data?.pcrs ?? [];
+  const pcrs = state.catalog;
   const filtered = filterPcrs(pcrs, state);
-  if (!filtered.some((pcr) => pcr.id === state.selectedId)) {
-    state.selectedId = filtered[0]?.id ?? "";
-  }
-  const selected = pcrs.find((pcr) => pcr.id === state.selectedId);
+  const selectedCatalog = pcrs.find((pcr) => pcr.id === state.selectedId);
+  const selected = selectedCatalog && state.detail?.entry?.id === selectedCatalog.id
+    ? { ...selectedCatalog, ...state.detail.entry }
+    : null;
 
   app.innerHTML = `
     <aside class="sidebar">
@@ -51,17 +99,22 @@ function render() {
         <div>
           <p class="eyebrow">TianGong LCA</p>
           <h1>PCR Viewer</h1>
-          ${renderCatalogSummary(state.data)}
+          ${renderSnapshotSummary()}
         </div>
         <span class="count">${filtered.length}/${pcrs.length}</span>
       </header>
       ${renderFilters(pcrs)}
+      ${renderHistoryControl()}
       <nav class="pcr-list" aria-label="PCR records">
         ${filtered.map((pcr) => renderPcrListItem(pcr, pcr.id === state.selectedId)).join("") || "<p class=\"empty-copy\">No PCR records match the current filters.</p>"}
       </nav>
     </aside>
     <section class="viewer">
-      ${selected ? renderSelectedPcr(selected) : "<div class=\"empty-state\"><h2>No PCR selected</h2><p>Adjust filters to select a PCR record.</p></div>"}
+      ${state.detailLoading
+        ? "<div class=\"loading-state\"><p>Loading selected PCR methodology...</p></div>"
+        : selected
+          ? renderSelectedPcr(selected)
+          : "<div class=\"empty-state\"><h2>No PCR selected</h2><p>Select a catalog record to load its PCR detail.</p></div>"}
     </section>
   `;
   bindEvents();
@@ -264,11 +317,23 @@ function bindEvents() {
     render();
   });
   for (const button of document.querySelectorAll("[data-pcr-id]")) {
-    button.addEventListener("click", () => {
-      state.selectedId = button.dataset.pcrId;
-      render();
+    button.addEventListener("click", async () => {
+      await selectPcr(button.dataset.pcrId);
     });
   }
+  document.querySelector("#load-history")?.addEventListener("click", loadHistory);
+  document.querySelector("#snapshot-history")?.addEventListener("change", async (event) => {
+    const entry = state.history?.find(({ manifest_ref: ref }) => ref === event.target.value);
+    if (!entry || entry.manifest_ref === state.snapshot.manifestRef) return;
+    const selected = await client.loadSnapshotByManifest(entry.manifest_ref, { withCatalog: false });
+    const uiBundle = await client.loadUiBundle(selected.manifest);
+    window.location.assign(stableSnapshotUrl({
+      baseUrl: artifactRoot,
+      manifestRef: entry.manifest_ref,
+      manifest: selected.manifest,
+      uiBundle,
+    }));
+  });
   const tabs = [...document.querySelectorAll("[role=\"tab\"][data-tab]")];
   for (const tab of tabs) {
     tab.addEventListener("click", () => {
@@ -282,6 +347,33 @@ function bindEvents() {
       event.preventDefault();
       activateTab(nextTab.dataset.tab, { focus: true });
     });
+  }
+}
+
+async function selectPcr(pcrId) {
+  state.selectedId = pcrId;
+  state.detail = null;
+  state.detailLoading = true;
+  render();
+  try {
+    state.detail = await client.loadPcrDetail(state.snapshot, pcrId);
+  } catch (error) {
+    state.detail = { entry: { id: pcrId, markdown: {}, guidance: { guidance_error: error.message } } };
+  } finally {
+    state.detailLoading = false;
+    render();
+  }
+}
+
+async function loadHistory() {
+  if (state.historyLoading || state.history) return;
+  state.historyLoading = true;
+  render();
+  try {
+    state.history = await client.loadHistory();
+  } finally {
+    state.historyLoading = false;
+    render();
   }
 }
 
@@ -324,15 +416,28 @@ function formatClassificationRefs(refs = []) {
   return refs.map((ref) => `${ref.system ?? ""} ${ref.version ?? ""} ${ref.code ?? ""}`.trim()).join("; ");
 }
 
-function renderCatalogSummary(data = {}) {
-  const scope = data.catalog_scope ?? "unknown";
-  const coverageSummaries = data.classification_coverage_summaries ?? [];
+function renderSnapshotSummary() {
+  const manifest = state.snapshot?.manifest ?? {};
   return `
     <div class="catalog-summary">
-      <p>${escapeHtml(`${scope} catalog · ${data.pcr_count ?? 0} PCR records`)}</p>
-      <ul aria-label="Classification coverage summaries">
-        ${coverageSummaries.map((coverage) => `<li>${escapeHtml(formatCoverageSummary(coverage))}</li>`).join("")}
-      </ul>
+      <p>${escapeHtml(`${manifest.catalog_scope ?? "unknown"} catalog · ${manifest.counts?.pcr ?? 0} PCR records`)}</p>
+      <p>${escapeHtml(`Snapshot ${manifest.snapshot_id ?? "unknown"} · sequence ${manifest.sequence ?? "unknown"}`)}</p>
+      <p>${escapeHtml(describeSnapshotCapture(manifest, state.provenance))}</p>
+      ${state.stableUrl ? `<p><a class="stable-link" href="${escapeHtml(state.stableUrl)}">Permanent snapshot link</a></p>` : ""}
+    </div>
+  `;
+}
+
+function renderHistoryControl() {
+  if (!state.history) {
+    return `<div class="history-control"><button id="load-history" type="button"${state.historyLoading ? " disabled" : ""}>${state.historyLoading ? "Loading history..." : "View snapshot history"}</button></div>`;
+  }
+  return `
+    <div class="history-control">
+      <label for="snapshot-history"><span>Retained snapshot</span></label>
+      <select id="snapshot-history">
+        ${state.history.map((entry) => `<option value="${escapeHtml(entry.manifest_ref)}"${entry.manifest_ref === state.snapshot.manifestRef ? " selected" : ""}>Sequence ${entry.sequence}</option>`).join("")}
+      </select>
     </div>
   `;
 }

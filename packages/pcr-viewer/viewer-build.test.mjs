@@ -23,6 +23,7 @@ import {
   buildViewerData,
   checkViewerSnapshot,
   computeViewerGeneratorContractSha256,
+  mirrorViewerArtifactStore,
   publishViewerSnapshot,
   recoverViewerSnapshot,
   validateViewerScope,
@@ -30,11 +31,15 @@ import {
 } from "./scripts/build-viewer-data.mjs";
 import { serveViewer } from "./scripts/serve-viewer.mjs";
 import {
+  artifactRootFromModuleUrl,
   assertViewerDataContract,
+  createViewerSnapshotClient,
   describeReadiness,
+  describeSnapshotCapture,
   filterPcrs,
   formatCoverageSummary,
   renderMarkdown,
+  stableSnapshotUrl,
   summarizeGuidance,
 } from "./static/viewer-core.js";
 
@@ -50,76 +55,55 @@ const coralPcrId =
 const coralPcrPath =
   "library/pcrs/agriculture-forestry-and-fishery-products/fish-crustaceans-molluscs-and-other-aquatic-invertebrates-products/coral-and-similar-products-shells-of-molluscs-crustaceans-or-echinoderms-and-cuttle-bone";
 
-test("buildViewer writes viewer data and static assets", () => {
+test("split viewer build writes an accepted integration snapshot and retained UI bundle", () => {
   const root = createViewerFixture();
   const outDir = mkdtempSync(path.join(tmpdir(), "tiangong-pcr-viewer-"));
   try {
-    const data = buildViewer({ root, outDir });
-    const dataPath = path.join(outDir, "data", "pcr-viewer-data.json");
+    const accepted = acceptedIntegrationHead();
+    const built = buildViewer({
+      root,
+      outDir,
+      acceptedIntegrationHead: accepted,
+      sourceVerifier: () => true,
+    });
+    const active = JSON.parse(readFileSync(path.join(outDir, "active.json"), "utf8"));
+    const manifest = JSON.parse(readFileSync(
+      path.join(outDir, "manifests", `${active.manifest_ref.slice(7)}.json`),
+      "utf8",
+    ));
+    const uiObject = JSON.parse(readFileSync(
+      path.join(outDir, "objects", `${active.ui_bundle_ref.slice(7)}.json`),
+      "utf8",
+    ));
 
-    assert.equal(data.schema_version, 3);
-    assert.equal(data.viewer_kind, "tiangong-pcr-static-viewer-data");
-    assert.equal(data.catalog_scope, "material");
-    assert.ok(data.pcr_count > 0);
-    assert.equal(data.pcr_count, data.pcrs.length);
-    assert.ok(existsSync(dataPath));
+    assert.equal(built.pcr_count, 1);
+    assert.equal(active.snapshot_id, accepted.snapshotId);
+    assert.equal(manifest.capture.source_ref, accepted.sourceRef);
+    assert.equal(manifest.capture.integration_commit, accepted.integrationCommit);
+    assert.equal(manifest.capture.tree_hash, accepted.treeHash);
+    assert.equal(manifest.capture.validation_state, "validated");
+    assert.equal(manifest.counts.pcr, 1);
+    assert.ok(existsSync(path.join(outDir, "history-head.json")));
+    assert.ok(existsSync(path.join(outDir, "objects", `${manifest.refs.catalog_root.slice(7)}.json`)));
     assert.ok(existsSync(path.join(outDir, "index.html")));
     assert.ok(existsSync(path.join(outDir, "styles.css")));
     assert.ok(existsSync(path.join(outDir, "app.js")));
     assert.ok(existsSync(path.join(outDir, "viewer-core.js")));
+    assert.ok(existsSync(path.join(outDir, uiObject.entry.asset_url, "index.html")));
     assert.ok(existsSync(path.join(outDir, VIEWER_BUILD_MARKER)));
-
-    const parsed = JSON.parse(readFileSync(dataPath, "utf8"));
-    const wheat = parsed.pcrs.find((entry) => entry.id === wheatPcrId);
-    const scaffold = parsed.pcrs.find((entry) => entry.content_maturity === "empty_scaffold");
-
-    assert.ok(wheat);
-    assert.equal(scaffold, undefined);
-    assert.equal(parsed.pcrs.every((entry) => entry.record_kind === "methodology"), true);
-    assert.equal(parsed.catalog_scope, "material");
-    assert.equal(parsed.classification_coverage_summaries.length, 1);
-    const [cpcCoverage] = parsed.classification_coverage_summaries;
-    assert.deepEqual(cpcCoverage.coordinate, { system: "cpc", version: "3.0" });
-    assert.equal(cpcCoverage.index_kind, "classification-pcr-coverage");
-    assert.equal(
-      cpcCoverage.index_path,
-      "classifications/indexes/cpc-3.0-coverage.json",
-    );
-    assert.equal(cpcCoverage.entries_inlined, false);
-    assert.deepEqual(cpcCoverage.summary, {
-      total: 1,
-      mapped: 1,
-      unmapped: 0,
-      candidate_suggestion: 0,
-      manual_review: 0,
-      unknown: 0,
-    });
-    assert.equal(Object.hasOwn(cpcCoverage, "entries"), false);
-    assert.equal(Object.hasOwn(parsed, "classification_coverage"), false);
-    assert.ok(
-      readFileSync(dataPath).byteLength < data.pcr_count * 300_000,
-      "Expected material viewer data below 300 KB per PCR",
-    );
-    assert.equal(wheat.title["en-US"], "Wheat seed for sowing");
-    assert.equal(wheat.markdown["en-US"].includes("# Wheat Seed for Sowing"), true);
-    assert.equal(wheat.markdown["zh-CN"].includes("# 小麦播种种子"), true);
-    assert.deepEqual(wheat.guidance, buildGuidance({ root, pcrId: wheatPcrId }));
-    assert.equal(wheat.guidance.reference_flow.reference_unit, "kg");
-    assert.ok(wheat.guidance.data_sources.length > 0);
-    assert.match(wheat.search_text, /wheat/i);
-    assert.match(wheat.search_text, /01111/);
+    assert.equal(existsSync(path.join(outDir, "data", "pcr-viewer-data.json")), false);
   } finally {
     rmSync(root, { recursive: true, force: true });
     rmSync(outDir, { recursive: true, force: true });
   }
 });
 
-test("buildViewer scope all preserves catalog compatibility without inlining empty scaffolds", () => {
+test("the legacy monolith remains callable for compatibility but split deployment is material-only", () => {
   const root = createViewerFixture({ includeScaffold: true });
   const outDir = mkdtempSync(path.join(tmpdir(), "tiangong-pcr-viewer-all-"));
   try {
     const materialData = buildViewerData({ root });
-    const data = buildViewer({ root, outDir, scope: "all" });
+    const data = buildViewerData({ root, scope: "all" });
     const scaffolds = data.pcrs.filter(
       (entry) => entry.record_kind === "legacy_scaffold_reference",
     );
@@ -133,7 +117,10 @@ test("buildViewer scope all preserves catalog compatibility without inlining emp
       assert.equal(Object.hasOwn(scaffold, "guidance"), false);
       assert.doesNotMatch(JSON.stringify(scaffold), /guidance_error/u);
     }
-    assert.ok(existsSync(path.join(outDir, VIEWER_BUILD_MARKER)));
+    assert.throws(
+      () => buildViewer({ root, outDir, scope: "all", acceptedIntegrationHead: acceptedIntegrationHead(), sourceVerifier: () => true }),
+      /split Viewer deployment supports only the material scope/u,
+    );
   } finally {
     rmSync(root, { recursive: true, force: true });
     rmSync(outDir, { recursive: true, force: true });
@@ -153,6 +140,131 @@ test("viewer build CLI validates its material, all, and legacy scopes", () => {
   assert.equal(result.status, 1);
   assert.equal(result.stdout, "");
   assert.match(result.stderr, /Invalid viewer scope: everything/u);
+});
+
+test("lazy snapshot client boots from catalog metadata and fetches one cached PCR detail on selection", async () => {
+  const root = createViewerFixture();
+  const outDir = mkdtempSync(path.join(tmpdir(), "tiangong-pcr-viewer-lazy-"));
+  const requests = [];
+  try {
+    buildViewer({
+      root,
+      outDir,
+      acceptedIntegrationHead: acceptedIntegrationHead(),
+      sourceVerifier: () => true,
+    });
+    const fetchJson = async (url, options) => {
+      const relative = new URL(url).pathname.replace(/^\/viewer\//u, "");
+      requests.push({ relative, cache: options?.cache });
+      return JSON.parse(readFileSync(path.join(outDir, relative), "utf8"));
+    };
+    const client = createViewerSnapshotClient({
+      baseUrl: "https://viewer.example/viewer/",
+      fetchJson,
+    });
+    const snapshot = await client.loadInitialSnapshot();
+
+    assert.equal(snapshot.manifest.capture.validation_state, "validated");
+    assert.deepEqual(snapshot.catalog.map((entry) => entry.id), [wheatPcrId]);
+    assert.equal(requests.some(({ relative }) => relative.includes("pcr.en-US.md")), false);
+    assert.equal(
+      requests.some(({ relative }) => relative === `objects/${snapshot.manifest.refs.pcr_entries[wheatPcrId].slice(7)}.json`),
+      false,
+    );
+
+    const first = await client.loadPcrDetail(snapshot, wheatPcrId);
+    const second = await client.loadPcrDetail(snapshot, wheatPcrId);
+    assert.equal(first, second);
+    assert.match(first.entry.markdown["en-US"], /Wheat Seed for Sowing/u);
+    assert.equal(
+      requests.filter(({ relative }) => relative === `objects/${snapshot.manifest.refs.pcr_entries[wheatPcrId].slice(7)}.json`).length,
+      1,
+    );
+    assert.equal(requests[0].relative, "active.json");
+    assert.equal(requests[0].cache, "no-cache");
+    assert.equal(requests.slice(1).every(({ cache }) => cache === "force-cache"), true);
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+    rmSync(outDir, { recursive: true, force: true });
+  }
+});
+
+test("history traversal yields stable snapshot and compatible retained-UI URLs", async () => {
+  const root = createViewerFixture();
+  const artifactStore = mkdtempSync(path.join(tmpdir(), "tiangong-pcr-viewer-history-ui-"));
+  try {
+    publishViewerSnapshot({
+      ...snapshotPublishOptions({ root, artifactStore, sequence: 1 }),
+      bootstrap: true,
+    });
+    publishViewerSnapshot({
+      ...snapshotPublishOptions({ root, artifactStore, sequence: 2 }),
+      changedPcrIds: [],
+    });
+    publishViewerSnapshot({
+      ...snapshotPublishOptions({ root, artifactStore, sequence: 3 }),
+      changedPcrIds: [],
+    });
+    const requests = [];
+    const client = createViewerSnapshotClient({
+      baseUrl: "https://viewer.example/library/",
+      fetchJson: async (url, options) => {
+        const relative = new URL(url).pathname.replace(/^\/library\//u, "");
+        requests.push({ relative, cache: options?.cache });
+        return JSON.parse(readFileSync(path.join(artifactStore, relative), "utf8"));
+      },
+    });
+    const history = await client.loadHistory();
+    assert.deepEqual(history.map(({ sequence }) => sequence), [3, 2, 1]);
+    assert.equal(requests[0].relative, "history-head.json");
+    assert.equal(requests[0].cache, "no-cache");
+    assert.ok(requests.filter(({ relative }) => relative.startsWith("objects/")).length >= 2);
+
+    const selected = await client.loadSnapshotByManifest(history.at(-1).manifest_ref);
+    const uiBundle = await client.loadUiBundle(selected.manifest);
+    const url = stableSnapshotUrl({
+      baseUrl: "https://viewer.example/library/",
+      manifestRef: history.at(-1).manifest_ref,
+      manifest: selected.manifest,
+      uiBundle,
+    });
+    assert.match(url, /\/ui\/[a-f0-9]{64}\/index\.html\?/u);
+    assert.equal(new URL(url).searchParams.get("snapshot"), selected.manifest.snapshot_id);
+    assert.equal(new URL(url).searchParams.get("manifest"), history.at(-1).manifest_ref);
+    assert.equal(new URL(url).searchParams.get("ui"), uiBundle.entry.id);
+    assert.equal(
+      stableSnapshotUrl({
+        baseUrl: "https://viewer.example/library/",
+        manifestRef: history.at(-1).manifest_ref,
+        manifest: { ...selected.manifest, schema_version: 0 },
+        uiBundle,
+      }),
+      url,
+      "an older manifest schema remains navigable through its retained compatible bundle",
+    );
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+    rmSync(artifactStore, { recursive: true, force: true });
+  }
+});
+
+test("split viewer labels validation capture separately from mutable landing provenance", () => {
+  assert.equal(describeSnapshotCapture({ capture: { validation_state: "validated" } }, null), "Captured after validation · landing unknown");
+  assert.equal(
+    describeSnapshotCapture(
+      { capture: { validation_state: "validated" } },
+      { landing_state: "landed", landed_at: "2026-09-05T01:02:03Z" },
+    ),
+    "Captured after validation · landed 2026-09-05T01:02:03Z",
+  );
+  assert.equal(
+    artifactRootFromModuleUrl(`https://viewer.example/library/ui/${"a".repeat(64)}/app.js`),
+    "https://viewer.example/library/",
+  );
+  assert.equal(
+    artifactRootFromModuleUrl("https://viewer.example/library/app.js"),
+    "https://viewer.example/library/",
+  );
 });
 
 test("incremental Viewer snapshots require opt-in bootstrap and reuse unchanged PCR details", () => {
@@ -673,6 +785,7 @@ test("Viewer snapshot CLI exposes stable JSON failures and exact package scripts
   });
 
   const scripts = JSON.parse(readFileSync(path.join(repoRoot, "package.json"), "utf8")).scripts;
+  assert.equal(scripts["viewer:build"], "node packages/pcr-viewer/scripts/build-viewer-data.mjs build");
   assert.equal(scripts["viewer:update"], "node packages/pcr-viewer/scripts/build-viewer-data.mjs update");
   assert.equal(scripts["viewer:check"], "node packages/pcr-viewer/scripts/build-viewer-data.mjs check");
   assert.equal(scripts["viewer:recover"], "node packages/pcr-viewer/scripts/build-viewer-data.mjs recover");
@@ -970,7 +1083,7 @@ test("viewer managed inputs reject symbolic links, FIFOs, and invalid UTF-8", as
 
 test("buildViewer refuses protected and unowned output directories", () => {
   assert.throws(
-    () => buildViewer({ root: repoRoot, outDir: repoRoot, scope: "all" }),
+    () => buildViewer({ root: repoRoot, outDir: repoRoot }),
     /Refusing to build the PCR viewer into protected path/u,
   );
 
@@ -1029,10 +1142,10 @@ test("buildViewer allows a safe new path through a parent symlink and can replac
   try {
     mkdirSync(realParentDir);
     symlinkSync(realParentDir, parentAlias, "dir");
-    buildViewer({ root, outDir });
+    buildViewer({ root, outDir, acceptedIntegrationHead: acceptedIntegrationHead(), sourceVerifier: () => true });
     writeFileSync(path.join(outDir, "stale-generated-file.txt"), "stale\n");
 
-    buildViewer({ root, outDir });
+    buildViewer({ root, outDir, acceptedIntegrationHead: acceptedIntegrationHead(), sourceVerifier: () => true });
 
     assert.equal(existsSync(path.join(outDir, "stale-generated-file.txt")), false);
     assert.equal(existsSync(path.join(outDir, VIEWER_BUILD_MARKER)), true);
@@ -1054,12 +1167,13 @@ test("buildViewer does not replace an existing build with an empty catalog", () 
       root: emptyRoot,
       coverageIndexes: ["classifications/indexes/cpc-3.0-coverage.json"],
     });
+    writeFixtureMaterialIndex({ root: emptyRoot, pcrs: [] });
     mkdirSync(outDir);
     writeFileSync(path.join(outDir, VIEWER_BUILD_MARKER), "owned viewer build\n");
     writeFileSync(sentinelPath, "last usable output\n");
 
     assert.throws(
-      () => buildViewer({ root: emptyRoot, outDir }),
+      () => buildViewer({ root: emptyRoot, outDir, acceptedIntegrationHead: acceptedIntegrationHead(), sourceVerifier: () => true }),
       /Refusing to replace viewer output with an empty PCR catalog/u,
     );
     assert.equal(readFileSync(sentinelPath, "utf8"), "last usable output\n");
@@ -1148,8 +1262,8 @@ test("viewer labels classification matching as a literal filter, not a resolver"
   assert.match(appSource, /Literal metadata filter/u);
   assert.match(appSource, /Substring filter only/u);
   assert.match(appSource, /tiangong-pcr resolve/u);
-  assert.match(appSource, /classification_coverage_summaries/u);
-  assert.match(appSource, /coverageSummaries\.map/u);
+  assert.match(appSource, /state\.catalog/u);
+  assert.match(appSource, /loadPcrDetail/u);
 });
 
 test("viewer-core renders deep headings, inline code, and indented lists", () => {
@@ -1225,6 +1339,44 @@ test("viewer scripts are safe to import when the process entry path does not exi
   assert.equal(output, "imported\n");
 });
 
+test("serve-viewer help documents split artifacts and exits without starting a server", () => {
+  const result = spawnSync(process.execPath, [
+    path.join(repoRoot, "packages/pcr-viewer/scripts/serve-viewer.mjs"),
+    "--help",
+  ], { encoding: "utf8" });
+
+  assert.equal(result.status, 0, result.stderr);
+  assert.match(result.stdout, /Usage:.*serve-viewer/u);
+  assert.match(result.stdout, /--root/u);
+  assert.match(result.stdout, /immutable snapshot objects/u);
+});
+
+test("artifact mirroring retains split history and installs the active compatible UI at the cache root", () => {
+  const root = createViewerFixture();
+  const artifactStore = mkdtempSync(path.join(tmpdir(), "tiangong-pcr-viewer-artifacts-"));
+  const outDir = path.join(mkdtempSync(path.join(tmpdir(), "tiangong-pcr-viewer-mirror-")), "dist");
+  try {
+    buildViewer({
+      root,
+      outDir: artifactStore,
+      acceptedIntegrationHead: acceptedIntegrationHead(),
+      sourceVerifier: () => true,
+    });
+    const activeBefore = readFileSync(path.join(artifactStore, "active.json"));
+    const mirrored = mirrorViewerArtifactStore({ artifactStore, outDir });
+
+    assert.deepEqual(readFileSync(path.join(outDir, "active.json")), activeBefore);
+    assert.equal(mirrored.sequence, 1);
+    assert.ok(existsSync(path.join(outDir, "history-head.json")));
+    assert.ok(existsSync(path.join(outDir, "index.html")));
+    assert.ok(existsSync(path.join(outDir, VIEWER_BUILD_MARKER)));
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+    rmSync(artifactStore, { recursive: true, force: true });
+    rmSync(path.dirname(outDir), { recursive: true, force: true });
+  }
+});
+
 test("serveViewer refuses to serve a symlink that escapes the build root", async () => {
   const parentDir = mkdtempSync(path.join(tmpdir(), "tiangong-pcr-viewer-serve-root-"));
   const root = path.join(parentDir, "viewer");
@@ -1251,6 +1403,48 @@ test("serveViewer refuses to serve a symlink that escapes the build root", async
   }
 });
 
+test("serveViewer sends revalidation headers for mutable pointers and immutable headers for hashes and UI bundles", async () => {
+  const sourceRoot = createViewerFixture();
+  const root = mkdtempSync(path.join(tmpdir(), "tiangong-pcr-viewer-cache-headers-"));
+  let server;
+  try {
+    buildViewer({
+      root: sourceRoot,
+      outDir: root,
+      acceptedIntegrationHead: acceptedIntegrationHead(),
+      sourceVerifier: () => true,
+    });
+    const active = JSON.parse(readFileSync(path.join(root, "active.json"), "utf8"));
+    const manifest = JSON.parse(readFileSync(path.join(root, "manifests", `${active.manifest_ref.slice(7)}.json`), "utf8"));
+    const uiObject = JSON.parse(readFileSync(path.join(root, "objects", `${active.ui_bundle_ref.slice(7)}.json`), "utf8"));
+    server = serveViewer({ root, port: 0 });
+    if (!server.listening) await new Promise((resolve) => server.once("listening", resolve));
+    const baseUrl = `http://127.0.0.1:${server.address().port}`;
+
+    for (const mutablePath of ["/active.json", "/history-head.json", `/provenance/${active.snapshot_id}.json`]) {
+      if (mutablePath.startsWith("/provenance/")) {
+        mkdirSync(path.join(root, "provenance"));
+        writeFileSync(path.join(root, mutablePath), '{"landing_state":"unknown"}\n');
+      }
+      const response = await fetch(`${baseUrl}${mutablePath}`);
+      assert.equal(response.headers.get("cache-control"), "no-cache");
+    }
+    for (const immutablePath of [
+      `/manifests/${active.manifest_ref.slice(7)}.json`,
+      `/objects/${manifest.refs.catalog_root.slice(7)}.json`,
+      `/${uiObject.entry.asset_url}app.js`,
+    ]) {
+      const response = await fetch(`${baseUrl}${immutablePath}`);
+      assert.equal(response.status, 200);
+      assert.equal(response.headers.get("cache-control"), "public, max-age=31536000, immutable");
+    }
+  } finally {
+    if (server?.listening) await new Promise((resolve) => server.close(resolve));
+    rmSync(sourceRoot, { recursive: true, force: true });
+    rmSync(root, { recursive: true, force: true });
+  }
+});
+
 test("viewer scripts can run from paths containing spaces and non-ASCII characters", async () => {
   const tempRoot = mkdtempSync(path.join(tmpdir(), "tiangong-pcr-viewer-cli-"));
   const fixtureRoot = path.join(tempRoot, "工作 空间");
@@ -1264,6 +1458,9 @@ test("viewer scripts can run from paths containing spaces and non-ASCII characte
       recursive: true,
     });
     cpSync(path.join(repoRoot, "packages", "pcr-viewer", "static"), path.join(fixtureViewerRoot, "static"), {
+      recursive: true,
+    });
+    cpSync(path.join(repoRoot, "packages", "pcr-viewer", "schemas"), path.join(fixtureViewerRoot, "schemas"), {
       recursive: true,
     });
     cpSync(path.join(repoRoot, "packages", "pcr-core", "src"), path.join(fixtureCoreRoot, "src"), {
@@ -1287,6 +1484,31 @@ test("viewer scripts can run from paths containing spaces and non-ASCII characte
       mappedPcrIds: [wheatPcrId],
     });
     writeFixtureCatalog({ root: fixtureRoot, coverageIndexes: [coverageIndex] });
+    writeFixtureMaterialIndex({
+      root: fixtureRoot,
+      pcrs: [{
+        id: wheatPcrId,
+        path: wheatPcrPath,
+        title: { "en-US": "Wheat seed for sowing", "zh-CN": "小麦播种种子" },
+        status: "candidate",
+        content_maturity: "authored_methodology",
+      }],
+    });
+    for (const relativePath of [
+      "package.json",
+      "package-lock.json",
+      "builder/vocab",
+      "builder/schemas/pcr-material-index.schema.json",
+    ]) {
+      const target = path.join(fixtureRoot, relativePath);
+      mkdirSync(path.dirname(target), { recursive: true });
+      cpSync(path.join(repoRoot, relativePath), target, { recursive: true });
+    }
+    execFileSync("git", ["init", "-b", "main", fixtureRoot], { stdio: "ignore" });
+    execFileSync("git", ["-C", fixtureRoot, "config", "user.email", "viewer-test@example.invalid"]);
+    execFileSync("git", ["-C", fixtureRoot, "config", "user.name", "Viewer Test"]);
+    execFileSync("git", ["-C", fixtureRoot, "add", "."]);
+    execFileSync("git", ["-C", fixtureRoot, "commit", "-m", "viewer fixture"], { stdio: "ignore" });
 
     const buildOutput = execFileSync(process.execPath, [
       path.join(fixtureViewerRoot, "scripts", "build-viewer-data.mjs"),
@@ -1301,7 +1523,7 @@ test("viewer scripts can run from paths containing spaces and non-ASCII characte
       encoding: "utf8",
     });
 
-    assert.match(buildOutput, /Built PCR viewer data for \d+ PCR records/);
+    assert.match(buildOutput, /Built PCR viewer snapshot for \d+ PCR records/);
     assert.match(buildOutput, /scope: material/u);
 
     const server = spawn(process.execPath, [
@@ -1330,7 +1552,7 @@ test("viewer scripts can run from paths containing spaces and non-ASCII characte
       const baseUrl = `http://127.0.0.1:${port}`;
 
       await assertResponse(baseUrl, "/", 200, /^text\/html/u);
-      await assertResponse(baseUrl, "/data/pcr-viewer-data.json", 200, /^application\/json/u);
+      await assertResponse(baseUrl, "/active.json", 200, /^application\/json/u);
       await assertResponse(baseUrl, "/%2e%2e%2fpackage.json", 403);
       await assertResponse(baseUrl, "/%E0%A4%A", 400);
       await assertResponse(baseUrl, "/", 200, /^text\/html/u);
@@ -1456,6 +1678,23 @@ function snapshotPublishOptions({ root, artifactStore, sequence }) {
     validatedAt: `2026-09-05T00:0${sequence}:30Z`,
     validationSummary: { status: "passed", checks: 3 },
     sourceVerifier: () => true,
+  };
+}
+
+function acceptedIntegrationHead(overrides = {}) {
+  return {
+    snapshotId: "viewer-bootstrap-accepted",
+    goalId: "goal-viewer-bootstrap",
+    harnessSnapshotId: "harness-bootstrap-accepted",
+    sequence: 1,
+    sourceRef: "refs/tiangong-viewer-sources/goal-viewer-bootstrap/harness-bootstrap-accepted",
+    integrationCommit: "a".repeat(40),
+    baseCommit: "b".repeat(40),
+    treeHash: "c".repeat(40),
+    capturedAt: "2026-09-05T00:00:00Z",
+    validatedAt: "2026-09-05T00:01:00Z",
+    validationSummary: { status: "passed", checks: 3 },
+    ...overrides,
   };
 }
 

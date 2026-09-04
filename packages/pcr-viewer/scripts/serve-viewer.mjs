@@ -7,10 +7,12 @@ const packageRoot = path.resolve(fileURLToPath(new URL("..", import.meta.url)));
 const defaultRoot = path.join(packageRoot, "dist");
 
 function cliOptions(argv) {
-  const options = { root: defaultRoot, port: 4173, host: "127.0.0.1" };
+  const options = { root: defaultRoot, port: 4173, host: "127.0.0.1", help: false };
   for (let index = 0; index < argv.length; index += 1) {
     const token = argv[index];
-    if (token === "--root") {
+    if (token === "--help" || token === "-h") {
+      options.help = true;
+    } else if (token === "--root") {
       options.root = path.resolve(requiredOptionValue(argv, index, token));
       index += 1;
     } else if (token === "--port") {
@@ -73,7 +75,10 @@ export function serveViewer({ root = defaultRoot, port = 4173, host = "127.0.0.1
       return;
     }
 
-    response.writeHead(200, { "Content-Type": contentType(canonicalFilePath) });
+    response.writeHead(200, {
+      "Content-Type": contentType(canonicalFilePath),
+      "Cache-Control": cacheControl(relativePath),
+    });
     createReadStream(canonicalFilePath).pipe(response);
   });
 
@@ -128,7 +133,41 @@ function contentType(filePath) {
 }
 
 if (isCliMain(import.meta.url)) {
-  serveViewer(cliOptions(process.argv.slice(2)));
+  const options = cliOptions(process.argv.slice(2));
+  if (options.help) {
+    console.log(`Usage: node packages/pcr-viewer/scripts/serve-viewer.mjs [options]
+
+Serve a split PCR Viewer deployment with mutable entrypoints and immutable snapshot objects.
+
+Options:
+  --root <path>  Viewer deployment cache root (default: packages/pcr-viewer/dist)
+  --host <host>  Listen address (default: 127.0.0.1)
+  --port <port>  Listen port, including 0 for an ephemeral port (default: 4173)
+  -h, --help     Show this help`);
+  } else {
+    const { help: _help, ...serverOptions } = options;
+    serveViewer(serverOptions);
+  }
+}
+
+function cacheControl(relativePath) {
+  const normalized = String(relativePath).replaceAll("\\", "/");
+  if (
+    normalized === "active.json" ||
+    normalized === "history-head.json" ||
+    /^provenance\/[^/]+\.json$/u.test(normalized)
+  ) {
+    return "no-cache";
+  }
+  if (
+    /^manifests\/[a-f0-9]{64}\.json$/u.test(normalized) ||
+    /^objects\/[a-f0-9]{64}\.json$/u.test(normalized) ||
+    /^history\/[a-f0-9]{64}\.json$/u.test(normalized) ||
+    /^ui\/[a-f0-9]{64}\//u.test(normalized)
+  ) {
+    return "public, max-age=31536000, immutable";
+  }
+  return "no-cache";
 }
 
 function isCliMain(moduleUrl) {
