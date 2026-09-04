@@ -339,10 +339,12 @@ test("generator and release marker fingerprints invalidate content-addressed obj
     assert.notEqual(generatorManifest.refs.pcr_entries["pcr.agriculture.wheat-seed"], firstManifest.refs.pcr_entries["pcr.agriculture.wheat-seed"]);
     const markerChanged = store.publish(snapshotInput({
       snapshotId: "snapshot-003", sequence: 3,
+      generatorContractSha256: sha256Ref("generator-contract-v2\n"),
       source: { ...snapshotInput().source, releaseRevisionMarker: sha256Ref("revision-marker-v2\n") },
     }));
     const markerManifest = store.readManifest(markerChanged.manifestRef);
-    assert.notEqual(markerManifest.refs.alias_root, generatorManifest.refs.alias_root);
+    assert.notEqual(markerManifest.refs.pcr_entries["pcr.agriculture.wheat-seed"], generatorManifest.refs.pcr_entries["pcr.agriculture.wheat-seed"]);
+    assert.equal(markerManifest.refs.alias_root, generatorManifest.refs.alias_root);
   } finally {
     rmSync(root, { recursive: true, force: true });
   }
@@ -481,6 +483,45 @@ test("rename contracts require the old id to disappear and a unique successor", 
         { id: "pcr.successor.two", title: "New", renamed_from: "pcr.agriculture.wheat-seed" },
       ],
     })), /more than one successor/u);
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+  }
+});
+
+test("a single alias update only changes its entry, shard, and alias root", () => {
+  const { root, store } = fixtureStore();
+  try {
+    const first = store.publish(snapshotInput());
+    const before = store.readManifest(first.manifestRef);
+    const second = store.publish(snapshotInput({
+      snapshotId: "snapshot-002", sequence: 2,
+      aliasEntries: [{ id: "pcr.legacy.wheat", locator: "cpc:3.0:09999" }],
+    }));
+    const after = store.readManifest(second.manifestRef);
+    assert.notEqual(after.refs.alias_entries["pcr.legacy.wheat"], before.refs.alias_entries["pcr.legacy.wheat"]);
+    assert.notEqual(after.refs.alias_root, before.refs.alias_root);
+    assert.deepEqual(after.refs.pcr_entries, before.refs.pcr_entries);
+    assert.deepEqual(after.refs.catalog_shards, before.refs.catalog_shards);
+    assert.deepEqual(after.refs.coverage_shards, before.refs.coverage_shards);
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+  }
+});
+
+test("a tampered recovery journal cannot mutate active or history", () => {
+  const { root, store } = fixtureStore();
+  try {
+    store.publish(snapshotInput());
+    const priorActive = readFileSync(path.join(root, "active.json"));
+    const priorHistory = readFileSync(path.join(root, "history-head.json"));
+    assert.throws(() => store.publish(snapshotInput({ snapshotId: "snapshot-002", sequence: 2, failurePhase: "prepared" })), /interrupted/u);
+    const journalPath = path.join(root, "journal.json");
+    const journal = JSON.parse(readFileSync(journalPath, "utf8"));
+    journal.capture.tree_hash = "f".repeat(40);
+    writeFileSync(journalPath, canonicalJson(journal));
+    assert.throws(() => store.recover(), /not exactly bound/u);
+    assert.deepEqual(readFileSync(path.join(root, "active.json")), priorActive);
+    assert.deepEqual(readFileSync(path.join(root, "history-head.json")), priorHistory);
   } finally {
     rmSync(root, { recursive: true, force: true });
   }

@@ -75,6 +75,7 @@ export class ViewerSnapshotStore {
     this.schemas = createViewerSnapshotSchemaRegistry();
     this.schemaContractSha256 = viewerSchemaContractSha256();
     this.lockLease = null;
+    this.currentJournal = null;
   }
 
   probe() {
@@ -225,10 +226,10 @@ export class ViewerSnapshotStore {
       throw new ViewerSnapshotStoreError("VIEWER_SEQUENCE_CONFLICT", `Snapshot sequence ${normalized.sequence} must follow ${previous.sequence}.`);
     }
 
-    const identity = this.#objectIdentity(normalized);
-    const catalogIdentity = this.#objectIdentity(normalized, { catalog: normalized.source.catalog });
-    const aliasIdentity = this.#objectIdentity(normalized, { aliases: normalized.source.aliases });
-    const coverageIdentity = this.#objectIdentity(normalized, { coverage: normalized.source.coverage });
+    const identity = this.#objectIdentity(normalized, {}, true);
+    const catalogIdentity = this.#objectIdentity(normalized);
+    const aliasIdentity = this.#objectIdentity(normalized);
+    const coverageIdentity = this.#objectIdentity(normalized);
     const pcrEntries = this.#writeEntries(normalized.pcrEntries, "pcr_detail", identity);
     const catalogEntries = this.#writeCatalogEntries(normalized.pcrEntries, catalogIdentity);
     const aliasEntries = this.#writeEntries(normalized.aliasEntries, "alias_entry", aliasIdentity);
@@ -303,11 +304,13 @@ export class ViewerSnapshotStore {
       },
     };
     this.#writePointer("journal.json", journal);
+    this.currentJournal = journal;
     normalized.onPhase?.("prepared", this);
     this.#interrupt(normalized.failurePhase, journal.phase);
 
     journal = { ...journal, phase: "history_prepared" };
     this.#writePointer("journal.json", journal);
+    this.currentJournal = journal;
     this.#interrupt(normalized.failurePhase, journal.phase);
 
     // This is the final source read.  It must succeed before either retained
@@ -324,11 +327,13 @@ export class ViewerSnapshotStore {
     this.#writePointerCas("history-head.json", history.head, journal.cas.history_head);
     journal = { ...journal, phase: "history_committed" };
     this.#writePointer("journal.json", journal);
+    this.currentJournal = journal;
     this.#interrupt(normalized.failurePhase, journal.phase);
 
     this.#writePointerCas("active.json", active, journal.cas.active);
     journal = { ...journal, phase: "active_committed" };
     this.#writePointer("journal.json", journal);
+    this.currentJournal = journal;
     this.#interrupt(normalized.failurePhase, journal.phase);
     this.#assertLockOwned();
     unlinkSync(this.path("journal.json"));
@@ -340,9 +345,12 @@ export class ViewerSnapshotStore {
     const journalPath = this.path("journal.json");
     if (!existsRegular(journalPath, "publication journal")) return Object.freeze({ recovered: false });
     const journal = parseCanonicalJson(readSafeFile(journalPath, "publication journal"), "publication journal");
+    this.currentJournal = journal;
     validateJournal(journal);
     const manifest = this.readManifest(journal.manifest_ref);
     if (manifest.sequence !== journal.sequence) throw new ViewerSnapshotStoreError("VIEWER_JOURNAL_CORRUPT", "Journal sequence does not match its manifest.");
+    this.#assertJournalMatchesManifest(journal, manifest);
+    this.#restoreCapturedPointer(journal);
     this.#verifySource({ source: journal.source, capture: journal.capture, sourceFingerprint: journal.source_fingerprint }, "before");
     if (journal.phase === "history_prepared") {
       this.#verifySource({ source: journal.source, capture: journal.capture, sourceFingerprint: journal.source_fingerprint }, "after");
@@ -493,13 +501,13 @@ export class ViewerSnapshotStore {
     return { renames: sortedObject(renames) };
   }
 
-  #objectIdentity(normalized, relevantSources = {}) {
+  #objectIdentity(normalized, relevantSources = {}, includeReleaseMarker = false) {
     return {
       generator_contract_sha256: normalized.generatorContractSha256,
       schema_contract_sha256: this.schemaContractSha256,
       // Commit/tree capture is snapshot provenance, never an entry-object input.
-      source_fingerprint: sha256Ref(canonicalBytes({ ...relevantSources, release_revision_marker: normalized.source.release_revision_marker })),
-      release_revision_marker: normalized.source.release_revision_marker,
+      source_fingerprint: sha256Ref(canonicalBytes(relevantSources)),
+      release_revision_marker: includeReleaseMarker ? normalized.source.release_revision_marker : null,
     };
   }
 
@@ -519,6 +527,30 @@ export class ViewerSnapshotStore {
     const result = this.sourceVerifier({ phase, source: structuredClone(normalized.source), capture: structuredClone(normalized.capture) });
     if (result !== true && result?.valid !== true) {
       throw new ViewerSnapshotStoreError("VIEWER_SOURCE_VERIFICATION_FAILED", `Pinned Git source verification failed during ${phase}.`);
+    }
+  }
+
+  #assertJournalMatchesManifest(journal, manifest) {
+    if (
+      canonicalJson(journal.source) !== canonicalJson(manifest.source) ||
+      canonicalJson(journal.capture) !== canonicalJson(manifest.capture) ||
+      journal.reservation.snapshot_id !== manifest.snapshot_id ||
+      journal.reservation.sequence !== manifest.sequence ||
+      journal.active.manifest_ref !== journal.manifest_ref ||
+      journal.active.snapshot_id !== manifest.snapshot_id ||
+      journal.active.sequence !== manifest.sequence ||
+      journal.active.ui_bundle_ref !== manifest.capture.ui_bundle_ref ||
+      journal.active.snapshot_hash !== journal.manifest_ref ||
+      journal.history_head.latest_sequence !== manifest.sequence
+    ) {
+      throw new ViewerSnapshotStoreError("VIEWER_JOURNAL_CORRUPT", "Journal identities are not exactly bound to the referenced manifest.");
+    }
+    if (journal.cas.history_head.new_ref !== sha256Ref(canonicalBytes(journal.history_head)) || journal.cas.active.new_ref !== sha256Ref(canonicalBytes(journal.active))) {
+      throw new ViewerSnapshotStoreError("VIEWER_JOURNAL_CORRUPT", "Journal pointer digests are not exactly bound to their values.");
+    }
+    const historyPage = this.readObject(journal.history_head.page_ref);
+    if (historyPage.object_kind !== "history_page" || historyPage.entry.entries.at(-1)?.manifest_ref !== journal.manifest_ref || historyPage.entry.entries.at(-1)?.sequence !== manifest.sequence) {
+      throw new ViewerSnapshotStoreError("VIEWER_JOURNAL_CORRUPT", "Journal history page is not bound to the referenced manifest.");
     }
   }
 
@@ -744,12 +776,17 @@ export class ViewerSnapshotStore {
     this.#assertLockOwned();
     const destination = this.path(leaf);
     const stage = this.#stage(bytes);
-    const backup = this.path("staging", `.backup-${leaf}-${process.pid}-${Date.now()}-${Math.random().toString(16).slice(2)}`);
+    const journalRef = this.currentJournal?.manifest_ref;
+    if (!journalRef) throw new ViewerSnapshotStoreError("VIEWER_JOURNAL_CORRUPT", "Conditional pointer replacement requires a durable journal.");
+    const backup = this.path("staging", `.pointer-backup-${refDigest(journalRef)}-${leaf}`);
     let moved = false;
     try {
       const before = this.#pointerRef(leaf);
       if (before !== expectedOldRef) throw new ViewerSnapshotStoreError("VIEWER_POINTER_CAS_CONFLICT", `${leaf} pointer changed before conditional replacement.`);
       if (before !== null) {
+        const capture = { ...this.currentJournal, pointer_capture: { leaf, backup_path: path.basename(backup), expected_old_ref: expectedOldRef } };
+        this.#writePointer("journal.json", capture);
+        this.currentJournal = capture;
         renameSync(destination, backup);
         moved = true;
         if (sha256Ref(readSafeFile(backup, `${leaf} CAS backup`)) !== expectedOldRef) {
@@ -766,6 +803,11 @@ export class ViewerSnapshotStore {
       }
       fsyncDirectory(path.dirname(destination));
       if (moved) { unlinkSync(backup); moved = false; }
+      if (this.currentJournal?.pointer_capture) {
+        const cleared = { ...this.currentJournal, pointer_capture: null };
+        this.#writePointer("journal.json", cleared);
+        this.currentJournal = cleared;
+      }
     } catch (error) {
       if (moved) {
         try { if (!existsRegular(destination, `artifact store ${leaf}`)) renameSync(backup, destination); } catch { /* preserve original failure */ }
@@ -775,6 +817,31 @@ export class ViewerSnapshotStore {
       try { unlinkSync(stage); } catch { /* hard linked or absent */ }
       try { if (moved) unlinkSync(backup); } catch { /* restored or absent */ }
     }
+  }
+
+  #restoreCapturedPointer(journal) {
+    const capture = journal.pointer_capture;
+    if (!capture) return;
+    if (!/^(history-head\.json|active\.json)$/u.test(capture.leaf) || typeof capture.backup_path !== "string" || path.basename(capture.backup_path) !== capture.backup_path) {
+      throw new ViewerSnapshotStoreError("VIEWER_JOURNAL_CORRUPT", "Journal pointer capture is invalid.");
+    }
+    const backup = this.path("staging", capture.backup_path);
+    if (!existsRegular(backup, "pointer backup")) return;
+    const expected = capture.expected_old_ref;
+    if (sha256Ref(readSafeFile(backup, "pointer backup")) !== expected) throw new ViewerSnapshotStoreError("VIEWER_JOURNAL_CORRUPT", "Pointer backup digest does not match its journal capture.");
+    const destination = this.path(capture.leaf);
+    const current = this.#pointerRef(capture.leaf);
+    if (current === null) {
+      renameSync(backup, destination);
+      fsyncDirectory(path.dirname(destination));
+    } else if (current === expected || current === journal.cas[capture.leaf === "active.json" ? "active" : "history_head"].new_ref) {
+      unlinkSync(backup);
+    } else {
+      throw new ViewerSnapshotStoreError("VIEWER_POINTER_CAS_CONFLICT", "Captured pointer cannot be restored without overwriting a substitute.");
+    }
+    const cleared = { ...journal, pointer_capture: null };
+    this.#writePointer("journal.json", cleared);
+    this.currentJournal = cleared;
   }
 
   #stage(bytes) {
