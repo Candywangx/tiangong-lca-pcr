@@ -6,7 +6,7 @@
   "required": ["schema_version", "object_kind", "identity", "entry"],
   "properties": {
     "schema_version": { "const": 1 },
-    "object_kind": { "enum": ["pcr_detail", "catalog_entry", "catalog_shard", "catalog_root", "alias_entry", "alias_shard", "alias_root", "coverage_entry", "coverage_shard", "coverage_root", "history_page"] },
+    "object_kind": { "enum": ["ui_bundle", "pcr_detail", "catalog_entry", "catalog_shard", "catalog_root", "alias_entry", "alias_shard", "alias_root", "coverage_entry", "coverage_shard", "coverage_root", "history_page"] },
     "identity": {
       "type": "object", "additionalProperties": false,
       "required": ["generator_contract_sha256", "schema_contract_sha256", "source_fingerprint", "release_revision_marker"],
@@ -19,5 +19,11 @@
     },
     "entry": { "type": "object" }
   },
+  "allOf": [
+    { "if": { "properties": { "object_kind": { "const": "pcr_detail" } } }, "then": { "properties": { "entry": { "type": "object", "required": ["id"], "minProperties": 2, "properties": { "id": { "type": "string", "minLength": 1 } } } } } },
+    { "if": { "properties": { "object_kind": { "const": "catalog_entry" } } }, "then": { "properties": { "entry": { "type": "object", "additionalProperties": false, "required": ["id", "title", "search_text", "lifecycle_status"], "properties": { "id": { "type": "string", "minLength": 1 }, "title": { "type": "string", "minLength": 1 }, "search_text": { "type": "string", "minLength": 1 }, "lifecycle_status": { "type": "string", "minLength": 1 } } } } } },
+    { "if": { "properties": { "object_kind": { "const": "alias_entry" } } }, "then": { "properties": { "entry": { "type": "object", "required": ["id", "locator"], "properties": { "id": { "type": "string", "minLength": 1 }, "locator": { "type": "string", "minLength": 1 } } } } } },
+    { "if": { "properties": { "object_kind": { "const": "ui_bundle" } } }, "then": { "properties": { "entry": { "type": "object", "additionalProperties": false, "required": ["id", "asset_url"], "properties": { "id": { "type": "string", "minLength": 1 }, "asset_url": { "type": "string" } } } } } }
+  ],
   "$defs": { "ref": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" } }
 }

@@ -27,6 +27,7 @@ import {
 
 const SHA256_PREFIX = "sha256:";
 const OBJECT_KINDS = new Set([
+  "ui_bundle",
   "pcr_detail",
   "catalog_entry",
   "alias_entry",
@@ -131,6 +132,9 @@ export class ViewerSnapshotStore {
     const manifest = parseCanonicalJson(bytes, "viewer manifest");
     this.schemas.assert("viewer-snapshot-manifest", manifest);
     this.#validateManifestObjects(manifest);
+    if (this.readObject(manifest.capture.ui_bundle_ref).object_kind !== "ui_bundle") {
+      throw new ViewerSnapshotStoreError("VIEWER_UI_BUNDLE_MISSING", "Manifest references an unavailable retained UI bundle.");
+    }
     return manifest;
   }
 
@@ -163,6 +167,7 @@ export class ViewerSnapshotStore {
       if (manifest.sequence !== entry.sequence) {
         throw new ViewerSnapshotStoreError("VIEWER_HISTORY_CORRUPT", `History sequence ${entry.sequence} does not match its manifest.`);
       }
+      this.#verifySource({ source: manifest.source, capture: manifest.capture }, "retained");
       previousSequence = entry.sequence;
     }
     if (head.latest_sequence !== previousSequence) throw new ViewerSnapshotStoreError("VIEWER_HISTORY_CORRUPT", "Viewer history head sequence does not match retained pages.");
@@ -173,6 +178,12 @@ export class ViewerSnapshotStore {
     const active = parseCanonicalJson(readSafeFile(this.path("active.json"), "active pointer"), "viewer active pointer");
     this.schemas.assert("viewer-active", active);
     const manifest = this.readManifest(active.manifest_ref);
+    if (active.snapshot_hash !== active.manifest_ref || active.snapshot_id !== manifest.snapshot_id || active.ui_bundle_ref !== manifest.capture.ui_bundle_ref) {
+      throw new ViewerSnapshotStoreError("VIEWER_ACTIVE_CORRUPT", "Active snapshot identity does not match its manifest.");
+    }
+    if (this.readObject(active.ui_bundle_ref).object_kind !== "ui_bundle") {
+      throw new ViewerSnapshotStoreError("VIEWER_UI_BUNDLE_MISSING", "Active snapshot references an unavailable retained UI bundle.");
+    }
     if (manifest.sequence !== active.sequence) {
       throw new ViewerSnapshotStoreError("VIEWER_ACTIVE_CORRUPT", "Active pointer sequence does not match its manifest.");
     }
@@ -215,21 +226,34 @@ export class ViewerSnapshotStore {
     }
 
     const identity = this.#objectIdentity(normalized);
+    const catalogIdentity = this.#objectIdentity(normalized, { catalog: normalized.source.catalog });
+    const aliasIdentity = this.#objectIdentity(normalized, { aliases: normalized.source.aliases });
+    const coverageIdentity = this.#objectIdentity(normalized, { coverage: normalized.source.coverage });
     const pcrEntries = this.#writeEntries(normalized.pcrEntries, "pcr_detail", identity);
-    const catalogEntries = this.#writeCatalogEntries(normalized.pcrEntries, identity);
-    const aliasEntries = this.#writeEntries(normalized.aliasEntries, "alias_entry", identity);
-    const coverageEntries = this.#writeCoverageEntries(normalized.coverageEntries, identity);
-    const catalogShards = this.#writePrefixShards(catalogEntries, "catalog_shard", (id) => twoCharacterPrefix(id), identity);
-    const aliasShards = this.#writePrefixShards(aliasEntries, "alias_shard", (id) => twoCharacterPrefix(id), identity);
-    const coverageShards = this.#writeCoverageShards(normalized.coverageEntries, coverageEntries, identity);
-    const catalogRoot = this.#writeObject({ schema_version: 1, object_kind: "catalog_root", identity, entry: { shards: catalogShards, details: pcrEntries } });
-    const aliasRoot = this.#writeObject({ schema_version: 1, object_kind: "alias_root", identity, entry: { shards: aliasShards, entries: aliasEntries } });
-    const coverageRoot = this.#writeObject({ schema_version: 1, object_kind: "coverage_root", identity, entry: { shards: coverageShards, entries: coverageEntries } });
+    const catalogEntries = this.#writeCatalogEntries(normalized.pcrEntries, catalogIdentity);
+    const aliasEntries = this.#writeEntries(normalized.aliasEntries, "alias_entry", aliasIdentity);
+    const coverageEntries = this.#writeCoverageEntries(normalized.coverageEntries, coverageIdentity);
+    const catalogShards = this.#writePrefixShards(catalogEntries, "catalog_shard", (id) => twoCharacterPrefix(id), catalogIdentity);
+    const aliasShards = this.#writePrefixShards(aliasEntries, "alias_shard", (id) => twoCharacterPrefix(id), aliasIdentity);
+    const coverageShards = this.#writeCoverageShards(normalized.coverageEntries, coverageEntries, coverageIdentity);
+    const catalogRoot = this.#writeObject({ schema_version: 1, object_kind: "catalog_root", identity: catalogIdentity, entry: { shards: catalogShards, details: pcrEntries } });
+    const aliasRoot = this.#writeObject({ schema_version: 1, object_kind: "alias_root", identity: aliasIdentity, entry: { shards: aliasShards, entries: aliasEntries } });
+    const coverageRoot = this.#writeObject({ schema_version: 1, object_kind: "coverage_root", identity: coverageIdentity, entry: { shards: coverageShards, entries: coverageEntries } });
+    const uiBundleRef = this.#writeObject({ schema_version: 1, object_kind: "ui_bundle", identity, entry: { id: normalized.capture.ui_bundle_ref, asset_url: normalized.uiBundleUrl } });
+    normalized.capture.ui_bundle_ref = uiBundleRef;
     const lineage = this.#deriveLineage(normalized.pcrEntries, previous.manifest);
     const manifest = {
       schema_version: 1,
       kind: "viewer-snapshot-manifest",
       snapshot_id: normalized.snapshotId,
+      goal_id: normalized.goalId,
+      harness_snapshot_id: normalized.harnessSnapshotId,
+      captured_at: normalized.capturedAt,
+      validated_at: normalized.validatedAt,
+      validation_summary: normalized.validationSummary,
+      catalog_scope: normalized.catalogScope,
+      previous_snapshot_id: previous.manifest?.snapshot_id ?? null,
+      previous_manifest_ref: previous.manifestRef,
       sequence: normalized.sequence,
       generator_version: this.generatorVersion,
       generator_contract_sha256: normalized.generatorContractSha256,
@@ -264,7 +288,7 @@ export class ViewerSnapshotStore {
     this.#writeImmutable(this.path("manifests", `${refDigest(manifestRef)}.json`), manifestBytes, "manifest");
 
     const history = this.#nextHistory(previous.history, { sequence: normalized.sequence, manifest_ref: manifestRef }, identity);
-    const active = { schema_version: 1, kind: "viewer-active", manifest_ref: manifestRef, sequence: normalized.sequence, cache_version: 1, ui_bundle_ref: normalized.capture.ui_bundle_ref, validation_state: "validated" };
+    const active = { schema_version: 1, kind: "viewer-active", snapshot_id: normalized.snapshotId, snapshot_url: `snapshots/${normalized.snapshotId}`, snapshot_hash: manifestRef, manifest_ref: manifestRef, sequence: normalized.sequence, cache_version: 1, ui_bundle_ref: normalized.capture.ui_bundle_ref, validation_state: "validated" };
     this.schemas.assert("viewer-active", active);
     const historyHeadBytes = canonicalBytes(history.head);
     const activeBytes = canonicalBytes(active);
@@ -286,6 +310,17 @@ export class ViewerSnapshotStore {
     this.#writePointer("journal.json", journal);
     this.#interrupt(normalized.failurePhase, journal.phase);
 
+    // This is the final source read.  It must succeed before either retained
+    // history or active state becomes externally visible.
+    try {
+      this.#verifySource(normalized, "after");
+    } catch (error) {
+      this.#assertLockOwned();
+      unlinkSync(this.path("journal.json"));
+      fsyncDirectory(this.root);
+      throw error;
+    }
+
     this.#writePointerCas("history-head.json", history.head, journal.cas.history_head);
     journal = { ...journal, phase: "history_committed" };
     this.#writePointer("journal.json", journal);
@@ -295,7 +330,6 @@ export class ViewerSnapshotStore {
     journal = { ...journal, phase: "active_committed" };
     this.#writePointer("journal.json", journal);
     this.#interrupt(normalized.failurePhase, journal.phase);
-    this.#verifySource(normalized, "after");
     this.#assertLockOwned();
     unlinkSync(this.path("journal.json"));
     fsyncDirectory(this.root);
@@ -311,6 +345,7 @@ export class ViewerSnapshotStore {
     if (manifest.sequence !== journal.sequence) throw new ViewerSnapshotStoreError("VIEWER_JOURNAL_CORRUPT", "Journal sequence does not match its manifest.");
     this.#verifySource({ source: journal.source, capture: journal.capture, sourceFingerprint: journal.source_fingerprint }, "before");
     if (journal.phase === "history_prepared") {
+      this.#verifySource({ source: journal.source, capture: journal.capture, sourceFingerprint: journal.source_fingerprint }, "after");
       this.#writePointerCas("history-head.json", journal.history_head, journal.cas.history_head);
       this.#writePointer("journal.json", { ...journal, phase: "history_committed" });
       return this.#recoverLocked();
@@ -340,6 +375,12 @@ export class ViewerSnapshotStore {
     if (!coverage) throw new ViewerSnapshotStoreError("VIEWER_SNAPSHOT_INVALID", "Snapshot source coverage must be an array.");
     const normalized = {
       snapshotId: requireText(input.snapshotId, "snapshot id"),
+      goalId: requireText(input.goalId, "goal id"),
+      harnessSnapshotId: requireText(input.harnessSnapshotId, "harness snapshot id"),
+      capturedAt: requireUtc(input.capturedAt, "capture timestamp"),
+      validatedAt: requireUtc(input.validatedAt, "validation timestamp"),
+      validationSummary: requireValidationSummary(input.validationSummary),
+      catalogScope: requireCatalogScope(input.catalogScope),
       sequence: requireSequence(input.sequence),
       generatorContractSha256: assertSha256Ref(input.generatorContractSha256, "generator contract reference"),
       source: {
@@ -356,6 +397,7 @@ export class ViewerSnapshotStore {
         validation_state: "validated",
         ui_bundle_ref: source.ui_bundle_ref === undefined ? sha256Ref("viewer-ui-bundle:unconfigured\n") : assertSha256Ref(source.ui_bundle_ref, "UI bundle reference"),
       },
+      uiBundleUrl: typeof input.uiBundleUrl === "string" ? input.uiBundleUrl : "",
       pcrEntries: requireEntries(input.pcrEntries, "PCR"),
       aliasEntries: requireEntries(input.aliasEntries, "alias"),
       coverageEntries: requireCoverageEntries(input.coverageEntries),
@@ -378,7 +420,12 @@ export class ViewerSnapshotStore {
   #writeCatalogEntries(entries, identity) {
     const refs = {};
     for (const entry of entries) {
-      refs[entry.id] = this.#writeObject({ schema_version: 1, object_kind: "catalog_entry", identity, entry: { id: entry.id } });
+      refs[entry.id] = this.#writeObject({ schema_version: 1, object_kind: "catalog_entry", identity, entry: {
+        id: entry.id,
+        title: typeof entry.catalog_title === "string" ? entry.catalog_title : entry.id,
+        search_text: typeof entry.catalog_search_text === "string" ? entry.catalog_search_text : entry.id,
+        lifecycle_status: typeof entry.lifecycle_status === "string" ? entry.lifecycle_status : "active",
+      } });
     }
     return sortedObject(refs);
   }
@@ -430,22 +477,28 @@ export class ViewerSnapshotStore {
 
   #deriveLineage(entries, previousManifest) {
     const renames = {};
+    const currentIds = new Set(entries.map((entry) => entry.id));
+    const predecessors = new Set();
     for (const entry of entries) {
       if (!Object.hasOwn(entry, "renamed_from")) continue;
       const oldId = requireText(entry.renamed_from, "renamed_from");
       if (!previousManifest || !Object.hasOwn(previousManifest.refs.pcr_entries, oldId)) {
         throw new ViewerSnapshotStoreError("VIEWER_RENAME_PREDECESSOR_MISSING", `Rename predecessor is not present in the previous manifest: ${oldId}.`);
       }
+      if (currentIds.has(oldId)) throw new ViewerSnapshotStoreError("VIEWER_RENAME_OLD_ID_PRESENT", `Renamed predecessor must be absent from the new manifest: ${oldId}.`);
+      if (predecessors.has(oldId)) throw new ViewerSnapshotStoreError("VIEWER_RENAME_AMBIGUOUS", `Rename predecessor has more than one successor: ${oldId}.`);
+      predecessors.add(oldId);
       renames[entry.id] = oldId;
     }
     return { renames: sortedObject(renames) };
   }
 
-  #objectIdentity(normalized) {
+  #objectIdentity(normalized, relevantSources = {}) {
     return {
       generator_contract_sha256: normalized.generatorContractSha256,
       schema_contract_sha256: this.schemaContractSha256,
-      source_fingerprint: sha256Ref(canonicalBytes({ source: normalized.source, capture: normalized.capture })),
+      // Commit/tree capture is snapshot provenance, never an entry-object input.
+      source_fingerprint: sha256Ref(canonicalBytes({ ...relevantSources, release_revision_marker: normalized.source.release_revision_marker })),
       release_revision_marker: normalized.source.release_revision_marker,
     };
   }
@@ -472,10 +525,29 @@ export class ViewerSnapshotStore {
   #writeObject(value) {
     if (!value || !OBJECT_KINDS.has(value.object_kind)) throw new ViewerSnapshotStoreError("VIEWER_OBJECT_KIND_INVALID", "Invalid viewer object kind.");
     this.schemas.assert("viewer-object", value);
+    this.#assertObjectSemantics(value);
     const bytes = canonicalBytes(value);
     const ref = sha256Ref(bytes);
     this.#writeImmutable(this.path("objects", `${refDigest(ref)}.json`), bytes, "object");
     return ref;
+  }
+
+  #assertObjectSemantics(value) {
+    const entry = value.entry;
+    const requiredText = (field) => requireText(entry[field], `${value.object_kind}.${field}`);
+    if (value.object_kind === "pcr_detail") {
+      requiredText("id");
+      if (Object.keys(entry).length < 2) throw new ViewerSnapshotStoreError("VIEWER_OBJECT_SEMANTIC_INVALID", "pcr_detail requires non-empty detail content.");
+    } else if (value.object_kind === "catalog_entry") {
+      for (const field of ["id", "title", "search_text", "lifecycle_status"]) requiredText(field);
+    } else if (value.object_kind === "alias_entry") {
+      requiredText("id"); requiredText("locator");
+    } else if (value.object_kind === "coverage_entry") {
+      normalizeCoordinate(entry.coordinate); requiredText("code");
+    } else if (value.object_kind === "ui_bundle") {
+      requiredText("id");
+      if (typeof entry.asset_url !== "string") throw new ViewerSnapshotStoreError("VIEWER_OBJECT_SEMANTIC_INVALID", "ui_bundle.asset_url must be a string.");
+    }
   }
 
   #readImmutable(target, expectedRef, label) {
@@ -552,6 +624,9 @@ export class ViewerSnapshotStore {
     if (manifest.predecessor) {
       const predecessor = this.readManifest(manifest.predecessor);
       if (predecessor.sequence + 1 !== manifest.sequence) throw new ViewerSnapshotStoreError("VIEWER_MANIFEST_CORRUPT", "Manifest predecessor sequence is invalid.");
+      if (manifest.previous_manifest_ref !== manifest.predecessor || manifest.previous_snapshot_id !== predecessor.snapshot_id) throw new ViewerSnapshotStoreError("VIEWER_MANIFEST_CORRUPT", "Manifest predecessor snapshot identity is not the immediate retained predecessor.");
+    } else if (manifest.previous_manifest_ref !== null || manifest.previous_snapshot_id !== null) {
+      throw new ViewerSnapshotStoreError("VIEWER_MANIFEST_CORRUPT", "Initial manifest must not declare a previous snapshot.");
     }
   }
 
@@ -661,8 +736,45 @@ export class ViewerSnapshotStore {
     if (current !== cas.old_ref) {
       throw new ViewerSnapshotStoreError("VIEWER_POINTER_CAS_CONFLICT", `${leaf} pointer CAS conflict: expected ${cas.old_ref ?? "missing"}, found ${current ?? "missing"}.`);
     }
-    this.#writePointer(leaf, value);
+    this.#replacePointerConditionally(leaf, bytes, cas.old_ref);
     if (this.#pointerRef(leaf) !== newRef) throw new ViewerSnapshotStoreError("VIEWER_POINTER_CAS_CONFLICT", `${leaf} pointer was substituted during commit.`);
+  }
+
+  #replacePointerConditionally(leaf, bytes, expectedOldRef) {
+    this.#assertLockOwned();
+    const destination = this.path(leaf);
+    const stage = this.#stage(bytes);
+    const backup = this.path("staging", `.backup-${leaf}-${process.pid}-${Date.now()}-${Math.random().toString(16).slice(2)}`);
+    let moved = false;
+    try {
+      const before = this.#pointerRef(leaf);
+      if (before !== expectedOldRef) throw new ViewerSnapshotStoreError("VIEWER_POINTER_CAS_CONFLICT", `${leaf} pointer changed before conditional replacement.`);
+      if (before !== null) {
+        renameSync(destination, backup);
+        moved = true;
+        if (sha256Ref(readSafeFile(backup, `${leaf} CAS backup`)) !== expectedOldRef) {
+          renameSync(backup, destination); moved = false;
+          throw new ViewerSnapshotStoreError("VIEWER_POINTER_CAS_CONFLICT", `${leaf} pointer was substituted during backup capture.`);
+        }
+      }
+      try {
+        linkSync(stage, destination);
+      } catch (error) {
+        if (moved) { renameSync(backup, destination); moved = false; }
+        if (error?.code === "EEXIST") throw new ViewerSnapshotStoreError("VIEWER_POINTER_CAS_CONFLICT", `${leaf} pointer appeared during conditional replacement.`);
+        throw error;
+      }
+      fsyncDirectory(path.dirname(destination));
+      if (moved) { unlinkSync(backup); moved = false; }
+    } catch (error) {
+      if (moved) {
+        try { if (!existsRegular(destination, `artifact store ${leaf}`)) renameSync(backup, destination); } catch { /* preserve original failure */ }
+      }
+      throw error;
+    } finally {
+      try { unlinkSync(stage); } catch { /* hard linked or absent */ }
+      try { if (moved) unlinkSync(backup); } catch { /* restored or absent */ }
+    }
   }
 
   #stage(bytes) {
@@ -772,6 +884,21 @@ function requireText(value, label) {
 
 function requireSequence(value) {
   if (!Number.isSafeInteger(value) || value < 1) throw new ViewerSnapshotStoreError("VIEWER_SNAPSHOT_INVALID", "Snapshot sequence must be a positive safe integer.");
+  return value;
+}
+
+function requireUtc(value, label) {
+  if (typeof value !== "string" || !value.endsWith("Z") || Number.isNaN(Date.parse(value))) throw new ViewerSnapshotStoreError("VIEWER_SNAPSHOT_INVALID", `Invalid ${label}.`);
+  return value;
+}
+
+function requireValidationSummary(value) {
+  if (!value || value.status !== "passed" || !Number.isSafeInteger(value.checks) || value.checks < 0 || Object.keys(value).some((key) => !["status", "checks"].includes(key))) throw new ViewerSnapshotStoreError("VIEWER_SNAPSHOT_INVALID", "Invalid validation summary.");
+  return structuredClone(value);
+}
+
+function requireCatalogScope(value) {
+  if (!["material", "all", "legacy"].includes(value)) throw new ViewerSnapshotStoreError("VIEWER_SNAPSHOT_INVALID", "Invalid catalog scope.");
   return value;
 }
 
