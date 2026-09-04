@@ -131,6 +131,59 @@ test("dispatch advances past a legacy transition cycle whose persisted counter i
   }
 });
 
+test("resume recovers a visible turn created before a dispatch event conflict without duplicating it", async () => {
+  const { root, stateDir, config } = fixture();
+  config.retry_policy = { max_attempts: 6, max_repairs: 2 };
+  const first = await dispatchGoalAuthors({
+    config,
+    stateDir,
+    slots: 1,
+    adapter: {
+      async createAuthorTask() {
+        return { thread_id: "thread-already-created", turn_id: "turn-already-created" };
+      },
+    },
+  });
+  const store = new GoalEventStore({ stateDir });
+  const original = first.dispatched[0];
+  store.append({
+    event_id: "fixture-dispatch-event-conflict",
+    type: "task_replaced",
+    payload: { task: {
+      ...original,
+      state: "retryable_failure",
+      failure_code: "GOAL_EVENT_ID_CONFLICT",
+      failure_message: "dispatch event id collided with legacy state",
+      repair_count: 2,
+      transition_ids: [...original.transition_ids, "legacy-dispatch-failed"],
+    } },
+  });
+  store.append({ event_id: "fixture-stopped", type: "scheduling_stopped", payload: { reason: "GOAL_EVENT_ID_CONFLICT" } });
+  let createCalls = 0;
+  try {
+    const result = await dispatchGoalAuthors({
+      config,
+      stateDir,
+      slots: 1,
+      resumeStopped: true,
+      adapter: {
+        async createAuthorTask() {
+          createCalls += 1;
+          return { thread_id: "thread-duplicate", turn_id: "turn-duplicate" };
+        },
+      },
+    });
+    assert.equal(createCalls, 0);
+    assert.equal(result.state.stopped, false);
+    assert.equal(result.state.tasks[0].state, "authoring");
+    assert.equal(result.state.tasks[0].thread_id, "thread-already-created");
+    assert.equal(result.state.tasks[0].turn_id, "turn-already-created");
+    assert.equal(result.state.tasks[0].dispatch_recovered_from_event_conflict, true);
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+  }
+});
+
 test("dispatch fills every open slot when another author is already active", async () => {
   const { root, stateDir, config } = fixture({ taskCount: 7 });
   const store = new GoalEventStore({ stateDir });

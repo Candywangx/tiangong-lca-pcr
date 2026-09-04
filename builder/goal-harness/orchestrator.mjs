@@ -33,6 +33,25 @@ export async function dispatchGoalAuthors({ config, stateDir, slots = config.aut
     }
     if (resumeStopped) {
       for (const failed of state.tasks.filter((task) => task.state === "retryable_failure" && (task.attempt ?? 0) < (config.retry_policy?.max_attempts ?? 3))) {
+        if (failed.failure_code === "GOAL_EVENT_ID_CONFLICT"
+          && failed.thread_id
+          && failed.turn_id
+          && canReuseAuthorizedAuthorWorktree({ config, task: failed, baselineCommit: state.baseline.commit })) {
+          let task = applyTaskTransition(failed, {
+            transition_id: `${failed.id}-turn-${failed.turn_id}-dispatch-recovered`,
+            to: "authoring",
+            at: new Date().toISOString(),
+          });
+          task = {
+            ...task,
+            dispatch_recovered_from_event_conflict: true,
+            last_failure_code: failed.failure_code,
+            failure_code: null,
+            failure_message: null,
+          };
+          store.append({ event_id: `${failed.id}-turn-${failed.turn_id}-dispatch-recovered-recorded`, type: "task_replaced", payload: { task } });
+          continue;
+        }
         const replaceThreadInPlace = new Set(["GOAL_REPAIR_RESUME_FAILED", "GOAL_REPAIR_LIMIT_REACHED"]).has(failed.failure_code)
           && canReuseAuthorizedAuthorWorktree({ config, task: failed, baselineCommit: state.baseline.commit });
         const repairInPlace = Boolean(failed.thread_id && failed.worktree_path && (failed.repair_count ?? 0) < (config.retry_policy?.max_repairs ?? 2));
