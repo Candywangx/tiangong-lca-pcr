@@ -98,10 +98,13 @@ export function createViewerSnapshotClient({ baseUrl, fetchJson = defaultFetchJs
       return { ...snapshot, active };
     },
     loadSnapshotByManifest,
-    async loadSnapshotRoute(manifestRef) {
+    async loadSnapshotRoute(manifestRef, snapshotUrl = `routes/${String(manifestRef).slice(7)}.json`) {
       assertSha256Ref(manifestRef, "Viewer route manifest reference");
+      if (snapshotUrl !== `routes/${manifestRef.slice(7)}.json`) {
+        throw new Error("Invalid Viewer snapshot route URL.");
+      }
       return assertSnapshotRoute(await fetchJson(
-        new URL(`routes/${manifestRef.slice(7)}.json`, root).href,
+        new URL(snapshotUrl, root).href,
         { cache: "force-cache" },
       ), manifestRef);
     },
@@ -212,6 +215,9 @@ function assertViewerActive(active) {
   }
   assertSha256Ref(active.manifest_ref, "Viewer active manifest reference");
   assertSha256Ref(active.ui_bundle_ref, "Viewer active UI bundle reference");
+  if (active.snapshot_url !== `routes/${active.manifest_ref.slice(7)}.json`) {
+    throw new Error("Invalid Viewer active snapshot route URL.");
+  }
   return active;
 }
 

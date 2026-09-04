@@ -335,6 +335,7 @@ test("store creates immutable entry objects and deterministic prefix shards", ()
     assert.equal(Object.keys(manifest.refs.coverage_shards).length, 1);
     for (const ref of Object.values(manifest.refs.pcr_entries)) assert.ok(store.readObject(ref));
     assert.equal(store.readActive().manifest_ref, result.manifestRef);
+    assert.equal(store.readActive().snapshot_url, `routes/${result.manifestRef.slice(7)}.json`);
 
     const identical = store.publish(snapshotInput({ snapshotId: "snapshot-002", sequence: 2 }));
     const next = store.readManifest(identical.manifestRef);
@@ -662,7 +663,7 @@ test("recovery crash matrix rejects active CAS substitution and retained history
     const retainedManifestRef = store.readHistory().entries.at(-1).manifest_ref;
     const retainedManifest = store.readManifest(retainedManifestRef);
     writeFileSync(path.join(root, "active.json"), canonicalJson({
-      schema_version: 1, kind: "viewer-active", snapshot_id: retainedManifest.snapshot_id, snapshot_url: `snapshots/${retainedManifest.snapshot_id}`, snapshot_hash: retainedManifestRef,
+      schema_version: 1, kind: "viewer-active", snapshot_id: retainedManifest.snapshot_id, snapshot_url: `routes/${retainedManifestRef.slice(7)}.json`, snapshot_hash: retainedManifestRef,
       manifest_ref: retainedManifestRef, sequence: 2,
       cache_version: 1, ui_bundle_ref: retainedManifest.capture.ui_bundle_ref, validation_state: "validated",
     }));
@@ -792,7 +793,7 @@ test("a journal with a recomputed active URL digest still cannot recover", () =>
     assert.throws(() => store.publish(snapshotInput({ snapshotId: "snapshot-002", sequence: 2, failurePhase: "prepared" })), /interrupted/u);
     const journalPath = path.join(root, "journal.json");
     const journal = JSON.parse(readFileSync(journalPath, "utf8"));
-    journal.active.snapshot_url = "snapshots/forged";
+    journal.active.snapshot_url = `routes/${"f".repeat(64)}.json`;
     journal.cas.active.new_ref = sha256Ref(canonicalJson(journal.active));
     writeFileSync(journalPath, canonicalJson(journal));
     assert.throws(() => store.recover(), /identities are not exactly bound/u);

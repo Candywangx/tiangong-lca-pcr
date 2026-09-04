@@ -2,7 +2,10 @@ import { createServer } from "node:http";
 import { createReadStream, existsSync, realpathSync, statSync } from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { recoverViewerDeployment } from "./viewer-deployment.mjs";
+import {
+  recoverViewerDeployment,
+  resolveViewerDeploymentGeneration,
+} from "./viewer-deployment.mjs";
 
 const packageRoot = path.resolve(fileURLToPath(new URL("..", import.meta.url)));
 const defaultRoot = path.join(packageRoot, "dist");
@@ -32,14 +35,24 @@ function cliOptions(argv) {
 export function serveViewer({ root = defaultRoot, port = 4173, host = "127.0.0.1" } = {}) {
   const requestedRoot = path.resolve(root);
   recoverViewerDeployment({ outDir: requestedRoot });
-  const resolvedRoot = existsSync(requestedRoot) ? realpathSync(requestedRoot) : requestedRoot;
   const resolvedPort = validPort(port);
-  const indexPath = path.join(resolvedRoot, "index.html");
+  const initialRoot = resolveViewerDeploymentGeneration(requestedRoot);
+  const indexPath = path.join(initialRoot, "index.html");
   if (!existsSync(indexPath)) {
-    throw new Error(`Viewer build not found at ${resolvedRoot}. Run npm run viewer:build first.`);
+    throw new Error(`Viewer build not found at ${initialRoot}. Run npm run viewer:build first.`);
   }
 
   const server = createServer((request, response) => {
+    // Resolve the atomic pointer once. Every path check and stream for this
+    // request is then pinned to one immutable generation.
+    let resolvedRoot;
+    try {
+      resolvedRoot = resolveViewerDeploymentGeneration(requestedRoot);
+    } catch {
+      response.writeHead(503);
+      response.end("Viewer deployment unavailable");
+      return;
+    }
     const requestUrl = new URL(request.url ?? "/", "http://localhost");
     let relativePath;
     try {

@@ -5,8 +5,10 @@ import {
   cpSync,
   existsSync,
   readFileSync,
+  readlinkSync,
   mkdirSync,
   mkdtempSync,
+  readdirSync,
   renameSync,
   rmSync,
   symlinkSync,
@@ -68,13 +70,14 @@ test("split viewer build writes an accepted integration snapshot and retained UI
       acceptedIntegrationHead: accepted,
       sourceVerifier: () => true,
     });
-    const active = JSON.parse(readFileSync(path.join(outDir, "active.json"), "utf8"));
+    const generation = path.resolve(outDir, readlinkSync(path.join(outDir, "current")));
+    const active = JSON.parse(readFileSync(path.join(generation, "active.json"), "utf8"));
     const manifest = JSON.parse(readFileSync(
-      path.join(outDir, "manifests", `${active.manifest_ref.slice(7)}.json`),
+      path.join(generation, "manifests", `${active.manifest_ref.slice(7)}.json`),
       "utf8",
     ));
     const uiObject = JSON.parse(readFileSync(
-      path.join(outDir, "objects", `${active.ui_bundle_ref.slice(7)}.json`),
+      path.join(generation, "objects", `${active.ui_bundle_ref.slice(7)}.json`),
       "utf8",
     ));
 
@@ -85,16 +88,18 @@ test("split viewer build writes an accepted integration snapshot and retained UI
     assert.equal(manifest.capture.tree_hash, accepted.treeHash);
     assert.equal(manifest.capture.validation_state, "validated");
     assert.equal(manifest.counts.pcr, 1);
-    assert.ok(existsSync(path.join(outDir, "history-head.json")));
-    assert.ok(existsSync(path.join(outDir, "routes", `${active.manifest_ref.slice(7)}.json`)));
-    assert.ok(existsSync(path.join(outDir, "objects", `${manifest.refs.catalog_root.slice(7)}.json`)));
-    assert.ok(existsSync(path.join(outDir, "index.html")));
-    assert.ok(existsSync(path.join(outDir, "styles.css")));
-    assert.ok(existsSync(path.join(outDir, "app.js")));
-    assert.ok(existsSync(path.join(outDir, "viewer-core.js")));
-    assert.ok(existsSync(path.join(outDir, uiObject.entry.asset_url, "index.html")));
+    assert.ok(existsSync(path.join(generation, "history-head.json")));
+    assert.ok(existsSync(path.join(generation, "routes", `${active.manifest_ref.slice(7)}.json`)));
+    assert.ok(existsSync(path.join(generation, "objects", `${manifest.refs.catalog_root.slice(7)}.json`)));
+    assert.ok(existsSync(path.join(generation, "index.html")));
+    assert.ok(existsSync(path.join(generation, "styles.css")));
+    assert.ok(existsSync(path.join(generation, "app.js")));
+    assert.ok(existsSync(path.join(generation, "viewer-core.js")));
+    assert.ok(existsSync(path.join(generation, uiObject.entry.asset_url, "index.html")));
     assert.ok(existsSync(path.join(outDir, VIEWER_BUILD_MARKER)));
-    assert.equal(existsSync(path.join(outDir, "data", "pcr-viewer-data.json")), false);
+    assert.equal(existsSync(path.join(generation, "data", "pcr-viewer-data.json")), false);
+    assert.equal(active.snapshot_url, `routes/${active.manifest_ref.slice(7)}.json`);
+    assert.ok(existsSync(path.join(generation, active.snapshot_url)));
   } finally {
     rmSync(root, { recursive: true, force: true });
     rmSync(outDir, { recursive: true, force: true });
@@ -209,10 +214,11 @@ test("lazy snapshot client boots from catalog metadata and fetches one cached PC
       acceptedIntegrationHead: acceptedIntegrationHead(),
       sourceVerifier: () => true,
     });
+    const deployed = currentDeploymentDir(outDir);
     const fetchJson = async (url, options) => {
       const relative = new URL(url).pathname.replace(/^\/viewer\//u, "");
       requests.push({ relative, cache: options?.cache });
-      return JSON.parse(readFileSync(path.join(outDir, relative), "utf8"));
+      return JSON.parse(readFileSync(path.join(deployed, relative), "utf8"));
     };
     const client = createViewerSnapshotClient({
       baseUrl: "https://viewer.example/viewer/",
@@ -238,10 +244,15 @@ test("lazy snapshot client boots from catalog metadata and fetches one cached PC
     );
     assert.equal(requests[0].relative, "active.json");
     assert.equal(requests[0].cache, "no-cache");
+    assert.equal(snapshot.active.snapshot_url, `routes/${snapshot.manifestRef.slice(7)}.json`);
+    assert.ok(existsSync(path.join(deployed, snapshot.active.snapshot_url)));
     assert.match(requests[1].relative, /^manifests\/[a-f0-9]{64}\.json$/u);
     assert.equal(requests[2].relative, `objects/${snapshot.manifest.refs.catalog_root.slice(7)}.json`);
     assert.equal(requests.some(({ relative }) => relative.startsWith("routes/")), false);
     assert.equal(requests.slice(1).every(({ cache }) => cache === "force-cache"), true);
+    const route = await client.loadSnapshotRoute(snapshot.manifestRef, snapshot.active.snapshot_url);
+    assert.equal(route.manifest_ref, snapshot.manifestRef);
+    assert.equal(requests.at(-1).relative, snapshot.active.snapshot_url);
   } finally {
     rmSync(root, { recursive: true, force: true });
     rmSync(outDir, { recursive: true, force: true });
@@ -1459,19 +1470,18 @@ test("artifact mirroring retains split history and installs the active compatibl
   const artifactStore = mkdtempSync(path.join(tmpdir(), "tiangong-pcr-viewer-artifacts-"));
   const outDir = path.join(mkdtempSync(path.join(tmpdir(), "tiangong-pcr-viewer-mirror-")), "dist");
   try {
-    buildViewer({
-      root,
-      outDir: artifactStore,
-      acceptedIntegrationHead: acceptedIntegrationHead(),
-      sourceVerifier: () => true,
+    publishViewerSnapshot({
+      ...snapshotPublishOptions({ root, artifactStore, sequence: 1 }),
+      bootstrap: true,
     });
     const activeBefore = readFileSync(path.join(artifactStore, "active.json"));
     const mirrored = mirrorViewerArtifactStore({ artifactStore, outDir, sourceVerifier: () => true });
+    const deployed = currentDeploymentDir(outDir);
 
-    assert.deepEqual(readFileSync(path.join(outDir, "active.json")), activeBefore);
+    assert.deepEqual(readFileSync(path.join(deployed, "active.json")), activeBefore);
     assert.equal(mirrored.sequence, 1);
-    assert.ok(existsSync(path.join(outDir, "history-head.json")));
-    assert.ok(existsSync(path.join(outDir, "index.html")));
+    assert.ok(existsSync(path.join(deployed, "history-head.json")));
+    assert.ok(existsSync(path.join(deployed, "index.html")));
     assert.ok(existsSync(path.join(outDir, VIEWER_BUILD_MARKER)));
   } finally {
     rmSync(root, { recursive: true, force: true });
@@ -1480,10 +1490,11 @@ test("artifact mirroring retains split history and installs the active compatibl
   }
 });
 
-test("split deployment replacement recovers every whole-directory transaction phase", () => {
+test("split deployment keeps the old generation live until an atomic current-pointer commit", async () => {
   const root = createViewerFixture();
   const parent = mkdtempSync(path.join(tmpdir(), "tiangong-viewer-deployment-recovery-"));
   const outDir = path.join(parent, "dist");
+  let server;
   try {
     buildViewer({
       root,
@@ -1491,61 +1502,143 @@ test("split deployment replacement recovers every whole-directory transaction ph
       acceptedIntegrationHead: acceptedIntegrationHead(),
       sourceVerifier: () => true,
     });
+    server = serveViewer({ root: outDir, port: 0 });
+    if (!server.listening) await new Promise((resolve) => server.once("listening", resolve));
+    const baseUrl = `http://127.0.0.1:${server.address().port}`;
+    let visibleSnapshot = acceptedIntegrationHead().snapshotId;
     for (const phase of [
-      "deployment_prepared",
-      "old_move_prepared",
-      "old_moved",
-      "new_commit_prepared",
-      "new_committed",
+      "generation_prepared",
+      "generation_installed",
+      "pointer_prepared",
+      "pointer_committed",
     ]) {
+      const replacement = `replacement-${phase}`;
       assert.throws(
         () => buildViewer({
           root,
           outDir,
-          acceptedIntegrationHead: acceptedIntegrationHead({ snapshotId: `replacement-${phase}` }),
+          acceptedIntegrationHead: acceptedIntegrationHead({ snapshotId: replacement }),
           sourceVerifier: () => true,
           deploymentFailurePhase: phase,
         }),
         (error) => error?.code === "VIEWER_DEPLOYMENT_INTERRUPTED",
       );
+      assert.ok(existsSync(outDir), "the stable served root must never disappear");
+      const visibleBeforeRecovery = await fetch(`${baseUrl}/active.json`).then((response) => response.json());
+      assert.equal(
+        visibleBeforeRecovery.snapshot_id,
+        phase === "pointer_committed" ? replacement : visibleSnapshot,
+        `unexpected live snapshot during ${phase}`,
+      );
       const recovered = recoverViewerDeployment({ outDir });
       assert.equal(recovered.recovered, true);
-      assert.ok(existsSync(path.join(outDir, "index.html")));
-      assert.ok(existsSync(path.join(outDir, "active.json")));
+      const deployed = currentDeploymentDir(outDir);
+      assert.ok(existsSync(path.join(deployed, "index.html")));
+      assert.equal(JSON.parse(readFileSync(path.join(deployed, "active.json"), "utf8")).snapshot_id, replacement);
+      assert.equal((await fetch(`${baseUrl}/active.json`).then((response) => response.json())).snapshot_id, replacement);
+      visibleSnapshot = replacement;
       assert.equal(recoverViewerDeployment({ outDir }).recovered, false);
     }
   } finally {
+    if (server?.listening) await new Promise((resolve) => server.close(resolve));
     rmSync(root, { recursive: true, force: true });
     rmSync(parent, { recursive: true, force: true });
   }
 });
 
-test("artifact mirror validates active history and exact retained UI bytes before replacement", () => {
+test("a legacy physical deployment stays live while it migrates to generation routing", async () => {
+  const sourceRoot = createViewerFixture();
+  const parent = mkdtempSync(path.join(tmpdir(), "tiangong-viewer-legacy-migration-"));
+  const seedDeployment = path.join(parent, "seed");
+  const outDir = path.join(parent, "dist");
+  let server;
+  try {
+    buildViewer({
+      root: sourceRoot,
+      outDir: seedDeployment,
+      acceptedIntegrationHead: acceptedIntegrationHead({ snapshotId: "legacy-visible" }),
+      sourceVerifier: () => true,
+    });
+    cpSync(currentDeploymentDir(seedDeployment), outDir, { recursive: true });
+    server = serveViewer({ root: outDir, port: 0 });
+    if (!server.listening) await new Promise((resolve) => server.once("listening", resolve));
+    const baseUrl = `http://127.0.0.1:${server.address().port}`;
+    assert.equal((await fetch(`${baseUrl}/active.json`).then((response) => response.json())).snapshot_id, "legacy-visible");
+
+    assert.throws(
+      () => buildViewer({
+        root: sourceRoot,
+        outDir,
+        acceptedIntegrationHead: acceptedIntegrationHead({ snapshotId: "generation-visible" }),
+        sourceVerifier: () => true,
+        deploymentFailurePhase: "pointer_prepared",
+      }),
+      (error) => error?.code === "VIEWER_DEPLOYMENT_INTERRUPTED",
+    );
+    assert.equal((await fetch(`${baseUrl}/active.json`).then((response) => response.json())).snapshot_id, "legacy-visible");
+    recoverViewerDeployment({ outDir });
+    assert.equal((await fetch(`${baseUrl}/active.json`).then((response) => response.json())).snapshot_id, "generation-visible");
+    assert.equal(existsSync(path.join(outDir, "active.json")), false, "legacy physical files are retired only after pointer commit");
+  } finally {
+    if (server?.listening) await new Promise((resolve) => server.close(resolve));
+    rmSync(sourceRoot, { recursive: true, force: true });
+    rmSync(parent, { recursive: true, force: true });
+  }
+});
+
+test("artifact mirror validates every retained history UI bundle before replacement", () => {
   const root = createViewerFixture();
   const artifactStore = mkdtempSync(path.join(tmpdir(), "tiangong-viewer-mirror-validation-"));
   const parent = mkdtempSync(path.join(tmpdir(), "tiangong-viewer-mirror-target-"));
   const outDir = path.join(parent, "dist");
   try {
-    buildViewer({ root, outDir: artifactStore, acceptedIntegrationHead: acceptedIntegrationHead(), sourceVerifier: () => true });
+    const first = publishViewerSnapshot({
+      ...snapshotPublishOptions({ root, artifactStore, sequence: 1 }),
+      bootstrap: true,
+    });
+    const firstManifest = first.store.readManifest(first.manifestRef);
+    const oldUi = first.store.readObject(firstManifest.capture.ui_bundle_ref);
+    const customUi = mkdtempSync(path.join(tmpdir(), "tiangong-viewer-old-ui-"));
+    cpSync(path.join(repoRoot, "packages/pcr-viewer/static"), customUi, { recursive: true });
+    writeFileSync(path.join(customUi, "app.js"), `${readFileSync(path.join(customUi, "app.js"), "utf8")}\n// retained-v2-ui\n`);
+    const customDigest = hashFixtureUiBundle(customUi);
+    const customUrl = `ui/${customDigest}/`;
+    mkdirSync(path.join(artifactStore, "ui"), { recursive: true });
+    cpSync(customUi, path.join(artifactStore, "ui", customDigest), { recursive: true });
+    publishViewerSnapshot({
+      ...snapshotPublishOptions({ root, artifactStore, sequence: 2 }),
+      uiBundleRef: `sha256:${customDigest}`,
+      uiBundleUrl: customUrl,
+    });
+    rmSync(customUi, { recursive: true, force: true });
     mirrorViewerArtifactStore({ artifactStore, outDir, sourceVerifier: () => true });
-    const priorActive = readFileSync(path.join(outDir, "active.json"));
+    const priorActive = readFileSync(path.join(currentDeploymentDir(outDir), "active.json"));
     const validHistory = readFileSync(path.join(artifactStore, "history-head.json"));
     writeFileSync(path.join(artifactStore, "history-head.json"), "{}\n");
     assert.throws(
       () => mirrorViewerArtifactStore({ artifactStore, outDir, sourceVerifier: () => true }),
       /schema validation failed|history/iu,
     );
-    assert.deepEqual(readFileSync(path.join(outDir, "active.json")), priorActive);
+    assert.deepEqual(readFileSync(path.join(currentDeploymentDir(outDir), "active.json")), priorActive);
     writeFileSync(path.join(artifactStore, "history-head.json"), validHistory);
 
-    const active = JSON.parse(readFileSync(path.join(artifactStore, "active.json"), "utf8"));
-    const uiObject = JSON.parse(readFileSync(path.join(artifactStore, "objects", `${active.ui_bundle_ref.slice(7)}.json`), "utf8"));
-    writeFileSync(path.join(artifactStore, uiObject.entry.asset_url, "app.js"), "substituted\n");
+    const oldUiDirectory = path.join(artifactStore, oldUi.entry.asset_url);
+    const oldUiBackup = mkdtempSync(path.join(tmpdir(), "tiangong-viewer-old-ui-backup-"));
+    cpSync(oldUiDirectory, oldUiBackup, { recursive: true });
+    rmSync(oldUiDirectory, { recursive: true, force: true });
     assert.throws(
       () => mirrorViewerArtifactStore({ artifactStore, outDir, sourceVerifier: () => true }),
       (error) => error?.code === "VIEWER_UI_BUNDLE_MISSING",
     );
-    assert.deepEqual(readFileSync(path.join(outDir, "active.json")), priorActive);
+    assert.deepEqual(readFileSync(path.join(currentDeploymentDir(outDir), "active.json")), priorActive);
+    cpSync(oldUiBackup, oldUiDirectory, { recursive: true });
+    rmSync(oldUiBackup, { recursive: true, force: true });
+    writeFileSync(path.join(oldUiDirectory, "app.js"), "substituted historical UI\n");
+    assert.throws(
+      () => mirrorViewerArtifactStore({ artifactStore, outDir, sourceVerifier: () => true }),
+      (error) => error?.code === "VIEWER_UI_BUNDLE_MISSING",
+    );
+    assert.deepEqual(readFileSync(path.join(currentDeploymentDir(outDir), "active.json")), priorActive);
   } finally {
     rmSync(root, { recursive: true, force: true });
     rmSync(artifactStore, { recursive: true, force: true });
@@ -1590,17 +1683,18 @@ test("serveViewer sends revalidation headers for mutable pointers and immutable 
       acceptedIntegrationHead: acceptedIntegrationHead(),
       sourceVerifier: () => true,
     });
-    const active = JSON.parse(readFileSync(path.join(root, "active.json"), "utf8"));
-    const manifest = JSON.parse(readFileSync(path.join(root, "manifests", `${active.manifest_ref.slice(7)}.json`), "utf8"));
-    const uiObject = JSON.parse(readFileSync(path.join(root, "objects", `${active.ui_bundle_ref.slice(7)}.json`), "utf8"));
+    const deployed = currentDeploymentDir(root);
+    const active = JSON.parse(readFileSync(path.join(deployed, "active.json"), "utf8"));
+    const manifest = JSON.parse(readFileSync(path.join(deployed, "manifests", `${active.manifest_ref.slice(7)}.json`), "utf8"));
+    const uiObject = JSON.parse(readFileSync(path.join(deployed, "objects", `${active.ui_bundle_ref.slice(7)}.json`), "utf8"));
     server = serveViewer({ root, port: 0 });
     if (!server.listening) await new Promise((resolve) => server.once("listening", resolve));
     const baseUrl = `http://127.0.0.1:${server.address().port}`;
 
     for (const mutablePath of ["/active.json", "/history-head.json", `/provenance/${active.snapshot_id}.json`]) {
       if (mutablePath.startsWith("/provenance/")) {
-        mkdirSync(path.join(root, "provenance"));
-        writeFileSync(path.join(root, mutablePath), '{"landing_state":"unknown"}\n');
+        mkdirSync(path.join(deployed, "provenance"));
+        writeFileSync(path.join(deployed, mutablePath), '{"landing_state":"unknown"}\n');
       }
       const response = await fetch(`${baseUrl}${mutablePath}`);
       assert.equal(response.headers.get("cache-control"), "no-cache");
@@ -1608,15 +1702,15 @@ test("serveViewer sends revalidation headers for mutable pointers and immutable 
     for (const immutablePath of [
       `/manifests/${active.manifest_ref.slice(7)}.json`,
       `/objects/${manifest.refs.catalog_root.slice(7)}.json`,
-      `/routes/${active.manifest_ref.slice(7)}.json`,
+      `/${active.snapshot_url}`,
       `/${uiObject.entry.asset_url}app.js`,
     ]) {
       const response = await fetch(`${baseUrl}${immutablePath}`);
       assert.equal(response.status, 200);
       assert.equal(response.headers.get("cache-control"), "public, max-age=31536000, immutable");
     }
-    mkdirSync(path.join(root, "locks"), { recursive: true });
-    writeFileSync(path.join(root, "locks", "publisher.lock"), "internal\n");
+    mkdirSync(path.join(deployed, "locks"), { recursive: true });
+    writeFileSync(path.join(deployed, "locks", "publisher.lock"), "internal\n");
     assert.equal((await fetch(`${baseUrl}/locks/publisher.lock`)).status, 404);
   } finally {
     if (server?.listening) await new Promise((resolve) => server.close(resolve));
@@ -1625,7 +1719,7 @@ test("serveViewer sends revalidation headers for mutable pointers and immutable 
   }
 });
 
-test("serveViewer performs deployment recovery before opening the served directory", async () => {
+test("serveViewer recovers a prepared generation without an absent-root window", async () => {
   const sourceRoot = createViewerFixture();
   const parent = mkdtempSync(path.join(tmpdir(), "tiangong-viewer-serve-recovery-"));
   const root = path.join(parent, "dist");
@@ -1638,11 +1732,11 @@ test("serveViewer performs deployment recovery before opening the served directo
         outDir: root,
         acceptedIntegrationHead: acceptedIntegrationHead({ snapshotId: "replacement-for-server" }),
         sourceVerifier: () => true,
-        deploymentFailurePhase: "old_moved",
+        deploymentFailurePhase: "generation_installed",
       }),
       (error) => error?.code === "VIEWER_DEPLOYMENT_INTERRUPTED",
     );
-    assert.equal(existsSync(root), false);
+    assert.equal(existsSync(root), true);
     server = serveViewer({ root, port: 0 });
     if (!server.listening) await new Promise((resolve) => server.once("listening", resolve));
     const response = await fetch(`http://127.0.0.1:${server.address().port}/active.json`);
@@ -2117,6 +2211,27 @@ function writeFixtureFile({ root, relativePath, contents }) {
 
 function sha256(contents) {
   return `sha256:${createHash("sha256").update(contents).digest("hex")}`;
+}
+
+function currentDeploymentDir(root) {
+  return path.resolve(root, readlinkSync(path.join(root, "current")));
+}
+
+function hashFixtureUiBundle(directory) {
+  const visit = (current, prefix = "") => readdirSync(current, { withFileTypes: true }).flatMap((entry) => {
+    const relativePath = prefix ? `${prefix}/${entry.name}` : entry.name;
+    if (entry.isDirectory()) return visit(path.join(current, entry.name), relativePath);
+    assert.equal(entry.isFile(), true, `unexpected UI fixture entry: ${relativePath}`);
+    return [relativePath];
+  });
+  const hash = createHash("sha256");
+  for (const relativePath of visit(directory).sort()) {
+    hash.update(relativePath, "utf8");
+    hash.update("\0");
+    hash.update(readFileSync(path.join(directory, ...relativePath.split("/"))));
+    hash.update("\0");
+  }
+  return hash.digest("hex");
 }
 
 async function assertResponse(baseUrl, route, status, contentTypePattern) {

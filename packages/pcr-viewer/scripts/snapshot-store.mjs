@@ -250,7 +250,12 @@ export class ViewerSnapshotStore {
     const active = parseCanonicalJson(readSafeFile(this.path("active.json"), "active pointer"), "viewer active pointer");
     this.schemas.assert("viewer-active", active);
     const manifest = this.#readManifest(active.manifest_ref, cache, false);
-    if (active.snapshot_hash !== active.manifest_ref || active.snapshot_id !== manifest.snapshot_id || active.ui_bundle_ref !== manifest.capture.ui_bundle_ref) {
+    if (
+      active.snapshot_hash !== active.manifest_ref ||
+      active.snapshot_id !== manifest.snapshot_id ||
+      active.ui_bundle_ref !== manifest.capture.ui_bundle_ref ||
+      active.snapshot_url !== `routes/${refDigest(active.manifest_ref)}.json`
+    ) {
       throw new ViewerSnapshotStoreError("VIEWER_ACTIVE_CORRUPT", "Active snapshot identity does not match its manifest.");
     }
     if (this.#readObject(active.ui_bundle_ref, cache).object_kind !== "ui_bundle") {
@@ -376,7 +381,7 @@ export class ViewerSnapshotStore {
     });
 
     const history = this.#nextHistory(previous.history, { sequence: normalized.sequence, manifest_ref: manifestRef }, historyIdentity);
-    const active = { schema_version: 1, kind: "viewer-active", snapshot_id: normalized.snapshotId, snapshot_url: `snapshots/${normalized.snapshotId}`, snapshot_hash: manifestRef, manifest_ref: manifestRef, sequence: normalized.sequence, cache_version: 1, ui_bundle_ref: normalized.capture.ui_bundle_ref, validation_state: "validated" };
+    const active = { schema_version: 1, kind: "viewer-active", snapshot_id: normalized.snapshotId, snapshot_url: `routes/${refDigest(manifestRef)}.json`, snapshot_hash: manifestRef, manifest_ref: manifestRef, sequence: normalized.sequence, cache_version: 1, ui_bundle_ref: normalized.capture.ui_bundle_ref, validation_state: "validated" };
     this.schemas.assert("viewer-active", active);
     const historyHeadBytes = canonicalBytes(history.head);
     const activeBytes = canonicalBytes(active);
@@ -645,7 +650,7 @@ export class ViewerSnapshotStore {
       journal.active.sequence !== manifest.sequence ||
       journal.active.ui_bundle_ref !== manifest.capture.ui_bundle_ref ||
       journal.active.snapshot_hash !== journal.manifest_ref ||
-      journal.active.snapshot_url !== `snapshots/${manifest.snapshot_id}` ||
+      journal.active.snapshot_url !== `routes/${refDigest(journal.manifest_ref)}.json` ||
       journal.history_head.latest_sequence !== manifest.sequence
     ) {
       throw new ViewerSnapshotStoreError("VIEWER_JOURNAL_CORRUPT", "Journal identities are not exactly bound to the referenced manifest.");

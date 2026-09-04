@@ -39,6 +39,7 @@ import { ViewerSnapshotStore } from "./snapshot-store.mjs";
 import {
   commitViewerDeployment,
   recoverViewerDeployment,
+  resolveViewerDeploymentGeneration,
   VIEWER_DEPLOYMENT_MARKER,
 } from "./viewer-deployment.mjs";
 
@@ -52,7 +53,7 @@ const MANAGED_READ_FLAGS =
   fsConstants.O_RDONLY | fsConstants.O_NOFOLLOW | fsConstants.O_NONBLOCK;
 const FATAL_UTF8_DECODER = new TextDecoder("utf-8", { fatal: true });
 export const VIEWER_BUILD_MARKER = VIEWER_DEPLOYMENT_MARKER;
-export { recoverViewerDeployment };
+export { recoverViewerDeployment, resolveViewerDeploymentGeneration };
 export const VIEWER_INCREMENTAL_GENERATOR_VERSION = "viewer-incremental-v1";
 const VIEWER_GENERATOR_CONTRACT_FILES = Object.freeze([
   "package.json",
@@ -140,7 +141,8 @@ export function buildViewer({
 }
 
 export function mirrorViewerArtifactStore({ artifactStore, outDir = defaultOutDir, sourceVerifier = null, deploymentFailurePhase = null } = {}) {
-  const resolvedStore = requireArtifactStore(artifactStore);
+  const requestedStore = requireArtifactStore(artifactStore);
+  const resolvedStore = resolveViewerDeploymentGeneration(requestedStore);
   const requestedOutDir = path.resolve(outDir);
   recoverViewerDeployment({ outDir: requestedOutDir });
   rejectOutputSymlink(requestedOutDir);
@@ -155,7 +157,7 @@ export function mirrorViewerArtifactStore({ artifactStore, outDir = defaultOutDi
     generatorVersion: VIEWER_INCREMENTAL_GENERATOR_VERSION,
     sourceVerifier: sourceVerifier ?? createGitSourceVerifier(repoRoot),
   });
-  store.probe();
+  if (resolvedStore === requestedStore) store.probe();
   if (existsSync(path.join(resolvedStore, "journal.json"))) {
     throw new ViewerBuilderError("VIEWER_MIRROR_SOURCE_BUSY", "Viewer artifact store has an unfinished publication journal.");
   }
@@ -166,7 +168,7 @@ export function mirrorViewerArtifactStore({ artifactStore, outDir = defaultOutDi
     throw new ViewerBuilderError("VIEWER_MIRROR_INVALID", "Viewer artifact history does not end at the active manifest.");
   }
   const route = store.readRoute(active.manifest_ref);
-  assertRetainedUiBundleInstalled({ artifactStore: resolvedStore, store, manifest });
+  assertHistoryUiBundlesInstalled({ artifactStore: resolvedStore, store, history });
   const assetUrl = route.ui_bundle_url;
   const activeBytes = readFileSync(path.join(resolvedStore, "active.json"));
   const historyBytes = readFileSync(path.join(resolvedStore, "history-head.json"));
@@ -187,9 +189,9 @@ export function mirrorViewerArtifactStore({ artifactStore, outDir = defaultOutDi
       generatorVersion: VIEWER_INCREMENTAL_GENERATOR_VERSION,
       sourceVerifier: sourceVerifier ?? createGitSourceVerifier(repoRoot),
     });
+    const copiedHistory = copiedStore.readHistory();
     const copiedActive = copiedStore.readActive();
-    const copiedManifest = copiedStore.readManifest(copiedActive.manifest_ref);
-    assertRetainedUiBundleInstalled({ artifactStore: tempDir, store: copiedStore, manifest: copiedManifest });
+    assertHistoryUiBundlesInstalled({ artifactStore: tempDir, store: copiedStore, history: copiedHistory });
     cpSync(path.join(tempDir, ...assetUrl.split("/").filter(Boolean)), tempDir, { recursive: true });
     pruneDeploymentInternals(tempDir);
     writeFileSync(path.join(tempDir, VIEWER_BUILD_MARKER), "Mirrored from a durable Viewer artifact store.\n");
@@ -550,16 +552,17 @@ export function checkViewerSnapshot({
   onAliasValidation = null,
 } = {}) {
   const resolvedRoot = realpathSync(path.resolve(root));
-  const resolvedStore = requireArtifactStore(artifactStore);
+  const requestedStore = requireArtifactStore(artifactStore);
+  const resolvedStore = resolveViewerDeploymentGeneration(requestedStore);
   const store = new ViewerSnapshotStore({
     root: resolvedStore,
     generatorVersion: VIEWER_INCREMENTAL_GENERATOR_VERSION,
     sourceVerifier: sourceVerifier ?? createGitSourceVerifier(resolvedRoot),
   });
-  store.recover();
+  if (resolvedStore === requestedStore) store.recover();
   const active = store.readActive();
   const manifest = store.readManifest(active.manifest_ref);
-  assertRetainedUiBundleInstalled({ artifactStore: resolvedStore, store, manifest });
+  assertHistoryUiBundlesInstalled({ artifactStore: resolvedStore, store, history: store.readHistory() });
   const generatorRef = generatorContractSha256 ?? computeViewerGeneratorContractSha256();
   const candidate = readIncrementalSourceModel({
     root: resolvedRoot,
@@ -610,6 +613,13 @@ function assertRetainedUiBundleInstalled({ artifactStore, store, manifest }) {
   const directory = path.join(artifactStore, ...assetUrl.split("/").filter(Boolean));
   if (!existsSync(directory) || hashUiBundleDirectory(directory) !== expectedRef.slice(7)) {
     throw new ViewerBuilderError("VIEWER_UI_BUNDLE_MISSING", `Viewer snapshot UI bundle is missing or substituted: ${assetUrl}.`);
+  }
+}
+
+function assertHistoryUiBundlesInstalled({ artifactStore, store, history }) {
+  for (const entry of history.entries) {
+    const manifest = store.readManifest(entry.manifest_ref);
+    assertRetainedUiBundleInstalled({ artifactStore, store, manifest });
   }
 }
 

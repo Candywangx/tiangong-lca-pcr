@@ -57,7 +57,10 @@ async function boot() {
     }
     state.catalog = state.snapshot.catalog;
     render();
-    const route = await client.loadSnapshotRoute(state.snapshot.manifestRef);
+    const route = await client.loadSnapshotRoute(
+      state.snapshot.manifestRef,
+      state.snapshot.active?.snapshot_url,
+    );
     const requestedUi = params.get("ui");
     const requestedSnapshot = params.get("snapshot");
     state.stableUrl = snapshotRouteUrl({ baseUrl: artifactRoot, route });
