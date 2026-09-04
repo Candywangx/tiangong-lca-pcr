@@ -548,6 +548,11 @@ test("generator contract recursively binds real guidance, readiness, schema, and
       mkdirSync(path.dirname(target), { recursive: true });
       cpSync(source, target, { recursive: true });
     }
+    execFileSync("git", ["init", "-b", "main", contractRoot], { stdio: "ignore" });
+    execFileSync("git", ["-C", contractRoot, "config", "user.email", "viewer-test@example.invalid"]);
+    execFileSync("git", ["-C", contractRoot, "config", "user.name", "Viewer Test"]);
+    execFileSync("git", ["-C", contractRoot, "add", "."]);
+    execFileSync("git", ["-C", contractRoot, "commit", "-m", "generator contract fixture"], { stdio: "ignore" });
     const before = computeViewerGeneratorContractSha256({ contractRoot });
     const first = publishViewerSnapshot({
       ...snapshotPublishOptions({ root: sourceRoot, artifactStore, sequence: 1 }),
@@ -575,6 +580,26 @@ test("generator contract recursively binds real guidance, readiness, schema, and
     const staticDependency = path.join(contractRoot, "packages/pcr-viewer/static/viewer-core.js");
     writeFileSync(staticDependency, `${readFileSync(staticDependency, "utf8")}\n// direct dependency mutation\n`);
     assert.notEqual(computeViewerGeneratorContractSha256({ contractRoot }), beforeStatic);
+    writeFixtureFile({
+      root: contractRoot,
+      relativePath: "packages/pcr-core/src/untracked-generator.mjs",
+      contents: "export const untracked = true;\n",
+    });
+    assert.throws(
+      () => computeViewerGeneratorContractSha256({ contractRoot }),
+      (error) => error?.code === "VIEWER_GENERATOR_CONTRACT_UNTRACKED",
+    );
+    rmSync(path.join(contractRoot, "packages/pcr-core/src/untracked-generator.mjs"));
+    writeFixtureFile({
+      root: contractRoot,
+      relativePath: "packages/pcr-core/src/intent-to-add-generator.mjs",
+      contents: "export const intentToAdd = true;\n",
+    });
+    execFileSync("git", ["-C", contractRoot, "add", "--intent-to-add", "packages/pcr-core/src/intent-to-add-generator.mjs"]);
+    assert.throws(
+      () => computeViewerGeneratorContractSha256({ contractRoot }),
+      (error) => error?.code === "VIEWER_GENERATOR_CONTRACT_UNTRACKED",
+    );
   } finally {
     rmSync(contractRoot, { recursive: true, force: true });
     rmSync(sourceRoot, { recursive: true, force: true });
@@ -800,6 +825,85 @@ test("viewer fails closed when catalog coverage declarations are missing or inva
     );
   } finally {
     rmSync(root, { recursive: true, force: true });
+  }
+});
+
+test("incremental publication and check reject a coverage declaration outside its canonical coordinate path", () => {
+  const root = createViewerFixture();
+  const artifactStore = mkdtempSync(path.join(tmpdir(), "tiangong-pcr-viewer-coverage-path-"));
+  try {
+    publishViewerSnapshot({
+      ...snapshotPublishOptions({ root, artifactStore, sequence: 1 }),
+      bootstrap: true,
+    });
+    const canonicalPath = path.join(root, "classifications/indexes/cpc-3.0-coverage.json");
+    const rogueRelativePath = "classifications/indexes/alternate-coverage.json";
+    writeFixtureFile({
+      root,
+      relativePath: rogueRelativePath,
+      contents: readFileSync(canonicalPath, "utf8"),
+    });
+    writeFixtureCatalog({ root, coverageIndexes: [rogueRelativePath] });
+    for (const operation of [
+      () => publishViewerSnapshot({
+        ...snapshotPublishOptions({ root, artifactStore, sequence: 2 }),
+        changedPcrIds: [],
+      }),
+      () => checkViewerSnapshot({ root, artifactStore, sourceVerifier: () => true }),
+    ]) {
+      assert.throws(
+        operation,
+        (error) => error?.code === "VIEWER_COVERAGE_DECLARATION_INVALID" &&
+          /requires classifications\/indexes\/cpc-3\.0-coverage\.json/u.test(error.message),
+      );
+    }
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+    rmSync(artifactStore, { recursive: true, force: true });
+  }
+});
+
+test("coverage provenance hashes exact validated bytes and check detects BOM-only drift", () => {
+  const root = createViewerFixture();
+  const artifactStore = mkdtempSync(path.join(tmpdir(), "tiangong-pcr-viewer-coverage-bytes-"));
+  try {
+    const first = publishViewerSnapshot({
+      ...snapshotPublishOptions({ root, artifactStore, sequence: 1 }),
+      bootstrap: true,
+    });
+    const before = first.store.readManifest(first.manifestRef);
+    const coveragePath = path.join(root, "classifications/indexes/cpc-3.0-coverage.json");
+    const bytesWithBom = Buffer.concat([
+      Buffer.from([0xef, 0xbb, 0xbf]),
+      readFileSync(coveragePath),
+    ]);
+    writeFileSync(coveragePath, bytesWithBom);
+    const checked = checkViewerSnapshot({ root, artifactStore, sourceVerifier: () => true });
+    assert.equal(checked.ok, false);
+    assert.ok(checked.drift.includes("coverage_source"));
+    const second = publishViewerSnapshot({
+      ...snapshotPublishOptions({ root, artifactStore, sequence: 2 }),
+      changedPcrIds: [],
+    });
+    const after = second.store.readManifest(second.manifestRef);
+    assert.equal(after.source.coverage[0].ref, `sha256:${createHash("sha256").update(bytesWithBom).digest("hex")}`);
+    assert.notEqual(after.source.coverage[0].ref, before.source.coverage[0].ref);
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+    rmSync(artifactStore, { recursive: true, force: true });
+  }
+});
+
+test("artifact stores cannot overlap generator-contract source directories", () => {
+  for (const artifactStore of [
+    path.join(repoRoot, "packages/pcr-viewer/scripts"),
+    path.join(repoRoot, "builder/schemas"),
+    path.parse(repoRoot).root,
+  ]) {
+    assert.throws(
+      () => recoverViewerSnapshot({ artifactStore, sourceVerifier: () => true }),
+      (error) => error?.code === "VIEWER_ARTIFACT_STORE_OVERLAP",
+    );
   }
 });
 

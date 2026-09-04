@@ -29,7 +29,7 @@ import {
   listPcrs,
   PCR_CATALOG_SCOPES,
   pcrReadContextAliasInputFingerprint,
-  readClassificationCoverage,
+  readClassificationCoverageSnapshot,
   readPcrMarkdown,
   withPcrReadContextSession,
 } from "../../pcr-core/src/index.mjs";
@@ -49,6 +49,19 @@ const MANAGED_READ_FLAGS =
 const FATAL_UTF8_DECODER = new TextDecoder("utf-8", { fatal: true });
 export const VIEWER_BUILD_MARKER = ".tiangong-pcr-viewer-build";
 export const VIEWER_INCREMENTAL_GENERATOR_VERSION = "viewer-incremental-v1";
+const VIEWER_GENERATOR_CONTRACT_FILES = Object.freeze([
+  "package.json",
+  "package-lock.json",
+  "builder/schemas/pcr-material-index.schema.json",
+]);
+const VIEWER_GENERATOR_CONTRACT_DIRECTORIES = Object.freeze([
+  "builder/vocab",
+  "packages/pcr-core/src",
+  "packages/pcr-core/schemas",
+  "packages/pcr-viewer/scripts",
+  "packages/pcr-viewer/schemas",
+  "packages/pcr-viewer/static",
+]);
 
 export class ViewerBuilderError extends Error {
   constructor(code, message, options = {}) {
@@ -153,7 +166,8 @@ function canonicalizeExistingAncestors(inputPath) {
 }
 
 function isAncestor(candidate, target) {
-  return target.startsWith(`${candidate}${path.sep}`);
+  const relative = path.relative(candidate, target);
+  return relative !== "" && relative !== ".." && !relative.startsWith(`..${path.sep}`) && !path.isAbsolute(relative);
 }
 
 function replaceBuiltDirectory(tempDir, outDir) {
@@ -727,8 +741,24 @@ function readCoverageProjection({ root, catalog }) {
       system: String(raw.classification_system).toLowerCase(),
       version: String(raw.classification_version),
     };
-    const document = readClassificationCoverage({ root, ...coordinate });
-    sources.push({ coordinate, ref: sha256Ref(Buffer.from(text, "utf8")) });
+    const expectedPath = toPosix(
+      path.relative(root, classificationCoveragePath({ root, ...coordinate })),
+    );
+    if (relativePath !== expectedPath) {
+      throw new ViewerBuilderError(
+        "VIEWER_COVERAGE_DECLARATION_INVALID",
+        `Invalid classification coverage declaration ${relativePath}: coordinate ${coordinate.system}:${coordinate.version} requires ${expectedPath}.`,
+      );
+    }
+    const snapshot = readClassificationCoverageSnapshot({ root, ...coordinate });
+    const document = snapshot.document;
+    if (snapshot.relative_path !== relativePath) {
+      throw new ViewerBuilderError(
+        "VIEWER_COVERAGE_DECLARATION_INVALID",
+        `Validated classification coverage source does not match its declaration: ${relativePath}.`,
+      );
+    }
+    sources.push({ coordinate, ref: snapshot.sha256 });
     for (const entry of document.entries) {
       entries.push({
         coordinate,
@@ -834,17 +864,8 @@ function listRegularFilesRecursively({ root, directory, relativeDirectory }) {
 
 export function computeViewerGeneratorContractSha256({ contractRoot = repoRoot } = {}) {
   const resolvedRoot = realpathSync(path.resolve(contractRoot));
-  const requiredFiles = ["package.json", "package-lock.json", "builder/schemas/pcr-material-index.schema.json"];
-  const requiredDirectories = [
-    "builder/vocab",
-    "packages/pcr-core/src",
-    "packages/pcr-core/schemas",
-    "packages/pcr-viewer/scripts",
-    "packages/pcr-viewer/schemas",
-    "packages/pcr-viewer/static",
-  ];
-  const files = [...requiredFiles];
-  for (const relativeDirectory of requiredDirectories) {
+  const files = [...VIEWER_GENERATOR_CONTRACT_FILES];
+  for (const relativeDirectory of VIEWER_GENERATOR_CONTRACT_DIRECTORIES) {
     const directory = path.join(resolvedRoot, ...relativeDirectory.split("/"));
     const stat = lstatSync(directory);
     if (stat.isSymbolicLink() || !stat.isDirectory()) {
@@ -853,6 +874,7 @@ export function computeViewerGeneratorContractSha256({ contractRoot = repoRoot }
     files.push(...listRegularFilesRecursively({ root: resolvedRoot, directory, relativeDirectory }));
   }
   files.sort();
+  assertGeneratorContractFilesTracked({ root: resolvedRoot, files });
   const hash = createHash("sha256");
   for (const relativePath of files) {
     const filePath = path.join(resolvedRoot, ...relativePath.split("/"));
@@ -866,6 +888,39 @@ export function computeViewerGeneratorContractSha256({ contractRoot = repoRoot }
     hash.update("\0");
   }
   return `sha256:${hash.digest("hex")}`;
+}
+
+function assertGeneratorContractFilesTracked({ root, files }) {
+  let output;
+  try {
+    output = execFileSync("git", [
+      "-C",
+      root,
+      "ls-tree",
+      "-r",
+      "--name-only",
+      "-z",
+      "HEAD",
+      "--",
+      ...VIEWER_GENERATOR_CONTRACT_FILES,
+      ...VIEWER_GENERATOR_CONTRACT_DIRECTORIES,
+    ], { stdio: ["ignore", "pipe", "pipe"], maxBuffer: 16 * 1024 * 1024 });
+  } catch (error) {
+    throw new ViewerBuilderError(
+      "VIEWER_GENERATOR_CONTRACT_UNTRACKED",
+      "Generator-contract inputs must belong to a Git worktree with committed source files.",
+      { cause: error },
+    );
+  }
+  const tracked = new Set(output.toString("utf8").split("\0").filter(Boolean));
+  const untracked = files.filter((relativePath) => !tracked.has(relativePath));
+  if (untracked.length > 0) {
+    throw new ViewerBuilderError(
+      "VIEWER_GENERATOR_CONTRACT_UNTRACKED",
+      `Generator-contract inputs contain untracked files: ${untracked.join(", ")}.`,
+      { details: { untracked } },
+    );
+  }
 }
 
 function createGitSourceVerifier(root) {
@@ -906,7 +961,31 @@ function requireArtifactStore(value) {
       "Missing required option: --artifact-store <path>.",
     );
   }
-  return path.resolve(value);
+  const resolved = canonicalizeExistingAncestors(path.resolve(value));
+  const resolvedGeneratorRoot = realpathSync(repoRoot);
+  for (const relativeDirectory of VIEWER_GENERATOR_CONTRACT_DIRECTORIES) {
+    const sourceDirectory = realpathSync(path.join(resolvedGeneratorRoot, ...relativeDirectory.split("/")));
+    if (
+      resolved === sourceDirectory ||
+      isAncestor(resolved, sourceDirectory) ||
+      isAncestor(sourceDirectory, resolved)
+    ) {
+      throw new ViewerBuilderError(
+        "VIEWER_ARTIFACT_STORE_OVERLAP",
+        `Viewer artifact store must not overlap generator-contract source directory ${relativeDirectory}.`,
+      );
+    }
+  }
+  for (const relativeFile of VIEWER_GENERATOR_CONTRACT_FILES) {
+    const sourceFile = realpathSync(path.join(resolvedGeneratorRoot, ...relativeFile.split("/")));
+    if (resolved === sourceFile || isAncestor(resolved, sourceFile)) {
+      throw new ViewerBuilderError(
+        "VIEWER_ARTIFACT_STORE_OVERLAP",
+        `Viewer artifact store must not contain generator-contract source file ${relativeFile}.`,
+      );
+    }
+  }
+  return resolved;
 }
 
 function requireRepositoryRelativePath(value, label) {

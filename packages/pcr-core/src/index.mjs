@@ -16,6 +16,7 @@ import {
   PcrClassificationCodeUnknownError,
   PcrClassificationCoverageSemanticError,
   readClassificationCoverage,
+  readClassificationCoverageSnapshot,
 } from "./classification-coverage.mjs";
 import { assertCoreContract, validateCoreContract } from "./contracts.mjs";
 import {
@@ -54,6 +55,7 @@ export {
   hasClassificationCoverage,
   listClassificationCoverage,
   readClassificationCoverage,
+  readClassificationCoverageSnapshot,
 } from "./classification-coverage.mjs";
 export const PCR_CATALOG_SCOPES = Object.freeze(["all", "material", "legacy"]);
 export const PCR_RECORD_KINDS = Object.freeze([
