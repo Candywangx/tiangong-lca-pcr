@@ -51,7 +51,7 @@ export function commitViewerDeployment({
   }
   assertOwnedDirectory(stage, "Viewer deployment stage");
   assertSafeTree(stage, "Viewer deployment stage");
-  const lease = acquireDeploymentLock({ target, forceStaleLock, staleLockMs });
+  const lease = acquireDeploymentLock({ target, forceStaleLock, staleLockMs, onPhase });
   try {
     recoverViewerDeploymentLocked({ target, lease });
     ensureStableRoot(target);
@@ -115,7 +115,7 @@ export function commitViewerDeployment({
     }
     throw error;
   } finally {
-    releaseDeploymentLock(target, lease);
+    releaseDeploymentLock(target, lease, onPhase);
   }
 }
 
@@ -362,53 +362,24 @@ function deploymentLockPath(outDir) {
   return path.join(path.dirname(outDir), `.${path.basename(outDir)}-deployment.lock.json`);
 }
 
-function acquireDeploymentLock({ target, forceStaleLock, staleLockMs }) {
+function acquireDeploymentLock({ target, forceStaleLock, staleLockMs, onPhase = null }) {
   if (!Number.isFinite(staleLockMs) || staleLockMs < 0) {
     throw new ViewerDeploymentError("VIEWER_DEPLOYMENT_LOCK_OPTION_INVALID", "Viewer deployment stale-lock age must be a non-negative finite number.");
   }
   const lockPath = deploymentLockPath(target);
   const parent = path.dirname(lockPath);
   mkdirSync(parent, { recursive: true });
-  const payload = Buffer.from(`${JSON.stringify({
+  const owner = {
     schema_version: 1,
     kind: "viewer-deployment-lock",
     pid: process.pid,
     created_at: new Date().toISOString(),
     owner_token: `${process.pid}-${Date.now()}-${Math.random().toString(16).slice(2)}`,
-  })}\n`, "utf8");
-  try {
-    const descriptor = openSync(lockPath, fsConstants.O_WRONLY | fsConstants.O_CREAT | fsConstants.O_EXCL | fsConstants.O_NOFOLLOW, 0o600);
-    try {
-      writeSync(descriptor, payload);
-      fsyncSync(descriptor);
-    } finally {
-      closeSync(descriptor);
-    }
-    fsyncDirectory(parent);
-    return payload;
-  } catch (error) {
-    if (error?.code !== "EEXIST") throw error;
-  }
+  };
+  const payload = Buffer.from(`${JSON.stringify(owner)}\n`, "utf8");
+  if (installDeploymentLock(lockPath, payload, owner.owner_token)) return payload;
 
-  assertRegularFile(lockPath, "Viewer deployment lock");
-  const existingBytes = readFileSync(lockPath);
-  let existing;
-  try {
-    existing = JSON.parse(existingBytes.toString("utf8"));
-  } catch (error) {
-    throw new ViewerDeploymentError("VIEWER_DEPLOYMENT_LOCK_INVALID", "Viewer deployment lock is not trusted JSON.", { cause: error });
-  }
-  const keys = Object.keys(existing ?? {}).sort();
-  if (
-    JSON.stringify(keys) !== JSON.stringify(["created_at", "kind", "owner_token", "pid", "schema_version"].sort()) ||
-    existing.schema_version !== 1 ||
-    existing.kind !== "viewer-deployment-lock" ||
-    !Number.isInteger(existing.pid) || existing.pid < 1 ||
-    typeof existing.owner_token !== "string" || !existing.owner_token ||
-    typeof existing.created_at !== "string"
-  ) {
-    throw new ViewerDeploymentError("VIEWER_DEPLOYMENT_LOCK_INVALID", "Viewer deployment lock has an untrusted owner record.");
-  }
+  const { bytes: existingBytes, owner: existing, storage } = readDeploymentLock(lockPath);
   const age = Date.now() - Date.parse(existing.created_at);
   if (
     !forceStaleLock ||
@@ -418,20 +389,17 @@ function acquireDeploymentLock({ target, forceStaleLock, staleLockMs }) {
   ) {
     throw new ViewerDeploymentError("VIEWER_DEPLOYMENT_LOCKED", "Viewer deployment lock is owned by another live or unconfirmed writer.");
   }
-  if (!readFileSync(lockPath).equals(existingBytes)) {
-    throw new ViewerDeploymentError("VIEWER_DEPLOYMENT_LOCK_OWNERSHIP_LOST", "Viewer deployment lock changed during stale-owner recovery.");
-  }
-  rmSync(lockPath);
-  fsyncDirectory(parent);
-  return acquireDeploymentLock({ target, forceStaleLock: false, staleLockMs });
+  notifyPhase(onPhase, "stale_lock_validated");
+  retireStaleDeploymentLock(lockPath, existingBytes, storage);
+  if (installDeploymentLock(lockPath, payload, owner.owner_token)) return payload;
+  throw new ViewerDeploymentError("VIEWER_DEPLOYMENT_LOCKED", "Another writer acquired the Viewer deployment lock during stale-owner recovery.");
 }
 
 function assertDeploymentLockOwned(target, lease) {
   const lockPath = deploymentLockPath(target);
   let actual;
   try {
-    assertRegularFile(lockPath, "Viewer deployment lock");
-    actual = readFileSync(lockPath);
+    actual = readDeploymentLock(lockPath).bytes;
   } catch (error) {
     throw new ViewerDeploymentError("VIEWER_DEPLOYMENT_LOCK_OWNERSHIP_LOST", "Viewer deployment lock disappeared or became unsafe.", { cause: error });
   }
@@ -440,11 +408,150 @@ function assertDeploymentLockOwned(target, lease) {
   }
 }
 
-function releaseDeploymentLock(target, lease) {
+function releaseDeploymentLock(target, lease, onPhase = null) {
   assertDeploymentLockOwned(target, lease);
   const lockPath = deploymentLockPath(target);
-  rmSync(lockPath);
-  fsyncDirectory(path.dirname(lockPath));
+  notifyPhase(onPhase, "deployment_lock_release_checked");
+  const releasedPath = `${lockPath}.released-${lockLeaseDigest(lease)}`;
+  retireDeploymentLockDirectory({ lockPath, retiredPath: releasedPath, expectedLease: lease });
+  rmSync(releasedPath, { recursive: true });
+  fsyncDirectory(path.dirname(releasedPath));
+}
+
+function installDeploymentLock(lockPath, payload, ownerToken) {
+  const parent = path.dirname(lockPath);
+  const candidate = `${lockPath}.candidate-${ownerToken}`;
+  mkdirSync(candidate);
+  try {
+    const ownerPath = path.join(candidate, "owner.json");
+    const descriptor = openSync(ownerPath, fsConstants.O_WRONLY | fsConstants.O_CREAT | fsConstants.O_EXCL | fsConstants.O_NOFOLLOW, 0o600);
+    try {
+      writeSync(descriptor, payload);
+      fsyncSync(descriptor);
+    } finally {
+      closeSync(descriptor);
+    }
+    fsyncDirectory(candidate);
+    if (existsSync(lockPath)) return false;
+    try {
+      renameSync(candidate, lockPath);
+    } catch (error) {
+      if (["EEXIST", "ENOTEMPTY", "ENOTDIR"].includes(error?.code)) return false;
+      throw error;
+    }
+    fsyncDirectory(parent);
+    return true;
+  } finally {
+    if (existsSync(candidate)) rmSync(candidate, { recursive: true });
+  }
+}
+
+function readDeploymentLock(lockPath) {
+  let stat;
+  try {
+    stat = lstatSync(lockPath);
+  } catch (error) {
+    if (error?.code === "ENOENT") {
+      throw new ViewerDeploymentError("VIEWER_DEPLOYMENT_LOCKED", "Viewer deployment lock changed while its owner was being checked.", { cause: error });
+    }
+    throw error;
+  }
+  if (stat.isSymbolicLink() || (!stat.isDirectory() && !stat.isFile())) {
+    throw new ViewerDeploymentError("VIEWER_DEPLOYMENT_LOCK_INVALID", "Viewer deployment lock must be an owned directory or legacy regular file.");
+  }
+  const storage = stat.isDirectory() ? "directory" : "legacy-file";
+  if (storage === "directory") {
+    const entries = readdirSync(lockPath);
+    if (entries.length !== 1 || entries[0] !== "owner.json") {
+      throw new ViewerDeploymentError("VIEWER_DEPLOYMENT_LOCK_INVALID", "Viewer deployment lock directory has an untrusted shape.");
+    }
+  }
+  const ownerPath = storage === "directory" ? path.join(lockPath, "owner.json") : lockPath;
+  assertRegularFile(ownerPath, "Viewer deployment lock owner");
+  const bytes = readFileSync(ownerPath);
+  let owner;
+  try {
+    owner = JSON.parse(bytes.toString("utf8"));
+  } catch (error) {
+    throw new ViewerDeploymentError("VIEWER_DEPLOYMENT_LOCK_INVALID", "Viewer deployment lock is not trusted JSON.", { cause: error });
+  }
+  const keys = Object.keys(owner ?? {}).sort();
+  if (
+    JSON.stringify(keys) !== JSON.stringify(["created_at", "kind", "owner_token", "pid", "schema_version"].sort()) ||
+    owner.schema_version !== 1 ||
+    owner.kind !== "viewer-deployment-lock" ||
+    !Number.isInteger(owner.pid) || owner.pid < 1 ||
+    typeof owner.owner_token !== "string" || !/^[a-zA-Z0-9-]+$/u.test(owner.owner_token) ||
+    typeof owner.created_at !== "string"
+  ) {
+    throw new ViewerDeploymentError("VIEWER_DEPLOYMENT_LOCK_INVALID", "Viewer deployment lock has an untrusted owner record.");
+  }
+  return { bytes, owner, storage };
+}
+
+function retireStaleDeploymentLock(lockPath, expectedLease, storage) {
+  const retiredPath = `${lockPath}.retired-${lockLeaseDigest(expectedLease)}`;
+  try {
+    if (storage === "legacy-file") {
+      retireLegacyDeploymentLockFile({ lockPath, retiredPath, expectedLease });
+    } else {
+      retireDeploymentLockDirectory({ lockPath, retiredPath, expectedLease });
+    }
+  } catch (error) {
+    if (["EEXIST", "ENOENT", "ENOTEMPTY"].includes(error?.code)) {
+      throw new ViewerDeploymentError("VIEWER_DEPLOYMENT_LOCKED", "Another writer already retired or replaced the stale Viewer deployment lock.", { cause: error });
+    }
+    throw error;
+  }
+  // Retain the stale owner's directory as a durable breaker. A delayed force
+  // contender that validated the same lease cannot rename a replacement live
+  // lock over this non-empty directory.
+  fsyncDirectory(path.dirname(retiredPath));
+}
+
+function retireLegacyDeploymentLockFile({ lockPath, retiredPath, expectedLease }) {
+  mkdirSync(retiredPath);
+  const retiredOwnerPath = path.join(retiredPath, "owner.json");
+  try {
+    renameSync(lockPath, retiredOwnerPath);
+    const actual = readFileSync(retiredOwnerPath);
+    if (!actual.equals(expectedLease)) {
+      if (!existsSync(lockPath)) renameSync(retiredOwnerPath, lockPath);
+      throw new ViewerDeploymentError("VIEWER_DEPLOYMENT_LOCK_OWNERSHIP_LOST", "Legacy Viewer deployment lock owner was replaced before atomic retirement.");
+    }
+  } catch (error) {
+    if (existsSync(retiredPath) && readdirSync(retiredPath).length === 0) rmSync(retiredPath, { recursive: true });
+    throw error;
+  }
+}
+
+function retireDeploymentLockDirectory({ lockPath, retiredPath, expectedLease }) {
+  renameSync(lockPath, retiredPath);
+  let actual;
+  try {
+    actual = readDeploymentLock(retiredPath).bytes;
+  } catch (error) {
+    restoreRetiredDeploymentLock({ lockPath, retiredPath });
+    throw error;
+  }
+  if (!actual.equals(expectedLease)) {
+    restoreRetiredDeploymentLock({ lockPath, retiredPath });
+    throw new ViewerDeploymentError("VIEWER_DEPLOYMENT_LOCK_OWNERSHIP_LOST", "Viewer deployment lock owner was replaced before atomic retirement.");
+  }
+}
+
+function restoreRetiredDeploymentLock({ lockPath, retiredPath }) {
+  if (existsSync(lockPath)) return;
+  try {
+    renameSync(retiredPath, lockPath);
+    fsyncDirectory(path.dirname(lockPath));
+  } catch (error) {
+    if (!["EEXIST", "ENOTEMPTY"].includes(error?.code)) throw error;
+  }
+}
+
+function lockLeaseDigest(lease) {
+  return createHash("sha256").update(lease).digest("hex");
 }
 
 function abortBeforePointerCommit({ target, journalPath, pointerTempName, lease }) {

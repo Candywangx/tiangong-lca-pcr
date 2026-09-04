@@ -1679,13 +1679,13 @@ test("deployment lock excludes another process, requires explicit stale recovery
   const stage = createDeploymentStage(parent, ".dist-build-live-lock", "locked-version");
   const child = spawn(process.execPath, ["-e", "setInterval(() => {}, 1000)"], { stdio: "ignore" });
   try {
-    writeFileSync(lockPath, `${JSON.stringify({
+    installDeploymentLock(lockPath, {
       schema_version: 1,
       kind: "viewer-deployment-lock",
       pid: child.pid,
       created_at: "2000-01-01T00:00:00.000Z",
       owner_token: "other-process-owner",
-    })}\n`, { flag: "wx" });
+    });
     for (const forceStaleLock of [false, true]) {
       assert.throws(
         () => commitViewerDeployment({ stageDir: stage, outDir, forceStaleLock, staleLockMs: 0 }),
@@ -1707,19 +1707,108 @@ test("deployment lock excludes another process, requires explicit stale recovery
         outDir,
         onPhase: (phase) => {
           if (phase !== "generation_prepared") return;
-          writeFileSync(lockPath, `${JSON.stringify({
+          rmSync(lockPath, { recursive: true });
+          installDeploymentLock(lockPath, {
             schema_version: 1,
             kind: "viewer-deployment-lock",
             pid: 99999999,
             created_at: "2000-01-01T00:00:00.000Z",
             owner_token: "substituted-owner",
-          })}\n`);
+          });
         },
       }),
       (error) => error?.code === "VIEWER_DEPLOYMENT_LOCK_OWNERSHIP_LOST",
     );
+
+    rmSync(lockPath, { recursive: true });
+    writeFileSync(lockPath, `${JSON.stringify({
+      schema_version: 1,
+      kind: "viewer-deployment-lock",
+      pid: 99999999,
+      created_at: "2000-01-01T00:00:00.000Z",
+      owner_token: "legacy-file-owner",
+    })}\n`, { flag: "wx" });
+    const legacyStage = createDeploymentStage(parent, ".dist-build-legacy-file-lock", "legacy-file-lock");
+    commitViewerDeployment({ stageDir: legacyStage, outDir, forceStaleLock: true, staleLockMs: 0 });
+    assert.equal(JSON.parse(readFileSync(path.join(currentDeploymentDir(outDir), "active.json"), "utf8")).snapshot_id, "legacy-file-lock");
   } finally {
     if (child.exitCode === null) child.kill("SIGKILL");
+    rmSync(parent, { recursive: true, force: true });
+  }
+});
+
+test("two coordinated forced stale recoverers cannot retire the replacement live lease", () => {
+  const parent = mkdtempSync(path.join(tmpdir(), "tiangong-viewer-stale-takeover-race-"));
+  const outDir = path.join(parent, "dist");
+  const lockPath = path.join(parent, ".dist-deployment.lock.json");
+  const firstStage = createDeploymentStage(parent, ".dist-build-first-racer", "first-racer");
+  const secondStage = createDeploymentStage(parent, ".dist-build-second-racer", "second-racer");
+  installDeploymentLock(lockPath, {
+    schema_version: 1,
+    kind: "viewer-deployment-lock",
+    pid: 99999999,
+    created_at: "2000-01-01T00:00:00.000Z",
+    owner_token: "abandoned-owner",
+  });
+  let secondRan = false;
+  try {
+    assert.throws(
+      () => commitViewerDeployment({
+        stageDir: firstStage,
+        outDir,
+        forceStaleLock: true,
+        staleLockMs: 0,
+        onPhase: (phase) => {
+          if (phase !== "stale_lock_validated" || secondRan) return;
+          secondRan = true;
+          commitViewerDeployment({
+            stageDir: secondStage,
+            outDir,
+            forceStaleLock: true,
+            staleLockMs: 0,
+          });
+        },
+      }),
+      (error) => error?.code === "VIEWER_DEPLOYMENT_LOCKED",
+    );
+    assert.equal(secondRan, true);
+    assert.equal(JSON.parse(readFileSync(path.join(currentDeploymentDir(outDir), "active.json"), "utf8")).snapshot_id, "second-racer");
+    assert.equal(existsSync(firstStage), true);
+  } finally {
+    rmSync(parent, { recursive: true, force: true });
+  }
+});
+
+test("deployment release never removes a replacement owner's lease", () => {
+  const parent = mkdtempSync(path.join(tmpdir(), "tiangong-viewer-release-race-"));
+  const outDir = path.join(parent, "dist");
+  const lockPath = path.join(parent, ".dist-deployment.lock.json");
+  const displacedPath = path.join(parent, ".dist-deployment.lock.displaced");
+  const stage = createDeploymentStage(parent, ".dist-build-release-race", "release-race");
+  let substituted = false;
+  try {
+    assert.throws(
+      () => commitViewerDeployment({
+        stageDir: stage,
+        outDir,
+        onPhase: (phase) => {
+          if (phase !== "deployment_lock_release_checked" || substituted) return;
+          substituted = true;
+          renameSync(lockPath, displacedPath);
+          installDeploymentLock(lockPath, {
+            schema_version: 1,
+            kind: "viewer-deployment-lock",
+            pid: process.pid,
+            created_at: new Date().toISOString(),
+            owner_token: "replacement-owner",
+          });
+        },
+      }),
+      (error) => error?.code === "VIEWER_DEPLOYMENT_LOCK_OWNERSHIP_LOST",
+    );
+    assert.equal(substituted, true);
+    assert.equal(readDeploymentLock(lockPath).owner_token, "replacement-owner");
+  } finally {
     rmSync(parent, { recursive: true, force: true });
   }
 });
@@ -1738,13 +1827,13 @@ test("serveViewer never recovers a deployment journal owned by a live publisher"
       () => commitViewerDeployment({ stageDir: pending, outDir, failurePhase: "generation_prepared" }),
       (error) => error?.code === "VIEWER_DEPLOYMENT_INTERRUPTED",
     );
-    writeFileSync(lockPath, `${JSON.stringify({
+    installDeploymentLock(lockPath, {
       schema_version: 1,
       kind: "viewer-deployment-lock",
       pid: child.pid,
       created_at: new Date().toISOString(),
       owner_token: "live-publisher",
-    })}\n`, { flag: "wx" });
+    });
     let serveError;
     try {
       unexpectedServer = serveViewer({ root: outDir, port: 0 });
@@ -2495,6 +2584,15 @@ function createDeploymentStage(parent, name, snapshotId) {
   writeFileSync(path.join(stage, "index.html"), `<h1>${snapshotId}</h1>\n`);
   writeFileSync(path.join(stage, "active.json"), `${JSON.stringify({ snapshot_id: snapshotId })}\n`);
   return stage;
+}
+
+function installDeploymentLock(lockPath, owner) {
+  mkdirSync(lockPath);
+  writeFileSync(path.join(lockPath, "owner.json"), `${JSON.stringify(owner)}\n`, { flag: "wx" });
+}
+
+function readDeploymentLock(lockPath) {
+  return JSON.parse(readFileSync(path.join(lockPath, "owner.json"), "utf8"));
 }
 
 function rawHttpGet({ port, path: requestPath }) {
