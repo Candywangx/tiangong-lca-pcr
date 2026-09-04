@@ -9,7 +9,6 @@ import { withGoalLock } from "./lock.mjs";
 import { buildIntegrationSnapshot } from "./scheduler.mjs";
 import { applyTaskTransition } from "./state-machine.mjs";
 import { ensureGoalWorktree } from "./worktrees.mjs";
-import { runCachedViewerBuild } from "./derived-cache.mjs";
 import { selectGoalRuntimeBaseCommit } from "./runtime-baseline.mjs";
 import {
   commitRepositoryValidation,
@@ -19,6 +18,10 @@ import {
   reserveRepositoryCandidate,
   selectRepositoryIntegrationHead,
 } from "./repository-coordinator.mjs";
+import {
+  probeViewerArtifactStore,
+  publishAllPendingViewerSnapshots,
+} from "./viewer-publication.mjs";
 
 const MAPPING_RELATIONS = new Set(["exact", "broader", "narrower", "proxy"]);
 
@@ -121,7 +124,16 @@ export function prepareIntegrationWorkspace({ config, snapshot, baseCommit }) {
   return { worktreePath, branch, integrationAttempt, preservedWorktreePaths: [...new Set(preservedWorktreePaths)] };
 }
 
-export function integrateGoalSnapshot({ config, stateDir, snapshotId = null, allowPartial = false, dryRun = false, commandRunner = runCommand }) {
+export function integrateGoalSnapshot({
+  config,
+  stateDir,
+  snapshotId = null,
+  allowPartial = false,
+  dryRun = false,
+  commandRunner = runCommand,
+  artifactStoreProbe = probeViewerArtifactStore,
+  viewerPublisher = publishAllPendingViewerSnapshots,
+}) {
   return withGoalLock(stateDir, "integrate", () => {
     const store = new GoalEventStore({ stateDir });
     if (!dryRun) {
@@ -173,6 +185,7 @@ export function integrateGoalSnapshot({ config, stateDir, snapshotId = null, all
     if (!config.integration?.decided_by) {
       throw new GoalHarnessError("GOAL_MAPPING_DECIDER_REQUIRED", "integration.decided_by is required before accepted mapping publication.");
     }
+    artifactStoreProbe({ config });
 
     const goalBase = selectGoalRuntimeBaseCommit(state, { projectRoot: config.project_root });
     const candidate = reserveRepositoryCandidate({
@@ -223,9 +236,7 @@ export function integrateGoalSnapshot({ config, stateDir, snapshotId = null, all
     try {
       for (const command of commandPlan) {
         const execute = () => commandRunner({ cwd: worktreePath, command: command.command, args: command.args, name: command.name });
-        commandResults.push(command.name === "viewer_build"
-          ? runCachedViewerBuild({ root: worktreePath, stateDir, runner: execute })
-          : execute());
+        commandResults.push(execute());
       }
     } catch (error) {
       snapshot = { ...snapshot, state: "retryable_failure", failure_code: error.code ?? "GOAL_INTEGRATION_COMMAND_FAILED", failure_message: error.message, command_results: commandResults };
@@ -250,6 +261,7 @@ export function integrateGoalSnapshot({ config, stateDir, snapshotId = null, all
       decision_ref: decision.decision_ref,
       accepted_codes: decision.additions.map((entry) => entry.code),
       command_results: commandResults,
+      changed_pcr_ids: tasks.map((entry) => entry.pcr_id).filter(Boolean).sort(),
       validated_at: new Date().toISOString(),
     };
     try {
@@ -285,7 +297,17 @@ export function integrateGoalSnapshot({ config, stateDir, snapshotId = null, all
         store.append({ event_id: `${snapshot.id}-${task.id}-validated-result`, type: "task_replaced", payload: { task } });
       }
     }
-    return { snapshot, status: "validated", command_results: commandResults, next_action: "Run goal:land after reviewing the validated snapshot and CAS preview." };
+    try {
+      viewerPublisher({ config, snapshotId: snapshot.id });
+    } catch (error) {
+      throw new GoalHarnessError(
+        "GOAL_VIEWER_PUBLICATION_FAILED",
+        `Repository validation is durable, but Viewer publication remains pending: ${error.message}`,
+        { cause_code: error.code ?? null, snapshot_id: snapshot.id, repository_sequence: snapshot.repository_sequence },
+      );
+    }
+    snapshot = store.rebuild().snapshots.find((entry) => entry.id === snapshot.id);
+    return { snapshot, status: "validated", command_results: commandResults, next_action: "Run goal:land after reviewing the validated and published Viewer snapshot and CAS preview." };
   });
 }
 
@@ -341,7 +363,7 @@ function integrationCommands(config, tasks) {
   return [
     { name: "aliases_build", command: "npm", args: ["run", "aliases:build"] },
     { name: "catalog_build", command: "npm", args: ["run", "catalog:build"] },
-    { name: "viewer_build", command: "npm", args: ["run", "viewer:build"] },
+    { name: "viewer_candidate_check", command: "npm", args: ["--silent", "run", "tiangong-pcr", "--", "guidance", "--pcr", selected.pcr_id, "--format", "json"] },
     { name: "validate", command: "npm", args: ["run", "validate"] },
     { name: "smoke_list", command: "npm", args: ["--silent", "run", "tiangong-pcr", "--", "list", "--path-prefix", prefix, "--format", "json"] },
     { name: "smoke_resolve", command: "npm", args: ["--silent", "run", "tiangong-pcr", "--", "resolve", "--classification", `${config.classification_system}:${config.classification_version}:${selected.cpc_code}`, "--format", "json"] },

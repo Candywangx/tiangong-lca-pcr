@@ -15,6 +15,7 @@ import {
   selectIntegrationBaseCommit,
 } from "./integration.mjs";
 import { commitRepositoryValidation, listCommittedRepositoryValidations, reserveRepositoryCandidate } from "./repository-coordinator.mjs";
+import { publishAllPendingViewerSnapshots } from "./viewer-publication.mjs";
 
 function git(root, args) {
   return execFileSync("git", args, { cwd: root, encoding: "utf8", stdio: ["ignore", "pipe", "pipe"] }).trim();
@@ -95,7 +96,7 @@ test("integration dry-run exposes the serial Builder and consumer checks without
     };
     const result = integrateGoalSnapshot({ config, stateDir, dryRun: true });
     assert.equal(result.status, "dry_run");
-    assert.deepEqual(result.commands.map((command) => command.name), ["aliases_build", "catalog_build", "viewer_build", "validate", "smoke_list", "smoke_resolve", "smoke_guidance"]);
+    assert.deepEqual(result.commands.map((command) => command.name), ["aliases_build", "catalog_build", "viewer_candidate_check", "validate", "smoke_list", "smoke_resolve", "smoke_guidance"]);
     assert.equal(new GoalEventStore({ stateDir }).rebuild().snapshots[0].state, "integration_pending");
   } finally {
     rmSync(root, { recursive: true, force: true });
@@ -272,6 +273,7 @@ test("a Goal made stale during gates rematerializes on the accepted head and rer
       classification_version: "3.0",
       integration_batch_size: 1,
       integration: { decided_by: "maintainer" },
+      artifact_store: path.join(root, "viewer-artifacts"),
     };
 
     const gateRuns = new Map();
@@ -289,28 +291,29 @@ test("a Goal made stale during gates rematerializes on the accepted head and rer
         competingCommit = git(competingWorktree, ["rev-parse", "HEAD"]);
         commitRepositoryValidation({ projectRoot: root, candidateToken: competing.candidate_token, integrationCommit: competingCommit });
       }
-      if (name === "viewer_build") {
-        const dist = path.join(cwd, "packages/pcr-viewer/dist");
-        mkdirSync(dist, { recursive: true });
-        writeFileSync(path.join(dist, ".tiangong-pcr-viewer-build"), "owned\n");
-      }
       return { name, exit_code: 0 };
     };
+    const viewerPublisher = ({ config: publishConfig }) => publishAllPendingViewerSnapshots({
+      config: publishConfig,
+      publishSnapshot(options) {
+        return { manifestRef: `sha256:${String(options.sequence).padStart(64, "0")}`, sequence: options.sequence };
+      },
+    });
 
     assert.throws(
-      () => integrateGoalSnapshot({ config, stateDir, commandRunner: runner }),
+      () => integrateGoalSnapshot({ config, stateDir, commandRunner: runner, viewerPublisher }),
       (error) => error.code === "GOAL_REPOSITORY_CANDIDATE_STALE",
     );
     const stale = new GoalEventStore({ stateDir }).rebuild().snapshots[0];
     assert.equal(stale.state, "retryable_failure");
     assert.equal(stale.base_commit, baseline);
 
-    const result = integrateGoalSnapshot({ config, stateDir, commandRunner: runner });
+    const result = integrateGoalSnapshot({ config, stateDir, commandRunner: runner, viewerPublisher });
     assert.equal(result.status, "validated");
     assert.equal(result.snapshot.base_commit, competingCommit);
     assert.equal(result.snapshot.integration_attempt, 2);
     assert.equal(result.snapshot.repository_sequence, 2);
-    assert.equal(result.snapshot.viewer_publication, "pending");
+    assert.equal(result.snapshot.viewer_publication, "published");
     assert.notEqual(result.snapshot.worktree_path, stale.worktree_path);
     for (const count of gateRuns.values()) assert.equal(count, 2);
     assert.equal(gateRuns.size, 7);
@@ -327,11 +330,11 @@ test("a Goal made stale during gates rematerializes on the accepted head and rer
     store.append({ event_id: `${task.id}-next-integration`, type: "task_replaced", payload: { task: { ...completedTask, state: "integration_pending", author_commit: authorCommit } } });
     store.append({ event_id: "snapshot-next-created", type: "snapshot_created", payload: { id: "snapshot-next", goal_id: goalId, task_ids: [task.id], author_commits: [authorCommit], state: "integration_pending", created_at: "2026-09-05T04:00:00.000Z" } });
 
-    const next = integrateGoalSnapshot({ config, stateDir, snapshotId: "snapshot-next", commandRunner: runner });
+    const next = integrateGoalSnapshot({ config, stateDir, snapshotId: "snapshot-next", commandRunner: runner, viewerPublisher });
     assert.equal(next.snapshot.repository_sequence, 3);
     assert.equal(store.rebuild().snapshots.find((entry) => entry.id === snapshotId).state, "landed");
     assert.equal(store.rebuild().snapshots.find((entry) => entry.id === "snapshot-next").state, "validated");
-    for (const [name, count] of gateRuns) assert.equal(count, name === "viewer_build" ? 2 : 3);
+    for (const count of gateRuns.values()) assert.equal(count, 3);
   } finally {
     rmSync(root, { recursive: true, force: true });
   }

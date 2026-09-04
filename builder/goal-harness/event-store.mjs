@@ -127,6 +127,17 @@ function reduceEvent(state, event) {
       : snapshot);
     const projectedTasks = new Map((event.payload.tasks ?? []).map((task) => [task.id, task]));
     next.tasks = (next.tasks ?? []).map((task) => projectedTasks.get(task.id) ?? task);
+  } else if (event.type === "viewer_snapshot_published") {
+    next.snapshots = (next.snapshots ?? []).map((snapshot) => snapshot.id === event.payload.snapshot_id
+      ? {
+          ...snapshot,
+          viewer_publication: "published",
+          viewer_manifest_ref: event.payload.manifest_ref,
+          viewer_snapshot_id: event.payload.viewer_snapshot_id,
+          viewer_sequence: event.payload.repository_sequence,
+          viewer_published_at: event.payload.published_at,
+        }
+      : snapshot);
   } else if (event.type === "task_replaced") {
     next.tasks = (next.tasks ?? []).map((task) => task.id === event.payload.task.id ? event.payload.task : task);
   } else if (event.type === "verified_common_uuids_updated") {

@@ -35,6 +35,7 @@ cpc_selector:
   mode: target_category
   value: all
 policy_prompt_path: ${policy}
+artifact_store: ${root}/viewer-artifacts
 ${extra}`,
   );
   return configPath;
@@ -73,6 +74,20 @@ test("goal configuration rejects all-repository CPC scope and missing policy", (
     assert.throws(
       () => loadGoalConfig({ configPath }),
       (error) => error.code === "GOAL_POLICY_UNREADABLE",
+    );
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+  }
+});
+
+test("goal configuration requires an explicit durable Viewer artifact store", () => {
+  const root = makeRoot();
+  try {
+    const configPath = writeConfig(root);
+    writeFileSync(configPath, readFileSync(configPath, "utf8").replace(/^artifact_store:.*\n/mu, ""));
+    assert.throws(
+      () => loadGoalConfig({ configPath }),
+      (error) => error.code === "GOAL_CONFIG_INVALID" && /artifact_store/u.test(error.message),
     );
   } finally {
     rmSync(root, { recursive: true, force: true });

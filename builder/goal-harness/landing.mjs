@@ -16,6 +16,8 @@ import { GoalEventStore } from "./event-store.mjs";
 import { withGoalLock } from "./lock.mjs";
 import { assertRepoPath, resolveRepoPath } from "./paths.mjs";
 import { applyTaskTransition } from "./state-machine.mjs";
+import { listCommittedRepositoryValidations, repositoryCoordinatorStateDir } from "./repository-coordinator.mjs";
+import { listViewerPublications, writeViewerLandingProvenance } from "./viewer-publication.mjs";
 
 const GIT_BLOB_MAX_BUFFER = 256 * 1024 * 1024;
 
@@ -42,7 +44,8 @@ export function captureExpectedFilesFromCommit(root, commit, paths) {
 }
 
 export function landGoalSnapshot({ config, stateDir, snapshotId = null, dryRun = false }) {
-  return withGoalLock(stateDir, "land", () => {
+  const landingStateDir = path.join(repositoryCoordinatorStateDir(config.project_root), "landing");
+  return withGoalLock(landingStateDir, "repository-land", () => withGoalLock(stateDir, "land", () => {
     const store = new GoalEventStore({ stateDir });
     let state = store.rebuild();
     let snapshot = snapshotId
@@ -51,14 +54,44 @@ export function landGoalSnapshot({ config, stateDir, snapshotId = null, dryRun =
     if (!snapshot) {
       throw new GoalHarnessError("GOAL_LAND_NOT_READY", "No validated integration snapshot is ready to land.");
     }
-    if (snapshot.state === "landed") {
-      return { status: "already_landed", snapshot, next_action: "Continue author scheduling or inspect Goal status." };
-    }
-    if (snapshot.state !== "validated" || !snapshot.integration_commit || !snapshot.worktree_path) {
+    if (!["validated", "landed"].includes(snapshot.state) || !snapshot.integration_commit || !snapshot.worktree_path) {
       throw new GoalHarnessError("GOAL_LAND_NOT_READY", `Snapshot ${snapshot.id} is not fully validated.`);
     }
-    const expectedFromBaseline = captureExpectedFilesFromCommitAllowMissing(config.project_root, state.baseline.commit, snapshot.changed_files);
-    const expected = { ...expectedFromBaseline, ...(state.landed_path_fingerprints ?? {}) };
+    const validations = listCommittedRepositoryValidations({ projectRoot: config.project_root });
+    const validation = validations.find((entry) => entry.repository_sequence === snapshot.repository_sequence);
+    if (!validation || validation.goal_id !== config.goal_id || validation.harness_snapshot_id !== snapshot.id || validation.integration_commit !== snapshot.integration_commit) {
+      throw new GoalHarnessError("GOAL_LAND_REPOSITORY_IDENTITY_INVALID", "Snapshot does not match committed repository validation truth.");
+    }
+    const publications = listViewerPublications({ projectRoot: config.project_root });
+    const publication = publications.find((entry) => entry.repository_sequence === validation.repository_sequence);
+    if (!publication || publication.integration_commit !== validation.integration_commit) {
+      throw new GoalHarnessError("GOAL_LAND_VIEWER_UNPUBLISHED", "A validated snapshot cannot land before its Viewer snapshot is durably published.", {
+        repository_sequence: validation.repository_sequence,
+        snapshot_id: snapshot.id,
+      });
+    }
+    if (path.resolve(publication.artifact_store) !== path.resolve(config.artifact_store)) {
+      throw new GoalHarnessError("GOAL_VIEWER_ARTIFACT_STORE_CONFLICT", "Landing configuration differs from retained Viewer publication history.");
+    }
+    const landingHeadPath = path.join(landingStateDir, "head.json");
+    const landingHead = existsSync(landingHeadPath)
+      ? readLandingHead(landingHeadPath)
+      : { schema_version: 1, repository_sequence: 0, integration_commit: validations[0].expected_old_head, path_fingerprints: {} };
+    if (landingHead.repository_sequence === validation.repository_sequence) {
+      if (landingHead.integration_commit !== validation.integration_commit) {
+        throw new GoalHarnessError("GOAL_LAND_HEAD_INVALID", "Repository landing head sequence has a different integration commit.");
+      }
+      writeViewerLandingProvenance({ publication, landingState: "landed", landedAt: landingHead.landed_at });
+      return { status: "already_landed", snapshot, next_action: "Continue author scheduling or inspect Goal status." };
+    }
+    if (validation.repository_sequence !== landingHead.repository_sequence + 1) {
+      throw new GoalHarnessError("GOAL_LAND_SEQUENCE_GAP", "Repository snapshots must land in repository validation order without cross-Goal skips.", {
+        requested_sequence: validation.repository_sequence,
+        next_sequence: landingHead.repository_sequence + 1,
+      });
+    }
+    const expectedFromBaseline = captureExpectedFilesFromCommitAllowMissing(config.project_root, validations[0].expected_old_head, snapshot.changed_files);
+    const expected = { ...expectedFromBaseline, ...(landingHead.path_fingerprints ?? {}) };
     const result = landFilesCas({
       projectRoot: config.project_root,
       sourceRoot: snapshot.worktree_path,
@@ -84,8 +117,19 @@ export function landGoalSnapshot({ config, stateDir, snapshotId = null, dryRun =
       }
     }
     store.append({ event_id: `${snapshot.id}-landing-fingerprints`, type: "landing_completed", payload: { snapshot_id: snapshot.id, path_fingerprints: pathFingerprints } });
+    writeJson(landingHeadPath, {
+      schema_version: 1,
+      repository_sequence: validation.repository_sequence,
+      integration_commit: validation.integration_commit,
+      goal_id: validation.goal_id,
+      harness_snapshot_id: validation.harness_snapshot_id,
+      viewer_manifest_ref: publication.manifest_ref,
+      landed_at: snapshot.landed_at,
+      path_fingerprints: { ...(landingHead.path_fingerprints ?? {}), ...pathFingerprints },
+    });
+    writeViewerLandingProvenance({ publication, landingState: "landed", landedAt: snapshot.landed_at });
     return { status: result.status, snapshot, path_fingerprints: pathFingerprints, state: store.rebuild(), next_action: "Resume scheduling; author worktrees remain preserved until explicit audited cleanup." };
-  });
+  }));
 }
 
 export function landFilesCas({ projectRoot, sourceRoot, paths, expected, stateDir, snapshotId, dryRun = false }) {
@@ -230,6 +274,18 @@ function writeJson(filePath, value) {
   const temporary = `${filePath}.${process.pid}.${randomUUID()}.tmp`;
   writeFileSync(temporary, `${JSON.stringify(value, null, 2)}\n`, { flag: "wx" });
   renameSync(temporary, filePath);
+}
+
+function readLandingHead(filePath) {
+  let value;
+  try { value = JSON.parse(readFileSync(filePath, "utf8")); } catch (error) {
+    throw new GoalHarnessError("GOAL_LAND_HEAD_INVALID", "Repository landing head is unreadable.", { cause: error.message });
+  }
+  if (value?.schema_version !== 1 || !Number.isSafeInteger(value.repository_sequence) || value.repository_sequence < 1 ||
+      !/^[a-f0-9]{40,64}$/u.test(value.integration_commit ?? "") || !value.path_fingerprints || typeof value.path_fingerprints !== "object") {
+    throw new GoalHarnessError("GOAL_LAND_HEAD_INVALID", "Repository landing head is malformed.");
+  }
+  return value;
 }
 
 function sameFingerprint(left, right) {
