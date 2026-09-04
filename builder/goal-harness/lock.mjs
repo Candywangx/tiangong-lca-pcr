@@ -1,11 +1,11 @@
-import { constants as fsConstants, closeSync, existsSync, fsyncSync, lstatSync, mkdirSync, openSync, readFileSync, renameSync, rmSync, writeSync } from "node:fs";
+import { constants as fsConstants, closeSync, existsSync, fsyncSync, linkSync, lstatSync, mkdirSync, openSync, readFileSync, readdirSync, renameSync, rmSync, unlinkSync, writeSync } from "node:fs";
 import path from "node:path";
 import { createHash, randomUUID } from "node:crypto";
 
 import { GoalHarnessError } from "./errors.mjs";
 
-export function withGoalLock(stateDir, operation, callback) {
-  const { lockPath, lease } = acquireGoalLock(stateDir, operation);
+export function withGoalLock(stateDir, operation, callback, { faultInjector = () => {} } = {}) {
+  const { lockPath, lease } = acquireGoalLock(stateDir, operation, { faultInjector });
   try {
     return callback();
   } finally {
@@ -13,8 +13,8 @@ export function withGoalLock(stateDir, operation, callback) {
   }
 }
 
-export async function withGoalLockAsync(stateDir, operation, callback) {
-  const { lockPath, lease } = acquireGoalLock(stateDir, operation);
+export async function withGoalLockAsync(stateDir, operation, callback, { faultInjector = () => {} } = {}) {
+  const { lockPath, lease } = acquireGoalLock(stateDir, operation, { faultInjector });
   try {
     return await callback();
   } finally {
@@ -22,7 +22,7 @@ export async function withGoalLockAsync(stateDir, operation, callback) {
   }
 }
 
-function acquireGoalLock(stateDir, operation) {
+function acquireGoalLock(stateDir, operation, { faultInjector }) {
   mkdirSync(stateDir, { recursive: true });
   const lockPath = path.join(stateDir, "goal.lock");
   const token = randomUUID();
@@ -40,7 +40,7 @@ function acquireGoalLock(stateDir, operation) {
       if (error?.code !== "EEXIST" && !existsSync(lockPath)) throw error;
       const existing = readGoalLock(lockPath);
       if (attempt === 0 && processIsDefinitelyGone(existing.holder.pid)) {
-        retireDeadLock({ stateDir, lockPath, existing });
+        retireDeadLock({ stateDir, lockPath, existing, faultInjector });
         continue;
       }
       throw new GoalHarnessError("GOAL_LOCKED", `Goal is locked by another operation: ${operation}`, { lock_path: lockPath, holder: existing.holder });
@@ -62,27 +62,56 @@ function processIsDefinitelyGone(pid) {
   }
 }
 
-function retireDeadLock({ stateDir, lockPath, existing }) {
+function retireDeadLock({ stateDir, lockPath, existing, faultInjector }) {
   const historyDir = path.join(stateDir, "lock-history");
   mkdirSync(historyDir, { recursive: true, mode: 0o700 });
   const digest = createHash("sha256").update(existing.bytes).digest("hex");
   const retiredDir = path.join(historyDir, `goal-lock-stale-${existing.holder.pid}-${digest}`);
+  let createdDirectory = false;
   try {
     mkdirSync(retiredDir, { mode: 0o700 });
+    createdDirectory = true;
   } catch (error) {
-    if (error?.code === "EEXIST") {
-      throw new GoalHarnessError("GOAL_LOCKED", "Another operation is already retiring this stale Goal lock.", { lock_path: lockPath });
-    }
-    throw error;
+    if (error?.code !== "EEXIST") throw error;
+  }
+  const retiredStat = lstatSync(retiredDir);
+  if (!retiredStat.isDirectory() || retiredStat.isSymbolicLink()) {
+    throw new GoalHarnessError("GOAL_LOCKED", "Stale-lock retirement claim has an untrusted filesystem type.", { lock_path: lockPath });
+  }
+  const entries = readdirSync(retiredDir);
+  if (entries.some((entry) => entry !== "owner.json")) {
+    throw new GoalHarnessError("GOAL_LOCKED", "Stale-lock retirement claim has an untrusted shape.", { lock_path: lockPath });
+  }
+  if (createdDirectory) {
+    fsyncDirectory(historyDir);
+    faultInjector("after_retirement_directory_created", { lock_path: lockPath, retired_dir: retiredDir });
   }
   const retiredOwner = path.join(retiredDir, "owner.json");
+  let capturedOwner = false;
   try {
-    renameSync(lockPath, retiredOwner);
+    try {
+      linkSync(lockPath, retiredOwner);
+      capturedOwner = true;
+      fsyncDirectory(retiredDir);
+    } catch (error) {
+      if (error?.code !== "EEXIST") throw error;
+    }
     const moved = readFileSync(retiredOwner);
     if (!moved.equals(existing.bytes)) {
-      if (!existsSync(lockPath)) renameSync(retiredOwner, lockPath);
+      if (capturedOwner) unlinkSync(retiredOwner);
       throw new GoalHarnessError("GOAL_LOCKED", "Goal lock owner changed while stale-lock retirement was in progress.", { lock_path: lockPath });
     }
+    if (!capturedOwner) {
+      throw new GoalHarnessError("GOAL_LOCKED", "Another operation already captured this stale Goal lock for retirement.", { lock_path: lockPath });
+    }
+    const current = readGoalLock(lockPath);
+    const currentStat = lstatSync(lockPath);
+    const capturedStat = lstatSync(retiredOwner);
+    if (!current.bytes.equals(existing.bytes) || currentStat.dev !== capturedStat.dev || currentStat.ino !== capturedStat.ino) {
+      unlinkSync(retiredOwner);
+      throw new GoalHarnessError("GOAL_LOCKED", "Goal lock was replaced while stale-lock retirement was in progress.", { lock_path: lockPath });
+    }
+    unlinkSync(lockPath);
     fsyncDirectory(retiredDir);
     fsyncDirectory(historyDir);
     fsyncDirectory(stateDir);
