@@ -509,6 +509,65 @@ test("a missing repair continuation replaces only the thread and preserves its s
   }
 });
 
+test("a repeated missing turn id advances from one repair continuation to replacement without event conflict", async () => {
+  const { root, stateDir, config } = fixture();
+  config.retry_policy = { max_attempts: 3, max_repairs: 2 };
+  const first = await dispatchGoalAuthors({
+    config,
+    stateDir,
+    slots: 1,
+    adapter: { async createAuthorTask() { return { thread_id: "thread-same", turn_id: "turn-original" }; } },
+  });
+  const store = new GoalEventStore({ stateDir });
+  const original = first.dispatched[0];
+  store.append({
+    event_id: "fixture-repeated-missing-turn",
+    type: "task_replaced",
+    payload: { task: {
+      ...original,
+      state: "authoring_repair",
+      turn_id: "turn-missing",
+      repair_count: 1,
+      repair_resume_count: 0,
+      repair_history: [{ repair_count: 1, turn_id: "turn-missing", resume_turn_ids: [], started_at: "2026-09-02T00:00:00.000Z" }],
+      transition_ids: [...original.transition_ids, "repair-1-authoring"],
+    } },
+  });
+  const missingThread = { thread: { turns: [{ id: "turn-original", status: "interrupted", items: [] }] } };
+  try {
+    const firstHarvest = await harvestGoalAuthors({
+      config,
+      stateDir,
+      adapter: { async readThread() { return missingThread; } },
+    });
+    assert.equal(firstHarvest.state.tasks[0].state, "repair_requested");
+    assert.equal(firstHarvest.state.tasks[0].repair_resume_pending, true);
+
+    const resumed = await dispatchGoalAuthors({
+      config,
+      stateDir,
+      slots: 1,
+      adapter: {
+        async startRepairTurn() {
+          return { thread_id: "thread-same", turn_id: "turn-missing" };
+        },
+      },
+    });
+    assert.equal(resumed.state.tasks[0].repair_resume_count, 1);
+    assert.equal(resumed.state.tasks[0].turn_id, "turn-missing");
+
+    const secondHarvest = await harvestGoalAuthors({
+      config,
+      stateDir,
+      adapter: { async readThread() { return missingThread; } },
+    });
+    assert.equal(secondHarvest.state.tasks[0].state, "retryable_failure");
+    assert.equal(secondHarvest.state.tasks[0].failure_code, "GOAL_REPAIR_RESUME_FAILED");
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+  }
+});
+
 test("a timed-out repair is interrupted then offered one same-thread continuation", async () => {
   const { root, stateDir, config } = fixture();
   config.author_timeout_seconds = 60;

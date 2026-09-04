@@ -303,7 +303,8 @@ export async function harvestGoalAuthors({
           const canResumeRepair = wasRepair && (task.repair_resume_count ?? 0) < 1;
           const repairResumeFailed = wasRepair && (task.repair_resume_count ?? 0) >= 1;
           const canRepairTimeout = canResumeRepair || (!repairResumeFailed && (task.repair_count ?? 0) < (config.retry_policy?.max_repairs ?? 2));
-          task = applyTaskTransition(task, { transition_id: `${task.id}-turn-${task.turn_id}-timeout`, to: canRepairTimeout ? "repair_requested" : "retryable_failure", at: now().toISOString() });
+          const timeoutIdentity = turnObservationIdentity(task, "timeout");
+          task = applyTaskTransition(task, { transition_id: timeoutIdentity, to: canRepairTimeout ? "repair_requested" : "retryable_failure", at: now().toISOString() });
           task = {
             ...task,
             repair_resume_pending: canResumeRepair,
@@ -320,7 +321,7 @@ export async function harvestGoalAuthors({
                   : "Continue from the preserved worktree in the same visible thread and finish the machine report."),
             }],
           };
-          store.append({ event_id: `${task.id}-turn-${task.turn_id}-timeout-recorded`, type: "task_replaced", payload: { task } });
+          store.append({ event_id: `${timeoutIdentity}-recorded`, type: "task_replaced", payload: { task } });
           failures.push(task);
           continue;
         }
@@ -328,7 +329,8 @@ export async function harvestGoalAuthors({
           const canResumeRepair = wasRepair && (task.repair_resume_count ?? 0) < 1;
           const repairResumeFailed = wasRepair && (task.repair_resume_count ?? 0) >= 1;
           const canRepairTurn = canResumeRepair || (!repairResumeFailed && (task.repair_count ?? 0) < (config.retry_policy?.max_repairs ?? 2));
-          task = applyTaskTransition(task, { transition_id: `${task.id}-turn-${task.turn_id}-failed`, to: canRepairTurn ? "repair_requested" : "retryable_failure", at: new Date().toISOString() });
+          const failureIdentity = turnObservationIdentity(task, "failed");
+          task = applyTaskTransition(task, { transition_id: failureIdentity, to: canRepairTurn ? "repair_requested" : "retryable_failure", at: new Date().toISOString() });
           task = {
             ...task,
             repair_resume_pending: canResumeRepair,
@@ -345,7 +347,7 @@ export async function harvestGoalAuthors({
                   : "Resume in the same visible thread and preserved worktree."),
             }],
           };
-          store.append({ event_id: `${task.id}-turn-${task.turn_id}-failure-recorded`, type: "task_replaced", payload: { task } });
+          store.append({ event_id: `${failureIdentity}-recorded`, type: "task_replaced", payload: { task } });
           failures.push(task);
           continue;
         }
@@ -553,6 +555,13 @@ function nextDispatchCycle(task) {
     if (match) highest = Math.max(highest, Number(match[1]));
   }
   return highest + 1;
+}
+
+function turnObservationIdentity(task, outcome) {
+  const repairGeneration = task.state === "authoring_repair" || (task.repair_count ?? 0) > 0
+    ? `repair-${task.repair_count ?? 0}-resume-${task.repair_resume_count ?? 0}`
+    : "author";
+  return `${task.id}-turn-${task.turn_id}-${repairGeneration}-${outcome}`;
 }
 
 function authorTimedOut(task, timeoutSeconds, at) {
