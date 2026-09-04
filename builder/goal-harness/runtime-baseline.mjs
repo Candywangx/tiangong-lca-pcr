@@ -34,7 +34,7 @@ export function ensureGoalRuntimeBaseline({ projectRoot, sourceRoot, stateDir, g
     if (dirty.length > 0) {
       throw new GoalHarnessError("GOAL_RUNTIME_SOURCE_DIRTY", "Harness runtime source has uncommitted approved-path changes; commit and verify them before installing a Goal runtime baseline.", { paths: dirty });
     }
-    if (state.runtime_baseline?.source_commit === sourceCommit && isAncestor(projectRoot, state.runtime_baseline.commit, baseCommit)) {
+    if (state.runtime_baseline?.source_commit === sourceCommit && state.runtime_baseline.commit === baseCommit) {
       return state.runtime_baseline;
     }
 
