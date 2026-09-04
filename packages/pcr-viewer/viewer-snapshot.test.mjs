@@ -188,7 +188,37 @@ test("publication binds coverage targets and object provenance to exact source i
     const firstManifest = store.readManifest(first.manifestRef);
     const second = store.publish(snapshotInput({ snapshotId: "snapshot-002", sequence: 2, source: { ...snapshotInput().source, catalog: sha256Ref("catalog-v2\n") } }));
     const secondManifest = store.readManifest(second.manifestRef);
-    assert.notEqual(secondManifest.refs.pcr_entries["pcr.agriculture.wheat-seed"], firstManifest.refs.pcr_entries["pcr.agriculture.wheat-seed"]);
+    assert.equal(secondManifest.refs.pcr_entries["pcr.agriculture.wheat-seed"], firstManifest.refs.pcr_entries["pcr.agriculture.wheat-seed"]);
+    assert.notEqual(secondManifest.refs.catalog_root, firstManifest.refs.catalog_root);
+  } finally { rmSync(root, { recursive: true, force: true }); }
+});
+
+test("global source attestations do not invalidate unchanged alias or coverage entries", () => {
+  const { root, store } = fixtureStore();
+  try {
+    const aliases = [
+      { id: "pcr.legacy.wheat", locator: "cpc:3.0:01111" },
+      { id: "pcr.legacy.cement", locator: "cpc:3.0:25232" },
+    ];
+    const coverage = [
+      { coordinate: { system: "cpc", version: "3.0" }, code: "01111", pcr_id: "pcr.agriculture.wheat-seed" },
+      { coordinate: { system: "cpc", version: "3.0" }, code: "01112", pcr_id: "pcr.agriculture.wheat-seed" },
+    ];
+    const first = store.publish(snapshotInput({ aliasEntries: aliases, coverageEntries: coverage }));
+    const before = store.readManifest(first.manifestRef);
+    const second = store.publish(snapshotInput({
+      snapshotId: "snapshot-002", sequence: 2,
+      source: { ...snapshotInput().source, aliases: sha256Ref("aliases-v2\n"), coverage: [{ coordinate: { system: "cpc", version: "3.0" }, ref: sha256Ref("coverage-v2\n") }] },
+      aliasEntries: [{ ...aliases[0], locator: "cpc:3.0:01110" }, aliases[1]],
+      coverageEntries: [{ ...coverage[0], pcr_id: null }, coverage[1]],
+    }));
+    const after = store.readManifest(second.manifestRef);
+    assert.notEqual(after.refs.alias_entries[aliases[0].id], before.refs.alias_entries[aliases[0].id]);
+    assert.equal(after.refs.alias_entries[aliases[1].id], before.refs.alias_entries[aliases[1].id]);
+    assert.notEqual(after.refs.coverage_entries["cpc:3.0:01111"], before.refs.coverage_entries["cpc:3.0:01111"]);
+    assert.equal(after.refs.coverage_entries["cpc:3.0:01112"], before.refs.coverage_entries["cpc:3.0:01112"]);
+    assert.notEqual(after.refs.alias_root, before.refs.alias_root);
+    assert.notEqual(after.refs.coverage_root, before.refs.coverage_root);
   } finally { rmSync(root, { recursive: true, force: true }); }
 });
 
@@ -201,6 +231,31 @@ test("readObject rejects digest-addressed JSON that is not canonical bytes", () 
     store.probe();
     writeFileSync(path.join(root, "objects", `${ref.slice(7)}.json`), noncanonical);
     assert.throws(() => store.readObject(ref), /canonical/u);
+  } finally { rmSync(root, { recursive: true, force: true }); }
+});
+
+test("readManifest rejects digest-addressed JSON that is not canonical bytes", () => {
+  const { root, store } = fixtureStore();
+  try {
+    const published = store.publish(snapshotInput());
+    const manifest = store.readManifest(published.manifestRef);
+    const noncanonical = Buffer.from(`${JSON.stringify(manifest, null, 2)}\n`, "utf8");
+    const ref = sha256Ref(noncanonical);
+    writeFileSync(path.join(root, "manifests", `${ref.slice(7)}.json`), noncanonical);
+    assert.throws(() => store.readManifest(ref), /canonical/u);
+  } finally { rmSync(root, { recursive: true, force: true }); }
+});
+
+test("duplicate coverage source coordinates fail before publication", () => {
+  const { root, store } = fixtureStore();
+  try {
+    assert.throws(() => store.publish(snapshotInput({ source: {
+      ...snapshotInput().source,
+      coverage: [
+        { coordinate: { system: "cpc", version: "3.0" }, ref: sha256Ref("coverage-v1\n") },
+        { coordinate: { system: "cpc", version: "3.0" }, ref: sha256Ref("coverage-v2\n") },
+      ],
+    } })), /duplicate coverage source coordinate/iu);
   } finally { rmSync(root, { recursive: true, force: true }); }
 });
 

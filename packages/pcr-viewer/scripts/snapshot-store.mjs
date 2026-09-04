@@ -146,6 +146,9 @@ export class ViewerSnapshotStore {
     if (cache.manifests.has(ref)) return cache.manifests.get(ref);
     const bytes = this.#readImmutable(this.path("manifests", `${refDigest(ref)}.json`), ref, "manifest");
     const manifest = parseCanonicalJson(bytes, "viewer manifest");
+    if (!bytes.equals(canonicalBytes(manifest))) {
+      throw new ViewerSnapshotStoreError("VIEWER_MANIFEST_NONCANONICAL", "Viewer manifest bytes are not canonical compact JSON.");
+    }
     this.schemas.assert("viewer-snapshot-manifest", manifest);
     cache.manifests.set(ref, manifest);
     try {
@@ -280,24 +283,21 @@ export class ViewerSnapshotStore {
     const lineage = this.#deriveLineage(normalized.pcrEntries, previous.manifest);
     this.#validateCoverageInputs(normalized);
 
-    const pcrIdentity = this.#objectIdentity(normalized, { catalog: normalized.source.catalog });
-    const catalogIdentity = this.#objectIdentity(normalized, { catalog: normalized.source.catalog });
-    const aliasIdentity = this.#objectIdentity(normalized, { aliases: normalized.source.aliases });
-    const coverageIdentity = this.#objectIdentity(normalized, { coverage: normalized.source.coverage });
+    const catalogRootIdentity = this.#objectIdentity(normalized, { catalog: normalized.source.catalog });
+    const aliasRootIdentity = this.#objectIdentity(normalized, { aliases: normalized.source.aliases });
+    const coverageRootIdentity = this.#objectIdentity(normalized, { coverage: normalized.source.coverage });
     const historyIdentity = this.#objectIdentity(normalized, { source: normalized.source, capture: normalized.capture });
     const uiIdentity = this.#objectIdentity(normalized, { ui_bundle_ref: normalized.capture.ui_bundle_ref });
-    const sourceRefForCoordinate = new Map(normalized.source.coverage.map((source) => [`${source.coordinate.system}:${source.coordinate.version}`, source.ref]));
-    const coverageIdentityFor = (coordinate) => this.#objectIdentity(normalized, { coverage: { coordinate, ref: sourceRefForCoordinate.get(`${coordinate.system}:${coordinate.version}`) } });
-    const pcrEntries = this.#writeEntries(normalized.pcrEntries, "pcr_detail", pcrIdentity, normalized.source.release_revision_markers);
-    const catalogEntries = this.#writeCatalogEntries(normalized.pcrEntries, catalogIdentity);
-    const aliasEntries = this.#writeEntries(normalized.aliasEntries, "alias_entry", aliasIdentity);
-    const coverageEntries = this.#writeCoverageEntries(normalized.coverageEntries, coverageIdentityFor);
-    const catalogShards = this.#writePrefixShards(catalogEntries, "catalog_shard", (id) => twoCharacterPrefix(id), catalogIdentity);
-    const aliasShards = this.#writePrefixShards(aliasEntries, "alias_shard", (id) => twoCharacterPrefix(id), aliasIdentity);
-    const coverageShards = this.#writeCoverageShards(normalized.coverageEntries, coverageEntries, coverageIdentityFor);
-    const catalogRoot = this.#writeObject({ schema_version: 1, object_kind: "catalog_root", identity: catalogIdentity, entry: { shards: catalogShards, details: pcrEntries } });
-    const aliasRoot = this.#writeObject({ schema_version: 1, object_kind: "alias_root", identity: aliasIdentity, entry: { shards: aliasShards, entries: aliasEntries } });
-    const coverageRoot = this.#writeObject({ schema_version: 1, object_kind: "coverage_root", identity: coverageIdentity, entry: { shards: coverageShards, entries: coverageEntries } });
+    const pcrEntries = this.#writeEntries(normalized.pcrEntries, "pcr_detail", (_entry, payload) => this.#objectIdentity(normalized, { pcr_detail: payload }), normalized.source.release_revision_markers);
+    const catalogEntries = this.#writeCatalogEntries(normalized.pcrEntries, (payload) => this.#objectIdentity(normalized, { catalog_entry: payload }));
+    const aliasEntries = this.#writeEntries(normalized.aliasEntries, "alias_entry", (_entry, payload) => this.#objectIdentity(normalized, { alias_entry: payload }));
+    const coverageEntries = this.#writeCoverageEntries(normalized.coverageEntries, (payload) => this.#objectIdentity(normalized, { coverage_entry: payload }));
+    const catalogShards = this.#writePrefixShards(catalogEntries, "catalog_shard", (id) => twoCharacterPrefix(id), (payload) => this.#objectIdentity(normalized, { catalog_shard: payload }));
+    const aliasShards = this.#writePrefixShards(aliasEntries, "alias_shard", (id) => twoCharacterPrefix(id), (payload) => this.#objectIdentity(normalized, { alias_shard: payload }));
+    const coverageShards = this.#writeCoverageShards(normalized.coverageEntries, coverageEntries, (payload) => this.#objectIdentity(normalized, { coverage_shard: payload }));
+    const catalogRoot = this.#writeObject({ schema_version: 1, object_kind: "catalog_root", identity: catalogRootIdentity, entry: { shards: catalogShards, details: pcrEntries } });
+    const aliasRoot = this.#writeObject({ schema_version: 1, object_kind: "alias_root", identity: aliasRootIdentity, entry: { shards: aliasShards, entries: aliasEntries } });
+    const coverageRoot = this.#writeObject({ schema_version: 1, object_kind: "coverage_root", identity: coverageRootIdentity, entry: { shards: coverageShards, entries: coverageEntries } });
     const uiBundleRef = this.#writeObject({ schema_version: 1, object_kind: "ui_bundle", identity: uiIdentity, entry: { id: normalized.capture.ui_bundle_ref, asset_url: normalized.uiBundleUrl } });
     normalized.capture.ui_bundle_ref = uiBundleRef;
     const manifest = {
@@ -436,8 +436,7 @@ export class ViewerSnapshotStore {
     if (!input || typeof input !== "object") throw new ViewerSnapshotStoreError("VIEWER_SNAPSHOT_INVALID", "Snapshot input must be an object.");
     const source = input.source;
     if (!source || typeof source !== "object") throw new ViewerSnapshotStoreError("VIEWER_SNAPSHOT_INVALID", "Snapshot source is required.");
-    const coverage = Array.isArray(source.coverage) ? source.coverage.map((entry) => ({ coordinate: normalizeCoordinate(entry.coordinate), ref: assertSha256Ref(entry.ref, "coverage source reference") })) : null;
-    if (!coverage) throw new ViewerSnapshotStoreError("VIEWER_SNAPSHOT_INVALID", "Snapshot source coverage must be an array.");
+    const coverage = normalizeCoverageSources(source.coverage);
     const normalized = {
       snapshotId: requireText(input.snapshotId, "snapshot id"),
       goalId: requireText(input.goalId, "goal id"),
@@ -474,20 +473,21 @@ export class ViewerSnapshotStore {
     return normalized;
   }
 
-  #writeEntries(entries, kind, identity, markerMap = null) {
+  #writeEntries(entries, kind, identityForEntry, markerMap = null) {
     const refs = {};
     for (const entry of entries) {
-      const entryIdentity = markerMap === null ? identity : { ...identity, release_revision_marker: markerMap[entry.id] ?? null };
       const payload = kind === "pcr_detail" ? projectPcrDetail(entry) : entry;
+      const baseIdentity = identityForEntry(entry, payload);
+      const entryIdentity = markerMap === null ? baseIdentity : { ...baseIdentity, release_revision_marker: markerMap[entry.id] ?? null };
       refs[entry.id] = this.#writeObject({ schema_version: 1, object_kind: kind, identity: entryIdentity, entry: payload });
     }
     return sortedObject(refs);
   }
 
-  #writeCatalogEntries(entries, identity) {
+  #writeCatalogEntries(entries, identityForEntry) {
     const refs = {};
     for (const entry of entries) {
-      refs[entry.id] = this.#writeObject({ schema_version: 1, object_kind: "catalog_entry", identity, entry: {
+      const payload = {
         id: entry.id,
         path: typeof entry.path === "string" ? entry.path : "",
         title: localeMap(entry.catalog_title ?? entry.title, entry.id),
@@ -500,22 +500,24 @@ export class ViewerSnapshotStore {
         record_kind: typeof entry.record_kind === "string" ? entry.record_kind : "methodology",
         readiness: resolvedReadiness(entry),
         search_text: typeof entry.search_text === "string" ? entry.search_text : entry.id,
-      } });
+      };
+      refs[entry.id] = this.#writeObject({ schema_version: 1, object_kind: "catalog_entry", identity: identityForEntry(payload), entry: payload });
     }
     return sortedObject(refs);
   }
 
-  #writeCoverageEntries(entries, identityForCoordinate) {
+  #writeCoverageEntries(entries, identityForEntry) {
     const refs = {};
     for (const entry of entries) {
       const coordinate = normalizeCoordinate(entry.coordinate);
       const key = `${coordinate.system}:${coordinate.version}:${entry.code}`;
-      refs[key] = this.#writeObject({ schema_version: 1, object_kind: "coverage_entry", identity: identityForCoordinate(coordinate), entry: structuredClone(entry) });
+      const payload = structuredClone(entry);
+      refs[key] = this.#writeObject({ schema_version: 1, object_kind: "coverage_entry", identity: identityForEntry(payload), entry: payload });
     }
     return sortedObject(refs);
   }
 
-  #writePrefixShards(entryRefs, kind, prefixFor, identity) {
+  #writePrefixShards(entryRefs, kind, prefixFor, identityForShard) {
     const groups = new Map();
     for (const [id, objectRef] of Object.entries(entryRefs)) {
       const prefix = prefixFor(id);
@@ -525,12 +527,13 @@ export class ViewerSnapshotStore {
     }
     const refs = {};
     for (const prefix of [...groups.keys()].sort()) {
-      refs[prefix] = this.#writeObject({ schema_version: 1, object_kind: kind, identity, entry: { prefix, entries: groups.get(prefix).sort(compareById) } });
+      const payload = { prefix, entries: groups.get(prefix).sort(compareById) };
+      refs[prefix] = this.#writeObject({ schema_version: 1, object_kind: kind, identity: identityForShard(payload), entry: payload });
     }
     return sortedObject(refs);
   }
 
-  #writeCoverageShards(entries, entryRefs, identityForCoordinate) {
+  #writeCoverageShards(entries, entryRefs, identityForShard) {
     const groups = new Map();
     for (const entry of entries) {
       const coordinate = normalizeCoordinate(entry.coordinate);
@@ -545,7 +548,7 @@ export class ViewerSnapshotStore {
     for (const key of [...groups.keys()].sort()) {
       const group = groups.get(key);
       group.entries.sort((left, right) => String(left.code).localeCompare(String(right.code)));
-      refs[key] = this.#writeObject({ schema_version: 1, object_kind: "coverage_shard", identity: identityForCoordinate(group.coordinate), entry: group });
+      refs[key] = this.#writeObject({ schema_version: 1, object_kind: "coverage_shard", identity: identityForShard(group), entry: group });
     }
     return sortedObject(refs);
   }
@@ -1051,6 +1054,18 @@ function requireCoverageEntries(entries) {
     if (keys.has(key)) throw new ViewerSnapshotStoreError("VIEWER_SNAPSHOT_DUPLICATE_COVERAGE", `Duplicate coverage entry: ${key}.`);
     keys.add(key);
     return copy;
+  });
+}
+
+function normalizeCoverageSources(entries) {
+  if (!Array.isArray(entries)) throw new ViewerSnapshotStoreError("VIEWER_SNAPSHOT_INVALID", "Snapshot source coverage must be an array.");
+  const coordinates = new Set();
+  return entries.map((entry) => {
+    const coordinate = normalizeCoordinate(entry?.coordinate);
+    const key = `${coordinate.system}:${coordinate.version}`;
+    if (coordinates.has(key)) throw new ViewerSnapshotStoreError("VIEWER_COVERAGE_SOURCE_DUPLICATE", `Duplicate coverage source coordinate: ${key}.`);
+    coordinates.add(key);
+    return { coordinate, ref: assertSha256Ref(entry?.ref, "coverage source reference") };
   });
 }
 
