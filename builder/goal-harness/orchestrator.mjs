@@ -71,6 +71,7 @@ export async function dispatchGoalAuthors({ config, stateDir, slots = config.aut
           });
           task = {
             ...task,
+            attempt: (failed.attempt ?? 1) + 1,
             previous_thread_ids: [...new Set([...(failed.previous_thread_ids ?? []), failed.thread_id])],
             thread_id: null,
             turn_id: null,

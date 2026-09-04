@@ -950,6 +950,7 @@ test("repair-limit replacement reuses a worktree only when its dirty paths remai
     assert.equal(readFileSync(allowedPath, "utf8"), "authored manifest.yaml\n");
     assert.equal(result.state.tasks[0].author_content_base_commit, originalContentBase);
     assert.equal(result.state.tasks[0].author_base_commit, authoredCommit);
+    assert.equal(result.state.tasks[0].attempt, 2);
 
     const firstReplacement = result.state.tasks[0];
     store.append({
@@ -979,6 +980,28 @@ test("repair-limit replacement reuses a worktree only when its dirty paths remai
     assert.equal(second.state.tasks[0].thread_id, "thread-new-2");
     assert.deepEqual(second.state.tasks[0].previous_thread_ids, ["thread-old", "thread-new"]);
     assert.equal(second.state.tasks[0].author_content_base_commit, originalContentBase);
+    assert.equal(second.state.tasks[0].attempt, 3);
+
+    const secondReplacement = second.state.tasks[0];
+    store.append({
+      event_id: "fixture-repair-limit-safe-worktree-max-attempts",
+      type: "task_replaced",
+      payload: { task: {
+        ...secondReplacement,
+        state: "retryable_failure",
+        failure_code: "GOAL_REPAIR_LIMIT_REACHED",
+        transition_ids: [...secondReplacement.transition_ids, "repair-limit-max-attempts"],
+      } },
+    });
+    const exhausted = await dispatchGoalAuthors({
+      config,
+      stateDir,
+      slots: 1,
+      resumeStopped: true,
+      adapter: { async createAuthorTask() { throw new Error("max_attempts must prevent another replacement thread"); } },
+    });
+    assert.equal(exhausted.dispatched.length, 0);
+    assert.equal(exhausted.state.tasks[0].state, "retryable_failure");
   } finally {
     rmSync(root, { recursive: true, force: true });
   }
