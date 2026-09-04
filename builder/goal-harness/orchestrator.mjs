@@ -27,6 +27,16 @@ export async function dispatchGoalAuthors({ config, stateDir, slots = config.aut
     if (state.stopped && !resumeStopped) {
       throw new GoalHarnessError("GOAL_SCHEDULING_STOPPED", `Goal ${state.goal_id} is stopped; use resume explicitly.`);
     }
+    if (dryRun) {
+      const previewState = resumeStopped ? previewResumedState({ config, state }) : state;
+      const selected = selectDispatchTasks(previewState, slots);
+      return {
+        dispatched: [],
+        would_dispatch: selected.map((task) => task.id),
+        state,
+        next_action: "Repeat without --dry-run to create visible author tasks.",
+      };
+    }
     if (state.stopped && resumeStopped) {
       store.append({ event_id: `resume-${state.last_event_sequence + 1}`, type: "scheduling_resumed", payload: {} });
       state = store.rebuild();
@@ -96,14 +106,7 @@ export async function dispatchGoalAuthors({ config, stateDir, slots = config.aut
       state = store.rebuild();
     }
 
-    const repairRequests = state.tasks.filter((task) => task.state === "repair_requested" && task.thread_id && task.worktree_path);
-    const repairCapacity = Math.max(0, slots - activeAuthorCount(state.tasks));
-    const selectedRepairs = repairRequests.slice(0, repairCapacity);
-    const prepared = state.tasks.filter((task) => task.state === "preflight" && task.worktree_path && !task.thread_id);
-    const selected = [...selectedRepairs, ...prepared, ...dispatchCandidates(state.tasks, { slots: slots - selectedRepairs.length })].slice(0, slots);
-    if (dryRun) {
-      return { dispatched: [], would_dispatch: selected.map((task) => task.id), state, next_action: "Repeat without --dry-run to create visible author tasks." };
-    }
+    const selected = selectDispatchTasks(state, slots);
 
     const dispatched = [];
     for (const selectedTask of selected) {
@@ -263,6 +266,41 @@ export async function dispatchGoalAuthors({ config, stateDir, slots = config.aut
       next_action: dispatched.length > 0 ? "Use goal:status or goal:resume to harvest completed visible tasks and refill slots." : "No dispatchable author task is available in the requested slots.",
     };
   });
+}
+
+function selectDispatchTasks(state, slots) {
+  const repairRequests = state.tasks.filter((task) => task.state === "repair_requested" && task.thread_id && task.worktree_path);
+  const repairCapacity = Math.max(0, slots - activeAuthorCount(state.tasks));
+  const selectedRepairs = repairRequests.slice(0, repairCapacity);
+  const prepared = state.tasks.filter((task) => task.state === "preflight" && task.worktree_path && !task.thread_id);
+  return [...selectedRepairs, ...prepared, ...dispatchCandidates(state.tasks, { slots: slots - selectedRepairs.length })].slice(0, slots);
+}
+
+function previewResumedState({ config, state }) {
+  const maxAttempts = config.retry_policy?.max_attempts ?? 3;
+  const maxRepairs = config.retry_policy?.max_repairs ?? 2;
+  const tasks = state.tasks.map((failed) => {
+    if (failed.state !== "retryable_failure" || (failed.attempt ?? 0) >= maxAttempts) return failed;
+    if (failed.failure_code === "GOAL_EVENT_ID_CONFLICT"
+      && failed.thread_id
+      && failed.turn_id
+      && canReuseAuthorizedAuthorWorktree({ config, task: failed, baselineCommit: state.baseline.commit })) {
+      return { ...failed, state: "authoring" };
+    }
+    const requiresThreadReplacement = new Set(["GOAL_REPAIR_RESUME_FAILED", "GOAL_REPAIR_LIMIT_REACHED"]).has(failed.failure_code);
+    const replaceThreadInPlace = requiresThreadReplacement
+      && canReuseAuthorizedAuthorWorktree({ config, task: failed, baselineCommit: state.baseline.commit });
+    const repairInPlace = !requiresThreadReplacement
+      && Boolean(failed.thread_id && failed.worktree_path && (failed.repair_count ?? 0) < maxRepairs);
+    if (replaceThreadInPlace) return { ...failed, state: "preflight", thread_id: null, turn_id: null };
+    if (repairInPlace) return { ...failed, state: "repair_requested" };
+    return {
+      ...failed,
+      state: "queued",
+      ...(failed.thread_id ? { worktree_path: null, author_branch: null, thread_id: null, turn_id: null } : {}),
+    };
+  });
+  return { ...state, stopped: false, tasks };
 }
 
 export async function harvestGoalAuthors({

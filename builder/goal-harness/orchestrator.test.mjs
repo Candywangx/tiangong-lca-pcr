@@ -74,6 +74,82 @@ test("dispatch creates one worktree-visible task and repeated resume does not du
   }
 });
 
+test("resume dry run previews dispatch without changing stopped state or the event log", async () => {
+  const { root, stateDir, config } = fixture();
+  const store = new GoalEventStore({ stateDir });
+  store.append({ event_id: "fixture-stopped-for-dry-run", type: "scheduling_stopped", payload: {} });
+  const eventsPath = path.join(stateDir, "events.jsonl");
+  const eventsBefore = readFileSync(eventsPath, "utf8");
+  let createCalls = 0;
+  try {
+    const result = await dispatchGoalAuthors({
+      config,
+      stateDir,
+      slots: 1,
+      resumeStopped: true,
+      dryRun: true,
+      adapter: {
+        async createAuthorTask() {
+          createCalls += 1;
+          return { thread_id: "thread-must-not-exist", turn_id: "turn-must-not-exist" };
+        },
+      },
+    });
+
+    assert.deepEqual(result.would_dispatch, ["cpc:3.0:41111"]);
+    assert.equal(result.state.stopped, true);
+    assert.equal(new GoalEventStore({ stateDir }).rebuild().stopped, true);
+    assert.equal(readFileSync(eventsPath, "utf8"), eventsBefore);
+    assert.equal(createCalls, 0);
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+  }
+});
+
+test("resume dry run includes retryable in-place repairs without persisting their transition", async () => {
+  const { root, stateDir, config } = fixture();
+  config.retry_policy = { max_attempts: 6, max_repairs: 2 };
+  const store = new GoalEventStore({ stateDir });
+  const original = store.rebuild().tasks[0];
+  store.append({
+    event_id: "fixture-retryable-for-dry-run",
+    type: "task_replaced",
+    payload: { task: {
+      ...original,
+      state: "retryable_failure",
+      attempt: 1,
+      thread_id: "thread-preserved",
+      turn_id: "turn-interrupted",
+      worktree_path: root,
+      author_branch: git(root, ["branch", "--show-current"]),
+      author_base_commit: store.rebuild().baseline.commit,
+      failure_code: "GOAL_CODEX_USAGE_LIMIT_EXCEEDED",
+      repair_count: 0,
+      transition_ids: ["fixture-authoring", "fixture-retryable"],
+    } },
+  });
+  store.append({ event_id: "fixture-retryable-dry-run-stopped", type: "scheduling_stopped", payload: {} });
+  const eventsPath = path.join(stateDir, "events.jsonl");
+  const eventsBefore = readFileSync(eventsPath, "utf8");
+  try {
+    const result = await dispatchGoalAuthors({
+      config,
+      stateDir,
+      slots: 1,
+      resumeStopped: true,
+      dryRun: true,
+      adapter: {},
+    });
+
+    assert.deepEqual(result.would_dispatch, ["cpc:3.0:41111"]);
+    assert.equal(result.state.stopped, true);
+    assert.equal(new GoalEventStore({ stateDir }).rebuild().tasks[0].state, "retryable_failure");
+    assert.equal(readFileSync(eventsPath, "utf8"), eventsBefore);
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+  }
+});
+
 test("dispatch advances past a legacy transition cycle whose persisted counter is stale", async () => {
   const { root, stateDir, config } = fixture();
   const store = new GoalEventStore({ stateDir });
