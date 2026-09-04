@@ -504,3 +504,45 @@ process.stdout.write(value);`);
     rmSync(stateDir, { recursive: true, force: true });
   }
 });
+
+test("short completion-marker writes are either unpublished or assembled in full", async () => {
+  const stateDir = mkdtempSync(path.join(tmpdir(), "goal-complete-short-write-"));
+  const lockPath = path.join(stateDir, "goal.lock");
+  const stale = deadLease("short-complete-write");
+  const staleBytes = Buffer.from(`${JSON.stringify(stale)}\n`);
+  try {
+    writeFileSync(lockPath, staleBytes);
+    const crashing = await spawnLockProcess(`import { withGoalLock } from ${JSON.stringify(lockModuleUrl)};
+let chunks = 0;
+withGoalLock(${JSON.stringify(stateDir)}, "partial-complete", () => "must not run", {
+  faultInjector(phase) {
+    if (phase === "before_retirement_complete_write_chunk") return { max_bytes: 1 };
+    if (phase === "after_retirement_complete_write_chunk" && ++chunks === 5) process.exit(86);
+  },
+});`);
+    assert.equal(crashing.code, 86);
+    const [retired] = readdirSync(path.join(stateDir, "lock-history"));
+    const retiredDir = path.join(stateDir, "lock-history", retired);
+    assert.equal(existsSync(path.join(retiredDir, "complete.json")), false);
+    const partialStages = readdirSync(retiredDir).filter((name) => name.startsWith(".complete-"));
+    assert.equal(partialStages.length, 1);
+    assert.equal(readFileSync(path.join(retiredDir, partialStages[0])).length, 5);
+
+    let recoveryWrites = 0;
+    assert.equal(withGoalLock(stateDir, "recover-short-complete", () => "entered", {
+      faultInjector(phase) {
+        if (phase === "before_retirement_complete_write_chunk") {
+          recoveryWrites += 1;
+          return { max_bytes: 1 };
+        }
+        return undefined;
+      },
+    }), "entered");
+    assert.ok(recoveryWrites > 1);
+    const expected = Buffer.from(`${JSON.stringify({ schema_version: 1, stale_lease_sha256: createHash("sha256").update(staleBytes).digest("hex") })}\n`);
+    assert.deepEqual(readFileSync(path.join(retiredDir, "complete.json")), expected);
+    assert.equal(existsSync(lockPath), false);
+  } finally {
+    rmSync(stateDir, { recursive: true, force: true });
+  }
+});

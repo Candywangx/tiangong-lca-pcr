@@ -99,9 +99,21 @@ function publishGoalLock({ stateDir, lockPath, lease, faultInjector }) {
   }
 }
 
-function writeAll(descriptor, bytes) {
+function writeAll(descriptor, bytes, { faultInjector = null, beforePhase = null, afterPhase = null } = {}) {
   let offset = 0;
-  while (offset < bytes.length) offset += writeSync(descriptor, bytes, offset, bytes.length - offset);
+  while (offset < bytes.length) {
+    const remaining = bytes.length - offset;
+    const instruction = beforePhase ? faultInjector(beforePhase, { offset, remaining }) : null;
+    const requested = Number.isSafeInteger(instruction?.max_bytes) && instruction.max_bytes > 0
+      ? Math.min(remaining, instruction.max_bytes)
+      : remaining;
+    const written = writeSync(descriptor, bytes, offset, requested);
+    if (!Number.isSafeInteger(written) || written <= 0 || written > requested) {
+      throw new GoalHarnessError("GOAL_LOCKED", "Filesystem made no progress while writing a lock artifact.", { offset, requested, written });
+    }
+    offset += written;
+    if (afterPhase) faultInjector(afterPhase, { offset, remaining: bytes.length - offset, written });
+  }
 }
 
 function removeOwnedStage(stagePath, owned) {
@@ -180,7 +192,7 @@ function completeStaleRetirement({ stateDir, lockPath, retiredDir, existing, fau
 
     const current = tryReadGoalLock(lockPath);
     if (current === null) {
-      publishRetirementComplete(retiredDir, existing.bytes);
+      publishRetirementComplete(retiredDir, existing.bytes, faultInjector);
       faultInjector("after_stale_retirement_completed", { lock_path: lockPath, retired_dir: retiredDir });
       return;
     }
@@ -190,7 +202,7 @@ function completeStaleRetirement({ stateDir, lockPath, retiredDir, existing, fau
     faultInjector("before_stale_lock_unlink", { lock_path: lockPath, retired_dir: retiredDir });
     const confirmed = tryReadGoalLock(lockPath);
     if (confirmed === null) {
-      publishRetirementComplete(retiredDir, existing.bytes);
+      publishRetirementComplete(retiredDir, existing.bytes, faultInjector);
       faultInjector("after_stale_retirement_completed", { lock_path: lockPath, retired_dir: retiredDir });
       return;
     }
@@ -202,7 +214,7 @@ function completeStaleRetirement({ stateDir, lockPath, retiredDir, existing, fau
     }
     fsyncDirectory(stateDir);
     faultInjector("after_stale_lock_unlinked", { lock_path: lockPath, retired_dir: retiredDir });
-    publishRetirementComplete(retiredDir, existing.bytes);
+    publishRetirementComplete(retiredDir, existing.bytes, faultInjector);
     faultInjector("after_stale_retirement_completed", { lock_path: lockPath, retired_dir: retiredDir });
   } catch (error) {
     if (error?.code === "ENOENT") throw lockedRace("Goal lock changed while stale-lock retirement was in progress.", lockPath, error);
@@ -315,7 +327,7 @@ function hasIncompleteRetirement(stateDir) {
   return false;
 }
 
-function publishRetirementComplete(retiredDir, staleBytes) {
+function publishRetirementComplete(retiredDir, staleBytes, faultInjector) {
   const completePath = path.join(retiredDir, "complete.json");
   const bytes = retirementCompleteBytes(staleBytes);
   if (existsSync(completePath)) {
@@ -326,7 +338,11 @@ function publishRetirementComplete(retiredDir, staleBytes) {
   let descriptor;
   try {
     descriptor = openSync(stagePath, fsConstants.O_WRONLY | fsConstants.O_CREAT | fsConstants.O_EXCL | fsConstants.O_NOFOLLOW, 0o600);
-    writeSync(descriptor, bytes);
+    writeAll(descriptor, bytes, {
+      faultInjector,
+      beforePhase: "before_retirement_complete_write_chunk",
+      afterPhase: "after_retirement_complete_write_chunk",
+    });
     fsyncSync(descriptor);
     closeSync(descriptor);
     descriptor = undefined;
