@@ -11,6 +11,14 @@ import { applyTaskTransition } from "./state-machine.mjs";
 import { ensureGoalWorktree } from "./worktrees.mjs";
 import { runCachedViewerBuild } from "./derived-cache.mjs";
 import { selectGoalRuntimeBaseCommit } from "./runtime-baseline.mjs";
+import {
+  commitRepositoryValidation,
+  listCommittedRepositoryValidations,
+  projectRepositoryValidation,
+  recoverRepositoryCoordinator,
+  reserveRepositoryCandidate,
+  selectRepositoryIntegrationHead,
+} from "./repository-coordinator.mjs";
 
 const MAPPING_RELATIONS = new Set(["exact", "broader", "narrower", "proxy"]);
 
@@ -68,7 +76,9 @@ function mappingEdgeIdentity(entry) {
 }
 
 export function selectIntegrationBaseCommit(state, { projectRoot = null } = {}) {
-  return selectGoalRuntimeBaseCommit(state, { projectRoot });
+  const goalBase = selectGoalRuntimeBaseCommit(state, { projectRoot });
+  if (!projectRoot) return goalBase;
+  return selectRepositoryIntegrationHead({ projectRoot, fallbackHead: goalBase });
 }
 
 export function materializeAuthorCommitTree({ worktreePath, authorCommit, allowedFiles }) {
@@ -114,6 +124,12 @@ export function prepareIntegrationWorkspace({ config, snapshot, baseCommit }) {
 export function integrateGoalSnapshot({ config, stateDir, snapshotId = null, allowPartial = false, dryRun = false, commandRunner = runCommand }) {
   return withGoalLock(stateDir, "integrate", () => {
     const store = new GoalEventStore({ stateDir });
+    if (!dryRun) {
+      recoverRepositoryCoordinator({ projectRoot: config.project_root, repairGoalProjections: false });
+      for (const record of listCommittedRepositoryValidations({ projectRoot: config.project_root })) {
+        if (record.goal_id === config.goal_id) projectRepositoryValidation({ goalStateDir: stateDir, record });
+      }
+    }
     let state = store.rebuild();
     let snapshot = selectSnapshot(state, snapshotId);
     if (!snapshot && allowPartial) {
@@ -158,7 +174,14 @@ export function integrateGoalSnapshot({ config, stateDir, snapshotId = null, all
       throw new GoalHarnessError("GOAL_MAPPING_DECIDER_REQUIRED", "integration.decided_by is required before accepted mapping publication.");
     }
 
-    const baseCommit = selectIntegrationBaseCommit(state, { projectRoot: config.project_root });
+    const goalBase = selectGoalRuntimeBaseCommit(state, { projectRoot: config.project_root });
+    const candidate = reserveRepositoryCandidate({
+      projectRoot: config.project_root,
+      goalId: config.goal_id,
+      snapshotId: snapshot.id,
+      fallbackHead: goalBase,
+    });
+    const baseCommit = candidate.observed_integration_head;
     const workspace = prepareIntegrationWorkspace({ config, snapshot, baseCommit });
     const { worktreePath, branch, integrationAttempt } = workspace;
 
@@ -168,6 +191,8 @@ export function integrateGoalSnapshot({ config, stateDir, snapshotId = null, all
       worktree_path: worktreePath,
       branch,
       base_commit: baseCommit,
+      repository_candidate_token: candidate.candidate_token,
+      observed_repository_head: candidate.observed_integration_head,
       integration_attempt: integrationAttempt,
       preserved_worktree_paths: workspace.preservedWorktreePaths,
       started_at: snapshot.started_at ?? new Date().toISOString(),
@@ -184,7 +209,7 @@ export function integrateGoalSnapshot({ config, stateDir, snapshotId = null, all
     }
 
     const headBefore = git(worktreePath, ["rev-parse", "HEAD"]);
-    if (!snapshot.integration_commit && headBefore === baseCommit && gitStatus(worktreePath).length === 0) {
+    if (headBefore === baseCommit && gitStatus(worktreePath).length === 0) {
       for (const selected of tasks) {
         materializeAuthorCommitTree({
           worktreePath,
@@ -217,7 +242,7 @@ export function integrateGoalSnapshot({ config, stateDir, snapshotId = null, all
     }
     const integrationCommit = git(worktreePath, ["rev-parse", "HEAD"]);
     const integratedFiles = gitZ(worktreePath, ["diff", "--name-only", "-z", baseCommit, integrationCommit, "--"]);
-    snapshot = {
+    const validationProjection = {
       ...snapshot,
       state: "validated",
       integration_commit: integrationCommit,
@@ -227,7 +252,28 @@ export function integrateGoalSnapshot({ config, stateDir, snapshotId = null, all
       command_results: commandResults,
       validated_at: new Date().toISOString(),
     };
-    store.append({ event_id: `${snapshot.id}-validated`, type: "snapshot_replaced", payload: { snapshot } });
+    try {
+      commitRepositoryValidation({
+        projectRoot: config.project_root,
+        candidateToken: candidate.candidate_token,
+        integrationCommit,
+        snapshotProjection: validationProjection,
+      });
+    } catch (error) {
+      snapshot = {
+        ...validationProjection,
+        state: "retryable_failure",
+        failure_code: error.code ?? "GOAL_REPOSITORY_VALIDATION_COMMIT_FAILED",
+        failure_message: error.message,
+      };
+      store.append({ event_id: `${snapshot.id}-repository-failure-${integrationAttempt}`, type: "snapshot_replaced", payload: { snapshot } });
+      throw error;
+    }
+    const validationRecord = listCommittedRepositoryValidations({ projectRoot: config.project_root })
+      .find((entry) => entry.candidate_token === candidate.candidate_token);
+    projectRepositoryValidation({ goalStateDir: stateDir, record: validationRecord });
+    state = store.rebuild();
+    snapshot = state.snapshots.find((entry) => entry.id === snapshot.id);
     for (const selected of tasks) {
       state = store.rebuild();
       let task = state.tasks.find((entry) => entry.id === selected.id);

@@ -14,6 +14,7 @@ import {
   prepareIntegrationWorkspace,
   selectIntegrationBaseCommit,
 } from "./integration.mjs";
+import { commitRepositoryValidation, reserveRepositoryCandidate } from "./repository-coordinator.mjs";
 
 function git(root, args) {
   return execFileSync("git", args, { cwd: root, encoding: "utf8", stdio: ["ignore", "pipe", "pipe"] }).trim();
@@ -116,6 +117,40 @@ test("integration selects the latest landed snapshot commit as its cumulative ba
     ...state,
     runtime_baseline: { commit: "e".repeat(40), base_commit: "d".repeat(40) },
   }), "e".repeat(40));
+});
+
+test("integration uses the accepted repository head across divergent Goal state", () => {
+  const root = mkdtempSync(path.join(tmpdir(), "tiangong-integration-global-head-"));
+  try {
+    git(root, ["init", "-q"]);
+    git(root, ["config", "user.name", "Goal Test"]);
+    git(root, ["config", "user.email", "goal@example.invalid"]);
+    writeFileSync(path.join(root, "tracked.txt"), "baseline\n");
+    git(root, ["add", "."]);
+    git(root, ["commit", "-qm", "baseline"]);
+    const baseline = git(root, ["rev-parse", "HEAD"]);
+    const candidate = reserveRepositoryCandidate({
+      projectRoot: root,
+      goalId: "other-goal",
+      snapshotId: "snapshot-other",
+      fallbackHead: baseline,
+    });
+    const tree = git(root, ["rev-parse", `${baseline}^{tree}`]);
+    const accepted = execFileSync("git", ["commit-tree", tree, "-p", baseline], {
+      cwd: root,
+      input: "accepted other Goal\n",
+      encoding: "utf8",
+    }).trim();
+    commitRepositoryValidation({ projectRoot: root, candidateToken: candidate.candidate_token, integrationCommit: accepted });
+
+    const localGoalState = {
+      baseline: { commit: baseline },
+      snapshots: [{ id: "local-old", state: "landed", integration_commit: baseline }],
+    };
+    assert.equal(selectIntegrationBaseCommit(localGoalState, { projectRoot: root }), accepted);
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+  }
 });
 
 test("integration materializes the complete author tree for a retry commit chain", () => {

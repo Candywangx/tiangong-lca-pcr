@@ -121,6 +121,12 @@ function reduceEvent(state, event) {
     next.snapshots = [...(next.snapshots ?? []), event.payload];
   } else if (event.type === "snapshot_replaced") {
     next.snapshots = (next.snapshots ?? []).map((snapshot) => snapshot.id === event.payload.snapshot.id ? event.payload.snapshot : snapshot);
+  } else if (event.type === "repository_validation_projected") {
+    next.snapshots = (next.snapshots ?? []).map((snapshot) => snapshot.id === event.payload.snapshot_id
+      ? { ...snapshot, ...event.payload.projection }
+      : snapshot);
+    const projectedTasks = new Map((event.payload.tasks ?? []).map((task) => [task.id, task]));
+    next.tasks = (next.tasks ?? []).map((task) => projectedTasks.get(task.id) ?? task);
   } else if (event.type === "task_replaced") {
     next.tasks = (next.tasks ?? []).map((task) => task.id === event.payload.task.id ? event.payload.task : task);
   } else if (event.type === "verified_common_uuids_updated") {
