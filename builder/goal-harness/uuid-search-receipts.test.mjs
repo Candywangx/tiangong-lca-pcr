@@ -169,6 +169,15 @@ test("hybrid query writes an immutable result receipt and final candidate decisi
     assert.equal(audit[0].result_sha256, query.receipt.result_sha256);
     assert.equal(audit[0].candidate_decisions[0].direct_read.state_code, 100);
 
+    const retriedTaskAudit = auditHybridSearchReceipts({
+      report,
+      stateDir,
+      task: { id: "task-1", cpc_code: "41111", attempt: 2 },
+      verifiedUuidReads: [verifiedUuidRead],
+    });
+    assert.equal(retriedTaskAudit[0].scope, "task_retry_reuse");
+    assert.equal(retriedTaskAudit[0].source_task_id, "task-1");
+
     const reusableReport = {
       hybrid_search_receipt_ids: ["receipt-1"],
       uuid_audits: [{ uuid: UUID_A, hybrid_search_receipt_id: "receipt-1" }],

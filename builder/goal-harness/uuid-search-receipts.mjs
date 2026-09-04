@@ -257,13 +257,20 @@ export function auditHybridSearchReceipts({ report, stateDir, task, verifiedUuid
       return auditOneReceipt({ stateDir, task, receiptId });
     } catch (error) {
       const adopted = adoptedByReceipt.get(receiptId) ?? [];
-      if (error.code !== "GOAL_HYBRID_SEARCH_RECEIPT_MISSING" || taskBoundReceiptIds.has(receiptId) || adopted.length === 0) throw error;
+      if (error.code !== "GOAL_HYBRID_SEARCH_RECEIPT_MISSING") throw error;
+      const paths = findCompleteReceiptPaths({ stateDir, receiptId });
+      try {
+        const audited = auditOneReceipt({ stateDir, task, receiptId, paths });
+        return { ...audited, scope: "task_retry_reuse", source_task_id: audited.task_id };
+      } catch (retryError) {
+        if (retryError.code !== "GOAL_HYBRID_SEARCH_RECEIPT_MISMATCH") throw retryError;
+        if (taskBoundReceiptIds.has(receiptId) || adopted.length === 0) throw error;
+      }
       const reusable = adopted.every((entry) => isReusableCommonUuidAudit({
         stateDir,
         entry: { uuid: entry.uuid, hybrid_search_receipt_id: receiptId },
       }));
       if (!reusable) throw error;
-      const paths = findCompleteReceiptPaths({ stateDir, receiptId });
       const audited = auditOneReceipt({ stateDir, task, receiptId, paths, allowGoalCacheReuse: true });
       return { ...audited, scope: "goal_cache_reuse", source_task_id: audited.task_id };
     }
