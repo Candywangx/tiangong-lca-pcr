@@ -116,3 +116,30 @@ test("CLI provides help and stable JSON failures with clean stdout", () => {
   assert.equal(error.error.code, "GOAL_COMMAND_UNKNOWN");
   assert.equal(typeof error.next_action, "string");
 });
+
+test("resume human output is a bounded summary and does not serialize the full Goal state", async () => {
+  const module = await import("./goal.mjs");
+  assert.equal(typeof module.renderHuman, "function");
+  const output = module.renderHuman({
+    command: "resume",
+    dry_run: false,
+    next_action: "Run goal:status",
+    result: {
+      dispatched: [{ cpc_code: "46910", state: "authoring" }],
+      harvest: {
+        valid_results: [{ cpc_code: "46532" }],
+        failures: [],
+        snapshot: null,
+      },
+      state: { deliberately_large_projection: "x".repeat(100_000) },
+    },
+  });
+
+  assert.match(output, /Goal resume/u);
+  assert.match(output, /1 valid/u);
+  assert.match(output, /1 dispatched/u);
+  assert.match(output, /46532/u);
+  assert.match(output, /46910/u);
+  assert.doesNotMatch(output, /deliberately_large_projection/u);
+  assert.ok(Buffer.byteLength(output) < 2_000, `expected bounded output, received ${Buffer.byteLength(output)} bytes`);
+});

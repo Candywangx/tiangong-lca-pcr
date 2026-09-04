@@ -78,7 +78,7 @@ function requiredValue(argv, index, option) {
   return value;
 }
 
-function renderHuman(envelope) {
+export function renderHuman(envelope) {
   const result = envelope.result;
   if (envelope.command === "plan") {
     const summary = result.plan.summary;
@@ -92,6 +92,14 @@ function renderHuman(envelope) {
   }
   if (envelope.command === "uuid-audit") {
     return `Goal UUID audit: ${result.affected.length} affected; ${result.requeued.length} requeued${result.applied ? " (applied)" : " (dry run)"}.\nNext: ${envelope.next_action}\n`;
+  }
+  if (envelope.command === "start" || envelope.command === "resume") {
+    const validResults = result.harvest?.valid_results ?? [];
+    const failures = result.harvest?.failures ?? [];
+    const dispatched = result.dispatched ?? [];
+    const validCodes = validResults.map((entry) => entry.cpc_code).filter(Boolean).join(", ") || "none";
+    const dispatchedCodes = dispatched.map((entry) => entry.cpc_code).filter(Boolean).join(", ") || "none";
+    return `Goal ${envelope.command}: ${validResults.length} valid, ${failures.length} failed, ${dispatched.length} dispatched.\nValid CPCs: ${validCodes}\nDispatched CPCs: ${dispatchedCodes}\nNext: ${envelope.next_action}\n`;
   }
   return `${JSON.stringify(result, null, 2)}\nNext: ${envelope.next_action}\n`;
 }
