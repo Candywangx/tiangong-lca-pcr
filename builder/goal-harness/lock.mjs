@@ -30,47 +30,90 @@ function acquireGoalLock(stateDir, operation, { faultInjector }) {
   const lease = Buffer.from(`${JSON.stringify(owner)}\n`, "utf8");
   for (let attempt = 0; attempt < 16; attempt += 1) {
     recoverIncompleteRetirements({ stateDir, faultInjector });
-    let descriptor;
-    let published = false;
+    let published;
     try {
-      descriptor = openSync(lockPath, fsConstants.O_WRONLY | fsConstants.O_CREAT | fsConstants.O_EXCL | fsConstants.O_NOFOLLOW, 0o600);
-      writeSync(descriptor, lease);
-      fsyncSync(descriptor);
-      fsyncDirectory(stateDir);
-      published = true;
-      faultInjector("after_goal_lock_published", { lock_path: lockPath });
-      if (hasIncompleteRetirement(stateDir)) {
-        closeSync(descriptor);
-        descriptor = undefined;
-        releaseGoalLock(lockPath, lease);
-        published = false;
-        continue;
-      }
-      return { lockPath, lease };
+      published = publishGoalLock({ stateDir, lockPath, lease, faultInjector });
     } catch (error) {
-      if (published) {
-        if (descriptor !== undefined) closeSync(descriptor);
-        descriptor = undefined;
-        releaseGoalLock(lockPath, lease);
-        published = false;
-      }
       if (error instanceof GoalHarnessError) throw error;
-      if (error?.code !== "EEXIST" && !existsSync(lockPath)) {
-        throw lockedRace("Goal lock changed while it was being acquired.", lockPath, error);
-      }
+      throw lockedRace("Goal lock changed while it was being acquired.", lockPath, error);
+    }
+    if (!published) {
       const existing = readGoalLock(lockPath);
       if (processIsDefinitelyGone(existing.holder.pid)) {
         retireDeadLock({ stateDir, lockPath, existing, faultInjector });
         continue;
       }
       throw new GoalHarnessError("GOAL_LOCKED", `Goal is locked by another operation: ${operation}`, { lock_path: lockPath, holder: existing.holder });
-    } finally {
-      if (descriptor !== undefined) closeSync(descriptor);
+    }
+    try {
+      faultInjector("after_goal_lock_published", { lock_path: lockPath });
+      if (hasIncompleteRetirement(stateDir)) {
+        releaseGoalLock(lockPath, lease);
+        continue;
+      }
+      return { lockPath, lease };
+    } catch (error) {
+      releaseGoalLock(lockPath, lease);
+      throw error;
     }
   }
   let holder = null;
   try { holder = readGoalLock(lockPath).holder; } catch (error) { if (!isMissingRace(error)) throw error; }
   throw new GoalHarnessError("GOAL_LOCKED", `Goal is locked by another operation: ${operation}`, { lock_path: lockPath, holder });
+}
+
+function publishGoalLock({ stateDir, lockPath, lease, faultInjector }) {
+  const stagePath = path.join(stateDir, `.goal-lock-acquire-${randomUUID()}.tmp`);
+  let descriptor;
+  let linked = false;
+  try {
+    descriptor = openSync(stagePath, fsConstants.O_WRONLY | fsConstants.O_CREAT | fsConstants.O_EXCL | fsConstants.O_NOFOLLOW, 0o600);
+    faultInjector("before_goal_lock_stage_write", { lock_path: lockPath, stage_path: stagePath });
+    writeAll(descriptor, lease);
+    faultInjector("after_goal_lock_stage_write", { lock_path: lockPath, stage_path: stagePath });
+    faultInjector("before_goal_lock_stage_fsync", { lock_path: lockPath, stage_path: stagePath });
+    fsyncSync(descriptor);
+    faultInjector("after_goal_lock_stage_fsync", { lock_path: lockPath, stage_path: stagePath });
+    fsyncDirectory(stateDir);
+    faultInjector("before_goal_lock_publish_link", { lock_path: lockPath, stage_path: stagePath });
+    try {
+      linkSync(stagePath, lockPath);
+      linked = true;
+    } catch (error) {
+      if (error?.code === "EEXIST") return false;
+      throw error;
+    }
+    faultInjector("after_goal_lock_publish_link", { lock_path: lockPath, stage_path: stagePath });
+    fsyncDirectory(stateDir);
+    return true;
+  } catch (error) {
+    if (linked) releaseGoalLock(lockPath, lease);
+    throw error;
+  } finally {
+    if (descriptor !== undefined) {
+      const owned = fstatSync(descriptor);
+      closeSync(descriptor);
+      descriptor = undefined;
+      removeOwnedStage(stagePath, owned);
+    }
+  }
+}
+
+function writeAll(descriptor, bytes) {
+  let offset = 0;
+  while (offset < bytes.length) offset += writeSync(descriptor, bytes, offset, bytes.length - offset);
+}
+
+function removeOwnedStage(stagePath, owned) {
+  const current = tryReadPathSnapshot(stagePath, "goal-lock staging file");
+  if (current === null) return;
+  if (current.stat.dev !== owned.dev || current.stat.ino !== owned.ino) {
+    throw new GoalHarnessError("GOAL_LOCKED", "Goal-lock staging file was replaced before cleanup.", { stage_path: stagePath });
+  }
+  try { unlinkSync(stagePath); } catch (error) {
+    if (error?.code !== "ENOENT") throw lockedRace("Cannot remove goal-lock staging file.", stagePath, error);
+  }
+  fsyncDirectory(path.dirname(stagePath));
 }
 
 function processIsDefinitelyGone(pid) {

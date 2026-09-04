@@ -425,3 +425,82 @@ test("a newly published lock is withdrawn when a retirement barrier appears conc
     rmSync(stateDir, { recursive: true, force: true });
   }
 });
+
+test("goal-lock publication crashes never expose an empty or truncated authoritative lease", async () => {
+  const phases = [
+    "before_goal_lock_stage_write",
+    "after_goal_lock_stage_write",
+    "before_goal_lock_stage_fsync",
+    "after_goal_lock_stage_fsync",
+    "before_goal_lock_publish_link",
+    "after_goal_lock_publish_link",
+  ];
+  for (const phase of phases) {
+    const stateDir = mkdtempSync(path.join(tmpdir(), `goal-lock-publish-${phase}-`));
+    const lockPath = path.join(stateDir, "goal.lock");
+    try {
+      const crashing = await spawnLockProcess(`import { withGoalLock } from ${JSON.stringify(lockModuleUrl)};
+withGoalLock(${JSON.stringify(stateDir)}, "publish-crash", () => "must not run", {
+  faultInjector(currentPhase) {
+    if (currentPhase === ${JSON.stringify(phase)}) process.exit(86);
+  },
+});`);
+      assert.equal(crashing.code, 86, `${phase} was not reached`);
+
+      if (existsSync(lockPath)) {
+        const bytes = readFileSync(lockPath);
+        assert.ok(bytes.length > 0, phase);
+        const owner = JSON.parse(bytes.toString("utf8"));
+        assert.equal(owner.schema_version, 1, phase);
+        assert.equal(owner.operation, "publish-crash", phase);
+        assert.equal(typeof owner.token, "string", phase);
+        assert.ok(owner.token.length > 0, phase);
+      }
+      assert.ok(readdirSync(stateDir).some((name) => name.startsWith(".goal-lock-acquire-")), `${phase} did not retain crash evidence`);
+
+      const results = await Promise.all(Array.from({ length: 6 }, () => runContender(stateDir)));
+      assert.equal(results.filter((entry) => entry.ok).length, 1, phase);
+      assert.ok(results.filter((entry) => !entry.ok).every((entry) => entry.code === "GOAL_LOCKED"), phase);
+      assert.equal(existsSync(lockPath), false, phase);
+    } finally {
+      rmSync(stateDir, { recursive: true, force: true });
+    }
+  }
+});
+
+test("normal goal-lock publication removes its owned staging file and excludes a live lease", async () => {
+  const stateDir = mkdtempSync(path.join(tmpdir(), "goal-lock-stage-clean-"));
+  try {
+    assert.equal(withGoalLock(stateDir, "normal", () => "entered"), "entered");
+    assert.deepEqual(readdirSync(stateDir).filter((name) => name.startsWith(".goal-lock-acquire-")), []);
+
+    const markerPath = path.join(stateDir, "holder-entered");
+    const holder = spawnLockProcess(`import { writeFileSync } from "node:fs";
+import { withGoalLock } from ${JSON.stringify(lockModuleUrl)};
+const value = withGoalLock(${JSON.stringify(stateDir)}, "holder", () => {
+  writeFileSync(${JSON.stringify(markerPath)}, "held");
+  process.stdout.write("held\\n");
+  Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, 500);
+  return "released";
+});
+process.stdout.write(value);`);
+    await new Promise((resolve, reject) => {
+      const deadline = Date.now() + 2_000;
+      const poll = () => {
+        if (existsSync(markerPath)) return resolve();
+        if (Date.now() >= deadline) return reject(new Error("live holder did not enter"));
+        setTimeout(poll, 10);
+      };
+      poll();
+    });
+    assert.throws(
+      () => withGoalLock(stateDir, "contender", () => "must not enter"),
+      (error) => error.code === "GOAL_LOCKED",
+    );
+    const held = await holder;
+    assert.equal(held.code, 0);
+    assert.equal(held.stdout, "held\nreleased");
+  } finally {
+    rmSync(stateDir, { recursive: true, force: true });
+  }
+});
