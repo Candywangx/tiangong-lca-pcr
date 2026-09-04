@@ -777,6 +777,64 @@ test("failed repair continuation replaces only the thread and preserves the safe
   }
 });
 
+test("failed repair continuation never falls back to the same thread when its worktree is unsafe", async () => {
+  const { root, stateDir, config } = fixture();
+  config.retry_policy = { max_attempts: 3, max_repairs: 2 };
+  const first = await dispatchGoalAuthors({
+    config,
+    stateDir,
+    slots: 1,
+    adapter: { async createAuthorTask() { return { thread_id: "thread-old", turn_id: "turn-old" }; } },
+  });
+  const oldWorktree = first.dispatched[0].worktree_path;
+  const unauthorized = path.join(oldWorktree, "unsafe-repair-artifact.txt");
+  writeFileSync(unauthorized, "preserve me\n");
+  const store = new GoalEventStore({ stateDir });
+  const active = store.rebuild().tasks[0];
+  store.append({
+    event_id: "fixture-unsafe-repair-resume-failed",
+    type: "task_replaced",
+    payload: { task: {
+      ...active,
+      state: "retryable_failure",
+      failure_code: "GOAL_REPAIR_RESUME_FAILED",
+      repair_count: 1,
+      repair_resume_count: 1,
+      transition_ids: [...active.transition_ids, "repair-resume-failed"],
+    } },
+  });
+  let repairStarts = 0;
+  let replacements = 0;
+  try {
+    const result = await dispatchGoalAuthors({
+      config,
+      stateDir,
+      slots: 1,
+      resumeStopped: true,
+      adapter: {
+        async startRepairTurn() {
+          repairStarts += 1;
+          return { thread_id: "thread-old", turn_id: "turn-same-thread" };
+        },
+        async createAuthorTask() {
+          replacements += 1;
+          return { thread_id: "thread-replacement", turn_id: "turn-replacement" };
+        },
+      },
+    });
+    const replacement = result.state.tasks[0];
+    assert.equal(repairStarts, 0);
+    assert.equal(replacements, 1);
+    assert.notEqual(replacement.worktree_path, oldWorktree);
+    assert.equal(replacement.thread_id, "thread-replacement");
+    assert.deepEqual(replacement.previous_thread_ids, ["thread-old"]);
+    assert.equal(replacement.attempt, 2);
+    assert.equal(readFileSync(unauthorized, "utf8"), "preserve me\n");
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+  }
+});
+
 test("repair-limit replacement reuses a worktree only when its dirty paths remain authorized", async () => {
   const { root, stateDir, config } = fixture();
   config.retry_policy = { max_attempts: 3, max_repairs: 2 };

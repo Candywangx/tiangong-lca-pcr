@@ -52,9 +52,11 @@ export async function dispatchGoalAuthors({ config, stateDir, slots = config.aut
           store.append({ event_id: `${failed.id}-turn-${failed.turn_id}-dispatch-recovered-recorded`, type: "task_replaced", payload: { task } });
           continue;
         }
-        const replaceThreadInPlace = new Set(["GOAL_REPAIR_RESUME_FAILED", "GOAL_REPAIR_LIMIT_REACHED"]).has(failed.failure_code)
+        const requiresThreadReplacement = new Set(["GOAL_REPAIR_RESUME_FAILED", "GOAL_REPAIR_LIMIT_REACHED"]).has(failed.failure_code);
+        const replaceThreadInPlace = requiresThreadReplacement
           && canReuseAuthorizedAuthorWorktree({ config, task: failed, baselineCommit: state.baseline.commit });
-        const repairInPlace = Boolean(failed.thread_id && failed.worktree_path && (failed.repair_count ?? 0) < (config.retry_policy?.max_repairs ?? 2));
+        const repairInPlace = !requiresThreadReplacement
+          && Boolean(failed.thread_id && failed.worktree_path && (failed.repair_count ?? 0) < (config.retry_policy?.max_repairs ?? 2));
         const nextCycle = nextDispatchCycle(failed);
         let task = applyTaskTransition(failed, {
           transition_id: `${authorIdentity(config.goal_id, failed.cpc_code, failed.attempt ?? 1, failed.uuid_enrichment_generation)}-${replaceThreadInPlace ? "replace-thread" : (repairInPlace ? "repair" : "requeue")}-${nextCycle}`,
@@ -79,7 +81,14 @@ export async function dispatchGoalAuthors({ config, stateDir, slots = config.aut
             reason: "Continue the preserved repair worktree after the original visible thread and its one continuation both became unrecoverable.",
           };
         } else if (!repairInPlace && failed.thread_id) {
-          task = { ...task, worktree_path: null, author_branch: null, thread_id: null, turn_id: null };
+          task = {
+            ...task,
+            previous_thread_ids: [...new Set([...(failed.previous_thread_ids ?? []), failed.thread_id])],
+            worktree_path: null,
+            author_branch: null,
+            thread_id: null,
+            turn_id: null,
+          };
         }
         store.append({ event_id: `${task.id}-requeued-${task.transition_ids.length}`, type: "task_replaced", payload: { task } });
       }
