@@ -165,6 +165,45 @@ test("catalog entries retain list metadata, classification text, and search_text
   } finally { rmSync(root, { recursive: true, force: true }); }
 });
 
+test("catalog readiness is derived from guidance or must exactly agree with it", () => {
+  const { root, store } = fixtureStore();
+  try {
+    const derived = store.publish(snapshotInput());
+    assert.ok(derived.manifestRef);
+    assert.throws(() => store.publish(snapshotInput({
+      snapshotId: "snapshot-002", sequence: 2,
+      pcrEntries: snapshotInput().pcrEntries.map((entry) => entry.id === "pcr.agriculture.wheat-seed"
+        ? { ...entry, readiness: { ...viewerReadiness(), status: "unavailable" } }
+        : entry),
+    })), /readiness.*guidance|guidance.*readiness/u);
+  } finally { rmSync(root, { recursive: true, force: true }); }
+});
+
+test("publication binds coverage targets and object provenance to exact source inputs", () => {
+  const { root, store } = fixtureStore();
+  try {
+    assert.throws(() => store.publish(snapshotInput({ coverageEntries: [{ coordinate: { system: "cpc", version: "3.0" }, code: "01111", pcr_id: "pcr.unknown" }] })), /coverage.*PCR|PCR.*coverage/iu);
+    assert.throws(() => store.publish(snapshotInput({ coverageEntries: [{ coordinate: { system: "hs", version: "2022" }, code: "01111", pcr_id: null }] })), /coverage.*source|source.*coverage/iu);
+    const first = store.publish(snapshotInput());
+    const firstManifest = store.readManifest(first.manifestRef);
+    const second = store.publish(snapshotInput({ snapshotId: "snapshot-002", sequence: 2, source: { ...snapshotInput().source, catalog: sha256Ref("catalog-v2\n") } }));
+    const secondManifest = store.readManifest(second.manifestRef);
+    assert.notEqual(secondManifest.refs.pcr_entries["pcr.agriculture.wheat-seed"], firstManifest.refs.pcr_entries["pcr.agriculture.wheat-seed"]);
+  } finally { rmSync(root, { recursive: true, force: true }); }
+});
+
+test("readObject rejects digest-addressed JSON that is not canonical bytes", () => {
+  const { root, store } = fixtureStore();
+  try {
+    const value = { schema_version: 1, object_kind: "alias_entry", identity: objectIdentity(), entry: { id: "pcr.legacy", locator: "cpc:3.0:01111" } };
+    const noncanonical = Buffer.from(`${JSON.stringify(value, null, 2)}\n`, "utf8");
+    const ref = sha256Ref(noncanonical);
+    store.probe();
+    writeFileSync(path.join(root, "objects", `${ref.slice(7)}.json`), noncanonical);
+    assert.throws(() => store.readObject(ref), /canonical/u);
+  } finally { rmSync(root, { recursive: true, force: true }); }
+});
+
 test("direct Ajv validation rejects generation metadata anywhere in guidance", () => {
   const schemas = createViewerSnapshotSchemaRegistry();
   const base = { schema_version: 1, object_kind: "pcr_detail", identity: objectIdentity(), entry: { id: "pcr.a", markdown: { "en-US": null, "zh-CN": null }, guidance: viewerGuidance() } };
@@ -453,6 +492,34 @@ test("semantic manifest validation rejects mismatched keyed detail references", 
   } finally {
     rmSync(root, { recursive: true, force: true });
   }
+});
+
+test("manifest validation rejects an alias shard that diverges from alias entry refs", () => {
+  const { root, store } = fixtureStore();
+  try {
+    const published = store.publish(snapshotInput());
+    const manifest = store.readManifest(published.manifestRef);
+    const aliasId = "pcr.legacy.wheat";
+    const changedAliasRef = store.writeObject({
+      ...store.readObject(manifest.refs.alias_entries[aliasId]),
+      entry: { id: aliasId, locator: "cpc:3.0:99999" },
+    });
+    const [prefix, shardRef] = Object.entries(manifest.refs.alias_shards)[0];
+    const alteredShard = store.writeObject({
+      ...store.readObject(shardRef),
+      entry: { prefix, entries: [{ id: aliasId, object_ref: changedAliasRef }] },
+    });
+    const altered = structuredClone(manifest);
+    altered.refs.alias_shards[prefix] = alteredShard;
+    altered.refs.alias_root = store.writeObject({
+      ...store.readObject(manifest.refs.alias_root),
+      entry: { shards: altered.refs.alias_shards, entries: altered.refs.alias_entries },
+    });
+    const bytes = canonicalJson(altered);
+    const ref = sha256Ref(bytes);
+    writeFileSync(path.join(root, "manifests", `${ref.slice(7)}.json`), bytes);
+    assert.throws(() => store.readManifest(ref), /alias_shard|prefix membership/u);
+  } finally { rmSync(root, { recursive: true, force: true }); }
 });
 
 test("a live owner-token lock rejects a concurrent publisher and post-commit source substitution stays journaled", () => {

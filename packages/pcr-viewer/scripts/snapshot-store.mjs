@@ -122,25 +122,49 @@ export class ViewerSnapshotStore {
   }
 
   readObject(ref) {
+    return this.#readObject(ref, null);
+  }
+
+  #readObject(ref, cache) {
+    if (cache?.objects.has(ref)) return cache.objects.get(ref);
     const bytes = this.#readImmutable(this.path("objects", `${refDigest(ref)}.json`), ref, "object");
     const value = parseCanonicalJson(bytes, "viewer object");
+    if (!bytes.equals(canonicalBytes(value))) {
+      throw new ViewerSnapshotStoreError("VIEWER_OBJECT_NONCANONICAL", "Viewer object bytes are not canonical compact JSON.");
+    }
     this.schemas.assert("viewer-object", value);
     this.#assertObjectSemantics(value);
+    cache?.objects.set(ref, value);
     return value;
   }
 
   readManifest(ref) {
+    return this.#readManifest(ref, this.#readCache(), true);
+  }
+
+  #readManifest(ref, cache, validatePredecessor) {
+    if (cache.manifests.has(ref)) return cache.manifests.get(ref);
     const bytes = this.#readImmutable(this.path("manifests", `${refDigest(ref)}.json`), ref, "manifest");
     const manifest = parseCanonicalJson(bytes, "viewer manifest");
     this.schemas.assert("viewer-snapshot-manifest", manifest);
-    this.#validateManifestObjects(manifest);
-    if (this.readObject(manifest.capture.ui_bundle_ref).object_kind !== "ui_bundle") {
+    cache.manifests.set(ref, manifest);
+    try {
+      this.#validateManifestObjects(manifest, cache, validatePredecessor);
+    } catch (error) {
+      cache.manifests.delete(ref);
+      throw error;
+    }
+    if (this.#readObject(manifest.capture.ui_bundle_ref, cache).object_kind !== "ui_bundle") {
       throw new ViewerSnapshotStoreError("VIEWER_UI_BUNDLE_MISSING", "Manifest references an unavailable retained UI bundle.");
     }
     return manifest;
   }
 
   readHistory() {
+    return this.#readHistory(this.#readCache());
+  }
+
+  #readHistory(cache) {
     const historyPath = this.path("history-head.json");
     if (!existsRegular(historyPath, "history head")) return { head: null, entries: [] };
     const head = parseCanonicalJson(readSafeFile(historyPath, "history head"), "viewer history head");
@@ -151,7 +175,7 @@ export class ViewerSnapshotStore {
     while (pageRef) {
       if (seen.has(pageRef)) throw new ViewerSnapshotStoreError("VIEWER_HISTORY_CORRUPT", "Viewer history pages must not cycle.");
       seen.add(pageRef);
-      const page = this.readObject(pageRef);
+      const page = this.#readObject(pageRef, cache);
       if (page.object_kind !== "history_page" || !Array.isArray(page.entry.entries) || page.entry.entries.length === 0 || page.entry.entries.length > HISTORY_PAGE_MAX_ENTRIES) {
         throw new ViewerSnapshotStoreError("VIEWER_HISTORY_CORRUPT", "Viewer history page is invalid or exceeds its fixed bound.");
       }
@@ -167,7 +191,7 @@ export class ViewerSnapshotStore {
       if (entry.sequence !== previousSequence + 1) {
         throw new ViewerSnapshotStoreError("VIEWER_HISTORY_CORRUPT", "Viewer history sequences must be contiguous and ordered.");
       }
-      const manifest = this.readManifest(entry.manifest_ref);
+      const manifest = this.#readManifest(entry.manifest_ref, cache, false);
       if (manifest.sequence !== entry.sequence) {
         throw new ViewerSnapshotStoreError("VIEWER_HISTORY_CORRUPT", `History sequence ${entry.sequence} does not match its manifest.`);
       }
@@ -197,19 +221,23 @@ export class ViewerSnapshotStore {
   }
 
   readActive() {
+    return this.#readActive(this.#readCache(), null);
+  }
+
+  #readActive(cache, retainedHistory) {
     const active = parseCanonicalJson(readSafeFile(this.path("active.json"), "active pointer"), "viewer active pointer");
     this.schemas.assert("viewer-active", active);
-    const manifest = this.readManifest(active.manifest_ref);
+    const manifest = this.#readManifest(active.manifest_ref, cache, false);
     if (active.snapshot_hash !== active.manifest_ref || active.snapshot_id !== manifest.snapshot_id || active.ui_bundle_ref !== manifest.capture.ui_bundle_ref) {
       throw new ViewerSnapshotStoreError("VIEWER_ACTIVE_CORRUPT", "Active snapshot identity does not match its manifest.");
     }
-    if (this.readObject(active.ui_bundle_ref).object_kind !== "ui_bundle") {
+    if (this.#readObject(active.ui_bundle_ref, cache).object_kind !== "ui_bundle") {
       throw new ViewerSnapshotStoreError("VIEWER_UI_BUNDLE_MISSING", "Active snapshot references an unavailable retained UI bundle.");
     }
     if (manifest.sequence !== active.sequence) {
       throw new ViewerSnapshotStoreError("VIEWER_ACTIVE_CORRUPT", "Active pointer sequence does not match its manifest.");
     }
-    const history = this.readHistory();
+    const history = retainedHistory ?? this.#readHistory(cache);
     const entry = history.entries.at(-1);
     if (!entry || entry.manifest_ref !== active.manifest_ref || entry.sequence !== active.sequence) {
       throw new ViewerSnapshotStoreError("VIEWER_ACTIVE_HISTORY_MISMATCH", "Active pointer must be the last permanently retained history entry.");
@@ -249,24 +277,29 @@ export class ViewerSnapshotStore {
     for (const pcrId of Object.keys(normalized.source.release_revision_markers)) {
       if (!normalized.pcrEntries.some((entry) => entry.id === pcrId)) throw new ViewerSnapshotStoreError("VIEWER_PCR_MARKER_UNKNOWN", `PCR release/revision marker has no matching current PCR entry: ${pcrId}.`);
     }
+    const lineage = this.#deriveLineage(normalized.pcrEntries, previous.manifest);
+    this.#validateCoverageInputs(normalized);
 
-    const identity = this.#objectIdentity(normalized);
-    const catalogIdentity = this.#objectIdentity(normalized);
-    const aliasIdentity = this.#objectIdentity(normalized);
-    const coverageIdentity = this.#objectIdentity(normalized);
-    const pcrEntries = this.#writeEntries(normalized.pcrEntries, "pcr_detail", identity, normalized.source.release_revision_markers);
+    const pcrIdentity = this.#objectIdentity(normalized, { catalog: normalized.source.catalog });
+    const catalogIdentity = this.#objectIdentity(normalized, { catalog: normalized.source.catalog });
+    const aliasIdentity = this.#objectIdentity(normalized, { aliases: normalized.source.aliases });
+    const coverageIdentity = this.#objectIdentity(normalized, { coverage: normalized.source.coverage });
+    const historyIdentity = this.#objectIdentity(normalized, { source: normalized.source, capture: normalized.capture });
+    const uiIdentity = this.#objectIdentity(normalized, { ui_bundle_ref: normalized.capture.ui_bundle_ref });
+    const sourceRefForCoordinate = new Map(normalized.source.coverage.map((source) => [`${source.coordinate.system}:${source.coordinate.version}`, source.ref]));
+    const coverageIdentityFor = (coordinate) => this.#objectIdentity(normalized, { coverage: { coordinate, ref: sourceRefForCoordinate.get(`${coordinate.system}:${coordinate.version}`) } });
+    const pcrEntries = this.#writeEntries(normalized.pcrEntries, "pcr_detail", pcrIdentity, normalized.source.release_revision_markers);
     const catalogEntries = this.#writeCatalogEntries(normalized.pcrEntries, catalogIdentity);
     const aliasEntries = this.#writeEntries(normalized.aliasEntries, "alias_entry", aliasIdentity);
-    const coverageEntries = this.#writeCoverageEntries(normalized.coverageEntries, coverageIdentity);
+    const coverageEntries = this.#writeCoverageEntries(normalized.coverageEntries, coverageIdentityFor);
     const catalogShards = this.#writePrefixShards(catalogEntries, "catalog_shard", (id) => twoCharacterPrefix(id), catalogIdentity);
     const aliasShards = this.#writePrefixShards(aliasEntries, "alias_shard", (id) => twoCharacterPrefix(id), aliasIdentity);
-    const coverageShards = this.#writeCoverageShards(normalized.coverageEntries, coverageEntries, coverageIdentity);
+    const coverageShards = this.#writeCoverageShards(normalized.coverageEntries, coverageEntries, coverageIdentityFor);
     const catalogRoot = this.#writeObject({ schema_version: 1, object_kind: "catalog_root", identity: catalogIdentity, entry: { shards: catalogShards, details: pcrEntries } });
     const aliasRoot = this.#writeObject({ schema_version: 1, object_kind: "alias_root", identity: aliasIdentity, entry: { shards: aliasShards, entries: aliasEntries } });
     const coverageRoot = this.#writeObject({ schema_version: 1, object_kind: "coverage_root", identity: coverageIdentity, entry: { shards: coverageShards, entries: coverageEntries } });
-    const uiBundleRef = this.#writeObject({ schema_version: 1, object_kind: "ui_bundle", identity, entry: { id: normalized.capture.ui_bundle_ref, asset_url: normalized.uiBundleUrl } });
+    const uiBundleRef = this.#writeObject({ schema_version: 1, object_kind: "ui_bundle", identity: uiIdentity, entry: { id: normalized.capture.ui_bundle_ref, asset_url: normalized.uiBundleUrl } });
     normalized.capture.ui_bundle_ref = uiBundleRef;
-    const lineage = this.#deriveLineage(normalized.pcrEntries, previous.manifest);
     const manifest = {
       schema_version: 1,
       kind: "viewer-snapshot-manifest",
@@ -312,7 +345,7 @@ export class ViewerSnapshotStore {
     const manifestRef = sha256Ref(manifestBytes);
     this.#writeImmutable(this.path("manifests", `${refDigest(manifestRef)}.json`), manifestBytes, "manifest");
 
-    const history = this.#nextHistory(previous.history, { sequence: normalized.sequence, manifest_ref: manifestRef }, identity);
+    const history = this.#nextHistory(previous.history, { sequence: normalized.sequence, manifest_ref: manifestRef }, historyIdentity);
     const active = { schema_version: 1, kind: "viewer-active", snapshot_id: normalized.snapshotId, snapshot_url: `snapshots/${normalized.snapshotId}`, snapshot_hash: manifestRef, manifest_ref: manifestRef, sequence: normalized.sequence, cache_version: 1, ui_bundle_ref: normalized.capture.ui_bundle_ref, validation_state: "validated" };
     this.schemas.assert("viewer-active", active);
     const historyHeadBytes = canonicalBytes(history.head);
@@ -320,7 +353,7 @@ export class ViewerSnapshotStore {
     let journal = {
       schema_version: 1, kind: "viewer-publication-journal", phase: "prepared", manifest_ref: manifestRef, sequence: normalized.sequence,
       history_head: history.head, active,
-      source: normalized.source, capture: normalized.capture, source_fingerprint: identity.source_fingerprint,
+      source: normalized.source, capture: normalized.capture, source_fingerprint: historyIdentity.source_fingerprint,
       reservation: { snapshot_id: normalized.snapshotId, sequence: normalized.sequence },
       cas: {
         history_head: { old_ref: this.#pointerRef("history-head.json"), new_ref: sha256Ref(historyHeadBytes) },
@@ -465,19 +498,19 @@ export class ViewerSnapshotStore {
         translation_status: translationStatus(entry.translation_status),
         classification_refs: Array.isArray(entry.classification_refs) ? structuredClone(entry.classification_refs) : [],
         record_kind: typeof entry.record_kind === "string" ? entry.record_kind : "methodology",
-        readiness: entry.readiness === undefined ? defaultReadiness() : structuredClone(entry.readiness),
+        readiness: resolvedReadiness(entry),
         search_text: typeof entry.search_text === "string" ? entry.search_text : entry.id,
       } });
     }
     return sortedObject(refs);
   }
 
-  #writeCoverageEntries(entries, identity) {
+  #writeCoverageEntries(entries, identityForCoordinate) {
     const refs = {};
     for (const entry of entries) {
       const coordinate = normalizeCoordinate(entry.coordinate);
       const key = `${coordinate.system}:${coordinate.version}:${entry.code}`;
-      refs[key] = this.#writeObject({ schema_version: 1, object_kind: "coverage_entry", identity, entry: structuredClone(entry) });
+      refs[key] = this.#writeObject({ schema_version: 1, object_kind: "coverage_entry", identity: identityForCoordinate(coordinate), entry: structuredClone(entry) });
     }
     return sortedObject(refs);
   }
@@ -497,7 +530,7 @@ export class ViewerSnapshotStore {
     return sortedObject(refs);
   }
 
-  #writeCoverageShards(entries, entryRefs, identity) {
+  #writeCoverageShards(entries, entryRefs, identityForCoordinate) {
     const groups = new Map();
     for (const entry of entries) {
       const coordinate = normalizeCoordinate(entry.coordinate);
@@ -512,7 +545,7 @@ export class ViewerSnapshotStore {
     for (const key of [...groups.keys()].sort()) {
       const group = groups.get(key);
       group.entries.sort((left, right) => String(left.code).localeCompare(String(right.code)));
-      refs[key] = this.#writeObject({ schema_version: 1, object_kind: "coverage_shard", identity, entry: group });
+      refs[key] = this.#writeObject({ schema_version: 1, object_kind: "coverage_shard", identity: identityForCoordinate(group.coordinate), entry: group });
     }
     return sortedObject(refs);
   }
@@ -658,30 +691,32 @@ export class ViewerSnapshotStore {
     return bytes;
   }
 
-  #validateManifestObjects(manifest) {
+  #validateManifestObjects(manifest, cache, validatePredecessor) {
     const refs = manifest.refs;
+    const sourceCoordinates = new Set(manifest.source.coverage.map((source) => `${source.coordinate.system}:${source.coordinate.version}`));
     for (const [id, ref] of Object.entries(refs.pcr_entries)) {
-      const object = this.readObject(ref);
+      const object = this.#readObject(ref, cache);
       if (object.object_kind !== "pcr_detail" || object.entry.id !== id) throw new ViewerSnapshotStoreError("VIEWER_MANIFEST_CORRUPT", `Manifest keyed PCR detail reference is invalid for ${id}.`);
     }
     for (const [id, ref] of Object.entries(refs.alias_entries)) {
-      const object = this.readObject(ref);
+      const object = this.#readObject(ref, cache);
       if (object.object_kind !== "alias_entry" || object.entry.id !== id) throw new ViewerSnapshotStoreError("VIEWER_MANIFEST_CORRUPT", `Manifest keyed alias entry reference is invalid for ${id}.`);
     }
     for (const [key, ref] of Object.entries(refs.coverage_entries)) {
-      const object = this.readObject(ref);
+      const object = this.#readObject(ref, cache);
       const coordinate = object.entry.coordinate;
       const expected = coordinate ? `${coordinate.system}:${coordinate.version}:${object.entry.code}` : null;
-      if (object.object_kind !== "coverage_entry" || expected !== key) throw new ViewerSnapshotStoreError("VIEWER_MANIFEST_CORRUPT", `Manifest keyed coverage entry reference is invalid for ${key}.`);
+      if (object.object_kind !== "coverage_entry" || expected !== key || !sourceCoordinates.has(`${coordinate.system}:${coordinate.version}`)) throw new ViewerSnapshotStoreError("VIEWER_MANIFEST_CORRUPT", `Manifest keyed coverage entry reference is invalid for ${key}.`);
+      if (object.entry.pcr_id !== null && !Object.hasOwn(refs.pcr_entries, object.entry.pcr_id)) throw new ViewerSnapshotStoreError("VIEWER_MANIFEST_CORRUPT", `Coverage entry PCR target is absent from the manifest: ${object.entry.pcr_id}.`);
     }
-    for (const [prefix, ref] of Object.entries(refs.catalog_shards)) this.#validatePrefixShard(ref, "catalog_shard", prefix, refs, "catalog_entry");
-    for (const [prefix, ref] of Object.entries(refs.alias_shards)) this.#validatePrefixShard(ref, "alias_shard", prefix, refs, "alias_entry");
-    for (const [key, ref] of Object.entries(refs.coverage_shards)) this.#validateCoverageShard(ref, key, refs.coverage_entries);
+    for (const [prefix, ref] of Object.entries(refs.catalog_shards)) this.#validatePrefixShard(ref, "catalog_shard", prefix, refs, "catalog_entry", cache);
+    for (const [prefix, ref] of Object.entries(refs.alias_shards)) this.#validatePrefixShard(ref, "alias_shard", prefix, refs, "alias_entry", cache);
+    for (const [key, ref] of Object.entries(refs.coverage_shards)) this.#validateCoverageShard(ref, key, refs.coverage_entries, cache);
     const roots = [
       [refs.catalog_root, "catalog_root"], [refs.alias_root, "alias_root"], [refs.coverage_root, "coverage_root"],
     ];
     for (const [ref, kind] of roots) {
-      const object = this.readObject(ref);
+      const object = this.#readObject(ref, cache);
       if (object.object_kind !== kind) throw new ViewerSnapshotStoreError("VIEWER_MANIFEST_CORRUPT", `Manifest root must reference a ${kind} object.`);
     }
     const expected = {
@@ -695,46 +730,47 @@ export class ViewerSnapshotStore {
       if (manifest.counts[name] !== actual) throw new ViewerSnapshotStoreError("VIEWER_MANIFEST_CORRUPT", `Manifest ${name} count does not match referenced objects.`);
     }
     let coverage = 0;
-    for (const ref of Object.values(refs.coverage_shards)) coverage += this.readObject(ref).entry.entries.length;
+    for (const ref of Object.values(refs.coverage_shards)) coverage += this.#readObject(ref, cache).entry.entries.length;
     if (manifest.counts.coverage !== coverage) throw new ViewerSnapshotStoreError("VIEWER_MANIFEST_CORRUPT", "Manifest coverage count does not match coverage shards.");
-    const catalogRoot = this.readObject(refs.catalog_root).entry;
-    const aliasRoot = this.readObject(refs.alias_root).entry;
-    const coverageRoot = this.readObject(refs.coverage_root).entry;
+    const catalogRoot = this.#readObject(refs.catalog_root, cache).entry;
+    const aliasRoot = this.#readObject(refs.alias_root, cache).entry;
+    const coverageRoot = this.#readObject(refs.coverage_root, cache).entry;
     if (canonicalJson(catalogRoot.shards) !== canonicalJson(refs.catalog_shards) || canonicalJson(catalogRoot.details) !== canonicalJson(refs.pcr_entries) || canonicalJson(aliasRoot.shards) !== canonicalJson(refs.alias_shards) || canonicalJson(aliasRoot.entries) !== canonicalJson(refs.alias_entries) || canonicalJson(coverageRoot.shards) !== canonicalJson(refs.coverage_shards) || canonicalJson(coverageRoot.entries) !== canonicalJson(refs.coverage_entries)) {
       throw new ViewerSnapshotStoreError("VIEWER_MANIFEST_CORRUPT", "Manifest root relationships are incomplete or substituted.");
     }
-    const catalogIds = Object.values(refs.catalog_shards).flatMap((ref) => this.readObject(ref).entry.entries.map((entry) => entry.id)).sort();
-    const aliasIds = Object.values(refs.alias_shards).flatMap((ref) => this.readObject(ref).entry.entries.map((entry) => entry.id)).sort();
+    const catalogIds = Object.values(refs.catalog_shards).flatMap((ref) => this.#readObject(ref, cache).entry.entries.map((entry) => entry.id)).sort();
+    const aliasIds = Object.values(refs.alias_shards).flatMap((ref) => this.#readObject(ref, cache).entry.entries.map((entry) => entry.id)).sort();
     const coverageKeys = Object.values(refs.coverage_shards).flatMap((ref) => {
-      const shard = this.readObject(ref).entry;
+      const shard = this.#readObject(ref, cache).entry;
       return shard.entries.map((entry) => `${shard.coordinate.system}:${shard.coordinate.version}:${entry.code}`);
     }).sort();
     if (canonicalJson(catalogIds) !== canonicalJson(Object.keys(refs.pcr_entries).sort()) || canonicalJson(aliasIds) !== canonicalJson(Object.keys(refs.alias_entries).sort()) || canonicalJson(coverageKeys) !== canonicalJson(Object.keys(refs.coverage_entries).sort())) {
       throw new ViewerSnapshotStoreError("VIEWER_MANIFEST_CORRUPT", "Manifest index roots do not provide complete one-to-one membership.");
     }
-    if (manifest.predecessor) {
-      const predecessor = this.readManifest(manifest.predecessor);
+    if (manifest.predecessor && validatePredecessor) {
+      const predecessor = this.#readManifest(manifest.predecessor, cache, true);
       if (predecessor.sequence + 1 !== manifest.sequence) throw new ViewerSnapshotStoreError("VIEWER_MANIFEST_CORRUPT", "Manifest predecessor sequence is invalid.");
       if (manifest.previous_manifest_ref !== manifest.predecessor || manifest.previous_snapshot_id !== predecessor.snapshot_id) throw new ViewerSnapshotStoreError("VIEWER_MANIFEST_CORRUPT", "Manifest predecessor snapshot identity is not the immediate retained predecessor.");
-    } else if (manifest.previous_manifest_ref !== null || manifest.previous_snapshot_id !== null) {
+    } else if (!manifest.predecessor && (manifest.previous_manifest_ref !== null || manifest.previous_snapshot_id !== null)) {
       throw new ViewerSnapshotStoreError("VIEWER_MANIFEST_CORRUPT", "Initial manifest must not declare a previous snapshot.");
     }
   }
 
-  #validatePrefixShard(ref, kind, prefix, manifestRefs, entryKind) {
-    const shard = this.readObject(ref);
+  #validatePrefixShard(ref, kind, prefix, manifestRefs, entryKind, cache) {
+    const shard = this.#readObject(ref, cache);
     if (shard.object_kind !== kind || shard.entry.prefix !== prefix || !Array.isArray(shard.entry.entries)) throw new ViewerSnapshotStoreError("VIEWER_MANIFEST_CORRUPT", `Invalid ${kind} semantic structure for prefix ${prefix}.`);
     for (const item of shard.entry.entries) {
-      if (twoCharacterPrefix(item.id) !== prefix || manifestRefs[entryKind === "catalog_entry" ? "pcr_entries" : "alias_entries"]?.[item.id] === undefined && entryKind !== "catalog_entry") {
+      const expectedAliasRef = entryKind === "alias_entry" ? manifestRefs.alias_entries[item.id] : null;
+      if (twoCharacterPrefix(item.id) !== prefix || (entryKind === "alias_entry" && expectedAliasRef !== item.object_ref)) {
         throw new ViewerSnapshotStoreError("VIEWER_MANIFEST_CORRUPT", `Invalid ${kind} prefix membership for ${item.id}.`);
       }
-      const entry = this.readObject(item.object_ref);
+      const entry = this.#readObject(item.object_ref, cache);
       if (entry.object_kind !== entryKind || entry.entry.id !== item.id) throw new ViewerSnapshotStoreError("VIEWER_MANIFEST_CORRUPT", `Invalid ${kind} entry relationship for ${item.id}.`);
     }
   }
 
-  #validateCoverageShard(ref, key, coverageEntries) {
-    const shard = this.readObject(ref);
+  #validateCoverageShard(ref, key, coverageEntries, cache) {
+    const shard = this.#readObject(ref, cache);
     if (shard.object_kind !== "coverage_shard" || !Array.isArray(shard.entry.entries)) throw new ViewerSnapshotStoreError("VIEWER_MANIFEST_CORRUPT", `Invalid coverage shard ${key}.`);
     const [coordinate, prefix] = key.split("/");
     if (`${shard.entry.coordinate?.system}:${shard.entry.coordinate?.version}` !== coordinate || shard.entry.prefix !== prefix) throw new ViewerSnapshotStoreError("VIEWER_MANIFEST_CORRUPT", `Coverage shard coordinate/prefix mismatch for ${key}.`);
@@ -759,14 +795,28 @@ export class ViewerSnapshotStore {
     }
   }
 
+  #validateCoverageInputs(normalized) {
+    const pcrIds = new Set(normalized.pcrEntries.map((entry) => entry.id));
+    const sourceCoordinates = new Set(normalized.source.coverage.map((source) => `${source.coordinate.system}:${source.coordinate.version}`));
+    for (const entry of normalized.coverageEntries) {
+      const coordinate = `${entry.coordinate.system}:${entry.coordinate.version}`;
+      if (!sourceCoordinates.has(coordinate)) throw new ViewerSnapshotStoreError("VIEWER_COVERAGE_SOURCE_MISSING", `Coverage coordinate is not represented by a pinned source: ${coordinate}.`);
+      if (entry.pcr_id !== null && !pcrIds.has(entry.pcr_id)) throw new ViewerSnapshotStoreError("VIEWER_COVERAGE_PCR_MISSING", `Coverage PCR target is not present in this snapshot: ${entry.pcr_id}.`);
+    }
+  }
+
   #readCurrentOrEmpty() {
     const hasActive = existsRegular(this.path("active.json"), "active pointer");
     const hasHistory = existsRegular(this.path("history-head.json"), "history head");
     if (hasActive !== hasHistory) throw new ViewerSnapshotStoreError("VIEWER_STORE_PARTIAL_STATE", "Active and history pointers must either both exist or both be absent.");
     if (!hasActive) return { sequence: 0, manifestRef: null, manifest: null, history: this.readHistory() };
-    const active = this.readActive();
-    return { sequence: active.sequence, manifestRef: active.manifest_ref, manifest: this.readManifest(active.manifest_ref), history: this.readHistory() };
+    const cache = this.#readCache();
+    const history = this.#readHistory(cache);
+    const active = this.#readActive(cache, history);
+    return { sequence: active.sequence, manifestRef: active.manifest_ref, manifest: this.#readManifest(active.manifest_ref, cache, false), history };
   }
+
+  #readCache() { return { objects: new Map(), manifests: new Map() }; }
 
   #writeImmutable(destination, bytes, label) {
     assertRegularOrMissing(destination, `immutable ${label}`);
@@ -1047,28 +1097,16 @@ function translationStatus(value) {
   return {};
 }
 
-function defaultReadiness() {
-  return {
-    status: "ready",
-    lifecycle_status: "active",
-    methodology_status: "reviewed_methodology",
-    structured_projection_available: true,
-    projection_fingerprint: {
-      required: true,
-      status: "current",
-      schema_valid: true,
-      contract_version: "1",
-      source_sha256: `sha256:${"0".repeat(64)}`,
-      generated_content_sha256: `sha256:${"1".repeat(64)}`,
-      source_hash_valid: true,
-      content_hash_valid: true,
-      issues: [],
-    },
-    usable_for_guidance: true,
-    usable_for_validation: true,
-    blockers: [],
-    warnings: [],
-  };
+function resolvedReadiness(entry) {
+  const catalogReadiness = entry.readiness;
+  const guidanceReadiness = entry.guidance?.readiness;
+  if (catalogReadiness === undefined && guidanceReadiness === undefined) {
+    throw new ViewerSnapshotStoreError("VIEWER_READINESS_REQUIRED", "Catalog readiness must be supplied or derived from validated guidance readiness.");
+  }
+  if (catalogReadiness !== undefined && guidanceReadiness !== undefined && canonicalJson(catalogReadiness) !== canonicalJson(guidanceReadiness)) {
+    throw new ViewerSnapshotStoreError("VIEWER_READINESS_MISMATCH", "Catalog readiness must exactly equal guidance readiness.");
+  }
+  return structuredClone(catalogReadiness ?? guidanceReadiness);
 }
 
 function assertMarkdown(value) {
