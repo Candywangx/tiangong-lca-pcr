@@ -3,7 +3,7 @@
   "$id": "viewer-snapshot-manifest",
   "type": "object",
   "additionalProperties": false,
-  "required": ["schema_version", "kind", "snapshot_id", "sequence", "generator_version", "generator_contract_sha256", "source", "predecessor", "lineage", "counts", "refs"],
+  "required": ["schema_version", "kind", "snapshot_id", "sequence", "generator_version", "generator_contract_sha256", "schema_contract_sha256", "source", "capture", "predecessor", "lineage", "counts", "refs"],
   "properties": {
     "schema_version": { "const": 1 },
     "kind": { "const": "viewer-snapshot-manifest" },
@@ -11,6 +11,7 @@
     "sequence": { "type": "integer", "minimum": 1 },
     "generator_version": { "type": "string", "minLength": 1 },
     "generator_contract_sha256": { "$ref": "#/$defs/ref" },
+    "schema_contract_sha256": { "$ref": "#/$defs/ref" },
     "source": {
       "type": "object", "additionalProperties": false,
       "required": ["catalog", "aliases", "coverage", "release_revision_marker"],
@@ -19,6 +20,17 @@
         "aliases": { "$ref": "#/$defs/ref" },
         "coverage": { "type": "array", "items": { "$ref": "#/$defs/coverageSource" } },
         "release_revision_marker": { "anyOf": [{ "type": "null" }, { "$ref": "#/$defs/ref" }] }
+      }
+    },
+    "capture": {
+      "type": "object", "additionalProperties": false, "required": ["source_ref", "integration_commit", "base_commit", "tree_hash", "validation_state", "ui_bundle_ref"],
+      "properties": {
+        "source_ref": { "type": "string", "minLength": 1 },
+        "integration_commit": { "type": "string", "pattern": "^[a-f0-9]{40,64}$" },
+        "base_commit": { "type": "string", "pattern": "^[a-f0-9]{40,64}$" },
+        "tree_hash": { "type": "string", "pattern": "^[a-f0-9]{40,64}$" },
+        "validation_state": { "const": "validated" },
+        "ui_bundle_ref": { "$ref": "#/$defs/ref" }
       }
     },
     "predecessor": { "anyOf": [{ "type": "null" }, { "$ref": "#/$defs/ref" }] },
@@ -36,10 +48,11 @@
     },
     "refs": {
       "type": "object", "additionalProperties": false,
-      "required": ["pcr_entries", "alias_entries", "catalog_shards", "alias_shards", "coverage_shards"],
+      "required": ["pcr_entries", "alias_entries", "coverage_entries", "catalog_shards", "alias_shards", "coverage_shards", "catalog_root", "alias_root", "coverage_root"],
       "properties": {
-        "pcr_entries": { "$ref": "#/$defs/refMap" }, "alias_entries": { "$ref": "#/$defs/refMap" },
+        "pcr_entries": { "$ref": "#/$defs/refMap" }, "alias_entries": { "$ref": "#/$defs/refMap" }, "coverage_entries": { "$ref": "#/$defs/refMap" },
         "catalog_shards": { "$ref": "#/$defs/refMap" }, "alias_shards": { "$ref": "#/$defs/refMap" }, "coverage_shards": { "$ref": "#/$defs/refMap" }
+        ,"catalog_root": { "$ref": "#/$defs/ref" }, "alias_root": { "$ref": "#/$defs/ref" }, "coverage_root": { "$ref": "#/$defs/ref" }
       }
     }
   },

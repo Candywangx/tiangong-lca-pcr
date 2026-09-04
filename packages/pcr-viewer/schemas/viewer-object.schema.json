@@ -3,12 +3,21 @@
   "$id": "viewer-object",
   "type": "object",
   "additionalProperties": false,
-  "required": ["schema_version", "object_kind", "entry"],
+  "required": ["schema_version", "object_kind", "identity", "entry"],
   "properties": {
     "schema_version": { "const": 1 },
-    "object_kind": {
-      "enum": ["pcr_entry", "alias_entry", "catalog_shard", "alias_shard", "coverage_shard", "history_page"]
+    "object_kind": { "enum": ["pcr_detail", "catalog_entry", "catalog_shard", "catalog_root", "alias_entry", "alias_shard", "alias_root", "coverage_entry", "coverage_shard", "coverage_root", "history_page"] },
+    "identity": {
+      "type": "object", "additionalProperties": false,
+      "required": ["generator_contract_sha256", "schema_contract_sha256", "source_fingerprint", "release_revision_marker"],
+      "properties": {
+        "generator_contract_sha256": { "$ref": "#/$defs/ref" },
+        "schema_contract_sha256": { "$ref": "#/$defs/ref" },
+        "source_fingerprint": { "$ref": "#/$defs/ref" },
+        "release_revision_marker": { "anyOf": [{ "type": "null" }, { "$ref": "#/$defs/ref" }] }
+      }
     },
     "entry": { "type": "object" }
-  }
+  },
+  "$defs": { "ref": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" } }
 }

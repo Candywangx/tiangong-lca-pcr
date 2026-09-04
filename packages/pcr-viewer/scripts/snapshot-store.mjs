@@ -22,17 +22,24 @@ import {
   createViewerSnapshotSchemaRegistry,
   refDigest,
   sha256Ref,
+  viewerSchemaContractSha256,
 } from "./snapshot-format.mjs";
 
 const SHA256_PREFIX = "sha256:";
 const OBJECT_KINDS = new Set([
-  "pcr_entry",
+  "pcr_detail",
+  "catalog_entry",
   "alias_entry",
   "catalog_shard",
+  "catalog_root",
   "alias_shard",
+  "alias_root",
+  "coverage_entry",
   "coverage_shard",
+  "coverage_root",
   "history_page",
 ]);
+const HISTORY_PAGE_MAX_ENTRIES = 2;
 
 export class ViewerSnapshotStoreError extends Error {
   constructor(code, message, options = {}) {
@@ -47,7 +54,7 @@ export class ViewerSnapshotStoreError extends Error {
  * this module never derives one from a checkout or Harness workspace.
  */
 export class ViewerSnapshotStore {
-  constructor({ root, generatorVersion, capabilities = {}, staleLockMs = 300_000 } = {}) {
+  constructor({ root, generatorVersion, capabilities = {}, capabilityProbe = null, sourceVerifier = null, staleLockMs = 300_000 } = {}) {
     if (typeof root !== "string" || !root.trim()) {
       throw new ViewerSnapshotStoreError("VIEWER_STORE_REQUIRED", "An explicit artifact store path is required.");
     }
@@ -61,8 +68,12 @@ export class ViewerSnapshotStore {
       atomicRename: capabilities.atomicRename ?? true,
       createIfAbsent: capabilities.createIfAbsent ?? true,
     };
+    this.capabilityProbe = capabilityProbe;
+    this.sourceVerifier = sourceVerifier;
     this.staleLockMs = staleLockMs;
     this.schemas = createViewerSnapshotSchemaRegistry();
+    this.schemaContractSha256 = viewerSchemaContractSha256();
+    this.lockLease = null;
   }
 
   probe() {
@@ -91,6 +102,15 @@ export class ViewerSnapshotStore {
     } finally {
       closeSync(descriptor);
     }
+    this.#probeCreateIfAbsentAndRename();
+    if (this.capabilityProbe) {
+      const reported = this.capabilityProbe({ root: this.root });
+      for (const capability of ["fsync", "atomicRename", "createIfAbsent"]) {
+        if (reported?.[capability] !== true) {
+          throw new ViewerSnapshotStoreError("VIEWER_STORE_CAPABILITY_UNAVAILABLE", `Artifact store capability probe rejected ${capability} capability.`);
+        }
+      }
+    }
     return Object.freeze({ root: this.root, same_filesystem: true, fsync: true, atomic_rename: true, create_if_absent: true });
   }
 
@@ -116,11 +136,26 @@ export class ViewerSnapshotStore {
 
   readHistory() {
     const historyPath = this.path("history-head.json");
-    if (!existsRegular(historyPath, "history head")) return { schema_version: 1, kind: "viewer-history", entries: [] };
-    const history = parseCanonicalJson(readSafeFile(historyPath, "history head"), "viewer history");
-    this.schemas.assert("viewer-history", history);
+    if (!existsRegular(historyPath, "history head")) return { head: null, entries: [] };
+    const head = parseCanonicalJson(readSafeFile(historyPath, "history head"), "viewer history head");
+    this.schemas.assert("viewer-history", head);
+    const pages = [];
+    const seen = new Set();
+    let pageRef = head.page_ref;
+    while (pageRef) {
+      if (seen.has(pageRef)) throw new ViewerSnapshotStoreError("VIEWER_HISTORY_CORRUPT", "Viewer history pages must not cycle.");
+      seen.add(pageRef);
+      const page = this.readObject(pageRef);
+      if (page.object_kind !== "history_page" || !Array.isArray(page.entry.entries) || page.entry.entries.length === 0 || page.entry.entries.length > HISTORY_PAGE_MAX_ENTRIES) {
+        throw new ViewerSnapshotStoreError("VIEWER_HISTORY_CORRUPT", "Viewer history page is invalid or exceeds its fixed bound.");
+      }
+      pages.push(page.entry);
+      pageRef = page.entry.previous_page_ref;
+      if (pageRef !== null && pageRef !== undefined) assertSha256Ref(pageRef, "history previous page reference");
+    }
+    const entries = pages.reverse().flatMap((page) => page.entries);
     let previousSequence = 0;
-    for (const entry of history.entries) {
+    for (const entry of entries) {
       if (entry.sequence !== previousSequence + 1) {
         throw new ViewerSnapshotStoreError("VIEWER_HISTORY_CORRUPT", "Viewer history sequences must be contiguous and ordered.");
       }
@@ -130,7 +165,8 @@ export class ViewerSnapshotStore {
       }
       previousSequence = entry.sequence;
     }
-    return history;
+    if (head.latest_sequence !== previousSequence) throw new ViewerSnapshotStoreError("VIEWER_HISTORY_CORRUPT", "Viewer history head sequence does not match retained pages.");
+    return { head, entries };
   }
 
   readActive() {
@@ -171,17 +207,24 @@ export class ViewerSnapshotStore {
 
   #publishLocked(input) {
     const normalized = this.#normalizeInput(input);
+    this.#verifySource(normalized, "before");
     this.#validatePinnedSources(normalized.pinnedSources);
     const previous = this.#readCurrentOrEmpty();
     if (normalized.sequence !== previous.sequence + 1) {
       throw new ViewerSnapshotStoreError("VIEWER_SEQUENCE_CONFLICT", `Snapshot sequence ${normalized.sequence} must follow ${previous.sequence}.`);
     }
 
-    const pcrEntries = this.#writeEntries(normalized.pcrEntries, "pcr_entry");
-    const aliasEntries = this.#writeEntries(normalized.aliasEntries, "alias_entry");
-    const catalogShards = this.#writePrefixShards(pcrEntries, "catalog_shard", (id) => twoCharacterPrefix(id));
-    const aliasShards = this.#writePrefixShards(aliasEntries, "alias_shard", (id) => twoCharacterPrefix(id));
-    const coverageShards = this.#writeCoverageShards(normalized.coverageEntries);
+    const identity = this.#objectIdentity(normalized);
+    const pcrEntries = this.#writeEntries(normalized.pcrEntries, "pcr_detail", identity);
+    const catalogEntries = this.#writeCatalogEntries(normalized.pcrEntries, identity);
+    const aliasEntries = this.#writeEntries(normalized.aliasEntries, "alias_entry", identity);
+    const coverageEntries = this.#writeCoverageEntries(normalized.coverageEntries, identity);
+    const catalogShards = this.#writePrefixShards(catalogEntries, "catalog_shard", (id) => twoCharacterPrefix(id), identity);
+    const aliasShards = this.#writePrefixShards(aliasEntries, "alias_shard", (id) => twoCharacterPrefix(id), identity);
+    const coverageShards = this.#writeCoverageShards(normalized.coverageEntries, coverageEntries, identity);
+    const catalogRoot = this.#writeObject({ schema_version: 1, object_kind: "catalog_root", identity, entry: { shards: catalogShards, details: pcrEntries } });
+    const aliasRoot = this.#writeObject({ schema_version: 1, object_kind: "alias_root", identity, entry: { shards: aliasShards, entries: aliasEntries } });
+    const coverageRoot = this.#writeObject({ schema_version: 1, object_kind: "coverage_root", identity, entry: { shards: coverageShards, entries: coverageEntries } });
     const lineage = this.#deriveLineage(normalized.pcrEntries, previous.manifest);
     const manifest = {
       schema_version: 1,
@@ -190,7 +233,9 @@ export class ViewerSnapshotStore {
       sequence: normalized.sequence,
       generator_version: this.generatorVersion,
       generator_contract_sha256: normalized.generatorContractSha256,
+      schema_contract_sha256: this.schemaContractSha256,
       source: normalized.source,
+      capture: normalized.capture,
       predecessor: previous.manifestRef,
       lineage,
       counts: {
@@ -204,9 +249,13 @@ export class ViewerSnapshotStore {
       refs: {
         pcr_entries: pcrEntries,
         alias_entries: aliasEntries,
+        coverage_entries: coverageEntries,
         catalog_shards: catalogShards,
         alias_shards: aliasShards,
         coverage_shards: coverageShards,
+        catalog_root: catalogRoot,
+        alias_root: aliasRoot,
+        coverage_root: coverageRoot,
       },
     };
     this.schemas.assert("viewer-snapshot-manifest", manifest);
@@ -214,31 +263,40 @@ export class ViewerSnapshotStore {
     const manifestRef = sha256Ref(manifestBytes);
     this.#writeImmutable(this.path("manifests", `${refDigest(manifestRef)}.json`), manifestBytes, "manifest");
 
-    let journal = { schema_version: 1, kind: "viewer-publication-journal", phase: "prepared", manifest_ref: manifestRef, sequence: normalized.sequence };
+    const history = this.#nextHistory(previous.history, { sequence: normalized.sequence, manifest_ref: manifestRef }, identity);
+    const active = { schema_version: 1, kind: "viewer-active", manifest_ref: manifestRef, sequence: normalized.sequence, cache_version: 1, ui_bundle_ref: normalized.capture.ui_bundle_ref, validation_state: "validated" };
+    this.schemas.assert("viewer-active", active);
+    const historyHeadBytes = canonicalBytes(history.head);
+    const activeBytes = canonicalBytes(active);
+    let journal = {
+      schema_version: 1, kind: "viewer-publication-journal", phase: "prepared", manifest_ref: manifestRef, sequence: normalized.sequence,
+      history_head: history.head, active,
+      source: normalized.source, capture: normalized.capture, source_fingerprint: identity.source_fingerprint,
+      reservation: { snapshot_id: normalized.snapshotId, sequence: normalized.sequence },
+      cas: {
+        history_head: { old_ref: this.#pointerRef("history-head.json"), new_ref: sha256Ref(historyHeadBytes) },
+        active: { old_ref: this.#pointerRef("active.json"), new_ref: sha256Ref(activeBytes) },
+      },
+    };
+    this.#writePointer("journal.json", journal);
+    normalized.onPhase?.("prepared", this);
+    this.#interrupt(normalized.failurePhase, journal.phase);
+
+    journal = { ...journal, phase: "history_prepared" };
     this.#writePointer("journal.json", journal);
     this.#interrupt(normalized.failurePhase, journal.phase);
 
-    const oldHistory = previous.history;
-    const history = { ...oldHistory, entries: [...oldHistory.entries, { sequence: normalized.sequence, manifest_ref: manifestRef }] };
-    this.schemas.assert("viewer-history", history);
-    const historyBytes = canonicalBytes(history);
-    const historyRef = sha256Ref(historyBytes);
-    this.#writeImmutable(this.path("history", `${refDigest(historyRef)}.json`), historyBytes, "history page");
-    journal = { ...journal, phase: "history_prepared", history_ref: historyRef };
-    this.#writePointer("journal.json", journal);
-    this.#interrupt(normalized.failurePhase, journal.phase);
-
-    this.#writePointer("history-head.json", history);
+    this.#writePointerCas("history-head.json", history.head, journal.cas.history_head);
     journal = { ...journal, phase: "history_committed" };
     this.#writePointer("journal.json", journal);
     this.#interrupt(normalized.failurePhase, journal.phase);
 
-    const active = { schema_version: 1, kind: "viewer-active", manifest_ref: manifestRef, sequence: normalized.sequence };
-    this.schemas.assert("viewer-active", active);
-    this.#writePointer("active.json", active);
+    this.#writePointerCas("active.json", active, journal.cas.active);
     journal = { ...journal, phase: "active_committed" };
     this.#writePointer("journal.json", journal);
     this.#interrupt(normalized.failurePhase, journal.phase);
+    this.#verifySource(normalized, "after");
+    this.#assertLockOwned();
     unlinkSync(this.path("journal.json"));
     fsyncDirectory(this.root);
     return Object.freeze({ manifestRef, sequence: normalized.sequence, reused: previous.manifest ? countReused(pcrEntries, previous.manifest.refs.pcr_entries) : 0 });
@@ -251,34 +309,24 @@ export class ViewerSnapshotStore {
     validateJournal(journal);
     const manifest = this.readManifest(journal.manifest_ref);
     if (manifest.sequence !== journal.sequence) throw new ViewerSnapshotStoreError("VIEWER_JOURNAL_CORRUPT", "Journal sequence does not match its manifest.");
-    if (journal.phase === "prepared") {
-      const history = this.readHistory();
-      const entries = history.entries.at(-1)?.manifest_ref === journal.manifest_ref
-        ? history.entries
-        : [...history.entries, { sequence: journal.sequence, manifest_ref: journal.manifest_ref }];
-      const nextHistory = { schema_version: 1, kind: "viewer-history", entries };
-      this.schemas.assert("viewer-history", nextHistory);
-      const bytes = canonicalBytes(nextHistory);
-      const ref = sha256Ref(bytes);
-      this.#writeImmutable(this.path("history", `${refDigest(ref)}.json`), bytes, "history page");
-      this.#writePointer("journal.json", { ...journal, phase: "history_prepared", history_ref: ref });
-      return this.#recoverLocked();
-    }
-    const historyBytes = this.#readImmutable(this.path("history", `${refDigest(journal.history_ref)}.json`), journal.history_ref, "history page");
-    const history = parseCanonicalJson(historyBytes, "viewer history page");
-    this.schemas.assert("viewer-history", history);
+    this.#verifySource({ source: journal.source, capture: journal.capture, sourceFingerprint: journal.source_fingerprint }, "before");
     if (journal.phase === "history_prepared") {
-      this.#writePointer("history-head.json", history);
+      this.#writePointerCas("history-head.json", journal.history_head, journal.cas.history_head);
       this.#writePointer("journal.json", { ...journal, phase: "history_committed" });
       return this.#recoverLocked();
     }
-    const active = { schema_version: 1, kind: "viewer-active", manifest_ref: journal.manifest_ref, sequence: journal.sequence };
+    if (journal.phase === "prepared") {
+      this.#writePointer("journal.json", { ...journal, phase: "history_prepared" });
+      return this.#recoverLocked();
+    }
     if (journal.phase === "history_committed") {
-      this.#writePointer("active.json", active);
+      this.#writePointerCas("active.json", journal.active, journal.cas.active);
       this.#writePointer("journal.json", { ...journal, phase: "active_committed" });
       return this.#recoverLocked();
     }
     this.readActive();
+    this.#verifySource({ source: journal.source, capture: journal.capture, sourceFingerprint: journal.source_fingerprint }, "after");
+    this.#assertLockOwned();
     unlinkSync(journalPath);
     fsyncDirectory(this.root);
     return Object.freeze({ recovered: true, manifestRef: journal.manifest_ref, sequence: journal.sequence });
@@ -300,25 +348,52 @@ export class ViewerSnapshotStore {
         coverage,
         release_revision_marker: source.releaseRevisionMarker === null || source.releaseRevisionMarker === undefined ? null : assertSha256Ref(source.releaseRevisionMarker, "release/revision marker reference"),
       },
+      capture: {
+        source_ref: requireText(source.source_ref, "source ref"),
+        integration_commit: requireGitHash(source.integration_commit, "integration commit"),
+        base_commit: requireGitHash(source.base_commit, "base commit"),
+        tree_hash: requireGitHash(source.tree_hash, "tree hash"),
+        validation_state: "validated",
+        ui_bundle_ref: source.ui_bundle_ref === undefined ? sha256Ref("viewer-ui-bundle:unconfigured\n") : assertSha256Ref(source.ui_bundle_ref, "UI bundle reference"),
+      },
       pcrEntries: requireEntries(input.pcrEntries, "PCR"),
       aliasEntries: requireEntries(input.aliasEntries, "alias"),
       coverageEntries: requireCoverageEntries(input.coverageEntries),
       pinnedSources: input.pinnedSources ?? [],
       failurePhase: input.failurePhase ?? null,
       forceStaleLock: input.forceStaleLock === true,
+      onPhase: typeof input.onPhase === "function" ? input.onPhase : null,
     };
     return normalized;
   }
 
-  #writeEntries(entries, kind) {
+  #writeEntries(entries, kind, identity) {
     const refs = {};
     for (const entry of entries) {
-      refs[entry.id] = this.#writeObject({ schema_version: 1, object_kind: kind, entry });
+      refs[entry.id] = this.#writeObject({ schema_version: 1, object_kind: kind, identity, entry });
     }
     return sortedObject(refs);
   }
 
-  #writePrefixShards(entryRefs, kind, prefixFor) {
+  #writeCatalogEntries(entries, identity) {
+    const refs = {};
+    for (const entry of entries) {
+      refs[entry.id] = this.#writeObject({ schema_version: 1, object_kind: "catalog_entry", identity, entry: { id: entry.id } });
+    }
+    return sortedObject(refs);
+  }
+
+  #writeCoverageEntries(entries, identity) {
+    const refs = {};
+    for (const entry of entries) {
+      const coordinate = normalizeCoordinate(entry.coordinate);
+      const key = `${coordinate.system}:${coordinate.version}:${entry.code}`;
+      refs[key] = this.#writeObject({ schema_version: 1, object_kind: "coverage_entry", identity, entry: structuredClone(entry) });
+    }
+    return sortedObject(refs);
+  }
+
+  #writePrefixShards(entryRefs, kind, prefixFor, identity) {
     const groups = new Map();
     for (const [id, objectRef] of Object.entries(entryRefs)) {
       const prefix = prefixFor(id);
@@ -328,26 +403,27 @@ export class ViewerSnapshotStore {
     }
     const refs = {};
     for (const prefix of [...groups.keys()].sort()) {
-      refs[prefix] = this.#writeObject({ schema_version: 1, object_kind: kind, entry: { prefix, entries: groups.get(prefix).sort(compareById) } });
+      refs[prefix] = this.#writeObject({ schema_version: 1, object_kind: kind, identity, entry: { prefix, entries: groups.get(prefix).sort(compareById) } });
     }
     return sortedObject(refs);
   }
 
-  #writeCoverageShards(entries) {
+  #writeCoverageShards(entries, entryRefs, identity) {
     const groups = new Map();
     for (const entry of entries) {
       const coordinate = normalizeCoordinate(entry.coordinate);
       const prefix = coverageCodePrefix(entry.code);
       const key = `${coordinate.system}:${coordinate.version}/${prefix}`;
       const group = groups.get(key) ?? { coordinate, prefix, entries: [] };
-      group.entries.push(structuredClone(entry));
+      const entryKey = `${coordinate.system}:${coordinate.version}:${entry.code}`;
+      group.entries.push({ code: entry.code, coverage_entry_ref: entryRefs[entryKey] });
       groups.set(key, group);
     }
     const refs = {};
     for (const key of [...groups.keys()].sort()) {
       const group = groups.get(key);
       group.entries.sort((left, right) => String(left.code).localeCompare(String(right.code)));
-      refs[key] = this.#writeObject({ schema_version: 1, object_kind: "coverage_shard", entry: group });
+      refs[key] = this.#writeObject({ schema_version: 1, object_kind: "coverage_shard", identity, entry: group });
     }
     return sortedObject(refs);
   }
@@ -363,6 +439,34 @@ export class ViewerSnapshotStore {
       renames[entry.id] = oldId;
     }
     return { renames: sortedObject(renames) };
+  }
+
+  #objectIdentity(normalized) {
+    return {
+      generator_contract_sha256: normalized.generatorContractSha256,
+      schema_contract_sha256: this.schemaContractSha256,
+      source_fingerprint: sha256Ref(canonicalBytes({ source: normalized.source, capture: normalized.capture })),
+      release_revision_marker: normalized.source.release_revision_marker,
+    };
+  }
+
+  #nextHistory(previousHistory, nextEntry, identity) {
+    const oldHead = previousHistory.head;
+    // Pages are append-only: never rewrite or bypass a previously retained page.
+    // A page may contain up to HISTORY_PAGE_MAX_ENTRIES; one entry per publish keeps
+    // every immutable page reachable from the current head.
+    const pageRef = this.#writeObject({ schema_version: 1, object_kind: "history_page", identity, entry: { entries: [nextEntry], previous_page_ref: oldHead?.page_ref ?? null } });
+    return { page_ref: pageRef, head: { schema_version: 1, kind: "viewer-history-head", page_ref: pageRef, latest_sequence: nextEntry.sequence } };
+  }
+
+  #verifySource(normalized, phase) {
+    if (typeof this.sourceVerifier !== "function") {
+      throw new ViewerSnapshotStoreError("VIEWER_SOURCE_VERIFIER_REQUIRED", "A verifiable pinned Git source verifier is required.");
+    }
+    const result = this.sourceVerifier({ phase, source: structuredClone(normalized.source), capture: structuredClone(normalized.capture) });
+    if (result !== true && result?.valid !== true) {
+      throw new ViewerSnapshotStoreError("VIEWER_SOURCE_VERIFICATION_FAILED", `Pinned Git source verification failed during ${phase}.`);
+    }
   }
 
   #writeObject(value) {
@@ -393,8 +497,29 @@ export class ViewerSnapshotStore {
 
   #validateManifestObjects(manifest) {
     const refs = manifest.refs;
-    for (const map of [refs.pcr_entries, refs.alias_entries, refs.catalog_shards, refs.alias_shards, refs.coverage_shards]) {
-      for (const ref of Object.values(map)) this.readObject(ref);
+    for (const [id, ref] of Object.entries(refs.pcr_entries)) {
+      const object = this.readObject(ref);
+      if (object.object_kind !== "pcr_detail" || object.entry.id !== id) throw new ViewerSnapshotStoreError("VIEWER_MANIFEST_CORRUPT", `Manifest keyed PCR detail reference is invalid for ${id}.`);
+    }
+    for (const [id, ref] of Object.entries(refs.alias_entries)) {
+      const object = this.readObject(ref);
+      if (object.object_kind !== "alias_entry" || object.entry.id !== id) throw new ViewerSnapshotStoreError("VIEWER_MANIFEST_CORRUPT", `Manifest keyed alias entry reference is invalid for ${id}.`);
+    }
+    for (const [key, ref] of Object.entries(refs.coverage_entries)) {
+      const object = this.readObject(ref);
+      const coordinate = object.entry.coordinate;
+      const expected = coordinate ? `${coordinate.system}:${coordinate.version}:${object.entry.code}` : null;
+      if (object.object_kind !== "coverage_entry" || expected !== key) throw new ViewerSnapshotStoreError("VIEWER_MANIFEST_CORRUPT", `Manifest keyed coverage entry reference is invalid for ${key}.`);
+    }
+    for (const [prefix, ref] of Object.entries(refs.catalog_shards)) this.#validatePrefixShard(ref, "catalog_shard", prefix, refs, "catalog_entry");
+    for (const [prefix, ref] of Object.entries(refs.alias_shards)) this.#validatePrefixShard(ref, "alias_shard", prefix, refs, "alias_entry");
+    for (const [key, ref] of Object.entries(refs.coverage_shards)) this.#validateCoverageShard(ref, key, refs.coverage_entries);
+    const roots = [
+      [refs.catalog_root, "catalog_root"], [refs.alias_root, "alias_root"], [refs.coverage_root, "coverage_root"],
+    ];
+    for (const [ref, kind] of roots) {
+      const object = this.readObject(ref);
+      if (object.object_kind !== kind) throw new ViewerSnapshotStoreError("VIEWER_MANIFEST_CORRUPT", `Manifest root must reference a ${kind} object.`);
     }
     const expected = {
       pcr: Object.keys(refs.pcr_entries).length,
@@ -409,6 +534,48 @@ export class ViewerSnapshotStore {
     let coverage = 0;
     for (const ref of Object.values(refs.coverage_shards)) coverage += this.readObject(ref).entry.entries.length;
     if (manifest.counts.coverage !== coverage) throw new ViewerSnapshotStoreError("VIEWER_MANIFEST_CORRUPT", "Manifest coverage count does not match coverage shards.");
+    const catalogRoot = this.readObject(refs.catalog_root).entry;
+    const aliasRoot = this.readObject(refs.alias_root).entry;
+    const coverageRoot = this.readObject(refs.coverage_root).entry;
+    if (canonicalJson(catalogRoot.shards) !== canonicalJson(refs.catalog_shards) || canonicalJson(catalogRoot.details) !== canonicalJson(refs.pcr_entries) || canonicalJson(aliasRoot.shards) !== canonicalJson(refs.alias_shards) || canonicalJson(aliasRoot.entries) !== canonicalJson(refs.alias_entries) || canonicalJson(coverageRoot.shards) !== canonicalJson(refs.coverage_shards) || canonicalJson(coverageRoot.entries) !== canonicalJson(refs.coverage_entries)) {
+      throw new ViewerSnapshotStoreError("VIEWER_MANIFEST_CORRUPT", "Manifest root relationships are incomplete or substituted.");
+    }
+    const catalogIds = Object.values(refs.catalog_shards).flatMap((ref) => this.readObject(ref).entry.entries.map((entry) => entry.id)).sort();
+    const aliasIds = Object.values(refs.alias_shards).flatMap((ref) => this.readObject(ref).entry.entries.map((entry) => entry.id)).sort();
+    const coverageKeys = Object.values(refs.coverage_shards).flatMap((ref) => {
+      const shard = this.readObject(ref).entry;
+      return shard.entries.map((entry) => `${shard.coordinate.system}:${shard.coordinate.version}:${entry.code}`);
+    }).sort();
+    if (canonicalJson(catalogIds) !== canonicalJson(Object.keys(refs.pcr_entries).sort()) || canonicalJson(aliasIds) !== canonicalJson(Object.keys(refs.alias_entries).sort()) || canonicalJson(coverageKeys) !== canonicalJson(Object.keys(refs.coverage_entries).sort())) {
+      throw new ViewerSnapshotStoreError("VIEWER_MANIFEST_CORRUPT", "Manifest index roots do not provide complete one-to-one membership.");
+    }
+    if (manifest.predecessor) {
+      const predecessor = this.readManifest(manifest.predecessor);
+      if (predecessor.sequence + 1 !== manifest.sequence) throw new ViewerSnapshotStoreError("VIEWER_MANIFEST_CORRUPT", "Manifest predecessor sequence is invalid.");
+    }
+  }
+
+  #validatePrefixShard(ref, kind, prefix, manifestRefs, entryKind) {
+    const shard = this.readObject(ref);
+    if (shard.object_kind !== kind || shard.entry.prefix !== prefix || !Array.isArray(shard.entry.entries)) throw new ViewerSnapshotStoreError("VIEWER_MANIFEST_CORRUPT", `Invalid ${kind} semantic structure for prefix ${prefix}.`);
+    for (const item of shard.entry.entries) {
+      if (twoCharacterPrefix(item.id) !== prefix || manifestRefs[entryKind === "catalog_entry" ? "pcr_entries" : "alias_entries"]?.[item.id] === undefined && entryKind !== "catalog_entry") {
+        throw new ViewerSnapshotStoreError("VIEWER_MANIFEST_CORRUPT", `Invalid ${kind} prefix membership for ${item.id}.`);
+      }
+      const entry = this.readObject(item.object_ref);
+      if (entry.object_kind !== entryKind || entry.entry.id !== item.id) throw new ViewerSnapshotStoreError("VIEWER_MANIFEST_CORRUPT", `Invalid ${kind} entry relationship for ${item.id}.`);
+    }
+  }
+
+  #validateCoverageShard(ref, key, coverageEntries) {
+    const shard = this.readObject(ref);
+    if (shard.object_kind !== "coverage_shard" || !Array.isArray(shard.entry.entries)) throw new ViewerSnapshotStoreError("VIEWER_MANIFEST_CORRUPT", `Invalid coverage shard ${key}.`);
+    const [coordinate, prefix] = key.split("/");
+    if (`${shard.entry.coordinate?.system}:${shard.entry.coordinate?.version}` !== coordinate || shard.entry.prefix !== prefix) throw new ViewerSnapshotStoreError("VIEWER_MANIFEST_CORRUPT", `Coverage shard coordinate/prefix mismatch for ${key}.`);
+    for (const item of shard.entry.entries) {
+      const expectedKey = `${coordinate}:${item.code}`;
+      if (coverageCodePrefix(item.code) !== prefix || coverageEntries[expectedKey] !== item.coverage_entry_ref) throw new ViewerSnapshotStoreError("VIEWER_MANIFEST_CORRUPT", `Coverage shard entry relationship mismatch for ${expectedKey}.`);
+    }
   }
 
   #validatePinnedSources(sources) {
@@ -460,6 +627,7 @@ export class ViewerSnapshotStore {
   }
 
   #writePointer(leaf, value) {
+    this.#assertLockOwned();
     const destination = this.path(leaf);
     assertRegularOrMissing(destination, `artifact store ${leaf}`);
     const stage = this.#stage(canonicalBytes(value));
@@ -473,6 +641,28 @@ export class ViewerSnapshotStore {
       try { unlinkSync(stage); } catch { /* already atomically renamed */ }
       throw error;
     }
+  }
+
+  #pointerRef(leaf) {
+    const target = this.path(leaf);
+    if (!existsRegular(target, `artifact store ${leaf}`)) return null;
+    return sha256Ref(readSafeFile(target, `artifact store ${leaf}`));
+  }
+
+  #writePointerCas(leaf, value, cas) {
+    if (!cas || !Object.hasOwn(cas, "old_ref") || !Object.hasOwn(cas, "new_ref")) {
+      throw new ViewerSnapshotStoreError("VIEWER_JOURNAL_CORRUPT", `Missing ${leaf} CAS reservation.`);
+    }
+    const bytes = canonicalBytes(value);
+    const newRef = sha256Ref(bytes);
+    if (cas.new_ref !== newRef) throw new ViewerSnapshotStoreError("VIEWER_JOURNAL_CORRUPT", `${leaf} CAS new digest does not match its pointer bytes.`);
+    const current = this.#pointerRef(leaf);
+    if (current === newRef) return;
+    if (current !== cas.old_ref) {
+      throw new ViewerSnapshotStoreError("VIEWER_POINTER_CAS_CONFLICT", `${leaf} pointer CAS conflict: expected ${cas.old_ref ?? "missing"}, found ${current ?? "missing"}.`);
+    }
+    this.#writePointer(leaf, value);
+    if (this.#pointerRef(leaf) !== newRef) throw new ViewerSnapshotStoreError("VIEWER_POINTER_CAS_CONFLICT", `${leaf} pointer was substituted during commit.`);
   }
 
   #stage(bytes) {
@@ -490,7 +680,7 @@ export class ViewerSnapshotStore {
     const lockPath = this.path("locks", "publisher.lock");
     try {
       const descriptor = openSync(lockPath, fsConstants.O_WRONLY | fsConstants.O_CREAT | fsConstants.O_EXCL | fsConstants.O_NOFOLLOW, 0o600);
-      try { const payload = canonicalBytes({ pid: process.pid, created_at: new Date().toISOString() }); writeSync(descriptor, payload); fsyncSync(descriptor); } finally { closeSync(descriptor); }
+      try { const payload = canonicalBytes({ pid: process.pid, created_at: new Date().toISOString(), owner_token: `${process.pid}-${Date.now()}-${Math.random().toString(16).slice(2)}` }); writeSync(descriptor, payload); fsyncSync(descriptor); this.lockLease = payload; } finally { closeSync(descriptor); }
     } catch (error) {
       if (error?.code !== "EEXIST") throw error;
       assertRegularOrMissing(lockPath, "publisher lock");
@@ -503,7 +693,34 @@ export class ViewerSnapshotStore {
       unlinkSync(lockPath);
       return this.#acquireLock(false);
     }
-    return () => { try { unlinkSync(lockPath); fsyncDirectory(path.dirname(lockPath)); } catch (error) { if (error?.code !== "ENOENT") throw error; } };
+    return () => { try { this.#assertLockOwned(); unlinkSync(lockPath); fsyncDirectory(path.dirname(lockPath)); } catch (error) { if (error?.code !== "ENOENT") throw error; } finally { this.lockLease = null; } };
+  }
+
+  #assertLockOwned() {
+    if (!this.lockLease) return;
+    const lockPath = this.path("locks", "publisher.lock");
+    const actual = readSafeFile(lockPath, "publisher lock");
+    if (!actual.equals(this.lockLease)) throw new ViewerSnapshotStoreError("VIEWER_LOCK_OWNERSHIP_LOST", "Publisher lock owner token was substituted.");
+  }
+
+  #probeCreateIfAbsentAndRename() {
+    const staging = this.path("staging", `.probe-${process.pid}-${Date.now()}-${Math.random().toString(16).slice(2)}`);
+    const target = this.path("staging", `${path.basename(staging)}.target`);
+    let descriptor;
+    try {
+      descriptor = openSync(staging, fsConstants.O_WRONLY | fsConstants.O_CREAT | fsConstants.O_EXCL | fsConstants.O_NOFOLLOW, 0o600);
+      writeSync(descriptor, Buffer.from("probe\n"));
+      fsyncSync(descriptor);
+      closeSync(descriptor); descriptor = null;
+      let exists = false;
+      try { const duplicate = openSync(staging, fsConstants.O_WRONLY | fsConstants.O_CREAT | fsConstants.O_EXCL | fsConstants.O_NOFOLLOW); closeSync(duplicate); } catch (error) { exists = error?.code === "EEXIST"; }
+      if (!exists) throw new ViewerSnapshotStoreError("VIEWER_STORE_CAPABILITY_UNAVAILABLE", "Artifact store create-if-absent capability probe failed.");
+      renameSync(staging, target);
+      if (!existsRegular(target, "atomic rename probe")) throw new ViewerSnapshotStoreError("VIEWER_STORE_CAPABILITY_UNAVAILABLE", "Artifact store atomic rename capability probe failed.");
+    } finally {
+      if (descriptor !== undefined && descriptor !== null) closeSync(descriptor);
+      for (const file of [staging, target]) { try { unlinkSync(file); } catch (error) { if (error?.code !== "ENOENT") throw error; } }
+    }
   }
 
   #interrupt(requested, phase) {
@@ -558,6 +775,11 @@ function requireSequence(value) {
   return value;
 }
 
+function requireGitHash(value, label) {
+  if (typeof value !== "string" || !/^[a-f0-9]{40,64}$/u.test(value)) throw new ViewerSnapshotStoreError("VIEWER_SOURCE_IDENTITY_INVALID", `Invalid ${label}.`);
+  return value;
+}
+
 function twoCharacterPrefix(value) { return sha256Ref(value).slice(SHA256_PREFIX.length, SHA256_PREFIX.length + 2); }
 function coverageCodePrefix(value) { return String(value).slice(0, 2); }
 function compareById(left, right) { return String(left.id).localeCompare(String(right.id)); }
@@ -570,7 +792,15 @@ function validateJournal(value) {
   }
   assertSha256Ref(value.manifest_ref, "journal manifest reference");
   requireSequence(value.sequence);
-  if (value.phase !== "prepared") assertSha256Ref(value.history_ref, "journal history reference");
+  if (!value.history_head || !value.active || !value.cas || !value.reservation || !value.source || !value.capture || typeof value.source_fingerprint !== "string") {
+    throw new ViewerSnapshotStoreError("VIEWER_JOURNAL_CORRUPT", "Journal is missing durable CAS/source/reservation state.");
+  }
+  for (const pointer of ["history_head", "active"]) {
+    const reservation = value.cas[pointer];
+    if (!reservation || !Object.hasOwn(reservation, "old_ref") || !Object.hasOwn(reservation, "new_ref") || (reservation.old_ref !== null && !/^sha256:[a-f0-9]{64}$/u.test(reservation.old_ref)) || !/^sha256:[a-f0-9]{64}$/u.test(reservation.new_ref)) {
+      throw new ViewerSnapshotStoreError("VIEWER_JOURNAL_CORRUPT", `Journal ${pointer} CAS reservation is invalid.`);
+    }
+  }
 }
 
 function parseCanonicalJson(bytes, label) {

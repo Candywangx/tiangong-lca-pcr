@@ -15,7 +15,19 @@ import { ViewerSnapshotStore } from "./scripts/snapshot-store.mjs";
 
 function fixtureStore() {
   const root = mkdtempSync(path.join(tmpdir(), "tiangong-viewer-snapshot-"));
-  return { root, store: new ViewerSnapshotStore({ root, generatorVersion: "viewer-1" }) };
+  const verificationCalls = [];
+  return {
+    root,
+    verificationCalls,
+    store: new ViewerSnapshotStore({
+      root,
+      generatorVersion: "viewer-1",
+      sourceVerifier: (request) => {
+        verificationCalls.push(request.phase);
+        return true;
+      },
+    }),
+  };
 }
 
 function snapshotInput(overrides = {}) {
@@ -30,6 +42,10 @@ function snapshotInput(overrides = {}) {
         { coordinate: { system: "cpc", version: "3.0" }, ref: sha256Ref("coverage-v1\n") },
       ],
       releaseRevisionMarker: null,
+      source_ref: "refs/heads/integration",
+      integration_commit: "a".repeat(40),
+      base_commit: "b".repeat(40),
+      tree_hash: "c".repeat(40),
     },
     pcrEntries: [
       { id: "pcr.agriculture.wheat-seed", title: "Wheat seed", lifecycle_status: "active" },
@@ -40,6 +56,15 @@ function snapshotInput(overrides = {}) {
       { coordinate: { system: "cpc", version: "3.0" }, code: "01111", pcr_id: "pcr.agriculture.wheat-seed" },
     ],
     ...overrides,
+  };
+}
+
+function objectIdentity() {
+  return {
+    generator_contract_sha256: sha256Ref("generator-contract-v1\n"),
+    schema_contract_sha256: sha256Ref("schema-contract-v1\n"),
+    source_fingerprint: sha256Ref("source-v1\n"),
+    release_revision_marker: null,
   };
 }
 
@@ -114,11 +139,11 @@ test("new manifests remove lifecycle-deleted entries and preserve rename lineage
 test("objects are create-only and reject a pre-existing byte substitution", () => {
   const { root, store } = fixtureStore();
   try {
-    const ref = sha256Ref(canonicalJson({ schema_version: 1, object_kind: "pcr_entry", entry: { id: "pcr.a" } }));
+    const ref = sha256Ref(canonicalJson({ schema_version: 1, object_kind: "pcr_detail", identity: objectIdentity(), entry: { id: "pcr.a" } }));
     mkdirSync(path.join(root, "objects"), { recursive: true });
     writeFileSync(path.join(root, "objects", `${ref.slice("sha256:".length)}.json`), "{}\n");
     assert.throws(
-      () => store.writeObject({ schema_version: 1, object_kind: "pcr_entry", entry: { id: "pcr.a" } }),
+      () => store.writeObject({ schema_version: 1, object_kind: "pcr_detail", identity: objectIdentity(), entry: { id: "pcr.a" } }),
       /immutable object byte conflict/iu,
     );
   } finally {
@@ -157,7 +182,7 @@ test("store rejects unsafe substitutions, corrupted retained state, and invalid 
     const published = store.publish(snapshotInput({ pinnedSources: [{ path: "source.txt", ref: sha256Ref("trusted\n") }] }));
     writeFileSync(path.join(root, "active.json"), '{"bad":true}\n');
     assert.throws(() => store.readActive(), /schema validation failed/u);
-    writeFileSync(path.join(root, "active.json"), canonicalJson({ schema_version: 1, kind: "viewer-active", manifest_ref: published.manifestRef, sequence: 1 }));
+    writeFileSync(path.join(root, "active.json"), canonicalJson({ schema_version: 1, kind: "viewer-active", manifest_ref: published.manifestRef, sequence: 1, cache_version: 1, ui_bundle_ref: sha256Ref("viewer-ui-bundle:unconfigured\n"), validation_state: "validated" }));
     const manifestPath = path.join(root, "manifests", `${published.manifestRef.slice(7)}.json`);
     rmSync(manifestPath);
     assert.throws(() => store.readActive(), /Missing immutable manifest/iu);
@@ -217,5 +242,164 @@ test("capability probes and special file substitutions fail closed", (t) => {
     assert.throws(() => fifo.store.probe(), /must be a directory/u);
   } finally {
     rmSync(fifo.root, { recursive: true, force: true });
+  }
+});
+
+test("PCR detail changes preserve catalog entries and index shards", () => {
+  const { root, store } = fixtureStore();
+  try {
+    const first = store.publish(snapshotInput());
+    const firstManifest = store.readManifest(first.manifestRef);
+    const second = store.publish(snapshotInput({
+      snapshotId: "snapshot-002",
+      sequence: 2,
+      pcrEntries: [
+        { id: "pcr.agriculture.wheat-seed", title: "Changed PCR body only", lifecycle_status: "active" },
+        { id: "pcr.industrial.cement", title: "Cement", lifecycle_status: "active" },
+      ],
+    }));
+    const secondManifest = store.readManifest(second.manifestRef);
+    assert.notEqual(secondManifest.refs.pcr_entries["pcr.agriculture.wheat-seed"], firstManifest.refs.pcr_entries["pcr.agriculture.wheat-seed"]);
+    assert.deepEqual(secondManifest.refs.catalog_shards, firstManifest.refs.catalog_shards);
+    assert.notEqual(secondManifest.refs.catalog_root, firstManifest.refs.catalog_root);
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+  }
+});
+
+test("journal records pointer CAS values and recovery rejects a substituted history head", () => {
+  const { root, store } = fixtureStore();
+  try {
+    store.publish(snapshotInput());
+    assert.throws(() => store.publish(snapshotInput({ snapshotId: "snapshot-002", sequence: 2, failurePhase: "history_prepared" })), /interrupted/u);
+    const journal = JSON.parse(readFileSync(path.join(root, "journal.json"), "utf8"));
+    assert.ok(journal.cas.history_head.old_ref);
+    assert.ok(journal.cas.history_head.new_ref);
+    writeFileSync(path.join(root, "history-head.json"), canonicalJson({ schema_version: 1, kind: "viewer-history-head", page_ref: sha256Ref("substituted"), latest_sequence: 1 }));
+    assert.throws(() => store.recover(), /CAS conflict|substitut/u);
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+  }
+});
+
+test("history is retained as bounded immutable linked pages and source verification brackets publication", () => {
+  const { root, store, verificationCalls } = fixtureStore();
+  try {
+    for (let sequence = 1; sequence <= 3; sequence += 1) {
+      store.publish(snapshotInput({ snapshotId: `snapshot-${sequence}`, sequence }));
+    }
+    const head = JSON.parse(readFileSync(path.join(root, "history-head.json"), "utf8"));
+    assert.equal(head.kind, "viewer-history-head");
+    assert.ok(head.page_ref);
+    const page = store.readObject(head.page_ref);
+    assert.equal(page.object_kind, "history_page");
+    assert.ok(page.entry.entries.length <= 2);
+    assert.ok(page.entry.previous_page_ref);
+    assert.deepEqual(verificationCalls, ["before", "after", "before", "after", "before", "after"]);
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+  }
+});
+
+test("publication requires verifiable pinned git identity and runs real capability probes", () => {
+  const noVerifier = fixtureStore();
+  try {
+    const store = new ViewerSnapshotStore({ root: noVerifier.root, generatorVersion: "viewer-1" });
+    assert.throws(() => store.publish(snapshotInput()), /source verifier is required/u);
+    const verified = new ViewerSnapshotStore({
+      root: noVerifier.root,
+      generatorVersion: "viewer-1",
+      sourceVerifier: () => true,
+      capabilityProbe: () => ({ fsync: true, atomicRename: true, createIfAbsent: false }),
+    });
+    assert.throws(() => verified.probe(), /createIfAbsent capability/u);
+  } finally {
+    rmSync(noVerifier.root, { recursive: true, force: true });
+  }
+});
+
+test("generator and release marker fingerprints invalidate content-addressed objects", () => {
+  const { root, store } = fixtureStore();
+  try {
+    const first = store.publish(snapshotInput());
+    const firstManifest = store.readManifest(first.manifestRef);
+    const generatorChanged = store.publish(snapshotInput({
+      snapshotId: "snapshot-002", sequence: 2, generatorContractSha256: sha256Ref("generator-contract-v2\n"),
+    }));
+    const generatorManifest = store.readManifest(generatorChanged.manifestRef);
+    assert.notEqual(generatorManifest.refs.pcr_entries["pcr.agriculture.wheat-seed"], firstManifest.refs.pcr_entries["pcr.agriculture.wheat-seed"]);
+    const markerChanged = store.publish(snapshotInput({
+      snapshotId: "snapshot-003", sequence: 3,
+      source: { ...snapshotInput().source, releaseRevisionMarker: sha256Ref("revision-marker-v2\n") },
+    }));
+    const markerManifest = store.readManifest(markerChanged.manifestRef);
+    assert.notEqual(markerManifest.refs.alias_root, generatorManifest.refs.alias_root);
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+  }
+});
+
+test("semantic manifest validation rejects mismatched keyed detail references", () => {
+  const { root, store } = fixtureStore();
+  try {
+    const published = store.publish(snapshotInput());
+    const manifest = store.readManifest(published.manifestRef);
+    const swapped = structuredClone(manifest);
+    swapped.refs.pcr_entries["pcr.agriculture.wheat-seed"] = manifest.refs.pcr_entries["pcr.industrial.cement"];
+    const catalogRoot = store.readObject(manifest.refs.catalog_root);
+    swapped.refs.catalog_root = store.writeObject({
+      ...catalogRoot,
+      entry: { ...catalogRoot.entry, details: swapped.refs.pcr_entries },
+    });
+    const bytes = canonicalJson(swapped);
+    const ref = sha256Ref(bytes);
+    writeFileSync(path.join(root, "manifests", `${ref.slice(7)}.json`), bytes);
+    assert.throws(() => store.readManifest(ref), /keyed PCR detail|semantic/u);
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+  }
+});
+
+test("a live owner-token lock rejects a concurrent publisher and post-commit source substitution stays journaled", () => {
+  const { root, store } = fixtureStore();
+  try {
+    let attempted = false;
+    store.publish(snapshotInput({
+      onPhase: () => {
+        attempted = true;
+        assert.throws(() => store.publish(snapshotInput({ snapshotId: "concurrent", sequence: 1 })), /publisher lock already exists/u);
+      },
+    }));
+    assert.equal(attempted, true);
+    const invalidated = new ViewerSnapshotStore({
+      root,
+      generatorVersion: "viewer-1",
+      sourceVerifier: ({ phase }) => phase !== "after",
+    });
+    assert.throws(() => invalidated.publish(snapshotInput({ snapshotId: "snapshot-002", sequence: 2 })), /source verification failed during after/u);
+    assert.ok(readFileSync(path.join(root, "journal.json"), "utf8").includes("active_committed"));
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+  }
+});
+
+test("recovery crash matrix rejects active CAS substitution and retained history-page substitution", () => {
+  const { root, store } = fixtureStore();
+  try {
+    store.publish(snapshotInput());
+    assert.throws(() => store.publish(snapshotInput({ snapshotId: "snapshot-002", sequence: 2, failurePhase: "history_committed" })), /interrupted/u);
+    writeFileSync(path.join(root, "active.json"), "{}\n");
+    assert.throws(() => store.recover(), /CAS conflict|substitut/u);
+
+    rmSync(path.join(root, "journal.json"));
+    writeFileSync(path.join(root, "active.json"), canonicalJson({
+      schema_version: 1, kind: "viewer-active", manifest_ref: store.readHistory().entries.at(-1).manifest_ref, sequence: 2,
+      cache_version: 1, ui_bundle_ref: sha256Ref("viewer-ui-bundle:unconfigured\n"), validation_state: "validated",
+    }));
+    const head = JSON.parse(readFileSync(path.join(root, "history-head.json"), "utf8"));
+    writeFileSync(path.join(root, "objects", `${head.page_ref.slice(7)}.json`), "{}\n");
+    assert.throws(() => store.readHistory(), /digest|substitut/u);
+  } finally {
+    rmSync(root, { recursive: true, force: true });
   }
 });

@@ -39,6 +39,17 @@ export function sha256Ref(value) {
   return `sha256:${createHash("sha256").update(bytes).digest("hex")}`;
 }
 
+/** Exact bytes of every strict viewer snapshot contract, in a fixed file order. */
+export function viewerSchemaContractSha256() {
+  return sha256Ref(
+    Buffer.concat(
+      Object.values(schemaFiles)
+        .sort()
+        .map((file) => readFileSync(fileURLToPath(new URL(file, schemaDirectory)))),
+    ),
+  );
+}
+
 export function assertSha256Ref(value, label = "sha256 reference") {
   if (typeof value !== "string" || !/^sha256:[a-f0-9]{64}$/u.test(value)) {
     throw new Error(`Invalid ${label}: expected sha256:<64 lowercase hex characters>.`);
