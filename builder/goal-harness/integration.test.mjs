@@ -317,6 +317,21 @@ test("a Goal made stale during gates rematerializes on the accepted head and rer
     const records = listCommittedRepositoryValidations({ projectRoot: root });
     assert.deepEqual(records.map((entry) => entry.repository_sequence), [1, 2]);
     assert.equal(records[1].expected_old_head, competingCommit);
+
+    const store = new GoalEventStore({ stateDir });
+    let landedState = store.rebuild();
+    store.append({ event_id: `${snapshotId}-landed-test`, type: "snapshot_replaced", payload: { snapshot: { ...landedState.snapshots[0], state: "landed", landed_at: "2026-09-05T03:00:00.000Z" } } });
+    landedState = store.rebuild();
+    store.append({ event_id: `${task.id}-completed-test`, type: "task_replaced", payload: { task: { ...landedState.tasks[0], state: "completed", updated_at: "2026-09-05T03:00:00.000Z" } } });
+    const completedTask = store.rebuild().tasks[0];
+    store.append({ event_id: `${task.id}-next-integration`, type: "task_replaced", payload: { task: { ...completedTask, state: "integration_pending", author_commit: authorCommit } } });
+    store.append({ event_id: "snapshot-next-created", type: "snapshot_created", payload: { id: "snapshot-next", goal_id: goalId, task_ids: [task.id], author_commits: [authorCommit], state: "integration_pending", created_at: "2026-09-05T04:00:00.000Z" } });
+
+    const next = integrateGoalSnapshot({ config, stateDir, snapshotId: "snapshot-next", commandRunner: runner });
+    assert.equal(next.snapshot.repository_sequence, 3);
+    assert.equal(store.rebuild().snapshots.find((entry) => entry.id === snapshotId).state, "landed");
+    assert.equal(store.rebuild().snapshots.find((entry) => entry.id === "snapshot-next").state, "validated");
+    for (const [name, count] of gateRuns) assert.equal(count, name === "viewer_build" ? 2 : 3);
   } finally {
     rmSync(root, { recursive: true, force: true });
   }

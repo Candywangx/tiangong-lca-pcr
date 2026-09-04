@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { execFileSync, spawn } from "node:child_process";
-import { existsSync, mkdtempSync, mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import { existsSync, mkdtempSync, mkdirSync, readFileSync, readdirSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import path from "node:path";
 import { pathToFileURL } from "node:url";
@@ -119,6 +119,74 @@ test("retained validation reads fail closed after source-ref substitution", () =
       () => listCommittedRepositoryValidations({ projectRoot: root }),
       (error) => error.code === "GOAL_REPOSITORY_SOURCE_REF_CONFLICT",
     );
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+  }
+});
+
+test("retained validation reads require the integration-head ref to exist and match the latest commit", () => {
+  for (const mutation of ["delete", "substitute"]) {
+    const { root, baseline } = createRepository();
+    try {
+      const candidate = reserveRepositoryCandidate({ projectRoot: root, goalId: "goal-a", snapshotId: "snapshot-a", fallbackHead: baseline });
+      const integrationCommit = childCommit(root, baseline, "integration");
+      commitRepositoryValidation({ projectRoot: root, candidateToken: candidate.candidate_token, integrationCommit });
+      if (mutation === "delete") {
+        git(root, ["update-ref", "-d", REPOSITORY_INTEGRATION_HEAD_REF]);
+      } else {
+        const substituted = childCommit(root, integrationCommit, "substituted head");
+        git(root, ["update-ref", REPOSITORY_INTEGRATION_HEAD_REF, substituted]);
+      }
+      assert.throws(
+        () => listCommittedRepositoryValidations({ projectRoot: root }),
+        (error) => error.code === "GOAL_REPOSITORY_HEAD_CONFLICT",
+      );
+    } finally {
+      rmSync(root, { recursive: true, force: true });
+    }
+  }
+});
+
+test("recovery replaces a torn retained record from the authoritative committed journal", () => {
+  const { root, baseline } = createRepository();
+  try {
+    const candidate = reserveRepositoryCandidate({ projectRoot: root, goalId: "goal-a", snapshotId: "snapshot-a", fallbackHead: baseline });
+    const integrationCommit = childCommit(root, baseline, "integration");
+    const record = commitRepositoryValidation({ projectRoot: root, candidateToken: candidate.candidate_token, integrationCommit });
+    const retainedPath = path.join(repositoryCoordinatorStateDir(root), "validations", "000000000001.json");
+    writeFileSync(retainedPath, "{\"phase\":");
+    assert.throws(() => listCommittedRepositoryValidations({ projectRoot: root }), (error) => error.code === "GOAL_REPOSITORY_STATE_INVALID");
+
+    recoverRepositoryCoordinator({ projectRoot: root });
+    assert.deepEqual(JSON.parse(readFileSync(retainedPath, "utf8")), record);
+    assert.deepEqual(listCommittedRepositoryValidations({ projectRoot: root }), [record]);
+    const quarantined = readdirSync(path.join(repositoryCoordinatorStateDir(root), "record-recovery"));
+    assert.equal(quarantined.length, 1);
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+  }
+});
+
+test("a reader during retained-record staging sees only the complete committed journal", () => {
+  const { root, baseline } = createRepository();
+  try {
+    const candidate = reserveRepositoryCandidate({ projectRoot: root, goalId: "goal-a", snapshotId: "snapshot-a", fallbackHead: baseline });
+    const integrationCommit = childCommit(root, baseline, "integration");
+    let observed = null;
+    const record = commitRepositoryValidation({
+      projectRoot: root,
+      candidateToken: candidate.candidate_token,
+      integrationCommit,
+      faultInjector(phase, committed) {
+        if (phase !== "after_record_staged") return;
+        const retainedPath = path.join(repositoryCoordinatorStateDir(root), "validations", "000000000001.json");
+        assert.equal(existsSync(retainedPath), false);
+        observed = listCommittedRepositoryValidations({ projectRoot: root });
+        assert.deepEqual(observed, [committed]);
+      },
+    });
+    assert.deepEqual(observed, [record]);
+    assert.deepEqual(listCommittedRepositoryValidations({ projectRoot: root }), [record]);
   } finally {
     rmSync(root, { recursive: true, force: true });
   }
@@ -257,6 +325,43 @@ test("crash after authoritative commit but before Goal projection is repaired id
     const eventCount = recovered.readEvents().length;
     recoverRepositoryCoordinator({ projectRoot: root });
     assert.equal(recovered.readEvents().length, eventCount);
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+  }
+});
+
+test("project then land then recover preserves later state and allows the next repository integration", () => {
+  const { root, baseline } = createRepository();
+  const stateDir = initializeGoal(root, "goal-a", "snapshot-a");
+  try {
+    const firstCandidate = reserveRepositoryCandidate({ projectRoot: root, goalId: "goal-a", snapshotId: "snapshot-a", fallbackHead: baseline });
+    const firstCommit = childCommit(root, baseline, "first integration");
+    commitRepositoryValidation({
+      projectRoot: root,
+      candidateToken: firstCandidate.candidate_token,
+      integrationCommit: firstCommit,
+      goalStateDir: stateDir,
+      snapshotProjection: { task_ids: ["task-a"] },
+    });
+    const store = new GoalEventStore({ stateDir });
+    let state = store.rebuild();
+    store.append({ event_id: "snapshot-a-landed", type: "snapshot_replaced", payload: { snapshot: { ...state.snapshots[0], state: "landed", landed_at: "2026-09-05T03:00:00.000Z" } } });
+    state = store.rebuild();
+    store.append({ event_id: "task-a-completed", type: "task_replaced", payload: { task: { ...state.tasks[0], state: "completed", updated_at: "2026-09-05T03:00:00.000Z" } } });
+    const eventsBeforeRecovery = store.readEvents().length;
+
+    recoverRepositoryCoordinator({ projectRoot: root });
+    assert.equal(store.readEvents().length, eventsBeforeRecovery);
+    assert.equal(store.rebuild().snapshots[0].state, "landed");
+    assert.equal(store.rebuild().tasks[0].state, "completed");
+
+    store.append({ event_id: "snapshot-b-created", type: "snapshot_created", payload: { id: "snapshot-b", goal_id: "goal-a", state: "integrating", task_ids: [] } });
+    const secondCandidate = reserveRepositoryCandidate({ projectRoot: root, goalId: "goal-a", snapshotId: "snapshot-b", fallbackHead: baseline });
+    const secondCommit = childCommit(root, firstCommit, "second integration");
+    const second = commitRepositoryValidation({ projectRoot: root, candidateToken: secondCandidate.candidate_token, integrationCommit: secondCommit, goalStateDir: stateDir });
+    assert.equal(second.repository_sequence, 2);
+    assert.equal(store.rebuild().snapshots.find((entry) => entry.id === "snapshot-a").state, "landed");
+    assert.equal(store.rebuild().snapshots.find((entry) => entry.id === "snapshot-b").state, "validated");
   } finally {
     rmSync(root, { recursive: true, force: true });
   }

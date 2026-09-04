@@ -4,12 +4,14 @@ import {
   closeSync,
   existsSync,
   fsyncSync,
+  linkSync,
   lstatSync,
   mkdirSync,
   openSync,
   readFileSync,
   readdirSync,
   renameSync,
+  unlinkSync,
   writeFileSync,
 } from "node:fs";
 import path from "node:path";
@@ -258,6 +260,13 @@ export function listCommittedRepositoryValidations({ projectRoot }) {
     }
     priorHead = record.integration_commit;
   }
+  const actualHead = readRef(projectRoot, REPOSITORY_INTEGRATION_HEAD_REF);
+  if (actualHead !== priorHead) {
+    throw new GoalHarnessError("GOAL_REPOSITORY_HEAD_CONFLICT", "Repository integration ref differs from the latest committed coordinator validation.", {
+      expected_head: priorHead,
+      actual_head: actualHead,
+    });
+  }
   return records;
 }
 
@@ -284,6 +293,18 @@ export function projectRepositoryValidation({ goalStateDir, record }) {
       expected_sequence: record.repository_sequence,
       actual_sequence: snapshot.repository_sequence,
     });
+  }
+  if (snapshot.repository_sequence === record.repository_sequence) {
+    const immutableMatches = snapshot.integration_commit === record.integration_commit &&
+      snapshot.source_ref === record.source_ref &&
+      snapshot.source_tree === record.tree_hash;
+    if (!immutableMatches) {
+      throw new GoalHarnessError("GOAL_REPOSITORY_PROJECTION_CONFLICT", "Goal snapshot repository validation identity differs from the committed coordinator record.", {
+        snapshot_id: snapshot.id,
+        repository_sequence: record.repository_sequence,
+      });
+    }
+    return { goal_id: record.goal_id, snapshot_id: snapshot.id, status: "already_projected" };
   }
   const projection = {
     ...(record.goal_projection ?? {}),
@@ -371,22 +392,56 @@ function finalizePreparedValidation({ stateDir, prepared, faultInjector = () => 
   const committed = { ...prepared, phase: "validation_committed" };
   writeJsonAtomic(journalPath(stateDir), committed);
   faultInjector("after_validation_committed", committed);
-  materializeCommittedRecord({ stateDir, committed });
+  materializeCommittedRecord({ stateDir, committed, faultInjector });
   faultInjector("after_record_persisted", committed);
   return committed;
 }
 
-function materializeCommittedRecord({ stateDir, committed }) {
+function materializeCommittedRecord({ stateDir, committed, faultInjector = () => {} }) {
   const retainedPath = validationPath(stateDir, committed.repository_sequence);
+  const retainedBytes = `${JSON.stringify(committed, null, 2)}\n`;
   if (existsSync(retainedPath)) {
-    const retained = readJsonFile(retainedPath, "GOAL_REPOSITORY_STATE_INVALID");
-    if (stableJson(retained) !== stableJson(committed)) {
+    const stat = lstatSync(retainedPath);
+    if (!stat.isFile() || stat.isSymbolicLink()) {
+      throw new GoalHarnessError("GOAL_REPOSITORY_VALIDATION_CONFLICT", "Repository validation destination is not a regular file.", {
+        repository_sequence: committed.repository_sequence,
+      });
+    }
+    const actualBytes = readFileSync(retainedPath, "utf8");
+    if (actualBytes === retainedBytes) return;
+    let parsedSuccessfully = false;
+    try { JSON.parse(actualBytes); parsedSuccessfully = true; } catch { /* torn destination is recoverable from the committed journal */ }
+    if (parsedSuccessfully) {
       throw new GoalHarnessError("GOAL_REPOSITORY_VALIDATION_CONFLICT", "Repository sequence already contains a different validation record.", {
         repository_sequence: committed.repository_sequence,
       });
     }
-  } else {
-    writeJsonCreate(retainedPath, committed);
+    const recoveryDir = path.join(stateDir, "record-recovery");
+    mkdirDurable(recoveryDir);
+    const quarantined = path.join(recoveryDir, `${String(committed.repository_sequence).padStart(12, "0")}-torn-${randomUUID()}.json`);
+    renameSync(retainedPath, quarantined);
+    fsyncDirectory(path.dirname(retainedPath));
+    fsyncDirectory(recoveryDir);
+  }
+  installCreateOnlyBytes(retainedPath, retainedBytes, committed.repository_sequence, () =>
+    faultInjector("after_record_staged", committed),
+  );
+}
+
+function installCreateOnlyBytes(filePath, bytes, sequence, afterStage = () => {}) {
+  mkdirDurable(path.dirname(filePath));
+  const stage = path.join(path.dirname(filePath), `.validation-stage-${String(sequence).padStart(12, "0")}-${randomUUID()}.tmp`);
+  writeFileSync(stage, bytes, { flag: "wx", mode: 0o600 });
+  fsyncFile(stage);
+  try {
+    afterStage();
+    linkSync(stage, filePath);
+    fsyncDirectory(path.dirname(filePath));
+  } catch (error) {
+    if (error?.code !== "EEXIST" || readFileSync(filePath, "utf8") !== bytes) throw error;
+  } finally {
+    try { unlinkSync(stage); } catch (error) { if (error?.code !== "ENOENT") throw error; }
+    fsyncDirectory(path.dirname(filePath));
   }
 }
 
