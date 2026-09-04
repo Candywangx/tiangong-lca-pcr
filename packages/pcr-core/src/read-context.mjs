@@ -13,6 +13,7 @@ import path from "node:path";
 import {
   PCR_ID_ALIAS_REGISTRY_PATH,
   pcrIdAliasValidationDependencies,
+  pcrIdAliasSourcePcrPathStates,
   readPcrIdAliases,
 } from "./pcr-id-aliases.mjs";
 import { parseYaml } from "./yaml-lite.mjs";
@@ -22,6 +23,7 @@ const MANAGED_READ_FLAGS =
   fsConstants.O_RDONLY | fsConstants.O_NOFOLLOW | fsConstants.O_NONBLOCK;
 const contextBindings = new WeakMap();
 const contextAliasDependencyPaths = new WeakMap();
+const contextAliasSourcePathStates = new WeakMap();
 const contextSessions = new WeakMap();
 const contextCatalogs = new WeakMap();
 const contextObservers = new WeakMap();
@@ -53,6 +55,7 @@ export function createPcrReadContext({
   const catalog = parseCatalog(catalogSource.text, rootPath);
   const dependencyPaths = catalogDependencyPaths(catalog, rootPath);
   const aliasDependencyPathsBefore = pcrIdAliasValidationDependencies({ root: rootPath });
+  const aliasSourcePathStatesBefore = pcrIdAliasSourcePcrPathStates({ root: rootPath });
   const boundPaths = [CATALOG_PATH, ...dependencyPaths, ...aliasDependencyPathsBefore];
   beforeAliasValidation?.({ root: rootPath });
   const bindingsBefore = captureBindings({
@@ -73,11 +76,19 @@ export function createPcrReadContext({
     aliases: deepFreeze(structuredClone(aliases)),
   });
   const aliasDependencyPathsAfter = pcrIdAliasValidationDependencies({ root: rootPath });
+  const aliasSourcePathStatesAfter = pcrIdAliasSourcePcrPathStates({ root: rootPath });
   if (!sameStrings(aliasDependencyPathsBefore, aliasDependencyPathsAfter)) {
     throw new PcrReadContextStaleError({
       root: rootPath,
       source: PCR_ID_ALIAS_REGISTRY_PATH,
       reason: "alias validation dependencies changed while aliases were validated",
+    });
+  }
+  if (!sameRecords(aliasSourcePathStatesBefore, aliasSourcePathStatesAfter)) {
+    throw new PcrReadContextStaleError({
+      root: rootPath,
+      source: PCR_ID_ALIAS_REGISTRY_PATH,
+      reason: "alias source PCR path states changed while aliases were validated",
     });
   }
   const bindingsAfter = captureBindings({
@@ -104,6 +115,7 @@ export function createPcrReadContext({
   Object.defineProperty(context, "_pcrReadContext", { value: true });
   contextBindings.set(context, bindingsAfter);
   contextAliasDependencyPaths.set(context, aliasDependencyPathsAfter);
+  contextAliasSourcePathStates.set(context, aliasSourcePathStatesAfter);
   contextObservers.set(context, { onBindingCheck, onCatalogSnapshot });
   return Object.freeze(context);
 }
@@ -158,6 +170,14 @@ export function assertPcrReadContextFresh({ context, root }) {
       reason: "alias validation dependency set changed",
     });
   }
+  const currentAliasSourcePathStates = pcrIdAliasSourcePcrPathStates({ root: context.root });
+  if (!sameRecords(contextAliasSourcePathStates.get(context) ?? [], currentAliasSourcePathStates)) {
+    throw new PcrReadContextStaleError({
+      root: context.root,
+      source: PCR_ID_ALIAS_REGISTRY_PATH,
+      reason: "alias source PCR path state changed",
+    });
+  }
   for (const [relativePath, expectedSha256] of contextBindings.get(context) ?? []) {
     let actualSha256;
     try {
@@ -186,7 +206,7 @@ export function withPcrReadContextSession({ context, root, read }) {
   if (active) {
     active.depth += 1;
     try {
-      return read();
+      return readSynchronously(read);
     } finally {
       active.depth -= 1;
     }
@@ -194,7 +214,7 @@ export function withPcrReadContextSession({ context, root, read }) {
   const session = { root: context.root, depth: 1 };
   contextSessions.set(context, session);
   try {
-    return read();
+    return readSynchronously(read);
   } finally {
     contextSessions.delete(context);
     assertPcrReadContextFresh({ context, root });
@@ -372,4 +392,18 @@ function samePathChain(left, right) {
   return left.length === right.length && left.every(
     (stats, index) => sameFileIdentity(stats, right[index]),
   );
+}
+
+function sameRecords(left, right) {
+  return left.length === right.length && left.every(
+    (entry, index) => entry.path === right[index].path && entry.state === right[index].state,
+  );
+}
+
+function readSynchronously(read) {
+  const result = read();
+  if (result && typeof result.then === "function") {
+    throw new TypeError("PCR read context sessions require a synchronous callback; use an explicit async API.");
+  }
+  return result;
 }

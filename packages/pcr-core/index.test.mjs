@@ -1317,6 +1317,32 @@ test("read context rejects added or removed supplemental alias registry YAML", (
   }
 });
 
+test("read context binds absent retired alias source paths by their typed existence state", () => {
+  const root = createReadContextFixture(
+    "tiangong-pcr-read-context-absent-alias-source-",
+    { withAlias: true, withoutAliasSource: true },
+  );
+  const sourcePath = path.join(root, scaffoldRelativePcrPath);
+  try {
+    const absentContext = createPcrReadContext({ root });
+    mkdirSync(sourcePath, { recursive: true });
+    assert.throws(
+      () => findPcrIdAlias({ root, pcrId: scaffoldPcrId, context: absentContext }),
+      (error) => error.code === "PCR_READ_CONTEXT_STALE",
+    );
+    rmSync(sourcePath, { recursive: true, force: true });
+
+    const absentAgainContext = createPcrReadContext({ root });
+    writeFileSync(sourcePath, "not a PCR directory\n");
+    assert.throws(
+      () => findPcrIdAlias({ root, pcrId: scaffoldPcrId, context: absentAgainContext }),
+      (error) => error.code === "PCR_READ_CONTEXT_STALE",
+    );
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+  }
+});
+
 test("read context bulk sessions bind once and reuse one catalog snapshot across multiple PCR reads", () => {
   const root = createReadContextFixture("tiangong-pcr-read-context-session-");
   const abaloneDir = path.join(root, abaloneRelativePcrPath);
@@ -1347,6 +1373,23 @@ test("read context bulk sessions bind once and reuse one catalog snapshot across
     });
     assert.equal(bindingChecks, 2);
     assert.equal(catalogSnapshots, 1);
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+  }
+});
+
+test("read context bulk sessions reject Promise callbacks instead of closing early", () => {
+  const root = createReadContextFixture("tiangong-pcr-read-context-promise-session-");
+  try {
+    const context = createPcrReadContext({ root });
+    assert.throws(
+      () => withPcrReadContextSession({
+        context,
+        root,
+        read: () => Promise.resolve("not supported"),
+      }),
+      /synchronous callback/u,
+    );
   } finally {
     rmSync(root, { recursive: true, force: true });
   }
@@ -1748,10 +1791,16 @@ function createBoundRepositoryFixture(prefix) {
   return root;
 }
 
-function createReadContextFixture(prefix, { withAlias = false } = {}) {
+function createReadContextFixture(
+  prefix,
+  { withAlias = false, withoutAliasSource = false } = {},
+) {
   const root = createBoundRepositoryFixture(prefix);
   if (withAlias) {
     writePcrAliasFixture(root);
+    if (withoutAliasSource) {
+      rmSync(path.join(root, scaffoldRelativePcrPath), { recursive: true, force: true });
+    }
   } else {
     const pcrDir = path.join(root, wheatRelativePcrPath);
     mkdirSync(path.dirname(pcrDir), { recursive: true });

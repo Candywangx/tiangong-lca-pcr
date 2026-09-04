@@ -127,16 +127,7 @@ export function readPcrIdAliases({ root, verifyCatalogBinding = true }) {
  */
 export function pcrIdAliasValidationDependencies({ root }) {
   const normalizedRoot = path.resolve(root);
-  let document;
-  try {
-    document = parseYaml(readContainedUtf8RegularFile({
-      root: normalizedRoot,
-      relativePath: PCR_ID_ALIAS_REGISTRY_PATH,
-      label: "PCR id alias registry",
-    }).text);
-  } catch (error) {
-    throw invalidAliases(PCR_ID_ALIAS_REGISTRY_PATH, error);
-  }
+  const document = readAliasRegistryDocument(normalizedRoot);
   const aliases = Array.isArray(document?.aliases) ? document.aliases : [];
   const dependencies = new Set(aliasRegistryPaths(normalizedRoot));
   if (aliases.length === 0) {
@@ -161,6 +152,75 @@ export function pcrIdAliasValidationDependencies({ root }) {
     dependencies.add(record.relativePath);
   }
   return [...dependencies].sort(compareText);
+}
+
+/**
+ * Return the exact directory-entry state of each alias source path. An absent
+ * legacy leaf is valid during physical migration, but it is not equivalent to
+ * an empty directory, a regular file, or a symbolic-link substitution.
+ */
+export function pcrIdAliasSourcePcrPathStates({ root }) {
+  const normalizedRoot = path.resolve(root);
+  const document = readAliasRegistryDocument(normalizedRoot);
+  const aliases = Array.isArray(document?.aliases) ? document.aliases : [];
+  return aliases
+    .map((alias) => ({
+      path: String(alias?.source_pcr_path ?? ""),
+      state: aliasSourcePcrPathState({
+        root: normalizedRoot,
+        relativePath: String(alias?.source_pcr_path ?? ""),
+      }),
+    }))
+    .sort((left, right) => compareText(left.path, right.path));
+}
+
+function readAliasRegistryDocument(root) {
+  try {
+    return parseYaml(readContainedUtf8RegularFile({
+      root,
+      relativePath: PCR_ID_ALIAS_REGISTRY_PATH,
+      label: "PCR id alias registry",
+    }).text);
+  } catch (error) {
+    throw invalidAliases(PCR_ID_ALIAS_REGISTRY_PATH, error);
+  }
+}
+
+function aliasSourcePcrPathState({ root, relativePath }) {
+  try {
+    assertSafeRelativePath(relativePath, "alias source PCR path");
+    const segments = relativePath.split("/");
+    let currentPath = root;
+    for (const [index, segment] of segments.entries()) {
+      currentPath = path.join(currentPath, segment);
+      let stats;
+      try {
+        stats = lstatSync(currentPath);
+      } catch (error) {
+        if (error?.code === "ENOENT") {
+          return "absent";
+        }
+        return `unreadable:${error?.code ?? "unknown"}`;
+      }
+      if (stats.isSymbolicLink()) {
+        return "symbolic_link";
+      }
+      const isLast = index === segments.length - 1;
+      if (!isLast && !stats.isDirectory()) {
+        return "parent_not_directory";
+      }
+      if (isLast) {
+        return stats.isDirectory()
+          ? "directory"
+          : stats.isFile()
+            ? "regular_file"
+            : "other";
+      }
+    }
+  } catch {
+    return "invalid_path";
+  }
+  return "invalid_path";
 }
 
 function readCatalogAliasBinding(root) {
