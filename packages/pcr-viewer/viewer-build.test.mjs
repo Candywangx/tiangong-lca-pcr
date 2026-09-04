@@ -22,6 +22,7 @@ import {
   buildViewer,
   buildViewerData,
   checkViewerSnapshot,
+  computeViewerGeneratorContractSha256,
   publishViewerSnapshot,
   recoverViewerSnapshot,
   validateViewerScope,
@@ -255,6 +256,7 @@ test("one-PCR incremental update never reads unrelated PCR bodies and runs the a
     });
     const firstManifest = first.store.readManifest(first.manifestRef);
     const reads = [];
+    const artifactReads = [];
     let aliasGates = 0;
     mkdirSync(path.join(root, wheatPcrPath, "revision"));
     writeFileSync(path.join(root, wheatPcrPath, "revision", "revision.yaml"), "revision: 2\n");
@@ -263,12 +265,17 @@ test("one-PCR incremental update never reads unrelated PCR bodies and runs the a
       generatorContractSha256: generatorV1,
       changedPcrIds: [wheatPcrId],
       onPcrBodyRead: (event) => reads.push(event),
+      onPcrArtifactRead: (event) => artifactReads.push(event.relative_path),
       onAliasValidation: () => { aliasGates += 1; },
     });
     const secondManifest = second.store.readManifest(second.manifestRef);
     assert.deepEqual(second.rebuiltPcrIds, [wheatPcrId]);
     assert.deepEqual([...new Set(reads.map((event) => event.pcr_id))], [wheatPcrId]);
-    assert.equal(aliasGates, 1);
+    assert.equal(aliasGates, 0);
+    assert.equal(artifactReads.some((relativePath) => relativePath.startsWith(`${coralPcrPath}/`)), false);
+    assert.equal(artifactReads.some((relativePath) => relativePath === `${wheatPcrPath}/pcr.en-US.md`), true);
+    assert.equal(artifactReads.some((relativePath) => relativePath === `${wheatPcrPath}/pcr.zh-CN.md`), true);
+    assert.equal(artifactReads.some((relativePath) => relativePath === `${wheatPcrPath}/structured.yaml`), true);
     assert.equal(secondManifest.refs.pcr_entries[coralPcrId], firstManifest.refs.pcr_entries[coralPcrId]);
 
     const generatorV2 = sha256("viewer-generator-v2\n");
@@ -281,6 +288,60 @@ test("one-PCR incremental update never reads unrelated PCR bodies and runs the a
     assert.deepEqual(third.rebuiltPcrIds, [coralPcrId, wheatPcrId].sort());
     assert.notEqual(thirdManifest.refs.pcr_entries[coralPcrId], secondManifest.refs.pcr_entries[coralPcrId]);
     assert.notEqual(thirdManifest.refs.pcr_entries[wheatPcrId], secondManifest.refs.pcr_entries[wheatPcrId]);
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+    rmSync(artifactStore, { recursive: true, force: true });
+  }
+});
+
+test("pinned Git-tree deltas rebuild an unhinted changed PCR without opening unchanged bodies", () => {
+  const root = createViewerFixture({ includeCoral: true });
+  const artifactStore = mkdtempSync(path.join(tmpdir(), "tiangong-pcr-viewer-git-delta-"));
+  const generatorContractSha256 = sha256("viewer-git-delta-generator\n");
+  try {
+    execFileSync("git", ["init", "-b", "main", root], { stdio: "ignore" });
+    execFileSync("git", ["-C", root, "config", "user.email", "viewer-test@example.invalid"]);
+    execFileSync("git", ["-C", root, "config", "user.name", "Viewer Test"]);
+    execFileSync("git", ["-C", root, "add", "."]);
+    execFileSync("git", ["-C", root, "commit", "-m", "fixture"], { stdio: "ignore" });
+    const firstCommit = gitFixtureOutput(root, ["rev-parse", "HEAD"]);
+    const firstTree = gitFixtureOutput(root, ["rev-parse", "HEAD^{tree}"]);
+    const firstSourceRef = "refs/tiangong-viewer-sources/goal-viewer-test/harness-1";
+    execFileSync("git", ["-C", root, "update-ref", firstSourceRef, firstCommit]);
+    publishViewerSnapshot({
+      ...snapshotPublishOptions({ root, artifactStore, sequence: 1 }),
+      sourceRef: firstSourceRef,
+      integrationCommit: firstCommit,
+      baseCommit: firstCommit,
+      treeHash: firstTree,
+      generatorContractSha256,
+      sourceVerifier: null,
+      bootstrap: true,
+    });
+
+    mkdirSync(path.join(root, coralPcrPath, "revision"));
+    writeFileSync(path.join(root, coralPcrPath, "revision", "revision.yaml"), "revision: 2\n");
+    execFileSync("git", ["-C", root, "add", "."]);
+    execFileSync("git", ["-C", root, "commit", "-m", "change unhinted coral marker"], { stdio: "ignore" });
+    const secondCommit = gitFixtureOutput(root, ["rev-parse", "HEAD"]);
+    const secondTree = gitFixtureOutput(root, ["rev-parse", "HEAD^{tree}"]);
+    const secondSourceRef = "refs/tiangong-viewer-sources/goal-viewer-test/harness-2";
+    execFileSync("git", ["-C", root, "update-ref", secondSourceRef, secondCommit]);
+    const artifactReads = [];
+    const second = publishViewerSnapshot({
+      ...snapshotPublishOptions({ root, artifactStore, sequence: 2 }),
+      sourceRef: secondSourceRef,
+      integrationCommit: secondCommit,
+      baseCommit: firstCommit,
+      treeHash: secondTree,
+      generatorContractSha256,
+      sourceVerifier: null,
+      changedPcrIds: [],
+      onPcrArtifactRead: (event) => artifactReads.push(event.relative_path),
+    });
+    assert.deepEqual(second.rebuiltPcrIds, [coralPcrId]);
+    assert.equal(artifactReads.some((relativePath) => relativePath.startsWith(`${wheatPcrPath}/`)), false);
+    assert.equal(artifactReads.some((relativePath) => relativePath === `${coralPcrPath}/structured.yaml`), true);
   } finally {
     rmSync(root, { recursive: true, force: true });
     rmSync(artifactStore, { recursive: true, force: true });
@@ -314,25 +375,209 @@ test("an alias change rewrites one alias entry shard without rebuilding PCR deta
         decision_ref: "docs/adr/viewer-alias.md",
       }],
     });
+    let changedAliasGates = 0;
     const second = publishViewerSnapshot({
       ...snapshotPublishOptions({ root, artifactStore, sequence: 2 }),
       changedPcrIds: [],
+      onAliasValidation: () => { changedAliasGates += 1; },
     });
     const secondManifest = second.store.readManifest(second.manifestRef);
     assert.equal(secondManifest.refs.pcr_entries[wheatPcrId], firstManifest.refs.pcr_entries[wheatPcrId]);
     assert.equal(Object.keys(firstManifest.refs.alias_shards).length, 0);
     assert.equal(Object.keys(secondManifest.refs.alias_shards).length, 1);
-    assert.equal(second.store.readObject(secondManifest.refs.alias_entries[legacyId]).entry.locator, "cpc:3.0:CPC-001");
+    assert.equal(changedAliasGates, 1);
+    const aliasEntry = second.store.readObject(secondManifest.refs.alias_entries[legacyId]).entry;
+    assert.equal(aliasEntry.locator, "cpc:3.0:CPC-001");
+    assert.equal(aliasEntry.source_pcr_path, "library/pcrs/legacy-products/example-products/old-wheat");
+    assert.equal(aliasEntry.reason, "empty_scaffold_migration");
+    assert.equal(aliasEntry.decision_ref, "docs/adr/viewer-alias.md");
+    assert.deepEqual(aliasEntry.target, {
+      kind: "classification_coverage",
+      classification_system: "cpc",
+      classification_version: "3.0",
+      code: "CPC-001",
+    });
 
+    writeFixtureFile({ root, relativePath: "docs/adr/viewer-alias-v2.md", contents: "# Viewer alias decision v2\n" });
+    writeFixtureCatalog({
+      root,
+      coverageIndexes: ["classifications/indexes/cpc-3.0-coverage.json"],
+      aliases: [{
+        source_pcr_id: legacyId,
+        source_pcr_path: "library/pcrs/legacy-products/example-products/old-wheat",
+        target: {
+          kind: "classification_coverage",
+          classification_system: "cpc",
+          classification_version: "3.0",
+          code: "CPC-001",
+        },
+        reason: "empty_scaffold_migration",
+        decision_ref: "docs/adr/viewer-alias-v2.md",
+      }],
+    });
     const third = publishViewerSnapshot({
       ...snapshotPublishOptions({ root, artifactStore, sequence: 3 }),
       changedPcrIds: [],
     });
     const thirdManifest = third.store.readManifest(third.manifestRef);
-    assert.equal(thirdManifest.refs.alias_entries[legacyId], secondManifest.refs.alias_entries[legacyId]);
-    assert.deepEqual(thirdManifest.refs.alias_shards, secondManifest.refs.alias_shards);
+    assert.notEqual(thirdManifest.refs.alias_entries[legacyId], secondManifest.refs.alias_entries[legacyId]);
+    assert.notDeepEqual(thirdManifest.refs.alias_shards, secondManifest.refs.alias_shards);
+    assert.equal(third.store.readObject(thirdManifest.refs.alias_entries[legacyId]).entry.decision_ref, "docs/adr/viewer-alias-v2.md");
+
+    let unchangedAliasGates = 0;
+    const fourth = publishViewerSnapshot({
+      ...snapshotPublishOptions({ root, artifactStore, sequence: 4 }),
+      changedPcrIds: [],
+      onAliasValidation: () => { unchangedAliasGates += 1; },
+    });
+    const fourthManifest = fourth.store.readManifest(fourth.manifestRef);
+    assert.equal(unchangedAliasGates, 0);
+    assert.equal(fourthManifest.refs.alias_root, thirdManifest.refs.alias_root);
   } finally {
     rmSync(root, { recursive: true, force: true });
+    rmSync(artifactStore, { recursive: true, force: true });
+  }
+});
+
+test("coverage evidence changes rewrite only the affected coverage entry and shard", () => {
+  const root = createViewerFixture();
+  const artifactStore = mkdtempSync(path.join(tmpdir(), "tiangong-pcr-viewer-coverage-evidence-"));
+  try {
+    const first = publishViewerSnapshot({
+      ...snapshotPublishOptions({ root, artifactStore, sequence: 1 }),
+      bootstrap: true,
+    });
+    const firstManifest = first.store.readManifest(first.manifestRef);
+    writeFixtureCoverageIndex({
+      root,
+      system: "cpc",
+      version: "3.0",
+      mappedPcrIds: [wheatPcrId],
+      confidence: "reviewed-evidence",
+      labelPrefix: "Updated leaf",
+    });
+    const second = publishViewerSnapshot({
+      ...snapshotPublishOptions({ root, artifactStore, sequence: 2 }),
+      changedPcrIds: [],
+    });
+    const secondManifest = second.store.readManifest(second.manifestRef);
+    const key = "cpc:3.0:CPC-001";
+    assert.equal(secondManifest.refs.pcr_entries[wheatPcrId], firstManifest.refs.pcr_entries[wheatPcrId]);
+    assert.notEqual(secondManifest.refs.coverage_entries[key], firstManifest.refs.coverage_entries[key]);
+    assert.notDeepEqual(secondManifest.refs.coverage_shards, firstManifest.refs.coverage_shards);
+    const entry = second.store.readObject(secondManifest.refs.coverage_entries[key]).entry;
+    assert.equal(entry.label, "Updated leaf 1");
+    assert.equal(entry.coverage_status, "mapped");
+    assert.equal(entry.mapping.confidence, "reviewed-evidence");
+    assert.equal(entry.mapping.acceptance.decision_ref, "docs/adr/viewer-fixture.md");
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+    rmSync(artifactStore, { recursive: true, force: true });
+  }
+});
+
+test("wrapper recovery makes retries idempotent after every durable publication phase", () => {
+  for (const phase of ["prepared", "history_prepared", "history_committed", "active_committed"]) {
+    const root = createViewerFixture();
+    const artifactStore = mkdtempSync(path.join(tmpdir(), `tiangong-pcr-viewer-retry-${phase}-`));
+    try {
+      const options = {
+        ...snapshotPublishOptions({ root, artifactStore, sequence: 1 }),
+        bootstrap: true,
+      };
+      assert.throws(
+        () => publishViewerSnapshot({ ...options, failurePhase: phase }),
+        (error) => error?.code === "VIEWER_PUBLICATION_INTERRUPTED",
+      );
+      const retried = publishViewerSnapshot(options);
+      assert.equal(retried.sequence, 1);
+      assert.equal(retried.store.readActive().manifest_ref, retried.manifestRef);
+      assert.equal(retried.store.readHistory().entries.length, 1);
+    } finally {
+      rmSync(root, { recursive: true, force: true });
+      rmSync(artifactStore, { recursive: true, force: true });
+    }
+  }
+});
+
+test("check recovers an interrupted publication before reading the active snapshot", () => {
+  const root = createViewerFixture();
+  const artifactStore = mkdtempSync(path.join(tmpdir(), "tiangong-pcr-viewer-check-recovery-"));
+  const generatorContractSha256 = sha256("viewer-check-recovery-generator\n");
+  try {
+    assert.throws(
+      () => publishViewerSnapshot({
+        ...snapshotPublishOptions({ root, artifactStore, sequence: 1 }),
+        generatorContractSha256,
+        bootstrap: true,
+        failurePhase: "history_committed",
+      }),
+      (error) => error?.code === "VIEWER_PUBLICATION_INTERRUPTED",
+    );
+    const checked = checkViewerSnapshot({
+      root,
+      artifactStore,
+      generatorContractSha256,
+      sourceVerifier: () => true,
+    });
+    assert.equal(checked.ok, true);
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+    rmSync(artifactStore, { recursive: true, force: true });
+  }
+});
+
+test("generator contract recursively binds real guidance, readiness, schema, and vocabulary dependencies", () => {
+  const contractRoot = mkdtempSync(path.join(tmpdir(), "tiangong-viewer-generator-contract-"));
+  const sourceRoot = createViewerFixture();
+  const artifactStore = mkdtempSync(path.join(tmpdir(), "tiangong-viewer-generator-store-"));
+  try {
+    for (const relativePath of [
+      "package.json",
+      "package-lock.json",
+      "builder/vocab",
+      "builder/schemas/pcr-material-index.schema.json",
+      "packages/pcr-core/src",
+      "packages/pcr-core/schemas",
+      "packages/pcr-viewer/scripts",
+      "packages/pcr-viewer/schemas",
+      "packages/pcr-viewer/static",
+    ]) {
+      const source = path.join(repoRoot, relativePath);
+      const target = path.join(contractRoot, relativePath);
+      mkdirSync(path.dirname(target), { recursive: true });
+      cpSync(source, target, { recursive: true });
+    }
+    const before = computeViewerGeneratorContractSha256({ contractRoot });
+    const first = publishViewerSnapshot({
+      ...snapshotPublishOptions({ root: sourceRoot, artifactStore, sequence: 1 }),
+      generatorContractSha256: before,
+      bootstrap: true,
+    });
+    const firstManifest = first.store.readManifest(first.manifestRef);
+    const dependency = path.join(contractRoot, "packages/pcr-core/src/projection-integrity.mjs");
+    writeFileSync(dependency, `${readFileSync(dependency, "utf8")}\n// contract mutation\n`);
+    const after = computeViewerGeneratorContractSha256({ contractRoot });
+    assert.notEqual(after, before);
+    assert.equal(computeViewerGeneratorContractSha256({ contractRoot }), after);
+    const second = publishViewerSnapshot({
+      ...snapshotPublishOptions({ root: sourceRoot, artifactStore, sequence: 2 }),
+      generatorContractSha256: after,
+      changedPcrIds: [],
+    });
+    const secondManifest = second.store.readManifest(second.manifestRef);
+    assert.deepEqual(second.rebuiltPcrIds, [wheatPcrId]);
+    assert.notEqual(
+      secondManifest.refs.pcr_entries[wheatPcrId],
+      firstManifest.refs.pcr_entries[wheatPcrId],
+    );
+    const beforeStatic = after;
+    const staticDependency = path.join(contractRoot, "packages/pcr-viewer/static/viewer-core.js");
+    writeFileSync(staticDependency, `${readFileSync(staticDependency, "utf8")}\n// direct dependency mutation\n`);
+    assert.notEqual(computeViewerGeneratorContractSha256({ contractRoot }), beforeStatic);
+  } finally {
+    rmSync(contractRoot, { recursive: true, force: true });
+    rmSync(sourceRoot, { recursive: true, force: true });
     rmSync(artifactStore, { recursive: true, force: true });
   }
 });
@@ -406,6 +651,52 @@ test("Viewer snapshot CLI exposes stable JSON failures and exact package scripts
   assert.equal(scripts["viewer:update"], "node packages/pcr-viewer/scripts/build-viewer-data.mjs update");
   assert.equal(scripts["viewer:check"], "node packages/pcr-viewer/scripts/build-viewer-data.mjs check");
   assert.equal(scripts["viewer:recover"], "node packages/pcr-viewer/scripts/build-viewer-data.mjs recover");
+});
+
+test("viewer:check reports semantic drift as stable JSON on stderr with empty stdout", () => {
+  const root = createViewerFixture();
+  const artifactStore = mkdtempSync(path.join(tmpdir(), "tiangong-pcr-viewer-check-cli-"));
+  try {
+    execFileSync("git", ["init", "-b", "main", root], { stdio: "ignore" });
+    execFileSync("git", ["-C", root, "config", "user.email", "viewer-test@example.invalid"]);
+    execFileSync("git", ["-C", root, "config", "user.name", "Viewer Test"]);
+    execFileSync("git", ["-C", root, "add", "."]);
+    execFileSync("git", ["-C", root, "commit", "-m", "fixture"], { stdio: "ignore" });
+    const commit = execFileSync("git", ["-C", root, "rev-parse", "HEAD"], { encoding: "utf8" }).trim();
+    const tree = execFileSync("git", ["-C", root, "rev-parse", "HEAD^{tree}"], { encoding: "utf8" }).trim();
+    publishViewerSnapshot({
+      ...snapshotPublishOptions({ root, artifactStore, sequence: 1 }),
+      sourceRef: "refs/heads/main",
+      integrationCommit: commit,
+      baseCommit: commit,
+      treeHash: tree,
+      sourceVerifier: null,
+      bootstrap: true,
+    });
+    mkdirSync(path.join(root, wheatPcrPath, "revision"));
+    writeFileSync(path.join(root, wheatPcrPath, "revision", "revision.yaml"), "revision: drift\n");
+
+    const scriptPath = path.join(repoRoot, "packages/pcr-viewer/scripts/build-viewer-data.mjs");
+    const result = spawnSync(process.execPath, [
+      scriptPath,
+      "check",
+      "--root",
+      root,
+      "--artifact-store",
+      artifactStore,
+      "--format",
+      "json",
+    ], { encoding: "utf8" });
+    assert.equal(result.status, 1);
+    assert.equal(result.stdout, "");
+    const failure = JSON.parse(result.stderr);
+    assert.equal(failure.ok, false);
+    assert.equal(failure.error.code, "VIEWER_SNAPSHOT_DRIFT");
+    assert.ok(failure.error.details.drift.includes("pcr_input_markers"));
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+    rmSync(artifactStore, { recursive: true, force: true });
+  }
 });
 
 test("viewer coverage counts classification leaves independently from PCR catalog size", () => {
@@ -1064,6 +1355,10 @@ function snapshotPublishOptions({ root, artifactStore, sequence }) {
   };
 }
 
+function gitFixtureOutput(root, args) {
+  return execFileSync("git", ["-C", root, ...args], { encoding: "utf8" }).trim();
+}
+
 function writeFixtureCatalog({ root, coverageIndexes, aliases = [] }) {
   const aliasRegistry = [
     "schema_version: 1",
@@ -1124,19 +1419,23 @@ function writeFixtureCoverageIndex({
   version,
   mappedPcrIds = [],
   unmappedCount = 0,
+  confidence = "fixture",
+  labelPrefix = "Fixture leaf",
 }) {
   const normalizedLeavesPath =
     `classifications/systems/${system}/${version}/normalized/leaves.json`;
   const mappingPath = `classifications/mappings/${system}-${version}-to-pcr.yaml`;
   const indexPath = `classifications/indexes/${system}-${version}-coverage.json`;
   const mappedEntries = mappedPcrIds.map((pcrId, index) =>
-    fixtureCoverageEntry({ system, index, pcrId }),
+    fixtureCoverageEntry({ system, index, pcrId, confidence, labelPrefix }),
   );
   const unmappedEntries = Array.from({ length: unmappedCount }, (_, offset) =>
     fixtureCoverageEntry({
       system,
       index: mappedEntries.length + offset,
       pcrId: null,
+      confidence,
+      labelPrefix,
     }),
   );
   const entries = [...mappedEntries, ...unmappedEntries];
@@ -1219,19 +1518,19 @@ function writeFixtureCoverageIndex({
   return indexPath;
 }
 
-function fixtureCoverageEntry({ system, index, pcrId }) {
+function fixtureCoverageEntry({ system, index, pcrId, confidence = "fixture", labelPrefix = "Fixture leaf" }) {
   const code = `${system.toUpperCase()}-${String(index + 1).padStart(3, "0")}`;
   return {
     code,
-    label: `Fixture leaf ${index + 1}`,
+    label: `${labelPrefix} ${index + 1}`,
     path_codes: [code],
-    path_titles: [`Fixture leaf ${index + 1}`],
+    path_titles: [`${labelPrefix} ${index + 1}`],
     coverage_status: pcrId ? "mapped" : "unmapped",
     mapping: pcrId
       ? {
           pcr_id: pcrId,
           mapping_type: "exact",
-          confidence: "fixture",
+          confidence,
           acceptance: {
             status: "accepted",
             decided_by: "viewer-test",

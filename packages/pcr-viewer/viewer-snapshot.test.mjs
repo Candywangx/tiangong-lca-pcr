@@ -57,10 +57,8 @@ function snapshotInput(overrides = {}) {
       { id: "pcr.agriculture.wheat-seed", title: "Wheat seed", lifecycle_status: "active", markdown: { "en-US": null, "zh-CN": null }, guidance: viewerGuidance("pcr.agriculture.wheat-seed") },
       { id: "pcr.industrial.cement", title: "Cement", lifecycle_status: "active", markdown: { "en-US": null, "zh-CN": null }, guidance: viewerGuidance("pcr.industrial.cement") },
     ],
-    aliasEntries: [{ id: "pcr.legacy.wheat", locator: "cpc:3.0:01111" }],
-    coverageEntries: [
-      { coordinate: { system: "cpc", version: "3.0" }, code: "01111", pcr_id: "pcr.agriculture.wheat-seed" },
-    ],
+    aliasEntries: [aliasEntry()],
+    coverageEntries: [coverageEntry()],
     ...overrides,
   };
 }
@@ -71,6 +69,56 @@ function objectIdentity() {
     schema_contract_sha256: sha256Ref("schema-contract-v1\n"),
     source_fingerprint: sha256Ref("source-v1\n"),
     release_revision_marker: null,
+  };
+}
+
+function aliasEntry({
+  id = "pcr.legacy.wheat",
+  code = "01111",
+  decisionRef = "docs/adr/viewer-alias.md",
+} = {}) {
+  return {
+    id,
+    locator: `cpc:3.0:${code}`,
+    source_pcr_path: `library/pcrs/legacy-products/example-products/${id.split(".").at(-1)}`,
+    target: {
+      kind: "classification_coverage",
+      classification_system: "cpc",
+      classification_version: "3.0",
+      code,
+    },
+    reason: "empty_scaffold_migration",
+    decision_ref: decisionRef,
+  };
+}
+
+function coverageEntry({
+  system = "cpc",
+  version = "3.0",
+  code = "01111",
+  pcrId = "pcr.agriculture.wheat-seed",
+  label = "Wheat seed",
+} = {}) {
+  return {
+    coordinate: { system, version },
+    code,
+    pcr_id: pcrId,
+    label,
+    path_codes: [code],
+    path_titles: [label],
+    coverage_status: pcrId === null ? "unmapped" : "mapped",
+    mapping: pcrId === null ? null : {
+      pcr_id: pcrId,
+      mapping_type: "exact",
+      confidence: "reviewed",
+      acceptance: {
+        status: "accepted",
+        decided_by: "viewer-test",
+        decided_at_utc: "2026-09-05T00:00:00Z",
+        decision_ref: "docs/adr/viewer-coverage.md",
+      },
+    },
+    legacy_reference: null,
   };
 }
 
@@ -122,6 +170,8 @@ test("viewer snapshot schemas are strict", () => {
   assert.equal(schemas.validate("viewer-object", { schema_version: 1, object_kind: "catalog_shard", identity, entry: { prefix: "aa", entries: [{ id: "pcr.a", object_ref: sha256Ref("a"), generated_at: "now" }] } }).valid, false);
   assert.equal(schemas.validate("viewer-object", { schema_version: 1, object_kind: "catalog_root", identity, entry: { shards: { aa: "not-a-ref" }, details: {} } }).valid, false);
   assert.equal(schemas.validate("viewer-object", { schema_version: 1, object_kind: "history_page", identity, entry: { entries: [{ sequence: 1, manifest_ref: sha256Ref("m"), generated_at: "now" }], previous_page_ref: null } }).valid, false);
+  assert.equal(schemas.validate("viewer-object", { schema_version: 1, object_kind: "alias_entry", identity, entry: { id: "pcr.legacy", locator: "cpc:3.0:01111" } }).valid, false);
+  assert.equal(schemas.validate("viewer-object", { schema_version: 1, object_kind: "coverage_entry", identity, entry: { coordinate: { system: "cpc", version: "3.0" }, code: "01111", pcr_id: null } }).valid, false);
 });
 
 test("PCR detail preserves the complete buildGuidance-shaped payload", () => {
@@ -182,8 +232,8 @@ test("catalog readiness is derived from guidance or must exactly agree with it",
 test("publication binds coverage targets and object provenance to exact source inputs", () => {
   const { root, store } = fixtureStore();
   try {
-    assert.throws(() => store.publish(snapshotInput({ coverageEntries: [{ coordinate: { system: "cpc", version: "3.0" }, code: "01111", pcr_id: "pcr.unknown" }] })), /coverage.*PCR|PCR.*coverage/iu);
-    assert.throws(() => store.publish(snapshotInput({ coverageEntries: [{ coordinate: { system: "hs", version: "2022" }, code: "01111", pcr_id: null }] })), /coverage.*source|source.*coverage/iu);
+    assert.throws(() => store.publish(snapshotInput({ coverageEntries: [coverageEntry({ pcrId: "pcr.unknown" })] })), /coverage.*PCR|PCR.*coverage/iu);
+    assert.throws(() => store.publish(snapshotInput({ coverageEntries: [coverageEntry({ system: "hs", version: "2022", pcrId: null })] })), /coverage.*source|source.*coverage/iu);
     const first = store.publish(snapshotInput());
     const firstManifest = store.readManifest(first.manifestRef);
     const second = store.publish(snapshotInput({ snapshotId: "snapshot-002", sequence: 2, source: { ...snapshotInput().source, catalog: sha256Ref("catalog-v2\n") } }));
@@ -197,20 +247,20 @@ test("global source attestations do not invalidate unchanged alias or coverage e
   const { root, store } = fixtureStore();
   try {
     const aliases = [
-      { id: "pcr.legacy.wheat", locator: "cpc:3.0:01111" },
-      { id: "pcr.legacy.cement", locator: "cpc:3.0:25232" },
+      aliasEntry(),
+      aliasEntry({ id: "pcr.legacy.cement", code: "25232" }),
     ];
     const coverage = [
-      { coordinate: { system: "cpc", version: "3.0" }, code: "01111", pcr_id: "pcr.agriculture.wheat-seed" },
-      { coordinate: { system: "cpc", version: "3.0" }, code: "01112", pcr_id: "pcr.agriculture.wheat-seed" },
+      coverageEntry(),
+      coverageEntry({ code: "01112" }),
     ];
     const first = store.publish(snapshotInput({ aliasEntries: aliases, coverageEntries: coverage }));
     const before = store.readManifest(first.manifestRef);
     const second = store.publish(snapshotInput({
       snapshotId: "snapshot-002", sequence: 2,
       source: { ...snapshotInput().source, aliases: sha256Ref("aliases-v2\n"), coverage: [{ coordinate: { system: "cpc", version: "3.0" }, ref: sha256Ref("coverage-v2\n") }] },
-      aliasEntries: [{ ...aliases[0], locator: "cpc:3.0:01110" }, aliases[1]],
-      coverageEntries: [{ ...coverage[0], pcr_id: null }, coverage[1]],
+      aliasEntries: [aliasEntry({ code: "01110" }), aliases[1]],
+      coverageEntries: [coverageEntry({ pcrId: null }), coverage[1]],
     }));
     const after = store.readManifest(second.manifestRef);
     assert.notEqual(after.refs.alias_entries[aliases[0].id], before.refs.alias_entries[aliases[0].id]);
@@ -225,7 +275,7 @@ test("global source attestations do not invalidate unchanged alias or coverage e
 test("readObject rejects digest-addressed JSON that is not canonical bytes", () => {
   const { root, store } = fixtureStore();
   try {
-    const value = { schema_version: 1, object_kind: "alias_entry", identity: objectIdentity(), entry: { id: "pcr.legacy", locator: "cpc:3.0:01111" } };
+    const value = { schema_version: 1, object_kind: "alias_entry", identity: objectIdentity(), entry: aliasEntry({ id: "pcr.legacy" }) };
     const noncanonical = Buffer.from(`${JSON.stringify(value, null, 2)}\n`, "utf8");
     const ref = sha256Ref(noncanonical);
     store.probe();
@@ -557,7 +607,7 @@ test("manifest validation rejects an alias shard that diverges from alias entry 
     const aliasId = "pcr.legacy.wheat";
     const changedAliasRef = store.writeObject({
       ...store.readObject(manifest.refs.alias_entries[aliasId]),
-      entry: { id: aliasId, locator: "cpc:3.0:99999" },
+      entry: aliasEntry({ id: aliasId, code: "99999" }),
     });
     const [prefix, shardRef] = Object.entries(manifest.refs.alias_shards)[0];
     const alteredShard = store.writeObject({
@@ -701,7 +751,7 @@ test("a single alias update only changes its entry, shard, and alias root", () =
     const before = store.readManifest(first.manifestRef);
     const second = store.publish(snapshotInput({
       snapshotId: "snapshot-002", sequence: 2,
-      aliasEntries: [{ id: "pcr.legacy.wheat", locator: "cpc:3.0:09999" }],
+      aliasEntries: [aliasEntry({ code: "09999" })],
     }));
     const after = store.readManifest(second.manifestRef);
     assert.notEqual(after.refs.alias_entries["pcr.legacy.wheat"], before.refs.alias_entries["pcr.legacy.wheat"]);

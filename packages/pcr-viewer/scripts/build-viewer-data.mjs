@@ -28,6 +28,7 @@ import {
   getClassificationCoverageSummary,
   listPcrs,
   PCR_CATALOG_SCOPES,
+  pcrReadContextAliasInputFingerprint,
   readClassificationCoverage,
   readPcrMarkdown,
   withPcrReadContextSession,
@@ -54,6 +55,7 @@ export class ViewerBuilderError extends Error {
     super(message, options);
     this.name = "ViewerBuilderError";
     this.code = code;
+    if (options.details !== undefined) this.details = structuredClone(options.details);
   }
 }
 
@@ -265,8 +267,10 @@ export function publishViewerSnapshot({
   generatorContractSha256 = null,
   sourceVerifier = null,
   onPcrBodyRead = null,
+  onPcrArtifactRead = null,
   onAliasValidation = null,
   forceStaleLock = false,
+  failurePhase = null,
 } = {}) {
   const resolvedRoot = realpathSync(path.resolve(root));
   const resolvedStore = requireArtifactStore(artifactStore);
@@ -276,6 +280,7 @@ export function publishViewerSnapshot({
     generatorVersion: VIEWER_INCREMENTAL_GENERATOR_VERSION,
     sourceVerifier: verifier,
   });
+  store.recover({ forceStaleLock });
   const hasActive = existsSync(path.join(resolvedStore, "active.json"));
   if (!hasActive && bootstrap !== true) {
     throw new ViewerBuilderError(
@@ -315,10 +320,13 @@ export function publishViewerSnapshot({
   const sourceModel = readIncrementalSourceModel({
     root: resolvedRoot,
     previousManifest,
+    integrationCommit,
+    deriveGitChangedPcrIds: sourceVerifier === null,
     generatorContractSha256: generatorRef,
     changedPcrIds,
     renamedFrom,
     onPcrBodyRead,
+    onPcrArtifactRead,
     onAliasValidation,
     store,
   });
@@ -347,6 +355,7 @@ export function publishViewerSnapshot({
     coverageEntries: sourceModel.coverageEntries,
     pinnedSources: [],
     forceStaleLock,
+    failurePhase,
   });
   return Object.freeze({
     ...result,
@@ -371,6 +380,7 @@ export function checkViewerSnapshot({
     generatorVersion: VIEWER_INCREMENTAL_GENERATOR_VERSION,
     sourceVerifier: sourceVerifier ?? createGitSourceVerifier(resolvedRoot),
   });
+  store.recover();
   const active = store.readActive();
   const manifest = store.readManifest(active.manifest_ref);
   const generatorRef = generatorContractSha256 ?? computeViewerGeneratorContractSha256();
@@ -431,10 +441,13 @@ export function recoverViewerSnapshot({
 function readIncrementalSourceModel({
   root,
   previousManifest,
+  integrationCommit = null,
+  deriveGitChangedPcrIds = false,
   generatorContractSha256,
   changedPcrIds,
   renamedFrom,
   onPcrBodyRead,
+  onPcrArtifactRead,
   onAliasValidation,
   store,
 }) {
@@ -464,40 +477,32 @@ function readIncrementalSourceModel({
     materialIds.add(pcr.id);
   }
 
+  const aliasRef = pcrReadContextAliasInputFingerprint({ root });
+  const reusableAliases = previousManifest?.source?.aliases === aliasRef
+    ? readPriorAliasRecords(store, previousManifest)
+    : null;
   let aliasValidationCount = 0;
   const context = createPcrReadContext({
     root,
+    onPcrArtifactRead,
     onAliasValidation: (event) => {
       aliasValidationCount += 1;
       onAliasValidation?.(event);
     },
+    validatedAliasReuse: reusableAliases === null
+      ? null
+      : { fingerprint: aliasRef, aliases: reusableAliases },
   });
-  if (aliasValidationCount !== 1) {
-    throw new ViewerBuilderError("VIEWER_ALIAS_GATE_INVALID", "The Viewer build must validate alias truth exactly once.");
+  const expectedAliasValidations = reusableAliases === null ? 1 : 0;
+  if (aliasValidationCount !== expectedAliasValidations) {
+    throw new ViewerBuilderError("VIEWER_ALIAS_GATE_INVALID", "The Viewer build ran an unexpected number of alias validations.");
   }
 
   return withPcrReadContextSession({
     context,
     root,
     read: () => {
-      const livePcrs = listPcrs({ root, refresh: true, scope: "material" });
-      const liveById = new Map(livePcrs.map((entry) => [entry.id, entry]));
-      const indexEntries = materialIndex.pcrs.map((entry) => {
-        const live = liveById.get(entry.id);
-        if (!live || live.path !== entry.path) {
-          throw new ViewerBuilderError(
-            "VIEWER_MATERIAL_INDEX_STALE",
-            `Material index entry does not match current PCR truth: ${entry.id}.`,
-          );
-        }
-        return live;
-      });
-      if (livePcrs.length !== indexEntries.length) {
-        throw new ViewerBuilderError(
-          "VIEWER_MATERIAL_INDEX_STALE",
-          "Material index membership does not match the current material PCR catalog.",
-        );
-      }
+      const indexEntries = materialIndex.pcrs.map((entry) => structuredClone(entry));
 
       const previousIds = new Set(Object.keys(previousManifest?.refs?.pcr_entries ?? {}));
       const previousCatalogEntries = previousManifest
@@ -517,8 +522,20 @@ function readIncrementalSourceModel({
       for (const [successor, predecessor] of Object.entries(renamedFrom)) {
         inferredRenames.set(String(successor), String(predecessor));
       }
-      const explicitHints = changedPcrIds !== undefined;
+      const derivePinnedDelta = Boolean(previousManifest && deriveGitChangedPcrIds);
+      const explicitHints = changedPcrIds !== undefined || derivePinnedDelta;
       const hinted = new Set((changedPcrIds ?? []).map(String));
+      if (derivePinnedDelta) {
+        for (const id of deriveChangedPcrIdsFromGit({
+          root,
+          previousCommit: previousManifest.capture.integration_commit,
+          currentCommit: integrationCommit,
+          currentEntries: indexEntries,
+          previousEntries: [...previousCatalogEntries.values()],
+        })) {
+          hinted.add(id);
+        }
+      }
       for (const id of hinted) {
         if (!materialIds.has(id) && !previousIds.has(id)) {
           throw new ViewerBuilderError("VIEWER_CHANGED_PCR_UNKNOWN", `Changed-PCR hint is not present in either snapshot: ${id}.`);
@@ -531,35 +548,40 @@ function readIncrementalSourceModel({
       );
       const rebuiltPcrIds = [];
       const pcrInputMarkers = {};
-      const pcrEntries = indexEntries.map((catalogEntry) => {
-        const previousRef = previousManifest?.refs?.pcr_entries?.[catalogEntry.id];
-        const previousCatalog = previousCatalogEntries.get(catalogEntry.id) ?? null;
-        const pathChanged = previousCatalog && previousCatalog.path !== catalogEntry.path;
+      const pcrEntries = indexEntries.map((materialEntry) => {
+        const previousRef = previousManifest?.refs?.pcr_entries?.[materialEntry.id];
+        const previousCatalog = previousCatalogEntries.get(materialEntry.id) ?? null;
+        const metadataChanged = previousCatalog && materialIndexMetadataChanged(previousCatalog, materialEntry);
         const rebuild =
           !previousManifest ||
           generatorChanged ||
           !explicitHints ||
-          hinted.has(catalogEntry.id) ||
+          hinted.has(materialEntry.id) ||
           !previousRef ||
-          pathChanged;
-        const decorated = decorateCatalogEntry(catalogEntry);
+          metadataChanged;
         if (!rebuild) {
           const prior = store.readObject(previousRef).entry;
-          pcrInputMarkers[catalogEntry.id] = previousManifest.source.release_revision_markers[catalogEntry.id];
-          return { ...decorated, markdown: structuredClone(prior.markdown), guidance: structuredClone(prior.guidance) };
+          pcrInputMarkers[materialEntry.id] = previousManifest.source.release_revision_markers[materialEntry.id];
+          return {
+            ...decorateCatalogEntry({ ...previousCatalog, ...materialEntry }),
+            markdown: structuredClone(prior.markdown),
+            guidance: structuredClone(prior.guidance),
+          };
         }
-        rebuiltPcrIds.push(catalogEntry.id);
+        rebuiltPcrIds.push(materialEntry.id);
+        onPcrBodyRead?.({ pcr_id: materialEntry.id, kind: "guidance" });
+        const guidance = buildGuidance({ root, pcrId: materialEntry.id, context });
+        assertMaterialIndexEntryMatchesPcr(materialEntry, guidance.pcr);
+        const decorated = decorateCatalogEntry(guidance.pcr);
         const markdown = Object.fromEntries(languages.map((language) => {
-          onPcrBodyRead?.({ pcr_id: catalogEntry.id, kind: "markdown", language });
-          return [language, readPcrMarkdown({ root, pcrId: catalogEntry.id, language, context })];
+          onPcrBodyRead?.({ pcr_id: materialEntry.id, kind: "markdown", language });
+          return [language, readPcrMarkdown({ root, pcrId: materialEntry.id, language, context })];
         }));
-        onPcrBodyRead?.({ pcr_id: catalogEntry.id, kind: "guidance" });
-        const guidance = buildGuidance({ root, pcrId: catalogEntry.id, context });
-        pcrInputMarkers[catalogEntry.id] = hashPcrInputs({ root, pcr: catalogEntry });
+        pcrInputMarkers[materialEntry.id] = hashPcrInputs({ root, pcr: guidance.pcr });
         return {
           ...decorated,
-          ...(inferredRenames.has(catalogEntry.id)
-            ? { renamed_from: inferredRenames.get(catalogEntry.id) }
+          ...(inferredRenames.has(materialEntry.id)
+            ? { renamed_from: inferredRenames.get(materialEntry.id) }
             : {}),
           markdown,
           guidance,
@@ -570,6 +592,10 @@ function readIncrementalSourceModel({
       const aliasEntries = context.aliases.map((alias) => ({
         id: alias.source_pcr_id,
         locator: aliasLocator(alias),
+        source_pcr_path: alias.source_pcr_path,
+        target: structuredClone(alias.target),
+        reason: alias.reason,
+        decision_ref: alias.decision_ref,
       }));
       const removedPcrIds = [...previousIds].filter((id) => !materialIds.has(id)).sort();
       return {
@@ -577,10 +603,7 @@ function readIncrementalSourceModel({
           Buffer.from(`library/catalog.yaml\0${catalogText}\0${indexRelativePath}\0`, "utf8"),
           Buffer.from(indexText, "utf8"),
         ])),
-        aliasRef: sha256Ref(canonicalBytes({
-          binding: catalog.pcr_id_aliases,
-          aliases: context.aliases,
-        })),
+        aliasRef,
         coverageSources: coverage.sources,
         coverageEntries: coverage.entries,
         aliasEntries,
@@ -612,6 +635,79 @@ function decorateCatalogEntry(pcr) {
   };
 }
 
+function materialIndexMetadataChanged(previous, current) {
+  return canonicalBytes({
+    id: previous.id,
+    path: previous.path,
+    title: previous.title,
+    status: previous.status,
+    content_maturity: previous.content_maturity,
+  }).compare(canonicalBytes({
+    id: current.id,
+    path: current.path,
+    title: current.title,
+    status: current.status,
+    content_maturity: current.content_maturity,
+  })) !== 0;
+}
+
+function assertMaterialIndexEntryMatchesPcr(indexEntry, pcr) {
+  if (materialIndexMetadataChanged(pcr, indexEntry)) {
+    throw new ViewerBuilderError(
+      "VIEWER_MATERIAL_INDEX_STALE",
+      `Material index entry does not match current PCR truth: ${indexEntry.id}.`,
+    );
+  }
+}
+
+function deriveChangedPcrIdsFromGit({
+  root,
+  previousCommit,
+  currentCommit,
+  currentEntries,
+  previousEntries,
+}) {
+  if (!/^[a-f0-9]{40,64}$/u.test(previousCommit) || !/^[a-f0-9]{40,64}$/u.test(currentCommit)) {
+    throw new ViewerBuilderError(
+      "VIEWER_GIT_DELTA_UNAVAILABLE",
+      "Pinned Viewer source commits are required to derive exact changed-PCR inputs.",
+    );
+  }
+  let output;
+  try {
+    output = execFileSync("git", [
+      "-C",
+      root,
+      "diff",
+      "--name-only",
+      "-z",
+      "--no-ext-diff",
+      "--no-renames",
+      previousCommit,
+      currentCommit,
+      "--",
+      "library/pcrs",
+    ], { stdio: ["ignore", "pipe", "pipe"], maxBuffer: 16 * 1024 * 1024 });
+  } catch (error) {
+    throw new ViewerBuilderError(
+      "VIEWER_GIT_DELTA_UNAVAILABLE",
+      "Could not derive changed PCRs from the pinned Viewer source commits.",
+      { cause: error },
+    );
+  }
+  const pcrIdsByPath = new Map(
+    [...previousEntries, ...currentEntries].map((entry) => [entry.path, entry.id]),
+  );
+  const changed = new Set();
+  for (const relativePath of output.toString("utf8").split("\0").filter(Boolean)) {
+    const segments = relativePath.split("/");
+    if (segments.length < 5) continue;
+    const id = pcrIdsByPath.get(segments.slice(0, 5).join("/"));
+    if (id) changed.add(id);
+  }
+  return [...changed].sort();
+}
+
 function readCoverageProjection({ root, catalog }) {
   const declarations = catalog?.classification_coverage_indexes;
   if (!Array.isArray(declarations) || declarations.length === 0) {
@@ -636,6 +732,7 @@ function readCoverageProjection({ root, catalog }) {
     for (const entry of document.entries) {
       entries.push({
         coordinate,
+        ...structuredClone(entry),
         code: String(entry.code),
         pcr_id: entry.mapping?.pcr_id ? String(entry.mapping.pcr_id) : null,
       });
@@ -650,6 +747,29 @@ function aliasLocator(alias) {
     return `${String(alias.target.classification_system).toLowerCase()}:${alias.target.classification_version}:${alias.target.code}`;
   }
   throw new ViewerBuilderError("VIEWER_ALIAS_TARGET_INVALID", `Unsupported alias target for ${String(alias?.source_pcr_id)}.`);
+}
+
+function readPriorAliasRecords(store, manifest) {
+  const aliases = [];
+  for (const ref of Object.values(manifest.refs.alias_entries)) {
+    const entry = store.readObject(ref).entry;
+    if (
+      typeof entry.source_pcr_path !== "string" ||
+      !entry.target ||
+      typeof entry.reason !== "string" ||
+      typeof entry.decision_ref !== "string"
+    ) {
+      return null;
+    }
+    aliases.push({
+      source_pcr_id: entry.id,
+      source_pcr_path: entry.source_pcr_path,
+      target: structuredClone(entry.target),
+      reason: entry.reason,
+      decision_ref: entry.decision_ref,
+    });
+  }
+  return aliases.sort((left, right) => left.source_pcr_id.localeCompare(right.source_pcr_id));
 }
 
 function readPreviousCatalogEntries(store, manifest) {
@@ -712,21 +832,37 @@ function listRegularFilesRecursively({ root, directory, relativeDirectory }) {
   return files;
 }
 
-function computeViewerGeneratorContractSha256() {
-  const files = [
-    new URL("./build-viewer-data.mjs", import.meta.url),
-    new URL("./snapshot-store.mjs", import.meta.url),
-    new URL("./snapshot-format.mjs", import.meta.url),
-    new URL("../schemas/viewer-object.schema.json", import.meta.url),
-    new URL("../schemas/viewer-snapshot-manifest.schema.json", import.meta.url),
-    new URL("../../pcr-core/src/index.mjs", import.meta.url),
-    new URL("../../pcr-core/src/read-context.mjs", import.meta.url),
+export function computeViewerGeneratorContractSha256({ contractRoot = repoRoot } = {}) {
+  const resolvedRoot = realpathSync(path.resolve(contractRoot));
+  const requiredFiles = ["package.json", "package-lock.json", "builder/schemas/pcr-material-index.schema.json"];
+  const requiredDirectories = [
+    "builder/vocab",
+    "packages/pcr-core/src",
+    "packages/pcr-core/schemas",
+    "packages/pcr-viewer/scripts",
+    "packages/pcr-viewer/schemas",
+    "packages/pcr-viewer/static",
   ];
+  const files = [...requiredFiles];
+  for (const relativeDirectory of requiredDirectories) {
+    const directory = path.join(resolvedRoot, ...relativeDirectory.split("/"));
+    const stat = lstatSync(directory);
+    if (stat.isSymbolicLink() || !stat.isDirectory()) {
+      throw new ViewerBuilderError("VIEWER_GENERATOR_CONTRACT_UNSAFE", `Generator-contract dependency must be a directory: ${relativeDirectory}.`);
+    }
+    files.push(...listRegularFilesRecursively({ root: resolvedRoot, directory, relativeDirectory }));
+  }
+  files.sort();
   const hash = createHash("sha256");
-  for (const url of files) {
-    hash.update(toPosix(path.relative(repoRoot, fileURLToPath(url))), "utf8");
+  for (const relativePath of files) {
+    const filePath = path.join(resolvedRoot, ...relativePath.split("/"));
+    const stat = lstatSync(filePath);
+    if (stat.isSymbolicLink() || !stat.isFile()) {
+      throw new ViewerBuilderError("VIEWER_GENERATOR_CONTRACT_UNSAFE", `Generator-contract dependency must be a regular file: ${relativePath}.`);
+    }
+    hash.update(relativePath, "utf8");
     hash.update("\0");
-    hash.update(readFileSync(fileURLToPath(url)));
+    hash.update(readFileSync(filePath));
     hash.update("\0");
   }
   return `sha256:${hash.digest("hex")}`;
@@ -1211,7 +1347,13 @@ function runCli(argv) {
     } else if (command === "check") {
       requireArtifactStore(options.artifactStore);
       output = checkViewerSnapshot(options);
-      if (!output.ok) process.exitCode = 1;
+      if (!output.ok) {
+        throw new ViewerBuilderError(
+          "VIEWER_SNAPSHOT_DRIFT",
+          `Viewer snapshot ${output.snapshot_id} differs from canonical source.`,
+          { details: { snapshot_id: output.snapshot_id, sequence: output.sequence, drift: output.drift } },
+        );
+      }
     } else if (command === "recover") {
       requireArtifactStore(options.artifactStore);
       output = { ok: true, ...recoverViewerSnapshot(options) };
@@ -1226,6 +1368,7 @@ function runCli(argv) {
       error: {
         code: typeof error?.code === "string" ? error.code : "VIEWER_COMMAND_FAILED",
         message: error instanceof Error ? error.message : String(error),
+        ...(error?.details === undefined ? {} : { details: structuredClone(error.details) }),
       },
     };
     console.error(format === "json" ? JSON.stringify(failure) : `${failure.error.code}: ${failure.error.message}`);

@@ -28,6 +28,8 @@ import {
   assertPcrReadContextFresh,
   createPcrReadContext,
   getPcrReadContextCatalog,
+  observePcrReadContextArtifactRead,
+  pcrReadContextAliasInputFingerprint,
   withPcrReadContextSession,
 } from "./read-context.mjs";
 import { parseYaml } from "./yaml-lite.mjs";
@@ -39,7 +41,7 @@ import {
 } from "./generated/controlled-vocabulary.mjs";
 
 export const FEEDBACK_TYPES = FEEDBACK_TYPE_VALUES;
-export { createPcrReadContext, withPcrReadContextSession };
+export { createPcrReadContext, pcrReadContextAliasInputFingerprint, withPcrReadContextSession };
 export {
   CLASSIFICATION_COVERAGE_STATUSES,
   PcrClassificationCodeUnknownError,
@@ -970,11 +972,11 @@ function getCurrentPcrSnapshotUnchecked({ root, pcrId, refresh = false, context 
   if (!entry) {
     throw new Error(`PCR not found: ${pcrId}`);
   }
-  return currentPcrSnapshot(normalizedRoot, entry);
+  return currentPcrSnapshot(normalizedRoot, entry, context);
 }
 
-function currentPcrSnapshot(root, entry) {
-  const snapshotFiles = readConsistentSnapshotFiles({ root, entry });
+function currentPcrSnapshot(root, entry, context = null) {
+  const snapshotFiles = readConsistentSnapshotFiles({ root, entry, context });
   const pcr = pcrFromManifest({
     root,
     pcrDir: path.dirname(entry.manifestPath),
@@ -995,7 +997,7 @@ function currentPcrSnapshot(root, entry) {
   return { pcr, artifacts: snapshotFiles.artifacts, ...projection };
 }
 
-function readConsistentSnapshotFiles({ root, entry }) {
+function readConsistentSnapshotFiles({ root, entry, context = null }) {
   let lastFailure = null;
   for (let attempt = 1; attempt <= CURRENT_SNAPSHOT_MAX_ATTEMPTS; attempt += 1) {
     try {
@@ -1015,7 +1017,7 @@ function readConsistentSnapshotFiles({ root, entry }) {
       const artifacts = Object.fromEntries(
         Object.values(RELEASE_ARTIFACTS).map((filename) => [
           filename,
-          readOptionalCanonicalFile(path.join(locationA.pcrDir, filename)),
+          readObservedPcrArtifact({ root, context, pcrDir: locationA.pcrDir, filename }),
         ]),
       );
       const releaseFailures = releaseArtifactFailures({ manifest, artifacts });
@@ -1056,6 +1058,18 @@ function readConsistentSnapshotFiles({ root, entry }) {
     attempts: CURRENT_SNAPSHOT_MAX_ATTEMPTS,
     lastFailure,
   });
+}
+
+function readObservedPcrArtifact({ root, context, pcrDir, filename }) {
+  const artifactPath = path.join(pcrDir, filename);
+  if (context) {
+    observePcrReadContextArtifactRead({
+      context,
+      root,
+      relativePath: toPosix(path.relative(root, artifactPath)),
+    });
+  }
+  return readOptionalCanonicalFile(artifactPath);
 }
 
 function releaseArtifactFailures({ manifest, artifacts }) {

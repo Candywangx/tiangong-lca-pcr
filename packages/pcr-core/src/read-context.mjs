@@ -48,7 +48,9 @@ export function createPcrReadContext({
   beforeAliasValidation = null,
   onBindingCheck = null,
   onCatalogSnapshot = null,
+  onPcrArtifactRead = null,
   beforeBoundSourceOpen = null,
+  validatedAliasReuse = null,
 }) {
   const rootPath = canonicalRoot(root);
   const catalogSource = readRepositoryFile({ root: rootPath, relativePath: CATALOG_PATH });
@@ -57,7 +59,6 @@ export function createPcrReadContext({
   const aliasDependencyPathsBefore = pcrIdAliasValidationDependencies({ root: rootPath });
   const aliasSourcePathStatesBefore = pcrIdAliasSourcePcrPathStates({ root: rootPath });
   const boundPaths = [CATALOG_PATH, ...dependencyPaths, ...aliasDependencyPathsBefore];
-  beforeAliasValidation?.({ root: rootPath });
   const bindingsBefore = captureBindings({
     root: rootPath,
     relativePaths: boundPaths,
@@ -70,11 +71,44 @@ export function createPcrReadContext({
       reason: "catalog changed after its dependency declarations were read",
     });
   }
-  const aliases = readPcrIdAliases({ root: rootPath });
-  onAliasValidation?.({
-    root: rootPath,
-    aliases: deepFreeze(structuredClone(aliases)),
+  const aliasFingerprintBefore = aliasInputFingerprint({
+    bindings: bindingsBefore,
+    aliasDependencyPaths: aliasDependencyPathsBefore,
+    aliasSourcePathStates: aliasSourcePathStatesBefore,
   });
+  let aliases;
+  if (validatedAliasReuse !== null) {
+    const declaredRegistry = parseYaml(readRepositoryFile({
+      root: rootPath,
+      relativePath: declaredPath(catalog.pcr_id_aliases?.path, "pcr_id_aliases.path", rootPath),
+    }).text);
+    const declaredAliases = Array.isArray(declaredRegistry?.aliases)
+      ? structuredClone(declaredRegistry.aliases).sort(compareAliases)
+      : null;
+    const attestedAliases = Array.isArray(validatedAliasReuse?.aliases)
+      ? structuredClone(validatedAliasReuse.aliases).sort(compareAliases)
+      : null;
+    if (
+      validatedAliasReuse?.fingerprint !== aliasFingerprintBefore ||
+      attestedAliases === null ||
+      declaredAliases === null ||
+      stableJson(attestedAliases) !== stableJson(declaredAliases)
+    ) {
+      throw new PcrReadContextStaleError({
+        root: rootPath,
+        source: PCR_ID_ALIAS_REGISTRY_PATH,
+        reason: "validated alias reuse attestation does not match current bound inputs",
+      });
+    }
+    aliases = attestedAliases;
+  } else {
+    beforeAliasValidation?.({ root: rootPath });
+    aliases = readPcrIdAliases({ root: rootPath });
+    onAliasValidation?.({
+      root: rootPath,
+      aliases: deepFreeze(structuredClone(aliases)),
+    });
+  }
   const aliasDependencyPathsAfter = pcrIdAliasValidationDependencies({ root: rootPath });
   const aliasSourcePathStatesAfter = pcrIdAliasSourcePcrPathStates({ root: rootPath });
   if (!sameStrings(aliasDependencyPathsBefore, aliasDependencyPathsAfter)) {
@@ -97,6 +131,17 @@ export function createPcrReadContext({
     beforeBoundSourceOpen,
   });
   assertBindingSnapshotsMatch({ root: rootPath, before: bindingsBefore, after: bindingsAfter });
+  if (aliasInputFingerprint({
+    bindings: bindingsAfter,
+    aliasDependencyPaths: aliasDependencyPathsAfter,
+    aliasSourcePathStates: aliasSourcePathStatesAfter,
+  }) !== aliasFingerprintBefore) {
+    throw new PcrReadContextStaleError({
+      root: rootPath,
+      source: PCR_ID_ALIAS_REGISTRY_PATH,
+      reason: "alias reuse inputs changed while the read context was created",
+    });
+  }
 
   const aliasByPcrId = new Map();
   for (const alias of aliases) {
@@ -116,8 +161,23 @@ export function createPcrReadContext({
   contextBindings.set(context, bindingsAfter);
   contextAliasDependencyPaths.set(context, aliasDependencyPathsAfter);
   contextAliasSourcePathStates.set(context, aliasSourcePathStatesAfter);
-  contextObservers.set(context, { onBindingCheck, onCatalogSnapshot });
+  contextObservers.set(context, { onBindingCheck, onCatalogSnapshot, onPcrArtifactRead });
   return Object.freeze(context);
+}
+
+export function pcrReadContextAliasInputFingerprint({ root }) {
+  const rootPath = canonicalRoot(root);
+  const dependencyPaths = pcrIdAliasValidationDependencies({ root: rootPath });
+  const sourcePathStates = pcrIdAliasSourcePcrPathStates({ root: rootPath });
+  const bindings = captureBindings({
+    root: rootPath,
+    relativePaths: [CATALOG_PATH, ...dependencyPaths],
+  });
+  return aliasInputFingerprint({
+    bindings,
+    aliasDependencyPaths: dependencyPaths,
+    aliasSourcePathStates: sourcePathStates,
+  });
 }
 
 export function isPcrReadContext(value) {
@@ -233,6 +293,14 @@ export function getPcrReadContextCatalog({ context, root, readCatalog }) {
     });
   }
   return contextCatalogs.get(context);
+}
+
+export function observePcrReadContextArtifactRead({ context, root, relativePath }) {
+  assertPcrReadContextFresh({ context, root });
+  contextObservers.get(context)?.onPcrArtifactRead?.({
+    root: context.root,
+    relative_path: String(relativePath),
+  });
 }
 
 export function findPcrIdAliasInReadContext({ context, root, pcrId }) {
@@ -398,6 +466,34 @@ function sameRecords(left, right) {
   return left.length === right.length && left.every(
     (entry, index) => entry.path === right[index].path && entry.state === right[index].state,
   );
+}
+
+function compareAliases(left, right) {
+  return String(left?.source_pcr_id ?? "").localeCompare(String(right?.source_pcr_id ?? ""));
+}
+
+function stableJson(value) {
+  if (Array.isArray(value)) {
+    return `[${value.map((entry) => stableJson(entry)).join(",")}]`;
+  }
+  if (value && typeof value === "object") {
+    return `{${Object.keys(value)
+      .sort()
+      .map((key) => `${JSON.stringify(key)}:${stableJson(value[key])}`)
+      .join(",")}}`;
+  }
+  return JSON.stringify(value);
+}
+
+function aliasInputFingerprint({ bindings, aliasDependencyPaths, aliasSourcePathStates }) {
+  const sources = [CATALOG_PATH, ...aliasDependencyPaths]
+    .filter((value, index, values) => values.indexOf(value) === index)
+    .sort()
+    .map((relativePath) => ({ relative_path: relativePath, sha256: bindings.get(relativePath) }));
+  return `sha256:${createHash("sha256").update(JSON.stringify({
+    sources,
+    source_path_states: aliasSourcePathStates,
+  })).digest("hex")}`;
 }
 
 function readSynchronously(read) {

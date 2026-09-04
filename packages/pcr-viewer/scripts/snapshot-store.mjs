@@ -649,12 +649,18 @@ export class ViewerSnapshotStore {
       for (const field of ["id", "status", "record_kind", "search_text"]) requiredText(field);
       assertMarkdown(entry.title);
     } else if (value.object_kind === "alias_entry") {
-      assertExactKeys(entry, ["id", "locator"], "alias_entry");
-      requiredText("id"); requiredText("locator");
+      assertExactKeys(entry, ["id", "locator", "source_pcr_path", "target", "reason", "decision_ref"], "alias_entry");
+      for (const field of ["id", "locator", "source_pcr_path", "reason", "decision_ref"]) requiredText(field);
+      const locator = entry.target.kind === "canonical_pcr"
+        ? entry.target.pcr_id
+        : `${entry.target.classification_system}:${entry.target.classification_version}:${entry.target.code}`;
+      if (entry.locator !== locator) throw new ViewerSnapshotStoreError("VIEWER_OBJECT_SEMANTIC_INVALID", "alias_entry.locator does not match target evidence.");
     } else if (value.object_kind === "coverage_entry") {
-      assertExactKeys(entry, ["coordinate", "code", "pcr_id"], "coverage_entry");
-      normalizeCoordinate(entry.coordinate); requiredText("code");
+      assertExactKeys(entry, ["coordinate", "code", "pcr_id", "label", "path_codes", "path_titles", "coverage_status", "mapping", "legacy_reference"], "coverage_entry");
+      normalizeCoordinate(entry.coordinate);
+      for (const field of ["code", "label", "coverage_status"]) requiredText(field);
       if (entry.pcr_id !== null && (typeof entry.pcr_id !== "string" || !entry.pcr_id)) throw new ViewerSnapshotStoreError("VIEWER_OBJECT_SEMANTIC_INVALID", "coverage_entry.pcr_id must be a string or null.");
+      if (Object.hasOwn(entry, "mapping") && entry.pcr_id !== (entry.mapping?.pcr_id ?? null)) throw new ViewerSnapshotStoreError("VIEWER_OBJECT_SEMANTIC_INVALID", "coverage_entry.pcr_id does not match mapping evidence.");
     } else if (value.object_kind === "ui_bundle") {
       assertExactKeys(entry, ["id", "asset_url"], "ui_bundle");
       requiredText("id");

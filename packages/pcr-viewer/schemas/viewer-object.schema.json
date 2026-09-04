@@ -67,6 +67,28 @@
         "version": { "type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$" }
       }
     },
+    "aliasTarget": {
+      "oneOf": [
+        {
+          "type": "object", "additionalProperties": false,
+          "required": ["kind", "classification_system", "classification_version", "code"],
+          "properties": {
+            "kind": { "const": "classification_coverage" },
+            "classification_system": { "type": "string", "pattern": "^[a-z0-9][a-z0-9_-]*$" },
+            "classification_version": { "type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$" },
+            "code": { "type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$" }
+          }
+        },
+        {
+          "type": "object", "additionalProperties": false,
+          "required": ["kind", "pcr_id"],
+          "properties": {
+            "kind": { "const": "canonical_pcr" },
+            "pcr_id": { "type": "string", "pattern": "^pcr\\." }
+          }
+        }
+      ]
+    },
     "refMap": {
       "type": "object",
       "additionalProperties": { "$ref": "#/$defs/ref" }
@@ -161,8 +183,16 @@
       "allOf": [
         { "$ref": "#/$defs/base" },
         { "type": "object", "properties": { "object_kind": { "const": "alias_entry" }, "entry": {
-          "type": "object", "additionalProperties": false, "required": ["id", "locator"],
-          "properties": { "id": { "$ref": "#/$defs/text" }, "locator": { "$ref": "#/$defs/text" } }
+          "type": "object", "additionalProperties": false,
+          "required": ["id", "locator", "source_pcr_path", "target", "reason", "decision_ref"],
+          "properties": {
+            "id": { "$ref": "#/$defs/text" },
+            "locator": { "$ref": "#/$defs/text" },
+            "source_pcr_path": { "type": "string", "pattern": "^library/pcrs/" },
+            "target": { "$ref": "#/$defs/aliasTarget" },
+            "reason": { "enum": ["empty_scaffold_migration", "canonical_pcr_replacement"] },
+            "decision_ref": { "$ref": "#/$defs/text" }
+          }
         } } }
       ]
     },
@@ -170,8 +200,19 @@
       "allOf": [
         { "$ref": "#/$defs/base" },
         { "type": "object", "properties": { "object_kind": { "const": "coverage_entry" }, "entry": {
-          "type": "object", "additionalProperties": false, "required": ["coordinate", "code", "pcr_id"],
-          "properties": { "coordinate": { "$ref": "#/$defs/coordinate" }, "code": { "$ref": "#/$defs/text" }, "pcr_id": { "type": ["string", "null"] } }
+          "type": "object", "additionalProperties": false,
+          "required": ["coordinate", "code", "pcr_id", "label", "path_codes", "path_titles", "coverage_status", "mapping", "legacy_reference"],
+          "properties": {
+            "coordinate": { "$ref": "#/$defs/coordinate" },
+            "code": { "$ref": "#/$defs/text" },
+            "pcr_id": { "type": ["string", "null"] },
+            "label": { "$ref": "#/$defs/text" },
+            "path_codes": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/text" } },
+            "path_titles": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/text" } },
+            "coverage_status": { "$ref": "https://tiangong-lca.org/schemas/pcr/v1/controlled-vocabulary.schema.json#/$defs/classification_coverage_status" },
+            "mapping": { "anyOf": [{ "$ref": "https://tiangong-lca.org/schemas/pcr/v1/classification-coverage.schema.json#/$defs/mapping" }, { "type": "null" }] },
+            "legacy_reference": { "anyOf": [{ "$ref": "https://tiangong-lca.org/schemas/pcr/v1/classification-coverage.schema.json#/$defs/legacyReference" }, { "type": "null" }] }
+          }
         } } }
       ]
     },
