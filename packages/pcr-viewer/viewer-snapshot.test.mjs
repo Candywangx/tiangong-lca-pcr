@@ -54,8 +54,8 @@ function snapshotInput(overrides = {}) {
       tree_hash: "c".repeat(40),
     },
     pcrEntries: [
-      { id: "pcr.agriculture.wheat-seed", title: "Wheat seed", lifecycle_status: "active" },
-      { id: "pcr.industrial.cement", title: "Cement", lifecycle_status: "active" },
+      { id: "pcr.agriculture.wheat-seed", title: "Wheat seed", lifecycle_status: "active", markdown: { "en-US": null, "zh-CN": null }, guidance: viewerGuidance("pcr.agriculture.wheat-seed") },
+      { id: "pcr.industrial.cement", title: "Cement", lifecycle_status: "active", markdown: { "en-US": null, "zh-CN": null }, guidance: viewerGuidance("pcr.industrial.cement") },
     ],
     aliasEntries: [{ id: "pcr.legacy.wheat", locator: "cpc:3.0:01111" }],
     coverageEntries: [
@@ -71,6 +71,32 @@ function objectIdentity() {
     schema_contract_sha256: sha256Ref("schema-contract-v1\n"),
     source_fingerprint: sha256Ref("source-v1\n"),
     release_revision_marker: null,
+  };
+}
+
+function viewerReadiness() {
+  return {
+    status: "ready", lifecycle_status: "active", methodology_status: "reviewed_methodology", structured_projection_available: true,
+    projection_fingerprint: {
+      required: true, status: "current", schema_valid: true, contract_version: "1",
+      source_sha256: sha256Ref("viewer-source\n"), generated_content_sha256: sha256Ref("viewer-content\n"),
+      source_hash_valid: true, content_hash_valid: true, issues: [],
+    },
+    usable_for_guidance: true, usable_for_validation: true, blockers: [], warnings: [],
+  };
+}
+
+// Complete pcr-core buildGuidance-shaped payload, deliberately not a viewer summary.
+function viewerGuidance(id = "pcr.a") {
+  return {
+    schema_version: 1, guidance_kind: "tiangong-pcr-agent-guidance",
+    pcr: { id, path: "library/pcrs/example", title: { "en-US": "Example", "zh-CN": null } },
+    readiness: viewerReadiness(), source_structured: "library/pcrs/example/structured.yaml",
+    system_boundary: { rules: [] }, boundary_abstraction: { boundary_level: "foreground" }, reference_flow: { reference_unit: "kg" },
+    measurement_rules: [], process_map: [], process_inventory: [],
+    production_guidance: { collection_protocols: [], calculation_rules: [], data_quality_requirements: [] },
+    published_dataset_profile: { target: "dataset" }, allocation_rules: [], data_quality_rules: [], validation_rules: [], data_sources: [],
+    validation_notes: ["Validate the foreground dataset."],
   };
 }
 
@@ -92,6 +118,26 @@ test("viewer snapshot schemas are strict", () => {
     () => schemas.assert("viewer-active", { schema_version: 1, kind: "viewer-active", manifest_ref: "not-a-ref", sequence: 1 }),
     /schema validation failed/u,
   );
+  const identity = objectIdentity();
+  assert.equal(schemas.validate("viewer-object", { schema_version: 1, object_kind: "catalog_shard", identity, entry: { prefix: "aa", entries: [{ id: "pcr.a", object_ref: sha256Ref("a"), generated_at: "now" }] } }).valid, false);
+  assert.equal(schemas.validate("viewer-object", { schema_version: 1, object_kind: "catalog_root", identity, entry: { shards: { aa: "not-a-ref" }, details: {} } }).valid, false);
+  assert.equal(schemas.validate("viewer-object", { schema_version: 1, object_kind: "history_page", identity, entry: { entries: [{ sequence: 1, manifest_ref: sha256Ref("m"), generated_at: "now" }], previous_page_ref: null } }).valid, false);
+});
+
+test("PCR detail preserves the complete buildGuidance-shaped payload", () => {
+  const { root, store } = fixtureStore();
+  try {
+    const guidance = viewerGuidance("pcr.agriculture.wheat-seed");
+    const markdown = { "en-US": "# Wheat", "zh-CN": "# 小麦" };
+    const result = store.publish(snapshotInput({ pcrEntries: [
+      { id: "pcr.agriculture.wheat-seed", title: "Wheat seed", markdown, guidance },
+      { id: "pcr.industrial.cement", title: "Cement", markdown: { "en-US": null, "zh-CN": null }, guidance: viewerGuidance("pcr.industrial.cement") },
+    ] }));
+    const manifest = store.readManifest(result.manifestRef);
+    const detail = store.readObject(manifest.refs.pcr_entries["pcr.agriculture.wheat-seed"]);
+    assert.deepEqual(detail.entry.markdown, markdown);
+    assert.deepEqual(detail.entry.guidance, guidance);
+  } finally { rmSync(root, { recursive: true, force: true }); }
 });
 
 test("store creates immutable entry objects and deterministic prefix shards", () => {
@@ -126,7 +172,7 @@ test("new manifests remove lifecycle-deleted entries and preserve rename lineage
       snapshotInput({
         snapshotId: "snapshot-002",
         sequence: 2,
-        pcrEntries: [{ id: "pcr.agriculture.wheat-seed-v2", title: "Wheat seed", renamed_from: "pcr.agriculture.wheat-seed" }],
+        pcrEntries: [{ id: "pcr.agriculture.wheat-seed-v2", title: "Wheat seed", renamed_from: "pcr.agriculture.wheat-seed", markdown: { "en-US": null, "zh-CN": null }, guidance: viewerGuidance("pcr.agriculture.wheat-seed-v2") }],
         aliasEntries: [],
         coverageEntries: [],
       }),
@@ -145,11 +191,11 @@ test("new manifests remove lifecycle-deleted entries and preserve rename lineage
 test("objects are create-only and reject a pre-existing byte substitution", () => {
   const { root, store } = fixtureStore();
   try {
-    const ref = sha256Ref(canonicalJson({ schema_version: 1, object_kind: "pcr_detail", identity: objectIdentity(), entry: { id: "pcr.a", markdown: { "en-US": null, "zh-CN": null }, guidance: { summary: null } } }));
+    const ref = sha256Ref(canonicalJson({ schema_version: 1, object_kind: "pcr_detail", identity: objectIdentity(), entry: { id: "pcr.a", markdown: { "en-US": null, "zh-CN": null }, guidance: viewerGuidance() } }));
     mkdirSync(path.join(root, "objects"), { recursive: true });
     writeFileSync(path.join(root, "objects", `${ref.slice("sha256:".length)}.json`), "{}\n");
     assert.throws(
-      () => store.writeObject({ schema_version: 1, object_kind: "pcr_detail", identity: objectIdentity(), entry: { id: "pcr.a", markdown: { "en-US": null, "zh-CN": null }, guidance: { summary: null } } }),
+      () => store.writeObject({ schema_version: 1, object_kind: "pcr_detail", identity: objectIdentity(), entry: { id: "pcr.a", markdown: { "en-US": null, "zh-CN": null }, guidance: viewerGuidance() } }),
       /immutable object byte conflict/iu,
     );
   } finally {
@@ -261,8 +307,8 @@ test("PCR detail changes preserve catalog entries and index shards", () => {
       snapshotId: "snapshot-002",
       sequence: 2,
       pcrEntries: [
-        { id: "pcr.agriculture.wheat-seed", title: "Changed PCR body only", lifecycle_status: "active", markdown: { "en-US": "Changed body", "zh-CN": null } },
-        { id: "pcr.industrial.cement", title: "Cement", lifecycle_status: "active" },
+        { id: "pcr.agriculture.wheat-seed", title: "Wheat seed", lifecycle_status: "active", markdown: { "en-US": "Changed body", "zh-CN": null }, guidance: viewerGuidance("pcr.agriculture.wheat-seed") },
+        { id: "pcr.industrial.cement", title: "Cement", lifecycle_status: "active", markdown: { "en-US": null, "zh-CN": null }, guidance: viewerGuidance("pcr.industrial.cement") },
       ],
     }));
     const secondManifest = store.readManifest(second.manifestRef);
@@ -472,15 +518,15 @@ test("rename contracts require the old id to disappear and a unique successor", 
     assert.throws(() => store.publish(snapshotInput({
       snapshotId: "snapshot-002", sequence: 2,
       pcrEntries: [
-        { id: "pcr.agriculture.wheat-seed", title: "Old still present" },
-        { id: "pcr.successor.one", title: "New", renamed_from: "pcr.agriculture.wheat-seed" },
+        { id: "pcr.agriculture.wheat-seed", title: "Old still present", markdown: { "en-US": null, "zh-CN": null }, guidance: viewerGuidance("pcr.agriculture.wheat-seed") },
+        { id: "pcr.successor.one", title: "New", renamed_from: "pcr.agriculture.wheat-seed", markdown: { "en-US": null, "zh-CN": null }, guidance: viewerGuidance("pcr.successor.one") },
       ],
     })), /predecessor must be absent/u);
     assert.throws(() => store.publish(snapshotInput({
       snapshotId: "snapshot-002", sequence: 2,
       pcrEntries: [
-        { id: "pcr.successor.one", title: "New", renamed_from: "pcr.agriculture.wheat-seed" },
-        { id: "pcr.successor.two", title: "New", renamed_from: "pcr.agriculture.wheat-seed" },
+        { id: "pcr.successor.one", title: "New", renamed_from: "pcr.agriculture.wheat-seed", markdown: { "en-US": null, "zh-CN": null }, guidance: viewerGuidance("pcr.successor.one") },
+        { id: "pcr.successor.two", title: "New", renamed_from: "pcr.agriculture.wheat-seed", markdown: { "en-US": null, "zh-CN": null }, guidance: viewerGuidance("pcr.successor.two") },
       ],
     })), /more than one successor/u);
   } finally {
@@ -568,11 +614,11 @@ test("object-kind contracts reject undeclared generated metadata", () => {
     assert.throws(() => store.writeObject({
       schema_version: 1, object_kind: "catalog_shard", identity,
       entry: { prefix: "aa", entries: [], generated_at: "2026-09-05T00:00:00Z" },
-    }), /undeclared field/u);
+    }), /schema validation failed/u);
     assert.throws(() => store.writeObject({
       schema_version: 1, object_kind: "coverage_entry", identity,
       entry: { coordinate: { system: "cpc", version: "3.0" }, code: "01111", pcr_id: "pcr.a", generated_at: "now" },
-    }), /undeclared field/u);
+    }), /schema validation failed/u);
   } finally { rmSync(root, { recursive: true, force: true }); }
 });
 
@@ -580,10 +626,10 @@ test("nested immutable object records reject undeclared generated metadata", () 
   const { root, store } = fixtureStore();
   try {
     const identity = objectIdentity();
-    assert.throws(() => store.writeObject({ schema_version: 1, object_kind: "catalog_shard", identity, entry: { prefix: "aa", entries: [{ id: "pcr.a", object_ref: sha256Ref("a"), generated_at: "now" }] } }), /undeclared field/u);
-    assert.throws(() => store.writeObject({ schema_version: 1, object_kind: "coverage_shard", identity, entry: { coordinate: { system: "cpc", version: "3.0", generated_at: "now" }, prefix: "01", entries: [] } }), /undeclared field/u);
-    assert.throws(() => store.writeObject({ schema_version: 1, object_kind: "history_page", identity, entry: { entries: [{ sequence: 1, manifest_ref: sha256Ref("m"), generated_at: "now" }], previous_page_ref: null } }), /undeclared field/u);
-    assert.throws(() => store.writeObject({ schema_version: 1, object_kind: "pcr_detail", identity, entry: { id: "pcr.a", title: "A", reference_flow: { generated_at: "now" } } }), /undeclared field/u);
+    assert.throws(() => store.writeObject({ schema_version: 1, object_kind: "catalog_shard", identity, entry: { prefix: "aa", entries: [{ id: "pcr.a", object_ref: sha256Ref("a"), generated_at: "now" }] } }), /schema validation failed/u);
+    assert.throws(() => store.writeObject({ schema_version: 1, object_kind: "coverage_shard", identity, entry: { coordinate: { system: "cpc", version: "3.0", generated_at: "now" }, prefix: "01", entries: [] } }), /schema validation failed/u);
+    assert.throws(() => store.writeObject({ schema_version: 1, object_kind: "history_page", identity, entry: { entries: [{ sequence: 1, manifest_ref: sha256Ref("m"), generated_at: "now" }], previous_page_ref: null } }), /schema validation failed/u);
+    assert.throws(() => store.writeObject({ schema_version: 1, object_kind: "pcr_detail", identity, entry: { id: "pcr.a", title: "A", markdown: { "en-US": null, "zh-CN": null }, guidance: viewerGuidance() } }), /schema validation failed/u);
   } finally { rmSync(root, { recursive: true, force: true }); }
 });
 
@@ -592,13 +638,13 @@ test("closed split-viewer nested contracts reject wrong types and non-reference 
   try {
     const identity = objectIdentity();
     const pcr = (entry) => ({ schema_version: 1, object_kind: "pcr_detail", identity, entry });
-    assert.throws(() => store.writeObject(pcr({ id: "pcr.a", markdown: "no", guidance: { summary: null } })), /markdown/u);
-    assert.throws(() => store.writeObject(pcr({ id: "pcr.a", markdown: { "en-US": 4, "zh-CN": null }, guidance: { summary: null } })), /markdown.en-US/u);
-    assert.throws(() => store.writeObject(pcr({ id: "pcr.a", markdown: { "en-US": null, "zh-CN": null }, guidance: "no" })), /guidance/u);
-    assert.throws(() => store.writeObject(pcr({ id: "pcr.a", markdown: { "en-US": null, "zh-CN": null }, guidance: { summary: null, generated_at: "now" } })), /undeclared field/u);
-    assert.throws(() => store.writeObject(pcr({ id: "pcr.a", title: "not detail", markdown: { "en-US": null, "zh-CN": null }, guidance: { summary: null } })), /undeclared field/u);
-    assert.throws(() => store.writeObject({ schema_version: 1, object_kind: "catalog_root", identity, entry: { shards: { aa: "not-a-ref" }, details: {} } }), /sha256 reference/u);
-    assert.throws(() => store.writeObject({ schema_version: 1, object_kind: "coverage_entry", identity, entry: { coordinate: { system: "cpc", version: "3.0" }, code: "01111", pcr_id: {} } }), /pcr_id/u);
-    assert.throws(() => store.writeObject({ schema_version: 1, object_kind: "history_page", identity, entry: { entries: [{ sequence: "1", manifest_ref: sha256Ref("m") }], previous_page_ref: null } }), /history_page entries/u);
+    assert.throws(() => store.writeObject(pcr({ id: "pcr.a", markdown: "no", guidance: viewerGuidance() })), /schema validation failed/u);
+    assert.throws(() => store.writeObject(pcr({ id: "pcr.a", markdown: { "en-US": 4, "zh-CN": null }, guidance: viewerGuidance() })), /schema validation failed/u);
+    assert.throws(() => store.writeObject(pcr({ id: "pcr.a", markdown: { "en-US": null, "zh-CN": null }, guidance: "no" })), /schema validation failed/u);
+    assert.throws(() => store.writeObject(pcr({ id: "pcr.a", markdown: { "en-US": null, "zh-CN": null }, guidance: { ...viewerGuidance(), generated_at: "now" } })), /schema validation failed/u);
+    assert.throws(() => store.writeObject(pcr({ id: "pcr.a", title: "not detail", markdown: { "en-US": null, "zh-CN": null }, guidance: viewerGuidance() })), /schema validation failed/u);
+    assert.throws(() => store.writeObject({ schema_version: 1, object_kind: "catalog_root", identity, entry: { shards: { aa: "not-a-ref" }, details: {} } }), /schema validation failed/u);
+    assert.throws(() => store.writeObject({ schema_version: 1, object_kind: "coverage_entry", identity, entry: { coordinate: { system: "cpc", version: "3.0" }, code: "01111", pcr_id: {} } }), /schema validation failed/u);
+    assert.throws(() => store.writeObject({ schema_version: 1, object_kind: "history_page", identity, entry: { entries: [{ sequence: "1", manifest_ref: sha256Ref("m") }], previous_page_ref: null } }), /schema validation failed/u);
   } finally { rmSync(root, { recursive: true, force: true }); }
 });

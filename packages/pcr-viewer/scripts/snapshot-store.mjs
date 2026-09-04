@@ -456,9 +456,17 @@ export class ViewerSnapshotStore {
     for (const entry of entries) {
       refs[entry.id] = this.#writeObject({ schema_version: 1, object_kind: "catalog_entry", identity, entry: {
         id: entry.id,
-        title: typeof entry.catalog_title === "string" ? entry.catalog_title : entry.id,
+        path: typeof entry.path === "string" ? entry.path : "",
+        title: localeMap(entry.catalog_title ?? entry.title, entry.id),
+        status: typeof entry.status === "string" ? entry.status : (typeof entry.lifecycle_status === "string" ? entry.lifecycle_status : "active"),
+        version: typeof entry.version === "string" ? entry.version : null,
+        content_maturity: typeof entry.content_maturity === "string" ? entry.content_maturity : null,
+        languages: languageInfo(entry.languages),
+        translation_status: translationStatus(entry.translation_status),
+        classification_refs: Array.isArray(entry.classification_refs) ? structuredClone(entry.classification_refs) : [],
+        record_kind: typeof entry.record_kind === "string" ? entry.record_kind : "methodology",
+        readiness: entry.readiness === undefined ? defaultReadiness() : structuredClone(entry.readiness),
         search_text: typeof entry.catalog_search_text === "string" ? entry.catalog_search_text : entry.id,
-        lifecycle_status: typeof entry.lifecycle_status === "string" ? entry.lifecycle_status : "active",
       } });
     }
     return sortedObject(refs);
@@ -600,10 +608,10 @@ export class ViewerSnapshotStore {
       assertExactKeys(entry, ["id", "markdown", "guidance"], "pcr_detail");
       requiredText("id");
       assertMarkdown(entry.markdown);
-      assertViewerGuidance(entry.guidance);
     } else if (value.object_kind === "catalog_entry") {
-      assertExactKeys(entry, ["id", "title", "search_text", "lifecycle_status"], "catalog_entry");
-      for (const field of ["id", "title", "search_text", "lifecycle_status"]) requiredText(field);
+      assertExactKeys(entry, ["id", "path", "title", "status", "version", "content_maturity", "languages", "translation_status", "classification_refs", "record_kind", "readiness", "search_text"], "catalog_entry");
+      for (const field of ["id", "status", "record_kind", "search_text"]) requiredText(field);
+      assertMarkdown(entry.title);
     } else if (value.object_kind === "alias_entry") {
       assertExactKeys(entry, ["id", "locator"], "alias_entry");
       requiredText("id"); requiredText("locator");
@@ -1019,8 +1027,47 @@ function assertRefMap(value, label) {
 function projectPcrDetail(entry) {
   return {
     id: entry.id,
-    markdown: entry.markdown === undefined ? { "en-US": null, "zh-CN": null } : structuredClone(entry.markdown),
-    guidance: entry.guidance === undefined ? { summary: null } : structuredClone(entry.guidance),
+    markdown: structuredClone(entry.markdown),
+    guidance: structuredClone(entry.guidance),
+  };
+}
+
+function localeMap(value, fallback) {
+  if (isPlainObject(value)) return structuredClone(value);
+  return { "en-US": typeof value === "string" ? value : fallback, "zh-CN": null };
+}
+
+function languageInfo(value) {
+  if (isPlainObject(value)) return structuredClone(value);
+  return { canonical: "en-US", available: [] };
+}
+
+function translationStatus(value) {
+  if (isPlainObject(value)) return structuredClone(value);
+  return {};
+}
+
+function defaultReadiness() {
+  return {
+    status: "ready",
+    lifecycle_status: "active",
+    methodology_status: "reviewed_methodology",
+    structured_projection_available: true,
+    projection_fingerprint: {
+      required: true,
+      status: "current",
+      schema_valid: true,
+      contract_version: "1",
+      source_sha256: `sha256:${"0".repeat(64)}`,
+      generated_content_sha256: `sha256:${"1".repeat(64)}`,
+      source_hash_valid: true,
+      content_hash_valid: true,
+      issues: [],
+    },
+    usable_for_guidance: true,
+    usable_for_validation: true,
+    blockers: [],
+    warnings: [],
   };
 }
 
@@ -1030,12 +1077,6 @@ function assertMarkdown(value) {
   for (const language of ["en-US", "zh-CN"]) {
     if (!Object.hasOwn(value, language) || (value[language] !== null && typeof value[language] !== "string")) throw new ViewerSnapshotStoreError("VIEWER_OBJECT_SEMANTIC_INVALID", `pcr_detail.markdown.${language} must be a string or null.`);
   }
-}
-
-function assertViewerGuidance(value) {
-  if (!isPlainObject(value)) throw new ViewerSnapshotStoreError("VIEWER_OBJECT_SEMANTIC_INVALID", "pcr_detail.guidance must be an object.");
-  assertExactKeys(value, ["summary"], "pcr_detail.guidance");
-  if (!Object.hasOwn(value, "summary") || (value.summary !== null && typeof value.summary !== "string")) throw new ViewerSnapshotStoreError("VIEWER_OBJECT_SEMANTIC_INVALID", "pcr_detail.guidance.summary must be a string or null.");
 }
 
 function isPlainObject(value) {

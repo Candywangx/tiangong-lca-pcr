@@ -11,6 +11,10 @@ const schemaFiles = {
   "viewer-history": "viewer-history.schema.json",
   "viewer-active": "viewer-active.schema.json",
 };
+const coreSchemaFiles = [
+  new URL("../../pcr-core/schemas/readiness.schema.json", import.meta.url),
+  new URL("../../pcr-core/schemas/guidance-output.schema.json", import.meta.url),
+];
 
 export class ViewerSnapshotSchemaError extends Error {
   constructor(contract, errors) {
@@ -45,7 +49,8 @@ export function viewerSchemaContractSha256() {
     Buffer.concat(
       Object.values(schemaFiles)
         .sort()
-        .map((file) => readFileSync(fileURLToPath(new URL(file, schemaDirectory)))),
+        .map((file) => readFileSync(fileURLToPath(new URL(file, schemaDirectory))))
+        .concat(coreSchemaFiles.map((url) => readFileSync(fileURLToPath(url)))),
     ),
   );
 }
@@ -73,6 +78,9 @@ export function createViewerSnapshotSchemaRegistry() {
   for (const file of Object.values(schemaFiles)) {
     const schema = JSON.parse(readFileSync(fileURLToPath(new URL(file, schemaDirectory)), "utf8"));
     ajv.addSchema(schema);
+  }
+  for (const url of coreSchemaFiles) {
+    ajv.addSchema(JSON.parse(readFileSync(fileURLToPath(url), "utf8")));
   }
   return Object.freeze({
     assert(contract, value) {

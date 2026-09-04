@@ -1,14 +1,26 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "viewer-object",
-  "type": "object",
-  "additionalProperties": false,
-  "required": ["schema_version", "object_kind", "identity", "entry"],
-  "properties": {
-    "schema_version": { "const": 1 },
-    "object_kind": { "enum": ["ui_bundle", "pcr_detail", "catalog_entry", "catalog_shard", "catalog_root", "alias_entry", "alias_shard", "alias_root", "coverage_entry", "coverage_shard", "coverage_root", "history_page"] },
+  "oneOf": [
+    { "$ref": "#/$defs/uiBundleObject" },
+    { "$ref": "#/$defs/pcrDetailObject" },
+    { "$ref": "#/$defs/catalogEntryObject" },
+    { "$ref": "#/$defs/aliasEntryObject" },
+    { "$ref": "#/$defs/coverageEntryObject" },
+    { "$ref": "#/$defs/catalogShardObject" },
+    { "$ref": "#/$defs/aliasShardObject" },
+    { "$ref": "#/$defs/coverageShardObject" },
+    { "$ref": "#/$defs/catalogRootObject" },
+    { "$ref": "#/$defs/aliasRootObject" },
+    { "$ref": "#/$defs/coverageRootObject" },
+    { "$ref": "#/$defs/historyPageObject" }
+  ],
+  "$defs": {
+    "ref": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" },
+    "text": { "type": "string", "minLength": 1 },
     "identity": {
-      "type": "object", "additionalProperties": false,
+      "type": "object",
+      "additionalProperties": false,
       "required": ["generator_contract_sha256", "schema_contract_sha256", "source_fingerprint", "release_revision_marker"],
       "properties": {
         "generator_contract_sha256": { "$ref": "#/$defs/ref" },
@@ -17,13 +29,218 @@
         "release_revision_marker": { "anyOf": [{ "type": "null" }, { "$ref": "#/$defs/ref" }] }
       }
     },
-    "entry": { "type": "object" }
-  },
-  "allOf": [
-    { "if": { "properties": { "object_kind": { "const": "pcr_detail" } } }, "then": { "properties": { "entry": { "type": "object", "required": ["id"], "minProperties": 2, "properties": { "id": { "type": "string", "minLength": 1 } } } } } },
-    { "if": { "properties": { "object_kind": { "const": "catalog_entry" } } }, "then": { "properties": { "entry": { "type": "object", "additionalProperties": false, "required": ["id", "title", "search_text", "lifecycle_status"], "properties": { "id": { "type": "string", "minLength": 1 }, "title": { "type": "string", "minLength": 1 }, "search_text": { "type": "string", "minLength": 1 }, "lifecycle_status": { "type": "string", "minLength": 1 } } } } } },
-    { "if": { "properties": { "object_kind": { "const": "alias_entry" } } }, "then": { "properties": { "entry": { "type": "object", "required": ["id", "locator"], "properties": { "id": { "type": "string", "minLength": 1 }, "locator": { "type": "string", "minLength": 1 } } } } } },
-    { "if": { "properties": { "object_kind": { "const": "ui_bundle" } } }, "then": { "properties": { "entry": { "type": "object", "additionalProperties": false, "required": ["id", "asset_url"], "properties": { "id": { "type": "string", "minLength": 1 }, "asset_url": { "type": "string" } } } } } }
-  ],
-  "$defs": { "ref": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" } }
+    "base": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["schema_version", "object_kind", "identity", "entry"],
+      "properties": {
+        "schema_version": { "const": 1 },
+        "object_kind": { "type": "string" },
+        "identity": { "$ref": "#/$defs/identity" },
+        "entry": { "type": "object" }
+      }
+    },
+    "markdown": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["en-US", "zh-CN"],
+      "properties": {
+        "en-US": { "type": ["string", "null"] },
+        "zh-CN": { "type": ["string", "null"] }
+      }
+    },
+    "title": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["en-US", "zh-CN"],
+      "properties": {
+        "en-US": { "type": ["string", "null"] },
+        "zh-CN": { "type": ["string", "null"] }
+      }
+    },
+    "coordinate": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["system", "version"],
+      "properties": {
+        "system": { "type": "string", "pattern": "^[a-z0-9][a-z0-9_-]*$" },
+        "version": { "type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$" }
+      }
+    },
+    "refMap": {
+      "type": "object",
+      "additionalProperties": { "$ref": "#/$defs/ref" }
+    },
+    "shardItem": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "object_ref"],
+      "properties": { "id": { "$ref": "#/$defs/text" }, "object_ref": { "$ref": "#/$defs/ref" } }
+    },
+    "coverageShardItem": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["code", "coverage_entry_ref"],
+      "properties": { "code": { "$ref": "#/$defs/text" }, "coverage_entry_ref": { "$ref": "#/$defs/ref" } }
+    },
+    "classificationRef": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["system", "version", "code"],
+      "properties": {
+        "system": { "$ref": "#/$defs/text" },
+        "version": { "$ref": "#/$defs/text" },
+        "code": { "$ref": "#/$defs/text" },
+        "title": { "$ref": "#/$defs/text" },
+        "mapping_type": { "$ref": "#/$defs/text" }
+      }
+    },
+    "languages": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["canonical", "available"],
+      "properties": {
+        "canonical": { "$ref": "#/$defs/text" },
+        "available": { "type": "array", "items": { "$ref": "#/$defs/text" }, "uniqueItems": true }
+      }
+    },
+    "translationStatus": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "en-US": { "$ref": "#/$defs/text" },
+        "zh-CN": { "$ref": "#/$defs/text" }
+      }
+    },
+    "uiBundleObject": {
+      "allOf": [
+        { "$ref": "#/$defs/base" },
+        { "type": "object", "properties": { "object_kind": { "const": "ui_bundle" }, "entry": {
+          "type": "object", "additionalProperties": false, "required": ["id", "asset_url"],
+          "properties": { "id": { "$ref": "#/$defs/text" }, "asset_url": { "type": "string" } }
+        } } }
+      ]
+    },
+    "pcrDetailObject": {
+      "allOf": [
+        { "$ref": "#/$defs/base" },
+        { "type": "object", "properties": { "object_kind": { "const": "pcr_detail" }, "entry": {
+          "type": "object", "additionalProperties": false, "required": ["id", "markdown", "guidance"],
+          "properties": {
+            "id": { "$ref": "#/$defs/text" },
+            "markdown": { "$ref": "#/$defs/markdown" },
+            "guidance": { "$ref": "https://tiangong-lca.org/schemas/pcr/v1/guidance-output.schema.json" }
+          }
+        } } }
+      ]
+    },
+    "catalogEntryObject": {
+      "allOf": [
+        { "$ref": "#/$defs/base" },
+        { "type": "object", "properties": { "object_kind": { "const": "catalog_entry" }, "entry": {
+          "type": "object", "additionalProperties": false,
+          "required": ["id", "path", "title", "status", "version", "content_maturity", "languages", "translation_status", "classification_refs", "record_kind", "readiness", "search_text"],
+          "properties": {
+            "id": { "$ref": "#/$defs/text" }, "path": { "type": "string" }, "title": { "$ref": "#/$defs/title" },
+            "status": { "$ref": "#/$defs/text" }, "version": { "type": ["string", "null"] }, "content_maturity": { "type": ["string", "null"] },
+            "languages": { "$ref": "#/$defs/languages" }, "translation_status": { "$ref": "#/$defs/translationStatus" },
+            "classification_refs": { "type": "array", "items": { "$ref": "#/$defs/classificationRef" } },
+            "record_kind": { "$ref": "#/$defs/text" },
+            "readiness": { "$ref": "https://tiangong-lca.org/schemas/pcr/v1/readiness.schema.json" },
+            "search_text": { "$ref": "#/$defs/text" }
+          }
+        } } }
+      ]
+    },
+    "aliasEntryObject": {
+      "allOf": [
+        { "$ref": "#/$defs/base" },
+        { "type": "object", "properties": { "object_kind": { "const": "alias_entry" }, "entry": {
+          "type": "object", "additionalProperties": false, "required": ["id", "locator"],
+          "properties": { "id": { "$ref": "#/$defs/text" }, "locator": { "$ref": "#/$defs/text" } }
+        } } }
+      ]
+    },
+    "coverageEntryObject": {
+      "allOf": [
+        { "$ref": "#/$defs/base" },
+        { "type": "object", "properties": { "object_kind": { "const": "coverage_entry" }, "entry": {
+          "type": "object", "additionalProperties": false, "required": ["coordinate", "code", "pcr_id"],
+          "properties": { "coordinate": { "$ref": "#/$defs/coordinate" }, "code": { "$ref": "#/$defs/text" }, "pcr_id": { "type": ["string", "null"] } }
+        } } }
+      ]
+    },
+    "catalogShardObject": {
+      "allOf": [
+        { "$ref": "#/$defs/base" },
+        { "type": "object", "properties": { "object_kind": { "const": "catalog_shard" }, "entry": {
+          "type": "object", "additionalProperties": false, "required": ["prefix", "entries"],
+          "properties": { "prefix": { "$ref": "#/$defs/text" }, "entries": { "type": "array", "items": { "$ref": "#/$defs/shardItem" } } }
+        } } }
+      ]
+    },
+    "aliasShardObject": {
+      "allOf": [
+        { "$ref": "#/$defs/base" },
+        { "type": "object", "properties": { "object_kind": { "const": "alias_shard" }, "entry": {
+          "type": "object", "additionalProperties": false, "required": ["prefix", "entries"],
+          "properties": { "prefix": { "$ref": "#/$defs/text" }, "entries": { "type": "array", "items": { "$ref": "#/$defs/shardItem" } } }
+        } } }
+      ]
+    },
+    "coverageShardObject": {
+      "allOf": [
+        { "$ref": "#/$defs/base" },
+        { "type": "object", "properties": { "object_kind": { "const": "coverage_shard" }, "entry": {
+          "type": "object", "additionalProperties": false, "required": ["coordinate", "prefix", "entries"],
+          "properties": {
+            "coordinate": { "$ref": "#/$defs/coordinate" }, "prefix": { "$ref": "#/$defs/text" },
+            "entries": { "type": "array", "items": { "$ref": "#/$defs/coverageShardItem" } }
+          }
+        } } }
+      ]
+    },
+    "catalogRootObject": {
+      "allOf": [
+        { "$ref": "#/$defs/base" },
+        { "type": "object", "properties": { "object_kind": { "const": "catalog_root" }, "entry": {
+          "type": "object", "additionalProperties": false, "required": ["shards", "details"],
+          "properties": { "shards": { "$ref": "#/$defs/refMap" }, "details": { "$ref": "#/$defs/refMap" } }
+        } } }
+      ]
+    },
+    "aliasRootObject": {
+      "allOf": [
+        { "$ref": "#/$defs/base" },
+        { "type": "object", "properties": { "object_kind": { "const": "alias_root" }, "entry": {
+          "type": "object", "additionalProperties": false, "required": ["shards", "entries"],
+          "properties": { "shards": { "$ref": "#/$defs/refMap" }, "entries": { "$ref": "#/$defs/refMap" } }
+        } } }
+      ]
+    },
+    "coverageRootObject": {
+      "allOf": [
+        { "$ref": "#/$defs/base" },
+        { "type": "object", "properties": { "object_kind": { "const": "coverage_root" }, "entry": {
+          "type": "object", "additionalProperties": false, "required": ["shards", "entries"],
+          "properties": { "shards": { "$ref": "#/$defs/refMap" }, "entries": { "$ref": "#/$defs/refMap" } }
+        } } }
+      ]
+    },
+    "historyPageObject": {
+      "allOf": [
+        { "$ref": "#/$defs/base" },
+        { "type": "object", "properties": { "object_kind": { "const": "history_page" }, "entry": {
+          "type": "object", "additionalProperties": false, "required": ["entries", "previous_page_ref"],
+          "properties": {
+            "entries": { "type": "array", "minItems": 1, "maxItems": 64, "items": {
+              "type": "object", "additionalProperties": false, "required": ["sequence", "manifest_ref"],
+              "properties": { "sequence": { "type": "integer", "minimum": 1 }, "manifest_ref": { "$ref": "#/$defs/ref" } }
+            } },
+            "previous_page_ref": { "anyOf": [{ "type": "null" }, { "$ref": "#/$defs/ref" }] }
+          }
+        } } }
+      ]
+    }
+  }
 }
