@@ -445,7 +445,8 @@ export class ViewerSnapshotStore {
     const refs = {};
     for (const entry of entries) {
       const entryIdentity = markerMap === null ? identity : { ...identity, release_revision_marker: markerMap[entry.id] ?? null };
-      refs[entry.id] = this.#writeObject({ schema_version: 1, object_kind: kind, identity: entryIdentity, entry });
+      const payload = kind === "pcr_detail" ? projectPcrDetail(entry) : entry;
+      refs[entry.id] = this.#writeObject({ schema_version: 1, object_kind: kind, identity: entryIdentity, entry: payload });
     }
     return sortedObject(refs);
   }
@@ -596,11 +597,10 @@ export class ViewerSnapshotStore {
     const entry = value.entry;
     const requiredText = (field) => requireText(entry[field], `${value.object_kind}.${field}`);
     if (value.object_kind === "pcr_detail") {
-      assertExactKeys(entry, ["id", "title", "lifecycle_status", "renamed_from", "markdown", "guidance", "search_text", "reference_flow"], "pcr_detail");
-      if (entry.reference_flow !== undefined) assertPcrDetailSubobject(entry.reference_flow, "pcr_detail.reference_flow");
-      if (entry.guidance !== undefined) assertNoGeneratedMetadata(entry.guidance, "pcr_detail.guidance");
+      assertExactKeys(entry, ["id", "markdown", "guidance"], "pcr_detail");
       requiredText("id");
-      if (Object.keys(entry).length < 2) throw new ViewerSnapshotStoreError("VIEWER_OBJECT_SEMANTIC_INVALID", "pcr_detail requires non-empty detail content.");
+      assertMarkdown(entry.markdown);
+      assertViewerGuidance(entry.guidance);
     } else if (value.object_kind === "catalog_entry") {
       assertExactKeys(entry, ["id", "title", "search_text", "lifecycle_status"], "catalog_entry");
       for (const field of ["id", "title", "search_text", "lifecycle_status"]) requiredText(field);
@@ -610,6 +610,7 @@ export class ViewerSnapshotStore {
     } else if (value.object_kind === "coverage_entry") {
       assertExactKeys(entry, ["coordinate", "code", "pcr_id"], "coverage_entry");
       normalizeCoordinate(entry.coordinate); requiredText("code");
+      if (entry.pcr_id !== null && (typeof entry.pcr_id !== "string" || !entry.pcr_id)) throw new ViewerSnapshotStoreError("VIEWER_OBJECT_SEMANTIC_INVALID", "coverage_entry.pcr_id must be a string or null.");
     } else if (value.object_kind === "ui_bundle") {
       assertExactKeys(entry, ["id", "asset_url"], "ui_bundle");
       requiredText("id");
@@ -624,7 +625,8 @@ export class ViewerSnapshotStore {
       if (!Array.isArray(entry.entries) || entry.entries.some((item) => { if (!item || typeof item !== "object") return true; assertExactKeys(item, ["code", "coverage_entry_ref"], "coverage_shard item"); return typeof item.code !== "string" || !/^sha256:[a-f0-9]{64}$/u.test(item.coverage_entry_ref); })) throw new ViewerSnapshotStoreError("VIEWER_OBJECT_SEMANTIC_INVALID", "coverage_shard entries are invalid.");
     } else if (["catalog_root", "alias_root", "coverage_root"].includes(value.object_kind)) {
       assertExactKeys(entry, value.object_kind === "catalog_root" ? ["shards", "details"] : ["shards", "entries"], value.object_kind);
-      if (!entry || typeof entry !== "object" || Object.values(entry).some((map) => !map || typeof map !== "object")) throw new ViewerSnapshotStoreError("VIEWER_OBJECT_SEMANTIC_INVALID", `${value.object_kind} relationships are invalid.`);
+      if (!entry || typeof entry !== "object") throw new ViewerSnapshotStoreError("VIEWER_OBJECT_SEMANTIC_INVALID", `${value.object_kind} relationships are invalid.`);
+      for (const [name, map] of Object.entries(entry)) assertRefMap(map, `${value.object_kind}.${name}`);
     } else if (value.object_kind === "history_page") {
       assertExactKeys(entry, ["entries", "previous_page_ref"], "history_page");
       if (!Array.isArray(entry.entries) || entry.entries.length === 0 || entry.entries.some((item) => { if (!item || typeof item !== "object") return true; assertExactKeys(item, ["sequence", "manifest_ref"], "history_page item"); return !Number.isSafeInteger(item.sequence) || item.sequence < 1 || !/^sha256:[a-f0-9]{64}$/u.test(item.manifest_ref); }) || (entry.previous_page_ref !== null && !/^sha256:[a-f0-9]{64}$/u.test(entry.previous_page_ref))) throw new ViewerSnapshotStoreError("VIEWER_OBJECT_SEMANTIC_INVALID", "history_page entries are invalid.");
@@ -1002,6 +1004,44 @@ function requireText(value, label) {
 function assertExactKeys(value, allowed, label) {
   const unknown = Object.keys(value).filter((key) => !allowed.includes(key));
   if (unknown.length) throw new ViewerSnapshotStoreError("VIEWER_OBJECT_SEMANTIC_INVALID", `${label} contains undeclared field(s): ${unknown.sort().join(", ")}.`);
+}
+
+function assertRefMap(value, label) {
+  if (!isPlainObject(value)) throw new ViewerSnapshotStoreError("VIEWER_OBJECT_SEMANTIC_INVALID", `${label} must be a plain reference map.`);
+  for (const [key, ref] of Object.entries(value)) {
+    requireText(key, `${label} key`);
+    try { assertSha256Ref(ref, `${label}.${key}`); } catch (error) {
+      throw new ViewerSnapshotStoreError("VIEWER_OBJECT_SEMANTIC_INVALID", `${label}.${key} must be a sha256 reference.`, { cause: error });
+    }
+  }
+}
+
+function projectPcrDetail(entry) {
+  return {
+    id: entry.id,
+    markdown: entry.markdown === undefined ? { "en-US": null, "zh-CN": null } : structuredClone(entry.markdown),
+    guidance: entry.guidance === undefined ? { summary: null } : structuredClone(entry.guidance),
+  };
+}
+
+function assertMarkdown(value) {
+  if (!isPlainObject(value)) throw new ViewerSnapshotStoreError("VIEWER_OBJECT_SEMANTIC_INVALID", "pcr_detail.markdown must be a closed language map.");
+  assertExactKeys(value, ["en-US", "zh-CN"], "pcr_detail.markdown");
+  for (const language of ["en-US", "zh-CN"]) {
+    if (!Object.hasOwn(value, language) || (value[language] !== null && typeof value[language] !== "string")) throw new ViewerSnapshotStoreError("VIEWER_OBJECT_SEMANTIC_INVALID", `pcr_detail.markdown.${language} must be a string or null.`);
+  }
+}
+
+function assertViewerGuidance(value) {
+  if (!isPlainObject(value)) throw new ViewerSnapshotStoreError("VIEWER_OBJECT_SEMANTIC_INVALID", "pcr_detail.guidance must be an object.");
+  assertExactKeys(value, ["summary"], "pcr_detail.guidance");
+  if (!Object.hasOwn(value, "summary") || (value.summary !== null && typeof value.summary !== "string")) throw new ViewerSnapshotStoreError("VIEWER_OBJECT_SEMANTIC_INVALID", "pcr_detail.guidance.summary must be a string or null.");
+}
+
+function isPlainObject(value) {
+  if (!value || typeof value !== "object" || Array.isArray(value)) return false;
+  const prototype = Object.getPrototypeOf(value);
+  return prototype === Object.prototype || prototype === null;
 }
 
 function assertPcrDetailSubobject(value, label) {

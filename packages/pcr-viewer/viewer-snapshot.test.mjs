@@ -145,11 +145,11 @@ test("new manifests remove lifecycle-deleted entries and preserve rename lineage
 test("objects are create-only and reject a pre-existing byte substitution", () => {
   const { root, store } = fixtureStore();
   try {
-    const ref = sha256Ref(canonicalJson({ schema_version: 1, object_kind: "pcr_detail", identity: objectIdentity(), entry: { id: "pcr.a", title: "A" } }));
+    const ref = sha256Ref(canonicalJson({ schema_version: 1, object_kind: "pcr_detail", identity: objectIdentity(), entry: { id: "pcr.a", markdown: { "en-US": null, "zh-CN": null }, guidance: { summary: null } } }));
     mkdirSync(path.join(root, "objects"), { recursive: true });
     writeFileSync(path.join(root, "objects", `${ref.slice("sha256:".length)}.json`), "{}\n");
     assert.throws(
-      () => store.writeObject({ schema_version: 1, object_kind: "pcr_detail", identity: objectIdentity(), entry: { id: "pcr.a", title: "A" } }),
+      () => store.writeObject({ schema_version: 1, object_kind: "pcr_detail", identity: objectIdentity(), entry: { id: "pcr.a", markdown: { "en-US": null, "zh-CN": null }, guidance: { summary: null } } }),
       /immutable object byte conflict/iu,
     );
   } finally {
@@ -261,7 +261,7 @@ test("PCR detail changes preserve catalog entries and index shards", () => {
       snapshotId: "snapshot-002",
       sequence: 2,
       pcrEntries: [
-        { id: "pcr.agriculture.wheat-seed", title: "Changed PCR body only", lifecycle_status: "active" },
+        { id: "pcr.agriculture.wheat-seed", title: "Changed PCR body only", lifecycle_status: "active", markdown: { "en-US": "Changed body", "zh-CN": null } },
         { id: "pcr.industrial.cement", title: "Cement", lifecycle_status: "active" },
       ],
     }));
@@ -584,5 +584,21 @@ test("nested immutable object records reject undeclared generated metadata", () 
     assert.throws(() => store.writeObject({ schema_version: 1, object_kind: "coverage_shard", identity, entry: { coordinate: { system: "cpc", version: "3.0", generated_at: "now" }, prefix: "01", entries: [] } }), /undeclared field/u);
     assert.throws(() => store.writeObject({ schema_version: 1, object_kind: "history_page", identity, entry: { entries: [{ sequence: 1, manifest_ref: sha256Ref("m"), generated_at: "now" }], previous_page_ref: null } }), /undeclared field/u);
     assert.throws(() => store.writeObject({ schema_version: 1, object_kind: "pcr_detail", identity, entry: { id: "pcr.a", title: "A", reference_flow: { generated_at: "now" } } }), /undeclared field/u);
+  } finally { rmSync(root, { recursive: true, force: true }); }
+});
+
+test("closed split-viewer nested contracts reject wrong types and non-reference maps", () => {
+  const { root, store } = fixtureStore();
+  try {
+    const identity = objectIdentity();
+    const pcr = (entry) => ({ schema_version: 1, object_kind: "pcr_detail", identity, entry });
+    assert.throws(() => store.writeObject(pcr({ id: "pcr.a", markdown: "no", guidance: { summary: null } })), /markdown/u);
+    assert.throws(() => store.writeObject(pcr({ id: "pcr.a", markdown: { "en-US": 4, "zh-CN": null }, guidance: { summary: null } })), /markdown.en-US/u);
+    assert.throws(() => store.writeObject(pcr({ id: "pcr.a", markdown: { "en-US": null, "zh-CN": null }, guidance: "no" })), /guidance/u);
+    assert.throws(() => store.writeObject(pcr({ id: "pcr.a", markdown: { "en-US": null, "zh-CN": null }, guidance: { summary: null, generated_at: "now" } })), /undeclared field/u);
+    assert.throws(() => store.writeObject(pcr({ id: "pcr.a", title: "not detail", markdown: { "en-US": null, "zh-CN": null }, guidance: { summary: null } })), /undeclared field/u);
+    assert.throws(() => store.writeObject({ schema_version: 1, object_kind: "catalog_root", identity, entry: { shards: { aa: "not-a-ref" }, details: {} } }), /sha256 reference/u);
+    assert.throws(() => store.writeObject({ schema_version: 1, object_kind: "coverage_entry", identity, entry: { coordinate: { system: "cpc", version: "3.0" }, code: "01111", pcr_id: {} } }), /pcr_id/u);
+    assert.throws(() => store.writeObject({ schema_version: 1, object_kind: "history_page", identity, entry: { entries: [{ sequence: "1", manifest_ref: sha256Ref("m") }], previous_page_ref: null } }), /history_page entries/u);
   } finally { rmSync(root, { recursive: true, force: true }); }
 });
