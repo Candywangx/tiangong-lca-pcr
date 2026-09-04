@@ -575,3 +575,14 @@ test("object-kind contracts reject undeclared generated metadata", () => {
     }), /undeclared field/u);
   } finally { rmSync(root, { recursive: true, force: true }); }
 });
+
+test("nested immutable object records reject undeclared generated metadata", () => {
+  const { root, store } = fixtureStore();
+  try {
+    const identity = objectIdentity();
+    assert.throws(() => store.writeObject({ schema_version: 1, object_kind: "catalog_shard", identity, entry: { prefix: "aa", entries: [{ id: "pcr.a", object_ref: sha256Ref("a"), generated_at: "now" }] } }), /undeclared field/u);
+    assert.throws(() => store.writeObject({ schema_version: 1, object_kind: "coverage_shard", identity, entry: { coordinate: { system: "cpc", version: "3.0", generated_at: "now" }, prefix: "01", entries: [] } }), /undeclared field/u);
+    assert.throws(() => store.writeObject({ schema_version: 1, object_kind: "history_page", identity, entry: { entries: [{ sequence: 1, manifest_ref: sha256Ref("m"), generated_at: "now" }], previous_page_ref: null } }), /undeclared field/u);
+    assert.throws(() => store.writeObject({ schema_version: 1, object_kind: "pcr_detail", identity, entry: { id: "pcr.a", title: "A", reference_flow: { generated_at: "now" } } }), /undeclared field/u);
+  } finally { rmSync(root, { recursive: true, force: true }); }
+});

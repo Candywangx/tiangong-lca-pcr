@@ -597,6 +597,8 @@ export class ViewerSnapshotStore {
     const requiredText = (field) => requireText(entry[field], `${value.object_kind}.${field}`);
     if (value.object_kind === "pcr_detail") {
       assertExactKeys(entry, ["id", "title", "lifecycle_status", "renamed_from", "markdown", "guidance", "search_text", "reference_flow"], "pcr_detail");
+      if (entry.reference_flow !== undefined) assertPcrDetailSubobject(entry.reference_flow, "pcr_detail.reference_flow");
+      if (entry.guidance !== undefined) assertNoGeneratedMetadata(entry.guidance, "pcr_detail.guidance");
       requiredText("id");
       if (Object.keys(entry).length < 2) throw new ViewerSnapshotStoreError("VIEWER_OBJECT_SEMANTIC_INVALID", "pcr_detail requires non-empty detail content.");
     } else if (value.object_kind === "catalog_entry") {
@@ -615,17 +617,17 @@ export class ViewerSnapshotStore {
     } else if (["catalog_shard", "alias_shard"].includes(value.object_kind)) {
       assertExactKeys(entry, ["prefix", "entries"], value.object_kind);
       requiredText("prefix");
-      if (!Array.isArray(entry.entries) || entry.entries.some((item) => !item || typeof item.id !== "string" || !/^sha256:[a-f0-9]{64}$/u.test(item.object_ref))) throw new ViewerSnapshotStoreError("VIEWER_OBJECT_SEMANTIC_INVALID", `${value.object_kind} entries are invalid.`);
+      if (!Array.isArray(entry.entries) || entry.entries.some((item) => { if (!item || typeof item !== "object") return true; assertExactKeys(item, ["id", "object_ref"], `${value.object_kind} item`); return typeof item.id !== "string" || !/^sha256:[a-f0-9]{64}$/u.test(item.object_ref); })) throw new ViewerSnapshotStoreError("VIEWER_OBJECT_SEMANTIC_INVALID", `${value.object_kind} entries are invalid.`);
     } else if (value.object_kind === "coverage_shard") {
       assertExactKeys(entry, ["coordinate", "prefix", "entries"], "coverage_shard");
       normalizeCoordinate(entry.coordinate); requiredText("prefix");
-      if (!Array.isArray(entry.entries) || entry.entries.some((item) => typeof item?.code !== "string" || !/^sha256:[a-f0-9]{64}$/u.test(item.coverage_entry_ref))) throw new ViewerSnapshotStoreError("VIEWER_OBJECT_SEMANTIC_INVALID", "coverage_shard entries are invalid.");
+      if (!Array.isArray(entry.entries) || entry.entries.some((item) => { if (!item || typeof item !== "object") return true; assertExactKeys(item, ["code", "coverage_entry_ref"], "coverage_shard item"); return typeof item.code !== "string" || !/^sha256:[a-f0-9]{64}$/u.test(item.coverage_entry_ref); })) throw new ViewerSnapshotStoreError("VIEWER_OBJECT_SEMANTIC_INVALID", "coverage_shard entries are invalid.");
     } else if (["catalog_root", "alias_root", "coverage_root"].includes(value.object_kind)) {
       assertExactKeys(entry, value.object_kind === "catalog_root" ? ["shards", "details"] : ["shards", "entries"], value.object_kind);
       if (!entry || typeof entry !== "object" || Object.values(entry).some((map) => !map || typeof map !== "object")) throw new ViewerSnapshotStoreError("VIEWER_OBJECT_SEMANTIC_INVALID", `${value.object_kind} relationships are invalid.`);
     } else if (value.object_kind === "history_page") {
       assertExactKeys(entry, ["entries", "previous_page_ref"], "history_page");
-      if (!Array.isArray(entry.entries) || entry.entries.length === 0 || entry.entries.some((item) => !Number.isSafeInteger(item?.sequence) || item.sequence < 1 || !/^sha256:[a-f0-9]{64}$/u.test(item.manifest_ref)) || (entry.previous_page_ref !== null && !/^sha256:[a-f0-9]{64}$/u.test(entry.previous_page_ref))) throw new ViewerSnapshotStoreError("VIEWER_OBJECT_SEMANTIC_INVALID", "history_page entries are invalid.");
+      if (!Array.isArray(entry.entries) || entry.entries.length === 0 || entry.entries.some((item) => { if (!item || typeof item !== "object") return true; assertExactKeys(item, ["sequence", "manifest_ref"], "history_page item"); return !Number.isSafeInteger(item.sequence) || item.sequence < 1 || !/^sha256:[a-f0-9]{64}$/u.test(item.manifest_ref); }) || (entry.previous_page_ref !== null && !/^sha256:[a-f0-9]{64}$/u.test(entry.previous_page_ref))) throw new ViewerSnapshotStoreError("VIEWER_OBJECT_SEMANTIC_INVALID", "history_page entries are invalid.");
     }
   }
 
@@ -957,6 +959,7 @@ export class ViewerSnapshotStore {
 }
 
 function normalizeCoordinate(value) {
+  if (value && typeof value === "object" && !Array.isArray(value)) assertExactKeys(value, ["system", "version"], "coverage coordinate");
   if (!value || typeof value !== "object" || !/^[a-z0-9][a-z0-9_-]*$/u.test(value.system) || !/^[A-Za-z0-9][A-Za-z0-9._-]*$/u.test(value.version)) {
     throw new ViewerSnapshotStoreError("VIEWER_COORDINATE_INVALID", "Invalid coverage coordinate.");
   }
@@ -999,6 +1002,21 @@ function requireText(value, label) {
 function assertExactKeys(value, allowed, label) {
   const unknown = Object.keys(value).filter((key) => !allowed.includes(key));
   if (unknown.length) throw new ViewerSnapshotStoreError("VIEWER_OBJECT_SEMANTIC_INVALID", `${label} contains undeclared field(s): ${unknown.sort().join(", ")}.`);
+}
+
+function assertPcrDetailSubobject(value, label) {
+  if (!value || typeof value !== "object" || Array.isArray(value)) throw new ViewerSnapshotStoreError("VIEWER_OBJECT_SEMANTIC_INVALID", `${label} must be an object.`);
+  assertExactKeys(value, ["reference_unit", "reference_amount", "unit", "amount", "qualifiers"], label);
+  if (value.qualifiers !== undefined) assertNoGeneratedMetadata(value.qualifiers, `${label}.qualifiers`);
+}
+
+function assertNoGeneratedMetadata(value, label) {
+  if (Array.isArray(value)) {
+    value.forEach((item, index) => assertNoGeneratedMetadata(item, `${label}[${index}]`));
+  } else if (value && typeof value === "object") {
+    if (Object.hasOwn(value, "generated_at")) throw new ViewerSnapshotStoreError("VIEWER_OBJECT_SEMANTIC_INVALID", `${label} contains undeclared field(s): generated_at.`);
+    for (const [key, child] of Object.entries(value)) assertNoGeneratedMetadata(child, `${label}.${key}`);
+  }
 }
 
 function requireSequence(value) {
