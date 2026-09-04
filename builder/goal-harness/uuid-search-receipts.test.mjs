@@ -178,6 +178,21 @@ test("hybrid query writes an immutable result receipt and final candidate decisi
     assert.equal(retriedTaskAudit[0].scope, "task_retry_reuse");
     assert.equal(retriedTaskAudit[0].source_task_id, "task-1");
 
+    const mismatchedRejection = structuredClone(report);
+    mismatchedRejection.rejected_uuid_candidates[0].reason = "Paraphrased rejection reason.";
+    assert.throws(
+      () => auditHybridSearchReceipts({
+        report: mismatchedRejection,
+        stateDir,
+        task: { id: "task-1", cpc_code: "41111", attempt: 1 },
+        verifiedUuidReads: [verifiedUuidRead],
+      }),
+      (error) => error.code === "GOAL_HYBRID_SEARCH_RECEIPT_MISMATCH"
+        && error.details.findings[0].expected.reason === "Candidate represents alloy steel rather than pig iron."
+        && error.details.findings[0].claimed.reason === "Paraphrased rejection reason."
+        && /verbatim/i.test(error.details.findings[0].remediation),
+    );
+
     const reusableReport = {
       hybrid_search_receipt_ids: ["receipt-1"],
       uuid_audits: [{ uuid: UUID_A, hybrid_search_receipt_id: "receipt-1" }],
