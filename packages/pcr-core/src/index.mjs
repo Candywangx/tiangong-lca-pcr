@@ -27,6 +27,8 @@ import { findPcrIdAlias } from "./pcr-id-aliases.mjs";
 import {
   assertPcrReadContextFresh,
   createPcrReadContext,
+  getPcrReadContextCatalog,
+  withPcrReadContextSession,
 } from "./read-context.mjs";
 import { parseYaml } from "./yaml-lite.mjs";
 import {
@@ -37,7 +39,7 @@ import {
 } from "./generated/controlled-vocabulary.mjs";
 
 export const FEEDBACK_TYPES = FEEDBACK_TYPE_VALUES;
-export { createPcrReadContext };
+export { createPcrReadContext, withPcrReadContextSession };
 export {
   CLASSIFICATION_COVERAGE_STATUSES,
   PcrClassificationCodeUnknownError,
@@ -956,11 +958,15 @@ function getCurrentPcrSnapshotUnchecked({ root, pcrId, refresh = false, context 
     assertPcrReadContextFresh({ context, root: normalizedRoot });
   }
   const catalog = context
-    ? readPcrCatalog(normalizedRoot)
+    ? getPcrReadContextCatalog({
+      context,
+      root: normalizedRoot,
+      readCatalog: readPcrCatalog,
+    })
     : getPcrCatalog({ root: normalizedRoot, refresh });
-  const entry = catalog.find(
-    (candidate) => candidate.id === pcrId,
-  );
+  const entry = context
+    ? catalog.get(pcrId)
+    : catalog.find((candidate) => candidate.id === pcrId);
   if (!entry) {
     throw new Error(`PCR not found: ${pcrId}`);
   }

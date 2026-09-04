@@ -119,6 +119,50 @@ export function readPcrIdAliases({ root, verifyCatalogBinding = true }) {
     .sort((left, right) => compareText(left.source_pcr_id, right.source_pcr_id));
 }
 
+/**
+ * Conservative file inventory for every source consulted while validating a
+ * non-empty alias registry. Consumers use this to bind a validated alias set
+ * to its decision evidence, normalized-leaf evidence, and manifest identity
+ * inventory without accepting caller-provided aliases as authoritative.
+ */
+export function pcrIdAliasValidationDependencies({ root }) {
+  const normalizedRoot = path.resolve(root);
+  let document;
+  try {
+    document = parseYaml(readContainedUtf8RegularFile({
+      root: normalizedRoot,
+      relativePath: PCR_ID_ALIAS_REGISTRY_PATH,
+      label: "PCR id alias registry",
+    }).text);
+  } catch (error) {
+    throw invalidAliases(PCR_ID_ALIAS_REGISTRY_PATH, error);
+  }
+  const aliases = Array.isArray(document?.aliases) ? document.aliases : [];
+  if (aliases.length === 0) {
+    return [];
+  }
+  const dependencies = new Set([PCR_ID_ALIAS_REGISTRY_PATH]);
+  for (const alias of aliases) {
+    if (typeof alias?.decision_ref === "string") {
+      dependencies.add(alias.decision_ref.split("#", 1)[0]);
+    }
+    const target = alias?.target;
+    if (
+      target?.kind === "classification_coverage" &&
+      typeof target.classification_system === "string" &&
+      typeof target.classification_version === "string"
+    ) {
+      dependencies.add(
+        `classifications/systems/${target.classification_system}/${target.classification_version}/normalized/leaves.json`,
+      );
+    }
+  }
+  for (const record of readCanonicalManifestInventory(normalizedRoot)) {
+    dependencies.add(record.relativePath);
+  }
+  return [...dependencies].sort(compareText);
+}
+
 function readCatalogAliasBinding(root) {
   if (!containedRegularFileExists({
     root,
@@ -546,6 +590,7 @@ function readCanonicalManifestInventory(root) {
     });
     return {
       directory: path.posix.dirname(relativePath),
+      relativePath,
       manifest: parseYaml(source.text),
     };
   });

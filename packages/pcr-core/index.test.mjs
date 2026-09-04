@@ -6,6 +6,7 @@ import {
   mkdirSync,
   mkdtempSync,
   readFileSync,
+  renameSync,
   rmSync,
   symlinkSync,
   writeFileSync,
@@ -30,6 +31,7 @@ import {
   resolvePcrIdentity,
   validateDatasetAgainstGuidance,
   validateModelAgainstGuidance,
+  withPcrReadContextSession,
 } from "./src/index.mjs";
 import { findPcrIdAlias, readPcrIdAliases } from "./src/pcr-id-aliases.mjs";
 import { sha256Fingerprint, splitProjectionDocument } from "./src/projection-integrity.mjs";
@@ -1177,9 +1179,9 @@ test("read context reuses aliases, isolates cache, freezes exposed data, and fai
   try {
     const context = createPcrReadContext({
       root,
-      aliasLoader: ({ root: aliasRoot }) => {
+      onAliasValidation: ({ aliases }) => {
         aliasLoads += 1;
-        return readPcrIdAliases({ root: aliasRoot });
+        assert.equal(Array.isArray(aliases), true);
       },
     });
 
@@ -1230,7 +1232,7 @@ test("read context reuses aliases, isolates cache, freezes exposed data, and fai
     writeFileSync(manifestPath, renderYaml(mutatedManifest));
     assert.throws(
       () => readPcrMarkdown({ root, pcrId: wheatSeedPcrId, context }),
-      /PCR not found/u,
+      (error) => error.code === "PCR_READ_CONTEXT_STALE",
     );
     writeFileSync(manifestPath, originalManifest);
     assert.match(readPcrMarkdown({ root, pcrId: wheatSeedPcrId, context }), /Wheat Seed/u);
@@ -1242,6 +1244,12 @@ test("read context reuses aliases, isolates cache, freezes exposed data, and fai
     const coveragePath = path.join(root, "classifications/indexes/cpc-3.0-coverage.json");
     const secondMappingPath = path.join(root, "classifications/mappings/cpc-2.1-to-pcr.yaml");
     const secondCoveragePath = path.join(root, "classifications/indexes/cpc-2.1-coverage.json");
+    const decisionPath = path.join(root, "docs/decisions/retired-id.md");
+    const normalizedLeavesPath = path.join(
+      root,
+      "classifications/systems/cpc/3.0/normalized/leaves.json",
+    );
+    const aliasInventoryManifestPath = path.join(root, scaffoldRelativePcrPath, "manifest.yaml");
     for (const [label, filePath, mutate] of [
       ["catalog", catalogPath, (text) => `${text}\n`],
       ["material index", indexPath, (text) => `${text}\n`],
@@ -1251,6 +1259,9 @@ test("read context reuses aliases, isolates cache, freezes exposed data, and fai
       ["first classification coverage", coveragePath, (text) => `${text}\n`],
       ["second classification mapping", secondMappingPath, (text) => `${text}\n`],
       ["second classification coverage", secondCoveragePath, (text) => `${text}\n`],
+      ["alias decision reference", decisionPath, (text) => `${text}\n`],
+      ["alias normalized leaves", normalizedLeavesPath, (text) => `${text}\n`],
+      ["alias manifest inventory", aliasInventoryManifestPath, (text) => `${text}\n`],
     ]) {
       const original = readFileSync(filePath, "utf8");
       const freshContext = createPcrReadContext({ root });
@@ -1270,6 +1281,82 @@ test("read context reuses aliases, isolates cache, freezes exposed data, and fai
   }
 });
 
+test("read context never lets an injected alias loader bypass retired-id routing", () => {
+  const root = createReadContextFixture("tiangong-pcr-read-context-authoritative-aliases-", { withAlias: true });
+  try {
+    const context = createPcrReadContext({
+      root,
+      aliasLoader: () => [],
+    });
+    assert.equal(
+      findPcrIdAlias({ root, pcrId: scaffoldPcrId, context }).target.code,
+      "92200",
+    );
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+  }
+});
+
+test("read context bulk sessions bind once and reuse one catalog snapshot across multiple PCR reads", () => {
+  const root = createReadContextFixture("tiangong-pcr-read-context-session-");
+  const abaloneDir = path.join(root, abaloneRelativePcrPath);
+  mkdirSync(path.dirname(abaloneDir), { recursive: true });
+  cpSync(path.join(repoRoot, abaloneRelativePcrPath), abaloneDir, { recursive: true });
+  let bindingChecks = 0;
+  let catalogSnapshots = 0;
+  try {
+    const context = createPcrReadContext({
+      root,
+      onBindingCheck: () => {
+        bindingChecks += 1;
+      },
+      onCatalogSnapshot: () => {
+        catalogSnapshots += 1;
+      },
+    });
+    withPcrReadContextSession({
+      context,
+      root,
+      read: () => {
+        for (const pcrId of [wheatSeedPcrId, abalonePcrId]) {
+          assert.ok(readPcrMarkdown({ root, pcrId, context }).length > 0);
+          assert.ok(readPcrMarkdown({ root, pcrId, language: "zh-CN", context }).length > 0);
+          assert.equal(buildGuidance({ root, pcrId, context }).pcr.id, pcrId);
+        }
+      },
+    });
+    assert.equal(bindingChecks, 2);
+    assert.equal(catalogSnapshots, 1);
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+  }
+});
+
+test("read context rejects an intermediate bound-source directory replacement", () => {
+  const root = createReadContextFixture("tiangong-pcr-read-context-directory-race-");
+  const mappingsDir = path.join(root, "classifications/mappings");
+  let replaced = false;
+  try {
+    assert.throws(
+      () => createPcrReadContext({
+        root,
+        beforeBoundSourceOpen: ({ relativePath }) => {
+          if (replaced || relativePath !== "classifications/mappings/cpc-3.0-to-pcr.yaml") {
+            return;
+          }
+          replaced = true;
+          renameSync(mappingsDir, `${mappingsDir}-replaced`);
+          mkdirSync(mappingsDir, { recursive: true });
+          writeFileSync(path.join(mappingsDir, "cpc-3.0-to-pcr.yaml"), "schema_version: 2\nstatus: current\n");
+        },
+      }),
+      /changed while it was being opened/u,
+    );
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+  }
+});
+
 test("read context rejects alias-loader mutation between its bound fingerprints", () => {
   const root = createReadContextFixture("tiangong-pcr-read-context-toctou-");
   const registryPath = path.join(root, "classifications/aliases/pcr-id-aliases.yaml");
@@ -1277,10 +1364,10 @@ test("read context rejects alias-loader mutation between its bound fingerprints"
     assert.throws(
       () => createPcrReadContext({
         root,
-        aliasLoader: ({ root: aliasRoot }) => {
+        onAliasValidation: ({ root: aliasRoot }) => {
           const aliases = readPcrIdAliases({ root: aliasRoot });
           writeFileSync(registryPath, `${readFileSync(registryPath, "utf8")}\n`);
-          return aliases;
+          assert.equal(aliases.length, 0);
         },
       }),
       (error) => error.code === "PCR_READ_CONTEXT_STALE",
