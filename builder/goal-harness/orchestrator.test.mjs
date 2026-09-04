@@ -150,6 +150,45 @@ test("resume dry run includes retryable in-place repairs without persisting thei
   }
 });
 
+test("dispatch infrastructure recheck fails before resume mutates state or creates a visible task", async () => {
+  const { root, stateDir, config } = fixture();
+  const store = new GoalEventStore({ stateDir });
+  store.append({ event_id: "fixture-stopped-before-infrastructure-recheck", type: "scheduling_stopped", payload: {} });
+  const eventsPath = path.join(stateDir, "events.jsonl");
+  const eventsBefore = readFileSync(eventsPath, "utf8");
+  let createCalls = 0;
+  try {
+    await assert.rejects(
+      dispatchGoalAuthors({
+        config,
+        stateDir,
+        slots: 1,
+        resumeStopped: true,
+        preDispatchCheck() {
+          const error = new Error("state_code=100 direct read unavailable after harvest");
+          error.code = "GOAL_HYBRID_AUTHENTICATED_PREFLIGHT_FAILED";
+          throw error;
+        },
+        adapter: {
+          async createAuthorTask() {
+            createCalls += 1;
+            return { thread_id: "thread-must-not-exist", turn_id: "turn-must-not-exist" };
+          },
+        },
+      }),
+      (error) => error.code === "GOAL_HYBRID_AUTHENTICATED_PREFLIGHT_FAILED",
+    );
+
+    const state = new GoalEventStore({ stateDir }).rebuild();
+    assert.equal(state.stopped, true);
+    assert.equal(state.tasks[0].state, "queued");
+    assert.equal(createCalls, 0);
+    assert.equal(readFileSync(eventsPath, "utf8"), eventsBefore);
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+  }
+});
+
 test("dispatch advances past a legacy transition cycle whose persisted counter is stale", async () => {
   const { root, stateDir, config } = fixture();
   const store = new GoalEventStore({ stateDir });

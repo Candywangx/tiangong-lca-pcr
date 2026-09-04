@@ -223,6 +223,7 @@ export async function startCommand({ configPath, slots = null, dryRun = false, r
       adapter,
       resumeStopped: resume,
       dryRun,
+      preDispatchCheck: dryRun ? null : () => assertAuthorDispatchInfrastructure(effectiveConfig),
     });
     return { ...result, harvest, runtime_baseline: runtimeBaseline, codex_project_id: effectiveConfig.codex?.project_id ?? null, app_server: daemon ? { endpoint: daemon.endpoint, pid: daemon.pid, reused: daemon.reused } : null };
   } finally {

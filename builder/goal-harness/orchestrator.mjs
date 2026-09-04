@@ -17,7 +17,15 @@ import { validateAuthorReport } from "./author-gates.mjs";
 import { selectGoalRuntimeBaseCommit } from "./runtime-baseline.mjs";
 import { resolveAuthorContentBaseCommit } from "./author-baseline.mjs";
 
-export async function dispatchGoalAuthors({ config, stateDir, slots = config.author_slots, adapter, resumeStopped = false, dryRun = false }) {
+export async function dispatchGoalAuthors({
+  config,
+  stateDir,
+  slots = config.author_slots,
+  adapter,
+  resumeStopped = false,
+  dryRun = false,
+  preDispatchCheck = null,
+}) {
   if (!Number.isInteger(slots) || slots < 1 || slots > 6) {
     throw new GoalHarnessError("GOAL_SLOTS_INVALID", "Author slots must be an integer from 1 through 6");
   }
@@ -27,6 +35,7 @@ export async function dispatchGoalAuthors({ config, stateDir, slots = config.aut
     if (state.stopped && !resumeStopped) {
       throw new GoalHarnessError("GOAL_SCHEDULING_STOPPED", `Goal ${state.goal_id} is stopped; use resume explicitly.`);
     }
+    if (!dryRun && preDispatchCheck) await preDispatchCheck({ state });
     if (dryRun) {
       const previewState = resumeStopped ? previewResumedState({ config, state }) : state;
       const selected = selectDispatchTasks(previewState, slots);
