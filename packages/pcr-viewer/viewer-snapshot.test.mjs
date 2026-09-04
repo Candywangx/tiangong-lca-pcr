@@ -140,6 +140,44 @@ test("PCR detail preserves the complete buildGuidance-shaped payload", () => {
   } finally { rmSync(root, { recursive: true, force: true }); }
 });
 
+test("catalog entries retain list metadata, classification text, and search_text", () => {
+  const { root, store } = fixtureStore();
+  try {
+    const pcr = {
+      id: "pcr.agriculture.wheat-seed", path: "library/pcrs/agriculture/wheat-seed",
+      title: { "en-US": "Wheat seed", "zh-CN": "小麦种子" }, status: "active", version: "1.2.3",
+      content_maturity: "reviewed_methodology", languages: { canonical: "en-US", available: ["en-US", "zh-CN"] },
+      translation_status: { "zh-CN": "reviewed" },
+      classification_refs: [{ system: "CPC", version: "3.0", code: "01111", title: "Wheat seed for sowing", mapping_type: "exact" }],
+      record_kind: "methodology", readiness: viewerReadiness(),
+      search_text: "Wheat seed 小麦种子 CPC 01111 Wheat seed for sowing",
+      markdown: { "en-US": "# Wheat", "zh-CN": "# 小麦" }, guidance: viewerGuidance("pcr.agriculture.wheat-seed"),
+    };
+    const result = store.publish(snapshotInput({ pcrEntries: [pcr, snapshotInput().pcrEntries[1]] }));
+    const manifest = store.readManifest(result.manifestRef);
+    const shard = Object.values(manifest.refs.catalog_shards)
+      .map((ref) => store.readObject(ref))
+      .find((object) => object.entry.entries.some((item) => item.id === pcr.id));
+    const catalogEntry = store.readObject(shard.entry.entries.find((item) => item.id === pcr.id).object_ref);
+    assert.equal(catalogEntry.entry.search_text, pcr.search_text);
+    assert.deepEqual(catalogEntry.entry.title, pcr.title);
+    assert.deepEqual(catalogEntry.entry.classification_refs, pcr.classification_refs);
+  } finally { rmSync(root, { recursive: true, force: true }); }
+});
+
+test("direct Ajv validation rejects generation metadata anywhere in guidance", () => {
+  const schemas = createViewerSnapshotSchemaRegistry();
+  const base = { schema_version: 1, object_kind: "pcr_detail", identity: objectIdentity(), entry: { id: "pcr.a", markdown: { "en-US": null, "zh-CN": null }, guidance: viewerGuidance() } };
+  assert.equal(schemas.validate("viewer-object", base).valid, true);
+  for (const guidance of [
+    { ...viewerGuidance(), pcr: { ...viewerGuidance().pcr, generated_at: "now" } },
+    { ...viewerGuidance(), reference_flow: { ...viewerGuidance().reference_flow, generated_at_utc: "now" } },
+    { ...viewerGuidance(), measurement_rules: [{ generation_timestamp: "now" }] },
+  ]) {
+    assert.equal(schemas.validate("viewer-object", { ...base, entry: { ...base.entry, guidance } }).valid, false);
+  }
+});
+
 test("store creates immutable entry objects and deterministic prefix shards", () => {
   const { root, store } = fixtureStore();
   try {

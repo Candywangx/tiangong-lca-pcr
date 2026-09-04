@@ -466,7 +466,7 @@ export class ViewerSnapshotStore {
         classification_refs: Array.isArray(entry.classification_refs) ? structuredClone(entry.classification_refs) : [],
         record_kind: typeof entry.record_kind === "string" ? entry.record_kind : "methodology",
         readiness: entry.readiness === undefined ? defaultReadiness() : structuredClone(entry.readiness),
-        search_text: typeof entry.catalog_search_text === "string" ? entry.catalog_search_text : entry.id,
+        search_text: typeof entry.search_text === "string" ? entry.search_text : entry.id,
       } });
     }
     return sortedObject(refs);

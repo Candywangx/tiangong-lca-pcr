@@ -129,7 +129,12 @@
           "properties": {
             "id": { "$ref": "#/$defs/text" },
             "markdown": { "$ref": "#/$defs/markdown" },
-            "guidance": { "$ref": "https://tiangong-lca.org/schemas/pcr/v1/guidance-output.schema.json" }
+            "guidance": {
+              "allOf": [
+                { "$ref": "https://tiangong-lca.org/schemas/pcr/v1/guidance-output.schema.json" },
+                { "$ref": "#/$defs/noGenerationMetadata" }
+              ]
+            }
           }
         } } }
       ]
@@ -240,6 +245,34 @@
             "previous_page_ref": { "anyOf": [{ "type": "null" }, { "$ref": "#/$defs/ref" }] }
           }
         } } }
+      ]
+    },
+    "noGenerationMetadata": {
+      "allOf": [
+        {
+          "not": {
+            "type": "object",
+            "anyOf": [
+              { "type": "object", "required": ["generated_at"], "properties": { "generated_at": true } },
+              { "type": "object", "required": ["generated_at_utc"], "properties": { "generated_at_utc": true } },
+              { "type": "object", "required": ["generation_timestamp"], "properties": { "generation_timestamp": true } }
+            ]
+          }
+        },
+        {
+          "if": { "type": "object" },
+          "then": {
+            "type": "object",
+            "additionalProperties": { "$ref": "#/$defs/noGenerationMetadata" }
+          }
+        },
+        {
+          "if": { "type": "array" },
+          "then": {
+            "type": "array",
+            "items": { "$ref": "#/$defs/noGenerationMetadata" }
+          }
+        }
       ]
     }
   }
