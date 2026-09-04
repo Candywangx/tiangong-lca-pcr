@@ -362,6 +362,60 @@ test("harvest interrupts an expired visible author and requests recovery in the 
   }
 });
 
+test("Codex usage-limit failures are infrastructure retryable without consuming a content repair", async () => {
+  const { root, stateDir, config } = fixture();
+  const store = new GoalEventStore({ stateDir });
+  const original = store.rebuild().tasks[0];
+  store.append({
+    event_id: "fixture-codex-usage-limit",
+    type: "task_replaced",
+    payload: { task: {
+      ...original,
+      state: "authoring_repair",
+      thread_id: "thread-quota",
+      turn_id: "turn-quota",
+      worktree_path: root,
+      repair_count: 1,
+      repair_history: [{
+        repair_count: 1,
+        turn_id: "turn-quota",
+        started_at: "2026-09-04T00:00:00.000Z",
+        ended_at: null,
+        original_commit: "a".repeat(40),
+        new_commit: null,
+        gate_findings: [{ code: "missing_receipt" }],
+      }],
+      transition_ids: ["authoring_repair"],
+    } },
+  });
+  const adapter = {
+    async readThread() {
+      return { thread: { turns: [{
+        id: "turn-quota",
+        status: "failed",
+        error: {
+          message: "You've hit your usage limit. Try again later.",
+          codexErrorInfo: "usageLimitExceeded",
+        },
+        items: [],
+      }] } };
+    },
+  };
+  try {
+    const harvested = await harvestGoalAuthors({ config, stateDir, adapter });
+    const failed = harvested.state.tasks[0];
+    assert.equal(failed.state, "retryable_failure");
+    assert.equal(failed.failure_code, "GOAL_CODEX_USAGE_LIMIT_EXCEEDED");
+    assert.equal(failed.repair_count, 1);
+    assert.equal(failed.thread_id, "thread-quota");
+    assert.equal(failed.worktree_path, root);
+    assert.equal(failed.pending_gate_findings[0].code, "codex_usage_limit_exceeded");
+    assert.match(failed.pending_gate_findings[0].remediation, /usage capacity/i);
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+  }
+});
+
 test("an interrupted repair resumes once in the same thread without consuming another repair", async () => {
   const { root, stateDir, config } = fixture();
   config.retry_policy = { max_repairs: 2 };

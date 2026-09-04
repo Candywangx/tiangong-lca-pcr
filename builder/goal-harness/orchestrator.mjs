@@ -326,6 +326,22 @@ export async function harvestGoalAuthors({
           failures.push(task);
           continue;
         }
+        if (isCodexUsageLimitFailure(extracted)) {
+          const failureIdentity = turnObservationIdentity(task, "usage-limit");
+          task = applyTaskTransition(task, { transition_id: failureIdentity, to: "retryable_failure", at: now().toISOString() });
+          task = {
+            ...task,
+            failure_code: "GOAL_CODEX_USAGE_LIMIT_EXCEEDED",
+            failure_message: extracted.error?.message ?? "Codex author usage capacity is unavailable.",
+            pending_gate_findings: [{
+              code: "codex_usage_limit_exceeded",
+              remediation: "Keep the visible thread and worktree intact; resume only after Codex usage capacity is available again.",
+            }],
+          };
+          store.append({ event_id: `${failureIdentity}-recorded`, type: "task_replaced", payload: { task } });
+          failures.push(task);
+          continue;
+        }
         if (extracted.status !== "completed") {
           const canResumeRepair = wasRepair && (task.repair_resume_count ?? 0) < 1;
           const repairResumeFailed = wasRepair && (task.repair_resume_count ?? 0) >= 1;
@@ -520,6 +536,10 @@ function isRepairableReviewFailure(error) {
     "GOAL_HYBRID_SEARCH_FAILED",
     "GOAL_HYBRID_SEARCH_UNAUTHENTICATED",
   ]).has(error.code);
+}
+
+function isCodexUsageLimitFailure(extracted) {
+  return extracted?.error?.codexErrorInfo === "usageLimitExceeded";
 }
 
 function selectRelevantCommonUuids({ stateDir, task }) {
