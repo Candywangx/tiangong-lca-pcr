@@ -10,6 +10,7 @@ import {
   openSync,
   readFileSync,
   renameSync,
+  unlinkSync,
   writeFileSync,
 } from "node:fs";
 import path from "node:path";
@@ -83,7 +84,8 @@ export function landGoalSnapshot({ config, stateDir, snapshotId = null, dryRun =
     artifactStoreVerifier({ config, publication, publications });
     const landingHeadPath = path.join(landingStateDir, "head.json");
     reconcileRepositoryLandingJournal({ landingStateDir, landingHeadPath });
-    const landingHead = existsSync(landingHeadPath)
+    const hasLandingHead = existsSync(landingHeadPath);
+    const landingHead = hasLandingHead
       ? readLandingHead(landingHeadPath)
       : {
           schema_version: 1,
@@ -109,7 +111,11 @@ export function landGoalSnapshot({ config, stateDir, snapshotId = null, dryRun =
         next_sequence: landingHead.repository_sequence + 1,
       });
     }
-    const expectedFromBaseline = captureExpectedFilesFromCommitAllowMissing(config.project_root, validations[0].expected_old_head, snapshot.changed_files);
+    const activationBootstrap = !hasLandingHead && publication.viewer_sequence === 1;
+    const landingPaths = activationBootstrap
+      ? captureActivationLandingPaths({ config, validations, validation })
+      : snapshot.changed_files;
+    const expectedFromBaseline = captureExpectedFilesFromCommitAllowMissing(config.project_root, validations[0].expected_old_head, landingPaths);
     const expected = { ...expectedFromBaseline, ...(landingHead.path_fingerprints ?? {}) };
     const landingTransaction = dryRun ? null : prepareRepositoryLanding({
       landingStateDir,
@@ -117,7 +123,8 @@ export function landGoalSnapshot({ config, stateDir, snapshotId = null, dryRun =
       landingHead,
       validation,
       publication,
-      pathFingerprints: captureExpectedFilesFromCommit(config.project_root, validation.integration_commit, snapshot.changed_files),
+      pathFingerprints: captureExpectedFilesFromCommitAllowMissing(config.project_root, validation.integration_commit, landingPaths),
+      appliedPaths: landingPaths,
     });
     if (landingTransaction) {
       faultInjector("after_repository_landing_prepared", landingTransaction);
@@ -130,7 +137,7 @@ export function landGoalSnapshot({ config, stateDir, snapshotId = null, dryRun =
         return landFilesCas({
           projectRoot: config.project_root,
           sourceRoot,
-          paths: snapshot.changed_files,
+          paths: landingPaths,
           expected,
           stateDir,
           snapshotId: snapshot.id,
@@ -141,7 +148,7 @@ export function landGoalSnapshot({ config, stateDir, snapshotId = null, dryRun =
     if (dryRun) {
       return { ...result, snapshot, expected, next_action: "Review the CAS path set, then repeat goal:land without --dry-run." };
     }
-    const pathFingerprints = captureExpectedFiles(config.project_root, snapshot.changed_files);
+    const pathFingerprints = captureExpectedFiles(config.project_root, landingPaths);
     completeRepositoryLandingHead({ landingStateDir, landingHeadPath, transaction: landingTransaction });
     faultInjector("after_repository_landing_head", landingTransaction);
     snapshot = projectLandedGoalState({ store, snapshot, pathFingerprints, landedAt: landingTransaction.landed_at, landingStatus: result.status });
@@ -194,7 +201,8 @@ export function landFilesCas({ projectRoot, sourceRoot, paths, expected, stateDi
 
   const sources = normalized.map((repoPath) => {
     const absolutePath = resolveRepoPath(sourceRoot, repoPath, { allowSensitive: true });
-    if (!existsSync(absolutePath) || !lstatSync(absolutePath).isFile()) {
+    if (!existsSync(absolutePath)) return { repoPath, absolutePath, fingerprint: { kind: "missing", sha256: null, size: 0 } };
+    if (!lstatSync(absolutePath).isFile()) {
       throw new GoalHarnessError("GOAL_LAND_SOURCE_INVALID", `Landing source is not a regular file: ${repoPath}`);
     }
     return { repoPath, absolutePath, fingerprint: fingerprint(absolutePath) };
@@ -208,8 +216,10 @@ export function landFilesCas({ projectRoot, sourceRoot, paths, expected, stateDi
   const backupDir = path.join(operationDir, "backup");
   for (const source of sources) {
     const staged = resolveRepoPath(stageDir, source.repoPath, { allowSensitive: true });
-    mkdirSync(path.dirname(staged), { recursive: true });
-    copyFileSync(source.absolutePath, staged);
+    if (source.fingerprint.kind === "file") {
+      mkdirSync(path.dirname(staged), { recursive: true });
+      copyFileSync(source.absolutePath, staged);
+    }
     const existing = resolveRepoPath(projectRoot, source.repoPath, { allowSensitive: true });
     if (existsSync(existing)) {
       const backup = resolveRepoPath(backupDir, source.repoPath, { allowSensitive: true });
@@ -224,6 +234,11 @@ export function landFilesCas({ projectRoot, sourceRoot, paths, expected, stateDi
     for (const repoPath of normalized) {
       const destination = resolveRepoPath(projectRoot, repoPath, { allowSensitive: true });
       const staged = resolveRepoPath(stageDir, repoPath, { allowSensitive: true });
+      const source = sources.find((entry) => entry.repoPath === repoPath);
+      if (source.fingerprint.kind === "missing") {
+        if (existsSync(destination)) unlinkSync(destination);
+        continue;
+      }
       mkdirSync(path.dirname(destination), { recursive: true });
       const temporary = `${destination}.goal-${snapshotId}-${randomUUID()}.tmp`;
       copyFileSync(staged, temporary);
@@ -262,6 +277,10 @@ export function recoverLandingJournal({ projectRoot, operationDir, journalPath, 
     const staged = resolveRepoPath(path.join(operationDir, "stage"), repoPath, { allowSensitive: true });
     const source = sourceByPath.get(repoPath);
     if (sameFingerprint(fingerprint(destination), source.fingerprint)) continue;
+    if (source.fingerprint.kind === "missing") {
+      if (existsSync(destination)) unlinkSync(destination);
+      continue;
+    }
     mkdirSync(path.dirname(destination), { recursive: true });
     const temporary = `${destination}.goal-${snapshotId}-${randomUUID()}.tmp`;
     copyFileSync(staged, temporary);
@@ -324,7 +343,7 @@ function readLandingHead(filePath) {
   return value;
 }
 
-function prepareRepositoryLanding({ landingStateDir, landingHeadPath, landingHead, validation, publication, pathFingerprints }) {
+function prepareRepositoryLanding({ landingStateDir, landingHeadPath, landingHead, validation, publication, pathFingerprints, appliedPaths }) {
   const journalPath = path.join(landingStateDir, "journal.json");
   const currentBytes = existsSync(landingHeadPath) ? readFileSync(landingHeadPath) : null;
   const nextHead = {
@@ -347,6 +366,7 @@ function prepareRepositoryLanding({ landingStateDir, landingHeadPath, landingHea
     next_head: nextHead,
     next_head_sha256: createHash("sha256").update(jsonBytes(nextHead)).digest("hex"),
     landed_at: nextHead.landed_at,
+    applied_paths: [...appliedPaths].sort(),
   };
   if (existsSync(journalPath)) {
     const retained = readRepositoryLandingJournal(journalPath);
@@ -354,6 +374,7 @@ function prepareRepositoryLanding({ landingStateDir, landingHeadPath, landingHea
         ["prepared", "head_committed", "projected"].includes(retained.phase)) {
       if (retained.next_head.goal_id !== validation.goal_id || retained.next_head.harness_snapshot_id !== validation.harness_snapshot_id ||
           retained.next_head.viewer_manifest_ref !== publication.manifest_ref ||
+          stableJson(retained.applied_paths) !== stableJson(prepared.applied_paths) ||
           stableJson(retained.next_head.path_fingerprints) !== stableJson(prepared.next_head.path_fingerprints)) {
         throw new GoalHarnessError("GOAL_LAND_JOURNAL_CONFLICT", "Retained repository landing transaction has a different publication identity.");
       }
@@ -421,7 +442,8 @@ function readRepositoryLandingJournal(journalPath) {
       typeof value.next_head.goal_id !== "string" || typeof value.next_head.harness_snapshot_id !== "string" ||
       !/^sha256:[a-f0-9]{64}$/u.test(value.next_head.viewer_manifest_ref ?? "") ||
       !Number.isFinite(Date.parse(value.next_head.landed_at ?? "")) || value.next_head.landed_at !== value.landed_at ||
-      !value.next_head.path_fingerprints || typeof value.next_head.path_fingerprints !== "object") {
+      !value.next_head.path_fingerprints || typeof value.next_head.path_fingerprints !== "object" ||
+      !Array.isArray(value.applied_paths) || value.applied_paths.some((entry) => typeof entry !== "string")) {
     throw new GoalHarnessError("GOAL_LAND_JOURNAL_INVALID", "Repository landing journal is malformed.");
   }
   return value;
@@ -484,6 +506,26 @@ function assertDetachedLandingSource(sourceRoot, validation) {
   if (head !== validation.integration_commit || tree !== validation.tree_hash || status !== "") {
     throw new GoalHarnessError("GOAL_LAND_SOURCE_INVALID", "Detached landing source does not match the pinned integration commit and tree.");
   }
+}
+
+function captureActivationLandingPaths({ config, validations, validation }) {
+  const baseline = validations[0].expected_old_head;
+  const output = execFileSync("git", ["diff", "--name-only", "-z", baseline, validation.integration_commit, "--"], {
+    cwd: config.project_root,
+    encoding: "buffer",
+    stdio: ["ignore", "pipe", "pipe"],
+    maxBuffer: GIT_BLOB_MAX_BUFFER,
+  });
+  const paths = output.toString("utf8").split("\0").filter(Boolean).map((entry) => assertRepoPath(entry, { allowSensitive: true })).sort();
+  const configuredRoots = config.baseline?.tracked_roots;
+  const allowedRoots = Array.isArray(configuredRoots) && configuredRoots.length > 0
+    ? configuredRoots.map((entry) => assertRepoPath(entry, { allowSensitive: true }))
+    : validations.flatMap((entry) => entry.goal_projection?.changed_files ?? []).map((entry) => assertRepoPath(entry, { allowSensitive: true }));
+  const unauthorized = paths.filter((entry) => !allowedRoots.some((root) => entry === root || entry.startsWith(`${root}/`)));
+  if (unauthorized.length > 0) {
+    throw new GoalHarnessError("GOAL_LAND_ACTIVATION_SCOPE_INVALID", "Activation landing includes paths outside the configured repository roots.", { unauthorized, allowed_roots: allowedRoots });
+  }
+  return paths;
 }
 
 function sameFingerprint(left, right) {

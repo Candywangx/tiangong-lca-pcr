@@ -24,6 +24,7 @@ import { buildGuidance } from "../pcr-core/src/index.mjs";
 import {
   buildViewer,
   buildViewerData,
+  checkViewerCandidates,
   checkViewerSnapshot,
   computeViewerGeneratorContractSha256,
   mirrorViewerArtifactStore,
@@ -610,6 +611,33 @@ test("one-PCR incremental update never reads unrelated PCR bodies and runs the a
     rmSync(root, { recursive: true, force: true });
     rmSync(artifactStore, { recursive: true, force: true });
   }
+});
+
+test("bounded candidate check reads every selected PCR and runs global contracts once without unrelated bodies", () => {
+  const reads = [];
+  const artifactReads = [];
+  const gates = [];
+  const result = checkViewerCandidates({
+    root: repoRoot,
+    pcrIds: [wheatPcrId, coralPcrId],
+    onPcrBodyRead: (event) => reads.push(event),
+    onPcrArtifactRead: (event) => artifactReads.push(event.relative_path),
+    onGlobalGate: (event) => gates.push(event.gate),
+  });
+  assert.deepEqual(result.checked_pcr_ids, [coralPcrId, wheatPcrId].sort());
+  assert.deepEqual(new Set(reads.map((entry) => entry.pcr_id)), new Set([wheatPcrId, coralPcrId]));
+  for (const pcrId of [wheatPcrId, coralPcrId]) {
+    assert.equal(reads.filter((entry) => entry.pcr_id === pcrId && entry.kind === "guidance").length, 1);
+    assert.deepEqual(reads.filter((entry) => entry.pcr_id === pcrId && entry.kind === "markdown").map((entry) => entry.language).sort(), ["en-US", "zh-CN"]);
+  }
+  assert.ok(artifactReads.length > 0);
+  assert.equal(artifactReads.every((entry) => entry.startsWith(`${wheatPcrPath}/`) || entry.startsWith(`${coralPcrPath}/`)), true);
+  for (const pcrPath of [wheatPcrPath, coralPcrPath]) {
+    for (const leaf of ["pcr.en-US.md", "pcr.zh-CN.md", "structured.yaml"]) {
+      assert.equal(artifactReads.includes(`${pcrPath}/${leaf}`), true, `${pcrPath}/${leaf}`);
+    }
+  }
+  assert.deepEqual([...gates].sort(), ["aliases", "catalog", "coverage", "full_contract"]);
 });
 
 test("pinned Git-tree deltas rebuild an unhinted changed PCR without opening unchanged bodies", () => {

@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { execFileSync } from "node:child_process";
+import { execFileSync, spawn } from "node:child_process";
 import { existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import path from "node:path";
@@ -13,10 +13,14 @@ import {
 import {
   listViewerPublications,
   listViewerPreActivationRecords,
+  probeViewerArtifactStore,
   publishPendingViewerSnapshots,
+  reconstructViewerArtifactStore,
   recoverViewerPublications,
 } from "./viewer-publication.mjs";
 import { landGoalSnapshot } from "./landing.mjs";
+import { VIEWER_INCREMENTAL_GENERATOR_VERSION } from "../../packages/pcr-viewer/scripts/build-viewer-data.mjs";
+import { ViewerSnapshotStore } from "../../packages/pcr-viewer/scripts/snapshot-store.mjs";
 
 function git(root, args, options = {}) {
   return execFileSync("git", args, {
@@ -38,7 +42,12 @@ function fixture() {
   git(root, ["commit", "-qm", "baseline"]);
   const baseline = git(root, ["rev-parse", "HEAD"]);
   const artifactStore = path.join(root, "viewer-history");
-  const config = { project_root: root, goal_id: "goal-a", artifact_store: artifactStore };
+  const config = {
+    project_root: root,
+    goal_id: "goal-a",
+    artifact_store: artifactStore,
+    baseline: { tracked_roots: [".gitignore", "tracked.txt", "pre-activation.txt"] },
+  };
   return { root, baseline, artifactStore, config };
 }
 
@@ -82,6 +91,40 @@ function commitValidation({ root, parent, goalId, snapshotId, content }) {
   });
 }
 
+function commitValidationFiles({ root, parent, goalId, snapshotId, files, changedFiles }) {
+  const candidate = reserveRepositoryCandidate({ projectRoot: root, goalId, snapshotId, fallbackHead: parent });
+  const treeInput = Object.entries(files).sort(([left], [right]) => left.localeCompare(right)).map(([file, content]) => {
+    const blob = git(root, ["hash-object", "-w", "--stdin"], { input: content });
+    return `100644 blob ${blob}\t${file}\n`;
+  }).join("");
+  const tree = git(root, ["mktree"], { input: treeInput });
+  const commit = git(root, ["commit-tree", tree, "-p", parent], { input: `${snapshotId}\n` });
+  const stateDir = path.join(root, "library/.pcr-builder-state/goals", goalId);
+  new GoalEventStore({ stateDir }).initialize({
+    goal_id: goalId,
+    baseline: { commit: parent },
+    tasks: [],
+    snapshots: [{ id: snapshotId, goal_id: goalId, task_ids: [], state: "integrating", worktree_path: root }],
+  });
+  return commitRepositoryValidation({
+    projectRoot: root,
+    candidateToken: candidate.candidate_token,
+    integrationCommit: commit,
+    goalStateDir: stateDir,
+    snapshotProjection: {
+      id: snapshotId,
+      goal_id: goalId,
+      task_ids: [],
+      state: "validated",
+      integration_commit: commit,
+      base_commit: parent,
+      worktree_path: root,
+      changed_files: changedFiles,
+      command_results: [{ name: "validate", exit_code: 0 }],
+    },
+  });
+}
+
 function commitFullTreeValidation({ root, parent, goalId, snapshotId, content }) {
   const candidate = reserveRepositoryCandidate({ projectRoot: root, goalId, snapshotId, fallbackHead: parent });
   writeFileSync(path.join(root, "tracked.txt"), `${content}\n`);
@@ -115,6 +158,42 @@ function commitFullTreeValidation({ root, parent, goalId, snapshotId, content })
   });
 }
 
+function publishFastValidViewerSnapshot(options) {
+  const store = new ViewerSnapshotStore({
+    root: options.artifactStore,
+    generatorVersion: VIEWER_INCREMENTAL_GENERATOR_VERSION,
+    sourceVerifier: options.sourceVerifier,
+  });
+  store.recover({ forceStaleLock: options.forceStaleLock });
+  return store.publish({
+    snapshotId: options.snapshotId,
+    goalId: options.goalId,
+    harnessSnapshotId: options.harnessSnapshotId,
+    capturedAt: options.capturedAt,
+    validatedAt: options.validatedAt,
+    validationSummary: options.validationSummary,
+    catalogScope: "material",
+    sequence: options.sequence,
+    generatorContractSha256: `sha256:${"1".repeat(64)}`,
+    source: {
+      catalog: `sha256:${"2".repeat(64)}`,
+      aliases: `sha256:${"3".repeat(64)}`,
+      coverage: [],
+      releaseRevisionMarkers: {},
+      source_ref: options.sourceRef,
+      integration_commit: options.integrationCommit,
+      base_commit: options.baseCommit,
+      tree_hash: options.treeHash,
+      ui_bundle_ref: `sha256:${"4".repeat(64)}`,
+    },
+    pcrEntries: [],
+    aliasEntries: [],
+    coverageEntries: [],
+    pinnedSources: [],
+    forceStaleLock: options.forceStaleLock,
+  });
+}
+
 test("publishes the next repository sequence from an exact detached pinned source and projects success", () => {
   const { root, baseline, artifactStore, config } = fixture();
   try {
@@ -131,6 +210,7 @@ test("publishes the next repository sequence from an exact detached pinned sourc
         assert.equal(options.sourceVerifier({ phase: "before", capture: {
           source_ref: validation.source_ref,
           integration_commit: validation.integration_commit,
+          base_commit: validation.expected_old_head,
           tree_hash: validation.tree_hash,
         } }), true);
         return { manifestRef: `sha256:${"a".repeat(64)}`, sequence: validation.repository_sequence };
@@ -154,10 +234,10 @@ test("publishes the next repository sequence from an exact detached pinned sourc
 });
 
 test("landing is repository ordered across Goals and requires the Viewer publication", () => {
-  const { root, baseline, artifactStore } = fixture();
+  const { root, baseline, artifactStore, config: baseConfig } = fixture();
   try {
     const first = commitValidation({ root, parent: baseline, goalId: "goal-a", snapshotId: "snapshot-a", content: "first" });
-    const publishConfig = { project_root: root, goal_id: "goal-a", artifact_store: artifactStore };
+    const publishConfig = { ...baseConfig, goal_id: "goal-a" };
     publishAll(publishConfig);
     commitValidation({ root, parent: first.integration_commit, goalId: "goal-b", snapshotId: "snapshot-b", content: "second" });
     publishAll(publishConfig);
@@ -244,6 +324,42 @@ test("first activation bootstraps the current accepted validation and records ea
     const stateDir = path.join(root, "library/.pcr-builder-state/goals/goal-c");
     assert.equal(landGoalSnapshot({ config: { ...config, goal_id: "goal-c" }, stateDir, snapshotId: "snapshot-c", artifactStoreVerifier: () => true }).status, "landed");
     assert.equal(readFileSync(path.join(root, "tracked.txt"), "utf8"), "third\n");
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+  }
+});
+
+test("first activation landing materializes the cumulative pinned tree including disjoint pre-activation paths", () => {
+  const { root, baseline, config } = fixture();
+  try {
+    const ignored = ".worktrees/\nlibrary/.pcr-builder-state/\n";
+    const first = commitValidationFiles({
+      root,
+      parent: baseline,
+      goalId: "goal-a",
+      snapshotId: "snapshot-a",
+      files: { ".gitignore": ignored, "pre-activation.txt": "first\n", "tracked.txt": "baseline\n" },
+      changedFiles: ["pre-activation.txt"],
+    });
+    const second = commitValidationFiles({
+      root,
+      parent: first.integration_commit,
+      goalId: "goal-b",
+      snapshotId: "snapshot-b",
+      files: { ".gitignore": ignored, "pre-activation.txt": "first\n", "tracked.txt": "second\n" },
+      changedFiles: ["tracked.txt"],
+    });
+    publishPendingViewerSnapshots({
+      config: { ...config, goal_id: "goal-b" },
+      publishSnapshot: (options) => ({ manifestRef: `sha256:${"8".repeat(64)}`, sequence: options.sequence }),
+    });
+    assert.equal(existsSync(path.join(root, "pre-activation.txt")), false);
+    const stateDir = path.join(root, "library/.pcr-builder-state/goals/goal-b");
+    assert.equal(landGoalSnapshot({ config: { ...config, goal_id: "goal-b" }, stateDir, artifactStoreVerifier: () => true }).status, "landed");
+    assert.equal(readFileSync(path.join(root, "pre-activation.txt"), "utf8"), "first\n");
+    assert.equal(readFileSync(path.join(root, "tracked.txt"), "utf8"), "second\n");
+    const head = JSON.parse(readFileSync(path.join(root, "library/.pcr-builder-state/repository-coordinator/landing/head.json"), "utf8"));
+    assert.deepEqual(Object.keys(head.path_fingerprints).sort(), ["pre-activation.txt", "tracked.txt"]);
   } finally {
     rmSync(root, { recursive: true, force: true });
   }
@@ -377,7 +493,70 @@ test("repository publication lock requires force for a confirmed dead owner and 
   }
 });
 
-test("recovery materializes a publication committed before the Goal projection", () => {
+test("simultaneous Harness publishers serialize to one exact publication", async () => {
+  const { root, baseline, config } = fixture();
+  try {
+    commitValidation({ root, parent: baseline, goalId: "goal-a", snapshotId: "snapshot-a", content: "accepted" });
+    const moduleUrl = new URL("./viewer-publication.mjs", import.meta.url).href;
+    const source = `import { publishPendingViewerSnapshots } from ${JSON.stringify(moduleUrl)};
+const config = JSON.parse(process.argv[1]);
+try {
+  const result = publishPendingViewerSnapshots({ config, publishSnapshot(options) { Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, 750); return { manifestRef: 'sha256:' + '7'.repeat(64), sequence: options.sequence }; } });
+  process.stdout.write(JSON.stringify({ ok: true, status: result.status, sequence: result.publication?.viewer_sequence ?? null }));
+} catch (error) {
+  process.stdout.write(JSON.stringify({ ok: false, code: error.code }));
+}`;
+    const run = () => new Promise((resolve, reject) => {
+      const child = spawn(process.execPath, ["--input-type=module", "-e", source, JSON.stringify(config)], { stdio: ["ignore", "pipe", "pipe"] });
+      let stdout = "";
+      let stderr = "";
+      child.stdout.on("data", (chunk) => { stdout += chunk; });
+      child.stderr.on("data", (chunk) => { stderr += chunk; });
+      child.on("error", reject);
+      child.on("close", (code) => code === 0 ? resolve(JSON.parse(stdout)) : reject(new Error(stderr)));
+    });
+    const results = await Promise.all([run(), run()]);
+    assert.equal(results.filter((entry) => entry.status === "published" && entry.sequence === 1).length, 1);
+    const follower = results.find((entry) => entry.status !== "published");
+    assert.equal(
+      follower.code === "GOAL_LOCKED" || (follower.ok === true && ["up_to_date", "already_published"].includes(follower.status) && follower.sequence === 1),
+      true,
+    );
+    assert.deepEqual(listViewerPublications({ projectRoot: root }).map((entry) => entry.viewer_sequence), [1]);
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+  }
+});
+
+test("Harness publication outer journal recovers every injected crash phase to one exact projection", () => {
+  for (const phase of ["after_reserved", "after_artifact_published", "after_publication_committed", "after_goal_projection"]) {
+    const { root, baseline, config } = fixture();
+    try {
+      commitValidation({ root, parent: baseline, goalId: "goal-a", snapshotId: "snapshot-a", content: "accepted" });
+      const fakePublisher = (options) => ({ manifestRef: `sha256:${"6".repeat(64)}`, sequence: options.sequence });
+      assert.throws(
+        () => publishPendingViewerSnapshots({
+          config,
+          publishSnapshot: fakePublisher,
+          faultInjector(actual) { if (actual === phase) throw Object.assign(new Error("crash"), { code: "TEST_CRASH" }); },
+        }),
+        (error) => error.code === "TEST_CRASH",
+        phase,
+      );
+      publishPendingViewerSnapshots({ config, publishSnapshot: fakePublisher });
+      const publications = listViewerPublications({ projectRoot: root });
+      assert.equal(publications.length, 1, phase);
+      assert.equal(publications[0].viewer_sequence, 1, phase);
+      const state = new GoalEventStore({ stateDir: path.join(root, "library/.pcr-builder-state/goals/goal-a") }).rebuild();
+      assert.equal(state.snapshots[0].viewer_publication, "published", phase);
+      assert.equal(state.snapshots[0].viewer_manifest_ref, `sha256:${"6".repeat(64)}`, phase);
+    } finally {
+      rmSync(root, { recursive: true, force: true });
+    }
+  }
+});
+
+test("recovery keeps Goal publication pending when a committed coordinator record has no durable Viewer artifacts", () => {
   const { root, baseline, config } = fixture();
   try {
     commitValidation({ root, parent: baseline, goalId: "goal-a", snapshotId: "snapshot-a", content: "accepted" });
@@ -390,10 +569,12 @@ test("recovery materializes a publication committed before the Goal projection",
       }),
       (error) => error.code === "TEST_CRASH",
     );
-    const recovered = recoverViewerPublications({ config, recoverSnapshot: () => ({ recovered: false }), reconstructMissingArtifacts: false });
-    assert.equal(recovered.publications.at(-1).manifest_ref, `sha256:${"b".repeat(64)}`);
+    assert.throws(
+      () => recoverViewerPublications({ config, recoverSnapshot: () => ({ recovered: false }), reconstructMissingArtifacts: false }),
+      (error) => error.code === "GOAL_VIEWER_ARTIFACT_MISSING",
+    );
     const state = new GoalEventStore({ stateDir: path.join(root, "library/.pcr-builder-state/goals/goal-a") }).rebuild();
-    assert.equal(state.snapshots[0].viewer_publication, "published");
+    assert.equal(state.snapshots[0].viewer_publication, "pending");
   } finally {
     rmSync(root, { recursive: true, force: true });
   }
@@ -430,10 +611,38 @@ test("real publisher recovery adopts only the exact manifest captured before Vie
       () => recoverViewerPublications({ config }),
       (error) => error.code === "GOAL_VIEWER_PUBLICATION_MANIFEST_SUBSTITUTED",
     );
+    const pendingState = new GoalEventStore({ stateDir: path.join(root, "library/.pcr-builder-state/goals/goal-a") }).rebuild();
+    assert.equal(pendingState.snapshots[0].viewer_publication, "pending");
     writeFileSync(journalPath, preparedBytes);
     const recovered = recoverViewerPublications({ config });
     assert.equal(recovered.publications[0].manifest_ref, prepared.expected_manifest_ref);
   } finally {
     rmSync(parent, { recursive: true, force: true });
+  }
+});
+
+test("deleted artifact reconstruction rebuilds only the published prefix and leaves the next validation publishable", () => {
+  const { root, baseline, config } = fixture();
+  try {
+    const first = commitValidation({ root, parent: baseline, goalId: "goal-a", snapshotId: "snapshot-a", content: "first" });
+    publishPendingViewerSnapshots({ config, publishSnapshot: publishFastValidViewerSnapshot });
+    commitValidation({ root, parent: first.integration_commit, goalId: "goal-b", snapshotId: "snapshot-b", content: "second" });
+    const publications = listViewerPublications({ projectRoot: root });
+
+    rmSync(config.artifact_store, { recursive: true, force: true });
+    probeViewerArtifactStore({ config });
+    const direct = reconstructViewerArtifactStore({ config, publications, publishSnapshot: publishFastValidViewerSnapshot });
+    assert.deepEqual(direct.sequences, [1]);
+
+    rmSync(config.artifact_store, { recursive: true, force: true });
+    const recovered = recoverViewerPublications({ config, publishSnapshot: publishFastValidViewerSnapshot });
+    assert.deepEqual(recovered.reconstruction.sequences, [1]);
+    assert.deepEqual(recovered.publications.map((entry) => entry.repository_sequence), [1]);
+
+    const next = publishPendingViewerSnapshots({ config: { ...config, goal_id: "goal-b" }, publishSnapshot: publishFastValidViewerSnapshot });
+    assert.equal(next.publication.repository_sequence, 2);
+    assert.equal(next.publication.viewer_sequence, 2);
+  } finally {
+    rmSync(root, { recursive: true, force: true });
   }
 });

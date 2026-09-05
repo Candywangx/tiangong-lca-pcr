@@ -236,7 +236,13 @@ export function publishPendingViewerSnapshots({
         forceStaleLock,
       });
     }
-    recoverPublicationJournal({ config, stateDir, now, faultInjector });
+    recoverPublicationJournal({
+      config,
+      stateDir,
+      now,
+      faultInjector,
+      artifactStoreVerifier: verifyPublishedStore ? verifyPublishedViewerArtifact : () => true,
+    });
     let activation = readViewerActivation(projectRoot);
     let validations = listCommittedRepositoryValidations({
       projectRoot,
@@ -318,6 +324,7 @@ export function recoverViewerPublications({
   forceStaleLock = false,
   now = () => new Date().toISOString(),
   faultInjector = () => {},
+  artifactStoreVerifier = verifyPublishedViewerArtifact,
 } = {}) {
   probeViewerArtifactStore({ config });
   const stateDir = viewerPublicationStateDir(config.project_root);
@@ -328,18 +335,21 @@ export function recoverViewerPublications({
       sourceVerifier: createCoordinatorArtifactSourceVerifier(config),
       forceStaleLock,
     });
-    const recovered = recoverPublicationJournal({ config, stateDir, now, faultInjector });
-    const publications = listViewerPublications({ projectRoot: config.project_root });
+    let publications = listViewerPublications({ projectRoot: config.project_root });
     assertPublicationStore(publications, requireArtifactStore(config));
     let reconstruction = null;
     if (publications.length > 0) {
       const activePath = path.join(requireArtifactStore(config), "active.json");
       if (!existsSync(activePath) && reconstructMissingArtifacts) {
         reconstruction = reconstructViewerArtifactStore({ config, publications, publishSnapshot, forceStaleLock });
-      } else if (existsSync(activePath)) {
-        verifyArtifactStoreHead({ config, publications });
+      } else if (!existsSync(activePath)) {
+        throw new GoalHarnessError("GOAL_VIEWER_ARTIFACT_MISSING", "Viewer publication records exist but the durable artifact store has no active snapshot.");
       }
     }
+    const recovered = recoverPublicationJournal({ config, stateDir, now, faultInjector, artifactStoreVerifier });
+    publications = listViewerPublications({ projectRoot: config.project_root });
+    assertPublicationStore(publications, requireArtifactStore(config));
+    for (const publication of publications) artifactStoreVerifier({ config, publication, publications });
     for (const publication of publications) projectViewerPublication({ projectRoot: config.project_root, publication });
     if (publications.length > 0) {
       const activation = requireViewerActivation(config.project_root);
@@ -360,8 +370,8 @@ export function reconstructViewerArtifactStore({ config, publications, publishSn
     sourceVerificationFromSequence: activation.repository_sequence,
   }).filter((entry) => entry.repository_sequence >= activation.repository_sequence);
   assertActivationMatchesValidations({ activation, validations });
-  if (validations.length !== publications.length) {
-    throw new GoalHarnessError("GOAL_VIEWER_RECONSTRUCTION_INCOMPLETE", "Every committed repository validation after activation needs a retained Viewer publication record.", {
+  if (validations.length < publications.length) {
+    throw new GoalHarnessError("GOAL_VIEWER_RECONSTRUCTION_INCOMPLETE", "Viewer publication history is longer than committed repository validation history.", {
       validation_count: validations.length,
       publication_count: publications.length,
     });
@@ -369,7 +379,7 @@ export function reconstructViewerArtifactStore({ config, publications, publishSn
   const temporaryStore = `${artifactStore}.rebuild-${randomUUID()}`;
   const backupStore = `${artifactStore}.empty-${randomUUID()}`;
   try {
-    for (const [index, validation] of validations.entries()) {
+    for (const [index, validation] of validations.slice(0, publications.length).entries()) {
       const expected = publications[index];
       if (expected.repository_sequence !== validation.repository_sequence || expected.integration_commit !== validation.integration_commit) {
         throw new GoalHarnessError("GOAL_VIEWER_RECONSTRUCTION_PROVENANCE_INVALID", "Viewer publication history does not match repository validation history.");
@@ -689,7 +699,7 @@ function publishValidation({ config, stateDir, validation, viewerSequence, publi
   return publication;
 }
 
-function recoverPublicationJournal({ config, stateDir, now, faultInjector }) {
+function recoverPublicationJournal({ config, stateDir, now, faultInjector, artifactStoreVerifier }) {
   const journalPath = path.join(stateDir, "journal.json");
   if (!existsSync(journalPath)) return null;
   const journal = readJson(journalPath, "GOAL_VIEWER_PUBLICATION_JOURNAL_INVALID");
@@ -701,10 +711,15 @@ function recoverPublicationJournal({ config, stateDir, now, faultInjector }) {
     if (!recovered) return { retry_required: true, ...journal };
     const artifactPublished = { ...journal, phase: "artifact_published", publication: recovered };
     writeJsonAtomic(journalPath, artifactPublished);
-    return recoverPublicationJournal({ config, stateDir, now, faultInjector });
+    return recoverPublicationJournal({ config, stateDir, now, faultInjector, artifactStoreVerifier });
   }
   validatePublication(journal.publication);
   assertPublicationStore([journal.publication], requireArtifactStore(config));
+  const retained = listViewerPublications({ projectRoot: config.project_root });
+  const publications = retained.some((entry) => entry.repository_sequence === journal.publication.repository_sequence)
+    ? retained
+    : [...retained, journal.publication].sort((left, right) => left.viewer_sequence - right.viewer_sequence);
+  artifactStoreVerifier({ config, publication: journal.publication, publications });
   materializePublication({ stateDir, publication: journal.publication });
   if (journal.phase !== "projected") {
     projectViewerPublication({ projectRoot: config.project_root, publication: journal.publication });
@@ -724,9 +739,17 @@ function withPinnedSourceWorktree({ projectRoot, validation, read }) {
   const sourceRoot = path.join(parent, `${String(validation.repository_sequence).padStart(12, "0")}-${randomUUID()}`);
   try {
     git(projectRoot, ["worktree", "add", "--detach", sourceRoot, validation.integration_commit]);
+    const coordinatorVerifier = createCoordinatorArtifactSourceVerifier({ project_root: projectRoot });
+    const currentCapture = {
+      source_ref: validation.source_ref,
+      integration_commit: validation.integration_commit,
+      base_commit: validation.expected_old_head,
+      tree_hash: validation.tree_hash,
+    };
     const sourceVerifier = ({ capture }) => {
       try {
-        verifyPinnedSource({ projectRoot, validation });
+        if (!coordinatorVerifier({ capture })) return false;
+        if (capture.integration_commit !== validation.integration_commit) return true;
         const head = git(sourceRoot, ["rev-parse", "--verify", "HEAD^{commit}"]);
         const tree = git(sourceRoot, ["rev-parse", "--verify", "HEAD^{tree}"]);
         const status = git(sourceRoot, ["status", "--porcelain=v1", "--untracked-files=all"]);
@@ -735,11 +758,11 @@ function withPinnedSourceWorktree({ projectRoot, validation, read }) {
         return false;
       }
     };
-    if (!sourceVerifier({ capture: { integration_commit: validation.integration_commit, tree_hash: validation.tree_hash } })) {
+    if (!sourceVerifier({ capture: currentCapture })) {
       throw new GoalHarnessError("GOAL_VIEWER_SOURCE_INVALID", "Detached Viewer publication source does not match its pinned validation identity.");
     }
     const result = read(sourceRoot, sourceVerifier);
-    if (!sourceVerifier({ capture: { integration_commit: validation.integration_commit, tree_hash: validation.tree_hash } })) {
+    if (!sourceVerifier({ capture: currentCapture })) {
       throw new GoalHarnessError("GOAL_VIEWER_SOURCE_CHANGED", "Detached Viewer publication source changed while it was being read.");
     }
     return result;

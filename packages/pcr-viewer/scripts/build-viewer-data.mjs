@@ -511,12 +511,26 @@ export function publishViewerSnapshot({
   });
 }
 
-export function checkViewerCandidates({ root = repoRoot, pcrIds = [] } = {}) {
+export function checkViewerCandidates({
+  root = repoRoot,
+  pcrIds = [],
+  onPcrBodyRead = null,
+  onPcrArtifactRead = null,
+  onGlobalGate = null,
+} = {}) {
   const ids = [...new Set(pcrIds.map(String))].sort();
   if (ids.length === 0) throw new ViewerBuilderError("VIEWER_CANDIDATE_REQUIRED", "At least one --pcr id is required for a bounded Viewer candidate check.");
   const resolvedRoot = realpathSync(path.resolve(root));
-  const context = createPcrReadContext({ root: resolvedRoot });
+  const notifyGate = (gate) => onGlobalGate?.({ gate });
+  const context = createPcrReadContext({
+    root: resolvedRoot,
+    onAliasValidation: () => notifyGate("aliases"),
+    onCatalogSnapshot: () => notifyGate("catalog"),
+    onPcrArtifactRead,
+  });
+  notifyGate("coverage");
   const schemas = createViewerSnapshotSchemaRegistry();
+  notifyGate("full_contract");
   const identity = {
     generator_contract_sha256: sha256Ref("viewer-candidate-generator\n"),
     schema_contract_sha256: viewerSchemaContractSha256(),
@@ -528,8 +542,12 @@ export function checkViewerCandidates({ root = repoRoot, pcrIds = [] } = {}) {
     root: resolvedRoot,
     read: () => {
       for (const pcrId of ids) {
+        onPcrBodyRead?.({ pcr_id: pcrId, kind: "guidance" });
         const guidance = buildGuidance({ root: resolvedRoot, pcrId, context });
-        const markdown = Object.fromEntries(languages.map((language) => [language, readPcrMarkdown({ root: resolvedRoot, pcrId, language, context })]));
+        const markdown = Object.fromEntries(languages.map((language) => {
+          onPcrBodyRead?.({ pcr_id: pcrId, kind: "markdown", language });
+          return [language, readPcrMarkdown({ root: resolvedRoot, pcrId, language, context })];
+        }));
         schemas.assert("viewer-object", {
           schema_version: 1,
           object_kind: "pcr_detail",
