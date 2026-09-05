@@ -185,7 +185,6 @@ export async function startCommand({ configPath, slots = null, dryRun = false, r
     planCommand({ configPath, dryRun: false });
   }
   const runtime = ensureCorepackToolPath(stateDir);
-  if (!dryRun) assertAuthorDispatchInfrastructure(config);
   const runtimeBaseline = dryRun ? null : ensureGoalRuntimeBaseline({
     projectRoot: config.project_root,
     sourceRoot: HARNESS_SOURCE_ROOT,
@@ -213,22 +212,32 @@ export async function startCommand({ configPath, slots = null, dryRun = false, r
       }
       effectiveConfig = { ...config, codex: { ...config.codex, project_id: configuredProject.id } };
     }
-    const harvest = resume && !dryRun
-      ? await harvestGoalAuthors({ config: effectiveConfig, stateDir, adapter })
-      : { valid_results: [], failures: [], snapshot: null };
-    const result = await dispatchGoalAuthors({
-      config: effectiveConfig,
-      stateDir,
-      slots: slots ?? config.author_slots,
-      adapter,
-      resumeStopped: resume,
+    const { harvest, result } = await runAuthorCycle({
+      resume,
       dryRun,
-      preDispatchCheck: dryRun ? null : () => assertAuthorDispatchInfrastructure(effectiveConfig),
+      harvestAuthors: () => harvestGoalAuthors({ config: effectiveConfig, stateDir, adapter }),
+      dispatchAuthors: () => dispatchGoalAuthors({
+        config: effectiveConfig,
+        stateDir,
+        slots: slots ?? config.author_slots,
+        adapter,
+        resumeStopped: resume,
+        dryRun,
+        preDispatchCheck: dryRun ? null : () => assertAuthorDispatchInfrastructure(effectiveConfig),
+      }),
     });
     return { ...result, harvest, runtime_baseline: runtimeBaseline, codex_project_id: effectiveConfig.codex?.project_id ?? null, app_server: daemon ? { endpoint: daemon.endpoint, pid: daemon.pid, reused: daemon.reused } : null };
   } finally {
     await adapter.close();
   }
+}
+
+export async function runAuthorCycle({ resume, dryRun, harvestAuthors, dispatchAuthors }) {
+  const harvest = resume && !dryRun
+    ? await harvestAuthors()
+    : { valid_results: [], failures: [], snapshot: null };
+  const result = await dispatchAuthors();
+  return { harvest, result };
 }
 
 export function assertAuthorDispatchInfrastructure(config, checker = authenticatedHybridSearchDryRunCheck) {
