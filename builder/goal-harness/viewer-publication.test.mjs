@@ -1,9 +1,10 @@
 import assert from "node:assert/strict";
 import { execFileSync, spawn } from "node:child_process";
-import { existsSync, mkdirSync, mkdtempSync, readFileSync, readdirSync, rmSync, writeFileSync } from "node:fs";
+import { existsSync, mkdirSync, mkdtempSync, readFileSync, readdirSync, rmSync, symlinkSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import path from "node:path";
 import test from "node:test";
+import { pathToFileURL } from "node:url";
 
 import { GoalEventStore } from "./event-store.mjs";
 import {
@@ -243,6 +244,31 @@ function replacePreparedWithSelfConsistentSubstitute({ artifactStore, journalPat
     (error) => error.code === "VIEWER_PUBLICATION_INTERRUPTED",
   );
   return { original_manifest_ref: originalJournal.manifest_ref, substituted: JSON.parse(readFileSync(journalPath, "utf8")) };
+}
+
+function recoverFromDivergentCurrentCheckout({ root, config }) {
+  const sourceRoot = path.resolve(import.meta.dirname, "../..");
+  if (!existsSync(path.join(root, "node_modules"))) symlinkSync(path.join(sourceRoot, "node_modules"), path.join(root, "node_modules"), "dir");
+  const orchestrator = "builder/goal-harness/viewer-publication.mjs";
+  writeFileSync(path.join(root, orchestrator), readFileSync(path.join(sourceRoot, orchestrator)));
+  const worker = "builder/goal-harness/pinned-viewer-publisher-worker.mjs";
+  if (existsSync(path.join(sourceRoot, worker))) {
+    writeFileSync(path.join(root, worker), readFileSync(path.join(sourceRoot, worker)));
+  }
+
+  const currentGenerator = path.join(root, "packages/pcr-viewer/scripts/build-viewer-data.mjs");
+  writeFileSync(currentGenerator, `${readFileSync(currentGenerator, "utf8")}\nthrow new Error("CURRENT_CHECKOUT_GENERATOR_MUST_NOT_LOAD");\n`);
+  const currentStatic = path.join(root, "packages/pcr-viewer/static/index.html");
+  writeFileSync(currentStatic, `${readFileSync(currentStatic, "utf8")}\n<!-- divergent-current-ui -->\n`);
+  const [currentPcr] = git(root, ["ls-files", ":(glob)library/pcrs/**/pcr.en-US.md"]).split("\n").filter(Boolean);
+  writeFileSync(path.join(root, currentPcr), `${readFileSync(path.join(root, currentPcr), "utf8")}\n<!-- divergent-current-pcr -->\n`);
+
+  const script = [
+    `const module = await import(${JSON.stringify(`${pathToFileURL(path.join(root, orchestrator)).href}?checkout=${Date.now()}`)});`,
+    "const result = module.recoverViewerPublications({ config: JSON.parse(process.argv[1]) });",
+    "process.stdout.write(JSON.stringify(result));",
+  ].join("\n");
+  return JSON.parse(execFileSync(process.execPath, ["--input-type=module", "-e", script, JSON.stringify(config)], { encoding: "utf8" }));
 }
 
 test("publishes the next repository sequence from an exact detached pinned source and projects success", () => {
@@ -638,6 +664,7 @@ test("real publisher recovery abandons uncommitted inner payloads and republishe
   const source = path.resolve(import.meta.dirname, "../..");
   try {
     execFileSync("git", ["clone", "--shared", "-q", source, root], { stdio: "ignore" });
+    symlinkSync(path.join(source, "node_modules"), path.join(root, "node_modules"), "dir");
     git(root, ["config", "user.name", "Goal Test"]);
     git(root, ["config", "user.email", "goal@example.invalid"]);
     writeFileSync(path.join(root, "tracked.txt"), "baseline\n");
@@ -661,6 +688,10 @@ test("real publisher recovery abandons uncommitted inner payloads and republishe
     assert.equal(prepared.expected_inner_manifest_ref, prepared.expected_manifest_ref);
     assert.match(prepared.expected_inner_source_fingerprint, /^sha256:[a-f0-9]{64}$/u);
     assert.match(prepared.expected_inner_journal_identity_sha256, /^sha256:[a-f0-9]{64}$/u);
+    assert.equal(prepared.expected_publisher_api_version, 1);
+    assert.equal(prepared.expected_viewer_generator_version, VIEWER_INCREMENTAL_GENERATOR_VERSION);
+    assert.equal(prepared.expected_manifest_schema_version, 1);
+    assert.match(prepared.expected_schema_contract_sha256, /^sha256:[a-f0-9]{64}$/u);
     const innerJournalPath = path.join(config.artifact_store, "journal.json");
     const innerJournalBytes = readFileSync(innerJournalPath);
     assert.equal(existsSync(path.join(config.artifact_store, "active.json")), false);
@@ -754,14 +785,14 @@ test("real publisher recovery abandons uncommitted inner payloads and republishe
     assert.deepEqual(readFileSync(path.join(config.artifact_store, "active.json")), oldActiveBytes);
     assert.deepEqual(readFileSync(path.join(config.artifact_store, "history-head.json")), oldHistoryBytes);
 
-    const recoveredPublication = recoverViewerPublications({ config: { ...config, goal_id: "goal-b" } });
+    const recoveredPublication = recoverFromDivergentCurrentCheckout({ root, config: { ...config, goal_id: "goal-b" } });
     assert.deepEqual(recoveredPublication.publications.map((entry) => entry.viewer_sequence), [1, 2]);
     const recoveredStore = new ViewerSnapshotStore({ root: config.artifact_store, generatorVersion: VIEWER_INCREMENTAL_GENERATOR_VERSION, sourceVerifier: () => true });
-    assert.deepEqual(
-      recoveredStore.readManifest(recoveredPublication.publications.at(-1).manifest_ref),
-      recoveredStore.readManifest(substitute.original_manifest_ref),
-    );
+    const recoveredManifest = recoveredStore.readManifest(recoveredPublication.publications.at(-1).manifest_ref);
+    assert.deepEqual(recoveredManifest, recoveredStore.readManifest(substitute.original_manifest_ref));
     assert.notEqual(recoveredPublication.publications.at(-1).manifest_ref, substitute.substituted.manifest_ref);
+    const recoveredUi = readFileSync(path.join(config.artifact_store, recoveredStore.readRoute(recoveredPublication.publications.at(-1).manifest_ref).ui_bundle_url, "index.html"), "utf8");
+    assert.doesNotMatch(recoveredUi, /divergent-current-ui/u);
     const retry = recoverViewerPublications({ config: { ...config, goal_id: "goal-b" } });
     assert.deepEqual(retry.publications.map((entry) => entry.manifest_ref), recoveredPublication.publications.map((entry) => entry.manifest_ref));
   } finally {
