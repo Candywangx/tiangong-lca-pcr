@@ -16,7 +16,6 @@ import {
 import path from "node:path";
 
 import {
-  computeViewerGeneratorContractSha256,
   publishViewerSnapshot,
   recoverViewerSnapshot,
   VIEWER_INCREMENTAL_GENERATOR_VERSION,
@@ -221,6 +220,7 @@ export function publishPendingViewerSnapshots({
   faultInjector = () => {},
   forceStaleLock = false,
   artifactFailurePhase = null,
+  artifactAbandonFailurePhase = null,
 } = {}) {
   const verifyPublishedStore = publishSnapshot === publishViewerSnapshot;
   const projectRoot = config?.project_root;
@@ -230,7 +230,7 @@ export function publishPendingViewerSnapshots({
   const stateDir = viewerPublicationStateDir(projectRoot);
   return withGoalLock(stateDir, "viewer-publish", () => {
     const preflight = verifyPublishedStore
-      ? preflightPublicationRecovery({ config, stateDir, now, faultInjector })
+      ? preflightPublicationRecovery({ config, stateDir, now, faultInjector, forceStaleLock, artifactAbandonFailurePhase })
       : { recover_inner: true };
     probeViewerArtifactStore({ config, capabilityProbe });
     if (verifyPublishedStore) {
@@ -333,11 +333,13 @@ export function recoverViewerPublications({
   now = () => new Date().toISOString(),
   faultInjector = () => {},
   artifactStoreVerifier = verifyPublishedViewerArtifact,
+  artifactFailurePhase = null,
+  artifactAbandonFailurePhase = null,
 } = {}) {
   const stateDir = viewerPublicationStateDir(config.project_root);
-  return withGoalLock(stateDir, "viewer-recover", () => {
+  const recovery = withGoalLock(stateDir, "viewer-recover", () => {
     const preflight = recoverSnapshot === recoverViewerSnapshot
-      ? preflightPublicationRecovery({ config, stateDir, now, faultInjector })
+      ? preflightPublicationRecovery({ config, stateDir, now, faultInjector, forceStaleLock, artifactAbandonFailurePhase })
       : { recover_inner: true };
     probeViewerArtifactStore({ config });
     const artifact_recovery = preflight.recover_inner
@@ -370,8 +372,32 @@ export function recoverViewerPublications({
       assertActivationMatchesValidations({ activation, validations });
       reconcilePreActivationRecords({ projectRoot: config.project_root, activation, validations });
     }
-    return { status: recovered || reconstruction ? "recovered" : "clean", recovered, artifact_recovery, reconstruction, publications };
+    return {
+      status: recovered || reconstruction ? "recovered" : "clean",
+      recovered,
+      artifact_recovery,
+      reconstruction,
+      publications,
+      republish_required: preflight.republish_required === true || recovered?.retry_required === true,
+    };
   }, { allowDeadLockRecovery: forceStaleLock });
+  if (!recovery.republish_required) return recovery;
+  const republished = publishPendingViewerSnapshots({
+    config,
+    publishSnapshot,
+    now,
+    faultInjector,
+    forceStaleLock,
+    artifactFailurePhase,
+    artifactAbandonFailurePhase,
+  });
+  return {
+    ...recovery,
+    status: "recovered",
+    republished,
+    publications: republished.publications,
+    republish_required: false,
+  };
 }
 
 export function reconstructViewerArtifactStore({ config, publications, publishSnapshot = publishViewerSnapshot, forceStaleLock = false }) {
@@ -612,7 +638,7 @@ export function writeViewerLandingProvenance({ publication, landingState, landed
 function publishValidation({ config, stateDir, validation, viewerSequence, publishSnapshot, now, faultInjector, forceStaleLock, artifactFailurePhase }) {
   const artifactStore = requireArtifactStore(config);
   const viewerSnapshotId = viewerSnapshotIdFor(validation);
-  const reserved = {
+  const proposedReservation = {
     schema_version: 1,
     phase: "reserved",
     goal_id: validation.goal_id,
@@ -627,8 +653,22 @@ function publishValidation({ config, stateDir, validation, viewerSequence, publi
     captured_at: now(),
     reserved_at: now(),
   };
-  writeJsonAtomic(path.join(stateDir, "journal.json"), reserved);
-  faultInjector("after_reserved", reserved);
+  const journalPath = path.join(stateDir, "journal.json");
+  let reserved = proposedReservation;
+  const retainedJournal = pathEntryExists(journalPath)
+    ? readJson(journalPath, "GOAL_VIEWER_PUBLICATION_JOURNAL_INVALID")
+    : null;
+  if (retainedJournal?.phase === "reserved") {
+    for (const field of ["schema_version", "goal_id", "harness_snapshot_id", "repository_sequence", "viewer_sequence", "integration_commit", "source_ref", "tree_hash", "artifact_store", "viewer_snapshot_id"]) {
+      if (retainedJournal[field] !== proposedReservation[field]) {
+        throw new GoalHarnessError("GOAL_VIEWER_PUBLICATION_JOURNAL_INVALID", "Retained Viewer reservation differs from the next repository validation.", { field });
+      }
+    }
+    reserved = retainedJournal;
+  } else {
+    writeJsonAtomic(journalPath, reserved);
+    faultInjector("after_reserved", reserved);
+  }
 
   let preparedExpectation = null;
   const published = withPinnedSourceWorktree({
@@ -750,7 +790,7 @@ function recoverPublicationJournal({ config, stateDir, now, faultInjector, artif
   return journal.publication;
 }
 
-function preflightPublicationRecovery({ config, stateDir, now, faultInjector = () => {} }) {
+function preflightPublicationRecovery({ config, stateDir, now, faultInjector = () => {}, forceStaleLock = false, artifactAbandonFailurePhase = null }) {
   const outerPath = path.join(stateDir, "journal.json");
   const innerPath = path.join(requireArtifactStore(config), "journal.json");
   const outer = pathEntryExists(outerPath)
@@ -774,9 +814,9 @@ function preflightPublicationRecovery({ config, stateDir, now, faultInjector = (
   }
   if (outer.phase === "reserved") {
     if (inner) {
-      return bridgeReservedInnerJournal({ config, stateDir, outer, observedInner: inner, now, faultInjector });
+      return abandonReservedInnerJournal({ config, outer, forceStaleLock, artifactAbandonFailurePhase });
     }
-    return { recover_inner: true };
+    return { recover_inner: true, republish_required: true };
   }
   if (outer.phase === "artifact_prepared") {
     assertPreparedOuterIdentity(outer);
@@ -812,11 +852,10 @@ function preflightPublicationRecovery({ config, stateDir, now, faultInjector = (
   return { recover_inner: false };
 }
 
-function bridgeReservedInnerJournal({ config, stateDir, outer, observedInner, now, faultInjector }) {
+function abandonReservedInnerJournal({ config, outer, forceStaleLock, artifactAbandonFailurePhase }) {
   let activation;
   let validations;
   let publications;
-  let inspected;
   try {
     activation = requireViewerActivation(config.project_root);
     validations = listCommittedRepositoryValidations({
@@ -827,20 +866,12 @@ function bridgeReservedInnerJournal({ config, stateDir, outer, observedInner, no
     publications = listViewerPublications({ projectRoot: config.project_root });
     assertActivationPublicationLineage({ activation, publications });
     assertPublicationStore(publications, requireArtifactStore(config));
-    const store = new ViewerSnapshotStore({
-      root: requireArtifactStore(config),
-      generatorVersion: VIEWER_INCREMENTAL_GENERATOR_VERSION,
-      sourceVerifier: createCoordinatorArtifactSourceVerifier(config),
-    });
-    inspected = store.inspectPreparedJournal();
   } catch (error) {
-    throw innerMismatch("Reserved Viewer publication cannot adopt its prepared inner journal.", error);
+    throw innerMismatch("Reserved Viewer publication cannot validate its coordinator identity before abandonment.", error);
   }
   const validation = validations.find((entry) => entry.repository_sequence === outer.repository_sequence);
-  const journal = inspected?.journal;
-  const manifest = inspected?.manifest;
   if (
-    !validation || !journal || !manifest ||
+    !validation ||
     outer.repository_sequence !== activation.repository_sequence + publications.length ||
     outer.viewer_sequence !== publications.length + 1 ||
     outer.goal_id !== validation.goal_id ||
@@ -849,65 +880,37 @@ function bridgeReservedInnerJournal({ config, stateDir, outer, observedInner, no
     outer.source_ref !== validation.source_ref ||
     outer.tree_hash !== validation.tree_hash ||
     outer.artifact_store !== requireArtifactStore(config) ||
-    outer.viewer_snapshot_id !== viewerSnapshotIdFor(validation) ||
-    journal.reservation.snapshot_id !== outer.viewer_snapshot_id ||
-    journal.reservation.sequence !== outer.viewer_sequence ||
-    manifest.snapshot_id !== outer.viewer_snapshot_id ||
-    manifest.goal_id !== outer.goal_id ||
-    manifest.harness_snapshot_id !== outer.harness_snapshot_id ||
-    manifest.sequence !== outer.viewer_sequence ||
-    manifest.captured_at !== outer.captured_at ||
-    manifest.validated_at !== validation.validated_at ||
-    stableJson(manifest.validation_summary) !== stableJson(validationSummary(validation)) ||
-    manifest.catalog_scope !== "material" ||
-    manifest.generator_version !== VIEWER_INCREMENTAL_GENERATOR_VERSION ||
-    manifest.capture.source_ref !== outer.source_ref ||
-    manifest.capture.integration_commit !== outer.integration_commit ||
-    manifest.capture.base_commit !== validation.expected_old_head ||
-    manifest.capture.tree_hash !== outer.tree_hash ||
-    manifest.capture.validation_state !== "validated" ||
-    stableJson(observedInner) !== stableJson(journal)
+    outer.viewer_snapshot_id !== viewerSnapshotIdFor(validation)
   ) {
-    throw innerMismatch("Reserved Viewer publication identity differs from its prepared inner journal.");
+    throw innerMismatch("Reserved Viewer publication identity differs from coordinator truth.");
   }
-
-  let expectedGeneratorContract;
+  const store = new ViewerSnapshotStore({
+    root: requireArtifactStore(config),
+    generatorVersion: VIEWER_INCREMENTAL_GENERATOR_VERSION,
+    sourceVerifier: createCoordinatorArtifactSourceVerifier(config),
+  });
   try {
-    expectedGeneratorContract = withPinnedSourceWorktree({
-      projectRoot: config.project_root,
-      validation,
-      read(sourceRoot) {
-        return computeViewerGeneratorContractSha256({ contractRoot: sourceRoot });
+    const abandonment = store.abandonPreparedJournal({
+      expected: {
+        snapshot_id: outer.viewer_snapshot_id,
+        sequence: outer.viewer_sequence,
+        goal_id: outer.goal_id,
+        harness_snapshot_id: outer.harness_snapshot_id,
+        captured_at: outer.captured_at,
+        validated_at: validation.validated_at,
+        source_ref: outer.source_ref,
+        integration_commit: outer.integration_commit,
+        base_commit: validation.expected_old_head,
+        tree_hash: outer.tree_hash,
       },
+      forceStaleLock,
+      failurePhase: artifactAbandonFailurePhase,
     });
+    if (!abandonment.abandoned) throw new Error("Prepared Viewer journal disappeared before abandonment.");
+    return { recover_inner: false, republish_required: true, abandonment };
   } catch (error) {
-    throw innerMismatch("Prepared Viewer generator contract cannot be reproduced from its pinned source tree.", error);
+    throw innerMismatch("Reserved Viewer publication could not safely abandon its uncommitted prepared artifact.", error);
   }
-  if (manifest.generator_contract_sha256 !== expectedGeneratorContract) {
-    throw innerMismatch("Prepared Viewer generator contract differs from its pinned source tree.");
-  }
-  const innerPath = path.join(requireArtifactStore(config), "journal.json");
-  const finalInner = readJson(innerPath, "GOAL_VIEWER_PUBLICATION_INNER_MISMATCH");
-  if (innerJournalIdentitySha256(finalInner) !== innerJournalIdentitySha256(journal) || finalInner.phase !== "prepared") {
-    throw innerMismatch("Prepared Viewer journal changed while the Harness was validating it.");
-  }
-  const artifactPrepared = {
-    ...outer,
-    expected_manifest_ref: journal.manifest_ref,
-    expected_manifest_capture: manifest.capture,
-    expected_manifest_source: manifest.source,
-    expected_generator_contract_sha256: manifest.generator_contract_sha256,
-    expected_schema_contract_sha256: manifest.schema_contract_sha256,
-    expected_inner_manifest_ref: journal.manifest_ref,
-    expected_inner_source_fingerprint: journal.source_fingerprint,
-    expected_inner_journal_identity_sha256: innerJournalIdentitySha256(journal),
-    phase: "artifact_prepared",
-    artifact_prepared_at: now(),
-    recovered_from_reserved_inner: true,
-  };
-  writeJsonAtomic(path.join(stateDir, "journal.json"), artifactPrepared);
-  faultInjector("after_reserved_inner_bridge", artifactPrepared);
-  return { recover_inner: true, bridged: true };
 }
 
 function innerMismatch(message, cause = null) {

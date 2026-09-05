@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { execFileSync, spawn } from "node:child_process";
-import { existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import { existsSync, mkdirSync, mkdtempSync, readFileSync, readdirSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import path from "node:path";
 import test from "node:test";
@@ -195,6 +195,54 @@ function publishFastValidViewerSnapshot(options) {
     pinnedSources: [],
     forceStaleLock: options.forceStaleLock,
   });
+}
+
+function replacePreparedWithSelfConsistentSubstitute({ artifactStore, journalPath }) {
+  const store = new ViewerSnapshotStore({
+    root: artifactStore,
+    generatorVersion: VIEWER_INCREMENTAL_GENERATOR_VERSION,
+    sourceVerifier: () => true,
+  });
+  const originalJournal = JSON.parse(readFileSync(journalPath, "utf8"));
+  const manifest = store.readManifest(originalJournal.manifest_ref);
+  const pcrEntries = Object.values(manifest.refs.pcr_entries).map((ref) => structuredClone(store.readObject(ref).entry));
+  pcrEntries[0].markdown["en-US"] += "\n<!-- self-consistent substitute -->\n";
+  const aliasEntries = Object.values(manifest.refs.alias_entries).map((ref) => structuredClone(store.readObject(ref).entry));
+  const coverageEntries = Object.values(manifest.refs.coverage_entries).map((ref) => structuredClone(store.readObject(ref).entry));
+  const uiBundle = store.readObject(manifest.capture.ui_bundle_ref).entry;
+  rmSync(journalPath);
+  assert.throws(
+    () => store.publish({
+      snapshotId: manifest.snapshot_id,
+      goalId: manifest.goal_id,
+      harnessSnapshotId: manifest.harness_snapshot_id,
+      capturedAt: manifest.captured_at,
+      validatedAt: manifest.validated_at,
+      validationSummary: manifest.validation_summary,
+      catalogScope: manifest.catalog_scope,
+      sequence: manifest.sequence,
+      generatorContractSha256: manifest.generator_contract_sha256,
+      source: {
+        catalog: manifest.source.catalog,
+        aliases: manifest.source.aliases,
+        coverage: manifest.source.coverage,
+        releaseRevisionMarkers: manifest.source.release_revision_markers,
+        source_ref: manifest.capture.source_ref,
+        integration_commit: manifest.capture.integration_commit,
+        base_commit: manifest.capture.base_commit,
+        tree_hash: manifest.capture.tree_hash,
+        ui_bundle_ref: uiBundle.id,
+      },
+      pcrEntries,
+      aliasEntries,
+      coverageEntries,
+      pinnedSources: [],
+      uiBundleUrl: uiBundle.asset_url,
+      failurePhase: "prepared_before_callback",
+    }),
+    (error) => error.code === "VIEWER_PUBLICATION_INTERRUPTED",
+  );
+  return { original_manifest_ref: originalJournal.manifest_ref, substituted: JSON.parse(readFileSync(journalPath, "utf8")) };
 }
 
 test("publishes the next repository sequence from an exact detached pinned source and projects success", () => {
@@ -584,7 +632,7 @@ test("recovery keeps Goal publication pending when a committed coordinator recor
   }
 });
 
-test("real publisher recovery adopts only exact cross-journal identities before pointer activation", { timeout: 240_000 }, () => {
+test("real publisher recovery abandons uncommitted inner payloads and republishes only pinned source", { timeout: 240_000 }, () => {
   const parent = mkdtempSync(path.join(tmpdir(), "goal-viewer-real-"));
   const root = path.join(parent, "repo");
   const source = path.resolve(import.meta.dirname, "../..");
@@ -648,6 +696,7 @@ test("real publisher recovery adopts only exact cross-journal identities before 
     const mismatches = [
       { ...inner, reservation: { ...inner.reservation, snapshot_id: "substituted-snapshot" } },
       { ...inner, cas: { ...inner.cas, active: { ...inner.cas.active, old_ref: null } } },
+      { ...inner, phase: "history_prepared" },
     ];
     for (const mismatch of mismatches) {
       writeFileSync(innerJournalPath, `${JSON.stringify(mismatch)}\n`);
@@ -663,23 +712,58 @@ test("real publisher recovery adopts only exact cross-journal identities before 
       writeFileSync(innerJournalPath, secondInnerBytes);
     }
 
+    writeFileSync(path.join(config.artifact_store, "active.json"), `${JSON.stringify(inner.active)}\n`);
+    const visibleActiveBytes = readFileSync(path.join(config.artifact_store, "active.json"));
     assert.throws(
       () => recoverViewerPublications({
         config: { ...config, goal_id: "goal-b" },
-        faultInjector(phase) {
-          if (phase === "after_reserved_inner_bridge") throw Object.assign(new Error("crash"), { code: "TEST_CRASH" });
-        },
       }),
-      (error) => error.code === "TEST_CRASH",
+      (error) => error.code === "GOAL_VIEWER_PUBLICATION_INNER_MISMATCH",
     );
-    assert.equal(JSON.parse(readFileSync(journalPath, "utf8")).phase, "artifact_prepared");
+    assert.deepEqual(readFileSync(journalPath), reservedBytes);
     assert.deepEqual(readFileSync(innerJournalPath), secondInnerBytes);
+    assert.deepEqual(readFileSync(path.join(config.artifact_store, "active.json")), visibleActiveBytes);
+    assert.deepEqual(readFileSync(path.join(config.artifact_store, "history-head.json")), oldHistoryBytes);
+    writeFileSync(path.join(config.artifact_store, "active.json"), oldActiveBytes);
+
+    const substitute = replacePreparedWithSelfConsistentSubstitute({ artifactStore: config.artifact_store, journalPath: innerJournalPath });
+    assert.notEqual(substitute.substituted.manifest_ref, substitute.original_manifest_ref);
+    const substitutedBytes = readFileSync(innerJournalPath);
+    assert.throws(
+      () => recoverViewerPublications({
+        config: { ...config, goal_id: "goal-b" },
+        artifactAbandonFailurePhase: "abandon_archived",
+      }),
+      (error) => error.code === "GOAL_VIEWER_PUBLICATION_INNER_MISMATCH",
+    );
+    assert.deepEqual(readFileSync(journalPath), reservedBytes);
+    assert.deepEqual(readFileSync(innerJournalPath), substitutedBytes);
     assert.deepEqual(readFileSync(path.join(config.artifact_store, "active.json")), oldActiveBytes);
     assert.deepEqual(readFileSync(path.join(config.artifact_store, "history-head.json")), oldHistoryBytes);
-    const bridged = recoverViewerPublications({ config: { ...config, goal_id: "goal-b" } });
-    assert.deepEqual(bridged.publications.map((entry) => entry.viewer_sequence), [1, 2]);
+    assert.ok(readdirSync(path.join(config.artifact_store, "staging", "abandoned-journals")).length > 0);
+
+    assert.throws(
+      () => recoverViewerPublications({
+        config: { ...config, goal_id: "goal-b" },
+        artifactAbandonFailurePhase: "abandon_removed",
+      }),
+      (error) => error.code === "GOAL_VIEWER_PUBLICATION_INNER_MISMATCH",
+    );
+    assert.deepEqual(readFileSync(journalPath), reservedBytes);
+    assert.equal(existsSync(innerJournalPath), false);
+    assert.deepEqual(readFileSync(path.join(config.artifact_store, "active.json")), oldActiveBytes);
+    assert.deepEqual(readFileSync(path.join(config.artifact_store, "history-head.json")), oldHistoryBytes);
+
+    const recoveredPublication = recoverViewerPublications({ config: { ...config, goal_id: "goal-b" } });
+    assert.deepEqual(recoveredPublication.publications.map((entry) => entry.viewer_sequence), [1, 2]);
+    const recoveredStore = new ViewerSnapshotStore({ root: config.artifact_store, generatorVersion: VIEWER_INCREMENTAL_GENERATOR_VERSION, sourceVerifier: () => true });
+    assert.deepEqual(
+      recoveredStore.readManifest(recoveredPublication.publications.at(-1).manifest_ref),
+      recoveredStore.readManifest(substitute.original_manifest_ref),
+    );
+    assert.notEqual(recoveredPublication.publications.at(-1).manifest_ref, substitute.substituted.manifest_ref);
     const retry = recoverViewerPublications({ config: { ...config, goal_id: "goal-b" } });
-    assert.deepEqual(retry.publications.map((entry) => entry.manifest_ref), bridged.publications.map((entry) => entry.manifest_ref));
+    assert.deepEqual(retry.publications.map((entry) => entry.manifest_ref), recoveredPublication.publications.map((entry) => entry.manifest_ref));
   } finally {
     rmSync(parent, { recursive: true, force: true });
   }

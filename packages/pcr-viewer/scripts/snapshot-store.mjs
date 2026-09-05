@@ -293,39 +293,47 @@ export class ViewerSnapshotStore {
     }
   }
 
-  inspectPreparedJournal() {
-    const journalPath = this.path("journal.json");
-    if (!existsRegular(journalPath, "publication journal")) return null;
-    const bytes = readSafeFile(journalPath, "publication journal");
-    const journal = parseCanonicalJson(bytes, "publication journal");
-    if (!bytes.equals(canonicalBytes(journal))) {
-      throw new ViewerSnapshotStoreError("VIEWER_JOURNAL_CORRUPT", "Publication journal bytes are not canonical.");
+  abandonPreparedJournal({ expected, forceStaleLock = false, failurePhase = null } = {}) {
+    this.probe();
+    const release = this.#acquireLock(forceStaleLock);
+    try {
+      const journalPath = this.path("journal.json");
+      if (!existsRegular(journalPath, "publication journal")) return Object.freeze({ abandoned: false });
+      const bytes = readSafeFile(journalPath, "publication journal");
+      const journal = parseCanonicalJson(bytes, "publication journal");
+      if (!bytes.equals(canonicalBytes(journal))) {
+        throw new ViewerSnapshotStoreError("VIEWER_JOURNAL_CORRUPT", "Publication journal bytes are not canonical.");
+      }
+      validateJournal(journal);
+      if (journal.phase !== "prepared" || journal.pointer_capture) {
+        throw new ViewerSnapshotStoreError("VIEWER_JOURNAL_VISIBLE", "Only an untouched prepared publication journal can be abandoned.");
+      }
+      const manifest = this.readManifest(journal.manifest_ref);
+      this.#assertJournalMatchesManifest(journal, manifest);
+      assertExpectedAbandonment({ expected, journal, manifest });
+      if (
+        this.#pointerRef("active.json") !== journal.cas.active.old_ref ||
+        this.#pointerRef("history-head.json") !== journal.cas.history_head.old_ref ||
+        journal.cas.active.new_ref === journal.cas.active.old_ref ||
+        journal.cas.history_head.new_ref === journal.cas.history_head.old_ref
+      ) {
+        throw new ViewerSnapshotStoreError("VIEWER_JOURNAL_VISIBLE", "Prepared publication pointers are visible or no longer equal their expected-old bytes.");
+      }
+      const archiveDirectory = this.path("staging", "abandoned-journals");
+      ensureSafeDirectory(archiveDirectory, "abandoned publication journals");
+      const archiveRef = sha256Ref(bytes);
+      const archivePath = path.join(archiveDirectory, `${refDigest(archiveRef)}.json`);
+      this.#writeImmutable(archivePath, bytes, "abandoned journal");
+      this.#interrupt(failurePhase, "abandon_archived");
+      this.#assertLockOwned();
+      unlinkSync(journalPath);
+      fsyncDirectory(this.root);
+      this.currentJournal = null;
+      this.#interrupt(failurePhase, "abandon_removed");
+      return Object.freeze({ abandoned: true, archive_ref: archiveRef, manifest_ref: journal.manifest_ref });
+    } finally {
+      release();
     }
-    validateJournal(journal);
-    if (journal.phase !== "prepared" || journal.pointer_capture) {
-      throw new ViewerSnapshotStoreError("VIEWER_JOURNAL_CORRUPT", "Only an untouched prepared publication journal can be inspected for Harness adoption.");
-    }
-    const manifest = this.readManifest(journal.manifest_ref);
-    this.#assertJournalMatchesManifest(journal, manifest);
-    this.#verifySource({ source: journal.source, capture: journal.capture, sourceFingerprint: journal.source_fingerprint }, "inspection");
-    if (manifest.schema_contract_sha256 !== this.schemaContractSha256) {
-      throw new ViewerSnapshotStoreError("VIEWER_JOURNAL_CORRUPT", "Prepared manifest uses a different Viewer schema contract.");
-    }
-    const currentPointerRefs = {
-      active: this.#pointerRef("active.json"),
-      history_head: this.#pointerRef("history-head.json"),
-    };
-    if (
-      currentPointerRefs.active !== journal.cas.active.old_ref ||
-      currentPointerRefs.history_head !== journal.cas.history_head.old_ref
-    ) {
-      throw new ViewerSnapshotStoreError("VIEWER_POINTER_CAS_CONFLICT", "Prepared journal expected-old pointers differ from the durable artifact store.");
-    }
-    return Object.freeze({
-      journal: structuredClone(journal),
-      manifest: structuredClone(manifest),
-      current_pointer_refs: Object.freeze(currentPointerRefs),
-    });
   }
 
   #publishLocked(input) {
@@ -1316,6 +1324,29 @@ function coverageCodePrefix(value) { return String(value).slice(0, 2); }
 function compareById(left, right) { return String(left.id).localeCompare(String(right.id)); }
 function sortedObject(value) { return Object.fromEntries(Object.keys(value).sort().map((key) => [key, value[key]])); }
 function countReused(next, previous) { return Object.entries(next).filter(([id, ref]) => previous[id] === ref).length; }
+
+function assertExpectedAbandonment({ expected, journal, manifest }) {
+  const actual = {
+    snapshot_id: manifest.snapshot_id,
+    sequence: manifest.sequence,
+    goal_id: manifest.goal_id,
+    harness_snapshot_id: manifest.harness_snapshot_id,
+    captured_at: manifest.captured_at,
+    validated_at: manifest.validated_at,
+    source_ref: manifest.capture.source_ref,
+    integration_commit: manifest.capture.integration_commit,
+    base_commit: manifest.capture.base_commit,
+    tree_hash: manifest.capture.tree_hash,
+  };
+  if (
+    !expected || typeof expected !== "object" ||
+    journal.reservation.snapshot_id !== actual.snapshot_id ||
+    journal.reservation.sequence !== actual.sequence ||
+    canonicalJson(actual) !== canonicalJson(expected)
+  ) {
+    throw new ViewerSnapshotStoreError("VIEWER_JOURNAL_IDENTITY_CONFLICT", "Prepared publication identity differs from the abandonment reservation.");
+  }
+}
 
 function validateJournal(value) {
   if (!value || value.schema_version !== 1 || value.kind !== "viewer-publication-journal" || !["prepared", "history_prepared", "history_committed", "active_committed"].includes(value.phase)) {
