@@ -19,13 +19,38 @@ export function ensureCorepackToolPath(stateDir) {
   return { bin_dir: binDir, environment: { ...process.env, PATH: `${binDir}${path.delimiter}${process.env.PATH ?? ""}` } };
 }
 
-export function authenticatedHybridSearchDryRunCheck({ tiangongCliRoot, flowHybridSearchRoot, credentialsEnvFile = null, runner = spawnTool }) {
+export function authenticatedHybridSearchDryRunCheck({
+  tiangongCliRoot,
+  flowHybridSearchRoot,
+  credentialsEnvFile = null,
+  runner = spawnTool,
+  maxAttempts = 3,
+  retryDelayMs = 1_000,
+  sleeper = sleepSync,
+}) {
   const name = "flow_hybrid_search_authenticated_preflight";
   if (!tiangongCliRoot || !flowHybridSearchRoot) return failedHybridPreflight(name, "tool_configuration");
   const envFileArg = `--env-file-if-exists=${credentialsEnvFile ? path.resolve(credentialsEnvFile) : path.join(tiangongCliRoot, ".env")}`;
   const temporary = mkdtempSync(path.join(tmpdir(), "tiangong-goal-hybrid-doctor-"));
   const requestPath = path.join(temporary, "request.json");
   writeFileSync(requestPath, `${JSON.stringify({ query: "electricity", filter: { flowType: "Product flow" }, match_count: 1, page_size: 1 })}\n`, { mode: 0o600 });
+  try {
+    const attempts = Number.isInteger(maxAttempts) && maxAttempts > 0 ? maxAttempts : 3;
+    let lastResult;
+    for (let attempt = 1; attempt <= attempts; attempt += 1) {
+      lastResult = authenticatedHybridSearchAttempt({ name, tiangongCliRoot, flowHybridSearchRoot, envFileArg, requestPath, runner });
+      if (lastResult.ok) {
+        return attempt === 1 ? lastResult : { ...lastResult, detail: { ...lastResult.detail, attempts: attempt } };
+      }
+      if (attempt < attempts) sleeper(retryDelayMs);
+    }
+    return { ...lastResult, detail: { ...lastResult.detail, attempts } };
+  } finally {
+    rmSync(temporary, { recursive: true, force: true });
+  }
+}
+
+function authenticatedHybridSearchAttempt({ name, tiangongCliRoot, flowHybridSearchRoot, envFileArg, requestPath, runner }) {
   try {
     const auth = runner(process.execPath, [
       envFileArg,
@@ -66,8 +91,6 @@ export function authenticatedHybridSearchDryRunCheck({ tiangongCliRoot, flowHybr
     return { name, ok: true, detail: { authenticated: true, live_query: true, state_code_100_read: true, credentials_redacted: true } };
   } catch {
     return failedHybridPreflight(name, "execution");
-  } finally {
-    rmSync(temporary, { recursive: true, force: true });
   }
 }
 
@@ -83,4 +106,9 @@ function spawnTool(command, args, options) {
     timeout: 60_000,
     maxBuffer: 16 * 1024 * 1024,
   });
+}
+
+function sleepSync(milliseconds) {
+  if (!Number.isFinite(milliseconds) || milliseconds <= 0) return;
+  Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, milliseconds);
 }

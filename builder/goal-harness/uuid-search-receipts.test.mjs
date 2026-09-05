@@ -54,6 +54,52 @@ test("authenticated doctor executes a live hybrid query and a public state_code=
   assert.ok(calls.every((call) => call.args.some((arg) => arg === "--env-file-if-exists=/tools/tiangong-cli/.env")));
 });
 
+test("authenticated hybrid preflight retries one transient whole-chain failure before dispatch", () => {
+  let callCount = 0;
+  const waits = [];
+  const check = authenticatedHybridSearchDryRunCheck({
+    tiangongCliRoot: "/tools/tiangong-cli",
+    flowHybridSearchRoot: "/tools/flow-hybrid-search",
+    maxAttempts: 3,
+    retryDelayMs: 25,
+    sleeper: (milliseconds) => waits.push(milliseconds),
+    runner(command, args) {
+      callCount += 1;
+      if (callCount === 1) return { status: 1, stdout: "", stderr: "transient upstream failure" };
+      if (args.includes("doctor-auth")) return { status: 0, stdout: JSON.stringify({ status: "passed" }), stderr: "" };
+      if (args.some((arg) => arg.endsWith("/run-flow-hybrid-search.mjs"))) {
+        return { status: 0, stdout: JSON.stringify({ data: [{ id: UUID_A }] }), stderr: "" };
+      }
+      return { status: 0, stdout: JSON.stringify({ state_code: 100, flow: { flowDataSet: { flowInformation: { dataSetInformation: { "common:UUID": UUID_A } } } } }), stderr: "" };
+    },
+  });
+  assert.equal(check.ok, true);
+  assert.equal(check.detail.attempts, 2);
+  assert.equal(callCount, 4);
+  assert.deepEqual(waits, [25]);
+});
+
+test("authenticated hybrid preflight still fails closed after bounded retries without leaking stderr", () => {
+  const secret = "must-not-escape";
+  let callCount = 0;
+  const check = authenticatedHybridSearchDryRunCheck({
+    tiangongCliRoot: "/tools/tiangong-cli",
+    flowHybridSearchRoot: "/tools/flow-hybrid-search",
+    maxAttempts: 3,
+    retryDelayMs: 0,
+    sleeper: () => {},
+    runner() {
+      callCount += 1;
+      return { status: 1, stdout: "", stderr: secret };
+    },
+  });
+  assert.equal(check.ok, false);
+  assert.equal(check.detail.stage, "authenticated_session");
+  assert.equal(check.detail.attempts, 3);
+  assert.equal(callCount, 3);
+  assert.equal(JSON.stringify(check).includes(secret), false);
+});
+
 test("author dispatch fails closed when authenticated hybrid infrastructure is unavailable", () => {
   let dispatchAttempted = false;
   assert.throws(
