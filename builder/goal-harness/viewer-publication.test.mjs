@@ -31,13 +31,16 @@ function git(root, args, options = {}) {
   }).trim();
 }
 
-function fixture() {
+function fixture({ baselineFiles = {} } = {}) {
   const root = mkdtempSync(path.join(tmpdir(), "goal-viewer-publication-"));
   git(root, ["init", "-q"]);
   git(root, ["config", "user.name", "Goal Test"]);
   git(root, ["config", "user.email", "goal@example.invalid"]);
   writeFileSync(path.join(root, ".gitignore"), ".worktrees/\nlibrary/.pcr-builder-state/\n");
   writeFileSync(path.join(root, "tracked.txt"), "baseline\n");
+  for (const [relativePath, content] of Object.entries(baselineFiles)) {
+    writeFileSync(path.join(root, relativePath), content);
+  }
   git(root, ["add", "."]);
   git(root, ["commit", "-qm", "baseline"]);
   const baseline = git(root, ["rev-parse", "HEAD"]);
@@ -46,7 +49,7 @@ function fixture() {
     project_root: root,
     goal_id: "goal-a",
     artifact_store: artifactStore,
-    baseline: { tracked_roots: [".gitignore", "tracked.txt", "pre-activation.txt"] },
+    baseline: { tracked_roots: [".gitignore", "tracked.txt", "pre-activation.txt", ...Object.keys(baselineFiles)] },
   };
   return { root, baseline, artifactStore, config };
 }
@@ -329,8 +332,8 @@ test("first activation bootstraps the current accepted validation and records ea
   }
 });
 
-test("first activation landing materializes the cumulative pinned tree including disjoint pre-activation paths", () => {
-  const { root, baseline, config } = fixture();
+test("first activation landing materializes cumulative additions and deletions from the pinned tree", () => {
+  const { root, baseline, config } = fixture({ baselineFiles: { "obsolete.txt": "remove me\n" } });
   try {
     const ignored = ".worktrees/\nlibrary/.pcr-builder-state/\n";
     const first = commitValidationFiles({
@@ -338,7 +341,7 @@ test("first activation landing materializes the cumulative pinned tree including
       parent: baseline,
       goalId: "goal-a",
       snapshotId: "snapshot-a",
-      files: { ".gitignore": ignored, "pre-activation.txt": "first\n", "tracked.txt": "baseline\n" },
+      files: { ".gitignore": ignored, "obsolete.txt": "remove me\n", "pre-activation.txt": "first\n", "tracked.txt": "baseline\n" },
       changedFiles: ["pre-activation.txt"],
     });
     const second = commitValidationFiles({
@@ -347,7 +350,7 @@ test("first activation landing materializes the cumulative pinned tree including
       goalId: "goal-b",
       snapshotId: "snapshot-b",
       files: { ".gitignore": ignored, "pre-activation.txt": "first\n", "tracked.txt": "second\n" },
-      changedFiles: ["tracked.txt"],
+      changedFiles: ["obsolete.txt", "tracked.txt"],
     });
     publishPendingViewerSnapshots({
       config: { ...config, goal_id: "goal-b" },
@@ -358,8 +361,9 @@ test("first activation landing materializes the cumulative pinned tree including
     assert.equal(landGoalSnapshot({ config: { ...config, goal_id: "goal-b" }, stateDir, artifactStoreVerifier: () => true }).status, "landed");
     assert.equal(readFileSync(path.join(root, "pre-activation.txt"), "utf8"), "first\n");
     assert.equal(readFileSync(path.join(root, "tracked.txt"), "utf8"), "second\n");
+    assert.equal(existsSync(path.join(root, "obsolete.txt")), false);
     const head = JSON.parse(readFileSync(path.join(root, "library/.pcr-builder-state/repository-coordinator/landing/head.json"), "utf8"));
-    assert.deepEqual(Object.keys(head.path_fingerprints).sort(), ["pre-activation.txt", "tracked.txt"]);
+    assert.deepEqual(Object.keys(head.path_fingerprints).sort(), ["obsolete.txt", "pre-activation.txt", "tracked.txt"]);
   } finally {
     rmSync(root, { recursive: true, force: true });
   }
@@ -606,11 +610,21 @@ test("real publisher recovery adopts only the exact manifest captured before Vie
     const prepared = JSON.parse(preparedBytes);
     assert.equal(prepared.phase, "artifact_prepared");
     assert.match(prepared.expected_manifest_ref, /^sha256:[a-f0-9]{64}$/u);
+    assert.equal(prepared.expected_inner_manifest_ref, prepared.expected_manifest_ref);
+    assert.match(prepared.expected_inner_source_fingerprint, /^sha256:[a-f0-9]{64}$/u);
+    assert.match(prepared.expected_inner_journal_identity_sha256, /^sha256:[a-f0-9]{64}$/u);
+    const innerJournalPath = path.join(config.artifact_store, "journal.json");
+    const innerJournalBytes = readFileSync(innerJournalPath);
+    assert.equal(existsSync(path.join(config.artifact_store, "active.json")), false);
+    assert.equal(existsSync(path.join(config.artifact_store, "history-head.json")), false);
     writeFileSync(journalPath, `${JSON.stringify({ ...prepared, expected_manifest_ref: `sha256:${"f".repeat(64)}` }, null, 2)}\n`);
     assert.throws(
       () => recoverViewerPublications({ config }),
       (error) => error.code === "GOAL_VIEWER_PUBLICATION_MANIFEST_SUBSTITUTED",
     );
+    assert.equal(existsSync(path.join(config.artifact_store, "active.json")), false);
+    assert.equal(existsSync(path.join(config.artifact_store, "history-head.json")), false);
+    assert.deepEqual(readFileSync(innerJournalPath), innerJournalBytes);
     const pendingState = new GoalEventStore({ stateDir: path.join(root, "library/.pcr-builder-state/goals/goal-a") }).rebuild();
     assert.equal(pendingState.snapshots[0].viewer_publication, "pending");
     writeFileSync(journalPath, preparedBytes);
@@ -646,3 +660,36 @@ test("deleted artifact reconstruction rebuilds only the published prefix and lea
     rmSync(root, { recursive: true, force: true });
   }
 });
+
+for (const sourceState of ["missing", "substituted"]) {
+  test(`deleted artifact reconstruction rejects a ${sourceState} post-activation source without projection`, () => {
+    const { root, baseline, config } = fixture();
+    try {
+      const validation = commitValidation({ root, parent: baseline, goalId: "goal-a", snapshotId: "snapshot-a", content: "accepted" });
+      assert.throws(
+        () => publishPendingViewerSnapshots({
+          config,
+          publishSnapshot: publishFastValidViewerSnapshot,
+          faultInjector(phase) {
+            if (phase === "after_publication_committed") throw Object.assign(new Error("crash"), { code: "TEST_CRASH" });
+          },
+        }),
+        (error) => error.code === "TEST_CRASH",
+      );
+      const goalStateDir = path.join(root, "library/.pcr-builder-state/goals/goal-a");
+      assert.equal(new GoalEventStore({ stateDir: goalStateDir }).rebuild().snapshots[0].viewer_publication, "pending");
+      rmSync(config.artifact_store, { recursive: true, force: true });
+      git(root, ["update-ref", sourceState === "missing" ? "-d" : validation.source_ref, ...(sourceState === "missing" ? [validation.source_ref] : [baseline])]);
+
+      assert.throws(
+        () => recoverViewerPublications({ config, publishSnapshot: publishFastValidViewerSnapshot }),
+        (error) => error.code === "GOAL_REPOSITORY_SOURCE_REF_CONFLICT",
+      );
+      assert.equal(existsSync(path.join(config.artifact_store, "active.json")), false);
+      assert.equal(existsSync(path.join(config.artifact_store, "history-head.json")), false);
+      assert.equal(new GoalEventStore({ stateDir: goalStateDir }).rebuild().snapshots[0].viewer_publication, "pending");
+    } finally {
+      rmSync(root, { recursive: true, force: true });
+    }
+  });
+}

@@ -16,6 +16,19 @@ import {
 } from "./integration.mjs";
 import { commitRepositoryValidation, listCommittedRepositoryValidations, reserveRepositoryCandidate } from "./repository-coordinator.mjs";
 import { publishAllPendingViewerSnapshots } from "./viewer-publication.mjs";
+import { checkViewerCandidates } from "../../packages/pcr-viewer/scripts/build-viewer-data.mjs";
+
+const repositoryRoot = path.resolve(import.meta.dirname, "../..");
+const boundedPcrs = [
+  {
+    id: "pcr.agriculture-forestry-and-fishery-products.products-of-agriculture-horticulture-and-market-gardening.wheat-seed",
+    path: "library/pcrs/agriculture-forestry-and-fishery-products/products-of-agriculture-horticulture-and-market-gardening/wheat-seed",
+  },
+  {
+    id: "pcr.agriculture-forestry-and-fishery-products.fish-crustaceans-molluscs-and-other-aquatic-invertebrates-products.coral-and-similar-products-shells-of-molluscs-crustaceans-or-echinoderms-and-cuttle-bone",
+    path: "library/pcrs/agriculture-forestry-and-fishery-products/fish-crustaceans-molluscs-and-other-aquatic-invertebrates-products/coral-and-similar-products-shells-of-molluscs-crustaceans-or-echinoderms-and-cuttle-bone",
+  },
+];
 
 function git(root, args) {
   return execFileSync("git", args, { cwd: root, encoding: "utf8", stdio: ["ignore", "pipe", "pipe"] }).trim();
@@ -104,6 +117,31 @@ test("integration dry-run exposes the serial Builder and consumer checks without
   } finally {
     rmSync(root, { recursive: true, force: true });
   }
+});
+
+test("Harness Viewer candidate gate performs bounded PCR reads and each real global validation once", () => {
+  const artifactReads = [];
+  const gates = [];
+  const result = checkViewerCandidates({
+    root: repositoryRoot,
+    pcrIds: boundedPcrs.map((entry) => entry.id),
+    onPcrArtifactRead: (event) => artifactReads.push(event.relative_path),
+    onGlobalGate: (event) => gates.push(event),
+  });
+
+  assert.deepEqual(result.checked_pcr_ids, boundedPcrs.map((entry) => entry.id).sort());
+  assert.equal(artifactReads.every((relativePath) => boundedPcrs.some((entry) => relativePath.startsWith(`${entry.path}/`))), true);
+  for (const pcr of boundedPcrs) {
+    for (const leaf of ["pcr.en-US.md", "pcr.zh-CN.md", "structured.yaml"]) {
+      assert.ok(artifactReads.filter((relativePath) => relativePath === `${pcr.path}/${leaf}`).length >= 1);
+    }
+  }
+  const byGate = Object.fromEntries(gates.map((event) => [event.gate, event]));
+  assert.deepEqual(gates.map((event) => event.gate).sort(), ["aliases", "catalog", "coverage", "full_contract"]);
+  assert.ok(byGate.aliases.entry_count > 0);
+  assert.ok(byGate.catalog.entry_count > 0);
+  assert.ok(byGate.coverage.entry_count > 0);
+  assert.equal(byGate.full_contract.object_count, boundedPcrs.length);
 });
 
 test("integration selects the latest landed snapshot commit as its cumulative base", () => {

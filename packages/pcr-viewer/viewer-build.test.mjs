@@ -622,7 +622,7 @@ test("bounded candidate check reads every selected PCR and runs global contracts
     pcrIds: [wheatPcrId, coralPcrId],
     onPcrBodyRead: (event) => reads.push(event),
     onPcrArtifactRead: (event) => artifactReads.push(event.relative_path),
-    onGlobalGate: (event) => gates.push(event.gate),
+    onGlobalGate: (event) => gates.push(event),
   });
   assert.deepEqual(result.checked_pcr_ids, [coralPcrId, wheatPcrId].sort());
   assert.deepEqual(new Set(reads.map((entry) => entry.pcr_id)), new Set([wheatPcrId, coralPcrId]));
@@ -637,7 +637,15 @@ test("bounded candidate check reads every selected PCR and runs global contracts
       assert.equal(artifactReads.includes(`${pcrPath}/${leaf}`), true, `${pcrPath}/${leaf}`);
     }
   }
-  assert.deepEqual([...gates].sort(), ["aliases", "catalog", "coverage", "full_contract"]);
+  assert.deepEqual(gates.map((event) => event.gate).sort(), ["aliases", "catalog", "coverage", "full_contract"]);
+  const byGate = Object.fromEntries(gates.map((event) => [event.gate, event]));
+  assert.ok(byGate.aliases.entry_count > 0);
+  assert.ok(byGate.catalog.entry_count > 0);
+  assert.ok(byGate.coverage.source_count > 0);
+  assert.ok(byGate.coverage.entry_count > 0);
+  assert.equal(byGate.full_contract.object_count, 2);
+  assert.match(byGate.full_contract.generator_contract_sha256, /^sha256:[a-f0-9]{64}$/u);
+  assert.match(byGate.full_contract.schema_contract_sha256, /^sha256:[a-f0-9]{64}$/u);
 });
 
 test("pinned Git-tree deltas rebuild an unhinted changed PCR without opening unchanged bodies", () => {

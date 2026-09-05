@@ -1,5 +1,5 @@
 import { execFileSync } from "node:child_process";
-import { randomUUID } from "node:crypto";
+import { createHash, randomUUID } from "node:crypto";
 import {
   closeSync,
   existsSync,
@@ -225,16 +225,21 @@ export function publishPendingViewerSnapshots({
   if (typeof projectRoot !== "string" || !projectRoot) {
     throw new GoalHarnessError("GOAL_PROJECT_ROOT_INVALID", "Viewer publication requires a Goal project root.");
   }
-  probeViewerArtifactStore({ config, capabilityProbe });
   const stateDir = viewerPublicationStateDir(projectRoot);
   return withGoalLock(stateDir, "viewer-publish", () => {
+    const preflight = verifyPublishedStore
+      ? preflightPublicationRecovery({ config, stateDir, now })
+      : { recover_inner: true };
+    probeViewerArtifactStore({ config, capabilityProbe });
     if (verifyPublishedStore) {
-      recoverViewerSnapshot({
-        root: projectRoot,
-        artifactStore: requireArtifactStore(config),
-        sourceVerifier: createCoordinatorArtifactSourceVerifier(config),
-        forceStaleLock,
-      });
+      if (preflight.recover_inner) {
+        recoverViewerSnapshot({
+          root: projectRoot,
+          artifactStore: requireArtifactStore(config),
+          sourceVerifier: createCoordinatorArtifactSourceVerifier(config),
+          forceStaleLock,
+        });
+      }
     }
     recoverPublicationJournal({
       config,
@@ -326,15 +331,20 @@ export function recoverViewerPublications({
   faultInjector = () => {},
   artifactStoreVerifier = verifyPublishedViewerArtifact,
 } = {}) {
-  probeViewerArtifactStore({ config });
   const stateDir = viewerPublicationStateDir(config.project_root);
   return withGoalLock(stateDir, "viewer-recover", () => {
-    const artifact_recovery = recoverSnapshot({
-      root: config.project_root,
-      artifactStore: requireArtifactStore(config),
-      sourceVerifier: createCoordinatorArtifactSourceVerifier(config),
-      forceStaleLock,
-    });
+    const preflight = recoverSnapshot === recoverViewerSnapshot
+      ? preflightPublicationRecovery({ config, stateDir, now })
+      : { recover_inner: true };
+    probeViewerArtifactStore({ config });
+    const artifact_recovery = preflight.recover_inner
+      ? recoverSnapshot({
+        root: config.project_root,
+        artifactStore: requireArtifactStore(config),
+        sourceVerifier: createCoordinatorArtifactSourceVerifier(config),
+        forceStaleLock,
+      })
+      : { recovered: false, skipped_after_outer_preflight: true };
     let publications = listViewerPublications({ projectRoot: config.project_root });
     assertPublicationStore(publications, requireArtifactStore(config));
     let reconstruction = null;
@@ -650,6 +660,9 @@ function publishValidation({ config, stateDir, validation, viewerSequence, publi
             expected_manifest_source: manifest.source,
             expected_generator_contract_sha256: manifest.generator_contract_sha256,
             expected_schema_contract_sha256: manifest.schema_contract_sha256,
+            expected_inner_manifest_ref: activeViewerJournal.manifest_ref,
+            expected_inner_source_fingerprint: activeViewerJournal.source_fingerprint,
+            expected_inner_journal_identity_sha256: innerJournalIdentitySha256(activeViewerJournal),
           };
           const artifactPrepared = {
             ...reserved,
@@ -730,6 +743,146 @@ function recoverPublicationJournal({ config, stateDir, now, faultInjector, artif
     projectViewerPublication({ projectRoot: config.project_root, publication: journal.publication });
   }
   return journal.publication;
+}
+
+function preflightPublicationRecovery({ config, stateDir, now }) {
+  const outerPath = path.join(stateDir, "journal.json");
+  const innerPath = path.join(requireArtifactStore(config), "journal.json");
+  const outer = pathEntryExists(outerPath)
+    ? readJson(outerPath, "GOAL_VIEWER_PUBLICATION_JOURNAL_INVALID")
+    : null;
+  const inner = pathEntryExists(innerPath)
+    ? readJson(innerPath, "GOAL_VIEWER_PUBLICATION_RECOVERY_AMBIGUOUS")
+    : null;
+
+  if (!outer) {
+    if (inner) {
+      throw new GoalHarnessError(
+        "GOAL_VIEWER_PUBLICATION_RECOVERY_AMBIGUOUS",
+        "Viewer artifact recovery is not bound to a Harness publication journal.",
+      );
+    }
+    return { recover_inner: true };
+  }
+  if (!["reserved", "artifact_prepared", "artifact_published", "publication_committed", "projected"].includes(outer.phase)) {
+    throw new GoalHarnessError("GOAL_VIEWER_PUBLICATION_JOURNAL_INVALID", "Unknown Viewer publication journal phase.");
+  }
+  if (outer.phase === "reserved") {
+    if (inner) {
+      throw new GoalHarnessError(
+        "GOAL_VIEWER_PUBLICATION_RECOVERY_AMBIGUOUS",
+        "Viewer artifact journal exists before the Harness captured its exact manifest identity.",
+      );
+    }
+    return { recover_inner: true };
+  }
+  if (outer.phase === "artifact_prepared") {
+    assertPreparedOuterIdentity(outer);
+    if (inner) {
+      if (
+        inner.manifest_ref !== outer.expected_inner_manifest_ref ||
+        inner.source_fingerprint !== outer.expected_inner_source_fingerprint ||
+        innerJournalIdentitySha256(inner) !== outer.expected_inner_journal_identity_sha256
+      ) {
+        throw new GoalHarnessError(
+          "GOAL_VIEWER_PUBLICATION_MANIFEST_SUBSTITUTED",
+          "Viewer artifact journal differs from the exact manifest and source captured by the Harness.",
+        );
+      }
+      assertPreparedManifestContent({ config, outer });
+      return { recover_inner: true };
+    }
+    const adopted = publicationFromReservedActive({ config, journal: outer, now });
+    if (!adopted) {
+      throw new GoalHarnessError(
+        "GOAL_VIEWER_PUBLICATION_RECOVERY_AMBIGUOUS",
+        "Prepared Viewer publication has neither its bound inner journal nor exact durable pointers.",
+      );
+    }
+    return { recover_inner: false };
+  }
+  if (inner) {
+    throw new GoalHarnessError(
+      "GOAL_VIEWER_PUBLICATION_RECOVERY_AMBIGUOUS",
+      "A completed Harness artifact phase cannot adopt an unexpected Viewer artifact journal.",
+    );
+  }
+  return { recover_inner: false };
+}
+
+function pathEntryExists(file) {
+  try {
+    lstatSync(file);
+    return true;
+  } catch (error) {
+    if (error?.code === "ENOENT") return false;
+    throw error;
+  }
+}
+
+function assertPreparedOuterIdentity(outer) {
+  if (
+    !SHA256_REF.test(outer.expected_manifest_ref ?? "") ||
+    !SHA256_REF.test(outer.expected_inner_source_fingerprint ?? "") ||
+    !SHA256_REF.test(outer.expected_inner_journal_identity_sha256 ?? "") ||
+    !outer.expected_manifest_capture ||
+    !outer.expected_manifest_source
+  ) {
+    throw new GoalHarnessError(
+      "GOAL_VIEWER_PUBLICATION_RECOVERY_AMBIGUOUS",
+      "Prepared Viewer recovery lacks an exact outer-to-inner manifest and source binding.",
+    );
+  }
+  if (outer.expected_inner_manifest_ref !== outer.expected_manifest_ref) {
+    throw new GoalHarnessError(
+      "GOAL_VIEWER_PUBLICATION_MANIFEST_SUBSTITUTED",
+      "The outer Viewer manifest reference differs from its bound inner journal reference.",
+    );
+  }
+}
+
+function assertPreparedManifestContent({ config, outer }) {
+  const store = new ViewerSnapshotStore({
+    root: requireArtifactStore(config),
+    generatorVersion: VIEWER_INCREMENTAL_GENERATOR_VERSION,
+    sourceVerifier: createCoordinatorArtifactSourceVerifier(config),
+  });
+  let manifest;
+  try {
+    manifest = store.readManifest(outer.expected_manifest_ref);
+  } catch (error) {
+    throw new GoalHarnessError(
+      "GOAL_VIEWER_PUBLICATION_MANIFEST_SUBSTITUTED",
+      "The exact Viewer manifest captured by the Harness is missing or corrupt.",
+      { cause: error.message },
+    );
+  }
+  if (
+    stableJson(manifest.capture) !== stableJson(outer.expected_manifest_capture) ||
+    stableJson(manifest.source) !== stableJson(outer.expected_manifest_source) ||
+    manifest.generator_contract_sha256 !== outer.expected_generator_contract_sha256 ||
+    manifest.schema_contract_sha256 !== outer.expected_schema_contract_sha256
+  ) {
+    throw new GoalHarnessError(
+      "GOAL_VIEWER_PUBLICATION_MANIFEST_SUBSTITUTED",
+      "The exact Viewer manifest content differs from the source captured by the Harness.",
+    );
+  }
+}
+
+function innerJournalIdentitySha256(journal) {
+  const identity = {
+    schema_version: journal?.schema_version,
+    kind: journal?.kind,
+    manifest_ref: journal?.manifest_ref,
+    sequence: journal?.sequence,
+    source: journal?.source,
+    capture: journal?.capture,
+    source_fingerprint: journal?.source_fingerprint,
+    reservation: journal?.reservation,
+    cas: journal?.cas,
+  };
+  return `sha256:${createHash("sha256").update(stableJson(identity), "utf8").digest("hex")}`;
 }
 
 function withPinnedSourceWorktree({ projectRoot, validation, read }) {

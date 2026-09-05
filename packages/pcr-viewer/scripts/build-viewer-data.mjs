@@ -521,26 +521,27 @@ export function checkViewerCandidates({
   const ids = [...new Set(pcrIds.map(String))].sort();
   if (ids.length === 0) throw new ViewerBuilderError("VIEWER_CANDIDATE_REQUIRED", "At least one --pcr id is required for a bounded Viewer candidate check.");
   const resolvedRoot = realpathSync(path.resolve(root));
-  const notifyGate = (gate) => onGlobalGate?.({ gate });
+  const notifyGate = (gate, evidence = {}) => onGlobalGate?.({ gate, ...evidence });
   const context = createPcrReadContext({
     root: resolvedRoot,
-    onAliasValidation: () => notifyGate("aliases"),
-    onCatalogSnapshot: () => notifyGate("catalog"),
+    onAliasValidation: (event) => notifyGate("aliases", { entry_count: event.aliases.length }),
+    onCatalogSnapshot: (event) => notifyGate("catalog", { entry_count: event.entryCount }),
     onPcrArtifactRead,
   });
-  notifyGate("coverage");
   const schemas = createViewerSnapshotSchemaRegistry();
-  notifyGate("full_contract");
-  const identity = {
-    generator_contract_sha256: sha256Ref("viewer-candidate-generator\n"),
-    schema_contract_sha256: viewerSchemaContractSha256(),
-    source_fingerprint: sha256Ref("viewer-candidate-source\n"),
-    release_revision_marker: null,
-  };
+  const generatorContractSha256 = computeViewerGeneratorContractSha256({ contractRoot: resolvedRoot });
+  const schemaContractSha256 = viewerSchemaContractSha256();
   return withPcrReadContextSession({
     context,
     root: resolvedRoot,
     read: () => {
+      const catalog = readRequiredYamlFile({
+        root: resolvedRoot,
+        filePath: path.join(resolvedRoot, "library", "catalog.yaml"),
+        label: "PCR catalog",
+      });
+      const coverage = readCoverageProjection({ root: resolvedRoot, catalog });
+      notifyGate("coverage", { source_count: coverage.sources.length, entry_count: coverage.entries.length });
       for (const pcrId of ids) {
         onPcrBodyRead?.({ pcr_id: pcrId, kind: "guidance" });
         const guidance = buildGuidance({ root: resolvedRoot, pcrId, context });
@@ -548,6 +549,12 @@ export function checkViewerCandidates({
           onPcrBodyRead?.({ pcr_id: pcrId, kind: "markdown", language });
           return [language, readPcrMarkdown({ root: resolvedRoot, pcrId, language, context })];
         }));
+        const identity = {
+          generator_contract_sha256: generatorContractSha256,
+          schema_contract_sha256: schemaContractSha256,
+          source_fingerprint: sha256Ref(canonicalBytes({ pcr_id: pcrId, markdown, guidance })),
+          release_revision_marker: null,
+        };
         schemas.assert("viewer-object", {
           schema_version: 1,
           object_kind: "pcr_detail",
@@ -555,6 +562,11 @@ export function checkViewerCandidates({
           entry: { id: pcrId, markdown, guidance },
         });
       }
+      notifyGate("full_contract", {
+        object_count: ids.length,
+        generator_contract_sha256: generatorContractSha256,
+        schema_contract_sha256: schemaContractSha256,
+      });
       return Object.freeze({ ok: true, checked_pcr_ids: Object.freeze(ids), checked: ids.length });
     },
   });
