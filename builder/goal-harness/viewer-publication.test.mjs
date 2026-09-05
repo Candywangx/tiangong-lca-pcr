@@ -584,7 +584,7 @@ test("recovery keeps Goal publication pending when a committed coordinator recor
   }
 });
 
-test("real publisher recovery adopts only the exact manifest captured before Viewer pointer activation", { timeout: 120_000 }, () => {
+test("real publisher recovery adopts only exact cross-journal identities before pointer activation", { timeout: 240_000 }, () => {
   const parent = mkdtempSync(path.join(tmpdir(), "goal-viewer-real-"));
   const root = path.join(parent, "repo");
   const source = path.resolve(import.meta.dirname, "../..");
@@ -597,7 +597,7 @@ test("real publisher recovery adopts only the exact manifest captured before Vie
     git(root, ["commit", "-qm", "viewer recovery baseline"]);
     const baseline = git(root, ["rev-parse", "HEAD"]);
     const config = { project_root: root, goal_id: "goal-a", artifact_store: path.join(parent, "viewer-history") };
-    commitFullTreeValidation({ root, parent: baseline, goalId: "goal-a", snapshotId: "snapshot-a", content: "accepted" });
+    const first = commitFullTreeValidation({ root, parent: baseline, goalId: "goal-a", snapshotId: "snapshot-a", content: "accepted" });
     assert.throws(
       () => publishPendingViewerSnapshots({
         config,
@@ -630,6 +630,56 @@ test("real publisher recovery adopts only the exact manifest captured before Vie
     writeFileSync(journalPath, preparedBytes);
     const recovered = recoverViewerPublications({ config });
     assert.equal(recovered.publications[0].manifest_ref, prepared.expected_manifest_ref);
+
+    commitFullTreeValidation({ root, parent: first.integration_commit, goalId: "goal-b", snapshotId: "snapshot-b", content: "accepted twice" });
+    assert.throws(
+      () => publishPendingViewerSnapshots({
+        config: { ...config, goal_id: "goal-b" },
+        artifactFailurePhase: "prepared_before_callback",
+      }),
+      (error) => error.code === "VIEWER_PUBLICATION_INTERRUPTED",
+    );
+    const reservedBytes = readFileSync(journalPath);
+    assert.equal(JSON.parse(reservedBytes).phase, "reserved");
+    const secondInnerBytes = readFileSync(innerJournalPath);
+    const oldActiveBytes = readFileSync(path.join(config.artifact_store, "active.json"));
+    const oldHistoryBytes = readFileSync(path.join(config.artifact_store, "history-head.json"));
+    const inner = JSON.parse(secondInnerBytes);
+    const mismatches = [
+      { ...inner, reservation: { ...inner.reservation, snapshot_id: "substituted-snapshot" } },
+      { ...inner, cas: { ...inner.cas, active: { ...inner.cas.active, old_ref: null } } },
+    ];
+    for (const mismatch of mismatches) {
+      writeFileSync(innerJournalPath, `${JSON.stringify(mismatch)}\n`);
+      const mismatchedBytes = readFileSync(innerJournalPath);
+      assert.throws(
+        () => recoverViewerPublications({ config: { ...config, goal_id: "goal-b" } }),
+        (error) => error.code === "GOAL_VIEWER_PUBLICATION_INNER_MISMATCH",
+      );
+      assert.deepEqual(readFileSync(journalPath), reservedBytes);
+      assert.deepEqual(readFileSync(innerJournalPath), mismatchedBytes);
+      assert.deepEqual(readFileSync(path.join(config.artifact_store, "active.json")), oldActiveBytes);
+      assert.deepEqual(readFileSync(path.join(config.artifact_store, "history-head.json")), oldHistoryBytes);
+      writeFileSync(innerJournalPath, secondInnerBytes);
+    }
+
+    assert.throws(
+      () => recoverViewerPublications({
+        config: { ...config, goal_id: "goal-b" },
+        faultInjector(phase) {
+          if (phase === "after_reserved_inner_bridge") throw Object.assign(new Error("crash"), { code: "TEST_CRASH" });
+        },
+      }),
+      (error) => error.code === "TEST_CRASH",
+    );
+    assert.equal(JSON.parse(readFileSync(journalPath, "utf8")).phase, "artifact_prepared");
+    assert.deepEqual(readFileSync(innerJournalPath), secondInnerBytes);
+    assert.deepEqual(readFileSync(path.join(config.artifact_store, "active.json")), oldActiveBytes);
+    assert.deepEqual(readFileSync(path.join(config.artifact_store, "history-head.json")), oldHistoryBytes);
+    const bridged = recoverViewerPublications({ config: { ...config, goal_id: "goal-b" } });
+    assert.deepEqual(bridged.publications.map((entry) => entry.viewer_sequence), [1, 2]);
+    const retry = recoverViewerPublications({ config: { ...config, goal_id: "goal-b" } });
+    assert.deepEqual(retry.publications.map((entry) => entry.manifest_ref), bridged.publications.map((entry) => entry.manifest_ref));
   } finally {
     rmSync(parent, { recursive: true, force: true });
   }

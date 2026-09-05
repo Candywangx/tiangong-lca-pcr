@@ -392,6 +392,7 @@ export function publishViewerSnapshot({
   changedPcrIds,
   renamedFrom = {},
   generatorContractSha256 = null,
+  generatorContractRoot = repoRoot,
   sourceVerifier = null,
   onPcrBodyRead = null,
   onPcrArtifactRead = null,
@@ -434,7 +435,7 @@ export function publishViewerSnapshot({
 
   const active = hasActive ? store.readActive() : null;
   const previousManifest = active ? store.readManifest(active.manifest_ref) : null;
-  const generatorRef = generatorContractSha256 ?? computeViewerGeneratorContractSha256();
+  const generatorRef = generatorContractSha256 ?? computeViewerGeneratorContractSha256({ contractRoot: generatorContractRoot });
   if (previousManifest && sequence === previousManifest.sequence) {
     const sameIdentity =
       previousManifest.snapshot_id === snapshotId &&

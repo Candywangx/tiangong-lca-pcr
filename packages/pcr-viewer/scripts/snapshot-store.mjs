@@ -293,6 +293,41 @@ export class ViewerSnapshotStore {
     }
   }
 
+  inspectPreparedJournal() {
+    const journalPath = this.path("journal.json");
+    if (!existsRegular(journalPath, "publication journal")) return null;
+    const bytes = readSafeFile(journalPath, "publication journal");
+    const journal = parseCanonicalJson(bytes, "publication journal");
+    if (!bytes.equals(canonicalBytes(journal))) {
+      throw new ViewerSnapshotStoreError("VIEWER_JOURNAL_CORRUPT", "Publication journal bytes are not canonical.");
+    }
+    validateJournal(journal);
+    if (journal.phase !== "prepared" || journal.pointer_capture) {
+      throw new ViewerSnapshotStoreError("VIEWER_JOURNAL_CORRUPT", "Only an untouched prepared publication journal can be inspected for Harness adoption.");
+    }
+    const manifest = this.readManifest(journal.manifest_ref);
+    this.#assertJournalMatchesManifest(journal, manifest);
+    this.#verifySource({ source: journal.source, capture: journal.capture, sourceFingerprint: journal.source_fingerprint }, "inspection");
+    if (manifest.schema_contract_sha256 !== this.schemaContractSha256) {
+      throw new ViewerSnapshotStoreError("VIEWER_JOURNAL_CORRUPT", "Prepared manifest uses a different Viewer schema contract.");
+    }
+    const currentPointerRefs = {
+      active: this.#pointerRef("active.json"),
+      history_head: this.#pointerRef("history-head.json"),
+    };
+    if (
+      currentPointerRefs.active !== journal.cas.active.old_ref ||
+      currentPointerRefs.history_head !== journal.cas.history_head.old_ref
+    ) {
+      throw new ViewerSnapshotStoreError("VIEWER_POINTER_CAS_CONFLICT", "Prepared journal expected-old pointers differ from the durable artifact store.");
+    }
+    return Object.freeze({
+      journal: structuredClone(journal),
+      manifest: structuredClone(manifest),
+      current_pointer_refs: Object.freeze(currentPointerRefs),
+    });
+  }
+
   #publishLocked(input) {
     const normalized = this.#normalizeInput(input);
     this.#verifySource(normalized, "before");
@@ -397,6 +432,7 @@ export class ViewerSnapshotStore {
     };
     this.#writePointer("journal.json", journal);
     this.currentJournal = journal;
+    this.#interrupt(normalized.failurePhase, "prepared_before_callback");
     normalized.onPhase?.("prepared", this);
     this.#interrupt(normalized.failurePhase, journal.phase);
 
