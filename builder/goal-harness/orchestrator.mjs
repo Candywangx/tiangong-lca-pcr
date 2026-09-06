@@ -74,12 +74,18 @@ export async function dispatchGoalAuthors({
         const requiresThreadReplacement = new Set(["GOAL_REPAIR_RESUME_FAILED", "GOAL_REPAIR_LIMIT_REACHED"]).has(failed.failure_code);
         const replaceThreadInPlace = requiresThreadReplacement
           && canReuseAuthorizedAuthorWorktree({ config, task: failed, baselineCommit: state.baseline.commit });
-        const repairInPlace = !requiresThreadReplacement
+        const infrastructureRetry = failed.failure_code === "GOAL_CODEX_USAGE_LIMIT_EXCEEDED";
+        const infrastructureResumeInPlace = infrastructureRetry
+          && canReuseAuthorizedAuthorWorktree({ config, task: failed, baselineCommit: state.baseline.commit });
+        const repairInPlace = !requiresThreadReplacement && !infrastructureRetry
           && Boolean(failed.thread_id && failed.worktree_path && (failed.repair_count ?? 0) < (config.retry_policy?.max_repairs ?? 2));
         const nextCycle = nextDispatchCycle(failed);
+        const retryMode = replaceThreadInPlace
+          ? "replace-thread"
+          : (infrastructureResumeInPlace ? "infrastructure-resume" : (repairInPlace ? "repair" : "requeue"));
         let task = applyTaskTransition(failed, {
-          transition_id: `${authorIdentity(config.goal_id, failed.cpc_code, failed.attempt ?? 1, failed.uuid_enrichment_generation)}-${replaceThreadInPlace ? "replace-thread" : (repairInPlace ? "repair" : "requeue")}-${nextCycle}`,
-          to: replaceThreadInPlace ? "preflight" : (repairInPlace ? "repair_requested" : "queued"),
+          transition_id: `${authorIdentity(config.goal_id, failed.cpc_code, failed.attempt ?? 1, failed.uuid_enrichment_generation)}-${retryMode}-${nextCycle}`,
+          to: replaceThreadInPlace ? "preflight" : ((repairInPlace || infrastructureResumeInPlace) ? "repair_requested" : "queued"),
           at: new Date().toISOString(),
         });
         if (replaceThreadInPlace) {
@@ -99,6 +105,13 @@ export async function dispatchGoalAuthors({
             author_base_commit: failed.last_author_commit ?? failed.author_commit ?? failed.author_base_commit ?? state.baseline.commit,
             author_content_base_commit: authorContentBaseCommit,
             reason: "Continue the preserved repair worktree after the original visible thread and its one continuation both became unrecoverable.",
+          };
+        } else if (infrastructureResumeInPlace) {
+          task = {
+            ...task,
+            dispatch_cycle: nextCycle,
+            infrastructure_resume_pending: true,
+            infrastructure_resume_target_state: hasOpenContentRepair(failed) ? "authoring_repair" : "authoring",
           };
         } else if (!repairInPlace && failed.thread_id) {
           task = {
@@ -122,12 +135,16 @@ export async function dispatchGoalAuthors({
       state = store.rebuild();
       let task = state.tasks.find((entry) => entry.id === selectedTask.id);
       if (task?.state === "repair_requested") {
+        const resumeInfrastructure = task.infrastructure_resume_pending === true;
         const resumeExistingRepair = task.repair_resume_pending === true;
         const repairNumber = resumeExistingRepair ? (task.repair_count ?? 1) : (task.repair_count ?? 0) + 1;
         const repairResumeNumber = resumeExistingRepair ? (task.repair_resume_count ?? 0) + 1 : 0;
-        const repairIdentity = resumeExistingRepair
-          ? `${task.id}-repair-${repairNumber}-resume-${repairResumeNumber}`
-          : `${task.id}-repair-${repairNumber}`;
+        const infrastructureResumeNumber = (task.infrastructure_resume_count ?? 0) + 1;
+        const repairIdentity = resumeInfrastructure
+          ? `${task.id}-infrastructure-resume-${infrastructureResumeNumber}`
+          : (resumeExistingRepair
+            ? `${task.id}-repair-${repairNumber}-resume-${repairResumeNumber}`
+            : `${task.id}-repair-${repairNumber}`);
         const compiled = compileAuthorPrompt({
           task: {
             ...task,
@@ -139,13 +156,17 @@ export async function dispatchGoalAuthors({
           verifiedSourceReceipts: selectRelevantSourceReceipts({ stateDir, task, state }),
           tools: { ...config.tools, project_root: config.project_root, config_path: path.resolve(state.config_path ?? config.config_path ?? "") },
         });
-        const prompt = compileRepairPrompt(task, compiled.prompt, { resumeExistingRepair });
+        const prompt = resumeInfrastructure
+          ? compileInfrastructureResumePrompt(task, compiled.prompt, infrastructureResumeNumber)
+          : compileRepairPrompt(task, compiled.prompt, { resumeExistingRepair });
         const outputSchema = compiled.output_schema;
         const taskStateDir = path.join(stateDir, "authors", authorIdentity(config.goal_id, task.cpc_code, task.attempt ?? 1, task.uuid_enrichment_generation));
         mkdirSync(taskStateDir, { recursive: true });
-        const repairArtifactStem = resumeExistingRepair
-          ? `repair-${repairNumber}-resume-${repairResumeNumber}`
-          : `repair-${repairNumber}`;
+        const repairArtifactStem = resumeInfrastructure
+          ? `infrastructure-resume-${infrastructureResumeNumber}`
+          : (resumeExistingRepair
+            ? `repair-${repairNumber}-resume-${repairResumeNumber}`
+            : `repair-${repairNumber}`);
         writeFileSync(path.join(taskStateDir, `${repairArtifactStem}-prompt.txt`), prompt);
         writeFileSync(path.join(taskStateDir, `${repairArtifactStem}-output-schema.json`), `${JSON.stringify(outputSchema, null, 2)}\n`);
         const visible = await adapter.startRepairTurn({
@@ -157,17 +178,37 @@ export async function dispatchGoalAuthors({
           receiptStateDir: stateDir,
         });
         const startedAt = new Date().toISOString();
-        task = applyTaskTransition(task, { transition_id: `${repairIdentity}-authoring`, to: "authoring_repair", at: startedAt });
+        const resumedState = resumeInfrastructure ? (task.infrastructure_resume_target_state ?? "authoring") : "authoring_repair";
+        task = applyTaskTransition(task, { transition_id: `${repairIdentity}-authoring`, to: resumedState, at: startedAt });
         task = {
           ...task,
           ...visible,
-          repair_count: repairNumber,
-          repair_resume_count: repairResumeNumber,
+          repair_count: resumeInfrastructure ? (task.repair_count ?? 0) : repairNumber,
+          repair_resume_count: resumeInfrastructure ? (task.repair_resume_count ?? 0) : repairResumeNumber,
           repair_resume_pending: false,
-          repair_started_at: resumeExistingRepair ? task.repair_started_at : startedAt,
-          repair_history: resumeExistingRepair
-            ? appendRepairResumeTurn(task.repair_history, visible.turn_id)
-            : [...(task.repair_history ?? []), {
+          infrastructure_resume_pending: false,
+          infrastructure_resume_target_state: null,
+          infrastructure_resume_count: resumeInfrastructure ? infrastructureResumeNumber : (task.infrastructure_resume_count ?? 0),
+          infrastructure_resume_history: resumeInfrastructure
+            ? [...(task.infrastructure_resume_history ?? []), {
+              resume_count: infrastructureResumeNumber,
+              turn_id: visible.turn_id,
+              started_at: startedAt,
+              interrupted_turn_id: task.turn_id ?? null,
+              failure_code: task.failure_code ?? null,
+            }]
+            : (task.infrastructure_resume_history ?? []),
+          failure_code: resumeInfrastructure ? null : task.failure_code,
+          failure_message: resumeInfrastructure ? null : task.failure_message,
+          pending_gate_findings: resumeInfrastructure && !hasOpenContentRepair(task) ? [] : task.pending_gate_findings,
+          repair_started_at: resumeInfrastructure
+            ? task.repair_started_at
+            : (resumeExistingRepair ? task.repair_started_at : startedAt),
+          repair_history: resumeInfrastructure
+            ? (task.repair_history ?? [])
+            : (resumeExistingRepair
+              ? appendRepairResumeTurn(task.repair_history, visible.turn_id)
+              : [...(task.repair_history ?? []), {
               repair_count: repairNumber,
               turn_id: visible.turn_id,
               resume_turn_ids: [],
@@ -176,7 +217,7 @@ export async function dispatchGoalAuthors({
               original_commit: task.last_author_commit ?? task.author_commit ?? null,
               new_commit: null,
               gate_findings: task.pending_gate_findings ?? [],
-            }],
+            }]),
         };
         store.append({ event_id: `${repairIdentity}-started`, type: "task_replaced", payload: { task } });
         dispatched.push(task);
@@ -299,9 +340,13 @@ function previewResumedState({ config, state }) {
     const requiresThreadReplacement = new Set(["GOAL_REPAIR_RESUME_FAILED", "GOAL_REPAIR_LIMIT_REACHED"]).has(failed.failure_code);
     const replaceThreadInPlace = requiresThreadReplacement
       && canReuseAuthorizedAuthorWorktree({ config, task: failed, baselineCommit: state.baseline.commit });
-    const repairInPlace = !requiresThreadReplacement
+    const infrastructureRetry = failed.failure_code === "GOAL_CODEX_USAGE_LIMIT_EXCEEDED";
+    const infrastructureResumeInPlace = infrastructureRetry
+      && canReuseAuthorizedAuthorWorktree({ config, task: failed, baselineCommit: state.baseline.commit });
+    const repairInPlace = !requiresThreadReplacement && !infrastructureRetry
       && Boolean(failed.thread_id && failed.worktree_path && (failed.repair_count ?? 0) < maxRepairs);
     if (replaceThreadInPlace) return { ...failed, state: "preflight", thread_id: null, turn_id: null };
+    if (infrastructureResumeInPlace) return { ...failed, state: "repair_requested", infrastructure_resume_pending: true };
     if (repairInPlace) return { ...failed, state: "repair_requested" };
     return {
       ...failed,
@@ -557,6 +602,29 @@ function compileRepairPrompt(task, currentAuthorPrompt, { resumeExistingRepair =
       gate_findings: task.pending_gate_findings ?? [],
     }, null, 2),
   ].join("\n\n");
+}
+
+function compileInfrastructureResumePrompt(task, currentAuthorPrompt, resumeCount) {
+  const continuingRepair = hasOpenContentRepair(task);
+  return [
+    "Continue the same PCR in this same visible thread and the same preserved worktree after an infrastructure-only interruption.",
+    "Do not restart the PCR, do not modify files outside the original four-file allowlist, and do not count this continuation as a content repair.",
+    "The complete current author contract follows and supersedes the interrupted turn's tooling and output-report instructions.",
+    currentAuthorPrompt,
+    "Resume from the files already present, complete all required checks, commit only the allowed files, and return a complete JSON report matching the supplied output schema.",
+    JSON.stringify({
+      infrastructure_resume_count: resumeCount,
+      continuing_content_repair: continuingRepair,
+      repair_count: task.repair_count ?? 0,
+      allowed_files: task.allowed_files ?? [],
+      gate_findings: continuingRepair ? (task.repair_history?.at(-1)?.gate_findings ?? []) : [],
+    }, null, 2),
+  ].join("\n\n");
+}
+
+function hasOpenContentRepair(task) {
+  const latest = task.repair_history?.at(-1);
+  return Boolean((task.repair_count ?? 0) > 0 && latest && latest.ended_at == null);
 }
 
 function appendRepairResumeTurn(repairHistory, turnId) {

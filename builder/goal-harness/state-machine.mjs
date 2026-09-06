@@ -7,7 +7,7 @@ const TRANSITIONS = Object.freeze({
   preflight: ["authoring", "map_existing", "manual_review", "blocked", "retryable_failure", "failed", "cancelled"],
   authoring: ["author_review", "repair_requested", "map_existing", "manual_review", "blocked", "retryable_failure", "failed", "cancelled"],
   author_review: ["valid_result", "repair_requested", "retryable_failure", "failed", "cancelled"],
-  repair_requested: ["authoring_repair", "retryable_failure", "failed", "cancelled"],
+  repair_requested: ["authoring", "authoring_repair", "retryable_failure", "failed", "cancelled"],
   authoring_repair: ["author_review", "repair_requested", "retryable_failure", "failed", "cancelled"],
   valid_result: ["integration_pending", "retryable_failure", "cancelled"],
   integration_pending: ["integrating", "retryable_failure", "cancelled"],

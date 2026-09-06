@@ -531,6 +531,106 @@ test("Codex usage-limit failures are infrastructure retryable without consuming 
   }
 });
 
+test("resuming an author after a usage limit preserves its content repair budget", async () => {
+  const { root, stateDir, config } = fixture();
+  config.retry_policy = { max_attempts: 6, max_repairs: 2 };
+  const store = new GoalEventStore({ stateDir });
+  const continuationCalls = [];
+  let replacementCalls = 0;
+  try {
+    const first = await dispatchGoalAuthors({
+      config,
+      stateDir,
+      slots: 1,
+      adapter: {
+        async createAuthorTask() {
+          return { thread_id: "thread-quota", turn_id: "turn-quota" };
+        },
+      },
+    });
+    const original = first.state.tasks[0];
+    store.append({
+      event_id: "fixture-quota-retryable",
+      type: "task_replaced",
+      payload: { task: {
+        ...original,
+        state: "retryable_failure",
+        failure_code: "GOAL_CODEX_USAGE_LIMIT_EXCEEDED",
+        failure_message: "usage capacity unavailable",
+        repair_count: 0,
+        repair_history: [],
+        transition_ids: [...original.transition_ids, "fixture-quota-retryable"],
+      } },
+    });
+    const result = await dispatchGoalAuthors({
+      config,
+      stateDir,
+      slots: 1,
+      resumeStopped: true,
+      preDispatchCheck() {},
+      adapter: {
+        async startRepairTurn(input) {
+          continuationCalls.push(input);
+          return { thread_id: input.threadId, turn_id: `turn-quota-resumed-${continuationCalls.length}` };
+        },
+        async createAuthorTask() {
+          replacementCalls += 1;
+          return { thread_id: "thread-replacement", turn_id: "turn-replacement" };
+        },
+      },
+    });
+
+    const resumed = result.state.tasks[0];
+    assert.equal(resumed.state, "authoring");
+    assert.equal(resumed.thread_id, "thread-quota");
+    assert.equal(resumed.turn_id, "turn-quota-resumed-1");
+    assert.equal(resumed.worktree_path, original.worktree_path);
+    assert.equal(resumed.repair_count, 0);
+    assert.deepEqual(resumed.repair_history, []);
+    assert.equal(resumed.infrastructure_resume_count, 1);
+    assert.equal(continuationCalls.length, 1);
+    assert.equal(replacementCalls, 0);
+
+    store.append({
+      event_id: "fixture-quota-retryable-again",
+      type: "task_replaced",
+      payload: { task: {
+        ...resumed,
+        state: "retryable_failure",
+        failure_code: "GOAL_CODEX_USAGE_LIMIT_EXCEEDED",
+        failure_message: "usage capacity unavailable again",
+        transition_ids: [...resumed.transition_ids, "fixture-quota-retryable-again"],
+      } },
+    });
+    const resumedAgain = await dispatchGoalAuthors({
+      config,
+      stateDir,
+      slots: 1,
+      resumeStopped: true,
+      preDispatchCheck() {},
+      adapter: {
+        async startRepairTurn(input) {
+          continuationCalls.push(input);
+          return { thread_id: input.threadId, turn_id: `turn-quota-resumed-${continuationCalls.length}` };
+        },
+        async createAuthorTask() {
+          replacementCalls += 1;
+          return { thread_id: "thread-replacement", turn_id: "turn-replacement" };
+        },
+      },
+    });
+    const second = resumedAgain.state.tasks[0];
+    assert.equal(second.state, "authoring");
+    assert.equal(second.turn_id, "turn-quota-resumed-2");
+    assert.equal(second.repair_count, 0);
+    assert.equal(second.infrastructure_resume_count, 2);
+    assert.equal(continuationCalls.length, 2);
+    assert.equal(replacementCalls, 0);
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+  }
+});
+
 test("an interrupted repair resumes once in the same thread without consuming another repair", async () => {
   const { root, stateDir, config } = fixture();
   config.retry_policy = { max_repairs: 2 };
