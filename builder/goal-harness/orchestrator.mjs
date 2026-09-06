@@ -143,8 +143,8 @@ export async function dispatchGoalAuthors({
         const repairIdentity = resumeInfrastructure
           ? `${task.id}-infrastructure-resume-${infrastructureResumeNumber}`
           : (resumeExistingRepair
-            ? `${task.id}-repair-${repairNumber}-resume-${repairResumeNumber}`
-            : `${task.id}-repair-${repairNumber}`);
+            ? `${task.id}-content-repair-${repairNumber}-resume-${repairResumeNumber}`
+            : `${task.id}-content-repair-${repairNumber}`);
         const compiled = compileAuthorPrompt({
           task: {
             ...task,

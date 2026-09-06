@@ -631,6 +631,66 @@ test("resuming an author after a usage limit preserves its content repair budget
   }
 });
 
+test("a content repair after legacy quota migration uses a distinct event identity", async () => {
+  const { root, stateDir, config } = fixture();
+  const store = new GoalEventStore({ stateDir });
+  try {
+    const first = await dispatchGoalAuthors({
+      config,
+      stateDir,
+      slots: 1,
+      adapter: {
+        async createAuthorTask() {
+          return { thread_id: "thread-legacy-quota", turn_id: "turn-author" };
+        },
+      },
+    });
+    const authored = first.state.tasks[0];
+    store.append({
+      event_id: `${authored.id}-repair-1-started`,
+      type: "task_replaced",
+      payload: { task: {
+        ...authored,
+        state: "authoring_repair",
+        repair_count: 1,
+        transition_ids: [...authored.transition_ids, `${authored.id}-repair-1-authoring`],
+      } },
+    });
+    const migrated = store.rebuild().tasks[0];
+    store.append({
+      event_id: `${authored.id}-quota-ledger-migrated`,
+      type: "task_replaced",
+      payload: { task: {
+        ...migrated,
+        state: "repair_requested",
+        repair_count: 0,
+        repair_history: [],
+        pending_gate_findings: [{ code: "receipt_mismatch", remediation: "copy the receipt decision" }],
+        transition_ids: [...migrated.transition_ids, `${authored.id}-quota-ledger-migrated`],
+      } },
+    });
+
+    const result = await dispatchGoalAuthors({
+      config,
+      stateDir,
+      slots: 1,
+      preDispatchCheck() {},
+      adapter: {
+        async startRepairTurn(input) {
+          return { thread_id: input.threadId, turn_id: "turn-content-repair" };
+        },
+      },
+    });
+    const repaired = result.state.tasks[0];
+    assert.equal(repaired.state, "authoring_repair");
+    assert.equal(repaired.repair_count, 1);
+    assert.equal(repaired.turn_id, "turn-content-repair");
+    assert.equal(repaired.repair_history.at(-1).gate_findings[0].code, "receipt_mismatch");
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+  }
+});
+
 test("an interrupted repair resumes once in the same thread without consuming another repair", async () => {
   const { root, stateDir, config } = fixture();
   config.retry_policy = { max_repairs: 2 };
