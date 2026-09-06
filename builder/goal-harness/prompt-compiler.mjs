@@ -29,6 +29,8 @@ Assignment
 - Queue action: ${task.queue_action}
 - Goal policy fingerprint: ${policySha256}
 - Classification precheck: ${formatItems(task.precheck_results)}
+- Previous structured gate findings: ${formatJson(task.pending_gate_findings ?? [])}
+- Previous validation details: ${task.validation_result ? JSON.stringify(task.validation_result) : "none supplied"}
 - Official source seeds: ${formatJson(task.official_source_seeds ?? [])}
 - Receipt-backed reusable UUID audits: ${formatJson(receiptBackedCommonUuids)}
 - Hash-verified original-source cache receipts relevant to these seeds: ${formatJson(verifiedSourceReceipts)}

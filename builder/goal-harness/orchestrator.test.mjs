@@ -1262,6 +1262,9 @@ test("repair-limit replacement reuses a worktree only when its dirty paths remai
       last_author_commit: authoredCommit,
       author_base_commit: authoredCommit,
       author_content_base_commit: undefined,
+      failure_message: "Builder PCR inspection found 1 problem(s).",
+      pending_gate_findings: [{ code: "GOAL_AUTHOR_PCR_INVALID", message: "Builder PCR inspection found 1 problem(s)." }],
+      validation_result: { problems: ["Reference Flow Definition is missing flow_property_ref.uuid."] },
       repair_history: [{ repair_count: 1, original_commit: authoredCommit, new_commit: authoredCommit }],
       transition_ids: [...active.transition_ids, "repair-limit"],
     } },
@@ -1286,6 +1289,8 @@ test("repair-limit replacement reuses a worktree only when its dirty paths remai
     assert.equal(result.state.tasks[0].author_content_base_commit, originalContentBase);
     assert.equal(result.state.tasks[0].author_base_commit, authoredCommit);
     assert.equal(result.state.tasks[0].attempt, 2);
+    assert.match(starts[0].prompt, /GOAL_AUTHOR_PCR_INVALID/u);
+    assert.match(starts[0].prompt, /Reference Flow Definition is missing flow_property_ref\.uuid/u);
 
     const firstReplacement = result.state.tasks[0];
     store.append({
