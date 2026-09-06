@@ -94,6 +94,41 @@ test("author report schema and semantic accounting accept a complete report", ()
   assert.equal(result.counts.total, 2);
 });
 
+test("an unavailable TianGong Chinese baseName is recorded exactly and uses the canonical fallback name", () => {
+  const candidate = report();
+  candidate.uuid_audits[0].base_name_zh = "";
+  candidate.uuid_audits[0].semantic_review = "TianGong Chinese baseName is unavailable; the canonical English baseName is retained.";
+  const inventoryRows = rows();
+  inventoryRows.zh[0].name = "Pig iron";
+
+  assert.equal(validateAuthorReport(candidate).valid, true);
+  assert.equal(assertAuthorQuality({ report: candidate, authorizedFiles: files, changedFiles: files, inventoryRows }).valid, true);
+});
+
+test("an unavailable TianGong Chinese baseName rejects an invented official name", () => {
+  const candidate = report();
+  candidate.uuid_audits[0].base_name_zh = "";
+  candidate.uuid_audits[0].semantic_review = "TianGong Chinese baseName is unavailable; the canonical English baseName is retained.";
+
+  assert.throws(
+    () => assertAuthorQuality({ report: candidate, authorizedFiles: files, changedFiles: files, inventoryRows: rows() }),
+    (error) => error.details.findings.some((finding) => finding.code === "ZH_FLOW_NAME_CANONICAL_FALLBACK_REQUIRED"),
+  );
+});
+
+test("an unavailable TianGong Chinese baseName requires an explicit audit explanation", () => {
+  const candidate = report();
+  candidate.uuid_audits[0].base_name_zh = "";
+  candidate.uuid_audits[0].semantic_review = "Exact public flow identity checked.";
+  const inventoryRows = rows();
+  inventoryRows.zh[0].name = "Pig iron";
+
+  assert.throws(
+    () => assertAuthorQuality({ report: candidate, authorizedFiles: files, changedFiles: files, inventoryRows }),
+    (error) => error.details.findings.some((finding) => finding.code === "ZH_FLOW_NAME_UNAVAILABLE_EXPLANATION_MISSING"),
+  );
+});
+
 test("author report schema rejects malformed receipt ids in every reference location", () => {
   const malformed = "receipt-1 后续使用这个值";
   const cases = [
