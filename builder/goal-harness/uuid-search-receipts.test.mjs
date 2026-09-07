@@ -16,6 +16,7 @@ import { appendGoalCacheReceipt } from "./goal-cache.mjs";
 
 const UUID_A = "11111111-1111-4111-8111-111111111111";
 const UUID_B = "22222222-2222-4222-8222-222222222222";
+const UUID_C = "33333333-3333-4333-8333-333333333333";
 
 function fixture() {
   const root = mkdtempSync(path.join(tmpdir(), "tiangong-uuid-receipt-"));
@@ -123,17 +124,17 @@ test("hybrid query writes an immutable result receipt and final candidate decisi
       limit: 5,
       cwd: worktreePath,
       toolConfig: { tiangong_cli_root: "/tools/cli", flow_hybrid_search_root: "/tools/hybrid" },
-      runner: () => ({ status: 0, stdout: JSON.stringify({ data: [{ id: UUID_A, json: { flow_property_uuid: "33333333-3333-4333-8333-333333333333" } }, { uuid: UUID_B }] }), stderr: "" }),
+      runner: () => ({ status: 0, stdout: JSON.stringify({ data: [{ id: UUID_A, json: { flow_property_uuid: "33333333-3333-4333-8333-333333333333" } }, { uuid: UUID_B }, { uuid: UUID_C }] }), stderr: "" }),
       now: () => "2026-09-03T00:00:00.000Z",
       randomId: () => "receipt-1",
     });
     assert.equal(query.receipt.receipt_id, "receipt-1");
-    assert.deepEqual(query.receipt.candidate_uuids, [UUID_A, UUID_B]);
+    assert.deepEqual(query.receipt.candidate_uuids, [UUID_A, UUID_B, UUID_C]);
     assert.match(query.receipt.result_sha256, /^sha256:[a-f0-9]{64}$/u);
     assert.equal(query.receipt.endpoint_id, "tiangong-flow-hybrid-search");
     assert.ok(query.receipt.tool.version);
-    assert.deepEqual(query.receipt.candidates.map((candidate) => candidate.rank), [1, 2]);
-    assert.deepEqual(JSON.parse(readFileSync(query.receipt.result_path, "utf8")), { data: [{ id: UUID_A, json: { flow_property_uuid: "33333333-3333-4333-8333-333333333333" } }, { uuid: UUID_B }] });
+    assert.deepEqual(query.receipt.candidates.map((candidate) => candidate.rank), [1, 2, 3]);
+    assert.deepEqual(JSON.parse(readFileSync(query.receipt.result_path, "utf8")), { data: [{ id: UUID_A, json: { flow_property_uuid: "33333333-3333-4333-8333-333333333333" } }, { uuid: UUID_B }, { uuid: UUID_C }] });
     const cached = runHybridSearchWithReceipt({
       stateDir,
       taskId: "task-1",
@@ -146,9 +147,9 @@ test("hybrid query writes an immutable result receipt and final candidate decisi
       randomId: () => "receipt-2",
     });
     assert.equal(cached.receipt.cache.hit, true);
-    assert.deepEqual(cached.receipt.candidate_uuids, [UUID_A, UUID_B]);
+    assert.deepEqual(cached.receipt.candidate_uuids, [UUID_A, UUID_B, UUID_C]);
 
-    for (const uuid of [UUID_A, UUID_B]) {
+    for (const uuid of [UUID_A, UUID_B, UUID_C]) {
       recordHybridCandidateDirectRead({
         stateDir,
         taskId: "task-1",
@@ -159,8 +160,8 @@ test("hybrid query writes an immutable result receipt and final candidate decisi
         reader: () => ({
           uuid,
           state_code: 100,
-          base_name_en: uuid === UUID_A ? "Pig iron" : "Alloy steel",
-          base_name_zh: uuid === UUID_A ? "生铁" : "合金钢",
+          base_name_en: uuid === UUID_A ? "Pig iron" : uuid === UUID_B ? "Alloy steel" : "Carbon steel",
+          base_name_zh: uuid === UUID_A ? "生铁" : uuid === UUID_B ? "合金钢" : "碳钢",
           flow_type: "product",
           classifications: [{ id: "41210", label: "Basic iron and steel" }],
           property: "Mass",
@@ -179,13 +180,17 @@ test("hybrid query writes an immutable result receipt and final candidate decisi
     writeFileSync(decisionsPath, `${JSON.stringify([
       { uuid: UUID_A, decision: "adopted", reason_code: null, reason: "Exact candidate.", general_comment_review: "No conflicting limitation." },
       { uuid: UUID_B, decision: "rejected", reason_code: "semantic_mismatch", reason: "Candidate represents alloy steel rather than pig iron.", general_comment_review: "Comment confirms alloy scope." },
+      { uuid: UUID_C, decision: "rejected", reason_code: "product_state_mismatch", reason: "Candidate represents finished carbon steel rather than molten pig iron.", general_comment_review: "Comment confirms finished-product state." },
     ])}\n`);
     finalizeHybridSearchReceipt({ stateDir, taskId: "task-1", receiptId: "receipt-1", decisionsPath, cwd: worktreePath, now: () => "2026-09-03T00:01:00.000Z" });
 
     const report = {
       hybrid_search_receipt_ids: ["receipt-1"],
       uuid_audits: [{ uuid: UUID_A, hybrid_search_receipt_id: "receipt-1" }],
-      rejected_uuid_candidates: [{ uuid: UUID_B, receipt_id: "receipt-1", reason_code: "semantic_mismatch", reason: "Candidate represents alloy steel rather than pig iron." }],
+      rejected_uuid_candidates: [
+        { uuid: UUID_B, receipt_id: "receipt-1", reason_code: "semantic_mismatch", reason: "Candidate represents alloy steel rather than pig iron." },
+        { uuid: UUID_C, receipt_id: "receipt-1", reason_code: "product_state_mismatch", reason: "Candidate represents finished carbon steel rather than molten pig iron." },
+      ],
       inventory: { unresolved: [] },
     };
     const verifiedUuidRead = {
@@ -226,6 +231,7 @@ test("hybrid query writes an immutable result receipt and final candidate decisi
 
     const mismatchedRejection = structuredClone(report);
     mismatchedRejection.rejected_uuid_candidates[0].reason = "Paraphrased rejection reason.";
+    mismatchedRejection.rejected_uuid_candidates[1].reason = "Another paraphrased rejection reason.";
     assert.throws(
       () => auditHybridSearchReceipts({
         report: mismatchedRejection,
@@ -234,8 +240,11 @@ test("hybrid query writes an immutable result receipt and final candidate decisi
         verifiedUuidReads: [verifiedUuidRead],
       }),
       (error) => error.code === "GOAL_HYBRID_SEARCH_RECEIPT_MISMATCH"
+        && error.details.findings.length === 2
         && error.details.findings[0].expected.reason === "Candidate represents alloy steel rather than pig iron."
         && error.details.findings[0].claimed.reason === "Paraphrased rejection reason."
+        && error.details.findings[1].expected.reason === "Candidate represents finished carbon steel rather than molten pig iron."
+        && error.details.findings[1].claimed.reason === "Another paraphrased rejection reason."
         && /verbatim/i.test(error.details.findings[0].remediation),
     );
 

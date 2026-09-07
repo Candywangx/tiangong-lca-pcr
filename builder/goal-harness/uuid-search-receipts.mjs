@@ -296,25 +296,31 @@ export function auditHybridSearchReceipts({ report, stateDir, task, verifiedUuid
       throw new GoalHarnessError("GOAL_HYBRID_SEARCH_RECEIPT_MISMATCH", `Receipt direct read for ${claimed.uuid} disagrees with the Harness public read.`);
     }
   }
+  const rejectionFindings = [];
   for (const claimed of report.rejected_uuid_candidates ?? []) {
     const receipt = byId.get(claimed.receipt_id);
     const decision = receipt?.candidate_decisions.find((entry) => entry.uuid === claimed.uuid.toLowerCase());
     if (decision?.decision !== "rejected" || decision.reason_code !== claimed.reason_code || decision.reason !== claimed.reason) {
       const message = `Rejected candidate ${claimed.uuid} disagrees with receipt ${claimed.receipt_id}.`;
-      throw new GoalHarnessError("GOAL_HYBRID_SEARCH_RECEIPT_MISMATCH", message, {
-        findings: [{
-          code: "GOAL_HYBRID_SEARCH_RECEIPT_MISMATCH",
-          message,
-          receipt_id: claimed.receipt_id,
-          uuid: claimed.uuid,
-          expected: decision
-            ? { decision: decision.decision, reason_code: decision.reason_code, reason: decision.reason }
-            : null,
-          claimed: { decision: "rejected", reason_code: claimed.reason_code, reason: claimed.reason },
-          remediation: "Copy the finalized receipt reason_code and reason verbatim into rejected_uuid_candidates.",
-        }],
+      rejectionFindings.push({
+        code: "GOAL_HYBRID_SEARCH_RECEIPT_MISMATCH",
+        message,
+        receipt_id: claimed.receipt_id,
+        uuid: claimed.uuid,
+        expected: decision
+          ? { decision: decision.decision, reason_code: decision.reason_code, reason: decision.reason }
+          : null,
+        claimed: { decision: "rejected", reason_code: claimed.reason_code, reason: claimed.reason },
+        remediation: "Copy the finalized receipt reason_code and reason verbatim into rejected_uuid_candidates.",
       });
     }
+  }
+  if (rejectionFindings.length > 0) {
+    throw new GoalHarnessError(
+      "GOAL_HYBRID_SEARCH_RECEIPT_MISMATCH",
+      `${rejectionFindings.length} rejected candidate report entr${rejectionFindings.length === 1 ? "y" : "ies"} disagree with finalized receipts.`,
+      { findings: rejectionFindings },
+    );
   }
   return audits;
 }
