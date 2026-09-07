@@ -844,6 +844,58 @@ test("a missing repair continuation replaces only the thread and preserves its s
   }
 });
 
+test("a queued repair turn is not duplicated while another turn in the same thread is active", async () => {
+  const { root, stateDir, config } = fixture();
+  config.retry_policy = { max_attempts: 3, max_repairs: 2 };
+  const first = await dispatchGoalAuthors({
+    config,
+    stateDir,
+    slots: 1,
+    adapter: { async createAuthorTask() { return { thread_id: "thread-same", turn_id: "turn-original" }; } },
+  });
+  const original = first.dispatched[0];
+  const store = new GoalEventStore({ stateDir });
+  store.append({
+    event_id: "fixture-queued-repair-behind-active-turn",
+    type: "task_replaced",
+    payload: { task: {
+      ...original,
+      state: "authoring_repair",
+      turn_id: "turn-repair-queued",
+      repair_count: 1,
+      repair_history: [{
+        repair_count: 1,
+        turn_id: "turn-repair-queued",
+        resume_turn_ids: [],
+        started_at: "2026-09-02T00:00:00.000Z",
+        ended_at: null,
+        original_commit: original.author_base_commit,
+        new_commit: null,
+        gate_findings: [{ code: "missing_receipt" }],
+      }],
+      transition_ids: [...original.transition_ids, "repair-1-authoring"],
+    } },
+  });
+  try {
+    const harvested = await harvestGoalAuthors({
+      config,
+      stateDir,
+      adapter: {
+        async readThread() {
+          return { thread: { turns: [{ id: "turn-original", status: "inProgress", items: [] }] } };
+        },
+      },
+    });
+    const active = harvested.state.tasks[0];
+    assert.equal(active.state, "authoring_repair");
+    assert.equal(active.turn_id, "turn-repair-queued");
+    assert.equal(active.repair_resume_count ?? 0, 0);
+    assert.equal(harvested.failures.length, 0);
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+  }
+});
+
 test("a repeated missing turn id advances from one repair continuation to replacement without event conflict", async () => {
   const { root, stateDir, config } = fixture();
   config.retry_policy = { max_attempts: 3, max_repairs: 2 };

@@ -388,6 +388,10 @@ export async function harvestGoalAuthors({
           extracted = extractCompletedTurnReport(response, task.turn_id);
         } catch (error) {
           if (error.code !== "GOAL_AUTHOR_TURN_MISSING") throw error;
+          const anotherTurnIsActive = (response.thread?.turns ?? []).some((turn) =>
+            turn.id !== task.turn_id && ["inProgress", "pending"].includes(turn.status),
+          );
+          if (anotherTurnIsActive) continue;
           extracted = { status: "missing", report: null, error: { code: error.code, message: error.message } };
         }
         if (extracted.status === "inProgress" || extracted.status === "pending") {
