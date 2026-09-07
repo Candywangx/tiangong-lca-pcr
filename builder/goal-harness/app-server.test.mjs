@@ -212,6 +212,49 @@ test("repair starts a new turn without resuming an interrupted turn in the origi
   }
 });
 
+test("repair reloads a durable thread once when a restarted daemon reports thread not found", async () => {
+  const mock = mockSpawn();
+  let turnStartCount = 0;
+  const calls = [];
+  const adapter = new CodexAppServerAdapter({
+    spawnFactory: () => mock.child,
+    requestTimeoutMs: 1000,
+  });
+  const originalRequest = adapter.request.bind(adapter);
+  adapter.request = async (method, params) => {
+    calls.push(method);
+    if (method === "turn/start") {
+      turnStartCount += 1;
+      if (turnStartCount === 1) throw new Error(`thread not found: ${params.threadId}`);
+      return { turn: { id: "turn-after-daemon-reload" } };
+    }
+    if (method === "thread/resume") return { thread: { id: params.threadId } };
+    return originalRequest(method, params);
+  };
+  try {
+    const result = await adapter.startRepairTurn({
+      threadId: "thread-visible-1",
+      worktreePath: "/tmp/visible-author-worktree",
+      prompt: "repair after daemon restart",
+      outputSchema: { type: "object" },
+      clientUserMessageId: "task-repair-daemon-reload",
+      receiptStateDir: "/tmp/goal-state",
+    });
+    assert.deepEqual(result, {
+      thread_id: "thread-visible-1",
+      turn_id: "turn-after-daemon-reload",
+    });
+    assert.equal(turnStartCount, 2);
+    assert.deepEqual(calls.filter((method) => ["turn/start", "thread/resume"].includes(method)), [
+      "turn/start",
+      "thread/resume",
+      "turn/start",
+    ]);
+  } finally {
+    await adapter.close();
+  }
+});
+
 test("websocket adapter closes only its client connection so a persistent Goal daemon can survive", async () => {
   const mock = mockWebSocket();
   const adapter = new CodexAppServerAdapter({

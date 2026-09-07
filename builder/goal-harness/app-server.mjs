@@ -106,7 +106,7 @@ export class CodexAppServerAdapter {
   }) {
     try {
       await this.connect();
-      const turn = await this.request("turn/start", compact({
+      const params = compact({
         threadId,
         cwd: worktreePath,
         runtimeWorkspaceRoots: [worktreePath],
@@ -114,7 +114,15 @@ export class CodexAppServerAdapter {
         outputSchema,
         clientUserMessageId,
         sandboxPolicy: authorSandboxPolicy(worktreePath, receiptStateDir),
-      }));
+      });
+      let turn;
+      try {
+        turn = await this.request("turn/start", params);
+      } catch (error) {
+        if (!/thread not found/iu.test(error?.message ?? "")) throw error;
+        await this.request("thread/resume", { threadId, persistExtendedHistory: true });
+        turn = await this.request("turn/start", params);
+      }
       const turnId = turn?.turn?.id;
       if (!turnId) throw new Error("turn/start returned no turn.id");
       return { thread_id: threadId, turn_id: turnId };
