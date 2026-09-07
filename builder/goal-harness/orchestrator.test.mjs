@@ -1409,6 +1409,11 @@ test("repair-limit replacement preserves but does not reuse an unauthorized dirt
     adapter: { async createAuthorTask() { return { thread_id: "thread-old", turn_id: "turn-old" }; } },
   });
   const oldWorktree = first.dispatched[0].worktree_path;
+  const allowedPath = path.join(oldWorktree, "library/pcrs/category/item/manifest.yaml");
+  writeFileSync(allowedPath, "last recorded author commit\n");
+  git(oldWorktree, ["add", "library/pcrs/category/item/manifest.yaml"]);
+  git(oldWorktree, ["commit", "-qm", "recorded author result"]);
+  const authoredCommit = git(oldWorktree, ["rev-parse", "HEAD"]);
   const unauthorized = path.join(oldWorktree, "unauthorized.txt");
   writeFileSync(unauthorized, "must remain preserved\n");
   const store = new GoalEventStore({ stateDir });
@@ -1421,6 +1426,8 @@ test("repair-limit replacement preserves but does not reuse an unauthorized dirt
       state: "retryable_failure",
       failure_code: "GOAL_REPAIR_LIMIT_REACHED",
       repair_count: 2,
+      author_commit: authoredCommit,
+      last_author_commit: authoredCommit,
       transition_ids: [...active.transition_ids, "repair-limit"],
     } },
   });
@@ -1434,6 +1441,9 @@ test("repair-limit replacement preserves but does not reuse an unauthorized dirt
     });
     assert.notEqual(result.state.tasks[0].worktree_path, oldWorktree);
     assert.equal(readFileSync(unauthorized, "utf8"), "must remain preserved\n");
+    assert.equal(git(result.state.tasks[0].worktree_path, ["rev-parse", "HEAD"]), authoredCommit);
+    assert.equal(result.state.tasks[0].author_base_commit, authoredCommit);
+    assert.equal(readFileSync(path.join(result.state.tasks[0].worktree_path, "library/pcrs/category/item/manifest.yaml"), "utf8"), "last recorded author commit\n");
     assert.equal(result.state.tasks[0].attempt, 2);
   } finally {
     rmSync(root, { recursive: true, force: true });

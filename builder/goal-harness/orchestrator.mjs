@@ -11,7 +11,7 @@ import { auditHybridSearchReceipts, isReusableCommonUuidAudit } from "./uuid-sea
 import { activeAuthorCount, buildIntegrationSnapshot, dispatchCandidates } from "./scheduler.mjs";
 import { applyTaskTransition } from "./state-machine.mjs";
 import { ensureGoalWorktree } from "./worktrees.mjs";
-import { extractCompletedTurnReport, reviewAuthorWorktree } from "./author-review.mjs";
+import { extractCompletedTurnReport, inspectAuthorCommit, reviewAuthorWorktree } from "./author-review.mjs";
 import { appendGoalCacheReceipt, listGoalCacheReceipts } from "./goal-cache.mjs";
 import { validateAuthorReport } from "./author-gates.mjs";
 import { selectGoalRuntimeBaseCommit } from "./runtime-baseline.mjs";
@@ -114,9 +114,22 @@ export async function dispatchGoalAuthors({
             infrastructure_resume_target_state: hasOpenContentRepair(failed) ? "authoring_repair" : "authoring",
           };
         } else if (!repairInPlace && failed.thread_id) {
+          const authorContentBaseCommit = resolveAuthorContentBaseCommit({
+            projectRoot: config.project_root,
+            task: failed,
+            fallbackCommit: state.baseline.commit,
+          });
           task = {
             ...task,
             previous_thread_ids: [...new Set([...(failed.previous_thread_ids ?? []), failed.thread_id])],
+            previous_worktree_paths: [...new Set([...(failed.previous_worktree_paths ?? []), failed.worktree_path].filter(Boolean))],
+            author_base_commit: selectRecordedAuthorBaseCommit({
+              projectRoot: config.project_root,
+              task: failed,
+              baselineCommit: authorContentBaseCommit,
+              fallbackCommit: failed.author_base_commit ?? state.baseline.commit,
+            }),
+            author_content_base_commit: authorContentBaseCommit,
             worktree_path: null,
             author_branch: null,
             thread_id: null,
@@ -744,5 +757,17 @@ function canReuseAuthorizedAuthorWorktree({ config, task, baselineCommit }) {
     return [...dirty].every((entry) => allowed.has(entry));
   } catch {
     return false;
+  }
+}
+
+function selectRecordedAuthorBaseCommit({ projectRoot, task, baselineCommit, fallbackCommit }) {
+  const candidate = task.last_author_commit ?? task.author_commit;
+  if (!candidate) return fallbackCommit;
+  try {
+    const inspected = inspectAuthorCommit({ projectRoot, baselineCommit, authorCommit: candidate });
+    const allowed = new Set(task.allowed_files ?? []);
+    return inspected.changed_files.every((entry) => allowed.has(entry)) ? candidate : fallbackCommit;
+  } catch {
+    return fallbackCommit;
   }
 }
