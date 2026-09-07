@@ -184,7 +184,7 @@ test("app-server failure is a stable fail-closed error with no hidden fallback",
   }
 });
 
-test("repair starts a new turn in the original durable thread and original worktree", async () => {
+test("repair starts a new turn without resuming an interrupted turn in the original durable thread", async () => {
   const mock = mockSpawn();
   const adapter = new CodexAppServerAdapter({ spawnFactory: () => mock.child, requestTimeoutMs: 1000 });
   try {
@@ -197,7 +197,7 @@ test("repair starts a new turn in the original durable thread and original workt
       receiptStateDir: "/tmp/goal-state",
     });
     assert.equal(result.thread_id, "thread-visible-1");
-    assert.equal(mock.requests.some((request) => request.method === "thread/resume" && request.params.threadId === "thread-visible-1"), true);
+    assert.equal(mock.requests.some((request) => request.method === "thread/resume"), false);
     const turn = mock.requests.find((request) => request.method === "turn/start");
     assert.equal(turn.params.threadId, "thread-visible-1");
     assert.equal(turn.params.cwd, "/tmp/visible-author-worktree");

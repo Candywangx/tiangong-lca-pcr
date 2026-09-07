@@ -122,8 +122,9 @@ content. Author worktrees are retained after stop and successful landing for aud
 The Harness starts one Goal-owned detached `codex app-server --listen ws://127.0.0.1:<port>` process idempotently and
 records its PID, loopback endpoint, and logs under the ignored Goal state directory. Short-lived CLI invocations use
 Node's WebSocket client for the initialize handshake, `project/list`, durable non-ephemeral `thread/start`,
-`thread/name/set`, `turn/start` with an output Schema, and `thread/read`/`thread/resume`. Closing a CLI client does not
-interrupt author turns.
+`thread/name/set`, `turn/start` with an output Schema, and `thread/read`. Repair turns call `turn/start` directly on
+the existing durable thread; they do not call `thread/resume` first because that would restart an interrupted prior
+turn before queuing the repair. Closing a CLI client does not interrupt author turns.
 Each thread is bound to one independent Git worktree and the current visible Codex project. If this interface or project binding is
 unavailable, dispatch stops with `GOAL_CODEX_VISIBLE_TASK_UNAVAILABLE` or `GOAL_CODEX_PROJECT_UNAVAILABLE`. There is
 no fallback to `codex exec`, hidden subagents, or multiple writers in one directory.

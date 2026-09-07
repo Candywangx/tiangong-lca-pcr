@@ -105,7 +105,7 @@ export class CodexAppServerAdapter {
     receiptStateDir = null,
   }) {
     try {
-      await this.resumeThread({ threadId });
+      await this.connect();
       const turn = await this.request("turn/start", compact({
         threadId,
         cwd: worktreePath,
