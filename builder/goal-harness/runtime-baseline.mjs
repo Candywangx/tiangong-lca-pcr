@@ -15,9 +15,11 @@ const EXACT_RUNTIME_PATHS = new Set([
   "builder/cli/goal.test.mjs",
   "builder/cli/goal-uuid-search.mjs",
   "builder/docs/tools/goal-harness.md",
+  "builder/lib/schema-contracts.test.mjs",
   "builder/schemas/goal-author-report.schema.json",
   "builder/schemas/goal-harness-config.schema.json",
   "package.json",
+  "packages/pcr-core/src/projection-completeness.mjs",
   "packages/pcr-viewer/viewer-build.test.mjs",
 ]);
 

@@ -20,8 +20,12 @@ test("runtime baseline overlays only approved Harness files on the latest landed
     git(root, ["config", "user.name", "Goal Test"]);
     git(root, ["config", "user.email", "goal@example.invalid"]);
     mkdirSync(path.join(root, "builder/goal-harness"), { recursive: true });
+    mkdirSync(path.join(root, "builder/lib"), { recursive: true });
+    mkdirSync(path.join(root, "packages/pcr-core/src"), { recursive: true });
     mkdirSync(path.join(root, "library/pcrs/example"), { recursive: true });
     writeFileSync(path.join(root, "builder/goal-harness/runtime.mjs"), "old runtime\n");
+    writeFileSync(path.join(root, "builder/lib/schema-contracts.test.mjs"), "old contract test\n");
+    writeFileSync(path.join(root, "packages/pcr-core/src/projection-completeness.mjs"), "old completeness\n");
     writeFileSync(path.join(root, "library/pcrs/example/manifest.yaml"), "baseline PCR\n");
     git(root, ["add", "."]);
     git(root, ["commit", "-qm", "baseline"]);
@@ -33,6 +37,8 @@ test("runtime baseline overlays only approved Harness files on the latest landed
     const landed = git(root, ["rev-parse", "HEAD"]);
 
     writeFileSync(path.join(root, "builder/goal-harness/runtime.mjs"), "optimized runtime\n");
+    writeFileSync(path.join(root, "builder/lib/schema-contracts.test.mjs"), "updated contract test\n");
+    writeFileSync(path.join(root, "packages/pcr-core/src/projection-completeness.mjs"), "updated completeness\n");
     writeFileSync(path.join(root, "library/pcrs/example/manifest.yaml"), "source branch must not leak\n");
     git(root, ["add", "."]);
     git(root, ["commit", "-qm", "runtime source"]);
@@ -48,8 +54,14 @@ test("runtime baseline overlays only approved Harness files on the latest landed
     assert.equal(result.source_commit, source);
     assert.equal(git(root, ["rev-parse", `${result.commit}^`]), landed);
     assert.equal(git(root, ["show", `${result.commit}:builder/goal-harness/runtime.mjs`]), "optimized runtime");
+    assert.equal(git(root, ["show", `${result.commit}:builder/lib/schema-contracts.test.mjs`]), "updated contract test");
+    assert.equal(git(root, ["show", `${result.commit}:packages/pcr-core/src/projection-completeness.mjs`]), "updated completeness");
     assert.equal(git(root, ["show", `${result.commit}:library/pcrs/example/manifest.yaml`]), "integrated PCR");
-    assert.deepEqual(result.paths, ["builder/goal-harness/runtime.mjs"]);
+    assert.deepEqual(result.paths, [
+      "builder/goal-harness/runtime.mjs",
+      "builder/lib/schema-contracts.test.mjs",
+      "packages/pcr-core/src/projection-completeness.mjs",
+    ]);
     assert.equal(selectGoalRuntimeBaseCommit(new GoalEventStore({ stateDir }).rebuild(), { projectRoot: root }), result.commit);
 
     const replay = ensureGoalRuntimeBaseline({ projectRoot: root, sourceRoot: root, stateDir, goalId: "fixture" });
