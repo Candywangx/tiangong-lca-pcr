@@ -93,6 +93,9 @@ export function hasDeclaredUnresolvedReferenceProductFlow(projection, manifest) 
         (field) => String(field) === "reference_product_flow_uuid",
       ));
   const unresolvedEntries = [
+    ...(Array.isArray(reviewMetadata.unresolved?.inventory_flow_uuids)
+      ? reviewMetadata.unresolved.inventory_flow_uuids
+      : []),
     ...(Array.isArray(reviewMetadata.unresolved_flow_identities)
       ? reviewMetadata.unresolved_flow_identities
       : []),

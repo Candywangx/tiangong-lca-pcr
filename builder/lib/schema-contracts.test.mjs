@@ -445,6 +445,61 @@ test("candidate completeness permits a blank product flow UUID only when its out
   );
 });
 
+test("candidate completeness recognizes the Goal inventory UUID unresolved contract for the reference output", () => {
+  const projection = {
+    reference_flow_definition: {
+      reference_amount: "1 kg",
+      product_flow_ref: { name: "Example product", uuid: "" },
+      flow_property_ref: { uuid: "mass-property" },
+      unit_group_ref: { uuid: "mass-units" },
+      reference_unit: "kg",
+    },
+    process_inventory: [
+      {
+        outputs: {
+          product: [{ row_id: "finished_product", name: "Example product" }],
+          waste: [],
+          elementary: [],
+        },
+      },
+    ],
+  };
+  const manifest = {
+    status: "candidate",
+    content_maturity: "authored_methodology",
+    review_metadata: {
+      unresolved: {
+        inventory_flow_uuids: [
+          {
+            row_id: "finished_product",
+            reason_code: "no_exact_candidate",
+            explanation: "No exact public state-100 product flow was found; receipt verified.",
+          },
+        ],
+      },
+    },
+  };
+
+  assert.equal(hasDeclaredUnresolvedReferenceProductFlow(projection, manifest), true);
+  assert.equal(
+    hasDeclaredUnresolvedReferenceProductFlow(projection, {
+      ...manifest,
+      review_metadata: {
+        unresolved: {
+          inventory_flow_uuids: [
+            {
+              row_id: "different_row",
+              reason_code: "no_exact_candidate",
+              explanation: "A different inventory row is unresolved.",
+            },
+          ],
+        },
+      },
+    }),
+    false,
+  );
+});
+
 test("builder contracts bind stable lifecycle and mapping tokens to shared vocabularies", () => {
   const manifest = {
     schema_version: 1,
