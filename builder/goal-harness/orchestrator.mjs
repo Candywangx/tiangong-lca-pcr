@@ -395,7 +395,9 @@ export async function harvestGoalAuthors({
         const wasRepair = task.state === "authoring_repair"
           || task.continuing_repair_after_thread_replacement === true
           || (Boolean(task.previous_thread_ids?.length) && task.repair_history?.at(-1)?.ended_at == null);
-        const response = await adapter.readThread({ threadId: task.thread_id, includeTurns: true });
+        const response = await adapter.readThread({ threadId: task.thread_id, includeTurns: true,
+          expectedTurnId: task.turn_id, worktreePath: task.worktree_path });
+        if (response.session_recovery) task = { ...task, session_recovery: response.session_recovery };
         let extracted;
         try {
           extracted = extractCompletedTurnReport(response, task.turn_id);

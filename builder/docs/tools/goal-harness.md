@@ -98,6 +98,13 @@ client message id, turn id, timestamps, old/new commits, and findings are persis
 second turn for the same repair. A replacement task is allowed only after the configured repair limit or a recorded
 thread/worktree/commit recovery failure.
 
+If an idle visible thread omits the expected repair turn from its history, the adapter can recover that completed
+turn from the local Codex session path returned by app-server. It requires a regular, non-symlink UTF-8 JSONL file
+under the configured Codex home `sessions/`, matching session thread/worktree identity, and exactly one terminal
+completion matching the final-answer message for the requested turn. Active threads and incomplete reports are never
+accepted by this recovery. The Goal records the session SHA-256 and turn identity; all ordinary author quality gates
+still run. The session contents are not copied into PCR files.
+
 ## Dirty baseline and landing
 
 The harness uses a temporary `GIT_INDEX_FILE`, `git write-tree`, and `git commit-tree` to capture only approved current

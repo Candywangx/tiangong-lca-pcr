@@ -1,9 +1,11 @@
 import { spawn } from "node:child_process";
 import { readFileSync, realpathSync } from "node:fs";
 import path from "node:path";
+import { homedir } from "node:os";
 import { StringDecoder } from "node:string_decoder";
 
 import { GoalHarnessError } from "./errors.mjs";
+import { readRecoveredSessionTurn } from "./session-recovery.mjs";
 
 export class CodexAppServerAdapter {
   constructor({
@@ -14,6 +16,7 @@ export class CodexAppServerAdapter {
     webSocketFactory = (url) => new WebSocket(url),
     requestTimeoutMs = 30_000,
     environment = process.env,
+    sessionsRoot = path.join(environment.CODEX_HOME || path.join(homedir(), ".codex"), "sessions"),
   } = {}) {
     this.command = command;
     this.args = args;
@@ -22,6 +25,7 @@ export class CodexAppServerAdapter {
     this.webSocketFactory = webSocketFactory;
     this.requestTimeoutMs = requestTimeoutMs;
     this.environment = environment;
+    this.sessionsRoot = sessionsRoot;
     this.child = null;
     this.socket = null;
     this.connected = false;
@@ -149,10 +153,21 @@ export class CodexAppServerAdapter {
     }
   }
 
-  async readThread({ threadId, includeTurns = true }) {
+  async readThread({ threadId, includeTurns = true, expectedTurnId = null, worktreePath = null }) {
     try {
       await this.connect();
-      return await this.request("thread/read", { threadId, includeTurns });
+      const response = await this.request("thread/read", { threadId, includeTurns });
+      if (includeTurns && expectedTurnId && worktreePath && response.thread?.status?.type === "idle"
+        && !response.thread.turns?.some((turn) => turn.id === expectedTurnId)) {
+        if (response.thread.id !== threadId || response.thread.cwd !== worktreePath) {
+          throw new GoalHarnessError("GOAL_SESSION_RECOVERY_INVALID", "Codex thread identity or worktree changed.");
+        }
+        const recovered = readRecoveredSessionTurn({ sessionPath: response.thread.path,
+          sessionsRoot: this.sessionsRoot, threadId, turnId: expectedTurnId, worktreePath });
+        if (recovered) return { ...response, session_recovery: recovered.audit,
+          thread: { ...response.thread, turns: [...(response.thread.turns ?? []), recovered.turn] } };
+      }
+      return response;
     } catch (error) {
       throw visibleTaskError("thread/read", error, this.stderr);
     }
