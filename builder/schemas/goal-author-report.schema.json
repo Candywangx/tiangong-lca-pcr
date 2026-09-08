@@ -11,6 +11,27 @@
     "cartesian_expansion_review", "methodology_necessity_approved", "commit_sha", "unresolved_issues"
   ],
   "properties": {
+    "boundary_review": {
+      "type": ["object", "null"],
+      "additionalProperties": false,
+      "required": ["reason_code", "summary", "questions", "evidence"],
+      "properties": {
+        "reason_code": { "type": "string", "enum": ["semantic_boundary_unresolved", "overlapping_pcr_identity"] },
+        "summary": { "type": "string", "minLength": 20 },
+        "questions": { "type": "array", "minItems": 1, "items": { "type": "string", "minLength": 1 } },
+        "evidence": {
+          "type": "array", "minItems": 1,
+          "items": {
+            "type": "object", "additionalProperties": false,
+            "required": ["locator", "observation"],
+            "properties": {
+              "locator": { "type": "string", "minLength": 1 },
+              "observation": { "type": "string", "minLength": 1 }
+            }
+          }
+        }
+      }
+    },
     "schema_version": { "type": "integer", "const": 1 },
     "cpc_code": { "type": "string", "pattern": "^[0-9]+$" },
     "product_name_en": { "type": "string", "minLength": 1 },

@@ -5,7 +5,10 @@ import { fileURLToPath } from "node:url";
 const reportSchemaPath = fileURLToPath(new URL("../schemas/goal-author-report.schema.json", import.meta.url));
 
 export function readAuthorReportSchema() {
-  return JSON.parse(readFileSync(reportSchemaPath, "utf8"));
+  // Runtime v1 reports may omit the additive field; Codex requires every wire property.
+  const schema = JSON.parse(readFileSync(reportSchemaPath, "utf8"));
+  schema.required = [...new Set([...schema.required, "boundary_review"])];
+  return schema;
 }
 
 export function compileAuthorPrompt({ task, policyPromptPath, verifiedCommonUuids = [], verifiedSourceReceipts = [], tools = {} }) {
@@ -45,7 +48,7 @@ Required repository contracts
 Read AGENTS.md, builder/AGENTS.md, builder/docs/index.md, the create/translate workflows, evidence/source, Markdown, manifest, structured-projection, UUID-reference contracts, and the reference-flow, inventory-flow, process-map, measurement-unit, range, and source-evidence method notes named by the Goal policy. Read only vocabularies actually used by this PCR.
 
 Method and evidence
-- Establish a semantic product boundary; a CPC leaf alone is not permission to duplicate canonical PCR identity. If an existing material PCR covers the boundary, stop editing and return a machine report describing map_existing or manual review.
+- Establish a semantic product boundary; a CPC leaf alone is not permission to duplicate canonical PCR identity. If an existing material PCR covers the boundary, stop editing and return an explicit boundary_review request using overlapping_pcr_identity for manual adjudication.
 - Verify final evidence against official pages, PDFs, DOI landing/full text, standards, regulations, institutional reports, or peer-reviewed full text. Search/OpenAlex titles, abstracts, snippets, and metadata are discovery only.
 - Never invent a DOI, URL, standard, regulation, author, year, number, UUID, or source id. Do not add "codex" to a source id unless the source is actually Codex Alimentarius.
 - Every inventory row is one concrete atomic physical, chemical, waste, or energy exchange. Reject umbrella choices such as energy carriers, utilities, fuels, electricity/steam/fuel, packaging materials, cleaning chemicals, wastewater and residues, emissions to air, other materials/wastes, or a future route choice. Use inclusion_condition for conditional routes.
@@ -80,7 +83,15 @@ Range override (authoritative over the Goal policy file)
 - Record each such need under manifest review_metadata.unresolved.range_evidence_needs; do not invent a numeric range merely to remove a lint warning.
 - Regulatory or standard limits are conformance/specification rules, not empirical ranges. A reasoned_estimate is provisional, source-id-free, and used only when it has real modeling or QA value.
 
-Authoring sequence and commit
+Boundary-review request
+For normal PCR results, set boundary_review to null and follow every authoring and quality requirement below. If the semantic product boundary remains unresolved or overlaps an existing material PCR, stop authoring and set boundary_review to an object with reason_code semantic_boundary_unresolved or overlapping_pcr_identity, a substantive summary of at least 20 characters, nonempty questions, and nonempty evidence entries with locator and observation. This requests unadjudicated manual review; it does not establish a completed PCR, map_existing decision, or accepted classification mapping.
+- Preserve the assigned CPC, PCR path, queue_action, and files containing the exact four authorized paths. Set commit_sha to the actual current HEAD even when no new commit was made. Leave partial authorized work intact for review.
+- Make no final inventory claims: set inventory total_rows, matched_rows, and unresolved_rows to 0 and unresolved to an empty array. Set uuid_audits and ranges to empty arrays and reference_product_uuid_confirmed to false; do not claim adopted final UUIDs or quantitative ranges.
+- Make no alignment, sync or validation success claims: set bilingual.aligned and every structured_sync flag to false, and bilingual inventory row counts to 0. Set validate.ok to false, exit_code to -1, known_shared_artifact_only to false, and summary to "not run: boundary review requested" for unperformed validation.
+- Searches already performed may appear in boundary_review.evidence as unadjudicated claims, not as final UUID adoption or verified methodology. Keep all other report fields accurate and use empty arrays where nothing was performed. Do not run sync, validate, or create a PCR completion commit merely to submit this request.
+- Missing UUIDs, insufficient range evidence, and infrastructure outages are not boundary-review reasons. Report infrastructure failures accurately through the existing failure path.
+
+Authoring sequence and commit (normal PCR results with boundary_review null)
 1. Author manifest.yaml, canonical pcr.en-US.md, and aligned pcr.zh-CN.md.
 2. Generate structured.yaml only with: npm run pcr:sync-structured -- --pcr ${task.pcr_path}
 3. Run the same sync command again and require no diff.
