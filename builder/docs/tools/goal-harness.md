@@ -196,6 +196,14 @@ and author validation. Search/OpenAlex summaries are discovery-only evidence.
 Integration is serial. It accepts only reviewed `exact`, `broader`, `narrower`, or `proxy` edges to material PCRs with
 accepted status, decision maker, UTC time, and a durable generated ADR. It then runs aliases, catalog, coverage/viewer,
 full validation, and public list/resolve/guidance checks before CAS landing is permitted.
+An integration-specific operation lock remains held during the full build, while the Goal state lock is released
+between preparation and finalization so author review/refill can proceed. Completion is durably recorded under
+`integration-completions/<snapshot-id>/<operation-id>.json` before state finalization. The versioned, hashed record
+binds the prepared snapshot/tasks, author commits, worktree, output fingerprints, and command results. Resume verifies
+the worktree and selected-state CAS before applying one atomic `integration_finalized` event; a busy state lock does
+not discard successful commands. Do not remove live locks or completion records. Changed outputs or selected tasks
+fail closed. Older snapshots whose validated state disagrees with task states report
+`GOAL_INTEGRATION_FINALIZATION_INCOMPLETE` and require evidence review rather than automatic landing advice.
 The viewer derivation may be restored only from a same-input cache whose PCR, mapping, alias, catalog, coverage,
 viewer-code, and core-code SHA-256 fingerprint and output-tree hash both match. Corruption rebuilds safely. Full
 `npm run validate` still runs once for every six-result snapshot; its lint phase performs the authoritative
