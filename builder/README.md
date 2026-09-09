@@ -40,6 +40,11 @@ builder/docs/
 
 ## Builder CLI
 
+PCR generation shares literature through `npm run pcr:materials -- query|read|register`.
+See [Shared materials](docs/tools/shared-materials.md) for commands, registration fields, quality constraints and
+shared-directory configuration. Goal Harness performs the initial bounded query before dispatch and passes the
+resolved directory to each author task; this is source preparation, not a new review or release gate.
+
 ```bash
 npm run init
 npm run lint

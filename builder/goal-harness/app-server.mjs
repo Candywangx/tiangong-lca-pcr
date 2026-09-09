@@ -46,6 +46,7 @@ export class CodexAppServerAdapter {
 
   async createAuthorTask({
     worktreePath,
+    additionalWorkspaceRoots = [],
     title,
     prompt,
     outputSchema,
@@ -60,7 +61,7 @@ export class CodexAppServerAdapter {
       await this.connect();
       const started = await this.request("thread/start", compact({
         cwd: worktreePath,
-        runtimeWorkspaceRoots: [worktreePath],
+        runtimeWorkspaceRoots: [...new Set([worktreePath, ...additionalWorkspaceRoots])],
         ephemeral: false,
         approvalPolicy,
         sandbox,
@@ -75,11 +76,11 @@ export class CodexAppServerAdapter {
       const turn = await this.request("turn/start", compact({
         threadId,
         cwd: worktreePath,
-        runtimeWorkspaceRoots: [worktreePath],
+        runtimeWorkspaceRoots: [...new Set([worktreePath, ...additionalWorkspaceRoots])],
         input: [{ type: "text", text: prompt }],
         outputSchema,
         clientUserMessageId,
-        sandboxPolicy: authorSandboxPolicy(worktreePath, receiptStateDir),
+        sandboxPolicy: authorSandboxPolicy(worktreePath, receiptStateDir, additionalWorkspaceRoots),
       }));
       const turnId = turn?.turn?.id;
       if (!turnId) {
@@ -103,6 +104,7 @@ export class CodexAppServerAdapter {
   async startRepairTurn({
     threadId,
     worktreePath,
+    additionalWorkspaceRoots = [],
     prompt,
     outputSchema,
     clientUserMessageId = null,
@@ -113,11 +115,11 @@ export class CodexAppServerAdapter {
       const params = compact({
         threadId,
         cwd: worktreePath,
-        runtimeWorkspaceRoots: [worktreePath],
+        runtimeWorkspaceRoots: [...new Set([worktreePath, ...additionalWorkspaceRoots])],
         input: [{ type: "text", text: prompt }],
         outputSchema,
         clientUserMessageId,
-        sandboxPolicy: authorSandboxPolicy(worktreePath, receiptStateDir),
+        sandboxPolicy: authorSandboxPolicy(worktreePath, receiptStateDir, additionalWorkspaceRoots),
       });
       let turn;
       try {
@@ -334,12 +336,13 @@ export class CodexAppServerAdapter {
   }
 }
 
-function authorSandboxPolicy(worktreePath, receiptStateDir) {
+function authorSandboxPolicy(worktreePath, receiptStateDir, additionalWorkspaceRoots = []) {
   return {
     type: "workspaceWrite",
     writableRoots: [...new Set([
       worktreePath,
       receiptStateDir,
+      ...additionalWorkspaceRoots,
       ...linkedWorktreeGitWritableRoots(worktreePath),
     ].filter(Boolean))],
     networkAccess: true,

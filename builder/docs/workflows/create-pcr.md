@@ -25,6 +25,13 @@ The AI produces the current best PCR from available evidence. This workflow writ
 3. Confirm that no existing canonical PCR record covers the same semantic product category.
 4. Choose a semantic PCR slug that does not contain the classification code. Explicitly initialize the four-file PCR
    directory, or promote the matching retained legacy scaffold in place after checking its identity.
+   Before external evidence preparation, follow `builder/docs/tools/shared-materials.md`: run `pcr:materials query`
+   for the product, process and each specific evidence need, then `read` relevant fragments with the intended-use
+   conditions. Goal Harness dispatch already runs a bounded product query; refine it before external searches.
+   Reuse valid originals/extractions, assess fragment applicability, and supplement uncovered or conflicting needs
+   with the existing tools. Register acquired originals immediately and extracted/verified fragments when ready.
+   This loop also applies when a new evidence question arises during steps 6–20; a cache hit never establishes
+   coverage or waives original verification, independent-source or counterevidence requirements.
 5. Immediately before authoring `pcr.en-US.md` content, read `builder/templates/pcr.en-US.md.hbs`.
 6. Write scope, exclusions, product category identity, typical market state, candidate processes, and likely flows from the current PCR synthesis.
 7. Define product category identity with canonical PCR id, classification refs, covered products, excluded products, representative product, production route, and market state.
@@ -47,6 +54,10 @@ The AI produces the current best PCR from available evidence. This workflow writ
 18. Define data quality requirements for identity, measurement, temporal coverage, completeness, and disclosure.
 19. Define the published dataset profile with dataset role, downstream use, allowed use, excluded use, metadata, quality disclosure, and update trigger.
 20. Add external data sources and reference their source ids from inventory or rule rows.
+    Register reusable source material and individually checked fragments with `pcr:materials register`; the shared
+    store is production-side and must not be committed. Prior PCR Data Sources can seed metadata-only discovery,
+    never a claim that the source was acquired or verified. Keep raw files, extraction records and search logs out
+    of canonical PCR files and `structured.yaml`.
 21. Keep authoring traces, unresolved review notes, and lifecycle state in `manifest.yaml`, issue records, or PR records.
 22. Write `pcr.en-US.md` first.
 23. Immediately before authoring `pcr.zh-CN.md`, read `builder/docs/workflows/translate-pcr.md` and

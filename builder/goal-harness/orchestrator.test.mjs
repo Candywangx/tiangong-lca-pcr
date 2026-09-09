@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { execFileSync } from "node:child_process";
-import { existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import { existsSync, mkdirSync, mkdtempSync, readFileSync, readdirSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import path from "node:path";
 import test from "node:test";
@@ -8,6 +8,7 @@ import test from "node:test";
 import { dispatchGoalAuthors, harvestGoalAuthors } from "./orchestrator.mjs";
 import { GoalEventStore } from "./event-store.mjs";
 import { activeAuthorCount } from "./scheduler.mjs";
+import { registerMaterial, resolveMaterialsRoot } from "../lib/shared-materials.mjs";
 
 function boundaryReport(task, commit) {
   return {
@@ -504,6 +505,33 @@ test("resume recovers a visible turn created before a dispatch event conflict wi
   } finally {
     rmSync(root, { recursive: true, force: true });
   }
+});
+
+test("generation dispatch actually queries shared sources and passes bounded candidates and shared write root", async () => {
+  const { root, stateDir, config } = fixture({ taskCount: 2 });
+  const materialsRoot = path.join(root, "library/.pcr-builder-state/shared-evidence");
+  config.tools.materials_root = materialsRoot;
+  const saved = registerMaterial({ root: materialsRoot, input: { source: { title: "Product 1 and Product 2 official method", url: "https://example.org/method", version: "1" }, tags: ["Product 1", "Product 2"] } });
+  const calls = [];
+  try {
+    const result = await dispatchGoalAuthors({ config, stateDir, slots: 2, adapter: {
+      async createAuthorTask(input) { calls.push(input); return { thread_id: `t${calls.length}`, turn_id: `u${calls.length}` }; },
+    } });
+    assert.equal(result.dispatched.length, 2);
+    for (const call of calls) {
+      assert.deepEqual(call.additionalWorkspaceRoots, [materialsRoot]);
+      assert.match(call.prompt, new RegExp(saved.id));
+      assert.match(call.prompt, /acquire_original/);
+      assert.match(call.prompt, /read .*--id/);
+      assert.match(call.prompt, /register .*--input/);
+      assert.match(call.prompt, /query .*--product/);
+      assert.match(call.prompt, /metadata.*discovery only/i);
+      const authorDirs = readdirSync(path.join(stateDir, "authors")).map(name => path.join(stateDir, "authors", name, "materials-query.json"));
+      assert.equal(authorDirs.length, 2);
+      for (const file of authorDirs) assert.equal(JSON.parse(readFileSync(file, "utf8")).local_candidate_hits, 1);
+    }
+    assert.equal(resolveMaterialsRoot({ cwd: calls[0].worktreePath, env: {} }), resolveMaterialsRoot({ cwd: calls[1].worktreePath, env: {} }));
+  } finally { rmSync(root, { recursive: true, force: true }); }
 });
 
 test("dispatch fills every open slot when another author is already active", async () => {

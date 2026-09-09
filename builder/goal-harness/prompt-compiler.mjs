@@ -11,7 +11,7 @@ export function readAuthorReportSchema() {
   return schema;
 }
 
-export function compileAuthorPrompt({ task, policyPromptPath, verifiedCommonUuids = [], verifiedSourceReceipts = [], tools = {} }) {
+export function compileAuthorPrompt({ task, policyPromptPath, verifiedCommonUuids = [], verifiedSourceReceipts = [], tools = {}, materials = null }) {
   const policyBytes = readFileSync(policyPromptPath);
   const policySha256 = `sha256:${createHash("sha256").update(policyBytes).digest("hex")}`;
   const allowedFiles = ["manifest.yaml", "pcr.en-US.md", "pcr.zh-CN.md", "structured.yaml"]
@@ -39,10 +39,13 @@ Assignment
 - Hash-verified original-source cache receipts relevant to these seeds: ${formatJson(verifiedSourceReceipts)}
 
 Exact write boundary
-You may modify and commit exactly these four files, and nothing else:
+You may modify and commit exactly these four repository files:
 ${allowedFiles.map((entry) => `- ${entry}`).join("\n")}
 
 Do not modify mappings, aliases, indexes, catalog, viewer artifacts, ADRs, Builder code, schemas, vocabularies, tests, package files, dependencies, or any other PCR. Do not copy methodology, inventory, numbers, ranges, or sources from another PCR. Other PCRs may be inspected only for identity/path existence.
+The shared materials store is a production-side exception: query/read/register source files and fragment evidence there; never commit them or copy runtime paths/logs into canonical PCR files.
+
+${materialsInstructions(materials)}
 
 Required repository contracts
 Read AGENTS.md, builder/AGENTS.md, builder/docs/index.md, the create/translate workflows, evidence/source, Markdown, manifest, structured-projection, UUID-reference contracts, and the reference-flow, inventory-flow, process-map, measurement-unit, range, and source-evidence method notes named by the Goal policy. Read only vocabularies actually used by this PCR.
@@ -110,4 +113,26 @@ function formatItems(value = []) {
 
 function formatJson(value) {
   return value.length > 0 ? JSON.stringify(value) : "none supplied";
+}
+
+function materialsInstructions(materials) {
+  const cli = fileURLToPath(new URL("../cli/materials.mjs", import.meta.url));
+  const quote = value => `'${String(value).replaceAll("'", "'\\''")}'`;
+  const command = `node ${quote(cli)}`;
+  const root = materials ? ` --root ${quote(materials.root)}` : "";
+  return `Shared source preparation — run before every external evidence need
+Read builder/docs/tools/shared-materials.md. ${materials ? "The Harness has already executed this bounded product query:" : "Begin with a local query; the CLI resolves the shared Git common directory."}
+${materials ? JSON.stringify({ root: materials.root, total_candidates: materials.total_candidates, next_offset: materials.next_offset, issues: materials.issues, candidates: materials.candidates.map(c => ({ id: c.id, title: c.source?.title.slice(0, 160), version: c.source?.version.slice(0, 100), state: c.state, reuse_original: c.reuse_original, reuse_extraction: c.reuse_extraction, gaps: c.gaps, fragments: c.fragments?.slice(0, 3).map(f => f.id) })) }) : ""}
+1. Refine the product query by actual process and specific need (ranges, functional unit, boundary, allocation or collection requirements):
+   ${command} query${root} --product '<product>' --process '<process>' --need '<specific question>' --limit 5
+   Also query a known DOI/URL before fetching it. Pass --request /tmp/material-use.json for route, state, basis, unit, required_version and extractor requirements.
+2. Read only relevant candidates: ${command} read${root} --id <record-id> --fragment <fragment-id> --request /tmp/material-use.json
+   For an unverified extraction use --start-line N --end-line N (at most 100 lines/8192 bytes), retain original page/table/cell locations and footnotes, and verify against the original. Metadata is discovery only; it still needs content acquisition. A verified fragment does not verify an entire publication.
+3. Check reuse_original/reuse_extraction and gaps. Reuse available valid original bytes without refetching the same version; reuse valid extraction without rerunning its tool. Never adopt a number on a local hit alone: check product, route, process, state, units, normalization, temporal relevance and limitations. Keep facts, case observations, conversions and inference distinct. A prior PCR conclusion or review approval is not evidence for this PCR.
+4. Use existing external discovery/acquisition/extraction tools for uncovered, stale, mismatched or conflicting questions. Continue required independent-source and counterevidence checks; one case cannot establish an industry range. Do not repeat an already covered query merely because the author task changed. Keep unresolved gaps explicit.
+5. Register each newly acquired original promptly (so another task can avoid downloading it), then register extraction and individually verified fragments:
+   ${command} register${root} --input /tmp/material-registration.json
+   Use the documented JSON fields, actual acquisition/verification times and extractor versions. The tool computes content hashes; do not invent provenance. Register metadata-only seeds as such. Do not store secrets or authenticated URLs. Only source citations and supported rules belong in PCR content; preparation files stay in the shared store or /tmp.
+Local candidate hits are not adopted-evidence counts. Program checks cover integrity/version compatibility; you remain responsible for semantic applicability and evidence sufficiency. No new review stage or publication gate is added.
+`;
 }

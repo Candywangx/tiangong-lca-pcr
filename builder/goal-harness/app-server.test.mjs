@@ -96,6 +96,7 @@ test("app-server adapter creates one durable visible thread bound to the author 
     assert.equal(doctor.ok, true);
     const task = await adapter.createAuthorTask({
       worktreePath: "/tmp/visible-author-worktree",
+      additionalWorkspaceRoots: ["/tmp/shared-materials"],
       title: "PCR 41111 · Pig iron",
       prompt: "Author only PCR 41111",
       outputSchema: { type: "object" },
@@ -109,15 +110,16 @@ test("app-server adapter creates one durable visible thread bound to the author 
     const started = mock.requests.find((request) => request.method === "thread/start");
     assert.equal(started.params.cwd, "/tmp/visible-author-worktree");
     assert.equal(started.params.ephemeral, false);
-    assert.deepEqual(started.params.runtimeWorkspaceRoots, ["/tmp/visible-author-worktree"]);
+    assert.deepEqual(started.params.runtimeWorkspaceRoots, ["/tmp/visible-author-worktree", "/tmp/shared-materials"]);
     assert.equal(mock.requests.some((request) => request.method === "thread/name/set"), true);
     const turn = mock.requests.find((request) => request.method === "turn/start");
     assert.equal(turn.params.threadId, "thread-visible-1");
+    assert.deepEqual(turn.params.runtimeWorkspaceRoots, ["/tmp/visible-author-worktree", "/tmp/shared-materials"]);
     assert.equal(turn.params.input[0].type, "text");
     assert.equal(turn.params.outputSchema.type, "object");
     assert.deepEqual(turn.params.sandboxPolicy, {
       type: "workspaceWrite",
-      writableRoots: ["/tmp/visible-author-worktree", "/tmp/goal-state"],
+      writableRoots: ["/tmp/visible-author-worktree", "/tmp/goal-state", "/tmp/shared-materials"],
       networkAccess: true,
     });
   } finally {
@@ -191,6 +193,7 @@ test("repair starts a new turn without resuming an interrupted turn in the origi
     const result = await adapter.startRepairTurn({
       threadId: "thread-visible-1",
       worktreePath: "/tmp/visible-author-worktree",
+      additionalWorkspaceRoots: ["/tmp/shared-materials"],
       prompt: "repair structured findings",
       outputSchema: { type: "object" },
       clientUserMessageId: "task-repair-1",
@@ -200,11 +203,13 @@ test("repair starts a new turn without resuming an interrupted turn in the origi
     assert.equal(mock.requests.some((request) => request.method === "thread/resume"), false);
     const turn = mock.requests.find((request) => request.method === "turn/start");
     assert.equal(turn.params.threadId, "thread-visible-1");
+    assert.deepEqual(turn.params.runtimeWorkspaceRoots, ["/tmp/visible-author-worktree", "/tmp/shared-materials"]);
+    assert.equal(turn.params.sandboxPolicy.writableRoots.includes("/tmp/shared-materials"), true);
     assert.equal(turn.params.cwd, "/tmp/visible-author-worktree");
     assert.equal(turn.params.clientUserMessageId, "task-repair-1");
     assert.deepEqual(turn.params.sandboxPolicy, {
       type: "workspaceWrite",
-      writableRoots: ["/tmp/visible-author-worktree", "/tmp/goal-state"],
+      writableRoots: ["/tmp/visible-author-worktree", "/tmp/goal-state", "/tmp/shared-materials"],
       networkAccess: true,
     });
   } finally {

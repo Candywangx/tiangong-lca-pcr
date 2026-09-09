@@ -17,6 +17,7 @@ import { validateAuthorReport } from "./author-gates.mjs";
 import { selectGoalRuntimeBaseCommit } from "./runtime-baseline.mjs";
 import { resolveAuthorContentBaseCommit } from "./author-baseline.mjs";
 import { auditBoundaryReview } from "./boundary-review.mjs";
+import { ensureMaterialsRoot, queryMaterials, resolveMaterialsRoot } from "../lib/shared-materials.mjs";
 
 export async function dispatchGoalAuthors({
   config,
@@ -148,6 +149,9 @@ export async function dispatchGoalAuthors({
     for (const selectedTask of selected) {
       state = store.rebuild();
       let task = state.tasks.find((entry) => entry.id === selectedTask.id);
+      if (!task) continue;
+      const materialsRoot = ensureMaterialsRoot(resolveMaterialsRoot({ cwd: config.project_root, root: config.tools?.materials_root }));
+      const materialsQuery = queryMaterials({ root: materialsRoot, request: { product: task.product_name_en }, limit: 5 });
       if (task?.state === "repair_requested") {
         const resumeInfrastructure = task.infrastructure_resume_pending === true;
         const resumeExistingRepair = task.repair_resume_pending === true;
@@ -169,6 +173,7 @@ export async function dispatchGoalAuthors({
           verifiedCommonUuids: selectRelevantCommonUuids({ stateDir, task }),
           verifiedSourceReceipts: selectRelevantSourceReceipts({ stateDir, task, state }),
           tools: { ...config.tools, project_root: config.project_root, config_path: path.resolve(state.config_path ?? config.config_path ?? "") },
+          materials: materialsQuery,
         });
         const prompt = resumeInfrastructure
           ? compileInfrastructureResumePrompt(task, compiled.prompt, infrastructureResumeNumber)
@@ -182,10 +187,12 @@ export async function dispatchGoalAuthors({
             ? `repair-${repairNumber}-resume-${repairResumeNumber}`
             : `repair-${repairNumber}`);
         writeFileSync(path.join(taskStateDir, `${repairArtifactStem}-prompt.txt`), prompt);
+        writeFileSync(path.join(taskStateDir, `${repairArtifactStem}-materials-query.json`), `${JSON.stringify(materialsQuery, null, 2)}\n`);
         writeFileSync(path.join(taskStateDir, `${repairArtifactStem}-output-schema.json`), `${JSON.stringify(outputSchema, null, 2)}\n`);
         const visible = await adapter.startRepairTurn({
           threadId: task.thread_id,
           worktreePath: task.worktree_path,
+          additionalWorkspaceRoots: [materialsRoot],
           prompt,
           outputSchema,
           clientUserMessageId: repairIdentity,
@@ -262,9 +269,11 @@ export async function dispatchGoalAuthors({
         verifiedCommonUuids: selectRelevantCommonUuids({ stateDir, task }),
         verifiedSourceReceipts: selectRelevantSourceReceipts({ stateDir, task, state }),
         tools: { ...config.tools, project_root: config.project_root, config_path: path.resolve(state.config_path ?? config.config_path ?? "") },
+        materials: materialsQuery,
       });
       const taskStateDir = path.join(stateDir, "authors", identity);
       mkdirSync(taskStateDir, { recursive: true });
+      writeFileSync(path.join(taskStateDir, "materials-query.json"), `${JSON.stringify(materialsQuery, null, 2)}\n`);
       writeFileSync(path.join(taskStateDir, "prompt.txt"), compiled.prompt);
       writeFileSync(path.join(taskStateDir, "output-schema.json"), `${JSON.stringify(compiled.output_schema, null, 2)}\n`);
       writeFileSync(path.join(taskStateDir, "prepared.json"), `${JSON.stringify({
@@ -294,6 +303,7 @@ export async function dispatchGoalAuthors({
       try {
         const visible = await adapter.createAuthorTask({
           worktreePath,
+          additionalWorkspaceRoots: [materialsRoot],
           title: `PCR ${task.cpc_code} · ${task.product_name_en}`,
           prompt: compiled.prompt,
           outputSchema: compiled.output_schema,
