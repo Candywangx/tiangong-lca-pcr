@@ -12,6 +12,48 @@ function git(root, args) {
   return execFileSync("git", args, { cwd: root, encoding: "utf8", stdio: ["ignore", "pipe", "pipe"] }).trim();
 }
 
+test("installed author runtime includes the working shared-materials CLI and author guidance", () => {
+  const root = mkdtempSync(path.join(tmpdir(), "goal-runtime-materials-"));
+  const authorRoot = `${root}-author`;
+  const stateDir = path.join(root, "library/.pcr-builder-state/goals/fixture");
+  const files = [
+    "builder/cli/materials.mjs",
+    "builder/lib/shared-materials.mjs",
+    "builder/lib/shared-materials.test.mjs",
+    "builder/docs/tools/shared-materials.md",
+    "builder/docs/tools/data-sources-and-tools.md",
+    "builder/docs/workflows/create-pcr.md",
+    "builder/docs/prompts/codex-create-pcr.md",
+    "builder/docs/prompts/claude-create-pcr.md",
+  ];
+  try {
+    git(root, ["init", "-q"]);
+    git(root, ["config", "user.name", "Goal Test"]);
+    git(root, ["config", "user.email", "goal@example.invalid"]);
+    writeFileSync(path.join(root, ".gitignore"), "library/.pcr-builder-state/\n");
+    git(root, ["add", "."]);
+    git(root, ["commit", "-qm", "baseline without materials"]);
+    const baseline = git(root, ["rev-parse", "HEAD"]);
+    for (const file of files) {
+      mkdirSync(path.dirname(path.join(root, file)), { recursive: true });
+      writeFileSync(path.join(root, file), readFileSync(new URL(`../../${file}`, import.meta.url)));
+    }
+    git(root, ["add", "."]);
+    git(root, ["commit", "-qm", "shared materials source"]);
+    new GoalEventStore({ stateDir }).initialize({ goal_id: "fixture", baseline: { commit: baseline }, tasks: [], snapshots: [] });
+    const runtime = ensureGoalRuntimeBaseline({ projectRoot: root, sourceRoot: root, stateDir, goalId: "fixture" });
+    assert.deepEqual(runtime.paths, [...files].sort());
+    git(root, ["worktree", "add", "--detach", "-q", authorRoot, runtime.commit]);
+    const query = JSON.parse(execFileSync(process.execPath, ["builder/cli/materials.mjs", "query", "--product", "wheat seed"], { cwd: authorRoot, encoding: "utf8" }));
+    assert.equal(query.root, path.join(root, ".git/pcr-materials"));
+    for (const file of files) assert.deepEqual(readFileSync(path.join(authorRoot, file)), readFileSync(path.join(root, file)));
+  } finally {
+    try { git(root, ["worktree", "remove", "--force", authorRoot]); } catch {}
+    rmSync(authorRoot, { recursive: true, force: true });
+    rmSync(root, { recursive: true, force: true });
+  }
+});
+
 test("runtime baseline overlays only approved Harness files on the latest landed snapshot", () => {
   const root = mkdtempSync(path.join(tmpdir(), "goal-runtime-baseline-"));
   const stateDir = path.join(root, "library/.pcr-builder-state/goals/fixture");

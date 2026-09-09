@@ -186,6 +186,14 @@ landed descendants become the cumulative base. Diverged histories or dirty runti
 keeps the validated viewer/test optimization active without rewriting the original synthetic baseline or touching the
 dirty primary working tree.
 
+The approved runtime paths also include the shared-materials CLI, implementation, tests, and create-PCR guidance.
+Run `goal:start` or `goal:resume` from the clean, committed checkout containing the desired Harness version (or invoke
+that checkout's `builder/cli/goal.mjs` directly); a GitHub push alone does not update another local checkout or an
+existing Goal runtime. New dispatches query the shared store and pass bounded candidates plus explicit query/read/register
+commands to authors. Existing author turns keep their original prompts; subsequent repair turns receive the updated
+instructions from the coordinator. The default materials directory is the Git common directory's `pcr-materials/`,
+shared across linked worktrees; `tools.materials_root` can override it. See [shared materials](shared-materials.md).
+
 Landing is staged and journaled. Every destination path is compared with the baseline or the last successfully landed
 snapshot. Any byte mismatch produces `GOAL_LAND_CAS_CONFLICT` with exact paths and does not overwrite newer user
 content. Author worktrees are retained after stop and successful landing for audit.
