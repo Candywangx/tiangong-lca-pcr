@@ -14,18 +14,38 @@ Spec: `docs/superpowers/specs/2026-09-09-boundary-review-outcome-design.md`.
 
 ### Task 1: Report and prompt contract
 
-- [ ] Add RED tests to `builder/goal-harness/quality-gates.test.mjs`: legacy report valid, explicit nullable request valid, malformed reasons/evidence rejected; compiled wire schema requires every property.
-- [ ] Run `node --test builder/goal-harness/quality-gates.test.mjs builder/goal-harness/prompt-compiler.test.mjs`; observe missing request support, not fixture syntax failures.
-- [ ] Add runtime-optional nullable `boundary_review` with reason_code, summary, questions, evidence locator/observation fields to `builder/schemas/goal-author-report.schema.json`; all nested keys required, no unsupported schema keywords.
-- [ ] Update `readAuthorReportSchema` in `builder/goal-harness/prompt-compiler.mjs` to require the nullable field only in the wire schema. Add explicit no-content outcome instructions. Keep normal finished-PCR instructions.
-- [ ] Run focused tests GREEN. Do not loosen inventory/source/UUID/range gates.
+- [x] Add RED tests to `builder/goal-harness/quality-gates.test.mjs`: legacy report valid, explicit nullable request valid, malformed reasons/evidence rejected; compiled wire schema requires every property.
+- [x] Run `node --test builder/goal-harness/quality-gates.test.mjs builder/goal-harness/prompt-compiler.test.mjs`; observe missing request support, not fixture syntax failures.
+- [x] Add runtime-optional nullable `boundary_review` with reason_code, summary, questions, evidence locator/observation fields to `builder/schemas/goal-author-report.schema.json`; all nested keys required, no unsupported schema keywords.
+- [x] Update `readAuthorReportSchema` in `builder/goal-harness/prompt-compiler.mjs` to require the nullable field only in the wire schema. Add explicit no-content outcome instructions. Keep normal finished-PCR instructions.
+- [x] Run focused tests GREEN. Do not loosen inventory/source/UUID/range gates.
+
+Task 1 evidence: commit `c5be827f`; RED 21 tests/3 expected failures, then GREEN
+21/21. Additional compiled-wire Ajv coverage and CLI regression passed 27/27.
+Independent specification and code-quality reviews approved. Unrestricted full
+validate passed 622 tests, 618 pass, 4 existing skips, 0 fail. A prior restricted
+execution failed at Git-dependent file wrappers; no tests were skipped to obtain
+the successful unrestricted result.
 
 ### Task 2: Independent request audit
 
-- [ ] Add `builder/goal-harness/boundary-review.test.mjs` using real temporary Git repositories. Assert rejection of mismatched CPC/path/file list/HEAD, unrelated commit, unauthorized committed or dirty paths, symlinked target, missing questions/evidence, success claims and infrastructure rows; assert preservation/hashes of partial allowed edits.
+- [x] Add `builder/goal-harness/boundary-review.test.mjs` using real temporary Git repositories. Assert rejection of mismatched CPC/path/file list/HEAD, unrelated commit, unauthorized committed or dirty paths, symlinked target, missing questions/evidence, success claims and infrastructure rows; assert preservation/hashes of partial allowed edits.
 - [ ] Run the test and observe RED because the audit API does not exist.
-- [ ] Implement `auditBoundaryReview({task,report,baselineCommit,worktreePath})` in `builder/goal-harness/boundary-review.mjs`. Validate schema, identity, non-final report shape and actual Git topology/path sets. No writes; read target regular files without following symlinks; hash absent files as null and current bytes as SHA-256. Return request provenance, current HEAD/content baseline and unadjudicated status, never a validity result.
-- [ ] Run tests GREEN, then add/report-size and file-read race failures if the chosen existing helpers do not already cover them.
+- [x] Implement `auditBoundaryReview({task,report,baselineCommit,worktreePath})` in `builder/goal-harness/boundary-review.mjs`. Validate schema, identity, non-final report shape and actual Git topology/path sets. No writes; read target regular files without following symlinks; hash absent files as null and current bytes as SHA-256. Return request provenance, current HEAD/content baseline and unadjudicated status, never a validity result.
+- [x] Run tests GREEN, then add/report-size and file-read race failures if the chosen existing helpers do not already cover them.
+
+Task 2 verification checkpoint: independent full validation passed 672 tests,
+668 pass, 4 existing skips, 0 fail (`/tmp/boundary-audit-validation-20260909.log`).
+Specification review identified a missing oversized-report regression test;
+the added test exercises the exact size-limit error with a schema-valid report.
+Focused rerun now passes 51/51, including concurrent bytes/HEAD/status changes.
+Independent specification review and subsequent code-quality review both approved
+the bounded Task 2 implementation. Scheduler integration is still pending;
+production remains stopped.
+
+Pre-commit full validate including the extra report test passed 673 tests,
+669 pass, 4 existing skips, 0 fail; test phase 26.48 seconds
+(`/tmp/boundary-audit-final-validate-20260909.log`).
 
 ### Task 3: Explicit legacy hold API
 
